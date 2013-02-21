@@ -1,0 +1,14 @@
+﻿@model MrCMS.Entities.Documents.Web.FormPosting
+<div class="modal-header">
+    <h3>View Entry</h3>
+</div>
+<div class="modal-body">
+    <ul>
+        @foreach (var value in Model.FormValues)
+        {
+            <li>
+                <b>@value.Key:</b> @value.Value
+            </li>
+        }
+    </ul>
+</div>

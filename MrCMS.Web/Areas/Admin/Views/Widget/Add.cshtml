@@ -1,0 +1,20 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Models.AddWidgetModel
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+<div class="modal-header">
+    <h3>Add widget</h3>
+</div>
+@using (Html.BeginForm("Add", "Widget", new { id = "", returnUrl = TempData["returnUrl"] }, FormMethod.Post))
+{
+    <div class="modal-body">
+        @Html.HiddenFor(model => model.LayoutArea.Id)
+        @Html.Label("WidgetType", "Widget Type")
+        @Html.DropDownList("WidgetType", WidgetHelper.WidgetTypeDropdownItems, new { data_val = "true", data_val_required = "Please select a widget type" })
+        <br />
+        @Html.LabelFor(model => model.Name)
+        @Html.EditorFor(model => model.Name, Model.Name)
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-success btn" value="Add widget" />
+    </div>
+}
