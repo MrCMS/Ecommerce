@@ -1,0 +1,46 @@
+﻿@using System.ComponentModel
+@using System.Web.Mvc.Html
+@using MrCMS.Helpers
+@using MrCMS.Settings
+@model SettingsBase
+<div id="@Model.DivId" class="tab-pane">
+    @{
+        var type = Model.GetType();
+    }
+    @foreach (var property in type.GetProperties().Where(info => info.CanWrite && info.Name != "Site"))
+    {
+        var name = (type.FullName + "." + property.Name).ToLower();
+        var displayNameAttribute = property.GetCustomAttributes(typeof(DisplayNameAttribute), true).OfType<DisplayNameAttribute>().FirstOrDefault();
+        var dropDownSelectionAttribute = property.GetCustomAttributes(typeof(DropDownSelectionAttribute), true).OfType<DropDownSelectionAttribute>().FirstOrDefault();
+        var textAreaAttribute = property.GetCustomAttributes(typeof(TextAreaAttribute), true).OfType<TextAreaAttribute>().FirstOrDefault();
+        var mediaSelectorAttribute = property.GetCustomAttributes(typeof(MediaSelectorAttribute), true).OfType<MediaSelectorAttribute>().FirstOrDefault();
+        var readonlyAttribute = property.GetCustomAttributes(typeof(ReadOnlyAttribute), true).OfType<ReadOnlyAttribute>().FirstOrDefault(attribute => attribute.IsReadOnly);
+
+        @Html.Label(name, displayNameAttribute != null ? displayNameAttribute.DisplayName : property.Name.BreakUpString())
+        if (readonlyAttribute != null)
+        {
+        @property.GetValue(Model, null)
+        }
+        else if (textAreaAttribute != null)
+        {
+            var cssClass = textAreaAttribute.CKEnabled ? "ckedit-enabled settings-textarea" : "settings-textarea";
+        @Html.TextArea(name, Convert.ToString(property.GetValue(Model, null)), new { @class = cssClass })
+        }
+        else if (dropDownSelectionAttribute != null)
+        {
+        @Html.DropDownList(name, ViewData[dropDownSelectionAttribute.ViewDataName] as IEnumerable<SelectListItem>)
+        }
+        else if (property.PropertyType == typeof(bool))
+        {
+        @Html.CheckBox(name, (bool)property.GetValue(Model, null))
+        }
+        else if (mediaSelectorAttribute != null)
+        {
+        @Html.TextBox(name, Convert.ToString(property.GetValue(Model, null)), new { @class = "media-selector" })
+        }
+        else
+        {
+        @Html.TextBox(name, property.GetValue(Model, null))
+        }
+    }
+</div>

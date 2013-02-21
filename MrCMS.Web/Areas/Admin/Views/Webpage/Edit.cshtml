@@ -1,0 +1,46 @@
+﻿@using MrCMS.Entities.Documents.Web
+@using MrCMS.Helpers
+@model Webpage
+@{
+    ViewBag.Title = "Edit | " + Model.Name;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<link href="@Url.Content("~/Areas/Admin/Content/Styles/jquery.formbuilder.css")" rel="stylesheet" type="text/css" />
+<section class="admin-header">
+    @if (TempData["saved"] != null)
+    {
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            @TempData["saved"]
+        </div>
+    }
+</section>
+<div class="row-fluid">
+    <div class="span12">
+        <a id="move-to" class="btn btn-info" title="Drag on to new page to relocate" href="#" style="cursor: move">Move to...</a>
+        <div class="btn-group display-inline pull-right">
+            @Html.EditorFor(x => x.PublishOn)
+            @(Model.PublishOn == null
+                ? Html.FormLink("Publish", "PublishNow", new { id = Model.Id }, new { @class = "btn  btn-warning" })
+                : Html.FormLink("Unpublish", "Unpublish", new { id = Model.Id }, new { @class = "btn  btn-success" }))
+            @Html.ValidationMessageFor(x => x.PublishOn)
+
+            <a href="/@Model.LiveUrlSegment" class="btn">View</a>
+            @if (Model.CanDelete)
+            {
+                <a href="@Url.Action("Delete", "Webpage", new { id = Model.Id })" class="btn btn-danger" data-toggle="fb-modal">Delete</a>
+            }
+            <button class="btn btn-primary" id="save-edit" data-form-id="edit-document" data-action="save">
+                Save</button>
+        </div>
+        <div class="display-inline pull-right" style="margin-top: 5px;">Publish on &nbsp; </div>
+    </div>
+</div>
+@Html.ValidationSummary()
+
+@{ Html.RenderPartial(Convert.ToString(ViewData["EditView"]));}
+<p style="margin-top: 10px; font-size: 11px;">
+    Created on: @Model.CreatedOn.ToShortDateString()
+    <br />
+    Last Updated on: @Model.UpdatedOn.ToShortDateString()
+</p>
