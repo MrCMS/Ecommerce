@@ -7,7 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce
     {
         public override string AppName
         {
-            get { return "Example"; }
+            get { return "Ecommerce"; }
         }
 
         protected override void RegisterServices(IKernel kernel)
