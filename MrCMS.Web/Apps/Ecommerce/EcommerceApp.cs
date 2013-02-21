@@ -1,9 +1,9 @@
 ﻿using MrCMS.Apps;
 using Ninject;
 
-namespace MrCMS.Web.Apps.Example
+namespace MrCMS.Web.Apps.Ecommerce
 {
-    public class ExampleApp : MrCMSApp
+    public class EcommerceApp : MrCMSApp
     {
         public override string AppName
         {
