@@ -15,7 +15,7 @@ namespace MrCMS.Indexing.Management
             _errors = new List<string>();
         }
 
-        public bool Success { get { return Errors.Any(); } }
+        public bool Success { get { return !Errors.Any(); } }
         public long ExecutionTime { get; set; }
 
         private void AddError(string error)
