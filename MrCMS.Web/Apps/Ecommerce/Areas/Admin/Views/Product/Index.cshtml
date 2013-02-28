@@ -1,0 +1,38 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Ecommerce.Pages.Product>
+@{
+    ViewBag.Title = "Products";
+}
+
+<h2>Products</h2>
+<div id="product-list">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Name
+                </th>
+                <th>Price
+                </th>
+                <th>Stock remaining
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>
+                        @product.Name
+                    </td>
+                    <td>
+                        @product.Price.ToString("0.00")
+                    </td>
+                    <td>
+                        @(product.StockRemaining.HasValue ? product.StockRemaining.ToString() : "-")
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Html.Pager(Model, "Index", p => new { p }, PagedListRenderOptions.PageNumbersOnly)
+</div>
