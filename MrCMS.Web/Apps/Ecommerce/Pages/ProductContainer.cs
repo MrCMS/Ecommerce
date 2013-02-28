@@ -2,7 +2,7 @@
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
-    public class ProductContainer : Webpage
+    public class ProductContainer : Webpage, IUniquePage
     {
     }
 }

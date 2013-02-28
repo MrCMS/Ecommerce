@@ -160,6 +160,7 @@
     <Compile Include="Apps\Ecommerce\Models\CartModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\EcommerceAdminMenuModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductAvailability.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ProductPagedList.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Product.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ProductContainer.cs" />
     <Compile Include="Apps\Ecommerce\Services\CartManager.cs" />
