@@ -25,5 +25,13 @@ namespace MrCMS.EcommerceApp.Tests.Metadata
 
             metadata.ChildrenList.Should().BeEquivalentTo(new List<Type> {typeof (Product)});
         }
+
+        [Fact]
+        public void ProductContainerMetaData_ShowChildrenInAdminNav_ShouldBeFalse()
+        {
+            var metadata = new ProductContainerMetadata();
+
+            metadata.ShowChildrenInAdminNav.Should().BeFalse();
+        }
     }
 }
