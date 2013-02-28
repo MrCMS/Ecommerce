@@ -113,10 +113,8 @@ namespace MrCMS.DbConfiguration
             var assemblies =
                 currentAssemblies.Where(
                     assembly =>
-                    !assembly.IsDynamic && !assembly.GlobalAssemblyCache 
-                    && assembly.FullName.Contains("mrcms", StringComparison.OrdinalIgnoreCase)
-                    //&& !assembly.FullName.Contains("castle", StringComparison.OrdinalIgnoreCase)
-                    ).ToList();
+                    !assembly.IsDynamic && !assembly.GlobalAssemblyCache &&
+                    !assembly.FullName.Contains("xunit", StringComparison.OrdinalIgnoreCase)).ToList();
             assemblies.AddRange(ManuallyAddedAssemblies);
 
             var finalAssemblies = new List<Assembly>();
