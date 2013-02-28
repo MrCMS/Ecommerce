@@ -1,10 +1,9 @@
-﻿using MrCMS.Paging;
-using MrCMS.Web.Apps.Ecommerce.Pages;
+﻿using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services
 {
     public interface IProductService
     {
-        IPagedList<Product> Search(string queryTerm = null, int page = 1);
+        ProductPagedList Search(string queryTerm = null, int page = 1);
     }
 }

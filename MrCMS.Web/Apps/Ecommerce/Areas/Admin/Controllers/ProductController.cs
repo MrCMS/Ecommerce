@@ -1,4 +1,6 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Website.Controllers;
 
@@ -7,10 +9,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class ProductController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly IProductService _productService;
+        private readonly IDocumentService _documentService;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IDocumentService documentService)
         {
             _productService = productService;
+            _documentService = documentService;
         }
 
         /// <summary>
@@ -21,6 +25,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         /// <returns></returns>
         public ViewResult Index(string q = null, int p = 1)
         {
+            if (_documentService.GetUniquePage<ProductContainer>() == null)
+                return View();
             var searchResult = _productService.Search(q, p);
             return View(searchResult);
         }

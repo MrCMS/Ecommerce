@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+using FakeItEasy;
 using FluentAssertions;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using Xunit;
@@ -9,6 +11,8 @@ namespace MrCMS.EcommerceApp.Tests.Services
 {
     public class ProductServiceTests : InMemoryDatabaseTest
     {
+        private IDocumentService _documentService;
+
         [Fact]
         public void ProductService_Search_WithNoSearchTermAndPageReturnsTheFirstPageOfAllProducts()
         {
@@ -21,7 +25,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
             pagedList.Should().HaveCount(10);
             pagedList.ShouldBeEquivalentTo(products.Take(10));
         }
-        
+
         [Fact]
         public void ProductService_Search_WithNoSearchTermAndPageSetReturnsThatPage()
         {
@@ -59,15 +63,37 @@ namespace MrCMS.EcommerceApp.Tests.Services
             Session.Transact(session => products1.ForEach(product => session.Save(product)));
             Session.Transact(session => products2.ForEach(product => session.Save(product)));
 
-            var pagedList = productService.Search("Other",2);
+            var pagedList = productService.Search("Other", 2);
 
             pagedList.Should().HaveCount(10);
             pagedList.ShouldBeEquivalentTo(products2.Skip(10).Take(10));
         }
+        [Fact]
+        public void ProductService_Search_ReturnsTheIdOfTheProductContainerIfItExists()
+        {
+            var productService = GetProductService();
+            A.CallTo(() => _documentService.GetUniquePage<ProductContainer>()).Returns(new ProductContainer {Id = 1});
+
+            var pagedList = productService.Search();
+
+            pagedList.ProductContainerId.Should().Be(1);
+        }
+
+        [Fact]
+        public void ProductService_Search_ReturnsNullContainerIdIfItDoesNotExist()
+        {
+            var productService = GetProductService();
+            A.CallTo(() => _documentService.GetUniquePage<ProductContainer>()).Returns(null);
+
+            var pagedList = productService.Search();
+
+            pagedList.ProductContainerId.Should().Be(null);
+        }
 
         ProductService GetProductService()
         {
-            return new ProductService(Session);
+            _documentService = A.Fake<IDocumentService>();
+            return new ProductService(Session, _documentService);
         }
     }
 }
