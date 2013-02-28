@@ -16,5 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
         {
             get { yield return typeof(Product); }
         }
+
+        public override bool ShowChildrenInAdminNav { get { return false; } }
     }
 }
