@@ -87,16 +87,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Admin\Controllers\CategoryControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductControllerTests.cs" />
+    <Compile Include="Admin\Controllers\TaxRateControllerTests.cs" />
     <Compile Include="Entities\ProductVariantTests\AvailabilityTests.cs" />
     <Compile Include="Entities\ProductVariantTests\PricingTests.cs" />
     <Compile Include="Entities\ProductVariantTests\StockLevelTests.cs" />
     <Compile Include="InMemoryDatabaseTest.cs" />
     <Compile Include="InterfaceMappingTest.cs" />
     <Compile Include="Entities\CartItemTests.cs" />
+    <Compile Include="Metadata\CategoryContainerMetadataTests.cs" />
+    <Compile Include="Metadata\CategoryMetadataTests.cs" />
     <Compile Include="Metadata\ProductContainerMetadataTests.cs" />
     <Compile Include="Metadata\ProductMetadataTests.cs" />
     <Compile Include="Models\CartModelTests.cs" />
+    <Compile Include="Pages\CategoryTests.cs" />
     <Compile Include="Pages\ProductTests\ProductAvailabilityTests.cs" />
     <Compile Include="Pages\ProductTests\ProductVariantsTests.cs" />
     <Compile Include="Pages\ProductTests\ProductPricingTests.cs" />
@@ -109,6 +114,7 @@
     <Compile Include="Services\ProductOptionManagerTests\SpecificationOptionTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\SpecificationValueTests.cs" />
     <Compile Include="Services\ProductServiceTests.cs" />
+    <Compile Include="Services\TaxRateManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

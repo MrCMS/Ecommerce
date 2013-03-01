@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentAssertions;
 using MrCMS.Entities.Documents;
 using MrCMS.Web.Apps.Ecommerce.Metadata;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using Xunit;
-using FluentAssertions;
 
 namespace MrCMS.EcommerceApp.Tests.Metadata
 {
-    public class ProductContainerMetadataTests
+    public class CategoryContainerMetadataTests
     {
         [Fact]
-        public void ProductContainerMetaData_ChildrenListType_ShouldBeWhiteList()
+        public void CategoryContainerMetaData_ChildrenListType_ShouldBeWhiteList()
         {
             var metadata = GetMetadata();
 
@@ -19,24 +19,24 @@ namespace MrCMS.EcommerceApp.Tests.Metadata
         }
 
         [Fact]
-        public void ProductContainerMetaData_ChildrenList_ShouldBeJustProducts()
+        public void CategoryContainerMetaData_ChildrenList_ShouldBeJustCategorys()
         {
             var metadata = GetMetadata();
 
-            metadata.ChildrenList.Should().BeEquivalentTo(new List<Type> {typeof (Product)});
+            metadata.ChildrenList.Should().BeEquivalentTo(new List<Type> { typeof(Category) });
         }
 
         [Fact]
-        public void ProductContainerMetaData_ShowChildrenInAdminNav_ShouldBeFalse()
+        public void CategoryContainerMetaData_ShowChildrenInAdminNav_ShouldBeFalse()
         {
             var metadata = GetMetadata();
 
             metadata.ShowChildrenInAdminNav.Should().BeFalse();
         }
-
-        private static ProductContainerMetadata GetMetadata()
+        
+        private static CategoryContainerMetadata GetMetadata()
         {
-            return new ProductContainerMetadata();
+            return new CategoryContainerMetadata();
         }
     }
 }

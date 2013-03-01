@@ -4,8 +4,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
 {
     public class TaxRate : SiteEntity
     {
-        public virtual decimal Name { get; set; }
-        public virtual decimal Code { get; set; }
+        public virtual string Name { get; set; }
+        public virtual string Code { get; set; }
         public virtual decimal Percentage { get; set; }
 
         public virtual decimal Multiplier

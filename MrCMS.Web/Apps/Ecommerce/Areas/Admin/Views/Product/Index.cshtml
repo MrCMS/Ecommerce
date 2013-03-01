@@ -4,12 +4,16 @@
     ViewBag.Title = "Products";
 }
 
-<h2>Products</h2>
 @if (Model != null)
 {
     <div class="row-fluid">
-        <div class="btn-group display-inline pull-right">
-            <a href="@Url.Action("Add", "Webpage", new { id = Model.ProductContainerId })" class="btn btn-primary">Add Product</a>
+        <div class="span4">
+            <h2>Products</h2>
+        </div>
+        <div class="span8">
+            <div class="btn-group  display-inline  pull-right">
+                <a href="@Url.Action("Add", "Webpage", new { id = Model.ProductContainerId })" class="btn btn-primary">Add Product</a>
+            </div>
         </div>
     </div>
     <div class="row-fluid">
@@ -30,7 +34,7 @@
                     {
                         <tr>
                             <td>
-                                @product.Name
+                                @Html.ActionLink(product.Name, "Edit", "Webpage", new { id = product.Id }, null)
                             </td>
                             <td>
                                 @product.Price.ToString("0.00")
@@ -48,5 +52,6 @@
 }
 else
 {
+    <h2>Products</h2>
     <p>Before you can add products, you need to add a Product Container to the navigation tree</p>    
 }

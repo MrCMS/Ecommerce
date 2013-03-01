@@ -1,4 +1,6 @@
-﻿using MrCMS.Apps;
+﻿using System.Web.Mvc;
+using MrCMS.Apps;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using Ninject;
 
 namespace MrCMS.Web.Apps.Ecommerce
@@ -17,6 +19,9 @@ namespace MrCMS.Web.Apps.Ecommerce
 
         protected override void RegisterApp(MrCMSAppRegistrationContext context)
         {
+            context.MapAreaRoute("Admin controllers", "Admin", "Admin/Apps/Ecommerce/{controller}/{action}/{id}",
+                                 new {controller = "Home", action = "Index", id = UrlParameter.Optional},
+                                 new[] {typeof (ProductController).Namespace});
         }
     }
 }
