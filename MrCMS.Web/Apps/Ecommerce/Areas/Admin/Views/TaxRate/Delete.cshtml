@@ -1,0 +1,16 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.TaxRate
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Delete", "TaxRate", FormMethod.Post))
+{
+    <div class="modal-header">
+        <h3>Delete Tax Rate</h3>
+    </div>
+    <div class="modal-body">
+        Are you sure you want to delete the tax rate @Model.Name ? Deleting this tax rate can not be undone.
+        <br />
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Delete tax rate" />
+    </div>
+}

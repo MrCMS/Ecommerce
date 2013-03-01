@@ -20,4 +20,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
         public override bool RequiresParent { get { return true; } }
         public override bool AutoBlacklist { get { return true; } }
     }
+    public class CategoryMetadata : DocumentMetadataMap<Category>
+    {
+        public override ChildrenListType ChildrenListType
+        {
+            get { return ChildrenListType.WhiteList; }
+        }
+
+        public override IEnumerable<System.Type> ChildrenList
+        {
+            get { yield break; }
+        }
+
+        public override bool RequiresParent { get { return true; } }
+        public override bool AutoBlacklist { get { return true; } }
+    }
 }

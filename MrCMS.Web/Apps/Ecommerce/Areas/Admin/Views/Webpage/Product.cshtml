@@ -1,0 +1,16 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+<p></p>
+@Html.LabelFor(product => product.PricePreTax)
+@Html.TextBoxFor(product => product.PricePreTax)
+
+@Html.LabelFor(product => product.PreviousPrice)
+@Html.TextBoxFor(product => product.PreviousPrice)
+
+@Html.LabelFor(product => product.SKU)
+@Html.TextBoxFor(product => product.SKU)
+
+@Html.LabelFor(product => product.StockRemaining)
+@Html.TextBoxFor(product => product.StockRemaining)
+
+@Html.LabelFor(product => product.TaxRate.Id, "Tax Rate")
+@Html.DropDownListFor(product => product.TaxRate.Id, ViewData["taxrates"] as IEnumerable<SelectListItem>)

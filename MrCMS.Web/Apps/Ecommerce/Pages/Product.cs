@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System.Linq;
+using MrCMS.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
@@ -42,8 +44,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             }
         }
 
+        [DisplayName("Stock Remaining")]
         public virtual int? StockRemaining { get; set; }
 
+        [DisplayName("Price Pre Tax")]
         public virtual decimal PricePreTax { get; set; }
 
         public virtual decimal ReducedBy
@@ -58,6 +62,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             }
         }
 
+        [DisplayName("Previous Price")]
         public virtual decimal? PreviousPrice { get; set; }
 
         public virtual decimal ReducedByPercentage
@@ -102,6 +107,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                 return null;
             return spec.Value;
 
+        }
+
+        public override void AdminViewData(System.Web.Mvc.ViewDataDictionary viewData, NHibernate.ISession session)
+        {
+            base.AdminViewData(viewData, session);
+            viewData["taxrates"] = session.QueryOver<TaxRate>()
+                                          .Cacheable()
+                                          .List()
+                                          .BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(),
+                                                               rate => rate == TaxRate, "None selected");
         }
     }
 }
