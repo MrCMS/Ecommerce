@@ -144,6 +144,7 @@
     <Compile Include="Application\Widgets\PlainTextWidget.cs" />
     <Compile Include="Application\Widgets\TextWidget.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductSpecificationOptionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\TaxRateController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchIndex.cs" />
     <Compile Include="Apps\Ecommerce\Entities\CartItem.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryContainerMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\CategoryMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\ProductContainerMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\ProductMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartModel.cs" />
@@ -170,9 +172,11 @@
     <Compile Include="Apps\Ecommerce\Pages\Product.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ProductContainer.cs" />
     <Compile Include="Apps\Ecommerce\Services\CartManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\CategoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ICartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\ICategoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IGetCart.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IProductOptionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\IProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ITaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductOptionManager.cs" />
@@ -213,6 +217,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Apps\Ecommerce\Content\Scripts\edit-product.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\build-config.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\ckeditor.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\config.js" />
@@ -569,6 +574,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Category\Index.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -712,6 +718,7 @@
     <Folder Include="Application\Entities\" />
     <Folder Include="Application\Services\" />
     <Folder Include="Application\Settings\" />
+    <Folder Include="Apps\Ecommerce\Content\Styles\" />
     <Folder Include="Apps\Ecommerce\Controllers\" />
     <Folder Include="Apps\Ecommerce\Settings\" />
     <Folder Include="Apps\Ecommerce\Views\Pages\" />
@@ -812,7 +819,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>36181</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:36177</IISUrl>
+          <IISUrl>http://localhost:36170</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

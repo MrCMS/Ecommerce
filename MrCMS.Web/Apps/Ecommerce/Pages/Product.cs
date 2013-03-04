@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Web.Mvc;
+using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System.Linq;
 using MrCMS.Helpers;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
@@ -15,7 +19,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             Variants = new List<ProductVariant>();
             SpecificationValues = new List<ProductSpecificationValue>();
+            Categories = new List<Category>();
         }
+
+        public virtual MediaCategory Gallery { get; set; }
 
         public virtual ProductAvailability Availability
         {
@@ -106,10 +113,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             if (spec == null)
                 return null;
             return spec.Value;
-
         }
 
-        public override void AdminViewData(System.Web.Mvc.ViewDataDictionary viewData, NHibernate.ISession session)
+        public override void AdminViewData(ViewDataDictionary viewData, ISession session)
         {
             base.AdminViewData(viewData, session);
             viewData["taxrates"] = session.QueryOver<TaxRate>()
@@ -117,6 +123,37 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                                           .List()
                                           .BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(),
                                                                rate => rate == TaxRate, "None selected");
+
+        }
+
+        public virtual IList<Category> Categories { get; set; }
+
+        protected override void CustomInitialization(IDocumentService service, ISession session)
+        {
+            base.CustomInitialization(service, session);
+
+            var mediaCategory = service.GetDocumentByUrl<MediaCategory>("product-galleries");
+            if (mediaCategory == null)
+            {
+                mediaCategory = new MediaCategory
+                                    {
+                                        Name = "Product Galleries",
+                                        UrlSegment = "product-galleries",
+                                        IsGallery = true
+                                    };
+                service.AddDocument(mediaCategory);
+            }
+            var productGallery = new MediaCategory
+                                     {
+                                         Name = Name,
+                                         UrlSegment = "product-galleries/" + UrlSegment,
+                                         IsGallery = true,
+                                         Parent = mediaCategory
+                                     };
+
+            Gallery = productGallery;
+
+            service.AddDocument(productGallery);
         }
     }
 }

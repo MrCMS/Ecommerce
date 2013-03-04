@@ -1,0 +1,56 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.CategoryPagedList
+@{
+    ViewBag.Title = "Categories";
+}
+
+@if (Model != null)
+{
+    <div class="row-fluid">
+        <div class="span4">
+            <h2>Categories</h2>
+        </div>
+        <div class="span8">
+            <div class="btn-group  display-inline  pull-right">
+                <a href="@Url.Action("Add", "Webpage", new { id = Model.CategoryContainerId })" class="btn btn-primary">Add Root Category</a>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div id="product-list">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Name
+                        </th>
+                        <th>Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var category in Model)
+                    {
+                        <tr>
+                            <td>
+                                @category.NestedName
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="@Url.Action("Add", "Webpage", new { id = category.Id })" class="btn btn-mini btn-success">Add Child Category</a>
+                                    <a href="@Url.Action("Edit", "Webpage", new { id = category.Id })" class="btn btn-mini">Edit</a>
+                                    <a href="@Url.Action("Delete", "Webpage", new { id = category.Id })" class="btn btn-mini btn-danger" data-toggle="fb-modal">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @Html.Pager(Model, "Index", p => new { p }, PagedListRenderOptions.PageNumbersOnly)
+        </div>
+    </div>
+}
+else
+{
+    <h2>Categories</h2>
+    <p>Before you can add categories, you need to add a Category Container to the navigation tree</p>    
+}

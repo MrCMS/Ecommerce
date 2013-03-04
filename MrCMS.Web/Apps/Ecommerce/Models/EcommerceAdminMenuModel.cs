@@ -18,7 +18,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                         new List<IMenuItem>
                         {
                             new ChildMenuItem("Products", "/Admin/Apps/Ecommerce/Product"),
+                            new ChildMenuItem("Categories", "/Admin/Apps/Ecommerce/Category"),
                             new ChildMenuItem("Tax Rates", "/Admin/Apps/Ecommerce/TaxRate"),
+                            new ChildMenuItem("Product Specification Options", "/Admin/Apps/Ecommerce/ProductSpecificationOption"),
                         });
             }
         }
