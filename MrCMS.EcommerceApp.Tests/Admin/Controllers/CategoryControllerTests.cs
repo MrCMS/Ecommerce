@@ -42,12 +42,24 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         public void CategoryController_Index_ReturnsTheResultOfTheCallToSearchAsTheModel()
         {
             var categoryController = GetCategoryController();
-            var categoryPagedList = new CategoryPagedList(new StaticPagedList<Category>(new Category[0], 1, 1, 0));
+            var categoryPagedList = new CategoryPagedList(new StaticPagedList<Category>(new Category[0], 1, 1, 0), 1);
             A.CallTo(() => _categoryService.Search("test", 1)).Returns(categoryPagedList);
 
             var index = categoryController.Index("test", 1);
 
             index.Model.Should().Be(categoryPagedList);
+        }
+
+        [Fact]
+        public void CategoryController_Index_ReturnsNullIfTheCategoryContainerIsNull()
+        {
+            
+            var categoryController = GetCategoryController();
+            A.CallTo(() => _documentService.GetUniquePage<CategoryContainer>()).Returns(null);
+
+            var index = categoryController.Index("test", 1);
+
+            index.Model.Should().BeNull();
         }
 
         CategoryController GetCategoryController()

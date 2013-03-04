@@ -14,4 +14,20 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
             mapping.ReferencesAny(item => item.Item).AutoMap("ItemType", "ItemId");
         }
     }
+
+    public class ProductOverride: IAutoMappingOverride<Product>
+    {
+        public void Override(AutoMapping<Product> mapping)
+        {
+            mapping.HasManyToMany(product => product.Categories).Table("ProductCategories").Not.Inverse();
+        }
+    }
+
+    public class CategoryOverride: IAutoMappingOverride<Category>
+    {
+        public void Override(AutoMapping<Category> mapping)
+        {
+            mapping.HasManyToMany(category => category.Products).Table("ProductCategories").Inverse();
+        }
+    }
 }

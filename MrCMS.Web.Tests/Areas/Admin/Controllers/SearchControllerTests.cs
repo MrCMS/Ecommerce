@@ -33,7 +33,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
             documentService = A.Fake<IDocumentService>();
             navigationService = A.Fake<INavigationService>();
             _siteService = A.Fake<ISiteService>();
-            var searchController = new SearchController(documentService, navigationService, _siteService);
+            var searchController = new SearchController(documentService, navigationService);
             return searchController;
         }
 

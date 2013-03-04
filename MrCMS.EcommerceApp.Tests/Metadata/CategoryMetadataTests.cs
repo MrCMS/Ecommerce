@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using MrCMS.Entities.Documents;
 using MrCMS.Web.Apps.Ecommerce.Metadata;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Metadata
@@ -18,11 +19,11 @@ namespace MrCMS.EcommerceApp.Tests.Metadata
         }
 
         [Fact]
-        public void CategoryMetadata_ChildrenList_ShouldBeJustCategorys()
+        public void CategoryMetadata_ChildrenList_ShouldBeJustCategories()
         {
             var metadata = new CategoryMetadata();
 
-            metadata.ChildrenList.Should().BeEquivalentTo(new List<Type>());
+            metadata.ChildrenList.Should().BeEquivalentTo(new List<Type>{typeof(Category)});
         }
 
         [Fact]

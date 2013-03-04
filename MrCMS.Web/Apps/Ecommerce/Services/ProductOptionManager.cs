@@ -8,7 +8,7 @@ using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services
 {
-    public class ProductOptionManager
+    public class ProductOptionManager : IProductOptionManager
     {
         private readonly ISession _session;
 

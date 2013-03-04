@@ -18,7 +18,7 @@ namespace MrCMS.EcommerceApp.Tests.Metadata
         }
 
         [Fact]
-        public void ProductMetadata_ChildrenList_ShouldBeJustProducts()
+        public void ProductMetadata_ChildrenList_ShouldBeEmpty()
         {
             var metadata = new ProductMetadata();
 
