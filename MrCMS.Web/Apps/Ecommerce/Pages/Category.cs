@@ -5,7 +5,7 @@ using MrCMS.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
-    public class Category : Webpage
+    public class Category : Webpage, IContainerItem
     {
         public Category()
         {
@@ -27,5 +27,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         }
 
         public virtual IList<Product> Products { get; set; }
+        public virtual string ContainerUrl
+        {
+            get { return (Parent as Webpage).LiveUrlSegment; }
+        }
     }
 }

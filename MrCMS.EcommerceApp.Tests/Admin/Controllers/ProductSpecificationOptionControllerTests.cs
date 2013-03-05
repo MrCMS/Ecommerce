@@ -46,6 +46,16 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
+        public void ProductSpecificationOptionController_AddGet_ReturnsAPartialViewResult()
+        {
+            var controller = GetProductSpecificationOptionController();
+
+            var addGet = controller.Add();
+
+            addGet.Should().BeOfType<PartialViewResult>();
+        }
+
+        [Fact]
         public void ProductSpecificationOptionController_Add_CallsAddOnTheProductOptionManager()
         {
             var controller = GetProductSpecificationOptionController();

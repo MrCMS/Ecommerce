@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using FakeItEasy;
+﻿using FakeItEasy;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;

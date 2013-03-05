@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Metadata;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -12,7 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
             get { return ChildrenListType.WhiteList; }
         }
 
-        public override IEnumerable<System.Type> ChildrenList
+        public override IEnumerable<Type> ChildrenList
         {
             get { yield return typeof(Category); }
         }
