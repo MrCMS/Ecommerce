@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using MrCMS.Entities.Documents.Web;
-using MrCMS.Web.Apps.Ecommerce.Models;
 using System.Linq;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
