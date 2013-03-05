@@ -1,0 +1,45 @@
+﻿@model List<MrCMS.Web.Apps.Ecommerce.Entities.ProductSpecificationOption>
+@{
+    ViewBag.Title = "Product Specification Options";
+}
+
+<div class="row-fluid">
+    <div class="span4">
+        <h2>Product Specification Options</h2>
+    </div>
+    <div class="span8">
+        <div class="btn-group  display-inline  pull-right">
+            <a href="@Url.Action("Add", "ProductSpecificationOption")" class="btn btn-primary"  data-toggle="fb-modal">Add Option</a>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div id="product-list">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Name
+                    </th>
+                    <th>Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var productSpecificationOption in Model)
+                {
+                    <tr>
+                        <td>
+                            @productSpecificationOption.Name
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                @Html.ActionLink("Edit", "Edit", "ProductSpecificationOption", new { id = productSpecificationOption.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                @Html.ActionLink("Delete", "Delete", "ProductSpecificationOption", new { id = productSpecificationOption.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

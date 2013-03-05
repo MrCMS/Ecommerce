@@ -13,7 +13,7 @@ using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
-    public class Product : Webpage, ICanAddToCart
+    public class Product : Webpage, ICanAddToCart, IContainerItem
     {
         public Product()
         {
@@ -155,5 +155,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
             service.AddDocument(productGallery);
         }
+
+        public virtual string ContainerUrl { get { return (Parent as Webpage).LiveUrlSegment; }}
     }
 }

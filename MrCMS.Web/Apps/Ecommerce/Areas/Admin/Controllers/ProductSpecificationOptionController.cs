@@ -20,6 +20,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return View(options);
         }
 
+        [HttpGet]
+        public PartialViewResult Add()
+        {
+            return PartialView();
+        }
+
         [HttpPost]
         public RedirectToRouteResult Add(ProductSpecificationOption option)
         {

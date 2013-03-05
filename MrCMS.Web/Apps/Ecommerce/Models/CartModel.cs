@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using MrCMS.Entities.People;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using System.Linq;
 
@@ -71,6 +73,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get { return Items.Any() && Items.All(item => item.CurrentlyAvailable); }
         }
+
+        public User User { get; set; }
+
+        public Guid UserGuid { get; set; }
     }
 
     public abstract class Discount
