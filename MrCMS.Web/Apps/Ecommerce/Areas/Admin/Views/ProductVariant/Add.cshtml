@@ -1,0 +1,26 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.ProductVariant
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
+@using (Html.BeginForm("Add", "ProductVariant", new { id = "" }, FormMethod.Post))
+{
+    <div class="modal-header">
+        <h3>Add Product Variant</h3>
+    </div>
+    <div class="modal-body">
+        @Html.LabelFor(variant => variant.SKU)
+        @Html.TextBoxFor(variant => variant.SKU)
+        @Html.LabelFor(variant => variant.PricePreTax)
+        @Html.TextBoxFor(variant => variant.PricePreTax)
+        @Html.LabelFor(variant => variant.PreviousPrice)
+        @Html.TextBoxFor(variant => variant.PreviousPrice)
+        @Html.LabelFor(variant => variant.AvailableOn)
+        @Html.TextBoxFor(variant => variant.AvailableOn)
+        @Html.LabelFor(variant => variant.StockRemaining)
+        @Html.TextBoxFor(variant => variant.StockRemaining)
+        @Html.LabelFor(variant => variant.TaxRate.Id, "Tax Rate")
+        @Html.DropDownListFor(variant => variant.TaxRate.Id, ViewData["taxrates"] as IEnumerable<SelectListItem>)
+        @Html.HiddenFor(variant => variant.Product.Id)
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Add Product Variant" />
+    </div>
+}

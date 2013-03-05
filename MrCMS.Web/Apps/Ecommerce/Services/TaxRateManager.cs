@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using NHibernate;
 using MrCMS.Helpers;
@@ -33,6 +34,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         public void Delete(TaxRate taxRate)
         {
             _session.Transact(session => session.Delete(taxRate));
+        }
+
+        public List<SelectListItem> GetOptions()
+        {
+            return GetAll().BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(), emptyItemText: "None");
         }
     }
 }

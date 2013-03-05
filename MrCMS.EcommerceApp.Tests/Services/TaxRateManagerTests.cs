@@ -23,10 +23,38 @@ namespace MrCMS.EcommerceApp.Tests.Services
         }
 
         [Fact]
+        public void TaxRateManager_GetOptions_ShouldHaveEmptyTaxRate()
+        {
+            TaxRateManager taxRateManager = GetTaxRateManager();
+
+            var allRates = taxRateManager.GetOptions();
+
+            allRates[0].Value.Should().Be("");
+            allRates[0].Text.Should().Be("None");
+        }
+
+        [Fact]
+        public void TaxRateManager_GetOptions_ShouldHaveRecordsForTheSavedTaxRates()
+        {
+            TaxRateManager taxRateManager = GetTaxRateManager();
+            List<TaxRate> taxRates = Enumerable.Range(1, 3).Select(i => new TaxRate { Percentage = i, Name = "Rate " + i }).ToList();
+            Session.Transact(session => taxRates.ForEach(rate => session.Save(rate)));
+
+            var allRates = taxRateManager.GetOptions();
+
+            allRates.Skip(1)
+                    .Select(item => item.Value)
+                    .ShouldAllBeEquivalentTo(taxRates.Select(rate => rate.Id.ToString()));
+            allRates.Skip(1)
+                    .Select(item => item.Text)
+                    .ShouldAllBeEquivalentTo(taxRates.Select(rate => rate.Name));
+        }
+
+        [Fact]
         public void TaxRateManager_Add_SavesThePassedTaxRateToSession()
         {
             TaxRateManager taxRateManager = GetTaxRateManager();
-            
+
             taxRateManager.Add(new TaxRate());
 
             Session.QueryOver<TaxRate>().RowCount().Should().Be(1);

@@ -146,6 +146,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductSpecificationOptionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductVariantController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\TaxRateController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductContainerController.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Apps\Ecommerce\Services\IGetCart.cs" />
     <Compile Include="Apps\Ecommerce\Services\IProductOptionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\IProductService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IProductVariantService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ITaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductOptionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductService.cs" />
@@ -582,6 +584,12 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductSpecificationOption\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductSpecificationOption\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\CategoryContainer.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductAdmin.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\ProductProperties.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\Variants.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Delete.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

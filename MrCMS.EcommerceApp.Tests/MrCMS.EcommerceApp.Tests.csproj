@@ -90,6 +90,7 @@
     <Compile Include="Admin\Controllers\CategoryControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductSpecificationOptionControllerTests.cs" />
+    <Compile Include="Admin\Controllers\ProductVariantControllerTests.cs" />
     <Compile Include="Admin\Controllers\TaxRateControllerTests.cs" />
     <Compile Include="Controllers\CategoryContainerControllerTests.cs" />
     <Compile Include="Entities\ProductVariantTests\AvailabilityTests.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Services\ProductOptionManagerTests\SpecificationOptionTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\SpecificationValueTests.cs" />
     <Compile Include="Services\ProductServiceTests.cs" />
+    <Compile Include="Services\ProductVariantServiceTests.cs" />
     <Compile Include="Services\TaxRateManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
