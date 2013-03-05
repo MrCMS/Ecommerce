@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
@@ -123,7 +124,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                                           .List()
                                           .BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(),
                                                                rate => rate == TaxRate, "None selected");
-
         }
 
         public virtual IList<Category> Categories { get; set; }
@@ -150,7 +150,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                                          IsGallery = true,
                                          Parent = mediaCategory
                                      };
-
             Gallery = productGallery;
 
             service.AddDocument(productGallery);

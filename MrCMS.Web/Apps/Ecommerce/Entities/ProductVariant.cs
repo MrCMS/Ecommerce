@@ -1,13 +1,17 @@
 ﻿using System;
+using System.ComponentModel;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities
 {
     public class ProductVariant : SiteEntity, ICanAddToCart
     {
+        [DisplayName("Price Pre Tax")]
         public virtual decimal PricePreTax { get; set; }
 
+        [DisplayName("Previous Price")]
         public virtual decimal? PreviousPrice { get; set; }
 
         public virtual decimal ReducedBy
@@ -41,6 +45,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
             }
         }
 
+        [DisplayName("Tax Rate")]
         public virtual TaxRate TaxRate { get; set; }
 
         public virtual decimal Tax { get { return Price - PricePreTax; } }
@@ -70,13 +75,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
             }
         }
 
+        [DisplayName("Available On")]
         public virtual DateTime? AvailableOn { get; set; }
 
         public virtual bool InStock
         {
             get { return !StockRemaining.HasValue || StockRemaining > 0; }
         }
+        [DisplayName("Stock Remaining")]
         public virtual int? StockRemaining { get; set; }
 
+        public virtual Product Product { get; set; }
     }
 }
