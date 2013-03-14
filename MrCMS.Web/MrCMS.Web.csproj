@@ -186,6 +186,7 @@
     <Compile Include="Apps\Ecommerce\Services\ProductOptionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\TaxRateManager.cs" />
+    <Compile Include="Apps\Ecommerce\Settings\StoreSettings.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseDocumentController.cs" />
     <Compile Include="Areas\Admin\Controllers\FileController.cs" />
@@ -734,7 +735,6 @@
     <Folder Include="Application\Services\" />
     <Folder Include="Application\Settings\" />
     <Folder Include="Apps\Ecommerce\Content\Styles\" />
-    <Folder Include="Apps\Ecommerce\Settings\" />
     <Folder Include="Apps\Ecommerce\Views\Pages\" />
     <Folder Include="Apps\Ecommerce\Views\Widgets\" />
     <Folder Include="Apps\Ecommerce\Widgets\" />

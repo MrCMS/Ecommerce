@@ -10,6 +10,8 @@ using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System.Linq;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
@@ -56,7 +58,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         public virtual int? StockRemaining { get; set; }
 
         [DisplayName("Price Pre Tax")]
-        public virtual decimal PricePreTax { get; set; }
+        public virtual decimal PricePreTax
+        {
+            get
+            {
+                return Math.Round(MrCMSApplication.Get<StoreSettings>().LoadedPricesIncludeTax
+                                      ? BasePrice / ((TaxRatePercentage + 100) / 100)
+                                      : BasePrice, 2, MidpointRounding.AwayFromZero);
+            }
+        }
+
+        [DisplayName("Base Price")]
+        public virtual decimal BasePrice { get; set; }
 
         public virtual decimal ReducedBy
         {
@@ -82,9 +95,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             get
             {
-                return Math.Round(TaxRate != null
-                                      ? PricePreTax * (TaxRate.Multiplier)
-                                      : PricePreTax, 2, MidpointRounding.AwayFromZero);
+                return Math.Round(MrCMSApplication.Get<StoreSettings>().LoadedPricesIncludeTax
+                                      ? BasePrice
+                                      : TaxRate != null
+                                            ? BasePrice * (TaxRate.Multiplier)
+                                            : BasePrice, 2, MidpointRounding.AwayFromZero);
             }
         }
 
@@ -155,6 +170,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             service.AddDocument(productGallery);
         }
 
-        public virtual string ContainerUrl { get { return (Parent as Webpage).LiveUrlSegment; }}
+        public virtual string ContainerUrl { get { return (Parent as Webpage).LiveUrlSegment; } }
     }
 }

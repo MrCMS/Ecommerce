@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
 using MrCMS.Website.Controllers;
@@ -14,11 +15,14 @@ namespace MrCMS.Web.Controllers
             _formService = formService;
         }
 
-        public ActionResult Save(Webpage webpage, FormCollection collection)
+        public ActionResult Save(Webpage webpage)
         {
-            _formService.SaveFormData(webpage, collection);
+            var saveFormData = _formService.SaveFormData(webpage, Request);
 
             TempData["form-submitted"] = true;
+            TempData["form-submitted-message"] = saveFormData;
+            // if any errors add form data to be renderered, otherwise form should be empty
+            TempData["form-data"] = saveFormData.Any() ? Request.Form : null;
             return Redirect(Referrer);
         }
     }

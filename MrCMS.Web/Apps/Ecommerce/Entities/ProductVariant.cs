@@ -3,13 +3,26 @@ using System.ComponentModel;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities
 {
     public class ProductVariant : SiteEntity, ICanAddToCart
     {
         [DisplayName("Price Pre Tax")]
-        public virtual decimal PricePreTax { get; set; }
+        public virtual decimal PricePreTax
+        {
+            get
+            {
+                return Math.Round(MrCMSApplication.Get<StoreSettings>().LoadedPricesIncludeTax
+                                      ? BasePrice / ((TaxRatePercentage + 100) / 100)
+                                      : BasePrice, 2, MidpointRounding.AwayFromZero);
+            }
+        }
+
+        [DisplayName("Base Price")]
+        public virtual decimal BasePrice { get; set; }
 
         [DisplayName("Previous Price")]
         public virtual decimal? PreviousPrice { get; set; }
