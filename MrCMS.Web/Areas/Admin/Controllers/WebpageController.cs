@@ -74,7 +74,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
             if (document == null)
                 return RedirectToAction("Index");
 
-            return View(document);
+            return View((object)document);
         }
 
         [HttpPost]
@@ -154,6 +154,12 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         public string SuggestDocumentUrl(Webpage parent, string pageName)
         {
             return _documentService.GetDocumentUrl(pageName, parent, true);
+        }
+
+        [HttpGet]
+        public PartialViewResult FormProperties(Webpage webpage)
+        {
+            return PartialView(webpage);
         }
     }
 }

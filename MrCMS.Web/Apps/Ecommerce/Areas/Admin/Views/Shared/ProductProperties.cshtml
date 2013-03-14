@@ -1,8 +1,8 @@
 ﻿@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
 <div class="tab-pane" id="product-properties">
-    @Html.LabelFor(product => product.PricePreTax)
-    @Html.TextBoxFor(product => product.PricePreTax)
+    @Html.LabelFor(product => product.BasePrice)
+    @Html.TextBoxFor(product => product.BasePrice) 
 
     @Html.LabelFor(product => product.PreviousPrice)
     @Html.TextBoxFor(product => product.PreviousPrice)
