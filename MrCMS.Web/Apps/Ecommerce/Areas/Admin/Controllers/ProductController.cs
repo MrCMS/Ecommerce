@@ -30,5 +30,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             var searchResult = _productService.Search(q, p);
             return View(searchResult);
         }
+
+        [HttpGet]
+        public PartialViewResult MakeMultiVariant(Product product)
+        {
+            return PartialView(product);
+        }
+
+        [HttpPost]
+        public RedirectToRouteResult MakeMultiVariant(Product product, string option1, string option2, string option3)
+        {
+            _productService.MakeMultiVariant(product, option1, option2, option3);
+
+            return RedirectToAction("Edit", "Webpage", new {id = product.Id});
+        }
     }
 }

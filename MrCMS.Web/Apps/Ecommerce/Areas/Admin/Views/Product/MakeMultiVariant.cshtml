@@ -1,0 +1,20 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
+@using (Html.BeginForm("MakeMultiVariant", "Product", new { id = Model.Id }, FormMethod.Post))
+{
+    
+    <div class="modal-header">
+        <h3>Make Multi-Variant</h3>
+    </div>
+    <div class="modal-body">
+        @Html.Label("option1", "Option 1")
+        @Html.TextBox("option1")
+        @Html.Label("option2", "Option 2")
+        @Html.TextBox("option2")
+        @Html.Label("option3", "Option 3")
+        @Html.TextBox("option3")
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Make multi-variant" />
+    </div>
+}
