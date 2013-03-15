@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -10,6 +11,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
 {
     public class ProductVariant : SiteEntity, ICanAddToCart
     {
+        public ProductVariant()
+        {
+            AttributeValues = new List<ProductAttributeValue>();
+        }
         [DisplayName("Price Pre Tax")]
         public virtual decimal PricePreTax
         {
@@ -99,5 +104,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
         public virtual int? StockRemaining { get; set; }
 
         public virtual Product Product { get; set; }
+
+        public virtual IList<ProductAttributeValue> AttributeValues { get; set; }
     }
 }

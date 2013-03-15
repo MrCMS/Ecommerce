@@ -26,7 +26,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                                   {
                                       if (productVariant.Product != null)
                                           productVariant.Product.Variants.Add(productVariant);
+                                      productVariant.AttributeValues.ForEach(
+                                          value => value.ProductVariant = productVariant);
                                       session.Save(productVariant);
+                                      productVariant.AttributeValues.ForEach(session.SaveOrUpdate);
                                   });
         }
 

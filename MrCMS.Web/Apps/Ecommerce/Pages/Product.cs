@@ -23,6 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             Variants = new List<ProductVariant>();
             SpecificationValues = new List<ProductSpecificationValue>();
             Categories = new List<Category>();
+            AttributeOptions = new List<ProductAttributeOption>();
         }
 
         public virtual MediaCategory Gallery { get; set; }
@@ -171,5 +172,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         }
 
         public virtual string ContainerUrl { get { return (Parent as Webpage).LiveUrlSegment; } }
+
+        public virtual bool HasMultiVariants { get; set; }
+
+        public virtual IList<ProductAttributeOption> AttributeOptions { get; set; }
     }
 }

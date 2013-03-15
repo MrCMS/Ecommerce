@@ -6,14 +6,17 @@
         <h3>Add Product Variant</h3>
     </div>
     <div class="modal-body">
+        @for (int index = 0; index < Model.Product.AttributeOptions.Count; index++)
+        {
+            var option = Model.Product.AttributeOptions[index];
+            @Html.LabelFor(variant => variant.AttributeValues[index].Value, option.Name)
+            @Html.TextBoxFor(variant => variant.AttributeValues[index].Value)
+            @Html.Hidden("AttributeValues["+index+"].Option.Id", option.Id.ToString())
+        }
         @Html.LabelFor(variant => variant.SKU)
         @Html.TextBoxFor(variant => variant.SKU)
-        @Html.LabelFor(variant => variant.PricePreTax)
-        @Html.TextBoxFor(variant => variant.PricePreTax)
-        @Html.LabelFor(variant => variant.PreviousPrice)
-        @Html.TextBoxFor(variant => variant.PreviousPrice)
-        @Html.LabelFor(variant => variant.AvailableOn)
-        @Html.TextBoxFor(variant => variant.AvailableOn)
+        @Html.LabelFor(variant => variant.BasePrice)
+        @Html.TextBoxFor(variant => variant.BasePrice)
         @Html.LabelFor(variant => variant.StockRemaining)
         @Html.TextBoxFor(variant => variant.StockRemaining)
         @Html.LabelFor(variant => variant.TaxRate.Id, "Tax Rate")

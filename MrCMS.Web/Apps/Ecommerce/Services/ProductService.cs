@@ -1,5 +1,6 @@
 ﻿using MrCMS.Paging;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
@@ -38,6 +39,46 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             var productContainer = _documentService.GetUniquePage<ProductContainer>();
             var productContainerId = productContainer == null ? (int?)null : productContainer.Id;
             return new ProductPagedList(pagedList, productContainerId);
+        }
+
+        public void MakeMultiVariant(Product product, string option1, string option2, string option3)
+        {
+            product.HasMultiVariants = true;
+
+            if (!string.IsNullOrWhiteSpace(option1))
+            {
+                var productAttributeOption =
+                    _session.QueryOver<ProductAttributeOption>()
+                            .Where(option => option.Name.IsInsensitiveLike(option1, MatchMode.Exact))
+                            .Take(1)
+                            .SingleOrDefault() ?? new ProductAttributeOption { Name = option1 };
+                product.AttributeOptions.Add(productAttributeOption);
+            }
+            if (!string.IsNullOrWhiteSpace(option2))
+            {
+                var productAttributeOption =
+                    _session.QueryOver<ProductAttributeOption>()
+                            .Where(option => option.Name.IsInsensitiveLike(option2, MatchMode.Exact))
+                            .Take(1)
+                            .SingleOrDefault()
+                    ?? new ProductAttributeOption { Name = option2 };
+                product.AttributeOptions.Add(productAttributeOption);
+            }
+            if (!string.IsNullOrWhiteSpace(option3))
+            {
+                var productAttributeOption =
+                    _session.QueryOver<ProductAttributeOption>()
+                            .Where(option => option.Name.IsInsensitiveLike(option3, MatchMode.Exact))
+                            .Take(1)
+                            .SingleOrDefault()
+                    ?? new ProductAttributeOption { Name = option3 };
+                product.AttributeOptions.Add(productAttributeOption);
+            }
+            _session.Transact(session =>
+                                  {
+                                      session.SaveOrUpdate(product);
+                                      product.AttributeOptions.ForEach(session.SaveOrUpdate);
+                                  });
         }
     }
 }

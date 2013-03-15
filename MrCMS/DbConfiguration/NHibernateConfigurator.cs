@@ -132,8 +132,8 @@ namespace MrCMS.DbConfiguration
                 .Mappings(m => m.AutoMappings.Add(AutoMap.Assemblies(new MrCMSMappingConfiguration(), finalAssemblies)
                                                 .IgnoreBase<SystemEntity>().IgnoreBase<SiteEntity>()
                                                 .IncludeBase<Document>().IncludeBase<Webpage>()
-                                                .IncludeBase<Widget>()
-                                                .IncludeBase<FormProperty>()
+                                                .IncludeBase<Widget>().IncludeBase<FormProperty>()
+                                                .IncludeAppBases()
                                                 .UseOverridesFromAssemblies(assemblies.Where(assembly => !assembly.GlobalAssemblyCache).ToArray())
                                                 .Conventions.AddFromAssemblyOf<CustomForeignKeyConvention>()))
                 .Cache(builder =>
