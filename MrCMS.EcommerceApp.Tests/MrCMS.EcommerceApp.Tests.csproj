@@ -101,14 +101,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin\Controllers\CategoryControllerTests.cs" />
+    <Compile Include="Admin\Controllers\CountryControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductSpecificationOptionControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductVariantControllerTests.cs" />
+    <Compile Include="Admin\Controllers\RegionControllerTests.cs" />
     <Compile Include="Admin\Controllers\TaxRateControllerTests.cs" />
     <Compile Include="Controllers\CategoryContainerControllerTests.cs" />
     <Compile Include="Entities\ProductVariantTests\AvailabilityTests.cs" />
     <Compile Include="Entities\ProductVariantTests\PricingTests.cs" />
     <Compile Include="Entities\ProductVariantTests\StockLevelTests.cs" />
+    <Compile Include="Entities\ShippingRateComputationMethodTests.cs" />
     <Compile Include="InMemoryDatabaseTest.cs" />
     <Compile Include="InterfaceMappingTest.cs" />
     <Compile Include="Entities\CartItemTests.cs" />
@@ -126,6 +129,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CartManagerTests.cs" />
     <Compile Include="Services\CategoryServiceTests.cs" />
+    <Compile Include="Services\CountryServiceTests.cs" />
     <Compile Include="Services\GetCartImplTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\AttributeOptionTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\AttributeValueTests.cs" />
@@ -133,6 +137,7 @@
     <Compile Include="Services\ProductOptionManagerTests\SpecificationValueTests.cs" />
     <Compile Include="Services\ProductServiceTests.cs" />
     <Compile Include="Services\ProductVariantServiceTests.cs" />
+    <Compile Include="Services\RegionServiceTests.cs" />
     <Compile Include="Services\TaxRateManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +157,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Helpers\" />
     <Folder Include="Indexing\" />
     <Folder Include="Stubs\" />
   </ItemGroup>
