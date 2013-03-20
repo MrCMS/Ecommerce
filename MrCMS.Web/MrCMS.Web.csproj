@@ -134,19 +134,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\DbConfiguration\PlainTextWidgetOveride.cs" />
-    <Compile Include="Application\DbConfiguration\TextPageOverride.cs" />
-    <Compile Include="Application\DbConfiguration\TextWidgetOveride.cs" />
-    <Compile Include="Application\Models\NavigationRecord.cs" />
-    <Compile Include="Application\Pages\SearchPage.cs" />
-    <Compile Include="Application\Pages\TextPage.cs" />
-    <Compile Include="Application\Widgets\Navigation.cs" />
-    <Compile Include="Application\Widgets\PlainTextWidget.cs" />
-    <Compile Include="Application\Widgets\TextWidget.cs" />
+    <Compile Include="Apps\Articles\ArticlesApp.cs" />
+    <Compile Include="Apps\Articles\Controllers\ArticleListController.cs" />
+    <Compile Include="Apps\Articles\DbConfiguration\ArticleOverride.cs" />
+    <Compile Include="Apps\Articles\Metadata\ArticleListMetaData.cs" />
+    <Compile Include="Apps\Articles\Metadata\ArticleMetaData.cs" />
+    <Compile Include="Apps\Articles\Pages\Article.cs" />
+    <Compile Include="Apps\Articles\Pages\ArticleList.cs" />
+    <Compile Include="Apps\Articles\Widgets\ArticleCategories.cs" />
+    <Compile Include="Apps\Articles\Widgets\LatestXArticles.cs" />
+    <Compile Include="Apps\Core\CoreApp.cs" />
+    <Compile Include="Apps\Core\DbConfiguration\PlainTextWidgetOveride.cs" />
+    <Compile Include="Apps\Core\DbConfiguration\TextWidgetOveride.cs" />
+    <Compile Include="Apps\Core\Models\NavigationList.cs" />
+    <Compile Include="Apps\Core\Models\NavigationRecord.cs" />
+    <Compile Include="Apps\Core\Pages\SearchPage.cs" />
+    <Compile Include="Apps\Core\Pages\TextPage.cs" />
+    <Compile Include="Apps\Core\Widgets\Navigation.cs" />
+    <Compile Include="Apps\Core\Widgets\PlainTextWidget.cs" />
+    <Compile Include="Apps\Core\Widgets\TextWidget.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductSpecificationOptionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductVariantController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\RegionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\TaxRateController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductContainerController.cs" />
@@ -154,11 +166,14 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\CategoryOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductOverride.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceApp.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Country.cs" />
     <Compile Include="Apps\Ecommerce\Entities\ProductAttributeOption.cs" />
     <Compile Include="Apps\Ecommerce\Entities\ProductAttributeValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\ProductSpecificationOption.cs" />
     <Compile Include="Apps\Ecommerce\Entities\ProductSpecificationValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\ProductVariant.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Region.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\ShippingMethod.cs" />
     <Compile Include="Apps\Ecommerce\Entities\TaxRate.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\PolymorphicMappingHelper.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchIndex.cs" />
@@ -169,7 +184,9 @@
     <Compile Include="Apps\Ecommerce\Metadata\ProductMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategoryPagedList.cs" />
+    <Compile Include="Apps\Ecommerce\Models\CountryToAdd.cs" />
     <Compile Include="Apps\Ecommerce\Models\EcommerceAdminMenuModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\IShippingCalculationRequest.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductAvailability.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductPagedList.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Category.cs" />
@@ -178,17 +195,28 @@
     <Compile Include="Apps\Ecommerce\Pages\ProductContainer.cs" />
     <Compile Include="Apps\Ecommerce\Services\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\CategoryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\CountryData.cs" />
+    <Compile Include="Apps\Ecommerce\Services\CountryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ICartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\ICategoryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ICountryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IGetCart.cs" />
     <Compile Include="Apps\Ecommerce\Services\IProductOptionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\IProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IProductVariantService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IRegionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ITaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductOptionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\RegionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\TaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Settings\StoreSettings.cs" />
+    <Compile Include="Apps\Galleries\Controllers\GalleryListController.cs" />
+    <Compile Include="Apps\Galleries\GalleriesApp.cs" />
+    <Compile Include="Apps\Galleries\Metadata\GalleryListMetaData.cs" />
+    <Compile Include="Apps\Galleries\Metadata\GalleryMetaData.cs" />
+    <Compile Include="Apps\Galleries\Pages\Gallery.cs" />
+    <Compile Include="Apps\Galleries\Pages\GalleryList.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseDocumentController.cs" />
     <Compile Include="Areas\Admin\Controllers\FileController.cs" />
@@ -215,16 +243,28 @@
     <Compile Include="Controllers\InstallController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Areas\Admin\Controllers\InPageMrCMSAdminController.cs" />
-    <Compile Include="Controllers\SearchPageController.cs" />
     <Compile Include="Controllers\SEOController.cs" />
-    <Compile Include="Controllers\TextPageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Apps\Core\Content\Bootstrap\css\bootstrap-responsive.css" />
+    <Content Include="Apps\Core\Content\Bootstrap\css\bootstrap-responsive.min.css" />
+    <Content Include="Apps\Core\Content\Bootstrap\css\bootstrap.css" />
+    <Content Include="Apps\Core\Content\Bootstrap\css\bootstrap.min.css" />
+    <Content Include="Apps\Core\Content\Bootstrap\img\glyphicons-halflings-white.png" />
+    <Content Include="Apps\Core\Content\Bootstrap\img\glyphicons-halflings.png" />
+    <Content Include="Apps\Core\Content\Bootstrap\js\bootstrap.js" />
+    <Content Include="Apps\Core\Content\Bootstrap\js\bootstrap.min.js" />
+    <Content Include="Apps\Core\Content\Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Apps\Core\Content\Scripts\jquery.validate.min.js" />
+    <Content Include="Apps\Core\Content\Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Apps\Core\Content\Scripts\respond.min.js" />
+    <Content Include="Apps\Core\Content\Styles\style.css" />
     <Content Include="Apps\Ecommerce\Content\Scripts\edit-product.js" />
+    <Content Include="Apps\Galleries\Areas\Admin\Content\Scripts\gallery.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\build-config.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\ckeditor.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\config.js" />
@@ -594,6 +634,33 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\MakeMultiVariant.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\Article.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Webpage\ArticleList.cshtml" />
+    <Content Include="Apps\Articles\Areas\Admin\Views\Widget\LatestXArticles.cshtml" />
+    <Content Include="Apps\Articles\Views\Pages\Article.cshtml" />
+    <Content Include="Apps\Articles\Views\Pages\ArticleList.cshtml" />
+    <Content Include="Apps\Articles\Views\Shared\ShowCategories.cshtml" />
+    <Content Include="Apps\Articles\Views\Web.config" />
+    <Content Include="Apps\Articles\Views\Widgets\ArticleCategories.cshtml" />
+    <Content Include="Apps\Articles\Views\Widgets\LatestXArticles.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\TextPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widgets\PlainTextWidget.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widgets\TextWidget.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\SearchPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\TextPage.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\_BaseLayout.cshtml" />
+    <Content Include="Apps\Core\Views\Web.config" />
+    <Content Include="Apps\Core\Views\Widgets\Navigation.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\PlainTextWidget.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\TextWidget.cshtml" />
+    <Content Include="Apps\Galleries\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\Gallery.cshtml" />
+    <Content Include="Apps\Galleries\Areas\Admin\Views\Webpage\GalleryList.cshtml" />
+    <Content Include="Apps\Galleries\Views\Pages\Gallery.cshtml" />
+    <Content Include="Apps\Galleries\Views\Pages\GalleryList.cshtml" />
+    <Content Include="Apps\Galleries\Views\Web.config" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -619,7 +686,6 @@
     <Content Include="Areas\Admin\Views\Layout\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Webpage\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Webpage\Redirect.cshtml" />
-    <Content Include="Views\Widget\PlainTextWidget.cshtml" />
     <Content Include="Areas\Admin\Views\Widget\Add.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\Sizes.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\MiniUploader.cshtml" />
@@ -686,7 +752,6 @@
     <Content Include="Areas\Admin\Views\Webpage\ViewPosting.cshtml" />
     <Content Include="Areas\Admin\Views\Webpage\Versions.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\RemoveMedia.cshtml" />
-    <Content Include="Areas\Admin\Views\Widget\PlainTextWidget.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Settings.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\SiteList.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\Index.cshtml" />
@@ -697,7 +762,6 @@
     <Content Include="Areas\Admin\Views\Navigation\NavLinks.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\InPageEditor.cshtml" />
     <Content Include="Views\Shared\_BaseLayout.cshtml" />
-    <Content Include="Views\Pages\SearchPage.cshtml" />
     <Content Include="Views\Login\ForgottenPassword.cshtml" />
     <Content Include="Views\Login\ForgottenPasswordSent.cshtml" />
     <Content Include="Views\Login\PasswordReset.cshtml" />
@@ -731,16 +795,30 @@
     <Content Include="Areas\Admin\Views\Webpage\RedirectEdit.cshtml" />
     <None Include="Properties\PublishProfiles\v0.1.1.pubxml" />
     <None Include="Properties\PublishProfiles\v0.1.pubxml" />
-    <Content Include="Views\Widget\Navigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Application\Entities\" />
-    <Folder Include="Application\Services\" />
-    <Folder Include="Application\Settings\" />
+    <Folder Include="Apps\Core\Areas\Admin\Controllers\" />
+    <Folder Include="Apps\Core\Content\Images\" />
+    <Folder Include="Apps\Core\Controllers\" />
+    <Folder Include="Apps\Core\Entities\" />
+    <Folder Include="Apps\Core\Metadata\" />
+    <Folder Include="Apps\Core\Services\" />
+    <Folder Include="Apps\Core\Settings\" />
     <Folder Include="Apps\Ecommerce\Content\Styles\" />
     <Folder Include="Apps\Ecommerce\Views\Pages\" />
     <Folder Include="Apps\Ecommerce\Views\Widgets\" />
     <Folder Include="Apps\Ecommerce\Widgets\" />
+    <Folder Include="Apps\Galleries\Areas\Admin\Controllers\" />
+    <Folder Include="Apps\Galleries\Areas\Admin\Views\Widgets\" />
+    <Folder Include="Apps\Galleries\Content\" />
+    <Folder Include="Apps\Galleries\DbConfiguration\" />
+    <Folder Include="Apps\Galleries\Entities\" />
+    <Folder Include="Apps\Galleries\Models\" />
+    <Folder Include="Apps\Galleries\Services\" />
+    <Folder Include="Apps\Galleries\Settings\" />
+    <Folder Include="Apps\Galleries\Views\Shared\" />
+    <Folder Include="Apps\Galleries\Views\Widgets\" />
+    <Folder Include="Apps\Galleries\Widgets\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
@@ -758,7 +836,6 @@
     <Content Include="Areas\Admin\Views\Layout\Show.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\Add.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\MediaCategory\GetTabs.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\Index.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\Media.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\Sort.cshtml" />
@@ -786,7 +863,6 @@
     <Content Include="Areas\Admin\Views\Webpage\Sort.cshtml" />
     <Content Include="Areas\Admin\Views\Webpage\Show.cshtml" />
     <Content Include="Areas\Admin\Views\Widget\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\Widget\TextWidget.cshtml" />
     <Content Include="Areas\Admin\Views\LayoutArea\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
   </ItemGroup>
@@ -806,11 +882,9 @@
     <Content Include="Areas\Admin\Views\MediaCategory\ImageSelector.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\ImageList.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\ImagePreview.cshtml" />
-    <Content Include="Views\Pages\TextPage.cshtml" />
     <Content Include="Views\Install\Setup.cshtml" />
     <Content Include="Views\Shared\_Installation.cshtml" />
     <Content Include="Views\Login\Login.cshtml" />
-    <Content Include="Views\Widget\TextWidget.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
