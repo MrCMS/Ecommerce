@@ -811,6 +811,8 @@
     <Folder Include="Apps\Core\Metadata\" />
     <Folder Include="Apps\Core\Services\" />
     <Folder Include="Apps\Core\Settings\" />
+    <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\" />
+    <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
     <Folder Include="Apps\Ecommerce\Content\Styles\" />
     <Folder Include="Apps\Ecommerce\Views\Pages\" />
     <Folder Include="Apps\Ecommerce\Views\Widgets\" />
