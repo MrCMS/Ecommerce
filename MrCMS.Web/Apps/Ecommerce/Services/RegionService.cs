@@ -15,7 +15,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 
         public void Add(Region region)
         {
-            _session.Transact(session => session.Save(region));
+            _session.Transact(session =>
+                                  {
+                                      session.Save(region);
+                                      if (region.Country != null)
+                                          region.Country.Regions.Add(region);
+                                  });
         }
 
         public void Update(Region region)

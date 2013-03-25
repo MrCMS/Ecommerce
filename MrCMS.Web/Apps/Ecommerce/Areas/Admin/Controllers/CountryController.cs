@@ -28,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [ActionName("Edit")]
+        [ActionName("Add")]
         public RedirectToRouteResult Add_POST(string countryCode)
         {
             _countryService.AddCountry(countryCode);

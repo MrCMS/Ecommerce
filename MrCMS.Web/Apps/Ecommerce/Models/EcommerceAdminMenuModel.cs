@@ -19,6 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                         {
                             new ChildMenuItem("Products", "/Admin/Apps/Ecommerce/Product"),
                             new ChildMenuItem("Categories", "/Admin/Apps/Ecommerce/Category"),
+                            new ChildMenuItem("Geographic Data", "/Admin/Apps/Ecommerce/Country"),
                             new ChildMenuItem("Tax Rates", "/Admin/Apps/Ecommerce/TaxRate"),
                             new ChildMenuItem("Product Specification Options", "/Admin/Apps/Ecommerce/ProductSpecificationOption"),
                         });
