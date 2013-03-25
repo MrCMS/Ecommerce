@@ -10,7 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
 
         public virtual decimal Multiplier
         {
-            get { return 1 + (Percentage/100m); }
+            get { return 1 + (Percentage/100m); } 
         }
     }
 }
