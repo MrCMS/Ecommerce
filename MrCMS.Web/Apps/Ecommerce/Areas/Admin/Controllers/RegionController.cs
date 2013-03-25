@@ -43,11 +43,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return RedirectToAction("Index", "Country");
         }
 
+        [HttpGet]
         public PartialViewResult Delete(Region region)
         {
             return PartialView(region);
         }
 
+        [HttpPost]
+        [ActionName("Delete")]
         public RedirectToRouteResult Delete_POST(Region region)
         {
             _regionService.Delete(region);

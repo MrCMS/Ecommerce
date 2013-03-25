@@ -58,17 +58,6 @@ namespace MrCMS.Web.Controllers
             SetInitialWebpages(model);
             InstallationResult installationResult = _installationService.Install(model);
 
-            // add navigation
-            //var navigation = new Navigation
-            //                     {
-            //                         Name = "Main Navigation",
-            //                         LayoutArea =
-            //                             model.BaseLayout.LayoutAreas.FirstOrDefault(
-            //                                 x => x.AreaName == "Main Navigation")
-            //                     };
-
-            //var widgetService = MrCMSApplication.Get<IWidgetService>().AddWidget(navigation);
-
             if (!installationResult.Success)
                 return View(model);
             else return Redirect("~");
@@ -79,7 +68,7 @@ namespace MrCMS.Web.Controllers
             model.BaseLayout = new Layout
                                    {
                                        Name = "Base Layout",
-                                       UrlSegment = "~/Views/Shared/_BaseLayout.cshtml",
+                                       UrlSegment = "~/Apps/Core/Views/Shared/_BaseLayout.cshtml",
                                        LayoutAreas = new List<LayoutArea>()
                                    };
             model.HomePage = new TextPage
@@ -96,6 +85,15 @@ namespace MrCMS.Web.Controllers
                     Name = "404",
                     UrlSegment = "404",
                     BodyContent = "Sorry, this page cannot be found.",
+                    RevealInNavigation = false,
+                    PublishOn = DateTime.UtcNow,
+                    Layout = model.BaseLayout
+                };
+            model.Error403 = new TextPage
+                {
+                    Name = "403",
+                    UrlSegment = "403",
+                    BodyContent = "Sorry, you are not authorized to view this page.",
                     RevealInNavigation = false,
                     PublishOn = DateTime.UtcNow,
                     Layout = model.BaseLayout

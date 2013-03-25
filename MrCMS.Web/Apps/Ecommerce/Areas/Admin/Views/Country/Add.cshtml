@@ -1,0 +1,17 @@
+﻿@model IEnumerable<SelectListItem>
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Add", "Country", FormMethod.Post))
+{
+    <div class="modal-header">
+        <h3>Add Country</h3>
+    </div>
+    <div class="modal-body">
+        @Html.Label("countryCode", "Name")
+        @Html.DropDownList("countryCode", Model)
+        <br />
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Add Country" />
+    </div>
+}

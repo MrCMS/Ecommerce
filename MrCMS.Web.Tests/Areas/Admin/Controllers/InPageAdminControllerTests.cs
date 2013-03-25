@@ -1,7 +1,9 @@
 ﻿using FakeItEasy;
+using FluentAssertions;
 using MrCMS.Services;
 using MrCMS.Web.Areas.Admin.Controllers;
 using NHibernate;
+using Xunit;
 
 namespace MrCMS.Web.Tests.Areas.Admin.Controllers
 {

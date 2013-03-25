@@ -1,0 +1,15 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Region
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Delete", "Region", FormMethod.Post))
+{
+    <div class="modal-header">
+        <h3>Delete Region</h3>
+    </div>
+    <div class="modal-body">
+        Are you sure you want to delete the region @Model.Name ? Deleting this region can not be undone.
+        <br />
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Delete region" />
+    </div>
+}

@@ -23,6 +23,10 @@ namespace MrCMS.DbConfiguration.Overrides
             mapping.Map(webpage => webpage.MetaKeywords).CustomType<VarcharMax>().Length(4001);
             mapping.Map(webpage => webpage.MetaDescription).CustomType<VarcharMax>().Length(4001);
             mapping.Map(webpage => webpage.FormDesign).CustomType<VarcharMax>().Length(4001);
+
+            mapping.HasMany(posting => posting.Urls).Cascade.Delete();
+            mapping.HasManyToMany(webpage => webpage.FrontEndAllowedRoles).Table("FrontEndWebpageRoles");
+            mapping.HasManyToMany(webpage => webpage.AdminAllowedRoles).Table("AdminWebpageRoles");
         }
     }
 

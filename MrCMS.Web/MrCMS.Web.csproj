@@ -661,6 +661,13 @@
     <Content Include="Apps\Galleries\Views\Pages\Gallery.cshtml" />
     <Content Include="Apps\Galleries\Views\Pages\GalleryList.cshtml" />
     <Content Include="Apps\Galleries\Views\Web.config" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Country\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Country\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Country\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Country\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Edit.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -910,7 +917,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>36181</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:36170</IISUrl>
+          <IISUrl>http://localhost:36167</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

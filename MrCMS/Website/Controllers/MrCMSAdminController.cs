@@ -1,9 +1,5 @@
-using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
-using MrCMS.Entities;
-using MrCMS.Entities.Multisite;
 using MrCMS.Entities.People;
 using MrCMS.Website.ActionResults;
 
@@ -49,6 +45,21 @@ namespace MrCMS.Website.Controllers
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet,
                 JsonData = data
             };
+        }
+
+        protected void SetSuccessMessage(string message)
+        {
+            TempData["success-message"] = message;
+        }
+
+        protected void SetErrorMessage(string message)
+        {
+            TempData["error-message"] = message;
+        }
+
+        protected void SetInfoMessage(string message)
+        {
+            TempData["info-message"] = message;
         }
     }
 }
