@@ -8,6 +8,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
         public virtual string Code { get; set; }
         public virtual decimal Percentage { get; set; }
 
+        public virtual Region Region { get; set; }
+        public virtual Country Country { get; set; }
+
         public virtual decimal Multiplier
         {
             get { return 1 + (Percentage/100m); } 

@@ -1,51 +1,78 @@
-﻿@model IList<MrCMS.Web.Apps.Ecommerce.Entities.TaxRate>
+﻿@model IList<MrCMS.Web.Apps.Ecommerce.Entities.Country>
 @{
     ViewBag.Title = "Tax Rates";
 }
 
 <div class="row-fluid">
     <div class="span4">
-        <h2>Tax Rates</h2>
+        <h3>Tax Rates</h3>
     </div>
-    <div class="span8">
-        <div class="btn-group  display-inline  pull-right">
-            <a href="@Url.Action("Add", "TaxRate")" class="btn btn-primary" data-toggle="fb-modal">Add Tax Rate</a>
-        </div>
+     <div class="span8">
+       <div class="btn-group pull-right">
+       @Html.ActionLink("Add Country", "Add","Country",null, new { @class = "btn btn-success", data_toggle = "fb-modal" })
+                      </div>
     </div>
 </div>
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Name
-            </th>
-            <th>Code
-            </th>
-            <th>Rate Percentage
-            </th>
-            <th>Actions
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var rate in Model)
+
+        @foreach (var country in Model)
         {
-            <tr>
-                <td>
-                    @rate.Name
-                </td>
-                <td>
-                    @rate.Code
-                </td>
-                <td>
-                    @rate.Percentage
-                </td>
-                <td>
-                    <div class="btn-group">
-                        @Html.ActionLink("Edit", "Edit", new { id = rate.Id }, new { @class = "btn btn-mini" })
-                        @Html.ActionLink("Delete", "Delete", new { id = rate.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
-                    </div>
-                </td>
-            </tr>
+            <div class="pull-left">
+                <strong>@country.Name</strong>
+            </div>
+                <div class="pull-left">
+                &nbsp;&nbsp;@if (country.TaxRates!=null && country.TaxRates.Where(x => x.Region == null).Count() > 0)
+                            { 
+                                @country.TaxRates.Where(x=>x.Region==null).First().Percentage.ToString("F") @Html.Encode("%") 
+                            } 
+            </div>
+            <div class="pull-right">
+            <div class="btn-group">
+                                       
+             
+                 @if (country.TaxRates.Where(x => x.Region == null).Count() > 0)
+                 {
+                    @Html.ActionLink("Edit", "Edit", new { countryId = country.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                    @Html.ActionLink("Delete", "Delete", new { countryId = country.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
+                }
+                else
+                {
+                    @Html.ActionLink("Add", "Add", new { countryId = country.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal"  })
+                }
+                                </div>
+                </div>
+            <div class="clearfix"></div>
+                <br />
+                    if (country.Regions.Count>0)
+                    { 
+                        <ul>
+
+                    @foreach (var region in country.Regions)
+                    {
+                        <li>
+                                 @region.Name &nbsp;&nbsp; @if (region.TaxRates.Count > 0)
+                                { 
+                                    @region.TaxRates.First().Percentage.ToString("F") @Html.Encode("%") 
+                            }
+                                     
+                                <div class="btn-group pull-right">
+                               
+                                @if (region.TaxRates.Count > 0)
+                                {
+                                    @Html.ActionLink("Edit", "Edit", new { regionId = region.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Delete", "Delete", new { regionId = region.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
+                                }
+                                else
+                                {
+                                     @Html.ActionLink("Add", "Add", new { regionId = region.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal"  })
+                                }
+                            </div>
+                                                      
+                                <div class="clearfix"></div>
+                            <br />
+                         </li>
+                    }
+
+                  </ul>
+   
+               }
         }
-    </tbody>
-</table>
