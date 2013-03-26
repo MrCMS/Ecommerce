@@ -1,7 +1,8 @@
 ﻿using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using NHibernate;
-
+using System.Collections.Generic;
+using System.Linq;
 namespace MrCMS.Web.Apps.Ecommerce.Services
 {
     public class RegionService : IRegionService
@@ -31,6 +32,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         public void Delete(Region region)
         {
             _session.Transact(session => session.Delete(region));
+        }
+
+        public object GetRegionsByCountryId(int countryId)
+        {
+            IList<Region> regions = _session.QueryOver<Region>().Cacheable().List();
+            return (from r in regions where r.Country.Id == countryId select new { r.Id, r.Name });
+        }
+
+        public Region Get(int regionId)
+        {
+            return _session.QueryOver<Region>().Where(x => x.Id == regionId).Cacheable().SingleOrDefault();
         }
     }
 }

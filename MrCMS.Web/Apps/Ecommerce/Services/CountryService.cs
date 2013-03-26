@@ -19,7 +19,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 
         public IList<Country> GetAllCountries()
         {
-            return _session.QueryOver<Country>().Cacheable().List();
+            return _session.QueryOver<Country>().CacheMode(CacheMode.Refresh).List();
+        }
+
+        public Country Get(int CountryId)
+        {
+            return _session.QueryOver<Country>().Where(x => x.Id == CountryId).Cacheable().SingleOrDefault();
         }
 
         public List<SelectListItem> GetCountriesToAdd()
@@ -56,6 +61,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 return _countryIsoCodeAndNames ??
                        (_countryIsoCodeAndNames = rows.Select(s => s.Split(';')).ToDictionary(s => s[1], s => s[0]));
             }
+        }
+
+        public List<SelectListItem> GetOptions()
+        {
+            return GetAllCountries().BuildSelectItemList(country => country.Name, rate => rate.Id.ToString(),null, String.Empty);
         }
     }
 }

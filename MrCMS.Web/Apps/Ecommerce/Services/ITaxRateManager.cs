@@ -11,5 +11,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         void Update(TaxRate taxRate);
         void Delete(TaxRate taxRate);
         List<SelectListItem> GetOptions();
+        TaxRate GetByCountryId(int countryId);
+        TaxRate GetByRegionId(int regionId);
     }
 }

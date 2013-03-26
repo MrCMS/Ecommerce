@@ -56,5 +56,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _regionService.Delete(region);
             return RedirectToAction("Index", "Country");
         }
+
+        public JsonResult GetRegionsByCountryId(int countryId)
+        {
+            return Json(_regionService.GetRegionsByCountryId(countryId), JsonRequestBehavior.AllowGet);
+        }
     }
 }

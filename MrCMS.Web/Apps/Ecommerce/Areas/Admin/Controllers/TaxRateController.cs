@@ -2,41 +2,67 @@
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Website.Controllers;
+using System.Collections.Generic;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class TaxRateController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly ITaxRateManager _taxRateManager;
+        private readonly ICountryService _countryService;
+        private readonly IRegionService _regionService;
 
-        public TaxRateController(ITaxRateManager taxRateManager)
+        public TaxRateController(ITaxRateManager taxRateManager, ICountryService countryService, IRegionService regionService)
         {
             _taxRateManager = taxRateManager;
+            _countryService = countryService;
+            _regionService = regionService;
         }
 
         public ViewResult Index()
         {
-            var taxRates = _taxRateManager.GetAll();
-            return View(taxRates);
+            return View(_countryService.GetAllCountries());
         }
 
         [HttpGet]
-        public PartialViewResult Add()
+        public ActionResult Add(int? countryId, int? regionId)
         {
-            return PartialView(new TaxRate());
+            if (countryId.HasValue)
+            {
+                TaxRate tr = new TaxRate() { Country = _countryService.Get(countryId.Value) };
+                return PartialView(tr);
+            }
+            else if (regionId.HasValue)
+            {
+                Region region = _regionService.Get(regionId.Value);
+                TaxRate tr = new TaxRate() { Country = region.Country, Region=region };
+                return PartialView(tr);
+            }
+            return RedirectToAction("Index");
         }
 
         [ActionName("Add")]
         [HttpPost]
-        public RedirectToRouteResult Add_POST(TaxRate taxRate)
+        public ActionResult Add_POST(TaxRate taxRate)
         {
-            _taxRateManager.Add(taxRate);
-            return RedirectToAction("Edit", new { id = taxRate.Id });
+            if (taxRate.Country!=null || taxRate.Region!=null)
+            {
+                _taxRateManager.Add(taxRate);
+            }
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public ViewResult Edit(TaxRate taxRate)
+        public ViewResult Edit(TaxRate taxRate,int? countryId, int? regionId)
         {
+            if (countryId.HasValue)
+            {
+                taxRate = _taxRateManager.GetByCountryId(countryId.Value);
+            }
+            else if (regionId.HasValue)
+            {
+                taxRate = _taxRateManager.GetByRegionId(regionId.Value);
+            }
             return View(taxRate);
         }
 
@@ -44,13 +70,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         public RedirectToRouteResult Edit_POST(TaxRate taxRate)
         {
-            _taxRateManager.Update(taxRate);
-            return RedirectToAction("Edit", new { id = taxRate.Id });
+            if (taxRate.Country != null || taxRate.Region != null)
+            {
+                _taxRateManager.Update(taxRate);
+            }
+
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public PartialViewResult Delete(TaxRate taxRate)
+        public PartialViewResult Delete(TaxRate taxRate, int? countryId, int? regionId)
         {
+            if (countryId.HasValue)
+            {
+                taxRate = _taxRateManager.GetByCountryId(countryId.Value);
+            }
+            else if (regionId.HasValue)
+            {
+                taxRate = _taxRateManager.GetByRegionId(regionId.Value);
+            }
             return PartialView(taxRate);
         }
 

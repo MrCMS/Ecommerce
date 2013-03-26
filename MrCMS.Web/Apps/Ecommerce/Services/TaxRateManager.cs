@@ -18,7 +18,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 
         public IList<TaxRate> GetAll()
         {
-            return _session.QueryOver<TaxRate>().Cacheable().List();
+            return _session.QueryOver<TaxRate>().OrderBy(x => x.Country).Asc.OrderBy(x => x.Region).Asc.CacheMode(CacheMode.Refresh).List();
+        }
+
+        public TaxRate GetByCountryId(int countryId)
+        {
+            return _session.QueryOver<TaxRate>().Where(x => x.Country.Id == countryId && x.Region==null).Cacheable().SingleOrDefault();
+        }
+        public TaxRate GetByRegionId(int regionId)
+        {
+            return _session.QueryOver<TaxRate>().Where(x => x.Region.Id == regionId).Cacheable().SingleOrDefault();
         }
 
         public void Add(TaxRate taxRate)
