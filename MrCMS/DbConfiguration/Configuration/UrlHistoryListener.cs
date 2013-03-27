@@ -6,7 +6,6 @@ using NHibernate;
 using NHibernate.Event;
 using System;
 using System.Linq;
-using MrCMS.Helpers;
 
 namespace MrCMS.DbConfiguration.Configuration
 {

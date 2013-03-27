@@ -80,8 +80,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Delete(TaxRate taxRate, int? countryId, int? regionId)
+        public PartialViewResult Delete(int? countryId, int? regionId)
         {
+            TaxRate taxRate = null;
             if (countryId.HasValue)
             {
                 taxRate = _taxRateManager.GetByCountryId(countryId.Value);
