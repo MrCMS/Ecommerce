@@ -185,8 +185,10 @@
     <Compile Include="Apps\Ecommerce\Models\CartModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategoryPagedList.cs" />
     <Compile Include="Apps\Ecommerce\Models\CountryToAdd.cs" />
+    <Compile Include="Apps\Ecommerce\Models\DeliveryStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\EcommerceAdminMenuModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\IShippingCalculationRequest.cs" />
+    <Compile Include="Apps\Ecommerce\Models\PaymentStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductAvailability.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductPagedList.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Category.cs" />
