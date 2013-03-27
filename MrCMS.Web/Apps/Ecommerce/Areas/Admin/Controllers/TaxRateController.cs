@@ -29,13 +29,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             if (countryId.HasValue)
             {
-                TaxRate tr = new TaxRate() { Country = _countryService.Get(countryId.Value) };
+                TaxRate tr = new TaxRate { Country = _countryService.Get(countryId.Value) };
                 return PartialView(tr);
             }
             else if (regionId.HasValue)
             {
                 Region region = _regionService.Get(regionId.Value);
-                TaxRate tr = new TaxRate() { Country = region.Country, Region=region };
+                TaxRate tr = new TaxRate { Country = region.Country, Region = region };
                 return PartialView(tr);
             }
             return RedirectToAction("Index");
@@ -43,9 +43,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Add")]
         [HttpPost]
-        public ActionResult Add_POST(TaxRate taxRate)
+        public RedirectToRouteResult Add_POST(TaxRate taxRate)
         {
-            if (taxRate.Country!=null || taxRate.Region!=null)
+            if (taxRate.Country != null || taxRate.Region != null)
             {
                 _taxRateManager.Add(taxRate);
             }
@@ -53,8 +53,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ViewResult Edit(TaxRate taxRate,int? countryId, int? regionId)
+        public PartialViewResult Edit(int? countryId, int? regionId)
         {
+            TaxRate taxRate = null;
             if (countryId.HasValue)
             {
                 taxRate = _taxRateManager.GetByCountryId(countryId.Value);
@@ -63,7 +64,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             {
                 taxRate = _taxRateManager.GetByRegionId(regionId.Value);
             }
-            return View(taxRate);
+            return PartialView(taxRate);
         }
 
         [ActionName("Edit")]
