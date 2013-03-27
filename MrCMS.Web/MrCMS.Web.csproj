@@ -210,7 +210,7 @@
     <Compile Include="Apps\Ecommerce\Services\ProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\RegionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\TaxRateManager.cs" />
-    <Compile Include="Apps\Ecommerce\Settings\StoreSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
     <Compile Include="Apps\Galleries\Controllers\GalleryListController.cs" />
     <Compile Include="Apps\Galleries\GalleriesApp.cs" />
     <Compile Include="Apps\Galleries\Metadata\GalleryListMetaData.cs" />
@@ -668,6 +668,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Settings.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
