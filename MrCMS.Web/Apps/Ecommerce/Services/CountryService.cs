@@ -57,7 +57,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         {
             get
             {
-                var rows = CountryData.RawData.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                var rows = CountryData.RawData.Split(new[] { "\n","\r" }, StringSplitOptions.RemoveEmptyEntries);
                 return _countryIsoCodeAndNames ??
                        (_countryIsoCodeAndNames = rows.Select(s => s.Split(';')).ToDictionary(s => s[1], s => s[0]));
             }
