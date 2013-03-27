@@ -2,25 +2,40 @@
 using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
     public class TaxRateControllerTests
     {
-        private ITaxRateManager _taxRateManager;
-        private ICountryService _countryService;
-        private IRegionService _regionService;
+        private readonly IConfigurationProvider _configurationProvider;
+        private readonly ICountryService _countryService;
+        private readonly IRegionService _regionService;
+        private readonly TaxRateController _taxRateController;
+        private readonly ITaxRateManager _taxRateManager;
+        private readonly TaxSettings _taxSettings;
+
+        public TaxRateControllerTests()
+        {
+            _taxRateManager = A.Fake<ITaxRateManager>();
+            _countryService = A.Fake<ICountryService>();
+            _regionService = A.Fake<IRegionService>();
+            _configurationProvider = A.Fake<IConfigurationProvider>();
+            _taxSettings = new TaxSettings();
+            _taxRateController = new TaxRateController(_taxRateManager, _countryService, _regionService,
+                                                       _configurationProvider,
+                                                       _taxSettings);
+        }
 
         [Fact]
         public void TaxRateController_Index_ReturnsViewResult()
         {
-            var taxRateController = GetTaxRateController();
-
-            var index = taxRateController.Index();
+            ViewResult index = _taxRateController.Index();
 
             index.Should().BeOfType<ViewResult>();
         }
@@ -28,9 +43,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_Index_CallsICountryServiceGetAllCountries()
         {
-            var taxRateController = GetTaxRateController();
-
-            var index = taxRateController.Index();
+            ViewResult index = _taxRateController.Index();
 
             A.CallTo(() => _countryService.GetAllCountries()).MustHaveHappened();
         }
@@ -38,11 +51,10 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_Index_ReturnsTheResultOfGetAllCountries()
         {
-            var taxRateController = GetTaxRateController();
             var countries = new List<Country>();
             A.CallTo(() => _countryService.GetAllCountries()).Returns(countries);
-            
-            var index = taxRateController.Index();
+
+            ViewResult index = _taxRateController.Index();
 
             index.Model.Should().Be(countries);
         }
@@ -50,9 +62,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_Add_ReturnsPartialViewResult()
         {
-            var taxRateController = GetTaxRateController();
-
-            var add = taxRateController.Add(1,null);
+            ActionResult add = _taxRateController.Add(1, null);
 
             add.Should().BeOfType<PartialViewResult>();
         }
@@ -60,9 +70,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_Add_ReturnsATaxRate()
         {
-            var taxRateController = GetTaxRateController();
-
-            var add = taxRateController.Add(1,null);
+            ActionResult add = _taxRateController.Add(1, null);
 
             add.As<PartialViewResult>().Model.Should().BeOfType<TaxRate>();
         }
@@ -70,10 +78,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_AddPOST_CallsITaxRateManagerAddWithPassedTaxRateIfItHasCountry()
         {
-            var taxRateController = GetTaxRateController();
-            var taxRate = new TaxRate{Country = new Country()};
+            var taxRate = new TaxRate {Country = new Country()};
 
-            var add = taxRateController.Add_POST(taxRate);
+            RedirectToRouteResult add = _taxRateController.Add_POST(taxRate);
 
             A.CallTo(() => _taxRateManager.Add(taxRate)).MustHaveHappened();
         }
@@ -81,10 +88,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_AddPOST_DoesNotCallITaxRateManagerAddWithPassedTaxRateIfItHasNoCountryOrRegionSet()
         {
-            var taxRateController = GetTaxRateController();
-            var taxRate = new TaxRate{};
+            var taxRate = new TaxRate {};
 
-            var add = taxRateController.Add_POST(taxRate);
+            RedirectToRouteResult add = _taxRateController.Add_POST(taxRate);
 
             A.CallTo(() => _taxRateManager.Add(taxRate)).MustNotHaveHappened();
         }
@@ -92,10 +98,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_AddPOST_RedirectsToTheIndex()
         {
-            var taxRateController = GetTaxRateController();
-            var taxRate = new TaxRate{Id=1};
+            var taxRate = new TaxRate {Id = 1};
 
-            var add = taxRateController.Add_POST(taxRate);
+            RedirectToRouteResult add = _taxRateController.Add_POST(taxRate);
 
             add.RouteValues["action"].Should().Be("Index");
         }
@@ -103,9 +108,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_Edit_ReturnsAPartialViewResult()
         {
-            var taxRateController = GetTaxRateController();
-
-            var edit = taxRateController.Edit(1,null);
+            PartialViewResult edit = _taxRateController.Edit(1, null);
 
             edit.Should().BeOfType<PartialViewResult>();
         }
@@ -113,11 +116,10 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_Edit_IfCountryIdIsSetReturnsTheResultOfGetByCountryIdAsTheModel()
         {
-            var taxRateController = GetTaxRateController();
             var taxRate = new TaxRate();
             A.CallTo(() => _taxRateManager.GetByCountryId(1)).Returns(taxRate);
 
-            var edit = taxRateController.Edit(1, null);
+            PartialViewResult edit = _taxRateController.Edit(1, null);
 
             edit.Model.Should().Be(taxRate);
         }
@@ -125,11 +127,10 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_Edit_IfRegionIdIsSetReturnsTheResultOfGetByRegionIdAsTheModel()
         {
-            var taxRateController = GetTaxRateController();
             var taxRate = new TaxRate();
             A.CallTo(() => _taxRateManager.GetByRegionId(1)).Returns(taxRate);
 
-            var edit = taxRateController.Edit(null, 1);
+            PartialViewResult edit = _taxRateController.Edit(null, 1);
 
             edit.Model.Should().Be(taxRate);
         }
@@ -137,10 +138,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_EditPOST_ShouldCallITaxManagerUpdateForATaxRateWithACountry()
         {
-            var taxRateController = GetTaxRateController();
-            var taxRate = new TaxRate{Country = new Country()};
+            var taxRate = new TaxRate {Country = new Country()};
 
-            var editPost = taxRateController.Edit_POST(taxRate);
+            RedirectToRouteResult editPost = _taxRateController.Edit_POST(taxRate);
 
             A.CallTo(() => _taxRateManager.Update(taxRate)).MustHaveHappened();
         }
@@ -148,10 +148,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_EditPOST_ShouldNotCallITaxManagerUpdateForATaxRateWithNoCountryOrRegion()
         {
-            var taxRateController = GetTaxRateController();
             var taxRate = new TaxRate();
 
-            var editPost = taxRateController.Edit_POST(taxRate);
+            RedirectToRouteResult editPost = _taxRateController.Edit_POST(taxRate);
 
             A.CallTo(() => _taxRateManager.Update(taxRate)).MustNotHaveHappened();
         }
@@ -159,10 +158,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_EditPOST_RedirectsToTheIndex()
         {
-            var taxRateController = GetTaxRateController();
-            var taxRate = new TaxRate{Id=1};
-            
-            var add = taxRateController.Edit_POST(taxRate);
+            var taxRate = new TaxRate {Id = 1};
+
+            RedirectToRouteResult add = _taxRateController.Edit_POST(taxRate);
 
             add.RouteValues["action"].Should().Be("Index");
         }
@@ -170,9 +168,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_Delete_ReturnsAPartialView()
         {
-            var taxRateController = GetTaxRateController();
-
-            var delete = taxRateController.Delete(null, null);
+            PartialViewResult delete = _taxRateController.Delete(null, null);
 
             delete.Should().BeOfType<PartialViewResult>();
         }
@@ -180,11 +176,10 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_Delete_ShouldReturnTheResultOfGetByCountryIdIfItIsSet()
         {
-            var taxRateController = GetTaxRateController();
             var taxRate = new TaxRate();
             A.CallTo(() => _taxRateManager.GetByCountryId(1)).Returns(taxRate);
 
-            var delete = taxRateController.Delete(1, null);
+            PartialViewResult delete = _taxRateController.Delete(1, null);
 
             delete.Model.Should().Be(taxRate);
         }
@@ -192,11 +187,10 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_Delete_ShouldReturnTheResultOfGetByRegionIdIfItIsSet()
         {
-            var taxRateController = GetTaxRateController();
             var taxRate = new TaxRate();
             A.CallTo(() => _taxRateManager.GetByRegionId(1)).Returns(taxRate);
 
-            var delete = taxRateController.Delete(null, 1);
+            PartialViewResult delete = _taxRateController.Delete(null, 1);
 
             delete.Model.Should().Be(taxRate);
         }
@@ -204,10 +198,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_DeletePOST_ShouldCallDeleteForThePassedTaxRate()
         {
-            var taxRateController = GetTaxRateController();
             var taxRate = new TaxRate();
-            
-            var delete = taxRateController.Delete_POST(taxRate);
+
+            RedirectToRouteResult delete = _taxRateController.Delete_POST(taxRate);
 
             A.CallTo(() => _taxRateManager.Delete(taxRate)).MustHaveHappened();
         }
@@ -215,19 +208,11 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void TaxRateController_DeletePOST_ShouldRedirectToIndex()
         {
-            var taxRateController = GetTaxRateController();
             var taxRate = new TaxRate();
-            
-            var delete = taxRateController.Delete_POST(taxRate);
+
+            RedirectToRouteResult delete = _taxRateController.Delete_POST(taxRate);
 
             delete.RouteValues["action"].Should().Be("Index");
-        }
-
-        TaxRateController GetTaxRateController()
-        {
-            _taxRateManager = A.Fake<ITaxRateManager>();
-            _countryService = A.Fake<ICountryService>();
-            return new TaxRateController(_taxRateManager, _countryService, _regionService);
         }
     }
 }

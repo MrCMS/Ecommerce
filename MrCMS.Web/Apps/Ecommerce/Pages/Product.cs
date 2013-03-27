@@ -63,7 +63,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             get
             {
-                return Math.Round(MrCMSApplication.Get<StoreSettings>().LoadedPricesIncludeTax
+                return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
                                       ? BasePrice / ((TaxRatePercentage + 100) / 100)
                                       : BasePrice, 2, MidpointRounding.AwayFromZero);
             }
@@ -96,7 +96,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             get
             {
-                return Math.Round(MrCMSApplication.Get<StoreSettings>().LoadedPricesIncludeTax
+                return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
                                       ? BasePrice
                                       : TaxRate != null
                                             ? BasePrice * (TaxRate.Multiplier)

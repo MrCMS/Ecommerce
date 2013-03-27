@@ -136,7 +136,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.ProductVariantTests
         [Fact]
         public void ProductVariant_PricePreTax_IfStoreSettingsAreNotLoadedPricesIncludeTaxShouldBeSameAsBasePrice()
         {
-            _mockingKernel.Bind<StoreSettings>().ToMethod(context => new StoreSettings { LoadedPricesIncludeTax = false });
+            _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { LoadedPricesIncludeTax = false });
             var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
 
             product.PricePreTax.Should().Be(6);
@@ -145,7 +145,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.ProductVariantTests
         [Fact]
         public void ProductVariant_PricePreTax_IfStoreSettingsAreLoadedPricesIncludeTaxShouldBeBasePriceLessVat()
         {
-            _mockingKernel.Bind<StoreSettings>().ToMethod(context => new StoreSettings { LoadedPricesIncludeTax = true });
+            _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { LoadedPricesIncludeTax = true });
             var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
 
             product.PricePreTax.Should().Be(5);
@@ -154,7 +154,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.ProductVariantTests
         [Fact]
         public void ProductVariant_Price_IfStoreSettingsAreNotLoadedPricesIncludeTaxShouldBeBasePricePlusVAT()
         {
-            _mockingKernel.Bind<StoreSettings>().ToMethod(context => new StoreSettings { LoadedPricesIncludeTax = false });
+            _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { LoadedPricesIncludeTax = false });
             var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
 
             product.Price.Should().Be(7.2m);
@@ -163,7 +163,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.ProductVariantTests
         [Fact]
         public void ProductVariant_Price_IfStoreSettingsAreLoadedPricesIncludeTaxShouldBeSameAsBasePrice()
         {
-            _mockingKernel.Bind<StoreSettings>().ToMethod(context => new StoreSettings { LoadedPricesIncludeTax = true });
+            _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { LoadedPricesIncludeTax = true });
             var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
 
             product.Price.Should().Be(6);

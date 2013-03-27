@@ -20,7 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
         {
             get
             {
-                return Math.Round(MrCMSApplication.Get<StoreSettings>().LoadedPricesIncludeTax
+                return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
                                       ? BasePrice / ((TaxRatePercentage + 100) / 100)
                                       : BasePrice, 2, MidpointRounding.AwayFromZero);
             }
