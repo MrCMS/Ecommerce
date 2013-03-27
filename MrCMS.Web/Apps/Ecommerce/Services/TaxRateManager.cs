@@ -32,7 +32,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 
         public void Add(TaxRate taxRate)
         {
-            _session.Transact(session => session.Save(taxRate));
+            _session.Transact(session =>
+                                  {
+                                      if (taxRate.Country != null)
+                                          taxRate.Country.TaxRates.Add(taxRate);
+                                      if (taxRate.Region != null)
+                                          taxRate.Region.TaxRates.Add(taxRate);
+                                      session.Save(taxRate);
+                                  });
         }
 
         public void Update(TaxRate taxRate)
