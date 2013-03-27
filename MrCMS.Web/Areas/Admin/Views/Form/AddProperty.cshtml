@@ -1,6 +1,4 @@
-﻿@using MrCMS.Entities.Documents.Web
-@using MrCMS.Entities.Documents.Web.FormProperties
-@using MrCMS.Helpers
+﻿@using MrCMS.Helpers
 @model MrCMS.Entities.Documents.Web.FormProperties.FormProperty
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 @using (Html.BeginForm("AddProperty", "Form", new { id = "" }, FormMethod.Post, new { @class = "form-update-form" }))
@@ -10,10 +8,7 @@
     </div>
     <div class="modal-body">
         @Html.HiddenFor(x => x.Webpage.Id)
-        @Html.DropDownList("type", TypeHelper.GetAllConcreteTypesAssignableFrom<FormProperty>()
-                                            .BuildSelectItemList(type => type.Name.BreakUpString(),
-                                                                 type => type.Name,
-                                                                 emptyItemText: null))
+        @Html.DropDownList("type", ViewData["property-types"] as IEnumerable<SelectListItem>)
                                                                  
         @Html.LabelFor(property => property.Name)
         @Html.TextBoxFor(property => property.Name)
