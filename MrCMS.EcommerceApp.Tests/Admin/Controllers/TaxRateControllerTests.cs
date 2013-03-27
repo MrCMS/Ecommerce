@@ -172,18 +172,31 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var taxRateController = GetTaxRateController();
 
-            var delete = taxRateController.Delete(new TaxRate(), null, null);
+            var delete = taxRateController.Delete(null, null);
 
             delete.Should().BeOfType<PartialViewResult>();
         }
 
         [Fact]
-        public void TaxRateController_Delete_ShouldReturnPassedTaxRateAsModel()
+        public void TaxRateController_Delete_ShouldReturnTheResultOfGetByCountryIdIfItIsSet()
         {
             var taxRateController = GetTaxRateController();
             var taxRate = new TaxRate();
+            A.CallTo(() => _taxRateManager.GetByCountryId(1)).Returns(taxRate);
 
-            var delete = taxRateController.Delete(taxRate, null, null);
+            var delete = taxRateController.Delete(1, null);
+
+            delete.Model.Should().Be(taxRate);
+        }
+
+        [Fact]
+        public void TaxRateController_Delete_ShouldReturnTheResultOfGetByRegionIdIfItIsSet()
+        {
+            var taxRateController = GetTaxRateController();
+            var taxRate = new TaxRate();
+            A.CallTo(() => _taxRateManager.GetByRegionId(1)).Returns(taxRate);
+
+            var delete = taxRateController.Delete(null, 1);
 
             delete.Model.Should().Be(taxRate);
         }
