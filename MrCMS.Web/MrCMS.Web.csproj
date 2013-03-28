@@ -154,6 +154,7 @@
     <Compile Include="Apps\Core\Widgets\PlainTextWidget.cs" />
     <Compile Include="Apps\Core\Widgets\TextWidget.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingMethodController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductSpecificationOptionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductController.cs" />
@@ -197,6 +198,8 @@
     <Compile Include="Apps\Ecommerce\Pages\ProductContainer.cs" />
     <Compile Include="Apps\Ecommerce\Services\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\CategoryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IShippingMethodManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ShippingMethodManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\CountryData.cs" />
     <Compile Include="Apps\Ecommerce\Services\CountryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ICartManager.cs" />
@@ -671,6 +674,8 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Settings.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Edit.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -805,6 +810,8 @@
     <Content Include="Areas\Admin\Views\Webpage\RedirectEdit.cshtml" />
     <None Include="Properties\PublishProfiles\v0.1.1.pubxml" />
     <None Include="Properties\PublishProfiles\v0.1.pubxml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Core\Areas\Admin\Controllers\" />
