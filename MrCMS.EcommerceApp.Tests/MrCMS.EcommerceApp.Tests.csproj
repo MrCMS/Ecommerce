@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin\Controllers\CategoryControllerTests.cs" />
+    <Compile Include="Admin\Controllers\ShippingMethodControllerTests.cs" />
     <Compile Include="Admin\Controllers\CountryControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductSpecificationOptionControllerTests.cs" />

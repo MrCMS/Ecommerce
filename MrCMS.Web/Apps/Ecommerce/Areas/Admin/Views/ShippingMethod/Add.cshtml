@@ -1,0 +1,18 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.ShippingMethod
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Add", "ShippingMethod", FormMethod.Post))
+{
+    <div class="modal-header">
+        <h3>Add Shipping Method</h3>
+    </div>
+    <div class="modal-body">
+        @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name)
+        @Html.LabelFor(x => x.Description)
+        @Html.TextAreaFor(x => x.Description)
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Add Shipping Method" />
+    </div>
+}

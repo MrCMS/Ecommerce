@@ -8,6 +8,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{810D89
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0F690EEC-BB1B-4916-BA16-682D9D7A7A19}"
+	ProjectSection(SolutionItems) = preProject
+		MrCMS.Web\Web.config = MrCMS.Web\Web.config
+		MrCMS.Web\Web.Debug.config = MrCMS.Web\Web.Debug.config
+		MrCMS.Web\Web.Release.config = MrCMS.Web\Web.Release.config
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MrCMS.Tests", "MrCMS.Tests\MrCMS.Tests.csproj", "{A0C47EBA-BAF0-43B8-A40A-D8D406E44525}"
 EndProject

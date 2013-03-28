@@ -22,6 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                             new ChildMenuItem("Geographic Data", "/Admin/Apps/Ecommerce/Country"),
                             new ChildMenuItem("Tax Rates", "/Admin/Apps/Ecommerce/TaxRate"),
                             new ChildMenuItem("Product Specification Options", "/Admin/Apps/Ecommerce/ProductSpecificationOption"),
+                            new ChildMenuItem("Shipping Methods", "/Admin/Apps/Ecommerce/ShippingMethod"),
                         });
             }
         }
