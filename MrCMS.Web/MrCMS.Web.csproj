@@ -168,6 +168,11 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\CategoryOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductOverride.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceApp.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Discount.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountApplication.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountApplicationOverride.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountLimitation.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountLimitationOverride.cs" />
     <Compile Include="Apps\Ecommerce\Entities\ShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Country.cs" />
     <Compile Include="Apps\Ecommerce\Entities\ProductAttributeOption.cs" />
