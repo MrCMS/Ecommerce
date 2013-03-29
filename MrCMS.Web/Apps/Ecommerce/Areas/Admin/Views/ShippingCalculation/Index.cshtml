@@ -1,4 +1,5 @@
-﻿@model IList<MrCMS.Web.Apps.Ecommerce.Entities.Country>
+﻿@using MrCMS.Web.Apps.Ecommerce.Entities
+@model IList<MrCMS.Web.Apps.Ecommerce.Entities.Country>
 @{
     ViewBag.Title = "Shipping Calculations";
 }
@@ -12,63 +13,61 @@
 
 @foreach (var country in Model)
 {
-        <div class="pull-left">
+    <div class="pull-left">
         <strong>@country.Name</strong>
-        </div>
-        <div class="pull-right">
+    </div>
+    <div class="pull-right">
         @Html.ActionLink("Add", "Add", "ShippingCalculation", new { countryId = country.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-        </div>
-        <br /><br />
-        <table class="table table-bordered table-striped">
+    </div>
+    <br />
+    <br />
+    <table class="table table-bordered table-striped">
 
         @foreach (var sc in country.ShippingCalculations)
         {
-                <tr>
+            <tr>
                 <td class="span3">
-                @sc.ShippingMethod.Name
+                    @sc.ShippingMethod.Name
                 </td>
-                  <td class="span4">
-                @sc.Name
+                <td class="span4">
+                    @sc.Name
                 </td>
-                 <td class="span3">
-                      @if (sc.CriteriaId == 1) 
-                      { 
-                          @sc.LowerBound.ToString("F") @Html.Encode(" lbs "); 
-                          if(sc.UpperBound == 0) 
-                          { 
-                              @Html.Encode(" and above"); 
-                          } 
-                          else 
-                          { 
-                              @Html.Encode(" - "); 
-                              @sc.UpperBound.ToString("F")  
-                              @Html.Encode(" lbs "); 
-                          }
-                      }
-                      else 
-                      {
-                          @(new HtmlString("&pound;")) @sc.LowerBound.ToString("F") 
-                          if(sc.UpperBound == 0) 
-                          { 
-                              @Html.Encode(" and above"); 
-                          } 
-                          else 
-                          { 
-                              @Html.Encode(" - "); 
-                              @(new HtmlString("&pound;"))
-                              @sc.UpperBound.ToString("F")  
-                          }
-                      } 
+                <td class="span3">
+                    @if (sc.ShippingCriteria == ShippingCriteria.ByWeight)
+                    { 
+                        <text>
+                        Cart Weight: 
+                          </text>
+                        @Html.Encode(string.Format("{0:F} lbs", sc.LowerBound))
+                        @(sc.UpperBound.HasValue ? Html.Encode(string.Format(" - {0:F} lbs", sc.UpperBound.Value)) : Html.Encode(" and above"))
+                    }
+                    else
+                    {
+                        <text>
+                        Cart Total: 
+                          </text>
+                        @Html.Raw(string.Format("&pound;{0:F}", sc.LowerBound))
+                        if (sc.UpperBound.HasValue)
+                        {
+                        @(new HtmlString(string.Format(" - &pound;{0:F}",sc.UpperBound.Value)))
+                        }
+                        else
+                        {
+                        @Html.Encode(" and above")
+                        }
+                    }
                 </td>
-                  <td class="span2">
-                @sc.Price
+                <td class="span2">
+                        @Html.Raw(string.Format("&pound;{0:F}", sc.Price))
                 </td>
                 <td>
-                @Html.ActionLink("Edit", "Edit", "ShippingCalculation", new { id = sc.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                @Html.ActionLink("Delete", "Delete", "ShippingCalculation", new { id = sc.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
-                 </td>
-                </tr>
+                    <div class="btn-group">
+                        @Html.ActionLink("Edit", "Edit", "ShippingCalculation", new { id = sc.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                        @Html.ActionLink("Delete", "Delete", "ShippingCalculation", new { id = sc.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                    </div>
+                </td>
+            </tr>
         }
 
-        </table>
+    </table>
 }
