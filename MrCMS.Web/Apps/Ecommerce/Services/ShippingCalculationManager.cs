@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Reflection;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using NHibernate;
@@ -32,11 +35,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         }
         public List<SelectListItem> GetCriteriaOptions()
         {
-            List<SelectListItem> criterias = new List<SelectListItem>();
-            criterias.Add(new SelectListItem() { Selected=true, Text="Based on cart weight", Value="1" });
-            criterias.Add(new SelectListItem() { Selected = true, Text = "Based on cart price", Value = "2" });
-            return criterias;
+            return
+                Enum.GetValues(typeof (ShippingCriteria))
+                    .Cast<ShippingCriteria>()
+                    .BuildSelectItemList(GetDescription,
+                                         criteria => criteria.ToString(), emptyItem: null);
+
+            //List<SelectListItem> criterias = new List<SelectListItem>();
+            //criterias.Add(new SelectListItem() { Selected=true, Text="Based on cart weight", Value="1" });
+            //criterias.Add(new SelectListItem() { Selected = true, Text = "Based on cart price", Value = "2" });
+            //return criterias;
         }
+
+        public static string GetDescription<T>(T item) where T : struct
+        {
+            FieldInfo field = typeof(T).GetField(item.ToString());
+            return field.GetCustomAttributes(typeof(DescriptionAttribute), false)
+                        .Cast<DescriptionAttribute>()
+                        .Select(x => x.Description)
+                        .FirstOrDefault();
+        }
+
         public void Add(ShippingCalculation ShippingCalculation)
         {
             _session.Transact(session =>
@@ -59,7 +78,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 
         public List<SelectListItem> GetOptions()
         {
-            return GetAll().BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(), emptyItemText: "None");
+            return GetAll().BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(), emptyItemText: null);
         }
     }
 }
