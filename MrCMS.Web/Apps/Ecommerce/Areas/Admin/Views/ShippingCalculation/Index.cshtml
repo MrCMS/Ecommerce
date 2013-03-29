@@ -1,0 +1,74 @@
+﻿@model IList<MrCMS.Web.Apps.Ecommerce.Entities.Country>
+@{
+    ViewBag.Title = "Shipping Calculations";
+}
+
+<div class="row-fluid">
+    <div class="span4">
+        <h3>Shipping Calculations</h3>
+    </div>
+</div>
+
+
+@foreach (var country in Model)
+{
+        <div class="pull-left">
+        <strong>@country.Name</strong>
+        </div>
+        <div class="pull-right">
+        @Html.ActionLink("Add", "Add", "ShippingCalculation", new { countryId = country.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+        </div>
+        <br /><br />
+        <table class="table table-bordered table-striped">
+
+        @foreach (var sc in country.ShippingCalculations)
+        {
+                <tr>
+                <td class="span3">
+                @sc.ShippingMethod.Name
+                </td>
+                  <td class="span4">
+                @sc.Name
+                </td>
+                 <td class="span3">
+                      @if (sc.CriteriaId == 1) 
+                      { 
+                          @sc.LowerBound.ToString("F") @Html.Encode(" lbs "); 
+                          if(sc.UpperBound == 0) 
+                          { 
+                              @Html.Encode(" and above"); 
+                          } 
+                          else 
+                          { 
+                              @Html.Encode(" - "); 
+                              @sc.UpperBound.ToString("F")  
+                              @Html.Encode(" lbs "); 
+                          }
+                      }
+                      else 
+                      {
+                          @(new HtmlString("&pound;")) @sc.LowerBound.ToString("F") 
+                          if(sc.UpperBound == 0) 
+                          { 
+                              @Html.Encode(" and above"); 
+                          } 
+                          else 
+                          { 
+                              @Html.Encode(" - "); 
+                              @(new HtmlString("&pound;"))
+                              @sc.UpperBound.ToString("F")  
+                          }
+                      } 
+                </td>
+                  <td class="span2">
+                @sc.Price
+                </td>
+                <td>
+                @Html.ActionLink("Edit", "Edit", "ShippingCalculation", new { id = sc.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                @Html.ActionLink("Delete", "Delete", "ShippingCalculation", new { id = sc.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                 </td>
+                </tr>
+        }
+
+        </table>
+}

@@ -11,6 +11,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
         {
             Regions = new List<Region>();
             TaxRates = new List<TaxRate>();
+            ShippingCalculations = new List<ShippingCalculation>();
         }
 
         public virtual string Name { get; set; }
@@ -19,5 +20,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
 
         public virtual IList<Region> Regions { get; set; }
         public virtual IList<TaxRate> TaxRates { get; set; }
+        public virtual IList<ShippingCalculation> ShippingCalculations { get; set; }
     }
 }

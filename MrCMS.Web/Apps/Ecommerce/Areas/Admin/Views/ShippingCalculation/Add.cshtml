@@ -1,0 +1,28 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.ShippingCalculation
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
+@using (Html.BeginForm("Add", "ShippingCalculation", FormMethod.Post, new { id = "add-shipping-calculation" }))
+{
+    <div class="modal-header">
+        <h3>Add Tax Rate</h3>
+    </div>
+    <div class="modal-body">
+        @Html.HiddenFor(x => x.Country.Id)
+        @Html.LabelFor(x => x.ShippingMethod.Id, "Shipping Method")
+        @Html.DropDownListFor(x => x.ShippingMethod.Id, ViewData["shippingmethods"] as IEnumerable<SelectListItem>)
+        @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name)
+        @Html.LabelFor(x => x.CriteriaId, "Criteria")
+        @Html.DropDownListFor(x => x.CriteriaId, ViewData["criterias"] as IEnumerable<SelectListItem>)
+        @Html.LabelFor(x => x.LowerBound)
+        @Html.TextBoxFor(x => x.LowerBound)
+        @Html.LabelFor(x => x.UpperBound)
+        @Html.TextBoxFor(x => x.UpperBound) (leave 0 if there is no upper bound)
+        @Html.LabelFor(x => x.Price)
+        @Html.TextBoxFor(x => x.Price)
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" id="save-add" data-action="save" data-form-id="add-shipping-calculation">
+                Add Shipping Calculation</button>
+    </div>
+}

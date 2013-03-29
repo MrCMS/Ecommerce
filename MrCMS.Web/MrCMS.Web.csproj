@@ -154,6 +154,7 @@
     <Compile Include="Apps\Core\Widgets\PlainTextWidget.cs" />
     <Compile Include="Apps\Core\Widgets\TextWidget.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingCalculationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingMethodController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductSpecificationOptionController.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\CategoryOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductOverride.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceApp.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\ShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Country.cs" />
     <Compile Include="Apps\Ecommerce\Entities\ProductAttributeOption.cs" />
     <Compile Include="Apps\Ecommerce\Entities\ProductAttributeValue.cs" />
@@ -198,6 +200,8 @@
     <Compile Include="Apps\Ecommerce\Pages\ProductContainer.cs" />
     <Compile Include="Apps\Ecommerce\Services\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\CategoryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ShippingCalculationManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IShippingCalculationManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\IShippingMethodManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\ShippingMethodManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\CountryData.cs" />
@@ -676,6 +680,10 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Settings.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Edit.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
