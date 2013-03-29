@@ -77,10 +77,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public User User { get; set; }
 
         public Guid UserGuid { get; set; }
-    }
 
-    public abstract class Discount
-    {
-        public abstract decimal GetDiscount(CartModel cartModel);
+        public string DiscountCode { get; set; }
     }
 }
