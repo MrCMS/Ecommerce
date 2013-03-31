@@ -1,0 +1,22 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Discount
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Add", "Discount", FormMethod.Post))
+{
+    <div class="modal-header">
+        <h3>Add Discount</h3>
+    </div>
+    <div class="modal-body">
+        @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name)
+        @Html.LabelFor(x => x.Code)
+        @Html.TextBoxFor(x => x.Code)
+        @Html.LabelFor(x => x.DateFrom, "From")
+        @Html.TextBoxFor(x => x.DateFrom)
+        @Html.LabelFor(x => x.DateTo, "To")
+        @Html.TextBoxFor(x => x.DateTo)
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Add Discount" />
+    </div>
+}
