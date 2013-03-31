@@ -154,6 +154,7 @@
     <Compile Include="Apps\Core\Widgets\PlainTextWidget.cs" />
     <Compile Include="Apps\Core\Widgets\TextWidget.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingCalculationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingMethodController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
@@ -207,6 +208,8 @@
     <Compile Include="Apps\Ecommerce\Pages\ProductContainer.cs" />
     <Compile Include="Apps\Ecommerce\Services\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\CategoryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\DiscountManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IDiscountManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\ShippingCalculationManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\IShippingCalculationManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\IShippingMethodManager.cs" />
@@ -279,6 +282,7 @@
     <Content Include="Apps\Core\Content\Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Apps\Core\Content\Scripts\respond.min.js" />
     <Content Include="Apps\Core\Content\Styles\style.css" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-discount.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\edit-product.js" />
     <Content Include="Apps\Galleries\Areas\Admin\Content\Scripts\gallery.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\build-config.js" />
@@ -691,6 +695,13 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\_OrderHasXOrMoreItems.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\_OrderTotalGreaterThanX.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\_FixedAmount.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -836,7 +847,6 @@
     <Folder Include="Apps\Core\Metadata\" />
     <Folder Include="Apps\Core\Services\" />
     <Folder Include="Apps\Core\Settings\" />
-    <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\" />
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
     <Folder Include="Apps\Ecommerce\Content\Styles\" />
     <Folder Include="Apps\Ecommerce\Views\Pages\" />

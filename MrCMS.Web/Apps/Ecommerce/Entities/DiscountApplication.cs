@@ -8,7 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
         public abstract decimal GetDiscount(CartModel cartModel);
     }
 
-    class FixedAmount : DiscountApplication
+    public class FixedAmount : DiscountApplication
     {
         public override decimal GetDiscount(CartModel cartModel)
         {

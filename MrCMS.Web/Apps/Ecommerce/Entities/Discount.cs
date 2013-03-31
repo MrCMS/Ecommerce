@@ -39,7 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
                 return TypeHelper.GetAllConcreteMappedClassesAssignableFrom<DiscountApplication>()
                                  .BuildSelectItemList(type => type.Name.BreakUpString(), type => type.FullName,
                                                       type =>
-                                                      Limitation != null && Application.Unproxy().GetType() == type,
+                                                      Application != null && Application.Unproxy().GetType() == type,
                                                       emptyItemText: null);
             }
         }
