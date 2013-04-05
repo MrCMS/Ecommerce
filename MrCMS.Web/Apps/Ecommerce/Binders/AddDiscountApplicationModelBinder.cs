@@ -26,9 +26,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Binders
                 ModelMetadataProviders.Current.GetMetadataForType(
                     () => CreateModel(controllerContext, bindingContext, type), type);
 
-            var document = base.BindModel(controllerContext, bindingContext) as DiscountApplication;
-
-            return document;
+            var discountApplication = base.BindModel(controllerContext, bindingContext) as DiscountApplication;
+            discountApplication.Id = 0;
+            return discountApplication;
         }
 
         protected override object CreateModel(ControllerContext controllerContext, ModelBindingContext bindingContext, Type modelType)
