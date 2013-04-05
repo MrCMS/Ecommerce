@@ -1,7 +1,7 @@
 ﻿$('#LimitationOpt').change(function () {
     var selectedID = $(this).val();
     var dID = $("#Id").val();
-    if (selectedID != "") {
+    if (selectedID != "" && selectedID != "No limitation") {
         $.get('/Admin/Apps/Ecommerce/DiscountLimitation/LoadDiscountLimitationProperties?limitationID=' + selectedID + "&discountID=" + dID, function (data) {
             $('#limitationValue').html(data);
             $('#limitationValue').fadeIn('fast');

@@ -15,8 +15,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
 {
     public abstract class DiscountLimitation : SiteEntity
     {
+        public DiscountLimitation()
+        {
+            Discounts = new List<Discount>();
+        }
+
         public abstract bool IsCartValid(CartModel cartModel);
-        public virtual string DiscountLimitationType { get; set; }
+        public abstract void CopyValues(DiscountLimitation limitation);
+
+        public virtual IList<Discount> Discounts { get; set; }
     }
 
     public class OrderHasXOrMoreItems : DiscountLimitation
@@ -28,6 +35,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
         }
 
         public virtual decimal NumberOfItems { get; set; }
+
+        public override void CopyValues(DiscountLimitation limitation)
+        {
+            this.NumberOfItems = ((OrderHasXOrMoreItems)limitation).NumberOfItems;
+        }
     }
 
     public class OrderTotalGreaterThanX : DiscountLimitation
@@ -39,5 +51,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
 
         [DisplayName("Value")]
         public virtual decimal OrderTotalGreaterThanValue { get; set; }
+
+        public override void CopyValues(DiscountLimitation limitation)
+        {
+            this.OrderTotalGreaterThanValue = ((OrderTotalGreaterThanX)limitation).OrderTotalGreaterThanValue;
+        }
     }
 }

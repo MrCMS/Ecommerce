@@ -1,3 +1,4 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.FixedAmount
 
-@Html.Hidden("DiscountApplicationType",Model.GetType())
+@Html.LabelFor(x => x.DiscountAmount)
+@Html.EditorFor(x => x.DiscountAmount)

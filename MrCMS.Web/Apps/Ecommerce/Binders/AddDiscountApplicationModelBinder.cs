@@ -19,7 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Binders
 
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-            var modelTypeName = controllerContext.Controller.ValueProvider.GetValue("DiscountApplicationType").AttemptedValue;
+            var modelTypeName = controllerContext.Controller.ValueProvider.GetValue("ApplicationOpt").AttemptedValue;
             var type = bindingContext.ModelType.Assembly.GetTypes().SingleOrDefault(x => x.IsSubclassOf(bindingContext.ModelType) && x.FullName == modelTypeName);
 
             bindingContext.ModelMetadata =

@@ -19,16 +19,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Binders
 
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-             var modelTypeName = controllerContext.Controller.ValueProvider.GetValue("DiscountLimitationType").AttemptedValue;
+            var modelTypeName = controllerContext.Controller.ValueProvider.GetValue("LimitationOpt").AttemptedValue;
             var type = bindingContext.ModelType.Assembly.GetTypes().SingleOrDefault(x => x.IsSubclassOf(bindingContext.ModelType) && x.FullName == modelTypeName);
 
-            bindingContext.ModelMetadata =
-                ModelMetadataProviders.Current.GetMetadataForType(
-                    () => CreateModel(controllerContext, bindingContext, type), type);
+            if (type != null)
+            {
+                bindingContext.ModelMetadata =
+                    ModelMetadataProviders.Current.GetMetadataForType(
+                        () => CreateModel(controllerContext, bindingContext, type), type);
 
-            var discountLimitation = base.BindModel(controllerContext, bindingContext) as DiscountLimitation;
-            discountLimitation.Id = 0;
-            return discountLimitation;
+                var discountLimitation = base.BindModel(controllerContext, bindingContext) as DiscountLimitation;
+                discountLimitation.Id = 0;
+                return discountLimitation;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         protected override object CreateModel(ControllerContext controllerContext, ModelBindingContext bindingContext, Type modelType)
