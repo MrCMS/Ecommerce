@@ -154,6 +154,8 @@
     <Compile Include="Apps\Core\Widgets\PlainTextWidget.cs" />
     <Compile Include="Apps\Core\Widgets\TextWidget.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountApplicationController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountLimitationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingCalculationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingMethodController.cs" />
@@ -163,6 +165,13 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductVariantController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\RegionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\TaxRateController.cs" />
+    <Compile Include="Apps\Ecommerce\Binders\AddDiscountModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\Binders\AddDiscountLimitationModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\Binders\AddDiscountApplicationModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\Binders\DiscountApplicationModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\Binders\DiscountLimitationModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\Binders\DiscountModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\Binders\EditDiscountModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductContainerController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
@@ -208,7 +217,11 @@
     <Compile Include="Apps\Ecommerce\Pages\ProductContainer.cs" />
     <Compile Include="Apps\Ecommerce\Services\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\CategoryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\DiscountApplicationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\DiscountLimitationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\DiscountManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IDiscountApplicationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IDiscountLimitationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IDiscountManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\ShippingCalculationManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\IShippingCalculationManager.cs" />
@@ -500,6 +513,8 @@
     <Content Include="Areas\Admin\Content\Scripts\custom\media-category.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\slider.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\portfolio-item.js" />
+    <Content Include="Areas\Admin\Content\Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Areas\Admin\Content\Scripts\jquery-ui.min.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.formbuilder.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.mrcms-mediaselector.js" />
     <Content Include="Areas\Admin\Content\Styles\admin.css" />
@@ -699,9 +714,9 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Edit.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\_OrderHasXOrMoreItems.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\_OrderTotalGreaterThanX.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\_FixedAmount.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\OrderHasXOrMoreItems.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\OrderTotalGreaterThanX.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\FixedAmount.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

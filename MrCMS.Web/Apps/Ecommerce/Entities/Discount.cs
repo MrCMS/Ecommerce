@@ -13,6 +13,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
         public virtual string Name { get; set; }
         public virtual string Code { get; set; }
 
+        public virtual string ValidTimePeriod
+        {
+            get 
+            {
+                if (DateFrom == null && DateTo == null)
+                    return "Forever";
+                else if (DateFrom != null && DateTo == null)
+                    return "From " + DateFrom;
+                else if (DateFrom == null && DateTo != null)
+                    return "Until " + DateTo;
+                else
+                    return DateFrom + " - " + DateTo;
+            }
+        }
+
         [DisplayName("Date From")]
         public virtual DateTime? DateFrom { get; set; }
         [DisplayName("Date To")]

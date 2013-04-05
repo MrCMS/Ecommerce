@@ -40,13 +40,11 @@
                             @item.Code
                         </td>
                          <td>
-                            @item.DateFrom.Value.ToShortDateString()
-                             &nbsp -  &nbsp
-                            @item.DateTo.Value.ToShortDateString()
+                            @item.ValidTimePeriod
                         </td>
                         <td>
                             <div class="btn-group">
-                                @Html.ActionLink("Edit", "Edit", "Discount", new { id = item.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                @Html.ActionLink("Edit", "Edit", "Discount", new { id = item.Id }, new { @class = "btn btn-mini" })
                                 @Html.ActionLink("Delete", "Delete", "Discount", new { id = item.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
                             </div>
                         </td>
