@@ -6,6 +6,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
     public abstract class DiscountApplication : SiteEntity
     {
         public abstract decimal GetDiscount(CartModel cartModel);
+        public virtual string DiscountApplicationType { get; set; }
     }
 
     public class FixedAmount : DiscountApplication

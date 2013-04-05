@@ -9,7 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         IList<Discount> GetAll();
         Discount Get(int id);
         void Add(Discount discount);
-        void Save(Discount discount);
+        void Save(Discount discount, DiscountLimitation discountLimitation, DiscountApplication discountApplication);
         void Delete(Discount discount);
     }
 }

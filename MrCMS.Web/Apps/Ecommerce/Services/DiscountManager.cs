@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using NHibernate;
-
 namespace MrCMS.Web.Apps.Ecommerce.Services
 {
     public class DiscountManager : IDiscountManager
@@ -34,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 session.Save(discount));
         }
 
-        public void Save(Discount discount)
+        public void Save(Discount discount, DiscountLimitation discountLimitation, DiscountApplication discountApplication)
         {
             _session.Transact(session => session.SaveOrUpdate(discount));
         }
