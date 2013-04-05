@@ -165,13 +165,10 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductVariantController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\RegionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\TaxRateController.cs" />
-    <Compile Include="Apps\Ecommerce\Binders\AddDiscountModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Binders\AddDiscountLimitationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Binders\AddDiscountApplicationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Binders\DiscountApplicationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Binders\DiscountLimitationModelBinder.cs" />
-    <Compile Include="Apps\Ecommerce\Binders\DiscountModelBinder.cs" />
-    <Compile Include="Apps\Ecommerce\Binders\EditDiscountModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductContainerController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />

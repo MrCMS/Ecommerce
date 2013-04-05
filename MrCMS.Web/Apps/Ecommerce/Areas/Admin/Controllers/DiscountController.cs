@@ -47,13 +47,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Edit")]
-        public RedirectToRouteResult Edit_POST(Discount discount, [IoCModelBinder(typeof(AddDiscountLimitationModelBinder))] DiscountLimitation discountLimitation, [IoCModelBinder(typeof(AddDiscountApplicationModelBinder))] DiscountApplication discountApplication)
+        public RedirectToRouteResult Edit_POST(Discount discount, [IoCModelBinder(typeof(AddDiscountLimitationModelBinder))] DiscountLimitation limitation, 
+            [IoCModelBinder(typeof(AddDiscountApplicationModelBinder))] DiscountApplication application)
         {
-            _discountManager.Save(discount, discountLimitation,discountApplication);
+            _discountManager.Save(discount, limitation, application);
 
             return RedirectToAction("Index");
         }
-
 
         [HttpGet]
         public PartialViewResult Delete(Discount discount)

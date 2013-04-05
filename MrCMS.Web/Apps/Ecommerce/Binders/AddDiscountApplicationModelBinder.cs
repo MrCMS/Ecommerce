@@ -10,20 +10,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities;
 
 namespace MrCMS.Web.Apps.Ecommerce.Binders
 {
-    public class AddDiscountApplicationGetModelBinder : DiscountApplicationModelBinder
-    {
-        public AddDiscountApplicationGetModelBinder(ISession session, IDiscountApplicationService discountApplicationService)
-            : base(session, discountApplicationService)
-        {
-        }
-
-        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
-        {
-            var model = CreateModel(controllerContext, bindingContext, bindingContext.ModelType);
-            return model;
-        }
-    }
-
     public class AddDiscountApplicationModelBinder : DiscountApplicationModelBinder
     {
         public AddDiscountApplicationModelBinder(ISession session, IDiscountApplicationService discountApplicationService)
