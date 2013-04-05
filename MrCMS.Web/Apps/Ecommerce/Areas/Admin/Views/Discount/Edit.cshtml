@@ -9,7 +9,6 @@
 
 @using (Html.BeginForm("Edit", "Discount", FormMethod.Post))
 {
-
         <h3>Edit Discount</h3>
 
         @Html.HiddenFor(x => x.Id)
@@ -22,10 +21,10 @@
         @Html.LabelFor(x => x.DateTo, "To")
         @Html.EditorFor(x => x.DateTo)
         @Html.LabelFor(x => x.Limitation)
-        @Html.DropDownList("LimitationOpt", Model.LimitationOptions, new { data_val = "true", data_val_required = "Please select a limitation." })
+        @Html.DropDownList("LimitationOpt", Model.LimitationOptions, new { data_val_required = "Please select a limitation." })
         <div id="limitationValue" style="display:none;"></div>
         @Html.LabelFor(x => x.Application)
-        @Html.DropDownList("ApplicationOpt", Model.ApplicationOptions, new { data_val = "true", data_val_required = "Please select application." })
+        @Html.DropDownList("ApplicationOpt", Model.ApplicationOptions, new { data_val_required = "Please select application." })
          <div id="applicationValue" style="display:none;"></div>
     <br />
         <input type="submit" class="btn-primary btn" value="Update Discount" />
