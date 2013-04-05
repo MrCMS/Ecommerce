@@ -10,20 +10,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities;
 
 namespace MrCMS.Web.Apps.Ecommerce.Binders
 {
-    public class AddDiscountLimitationGetModelBinder : DiscountLimitationModelBinder
-    {
-        public AddDiscountLimitationGetModelBinder(ISession session, IDiscountLimitationService discountLimitationService)
-            : base(session, discountLimitationService)
-        {
-        }
-
-        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
-        {
-            var model = CreateModel(controllerContext, bindingContext, bindingContext.ModelType);
-            return model;
-        }
-    }
-
     public class AddDiscountLimitationModelBinder : DiscountLimitationModelBinder
     {
         public AddDiscountLimitationModelBinder(ISession session, IDiscountLimitationService discountLimitationService)
