@@ -40,9 +40,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Binders
                 ModelMetadataProviders.Current.GetMetadataForType(
                     () => CreateModel(controllerContext, bindingContext, type), type);
 
-            var document = base.BindModel(controllerContext, bindingContext) as DiscountLimitation;
-
-            return document;
+            var discountLimitation = base.BindModel(controllerContext, bindingContext) as DiscountLimitation;
+            discountLimitation.Id = 0;
+            return discountLimitation;
         }
 
         protected override object CreateModel(ControllerContext controllerContext, ModelBindingContext bindingContext, Type modelType)
