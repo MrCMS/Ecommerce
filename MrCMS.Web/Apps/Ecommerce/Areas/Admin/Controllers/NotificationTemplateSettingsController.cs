@@ -19,23 +19,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class NotificationTemplateSettingsController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly INotificationTemplateSettingsManager _notificationTemplateSettingsManager;
-        private readonly INotificationTemplateProcessor _notificationTemplateProcessor;
 
-        public NotificationTemplateSettingsController(INotificationTemplateSettingsManager notificationTemplateSettingsManager, INotificationTemplateProcessor notificationTemplateProcessor)
+        public NotificationTemplateSettingsController(INotificationTemplateSettingsManager notificationTemplateSettingsManager)
         {
             _notificationTemplateSettingsManager = notificationTemplateSettingsManager;
-            _notificationTemplateProcessor = notificationTemplateProcessor;
-        }
-
-        public string Test()
-        {
-            Region provider = new Region();
-            provider.Name = "Will Anderson";
-
-            NotificationTemplateSettings notificationTemplateSettings = new NotificationTemplateSettings();
-            notificationTemplateSettings.OrderConfirmationTemplate = "Hi {Name}! Your order is being processed. Total amount of order is: ${GetOrderTotalAmount()}";
-
-            return _notificationTemplateProcessor.ReplaceTokensAndMethods<Region>(provider, notificationTemplateSettings.OrderConfirmationTemplate);
         }
 
         public ViewResult Index()
@@ -47,7 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Add()
         {
-            return View(new NotificationTemplateSettings());
+            return View(new NotificationTemplateSettings() { Name = "Default" });
         }
 
         [HttpPost]
@@ -55,13 +42,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectToRouteResult Add_POST(NotificationTemplateSettings notificationTemplateSettings)
         {
             _notificationTemplateSettingsManager.Save(notificationTemplateSettings);
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit");
         }
 
         [HttpGet]
-        public ViewResult Edit(NotificationTemplateSettings notificationTemplateSettings)
+        public ActionResult Edit()
         {
-            return View(notificationTemplateSettings);
+            IList<NotificationTemplateSettings> notificationTemplateSettings = _notificationTemplateSettingsManager.GetAll();
+            if (notificationTemplateSettings.Count()>0)
+                return View(notificationTemplateSettings.First());
+            else
+                return RedirectToAction("Add");
         }
 
         [HttpPost]
@@ -70,7 +61,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _notificationTemplateSettingsManager.Save(notificationTemplateSettings);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit");
         }
 
         [HttpGet]

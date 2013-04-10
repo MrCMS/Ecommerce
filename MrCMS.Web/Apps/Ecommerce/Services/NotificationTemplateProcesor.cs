@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -21,7 +22,34 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         {
             ProcessedTemplate = ReplaceTokens<T>(tokenProvider, Template);
             ProcessedTemplate = ReplaceMethods<T>(tokenProvider, ProcessedTemplate);
+            ProcessedTemplate = ReplaceExtensionMethods<T>(tokenProvider, ProcessedTemplate);
             return ProcessedTemplate;
+        }
+
+        public string ReplaceExtensionMethods<T>(T tokenProvider, string Template)
+        {
+            var query = from type in tokenProvider.GetType().Assembly.GetTypes()
+                        where type.IsSealed && !type.IsGenericType && !type.IsNested
+                        from method in type.GetMethods(BindingFlags.Static
+                            | BindingFlags.Public | BindingFlags.NonPublic)
+                        where method.IsDefined(typeof(ExtensionAttribute), false)
+                        where method.GetParameters()[0].ParameterType == tokenProvider.GetType()
+                        select method;
+
+            Dictionary<string, string> replacements = new Dictionary<string, string>();
+
+            foreach (Match item in GetRegexMatches(Template))
+            {
+                if (item.Value.Contains("()"))
+                {
+                    string cleanMethodName = item.Value.Replace("{", "").Replace("}", "").Replace("(", "").Replace(")", ""); ;
+                    MethodInfo method = query.Where(x => x.Name.Contains(cleanMethodName)).SingleOrDefault();
+                    if (method != null)
+                        replacements.Add(method.Name + "()", method.Invoke(tokenProvider,new object[]{tokenProvider}).ToString());
+                }
+            }
+
+            return ReplaceTokensForString(Template, replacements);
         }
 
         public string ReplaceMethods<T>(T tokenProvider,string Template)

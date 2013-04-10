@@ -61,4 +61,12 @@ namespace MrCMS.Entities.People
             Sites.Clear();
         }
     }
+
+    public static class UserExtensions
+    {
+        public static string GetFirstAndLastName(this User user)
+        {
+            return user.FirstName + " " + user.LastName;
+        }
+    }
 }
