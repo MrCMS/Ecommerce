@@ -1,0 +1,45 @@
+﻿@model List<MrCMS.Web.Apps.Ecommerce.Entities.NotificationTemplateSettings>
+@{
+    ViewBag.Title = "Notification Template Settings";
+}
+
+<div class="row-fluid">
+    <div class="span6">
+        <h2>Notification Template Settings</h2>
+    </div>
+    <div class="span6">
+        <div class="btn-group  display-inline  pull-right">
+            <a href="@Url.Action("Add", "NotificationTemplateSettings")" class="btn btn-primary">Add Notification Template Settings</a>
+        </div>
+    </div>
+</div>
+<div class="row-fluid">
+    <div id="product-list">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Name
+                    </th>
+                    <th>Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                @Html.ActionLink("Edit", "Edit", "NotificationTemplateSettings", new { id = item.Id }, new { @class = "btn btn-mini" })
+                                @Html.ActionLink("Delete", "Delete", "NotificationTemplateSettings", new { id = item.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
