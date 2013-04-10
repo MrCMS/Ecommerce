@@ -5,6 +5,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Entities;
+using System.ComponentModel;
 namespace MrCMS.Web.Apps.Ecommerce.Entities
 {
     public class NotificationTemplateSettings : SiteEntity
@@ -17,6 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
 
         public virtual string Emails { get; set; }
         private string[] EmailList { get; set; }
+        [DisplayName("Template")]
         public virtual string OwnerTemplate { get; set; }
     }
 }
