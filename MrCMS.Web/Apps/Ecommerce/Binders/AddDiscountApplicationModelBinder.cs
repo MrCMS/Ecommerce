@@ -7,6 +7,7 @@ using NHibernate;
 using MrCMS.Web.Apps.Ecommerce.Binders;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Website.Binders;
 
 namespace MrCMS.Web.Apps.Ecommerce.Binders
 {
