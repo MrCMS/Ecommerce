@@ -1,70 +1,83 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
-using MrCMS.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using Xunit;
-using FakeItEasy;
-using MrCMS.Entities.People;
-using System;
 
 namespace MrCMS.EcommerceApp.Tests.Services
 {
-    public class NotificationTemplateProcessorTests : InMemoryDatabaseTest
+    public class NotificationTemplateProcessorTests
     {
-        private INotificationTemplateProcessor _notificationTemplateProcessor;
-        private INotificationTemplateSettingsManager _notificationTemplateSettingsManager;
+        private readonly NotificationTemplateProcesor _notificationTemplateProcessor;
 
         public NotificationTemplateProcessorTests()
         {
             _notificationTemplateProcessor = new NotificationTemplateProcesor();
-            _notificationTemplateSettingsManager = new NotificationTemplateSettingsManager(Session);
         }
 
         [Fact]
-        public void NotificationTemplateProcesor_ReplaceTokens()
+        public void NotificationTemplateProcesor_ReplaceTokens_ShouldReplaceAutoProperty()
         {
-            Session.Transact(session => session.Save(new User { FirstName = "John" }));
-            User user = Session.QueryOver<User>().List().First();
-
+            var user = new TestUser { FirstName = "John" };
             string template = "Hello {FirstName}";
-            Session.Transact(session => session.Save(new NotificationTemplateSettings { OrderConfirmationTemplate=template}));
-            NotificationTemplateSettings notificationTemplateSettings = Session.QueryOver<NotificationTemplateSettings>().List().First();
 
-            string processedTemplate = _notificationTemplateProcessor.ReplaceTokens<User>(user, notificationTemplateSettings.OrderConfirmationTemplate);
+            string processedTemplate = _notificationTemplateProcessor.ReplaceTokens(user, template);
 
-            Assert.Contains( "John",processedTemplate);
+            processedTemplate.Should().Be("Hello John");
         }
 
         [Fact]
-        public void NotificationTemplateProcesor_ReplaceMethods()
+        public void NotificationTemplateProcesor_ReplaceTokens_ShouldReplaceReadOnlyProperty()
         {
-            Session.Transact(session => session.Save(new User { FirstName = "John", LastName="Doe"}));
-            User user = Session.QueryOver<User>().List().First();
+            var user = new TestUser { FirstName = "John", LastName = "Doe"};
+            string template = "Hello {Name}";
 
-            string template = "Your Name is {get_FirstName()}";
-            Session.Transact(session => session.Save(new NotificationTemplateSettings { OrderConfirmationTemplate = template }));
-            NotificationTemplateSettings notificationTemplateSettings = Session.QueryOver<NotificationTemplateSettings>().List().First();
+            string processedTemplate = _notificationTemplateProcessor.ReplaceTokens(user, template);
 
-            string processedTemplate = _notificationTemplateProcessor.ReplaceMethods<User>(user, notificationTemplateSettings.OrderConfirmationTemplate);
-
-            Assert.Contains("John", processedTemplate);
+            processedTemplate.Should().Be("Hello John Doe");
         }
 
         [Fact]
-        public void NotificationTemplateProcesor_ReplaceExtensionMethods()
+        public void NotificationTemplateProcesor_ReplaceMethods_ReplacesParameterlessMethods()
         {
-            Session.Transact(session => session.Save(new User { FirstName = "John", LastName = "Doe" }));
-            User user = Session.QueryOver<User>().List().First();
+            var user = new TestUser { FirstName = "John", LastName = "Doe" };
+            string template = "Your Name is {GetNameReversed()}";
 
-            string template = "Your Name is {GetFirstAndLastName()}";
-            Session.Transact(session => session.Save(new NotificationTemplateSettings { OrderConfirmationTemplate = template }));
-            NotificationTemplateSettings notificationTemplateSettings = Session.QueryOver<NotificationTemplateSettings>().List().First();
+            string processedTemplate = _notificationTemplateProcessor.ReplaceMethods(user, template);
 
-            string processedTemplate = _notificationTemplateProcessor.ReplaceExtensionMethods<User>(user, notificationTemplateSettings.OrderConfirmationTemplate);
+            processedTemplate.Should().Be("Your Name is eoD nhoJ");
+        }
 
-            Assert.Contains("John Doe", processedTemplate);
+        [Fact]
+        public void NotificationTemplateProcesor_ReplaceExtensionMethods_ShouldFindAndReplaceTokensWithMethods()
+        {
+            var user = new TestUser { FirstName = "John", LastName = "Doe" };
+
+            string template = "Your initials are {GetInitials()}";
+
+            string processedTemplate = _notificationTemplateProcessor.ReplaceExtensionMethods(user, template);
+
+            processedTemplate.Should().Be("Your initials are J.D");
+        }
+    }
+
+    public class TestUser
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Name { get { return FirstName + " " + LastName; } }
+        public string GetNameReversed()
+        {
+            IEnumerable<char> nameReversed = Name.Reverse();
+            return new string(nameReversed.ToArray());
+        }
+    }
+
+    public static class TestUserExtender
+    {
+        public static string GetInitials(this TestUser user)
+        {
+            return string.Format("{0}.{1}", user.FirstName[0], user.LastName[0]);
         }
     }
 }
