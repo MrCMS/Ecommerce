@@ -40,23 +40,6 @@ namespace MrCMS.EcommerceApp.Tests.Models
         }
 
         [Fact]
-        public void CartModel_TaxSubtotal_ShouldBeTheSumOfTax()
-        {
-            var cartItem1 = A.Fake<CartItem>();
-            var cartItem2 = A.Fake<CartItem>();
-            A.CallTo(() => cartItem1.Tax).Returns(10);
-            A.CallTo(() => cartItem2.Tax).Returns(20);
-            var cartModel = new CartModel
-                                {
-                                    Items = new List<CartItem> { cartItem1, cartItem2 }
-                                };
-
-            var taxSubtotal = cartModel.TaxSubtotal;
-
-            taxSubtotal.Should().Be(30);
-        }
-
-        [Fact]
         public void CartModel_TotalPreDiscount_ShouldBeTheSumOfPrice()
         {
             var cartItem1 = A.Fake<CartItem>();
@@ -142,25 +125,20 @@ namespace MrCMS.EcommerceApp.Tests.Models
         }
 
         [Fact]
-        public void CartModel_Tax_WithDiscountShouldBeReducedInProportion()
+        public void CartModel_Tax_ShouldBeTheSumOfTax()
         {
             var cartItem1 = A.Fake<CartItem>();
             var cartItem2 = A.Fake<CartItem>();
-            A.CallTo(() => cartItem1.Tax).Returns(4);
-            A.CallTo(() => cartItem1.Price).Returns(20);
-            A.CallTo(() => cartItem2.Tax).Returns(6);
-            A.CallTo(() => cartItem2.Price).Returns(30);
-            var discount = A.Fake<Discount>();
+            A.CallTo(() => cartItem1.Tax).Returns(10);
+            A.CallTo(() => cartItem2.Tax).Returns(20);
             var cartModel = new CartModel
             {
-                Items = new List<CartItem> { cartItem1, cartItem2 },
-                Discount = discount
+                Items = new List<CartItem> { cartItem1, cartItem2 }
             };
-            A.CallTo(() => discount.GetDiscount(cartModel)).Returns(10);
 
-            var total = cartModel.Tax;
+            var tax = cartModel.Tax;
 
-            total.Should().Be(8);
+            tax.Should().Be(30);
         }
 
         [Fact]

@@ -182,8 +182,11 @@
     <Compile Include="Apps\Ecommerce\Entities\Discount.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplication.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountApplicationOverride.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\FixedAmountFromOrder.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitation.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountLimitationOverride.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderHasXOrMoreItems.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderTotalGreaterThanX.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NotificationTemplateSettings.cs" />
     <Compile Include="Apps\Ecommerce\Entities\ShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Country.cs" />
@@ -720,7 +723,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\OrderHasXOrMoreItems.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\OrderTotalGreaterThanX.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\FixedAmount.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\FixedAmountFromOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\NotificationTemplateSettings\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\NotificationTemplateSettings\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\NotificationTemplateSettings\Delete.cshtml" />
