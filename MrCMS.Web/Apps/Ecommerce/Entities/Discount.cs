@@ -71,6 +71,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
             return Application == null ? 0m : Application.GetDiscount(cartModel);
         }
 
+        public virtual decimal GetDiscount(CartItem cartItem, string discountCode)
+        {
+            if (!IsCodeValid(discountCode))
+                return 0m;
+
+            if (Limitation != null)
+                if (!Limitation.IsItemValid(cartItem))
+                    return 0m;
+
+            return Application == null ? 0m : Application.GetDiscount(cartItem);
+        }
+
         private bool IsCodeValid(string discountCode)
         {
             if (!string.Equals(Name, discountCode, StringComparison.OrdinalIgnoreCase))

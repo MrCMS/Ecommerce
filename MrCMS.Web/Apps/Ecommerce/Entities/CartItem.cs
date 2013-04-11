@@ -41,5 +41,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
         {
             get { return Item.TaxRatePercentage; }
         }
+
+        public virtual decimal GetDiscountAmount(Discount discount, string discountCode)
+        {
+            return discount != null
+                       ? discount.GetDiscount(this, discountCode)
+                       : decimal.Zero;
+        }
     }
 }

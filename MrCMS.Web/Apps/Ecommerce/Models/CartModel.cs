@@ -19,11 +19,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get { return Items.Sum(item => item.PricePreTax); }
         }
 
-        public decimal TaxSubtotal
-        {
-            get { return Items.Sum(item => item.Tax); }
-        }
-
         public decimal TotalPreDiscount
         {
             get { return Items.Sum(item => item.Price); }
@@ -45,9 +40,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get
             {
+                // get total for orders
                 var discountAmount = Discount == null
                                          ? 0
                                          : Discount.GetDiscount(this);
+                if (Discount != null && Items.Any())
+                {
+                    discountAmount += Items.Sum(item => item.GetDiscountAmount(Discount, DiscountCode));
+                }
                 return discountAmount > TotalPreDiscount
                            ? TotalPreDiscount
                            : discountAmount;
@@ -61,12 +61,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public decimal Tax
         {
-            get
-            {
-                return TotalPreDiscount == 0
-                           ? 0
-                           : TaxSubtotal * (1 - DiscountAmount / TotalPreDiscount);
-            }
+            get { return Items.Sum(item => item.Tax); }
         }
 
         public bool CanCheckout
