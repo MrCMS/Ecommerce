@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 using MrCMS.Helpers;
 

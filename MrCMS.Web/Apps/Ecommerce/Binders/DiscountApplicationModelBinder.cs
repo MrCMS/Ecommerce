@@ -2,6 +2,7 @@ using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.Discounts;
 using NHibernate;
 using NHibernate.Criterion;
 using MrCMS.Web.Apps.Ecommerce.Services;

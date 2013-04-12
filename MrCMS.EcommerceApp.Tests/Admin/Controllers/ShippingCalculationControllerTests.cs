@@ -2,19 +2,17 @@
 using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
-using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
-using MrCMS.Web.Apps.Ecommerce.Entities;
-using MrCMS.Web.Apps.Ecommerce.Services;
-using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
+using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
     public class ShippingCalculationControllerTests
     {
-        private readonly IConfigurationProvider _configurationProvider;
-        private readonly ICountryService _countryService;
         private readonly ShippingCalculationController _shippingCalculationController;
         private readonly IShippingCalculationManager _shippingCalculationManager;
         private readonly IShippingMethodManager _shippingMethodManager;
@@ -22,10 +20,8 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         public ShippingCalculationControllerTests()
         {
             _shippingCalculationManager = A.Fake<IShippingCalculationManager>();
-            _countryService = A.Fake<ICountryService>();
-            _configurationProvider = A.Fake<IConfigurationProvider>();
             _shippingMethodManager = A.Fake<IShippingMethodManager>();
-            _shippingCalculationController = new ShippingCalculationController(_shippingCalculationManager, _countryService, _shippingMethodManager);
+            _shippingCalculationController = new ShippingCalculationController(_shippingCalculationManager, _shippingMethodManager);
         }
 
         [Fact]
@@ -37,28 +33,28 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ShippingCalculationController_Index_CallsICountryServiceGetAllCountries()
+        public void ShippingCalculationController_Index_CallsIShippingManagerGetAll()
         {
             ViewResult index = _shippingCalculationController.Index();
 
-            A.CallTo(() => _countryService.GetAllCountries()).MustHaveHappened();
+            A.CallTo(() => _shippingMethodManager.GetAll()).MustHaveHappened();
         }
 
         [Fact]
-        public void ShippingCalculationController_Index_ReturnsTheResultOfGetAllCountries()
+        public void ShippingCalculationController_Index_ReturnsTheResultOfGetAll()
         {
-            var countries = new List<Country>();
-            A.CallTo(() => _countryService.GetAllCountries()).Returns(countries);
+            var shippingMethods = new List<ShippingMethod>();
+            A.CallTo(() => _shippingMethodManager.GetAll()).Returns(shippingMethods);
 
-            ViewResult index = _shippingCalculationController.Index();
+            var index = _shippingCalculationController.Index();
 
-            index.Model.Should().Be(countries);
+            index.Model.Should().Be(shippingMethods);
         }
 
         [Fact]
         public void ShippingCalculationController_Add_ReturnsPartialViewResult()
         {
-            ActionResult add = _shippingCalculationController.Add(1);
+            ActionResult add = _shippingCalculationController.Add(new ShippingMethod());
 
             add.Should().BeOfType<PartialViewResult>();
         }
@@ -66,7 +62,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingCalculationController_Add_ReturnsAShippingCalculation()
         {
-            ActionResult add = _shippingCalculationController.Add(2);
+            ActionResult add = _shippingCalculationController.Add(new ShippingMethod());
 
             add.As<PartialViewResult>().Model.Should().BeOfType<ShippingCalculation>();
         }
@@ -74,7 +70,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingCalculationController_AddPOST_CallsIShippingCalculationManagerAddWithPassedShippingCalculationIfItHasCountry()
         {
-            var shippingCalculation = new ShippingCalculation {Country = new Country()};
+            var shippingCalculation = new ShippingCalculation {ShippingMethod = new ShippingMethod()};
 
             RedirectToRouteResult add = _shippingCalculationController.Add_POST(shippingCalculation);
 
@@ -84,7 +80,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingCalculationController_AddPOST_DoesNotCallIShippingCalculationManagerAddWithPassedShippingCalculationIfItHasNoCountryOrRegionSet()
         {
-            var shippingCalculation = new ShippingCalculation {};
+            var shippingCalculation = new ShippingCalculation();
 
             RedirectToRouteResult add = _shippingCalculationController.Add_POST(shippingCalculation);
 
@@ -114,7 +110,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingCalculationController_EditPOST_ShouldCallITaxManagerUpdateForAShippingCalculationWithACountry()
         {
-            var shippingCalculation = new ShippingCalculation {Country = new Country()};
+            var shippingCalculation = new ShippingCalculation { ShippingMethod = new ShippingMethod() };
 
             RedirectToRouteResult editPost = _shippingCalculationController.Edit_POST(shippingCalculation);
 

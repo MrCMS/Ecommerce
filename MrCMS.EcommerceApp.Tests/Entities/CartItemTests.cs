@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using Xunit;
 
@@ -108,6 +109,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities
         }
 
         public decimal PricePreTax { get; set; }
+        public decimal Weight { get; set; }
 
         public bool Available { get; set; }
     }

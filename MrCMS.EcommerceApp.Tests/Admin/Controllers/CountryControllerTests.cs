@@ -4,7 +4,9 @@ using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers

@@ -2,6 +2,7 @@
 using MrCMS.Apps;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using Ninject;
 
 namespace MrCMS.Web.Apps.Ecommerce

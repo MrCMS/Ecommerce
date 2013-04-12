@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using Xunit;
 

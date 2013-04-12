@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using Xunit;
 using MrCMS.Helpers;
 

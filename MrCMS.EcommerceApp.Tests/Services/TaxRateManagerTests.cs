@@ -3,7 +3,9 @@ using System.Linq;
 using FluentAssertions;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services

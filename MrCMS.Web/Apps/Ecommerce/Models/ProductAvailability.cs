@@ -18,5 +18,6 @@
         decimal Tax { get; }
         bool CanBuy(int quantity);
         decimal PricePreTax { get; }
+        decimal Weight { get; }
     }
 }

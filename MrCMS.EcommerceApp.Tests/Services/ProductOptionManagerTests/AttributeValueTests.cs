@@ -2,7 +2,9 @@
 using FluentAssertions;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests

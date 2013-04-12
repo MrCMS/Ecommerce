@@ -1,13 +1,10 @@
 using System;
 using System.Linq;
 using System.Web.Mvc;
-using MrCMS.Helpers;
-using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
+using MrCMS.Web.Apps.Ecommerce.Services.Discounts;
 using NHibernate;
-using MrCMS.Web.Apps.Ecommerce.Binders;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities;
-using MrCMS.Website.Binders;
 
 namespace MrCMS.Web.Apps.Ecommerce.Binders
 {

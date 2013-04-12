@@ -14,6 +14,7 @@ using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Tasks;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Website;
 using NHibernate;
 using NHibernate.Cfg;

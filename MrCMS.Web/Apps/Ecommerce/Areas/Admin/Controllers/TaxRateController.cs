@@ -1,26 +1,21 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Settings;
-using MrCMS.Web.Apps.Ecommerce.Entities;
-using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
+using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website.Controllers;
-using System.Collections.Generic;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class TaxRateController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly ITaxRateManager _taxRateManager;
-        private readonly ICountryService _countryService;
-        private readonly IRegionService _regionService;
         private readonly IConfigurationProvider _configurationProvider;
         private readonly TaxSettings _taxSettings;
 
-        public TaxRateController(ITaxRateManager taxRateManager, ICountryService countryService, IRegionService regionService, IConfigurationProvider configurationProvider, TaxSettings taxSettings)
+        public TaxRateController(ITaxRateManager taxRateManager, IConfigurationProvider configurationProvider,TaxSettings taxSettings)
         {
             _taxRateManager = taxRateManager;
-            _countryService = countryService;
-            _regionService = regionService;
             _configurationProvider = configurationProvider;
             _taxSettings = taxSettings;
         }
@@ -28,76 +23,41 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public ViewResult Index()
         {
             ViewData["settings"] = _taxSettings;
-            return View(_countryService.GetAllCountries());
+            var taxRates = _taxRateManager.GetAll();
+            return View(taxRates);
         }
 
         [HttpGet]
-        public ActionResult Add(int? countryId, int? regionId)
+        public PartialViewResult Add()
         {
-            if (countryId.HasValue)
-            {
-                TaxRate tr = new TaxRate { Country = _countryService.Get(countryId.Value) };
-                return PartialView(tr);
-            }
-            else if (regionId.HasValue)
-            {
-                Region region = _regionService.Get(regionId.Value);
-                TaxRate tr = new TaxRate { Country = region.Country, Region = region };
-                return PartialView(tr);
-            }
-            return RedirectToAction("Index");
+            return PartialView(new TaxRate());
         }
 
         [ActionName("Add")]
         [HttpPost]
         public RedirectToRouteResult Add_POST(TaxRate taxRate)
         {
-            if (taxRate.Country != null || taxRate.Region != null)
-            {
-                _taxRateManager.Add(taxRate);
-            }
-            return RedirectToAction("Index");
+            _taxRateManager.Add(taxRate);
+            return RedirectToAction("Edit", new { id = taxRate.Id });
         }
 
         [HttpGet]
-        public PartialViewResult Edit(int? countryId, int? regionId)
+        public ViewResult Edit(TaxRate taxRate)
         {
-            TaxRate taxRate = null;
-            if (countryId.HasValue)
-            {
-                taxRate = _taxRateManager.GetByCountryId(countryId.Value);
-            }
-            else if (regionId.HasValue)
-            {
-                taxRate = _taxRateManager.GetByRegionId(regionId.Value);
-            }
-            return PartialView(taxRate);
+            return View(taxRate);
         }
 
         [ActionName("Edit")]
         [HttpPost]
         public RedirectToRouteResult Edit_POST(TaxRate taxRate)
         {
-            if (taxRate.Country != null || taxRate.Region != null)
-            {
-                _taxRateManager.Update(taxRate);
-            }
-
-            return RedirectToAction("Index");
+            _taxRateManager.Update(taxRate);
+            return RedirectToAction("Edit", new { id = taxRate.Id });
         }
 
         [HttpGet]
-        public PartialViewResult Delete(int? countryId, int? regionId)
+        public PartialViewResult Delete(TaxRate taxRate)
         {
-            TaxRate taxRate = null;
-            if (countryId.HasValue)
-            {
-                taxRate = _taxRateManager.GetByCountryId(countryId.Value);
-            }
-            else if (regionId.HasValue)
-            {
-                taxRate = _taxRateManager.GetByRegionId(regionId.Value);
-            }
             return PartialView(taxRate);
         }
 

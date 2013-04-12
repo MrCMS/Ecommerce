@@ -1,15 +1,12 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.ShippingCalculation
-
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Shipping.ShippingCalculation
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
-@using (Html.BeginForm("Add", "ShippingCalculation", FormMethod.Post, new { id = "add-shipping-calculation" }))
+@using (Html.BeginForm("Add", "ShippingCalculation", new { id = "" }, FormMethod.Post, new { id = "add-shipping-calculation" }))
 {
     <div class="modal-header">
         <h3>Add Shipping Calculation</h3>
     </div>
     <div class="modal-body">
-        @Html.HiddenFor(x => x.Country.Id)
-        @Html.LabelFor(x => x.ShippingMethod.Id, "Shipping Method")
-        @Html.DropDownListFor(x => x.ShippingMethod.Id, ViewData["shippingmethods"] as IEnumerable<SelectListItem>)
+        @Html.HiddenFor(x => x.ShippingMethod.Id)
         @Html.LabelFor(x => x.Name)
         @Html.TextBoxFor(x => x.Name)
         @Html.LabelFor(x => x.ShippingCriteria)
@@ -18,11 +15,11 @@
         @Html.TextBoxFor(x => x.LowerBound)
         @Html.LabelFor(x => x.UpperBound)
         @Html.TextBoxFor(x => x.UpperBound) (leave blank if there is no upper bound)
-        @Html.LabelFor(x => x.Price)
-        @Html.TextBoxFor(x => x.Price)
+        @Html.LabelFor(x => x.BasePrice)
+        @Html.TextBoxFor(x => x.BasePrice)
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" id="save-add" data-action="save" data-form-id="add-shipping-calculation">
-                Add Shipping Calculation</button>
+            Add Shipping Calculation</button>
     </div>
 }

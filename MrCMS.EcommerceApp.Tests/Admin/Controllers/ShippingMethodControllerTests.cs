@@ -3,22 +3,30 @@ using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
-using MrCMS.Web.Apps.Ecommerce.Entities;
-using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
     public class ShippingMethodControllerTests
     {
-        private IShippingMethodManager _shippingMethodManager;
+        private readonly IShippingMethodManager _shippingMethodManager;
+        private readonly ITaxRateManager _taxRateManager;
+        private readonly ShippingMethodController _shippingMethodController;
+
+        public ShippingMethodControllerTests()
+        {
+            _shippingMethodManager = A.Fake<IShippingMethodManager>();
+            _taxRateManager = A.Fake<ITaxRateManager>();
+            _shippingMethodController = new ShippingMethodController(_shippingMethodManager, _taxRateManager);
+        }
 
         [Fact]
         public void ShippingMethodController_Index_ReturnsAViewResult()
         {
-            var controller = GetShippingMethodController();
-
-            var index = controller.Index();
+            var index = _shippingMethodController.Index();
 
             index.Should().BeOfType<ViewResult>();
         }
@@ -26,9 +34,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_Index_CallsShippingMethodGetAll()
         {
-            var controller = GetShippingMethodController();
-
-            controller.Index();
+            _shippingMethodController.Index();
 
             A.CallTo(() => _shippingMethodManager.GetAll()).MustHaveHappened();
         }
@@ -36,11 +42,10 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_Index_ReturnsTheResultOfTheShippingMethodManagerCall()
         {
-            var controller = GetShippingMethodController();
             var shoppingMethods = new List<ShippingMethod>();
             A.CallTo(() => _shippingMethodManager.GetAll()).Returns(shoppingMethods);
 
-            var index = controller.Index();
+            var index = _shippingMethodController.Index();
 
             index.Model.Should().Be(shoppingMethods);
         }
@@ -48,9 +53,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_AddGet_ReturnsAPartialViewResult()
         {
-            var controller = GetShippingMethodController();
-
-            var addGet = controller.Add();
+            var addGet = _shippingMethodController.Add();
 
             addGet.Should().BeOfType<PartialViewResult>();
         }
@@ -58,10 +61,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_Add_CallsAddOnTheShippingMethodManager()
         {
-            var controller = GetShippingMethodController();
             var shippingMethod = new ShippingMethod();
 
-            var add = controller.Add(shippingMethod);
+            var add = _shippingMethodController.Add(shippingMethod);
 
             A.CallTo(() => _shippingMethodManager.Add(shippingMethod)).MustHaveHappened();
         }
@@ -69,10 +71,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_Add_ReturnsRedirectToRouteResult()
         {
-            var controller = GetShippingMethodController();
             var option = new ShippingMethod();
 
-            var add = controller.Add(option);
+            var add = _shippingMethodController.Add(option);
 
             add.Should().BeOfType<RedirectToRouteResult>();
         }
@@ -80,10 +81,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_Add_ReturnsRedirectToIndex()
         {
-            var controller = GetShippingMethodController();
             var option = new ShippingMethod();
 
-            var add = controller.Add(option);
+            var add = _shippingMethodController.Add(option);
 
             add.RouteValues["action"].Should().Be("Index");
         }
@@ -91,10 +91,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_EditGet_ReturnsAPartialViewResult()
         {
-            var controller = GetShippingMethodController();
             var shippingMethod = new ShippingMethod();
 
-            var edit = controller.Edit(shippingMethod);
+            var edit = _shippingMethodController.Edit(shippingMethod);
 
             edit.Should().BeOfType<PartialViewResult>();
         }
@@ -102,10 +101,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_EditGet_ReturnsThePassedOptionAsViewModel()
         {
-            var controller = GetShippingMethodController();
             var shippingMethod = new ShippingMethod();
 
-            var edit = controller.Edit(shippingMethod);
+            var edit = _shippingMethodController.Edit(shippingMethod);
 
             edit.Model.Should().Be(shippingMethod);
         }
@@ -113,10 +111,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_EditPost_CallsUpdateOptionOnTheManager()
         {
-            var controller = GetShippingMethodController();
             var shippingMethod = new ShippingMethod();
 
-            var editPost = controller.Edit_POST(shippingMethod);
+            var editPost = _shippingMethodController.Edit_POST(shippingMethod);
 
             A.CallTo(() => _shippingMethodManager.Update(shippingMethod)).MustHaveHappened();
         }
@@ -124,10 +121,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_EditPost_ReturnsRedirectToRouteResult()
         {
-            var controller = GetShippingMethodController();
             var shippingMethod = new ShippingMethod();
 
-            var editPost = controller.Edit_POST(shippingMethod);
+            var editPost = _shippingMethodController.Edit_POST(shippingMethod);
 
             editPost.Should().BeOfType<RedirectToRouteResult>();
         }
@@ -135,10 +131,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_EditPost_RedirectsToIndex()
         {
-            var controller = GetShippingMethodController();
             var shippingMethod = new ShippingMethod();
 
-            var editPost = controller.Edit_POST(shippingMethod);
+            var editPost = _shippingMethodController.Edit_POST(shippingMethod);
 
             editPost.RouteValues["action"].Should().Be("Index");
         }
@@ -146,10 +141,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_Delete_ReturnsPartialViewResult()
         {
-            var controller = GetShippingMethodController();
             var shippingMethod = new ShippingMethod();
 
-            var delete = controller.Delete(shippingMethod);
+            var delete = _shippingMethodController.Delete(shippingMethod);
 
             delete.Should().BeOfType<PartialViewResult>();
         }
@@ -157,10 +151,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_Delete_ReturnsOptionAsModel()
         {
-            var controller = GetShippingMethodController();
             var shippingMethod = new ShippingMethod();
 
-            var delete = controller.Delete(shippingMethod);
+            var delete = _shippingMethodController.Delete(shippingMethod);
 
             delete.Model.Should().Be(shippingMethod);
         }
@@ -168,10 +161,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_DeletePOST_CallsDeleteOption()
         {
-            var controller = GetShippingMethodController();
             var shippingMethod = new ShippingMethod();
 
-            var delete = controller.Delete_POST(shippingMethod);
+            var delete = _shippingMethodController.Delete_POST(shippingMethod);
 
             A.CallTo(() => _shippingMethodManager.Delete(shippingMethod)).MustHaveHappened();
         }
@@ -179,10 +171,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_DeletePOST_ReturnsRedirectToRouteResult()
         {
-            var controller = GetShippingMethodController();
             var shippingMethod = new ShippingMethod();
 
-            var delete = controller.Delete_POST(shippingMethod);
+            var delete = _shippingMethodController.Delete_POST(shippingMethod);
 
             delete.Should().BeOfType<RedirectToRouteResult>();
         }
@@ -190,18 +181,11 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ShippingMethodController_DeletePOST_RedirectsToIndex()
         {
-            var controller = GetShippingMethodController();
             var option = new ShippingMethod();
-            
-            var delete = controller.Delete_POST(option);
+
+            var delete = _shippingMethodController.Delete_POST(option);
 
             delete.RouteValues["action"].Should().Be("Index");
-        }
-
-        ShippingMethodController GetShippingMethodController()
-        {
-            _shippingMethodManager = A.Fake<IShippingMethodManager>();
-            return new ShippingMethodController(_shippingMethodManager);
         }
     }
 }
