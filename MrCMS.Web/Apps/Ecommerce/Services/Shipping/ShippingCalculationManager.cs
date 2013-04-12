@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using NHibernate;
 using MrCMS.Helpers;
@@ -34,6 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         {
             return _session.QueryOver<ShippingCalculation>().Where(x => x.Country.Id == countryId).Cacheable().SingleOrDefault();
         }
+
         public List<SelectListItem> GetCriteriaOptions()
         {
             return
@@ -41,14 +41,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
                     .Cast<ShippingCriteria>()
                     .BuildSelectItemList(GetDescription,
                                          criteria => criteria.ToString(), emptyItem: null);
-
-            //List<SelectListItem> criterias = new List<SelectListItem>();
-            //criterias.Add(new SelectListItem() { Selected=true, Text="Based on cart weight", Value="1" });
-            //criterias.Add(new SelectListItem() { Selected = true, Text = "Based on cart price", Value = "2" });
-            //return criterias;
         }
 
-        public static string GetDescription<T>(T item) where T : struct
+        private static string GetDescription<T>(T item) where T : struct
         {
             FieldInfo field = typeof(T).GetField(item.ToString());
             return field.GetCustomAttributes(typeof(DescriptionAttribute), false)
@@ -57,26 +52,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
                         .FirstOrDefault();
         }
 
-        public void Add(ShippingCalculation ShippingCalculation)
+        public void Add(ShippingCalculation shippingCalculation)
         {
             _session.Transact(session =>
                                   {
-                                      if (ShippingCalculation.Country != null)
-                                          ShippingCalculation.Country.ShippingCalculations.Add(ShippingCalculation);
-                                      if (ShippingCalculation.ShippingMethod != null)
-                                          ShippingCalculation.ShippingMethod.ShippingCalculations.Add(ShippingCalculation);
-                                      session.Save(ShippingCalculation);
+                                      if (shippingCalculation.Country != null)
+                                          shippingCalculation.Country.ShippingCalculations.Add(shippingCalculation);
+                                      if (shippingCalculation.ShippingMethod != null)
+                                          shippingCalculation.ShippingMethod.ShippingCalculations.Add(shippingCalculation);
+                                      session.Save(shippingCalculation);
                                   });
         }
 
-        public void Update(ShippingCalculation ShippingCalculation)
+        public void Update(ShippingCalculation shippingCalculation)
         {
-            _session.Transact(session => session.Update(ShippingCalculation));
+            _session.Transact(session => session.Update(shippingCalculation));
         }
 
-        public void Delete(ShippingCalculation ShippingCalculation)
+        public void Delete(ShippingCalculation shippingCalculation)
         {
-            _session.Transact(session => session.Delete(ShippingCalculation));
+            _session.Transact(session => session.Delete(shippingCalculation));
         }
 
         public List<SelectListItem> GetOptions()

@@ -61,12 +61,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public decimal Total
         {
-            get { return TotalPreDiscount - DiscountAmount; }
+            get { return TotalPreDiscount - DiscountAmount + ShippingTotal.GetValueOrDefault(); }
         }
 
         public decimal Tax
         {
-            get { return Items.Sum(item => item.Tax); }
+            get { return Items.Sum(item => item.Tax) + ShippingTax.GetValueOrDefault(); }
         }
 
         public bool CanCheckout
