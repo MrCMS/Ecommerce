@@ -10,6 +10,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
         void Add(TaxRate taxRate);
         void Update(TaxRate taxRate);
         void Delete(TaxRate taxRate);
-        List<SelectListItem> GetOptions();
+        List<SelectListItem> GetOptions(TaxRate taxRate = null);
     }
 }

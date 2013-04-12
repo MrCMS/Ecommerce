@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using NHibernate;
+using System.Linq;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Discounts
 {
@@ -109,6 +111,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Discounts
                     if (discount.Application != null)
                         session.Delete(discount.Application);
                 });
+        }
+
+        public DiscountApplication GetApplication(Discount discount, string applicationType)
+        {
+            var application =
+                TypeHelper.GetAllConcreteMappedClassesAssignableFrom<DiscountApplication>()
+                          .FirstOrDefault(type => type.FullName == applicationType);
+
+            return discount.Application != null && discount.Application.GetType() == application
+                       ? discount.Application
+                       : Activator.CreateInstance(application) as DiscountApplication;
+        }
+
+        public DiscountLimitation GetLimitation(Discount discount, string limitationType)
+        {
+            if (string.IsNullOrWhiteSpace(limitationType))
+                return null;
+
+            var limitation =
+                TypeHelper.GetAllConcreteMappedClassesAssignableFrom<DiscountLimitation>()
+                          .FirstOrDefault(type => type.FullName == limitationType);
+
+            return discount.Limitation != null && discount.Limitation.GetType() == limitation
+                       ? discount.Limitation
+                       : Activator.CreateInstance(limitation) as DiscountLimitation;
         }
     }
 }

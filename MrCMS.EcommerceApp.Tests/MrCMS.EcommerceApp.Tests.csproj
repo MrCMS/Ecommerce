@@ -101,6 +101,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin\Controllers\CategoryControllerTests.cs" />
+    <Compile Include="Admin\Controllers\DiscountApplicationControllerTests.cs" />
+    <Compile Include="Admin\Controllers\DiscountControllerTests.cs" />
+    <Compile Include="Admin\Controllers\DiscountLimitationControllerTests.cs" />
+    <Compile Include="Admin\Controllers\NotificationTemplateSettingsTests.cs" />
     <Compile Include="Admin\Controllers\ShippingCalculationControllerTests.cs" />
     <Compile Include="Admin\Controllers\ShippingMethodControllerTests.cs" />
     <Compile Include="Admin\Controllers\CountryControllerTests.cs" />

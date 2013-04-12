@@ -27,10 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult Add()
         {
-            ViewData["tax-rates"] = _taxRateManager.GetAll()
-                                                   .BuildSelectItemList(rate => rate.Name,
-                                                                        rate => rate.Id.ToString(),
-                                                                        emptyItem: null);
+            ViewData["tax-rates"] = _taxRateManager.GetOptions();
             return PartialView();
         }
 
@@ -44,11 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult Edit(ShippingMethod option)
         {
-            ViewData["tax-rates"] = _taxRateManager.GetAll()
-                                                   .BuildSelectItemList(rate => rate.Name,
-                                                                        rate => rate.Id.ToString(),
-                                                                        rate => rate == option.TaxRate,
-                                                                        emptyItem: null);
+            ViewData["tax-rates"] = _taxRateManager.GetOptions(option.TaxRate);
             return PartialView(option);
         }
 

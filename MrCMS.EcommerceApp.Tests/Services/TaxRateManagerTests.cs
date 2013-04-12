@@ -25,17 +25,6 @@ namespace MrCMS.EcommerceApp.Tests.Services
         }
 
         [Fact]
-        public void TaxRateManager_GetOptions_ShouldHaveEmptyTaxRate()
-        {
-            TaxRateManager taxRateManager = GetTaxRateManager();
-
-            var allRates = taxRateManager.GetOptions();
-
-            allRates[0].Value.Should().Be("");
-            allRates[0].Text.Should().Be("None");
-        }
-
-        [Fact]
         public void TaxRateManager_GetOptions_ShouldHaveRecordsForTheSavedTaxRates()
         {
             TaxRateManager taxRateManager = GetTaxRateManager();
@@ -44,11 +33,9 @@ namespace MrCMS.EcommerceApp.Tests.Services
 
             var allRates = taxRateManager.GetOptions();
 
-            allRates.Skip(1)
-                    .Select(item => item.Value)
+            allRates.Select(item => item.Value)
                     .ShouldAllBeEquivalentTo(taxRates.Select(rate => rate.Id.ToString()));
-            allRates.Skip(1)
-                    .Select(item => item.Text)
+            allRates.Select(item => item.Text)
                     .ShouldAllBeEquivalentTo(taxRates.Select(rate => rate.Name));
         }
 

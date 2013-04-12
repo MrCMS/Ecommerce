@@ -25,6 +25,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Templating
             return _session.QueryOver<NotificationTemplateSettings>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
         }
 
+        public NotificationTemplateSettings Get()
+        {
+            return _session.QueryOver<NotificationTemplateSettings>().Cacheable().SingleOrDefault();
+        }
+
         public void Save(NotificationTemplateSettings item)
         {
             _session.Transact(session => session.SaveOrUpdate(item));

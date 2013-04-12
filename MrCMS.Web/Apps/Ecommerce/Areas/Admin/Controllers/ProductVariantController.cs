@@ -38,7 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult Edit(ProductVariant productVariant)
         {
-            ViewData["taxrates"] = _taxRateManager.GetOptions();
+            ViewData["taxrates"] = _taxRateManager.GetOptions(productVariant.TaxRate);
             return PartialView(productVariant);
         }
 

@@ -21,17 +21,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 
         public IList<ShippingCalculation> GetAll()
         {
-            return _session.QueryOver<ShippingCalculation>().OrderBy(x => x.Country).Asc.Cacheable().List();
+            return _session.QueryOver<ShippingCalculation>().OrderBy(x => x.Name).Asc.Cacheable().List();
         }
 
         public ShippingCalculation Get(int id)
         {
             return _session.QueryOver<ShippingCalculation>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
-        }
-
-        public ShippingCalculation GetByCountryId(int countryId)
-        {
-            return _session.QueryOver<ShippingCalculation>().Where(x => x.Country.Id == countryId).Cacheable().SingleOrDefault();
         }
 
         public List<SelectListItem> GetCriteriaOptions()
@@ -56,8 +51,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         {
             _session.Transact(session =>
                                   {
-                                      if (shippingCalculation.Country != null)
-                                          shippingCalculation.Country.ShippingCalculations.Add(shippingCalculation);
                                       if (shippingCalculation.ShippingMethod != null)
                                           shippingCalculation.ShippingMethod.ShippingCalculations.Add(shippingCalculation);
                                       session.Save(shippingCalculation);
