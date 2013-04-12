@@ -62,7 +62,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
             }
         }
 
-        public virtual Country Country { get; set; }
         [DisplayName("Shipping Method")]
         public virtual ShippingMethod ShippingMethod { get; set; }
 
@@ -73,8 +72,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         public virtual decimal? GetPrice(CartModel model)
         {
-            if (model.GetCountry() != Country)
-                return null;
             switch (ShippingCriteria)
             {
                 case ShippingCriteria.ByWeight:

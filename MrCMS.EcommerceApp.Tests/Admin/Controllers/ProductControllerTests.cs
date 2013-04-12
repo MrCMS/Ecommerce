@@ -18,13 +18,21 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private IProductService _productService;
         private IDocumentService _documentService;
         private ProductContainer _productContainer;
+        private ProductController _productController;
+
+        public ProductControllerTests()
+        {
+            _documentService = A.Fake<IDocumentService>();
+            _productContainer = new ProductContainer();
+            A.CallTo(() => _documentService.GetUniquePage<ProductContainer>()).Returns(_productContainer);
+            _productService = A.Fake<IProductService>();
+            _productController = new ProductController(_productService, _documentService);
+        }
 
         [Fact]
         public void ProductController_Index_ShouldReturnAViewResult()
         {
-            var productController = GetProductController();
-
-            var index = productController.Index();
+            var index = _productController.Index();
 
             index.Should().BeOfType<ViewResult>();
         }
@@ -32,9 +40,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductController_Index_ShouldCallProductServiceSearch()
         {
-            var productController = GetProductController();
-
-            productController.Index("q", 1);
+            _productController.Index("q", 1);
 
             A.CallTo(() => _productService.Search("q", 1)).MustHaveHappened();
         }
@@ -42,11 +48,10 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductController_Index_ShouldReturnTheResultOfTheProductSearchCallAsTheModel()
         {
-            var productController = GetProductController();
             var pagedList = new ProductPagedList(new StaticPagedList<Product>(new List<Product>(), 1, 1, 0), 1);
             A.CallTo(() => _productService.Search("q", 1)).Returns(pagedList);
 
-            var viewResult = productController.Index("q", 1);
+            var viewResult = _productController.Index("q", 1);
 
             viewResult.Model.Should().Be(pagedList);
         }
@@ -54,21 +59,63 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductController_Index_ShouldReturnNullModelIfProductContainerIsNull()
         {
-            var productController = GetProductController();
             A.CallTo(() => _documentService.GetUniquePage<ProductContainer>()).Returns(null);
 
-            var viewResult = productController.Index();
+            var viewResult = _productController.Index();
 
             viewResult.Model.Should().BeNull();
         }
 
-        ProductController GetProductController()
+        [Fact]
+        public void ProductController_MakeMultiVariantGet_ShouldReturnAPartialViewResult()
         {
-            _documentService = A.Fake<IDocumentService>();
-            _productContainer = new ProductContainer();
-            A.CallTo(() => _documentService.GetUniquePage<ProductContainer>()).Returns(_productContainer);
-            _productService = A.Fake<IProductService>();
-            return new ProductController(_productService, _documentService);
+            var product = new Product();
+
+            var result = _productController.MakeMultiVariant(product);
+
+            result.Should().BeOfType<PartialViewResult>();
+        }
+
+        [Fact]
+        public void ProductController_MakeMultivariantGet_ReturnsThePassedObjectAsTheModel()
+        {
+            var product = new Product();
+
+            var result = _productController.MakeMultiVariant(product);
+
+            result.Model.Should().Be(product);
+        }
+
+        [Fact]
+        public void ProductController_MakeMultiVariantPost_ShouldCallTheMakeMultiVariantMethodOfTheServiceWithThePassedArguments()
+        {
+            var product = new Product();
+
+            var result = _productController.MakeMultiVariant(product, "option1", "option2", "option3");
+
+            A.CallTo(() => _productService.MakeMultiVariant(product, "option1", "option2", "option3"))
+             .MustHaveHappened();
+        }
+
+        [Fact]
+        public void ProductController_MakeMultiVariantPost_ShouldReturnARedirectToRouteResult()
+        {
+            var product = new Product();
+
+            var result = _productController.MakeMultiVariant(product, "option1", "option2", "option3");
+
+            result.Should().BeOfType<RedirectToRouteResult>();
+        }
+        [Fact]
+        public void ProductController_MakeMultiVariantPost_ShouldRedirectToTheWebpageEditActionForTheProductId()
+        {
+            var product = new Product{Id=123};
+
+            var result = _productController.MakeMultiVariant(product, "option1", "option2", "option3");
+
+            result.RouteValues["controller"].Should().Be("Webpage");
+            result.RouteValues["action"].Should().Be("Edit");
+            result.RouteValues["id"].Should().Be(123);
         }
     }
 }

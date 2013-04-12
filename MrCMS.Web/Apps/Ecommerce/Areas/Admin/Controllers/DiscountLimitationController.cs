@@ -12,23 +12,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class DiscountLimitationController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly IDiscountLimitationService _discountLimitationService;
         private readonly IDiscountManager _discountManager;
 
-        public DiscountLimitationController(IDiscountLimitationService discountLimitationService, IDiscountManager discountManager)
+        public DiscountLimitationController(IDiscountManager discountManager)
         {
-            _discountLimitationService = discountLimitationService;
             _discountManager = discountManager;
         }
 
         [HttpGet]
-        public PartialViewResult LoadDiscountLimitationProperties(string limitationID,int discountID)
+        public ActionResult LoadDiscountLimitationProperties(Discount discount, string limitationType)
         {
-                Discount discount = _discountManager.Get(discountID);
-                string[] name = limitationID.Split('.');
-                return PartialView(name[name.Length - 1],
-                    discount.Limitation != null && discount.Limitation.GetType() == Type.GetType(limitationID) ?
-                    discount.Limitation : Activator.CreateInstance(Type.GetType(limitationID)));
+            var limitation = _discountManager.GetLimitation(discount, limitationType);
+            return limitation != null
+                       ? (ActionResult) PartialView(limitation)
+                       : new EmptyResult();
         }
     }
 }

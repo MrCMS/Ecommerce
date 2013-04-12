@@ -6,8 +6,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Templating
 {
     public interface INotificationTemplateSettingsManager
     {
-        IList<NotificationTemplateSettings> GetAll();
-        NotificationTemplateSettings Get(int id);
+        NotificationTemplateSettings Get();
+        //NotificationTemplateSettings Get(int id);
         void Save(NotificationTemplateSettings item);
         void Delete(NotificationTemplateSettings item);
     }

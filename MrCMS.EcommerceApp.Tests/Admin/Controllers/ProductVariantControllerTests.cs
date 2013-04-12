@@ -49,7 +49,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var product = new Product();
             var selectListItems = new List<SelectListItem>();
-            A.CallTo(() => _taxRateManager.GetOptions()).Returns(selectListItems);
+            A.CallTo(() => _taxRateManager.GetOptions(null)).Returns(selectListItems);
             var add = _productVariantController.Add(product);
 
             add.ViewData["taxrates"].Should().Be(selectListItems);
@@ -109,7 +109,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var productVariant = GetNewProductVariant();
             var selectListItems = new List<SelectListItem>();
-            A.CallTo(() => _taxRateManager.GetOptions()).Returns(selectListItems);
+            A.CallTo(() => _taxRateManager.GetOptions(null)).Returns(selectListItems);
             var add = _productVariantController.Edit(productVariant);
 
             add.ViewData["taxrates"].Should().Be(selectListItems);

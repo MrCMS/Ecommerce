@@ -49,10 +49,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                 var discountAmount = Discount == null
                                          ? 0
                                          : Discount.GetDiscount(this);
+                
                 if (Discount != null && Items.Any())
-                {
                     discountAmount += Items.Sum(item => item.GetDiscountAmount(Discount, DiscountCode));
-                }
+
                 return discountAmount > TotalPreDiscount
                            ? TotalPreDiscount
                            : discountAmount;
@@ -86,15 +86,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public decimal? ShippingTotal { get { return ShippingMethod == null ? null : ShippingMethod.GetPrice(this); } }
         public decimal? ShippingTax { get { return ShippingMethod == null ? null : ShippingMethod.GetTax(this); } }
-
-        public Country GetCountry()
-        {
-            if (ShippingAddress != null)
-                return ShippingAddress.Country;
-            return Country;
-        }
-
-        public Country Country { get; set; }
 
         public decimal Weight
         {

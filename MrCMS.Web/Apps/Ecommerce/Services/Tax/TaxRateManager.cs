@@ -35,9 +35,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
             _session.Transact(session => session.Delete(taxRate));
         }
 
-        public List<SelectListItem> GetOptions()
+        public List<SelectListItem> GetOptions(TaxRate taxRate = null)
         {
-            return GetAll().BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(), emptyItemText: "None");
+            return GetAll()
+                .BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(), rate => rate == taxRate,
+                                     emptyItem: null);
         }
     }
 }

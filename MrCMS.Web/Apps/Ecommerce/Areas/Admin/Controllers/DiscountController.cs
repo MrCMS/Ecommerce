@@ -36,15 +36,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("Add")]
         public RedirectToRouteResult Add_POST(Discount discount)
         {
-            
             _discountManager.Add(discount);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public PartialViewResult Edit(Discount discount)
+        public ViewResult Edit(Discount discount)
         {
-            return PartialView(discount);
+            return View(discount);
         }
 
         [HttpPost]
