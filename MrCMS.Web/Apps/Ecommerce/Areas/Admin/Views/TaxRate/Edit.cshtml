@@ -1,21 +1,27 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.TaxRate
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Tax.TaxRate
+@{
+    ViewBag.Title = "Edit " + Model.Name;
+}
 
-@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
-
+<div class="row-fluid">
+    <div class="span4">
+        <h4>Edit - @Model.Name</h4>
+    </div>
+    <div class="span8">
+        <div class="btn-group  display-inline  pull-right">
+            @Html.ActionLink("Back to list", "Index", "TaxRate", null, new { @class = "btn" })
+            <button class="btn btn-primary" id="save-edit" data-action="save" data-form-id="edit-tax-rate">
+                Save</button>
+        </div>
+    </div>
+</div>
 @using (Html.BeginForm("Edit", "TaxRate", FormMethod.Post, new { id = "edit-tax-rate" }))
 {
-    <div class="modal-header">
-        <h3>Edit Tax Rate</h3>
-    </div>
-    <div class="modal-body">
     @Html.HiddenFor(x => x.Id)
-       @Html.HiddenFor(x => x.Country.Id)
-       @Html.HiddenFor(x => x.Region.Id)
+    @Html.LabelFor(x => x.Name)
+    @Html.TextBoxFor(x => x.Name)
+    @Html.LabelFor(x => x.Code)
+    @Html.TextBoxFor(x => x.Code)
     @Html.LabelFor(x => x.Percentage)
     @Html.TextBoxFor(x => x.Percentage)
-    </div>
-    <div class="modal-footer">
-         <button class="btn btn-primary" id="save-edit" data-action="save" data-form-id="edit-tax-rate">
-                Save Changes</button>
-    </div>
 }

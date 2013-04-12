@@ -7,6 +7,8 @@ using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System.Linq;
 using MrCMS.Helpers;
@@ -68,6 +70,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                                       : BasePrice, 2, MidpointRounding.AwayFromZero);
             }
         }
+
+        public virtual decimal Weight { get; set; }
 
         [DisplayName("Base Price")]
         public virtual decimal BasePrice { get; set; }

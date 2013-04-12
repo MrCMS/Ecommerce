@@ -8,8 +8,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         [DisplayName("Loaded Prices Include Tax")]
         public bool LoadedPricesIncludeTax { get; set; }
 
-        [DisplayName("Shipping Is Taxed")]
-        public bool ShippingIsTaxed { get; set; }
+        [DisplayName("Shipping Rates Include Tax")]
+        public bool ShippingRateIncludesTax { get; set; }
 
         public override bool RenderInSettings
         {

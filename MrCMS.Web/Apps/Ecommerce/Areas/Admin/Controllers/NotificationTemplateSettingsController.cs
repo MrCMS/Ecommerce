@@ -1,6 +1,8 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Binders;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Templating;
 using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.Templating;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
 using NHibernate.SqlCommand;

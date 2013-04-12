@@ -1,41 +1,54 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Entities;
-using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Website.Controllers;
+using MrCMS.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class ShippingMethodController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly IShippingMethodManager _ShippingMethodManager;
+        private readonly IShippingMethodManager _shippingMethodManager;
+        private readonly ITaxRateManager _taxRateManager;
 
-        public ShippingMethodController(IShippingMethodManager ShippingMethodManager)
+        public ShippingMethodController(IShippingMethodManager shippingMethodManager, ITaxRateManager taxRateManager)
         {
-            _ShippingMethodManager = ShippingMethodManager;
+            _shippingMethodManager = shippingMethodManager;
+            _taxRateManager = taxRateManager;
         }
 
         public ViewResult Index()
         {
-            var options = _ShippingMethodManager.GetAll();
+            var options = _shippingMethodManager.GetAll();
             return View(options);
         }
 
         [HttpGet]
         public PartialViewResult Add()
         {
+            ViewData["tax-rates"] = _taxRateManager.GetAll()
+                                                   .BuildSelectItemList(rate => rate.Name,
+                                                                        rate => rate.Id.ToString(),
+                                                                        emptyItem: null);
             return PartialView();
         }
 
         [HttpPost]
         public RedirectToRouteResult Add(ShippingMethod option)
         {
-            _ShippingMethodManager.Add(option);
+            _shippingMethodManager.Add(option);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public PartialViewResult Edit(ShippingMethod option)
         {
+            ViewData["tax-rates"] = _taxRateManager.GetAll()
+                                                   .BuildSelectItemList(rate => rate.Name,
+                                                                        rate => rate.Id.ToString(),
+                                                                        rate => rate == option.TaxRate,
+                                                                        emptyItem: null);
             return PartialView(option);
         }
 
@@ -43,7 +56,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         public RedirectToRouteResult Edit_POST(ShippingMethod option)
         {
-            _ShippingMethodManager.Update(option);
+            _shippingMethodManager.Update(option);
             return RedirectToAction("Index");
         }
 
@@ -57,7 +70,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         public RedirectToRouteResult Delete_POST(ShippingMethod option)
         {
-            _ShippingMethodManager.Delete(option);
+            _shippingMethodManager.Delete(option);
             return RedirectToAction("Index");
         }
     }

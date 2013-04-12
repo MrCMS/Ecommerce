@@ -2,6 +2,7 @@
 using FluentNHibernate.Automapping.Alterations;
 using MrCMS.DbConfiguration.Types;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Templating;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration

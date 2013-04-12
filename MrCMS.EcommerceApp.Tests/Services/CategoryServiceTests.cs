@@ -5,6 +5,7 @@ using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services

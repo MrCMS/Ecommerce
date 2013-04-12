@@ -2,6 +2,7 @@
 using System.Linq;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.Templating;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services
