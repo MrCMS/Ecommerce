@@ -12,8 +12,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         List<SelectListItem> GetOptions();
         List<SelectListItem> GetCriteriaOptions();
         ShippingCalculation GetByCountryId(int countryId);
-        void Add(ShippingCalculation ShippingCalculation);
-        void Update(ShippingCalculation ShippingCalculation);
-        void Delete(ShippingCalculation ShippingCalculation);
+        void Add(ShippingCalculation shippingCalculation);
+        void Update(ShippingCalculation shippingCalculation);
+        void Delete(ShippingCalculation shippingCalculation);
     }
 }
