@@ -26,6 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                             new ChildMenuItem("Shipping Calculations", "/Admin/Apps/Ecommerce/ShippingCalculation"),
                             new ChildMenuItem("Discounts", "/Admin/Apps/Ecommerce/Discount"),
                             new ChildMenuItem("Notification Template Settings", "/Admin/Apps/Ecommerce/NotificationTemplateSettings/Edit"),
+                            new ChildMenuItem("Orders", "/Admin/Apps/Ecommerce/Order"),
                         });
             }
         }

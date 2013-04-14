@@ -154,6 +154,7 @@
     <Compile Include="Apps\Core\Widgets\PlainTextWidget.cs" />
     <Compile Include="Apps\Core\Widgets\TextWidget.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountApplicationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountLimitationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountController.cs" />
@@ -174,6 +175,8 @@
     <Compile Include="Apps\Ecommerce\Controllers\ProductContainerController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CategoryOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\OrderLineOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\OrderNoteOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\NotificationTemplateSettingsOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ShippingMethodOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CountryOverride.cs" />
@@ -187,6 +190,9 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountLimitationOverride.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderHasXOrMoreItems.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderTotalGreaterThanX.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Orders\OrderLine.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Orders\OrderNote.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Orders\Order.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Templating\NotificationTemplateSettings.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Geographic\Country.cs" />
@@ -208,6 +214,7 @@
     <Compile Include="Apps\Ecommerce\Metadata\ProductMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategoryPagedList.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ShippingStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\CountryToAdd.cs" />
     <Compile Include="Apps\Ecommerce\Models\DeliveryStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\EcommerceAdminMenuModel.cs" />
@@ -222,6 +229,10 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartImpl.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\CategoryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderNoteService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\OrderNoteService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\OrderService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Templating\INotificationTemplateProcessor.cs" />
     <Compile Include="Apps\Ecommerce\Services\Templating\NotificationTemplateProcesor.cs" />
     <Compile Include="Apps\Ecommerce\Services\Templating\NotificationTemplateSettingsManager.cs" />
@@ -728,6 +739,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\OrderTotalGreaterThanX.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\FixedAmountFromOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\NotificationTemplateSettings\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Index.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
