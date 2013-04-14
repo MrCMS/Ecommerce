@@ -6,13 +6,20 @@ using MrCMS.Entities;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
 {
     public class Discount : SiteEntity
     {
+        public Discount()
+        {
+            Orders = new List<Order>();
+        }
+
         public virtual string Name { get; set; }
         public virtual string Code { get; set; }
+        public virtual IList<Order> Orders { get; set; }
 
         public virtual string ValidTimePeriod
         {

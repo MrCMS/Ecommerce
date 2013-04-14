@@ -3,6 +3,7 @@ using System.Linq;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 {
@@ -11,11 +12,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         public ShippingMethod()
         {
             ShippingCalculations = new List<ShippingCalculation>();
+            Orders = new List<Order>();
         }
 
         public virtual string Name { get; set; }
         public virtual string Description { get; set; }
         public virtual IList<ShippingCalculation> ShippingCalculations { get; set; }
+        public virtual IList<Order> Orders { get; set; }
 
         public virtual TaxRate TaxRate { get; set; }
 

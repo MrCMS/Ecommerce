@@ -45,7 +45,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get
             {
-                // get total for orders
                 var discountAmount = Discount == null
                                          ? 0
                                          : Discount.GetDiscount(this);
