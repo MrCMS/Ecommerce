@@ -6,7 +6,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Discounts
     public interface IDiscountManager
     {
         IList<Discount> GetAll();
-        Discount Get(int id);
+        Discount Get(int discountId);
         void Add(Discount discount);
         void Save(Discount discount, DiscountLimitation discountLimitation, DiscountApplication discountApplication);
         void Delete(Discount discount);

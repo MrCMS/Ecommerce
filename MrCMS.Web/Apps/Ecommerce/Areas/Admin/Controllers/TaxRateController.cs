@@ -69,6 +69,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
         public RedirectToRouteResult Settings(TaxSettings settings)
         {
             _configurationProvider.SaveSettings(settings);

@@ -19,5 +19,6 @@
         bool CanBuy(int quantity);
         decimal PricePreTax { get; }
         decimal Weight { get; }
+        string Name { get; }
     }
 }

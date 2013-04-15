@@ -47,6 +47,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
             get { return Item.Weight*Quantity; }
         }
 
+        public virtual string Name
+        {
+            get { return Item.Name; }
+        }
+
         public virtual decimal GetDiscountAmount(Discount discount, string discountCode)
         {
             return discount != null

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -9,7 +8,7 @@ using Ninject.MockingKernel;
 using Xunit;
 using Xunit.Extensions;
 
-namespace MrCMS.EcommerceApp.Tests.Entities.ProductVariantTests
+namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
 {
     public class PricingTests
     {

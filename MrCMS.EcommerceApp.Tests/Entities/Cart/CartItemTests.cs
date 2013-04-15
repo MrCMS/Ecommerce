@@ -1,17 +1,18 @@
-﻿using FluentAssertions;
-using MrCMS.Web.Apps.Ecommerce.Entities;
+﻿using FakeItEasy;
+using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
+using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using Xunit;
 
-namespace MrCMS.EcommerceApp.Tests.Entities
+namespace MrCMS.EcommerceApp.Tests.Entities.Cart
 {
     public class CartItemTests
     {
         [Fact]
         public void CartItem_PricePreTax_ShouldBeProductPricePreTaxTimesQuantity()
         {
-            var product = new StubProduct {PricePreTax = 10};
+            var product = new StubProduct { PricePreTax = 10 };
             var cartItem = new CartItem { Item = product, Quantity = 2 };
 
             var pricePreTax = cartItem.PricePreTax;
@@ -21,7 +22,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities
         [Fact]
         public void CartItem_Price_ShouldBeProductPriceTimesQuantity()
         {
-            var product = new StubProduct {Price = 10};
+            var product = new StubProduct { Price = 10 };
             var cartItem = new CartItem { Item = product, Quantity = 2 };
 
             var price = cartItem.Price;
@@ -43,7 +44,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities
         [Fact]
         public void CartItem_Tax_ShouldBeProductTaxTimesQuantity()
         {
-            var product = new StubProduct {Tax = 2};
+            var product = new StubProduct { Tax = 2 };
             var cartItem = new CartItem { Item = product, Quantity = 2 };
 
             var tax = cartItem.Tax;
@@ -54,7 +55,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities
         [Fact]
         public void CartItem_CurrentlyAvailable_ShouldBeFalseIfStockLevelsAreTooLow()
         {
-            var product = new StubProduct { Available = false};
+            var product = new StubProduct { Available = false };
             var cartItem = new CartItem { Item = product, Quantity = 2 };
 
             var currentlyAvailable = cartItem.CurrentlyAvailable;
@@ -65,7 +66,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities
         [Fact]
         public void CartItem_CurrentlyAvailable_ShouldBeTrueIfProductIsAvailableForQuantity()
         {
-            var product = new StubProduct { Available = true};
+            var product = new StubProduct { Available = true };
             var cartItem = new CartItem { Item = product, Quantity = 2 };
 
             var currentlyAvailable = cartItem.CurrentlyAvailable;
@@ -76,7 +77,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities
         [Fact]
         public void CartItem_CurrentlyAvailable_ShouldBeTrueIfStockLevelsAreHighEnough()
         {
-            var product = new StubProduct {  Available = true };
+            var product = new StubProduct { Available = true };
             var cartItem = new CartItem { Item = product, Quantity = 2 };
 
             var currentlyAvailable = cartItem.CurrentlyAvailable;
@@ -94,6 +95,41 @@ namespace MrCMS.EcommerceApp.Tests.Entities
 
             taxRatePercentage.Should().Be(20);
         }
+
+        [Fact]
+        public void CartItem_Weight_ShouldBeWeightTimesQuantity()
+        {
+            var product = new StubProduct { Weight = 123 };
+            var cartItem = new CartItem { Item = product, Quantity = 3 };
+
+            var weight = cartItem.Weight;
+
+            weight.Should().Be(369);
+        }
+
+        [Fact]
+        public void CartItem_GetDiscountAmount_IfNullDiscountIsPassedShouldBeZero()
+        {
+            var product = new StubProduct { };
+            var cartItem = new CartItem { Item = product, Quantity = 3 };
+
+            var discountAmount = cartItem.GetDiscountAmount(null, null);
+
+            discountAmount.Should().Be(0);
+        }
+
+        [Fact]
+        public void CartItem_GetDiscountAmount_IfValidDiscountIsPassedShouldReturnResultOfDiscountGetAmount()
+        {
+            var discount = A.Fake<Discount>();
+            var product = new StubProduct { };
+            var cartItem = new CartItem { Item = product, Quantity = 3 };
+            A.CallTo(() => discount.GetDiscount(cartItem, "test")).Returns(10m);
+
+            var discountAmount = cartItem.GetDiscountAmount(discount, "test");
+
+            discountAmount.Should().Be(10);
+        }
     }
 
     public class StubProduct : ICanAddToCart
@@ -110,6 +146,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities
 
         public decimal PricePreTax { get; set; }
         public decimal Weight { get; set; }
+        public string Name { get; set; }
 
         public bool Available { get; set; }
     }

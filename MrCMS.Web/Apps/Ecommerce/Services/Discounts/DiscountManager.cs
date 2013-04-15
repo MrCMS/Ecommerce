@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using MrCMS.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using NHibernate;
 using System.Linq;
@@ -22,9 +21,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Discounts
             return _session.QueryOver<Discount>().CacheMode(CacheMode.Refresh).List();
         }
 
-        public Discount Get(int DiscountId)
+        public Discount Get(int discountId)
         {
-            return _session.QueryOver<Discount>().Where(x => x.Id == DiscountId).Cacheable().SingleOrDefault();
+            return _session.QueryOver<Discount>().Where(x => x.Id == discountId).Cacheable().SingleOrDefault();
         }
 
         public void Add(Discount discount)
@@ -83,22 +82,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Discounts
                 oldDiscount.Application = discountApplication;
             }
 
-            _session.Transact(session =>
-            {
-                session.SaveOrUpdate(discount);
-            });
+            _session.Transact(session => session.SaveOrUpdate(discount));
         }
+
         private void DeleteOldLimitationOrApplication(Discount oldDiscount, object oldLimitationOrApplication)
         {
             oldDiscount.Limitation = null;
-            _session.Transact(session =>
-            {
-                session.SaveOrUpdate(oldDiscount);
-            });
-            _session.Transact(session =>
-            {
-                session.Delete(oldLimitationOrApplication);
-            });
+            _session.Transact(session => session.SaveOrUpdate(oldDiscount));
+            _session.Transact(session => session.Delete(oldLimitationOrApplication));
         }
 
         public void Delete(Discount discount)

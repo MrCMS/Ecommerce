@@ -1,9 +1,8 @@
 ﻿using FluentAssertions;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using Xunit;
 
-namespace MrCMS.EcommerceApp.Tests.Entities.ProductVariantTests
+namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
 {
     public class StockLevelTests
     {

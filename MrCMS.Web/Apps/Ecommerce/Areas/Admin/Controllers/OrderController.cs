@@ -22,27 +22,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Index(int page = 1)
         {
-            return View(_orderService.GetAll(page,10));
+            return View(_orderService.GetPaged(page));
         }
 
         [HttpGet]
-        public ViewResult View(Order order)
+        public ViewResult Show(Order order)
         {
             return View(order);
-        }
-
-        [HttpGet]
-        public ViewResult Edit(Order order)
-        {
-            return View(order);
-        }
-
-        [ActionName("Edit")]
-        [HttpPost]
-        public RedirectToRouteResult Edit_POST(Order order)
-        {
-            _orderService.Save(order);
-            return RedirectToAction("Index");
         }
     }
 }

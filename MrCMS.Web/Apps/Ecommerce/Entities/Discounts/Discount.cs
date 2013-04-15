@@ -23,7 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
 
         public virtual string ValidTimePeriod
         {
-            get 
+            get
             {
                 if (DateFrom == null && DateTo == null)
                     return "Forever";
@@ -91,15 +91,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
             return Application == null ? 0m : Application.GetDiscount(cartItem);
         }
 
-        private bool IsCodeValid(string discountCode)
+        public virtual bool IsCodeValid(string discountCode)
         {
-            if (!string.Equals(Name, discountCode, StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(Code, discountCode, StringComparison.OrdinalIgnoreCase))
                 return false;
 
             if (DateFrom.HasValue && DateFrom > DateTime.UtcNow)
                 return false;
-            
-            if (DateTo.HasValue && DateTo > DateTime.UtcNow)
+
+            if (DateTo.HasValue && DateTo < DateTime.UtcNow)
                 return false;
 
             return true;

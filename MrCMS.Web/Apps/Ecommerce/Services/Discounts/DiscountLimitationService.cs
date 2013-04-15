@@ -1,5 +1,4 @@
-﻿using MrCMS.Web.Apps.Ecommerce.Entities;
-using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
+﻿using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Discounts
