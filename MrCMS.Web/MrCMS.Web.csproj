@@ -63,6 +63,9 @@
     <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
@@ -97,6 +100,12 @@
     </Reference>
     <Reference Include="Ninject.Web.Mvc">
       <HintPath>..\packages\Ninject.MVC3.3.0.0.6\lib\net40-full\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="PayPalCoreSDK">
+      <HintPath>..\packages\PayPalCoreSDK.1.2.0\lib\PayPalCoreSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="PayPalMerchantSDK">
+      <HintPath>..\packages\PayPalMerchantSDK.2.4.100\lib\PayPalMerchantSDK.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.SQLite, Version=1.0.82.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -226,6 +235,7 @@
     <Compile Include="Apps\Ecommerce\Pages\CategoryContainer.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Product.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ProductContainer.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PaypalExpress\IPaypalExpressInterface.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartImpl.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\CategoryService.cs" />
@@ -263,6 +273,7 @@
     <Compile Include="Apps\Ecommerce\Services\Products\ProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Geographic\RegionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\TaxRateManager.cs" />
+    <Compile Include="Apps\Ecommerce\Settings\PaymentGatewaySettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
     <Compile Include="Apps\Galleries\Controllers\GalleryListController.cs" />
     <Compile Include="Apps\Galleries\GalleriesApp.cs" />

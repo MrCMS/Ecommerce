@@ -3,10 +3,8 @@ using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using Xunit;
@@ -15,9 +13,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
     public class ProductVariantControllerTests
     {
-        private ProductVariantController _productVariantController;
-        private IProductVariantService _productVariantService;
-        private ITaxRateManager _taxRateManager;
+        private readonly ProductVariantController _productVariantController;
+        private readonly IProductVariantService _productVariantService;
+        private readonly ITaxRateManager _taxRateManager;
 
         public ProductVariantControllerTests()
         {

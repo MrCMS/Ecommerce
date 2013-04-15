@@ -1,11 +1,10 @@
 ﻿using System;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using Xunit;
 using FluentAssertions;
 
-namespace MrCMS.EcommerceApp.Tests.Entities.ProductVariantTests
+namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
 {
     public class AvailabilityTests
     {

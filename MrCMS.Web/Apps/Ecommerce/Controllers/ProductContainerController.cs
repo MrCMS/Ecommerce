@@ -13,15 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         public ViewResult Show(ProductContainer productContainer)
         {
-            int page = 1;
-            if (Request["p"] != null)
-            {
-                if (!int.TryParse(Request["p"], out page))
-                {
-                    page = 1;
-                }
-            }
-            return View(new CategoryContainer<Product>(productContainer, null, page));
+            return View(productContainer);
         }
     }
 }

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using MrCMS.Entities.People;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
-using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 
@@ -58,7 +56,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             }
         }
 
-        public decimal Total
+        public virtual decimal Total
         {
             get { return TotalPreDiscount - DiscountAmount + ShippingTotal.GetValueOrDefault(); }
         }
@@ -86,7 +84,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public decimal? ShippingTotal { get { return ShippingMethod == null ? null : ShippingMethod.GetPrice(this); } }
         public decimal? ShippingTax { get { return ShippingMethod == null ? null : ShippingMethod.GetTax(this); } }
 
-        public decimal Weight
+        public virtual decimal Weight
         {
             get { return Items.Any() ? Items.Sum(item => item.Weight) : decimal.Zero; }
         }

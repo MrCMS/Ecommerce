@@ -28,6 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         }
 
         public virtual decimal Weight { get; set; }
+        public virtual string Name { get { return Product.Name; } }
 
         [DisplayName("Base Price")]
         public virtual decimal BasePrice { get; set; }

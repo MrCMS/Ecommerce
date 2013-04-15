@@ -26,17 +26,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public void PlaceOrder(CartModel cartModel)
         {
-            Order order = new Order();
-            order.ShippingAddress = cartModel.ShippingAddress;
-            order.ShippingMethod = cartModel.ShippingMethod;
-            order.Subtotal = cartModel.Subtotal;
-            order.Discount = cartModel.Discount;
-            order.DiscountCode = cartModel.DiscountCode;
-            order.Tax = cartModel.Tax;
-            order.Total = cartModel.Total;
-            order.ShippingTotal = cartModel.ShippingTotal;
-            order.User = cartModel.User;
-            order.Weight = cartModel.Weight;
+            var order = new Order
+                            {
+                                ShippingAddress = cartModel.ShippingAddress,
+                                ShippingMethod = cartModel.ShippingMethod,
+                                Subtotal = cartModel.Subtotal,
+                                Discount = cartModel.Discount,
+                                DiscountCode = cartModel.DiscountCode,
+                                Tax = cartModel.Tax,
+                                Total = cartModel.Total,
+                                ShippingTotal = cartModel.ShippingTotal,
+                                User = cartModel.User,
+                                Weight = cartModel.Weight
+                            };
             _session.Transact(session => session.Save(order));
         }
 
@@ -45,7 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             _session.Transact(session => session.SaveOrUpdate(item));
         }
 
-        public IPagedList<Order> GetAll(int pageNum, int pageSize = 10)
+        public IPagedList<Order> GetPaged(int pageNum, int pageSize = 10)
         {
             return BaseQuery().Paged(pageNum, pageSize);
         }

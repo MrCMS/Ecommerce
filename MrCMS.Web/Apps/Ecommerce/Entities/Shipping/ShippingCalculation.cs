@@ -128,29 +128,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                //if (sc.ShippingCriteria == ShippingCriteria.ByWeight)
-                   //     {
-                   //         <text>
-                   //             Cart Weight: 
-                   //         </text>
-                   //         @Html.Encode(string.Format("{0:F} lbs", sc.LowerBound))
-                   //         @(sc.UpperBound.HasValue ? Html.Encode(string.Format(" - {0:F} lbs", sc.UpperBound.Value)) : Html.Encode(" and above"))
-                   //     }
-                   //     else
-                   //     {
-                   //         <text>
-                   //             Cart Total: 
-                   //         </text>
-                   //         @Html.Raw(string.Format("&pound;{0:F}", sc.LowerBound))
-                   //         if (sc.UpperBound.HasValue)
-                   //         {
-                   //             @(new HtmlString(string.Format(" - &pound;{0:F}", sc.UpperBound.Value)))
-                   //         }
-                   //         else
-                   //         {
-                   //             @Html.Encode(" and above")
-                   //         }
-                   //     }
             }
         }
 
