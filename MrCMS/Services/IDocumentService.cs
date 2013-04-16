@@ -40,8 +40,11 @@ namespace MrCMS.Services
         DocumentVersion GetDocumentVersion(int id);
         void SetParent(Document document, int? parentId);
         DocumentMetadata GetDefinitionByType(Type type);
-        bool IsValidForWebpage(string url, int? id);
         void SetFrontEndRoles(string frontEndRoles, Webpage webpage);
         void SetAdminRoles(string adminRoles, Webpage webpage);
+        bool UrlIsValidForMediaCategory(string urlSegment, int? id);
+        bool UrlIsValidForLayout(string urlSegment, int? id);
+        bool UrlIsValidForWebpage(string url, int? id);
+        bool UrlIsValidForWebpageUrlHistory(string url);
     }
 }

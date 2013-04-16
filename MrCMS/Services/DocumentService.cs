@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Layout;
+using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Multisite;
 using MrCMS.Entities.People;
 using MrCMS.Entities.Widget;
 using MrCMS.Helpers;
 using MrCMS.Models;
-using MrCMS.Paging;
 using MrCMS.Settings;
 using MrCMS.Website;
 using NHibernate;
@@ -33,8 +33,7 @@ namespace MrCMS.Services
 
         public void AddDocument<T>(T document) where T : Document
         {
-            var sameParentDocs =
-                GetDocumentsByParent(document.Parent as T);
+            var sameParentDocs = GetDocumentsByParent(document.Parent as T).ToList();
             document.DisplayOrder = sameParentDocs.Any() ? sameParentDocs.Max(doc => doc.DisplayOrder) + 1 : 0;
             document.CustomInitialization(this, _session);
             _session.Transact(session => session.SaveOrUpdate(document));
@@ -54,10 +53,10 @@ namespace MrCMS.Services
         public T SaveDocument<T>(T document) where T : Document
         {
             _session.Transact(session =>
-                                  {
-                                      document.OnSaving(session);
-                                      session.SaveOrUpdate(document);
-                                  });
+            {
+                document.OnSaving(session);
+                session.SaveOrUpdate(document);
+            });
             return document;
         }
 
@@ -71,7 +70,7 @@ namespace MrCMS.Services
             var uniqueResult =
                 _session.CreateCriteria(type)
                         .Add(Restrictions.Eq(Projections.Property("Site"), _currentSite.Site))
-                        .SetProjection(Projections.RowCount())
+                        .SetProjection(Projections.RowCount()).SetCacheable(true)
                         .UniqueResult<int>();
             return uniqueResult != 0;
         }
@@ -107,8 +106,14 @@ namespace MrCMS.Services
 
         public IEnumerable<T> GetDocumentsByParent<T>(T parent) where T : Document
         {
+            var queryOver = _session.QueryOver<T>().Where(arg => arg.Site.Id == _currentSite.Id);
+
+            queryOver = parent != null
+                            ? queryOver.Where(arg => arg.Parent.Id == parent.Id)
+                            : queryOver.Where(arg => arg.Parent == null);
+
             IEnumerable<T> children =
-                _session.QueryOver<T>().Where(arg => arg.Parent == parent && arg.Site == _currentSite.Site).List();
+                queryOver.Cacheable().List();
 
             if (parent != null)
             {
@@ -123,8 +128,14 @@ namespace MrCMS.Services
 
         public IEnumerable<T> GetAdminDocumentsByParent<T>(T parent) where T : Document
         {
+            var queryOver = _session.QueryOver<T>().Where(arg => arg.Site.Id == _currentSite.Id);
+
+            queryOver = parent != null
+                            ? queryOver.Where(arg => arg.Parent.Id == parent.Id)
+                            : queryOver.Where(arg => arg.Parent == null);
+
             IEnumerable<T> children =
-                _session.QueryOver<T>().Where(arg => arg.Parent == parent && arg.Site == _currentSite.Site).List();
+                queryOver.Cacheable().List();
 
             if (parent is Webpage)
             {
@@ -164,11 +175,11 @@ namespace MrCMS.Services
 
             //make sure the URL is unique
 
-            if (!IsValidForWebpage(stringBuilder.ToString(), null))
+            if (!UrlIsValidForWebpage(stringBuilder.ToString(), null))
             {
                 var counter = 1;
 
-                while (!IsValidForWebpage(string.Format("{0}-{1}", stringBuilder, counter), null))
+                while (!UrlIsValidForWebpage(string.Format("{0}-{1}", stringBuilder, counter), null))
                     counter++;
 
                 stringBuilder.AppendFormat("-{0}", counter);
@@ -212,28 +223,21 @@ namespace MrCMS.Services
             var existingTags = document.Tags.ToList();
 
             tagNames.ForEach(name =>
-                                 {
-                                     var tag = GetTag(name) ?? new Tag { Name = name };
-                                     _session.SaveOrUpdate(tag);
-                                     if (!document.Tags.Contains(tag))
-                                     {
-                                         document.Tags.Add(tag);
-                                         tag.Documents.Add(document);
-                                     }
-                                     existingTags.Remove(tag);
-                                 });
+            {
+                var tag = GetTag(name) ?? new Tag { Name = name };
+                if (!document.Tags.Contains(tag))
+                {
+                    document.Tags.Add(tag);
+                    tag.Documents.Add(document);
+                }
+                existingTags.Remove(tag);
+            });
 
             existingTags.ForEach(tag =>
-                                     {
-                                         document.Tags.Remove(tag);
-                                         tag.Documents.Remove(document);
-                                         _session.SaveOrUpdate(tag);
-                                     });
-
-            if (IsValidForWebpage(document.UrlSegment, document.Id))
             {
-                _session.SaveOrUpdate(document);
-            }
+                document.Tags.Remove(tag);
+                tag.Documents.Remove(document);
+            });
         }
 
         private Tag GetTag(string name)
@@ -244,26 +248,26 @@ namespace MrCMS.Services
         public void SetOrder(int documentId, int order)
         {
             _session.Transact(session =>
-                                  {
-                                      var document = session.Get<Document>(documentId);
-                                      document.DisplayOrder = order;
-                                      session.SaveOrUpdate(document);
-                                  });
+            {
+                var document = session.Get<Document>(documentId);
+                document.DisplayOrder = order;
+                session.SaveOrUpdate(document);
+            });
         }
 
         public void SetOrders(List<SortItem> items)
         {
             _session.Transact(session => items.ForEach(item =>
-                                                           {
-                                                               var document = session.Get<Document>(item.Id);
-                                                               document.DisplayOrder = item.Order;
-                                                               session.Update(document);
-                                                           }));
+            {
+                var document = session.Get<Document>(item.Id);
+                document.DisplayOrder = item.Order;
+                session.Update(document);
+            }));
         }
 
         public bool AnyPublishedWebpages()
         {
-            return _session.QueryOver<Webpage>().Where(webpage => webpage.Published).Cacheable().RowCount() > 0;
+            return _session.QueryOver<Webpage>().Where(webpage => webpage.PublishOn != null && webpage.PublishOn <= DateTime.Now).Cacheable().RowCount() > 0;
         }
 
         public bool AnyWebpages()
@@ -275,7 +279,7 @@ namespace MrCMS.Services
         {
             return
                 _session.QueryOver<Webpage>().Where(
-                    x => x.Parent.Id == parentId && x.Published && x.PublishOn < DateTime.Now && x.RevealInNavigation).
+                    x => x.Parent.Id == parentId && x.PublishOn != null && x.PublishOn <= DateTime.Now && x.PublishOn < DateTime.Now && x.RevealInNavigation).
                     List();
         }
 
@@ -284,10 +288,10 @@ namespace MrCMS.Services
             if (document != null)
             {
                 _session.Transact(session =>
-                                      {
-                                          document.OnDeleting(session);
-                                          session.Delete(document);
-                                      });
+                {
+                    document.OnDeleting(session);
+                    session.Delete(document);
+                });
             }
         }
 
@@ -381,17 +385,6 @@ namespace MrCMS.Services
             return DocumentMetadataHelper.GetMetadataByType(type);
         }
 
-        public bool IsValidForWebpage(string url, int? id)
-        {
-            if (id.HasValue)
-            {
-                var document = GetDocument<Webpage>(id.Value);
-                return document != null && document.UrlSegment == url;
-            }
-
-            return !WebpageExists(url) && !ExistsInUrlHistory(url);
-        }
-
         public void SetFrontEndRoles(string frontEndRoles, Webpage webpage)
         {
             if (webpage == null) throw new ArgumentNullException("webpage");
@@ -405,39 +398,38 @@ namespace MrCMS.Services
 
             var roles = webpage.FrontEndAllowedRoles.ToList();
 
-            _session.Transact(session =>
-                                  {
-                                      if (webpage.InheritFrontEndRolesFromParent)
-                                      {
-                                          roles.ForEach(role =>
-                                                            {
-                                                                role.FrontEndWebpages.Remove(webpage);
-                                                                webpage.FrontEndAllowedRoles.Remove(role);
-                                                            });
-                                      }
-                                      else
-                                      {
-                                          roleNames.ForEach(name =>
-                                                                {
-                                                                    var role = GetRole(name);
-                                                                    if (!webpage.FrontEndAllowedRoles.Contains(role))
-                                                                    {
-                                                                        webpage.FrontEndAllowedRoles.Add(role);
-                                                                        role.FrontEndWebpages.Add(webpage);
-                                                                    }
-                                                                    roles.Remove(role);
-                                                                });
+            if (webpage.InheritFrontEndRolesFromParent)
+            {
+                roles.ForEach(role =>
+                {
+                    role.FrontEndWebpages.Remove(webpage);
+                    webpage.FrontEndAllowedRoles.Remove(role);
+                });
+            }
+            else
+            {
+                roleNames.ForEach(name =>
+                {
+                    var role = GetRole(name);
+                    if (role != null)
+                    {
+                        if (!webpage.FrontEndAllowedRoles.Contains(role))
+                        {
+                            webpage.FrontEndAllowedRoles.Add(role);
+                            role.FrontEndWebpages.Add(webpage);
+                        }
+                        roles.Remove(role);
+                    }
 
-                                          roles.ForEach(role =>
-                                                            {
-                                                                webpage.FrontEndAllowedRoles.Remove(role);
-                                                                role.FrontEndWebpages.Remove(webpage);
-                                                                session.SaveOrUpdate(role);
-                                                            });
-                                      }
+                });
 
-                                      session.SaveOrUpdate(webpage);
-                                  });
+                roles.ForEach(role =>
+                {
+                    webpage.FrontEndAllowedRoles.Remove(role);
+                    role.FrontEndWebpages.Remove(webpage);
+                });
+            }
+
         }
 
         private UserRole GetRole(string name)
@@ -458,38 +450,33 @@ namespace MrCMS.Services
 
             var roles = webpage.AdminAllowedRoles.ToList();
 
-            _session.Transact(session =>
-                                  {
-                                      if (webpage.InheritAdminRolesFromParent)
-                                      {
-                                          roles.ForEach(role =>
-                                                            {
-                                                                role.AdminWebpages.Remove(webpage);
-                                                                webpage.AdminAllowedRoles.Remove(role);
-                                                            });
-                                      }
-                                      else
-                                      {
-                                          roleNames.ForEach(name =>
-                                                                {
-                                                                    var role = GetRole(name);
-                                                                    if (!webpage.AdminAllowedRoles.Contains(role))
-                                                                    {
-                                                                        webpage.AdminAllowedRoles.Add(role);
-                                                                        role.AdminWebpages.Add(webpage);
-                                                                    }
-                                                                    roles.Remove(role);
-                                                                });
+            if (webpage.InheritAdminRolesFromParent)
+            {
+                roles.ForEach(role =>
+                {
+                    role.AdminWebpages.Remove(webpage);
+                    webpage.AdminAllowedRoles.Remove(role);
+                });
+            }
+            else
+            {
+                roleNames.ForEach(name =>
+                {
+                    var role = GetRole(name);
+                    if (!webpage.AdminAllowedRoles.Contains(role))
+                    {
+                        webpage.AdminAllowedRoles.Add(role);
+                        role.AdminWebpages.Add(webpage);
+                    }
+                    roles.Remove(role);
+                });
 
-                                          roles.ForEach(role =>
-                                                            {
-                                                                webpage.AdminAllowedRoles.Remove(role);
-                                                                role.AdminWebpages.Remove(webpage);
-                                                                session.SaveOrUpdate(role);
-                                                            });
-                                      }
-                                      session.SaveOrUpdate(webpage);
-                                  });
+                roles.ForEach(role =>
+                {
+                    webpage.AdminAllowedRoles.Remove(role);
+                    role.AdminWebpages.Remove(webpage);
+                });
+            }
         }
 
         public T GetDocumentByUrl<T>(string url) where T : Document
@@ -500,7 +487,68 @@ namespace MrCMS.Services
                         .SingleOrDefault();
         }
 
-        public UrlHistory GetHistoryItemByUrl(string url) 
+        public bool UrlIsValidForWebpage(string url, int? id)
+        {
+            if (string.IsNullOrEmpty(url))
+                return false;
+
+            if (id.HasValue)
+            {
+                var document = GetDocument<Webpage>(id.Value);
+                var documentHistory = document.Urls.Any(x => x.UrlSegment == url);
+                if (url.Trim() == document.UrlSegment.Trim() || documentHistory) //if url is the same or has been used for the same page before lets go
+                    return true;
+
+                return !WebpageExists(url) && !ExistsInUrlHistory(url);
+            }
+
+            return !WebpageExists(url) && !ExistsInUrlHistory(url);
+        }
+
+        /// <summary>
+        /// Check to see if the supplied URL is ok to be added to the URL history table
+        /// </summary>
+        public bool UrlIsValidForWebpageUrlHistory(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+                return false;
+
+            return !WebpageExists(url) && !ExistsInUrlHistory(url);
+        }
+
+        public bool UrlIsValidForMediaCategory(string url, int? id)
+        {
+            if (string.IsNullOrEmpty(url))
+                return false;
+
+            if (id.HasValue)
+            {
+                var document = GetDocument<MediaCategory>(id.Value);
+                if (url.Trim() == document.UrlSegment.Trim())
+                    return true;
+                return !MediaCtegoryExists(url);
+            }
+
+            return !MediaCtegoryExists(url);
+        }
+
+        public bool UrlIsValidForLayout(string url, int? id)
+        {
+            if (string.IsNullOrEmpty(url))
+                return false;
+
+            if (id.HasValue)
+            {
+                var document = GetDocument<Layout>(id.Value);
+                if (url.Trim() == document.UrlSegment.Trim())
+                    return true;
+                return !LayoutExists(url);
+            }
+
+            return !LayoutExists(url);
+        }
+
+        public UrlHistory GetHistoryItemByUrl(string url)
         {
             return _session.QueryOver<UrlHistory>()
                         .Where(doc => doc.UrlSegment == url && doc.Site.Id == _currentSite.Id)
@@ -508,6 +556,37 @@ namespace MrCMS.Services
                         .SingleOrDefault();
         }
 
+        /// <summary>
+        /// Checks to see if the supplied url is unique for media category / folder.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns>bool</returns>
+        private bool MediaCtegoryExists(string url)
+        {
+            return _session.QueryOver<MediaCategory>()
+                        .Where(doc => doc.UrlSegment == url && doc.Site.Id == _currentSite.Id)
+                        .Cacheable()
+                        .RowCount() > 0;
+        }
+
+        /// <summary>
+        /// Checks to see if the supplied url is unique for layouts
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        private bool LayoutExists(string url)
+        {
+            return _session.QueryOver<Layout>()
+                        .Where(doc => doc.UrlSegment == url && doc.Site.Id == _currentSite.Id)
+                        .Cacheable()
+                        .RowCount() > 0;
+        }
+
+        /// <summary>
+        /// Checks to see if a webpage exists with the supplied URL
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns>bool</returns>
         private bool WebpageExists(string url)
         {
             return _session.QueryOver<Webpage>()
@@ -516,6 +595,11 @@ namespace MrCMS.Services
                         .RowCount() > 0;
         }
 
+        /// <summary>
+        /// Checks to see if the supplied URL exists in webpage URL history table
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns>bool</returns>
         private bool ExistsInUrlHistory(string url)
         {
             return

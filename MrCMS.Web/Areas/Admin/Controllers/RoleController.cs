@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using MrCMS.Entities.Documents;
 using MrCMS.Entities.People;
+using MrCMS.Helpers;
 using MrCMS.Models;
 using MrCMS.Services;
 using MrCMS.Website.Controllers;
@@ -32,7 +35,13 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult Add(UserRole model)
         {
-            _roleService.SaveRole(model);
+            if (ModelState.IsValid)
+            {
+                if (_roleService.GetRoleByName(model.Name) == null)
+                    _roleService.SaveRole(model);
+                else
+                    TempData.ErrorMessages().Add(string.Format("{0} already exists.", model.Name));
+            }
 
             return RedirectToAction("Index");
         }
@@ -76,6 +85,17 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         {
             IEnumerable<AutoCompleteResult> result = _roleService.Search(document, term);
 
+            return Json(result);
+        }
+
+        /// <summary>
+        /// Used with Tag-it javascript to act as data source for roles available for securing web pages. See permissions tab in edit view of a webpage.
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetRolesForPermissions()
+        {
+            var roles = _roleService.GetAllRoles().Select(x=>x.Name).ToArray();
+            var result = new JavaScriptSerializer().Serialize(roles);
             return Json(result);
         }
     }

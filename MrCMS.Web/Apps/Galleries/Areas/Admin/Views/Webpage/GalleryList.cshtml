@@ -1,11 +1,9 @@
-﻿@model MrCMS.Web.Apps.Galleries.Pages.GalleryList 
-           <hr />
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Galleries.Pages.GalleryList 
+@{ Html.IncludeScript("~/Apps/Galleries/Areas/Admin/Content/Scripts/gallery.js"); }
+<hr />
 @Html.LabelFor(model => model.PageSize)
 @Html.EditorFor(model => model.PageSize)
 
-@Html.LabelFor(model => model.AllowPaging)
-@Html.EditorFor(model => model.AllowPaging)
-
-@Html.LabelFor(x => x.TagList, "Tags")
-@Html.TextBoxFor(x => x.TagList, new { @class = "span12" })
+@Html.InlineCheckboxFor(model => model.AllowPaging, null, null, "Allow paging")
 

@@ -49,26 +49,24 @@ namespace MrCMS.Web.Controllers
                             return Redirect(loginModel.ReturnUrl ?? "~/");
                         }
                     }
+                    else
+                    {
+                        loginModel.Message = "Incorrect email or password.";
+                    }
                 }
             }
-            loginModel = loginModel ?? new LoginModel();
-            return View(new LoginModel()
-                {
-                    Email = loginModel.Email,
-                    RememberMe = loginModel.RememberMe,
-                    ReturnUrl = loginModel.ReturnUrl,
-                });
+            return View(loginModel ?? new LoginModel());
         }
 
 
-        public ActionResult Logout()
+        public RedirectResult Logout()
         {
             _authorisationService.Logout();
             return Redirect("~");
         }
 
         [HttpGet]
-        public ActionResult ForgottenPassword()
+        public ViewResult ForgottenPassword()
         {
             return View();
         }
@@ -99,6 +97,7 @@ namespace MrCMS.Web.Controllers
             public string Password { get; set; }
             public bool RememberMe { get; set; }
             public string ReturnUrl { get; set; }
+            public string Message { get; set; }
         }
 
         #endregion
