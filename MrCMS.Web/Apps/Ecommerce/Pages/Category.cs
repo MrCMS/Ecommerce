@@ -5,7 +5,7 @@ using MrCMS.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
-    public class Category : Webpage, IContainerItem
+    public class Category : Webpage
     {
         public Category()
         {

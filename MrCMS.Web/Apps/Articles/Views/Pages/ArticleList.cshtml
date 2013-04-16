@@ -1,10 +1,29 @@
-﻿@using MrCMS.Helpers
+﻿@using MrCMS.Entities.Documents
+@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Articles.Pages
-@model MrCMS.Entities.Documents.Web.CategoryContainer<MrCMS.Web.Apps.Articles.Pages.Article>
+@using NHibernate.Criterion
+@model ArticleList
            
 @Editable(Model, p=>p.BodyContent, true)
 
-@foreach (var page in Model.ChildItemsPaged)
+@{
+    var category = Request["Category"];
+    
+    var query = QueryOver.Of<Article>()
+                                     .Where(a => a.Parent == Model && a.PublishOn != null && a.PublishOn <= DateTime.Now)
+                                     .ThenBy(arg => arg.PublishOn)
+                                     .Desc;
+
+    if (!String.IsNullOrEmpty(category))
+    {
+        Tag tagAlias = null;
+        query = query.JoinAlias(article => article.Tags, () => tagAlias).Where(() => tagAlias.Name.IsInsensitiveLike(category, MatchMode.Exact));
+    }
+
+
+    var pagedList = Model.PagedChildren<Article>(pageNum: Request["p"].GetIntValue(1), query: query, pageSize: Model.PageSize);
+}
+@foreach (var page in pagedList)
 {
     <div class="row-fluid">
         <div class="span12">
@@ -22,6 +41,6 @@
 }
 @if (Model.AllowPaging)
 {
-    @Html.PageCurrentPage(Model.ChildItemsPaged, i => new { p = i }, PagedListRenderOptions.PageNumbersOnly)
+    @Html.PageCurrentPage(pagedList, i => new { p = i }, PagedListRenderOptions.PageNumbersOnly)
 }
 

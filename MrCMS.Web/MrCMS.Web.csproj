@@ -56,6 +56,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentNHibernate.1.3.0.733\lib\FluentNHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="GCheckout">
+      <HintPath>..\packages\Google.Checkout.2.5.0.14\lib\GCheckout.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -144,7 +147,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Apps\Articles\ArticlesApp.cs" />
-    <Compile Include="Apps\Articles\Controllers\ArticleListController.cs" />
     <Compile Include="Apps\Articles\DbConfiguration\ArticleOverride.cs" />
     <Compile Include="Apps\Articles\Metadata\ArticleListMetaData.cs" />
     <Compile Include="Apps\Articles\Metadata\ArticleMetaData.cs" />
@@ -235,7 +237,9 @@
     <Compile Include="Apps\Ecommerce\Pages\CategoryContainer.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Product.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ProductContainer.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\GoogleCheckout\IGoogleCheckoutService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaypalExpress\IPaypalExpressInterface.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PaypalExpress\PaypalExpressCheckoutService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartImpl.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\CategoryService.cs" />
@@ -273,9 +277,8 @@
     <Compile Include="Apps\Ecommerce\Services\Products\ProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Geographic\RegionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\TaxRateManager.cs" />
-    <Compile Include="Apps\Ecommerce\Settings\PaymentGatewaySettings.cs" />
+    <Compile Include="Apps\Ecommerce\Settings\PaymentSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
-    <Compile Include="Apps\Galleries\Controllers\GalleryListController.cs" />
     <Compile Include="Apps\Galleries\GalleriesApp.cs" />
     <Compile Include="Apps\Galleries\Metadata\GalleryListMetaData.cs" />
     <Compile Include="Apps\Galleries\Metadata\GalleryMetaData.cs" />
@@ -303,6 +306,7 @@
     <Compile Include="Areas\Admin\Controllers\LayoutAreaController.cs" />
     <Compile Include="Areas\Admin\Models\AddPageModel.cs" />
     <Compile Include="Areas\Admin\Models\AddUserModel.cs" />
+    <Compile Include="Areas\Admin\Models\Dashboard.cs" />
     <Compile Include="Controllers\FormController.cs" />
     <Compile Include="Controllers\InstallController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -751,7 +755,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\FixedAmountFromOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\NotificationTemplateSettings\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Details.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Pages\Product.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -890,6 +894,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Apps\Articles\Controllers\" />
     <Folder Include="Apps\Core\Areas\Admin\Controllers\" />
     <Folder Include="Apps\Core\Content\Images\" />
     <Folder Include="Apps\Core\Controllers\" />
@@ -898,14 +903,13 @@
     <Folder Include="Apps\Core\Services\" />
     <Folder Include="Apps\Core\Settings\" />
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
-    <Folder Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\" />
     <Folder Include="Apps\Ecommerce\Content\Styles\" />
-    <Folder Include="Apps\Ecommerce\Views\Pages\" />
     <Folder Include="Apps\Ecommerce\Views\Widgets\" />
     <Folder Include="Apps\Ecommerce\Widgets\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Controllers\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Views\Widgets\" />
     <Folder Include="Apps\Galleries\Content\" />
+    <Folder Include="Apps\Galleries\Controllers\" />
     <Folder Include="Apps\Galleries\DbConfiguration\" />
     <Folder Include="Apps\Galleries\Entities\" />
     <Folder Include="Apps\Galleries\Models\" />

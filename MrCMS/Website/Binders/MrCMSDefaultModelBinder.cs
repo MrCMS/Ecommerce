@@ -8,9 +8,6 @@ using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
 using MrCMS.Website.Controllers;
 using NHibernate;
-using System.Collections;
-using System.Reflection;
-using System.ComponentModel.DataAnnotations;
 
 namespace MrCMS.Website.Binders
 {
@@ -27,14 +24,13 @@ namespace MrCMS.Website.Binders
         {
             get { return _session.Invoke(); }
         }
-
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
             if (controllerContext.Controller is MrCMSAdminController &&
                 typeof(SystemEntity).IsAssignableFrom(bindingContext.ModelType) &&
                 (CreateModel(controllerContext, bindingContext, bindingContext.ModelType) == null || ShouldReturnNull(controllerContext, bindingContext)))
                 return null;
- 
+
             var bindModel = base.BindModel(controllerContext, bindingContext);
             if (bindModel is SiteEntity)
             {
@@ -50,7 +46,6 @@ namespace MrCMS.Website.Binders
                     baseEntity.CustomBinding(controllerContext, Session);
                 }
             }
-
             return bindModel;
         }
 
@@ -168,7 +163,6 @@ namespace MrCMS.Website.Binders
                     return obj ?? Activator.CreateInstance(modelType);
                 }
             }
-
             return null;
         }
     }
