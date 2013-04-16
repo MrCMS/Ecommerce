@@ -31,7 +31,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
         {
             WebpageController webpageController = GetWebpageController();
 
-            var actionResult = webpageController.Add_Get(new TextPage { Site = webpageController.CurrentSite }) as ViewResult;
+            var actionResult = webpageController.Add_Get(1) as ViewResult;
 
             actionResult.Model.Should().BeOfType<AddPageModel>();
         }
@@ -43,7 +43,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
             var textPage = new TextPage {Site = webpageController.CurrentSite, Id = 1};
             A.CallTo(() => documentService.GetDocument<Document>(1)).Returns(textPage);
 
-            var actionResult = webpageController.Add_Get(textPage) as ViewResult;
+            var actionResult = webpageController.Add_Get(1) as ViewResult;
 
             (actionResult.Model as AddPageModel).ParentId.Should().Be(1);
         }
@@ -55,7 +55,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
             var textPage = new TextPage {Site = webpageController.CurrentSite};
             A.CallTo(() => documentService.GetDocument<Document>(1)).Returns(textPage);
 
-            var result = webpageController.Add_Get(textPage) as ViewResult;
+            var result = webpageController.Add_Get(1) as ViewResult;
 
             webpageController.ViewData["Layout"].Should().BeAssignableTo<IEnumerable<SelectListItem>>();
         }
@@ -65,7 +65,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
         {
             WebpageController webpageController = GetWebpageController();
             var webpage = new TextPage { Site = new Site() };
-            A.CallTo(() => documentService.IsValidForWebpage(null, null)).Returns(true);
+            A.CallTo(() => documentService.UrlIsValidForWebpage(null, null)).Returns(true);
 
             webpageController.Add(webpage);
 
@@ -77,7 +77,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
         {
             WebpageController webpageController = GetWebpageController();
             var webpage = new TextPage { Id = 1 };
-            A.CallTo(() => documentService.IsValidForWebpage(null, null)).Returns(true);
+            A.CallTo(() => documentService.UrlIsValidForWebpage(null, null)).Returns(true);
 
             var result = webpageController.Add(webpage) as RedirectToRouteResult;
 
@@ -90,7 +90,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
         {
             WebpageController webpageController = GetWebpageController();
             var webpage = new TextPage { Id = 1 };
-            A.CallTo(() => documentService.IsValidForWebpage(null, null)).Returns(false);
+            A.CallTo(() => documentService.UrlIsValidForWebpage(null, null)).Returns(false);
 
             var result = webpageController.Add(webpage);
 
@@ -102,7 +102,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
         {
             WebpageController webpageController = GetWebpageController();
             var webpage = new TextPage { Id = 1 };
-            A.CallTo(() => documentService.IsValidForWebpage(null, null)).Returns(false);
+            A.CallTo(() => documentService.UrlIsValidForWebpage(null, null)).Returns(false);
 
             var result = webpageController.Add(webpage);
 
@@ -180,7 +180,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
         public void WebpageController_EditPost_ShouldCallSaveDocument()
         {
             WebpageController webpageController = GetWebpageController();
-            A.CallTo(() => documentService.IsValidForWebpage(null, 1)).Returns(true);
+            A.CallTo(() => documentService.UrlIsValidForWebpage(null, 1)).Returns(true);
             Webpage textPage = new TextPage { Id = 1 };
 
             webpageController.Edit(textPage);
@@ -192,7 +192,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
         public void WebpageController_EditPost_ShouldRedirectToEdit()
         {
             WebpageController webpageController = GetWebpageController();
-            A.CallTo(() => documentService.IsValidForWebpage(null, 1)).Returns(true);
+            A.CallTo(() => documentService.UrlIsValidForWebpage(null, 1)).Returns(true);
             var textPage = new TextPage { Id = 1 };
 
             ActionResult actionResult = webpageController.Edit(textPage);

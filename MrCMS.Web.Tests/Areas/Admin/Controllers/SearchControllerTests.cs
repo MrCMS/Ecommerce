@@ -8,6 +8,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Areas.Admin.Controllers;
 using Xunit;
+using System.Linq;
 
 namespace MrCMS.Web.Tests.Areas.Admin.Controllers
 {
@@ -61,7 +62,14 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
 
             searchController.GetSearchResults("test", null);
 
-            A.CallTo(() => searchService.SearchDocuments<Document>("test")).MustHaveHappened();
+            // this assertation is to replace the following, which seems to be unreliable with some test runners
+            //A.CallTo(() => searchService.SearchDocuments<Document>("test")).MustHaveHappened();
+            var calls = Fake.GetCalls(searchService);
+
+            calls.Where(
+                call =>
+                call.Method.Name == "SearchDocuments" && call.Method.GetGenericArguments()[0] == typeof (Document) &&
+                call.Arguments[0] == "test").Should().HaveCount(1);
         }
 
         [Fact]
@@ -85,7 +93,14 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
 
             searchController.GetSearchResults("test", "TextPage");
 
-            A.CallTo(() => searchService.SearchDocuments<TextPage>("test")).MustHaveHappened();
+            // this assertation is to replace the following, which seems to be unreliable with some test runners
+            //A.CallTo(() => searchService.SearchDocuments<TextPage>("test")).MustHaveHappened();
+            var calls = Fake.GetCalls(searchService);
+
+            calls.Where(
+                call =>
+                call.Method.Name == "SearchDocuments" && call.Method.GetGenericArguments()[0] == typeof(TextPage) &&
+                call.Arguments[0] == "test").Should().HaveCount(1);
         }
 
         [Fact]

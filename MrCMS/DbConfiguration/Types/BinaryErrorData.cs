@@ -1,13 +1,12 @@
 ﻿using System.Data;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using Elmah;
 using NHibernate;
 using NHibernate.SqlTypes;
 
 namespace MrCMS.DbConfiguration.Types
 {
-    public class BinaryData : BaseImmutableUserType<Error>
+    public class BinaryData<T> : BaseImmutableUserType<T>
     {
         readonly BinaryFormatter binaryFormatter = new BinaryFormatter();
         public override object NullSafeGet(IDataReader rs, string[] names, object owner)
@@ -15,8 +14,16 @@ namespace MrCMS.DbConfiguration.Types
             var o = NHibernateUtil.BinaryBlob.NullSafeGet(rs, names[0]) as byte[];
             using (var memoryStream = new MemoryStream(o))
             {
-                var deserialize = binaryFormatter.Deserialize(memoryStream);
-                return deserialize;
+                try
+                {
+                    var deserialize = binaryFormatter.Deserialize(memoryStream);
+                    return deserialize;
+                }
+                catch
+                {
+                    return null;
+                }
+
             }
         }
 

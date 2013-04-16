@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Web.Mvc;
 using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Multisite;
@@ -17,7 +18,6 @@ namespace MrCMS.Entities.People
             Guid = Guid.NewGuid();
         }
 
-        [Required]
         [DisplayName("First Name")]
         public virtual string FirstName { get; set; }
         [DisplayName("Last Name")]
@@ -29,6 +29,7 @@ namespace MrCMS.Entities.People
         public virtual Guid Guid { get; set; }
 
         [Required]
+        [Remote("IsUniqueEmail", "User")]
         public virtual string Email { get; set; }
 
         [Required]
@@ -59,14 +60,6 @@ namespace MrCMS.Entities.People
             foreach (var site in Sites)
                 site.Users.Remove(this);
             Sites.Clear();
-        }
-    }
-
-    public static class UserExtensions
-    {
-        public static string GetFirstAndLastName(this User user)
-        {
-            return user.FirstName + " " + user.LastName;
         }
     }
 }
