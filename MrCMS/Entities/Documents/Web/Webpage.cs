@@ -9,11 +9,13 @@ using System.Xml;
 using MrCMS.Entities.Documents.Web.FormProperties;
 using MrCMS.Entities.People;
 using MrCMS.Models;
+using MrCMS.Paging;
 using MrCMS.Services;
 using MrCMS.Website;
 using MrCMS.Helpers;
 using System.Linq;
 using NHibernate;
+using NHibernate.Criterion;
 
 namespace MrCMS.Entities.Documents.Web
 {
@@ -26,13 +28,22 @@ namespace MrCMS.Entities.Documents.Web
         }
         private Layout.Layout _layout;
 
+        [Required]
+        [Remote("ValidateUrlIsAllowed", "Webpage", AdditionalFields = "Id")]
+        [RegularExpression("[a-zA-Z0-9\\-\\.\\~\\/_\\\\]+$", ErrorMessage = "Url must alphanumeric characters only with dashes or underscore for spaces.")]
+        [DisplayName("Url Segment")]
+        public override string UrlSegment { get; set; }
+
         [DisplayName("Meta Title")]
+        [StringLength(250, ErrorMessage = "Meta title cannot be longer than 250 characters.")]
         public virtual string MetaTitle { get; set; }
         [DisplayName("Meta Description")]
+        [StringLength(250, ErrorMessage = "Meta description cannot be longer than 250 characters.")]
         public virtual string MetaDescription { get; set; }
         [DisplayName("Meta Keywords")]
+        [StringLength(250, ErrorMessage = "Meta keywords cannot be longer than 250 characters.")]
         public virtual string MetaKeywords { get; set; }
-        [DisplayName("Reveal in navigation")]
+        [DisplayName("Include in navigation")]
         public virtual bool RevealInNavigation { get; set; }
 
         [DisplayName("Requires SSL")]
@@ -40,7 +51,7 @@ namespace MrCMS.Entities.Documents.Web
 
         public virtual bool Published
         {
-            get { return PublishOn != null && PublishOn <= DateTime.UtcNow; }
+            get { return PublishOn != null && PublishOn <= DateTime.Now; }
         }
 
         public virtual string LiveUrlSegment
@@ -113,10 +124,14 @@ namespace MrCMS.Entities.Documents.Web
         public virtual IList<FormPosting> FormPostings { get; set; }
 
         [DisplayName("Form Submitted Message")]
+        [AllowHtml]
+        [StringLength(500, ErrorMessage = "Form submitted messsage cannot be longer than 500 characters.")]
         public virtual string FormSubmittedMessage { get; set; }
-        [DisplayName("Form Email Title")]
+        [DisplayName("Subject")]
+        [StringLength(250, ErrorMessage = "Subject cannot be longer than 250 characters.")]
         public virtual string FormEmailTitle { get; set; }
         [DisplayName("Send Form To")]
+        [StringLength(500, ErrorMessage = "Send to cannot be longer than 500 characters.")]
         public virtual string SendFormTo { get; set; }
         [DisplayName("Form Email Message")]
         public virtual string FormMessage { get; set; }
@@ -205,6 +220,25 @@ namespace MrCMS.Entities.Documents.Web
             if (!AdminAllowedRoles.Any()) return true;
             if (AdminAllowedRoles.Any() && currentUser == null) return false;
             return currentUser != null && currentUser.Roles.Intersect(AdminAllowedRoles).Any();
+        }
+
+        /// <summary>
+        /// Method to page child items with default filter and ordering implementation
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="query"></param>
+        /// <param name="pageNum"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public virtual IPagedList<T> PagedChildren<T>(QueryOver<T> query = null, int pageNum = 1, int pageSize = 10) where T : Webpage
+        {
+            query = query ??
+                    QueryOver.Of<T>()
+                             .Where(a => a.Parent == this && a.PublishOn != null && a.PublishOn <= DateTime.Now)
+                             .ThenBy(arg => arg.PublishOn)
+                             .Desc;
+
+            return MrCMSApplication.Get<ISession>().Paged(query, pageNum, pageSize);
         }
     }
 }

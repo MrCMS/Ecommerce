@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Elmah;
+using MrCMS.Entities.Multisite;
 using MrCMS.Website;
 using NHibernate;
 using MrCMS.Helpers;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace MrCMS.Logging
 {
-    public class MrCMSErrorLog : ErrorLog
+    public class MrCMSErrorLog : ErrorLog, IDisposable
     {
         private ISession _session;
 
@@ -23,7 +24,7 @@ namespace MrCMS.Logging
         public MrCMSErrorLog(IDictionary config)
         {
             if (CurrentRequestData.DatabaseIsInstalled)
-                _session = MrCMSApplication.Get<ISession>();
+                _session = MrCMSApplication.Get<ISessionFactory>().OpenSession();
         }
 
         public override string Log(Error error)
@@ -37,7 +38,7 @@ namespace MrCMS.Logging
                                                                   Guid = newGuid,
                                                                   Message = error.Message,
                                                                   Detail = error.Detail,
-                                                                  Site = CurrentRequestData.CurrentSite
+                                                                  Site = _session.Get<Site>(CurrentRequestData.CurrentSite.Id)
                                                               }));
 
             return newGuid.ToString();
@@ -81,6 +82,34 @@ namespace MrCMS.Logging
             }
             finally
             {
+            }
+        }
+
+        private bool _disposed;
+        public void Dispose()
+        {
+            Dispose(true);
+
+            // Use SupressFinalize in case a subclass 
+            // of this type implements a finalizer.
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // If you need thread safety, use a lock around these  
+            // operations, as well as in your methods that use the resource. 
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    if (_session != null)
+                        _session.Dispose();
+                }
+
+                // Indicate that the instance has been disposed.
+                _session = null;
+                _disposed = true;
             }
         }
     }

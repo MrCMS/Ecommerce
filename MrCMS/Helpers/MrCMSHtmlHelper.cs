@@ -254,19 +254,17 @@ namespace MrCMS.Helpers
                                                      Expression<Func<TModel, bool>> expression, object labelAttributes, object checkboxAttributes,
                                                      string text = null)
         {
-            var metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
-            var htmlFieldName = ExpressionHelper.GetExpressionText(expression);
-            var checkbox = (CheckBoxHelper(htmlHelper, metadata, htmlFieldName, expression.Compile()(htmlHelper.ViewData.Model), AnonymousObjectToHtmlAttributes(checkboxAttributes)).ToHtmlString());
+            var checkbox = (CheckBoxHelper(htmlHelper, ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData), ExpressionHelper.GetExpressionText(expression), expression.Compile()(htmlHelper.ViewData.Model), AnonymousObjectToHtmlAttributes(checkboxAttributes)).ToHtmlString());
             var labelHtmlAttributes = AnonymousObjectToHtmlAttributes(labelAttributes);
             // add checkbox style to label, for Bootstrap
             if (labelHtmlAttributes.ContainsKey("class"))
                 labelHtmlAttributes["class"] += " checkbox";
             else
                 labelHtmlAttributes["class"] = "checkbox";
-            return LabelHelper(htmlHelper, metadata,
-                               htmlFieldName,
+            return LabelHelper(htmlHelper, ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData),
+                               ExpressionHelper.GetExpressionText(expression),
                                labelHtmlAttributes,
-                               checkbox + (text ?? metadata.DisplayName ?? metadata.PropertyName ?? htmlFieldName));
+                               checkbox + text);
         }
 
         public static MvcHtmlString Label(this HtmlHelper htmlHelper, string labelFor, object htmlAttributes,
@@ -600,6 +598,24 @@ namespace MrCMS.Helpers
                 tempData["info-message"] = new List<string>();
             }
             return tempData["info-message"] as List<string>;
+        }
+        
+        public static MvcHtmlString InfoBlock(this HtmlHelper helper, string boldText, string text)
+        {
+            var tagBulder = new TagBuilder("div");
+            tagBulder.AddCssClass("alert alert-info");
+
+            if (!string.IsNullOrEmpty(boldText))
+            {
+                var strongText = new TagBuilder("strong");
+                strongText.SetInnerText(boldText);
+
+                tagBulder.InnerHtml += strongText.ToString() + text;
+
+                return MvcHtmlString.Create(tagBulder.ToString());
+            }
+            tagBulder.SetInnerText(text);
+            return MvcHtmlString.Create(tagBulder.ToString());
         }
     }
 }

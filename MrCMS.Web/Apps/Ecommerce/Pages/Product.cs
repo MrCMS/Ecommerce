@@ -18,7 +18,7 @@ using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
-    public class Product : Webpage, ICanAddToCart, IContainerItem
+    public class Product : Webpage, ICanAddToCart
     {
         public Product()
         {

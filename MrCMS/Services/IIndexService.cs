@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using MrCMS.Indexing.Management;
 using MrCMS.Website;
 using System.Linq;
 using NHibernate;
+using NHibernate.Criterion;
 
 namespace MrCMS.Services
 {
@@ -18,10 +20,12 @@ namespace MrCMS.Services
     public class IndexService : IIndexService
     {
         private readonly ISession _session;
+        private readonly CurrentSite _site;
 
-        public IndexService(ISession session)
+        public IndexService(ISession session, CurrentSite site)
         {
             _session = session;
+            _site = site;
         }
 
         public List<MrCMSIndex> GetIndexes()
@@ -40,7 +44,7 @@ namespace MrCMS.Services
                                              DoesIndexExist = indexManagerBase.IndexExists,
                                              LastModified = indexManagerBase.LastModified,
                                              NumberOfDocs = indexManagerBase.NumberOfDocs,
-                                             TypeName =indexManagerBase.GetIndexDefinitionType() .FullName
+                                             TypeName = indexManagerBase.GetIndexDefinitionType().FullName
                                          });
                 }
             }
@@ -52,13 +56,19 @@ namespace MrCMS.Services
             var indexDefinitionInterface =
                 indexType.GetInterfaces()
                          .FirstOrDefault(
-                             type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof (IIndexDefinition<>));
-            ;
+                             type => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IIndexDefinition<>));
             var indexManagerBase =
-                MrCMSApplication.Get(
-                    typeof (FSDirectoryIndexManager<,>).MakeGenericType(indexDefinitionInterface.GetGenericArguments()[0],
-                                                                        indexType)) as IIndexManagerBase;
+                (GetIndexManagerOverride ?? DefaultGetIndexManager())(indexType, indexDefinitionInterface);
             return indexManagerBase;
+        }
+
+        public static Func<Type, Type, IIndexManagerBase> GetIndexManagerOverride = null;
+
+        private static Func<Type, Type, IIndexManagerBase> DefaultGetIndexManager()
+        {
+            return (indexType, indexDefinitionInterface) => MrCMSApplication.Get(
+                typeof (FSDirectoryIndexManager<,>).MakeGenericType(indexDefinitionInterface.GetGenericArguments()[0],
+                                                                    indexType)) as IIndexManagerBase;
         }
 
         public void Reindex(string typeName)
@@ -66,20 +76,20 @@ namespace MrCMS.Services
             var definitionType = TypeHelper.GetTypeByName(typeName);
             var indexManagerBase = GetIndexManagerBase(definitionType);
 
-            var list = _session.CreateCriteria(indexManagerBase.GetEntityType()).List();
+            var list = _session.CreateCriteria(indexManagerBase.GetEntityType()).Add(Restrictions.Eq("Site.Id", _site.Id) ).List();
 
             var listInstance =
                 Activator.CreateInstance(typeof(List<>).MakeGenericType(indexManagerBase.GetEntityType()));
             var methodExt = listInstance.GetType().GetMethodExt("Add", indexManagerBase.GetEntityType());
             foreach (var entity in list)
             {
-                methodExt.Invoke(listInstance, new object[] {entity});
+                methodExt.Invoke(listInstance, new object[] { entity });
             }
 
 
-            var concreteManagerType = typeof (IIndexManager<,>).MakeGenericType(indexManagerBase.GetEntityType(), indexManagerBase.GetIndexDefinitionType());
+            var concreteManagerType = typeof(IIndexManager<,>).MakeGenericType(indexManagerBase.GetEntityType(), indexManagerBase.GetIndexDefinitionType());
             var methodInfo = concreteManagerType.GetMethodExt("ReIndex",
-                                                              typeof (IEnumerable<>).MakeGenericType(
+                                                              typeof(IEnumerable<>).MakeGenericType(
                                                                   indexManagerBase.GetEntityType()));
 
             methodInfo.Invoke(indexManagerBase, new object[] { listInstance });
