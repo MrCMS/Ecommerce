@@ -751,6 +751,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\FixedAmountFromOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\NotificationTemplateSettings\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Details.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -897,6 +898,7 @@
     <Folder Include="Apps\Core\Services\" />
     <Folder Include="Apps\Core\Settings\" />
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
+    <Folder Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\" />
     <Folder Include="Apps\Ecommerce\Content\Styles\" />
     <Folder Include="Apps\Ecommerce\Views\Pages\" />
     <Folder Include="Apps\Ecommerce\Views\Widgets\" />
