@@ -14,6 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
     {
         public Order()
         {
+            OrderLines = new List<OrderLine>();
             OrderNotes = new List<OrderNote>();
         }
 
@@ -40,6 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual User User { get; set; }
         public virtual string OrderEmail { get; set; }
 
+        public virtual IList<OrderLine> OrderLines { get; set; }
         public virtual IList<OrderNote> OrderNotes { get; set; }
     }
 }

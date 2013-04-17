@@ -13,6 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 {
     public class OrderLine : SiteEntity
     {
+        public virtual Order Order { get; set; }
         public virtual decimal Quantity { get; set; }
         public virtual ICanAddToCart ProductVariant { get; set; }
         public virtual decimal UnitPrice { get; set; }

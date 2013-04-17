@@ -1,0 +1,22 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.OrderNote
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Add", "OrderNote", FormMethod.Post))
+{
+    <div class="modal-header">
+        <h3>Add Order Note</h3>
+    </div>
+    <div class="modal-body">
+        @Html.HiddenFor(x => x.Order.Id)
+        @Html.HiddenFor(x => x.User.Id)
+        @Html.LabelFor(x => x.ShowToClient)
+        @Html.CheckBoxFor(x => x.ShowToClient)
+        <br />
+         <br />
+        @Html.LabelFor(x => x.Note)
+        @Html.TextAreaFor(x => x.Note, new { style="width:500px;height:200px" })
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Add Order Note" />
+    </div>
+}

@@ -42,11 +42,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             _session.Transact(session => session.Save(order));
         }
 
-        public void Save(Order item)
-        {
-            _session.Transact(session => session.SaveOrUpdate(item));
-        }
-
         public IPagedList<Order> GetPaged(int pageNum, int pageSize = 10)
         {
             return BaseQuery().Paged(pageNum, pageSize);
@@ -58,6 +53,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 _session.QueryOver<Order>()
                         .OrderBy(entry => entry.CreatedOn)
                         .Desc;
+        }
+
+        public void Save(Order item)
+        {
+            _session.Transact(session => session.SaveOrUpdate(item));
+        }
+
+        public Order Get(int id)
+        {
+            return _session.QueryOver<Order>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
         }
     }
 }

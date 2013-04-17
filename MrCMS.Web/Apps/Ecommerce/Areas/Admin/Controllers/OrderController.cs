@@ -7,6 +7,7 @@ using MrCMS.Website.Controllers;
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -26,9 +27,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ViewResult Show(Order order)
+        public ActionResult Edit(int id = 0)
         {
-            return View(order);
+            if (id > 0)
+            {
+                return View(_orderService.Get(id));
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+
+        [ActionName("Edit")]
+        [HttpPost]
+        public RedirectToRouteResult Edit_POST(Order order)
+        {
+            order.User = CurrentRequestData.CurrentUser;
+            _orderService.Save(order);
+            return RedirectToAction("Index");
         }
     }
 }
