@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Apps;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using Ninject;
 

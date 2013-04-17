@@ -81,5 +81,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                       product.AttributeOptions.ForEach(session.SaveOrUpdate);
                                   });
         }
+
+        public void AddCategory(Product product, int categoryId)
+        {
+            var category = _documentService.GetDocument<Category>(categoryId);
+            product.Categories.Add(category);
+            category.Products.Add(product);
+            _session.Transact(session => session.SaveOrUpdate(product));
+        }
+
+        public void RemoveCategory(Product product, int categoryId)
+        {
+            var category = _documentService.GetDocument<Category>(categoryId);
+            product.Categories.Remove(category);
+            category.Products.Remove(product);
+            _session.Transact(session => session.SaveOrUpdate(product));
+        }
     }
 }

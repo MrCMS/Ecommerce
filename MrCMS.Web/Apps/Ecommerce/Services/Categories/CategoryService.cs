@@ -58,5 +58,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
                                                               value = category.NestedName
                                                           });
         }
+
+        public IPagedList<Category> GetCategories(Product product, string query, int page)
+        {
+            var queryOver = QueryOver.Of<Category>();
+
+            if (!string.IsNullOrWhiteSpace(query))
+                queryOver = queryOver.Where(category => category.Name.IsInsensitiveLike(query, MatchMode.Anywhere));
+
+            queryOver = queryOver.Where(category => !category.Id.IsIn(product.Categories.Select(c => c.Id).ToArray()));
+
+            return _session.Paged(queryOver, page, 10);
+        }
     }
 }
