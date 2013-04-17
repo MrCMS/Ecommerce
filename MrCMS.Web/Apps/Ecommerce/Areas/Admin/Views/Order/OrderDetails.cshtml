@@ -1,0 +1,25 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
+
+<div class="tab-pane active" id="order-details">
+    @Html.HiddenFor(x => x.Id)
+
+    @Html.LabelFor(x => x.Subtotal)
+    @Html.DisplayFor(x => x.Subtotal)
+     @Html.LabelFor(x => x.Tax)
+    @Html.DisplayFor(x => x.Tax)
+      @Html.LabelFor(x => x.DiscountCode)
+    @Html.DisplayFor(x => x.DiscountCode)
+     @Html.LabelFor(x => x.Total)
+    @Html.DisplayFor(x => x.Total)
+
+      @Html.LabelFor(x => x.Weight)
+    @Html.EditorFor(x => x.Weight)
+
+    @Html.LabelFor(x => x.ShippingStatus)
+    @Html.DisplayFor(x => x.ShippingStatus)
+    @Html.LabelFor(x => x.ShippingTotal)
+    @Html.DisplayFor(x => x.ShippingTotal)
+    <br />
+    <br />
+     <input type="submit" class="btn-primary btn" value="Save Changes" />
+</div>

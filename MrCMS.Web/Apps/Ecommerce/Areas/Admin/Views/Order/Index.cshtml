@@ -32,6 +32,8 @@
                     </th>
                      <th>Total
                     </th>
+                        <th>Actions
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -52,6 +54,11 @@
                         </td>
                           <td>
                             @item.Total
+                        </td>
+                          <td>
+                            <div class="btn-group">
+                                @Html.ActionLink("Edit", "Edit", "Order", new { id = item.Id }, new { @class = "btn btn-mini" })
+                            </div>
                         </td>
                     </tr>
                 }
