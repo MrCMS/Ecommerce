@@ -7,6 +7,8 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using MrCMS.Helpers;
 using NHibernate.Criterion;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
@@ -80,6 +82,32 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                       session.SaveOrUpdate(product);
                                       product.AttributeOptions.ForEach(session.SaveOrUpdate);
                                   });
+        }
+
+        public void AddCategory(Product product, int categoryId)
+        {
+            var category = _documentService.GetDocument<Category>(categoryId);
+            product.Categories.Add(category);
+            category.Products.Add(product);
+            _session.Transact(session => session.SaveOrUpdate(product));
+        }
+
+        public void RemoveCategory(Product product, int categoryId)
+        {
+            var category = _documentService.GetDocument<Category>(categoryId);
+            product.Categories.Remove(category);
+            category.Products.Remove(product);
+            _session.Transact(session => session.SaveOrUpdate(product));
+        }
+
+        public List<SelectListItem> GetOptions()
+        {
+            return _session.QueryOver<Product>().Cacheable().List().BuildSelectItemList(item => item.Name, item => item.Id.ToString(), emptyItemText: null);
+        }
+
+        public Product Get(int id)
+        {
+            return _session.QueryOver<Product>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
         }
     }
 }

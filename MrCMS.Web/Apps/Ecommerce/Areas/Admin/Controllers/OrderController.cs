@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Website;
+using MrCMS.Web.Apps.Ecommerce.Services.Products;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {

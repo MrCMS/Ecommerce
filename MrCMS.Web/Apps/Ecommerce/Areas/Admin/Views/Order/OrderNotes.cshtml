@@ -1,15 +1,13 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
 
 <div class="tab-pane" id="order-notes">
-
-          
-    <div class="row-fluid">
+        <div class="row-fluid">
        <div class="span12">
-        <a href="@Url.Action("Add","OrderNote",new { orderID = Model.Id })" class="btn btn-primary" data-toggle="fb-modal">Add Order Note</a>
+         <a href="@Url.Action("Add","OrderNote",new { orderID = Model.Id })" class="btn btn-primary" data-toggle="fb-modal">Add Order Note</a>
            <br />   <br />
-            @if (Model.OrderNotes.Count == 0)
+         @if (Model.OrderNotes.Count == 0)
         {
-            @:No notes.
+            @:No lines.
         }
         else
         {
