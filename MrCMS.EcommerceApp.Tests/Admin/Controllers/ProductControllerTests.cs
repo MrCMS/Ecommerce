@@ -8,6 +8,7 @@ using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 
@@ -19,6 +20,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private IDocumentService _documentService;
         private ProductContainer _productContainer;
         private ProductController _productController;
+        private ICategoryService _categoryService;
 
         public ProductControllerTests()
         {
@@ -26,7 +28,8 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _productContainer = new ProductContainer();
             A.CallTo(() => _documentService.GetUniquePage<ProductContainer>()).Returns(_productContainer);
             _productService = A.Fake<IProductService>();
-            _productController = new ProductController(_productService, _documentService);
+            _categoryService = A.Fake<ICategoryService>();
+            _productController = new ProductController(_productService, _documentService, _categoryService);
         }
 
         [Fact]
