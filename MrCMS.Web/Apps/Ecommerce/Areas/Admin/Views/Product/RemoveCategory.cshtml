@@ -1,0 +1,17 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Pages
+@model Product
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+   var category= ViewData["category"] as Category;}
+@using (Html.BeginForm("RemoveCategory", "Product", new { id = Model.Id, categoryId = category.Id }, FormMethod.Post))
+{
+    <div class="modal-header">
+        <h3>Remove Category from Product</h3>
+    </div>
+    <div class="modal-body">
+        Are you sure you want to remove the category @category.Name from the product @Model.Name? Removing this category can not be undone.
+        <br />
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Remove Category" />
+    </div>
+}
