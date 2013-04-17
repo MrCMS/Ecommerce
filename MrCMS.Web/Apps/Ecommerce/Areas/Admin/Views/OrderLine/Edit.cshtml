@@ -1,0 +1,34 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.OrderLine
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Edit", "OrderLine", FormMethod.Post))
+{
+    <div class="modal-header">
+        <h3>Edit Order Line</h3>
+    </div>
+    <div class="modal-body">
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.Order.Id)
+        @Html.Hidden("ProductID", Model.ProductVariant.Id)
+
+        @Html.LabelFor(x => x.ProductVariant)
+        @Html.DisplayFor(x => x.ProductVariant.Name)
+        @Html.LabelFor(x => x.Quantity)
+        @Html.TextBoxFor(x => x.Quantity)
+        @Html.LabelFor(x => x.UnitPrice)
+        @Html.TextBoxFor(x => x.UnitPrice)
+        @Html.LabelFor(x => x.Subtotal)
+        @Html.TextBoxFor(x => x.Subtotal)
+        @Html.LabelFor(x => x.Tax)
+        @Html.TextBoxFor(x => x.Tax)
+        @Html.LabelFor(x => x.TaxRate)
+        @Html.TextBoxFor(x => x.TaxRate)
+        @Html.LabelFor(x => x.Discount)
+        @Html.TextBoxFor(x => x.Discount)
+        @Html.LabelFor(x => x.Weight)
+        @Html.TextBoxFor(x => x.Weight)
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Save Changes" />
+    </div>
+}

@@ -11,6 +11,7 @@
 
     public interface ICanAddToCart
     {
+        int Id { get; }
         string SKU { get; }
         decimal TaxRatePercentage { get; }
         decimal Price { get; }

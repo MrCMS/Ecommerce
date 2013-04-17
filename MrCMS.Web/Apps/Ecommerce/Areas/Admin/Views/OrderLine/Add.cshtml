@@ -1,0 +1,32 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.OrderLine
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Add", "OrderLine", FormMethod.Post))
+{
+    <div class="modal-header">
+        <h3>Add Order Line</h3>
+    </div>
+    <div class="modal-body">
+        @Html.HiddenFor(x => x.Order.Id)
+        
+        @Html.LabelFor(x => x.ProductVariant)
+        @Html.DropDownList("ProductID",ViewData["products"] as IEnumerable<SelectListItem>)
+        @Html.LabelFor(x => x.Quantity)
+        @Html.TextBoxFor(x => x.Quantity)
+        @Html.LabelFor(x => x.UnitPrice)
+        @Html.TextBoxFor(x => x.UnitPrice)
+        @Html.LabelFor(x => x.Subtotal)
+        @Html.TextBoxFor(x => x.Subtotal)
+        @Html.LabelFor(x => x.Tax)
+        @Html.TextBoxFor(x => x.Tax)
+        @Html.LabelFor(x => x.TaxRate)
+        @Html.TextBoxFor(x => x.TaxRate)
+        @Html.LabelFor(x => x.Discount)
+        @Html.TextBoxFor(x => x.Discount)
+        @Html.LabelFor(x => x.Weight)
+        @Html.TextBoxFor(x => x.Weight)
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Add Order Line" />
+    </div>
+}

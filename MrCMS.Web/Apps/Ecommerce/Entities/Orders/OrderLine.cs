@@ -8,14 +8,15 @@ using System;
 using MrCMS.Entities.People;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 {
     public class OrderLine : SiteEntity
     {
         public virtual Order Order { get; set; }
-        public virtual decimal Quantity { get; set; }
         public virtual ICanAddToCart ProductVariant { get; set; }
+        public virtual decimal Quantity { get; set; }
         public virtual decimal UnitPrice { get; set; }
         public virtual decimal Subtotal { get; set; }
         public virtual decimal Tax { get; set; }

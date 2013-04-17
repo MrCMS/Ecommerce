@@ -165,6 +165,7 @@
     <Compile Include="Apps\Core\Widgets\PlainTextWidget.cs" />
     <Compile Include="Apps\Core\Widgets\TextWidget.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderLineController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderNoteController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountApplicationController.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Apps\Ecommerce\Binders\AddDiscountApplicationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Binders\DiscountApplicationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Binders\DiscountLimitationModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\CartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductContainerController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
@@ -234,16 +236,22 @@
     <Compile Include="Apps\Ecommerce\Models\PaymentStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductAvailability.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductPagedList.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\Cart.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Category.cs" />
     <Compile Include="Apps\Ecommerce\Pages\CategoryContainer.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\OrderPlaced.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\PaymentDetails.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Product.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ProductContainer.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\SetDeliveryAddress.cs" />
     <Compile Include="Apps\Ecommerce\Payment\GoogleCheckout\IGoogleCheckoutService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaypalExpress\IPaypalExpressInterface.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaypalExpress\PaypalExpressCheckoutService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartImpl.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\CategoryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderLineService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\OrderLineService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderService.cs" />
@@ -333,6 +341,10 @@
     <Content Include="Apps\Core\Content\Scripts\respond.min.js" />
     <Content Include="Apps\Core\Content\Styles\style.css" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-discount.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\product-categories.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderNotes.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Apps\Ecommerce\Content\Scripts\edit-product.js" />
     <Content Include="Apps\Galleries\Areas\Admin\Content\Scripts\gallery.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\build-config.js" />
@@ -757,13 +769,18 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\NotificationTemplateSettings\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\Product.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Edit.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderNotes.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderLines.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderDetails.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderLines.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderLine\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderLine\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderLine\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddCategory.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\RemoveCategory.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ViewCategories.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

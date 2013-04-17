@@ -1,5 +1,83 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
 
 <div class="tab-pane" id="order-lines">
-    LINES
+        <div class="row-fluid">
+       <div class="span12">
+        <a href="@Url.Action("Add","OrderLine",new { orderID = Model.Id })" class="btn btn-primary" data-toggle="fb-modal">Add Order Line</a>
+           <br />   <br />
+            @if (Model.OrderLines.Count == 0)
+        {
+            @:No lines.
+        }
+        else
+        {
+    <table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Product
+            </th>
+            <th>SKU
+            </th>
+            <th>Quantity
+            </th>
+             <th>Unit Price
+            </th>
+             <th>Subtotal
+            </th>
+             <th>Tax
+            </th>
+             <th>Tax Rate
+            </th>
+             <th>Discount
+            </th>
+             <th>Weight
+            </th>
+            <th>Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderLines)
+        {
+            <tr>
+                <td>
+                @item.ProductVariant.Name
+                </td>
+                 <td>
+                @item.ProductVariant.SKU
+                </td>
+                <td>
+                    @item.Quantity
+                </td>
+                <td>
+                    @item.UnitPrice
+                </td>
+                <td>
+                    @item.Subtotal
+                </td>
+                <td>
+                    @item.Tax
+                </td>
+                 <td>
+                    @item.TaxRate
+                </td>
+                 <td>
+                    @item.Discount
+                </td>
+                 <td>
+                    @item.Weight
+                </td>
+                <td>
+                    <div class="btn-group">
+                        @Html.ActionLink("Edit", "Edit", "OrderLine" , new { id = item.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                        @Html.ActionLink("Delete", "Delete", "OrderLine" , new { id = item.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+    </table>
+            }
+           </div>
+        </div>
 </div>

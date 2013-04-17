@@ -22,17 +22,6 @@
         @Html.ActionLink("To Gallery", "Edit", "MediaCategory", new { id = Model.Gallery.Id }, null)
     }
 
-    @Html.Label("add-category", "Add Category")
-    @Html.TextBox("add-category")
-    <h5>Categories</h5>
-    <ul id="category-list">
-        @for (int i = 0; i < Model.Categories.Count; i++)
-        {
-            <li>
-                <input name="Categories[@i].Id" type="hidden" value="@Model.Categories[i].Id" />
-                @Model.Categories[i].NestedName <a href="#" class="remove-category">x</a>
-            </li>
-        }
-    </ul>
+    @{ Html.RenderAction("ViewCategories", "Product", new { product = Model });}
     @{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/edit-product.js"); }
 </div>
