@@ -25,21 +25,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
         {
             get
             {
-                if (DateFrom == null && DateTo == null)
+                if (ValidFrom == null && ValidUntil == null)
                     return "Forever";
-                else if (DateFrom != null && DateTo == null)
-                    return "From " + DateFrom;
-                else if (DateFrom == null && DateTo != null)
-                    return "Until " + DateTo;
+                else if (ValidFrom != null && ValidUntil == null)
+                    return "From " + ValidFrom;
+                else if (ValidFrom == null && ValidUntil != null)
+                    return "Until " + ValidUntil;
                 else
-                    return DateFrom + " - " + DateTo;
+                    return ValidFrom + " - " + ValidUntil;
             }
         }
 
-        [DisplayName("Date From")]
-        public virtual DateTime? DateFrom { get; set; }
-        [DisplayName("Date To")]
-        public virtual DateTime? DateTo { get; set; }
+        [DisplayName("Valid From")]
+        public virtual DateTime? ValidFrom { get; set; }
+        [DisplayName("Valid Until")]
+        public virtual DateTime? ValidUntil { get; set; }
 
         public virtual DiscountLimitation Limitation { get; set; }
         public virtual DiscountApplication Application { get; set; }
@@ -96,10 +96,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
             if (!string.Equals(Code, discountCode, StringComparison.OrdinalIgnoreCase))
                 return false;
 
-            if (DateFrom.HasValue && DateFrom > DateTime.UtcNow)
+            if (ValidFrom.HasValue && ValidFrom > DateTime.UtcNow)
                 return false;
 
-            if (DateTo.HasValue && DateTo < DateTime.UtcNow)
+            if (ValidUntil.HasValue && ValidUntil < DateTime.UtcNow)
                 return false;
 
             return true;

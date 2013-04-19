@@ -12,6 +12,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
             Discounts = new List<Discount>();
         }
 
+        public abstract string DisplayName { get; }
         public abstract bool IsCartValid(CartModel cartModel);
         public abstract bool IsItemValid(CartItem cartItem);
         public abstract void CopyValues(DiscountLimitation limitation);

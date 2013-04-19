@@ -763,8 +763,8 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Edit.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\OrderHasXOrMoreItems.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\OrderTotalGreaterThanX.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\CartHasAtLeastXItems.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\CartSubtotalGreaterThanX.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\FixedAmountFromOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\NotificationTemplateSettings\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Index.cshtml" />
