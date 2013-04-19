@@ -21,6 +21,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             return _session.QueryOver<ShippingMethod>().Cacheable().List();
         }
 
+        public ShippingMethod Get(int id)
+        {
+            return _session.QueryOver<ShippingMethod>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
+        }
+
         public List<SelectListItem> GetOptions()
         {
             return GetAll().BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(), emptyItemText: "None");

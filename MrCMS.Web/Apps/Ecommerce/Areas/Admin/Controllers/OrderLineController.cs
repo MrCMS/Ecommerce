@@ -9,6 +9,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Website;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -38,24 +39,47 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         public RedirectToRouteResult Add_POST(OrderLine orderLine, int ProductID=0)
         {
-            orderLine.ProductVariant = _productService.Get(ProductID);
-            orderLine.Order.OrderLines.Add(orderLine);
-            _orderLineService.Add(orderLine);
-            return RedirectToAction("Edit","Order", new { id = orderLine.Order.Id });
+            Product product = _productService.Get(ProductID);
+            if (product.CanBuy(orderLine.Quantity))
+            {
+                orderLine.ProductVariant = product;
+                orderLine.Subtotal = orderLine.Quantity * product.PricePreTax;
+                orderLine.Weight = orderLine.Quantity * product.Weight;
+                orderLine.UnitPrice = product.Price;
+                orderLine.Tax = orderLine.Quantity * product.Tax;
+                orderLine.TaxRate = product.TaxRatePercentage;
+                orderLine.Order.OrderLines.Add(orderLine);
+                _orderLineService.Add(orderLine);
+            }
+            
+            return RedirectToAction("Edit", "Order", new { id = orderLine.Order.Id });
         }
 
         [HttpGet]
         public ViewResult Edit(OrderLine orderLine)
         {
             ViewData["products"] = _productService.GetOptions();
+            ViewData["ProductID"] = orderLine.ProductVariant.Id;
             return View(orderLine);
         }
 
         [ActionName("Edit")]
         [HttpPost]
-        public RedirectToRouteResult Edit_POST(OrderLine orderLine)
+        public RedirectToRouteResult Edit_POST(OrderLine orderLine, int ProductID)
         {
-            _orderLineService.Save(orderLine);
+            Product product = _productService.Get(ProductID);
+            if (product.CanBuy(orderLine.Quantity))
+            {
+                orderLine.ProductVariant = product;
+                orderLine.Subtotal = orderLine.Quantity * product.PricePreTax;
+                orderLine.Weight = orderLine.Quantity * product.Weight;
+                orderLine.UnitPrice = product.Price;
+                orderLine.Tax = orderLine.Quantity * product.Tax;
+                orderLine.TaxRate = product.TaxRatePercentage;
+                orderLine.Order.OrderLines.Add(orderLine);
+                _orderLineService.Save(orderLine);
+            }
+
             return RedirectToAction("Edit", "Order", new { id = orderLine.Order.Id });
         }
 
