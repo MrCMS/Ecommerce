@@ -134,6 +134,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
 
     public class StubProduct : ICanAddToCart
     {
+        public int Id { get; set; }
         public string SKU { get; set; }
         public decimal TaxRatePercentage { get; set; }
         public decimal Price { get; set; }

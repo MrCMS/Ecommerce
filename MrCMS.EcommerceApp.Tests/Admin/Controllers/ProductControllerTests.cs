@@ -20,15 +20,15 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
     {
         private IProductService _productService;
         private IDocumentService _documentService;
-        private ProductContainer _productContainer;
+        private ProductSearch _productSearch;
         private ProductController _productController;
         private ICategoryService _categoryService;
 
         public ProductControllerTests()
         {
             _documentService = A.Fake<IDocumentService>();
-            _productContainer = new ProductContainer();
-            A.CallTo(() => _documentService.GetUniquePage<ProductContainer>()).Returns(_productContainer);
+            _productSearch = new ProductSearch();
+            A.CallTo(() => _documentService.GetUniquePage<ProductSearch>()).Returns(_productSearch);
             _productService = A.Fake<IProductService>();
             _categoryService = A.Fake<ICategoryService>();
             _productController = new ProductController(_productService, _documentService, _categoryService);
@@ -64,7 +64,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductController_Index_ShouldReturnNullModelIfProductContainerIsNull()
         {
-            A.CallTo(() => _documentService.GetUniquePage<ProductContainer>()).Returns(null);
+            A.CallTo(() => _documentService.GetUniquePage<ProductSearch>()).Returns(null);
 
             var viewResult = _productController.Index();
 

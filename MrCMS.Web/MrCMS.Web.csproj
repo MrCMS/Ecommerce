@@ -186,7 +186,7 @@
     <Compile Include="Apps\Ecommerce\Binders\DiscountLimitationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
-    <Compile Include="Apps\Ecommerce\Controllers\ProductContainerController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\ProductSearchController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CategoryOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderLineOverride.cs" />
@@ -224,7 +224,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Cart\CartItem.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryContainerMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryMetadata.cs" />
-    <Compile Include="Apps\Ecommerce\Metadata\ProductContainerMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\ProductSearchMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\ProductMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategoryPagedList.cs" />
@@ -242,7 +242,7 @@
     <Compile Include="Apps\Ecommerce\Pages\OrderPlaced.cs" />
     <Compile Include="Apps\Ecommerce\Pages\PaymentDetails.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Product.cs" />
-    <Compile Include="Apps\Ecommerce\Pages\ProductContainer.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\ProductSearch.cs" />
     <Compile Include="Apps\Ecommerce\Pages\SetDeliveryAddress.cs" />
     <Compile Include="Apps\Ecommerce\Payment\GoogleCheckout\IGoogleCheckoutService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaypalExpress\IPaypalExpressInterface.cs" />
@@ -781,6 +781,9 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddCategory.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\RemoveCategory.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ViewCategories.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Pages\ProductSearch.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Pages\CategoryContainer.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Pages\Category.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

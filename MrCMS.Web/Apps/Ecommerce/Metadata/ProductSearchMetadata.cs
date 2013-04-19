@@ -6,7 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.Metadata
 {
-    public class ProductContainerMetadata : DocumentMetadataMap<ProductContainer>
+    public class ProductSearchMetadata : DocumentMetadataMap<ProductSearch>
     {
         public override ChildrenListType ChildrenListType
         {
@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
 
         public override string WebGetController
         {
-            get { return "ProductContainer"; }
+            get { return "ProductSearch"; }
         }
         public override string WebGetAction
         {
