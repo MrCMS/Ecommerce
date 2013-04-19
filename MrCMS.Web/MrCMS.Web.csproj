@@ -165,6 +165,7 @@
     <Compile Include="Apps\Core\Widgets\PlainTextWidget.cs" />
     <Compile Include="Apps\Core\Widgets\TextWidget.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderLineController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderNoteController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderController.cs" />
@@ -247,6 +248,8 @@
     <Compile Include="Apps\Ecommerce\Payment\GoogleCheckout\IGoogleCheckoutService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaypalExpress\IPaypalExpressInterface.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaypalExpress\PaypalExpressCheckoutService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartImpl.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\CategoryService.cs" />
@@ -256,6 +259,10 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Payments\IPaymentStatusService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Payments\PaymentStatusService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingStatusService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Shipping\ShippingStatusService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Templating\INotificationTemplateProcessor.cs" />
     <Compile Include="Apps\Ecommerce\Services\Templating\NotificationTemplateProcesor.cs" />
     <Compile Include="Apps\Ecommerce\Services\Templating\NotificationTemplateSettingsManager.cs" />
@@ -784,6 +791,7 @@
     <Content Include="Apps\Ecommerce\Views\Pages\ProductSearch.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\CategoryContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\Category.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Address\Edit.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

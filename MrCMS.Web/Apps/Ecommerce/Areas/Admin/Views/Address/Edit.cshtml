@@ -1,0 +1,109 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Users.Address
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Edit", "Address", FormMethod.Post))
+{
+    <div class="modal-header">
+        <h3>Edit/Add Address</h3>
+    </div>
+    <div class="modal-body">
+        @Html.HiddenFor(x => x.Id)
+        @Html.Hidden("orderID",ViewData["orderID"])
+        @Html.Hidden("addressType",ViewData["addressType"])
+
+            <table class="table table-bordered table-striped">
+              <tr>
+                <td>
+        @Html.LabelFor(x => x.FirstName)
+                </td>
+                  <td>
+        @Html.TextBoxFor(x => x.FirstName)
+                   </td>
+                    </tr>
+                <tr>
+                <td>
+        @Html.LabelFor(x => x.LastName)
+                     </td>
+                  <td>
+        @Html.TextBoxFor(x => x.LastName)
+                      </td>
+                    </tr>
+                        <tr>
+                <td>
+        @Html.LabelFor(x => x.Title)
+                       </td>
+                  <td>
+        @Html.TextBoxFor(x => x.Title)
+                      </td>
+                    </tr>
+                        <tr>
+                <td>
+        @Html.LabelFor(x => x.Company)
+                       </td>
+                  <td>
+        @Html.TextBoxFor(x => x.Company)
+                      </td>
+                    </tr>
+                        <tr>
+                <td>
+        @Html.LabelFor(x => x.PhoneNumber)
+                       </td>
+                  <td>
+        @Html.TextBoxFor(x => x.PhoneNumber)
+                      </td>
+                    </tr>
+                        <tr>
+                <td>
+        @Html.LabelFor(x => x.Address1)
+                       </td>
+                  <td>
+        @Html.TextBoxFor(x => x.Address1)
+                      </td>
+                    </tr>
+                        <tr>
+                <td>
+        @Html.LabelFor(x => x.Address2)
+                       </td>
+                  <td>
+        @Html.TextBoxFor(x => x.Address2)
+                      </td>
+                    </tr>
+                        <tr>
+                <td>
+        @Html.LabelFor(x => x.PostalCode)
+                       </td>
+                  <td>
+        @Html.TextBoxFor(x => x.PostalCode)
+                      </td>
+                    </tr>
+                        <tr>
+                <td>
+        @Html.LabelFor(x => x.City)
+                       </td>
+                  <td>
+        @Html.TextBoxFor(x => x.City)
+                      </td>
+                    </tr>
+                        <tr>
+                <td>
+        @Html.LabelFor(x => x.StateProvince)
+                       </td>
+                  <td>
+        @Html.TextBoxFor(x => x.StateProvince)
+                      </td>
+                    </tr>
+                        <tr>
+                <td>
+        @Html.LabelFor(x => x.Country)
+                       </td>
+                  <td>
+        @Html.DropDownList("CountryID",ViewData["Countries"] as IEnumerable<SelectListItem>)
+
+                    </td>
+              </tr>
+          </table>
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Save" />
+    </div>
+}

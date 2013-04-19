@@ -9,17 +9,21 @@ using MrCMS.Entities.People;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using System.ComponentModel;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 {
     public class OrderLine : SiteEntity
     {
         public virtual Order Order { get; set; }
+        [DisplayName("Product")]
         public virtual ICanAddToCart ProductVariant { get; set; }
-        public virtual decimal Quantity { get; set; }
+        public virtual int Quantity { get; set; }
+        [DisplayName("Unit Price")]
         public virtual decimal UnitPrice { get; set; }
         public virtual decimal Subtotal { get; set; }
         public virtual decimal Tax { get; set; }
+        [DisplayName("Tax Rate")]
         public virtual decimal TaxRate { get; set; }
         public virtual decimal Discount { get; set; }
         public virtual decimal Weight { get; set; }
