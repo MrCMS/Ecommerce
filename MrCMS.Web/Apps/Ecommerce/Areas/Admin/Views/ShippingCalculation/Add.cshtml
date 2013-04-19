@@ -7,16 +7,14 @@
     </div>
     <div class="modal-body">
         @Html.HiddenFor(x => x.ShippingMethod.Id)
-        @Html.LabelFor(x => x.Name)
-        @Html.TextBoxFor(x => x.Name)
         @Html.LabelFor(x => x.ShippingCriteria)
         @Html.DropDownListFor(x => x.ShippingCriteria, ViewData["criterias"] as IEnumerable<SelectListItem>)
         @Html.LabelFor(x => x.LowerBound)
         @Html.TextBoxFor(x => x.LowerBound)
         @Html.LabelFor(x => x.UpperBound)
         @Html.TextBoxFor(x => x.UpperBound) (leave blank if there is no upper bound)
-        @Html.LabelFor(x => x.BasePrice)
-        @Html.TextBoxFor(x => x.BasePrice)
+        @Html.LabelFor(x => x.BaseAmount)
+        @Html.TextBoxFor(x => x.BaseAmount)
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" id="save-add" data-action="save" data-form-id="add-shipping-calculation">

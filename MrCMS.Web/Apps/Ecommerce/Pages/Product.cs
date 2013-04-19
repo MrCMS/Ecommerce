@@ -73,7 +73,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual decimal Weight { get; set; }
 
-        [DisplayName("Base Price")]
+        [DisplayName("Price")]
         public virtual decimal BasePrice { get; set; }
 
         public virtual decimal ReducedBy

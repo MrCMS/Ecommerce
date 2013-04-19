@@ -28,9 +28,9 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
             var shippingCalculation = new TestableShippingCalculation
             {
                 OverrideTaxRate = new TaxRate { Percentage = 20 },
-                BasePrice = 12
+                BaseAmount = 12
             };
-            shippingCalculation.PricePreTax.Should().Be(12);
+            shippingCalculation.AmountPreTax.Should().Be(12);
         }
 
         [Fact]
@@ -40,9 +40,9 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
             var shippingCalculation = new TestableShippingCalculation
             {
                 OverrideTaxRate = new TaxRate { Percentage = 20 },
-                BasePrice = 12
+                BaseAmount = 12
             };
-            shippingCalculation.PricePreTax.Should().Be(10);
+            shippingCalculation.AmountPreTax.Should().Be(10);
         }
 
         [Fact]
@@ -52,9 +52,9 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
             var shippingCalculation = new TestableShippingCalculation
             {
                 OverrideTaxRate = new TaxRate { Percentage = 20 },
-                BasePrice = 12
+                BaseAmount = 12
             };
-            shippingCalculation.Price.Should().Be(12);
+            shippingCalculation.Amount.Should().Be(12);
         }
 
         [Fact]
@@ -64,9 +64,9 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
             var shippingCalculation = new TestableShippingCalculation
             {
                 OverrideTaxRate = new TaxRate { Percentage = 20 },
-                BasePrice = 12
+                BaseAmount = 12
             };
-            shippingCalculation.Price.Should().Be(14.4m);
+            shippingCalculation.Amount.Should().Be(14.4m);
         }
 
         [Fact]
@@ -233,15 +233,15 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
         }
 
         public decimal? OverridePrice { get; set; }
-        public override decimal Price
+        public override decimal Amount
         {
-            get { return OverridePrice ?? base.Price; }
+            get { return OverridePrice ?? base.Amount; }
         }
 
         public decimal? OverridePricePreTax { get; set; }
-        public override decimal PricePreTax
+        public override decimal AmountPreTax
         {
-            get { return OverridePricePreTax ?? base.PricePreTax; }
+            get { return OverridePricePreTax ?? base.AmountPreTax; }
         }
     }
 }

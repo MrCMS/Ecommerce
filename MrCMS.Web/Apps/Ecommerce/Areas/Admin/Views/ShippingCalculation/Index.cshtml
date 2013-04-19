@@ -25,24 +25,20 @@
     <table class="table table-condensed table-striped">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Price</th>
-                <th>Actions</th>
+                <th class="span6">Description</th>
+                <th class="span2">Price</th>
+                <th class="span4">Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var sc in shippingMethod.ShippingCalculations)
+            @foreach (var sc in shippingMethod.ShippingCalculations.OrderBy(calculation => calculation.ShippingCriteria).ThenBy(calculation => calculation.LowerBound))
             {
                 <tr>
-                    <td class="span4">
-                        @sc.Name
-                    </td>
-                    <td class="span3">
+                    <td>
                         @sc.Description
                     </td>
-                    <td class="span2">
-                        @sc.Price.ToString("C")
+                    <td>
+                        @sc.Amount.ToString("C")
                     </td>
                     <td>
                         <div class="btn-group">

@@ -6,9 +6,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 {
     public interface IShippingCalculationManager
     {
-        IList<ShippingCalculation> GetAll();
-        ShippingCalculation Get(int id);
-        List<SelectListItem> GetOptions();
         List<SelectListItem> GetCriteriaOptions();
         void Add(ShippingCalculation shippingCalculation);
         void Update(ShippingCalculation shippingCalculation);

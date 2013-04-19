@@ -1,8 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Web;
 using MrCMS.Entities;
-using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -12,15 +10,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 {
     public class ShippingCalculation : SiteEntity
     {
-        public virtual string Name { get; set; }
         [DisplayName("Shipping Criteria")]
         public virtual ShippingCriteria ShippingCriteria { get; set; }
         [DisplayName("Lower Bound")]
         public virtual decimal LowerBound { get; set; }
         [DisplayName("Upper Bound")]
         public virtual decimal? UpperBound { get; set; }
-        [DisplayName("Base Price")]
-        public virtual decimal BasePrice { get; set; }
+        [DisplayName("Amount")]
+        public virtual decimal BaseAmount { get; set; }
         public virtual TaxRate TaxRate
         {
             get
@@ -39,26 +36,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
                            : TaxRate.Percentage;
             }
         }
-        [DisplayName("Price Pre Tax")]
-        public virtual decimal PricePreTax
+        [DisplayName("Amount Pre Tax")]
+        public virtual decimal AmountPreTax
         {
             get
             {
                 return Math.Round(MrCMSApplication.Get<TaxSettings>().ShippingRateIncludesTax
-                                      ? BasePrice / ((TaxRatePercentage + 100) / 100)
-                                      : BasePrice, 2, MidpointRounding.AwayFromZero);
+                                      ? BaseAmount / ((TaxRatePercentage + 100) / 100)
+                                      : BaseAmount, 2, MidpointRounding.AwayFromZero);
             }
         }
 
-        public virtual decimal Price
+        public virtual decimal Amount
         {
             get
             {
                 return Math.Round(MrCMSApplication.Get<TaxSettings>().ShippingRateIncludesTax
-                                      ? BasePrice
+                                      ? BaseAmount
                                       : TaxRate != null
-                                            ? BasePrice * (TaxRate.Multiplier)
-                                            : BasePrice, 2, MidpointRounding.AwayFromZero);
+                                            ? BaseAmount * (TaxRate.Multiplier)
+                                            : BaseAmount, 2, MidpointRounding.AwayFromZero);
             }
         }
 
@@ -99,7 +96,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
                 return null;
             if (value < LowerBound)
                 return null;
-            return Price;
+            return Amount;
         }
 
         public virtual decimal? GetTax(CartModel model)
@@ -110,7 +107,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         public virtual decimal Tax
         {
-            get { return Price - PricePreTax; }
+            get { return Amount - AmountPreTax; }
         }
 
         public virtual string Description
