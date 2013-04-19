@@ -20,7 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult LoadDiscountApplicationProperties(Discount discount, string applicationType)
         {
             var application = _discountManager.GetApplication(discount, applicationType);
-            return PartialView(application);
+            return PartialView(application.GetType().Name, application);
         }
     }
 }

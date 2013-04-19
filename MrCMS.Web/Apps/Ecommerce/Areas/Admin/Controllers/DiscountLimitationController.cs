@@ -1,12 +1,7 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Discounts;
 using MrCMS.Website.Controllers;
-using System.Collections.Generic;
-using System;
-using MrCMS.Website.Binders;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -24,7 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             var limitation = _discountManager.GetLimitation(discount, limitationType);
             return limitation != null
-                       ? (ActionResult) PartialView(limitation)
+                       ? (ActionResult) PartialView(limitation.GetType().Name, limitation)
                        : new EmptyResult();
         }
     }

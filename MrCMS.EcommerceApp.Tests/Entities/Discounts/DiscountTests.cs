@@ -24,7 +24,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Discounts
         [Fact]
         public void Discount_IsCodeValid_IfCodeMatchesButHasNotStartedYetReturnFalse()
         {
-            var discount = new Discount { Code = "test-code", DateFrom = DateTime.Now.AddDays(1) };
+            var discount = new Discount { Code = "test-code", ValidFrom = DateTime.Now.AddDays(1) };
 
             var isCodeValid = discount.IsCodeValid("test-code");
 
@@ -34,7 +34,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Discounts
         [Fact]
         public void Discount_IsCodeValid_IfCodeMatchesButHasFinishedReturnFalse()
         {
-            var discount = new Discount { Code = "test-code", DateTo = DateTime.Now.AddDays(-1) };
+            var discount = new Discount { Code = "test-code", ValidUntil = DateTime.Now.AddDays(-1) };
 
             var isCodeValid = discount.IsCodeValid("test-code");
 
@@ -57,8 +57,8 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Discounts
             var discount = new Discount
                                {
                                    Code = "test-code",
-                                   DateFrom = DateTime.Now.AddDays(-1),
-                                   DateTo = DateTime.Now.AddDays(1)
+                                   ValidFrom = DateTime.Now.AddDays(-1),
+                                   ValidUntil = DateTime.Now.AddDays(1)
                                };
 
             var isCodeValid = discount.IsCodeValid("test-code");

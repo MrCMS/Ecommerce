@@ -5,8 +5,13 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations
 {
-    public class OrderTotalGreaterThanX : DiscountLimitation
+    public class CartSubtotalGreaterThanX : DiscountLimitation
     {
+        public override string DisplayName
+        {
+            get { return "Cart product subtotal is greater than x"; }
+        }
+
         public override bool IsCartValid(CartModel cartModel)
         {
             return cartModel.TotalPreDiscount > OrderTotalGreaterThanValue;
@@ -22,7 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations
 
         public override void CopyValues(DiscountLimitation limitation)
         {
-            this.OrderTotalGreaterThanValue = ((OrderTotalGreaterThanX)limitation).OrderTotalGreaterThanValue;
+            this.OrderTotalGreaterThanValue = ((CartSubtotalGreaterThanX)limitation).OrderTotalGreaterThanValue;
         }
     }
 }

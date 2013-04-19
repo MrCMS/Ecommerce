@@ -4,29 +4,32 @@
     ViewBag.Title = "Edit Discount";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/edit-discount.js");}
-
 @using (Html.BeginForm("Edit", "Discount", FormMethod.Post))
 {
-        <h3>Edit Discount</h3>
+    <h3>
+        Edit Discount</h3>
 
-        @Html.HiddenFor(x => x.Id)
-        @Html.LabelFor(x => x.Name)
-        @Html.EditorFor(x => x.Name)
-        @Html.LabelFor(x => x.Code)
-        @Html.EditorFor(x => x.Code)
-        @Html.LabelFor(x => x.DateFrom, "From")
-        @Html.EditorFor(x => x.DateFrom)
-        @Html.LabelFor(x => x.DateTo, "To")
-        @Html.EditorFor(x => x.DateTo)
-        @Html.LabelFor(x => x.Limitation)
-        @Html.DropDownList("LimitationOpt", Model.LimitationOptions, new { data_val_required = "Please select a limitation." })
-        <div id="limitationValue" style="display:none;"></div>
-        @Html.LabelFor(x => x.Application)
-        @Html.DropDownList("ApplicationOpt", Model.ApplicationOptions, new { data_val_required = "Please select application." })
-         <div id="applicationValue" style="display:none;"></div>
+    @Html.HiddenFor(x => x.Id)
+    @Html.LabelFor(x => x.Name)
+    @Html.EditorFor(x => x.Name)
+    @Html.LabelFor(x => x.Code)
+    @Html.EditorFor(x => x.Code)
+    @Html.LabelFor(x => x.ValidFrom)
+    @Html.EditorFor(x => x.ValidFrom)
+    @Html.LabelFor(x => x.ValidUntil)
+    @Html.EditorFor(x => x.ValidUntil)
+    @Html.LabelFor(x => x.Limitation)
+    @Html.DropDownList("LimitationOpt", Model.LimitationOptions, new { data_val_required = "Please select a limitation." })
+    <div id="limitationValue" style="display: none;">
+    </div>
+    @Html.LabelFor(x => x.Application)
+    @Html.DropDownList("ApplicationOpt", Model.ApplicationOptions, new { data_val_required = "Please select application." })
+    <div id="applicationValue" style="display: none;">
+    </div>
     <br />
-        <input type="submit" class="btn-primary btn" value="Update Discount" />
+    <input type="submit" class="btn-primary btn" value="Update Discount" />
+    <p></p>
+    @Html.InfoBlock("Heads up! ", "Leave Valid From and Until blank to make discount valid forever")
 
 }
