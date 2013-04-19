@@ -47,23 +47,23 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void OrderController_Show_ReturnsAViewResult()
+        public void OrderController_Edit_ReturnsAViewResult()
         {
             var order = new Order();
 
-            var result = _orderController.Show(order);
+            var result = _orderController.Edit(order);
 
             result.Should().BeOfType<ViewResult>();
         }
 
         [Fact]
-        public void OrderController_Show_ReturnsThePassedObjectAsTheModel()
+        public void OrderController_Edit_ReturnsThePassedObjectAsTheModel()
         {
             var order = new Order();
 
-            var result = _orderController.Show(order);
+            var result = _orderController.Edit(order);
 
-            result.Model.Should().Be(order);
+            result.As<ViewResult>().Model.Should().Be(order);
         }
     }
 }

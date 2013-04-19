@@ -1,14 +1,8 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Entities;
-using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Services;
-using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Website.Controllers;
-using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Website;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -28,16 +22,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(int id = 0)
+        public ActionResult Edit(Order order)
         {
-            if (id > 0)
-            {
-                return View(_orderService.Get(id));
-            }
-            else
-            {
-                return RedirectToAction("Index");
-            }
+            return order != null
+                       ? (ActionResult) View(order)
+                       : RedirectToAction("Index");
         }
 
         [ActionName("Edit")]

@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         /// <returns></returns>
         public ViewResult Index(string q = null, int p = 1)
         {
-            if (_documentService.GetUniquePage<ProductContainer>() == null)
+            if (_documentService.GetUniquePage<ProductSearch>() == null)
                 return View();
             var searchResult = _productService.Search(q, p);
             return View(searchResult);

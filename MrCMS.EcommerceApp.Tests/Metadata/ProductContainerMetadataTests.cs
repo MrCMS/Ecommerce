@@ -8,35 +8,30 @@ using FluentAssertions;
 
 namespace MrCMS.EcommerceApp.Tests.Metadata
 {
-    public class ProductContainerMetadataTests
+    public class ProductSearchMetadataTests
     {
-        [Fact]
-        public void ProductContainerMetaData_ChildrenListType_ShouldBeWhiteList()
-        {
-            var metadata = GetMetadata();
+        private ProductSearchMetadata _metadata;
 
-            metadata.ChildrenListType.Should().Be(ChildrenListType.WhiteList);
+        public ProductSearchMetadataTests()
+        {
+            _metadata = new ProductSearchMetadata();
+        }
+        [Fact]
+        public void ProductSearchMetaData_ChildrenListType_ShouldBeWhiteList()
+        {
+            _metadata.ChildrenListType.Should().Be(ChildrenListType.WhiteList);
         }
 
         [Fact]
-        public void ProductContainerMetaData_ChildrenList_ShouldBeJustProducts()
+        public void ProductSearchMetaData_ChildrenList_ShouldBeJustProducts()
         {
-            var metadata = GetMetadata();
-
-            metadata.ChildrenList.Should().BeEquivalentTo(new List<Type> {typeof (Product)});
+            _metadata.ChildrenList.Should().BeEquivalentTo(new List<Type> {typeof (Product)});
         }
 
         [Fact]
-        public void ProductContainerMetaData_ShowChildrenInAdminNav_ShouldBeFalse()
+        public void ProductSearchMetaData_ShowChildrenInAdminNav_ShouldBeFalse()
         {
-            var metadata = GetMetadata();
-
-            metadata.ShowChildrenInAdminNav.Should().BeFalse();
-        }
-
-        private static ProductContainerMetadata GetMetadata()
-        {
-            return new ProductContainerMetadata();
+            _metadata.ShowChildrenInAdminNav.Should().BeFalse();
         }
     }
 }

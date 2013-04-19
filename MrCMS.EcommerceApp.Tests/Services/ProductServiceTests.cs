@@ -73,7 +73,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         public void ProductService_Search_ReturnsTheIdOfTheProductContainerIfItExists()
         {
             var productService = GetProductService();
-            A.CallTo(() => _documentService.GetUniquePage<ProductContainer>()).Returns(new ProductContainer {Id = 1});
+            A.CallTo(() => _documentService.GetUniquePage<ProductSearch>()).Returns(new ProductSearch {Id = 1});
 
             var pagedList = productService.Search();
 
@@ -84,7 +84,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         public void ProductService_Search_ReturnsNullContainerIdIfItDoesNotExist()
         {
             var productService = GetProductService();
-            A.CallTo(() => _documentService.GetUniquePage<ProductContainer>()).Returns(null);
+            A.CallTo(() => _documentService.GetUniquePage<ProductSearch>()).Returns(null);
 
             var pagedList = productService.Search();
 

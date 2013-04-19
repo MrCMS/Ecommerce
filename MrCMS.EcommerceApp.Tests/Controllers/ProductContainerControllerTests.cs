@@ -18,9 +18,9 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
             _controller = new ProductContainerController {RequestMock = A.Fake<HttpRequestBase>()};
         }
 
-        private ProductContainer GetProductContainer()
+        private ProductSearch GetProductContainer()
         {
-            return new ProductContainer {Layout = new Layout()};
+            return new ProductSearch {Layout = new Layout()};
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
 
             var show = _controller.Show(productContainer);
 
-            show.Model.Should().BeOfType<ProductContainer>();
+            show.Model.Should().BeOfType<ProductSearch>();
         }
     }
 }

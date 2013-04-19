@@ -39,7 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 pagedList = _session.Paged(QueryOver.Of<Product>(), page, 10);
             }
 
-            var productContainer = _documentService.GetUniquePage<ProductContainer>();
+            var productContainer = _documentService.GetUniquePage<ProductSearch>();
             var productContainerId = productContainer == null ? (int?)null : productContainer.Id;
             return new ProductPagedList(pagedList, productContainerId);
         }
