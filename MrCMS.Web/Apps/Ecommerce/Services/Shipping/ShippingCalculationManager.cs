@@ -19,16 +19,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             _session = session;
         }
 
-        public IList<ShippingCalculation> GetAll()
-        {
-            return _session.QueryOver<ShippingCalculation>().OrderBy(x => x.Name).Asc.Cacheable().List();
-        }
-
-        public ShippingCalculation Get(int id)
-        {
-            return _session.QueryOver<ShippingCalculation>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
-        }
-
         public List<SelectListItem> GetCriteriaOptions()
         {
             return
@@ -65,11 +55,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         public void Delete(ShippingCalculation shippingCalculation)
         {
             _session.Transact(session => session.Delete(shippingCalculation));
-        }
-
-        public List<SelectListItem> GetOptions()
-        {
-            return GetAll().BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(), emptyItemText: null);
         }
     }
 }

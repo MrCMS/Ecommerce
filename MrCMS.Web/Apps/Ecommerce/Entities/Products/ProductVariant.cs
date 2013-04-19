@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual decimal Weight { get; set; }
         public virtual string Name { get { return Product.Name; } }
 
-        [DisplayName("Base Price")]
+        [DisplayName("Price")]
         public virtual decimal BasePrice { get; set; }
 
         [DisplayName("Previous Price")]
