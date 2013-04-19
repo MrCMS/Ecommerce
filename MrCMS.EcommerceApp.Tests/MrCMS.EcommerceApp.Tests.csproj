@@ -115,7 +115,7 @@
     <Compile Include="Admin\Controllers\RegionControllerTests.cs" />
     <Compile Include="Admin\Controllers\TaxRateControllerTests.cs" />
     <Compile Include="Controllers\CategoryContainerControllerTests.cs" />
-    <Compile Include="Controllers\ProductContainerControllerTests.cs" />
+    <Compile Include="Controllers\ProductSearchControllerTests.cs" />
     <Compile Include="EcommerceAppTests.cs" />
     <Compile Include="Entities\Discounts\DiscountTests.cs" />
     <Compile Include="Entities\Products\ProductVariantTests\AvailabilityTests.cs" />
