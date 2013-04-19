@@ -1,28 +1,31 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Settings
+@using MrCMS.Helpers
 @{
     ViewBag.Title = "Tax Rates";
 }
-
-<div class="row-fluid">
-    <div class="span4">
-        <h2>Tax Rates</h2>
-    </div>
-    <div class="span8">
-        <div class="btn-group  display-inline  pull-right">
-            <a href="@Url.Action("Add", "TaxRate")" class="btn btn-primary" data-toggle="fb-modal">Add Tax Rate</a>
-        </div>
-    </div>
-</div>
-<table class="table table-bordered table-striped">
+<fieldset>
+    <legend>Tax <span class="btn-group  display-inline  pull-right"><a href="@Url.Action("Add", "TaxRate")" class="btn btn-primary" data-toggle="fb-modal">
+        Add Tax Rate</a> </span></legend>
+</fieldset>
+<h4>
+    Tax Categories</h4>
+<table class="table table-condensed table-striped">
     <thead>
         <tr>
-            <th>Name
+            <th>
+                Name
             </th>
-            <th>Code
+            <th>
+                Code
             </th>
-            <th>Rate Percentage
+            <th>
+                Rate Percentage
             </th>
-            <th>Actions
+            <th>
+                Is Default Rate?
+            </th>
+            <th>
+                Actions
             </th>
         </tr>
     </thead>
@@ -40,7 +43,11 @@
                     @rate.Percentage
                 </td>
                 <td>
+                    @rate.IsDefault
+                </td>
+                <td>
                     <div class="btn-group">
+                        @Html.FormLink("Make Default", "MakeDefault", "TaxRate", new{id = rate.Id}, new {@class= "btn btn-mini"})
                         @Html.ActionLink("Edit", "Edit", new { id = rate.Id }, new { @class = "btn btn-mini" })
                         @Html.ActionLink("Delete", "Delete", new { id = rate.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
                     </div>
@@ -49,6 +56,7 @@
         }
     </tbody>
 </table>
-
-    <h3>Tax Settings</h3>
-    @{ Html.RenderPartial("Settings", ViewData["settings"] as TaxSettings);}
+<hr class="small-margin" />
+<h4>
+    Tax Settings</h4>
+@{ Html.RenderPartial("Settings", ViewData["settings"] as TaxSettings);}

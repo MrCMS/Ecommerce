@@ -7,6 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Tax
         public virtual string Name { get; set; }
         public virtual string Code { get; set; }
         public virtual decimal Percentage { get; set; }
+        public virtual bool IsDefault { get; set; }
 
         public virtual decimal Multiplier
         {
