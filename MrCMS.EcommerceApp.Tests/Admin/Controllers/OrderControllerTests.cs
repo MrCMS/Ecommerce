@@ -6,6 +6,8 @@ using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using Xunit;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Services.Payments;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
@@ -13,11 +15,17 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly OrderController _orderController;
+        private readonly IShippingStatusService _shippingStatusService;
+        private readonly IPaymentStatusService _paymentStatusService;
+        private readonly IShippingMethodManager _shippingMethodManager;
 
         public OrderControllerTests()
         {
             _orderService = A.Fake<IOrderService>();
-            _orderController = new OrderController(_orderService);
+            _shippingStatusService = A.Fake<IShippingStatusService>(); ;
+            _paymentStatusService = A.Fake<IPaymentStatusService>(); ;
+            _shippingMethodManager = A.Fake<IShippingMethodManager>(); ;
+            _orderController = new OrderController(_orderService,_shippingStatusService, _paymentStatusService,_shippingMethodManager);
         }
 
         [Fact]

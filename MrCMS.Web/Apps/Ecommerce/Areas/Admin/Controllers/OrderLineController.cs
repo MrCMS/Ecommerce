@@ -39,48 +39,62 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         public RedirectToRouteResult Add_POST(OrderLine orderLine, int ProductID=0)
         {
-            Product product = _productService.Get(ProductID);
-            if (product.CanBuy(orderLine.Quantity))
+            if (orderLine.Order != null)
             {
-                orderLine.ProductVariant = product;
-                orderLine.Subtotal = orderLine.Quantity * product.PricePreTax;
-                orderLine.Weight = orderLine.Quantity * product.Weight;
-                orderLine.UnitPrice = product.Price;
-                orderLine.Tax = orderLine.Quantity * product.Tax;
-                orderLine.TaxRate = product.TaxRatePercentage;
-                orderLine.Order.OrderLines.Add(orderLine);
-                _orderLineService.Add(orderLine);
+                Product product = _productService.Get(ProductID);
+                if (product.CanBuy(orderLine.Quantity))
+                {
+                    orderLine.ProductVariant = product;
+                    orderLine.Subtotal = orderLine.Quantity * product.PricePreTax;
+                    orderLine.Weight = orderLine.Quantity * product.Weight;
+                    orderLine.UnitPrice = product.Price;
+                    orderLine.Tax = orderLine.Quantity * product.Tax;
+                    orderLine.TaxRate = product.TaxRatePercentage;
+                    orderLine.Order.OrderLines.Add(orderLine);
+                    _orderLineService.Save(orderLine);
+                }
+
+                return RedirectToAction("Edit", "Order", new { id = orderLine.Order.Id });
             }
-            
-            return RedirectToAction("Edit", "Order", new { id = orderLine.Order.Id });
+            else
+            {
+                return RedirectToAction("Index", "Order");
+            }
         }
 
         [HttpGet]
-        public ViewResult Edit(OrderLine orderLine)
+        public PartialViewResult Edit(OrderLine orderLine)
         {
             ViewData["products"] = _productService.GetOptions();
             ViewData["ProductID"] = orderLine.ProductVariant.Id;
-            return View(orderLine);
+            return PartialView(orderLine);
         }
 
         [ActionName("Edit")]
         [HttpPost]
         public RedirectToRouteResult Edit_POST(OrderLine orderLine, int ProductID)
         {
-            Product product = _productService.Get(ProductID);
-            if (product.CanBuy(orderLine.Quantity))
+            if (orderLine.Order != null)
             {
-                orderLine.ProductVariant = product;
-                orderLine.Subtotal = orderLine.Quantity * product.PricePreTax;
-                orderLine.Weight = orderLine.Quantity * product.Weight;
-                orderLine.UnitPrice = product.Price;
-                orderLine.Tax = orderLine.Quantity * product.Tax;
-                orderLine.TaxRate = product.TaxRatePercentage;
-                orderLine.Order.OrderLines.Add(orderLine);
-                _orderLineService.Save(orderLine);
-            }
+                Product product = _productService.Get(ProductID);
+                if (product.CanBuy(orderLine.Quantity))
+                {
+                    orderLine.ProductVariant = product;
+                    orderLine.Subtotal = orderLine.Quantity * product.PricePreTax;
+                    orderLine.Weight = orderLine.Quantity * product.Weight;
+                    orderLine.UnitPrice = product.Price;
+                    orderLine.Tax = orderLine.Quantity * product.Tax;
+                    orderLine.TaxRate = product.TaxRatePercentage;
+                    orderLine.Order.OrderLines.Add(orderLine);
+                    _orderLineService.Save(orderLine);
+                }
 
-            return RedirectToAction("Edit", "Order", new { id = orderLine.Order.Id });
+                return RedirectToAction("Edit", "Order", new { id = orderLine.Order.Id });
+            }
+            else
+            {
+                return RedirectToAction("Index", "Order");
+            }
         }
 
         [HttpGet]
@@ -93,8 +107,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         public RedirectToRouteResult Delete_POST(OrderLine orderLine)
         {
-            _orderLineService.Delete(orderLine);
-            return RedirectToAction("Edit", "Order", new { id = orderLine.Order.Id });
+            if (orderLine.Order != null)
+            {
+                _orderLineService.Delete(orderLine);
+                return RedirectToAction("Edit", "Order", new { id = orderLine.Order.Id });
+            }
+            else
+            {
+                return RedirectToAction("Index", "Order");
+            }
         }
     }
 }

@@ -101,6 +101,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin\Controllers\CategoryControllerTests.cs" />
+    <Compile Include="Admin\Controllers\OrderLineControllerTests.cs" />
+    <Compile Include="Admin\Controllers\OrderNoteControllerTests.cs" />
     <Compile Include="Admin\Controllers\DiscountApplicationControllerTests.cs" />
     <Compile Include="Admin\Controllers\DiscountControllerTests.cs" />
     <Compile Include="Admin\Controllers\DiscountLimitationControllerTests.cs" />

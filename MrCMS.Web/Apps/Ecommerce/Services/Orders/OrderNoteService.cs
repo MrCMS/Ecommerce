@@ -27,11 +27,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             return _session.QueryOver<OrderNote>().Cacheable().List();
         }
 
-        public void Add(OrderNote item)
-        {
-            _session.Transact(session => session.Save(item));
-        }
-
         public void Save(OrderNote item)
         {
             _session.Transact(session => session.SaveOrUpdate(item));
