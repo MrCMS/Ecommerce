@@ -35,24 +35,38 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         public RedirectToRouteResult Add_POST(OrderNote orderNote)
         {
-            orderNote.Order.OrderNotes.Add(orderNote);
-            _orderNoteService.Add(orderNote);
-            return RedirectToAction("Edit","Order", new { id = orderNote.Order.Id });
+            if (orderNote.Order != null)
+            {
+                orderNote.Order.OrderNotes.Add(orderNote);
+                _orderNoteService.Save(orderNote);
+                return RedirectToAction("Edit", "Order", new { id = orderNote.Order.Id });
+            }
+            else
+            {
+                return RedirectToAction("Index", "Order");
+            }
         }
 
         [HttpGet]
-        public ViewResult Edit(OrderNote orderNote)
+        public PartialViewResult Edit(OrderNote orderNote)
         {
-            return View(orderNote);
+            return PartialView(orderNote);
         }
 
         [ActionName("Edit")]
         [HttpPost]
         public RedirectToRouteResult Edit_POST(OrderNote orderNote)
         {
-            orderNote.User = CurrentRequestData.CurrentUser;
-            _orderNoteService.Save(orderNote);
-            return RedirectToAction("Edit", "Order", new { id = orderNote.Order.Id });
+            if (orderNote.Order != null)
+            {
+                orderNote.User = CurrentRequestData.CurrentUser;
+                _orderNoteService.Save(orderNote);
+                return RedirectToAction("Edit", "Order", new { id = orderNote.Order.Id });
+            }
+            else
+            {
+                return RedirectToAction("Index", "Order");
+            }
         }
 
         [HttpGet]
@@ -65,8 +79,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         public RedirectToRouteResult Delete_POST(OrderNote orderNote)
         {
-            _orderNoteService.Delete(orderNote);
-            return RedirectToAction("Edit", "Order", new { id = orderNote.Order.Id });
+            if (orderNote.Order != null)
+            {
+                _orderNoteService.Delete(orderNote);
+                return RedirectToAction("Edit", "Order", new { id = orderNote.Order.Id });
+            }
+            else
+            {
+                return RedirectToAction("Index", "Order");
+            }
         }
     }
 }

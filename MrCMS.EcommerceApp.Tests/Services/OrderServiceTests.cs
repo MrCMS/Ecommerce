@@ -11,6 +11,11 @@ using System.Collections;
 using FluentAssertions;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders;
+using NHibernate;
+using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.EcommerceApp.Tests.Services
 {
@@ -25,9 +30,13 @@ namespace MrCMS.EcommerceApp.Tests.Services
         }
 
         [Fact]
-        public void OrderService_PlaceOrder()
+        public void OrderService_PlaceOrder_SavesThePassedOrderToSession()
         {
+            OrderService orderService = new OrderService(Session, GetGetCartImpl());
 
+            orderService.PlaceOrder(new CartModel());
+
+            Session.QueryOver<Order>().RowCount().Should().Be(1);
         }
 
         GetCartImpl GetGetCartImpl()

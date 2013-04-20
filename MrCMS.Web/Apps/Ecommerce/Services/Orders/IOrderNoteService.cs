@@ -11,7 +11,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
     public interface IOrderNoteService
     {
         IList<OrderNote> GetAll();
-        void Add(OrderNote item);
         void Save(OrderNote item);
         void Delete(OrderNote item);
     }

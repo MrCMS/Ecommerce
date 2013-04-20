@@ -11,7 +11,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
     public interface IOrderLineService
     {
         IList<OrderLine> GetAll();
-        void Add(OrderLine item);
         void Save(OrderLine item);
         void Delete(OrderLine item);
     }
