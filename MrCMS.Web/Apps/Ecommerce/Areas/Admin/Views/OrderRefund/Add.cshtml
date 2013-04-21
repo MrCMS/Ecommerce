@@ -1,0 +1,22 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.OrderRefund
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Add", "OrderRefund", FormMethod.Post))
+{
+    <div class="modal-header">
+        <h3>Add Order Refund</h3>
+    </div>
+    <div class="modal-body">
+        @Html.HiddenFor(x => x.Order.Id)
+        @Html.HiddenFor(x => x.User.Id)
+        @Html.LabelFor(x => x.Amount)
+        @Html.EditorFor(x => x.Amount)
+        <br />
+         <br />
+        @Html.LabelFor(x => x.Note)
+        @Html.TextAreaFor(x => x.Note, new { style="width:500px;height:200px" })
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Add Order Refund" />
+    </div>
+}

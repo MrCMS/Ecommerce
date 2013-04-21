@@ -49,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                     orderLine.Weight = orderLine.Quantity * product.Weight;
                     orderLine.UnitPrice = product.Price;
                     orderLine.Tax = orderLine.Quantity * product.Tax;
-                    orderLine.TaxRate = product.TaxRatePercentage;
+                    orderLine.TaxRate = product.TaxRate.Percentage;
                     orderLine.Order.OrderLines.Add(orderLine);
                     _orderLineService.Save(orderLine);
                 }
@@ -84,7 +84,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                     orderLine.Weight = orderLine.Quantity * product.Weight;
                     orderLine.UnitPrice = product.Price;
                     orderLine.Tax = orderLine.Quantity * product.Tax;
-                    orderLine.TaxRate = product.TaxRatePercentage;
+                    orderLine.TaxRate = product.TaxRate.Percentage;
                     orderLine.Order.OrderLines.Add(orderLine);
                     _orderLineService.Save(orderLine);
                 }

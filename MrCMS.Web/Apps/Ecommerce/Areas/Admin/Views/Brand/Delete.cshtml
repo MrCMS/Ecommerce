@@ -1,0 +1,17 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.Brand
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Delete", "Brand", FormMethod.Post))
+{
+     @Html.HiddenFor(x => x.Id)
+    <div class="modal-header">
+        <h3>Delete Brand</h3>
+    </div>
+    <div class="modal-body">
+        Are you sure you want to delete the brand ? Deleting this item can not be undone.
+        <br />
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Delete Brand" />
+    </div>
+}
