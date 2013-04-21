@@ -1,0 +1,47 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
+
+<div class="tab-pane" id="order-refunds">
+        <div class="row-fluid">
+       <div class="span12">
+         <a href="@Url.Action("Add","OrderRefund",new { orderID = Model.Id })" class="btn btn-primary" data-toggle="fb-modal">Add Order Refund</a>
+           <br />   <br />
+         @if (Model.OrderRefunds.Count == 0)
+        {
+            @:No refunds.
+        }
+        else
+        {
+    <table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Amount
+            </th>
+            <th>Note
+            </th>
+            <th>Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderRefunds)
+        {
+            <tr>
+                <td>
+                    @item.Amount
+                </td>
+                <td>
+                    @item.Note
+                </td>
+                <td>
+                    <div class="btn-group">
+                        @Html.ActionLink("Delete", "Delete", "OrderRefund" , new { id = item.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+    </table>
+            }
+           </div>
+        </div>
+</div>

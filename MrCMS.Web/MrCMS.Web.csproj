@@ -166,6 +166,8 @@
     <Compile Include="Apps\Core\Widgets\TextWidget.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderRefundController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderLineController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderNoteController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderController.cs" />
@@ -205,9 +207,11 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountLimitationOverride.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderHasXOrMoreItems.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderTotalGreaterThanX.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Orders\OrderRefund.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderLine.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderNote.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\Order.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Products\Brand.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Templating\NotificationTemplateSettings.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Geographic\Country.cs" />
@@ -248,6 +252,10 @@
     <Compile Include="Apps\Ecommerce\Payment\GoogleCheckout\IGoogleCheckoutService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaypalExpress\IPaypalExpressInterface.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaypalExpress\PaypalExpressCheckoutService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderRefundService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\OrderRefundService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\IBrandService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\BrandService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
@@ -347,6 +355,7 @@
     <Content Include="Apps\Core\Content\Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Apps\Core\Content\Scripts\respond.min.js" />
     <Content Include="Apps\Core\Content\Styles\style.css" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-discount.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\product-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderNotes.cshtml">
@@ -792,6 +801,13 @@
     <Content Include="Apps\Ecommerce\Views\Pages\CategoryContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\Category.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Address\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderRefunds.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderRefund\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderRefund\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\Index.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

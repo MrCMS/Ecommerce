@@ -17,11 +17,35 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         {
             OrderLines = new List<OrderLine>();
             OrderNotes = new List<OrderNote>();
+            OrderRefunds = new List<OrderRefund>();
         }
 
         public virtual decimal Subtotal { get; set; }
+
         public virtual decimal Tax { get; set; }
         public virtual decimal Total { get; set; }
+
+        [DisplayName("Total after Refunds")]
+        public virtual decimal TotalAfterRefunds
+        {
+            get
+            {
+                return Total - TotalRefunds;
+            }
+        }
+
+        public virtual decimal TotalRefunds
+        {
+            get
+            {
+                decimal amountRefunded = 0;
+                foreach (var item in OrderRefunds)
+                {
+                    amountRefunded += item.Amount;
+                }
+                return amountRefunded;
+            }
+        }
 
         public virtual Discount Discount { get; set; }
         [DisplayName("Discount Code")]
@@ -53,5 +77,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 
         public virtual IList<OrderLine> OrderLines { get; set; }
         public virtual IList<OrderNote> OrderNotes { get; set; }
+        public virtual IList<OrderRefund> OrderRefunds { get; set; }
     }
 }

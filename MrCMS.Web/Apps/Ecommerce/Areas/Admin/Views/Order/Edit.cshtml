@@ -7,8 +7,9 @@
         <div class="span12">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#order-details" data-toggle="tab">Order Details</a></li>
-            <li><a href="#order-lines" data-toggle="tab">Order Lines</a></li>
-            <li><a href="#order-notes" data-toggle="tab">Order Notes</a></li>
+            <li><a href="#order-lines" data-toggle="tab">Lines</a></li>
+            <li><a href="#order-notes" data-toggle="tab">Notes</a></li>
+             <li><a href="#order-refunds" data-toggle="tab">Refunds</a></li>
             <li class="pull-right">@Html.ActionLink("Back to list", "Index", "Order", null, new { @class = "btn" })</li>
         </ul>
 
@@ -21,5 +22,6 @@
             @{Html.RenderPartial("OrderDetails", Model); }
             @{Html.RenderPartial("OrderLines", Model);}
             @{Html.RenderPartial("OrderNotes", Model);}
+            @{Html.RenderPartial("OrderRefunds", Model);}
         </div>
 </div>
