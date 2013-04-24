@@ -1,5 +1,4 @@
 ﻿@using MrCMS.Website
-@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Core.Models.NavigationList
 @{
     var currentPage = CurrentRequestData.CurrentPage;
@@ -18,7 +17,6 @@
                         @foreach (var record in page.Children)
                         {
                             <li class="@(activePages.Contains(record.Url.ToString(), StringComparer.OrdinalIgnoreCase) ? "active" : "")">
-
                                <a href="@record.Url">@record.Text</a>
                             </li>
                         }
@@ -32,6 +30,5 @@
                <a href="@page.Url">@page.Text</a>
             </li>      
             }
-
         }
     </ul>

@@ -32,7 +32,7 @@ $(function () {
     }, 200);
 
     function setStandardUrl() {
-        $("#UrlSegment").val($("#Name").val().trim().replace(/\W/g, '-').toLowerCase());
+        $("#UrlSegment").val($("#Name").val().trim().replace(/[^a-zA-Z0-9-/]/g, '-').toLowerCase());
     }
 
     function suggestUrl() {
