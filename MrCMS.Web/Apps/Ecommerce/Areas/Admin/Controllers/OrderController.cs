@@ -1,4 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
+using MrCMS.Web.Apps.Ecommerce.Entities.Users;
+using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
@@ -38,7 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             if (order.ShippingMethod != null)
                 ViewData["ShippingMethodId"] = order.ShippingMethod.Id;
             return order != null
-                       ? (ActionResult) View(order)
+                       ? (ActionResult)View(order)
                        : RedirectToAction("Index");
         }
 
@@ -50,6 +55,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 order.ShippingMethod = _shippingMethodManager.Get(shippingMethodId);
             order.User = CurrentRequestData.CurrentUser;
             _orderService.Save(order);
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult PlaceNewOrder()
+        {
+            _orderService.PlaceOrder(new CartModel
+                                         {
+                                             Items = new List<CartItem>
+                                                         {
+                                                             new CartItem
+                                                                 {
+                                                                     Item =
+                                                                         MrCMSApplication.Get<IProductService>()
+                                                                                         .Search()[0],
+                                                                     Quantity = 3
+                                                                 }
+                                                         },
+                                             User = CurrentRequestData.CurrentUser,
+                                             ShippingAddress = new Address{},
+                                             ShippingMethod = _shippingMethodManager.GetAll()[0]
+                                         });
             return RedirectToAction("Index");
         }
     }

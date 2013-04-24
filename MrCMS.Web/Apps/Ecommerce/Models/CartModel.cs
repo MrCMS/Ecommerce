@@ -46,7 +46,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                 var discountAmount = Discount == null
                                          ? 0
                                          : Discount.GetDiscount(this);
-                
+
                 if (Discount != null && Items.Any())
                     discountAmount += Items.Sum(item => item.GetDiscountAmount(Discount, DiscountCode));
 
@@ -58,7 +58,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public virtual decimal Total
         {
-            get { return TotalPreDiscount - DiscountAmount + ShippingTotal.GetValueOrDefault(); }
+            get { return TotalPreShipping + ShippingTotal.GetValueOrDefault(); }
+        }
+
+        public virtual decimal TotalPreShipping
+        {
+            get { return TotalPreDiscount - DiscountAmount; }
         }
 
         public decimal Tax
