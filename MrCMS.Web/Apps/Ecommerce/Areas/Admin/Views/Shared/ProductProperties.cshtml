@@ -16,6 +16,9 @@
     @Html.LabelFor(product => product.TaxRate.Id, "Tax Rate")
     @Html.DropDownListFor(product => product.TaxRate.Id, ViewData["taxrates"] as IEnumerable<SelectListItem>)
 
+    @Html.LabelFor(product => product.Brand.Id, "Brand")
+    @Html.DropDownListFor(product => product.Brand.Id, ViewData["brands"] as IEnumerable<SelectListItem>)
+
     @if (Model.Gallery != null)
     {
         @Html.LabelFor(product => product.Gallery.Id, "Gallery")

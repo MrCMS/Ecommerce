@@ -52,7 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectToRouteResult Edit_POST(TaxRate taxRate)
         {
             _taxRateManager.Update(taxRate);
-            return RedirectToAction("Edit", new { id = taxRate.Id });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]

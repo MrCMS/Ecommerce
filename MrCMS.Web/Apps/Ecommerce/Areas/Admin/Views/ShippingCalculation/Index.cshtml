@@ -4,20 +4,18 @@
     ViewBag.Title = "Shipping Calculations";
 }
 
-<div class="row-fluid">
-    <div class="span4">
-        <h3>Shipping Calculations</h3>
-    </div>
-</div>
-
+<form>
+    <fieldset>
+        <legend>Shipping Calculations
+        </legend>
 
 @foreach (var shippingMethod in Model)
 {
     <div class="pull-left">
-        <strong>@shippingMethod.Name</strong>
+        <h4>@shippingMethod.Name</h4>
     </div>
     <div class="pull-right">
-        @Html.ActionLink("Add", "Add", "ShippingCalculation", new { id = shippingMethod.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+        @Html.ActionLink("Add", "Add", "ShippingCalculation", new { id = shippingMethod.Id }, new { @class = "btn btn-success btn-mini", data_toggle = "fb-modal" })
     </div>
     <br />
     <br />
@@ -51,3 +49,6 @@
         </tbody>
     </table>
 }
+
+    </fieldset>
+</form>

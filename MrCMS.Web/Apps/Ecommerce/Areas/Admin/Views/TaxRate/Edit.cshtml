@@ -3,20 +3,16 @@
     ViewBag.Title = "Edit " + Model.Name;
 }
 
-<div class="row-fluid">
-    <div class="span4">
-        <h4>Edit - @Model.Name</h4>
-    </div>
-    <div class="span8">
-        <div class="btn-group  display-inline  pull-right">
-            @Html.ActionLink("Back to list", "Index", "TaxRate", null, new { @class = "btn" })
-            <button class="btn btn-primary" id="save-edit" data-action="save" data-form-id="edit-tax-rate">
-                Save</button>
-        </div>
-    </div>
-</div>
 @using (Html.BeginForm("Edit", "TaxRate", FormMethod.Post, new { id = "edit-tax-rate" }))
 {
+    <fieldset>
+    <legend>
+        Edit - @Model.Name
+        <span class="btn-group  display-inline  pull-right">
+            @Html.ActionLink("Back to list", "Index", "TaxRate", null, new { @class = "btn" })
+            <input class="btn btn-primary" id="save-edit" data-action="save" data-form-id="edit-tax-rate" type="submit" value="Save" /> 
+        </span>
+    </legend>
     @Html.HiddenFor(x => x.Id)
     @Html.LabelFor(x => x.Name)
     @Html.TextBoxFor(x => x.Name)
@@ -24,4 +20,5 @@
     @Html.TextBoxFor(x => x.Code)
     @Html.LabelFor(x => x.Percentage)
     @Html.TextBoxFor(x => x.Percentage)
+    </fieldset>
 }

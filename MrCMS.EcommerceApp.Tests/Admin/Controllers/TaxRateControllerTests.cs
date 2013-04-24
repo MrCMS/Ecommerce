@@ -119,14 +119,13 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void TaxRateController_EditPOST_RedirectsToEditForTheIdOfTheSavedTaxRate()
+        public void TaxRateController_EditPOST_RedirectsToIndex()
         {
             var taxRate = new TaxRate { Id = 1 };
 
             var add = _taxRateController.Edit_POST(taxRate);
 
-            add.RouteValues["action"].Should().Be("Edit");
-            add.RouteValues["id"].Should().Be(1);
+            add.RouteValues["action"].Should().Be("Index");
         }
 
         [Fact]

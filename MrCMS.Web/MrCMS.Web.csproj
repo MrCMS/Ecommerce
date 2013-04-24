@@ -967,6 +967,10 @@
     <Content Include="Areas\Admin\Views\Webpage\FormDesign.cshtml" />
     <Content Include="Areas\Admin\Views\UrlHistory\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\UrlHistory\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Webpage\Category.cshtml" />
+    <Content Include="Areas\Admin\Views\Webpage\Product.cshtml" />
+    <Content Include="Areas\Admin\Views\Webpage\ProductSearch.cshtml" />
+    <Content Include="Areas\Admin\Views\Webpage\CategoryContainer.cshtml" />
     <None Include="Properties\PublishProfiles\v0.1.1.pubxml" />
     <None Include="Properties\PublishProfiles\v0.1.pubxml" />
     <Content Include="Apps\Core\Views\Widgets\Navigation.cshtml" />
@@ -1092,7 +1096,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>36181</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:36170</IISUrl>
+          <IISUrl>http://localhost:36167</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
