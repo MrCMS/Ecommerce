@@ -82,7 +82,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         private decimal? GetPriceByCartTotal(CartModel model)
         {
-            return GetPrice(model.Total);
+            return GetPrice(model.TotalPreShipping);
         }
 
         private decimal? GetPriceByWeight(CartModel model)
