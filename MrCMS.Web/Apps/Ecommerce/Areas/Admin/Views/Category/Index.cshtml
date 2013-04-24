@@ -6,19 +6,15 @@
 
 @if (Model != null)
 {
-    <div class="row-fluid">
-        <div class="span4">
-            <h2>Categories</h2>
-        </div>
-        <div class="span8">
-            <div class="btn-group  display-inline  pull-right">
-                <a href="@Url.Action("Add", "Webpage", new { id = Model.CategoryContainerId })" class="btn btn-primary">Add Root Category</a>
-            </div>
-        </div>
-    </div>
-    <div class="row-fluid">
-        <div id="product-list">
-            <table class="table table-bordered table-striped">
+
+    <form>
+        <fieldset>
+            <legend>Categories
+            <span class="btn-group  display-inline  pull-right">
+                <a href="@Url.Action("Add", "Webpage", new { id = Model.CategoryContainerId })" class="btn btn-success">Add Root Category</a>
+            </span>
+            </legend>
+            <table class="table table-condensed table-striped">
                 <thead>
                     <tr>
                         <th>Name
@@ -46,8 +42,9 @@
                 </tbody>
             </table>
             @Html.Pager(Model, "Index", p => new { p }, PagedListRenderOptions.PageNumbersOnly)
-        </div>
-    </div>
+
+        </fieldset>
+    </form>
 }
 else
 {

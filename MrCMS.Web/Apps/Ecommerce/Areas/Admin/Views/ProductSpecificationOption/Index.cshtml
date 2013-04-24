@@ -3,19 +3,14 @@
     ViewBag.Title = "Product Specification Options";
 }
 
-<div class="row-fluid">
-    <div class="span4">
-        <h2>Product Specification Options</h2>
-    </div>
-    <div class="span8">
-        <div class="btn-group  display-inline  pull-right">
-            <a href="@Url.Action("Add", "ProductSpecificationOption")" class="btn btn-primary"  data-toggle="fb-modal">Add Option</a>
-        </div>
-    </div>
-</div>
-<div class="row-fluid">
-    <div id="product-list">
-        <table class="table table-bordered table-striped">
+<form>
+    <fieldset>
+        <legend>Product Specification Options
+        <span class="btn-group  display-inline  pull-right">
+            <a href="@Url.Action("Add", "ProductSpecificationOption")" class="btn btn-success"  data-toggle="fb-modal">Add Option</a>
+        </span>
+        </legend>
+        <table class="table table-condensed table-striped">
             <thead>
                 <tr>
                     <th>Name
@@ -41,5 +36,5 @@
                 }
             </tbody>
         </table>
-    </div>
-</div>
+    </fieldset>
+</form>

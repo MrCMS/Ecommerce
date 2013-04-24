@@ -27,7 +27,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void BrandController_Index_ReturnsViewResult()
         {
-            var index = _brandController.Index(String.Empty);
+            var index = _brandController.Index(String.Empty, 1);
 
             index.Should().BeOfType<ViewResult>();
         }
@@ -35,18 +35,18 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void BrandController_Index_CallsIBrandServiceGetPaged()
         {
-            var index = _brandController.Index(String.Empty,1);
+            var index = _brandController.Index(String.Empty, 1);
 
-            A.CallTo(() => _brandService.GetPaged(1,String.Empty,10)).MustHaveHappened();
+            A.CallTo(() => _brandService.GetPaged(1, String.Empty, 10)).MustHaveHappened();
         }
 
         [Fact]
         public void BrandController_Index_ReturnsTheResultOfGetPaged()
         {
-            var brands = new PagedList<Brand>(new List<Brand>(),1,10);
+            var brands = new PagedList<Brand>(new List<Brand>(), 1, 10);
             A.CallTo(() => _brandService.GetPaged(1, String.Empty, 10)).Returns(brands);
 
-            var index = _brandController.Index(String.Empty);
+            var index = _brandController.Index(String.Empty, 1);
 
             index.Model.Should().Be(brands);
         }

@@ -7,8 +7,14 @@
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/edit-discount.js");}
 @using (Html.BeginForm("Edit", "Discount", FormMethod.Post))
 {
-    <h3>
-        Edit Discount</h3>
+    <fieldset>
+        <legend>Edit Discount
+                <span class="btn-group  display-inline  pull-right">
+                    <input type="submit" class="btn-primary btn" value="Update Discount" />
+                </span>
+
+        </legend>
+    </fieldset>
 
     @Html.HiddenFor(x => x.Id)
     @Html.LabelFor(x => x.Name)
@@ -28,8 +34,6 @@
     <div id="applicationValue" style="display: none;">
     </div>
     <br />
-    <input type="submit" class="btn-primary btn" value="Update Discount" />
-    <p></p>
     @Html.InfoBlock("Heads up! ", "Leave Valid From and Until blank to make discount valid forever")
 
 }

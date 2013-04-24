@@ -6,6 +6,7 @@ using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Paging;
 using System;
+using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
@@ -36,7 +37,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                         .OrderBy(entry => entry.Name).Asc;
             else
                 return
-                  _session.QueryOver<Brand>().Where(x => x.Name == search)
+                  _session.QueryOver<Brand>().Where(x => x.Name.IsInsensitiveLike(search, MatchMode.Anywhere))
                           .OrderBy(entry => entry.Name).Asc;
         }
 

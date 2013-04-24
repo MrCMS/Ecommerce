@@ -3,27 +3,21 @@
     ViewBag.Title = "Discounts";
 }
 
-<div class="row-fluid">
-    <div class="span4">
-        <h2>Discounts</h2>
-    </div>
-    <div class="span8">
-        <div class="btn-group  display-inline  pull-right">
-            <a href="@Url.Action("Add", "Discount")" class="btn btn-primary"  data-toggle="fb-modal">Add Discount</a>
-        </div>
-    </div>
-</div>
-<div class="row-fluid">
-    <div id="product-list">
-        <table class="table table-bordered table-striped">
+<form>
+    <fieldset>
+        <legend>Discounts
+            <span class="btn-group  display-inline  pull-right">
+                <a href="@Url.Action("Add", "Discount")" class="btn btn-success"  data-toggle="fb-modal">Add Discount</a>
+            </span>
+        </legend>
+        <table class="table table-condensed table-striped">
             <thead>
                 <tr>
                     <th>Name
                     </th>
-                     <th>Code
+                    <th>Code
                     </th>
-                     <th>
-                         Time period
+                    <th>Time period
                     </th>
                     <th>Actions
                     </th>
@@ -36,10 +30,10 @@
                         <td>
                             @item.Name
                         </td>
-                         <td>
+                        <td>
                             @item.Code
                         </td>
-                         <td>
+                        <td>
                             @item.ValidTimePeriod
                         </td>
                         <td>
@@ -52,5 +46,5 @@
                 }
             </tbody>
         </table>
-    </div>
-</div>
+    </fieldset>
+</form>

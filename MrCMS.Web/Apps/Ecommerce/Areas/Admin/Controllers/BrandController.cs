@@ -17,9 +17,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _brandService = brandService;
         }
 
-        public ViewResult Index(string searchParam, int page = 1)
+        [HttpGet]
+        public ViewResult Index(string q, int page = 1)
         {
-            var brands = _brandService.GetPaged(page, searchParam);
+            ViewData["query"] = q;
+            var brands = _brandService.GetPaged(page, q);
             return View(brands);
         }
 

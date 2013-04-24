@@ -144,6 +144,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                                           .List()
                                           .BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(),
                                                                rate => rate == TaxRate, "None selected");
+            viewData["brands"] = session.QueryOver<Brand>()
+                                        .OrderBy(brand => brand.Name).Asc
+                                        .Cacheable()
+                                        .List()
+                                        .BuildSelectItemList(brand => brand.Name, brand => brand.Id.ToString(),
+                                                             brand => brand == Brand, "None selected");
         }
 
         public virtual IList<Category> Categories { get; set; }
@@ -180,5 +186,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         public virtual bool HasMultiVariants { get; set; }
 
         public virtual IList<ProductAttributeOption> AttributeOptions { get; set; }
+
+        public virtual Brand Brand { get; set; }
     }
 }

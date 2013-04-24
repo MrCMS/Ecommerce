@@ -7,18 +7,13 @@
 @using (Html.BeginForm("Edit", "NotificationTemplateSettings", FormMethod.Post))
 {
     @Html.HiddenFor(x => x.Id)
-    <div class="row-fluid">
-        <div class="span8">
-            <h2>Customer Notification Templates</h2>
-        </div>
-        <div class="span4">
-            <div class="btn-group  display-inline  pull-right">
+    <fieldset>
+        <legend>Customer Notification Templates
+            <span class="btn-group  display-inline  pull-right">
                 <input type="submit" class="btn-primary btn" value="Save" />
-            </div>
-        </div>
-    </div>
-    
-
+            </span>
+        </legend>
+    </fieldset>
     <div class="accordion" id="notificationAccordion">
         <div class="accordion-group">
             <div class="accordion-heading">
@@ -55,8 +50,12 @@
         </div>
     </div>
 
-    <h2>Store Owner Notifications</h2>
-
+    <fieldset>
+        <legend>Store Owner Notifications
+            <span class="btn-group  display-inline  pull-right">
+            </span>
+        </legend>
+    </fieldset>
     @Html.LabelFor(x => x.Emails)
     @Html.TextBoxFor(x => x.Emails, new { @class = "input-xxlarge" })
 
