@@ -25,10 +25,6 @@ namespace MrCMS.Entities.Documents.Web
         {
             InheritAdminRolesFromParent = true;
             InheritFrontEndRolesFromParent = true;
-            ShownWidgets = new List<Widget.Widget>();
-            HiddenWidgets = new List<Widget.Widget>();
-            Widgets = new List<Widget.Widget>();
-            PageWidgetSorts = new List<PageWidgetSort>();
         }
         private Layout.Layout _layout;
 
