@@ -118,10 +118,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
                 {
                     case ShippingCriteria.ByWeight:
                         return string.Format("Cart weight: {0}", GetCartWeightValue());
-                        break;
                     case ShippingCriteria.ByCartTotal:
                         return string.Format("Cart total: {0}", GetCartTotalValue());
-                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
