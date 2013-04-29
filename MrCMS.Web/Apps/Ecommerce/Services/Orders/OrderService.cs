@@ -37,8 +37,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                 Total = cartModel.Total,
                                 ShippingTotal = cartModel.ShippingTotal,
                                 User = cartModel.User,
-                                Weight = cartModel.Weight
+                                Weight = cartModel.Weight,
+                                OrderEmail=cartModel.User!=null?cartModel.User.Email:String.Empty
                             };
+            foreach (var item in cartModel.Items)
+            {
+                order.OrderLines.Add(new OrderLine()
+                {
+                UnitPrice=item.Price,
+                Weight=item.Weight,
+                TaxRate=item.TaxRatePercentage,
+                Tax=item.Tax,
+                Quantity=item.Quantity,
+                ProductVariant=item.Item,
+                Subtotal=item.PricePreTax*item.Quantity
+                });
+            }
             _session.Transact(session => session.Save(order));
         }
 
