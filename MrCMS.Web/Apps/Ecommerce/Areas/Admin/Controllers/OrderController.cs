@@ -58,6 +58,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public ActionResult EditShippingStatus(Order order)
+        {
+            ViewData["ShippingStatuses"] = _shippingStatusService.GetOptions();
+            ViewData["PaymentStatuses"] = _paymentStatusService.GetOptions();
+            return order != null
+                       ? (ActionResult)View(order)
+                       : RedirectToAction("Edit", "Order", new { id = order.Id });
+        }
+
+        [ActionName("EditShippingStatus")]
+        [HttpPost]
+        public RedirectToRouteResult EditShippingStatus_POST(Order order)
+        {
+            order.User = CurrentRequestData.CurrentUser;
+            _orderService.Save(order);
+            return RedirectToAction("Edit", "Order", new { id = order.Id });
+        }
+
         public ActionResult PlaceNewOrder()
         {
             _orderService.PlaceOrder(new CartModel

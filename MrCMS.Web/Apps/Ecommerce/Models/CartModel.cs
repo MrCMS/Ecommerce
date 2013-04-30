@@ -83,6 +83,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public string DiscountCode { get; set; }
 
         public Address ShippingAddress { get; set; }
+        public Address BillingAddress { get; set; }
 
         public ShippingMethod ShippingMethod { get; set; }
 

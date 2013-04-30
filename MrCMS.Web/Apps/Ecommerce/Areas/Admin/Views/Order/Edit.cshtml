@@ -5,14 +5,20 @@
 
 <div class="row-fluid">
         <div class="span12">
+            <fieldset>
+    <legend>Order - #@Model.Id
+    </legend>
+                </fieldset>
+            </div>
+    </div>
+<div class="row-fluid">
+        <div class="span12">
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#order-details" data-toggle="tab">Order Details</a></li>
-            <li><a href="#order-lines" data-toggle="tab">Lines</a></li>
-            <li><a href="#order-notes" data-toggle="tab">Notes</a></li>
+            <li class="active"><a href="#order-details" data-toggle="tab">Order details</a></li>
+            <li><a href="#order-lines" data-toggle="tab">Order lines</a></li>
+            <li><a href="#order-notes" data-toggle="tab">Order notes</a></li>
              <li><a href="#order-refunds" data-toggle="tab">Refunds</a></li>
-            <li class="pull-right">@Html.ActionLink("Back to list", "Index", "Order", null, new { @class = "btn" })</li>
         </ul>
-
 </div>
 
 </div>

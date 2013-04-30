@@ -33,43 +33,14 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void OrderLineController_Add_ReturnsPartialViewResult()
-        {
-            var add = _orderLineController.Add(1);
-
-            add.Should().BeOfType<PartialViewResult>();
-        }
-
-        [Fact]
-        public void OrderLineController_Add_ReturnsAOrderLine()
-        {
-            var add = _orderLineController.Add(1);
-
-            add.Model.Should().BeOfType<OrderLine>();
-        }
-
-        [Fact]
-        public void OrderLineController_AddPOST_RedirectsToEditOrderForTheIdOfOrder()
-        {
-            var orderLine = new OrderLine();
-            orderLine.Order = new Order { Id = 1 };
-
-            var add = _orderLineController.Add_POST(orderLine);
-
-            add.RouteValues["action"].Should().Be("Edit");
-            add.RouteValues["controller"].Should().Be("Order");
-            add.RouteValues["id"].Should().Be(1);
-        }
-
-        [Fact]
-        public void OrderLineController_Edit_ReturnsAPartialViewResult()
+        public void OrderLineController_Edit_ReturnsAViewResult()
         {
             var item = new OrderLine();
             item.ProductVariant = new Product() { Id = 1 };
 
             var result = _orderLineController.Edit(item);
 
-            result.Should().BeOfType<PartialViewResult>();
+            result.Should().BeOfType<ViewResult>();
         }
 
         [Fact]
@@ -80,64 +51,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             var result = _orderLineController.Edit(item);
 
-            result.As<PartialViewResult>().Model.Should().Be(item);
-        }
-
-
-        [Fact]
-        public void OrderLineController_EditPOST_RedirectsToEditOrderForTheIdOfOrder()
-        {
-            var orderLine = new OrderLine();
-            orderLine.Order = new Order { Id = 1 };
-
-            var edit = _orderLineController.Edit_POST(orderLine,1);
-
-            edit.RouteValues["action"].Should().Be("Edit");
-            edit.RouteValues["controller"].Should().Be("Order");
-            edit.RouteValues["id"].Should().Be(1);
-        }
-
-
-        [Fact]
-        public void OrderLineController_Delete_ReturnsAPartialView()
-        {
-            var delete = _orderLineController.Delete(new OrderLine());
-
-            delete.Should().BeOfType<PartialViewResult>();
-        }
-
-        [Fact]
-        public void OrderLineController_Delete_ShouldReturnPassedOrderLineAsModel()
-        {
-            var item = new OrderLine();
-
-            var delete = _orderLineController.Delete(item);
-
-            delete.Model.Should().Be(item);
-        }
-
-        [Fact]
-        public void OrderLineController_DeletePOST_ShouldCallDeleteForThePassedOrderLine()
-        {
-            var item = new OrderLine();
-            item.Order = new Order { Id = 1 };
-
-            var delete = _orderLineController.Delete_POST(item);
-
-            A.CallTo(() => _orderLineService.Delete(item)).MustHaveHappened();
-        }
-
-        [Fact]
-        public void OrderLineController_DeletePOST_RedirectsToEditOrderForTheIdOfOrder()
-        {
-            var orderLine = new OrderLine();
-            orderLine.Order = new Order { Id = 1 };
-
-            var delete = _orderLineController.Delete_POST(orderLine);
-
-            delete.RouteValues["action"].Should().Be("Edit");
-            delete.RouteValues["controller"].Should().Be("Order");
-            delete.RouteValues["id"].Should().Be(1);
+            result.As<ViewResult>().Model.Should().Be(item);
         }
     }
 }
