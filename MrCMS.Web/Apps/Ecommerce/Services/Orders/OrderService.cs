@@ -29,6 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             var order = new Order
                             {
                                 ShippingAddress = cartModel.ShippingAddress,
+                                BillingAddress = cartModel.BillingAddress,
                                 ShippingMethod = cartModel.ShippingMethod,
                                 Subtotal = cartModel.Subtotal,
                                 Discount = cartModel.Discount,

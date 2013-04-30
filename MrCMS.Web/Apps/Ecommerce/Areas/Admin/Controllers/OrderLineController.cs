@@ -10,6 +10,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Website;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using System;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -27,52 +28,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Add(int orderID)
-        {
-            ViewData["products"] = _productService.GetOptions();
-            OrderLine orderLine = new OrderLine();
-            orderLine.Order = _orderService.Get(orderID);
-            return PartialView(orderLine);
-        }
-
-        [ActionName("Add")]
-        [HttpPost]
-        public RedirectToRouteResult Add_POST(OrderLine orderLine, int ProductID=0)
-        {
-            if (orderLine.Order != null)
-            {
-                Product product = _productService.Get(ProductID);
-                if (product.CanBuy(orderLine.Quantity))
-                {
-                    orderLine.ProductVariant = product;
-                    orderLine.Subtotal = orderLine.Quantity * product.PricePreTax;
-                    orderLine.Weight = orderLine.Quantity * product.Weight;
-                    orderLine.UnitPrice = product.Price;
-                    orderLine.Tax = orderLine.Quantity * product.Tax;
-                    orderLine.TaxRate = product.TaxRate.Percentage;
-                    orderLine.Order.OrderLines.Add(orderLine);
-                    _orderLineService.Save(orderLine);
-                }
-
-                return RedirectToAction("Edit", "Order", new { id = orderLine.Order.Id });
-            }
-            else
-            {
-                return RedirectToAction("Index", "Order");
-            }
-        }
-
-        [HttpGet]
-        public PartialViewResult Edit(OrderLine orderLine)
+        public ViewResult Edit(OrderLine orderLine)
         {
             ViewData["products"] = _productService.GetOptions();
             ViewData["ProductID"] = orderLine.ProductVariant.Id;
-            return PartialView(orderLine);
+            return View(orderLine);
         }
 
         [ActionName("Edit")]
         [HttpPost]
-        public RedirectToRouteResult Edit_POST(OrderLine orderLine, int ProductID)
+        public ActionResult Edit_POST(OrderLine orderLine, int ProductID)
         {
             if (orderLine.Order != null)
             {
@@ -86,31 +51,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                     orderLine.Tax = orderLine.Quantity * product.Tax;
                     orderLine.TaxRate = product.TaxRate.Percentage;
                     orderLine.Order.OrderLines.Add(orderLine);
-                    _orderLineService.Save(orderLine);
+                }
+                else
+                {
+                    ModelState.AddModelError("Quantity", "Requested Quantity is not available for purchase. "+(product.StockRemaining.HasValue?"Stock remaining:"+product.StockRemaining.Value:String.Empty));
                 }
 
-                return RedirectToAction("Edit", "Order", new { id = orderLine.Order.Id });
-            }
-            else
-            {
-                return RedirectToAction("Index", "Order");
-            }
-        }
+                if (orderLine.Discount > (orderLine.Quantity * product.PricePreTax))
+                {
+                    ModelState.AddModelError("Discount", "Discount value cannot be greater than Subtotal. (" + (orderLine.Quantity * product.PricePreTax) + ")");
+                }
 
-        [HttpGet]
-        public PartialViewResult Delete(OrderLine orderLine)
-        {
-            return PartialView(orderLine);
-        }
-
-        [ActionName("Delete")]
-        [HttpPost]
-        public RedirectToRouteResult Delete_POST(OrderLine orderLine)
-        {
-            if (orderLine.Order != null)
-            {
-                _orderLineService.Delete(orderLine);
-                return RedirectToAction("Edit", "Order", new { id = orderLine.Order.Id });
+                if (ModelState.IsValid)
+                {
+                    _orderLineService.Save(orderLine);
+                    return RedirectToAction("Edit", "Order", new { id = orderLine.Order.Id });
+                }
+                else
+                {
+                    ViewData["products"] = _productService.GetOptions();
+                    ViewData["ProductID"] = orderLine.ProductVariant.Id;
+                    return View(orderLine);
+                }
             }
             else
             {

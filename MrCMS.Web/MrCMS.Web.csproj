@@ -212,6 +212,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Tax\TaxRate.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Templating\NotificationTemplateSettings.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Users\Address.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\MrCMSEcommerceHtmlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\PolymorphicMappingHelper.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchIndex.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryContainerMetadata.cs" />
@@ -765,9 +766,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\NotificationTemplateSettings\Edit.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderLine\Add.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderLine\Delete.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderLine\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\Edit.cshtml" />
@@ -822,6 +820,8 @@
     <Content Include="Apps\Ecommerce\Views\Pages\Product.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\ProductSearch.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Web.config" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderLine\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\EditShippingStatus.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
