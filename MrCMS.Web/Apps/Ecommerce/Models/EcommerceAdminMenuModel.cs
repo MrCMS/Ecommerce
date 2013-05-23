@@ -17,25 +17,45 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                        (_children = new Dictionary<string, List<IMenuItem>>
                                         {
                                             {
-                                                "",
+                                                "Admin",
                                                 new List<IMenuItem>
                                                     {
                                                         new ChildMenuItem("Products", "/Admin/Apps/Ecommerce/Product"),
                                                         new ChildMenuItem("Categories", "/Admin/Apps/Ecommerce/Category"),
                                                         new ChildMenuItem("Brands", "/Admin/Apps/Ecommerce/Brand"),
+                                                        new ChildMenuItem("Product Specification Options",
+                                                                          "/Admin/Apps/Ecommerce/ProductSpecificationOption"),
+                                                        new ChildMenuItem("Discounts", "/Admin/Apps/Ecommerce/Discount"),
+                                                        new ChildMenuItem("Orders", "/Admin/Apps/Ecommerce/Order"),
+                                                    }
+                                            },
+                                            {
+                                                "Tools",
+                                                new List<IMenuItem>
+                                                    {
+                                                        new ChildMenuItem("Import/Export Categories",
+                                                                          "/Admin/Apps/Ecommerce/Category/ImportExport"),
+                                                        new ChildMenuItem("Import/Export Products",
+                                                                          "/Admin/Apps/Ecommerce/Product/ImportExport"),
+                                                        new ChildMenuItem("Import/Export Product Images",
+                                                                          "/Admin/Apps/Ecommerce/ProductImage/ImportExport"),
+                                                        new ChildMenuItem("Google Base Integration",
+                                                                          "/Admin/Apps/Ecommerce/GoogleBase"),
+                                                    }
+                                            },
+                                            {
+                                                "Settings",
+                                                new List<IMenuItem>
+                                                    {
                                                         new ChildMenuItem("Geographic Data",
                                                                           "/Admin/Apps/Ecommerce/Country"),
                                                         new ChildMenuItem("Tax Rates", "/Admin/Apps/Ecommerce/TaxRate"),
-                                                        new ChildMenuItem("Product Specification Options",
-                                                                          "/Admin/Apps/Ecommerce/ProductSpecificationOption"),
+                                                        new ChildMenuItem("Notification Template Settings",
+                                                                          "/Admin/Apps/Ecommerce/NotificationTemplateSettings/Edit"),
                                                         new ChildMenuItem("Shipping Methods",
                                                                           "/Admin/Apps/Ecommerce/ShippingMethod"),
                                                         new ChildMenuItem("Shipping Calculations",
                                                                           "/Admin/Apps/Ecommerce/ShippingCalculation"),
-                                                        new ChildMenuItem("Discounts", "/Admin/Apps/Ecommerce/Discount"),
-                                                        new ChildMenuItem("Notification Template Settings",
-                                                                          "/Admin/Apps/Ecommerce/NotificationTemplateSettings/Edit"),
-                                                        new ChildMenuItem("Orders", "/Admin/Apps/Ecommerce/Order"),
                                                     }
                                             }
                                         });
