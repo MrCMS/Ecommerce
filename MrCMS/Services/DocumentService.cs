@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web.Mvc;
 using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Layout;
 using MrCMS.Entities.Documents.Media;
@@ -106,24 +107,13 @@ namespace MrCMS.Services
 
         public IEnumerable<T> GetDocumentsByParent<T>(T parent) where T : Document
         {
-            var queryOver = _session.QueryOver<T>().Where(arg => arg.Site.Id == _currentSite.Id);
-
-            queryOver = parent != null
-                            ? queryOver.Where(arg => arg.Parent.Id == parent.Id)
-                            : queryOver.Where(arg => arg.Parent == null);
-
-            IEnumerable<T> children =
-                queryOver.Cacheable().List();
-
             if (parent != null)
             {
+                var list = parent.Children.OfType<T>();
                 var documentTypeDefinition = parent.GetMetadata();
-                if (documentTypeDefinition != null)
-                {
-                    return Sort(documentTypeDefinition, children);
-                }
+                return documentTypeDefinition != null ? Sort(documentTypeDefinition, list) : list;
             }
-            return children.OrderBy(arg => arg.DisplayOrder);
+            return _session.QueryOver<T>().Where(arg => arg.Parent == null).Cacheable().List();
         }
 
         public IEnumerable<T> GetAdminDocumentsByParent<T>(T parent) where T : Document
@@ -299,7 +289,7 @@ namespace MrCMS.Services
         {
             if (document.PublishOn == null)
             {
-                document.PublishOn = DateTime.Now;
+                document.PublishOn = CurrentRequestData.Now;
                 SaveDocument(document);
             }
         }
@@ -378,6 +368,7 @@ namespace MrCMS.Services
                 existingParent.Children.Remove(document);
                 SaveDocument(existingParent);
             }
+            SaveDocument(document);
         }
 
         public DocumentMetadata GetDefinitionByType(Type type)
@@ -514,6 +505,26 @@ namespace MrCMS.Services
                 return false;
 
             return !WebpageExists(url) && !ExistsInUrlHistory(url);
+        }
+
+        public IEnumerable<SelectListItem> GetValidParents(Webpage webpage)
+        {
+            var validParentTypes = DocumentMetadataHelper.GetValidParentTypes(webpage);
+            var potentialParents = new List<Webpage>();
+
+            foreach (var metadata in validParentTypes)
+            {
+                potentialParents.AddRange(_session.CreateCriteria(metadata.Type).SetCacheable(true).List<Webpage>());
+            }
+
+            var result = potentialParents.Distinct().Where(page => !page.ActivePages.Contains(webpage))
+                                                        .BuildSelectItemList(page => string.Format("{0} ({1})", page.Name, page.GetMetadata().Name),
+                                                                             page => page.Id.ToString(), emptyItem: null);
+
+            if (!webpage.GetMetadata().RequiresParent)
+                result.Insert(0, SelectListItemHelper.EmptyItem("Root"));
+
+            return result;
         }
 
         public bool UrlIsValidForMediaCategory(string url, int? id)

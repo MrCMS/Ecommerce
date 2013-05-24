@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using MrCMS.Helpers;
+using System.Linq;
 
 namespace MrCMS.Entities.Documents
 {
@@ -16,8 +18,8 @@ namespace MrCMS.Entities.Documents
         public int MaxChildNodes { get; set; }
 
         public bool Sortable { get; set; }
-	
-	    public Func<Document, object> SortBy { get; set; }
+
+        public Func<Document, object> SortBy { get; set; }
 
         public bool SortByDesc { get; set; }
 
@@ -37,7 +39,30 @@ namespace MrCMS.Entities.Documents
 
         public bool ShowChildrenInAdminNav { get; set; }
 
+        public bool ChildrenMaintainHierarchy { get; set; }
+
+        public bool HasBodyContent { get; set; }
+
         public string App { get; set; }
+
+        public IEnumerable<Type> ValidChildrenTypes
+        {
+            get
+            {
+                switch (ChildrenListType)
+                {
+                    case ChildrenListType.BlackList:
+                        return
+                            DocumentMetadataHelper.DocumentMetadatas.Where(
+                                metadata => !ChildrenList.Contains(metadata.Type) && !metadata.AutoBlacklist)
+                                                  .Select(metadata => metadata.Type)
+                                                  .ToList();
+                    case ChildrenListType.WhiteList:
+                        return ChildrenList;
+                }
+                return new List<Type>();
+            }
+        }
     }
 
     public enum ChildrenListType

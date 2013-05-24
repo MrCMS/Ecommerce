@@ -8,6 +8,7 @@ using MrCMS.Entities.Documents.Layout;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
 using MrCMS.Services;
+using MrCMS.Settings;
 using MrCMS.Website;
 using MrCMS.Website.Binders;
 using NHibernate;
@@ -115,10 +116,19 @@ namespace MrCMS.Web.Areas.Admin.Controllers
             return RedirectToAction("Edit", new { id = document.Id, layoutAreaId });
         }
 
-        [HttpPost]
-        public void SetParent(Webpage webpage, int? parentId)
+        [HttpGet]
+        public PartialViewResult SetParent(Webpage webpage)
         {
-            _documentService.SetParent(webpage, parentId);
+            ViewData["valid-parents"] = _documentService.GetValidParents(webpage);
+            return PartialView(webpage);
+        }
+
+        [HttpPost]
+        public RedirectToRouteResult SetParent(Webpage webpage, int? parent)
+        {
+            _documentService.SetParent(webpage, parent);
+
+            return RedirectToAction("Edit", new {id = webpage.Id});
         }
 
         public ActionResult ViewChanges(DocumentVersion documentVersion)
@@ -168,6 +178,14 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         public ActionResult ValidateUrlIsAllowed(string UrlSegment, int? Id)
         {
             return !_documentService.UrlIsValidForWebpage(UrlSegment, Id) ? Json("Please choose a different URL as this one is already used.", JsonRequestBehavior.AllowGet) : Json(true, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// Returns server date used for publishing (can't use JS date as can be out compared to server date)
+        /// </summary>
+        /// <returns>Date</returns>
+        public string GetServerDate()
+        {
+            return CurrentRequestData.Now.ToString(CurrentRequestData.CultureInfo);
         }
     }
 }

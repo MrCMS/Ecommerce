@@ -86,35 +86,35 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
 
 
         private static readonly FieldDefinition<Product> _id =
-            new FieldDefinition<Product>("id", webpage => webpage.Id.ToString(), Field.Store.YES,
+            new StringFieldDefinition<Product>("id", webpage => webpage.Id.ToString(), Field.Store.YES,
                                          Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Product> _name =
-            new FieldDefinition<Product>("name", webpage => webpage.Name, Field.Store.YES,
+            new StringFieldDefinition<Product>("name", webpage => webpage.Name, Field.Store.YES,
                                          Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Product> _bodyContent =
-            new FieldDefinition<Product>("bodycontent", webpage => webpage.BodyContent, Field.Store.NO,
+            new StringFieldDefinition<Product>("bodycontent", webpage => webpage.BodyContent, Field.Store.NO,
                                          Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Product> _metaTitle =
-            new FieldDefinition<Product>("metatitle", webpage => webpage.MetaTitle, Field.Store.NO,
+            new StringFieldDefinition<Product>("metatitle", webpage => webpage.MetaTitle, Field.Store.NO,
                                          Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Product> _metaKeywords =
-            new FieldDefinition<Product>("metakeywords", webpage => webpage.MetaKeywords, Field.Store.NO,
+            new StringFieldDefinition<Product>("metakeywords", webpage => webpage.MetaKeywords, Field.Store.NO,
                                          Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Product> _metaDescription =
-            new FieldDefinition<Product>("metadescription",
+            new StringFieldDefinition<Product>("metadescription",
                                          webpage => webpage.MetaDescription, Field.Store.NO, Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Product> _urlSegment =
-            new FieldDefinition<Product>("urlsegment", webpage => webpage.UrlSegment, Field.Store.NO,
+            new StringFieldDefinition<Product>("urlsegment", webpage => webpage.UrlSegment, Field.Store.NO,
                                          Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Product> _publishOn =
-            new FieldDefinition<Product>("publishOn",
+            new StringFieldDefinition<Product>("publishOn",
                                          webpage =>
                                          DateTools.DateToString(webpage.PublishOn.GetValueOrDefault(DateTime.MaxValue),
                                                                 DateTools.Resolution.SECOND), Field.Store.NO,

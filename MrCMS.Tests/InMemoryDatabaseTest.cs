@@ -12,6 +12,7 @@ using MrCMS.Entities.Multisite;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Services;
+using MrCMS.Settings;
 using MrCMS.Tasks;
 using MrCMS.Tests.Stubs;
 using MrCMS.Website;
@@ -31,6 +32,7 @@ namespace MrCMS.Tests
             _listDictionary = new ListDictionary();
             A.CallTo(() => httpContextWrapper.Items).Returns(_listDictionary);
             CurrentRequestData.OverridenContext = httpContextWrapper;
+            CurrentRequestData.SiteSettings = new SiteSettings();
         }
 
         public virtual void Dispose()
@@ -82,6 +84,8 @@ namespace MrCMS.Tests
                     session.SaveOrUpdate(site);
                     return site;
                 });
+
+            CurrentRequestData.SiteSettings = new SiteSettings {TimeZone = TimeZoneInfo.Local.Id};
 
             TaskExecutor.Discard();
 

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using MrCMS.Models;
 using MrCMS.Services;
@@ -17,7 +15,8 @@ namespace MrCMS.Entities.Documents.Media
         public virtual string FileExtension { get; set; }
         public virtual string ContentType { get; set; }
         public virtual MediaCategory MediaCategory { get; set; }
-        public virtual string FileLocation { get; set; }
+        //public virtual string FileLocation { get; set; }
+        public virtual string FileUrl { get; set; }
         public virtual int ContentLength { get; set; }
         public virtual string FileName { get; set; }
 
@@ -56,6 +55,5 @@ namespace MrCMS.Entities.Documents.Media
                 }
             }
         }
-
     }
 }

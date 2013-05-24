@@ -5,6 +5,7 @@ using MrCMS.Entities.Multisite;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Paging;
+using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
 
@@ -73,7 +74,7 @@ namespace MrCMS.Services
         {
             return
                 _session.QueryOver<User>()
-                    .Where(user => user.ResetPasswordGuid == resetGuid && user.ResetPasswordExpiry >= DateTime.UtcNow)
+                    .Where(user => user.ResetPasswordGuid == resetGuid && user.ResetPasswordExpiry >= CurrentRequestData.Now)
                     .Cacheable().SingleOrDefault();
         }
 
@@ -90,14 +91,22 @@ namespace MrCMS.Services
                                       session.Delete(user);
                                   });
         }
-
+        
         /// <summary>
         /// Checks to see if the supplied email address is unique
         /// </summary>
         /// <param name="email"></param>
+        /// <param name="id">The id of user to exlcude from check. Has to be string because of AdditionFields on Remote property</param>
         /// <returns></returns>
-        public bool IsUniqueEmail(string email)
+        public bool IsUniqueEmail(string email, string id)
         {
+            var userId = 0;
+            int.TryParse(id, out userId);
+
+            if (userId > 0)
+            {
+                return _session.QueryOver<User>().Where(u => u.Email == email && u.Id != userId).RowCount() == 0;
+            }
             return _session.QueryOver<User>().Where(u => u.Email == email).RowCount() == 0;
         }
 

@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Documents.Web.FormProperties;
 using MrCMS.Helpers;
+using MrCMS.Models;
 using MrCMS.Services;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
@@ -113,6 +114,24 @@ namespace MrCMS.Web.Areas.Admin
         {
             _formService.DeleteFormListOption(formListOption);
             return Json(new FormActionResult { success = true });
+        }
+
+
+        [HttpGet]
+        public ActionResult Sort(Webpage webpage)
+        {
+            var sortItems = webpage.FormProperties.OrderBy(x=>x.DisplayOrder)
+                                .Select(
+                                    arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Name })
+                                .ToList();
+
+            return View(sortItems);
+        }
+
+        [HttpPost]
+        public void Sort(List<SortItem> items)
+        {
+            _formService.SetOrders(items);
         }
     }
 
