@@ -1,26 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Web;
-using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Elmah;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using MrCMS.Apps;
 using MrCMS.DbConfiguration.Configuration;
-using MrCMS.Entities.Documents.Layout;
 using MrCMS.Entities.Documents.Web;
-using MrCMS.Entities.Multisite;
-using MrCMS.Entities.People;
 using MrCMS.IoC;
 using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Tasks;
 using MrCMS.Website;
 using MrCMS.Website.Binders;
-using MrCMS.Website.Optimization;
 using MrCMS.Website.Routing;
 using NHibernate;
 using Ninject;
@@ -78,6 +75,8 @@ namespace MrCMS.Website
                                             CurrentRequestData.ErrorSignal = ErrorSignal.FromCurrentContext();
                                             CurrentRequestData.CurrentSite = Get<ISiteService>().GetCurrentSite();
                                             CurrentRequestData.SiteSettings = Get<SiteSettings>();
+                                            Thread.CurrentThread.CurrentCulture = CurrentRequestData.SiteSettings.CultureInfo;
+                                            Thread.CurrentThread.CurrentUICulture = CurrentRequestData.SiteSettings.CultureInfo;
                                         }
                                     };
                 AuthenticateRequest += (sender, args) =>
@@ -259,7 +258,7 @@ namespace MrCMS.Website
                        .List().OrderBy(x => x.DisplayOrder);
         }
 
-        public const string AssemblyVersion = "0.2.1.*";
-        public const string AssemblyFileVersion = "0.2.1.0";
+        public const string AssemblyVersion = "0.3.0.*";
+        public const string AssemblyFileVersion = "0.3.0.0";
     }
 }

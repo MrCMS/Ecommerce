@@ -147,7 +147,6 @@
     <Compile Include="Services\NotificationTemplateProcessorTests.cs" />
     <Compile Include="Services\CountryServiceTests.cs" />
     <Compile Include="Services\GetCartImplTests.cs" />
-    <Compile Include="Services\OrderServiceTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\AttributeOptionTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\AttributeValueTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\SpecificationOptionTests.cs" />

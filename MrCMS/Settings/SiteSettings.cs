@@ -1,18 +1,24 @@
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.Web.Mvc;
-using MrCMS.Entities.Multisite;
 using NHibernate;
 
 namespace MrCMS.Settings
 {
     public class SiteSettings : SiteSettingsBase
     {
-        private Guid _siteId = Guid.NewGuid();
         private readonly SiteSettingsOptionGenerator _siteSettingsOptionGenerator = new SiteSettingsOptionGenerator();
+        private SiteSettingsOptionGenerator _siteSettingsOptionGeneratorOverride;
+        protected SiteSettingsOptionGenerator SiteSettingsOptionGenerator { get { return _siteSettingsOptionGeneratorOverride ?? _siteSettingsOptionGenerator; } }
+        public void SetSiteSettingsOptionGeneratorOverride(SiteSettingsOptionGenerator siteSettingsOptionGenerator)
+        {
+            _siteSettingsOptionGeneratorOverride = siteSettingsOptionGenerator;
+        }
 
-        //[ReadOnly(true)]
-        //public Guid SiteId { get { return _siteId; } set { _siteId = value; } }
+        [DropDownSelection("Themes")]
+        [DisplayName("Theme")]
+        public string ThemeName { get; set; }
 
         [DisplayName("Default Layout")]
         [DropDownSelection("DefaultLayoutOptions")]
@@ -27,19 +33,39 @@ namespace MrCMS.Settings
         [DropDownSelection("500Options")]
         [DisplayName("500 Page")]
         public virtual int Error500PageId { get; set; }
-        
+
         [DisplayName("Site is live")]
         public bool SiteIsLive { get; set; }
-        
+
         [DisplayName("Enable inline editing")]
         public bool EnableInlineEditing { get; set; }
 
+        [DisplayName("Site UI Culture")]
+        [DropDownSelection("UiCultures")]
+        public string UICulture { get; set; }
+        public CultureInfo CultureInfo { get { return !string.IsNullOrWhiteSpace(UICulture) ? CultureInfo.GetCultureInfo(UICulture) : CultureInfo.CurrentCulture; } }
+
+        [DisplayName("Time zones")]
+        [DropDownSelection("TimeZones")]
+        public string TimeZone { get; set; }
+        public TimeZoneInfo TimeZoneInfo { get { return !string.IsNullOrWhiteSpace(TimeZone) ? TimeZoneInfo.FindSystemTimeZoneById(TimeZone) : TimeZoneInfo.Local; } }
+
         public override void SetViewData(ISession session, ViewDataDictionary viewDataDictionary)
         {
-            viewDataDictionary["DefaultLayoutOptions"] = _siteSettingsOptionGenerator.GetLayoutOptions(session, Site, DefaultLayoutId);
-            viewDataDictionary["403Options"] = _siteSettingsOptionGenerator.GetErrorPageOptions(session, Site, Error403PageId);
-            viewDataDictionary["404Options"] = _siteSettingsOptionGenerator.GetErrorPageOptions(session, Site, Error404PageId);
-            viewDataDictionary["500Options"] = _siteSettingsOptionGenerator.GetErrorPageOptions(session, Site, Error500PageId);
+            viewDataDictionary["DefaultLayoutOptions"] = SiteSettingsOptionGenerator.GetLayoutOptions(session, Site,
+                                                                                                       DefaultLayoutId);
+            viewDataDictionary["403Options"] = SiteSettingsOptionGenerator.GetErrorPageOptions(session, Site,
+                                                                                                Error403PageId);
+            viewDataDictionary["404Options"] = SiteSettingsOptionGenerator.GetErrorPageOptions(session, Site,
+                                                                                                Error404PageId);
+            viewDataDictionary["500Options"] = SiteSettingsOptionGenerator.GetErrorPageOptions(session, Site,
+                                                                                                Error500PageId);
+            viewDataDictionary["Themes"] = SiteSettingsOptionGenerator.GetThemeNames(ThemeName);
+
+            viewDataDictionary["UiCultures"] = SiteSettingsOptionGenerator.GetUiCultures(UICulture);
+
+            viewDataDictionary["TimeZones"] = SiteSettingsOptionGenerator.GetTimeZones(TimeZone);
         }
+
     }
 }

@@ -45,13 +45,20 @@ namespace MrCMS.Entities.Documents.Web
         public virtual string MetaKeywords { get; set; }
         [DisplayName("Include in navigation")]
         public virtual bool RevealInNavigation { get; set; }
+        [DisplayName("Custom header scripts")]
+        [StringLength(8000)]
+        public virtual string CustomHeaderScripts { get; set; }
+        [DisplayName("Custom footer scripts")]
+        [StringLength(8000)]
+        public virtual string CustomFooterScripts { get; set; }
+
 
         [DisplayName("Requires SSL")]
         public virtual bool RequiresSSL { get; set; }
 
         public virtual bool Published
         {
-            get { return PublishOn != null && PublishOn <= DateTime.Now; }
+            get { return PublishOn != null && PublishOn <= CurrentRequestData.Now; }
         }
 
         public virtual string LiveUrlSegment
@@ -115,14 +122,8 @@ namespace MrCMS.Entities.Documents.Web
 
         [DisplayName("Block Anonymous Access")]
         public virtual bool BlockAnonymousAccess { get; set; }
-
-        [DisplayName("Form Data")]
-        public virtual string FormData { get; set; }
-
-        public virtual IList<FormProperty> FormProperties { get; set; }
-
-        public virtual IList<FormPosting> FormPostings { get; set; }
-
+        
+        //forms
         [DisplayName("Form Submitted Message")]
         [AllowHtml]
         [StringLength(500, ErrorMessage = "Form submitted messsage cannot be longer than 500 characters.")]
@@ -135,6 +136,16 @@ namespace MrCMS.Entities.Documents.Web
         public virtual string SendFormTo { get; set; }
         [DisplayName("Form Email Message")]
         public virtual string FormMessage { get; set; }
+        public virtual IList<FormProperty> FormProperties { get; set; }
+        public virtual IList<FormPosting> FormPostings { get; set; }
+        public virtual string FormDesign { get; set; }
+        [StringLength(100)]
+        [DisplayName("Submit Button Css Class")]
+        public virtual string SubmitButtonCssClass { get; set; }
+        [StringLength(100)]
+        [DisplayName("Submit button custom CSS class")]
+        public virtual string SubmitButtonText { get; set; }
+        
 
         [DisplayName("Same as parent")]
         public virtual bool InheritFrontEndRolesFromParent { get; set; }
@@ -167,25 +178,7 @@ namespace MrCMS.Entities.Documents.Web
                 return string.Format("{0}{1}/{2}", scheme, authority, LiveUrlSegment);
             }
         }
-
-        public virtual string FormDesign { get; set; }
-
-        public override void CustomBinding(ControllerContext controllerContext, ISession session)
-        {
-        }
-
-        public virtual void AdminViewData(ViewDataDictionary viewData, ISession session)
-        {
-        }
-
-        public virtual void AddCustomSitemapData(UrlHelper urlHelper, XmlNode url, XmlDocument xmlDocument)
-        {
-        }
-
-        public virtual void UiViewData(ViewDataDictionary viewData, ISession session, HttpRequestBase request)
-        {
-        }
-
+        
         private IList<UrlHistory> _urls = new List<UrlHistory>();
 
         public virtual IList<UrlHistory> Urls
@@ -234,11 +227,38 @@ namespace MrCMS.Entities.Documents.Web
         {
             query = query ??
                     QueryOver.Of<T>()
-                             .Where(a => a.Parent == this && a.PublishOn != null && a.PublishOn <= DateTime.Now)
+                             .Where(a => a.Parent == this && a.PublishOn != null && a.PublishOn <= CurrentRequestData.Now)
                              .ThenBy(arg => arg.PublishOn)
                              .Desc;
 
             return MrCMSApplication.Get<ISession>().Paged(query, pageNum, pageSize);
         }
+
+        public virtual string GetPageTitle()
+        {
+            return !string.IsNullOrWhiteSpace(MetaTitle) ? MetaTitle : Name;
+        }
+
+        public virtual bool CanAddChildren()
+        {
+            return this.GetMetadata().ValidChildrenTypes.Any();
+        }
+        
+        public override void CustomBinding(ControllerContext controllerContext, ISession session)
+        {
+        }
+
+        public virtual void AdminViewData(ViewDataDictionary viewData, ISession session)
+        {
+        }
+
+        public virtual void AddCustomSitemapData(UrlHelper urlHelper, XmlNode url, XmlDocument xmlDocument)
+        {
+        }
+
+        public virtual void UiViewData(ViewDataDictionary viewData, ISession session, HttpRequestBase request)
+        {
+        }
+
     }
 }

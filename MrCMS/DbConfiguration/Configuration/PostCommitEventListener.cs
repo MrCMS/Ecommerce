@@ -21,11 +21,15 @@ namespace MrCMS.DbConfiguration.Configuration
                 var session = @event.Session.SessionFactory.OpenSession();
                 if (@event.Entity is Document)
                 {
+                    var ignorePropertyNames = new[]
+                        {
+                            "UpdatedOn", "Id", "CreatedOn"
+                        };
                     var propertyInfos =
                         @event.Entity.GetType().GetProperties().Where(
                             info =>
                             info.CanWrite && !typeof(SystemEntity).IsAssignableFrom(info.PropertyType) &&
-                            !info.PropertyType.IsGenericType).ToList();
+                            !info.PropertyType.IsGenericType && !ignorePropertyNames.Contains(info.Name)).ToList();
 
                     var propertyNames = @event.Persister.PropertyNames;
 
@@ -48,15 +52,15 @@ namespace MrCMS.DbConfiguration.Configuration
                     if (anyChanges)
                     {
                         var document = GetDocument(session, @event.Entity as Document);
- 
+
                         var documentVersion = new DocumentVersion
                                                   {
                                                       Document = document,
                                                       Data = JsonConvert.SerializeObject(jObject),
                                                       User = GetUser(session),
-                                                      CreatedOn = DateTime.UtcNow,
-                                                      UpdatedOn = DateTime.UtcNow,
-                                                      Site = session.Get<Site>( CurrentRequestData.CurrentSite.Id)
+                                                      CreatedOn = CurrentRequestData.Now,
+                                                      UpdatedOn = CurrentRequestData.Now,
+                                                      Site = session.Get<Site>(CurrentRequestData.CurrentSite.Id)
                                                   };
                         document.Versions.Add(documentVersion);
                         using (var transaction = session.BeginTransaction())

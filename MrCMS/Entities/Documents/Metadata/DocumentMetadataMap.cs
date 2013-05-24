@@ -117,6 +117,16 @@ namespace MrCMS.Entities.Documents.Metadata
         /// </summary>
         public virtual bool ShowChildrenInAdminNav { get { return true; } }
 
+        /// <summary>
+        /// Specifies whether child pages will have Maintain Hierarchy checked by default
+        /// </summary>
+        public virtual bool ChildrenMaintainHierarchy { get { return true; } }
+
+        /// <summary>
+        /// Specifies whether the page type is able to have body content
+        /// </summary>
+        public virtual bool HasBodyContent { get { return true; } }
+
         public DocumentMetadata Metadata
         {
             get
@@ -143,7 +153,9 @@ namespace MrCMS.Entities.Documents.Metadata
                                DefaultLayoutName = DefaultLayoutName,
                                EditPartialView = EditPartialView,
                                ShowChildrenInAdminNav = ShowChildrenInAdminNav,
-                               App = App
+                               App = App,
+                               ChildrenMaintainHierarchy = ChildrenMaintainHierarchy,
+                               HasBodyContent = HasBodyContent
                            };
             }
         }

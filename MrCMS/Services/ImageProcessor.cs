@@ -14,18 +14,18 @@ namespace MrCMS.Services
     public class ImageProcessor : IImageProcessor
     {
         private readonly ISession _session;
+        private readonly IFileSystem _fileSystem;
+        private readonly MediaSettings _mediaSettings;
 
-        public ImageProcessor(ISession session)
+        public ImageProcessor(ISession session, IFileSystem fileSystem, MediaSettings mediaSettings)
         {
             _session = session;
+            _fileSystem = fileSystem;
+            _mediaSettings = mediaSettings;
         }
 
         public MediaFile GetImage(string imageUrl)
         {
-            if (imageUrl.StartsWith("/"))
-            {
-                imageUrl = imageUrl.Substring(1);
-            }
             if (IsResized(imageUrl))
             {
                 var resizePart = GetResizePart(imageUrl);
@@ -34,7 +34,7 @@ namespace MrCMS.Services
             }
             var fileByLocation =
                 _session.QueryOver<MediaFile>()
-                        .Where(file => file.FileLocation == imageUrl)
+                        .Where(file => file.FileUrl == imageUrl)
                         .Take(1)
                         .Cacheable()
                         .SingleOrDefault();
@@ -75,7 +75,7 @@ namespace MrCMS.Services
             }
         }
 
-        public void SaveResizedImage(MediaFile file, Size size, byte[] fileBytes, string filePath)
+        public void SaveResizedImage(MediaFile file, Size size, byte[] fileBytes, string fileUrl)
         {
             using (var stream = new MemoryStream(fileBytes))
             {
@@ -97,10 +97,15 @@ namespace MrCMS.Services
                         g.PixelOffsetMode = PixelOffsetMode.HighQuality;
                         g.DrawImage(b, 0, 0, newSize.Width, newSize.Height);
                         var ep = new EncoderParameters();
-                        ep.Param[0] = new EncoderParameter(Encoder.Quality, 100L);
+                        ep.Param[0] = new EncoderParameter(Encoder.Quality, _mediaSettings.ResizeQuality ?? 90L);
                         ImageCodecInfo ici = GetImageCodecInfoFromExtension(file.FileExtension)
                                              ?? GetImageCodecInfoFromMimeType("image/jpeg");
-                        newBitMap.Save(filePath, ici, ep);
+
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            newBitMap.Save(memoryStream, ici, ep);
+                            _fileSystem.SaveFile(memoryStream, fileUrl, file.ContentType);
+                        }
                     }
                 }
             }
@@ -125,7 +130,7 @@ namespace MrCMS.Services
                     g.PixelOffsetMode = PixelOffsetMode.HighQuality;
                     g.DrawImage(original, 0, 0, newSize.Width, newSize.Height);
                     var ep = new EncoderParameters();
-                    ep.Param[0] = new EncoderParameter(Encoder.Quality, 100L);
+                    ep.Param[0] = new EncoderParameter(Encoder.Quality, _mediaSettings.ResizeQuality ?? 90L);
                     ImageCodecInfo ici = GetImageCodecInfoFromExtension(file.FileExtension)
                                          ?? GetImageCodecInfoFromMimeType("image/jpeg");
                     var memoryStream = new MemoryStream();
@@ -211,12 +216,12 @@ namespace MrCMS.Services
         /// <summary>
         /// Returns the name and full path of the requested file
         /// </summary>
-        public static string RequestedImageFileLocation(MediaFile file, Size size)
+        public static string RequestedImageFileUrl(MediaFile file, Size size)
         {
             if (file.Size == size)
-                return file.FileLocation;
+                return file.FileUrl;
 
-            var fileLocation = file.FileLocation;
+            var fileLocation = file.FileUrl;
 
             var temp = fileLocation.Replace(file.FileExtension, "");
             if (size.Width != 0)

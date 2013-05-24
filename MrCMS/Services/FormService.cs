@@ -131,7 +131,7 @@ namespace MrCMS.Services
 
             var result = _fileService.AddFile(file.InputStream, webpage.Id + "-" + formPosting.Id + "-" + file.FileName, file.ContentType, file.ContentLength, mediaCategory);
 
-            return result.Path;
+            return result.url;
         }
 
         private MediaCategory CreateFileUploadMediaCategory()
@@ -223,7 +223,7 @@ namespace MrCMS.Services
                                                                      var title = new TagBuilder("b");
                                                                      title.InnerHtml += formValue.Key + ":";
                                                                      listItem.InnerHtml += title.ToString() + " " +
-                                                                                           formValue.Value;
+                                                                                           formValue.GetMessageValue();
 
                                                                      list.InnerHtml += listItem.ToString();
                                                                  }
@@ -256,7 +256,7 @@ namespace MrCMS.Services
                                                                              OrdinalIgnoreCase));
                                                              return formValue == null
                                                                         ? string.Empty
-                                                                        : formValue.Value;
+                                                                        : formValue.GetMessageValue();
                                                          });
         }
 
@@ -310,6 +310,16 @@ namespace MrCMS.Services
         public void DeleteFormListOption(FormListOption formListOption)
         {
             _session.Transact(session => session.Delete(formListOption));
+        }
+
+        public void SetOrders(List<SortItem> items)
+        {
+            _session.Transact(session => items.ForEach(item =>
+            {
+                var formItem = session.Get<FormProperty>(item.Id);
+                formItem.DisplayOrder = item.Order;
+                session.Update(formItem);
+            }));
         }
     }
 

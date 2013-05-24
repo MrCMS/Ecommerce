@@ -30,7 +30,7 @@ namespace MrCMS.Tests.Settings
         {
             var siteSettingsOptionGenerator = new SiteSettingsOptionGenerator();
 
-            var textPage = new BasicMappedWebpage { PublishOn = DateTime.UtcNow.AddDays(-1), Name = "Test 1", Site = CurrentSite };
+            var textPage = new BasicMappedWebpage { PublishOn = CurrentRequestData.Now.AddDays(-1), Name = "Test 1", Site = CurrentSite };
             Session.Transact(session => session.Save(textPage));
 
             var errorPageOptions = siteSettingsOptionGenerator.GetErrorPageOptions(Session, CurrentSite, -1);
@@ -45,13 +45,13 @@ namespace MrCMS.Tests.Settings
         {
             var siteSettingsOptionGenerator = new SiteSettingsOptionGenerator();
 
-            var textPage = new BasicMappedWebpage { PublishOn = DateTime.UtcNow.AddDays(-1), Name = "Test 1", Site = CurrentSite };
+            var textPage = new BasicMappedWebpage { PublishOn = CurrentRequestData.Now.AddDays(-1), Name = "Test 1", Site = CurrentSite };
             Session.Transact(session =>
                                  {
                                      session.Save(textPage);
                                  });
             var site2 = new Site();
-            var textPage2 = new BasicMappedWebpage { PublishOn = DateTime.UtcNow.AddDays(-1), Name = "Test 2", Site = site2 };
+            var textPage2 = new BasicMappedWebpage { PublishOn = CurrentRequestData.Now.AddDays(-1), Name = "Test 2", Site = site2 };
 
             CurrentRequestData.CurrentSite = site2;
             Session.Transact(session =>
@@ -85,7 +85,7 @@ namespace MrCMS.Tests.Settings
         {
             var siteSettingsOptionGenerator = new SiteSettingsOptionGenerator();
 
-            var textPage = new BasicMappedWebpage { PublishOn = DateTime.UtcNow.AddDays(-1), Name = "Test 1", Site = CurrentSite };
+            var textPage = new BasicMappedWebpage { PublishOn = CurrentRequestData.Now.AddDays(-1), Name = "Test 1", Site = CurrentSite };
             Session.Transact(session => session.Save(textPage));
 
             var errorPageOptions = siteSettingsOptionGenerator.GetErrorPageOptions(Session, CurrentSite, textPage.Id);
@@ -104,19 +104,6 @@ namespace MrCMS.Tests.Settings
             var errorPageOptions = siteSettingsOptionGenerator.GetLayoutOptions(Session, site, -1);
 
             errorPageOptions.Should().HaveCount(0);
-        }
-
-        [Fact]
-        public void SiteSettingsOptionGenerator_GetLayoutOptions_WithDefaultIncludedIncludesDefaultLayout()
-        {
-            var siteSettingsOptionGenerator = new SiteSettingsOptionGenerator();
-
-            var site = new Site();
-            Session.Transact(session => session.Save(site));
-            var errorPageOptions = siteSettingsOptionGenerator.GetLayoutOptions(Session, site, -1, true);
-
-            errorPageOptions.Should().HaveCount(1);
-            errorPageOptions[0].Text.Should().Be("Default Layout");
         }
 
         [Fact]
