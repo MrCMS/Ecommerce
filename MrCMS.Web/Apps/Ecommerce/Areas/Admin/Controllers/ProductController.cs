@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
@@ -14,12 +14,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IProductService _productService;
         private readonly IDocumentService _documentService;
         private readonly ICategoryService _categoryService;
+        private readonly ITaxRateManager _taxRateManager;
 
-        public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService)
+        public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService, ITaxRateManager taxRateManager)
         {
             _productService = productService;
             _documentService = documentService;
             _categoryService = categoryService;
+            _taxRateManager = taxRateManager;
         }
 
         /// <summary>
@@ -39,19 +41,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult MakeMultiVariant(Product product)
         {
-            return PartialView(product);
+            return PartialView(new MakeMultivariantModel { ProductId = product.Id });
         }
 
         [HttpPost]
-        public RedirectToRouteResult MakeMultiVariant(Product product, string option1, string option2, string option3)
+        public RedirectToRouteResult MakeMultiVariant(MakeMultivariantModel model)
         {
-            _productService.MakeMultiVariant(product, option1, option2, option3);
+            _productService.MakeMultiVariant(model);
 
-            return RedirectToAction("Edit", "Webpage", new { id = product.Id });
+            return RedirectToAction("Edit", "Webpage", new { id = model.ProductId });
         }
 
         [HttpGet]
-        public PartialViewResult ViewCategories(Product product)
+        public PartialViewResult Categories(Product product)
         {
             return PartialView(product);
         }
@@ -92,6 +94,32 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _productService.RemoveCategory(product, categoryId);
 
             return RedirectToAction("Edit", "Webpage", new { id = product.Id });
+        }
+
+        public PartialViewResult PricingButtons(Product product)
+        {
+            return PartialView(product);
+        }
+
+        public PartialViewResult PricingInfo(Product product)
+        {
+            ViewData["tax-rate-options"] = _taxRateManager.GetOptions(product.TaxRate);
+            return PartialView(product);
+        }
+
+        public PartialViewResult Specifications(Product product)
+        {
+            return PartialView(product);
+        }
+
+        public PartialViewResult Images(Product product)
+        {
+            return PartialView(product);
+        }
+
+        public PartialViewResult UploadImage(Product product)
+        {
+            return PartialView(product);
         }
     }
 }

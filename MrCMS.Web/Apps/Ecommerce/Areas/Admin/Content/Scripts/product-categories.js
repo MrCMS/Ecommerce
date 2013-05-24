@@ -26,7 +26,7 @@
         $.post('/Admin/Apps/Ecommerce/Product/AddCategory/',
             { id: productId, categoryId: categoryId },
             function (response) {
-                parent.$.get('/Admin/Apps/Ecommerce/Product/ViewCategories/' + productId, function (products) {
+                parent.$.get('/Admin/Apps/Ecommerce/Product/Categories/' + productId, function (products) {
                     parent.$('#category-list').replaceWith(products);
                 });
                 var href = '/Admin/Apps/Ecommerce/Product/AddCategory/' + productId + '?page=' + page;

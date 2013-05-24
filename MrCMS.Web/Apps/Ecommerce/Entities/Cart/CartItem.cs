@@ -7,7 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 {
     public class CartItem : SiteEntity
     {
-        public virtual ICanAddToCart Item { get; set; }
+        public virtual IBuyableItem Item { get; set; }
         public virtual Guid UserGuid { get; set; }
 
         public virtual int Quantity { get; set; }

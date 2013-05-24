@@ -18,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _session = session;
         }
 
-        public void AddToCart(ICanAddToCart item, int quantity)
+        public void AddToCart(IBuyableItem item, int quantity)
         {
             var cartModel = _getCart.GetCart();
 

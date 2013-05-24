@@ -1,0 +1,27 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+<div id="image-list">
+    <div class="row-fluid">
+        <div class="span6">
+            <h4>Images</h4>
+        </div>
+        <div class="span6">
+            <div class="btn-group pull-right">
+                @Html.ActionLink("View Gallery", "Edit", "MediaCategory", new { id = Model.Gallery.Id }, new { @class = "btn-mini btn" })
+                @Html.ActionLink("Upload Image", "UploadImage", "Product", new { id = Model.Id }, new { @class = "btn-mini btn", data_toggle = "fb-modal" })
+
+            </div>
+        </div>
+    </div>
+    @foreach (var chunk in Model.Images.Chunk(4))
+    {
+        <div class="row-fluid">
+            @foreach (var image in chunk)
+            {
+                <div class="span3">
+                    @Html.RenderImage(image.FileUrl)
+                </div>
+            }
+        </div>
+    }
+</div>

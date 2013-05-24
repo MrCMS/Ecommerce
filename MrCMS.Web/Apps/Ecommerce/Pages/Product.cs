@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -18,7 +18,7 @@ using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
-    public class Product : Webpage, ICanAddToCart
+    public class Product : Webpage, IBuyableItem
     {
         public Product()
         {
@@ -26,6 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             SpecificationValues = new List<ProductSpecificationValue>();
             Categories = new List<Category>();
             AttributeOptions = new List<ProductAttributeOption>();
+            PriceBreaks = new List<PriceBreak>();
         }
 
         public virtual MediaCategory Gallery { get; set; }
@@ -121,6 +122,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         }
 
         public virtual IList<ProductVariant> Variants { get; set; }
+        public virtual IList<PriceBreak> PriceBreaks { get; set; }
         public virtual IList<ProductSpecificationValue> SpecificationValues { get; set; }
 
         public virtual bool CanBuy(int quantity)
@@ -139,11 +141,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         public override void AdminViewData(ViewDataDictionary viewData, ISession session)
         {
             base.AdminViewData(viewData, session);
-            viewData["taxrates"] = session.QueryOver<TaxRate>()
-                                          .Cacheable()
-                                          .List()
-                                          .BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(),
-                                                               rate => rate == TaxRate, "None selected");
             viewData["brands"] = session.QueryOver<Brand>()
                                         .OrderBy(brand => brand.Name).Asc
                                         .Cacheable()
@@ -181,12 +178,36 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             service.AddDocument(productGallery);
         }
 
-        public virtual string ContainerUrl { get { return (Parent as Webpage).LiveUrlSegment; } }
-
-        public virtual bool HasMultiVariants { get; set; }
+        public virtual string ContainerUrl
+        {
+            get
+            {
+                var webpage = (Parent as Webpage);
+                return webpage != null ? webpage.LiveUrlSegment : string.Empty;
+            }
+        }
 
         public virtual IList<ProductAttributeOption> AttributeOptions { get; set; }
 
         public virtual Brand Brand { get; set; }
+
+        [StringLength(1000)]
+        public virtual string Abstract { get; set; }
+
+        public virtual IEnumerable<MediaFile> Images
+        {
+            get
+            {
+                return Gallery != null
+                           ? (IEnumerable<MediaFile>)
+                             Gallery.Files.Where(file => file.IsImage).OrderBy(file => file.DisplayOrder)
+                           : new List<MediaFile>();
+            }
+        }
+
+        public virtual string EditUrl
+        {
+            get { return "~/Admin/Webpage/Edit/" + Id; }
+        }
     }
 }

@@ -132,7 +132,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         }
     }
 
-    public class StubProduct : ICanAddToCart
+    public class StubProduct : IBuyableItem
     {
         public int Id { get; set; }
         public string SKU { get; set; }
@@ -148,6 +148,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         public decimal PricePreTax { get; set; }
         public decimal Weight { get; set; }
         public string Name { get; set; }
+        public string EditUrl { get; private set; }
 
         public bool Available { get; set; }
     }

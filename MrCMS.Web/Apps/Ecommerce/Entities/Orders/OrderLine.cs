@@ -17,7 +17,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
     {
         public virtual Order Order { get; set; }
         [DisplayName("Product")]
-        public virtual ICanAddToCart ProductVariant { get; set; }
+        public virtual IBuyableItem ProductVariant { get; set; }
         public virtual int Quantity { get; set; }
         [DisplayName("Unit Price")]
         public virtual decimal UnitPrice { get; set; }

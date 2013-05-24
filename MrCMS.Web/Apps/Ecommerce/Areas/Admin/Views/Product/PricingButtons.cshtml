@@ -1,0 +1,12 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+<div class="btn-group pull-right">
+    @if (Model.HasVariants)
+    {
+        @Html.ActionLink("Add variant", "Add", "ProductVariant", new { id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+    }
+    else
+    {
+        @Html.ActionLink("Make multivariant", "MakeMultiVariant", "Product", new { id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+        @Html.ActionLink("Add price break", "Add", "PriceBreak", new { id = Model.Id, type = "Product" }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+    }
+</div>
