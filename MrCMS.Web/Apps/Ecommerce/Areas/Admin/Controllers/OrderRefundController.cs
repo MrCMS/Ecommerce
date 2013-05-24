@@ -23,28 +23,35 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Add(int orderID)
+        public ViewResult Add(int orderID)
         {
             OrderRefund orderRefund = new OrderRefund();
             orderRefund.Order = _orderService.Get(orderID);
             orderRefund.Amount = orderRefund.Order.Total;
             orderRefund.User = CurrentRequestData.CurrentUser;
-            return PartialView(orderRefund);
+            return View(orderRefund);
         }
 
         [ActionName("Add")]
         [HttpPost]
-        public RedirectToRouteResult Add_POST(OrderRefund orderRefund)
+        public ActionResult Add_POST(OrderRefund orderRefund)
         {
             if (orderRefund.Order != null)
             {
-                if (orderRefund.Amount <= orderRefund.Order.TotalAfterRefunds)
+                if (orderRefund.Amount > orderRefund.Order.TotalAfterRefunds)
+                {
+                    ModelState.AddModelError("Amount", "Refund Amount must be equal or less than Total Amount after previous refunds.");
+                }
+                if (ModelState.IsValid)
                 {
                     orderRefund.Order.OrderRefunds.Add(orderRefund);
                     _orderRefundService.Save(orderRefund);
+                    return RedirectToAction("Edit", "Order", new { id = orderRefund.Order.Id });
                 }
-
-                return RedirectToAction("Edit", "Order", new { id = orderRefund.Order.Id });
+                else
+                {
+                    return View(orderRefund);
+                }
             }
             else
             {

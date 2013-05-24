@@ -3,8 +3,6 @@
 <div class="tab-pane" id="order-lines">
         <div class="row-fluid">
        <div class="span12">
-        <a href="@Url.Action("Add","OrderLine",new { orderID = Model.Id })" class="btn btn-primary" data-toggle="fb-modal">Add Order Line</a>
-           <br />   <br />
             @if (Model.OrderLines.Count == 0)
         {
             @:No lines.
@@ -47,30 +45,29 @@
                 @item.ProductVariant.SKU
                 </td>
                 <td>
-                    @item.Quantity
+                    @item.Quantity.ToString("n2")
                 </td>
                 <td>
-                    @item.UnitPrice
+                    @item.UnitPrice.ToString("n2")
                 </td>
                 <td>
-                    @item.Subtotal
+                    @item.Subtotal.ToString("n2")
                 </td>
                 <td>
-                    @item.Tax
+                    @item.Tax.ToString("n2")
                 </td>
                  <td>
-                    @item.TaxRate
+                    @item.TaxRate.ToString("n2")
                 </td>
                  <td>
-                    @item.Discount
+                    @item.Discount.ToString("n2")
                 </td>
                  <td>
-                    @item.Weight
+                    @item.Weight.ToString("n2")
                 </td>
                 <td>
                     <div class="btn-group">
-                        @Html.ActionLink("Edit", "Edit", "OrderLine" , new { id = item.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                        @Html.ActionLink("Delete", "Delete", "OrderLine" , new { id = item.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
+                        @Html.ActionLink("Edit", "Edit", "OrderLine" , new { id = item.Id }, new { @class = "btn btn-mini" })
                     </div>
                 </td>
             </tr>

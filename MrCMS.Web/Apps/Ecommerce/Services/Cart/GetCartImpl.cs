@@ -27,6 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                            UserGuid = CurrentRequestData.UserGuid,
                            Items = GetItems(),
                            ShippingAddress = GetShippingAddress(),
+                           BillingAddress = GetBillingAddress(),
                            ShippingMethod = GetShippingMethod()
                        };
         }
@@ -44,6 +45,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             return CurrentRequestData.CurrentContext.Session != null
                        ? CurrentRequestData.CurrentContext.Session["current.shipping-address"] as Address
+                       : null;
+        }
+
+        private Address GetBillingAddress()
+        {
+            return CurrentRequestData.CurrentContext.Session != null
+                       ? CurrentRequestData.CurrentContext.Session["current.billing-address"] as Address
                        : null;
         }
 

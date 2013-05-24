@@ -10,7 +10,7 @@
     <fieldset>
         <legend>Brands
             <span class="btn-group  display-inline  pull-right">
-                <a href="@Url.Action("Add", "Brand")" class="btn btn-success"  data-toggle="fb-modal">Add Brand</a>
+                <a href="@Url.Action("Add", "Brand")" class="btn btn-primary"  data-toggle="fb-modal">Add Brand</a>
             </span>
         </legend>
 
@@ -18,7 +18,7 @@
             @using (Html.BeginForm("Index", "Brand", FormMethod.Get))
             {
                 <input type="text" class="search-query" placeholder="Search" id="searchParam" name="q" value="@ViewData["query"]" />
-                <input type="submit" class="btn btn-primary btn-mini" value="Search" />
+                <input type="submit" class="btn btn-primary btn-success" value="Search" />
             }
         </div>
         <hr />
