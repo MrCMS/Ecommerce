@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -24,7 +25,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult Add(Product product)
         {
             ViewData["taxrates"] = _taxRateManager.GetOptions();
-            return PartialView(new ProductVariant {Product = product});
+            return
+                PartialView(new ProductVariant
+                                {
+                                    Product = product,
+                                    AttributeValues =
+                                        Enumerable.Range(0, product.AttributeOptions.Count)
+                                                  .Select(i => new ProductAttributeValue()).ToList()
+                                });
         }
 
         [ActionName("Add")]

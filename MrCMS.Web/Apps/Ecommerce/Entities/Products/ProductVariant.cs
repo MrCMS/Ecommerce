@@ -10,11 +10,12 @@ using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 {
-    public class ProductVariant : SiteEntity, ICanAddToCart
+    public class ProductVariant : SiteEntity, IBuyableItem
     {
         public ProductVariant()
         {
             AttributeValues = new List<ProductAttributeValue>();
+            PriceBreaks = new List<PriceBreak>();
         }
         [DisplayName("Price Pre Tax")]
         public virtual decimal PricePreTax
@@ -29,6 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual decimal Weight { get; set; }
         public virtual string Name { get { return Product.Name; } }
+        public virtual string EditUrl { get { return Product.EditUrl; } }
 
         [DisplayName("Price")]
         public virtual decimal BasePrice { get; set; }
@@ -110,5 +112,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual Product Product { get; set; }
 
         public virtual IList<ProductAttributeValue> AttributeValues { get; set; }
+        public virtual IList<PriceBreak> PriceBreaks { get; set; }
     }
 }
