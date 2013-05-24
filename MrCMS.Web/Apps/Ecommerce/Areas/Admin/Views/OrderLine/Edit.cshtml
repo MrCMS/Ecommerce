@@ -1,12 +1,18 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.OrderLine
 
-@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@{
+    ViewBag.Title = "Edit Order Line";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}    
 @using (Html.BeginForm("Edit", "OrderLine", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Edit Order Line</h3>
-    </div>
-    <div class="modal-body">
+        <fieldset>
+        <legend>Edit Order Line
+                <span class="btn-group  display-inline  pull-right">
+                     <input type="submit" class="btn-primary btn" value="Update Order Line" />
+                </span>
+        </legend>
+    </fieldset>
         @Html.HiddenFor(x => x.Id)
         @Html.HiddenFor(x => x.Order.Id)
 
@@ -14,10 +20,10 @@
         @Html.DropDownList("ProductID",ViewData["products"] as IEnumerable<SelectListItem>)
         @Html.LabelFor(x => x.Quantity)
         @Html.TextBoxFor(x => x.Quantity)
+        <span class="text-error">
+        @Html.ValidationMessageFor(x => x.Quantity)</span>
         @Html.LabelFor(x => x.Discount)
         @Html.TextBoxFor(x => x.Discount)
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Save Changes" />
-    </div>
+        <span class="text-error">
+        @Html.ValidationMessageFor(x => x.Discount)</span>
 }

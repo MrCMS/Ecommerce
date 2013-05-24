@@ -29,11 +29,11 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void OrderRefundController_Add_ReturnsPartialViewResult()
+        public void OrderRefundController_Add_ReturnsViewResult()
         {
             var add = _orderRefundController.Add(1);
 
-            add.Should().BeOfType<PartialViewResult>();
+            add.Should().BeOfType<ViewResult>();
         }
 
         [Fact]
@@ -53,19 +53,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             var add = _orderRefundController.Add_POST(item);
 
             A.CallTo(() => _orderRefundService.Save(item)).MustHaveHappened();
-        }
-
-        [Fact]
-        public void OrderRefundController_AddPOST_RedirectsToEditOrderForTheIdOfOrder()
-        {
-            var orderRefund = new OrderRefund();
-            orderRefund.Order = new Order { Id = 1 };
-
-            var add = _orderRefundController.Add_POST(orderRefund);
-
-            add.RouteValues["action"].Should().Be("Edit");
-            add.RouteValues["controller"].Should().Be("Order");
-            add.RouteValues["id"].Should().Be(1);
         }
 
         [Fact]
