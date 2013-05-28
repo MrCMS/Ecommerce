@@ -26,7 +26,7 @@ namespace MrCMS.EcommerceApp.Tests.Pages.ProductTests
                                                 {
                                                     Value = "value",
                                                     Option =
-                                                        new ProductSpecificationOption
+                                                        new ProductSpecificationAttribute
                                                             {
                                                                 Name = "Test"
                                                             }

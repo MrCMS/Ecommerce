@@ -50,7 +50,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             Session.QueryOver<ProductSpecificationValue>().List().First().Value.Should().Be("Updated Value");
         }
 
-        private ProductSpecificationValue CreateValue(Product product, ProductSpecificationOption option, string value)
+        private ProductSpecificationValue CreateValue(Product product, ProductSpecificationAttribute option, string value)
         {
             var specValue = new ProductSpecificationValue
                                 {
@@ -62,9 +62,9 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             return specValue;
         }
 
-        private ProductSpecificationOption CreateOption(string name)
+        private ProductSpecificationAttribute CreateOption(string name)
         {
-            var option = new ProductSpecificationOption {Name = name};
+            var option = new ProductSpecificationAttribute {Name = name};
             Session.Transact(session => session.Save(option));
             return option;
         }

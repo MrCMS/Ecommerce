@@ -23,8 +23,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                         new ChildMenuItem("Products", "/Admin/Apps/Ecommerce/Product"),
                                                         new ChildMenuItem("Categories", "/Admin/Apps/Ecommerce/Category"),
                                                         new ChildMenuItem("Brands", "/Admin/Apps/Ecommerce/Brand"),
-                                                        new ChildMenuItem("Product Specification Options",
-                                                                          "/Admin/Apps/Ecommerce/ProductSpecificationOption"),
+                                                        new ChildMenuItem("Product Specification Attributes",
+                                                                          "/Admin/Apps/Ecommerce/ProductSpecificationAttribute"),
                                                         new ChildMenuItem("Discounts", "/Admin/Apps/Ecommerce/Discount"),
                                                         new ChildMenuItem("Orders", "/Admin/Apps/Ecommerce/Order"),
                                                     }
