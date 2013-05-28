@@ -7,18 +7,18 @@ using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
-    public class ProductSpecificationOptionController : MrCMSAppAdminController<EcommerceApp>
+    public class ProductSpecificationAttributeController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly IProductOptionManager _productOptionManager;
 
-        public ProductSpecificationOptionController(IProductOptionManager productOptionManager)
+        public ProductSpecificationAttributeController(IProductOptionManager productOptionManager)
         {
             _productOptionManager = productOptionManager;
         }
 
         public ViewResult Index()
         {
-            var options = _productOptionManager.ListSpecificationOptions();
+            var options = _productOptionManager.ListSpecificationAttributes();
             return View(options);
         }
 
@@ -29,37 +29,37 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public RedirectToRouteResult Add(ProductSpecificationOption option)
+        public RedirectToRouteResult Add(ProductSpecificationAttribute option)
         {
-            _productOptionManager.AddSpecificationOption(option);
+            _productOptionManager.AddSpecificationAttribute(option);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public PartialViewResult Edit(ProductSpecificationOption option)
+        public PartialViewResult Edit(ProductSpecificationAttribute option)
         {
             return PartialView(option);
         }
 
         [ActionName("Edit")]
         [HttpPost]
-        public RedirectToRouteResult Edit_POST(ProductSpecificationOption option)
+        public RedirectToRouteResult Edit_POST(ProductSpecificationAttribute option)
         {
-            _productOptionManager.UpdateSpecificationOption(option);
+            _productOptionManager.UpdateSpecificationAttribute(option);
             return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public PartialViewResult Delete(ProductSpecificationOption option)
+        public PartialViewResult Delete(ProductSpecificationAttribute option)
         {
             return PartialView(option);
         }
 
         [ActionName("Delete")]
         [HttpPost]
-        public RedirectToRouteResult Delete_POST(ProductSpecificationOption option)
+        public RedirectToRouteResult Delete_POST(ProductSpecificationAttribute option)
         {
-            _productOptionManager.DeleteSpecificationOption(option);
+            _productOptionManager.DeleteSpecificationAttribute(option);
             return RedirectToAction("Index");
         }
     }

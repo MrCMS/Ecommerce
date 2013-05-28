@@ -11,14 +11,14 @@ using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
-    public class ProductSpecificationOptionControllerTests
+    public class ProductSpecificationAttributeControllerTests
     {
         private IProductOptionManager _productOptionManager;
 
         [Fact]
-        public void ProductSpecificationOptionController_Index_ReturnsAViewResult()
+        public void ProductSpecificationAttributeController_Index_ReturnsAViewResult()
         {
-            var controller = GetProductSpecificationOptionController();
+            var controller = GetProductSpecificationAttributeController();
 
             var index = controller.Index();
 
@@ -26,31 +26,31 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_Index_CallsProductOptionManagerListSpecificationOptions()
+        public void ProductSpecificationAttributeController_Index_CallsProductOptionManagerListSpecificationAttributes()
         {
-            var controller = GetProductSpecificationOptionController();
+            var controller = GetProductSpecificationAttributeController();
             
            controller.Index();
 
-            A.CallTo(() => _productOptionManager.ListSpecificationOptions()).MustHaveHappened();
+            A.CallTo(() => _productOptionManager.ListSpecificationAttributes()).MustHaveHappened();
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_Index_ReturnsTheResultOfTheProductOptionManagerCall()
+        public void ProductSpecificationAttributeController_Index_ReturnsTheResultOfTheProductOptionManagerCall()
         {
-            var controller = GetProductSpecificationOptionController();
-            var productSpecificationOptions = new List<ProductSpecificationOption>();
-            A.CallTo(() => _productOptionManager.ListSpecificationOptions()).Returns(productSpecificationOptions);
+            var controller = GetProductSpecificationAttributeController();
+            var productSpecificationAttributes = new List<ProductSpecificationAttribute>();
+            A.CallTo(() => _productOptionManager.ListSpecificationAttributes()).Returns(productSpecificationAttributes);
 
             var index = controller.Index();
 
-            index.Model.Should().Be(productSpecificationOptions);
+            index.Model.Should().Be(productSpecificationAttributes);
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_AddGet_ReturnsAPartialViewResult()
+        public void ProductSpecificationAttributeController_AddGet_ReturnsAPartialViewResult()
         {
-            var controller = GetProductSpecificationOptionController();
+            var controller = GetProductSpecificationAttributeController();
 
             var addGet = controller.Add();
 
@@ -58,21 +58,21 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_Add_CallsAddOnTheProductOptionManager()
+        public void ProductSpecificationAttributeController_Add_CallsAddOnTheProductOptionManager()
         {
-            var controller = GetProductSpecificationOptionController();
-            var option = new ProductSpecificationOption();
+            var controller = GetProductSpecificationAttributeController();
+            var option = new ProductSpecificationAttribute();
 
             var add = controller.Add(option);
 
-            A.CallTo(() => _productOptionManager.AddSpecificationOption(option)).MustHaveHappened();
+            A.CallTo(() => _productOptionManager.AddSpecificationAttribute(option)).MustHaveHappened();
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_Add_ReturnsRedirectToRouteResult()
+        public void ProductSpecificationAttributeController_Add_ReturnsRedirectToRouteResult()
         {
-            var controller = GetProductSpecificationOptionController();
-            var option = new ProductSpecificationOption();
+            var controller = GetProductSpecificationAttributeController();
+            var option = new ProductSpecificationAttribute();
 
             var add = controller.Add(option);
 
@@ -80,10 +80,10 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_Add_ReturnsRedirectToIndex()
+        public void ProductSpecificationAttributeController_Add_ReturnsRedirectToIndex()
         {
-            var controller = GetProductSpecificationOptionController();
-            var option = new ProductSpecificationOption();
+            var controller = GetProductSpecificationAttributeController();
+            var option = new ProductSpecificationAttribute();
 
             var add = controller.Add(option);
 
@@ -91,10 +91,10 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_EditGet_ReturnsAPartialViewResult()
+        public void ProductSpecificationAttributeController_EditGet_ReturnsAPartialViewResult()
         {
-            var controller = GetProductSpecificationOptionController();
-            var option = new ProductSpecificationOption();
+            var controller = GetProductSpecificationAttributeController();
+            var option = new ProductSpecificationAttribute();
 
             var edit = controller.Edit(option);
 
@@ -102,10 +102,10 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_EditGet_ReturnsThePassedOptionAsViewModel()
+        public void ProductSpecificationAttributeController_EditGet_ReturnsThePassedOptionAsViewModel()
         {
-            var controller = GetProductSpecificationOptionController();
-            var option = new ProductSpecificationOption();
+            var controller = GetProductSpecificationAttributeController();
+            var option = new ProductSpecificationAttribute();
 
             var edit = controller.Edit(option);
 
@@ -113,21 +113,21 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_EditPost_CallsUpdateOptionOnTheManager()
+        public void ProductSpecificationAttributeController_EditPost_CallsUpdateOptionOnTheManager()
         {
-            var controller = GetProductSpecificationOptionController();
-            var option = new ProductSpecificationOption();
+            var controller = GetProductSpecificationAttributeController();
+            var option = new ProductSpecificationAttribute();
 
             var editPost = controller.Edit_POST(option);
 
-            A.CallTo(() => _productOptionManager.UpdateSpecificationOption(option)).MustHaveHappened();
+            A.CallTo(() => _productOptionManager.UpdateSpecificationAttribute(option)).MustHaveHappened();
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_EditPost_ReturnsRedirectToRouteResult()
+        public void ProductSpecificationAttributeController_EditPost_ReturnsRedirectToRouteResult()
         {
-            var controller = GetProductSpecificationOptionController();
-            var option = new ProductSpecificationOption();
+            var controller = GetProductSpecificationAttributeController();
+            var option = new ProductSpecificationAttribute();
 
             var editPost = controller.Edit_POST(option);
 
@@ -135,10 +135,10 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_EditPost_RedirectsToIndex()
+        public void ProductSpecificationAttributeController_EditPost_RedirectsToIndex()
         {
-            var controller = GetProductSpecificationOptionController();
-            var option = new ProductSpecificationOption();
+            var controller = GetProductSpecificationAttributeController();
+            var option = new ProductSpecificationAttribute();
 
             var editPost = controller.Edit_POST(option);
 
@@ -146,10 +146,10 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_Delete_ReturnsPartialViewResult()
+        public void ProductSpecificationAttributeController_Delete_ReturnsPartialViewResult()
         {
-            var controller = GetProductSpecificationOptionController();
-            var option = new ProductSpecificationOption();
+            var controller = GetProductSpecificationAttributeController();
+            var option = new ProductSpecificationAttribute();
 
             var delete = controller.Delete(option);
 
@@ -157,10 +157,10 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_Delete_ReturnsOptionAsModel()
+        public void ProductSpecificationAttributeController_Delete_ReturnsOptionAsModel()
         {
-            var controller = GetProductSpecificationOptionController();
-            var option = new ProductSpecificationOption();
+            var controller = GetProductSpecificationAttributeController();
+            var option = new ProductSpecificationAttribute();
             
             var delete = controller.Delete(option);
 
@@ -168,21 +168,21 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_DeletePOST_CallsDeleteOption()
+        public void ProductSpecificationAttributeController_DeletePOST_CallsDeleteOption()
         {
-            var controller = GetProductSpecificationOptionController();
-            var option = new ProductSpecificationOption();
+            var controller = GetProductSpecificationAttributeController();
+            var option = new ProductSpecificationAttribute();
             
             var delete = controller.Delete_POST(option);
 
-            A.CallTo(() => _productOptionManager.DeleteSpecificationOption(option)).MustHaveHappened();
+            A.CallTo(() => _productOptionManager.DeleteSpecificationAttribute(option)).MustHaveHappened();
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_DeletePOST_ReturnsRedirectToRouteResult()
+        public void ProductSpecificationAttributeController_DeletePOST_ReturnsRedirectToRouteResult()
         {
-            var controller = GetProductSpecificationOptionController();
-            var option = new ProductSpecificationOption();
+            var controller = GetProductSpecificationAttributeController();
+            var option = new ProductSpecificationAttribute();
             
             var delete = controller.Delete_POST(option);
 
@@ -190,20 +190,20 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ProductSpecificationOptionController_DeletePOST_RedirectsToIndex()
+        public void ProductSpecificationAttributeController_DeletePOST_RedirectsToIndex()
         {
-            var controller = GetProductSpecificationOptionController();
-            var option = new ProductSpecificationOption();
+            var controller = GetProductSpecificationAttributeController();
+            var option = new ProductSpecificationAttribute();
             
             var delete = controller.Delete_POST(option);
 
             delete.RouteValues["action"].Should().Be("Index");
         }
 
-        ProductSpecificationOptionController GetProductSpecificationOptionController()
+        ProductSpecificationAttributeController GetProductSpecificationAttributeController()
         {
             _productOptionManager = A.Fake<IProductOptionManager>();
-            return new ProductSpecificationOptionController(_productOptionManager);
+            return new ProductSpecificationAttributeController(_productOptionManager);
         }
     }
 }

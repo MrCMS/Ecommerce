@@ -1,0 +1,18 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationAttributeOption
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Add", "ProductSpecificationAttributeOption", FormMethod.Post))
+{
+    <div class="modal-header">
+        <h3>Add Product Specification Atrribute Option</h3>
+    </div>
+    <div class="modal-body">
+        @Html.HiddenFor(x => x.ProductSpecificationAttribute.Id)
+        @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name)
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Add Atrribute Option" />
+    </div>
+}

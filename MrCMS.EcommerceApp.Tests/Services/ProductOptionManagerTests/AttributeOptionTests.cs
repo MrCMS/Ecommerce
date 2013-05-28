@@ -50,7 +50,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             Session.Transact(session => session.Save(option));
             option.Name = "Updated";
 
-            productOptionManager.UpdateAttributeOptionn(option);
+            productOptionManager.UpdateAttributeOption(option);
 
             Session.Evict(option);
             Session.Get<ProductAttributeOption>(1).Name.Should().Be("Updated");
@@ -66,7 +66,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             Session.Transact(session => session.Save(option2));
             option.Name = "Test 2";
 
-            productOptionManager.UpdateAttributeOptionn(option);
+            productOptionManager.UpdateAttributeOption(option);
 
             Session.Evict(option);
             Session.Get<ProductAttributeOption>(1).Name.Should().Be("Test");
@@ -80,7 +80,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             Session.Transact(session => session.Save(option));
             option.Name = "";
 
-            productOptionManager.UpdateAttributeOptionn(option);
+            productOptionManager.UpdateAttributeOption(option);
 
             Session.Evict(option);
             Session.Get<ProductAttributeOption>(1).Name.Should().Be("Test");
