@@ -7,11 +7,11 @@
      @Html.HiddenFor(x => x.Id)
     <fieldset>
         <legend>Options for @Model.Name attribute
-        <span class="btn-group  display-inline  pull-right">
-            <a href="@Url.Action("Add", "ProductSpecificationAttributeOption", new { attributeId=Model.Id })" class="btn btn-primary"  data-toggle="fb-modal">Add Option</a>
-            <a href="@Url.Action("Sort", "ProductSpecificationAttributeOption", new { attributeId=Model.Id })" class="btn btn-warning" data-toggle="fb-modal">Sort Options</a>
-            <a href="@Url.Action("Index", "ProductSpecificationAttribute")" class="btn btn-success">Back to List of Specification Attributes</a>
-        </span>
+            <span class="btn-group  display-inline  pull-right">
+                <a href="@Url.Action("Index", "ProductSpecificationAttribute")" class="btn">Back</a>
+                <a href="@Url.Action("Sort", "ProductSpecificationAttributeOption", new { attributeId=Model.Id })" class="btn" data-toggle="fb-modal">Sort</a>
+                <a href="@Url.Action("Add", "ProductSpecificationAttributeOption", new { attributeId=Model.Id })" class="btn btn-primary"  data-toggle="fb-modal">Add Option</a>
+            </span>
         </legend>
         @if(Model.Options.Count>0)
         {
