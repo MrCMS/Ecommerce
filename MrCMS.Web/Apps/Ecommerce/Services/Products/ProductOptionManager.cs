@@ -33,15 +33,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             if (option == null || string.IsNullOrWhiteSpace(option.Name))
                 return;
-            if (AnyExistingAtrributesWithName(option))
-                return;
             _session.Transact(session => session.Save(option));
         }
 
         public void UpdateSpecificationAttribute(ProductSpecificationAttribute option)
         {
-            if (AnyExistingAtrributesWithName(option))
-                return;
             _session.Transact(session => session.Update(option));
         }
 
@@ -60,16 +56,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             if (option == null || string.IsNullOrWhiteSpace(option.Name))
                 return;
-            if (AnyExistingAtrributeOptionsWithName(option))
-                return;
             option.ProductSpecificationAttribute.Options.Add(option);
             _session.Transact(session => session.Save(option));
         }
 
         public void UpdateSpecificationAttributeOption(ProductSpecificationAttributeOption option)
         {
-            if (AnyExistingAtrributeOptionsWithName(option))
-                return;
             _session.Transact(session => session.Update(option));
         }
 
@@ -88,20 +80,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             _session.Transact(session => session.Delete(option));
         }
 
-        private bool AnyExistingAtrributesWithName(ProductSpecificationAttribute option)
+        public bool AnyExistingAtrributesWithName(string name)
         {
             return _session.QueryOver<ProductSpecificationAttribute>()
                            .Where(
                                specificationOption =>
-                               specificationOption.Name.IsInsensitiveLike(option.Name, MatchMode.Exact))
+                               specificationOption.Name.IsInsensitiveLike(name, MatchMode.Exact))
                            .RowCount() > 0;
         }
-        private bool AnyExistingAtrributeOptionsWithName(ProductSpecificationAttributeOption option)
+        public bool AnyExistingAtrributeOptionsWithName(string name, int id)
         {
             return _session.QueryOver<ProductSpecificationAttributeOption>()
                            .Where(
                                specificationOption =>
-                               specificationOption.Name.IsInsensitiveLike(option.Name, MatchMode.Exact) && specificationOption.ProductSpecificationAttribute.Id==option.ProductSpecificationAttribute.Id)
+                               specificationOption.Name.IsInsensitiveLike(name, MatchMode.Exact) && specificationOption.ProductSpecificationAttribute.Id == id)
                            .RowCount() > 0;
         }
         private bool AnyExistingOptionsWithName(ProductAttributeOption option)
