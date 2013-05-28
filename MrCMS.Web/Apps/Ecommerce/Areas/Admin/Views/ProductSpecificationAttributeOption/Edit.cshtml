@@ -7,9 +7,11 @@
     </div>
     <div class="modal-body">
         @Html.HiddenFor(x => x.Id)
+        @Html.Hidden("attributeId", Model.ProductSpecificationAttribute.Id)
         @Html.HiddenFor(x => x.ProductSpecificationAttribute.Id)
         @Html.LabelFor(x => x.Name)
         @Html.TextBoxFor(x => x.Name)
+        <br />
         @Html.ValidationMessageFor(x => x.Name)
     </div>
     <div class="modal-footer">

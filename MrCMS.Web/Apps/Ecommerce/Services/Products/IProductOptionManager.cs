@@ -13,12 +13,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void AddSpecificationAttribute(ProductSpecificationAttribute option);
         void UpdateSpecificationAttribute(ProductSpecificationAttribute option);
         void DeleteSpecificationAttribute(ProductSpecificationAttribute option);
+        bool AnyExistingAtrributesWithName(string name);
 
         IList<ProductSpecificationAttributeOption> ListSpecificationAttributeOptions(int id);
         void AddSpecificationAttributeOption(ProductSpecificationAttributeOption option);
         void UpdateSpecificationAttributeOption(ProductSpecificationAttributeOption option);
         void UpdateSpecificationAttributeOptionDisplayOrder(IList<SortItem> options);
         void DeleteSpecificationAttributeOption(ProductSpecificationAttributeOption option);
+        bool AnyExistingAtrributeOptionsWithName(string name, int id);
 
         void AddAttributeOption(ProductAttributeOption productAttributeOption);
         void UpdateAttributeOption(ProductAttributeOption option);
