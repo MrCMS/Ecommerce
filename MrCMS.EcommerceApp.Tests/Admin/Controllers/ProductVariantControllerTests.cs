@@ -27,7 +27,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductVariantController_Add_ReturnsAPartialViewResult()
         {
-            var add = _productVariantController.Add(null);
+            var add = _productVariantController.Add(new Product());
 
             add.Should().BeOfType<PartialViewResult>();
         }
