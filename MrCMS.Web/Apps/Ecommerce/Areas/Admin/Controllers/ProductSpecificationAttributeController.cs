@@ -29,10 +29,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public RedirectToRouteResult Add(ProductSpecificationAttribute option)
+        public ActionResult Add(ProductSpecificationAttribute option)
         {
-            _productOptionManager.AddSpecificationAttribute(option);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                _productOptionManager.AddSpecificationAttribute(option);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return PartialView(option);
+            }
         }
 
         [HttpGet]
@@ -43,10 +50,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Edit")]
         [HttpPost]
-        public RedirectToRouteResult Edit_POST(ProductSpecificationAttribute option)
+        public ActionResult Edit_POST(ProductSpecificationAttribute option)
         {
-            _productOptionManager.UpdateSpecificationAttribute(option);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                _productOptionManager.UpdateSpecificationAttribute(option);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return PartialView(option);
+            }
         }
 
         [HttpGet]
