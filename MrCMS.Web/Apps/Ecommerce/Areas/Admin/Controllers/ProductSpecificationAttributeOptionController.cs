@@ -23,24 +23,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         public ActionResult Index(int attributeId=0)
         {
-            if (attributeId != 0)
-            {
-                ProductSpecificationAttribute productSpecificationAttribute = _productOptionManager.GetSpecificationAttribute(attributeId);
-                if(productSpecificationAttribute!=null)
-                    return View(productSpecificationAttribute);
-            }
+            ProductSpecificationAttribute productSpecificationAttribute = _productOptionManager.GetSpecificationAttribute(attributeId);
+            if (productSpecificationAttribute != null)
+                return View(productSpecificationAttribute);
             return RedirectToAction("Index","ProductSpecificationAttribute");
         }
 
         [HttpGet]
         public ActionResult Add(int attributeId = 0)
         {
-            if (attributeId != 0)
-            {
-                ProductSpecificationAttribute productSpecificationAttribute = _productOptionManager.GetSpecificationAttribute(attributeId);
-                if (productSpecificationAttribute != null)
-                    return PartialView(new ProductSpecificationAttributeOption() { ProductSpecificationAttribute=productSpecificationAttribute });
-            }
+            ProductSpecificationAttribute productSpecificationAttribute = _productOptionManager.GetSpecificationAttribute(attributeId);
+            if (productSpecificationAttribute != null)
+                return PartialView(new ProductSpecificationAttributeOption() { ProductSpecificationAttribute=productSpecificationAttribute });
             return RedirectToAction("Index", "ProductSpecificationAttribute");
         }
 
@@ -100,18 +94,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Sort(int attributeId=0)
         {
-            if (attributeId != 0)
+            ProductSpecificationAttribute productSpecificationAttribute = _productOptionManager.GetSpecificationAttribute(attributeId);
+            if (productSpecificationAttribute != null)
             {
-                ProductSpecificationAttribute productSpecificationAttribute = _productOptionManager.GetSpecificationAttribute(attributeId);
-                if (productSpecificationAttribute != null)
-                {
-                    var sortItems = productSpecificationAttribute.Options.OrderBy(x => x.DisplayOrder)
-                                .Select(
-                                    arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Name })
-                                .ToList();
-                    ViewBag.ProductSpecificationAttribute = productSpecificationAttribute;
-                    return View(sortItems);
-                }
+                var sortItems = productSpecificationAttribute.Options.OrderBy(x => x.DisplayOrder)
+                            .Select(
+                                arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Name })
+                            .ToList();
+                ViewBag.ProductSpecificationAttribute = productSpecificationAttribute;
+                return View(sortItems);
             }
             return RedirectToAction("Index","ProductSpecificationAttribute");
         }

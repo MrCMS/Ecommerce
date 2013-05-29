@@ -24,12 +24,13 @@
                         </td>
                     </tr>
                 }
-                @if(Model.Count==0)
+                
+            </tbody>
+        </table>
+        @if(Model.Count==0)
                 {
                     <span>No categories to add to product.</span>
                 }
-            </tbody>
-        </table>
         @Html.Pager(Model, "AddCategory", i => new { page = i, id = product.Id })
     </div>
 </div>

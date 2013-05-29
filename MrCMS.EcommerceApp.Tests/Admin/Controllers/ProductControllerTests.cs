@@ -25,6 +25,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private ProductController _productController;
         private ICategoryService _categoryService;
         private readonly ITaxRateManager _taxRateManager;
+        private IProductOptionManager _productOptionManager;
 
         public ProductControllerTests()
         {
@@ -33,7 +34,8 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             A.CallTo(() => _documentService.GetUniquePage<ProductSearch>()).Returns(_productSearch);
             _productService = A.Fake<IProductService>();
             _categoryService = A.Fake<ICategoryService>();
-            _productController = new ProductController(_productService, _documentService, _categoryService, _taxRateManager);
+            _productOptionManager = A.Fake<IProductOptionManager>();
+            _productController = new ProductController(_productService, _documentService, _categoryService, _taxRateManager, _productOptionManager);
         }
 
         [Fact]

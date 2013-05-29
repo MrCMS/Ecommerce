@@ -369,6 +369,7 @@
     <Content Include="Apps\Core\Content\Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Apps\Core\Content\Scripts\respond.min.js" />
     <Content Include="Apps\Core\Content\Styles\style.css" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\specification-attributes.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-discount.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-product.js" />
@@ -1201,6 +1202,9 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductSpecificationAttributeOption\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductSpecificationAttributeOption\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductSpecificationAttributeOption\Sort.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddSpecification.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\RemoveSpecification.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortSpecifications.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

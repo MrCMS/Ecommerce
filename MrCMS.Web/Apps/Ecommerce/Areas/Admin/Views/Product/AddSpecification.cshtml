@@ -1,0 +1,31 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationValue
+@{ 
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+    var product = ViewData["product"] as Product;
+}
+<div class="modal-header">
+    <h3>Add Specifications to Product</h3>
+</div>
+<div class="modal-body">
+    <div id="categories">
+        @Html.Hidden("ProductId",Model.Product.Id)
+        @if((ViewData["specification-attributes"] as IEnumerable<SelectListItem>).Count()>0)
+        {
+     @Html.DisplayTextFor(x=>x.Option)
+    @Html.DropDownListFor(x=>x.Option, ViewData["specification-attributes"] as IEnumerable<SelectListItem>)
+        <br />
+         @Html.DisplayTextFor(x=>x.Value)
+     @Html.DropDownListFor(x=>x.Value, ViewData["specification-attributes-options"] as IEnumerable<SelectListItem>)
+        }
+        else
+        {
+            <span>There are no specification attributes for adding. </span>
+        }
+    </div>
+</div>
+<div class="modal-footer">
+    <button id="close" class="btn-primary btn">Save & Close</button>
+</div>
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/specification-attributes.js"); }

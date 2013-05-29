@@ -6,7 +6,11 @@ using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Website.Controllers;
-
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using MrCMS.Models;
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class ProductController : MrCMSAppAdminController<EcommerceApp>
@@ -15,13 +19,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IDocumentService _documentService;
         private readonly ICategoryService _categoryService;
         private readonly ITaxRateManager _taxRateManager;
+        private readonly IProductOptionManager _productOptionManager;
 
-        public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService, ITaxRateManager taxRateManager)
+        public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService, ITaxRateManager taxRateManager, 
+            IProductOptionManager productOptionManager)
         {
             _productService = productService;
             _documentService = documentService;
             _categoryService = categoryService;
             _taxRateManager = taxRateManager;
+            _productOptionManager = productOptionManager;
         }
 
         /// <summary>
@@ -94,6 +101,99 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _productService.RemoveCategory(product, categoryId);
 
             return RedirectToAction("Edit", "Webpage", new { id = product.Id });
+        }
+
+        [HttpGet]
+        public PartialViewResult AddSpecification(Product product)
+        {
+            ViewData["product"] = product;
+            List<ProductSpecificationAttribute> attributes=_productOptionManager.ListSpecificationAttributes().ToList().Where(x=>x.Options.Count()>0 
+                && product.SpecificationValues.Where(v=>v.Option.Id==x.Id).Count()==0).ToList();
+
+            ViewData["specification-attributes"] = new SelectList(attributes, "Id", "Name");
+            ViewData["specification-attributes-options"] = new SelectList(attributes.Count() > 0 ? attributes.First().Options : new List<ProductSpecificationAttributeOption>(), "Id", "Name");
+            return PartialView(new ProductSpecificationValue() { Product=product });
+        }
+
+        [HttpGet]
+        public JsonResult GetSpecificationAttributeOptions(int specificationAttributeId = 0)
+        {
+            try
+            {
+                List<SelectListItem> options = new List<SelectListItem>();
+                foreach (var item in _productOptionManager.GetSpecificationAttribute(specificationAttributeId).Options.OrderBy(x => x.DisplayOrder).ToList())
+                {
+                    options.Add(new SelectListItem() { Selected=false, Text=item.Name, Value=item.Id.ToString() });
+                }
+                return Json(options);
+            }
+            catch
+            {
+                return Json(false);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult AddSpecification(string Value, int Option=0,int ProductId=0)
+        {
+            try
+            {
+                _productOptionManager.SetSpecificationValue(_productService.Get(ProductId), _productOptionManager.GetSpecificationAttribute(Option), Value);
+                return Json(true);
+            }
+            catch
+            {
+                return Json(false);
+            }
+        }
+
+        [HttpGet]
+        public PartialViewResult RemoveSpecification(Product product, int specificationValueId)
+        {
+            ViewData["specification-value"] = _productOptionManager.GetSpecificationValue(specificationValueId);
+            return PartialView(product);
+        }
+
+        [HttpPost]
+        [ActionName("RemoveSpecification")]
+        public RedirectToRouteResult RemoveSpecification_POST(Product product, int specificationValueId)
+        {
+            _productOptionManager.DeleteSpecificationValue(_productOptionManager.GetSpecificationValue(specificationValueId));
+
+            return RedirectToAction("Edit", "Webpage", new { id = product.Id });
+        }
+
+        [HttpGet]
+        public ActionResult SortSpecifications(int productId = 0)
+        {
+            if (productId != 0)
+            {
+                Product product = _productService.Get(productId);
+                if (product != null)
+                {
+                    var sortItems = product.SpecificationValues.OrderBy(x => x.DisplayOrder)
+                                .Select(
+                                    arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Option.Name })
+                                .ToList();
+                    ViewBag.Product = product;
+                    return View(sortItems);
+                }
+            }
+            return RedirectToAction("Edit", "Webpage", new { id = productId });
+        }
+
+        [HttpPost]
+        public ActionResult SortSpecifications(List<SortItem> items, int productId = 0)
+        {
+            if (productId != 0)
+            {
+                if (items != null && items.Count > 0)
+                {
+                    _productOptionManager.UpdateSpecificationValueDisplayOrder(items);
+                }
+                return RedirectToAction("Edit", "Webpage", new { id = productId });
+            }
+            return RedirectToAction("Edit", "Webpage", new { id = productId });
         }
 
         public PartialViewResult PricingButtons(Product product)
