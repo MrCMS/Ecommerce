@@ -7,6 +7,9 @@ using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 using MrCMS.Helpers;
+using MrCMS.Website;
+using MrCMS.Entities.People;
+using FakeItEasy;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
 {
@@ -19,18 +22,6 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             var option = new ProductSpecificationAttribute { Name = "test" };
 
             productOptionManager.AddSpecificationAttribute(option);
-
-            Session.QueryOver<ProductSpecificationAttribute>().List().Should().HaveCount(1);
-        }
-
-        [Fact]
-        public void ProductOptionManager_AddSpecificationAttribute_DoesNotSaveIfExistingOptionWithSameName()
-        {
-            var productOptionManager = GetProductOptionManager();
-            var option1 = new ProductSpecificationAttribute { Name = "Test" };
-            Session.Transact(session => session.Save(option1));
-
-            productOptionManager.AddSpecificationAttribute(new ProductSpecificationAttribute { Name = "Test" });
 
             Session.QueryOver<ProductSpecificationAttribute>().List().Should().HaveCount(1);
         }
@@ -57,25 +48,6 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
 
             Session.Evict(option);
             Session.Get<ProductSpecificationAttribute>(1).Name.Should().Be("Updated");
-        }
-
-        [Fact]
-        public void ProductOptionManager_UpdateSpecificationAttribute_ShouldNotSaveChangesIfOptionAlreadyHasThatName()
-        {
-            var productOptionManager = GetProductOptionManager();
-            var option = new ProductSpecificationAttribute { Name = "Test" };
-            var option2 = new ProductSpecificationAttribute { Name = "Updated" };
-            Session.Transact(session =>
-                                 {
-                                     session.Save(option);
-                                     session.Save(option2);
-                                 });
-            option.Name = "Updated";
-
-            productOptionManager.UpdateSpecificationAttribute(option);
-
-            Session.Evict(option);
-            Session.Get<ProductSpecificationAttribute>(1).Name.Should().Be("Test");
         }
 
         [Fact]

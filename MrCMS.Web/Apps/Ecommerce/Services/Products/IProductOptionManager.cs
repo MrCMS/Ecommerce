@@ -27,7 +27,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         IList<ProductAttributeOption> ListAttributeOptions();
         void DeleteAttributeOption(ProductAttributeOption option);
 
-        void SetSpecificationValue(Product product, string optionName, string value);
         void SetAttributeValue(ProductVariant productVariant, string attributeName, string value);
+        void SetSpecificationValue(Product product, ProductSpecificationAttribute productSpecificationAttribute, string Value);
+        void DeleteSpecificationValue(ProductSpecificationValue specification);
+        void UpdateSpecificationValueDisplayOrder(IList<SortItem> options);
+        ProductSpecificationValue GetSpecificationValue(int id);
     }
 }

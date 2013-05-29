@@ -80,17 +80,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ProductSpecificationAttributeController_Add_ReturnsRedirectToIndex()
-        {
-            var controller = GetProductSpecificationAttributeController();
-            var option = new ProductSpecificationAttribute();
-
-            var add = controller.Add(option);
-
-            add.RouteValues["action"].Should().Be("Index");
-        }
-
-        [Fact]
         public void ProductSpecificationAttributeController_EditGet_ReturnsAPartialViewResult()
         {
             var controller = GetProductSpecificationAttributeController();
@@ -132,17 +121,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             var editPost = controller.Edit_POST(option);
 
             editPost.Should().BeOfType<RedirectToRouteResult>();
-        }
-
-        [Fact]
-        public void ProductSpecificationAttributeController_EditPost_RedirectsToIndex()
-        {
-            var controller = GetProductSpecificationAttributeController();
-            var option = new ProductSpecificationAttribute();
-
-            var editPost = controller.Edit_POST(option);
-
-            editPost.RouteValues["action"].Should().Be("Index");
         }
 
         [Fact]
