@@ -58,36 +58,21 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void CountryController_Add_ShouldCallCountyServiceGetCountriesToAdd()
-        {
-            var add = _countryController.Add();
-
-            A.CallTo(() => _countryService.GetCountriesToAdd()).MustHaveHappened();
-        }
-
-        [Fact]
-        public void CountryController_Add_ReturnsCountriesToAddAsModel()
-        {
-            var selectListItems = new List<SelectListItem>();
-            A.CallTo(() => _countryService.GetCountriesToAdd()).Returns(selectListItems);
-
-            var add = _countryController.Add();
-
-            add.Model.Should().Be(selectListItems);
-        }
-
-        [Fact]
         public void CountryController_AddPost_CallsAddCountryWithPassedValue()
         {
-            _countryController.Add_POST("GB");
+            var country = new Country() { Name = "Great Britain", ISOTwoLetterCode = "GB" };
 
-            A.CallTo(() => _countryService.AddCountry("GB")).MustHaveHappened();
+            _countryController.Add_POST(country);
+
+            A.CallTo(() => _countryService.AddCountry(country.Name)).MustHaveHappened();
         }
 
         [Fact]
         public void CountryController_AddPost_ReturnsRedirectToIndex()
         {
-            var result = _countryController.Add_POST("GB");
+            var country = new Country() { Name = "Great Britain", ISOTwoLetterCode = "GB" };
+
+            var result = _countryController.Add_POST(country);
 
             result.RouteValues["action"].Should().Be("Index");
         }

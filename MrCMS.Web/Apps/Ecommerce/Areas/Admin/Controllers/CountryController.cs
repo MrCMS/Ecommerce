@@ -26,15 +26,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult Add()
         {
-            var countriesToAdd = _countryService.GetCountriesToAdd();
-            return PartialView(countriesToAdd);
+            //ADDING COUNTRIES FROM STATIC LIST
+            //var countriesToAdd = _countryService.GetCountriesToAdd();
+            //return PartialView(countriesToAdd);
+            return PartialView();
         }
 
         [HttpPost]
         [ActionName("Add")]
-        public RedirectToRouteResult Add_POST(string countryCode)
+        public RedirectToRouteResult Add_POST(Country country)
         {
-            _countryService.AddCountry(countryCode);
+            _countryService.AddCountry(country.Name);
             return RedirectToAction("Index");
         }
 
@@ -68,6 +70,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-       
+        public JsonResult IsUniqueCountry(string name, int Id=0)
+        {
+            if (_countryService.AnyExistingCountriesWithName(name, Id))
+                return Json("There is already a country stored with that name.", JsonRequestBehavior.AllowGet);
+            else
+                return Json(true, JsonRequestBehavior.AllowGet);
+        }
     }
 }

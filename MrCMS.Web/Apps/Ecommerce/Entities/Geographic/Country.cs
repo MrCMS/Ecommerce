@@ -2,6 +2,9 @@
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
+using System.ComponentModel;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Geographic
 {
@@ -14,7 +17,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Geographic
             ShippingCalculations = new List<ShippingCalculation>();
         }
 
+        [Required]
+        [Remote("IsUniqueCountry", "Country", AdditionalFields="Id")]
         public virtual string Name { get; set; }
+        [Required]
+        [DisplayName("ISO Code (2 letters)")]
         public virtual string ISOTwoLetterCode { get; set; }
         public virtual int DisplayOrder { get; set; }
 

@@ -6,6 +6,7 @@ using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using NHibernate;
+using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Geographic
 {
@@ -28,6 +29,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Geographic
             return _session.QueryOver<Country>().Where(x => x.Id == CountryId).Cacheable().SingleOrDefault();
         }
 
+        public bool AnyExistingCountriesWithName(string name, int id=0)
+        {
+            if (id != 0 && Get(id).Name.Trim().ToLower() == name.Trim().ToLower())
+            {
+                return false;
+            }
+            else
+                return _session.QueryOver<Country>().Where(x => x.Name.IsInsensitiveLike(name, MatchMode.Exact)).RowCount() > 0;
+        }
+
         public List<SelectListItem> GetCountriesToAdd()
         {
             return
@@ -38,9 +49,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Geographic
 
         public void AddCountry(string countryCode)
         {
+            //_session.Transact(
+            //    session =>
+            //    session.Save(new Country {ISOTwoLetterCode = countryCode, Name = CountryIsoCodeAndNames[countryCode]}));
             _session.Transact(
-                session =>
-                session.Save(new Country {ISOTwoLetterCode = countryCode, Name = CountryIsoCodeAndNames[countryCode]}));
+               session =>
+               session.Save(new Country { Name = countryCode }));
         }
 
         public void Save(Country country)

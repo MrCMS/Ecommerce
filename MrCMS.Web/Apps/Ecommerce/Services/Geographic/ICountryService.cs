@@ -14,5 +14,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Geographic
         void Save(Country country);
         void Delete(Country country);
         List<SelectListItem> GetOptions();
+        bool AnyExistingCountriesWithName(string name, int id=0);
     }
 }
