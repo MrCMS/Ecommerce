@@ -7,6 +7,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Website.Controllers;
 using System.Collections.Generic;
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -14,41 +15,48 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     {
         private readonly IShippingCalculationManager _shippingCalculationManager;
         private readonly IShippingMethodManager _shippingMethodManager;
+        private readonly ICountryService _countryService;
 
-        public ShippingCalculationController(IShippingCalculationManager shippingCalculationManager, IShippingMethodManager shippingMethodManager)
+        public ShippingCalculationController(IShippingCalculationManager shippingCalculationManager, IShippingMethodManager shippingMethodManager, ICountryService countryService)
         {
             _shippingCalculationManager = shippingCalculationManager;
             _shippingMethodManager = shippingMethodManager;
+            _countryService = countryService;
         }
 
         public ViewResult Index()
         {
-            return View(_shippingMethodManager.GetAll());
+            return View(_countryService.GetAllCountries());
         }
 
         [HttpGet]
-        public ActionResult Add(ShippingMethod method)
+        public ActionResult Add(Country country)
         {
             ViewData["criterias"] = _shippingCalculationManager.GetCriteriaOptions();
-            var shippingCalculation = new ShippingCalculation { ShippingMethod = method };
+            ViewData["shipping-methods"] = _shippingMethodManager.GetOptions();
+            var shippingCalculation = new ShippingCalculation { Country=country};
             return PartialView(shippingCalculation);
         }
 
         [ActionName("Add")]
         [HttpPost]
-        public RedirectToRouteResult Add_POST(ShippingCalculation shippingCalculation)
+        public ActionResult Add_POST(ShippingCalculation shippingCalculation)
         {
-            if (shippingCalculation.ShippingMethod != null)
+            if (ModelState.IsValid)
             {
-                _shippingCalculationManager.Add(shippingCalculation);
+                if (shippingCalculation.ShippingMethod != null)
+                {
+                    _shippingCalculationManager.Add(shippingCalculation);
+                }
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            return PartialView(shippingCalculation);
         }
 
         [HttpGet]
         public PartialViewResult Edit(ShippingCalculation shippingCalculation)
         {
-            ViewData["shippingmethods"] = _shippingMethodManager.GetOptions();
+            ViewData["shipping-methods"] = _shippingMethodManager.GetOptions();
             ViewData["criterias"] = _shippingCalculationManager.GetCriteriaOptions();
 
             return PartialView(shippingCalculation);
@@ -56,14 +64,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Edit")]
         [HttpPost]
-        public RedirectToRouteResult Edit_POST(ShippingCalculation shippingCalculation)
+        public ActionResult Edit_POST(ShippingCalculation shippingCalculation)
         {
-            if (shippingCalculation.ShippingMethod != null)
+            if (ModelState.IsValid)
             {
-                _shippingCalculationManager.Update(shippingCalculation);
+                if (shippingCalculation.ShippingMethod != null)
+                {
+                    _shippingCalculationManager.Update(shippingCalculation);
+                }
+                return RedirectToAction("Index");
             }
-
-            return RedirectToAction("Index");
+            return PartialView(shippingCalculation);
         }
 
         [HttpGet]

@@ -1206,7 +1206,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddSpecification.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\RemoveSpecification.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortSpecifications.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Copy of Index.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

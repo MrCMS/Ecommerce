@@ -1,5 +1,5 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Entities.Shipping
-@model IList<ShippingMethod>
+@model IList<MrCMS.Web.Apps.Ecommerce.Entities.Geographic.Country>
 @{
     ViewBag.Title = "Shipping Calculations";
 }
@@ -9,45 +9,51 @@
         <legend>Shipping Calculations
         </legend>
 
-@foreach (var shippingMethod in Model)
+@foreach (var country in Model)
 {
     <div class="pull-left">
-        <h4>@shippingMethod.Name</h4>
+        <h4>@country.Name</h4>
     </div>
-    <div class="pull-right">
-        @Html.ActionLink("Add", "Add", "ShippingCalculation", new { id = shippingMethod.Id }, new { @class = "btn btn-primary btn-mini", data_toggle = "fb-modal" })
+     <div class="pull-right">
+        @Html.ActionLink("Add", "Add", "ShippingCalculation", new { id=country.Id }, new { @class = "btn btn-primary btn-mini", data_toggle = "fb-modal" })
     </div>
     <br />
     <br />
-    if (!shippingMethod.ShippingCalculations.Any()) { continue; }
-    <table class="table table-condensed table-striped">
-        <thead>
-            <tr>
-                <th class="span6">Description</th>
-                <th class="span2">Price</th>
-                <th class="span4">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var sc in shippingMethod.ShippingCalculations.OrderBy(calculation => calculation.ShippingCriteria).ThenBy(calculation => calculation.LowerBound))
-            {
+    <div class="clearfix"></div>
+    foreach (ShippingMethod shippingMethod in country.GetShippingMethods())
+    {
+         <strong>@shippingMethod.Name</strong>
+ 
+        <table class="table table-condensed table-striped">
+            <thead>
                 <tr>
-                    <td>
-                        @sc.Description
-                    </td>
-                    <td>
-                        @sc.Amount.ToString("C")
-                    </td>
-                    <td>
-                        <div class="btn-group">
-                            @Html.ActionLink("Edit", "Edit", "ShippingCalculation", new { id = sc.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                            @Html.ActionLink("Delete", "Delete", "ShippingCalculation", new { id = sc.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
-                        </div>
-                    </td>
+                    <th class="span4"></th>
+                    <th class="span2"></th>
+                    <th class="span2"></th>
                 </tr>
-            }
+            </thead>
+            <tbody>
+        @foreach (ShippingCalculation shippingCalculation in shippingMethod.ShippingCalculations.Where(x=>x.Country.Id==country.Id).OrderBy(calculation => calculation.ShippingCriteria).ThenBy(calculation => calculation.LowerBound))
+        {
+            <tr>
+                <td>
+                    @shippingCalculation.Description
+                </td>
+                <td>
+                    @shippingCalculation.Amount.ToString("C")
+                </td>
+                <td>
+                    <div class="btn-group pull-right">
+                        @Html.ActionLink("Edit", "Edit", "ShippingCalculation", new { id = shippingCalculation.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                        @Html.ActionLink("Delete", "Delete", "ShippingCalculation", new { id = shippingCalculation.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                    </div>
+                </td>
+            </tr>
+        }
         </tbody>
-    </table>
+        </table>
+        <div class="clearfix"></div>
+    }
 }
 
     </fieldset>
