@@ -10,10 +10,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Geographic
         IList<Country> GetAllCountries();
         Country Get(int countryId);
         List<SelectListItem> GetCountriesToAdd();
-        void AddCountry(string countryCode);
+        void AddCountry(Country country);
         void Save(Country country);
         void Delete(Country country);
         List<SelectListItem> GetOptions();
-        bool AnyExistingCountriesWithName(string name, int id=0);
+        bool AnyExistingCountriesWithName(string name, int id = 0);
     }
 }

@@ -36,7 +36,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("Add")]
         public RedirectToRouteResult Add_POST(Country country)
         {
-            _countryService.AddCountry(country.Name);
+            _countryService.AddCountry(country);
             return RedirectToAction("Index");
         }
 

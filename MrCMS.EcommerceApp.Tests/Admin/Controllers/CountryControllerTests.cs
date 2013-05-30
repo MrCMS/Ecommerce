@@ -64,7 +64,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             _countryController.Add_POST(country);
 
-            A.CallTo(() => _countryService.AddCountry(country.Name)).MustHaveHappened();
+            A.CallTo(() => _countryService.AddCountry(country)).MustHaveHappened();
         }
 
         [Fact]

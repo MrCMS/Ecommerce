@@ -2,12 +2,17 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("Delete", "Country", FormMethod.Post))
 {
+     @Html.HiddenFor(x => x.Id)
     <div class="modal-header">
         <h3>Delete Country</h3>
     </div>
     <div class="modal-body">
         Are you sure you want to delete the country @Model.Name ? Deleting this country can not be undone.
+             <br />
         <br />
+        <div class="alert alert-warning">
+            <strong>Warning:</strong> Deleting this country will delete all postage values set against it.
+        </div>
     </div>
     <div class="modal-footer">
         <input type="submit" class="btn-primary btn" value="Delete country" />

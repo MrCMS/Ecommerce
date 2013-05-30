@@ -47,14 +47,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Geographic
                                       .BuildSelectItemList(pair => pair.Value, pair => pair.Key, emptyItemText: null);
         }
 
-        public void AddCountry(string countryCode)
+        public void AddCountry(Country country)
         {
             //_session.Transact(
             //    session =>
             //    session.Save(new Country {ISOTwoLetterCode = countryCode, Name = CountryIsoCodeAndNames[countryCode]}));
             _session.Transact(
                session =>
-               session.Save(new Country { Name = countryCode }));
+               session.Save(country));
         }
 
         public void Save(Country country)

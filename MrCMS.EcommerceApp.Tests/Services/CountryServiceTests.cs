@@ -55,7 +55,9 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void CountryService_AddCountry_ShouldAddCountryToSession()
         {
-            _countryService.AddCountry("GB");
+            var country = new Country { Name = "UK", ISOTwoLetterCode = "GB" };
+
+            _countryService.AddCountry(country);
 
             Session.QueryOver<Country>().List().Should().HaveCount(1);
         }
