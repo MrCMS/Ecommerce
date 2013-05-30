@@ -3,16 +3,25 @@
 @{
     ViewBag.Title = "Tax Rates";
 }
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/tax-rates.js");}
+@using (Html.BeginForm("Settings", "TaxRate", FormMethod.Post, new { id="Settings" }))
+{
 <fieldset>
     <legend>Tax <span class="btn-group  display-inline  pull-right"><a href="@Url.Action("Add", "TaxRate")" class="btn btn-primary" data-toggle="fb-modal">
         Add Tax Rate</a> </span></legend>
 </fieldset>
+    @Html.CheckBox("TaxStatus", (ViewData["settings"] as TaxSettings).TaxStatus, new { @class = "pull-left" })     <span>&nbsp;Enable Taxes?</span>
+<br /><br />
+
 <h4>
     Tax Categories</h4>
-@if((ViewData["settings"] as TaxSettings).TaxStatus)
-{
-    if(Model.Count>0)
-    {
+ 
+
+    <div id="tax-categories">
+ @if ((ViewData["settings"] as TaxSettings).TaxStatus)
+ {
+     if (Model.Count > 0)
+     {
     <table class="table table-condensed table-striped">
         <thead>
             <tr>
@@ -51,7 +60,7 @@
                     </td>
                     <td>
                         <div class="btn-group">
-                            @Html.FormLink("Make Default", "MakeDefault", "TaxRate", new{id = rate.Id}, new {@class= "btn btn-mini"})
+                            @Html.FormLink("Make Default", "MakeDefault", "TaxRate", new { id = rate.Id }, new { @class = "btn btn-mini" })
                             @Html.ActionLink("Edit", "Edit", new { id = rate.Id }, new { @class = "btn btn-mini" })
                             @Html.ActionLink("Delete", "Delete", new { id = rate.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
                         </div>
@@ -60,17 +69,21 @@
             }
         </tbody>
     </table>
-    }
-    else
-    {
+     }
+     else
+     {
         <span>Please add a tax rate.</span>
-    }
-}
-else
-{
-    <span>Tax rates are disabled. Enable tax rates by checking Tax Enabled checkbox in setting bellow.</span>
-}
+     }
+
+ }
+ else
+ {
+    <span>Tax rates are disabled. Enable tax rates by checking Enable Taxes checkbox above.</span>
+ }
+ </div>
+ <span id="taxes-disabled" style="display:none">Tax rates are disabled. Enable tax rates by checking Enable Taxes checkbox above.</span>
 <hr class="small-margin" />
 <h4>
     Tax Settings</h4>
-@{ Html.RenderPartial("Settings", ViewData["settings"] as TaxSettings);}
+ { Html.RenderPartial("Settings", ViewData["settings"] as TaxSettings); }
+}

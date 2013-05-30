@@ -1,11 +1,8 @@
 ﻿@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings
-@using (Html.BeginForm("Settings", "TaxRate", FormMethod.Post))
-{
+
     @Html.HiddenFor(settings => settings.Site.Id)
     @Html.InlineCheckboxFor(settings => settings.LoadedPricesIncludeTax, null, null)
     @Html.InlineCheckboxFor(settings => settings.ShippingRateIncludesTax, null, null)
-    @Html.InlineCheckboxFor(settings => settings.TaxStatus, null, null)
 
-    <input type="submit" value="Save Settings" class="btn btn-primary btn-mini" />
-}
+    <input type="submit" value="Save Settings" id="save-settings" class="btn btn-primary btn-mini" />
