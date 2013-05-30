@@ -21,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Geographic
 
         public IList<Country> GetAllCountries()
         {
-            return _session.QueryOver<Country>().CacheMode(CacheMode.Refresh).List();
+            return _session.QueryOver<Country>().CacheMode(CacheMode.Put).List();
         }
 
         public Country Get(int CountryId)

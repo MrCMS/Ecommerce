@@ -5,18 +5,24 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
+using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 {
     public class ShippingCalculation : SiteEntity
     {
         [DisplayName("Shipping Criteria")]
+        [Required]
         public virtual ShippingCriteria ShippingCriteria { get; set; }
         [DisplayName("Lower Bound")]
+        [Required]
         public virtual decimal LowerBound { get; set; }
         [DisplayName("Upper Bound")]
         public virtual decimal? UpperBound { get; set; }
         [DisplayName("Amount")]
+        [Required]
         public virtual decimal BaseAmount { get; set; }
         public virtual TaxRate TaxRate
         {
@@ -61,6 +67,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         [DisplayName("Shipping Method")]
         public virtual ShippingMethod ShippingMethod { get; set; }
+
+         [Required]
+        public virtual Country Country { get; set; }
 
         public virtual bool CanBeUsed(CartModel model)
         {
