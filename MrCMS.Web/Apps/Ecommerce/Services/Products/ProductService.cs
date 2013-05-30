@@ -126,7 +126,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 _session.QueryOver<ProductAttributeOption>()
                         .Where(option => option.Name.IsInsensitiveLike(optionName, MatchMode.Exact))
                         .Take(1)
-                        .SingleOrDefault() ?? new ProductAttributeOption { Name = optionName };
+                        .SingleOrDefault();
+            if (productAttributeOption == null)
+            {
+                _session.Transact(session => session.Save(new ProductAttributeOption() { Name=optionName }));
+                productAttributeOption =
+                _session.QueryOver<ProductAttributeOption>()
+                        .Where(option => option.Name.IsInsensitiveLike(optionName, MatchMode.Exact))
+                        .Take(1)
+                        .SingleOrDefault();
+            }
             product.AttributeOptions.Add(productAttributeOption);
         }
 

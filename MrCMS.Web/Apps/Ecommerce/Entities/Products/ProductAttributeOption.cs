@@ -9,8 +9,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public ProductAttributeOption()
         {
             Products = new List<Product>();
+            Values = new List<ProductAttributeValue>();
         }
         public virtual string Name { get; set; }
         public virtual IList<Product> Products { get; set; }
+        public virtual IList<ProductAttributeValue> Values { get; set; }
     }
 }
