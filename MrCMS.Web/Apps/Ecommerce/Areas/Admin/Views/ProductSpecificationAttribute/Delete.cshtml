@@ -3,6 +3,7 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("Delete", "ProductSpecificationAttribute", FormMethod.Post))
 {
+     @Html.HiddenFor(x => x.Id)
     <div class="modal-header">
         <h3>Delete Product Specification Atrribute</h3>
     </div>
