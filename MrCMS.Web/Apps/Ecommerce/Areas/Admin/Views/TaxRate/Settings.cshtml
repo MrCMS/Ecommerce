@@ -5,6 +5,7 @@
     @Html.HiddenFor(settings => settings.Site.Id)
     @Html.InlineCheckboxFor(settings => settings.LoadedPricesIncludeTax, null, null)
     @Html.InlineCheckboxFor(settings => settings.ShippingRateIncludesTax, null, null)
+    @Html.InlineCheckboxFor(settings => settings.TaxStatus, null, null)
 
     <input type="submit" value="Save Settings" class="btn btn-primary btn-mini" />
 }

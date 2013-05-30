@@ -11,6 +11,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         [DisplayName("Shipping Rates Include Tax")]
         public bool ShippingRateIncludesTax { get; set; }
 
+        [DisplayName("Taxes Enabled?")]
+        public bool TaxStatus{ get; set; }
+
         public override bool RenderInSettings
         {
             get { return false; }

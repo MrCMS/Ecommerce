@@ -49,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                     {
                                                         new ChildMenuItem("Geographic Data",
                                                                           "/Admin/Apps/Ecommerce/Country"),
-                                                        new ChildMenuItem("Tax Rates", "/Admin/Apps/Ecommerce/TaxRate"),
+                                                        new ChildMenuItem("Taxes", "/Admin/Apps/Ecommerce/TaxRate"),
                                                         new ChildMenuItem("Notification Template Settings",
                                                                           "/Admin/Apps/Ecommerce/NotificationTemplateSettings/Edit"),
                                                         new ChildMenuItem("Shipping Methods",
