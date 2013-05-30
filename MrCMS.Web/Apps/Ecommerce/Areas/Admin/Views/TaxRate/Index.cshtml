@@ -9,53 +9,67 @@
 </fieldset>
 <h4>
     Tax Categories</h4>
-<table class="table table-condensed table-striped">
-    <thead>
-        <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                Code
-            </th>
-            <th>
-                Rate Percentage
-            </th>
-            <th>
-                Is Default Rate?
-            </th>
-            <th>
-                Actions
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var rate in Model)
-        {
+@if((ViewData["settings"] as TaxSettings).TaxStatus)
+{
+    if(Model.Count>0)
+    {
+    <table class="table table-condensed table-striped">
+        <thead>
             <tr>
-                <td>
-                    @rate.Name
-                </td>
-                <td>
-                    @rate.Code
-                </td>
-                <td>
-                    @rate.Percentage
-                </td>
-                <td>
-                    @rate.IsDefault
-                </td>
-                <td>
-                    <div class="btn-group">
-                        @Html.FormLink("Make Default", "MakeDefault", "TaxRate", new{id = rate.Id}, new {@class= "btn btn-mini"})
-                        @Html.ActionLink("Edit", "Edit", new { id = rate.Id }, new { @class = "btn btn-mini" })
-                        @Html.ActionLink("Delete", "Delete", new { id = rate.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
-                    </div>
-                </td>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Code
+                </th>
+                <th>
+                    Rate Percentage
+                </th>
+                <th>
+                    Is Default Rate?
+                </th>
+                <th>
+                    Actions
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var rate in Model)
+            {
+                <tr>
+                    <td>
+                        @rate.Name
+                    </td>
+                    <td>
+                        @rate.Code
+                    </td>
+                    <td>
+                        @rate.Percentage
+                    </td>
+                    <td>
+                        @rate.IsDefault
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            @Html.FormLink("Make Default", "MakeDefault", "TaxRate", new{id = rate.Id}, new {@class= "btn btn-mini"})
+                            @Html.ActionLink("Edit", "Edit", new { id = rate.Id }, new { @class = "btn btn-mini" })
+                            @Html.ActionLink("Delete", "Delete", new { id = rate.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+    else
+    {
+        <span>Please add a tax rate.</span>
+    }
+}
+else
+{
+    <span>Tax rates are disabled. Enable tax rates by checking Tax Enabled checkbox in setting bellow.</span>
+}
 <hr class="small-margin" />
 <h4>
     Tax Settings</h4>

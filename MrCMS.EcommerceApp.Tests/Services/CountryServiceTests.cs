@@ -61,16 +61,6 @@ namespace MrCMS.EcommerceApp.Tests.Services
         }
 
         [Fact]
-        public void CountryService_AddCountry_ShouldSetNameFromData()
-        {
-            _countryService.AddCountry("GB");
-
-            var country = Session.QueryOver<Country>().List().First();
-
-            country.Name.Should().Be("UNITED KINGDOM");
-        }
-
-        [Fact]
         public void CountryService_Save_ShouldUpdateCountry()
         {
             var country = new Country {Name = "UK", ISOTwoLetterCode = "GB"};
