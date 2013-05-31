@@ -8,13 +8,24 @@
             @Html.ValidationMessageFor(product => product.BasePrice)
             @if (Model.PriceBreaks.Any())
             {
-                <h5>Price Breaks</h5>
-                <ul>
-                    @foreach (var priceBreak in Model.PriceBreaks.OrderBy(@break => @break.Quantity))
-                    {
-                        <li>@priceBreak.Quantity+: @priceBreak.Price (@Html.ActionLink("Delete", "Delete", "PriceBreak", new { id = priceBreak.Id }, new { data_toggle = "fb-modal" }))</li>
-                    }
-                </ul>
+                 <h5>Price Breaks</h5>
+                            <table class="table table-striped table-condensed">
+                                <tr>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th></th>
+                                </tr>
+                                @foreach (var priceBreak in Model.PriceBreaks.OrderBy(@break => @break.Quantity))
+                                {
+                                    <tr>
+                                        <td>@priceBreak.Quantity</td>
+                                         <td>@priceBreak.Price</td>
+                                         <td>@Html.ActionLink("Delete", "Delete", "PriceBreak", new { id = priceBreak.Id }, new { @class = "btn btn-danger btn-mini pull-right", data_toggle = "fb-modal" })</td>
+                                    </tr>
+                                }
+                                
+                            </table>
+                
             }
         </div>
         <div class="span2">
@@ -93,12 +104,23 @@ else
                         @if (variant.PriceBreaks.Any())
                         {
                             <h5>Price Breaks</h5>
-                            <ul>
+                           <table class="table table-striped table-condensed">
+                                <tr>
+                                    <td>Qty</td>
+                                    <td>Price</td>
+                                    <td></td>
+                                </tr>
                                 @foreach (var priceBreak in variant.PriceBreaks.OrderBy(@break => @break.Quantity))
                                 {
-                                    <li>@priceBreak.Quantity+: @priceBreak.Price (@Html.ActionLink("Delete", "Delete", "PriceBreak", new { id = priceBreak.Id }, new { data_toggle = "fb-modal" }))</li>
+                                    <tr>
+                                        <td>@priceBreak.Quantity</td>
+                                         <td>@priceBreak.Price</td>
+                                         <td>@Html.ActionLink("Delete", "Delete", "PriceBreak", new { id = priceBreak.Id }, new { @class = "btn btn-danger btn-mini pull-right", data_toggle = "fb-modal" })</td>
+                                    </tr>
                                 }
-                            </ul>
+                                
+                            </table>
+    
                         }
                     </td>
                     <td>
