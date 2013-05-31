@@ -14,6 +14,8 @@ using MrCMS.Models;
 using MrCMS.Entities.Documents.Media;
 using System.IO;
 using System.Web;
+using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
+using System;
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class ProductController : MrCMSAppAdminController<EcommerceApp>
@@ -25,7 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IProductOptionManager _productOptionManager;
         private readonly IFileService _fileService;
 
-        public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService, ITaxRateManager taxRateManager, 
+        public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService, ITaxRateManager taxRateManager,
             IProductOptionManager productOptionManager, IFileService fileService)
         {
             _productService = productService;
@@ -91,6 +93,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 return Json(false);
             }
         }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public JsonResult SearchCategories(Product product, string term)
+        {
+            if (string.IsNullOrWhiteSpace(term))
+                return Json(_categoryService.GetCategories(product, String.Empty, 1).Select(x => new { Name = x.Name, CategoryID = x.Id }).Take(10).ToList());
+
+            return Json(_categoryService.GetCategories(product, term, 1).Select(x=>new { Name=x.Name, CategoryID=x.Id }).Take(10).ToList(), JsonRequestBehavior.AllowGet);
+        }
+
 
         [HttpGet]
         public PartialViewResult RemoveCategory(Product product, int categoryId)

@@ -30,7 +30,7 @@
                     parent.$('#category-list').replaceWith(products);
                 });
                 var href = '/Admin/Apps/Ecommerce/Product/AddCategory/' + productId + '?page=' + page;
-                $('.modal-body').load(href + ' div#categories', function () {
+                $('.modal-body-container').load(href + ' div#categories', function () {
                     resizeModal();
                 });
             });
@@ -42,5 +42,21 @@
                 parent.$.fancybox.center();
             });
         }, 100);
-    }
+    };
+
+    $('#searchparam').keypress(function (key) {
+        var term = $(this).val();
+        var productId = $("#productId").val();
+        if (key.which == 13 && term !== "") {
+            $.getJSON('/Admin/Apps/Ecommerce/Product/SearchCategories',
+            { Id: productId, term: term },
+            function (response) {
+                $("table").empty();
+                $.each(response, function(key,val) {
+                    $("table").append("<tr><td>" + val["Name"] + "</td><td><div class=\"pull-right\"><button data-page=\"0\" data-product-id=\"" + productId + "\"data-category-id=" + val["CategoryID"] + " class=\"btn btn-success add-category\">Add</button></div></td></tr>");
+                })
+            });
+        }
+    });
 })
+
