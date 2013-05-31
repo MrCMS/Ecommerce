@@ -3,25 +3,24 @@
 <div id="image-list">
     <div class="row-fluid">
         <div class="span6">
-            <h4>Images</h4>
+            <h4>Product Images</h4>
         </div>
         <div class="span6">
             <div class="btn-group pull-right">
-                @Html.ActionLink("View Gallery", "Edit", "MediaCategory", new { id = Model.Gallery.Id }, new { @class = "btn-mini btn" })
-                @Html.ActionLink("Upload Image", "UploadImage", "Product", new { id = Model.Id }, new { @class = "btn-mini btn", data_toggle = "fb-modal" })
-
+                @Html.ActionLink("Sort", "SortImages", "Product", new { id = Model.Id }, new { @class = "btn-mini btn" , data_toggle = "fb-modal" })
             </div>
         </div>
     </div>
-    @foreach (var chunk in Model.Images.Chunk(4))
-    {
-        <div class="row-fluid">
-            @foreach (var image in chunk)
-            {
-                <div class="span3">
-                    @Html.RenderImage(image.FileUrl)
-                </div>
-            }
-        </div>
-    }
 </div>
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/products.js");}
+
+@using (Html.BeginForm("Edit", "MediaCategory", new { id = Model.Id }, FormMethod.Post, new { id = "edit-media" }))
+{
+}
+
+<p id="dragdropsupported" style="border: 2px dotted #808080; height: 30px; line-height: 30px;" onmouseover="$(this).css('background','#e7e7e7')" onmouseout="$(this).css('background','#fff')">&nbsp;Drag files here to upload.</p>
+
+@{ Html.RenderPartial("Upload", Model.Gallery); }
+
+@{ Html.RenderPartial("UploadTemplate"); }
+@{ Html.RenderPartial("DownloadTemplate"); }

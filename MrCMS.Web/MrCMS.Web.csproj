@@ -369,6 +369,7 @@
     <Content Include="Apps\Core\Content\Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Apps\Core\Content\Scripts\respond.min.js" />
     <Content Include="Apps\Core\Content\Styles\style.css" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\products.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\tax-rates.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\specification-attributes.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
@@ -1196,7 +1197,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Categories.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Specifications.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Images.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\UploadImage.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\PriceBreak\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductSpecificationAttributeOption\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductSpecificationAttributeOption\Delete.cshtml" />
@@ -1206,6 +1206,11 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddSpecification.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\RemoveSpecification.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortSpecifications.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\UploadTemplate.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Upload.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\DownloadTemplate.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Thumbnails.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortImages.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
