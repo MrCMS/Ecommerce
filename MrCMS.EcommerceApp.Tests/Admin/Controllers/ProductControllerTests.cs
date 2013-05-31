@@ -26,6 +26,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private ICategoryService _categoryService;
         private readonly ITaxRateManager _taxRateManager;
         private IProductOptionManager _productOptionManager;
+        private readonly IFileService _fileService;
 
         public ProductControllerTests()
         {
@@ -35,7 +36,8 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _productService = A.Fake<IProductService>();
             _categoryService = A.Fake<ICategoryService>();
             _productOptionManager = A.Fake<IProductOptionManager>();
-            _productController = new ProductController(_productService, _documentService, _categoryService, _taxRateManager, _productOptionManager);
+            _fileService = A.Fake<IFileService>();
+            _productController = new ProductController(_productService, _documentService, _categoryService, _taxRateManager, _productOptionManager,_fileService);
         }
 
         [Fact]

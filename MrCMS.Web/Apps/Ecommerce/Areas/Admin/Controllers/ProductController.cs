@@ -11,6 +11,9 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using MrCMS.Models;
+using MrCMS.Entities.Documents.Media;
+using System.IO;
+using System.Web;
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class ProductController : MrCMSAppAdminController<EcommerceApp>
@@ -20,15 +23,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly ICategoryService _categoryService;
         private readonly ITaxRateManager _taxRateManager;
         private readonly IProductOptionManager _productOptionManager;
+        private readonly IFileService _fileService;
 
         public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService, ITaxRateManager taxRateManager, 
-            IProductOptionManager productOptionManager)
+            IProductOptionManager productOptionManager, IFileService fileService)
         {
             _productService = productService;
             _documentService = documentService;
             _categoryService = categoryService;
             _taxRateManager = taxRateManager;
             _productOptionManager = productOptionManager;
+            _fileService = fileService;
         }
 
         /// <summary>
@@ -217,9 +222,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return PartialView(product);
         }
 
-        public PartialViewResult UploadImage(Product product)
+        public ActionResult Thumbnails()
         {
-            return PartialView(product);
+            return PartialView();
+        }
+
+        [HttpGet]
+        public ActionResult SortImages(Product product)
+        {
+            ViewBag.Product = product;
+            var sortItems =
+            _fileService.GetFiles(product.Gallery).OrderBy(arg => arg.display_order)
+                                .Select(
+                                    arg => new ImageSortItem { Order = arg.display_order, Id = arg.Id, Name = arg.name, ImageUrl = arg.url, IsImage = arg.is_image })
+                                .ToList();
+
+            return View(sortItems);
+        }
+
+        [HttpPost]
+        public ActionResult SortImages(int productId, List<SortItem> items)
+        {
+            _fileService.SetOrders(items);
+            return RedirectToAction("Edit", "Webpage", new { id = productId });
         }
     }
 }
