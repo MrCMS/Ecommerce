@@ -7,6 +7,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using NHibernate;
 using MrCMS.Helpers;
 using System.Linq;
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 {
@@ -45,6 +46,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
                                           shippingCalculation.ShippingMethod.ShippingCalculations.Add(shippingCalculation);
                                       session.Save(shippingCalculation);
                                   });
+            _session.Evict(typeof(ShippingCalculation));
+            _session.Evict(typeof(ShippingMethod));
+            _session.Evict(typeof(Country));
         }
 
         public void Update(ShippingCalculation shippingCalculation)
