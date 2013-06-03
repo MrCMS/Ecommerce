@@ -14,6 +14,7 @@
 
         @Html.LabelFor(x => x.Name)
         @Html.TextBoxFor(x => x.Name)
+        @Html.ValidationMessageFor(x => x.Name)
     </div>
     <div class="modal-footer">
         <input type="submit" class="btn-primary btn" value="Save Changes" />
