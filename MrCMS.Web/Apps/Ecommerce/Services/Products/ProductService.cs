@@ -84,7 +84,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (!string.IsNullOrWhiteSpace(model.Option1))
                 values.Add(new ProductAttributeValue
                                {
-                                   Option =
+                                   ProductAttributeOption =
                                        _session.QueryOver<ProductAttributeOption>()
                                                .Where(
                                                    option =>
@@ -96,7 +96,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (!string.IsNullOrWhiteSpace(model.Option2))
                 values.Add(new ProductAttributeValue
                                {
-                                   Option =
+                                   ProductAttributeOption =
                                        _session.QueryOver<ProductAttributeOption>()
                                                .Where(
                                                    option =>
@@ -108,7 +108,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (!string.IsNullOrWhiteSpace(model.Option3))
                 values.Add(new ProductAttributeValue
                                {
-                                   Option =
+                                   ProductAttributeOption =
                                        _session.QueryOver<ProductAttributeOption>()
                                                .Where(
                                                    option =>

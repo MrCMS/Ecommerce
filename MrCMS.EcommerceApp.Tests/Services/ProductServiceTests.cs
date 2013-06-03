@@ -7,6 +7,8 @@ using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 using MrCMS.Helpers;
+using NHibernate.Mapping;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 
 namespace MrCMS.EcommerceApp.Tests.Services
 {

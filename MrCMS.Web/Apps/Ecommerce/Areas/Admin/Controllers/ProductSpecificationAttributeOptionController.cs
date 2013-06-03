@@ -128,7 +128,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 ProductSpecificationAttribute productSpecificationAttribute = _productOptionManager.GetSpecificationAttribute(attributeId);
                 if (productSpecificationAttribute != null)
                 {
-                    if (_productOptionManager.AnyExistingAtrributeOptionsWithName(name,productSpecificationAttribute.Id))
+                    if (_productOptionManager.AnyExistingSpecificationAttributeOptionsWithName(name,productSpecificationAttribute.Id))
                         return Json("There is already an attribute option stored with that name.", JsonRequestBehavior.AllowGet);
                     else
                         return Json(true, JsonRequestBehavior.AllowGet);

@@ -1211,6 +1211,8 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\DownloadTemplate.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Thumbnails.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortImages.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortOptions.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ManageOptions.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

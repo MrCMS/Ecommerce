@@ -14,5 +14,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual string Name { get; set; }
         public virtual IList<Product> Products { get; set; }
         public virtual IList<ProductAttributeValue> Values { get; set; }
+        public virtual int DisplayOrder { get; set; }
     }
 }
