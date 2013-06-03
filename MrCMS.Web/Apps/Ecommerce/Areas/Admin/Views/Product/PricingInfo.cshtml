@@ -70,7 +70,7 @@ else
     <table class="table table-condensed table-striped">
         <thead>
             <tr>
-                @foreach (var option in Model.AttributeOptions)
+                @foreach (var option in Model.AttributeOptions.OrderBy(x => x.DisplayOrder))
                 {
                     <th>@option.Name
                     </th>
@@ -89,9 +89,9 @@ else
             @foreach (var variant in Model.Variants)
             {
                 <tr>
-                    @foreach (var option in Model.AttributeOptions)
+                    @foreach (var option in Model.AttributeOptions.OrderBy(x => x.DisplayOrder))
                     {
-                        var productAttributeValue = variant.AttributeValues.FirstOrDefault(value => value.Option.Name == option.Name);
+                        var productAttributeValue = variant.AttributeValues.FirstOrDefault(value => value.ProductAttributeOption.Name == option.Name);
                         <td>
                             @(productAttributeValue != null ? productAttributeValue.Value : string.Empty)
                         </td>

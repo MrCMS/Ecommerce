@@ -7,7 +7,7 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
-
+using System.Linq;
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 {
     public class ProductVariant : SiteEntity, IBuyableItem
@@ -69,6 +69,32 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             }
         }
 
+        public virtual decimal GetPrice(int quantity)
+        {
+            return GetPriceIncludingPriceBreaks(quantity) * quantity;
+        }
+
+        public virtual IList<PriceBreak> PriceBreaks { get; set; }
+
+        public virtual decimal GetPriceIncludingPriceBreaks(int quantity)
+        {
+            if (PriceBreaks.Count > 0)
+            {
+                List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
+                if (priceBreaks.Count > 0)
+                    return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
+                                      ? priceBreaks.First().Price
+                                      : TaxRate != null
+                                            ? priceBreaks.First().Price * (TaxRate.Multiplier)
+                                            : priceBreaks.First().Price, 2, MidpointRounding.AwayFromZero);
+                else
+                    return Price;
+            }
+            else
+                return Price;
+        }
+
+
         [DisplayName("Tax Rate")]
         public virtual TaxRate TaxRate { get; set; }
 
@@ -112,6 +138,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual Product Product { get; set; }
 
         public virtual IList<ProductAttributeValue> AttributeValues { get; set; }
-        public virtual IList<PriceBreak> PriceBreaks { get; set; }
+
     }
 }

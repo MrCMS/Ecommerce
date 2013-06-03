@@ -74,9 +74,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual decimal Weight { get; set; }
 
-        [DisplayName("Price")]
-        public virtual decimal BasePrice { get; set; }
-
         public virtual decimal ReducedBy
         {
             get
@@ -97,6 +94,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             get { return PreviousPrice.HasValue ? ReducedBy / PreviousPrice.Value : 0; }
         }
 
+        [DisplayName("Price")]
+        public virtual decimal BasePrice { get; set; }
+
         public virtual decimal Price
         {
             get
@@ -107,6 +107,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                                             ? BasePrice * (TaxRate.Multiplier)
                                             : BasePrice, 2, MidpointRounding.AwayFromZero);
             }
+        }
+
+        public virtual decimal GetPrice(int quantity)
+        {
+            return GetPriceIncludingPriceBreaks(quantity) * quantity;
+        }
+
+        public virtual IList<PriceBreak> PriceBreaks { get; set; }
+
+        public virtual decimal GetPriceIncludingPriceBreaks(int quantity)
+        {
+            if (PriceBreaks.Count > 0)
+            {
+                List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
+                if (priceBreaks.Count > 0)
+                    return priceBreaks.First().GetPrice();
+            }
+
+            return Price;
         }
 
         public virtual TaxRate TaxRate { get; set; }
@@ -122,7 +141,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         }
 
         public virtual IList<ProductVariant> Variants { get; set; }
-        public virtual IList<PriceBreak> PriceBreaks { get; set; }
+
         public virtual IList<ProductSpecificationValue> SpecificationValues { get; set; }
 
         public virtual bool CanBuy(int quantity)
@@ -209,5 +228,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             get { return "~/Admin/Webpage/Edit/" + Id; }
         }
+
+  
     }
 }

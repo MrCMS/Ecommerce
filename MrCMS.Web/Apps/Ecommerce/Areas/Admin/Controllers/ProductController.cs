@@ -258,5 +258,112 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _fileService.SetOrders(items);
             return RedirectToAction("Edit", "Webpage", new { id = productId });
         }
+
+
+        [HttpGet]
+        public ActionResult SortOptions(Product product)
+        {
+            if (product != null)
+            {
+                var sortItems = product.AttributeOptions.OrderBy(x => x.DisplayOrder)
+                            .Select(
+                                arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Name })
+                            .ToList();
+                ViewBag.Product = product;
+                return View(sortItems);
+            }
+            return RedirectToAction("Edit", "Webpage", new { id = product.Id });
+        }
+
+        [HttpPost]
+        public ActionResult SortOptions(List<SortItem> items, Product product)
+        {
+            if (product != null)
+            {
+                if (items != null && items.Count > 0)
+                {
+                    _productOptionManager.UpdateAttributeOptionDisplayOrder(items);
+                }
+            }
+            return RedirectToAction("Edit", "Webpage", new { id = product.Id });
+        }
+
+        [HttpGet]
+        public PartialViewResult ManageOptions(Product product)
+        {
+            MakeMultivariantModel model = new MakeMultivariantModel();
+            model.ProductId = product.Id;
+            if (product.AttributeOptions.Count() > 0)
+            {
+                try
+                {
+                    model.Option1Id = product.AttributeOptions[0].Id;
+                    model.Option1 = product.AttributeOptions[0].Name;
+                    if (product.AttributeOptions[1] != null)
+                    {
+                        model.Option2Id = product.AttributeOptions[1].Id;
+                        model.Option2 = product.AttributeOptions[1].Name;
+                    }
+                    if (product.AttributeOptions[2] != null)
+                    {
+                        model.Option3Id = product.AttributeOptions[2].Id;
+                        model.Option3 = product.AttributeOptions[2].Name;
+                    }
+                }
+                catch (Exception)
+                {
+
+                }
+            }
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public RedirectToRouteResult ManageOptions(MakeMultivariantModel model)
+        {
+            var product = _documentService.GetDocument<Product>(model.ProductId);
+            if (!string.IsNullOrWhiteSpace(model.Option1))
+            {
+                _productOptionManager.UpdateAttributeOption(model.Option1, model.Option1Id,product);
+            }
+            else
+            {
+                if (model.Option1Id!=0)
+                {
+                    _productOptionManager.DeleteAttributeOption(_productOptionManager.GetAttributeOption(model.Option1Id));
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(model.Option2))
+            {
+                _productOptionManager.UpdateAttributeOption(model.Option2, model.Option2Id, product);
+            }
+            else
+            {
+                if (model.Option2Id != 0)
+                {
+                    _productOptionManager.DeleteAttributeOption(_productOptionManager.GetAttributeOption(model.Option2Id));
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(model.Option3))
+            {
+                _productOptionManager.UpdateAttributeOption(model.Option3, model.Option3Id, product);
+            }
+            else
+            {
+                if (model.Option3Id != 0)
+                {
+                    _productOptionManager.DeleteAttributeOption(_productOptionManager.GetAttributeOption(model.Option3Id));
+                }
+            }
+
+            product = _documentService.GetDocument<Product>(model.ProductId);
+            if (product.AttributeOptions.Count == 0)
+            {
+                product.Variants.Clear();
+                _documentService.SaveDocument(product);
+            }
+
+            return RedirectToAction("Edit", "Webpage", new { id = model.ProductId });
+        }
     }
 }

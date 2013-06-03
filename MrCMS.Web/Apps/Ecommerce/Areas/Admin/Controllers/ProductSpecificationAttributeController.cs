@@ -79,7 +79,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         public JsonResult IsUniqueAttribute(string name)
         {
-            if (_productOptionManager.AnyExistingAtrributesWithName(name))
+            if (_productOptionManager.AnyExistingSpecificationAttributesWithName(name))
                     return Json("There is already an attribute stored with that name.", JsonRequestBehavior.AllowGet);
             else
                     return Json(true, JsonRequestBehavior.AllowGet);

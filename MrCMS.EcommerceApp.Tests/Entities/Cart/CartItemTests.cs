@@ -151,5 +151,10 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         public string EditUrl { get; private set; }
 
         public bool Available { get; set; }
+
+        public virtual decimal GetPrice(int quantity)
+        {
+            return Price;
+        }
     }
 }

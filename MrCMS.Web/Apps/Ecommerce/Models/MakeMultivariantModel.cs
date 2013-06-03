@@ -19,5 +19,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public string Option3 { get; set; }
         [DisplayName("Option 3 Value")]
         public string Option3Value { get; set; }
+
+        public int Option1ValueDisplayOrder { get; set; }
+        public int Option2ValueDisplayOrder { get; set; }
+        public int Option3ValueDisplayOrder { get; set; }
+
+        public int Option1Id { get; set; }
+        public int Option2Id { get; set; }
+        public int Option3Id { get; set; }
     }
 }

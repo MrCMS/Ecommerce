@@ -53,7 +53,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             var specValue = new ProductAttributeValue
             {
                 ProductVariant = product,
-                Option = option,
+                ProductAttributeOption = option,
                 Value = value
             };
             Session.Transact(session => session.Save(specValue));
