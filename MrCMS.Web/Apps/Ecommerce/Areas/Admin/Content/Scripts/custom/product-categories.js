@@ -1,4 +1,4 @@
-﻿$(function () {
+$(function () {
     $('button#close').click(function () {
         parent.$.fancybox.close();
         return false;
