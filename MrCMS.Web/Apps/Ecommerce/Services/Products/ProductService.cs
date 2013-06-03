@@ -262,5 +262,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     throw new IndexOutOfRangeException("type");
             }
         }
+
+        public bool AnyExistingProductWithSKU(string sku, int id)
+        {
+            return _session.QueryOver<Product>()
+                           .Where(
+                               product =>
+                               product.SKU.IsInsensitiveLike(sku, MatchMode.Exact) && product.Id!=id)
+                           .RowCount() > 0;
+        }
     }
 }
