@@ -18,5 +18,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void DeletePriceBreak(PriceBreak priceBreak);
         bool IsPriceBreakQuantityValid(int quantity, int id, string type);
         bool IsPriceBreakPriceValid(decimal price, int id, string type, int quantity);
+        bool AnyExistingProductWithSKU(string sku, int id);
     }
 }

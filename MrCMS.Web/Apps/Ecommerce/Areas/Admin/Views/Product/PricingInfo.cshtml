@@ -39,6 +39,7 @@
         <div class="span2">
             @Html.LabelFor(product => product.SKU)
             @Html.TextBoxFor(product => product.SKU, new { @class = "span12" })
+            @Html.ValidationMessageFor(product => product.SKU)
         </div>
         <div class="span2">
             @Html.LabelFor(product => product.TaxRate.Id, "Tax Rate")

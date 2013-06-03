@@ -365,5 +365,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
             return RedirectToAction("Edit", "Webpage", new { id = model.ProductId });
         }
+
+        public JsonResult IsUniqueSKU(string sku, int id)
+        {
+            if (id != 0)
+            {
+                if(_productService.AnyExistingProductWithSKU(sku,id))
+                    return Json("There is already an SKU stored with that value.", JsonRequestBehavior.AllowGet);
+                else
+                    return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            return Json(String.Empty);
+        }
     }
 }

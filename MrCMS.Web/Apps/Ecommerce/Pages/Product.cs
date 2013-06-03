@@ -46,6 +46,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             get { return !StockRemaining.HasValue || StockRemaining > 0; }
         }
 
+        [Remote("IsUniqueSKU", "Product", AdditionalFields = "Id")]
         public virtual string SKU { get; set; }
 
         public virtual decimal TaxRatePercentage
