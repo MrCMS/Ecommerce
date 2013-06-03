@@ -1,4 +1,4 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+@model MrCMS.Web.Apps.Ecommerce.Pages.Product
 @if (!Model.HasVariants)
 {
     <div class="row-fluid">
@@ -31,12 +31,10 @@
         <div class="span2">
             @Html.LabelFor(product => product.PreviousPrice)
             @Html.TextBoxFor(product => product.PreviousPrice, new { @class = "span12" })
-            @Html.ValidationMessageFor(product => product.PreviousPrice)
         </div>
         <div class="span2">
             @Html.LabelFor(product => product.StockRemaining)
             @Html.TextBoxFor(product => product.StockRemaining, new { @class = "span12" })
-            @Html.ValidationMessageFor(product => product.StockRemaining)
         </div>
         <div class="span2">
             @Html.LabelFor(product => product.SKU)
