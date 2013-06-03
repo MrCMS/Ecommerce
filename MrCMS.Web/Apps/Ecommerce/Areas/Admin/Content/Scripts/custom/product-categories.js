@@ -44,10 +44,10 @@
         }, 100);
     };
 
-    $('#searchparam').keypress(function (key) {
+    $('#searchparam').keyup(function (key) {
         var term = $(this).val();
         var productId = $("#productId").val();
-        if (key.which == 13 && term !== "") {
+        if (term !== "") {
             $.getJSON('/Admin/Apps/Ecommerce/Product/SearchCategories',
             { Id: productId, term: term },
             function (response) {
