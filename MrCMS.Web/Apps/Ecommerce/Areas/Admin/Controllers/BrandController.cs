@@ -33,10 +33,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Add")]
         [HttpPost]
-        public RedirectToRouteResult Add_POST(Brand brand)
+        public ActionResult Add_POST(Brand brand)
         {
-            _brandService.Add(brand);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                _brandService.Add(brand);
+                return RedirectToAction("Index");
+            }
+            return PartialView(brand);
         }
 
         [HttpGet]
@@ -47,10 +51,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Edit")]
         [HttpPost]
-        public RedirectToRouteResult Edit_POST(Brand brand)
+        public ActionResult Edit_POST(Brand brand)
         {
-            _brandService.Update(brand);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                _brandService.Update(brand);
+                return RedirectToAction("Index");
+            }
+            return View(brand);
         }
 
         [HttpGet]
@@ -65,6 +73,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _brandService.Delete(brand);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public JsonResult IsUniqueName(string name, int id=0)
+        {
+            if (_brandService.AnyExistingBrandsWithName(name, id))
+                return Json("There is already a brand stored with that name.", JsonRequestBehavior.AllowGet);
+            else
+                return Json(true, JsonRequestBehavior.AllowGet);
+
         }
     }
 }

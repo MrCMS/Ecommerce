@@ -77,15 +77,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             A.CallTo(() => _brandService.Add(brand)).MustHaveHappened();
         }
 
-        [Fact]
-        public void BrandController_AddPOST_RedirectsToEditForTheIdOfTheSavedBrand()
-        {
-            var brand = new Brand { Id = 1 };
-
-            var add = _brandController.Add_POST(brand);
-
-            add.RouteValues["action"].Should().Be("Index");
-        }
 
         [Fact]
         public void BrandController_Edit_ReturnsAViewResult()
@@ -113,16 +104,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             var editPost = _brandController.Edit_POST(brand);
 
             A.CallTo(() => _brandService.Update(brand)).MustHaveHappened();
-        }
-
-        [Fact]
-        public void BrandController_EditPOST_RedirectsToEditForTheIdOfTheSavedBrand()
-        {
-            var brand = new Brand { Id = 1 };
-
-            var edit = _brandController.Edit_POST(brand);
-
-            edit.RouteValues["action"].Should().Be("Index");
         }
 
         [Fact]

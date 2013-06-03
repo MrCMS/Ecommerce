@@ -55,5 +55,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             _session.Transact(session => session.Delete(brand));
         }
+        public bool AnyExistingBrandsWithName(string name, int id)
+        {
+            return _session.QueryOver<Brand>()
+                           .Where(
+                               option =>
+                               option.Name.IsInsensitiveLike(name, MatchMode.Exact) && option.Id != id)
+                           .RowCount() > 0;
+        }
     }
 }

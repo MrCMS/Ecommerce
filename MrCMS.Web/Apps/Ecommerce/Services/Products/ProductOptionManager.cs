@@ -231,7 +231,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             return _session.QueryOver<ProductAttributeOption>()
                            .Where(
                                option =>
-                               option.Name.IsInsensitiveLike(option.Name, MatchMode.Exact) && option.Id==id)
+                               option.Name.IsInsensitiveLike(name, MatchMode.Exact) && option.Id==id)
                            .RowCount() > 0;
         }
     }
