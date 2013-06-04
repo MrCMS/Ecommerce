@@ -5,12 +5,11 @@
         int Id { get; }
         string SKU { get; }
         decimal TaxRatePercentage { get; }
-        decimal Price { get; }
         decimal GetPrice(int quantity);
-        decimal ReducedBy { get; }
-        decimal Tax { get; }
+        decimal GetSaving(int quantity);
+        decimal GetTax(int quantity);
         bool CanBuy(int quantity);
-        decimal PricePreTax { get; }
+        decimal GetPricePreTax(int quantity);
         decimal Weight { get; }
         string Name { get; }
         string EditUrl { get; }

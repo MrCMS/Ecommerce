@@ -154,7 +154,23 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
 
         public virtual decimal GetPrice(int quantity)
         {
-            return Price;
+            return Price * quantity;
         }
+
+        public virtual decimal GetSaving(int quantity)
+        {
+            return GetPrice(quantity)-ReducedBy;
+        }
+
+        public virtual decimal GetTax(int quantity)
+        {
+            return Tax * quantity;
+        }
+
+        public virtual decimal GetPricePreTax(int quantity)
+        {
+            return PricePreTax * quantity;
+        }
+
     }
 }
