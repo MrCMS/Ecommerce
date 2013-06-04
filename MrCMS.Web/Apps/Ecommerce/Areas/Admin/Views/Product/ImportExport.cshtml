@@ -1,0 +1,32 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.ProductPagedList
+@{
+    ViewBag.Title = "Import / Export Products";
+}
+
+<form>
+    <fieldset>
+        <legend>Import / Export Products
+        </legend>
+
+        <div class="row-fluid">
+
+                 @using (Html.BeginForm("ImportProducts", "Product", FormMethod.Post, new { id = "fileupload", enctype = "multipart/form-data"}))
+                 {
+                    <span class="btn btn-success fileinput-button"><span>Choose Import File</span>
+                    <input type="file" name="file" />
+                   </span>
+                    <div class="clearfix"></div>
+                     <br />
+                  <input type="submit" class="btn btn-primary" value="Import Products"/>
+                    }
+            <br />
+            <br />
+            <hr />
+            <br />
+            <span class="btn-group display-inline">
+                 <a href="@Url.Action("ExportProducts", "Product")" class="btn btn-primary">Export Products</a>
+            </span>
+        </div>
+    </fieldset>
+</form>

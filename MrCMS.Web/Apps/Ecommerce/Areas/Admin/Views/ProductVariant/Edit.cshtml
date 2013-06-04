@@ -8,7 +8,7 @@
     <div class="modal-body">
         @for (int index = 0; index < Model.AttributeValues.Count; index++)
         {
-            @Html.LabelFor(variant => variant.AttributeValues[index].Value, Model.AttributeValues[index].Option.Name)
+            @Html.LabelFor(variant => variant.AttributeValues[index].Value, Model.AttributeValues[index].ProductAttributeOption.Name)
             @Html.TextBoxFor(variant => variant.AttributeValues[index].Value)
             @Html.HiddenFor(variant => variant.AttributeValues[index].Id)
         }
