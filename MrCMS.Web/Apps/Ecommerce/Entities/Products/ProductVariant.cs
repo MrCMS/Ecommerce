@@ -75,32 +75,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             {
                 List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
                 if (priceBreaks.Count > 0)
-                    return priceBreaks.First().GetPrice();
+                    return priceBreaks.First().GetPrice() * quantity;
             }
 
-            return Price;
+            return Price * quantity;
         }
 
         public virtual decimal GetSaving(int quantity)
         {
             if (PreviousPrice != 0)
-                return ((PreviousPrice * quantity) - (GetPrice(quantity) * quantity)).Value;
+                return ((PreviousPrice * quantity) - GetPrice(quantity)).Value;
             else
-                return GetPrice(quantity);
+                return (Price * quantity) - GetPrice(quantity);
         }
 
         public virtual decimal GetTax(int quantity)
         {
-            return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
-                                       ? GetPrice(quantity) - (GetPrice(quantity) / ((TaxRatePercentage + 100) / 100))
-                                       : 0, 2, MidpointRounding.AwayFromZero);
+            return Math.Round(GetPrice(quantity) - GetPricePreTax(quantity), 2, MidpointRounding.AwayFromZero);
         }
 
         public virtual decimal GetPricePreTax(int quantity)
         {
-            return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
-                                       ? GetPrice(quantity) / ((TaxRatePercentage + 100) / 100)
-                                       : GetPrice(quantity), 2, MidpointRounding.AwayFromZero);
+            return Math.Round(GetPrice(quantity) / ((TaxRatePercentage + 100) / 100), 2, MidpointRounding.AwayFromZero);
+        }
+
+        public virtual decimal GetUnitPrice()
+        {
+            return Price;
         }
 
 
