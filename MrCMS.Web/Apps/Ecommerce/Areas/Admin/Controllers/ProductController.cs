@@ -16,6 +16,8 @@ using System.IO;
 using System.Web;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using System;
+using MrCMS.Website;
+using MrCMS.Entities.Multisite;
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class ProductController : MrCMSAppAdminController<EcommerceApp>
@@ -26,9 +28,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly ITaxRateManager _taxRateManager;
         private readonly IProductOptionManager _productOptionManager;
         private readonly IFileService _fileService;
+        private readonly IImportExportManager _importExportManager;
 
         public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService, ITaxRateManager taxRateManager,
-            IProductOptionManager productOptionManager, IFileService fileService)
+            IProductOptionManager productOptionManager, IFileService fileService, IImportExportManager importExportManager)
         {
             _productService = productService;
             _documentService = documentService;
@@ -36,6 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _taxRateManager = taxRateManager;
             _productOptionManager = productOptionManager;
             _fileService = fileService;
+            _importExportManager = importExportManager;
         }
 
         /// <summary>
@@ -376,6 +380,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                     return Json(true, JsonRequestBehavior.AllowGet);
             }
             return Json(String.Empty);
+        }
+
+        public ViewResult ImportExport()
+        {
+            return View();
+        }
+
+        public FileResult ExportProducts()
+        {
+            try
+            {
+                return File(_importExportManager.ExportProductsToExcel(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MrCMS-ExportProducts-"+DateTime.UtcNow+".xlsx");
+            }
+            catch (Exception)
+            {
+                return File(String.Empty, String.Empty);
+            }
+            
+        }
+
+        [HttpPost]
+        public ViewResult ImportProduct(HttpPostedFileBase file)
+        {
+            return View();
         }
     }
 }

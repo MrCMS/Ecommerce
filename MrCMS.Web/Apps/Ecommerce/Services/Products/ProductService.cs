@@ -165,6 +165,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             return _session.QueryOver<Product>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
         }
 
+        public IList<Product> GetAll()
+        {
+            return _session.QueryOver<Product>().Cacheable().List();
+        }
+
         public PriceBreak AddPriceBreak(AddPriceBreakModel model)
         {
             switch (model.Type)
