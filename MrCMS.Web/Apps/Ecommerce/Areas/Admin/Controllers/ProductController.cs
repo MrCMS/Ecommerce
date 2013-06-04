@@ -332,11 +332,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             }
             else
             {
-                if (model.Option1Id!=0)
+                if (model.Option1Id != 0)
                 {
-                    _productOptionManager.DeleteAttributeOption(_productOptionManager.GetAttributeOption(model.Option1Id));
+                    ProductAttributeOption option = _productOptionManager.GetAttributeOption(model.Option1Id);
+                    foreach (var item in option.Values.Where(x => x.ProductAttributeOption.Id == option.Id).ToList())
+                    {
+                        option.Values.Remove(item);
+                    }
+                    product.AttributeOptions.Remove(option);
                 }
             }
+
             if (!string.IsNullOrWhiteSpace(model.Option2))
             {
                 _productOptionManager.UpdateAttributeOption(model.Option2, model.Option2Id, product);
@@ -345,7 +351,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             {
                 if (model.Option2Id != 0)
                 {
-                    _productOptionManager.DeleteAttributeOption(_productOptionManager.GetAttributeOption(model.Option2Id));
+                    ProductAttributeOption option = _productOptionManager.GetAttributeOption(model.Option2Id);
+                    foreach (var item in option.Values.Where(x => x.ProductAttributeOption.Id == option.Id).ToList())
+                    {
+                        option.Values.Remove(item);
+                    }
+                    _productOptionManager.UpdateAttributeOption(option);
+                    product.AttributeOptions.Remove(option);
                 }
             }
             if (!string.IsNullOrWhiteSpace(model.Option3))
@@ -356,17 +368,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             {
                 if (model.Option3Id != 0)
                 {
-                    _productOptionManager.DeleteAttributeOption(_productOptionManager.GetAttributeOption(model.Option3Id));
+                    ProductAttributeOption option = _productOptionManager.GetAttributeOption(model.Option3Id);
+                    foreach (var item in option.Values.Where(x => x.ProductAttributeOption.Id == option.Id).ToList())
+                    {
+                        option.Values.Remove(item);
+                    }
+                    product.AttributeOptions.Remove(option);
                 }
             }
-
-            product = _documentService.GetDocument<Product>(model.ProductId);
-            if (product.AttributeOptions.Count == 0)
-            {
-                product.Variants.Clear();
-                _documentService.SaveDocument(product);
-            }
-
+            _documentService.SaveDocument(product);
+   
             return RedirectToAction("Edit", "Webpage", new { id = model.ProductId });
         }
 

@@ -96,6 +96,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                             wsProducts.Cells["O" + (i + 2).ToString()].Value += item.Option.Name + ":" + item.Value + ";";
                         }
                     }
+                    if (products[i].Variants.Count > 0)
+                    {
+                        foreach (var item in products[i].Variants)
+                        {
+                            wsProducts.Cells["P" + (i + 2).ToString()].Value += item.SKU + ";";
+                        }
+                    }
                 }
                 wsProducts.Cells["A:O"].AutoFitColumns();
 

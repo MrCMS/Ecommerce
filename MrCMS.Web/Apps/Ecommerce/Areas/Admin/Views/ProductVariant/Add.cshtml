@@ -11,7 +11,7 @@
             var option = Model.Product.AttributeOptions[index];
             @Html.LabelFor(variant => variant.AttributeValues[index].Value, option.Name)
             @Html.TextBoxFor(variant => variant.AttributeValues[index].Value)
-            @Html.Hidden("AttributeValues["+index+"].Option.Id", option.Id.ToString())
+            @Html.Hidden("AttributeValues["+index+"].ProductAttributeOption.Id", option.Id.ToString())
         }
         @Html.LabelFor(variant => variant.SKU)
         @Html.TextBoxFor(variant => variant.SKU)
