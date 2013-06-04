@@ -130,7 +130,10 @@ else
                     <td>
                         <div class="btn-group">
                             @Html.ActionLink("Edit", "Edit", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                            @Html.ActionLink("Delete", "Delete", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                            @if(Model.Variants.Count>1)
+                            {
+                                @Html.ActionLink("Delete", "Delete", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                            }
                         </div>
                     </td>
                 </tr>

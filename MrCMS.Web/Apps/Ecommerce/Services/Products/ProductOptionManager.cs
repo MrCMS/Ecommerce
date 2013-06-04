@@ -7,6 +7,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using NHibernate.Criterion;
 using MrCMS.Models;
+using System;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
@@ -154,24 +155,64 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         }
         public void UpdateAttributeOption(string name, int id, Product product)
         {
-            if (id != 0)
+            ProductAttributeOption option1 = GetAttributeOption(id);
+            ProductAttributeOption option2 = GetAttributeOptionByName(name);
+
+            if (id != 0 && option1 != null && option2 != null)
+                return;
+            else if (id != 0 && option1 != null && option2 == null)
             {
-                ProductAttributeOption option1 = GetAttributeOption(id);
-                ProductAttributeOption option2 = GetAttributeOptionByName(name);
-                if (option1 != null && option2 == null)
-                {
-                    option1.Name = name;
-                    _session.Transact(session => session.Update(option1));
-                }
+                option1.Name = name;
+                _session.Transact(session => session.Update(option1));
             }
             else
             {
-                ProductAttributeOption option = new ProductAttributeOption();
-                option.Name = name;
-                option.Products.Add(product);
-                option.DisplayOrder = 0;
-                _session.Transact(session => session.SaveOrUpdate(option));
+                if (option2 != null)
+                {
+                    if (option2.Products.Where(x => x.Id == product.Id).Count() == 0)
+                    {
+                        option2.Products.Add(product);
+                    }
+                    _session.Transact(session => session.Update(option2));
+                    for (int i = 0; i < product.Variants.Count; i++)
+                    {
+                        if (product.Variants[i].AttributeValues.Where(x => x.ProductAttributeOption.Id == option2.Id).Count() == 0)
+                        {
+                            product.Variants[i].AttributeValues.Add(new ProductAttributeValue
+                            {
+                                ProductVariant = product.Variants[i],
+                                ProductAttributeOption = option2,
+                                Value = String.Empty
+                            });
+                            _session.Transact(session => session.Update(product.Variants[i]));
+                        }
+                    }
+                }
+                else
+                {
+                    ProductAttributeOption option = new ProductAttributeOption();
+                    option.Name = name;
+                    option.Products.Add(product);
+                    option.DisplayOrder = 0;
+                    _session.Transact(session => session.Save(option));
+
+                    for (int i = 0; i < product.Variants.Count; i++)
+                    {
+                         product.Variants[i].AttributeValues.Add(new ProductAttributeValue
+                            {
+                                ProductVariant = product.Variants[i],
+                                ProductAttributeOption = option,
+                                Value = String.Empty
+                            });
+                        _session.Transact(session => session.Update(product.Variants[i]));
+                    }
+                }
             }
+      
+            _session.Evict(typeof(ProductAttributeValue));
+            _session.Evict(typeof(ProductAttributeOption));
+            _session.Evict(typeof(ProductVariant));
+            _session.Evict(typeof(Product));
         }
         public void UpdateAttributeOptionDisplayOrder(IList<SortItem> options)
         {
