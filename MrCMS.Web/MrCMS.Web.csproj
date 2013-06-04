@@ -280,6 +280,8 @@
     <Compile Include="Apps\Ecommerce\Services\Geographic\ICountryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Geographic\IRegionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Geographic\RegionService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportExportManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportExportManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderLineService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderRefundService.cs" />
@@ -1213,6 +1215,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortImages.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ManageOptions.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ImportExport.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

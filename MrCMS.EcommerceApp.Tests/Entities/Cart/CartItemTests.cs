@@ -10,9 +10,10 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
     public class CartItemTests
     {
         [Fact]
-        public void CartItem_PricePreTax_ShouldBeProductPricePreTaxTimesQuantity()
+        public void CartItem_PricePreTax_ShouldBeTheResultOfGetPricePreTax()
         {
-            var product = new StubProduct { PricePreTax = 10 };
+            var product = A.Fake<IBuyableItem>();
+            A.CallTo(() => product.GetPricePreTax(2)).Returns(20);
             var cartItem = new CartItem { Item = product, Quantity = 2 };
 
             var pricePreTax = cartItem.PricePreTax;
@@ -20,9 +21,10 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
             pricePreTax.Should().Be(20);
         }
         [Fact]
-        public void CartItem_Price_ShouldBeProductPriceTimesQuantity()
+        public void CartItem_Price_ShouldBeTheResultOfGetPrice()
         {
-            var product = new StubProduct { Price = 10 };
+            var product = A.Fake<IBuyableItem>();
+            A.CallTo(() => product.GetPrice(2)).Returns(20);
             var cartItem = new CartItem { Item = product, Quantity = 2 };
 
             var price = cartItem.Price;
@@ -31,9 +33,10 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         }
 
         [Fact]
-        public void CartItem_Saving_ShouldBeProductReducedByTimesQuantity()
+        public void CartItem_Saving_ShouldBeTheResultOfGetSaving()
         {
-            var product = new StubProduct { ReducedBy = 10 };
+            var product = A.Fake<IBuyableItem>();
+            A.CallTo(() => product.GetSaving(2)).Returns(20);
             var cartItem = new CartItem { Item = product, Quantity = 2 };
 
             var saving = cartItem.Saving;
@@ -42,20 +45,22 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         }
 
         [Fact]
-        public void CartItem_Tax_ShouldBeProductTaxTimesQuantity()
+        public void CartItem_Tax_ShouldBeTheResultOfGetTax()
         {
-            var product = new StubProduct { Tax = 2 };
+            var product = A.Fake<IBuyableItem>();
+            A.CallTo(() => product.GetTax(2)).Returns(20);
             var cartItem = new CartItem { Item = product, Quantity = 2 };
 
             var tax = cartItem.Tax;
 
-            tax.Should().Be(4);
+            tax.Should().Be(20);
         }
 
         [Fact]
         public void CartItem_CurrentlyAvailable_ShouldBeFalseIfStockLevelsAreTooLow()
         {
-            var product = new StubProduct { Available = false };
+            var product = A.Fake<IBuyableItem>();
+            A.CallTo(() => product.CanBuy(5)).Returns(false);
             var cartItem = new CartItem { Item = product, Quantity = 2 };
 
             var currentlyAvailable = cartItem.CurrentlyAvailable;
@@ -66,7 +71,8 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         [Fact]
         public void CartItem_CurrentlyAvailable_ShouldBeTrueIfProductIsAvailableForQuantity()
         {
-            var product = new StubProduct { Available = true };
+            var product = A.Fake<IBuyableItem>();
+            A.CallTo(() => product.CanBuy(2)).Returns(true);
             var cartItem = new CartItem { Item = product, Quantity = 2 };
 
             var currentlyAvailable = cartItem.CurrentlyAvailable;
@@ -77,7 +83,8 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         [Fact]
         public void CartItem_CurrentlyAvailable_ShouldBeTrueIfStockLevelsAreHighEnough()
         {
-            var product = new StubProduct { Available = true };
+            var product = A.Fake<IBuyableItem>();
+            A.CallTo(() => product.CanBuy(2)).Returns(true);
             var cartItem = new CartItem { Item = product, Quantity = 2 };
 
             var currentlyAvailable = cartItem.CurrentlyAvailable;
@@ -88,7 +95,8 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         [Fact]
         public void CartItem_TaxRatePercentage_ShouldReturnTheTaxRateInPercentage()
         {
-            var product = new StubProduct { TaxRatePercentage = 20 };
+            var product = A.Fake<IBuyableItem>();
+            A.CallTo(() => product.TaxRatePercentage).Returns(20);
             var cartItem = new CartItem { Item = product, Quantity = 2 };
 
             var taxRatePercentage = cartItem.TaxRatePercentage;
@@ -99,7 +107,8 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         [Fact]
         public void CartItem_Weight_ShouldBeWeightTimesQuantity()
         {
-            var product = new StubProduct { Weight = 123 };
+            var product = A.Fake<IBuyableItem>();
+            A.CallTo(() => product.Weight).Returns(123);
             var cartItem = new CartItem { Item = product, Quantity = 3 };
 
             var weight = cartItem.Weight;
@@ -110,7 +119,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         [Fact]
         public void CartItem_GetDiscountAmount_IfNullDiscountIsPassedShouldBeZero()
         {
-            var product = new StubProduct { };
+            var product = A.Fake<IBuyableItem>();
             var cartItem = new CartItem { Item = product, Quantity = 3 };
 
             var discountAmount = cartItem.GetDiscountAmount(null, null);
@@ -122,7 +131,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         public void CartItem_GetDiscountAmount_IfValidDiscountIsPassedShouldReturnResultOfDiscountGetAmount()
         {
             var discount = A.Fake<Discount>();
-            var product = new StubProduct { };
+            var product = A.Fake<IBuyableItem>();
             var cartItem = new CartItem { Item = product, Quantity = 3 };
             A.CallTo(() => discount.GetDiscount(cartItem, "test")).Returns(10m);
 
@@ -130,47 +139,5 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
 
             discountAmount.Should().Be(10);
         }
-    }
-
-    public class StubProduct : IBuyableItem
-    {
-        public int Id { get; set; }
-        public string SKU { get; set; }
-        public decimal TaxRatePercentage { get; set; }
-        public decimal Price { get; set; }
-        public decimal ReducedBy { get; set; }
-        public decimal Tax { get; set; }
-        public bool CanBuy(int quantity)
-        {
-            return Available;
-        }
-
-        public decimal PricePreTax { get; set; }
-        public decimal Weight { get; set; }
-        public string Name { get; set; }
-        public string EditUrl { get; private set; }
-
-        public bool Available { get; set; }
-
-        public virtual decimal GetPrice(int quantity)
-        {
-            return Price * quantity;
-        }
-
-        public virtual decimal GetSaving(int quantity)
-        {
-            return GetPrice(quantity)-ReducedBy;
-        }
-
-        public virtual decimal GetTax(int quantity)
-        {
-            return Tax * quantity;
-        }
-
-        public virtual decimal GetPricePreTax(int quantity)
-        {
-            return PricePreTax * quantity;
-        }
-
     }
 }

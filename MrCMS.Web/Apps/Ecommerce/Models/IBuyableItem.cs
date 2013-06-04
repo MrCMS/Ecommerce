@@ -8,6 +8,7 @@
         decimal GetPrice(int quantity);
         decimal GetSaving(int quantity);
         decimal GetTax(int quantity);
+        decimal GetUnitPrice();
         bool CanBuy(int quantity);
         decimal GetPricePreTax(int quantity);
         decimal Weight { get; }
