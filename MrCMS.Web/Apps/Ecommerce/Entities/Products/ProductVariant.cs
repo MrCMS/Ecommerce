@@ -71,8 +71,38 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual decimal GetPrice(int quantity)
         {
-            return GetPriceIncludingPriceBreaks(quantity) * quantity;
+            if (PriceBreaks.Count > 0)
+            {
+                List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
+                if (priceBreaks.Count > 0)
+                    return priceBreaks.First().GetPrice();
+            }
+
+            return Price;
         }
+
+        public virtual decimal GetSaving(int quantity)
+        {
+            if (PreviousPrice != 0)
+                return ((PreviousPrice * quantity) - (GetPrice(quantity) * quantity)).Value;
+            else
+                return GetPrice(quantity);
+        }
+
+        public virtual decimal GetTax(int quantity)
+        {
+            return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
+                                       ? GetPrice(quantity) - (GetPrice(quantity) / ((TaxRatePercentage + 100) / 100))
+                                       : 0, 2, MidpointRounding.AwayFromZero);
+        }
+
+        public virtual decimal GetPricePreTax(int quantity)
+        {
+            return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
+                                       ? GetPrice(quantity) / ((TaxRatePercentage + 100) / 100)
+                                       : GetPrice(quantity), 2, MidpointRounding.AwayFromZero);
+        }
+
 
         public virtual IList<PriceBreak> PriceBreaks { get; set; }
 
