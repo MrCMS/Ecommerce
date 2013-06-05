@@ -10,6 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     {
         IList<ProductSpecificationAttribute> ListSpecificationAttributes();
         ProductSpecificationAttribute GetSpecificationAttribute(int id);
+        ProductSpecificationAttribute GetSpecificationAttributeByName(string name);
         void AddSpecificationAttribute(ProductSpecificationAttribute option);
         void UpdateSpecificationAttribute(ProductSpecificationAttribute option);
         void DeleteSpecificationAttribute(ProductSpecificationAttribute option);
@@ -38,5 +39,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void SetAttributeValue(ProductVariant productVariant, string attributeName, string value);
         bool AnyExistingAttributeOptionsWithName(ProductAttributeOption option);
         bool AnyExistingAttributeOptionsWithName(string name, int id);
+        bool AnyExistingAttributeOptionsWithName(string name);
     }
 }

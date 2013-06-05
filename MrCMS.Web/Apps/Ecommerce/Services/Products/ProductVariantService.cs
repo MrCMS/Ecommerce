@@ -3,6 +3,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
+using NHibernate.Criterion;
 using System.Linq;
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
@@ -14,7 +15,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             _session = session;
         }
-
+        public ProductVariant GetProductVariantBySKU(string sku)
+        {
+            return _session.QueryOver<ProductVariant>()
+                            .Where(
+                                variant =>
+                                variant.SKU.IsInsensitiveLike(sku, MatchMode.Exact)).SingleOrDefault();
+        }
         public void Add(ProductVariant productVariant)
         {
             if (productVariant.Product != null)
@@ -47,6 +54,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public void Delete(ProductVariant productVariant)
         {
             _session.Transact(session => session.Delete(productVariant));
+        }
+
+        public bool AnyExistingProductVariantWithSKU(string sku, int id)
+        {
+            return _session.QueryOver<ProductVariant>()
+                           .Where(
+                               productVariant =>
+                               productVariant.SKU.IsInsensitiveLike(sku, MatchMode.Exact) && productVariant.Id != id)
+                           .RowCount() > 0;
         }
     }
 }

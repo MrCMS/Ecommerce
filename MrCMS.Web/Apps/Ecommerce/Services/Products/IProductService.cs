@@ -14,6 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void RemoveCategory(Product product, int categoryId);
         List<SelectListItem> GetOptions();
         Product Get(int id);
+        Product GetByName(string name);
         IList<Product> GetAll();
         PriceBreak AddPriceBreak(AddPriceBreakModel model);
         void DeletePriceBreak(PriceBreak priceBreak);

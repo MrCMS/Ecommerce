@@ -412,9 +412,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ViewResult ImportProduct(HttpPostedFileBase file)
+        public ViewResult ImportProducts(HttpPostedFileBase document)
         {
-            return View();
+            if (document != null && document.ContentLength > 0 && document.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            {
+                ViewBag.Messages = _importExportManager.ImportProductsFromExcel(document);
+            }
+            else
+            {
+                ViewBag.Status = "Please choose non-empty Excel (.xslx) file before uploading.";
+            }
+            return View("ImportExport");
         }
     }
 }

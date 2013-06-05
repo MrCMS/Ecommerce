@@ -28,6 +28,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             return _session.QueryOver<ProductSpecificationAttribute>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
         }
+        public ProductSpecificationAttribute GetSpecificationAttributeByName(string name)
+        {
+            return _session.QueryOver<ProductSpecificationAttribute>()
+                            .Where(
+                                specificationOption =>
+                                specificationOption.Name.IsInsensitiveLike(name, MatchMode.Exact)).SingleOrDefault();
+        }
         public void AddSpecificationAttribute(ProductSpecificationAttribute option)
         {
             if (option == null || string.IsNullOrWhiteSpace(option.Name))
@@ -273,6 +280,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                            .Where(
                                option =>
                                option.Name.IsInsensitiveLike(name, MatchMode.Exact) && option.Id==id)
+                           .RowCount() > 0;
+        }
+        public bool AnyExistingAttributeOptionsWithName(string name)
+        {
+            return _session.QueryOver<ProductAttributeOption>()
+                           .Where(
+                               option =>
+                               option.Name.IsInsensitiveLike(name, MatchMode.Exact))
                            .RowCount() > 0;
         }
     }

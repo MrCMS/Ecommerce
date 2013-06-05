@@ -165,6 +165,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             return _session.QueryOver<Product>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
         }
 
+        public Product GetByName(string name)
+        {
+            return _session.QueryOver<Product>()
+                           .Where(
+                               product =>
+                               product.Name.IsInsensitiveLike(name, MatchMode.Exact))
+                           .SingleOrDefault();
+        }
         public IList<Product> GetAll()
         {
             return _session.QueryOver<Product>().Cacheable().List();

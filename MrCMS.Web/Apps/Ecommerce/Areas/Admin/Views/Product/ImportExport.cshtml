@@ -4,22 +4,29 @@
     ViewBag.Title = "Import / Export Products";
 }
 
-<form>
-    <fieldset>
+<fieldset>
         <legend>Import / Export Products
         </legend>
 
         <div class="row-fluid">
 
-                 @using (Html.BeginForm("ImportProducts", "Product", FormMethod.Post, new { id = "fileupload", enctype = "multipart/form-data"}))
+                 @using (Html.BeginForm("ImportProducts", "Product", FormMethod.Post, new { enctype = "multipart/form-data"}))
                  {
-                    <span class="btn btn-success fileinput-button"><span>Choose Import File</span>
-                    <input type="file" name="file" />
-                   </span>
-                    <div class="clearfix"></div>
+                    <span class="btn btn-success fileinput-button"><span>Choose Import File</span>  
+                         <input type="file" name="document" id="document" />  </span>
+                     <div class="clearfix"></div>
                      <br />
+                     if(ViewBag.Messages!=null)
+                     {
+                         foreach (string item in ViewBag.Messages)
+                         {
+                             <span class="alert alert-warning">@item</span><div class="clearfix"></div>
+                     <br />
+                         }
+                     }
+                    
                   <input type="submit" class="btn btn-primary" value="Import Products"/>
-                    }
+                 }
             <br />
             <br />
             <hr />
@@ -28,5 +35,4 @@
                  <a href="@Url.Action("ExportProducts", "Product")" class="btn btn-primary">Export Products</a>
             </span>
         </div>
-    </fieldset>
-</form>
+</fieldset>
