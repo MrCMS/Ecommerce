@@ -18,7 +18,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             _session = session;
         }
-
+        public Brand GetBrandByName(string name)
+        {
+            return _session.QueryOver<Brand>()
+                            .Where(
+                                brand =>
+                                brand.Name.IsInsensitiveLike(name, MatchMode.Exact)).SingleOrDefault();
+        }
         public IList<Brand> GetAll()
         {
             return _session.QueryOver<Brand>().Cacheable().List();

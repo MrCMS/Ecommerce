@@ -8,6 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public interface IBrandService
     {
+        Brand GetBrandByName(string name);
         IList<Brand> GetAll();
         IPagedList<Brand> GetPaged(int pageNum, string search, int pageSize = 10);
         void Add(Brand item);

@@ -14,6 +14,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
         {
             _session = session;
         }
+        public TaxRate Get(int id)
+        {
+            return _session.QueryOver<TaxRate>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
+        }
 
         public IList<TaxRate> GetAll()
         {

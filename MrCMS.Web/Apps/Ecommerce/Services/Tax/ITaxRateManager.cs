@@ -6,6 +6,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
 {
     public interface ITaxRateManager
     {
+        TaxRate Get(int id);
         IList<TaxRate> GetAll();
         void Add(TaxRate taxRate);
         void Update(TaxRate taxRate);
