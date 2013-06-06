@@ -61,7 +61,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             {
                 AddAttributeOption(model.Option3, product);
             }
-            var productVariant = new ProductVariant { Product = product };
+            var productVariant = new ProductVariant { Product = product, SKU=product.SKU, BasePrice=product.BasePrice, StockRemaining=product.StockRemaining, TaxRate=product.TaxRate, Weight=product.Weight };
             product.Variants.Add(productVariant);
             var productAttributeValues = GetAttributeValues(model, productVariant);
             productAttributeValues.ForEach(value => productVariant.AttributeValues.Add(value));
@@ -76,6 +76,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                                    });
                                       product.AttributeOptions.ForEach(session.SaveOrUpdate);
                                   });
+
+            product = _documentService.GetDocument<Product>(model.ProductId);
+            product.BasePrice = 0;
+            product.SKU = null;
+            product.StockRemaining = null;
+            _documentService.SaveDocument<Product>(product);
         }
 
         private IList<ProductAttributeValue> GetAttributeValues(MakeMultivariantModel model, ProductVariant productVariant)
@@ -283,6 +289,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                product =>
                                product.SKU.IsInsensitiveLike(sku, MatchMode.Exact) && product.Id!=id)
                            .RowCount() > 0;
+        }
+
+        public void MakeSingleVariant(Product product)
+        {
+            product.BasePrice = product.Variants.First().BasePrice;
+            product.SKU = product.Variants.First().SKU;
+            product.StockRemaining = product.Variants.First().StockRemaining;
+            product.AttributeOptions.Clear();
+            _session.Transact(session =>
+            {
+                product.Variants.ForEach(variant =>
+                {
+                    variant.AttributeValues.Clear();
+                    session.Update(variant);
+                });
+            });
+            product.Variants.Clear();
+            _documentService.SaveDocument<Product>(product);
         }
     }
 }
