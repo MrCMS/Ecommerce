@@ -8,6 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Templating
         public virtual string OrderConfirmationTemplate { get; set; }
         public virtual string ShippingNotificationTemplate { get; set; }
         public virtual string CancelledNotificationTemplate { get; set; }
+        public virtual string OutOfStockNotificationTemplate { get; set; }
 
         public virtual string Emails { get; set; }
         [DisplayName("Template")]

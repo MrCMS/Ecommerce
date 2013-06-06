@@ -21,8 +21,9 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ProductVariantService_Add_ShouldPersistToTheSession()
         {
-            var productVariant = new ProductVariant();
-            
+            var product = new Product();
+            var productVariant = new ProductVariant() { Product=product };
+
             _productVariantService.Add(productVariant);
 
             Session.QueryOver<ProductVariant>().RowCount().Should().Be(1);

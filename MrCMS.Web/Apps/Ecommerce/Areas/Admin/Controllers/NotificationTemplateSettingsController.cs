@@ -19,7 +19,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Edit()
         {
-            return View(_notificationTemplateSettingsManager.Get());
+            NotificationTemplateSettings settings = _notificationTemplateSettingsManager.Get();
+            if (settings == null)
+                settings = new NotificationTemplateSettings();
+            return View(settings);
         }
 
         [HttpPost]
