@@ -1219,6 +1219,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ManageOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ImportExport.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\MakeSingleVariant.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

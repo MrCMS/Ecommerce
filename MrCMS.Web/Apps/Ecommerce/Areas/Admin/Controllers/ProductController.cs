@@ -400,14 +400,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         public FileResult ExportProducts()
         {
-            try
-            {
+            //try
+            //{
                 return File(_importExportManager.ExportProductsToExcel(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MrCMS-ExportProducts-"+DateTime.UtcNow+".xlsx");
-            }
-            catch (Exception)
-            {
-                return File(String.Empty, String.Empty);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return File(String.Empty, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            //}
             
         }
 
