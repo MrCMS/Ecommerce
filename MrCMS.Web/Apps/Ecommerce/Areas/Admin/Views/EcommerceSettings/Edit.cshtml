@@ -1,0 +1,24 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Settings.EcommerceSettings
+@{
+    ViewBag.Title = "Edit Ecommerce Settings";
+}
+ 
+
+@using (Html.BeginForm("Edit", "EcommerceSettings", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Ecommerce Settings
+        </legend>
+        @Html.HiddenFor(settings => settings.Site.Id)
+        @Html.LabelFor(x => x.PageSizeAdmin)
+        @Html.TextBoxFor(x => x.PageSizeAdmin)
+        @Html.ValidationMessageFor(x => x.PageSizeAdmin)
+
+        @Html.LabelFor(x => x.CategoryProductsPerPage)
+        @Html.TextBoxFor(x => x.CategoryProductsPerPage)
+        @Html.ValidationMessageFor(x => x.CategoryProductsPerPage)
+        <br />
+    <input type="submit" class="btn-primary btn" value="Save Settings" />
+        </fieldset>
+}

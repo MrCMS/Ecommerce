@@ -190,6 +190,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingCalculationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingMethodController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\TaxRateController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Binders\AddDiscountApplicationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Binders\AddDiscountLimitationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Binders\DiscountApplicationModelBinder.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
+    <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingMethod.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Tax\TaxRate.cs" />
@@ -1220,6 +1222,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ManageOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ImportExport.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\MakeSingleVariant.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceSettings\Edit.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
