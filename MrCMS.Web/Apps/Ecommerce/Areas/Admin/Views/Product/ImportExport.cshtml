@@ -10,6 +10,11 @@
 
         <div class="row-fluid">
 
+                  <span class="alert alert-info">Import File must be in .xslx format. After clicking on "Import Products" any new products inside file will be added to database
+                      and existing ones will be updated with provided values in file.
+                  </span>
+            <div class="clearfix"></div>
+                     <br />
                  @using (Html.BeginForm("ImportProducts", "Product", FormMethod.Post, new { enctype = "multipart/form-data"}))
                  {
                     <span class="btn btn-success fileinput-button"><span>Choose Import File</span>  
@@ -20,19 +25,30 @@
                      {
                          foreach (string item in ViewBag.Messages)
                          {
-                             <span class="alert alert-warning">@item</span><div class="clearfix"></div>
+                             <span class="alert alert-info">@item</span><div class="clearfix"></div>
                      <br />
                          }
+                     }
+                     if(ViewBag.ImportStatus!=null)
+                     {
+                             <span class="alert alert-info">@ViewBag.ImportStatus</span><div class="clearfix"></div>
+                     <br />
                      }
                     
                   <input type="submit" class="btn btn-primary" value="Import Products"/>
                  }
-            <br />
-            <br />
+              <br />
             <hr />
             <br />
             <span class="btn-group display-inline">
                  <a href="@Url.Action("ExportProducts", "Product")" class="btn btn-primary">Export Products</a>
             </span>
+            <div class="clearfix"></div>
+                     <br />
+            @if(ViewBag.ExportStatus!=null)
+                     {
+                             <span class="alert alert-info">@ViewBag.ExportStatus</span><div class="clearfix"></div>
+                     <br />
+                     }
         </div>
 </fieldset>

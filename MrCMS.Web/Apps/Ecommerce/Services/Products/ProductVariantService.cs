@@ -26,6 +26,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             if (productVariant.Product != null)
             {
+                if (productVariant.Weight != 0)
+                    productVariant.Weight = productVariant.Product.Weight;
                 productVariant.Product.Variants.Add(productVariant);
 
                 for (int i = 0; i < productVariant.AttributeValues.Count; i++)
