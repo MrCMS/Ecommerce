@@ -41,10 +41,13 @@
             @Html.TextBoxFor(product => product.SKU, new { @class = "span12" })
             @Html.ValidationMessageFor(product => product.SKU)
         </div>
+         @if(MrCMS.Website.MrCMSApplication.Get<MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings>().LoadedPricesIncludeTax)
+        {
         <div class="span2">
             @Html.LabelFor(product => product.TaxRate.Id, "Tax Rate")
             @Html.DropDownListFor(product => product.TaxRate.Id, ViewData["tax-rate-options"] as IEnumerable<SelectListItem>, new { @class = "span12" })
         </div>
+         }
         <div class="span2">
             @Html.LabelFor(product => product.Weight)
             @Html.TextBoxFor(product => product.Weight, new { @class = "span12" })
@@ -55,10 +58,13 @@
 else
 {
     <div class="row-fluid">
+        @if(MrCMS.Website.MrCMSApplication.Get<MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings>().LoadedPricesIncludeTax)
+        {
         <div class="span2">
             @Html.LabelFor(product => product.TaxRate.Id, "Tax Rate")
             @Html.DropDownListFor(product => product.TaxRate.Id, ViewData["tax-rate-options"] as IEnumerable<SelectListItem>, new { @class = "span12" })
         </div>
+        }
         <div class="span2">
             @Html.LabelFor(product => product.Weight)
             @Html.TextBoxFor(product => product.Weight, new { @class = "span12" })

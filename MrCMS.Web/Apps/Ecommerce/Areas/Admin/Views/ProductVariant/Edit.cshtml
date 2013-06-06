@@ -18,8 +18,11 @@
         @Html.TextBoxFor(variant => variant.BasePrice)
         @Html.LabelFor(variant => variant.StockRemaining)
         @Html.TextBoxFor(variant => variant.StockRemaining)
+         @if(MrCMS.Website.MrCMSApplication.Get<MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings>().LoadedPricesIncludeTax)
+        {
         @Html.LabelFor(variant => variant.TaxRate.Id, "Tax Rate")
         @Html.DropDownListFor(variant => variant.TaxRate.Id, ViewData["taxrates"] as IEnumerable<SelectListItem>)
+         }
     </div>
     <div class="modal-footer">
         <input type="submit" class="btn-primary btn" value="Update Product Variant" />
