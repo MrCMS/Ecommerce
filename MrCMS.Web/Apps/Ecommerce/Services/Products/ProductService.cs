@@ -179,6 +179,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                product.Name.IsInsensitiveLike(name, MatchMode.Exact))
                            .SingleOrDefault();
         }
+        public Product GetByUrl(string url)
+        {
+            return _session.QueryOver<Product>()
+                           .Where(
+                               product =>
+                               product.UrlSegment.IsInsensitiveLike(url, MatchMode.Exact))
+                           .SingleOrDefault();
+        }
         public IList<Product> GetAll()
         {
             return _session.QueryOver<Product>().Cacheable().List();

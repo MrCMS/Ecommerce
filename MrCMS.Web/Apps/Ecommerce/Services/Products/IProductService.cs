@@ -16,6 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         List<SelectListItem> GetOptions();
         Product Get(int id);
         Product GetByName(string name);
+        Product GetByUrl(string url);
         IList<Product> GetAll();
         PriceBreak AddPriceBreak(AddPriceBreakModel model);
         void DeletePriceBreak(PriceBreak priceBreak);
