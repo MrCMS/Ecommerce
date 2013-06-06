@@ -48,6 +48,17 @@
                 </div>
             </div>
         </div>
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#notificationAccordion" href="#c4">Out of Stock Notification
+                </a>
+            </div>
+            <div id="c4" class="accordion-body collapse">
+                <div class="accordion-inner">
+                    @Html.TextAreaFor(x => x.OutOfStockNotificationTemplate, new { @class = "ckedit-enabled" })
+                </div>
+            </div>
+        </div>
     </div>
 
     <fieldset>
