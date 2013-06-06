@@ -64,6 +64,10 @@ else
             @Html.TextBoxFor(product => product.Weight, new { @class = "span12" })
             @Html.ValidationMessageFor(product => product.Weight)
         </div>
+         <div class="span2">
+            @Html.LabelFor(product => product.PreviousPrice)
+            @Html.TextBoxFor(product => product.PreviousPrice, new { @class = "span12" })
+        </div>
     </div>
 }
 @if (Model.HasVariants)

@@ -424,5 +424,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             }
             return View("ImportExport");
         }
+
+        [HttpGet]
+        public PartialViewResult MakeSingleVariant(Product product)
+        {
+            return PartialView(product);
+        }
+
+        [HttpPost]
+        [ActionName("MakeSingleVariant")]
+        public RedirectToRouteResult MakeSingleVariant_POST(Product product)
+        {
+            _productService.MakeSingleVariant(product);
+
+            return RedirectToAction("Edit", "Webpage", new { id = product.Id });
+        }
     }
 }

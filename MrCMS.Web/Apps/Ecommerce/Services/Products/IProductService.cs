@@ -10,6 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     {
         ProductPagedList Search(string queryTerm = null, int page = 1);
         void MakeMultiVariant(MakeMultivariantModel model);
+        void MakeSingleVariant(Product product);
         void AddCategory(Product product, int categoryId);
         void RemoveCategory(Product product, int categoryId);
         List<SelectListItem> GetOptions();
