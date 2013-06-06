@@ -47,6 +47,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                 "Settings",
                                                 new List<IMenuItem>
                                                     {
+                                                         new ChildMenuItem("Global Settings",
+                                                                          "/Admin/Apps/Ecommerce/EcommerceSettings/Edit"),
                                                         new ChildMenuItem("Geographic Data",
                                                                           "/Admin/Apps/Ecommerce/Country"),
                                                         new ChildMenuItem("Taxes", "/Admin/Apps/Ecommerce/TaxRate"),

@@ -102,6 +102,7 @@
   <ItemGroup>
     <Compile Include="Admin\Controllers\CategoryControllerTests.cs" />
     <Compile Include="Admin\Controllers\BrandControllerTests.cs" />
+    <Compile Include="Admin\Controllers\EcommerceSettingsControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductSpecificationAttributeOptionControllerTests.cs" />
     <Compile Include="Admin\Controllers\OrderRefundControllerTests.cs" />
     <Compile Include="Admin\Controllers\OrderLineControllerTests.cs" />
