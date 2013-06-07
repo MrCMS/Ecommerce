@@ -321,6 +321,7 @@
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Settings\PaymentSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\FeaturedXProducts.cs" />
     <Compile Include="Apps\Galleries\GalleriesApp.cs" />
     <Compile Include="Apps\Galleries\Metadata\GalleryListMetaData.cs" />
     <Compile Include="Apps\Galleries\Metadata\GalleryMetaData.cs" />
@@ -376,6 +377,7 @@
     <Content Include="Apps\Core\Content\Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Apps\Core\Content\Scripts\respond.min.js" />
     <Content Include="Apps\Core\Content\Styles\style.css" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-products.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\products.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\tax-rates.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\specification-attributes.js" />
@@ -1223,6 +1225,9 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ImportExport.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\MakeSingleVariant.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceSettings\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\FeaturedXProducts.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedXProducts.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Web.config" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -1610,7 +1615,6 @@
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
     <Folder Include="Apps\Ecommerce\Queries\" />
-    <Folder Include="Apps\Ecommerce\Widgets\" />
     <Folder Include="App_Data\" />
     <Folder Include="Themes\Default\Apps\Ecommerce\Content\Scripts\" />
     <Folder Include="Themes\Default\Apps\Ecommerce\Content\Styles\" />

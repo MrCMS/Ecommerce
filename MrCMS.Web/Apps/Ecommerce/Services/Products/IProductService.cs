@@ -9,6 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     public interface IProductService
     {
         ProductPagedList Search(string queryTerm = null, int page = 1);
+        IList<Product> Search(string queryTerm);
         void MakeMultiVariant(MakeMultivariantModel model);
         void MakeSingleVariant(Product product);
         void AddCategory(Product product, int categoryId);

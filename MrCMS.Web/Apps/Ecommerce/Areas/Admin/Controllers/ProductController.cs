@@ -441,5 +441,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
             return RedirectToAction("Edit", "Webpage", new { id = product.Id });
         }
+
+        [HttpGet]
+        public JsonResult SearchProducts(string term)
+        {
+            if (!string.IsNullOrWhiteSpace(term))
+                return Json(_productService.Search(term).Select(x => new { Name = x.Name, ProductID=x.Id }).Take(15).ToList());
+
+            return Json(String.Empty, JsonRequestBehavior.AllowGet);
+        }
     }
 }
