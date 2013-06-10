@@ -58,7 +58,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                 for (var row = 2; row <= rowCount; row++)
                                 {
                                     Product product = new Product();
-                                    string url = String.Empty, sku = String.Empty, name = String.Empty ;
+                                    string url = String.Empty, sku = String.Empty, name = String.Empty;
                                     //Url
                                     if (excelFile.Workbook.Worksheets[2].Cells[row, 1] != null && excelFile.Workbook.Worksheets[2].Cells[row, 1].Value != null)
                                         url = excelFile.Workbook.Worksheets[2].Cells[row, 1].Value.ToString();
@@ -71,9 +71,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
                                     product = _productService.GetByUrl(url);
 
-                                    if(product==null)
+                                    if (product == null)
                                     {
-                                        product=new Product();
+                                        product = new Product();
                                         product.SKU = sku;
                                         product.Name = name;
                                     }
@@ -248,7 +248,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                 int categoryID = 0;
                                                 Int32.TryParse(item, out categoryID);
                                                 Category category = _documentService.GetDocument<Category>(categoryID);
-                                                if (category!=null && product.Categories.Where(x => x.Id == category.Id).Count() == 0)
+                                                if (category != null && product.Categories.Where(x => x.Id == category.Id).Count() == 0)
                                                     product.Categories.Add(category);
                                             }
                                         }
@@ -280,7 +280,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                     }
 
                                                     ProductSpecificationAttribute option = _productOptionManager.GetSpecificationAttributeByName(specificationValue[0]);
-                                                    if(product.SpecificationValues.Where(x=>x.Option.Id==option.Id && x.Product.Id==product.Id).Count()==0)
+                                                    if (product.SpecificationValues.Where(x => x.Option.Id == option.Id && x.Product.Id == product.Id).Count() == 0)
                                                         product.SpecificationValues.Add(new ProductSpecificationValue() { Option = option, Value = specificationValue[1], Product = product });
                                                 }
                                             }
@@ -313,7 +313,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             using (ExcelPackage excelFile = new ExcelPackage())
             {
                 ExcelWorksheet wsInfo = excelFile.Workbook.Worksheets.Add("Info");
-                
+
                 wsInfo.Cells["A1:C1"].Style.Font.Bold = true;
                 wsInfo.Cells["A:C"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 wsInfo.Cells["A1"].Value = "MrCMS Version";
@@ -376,9 +376,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     if (products[i].Categories.Count > 0)
                     {
                         foreach (var item in products[i].Categories)
-	                    {
+                        {
                             wsProducts.Cells["P" + rowNumber.ToString()].Value += item.Id + ";";
-	                    }
+                        }
                     }
                     if (products[i].SpecificationValues.Count > 0)
                     {

@@ -231,6 +231,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\EnterOrderEmail.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingMethod.cs" />
@@ -264,7 +265,7 @@
     <Compile Include="Apps\Ecommerce\Pages\PaymentDetails.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Product.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ProductSearch.cs" />
-    <Compile Include="Apps\Ecommerce\Pages\SetDeliveryAddress.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\SetDeliveryDetails.cs" />
     <Compile Include="Apps\Ecommerce\Payment\GoogleCheckout\IGoogleCheckoutService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaypalExpress\IPaypalExpressInterface.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaypalExpress\PaypalExpressCheckoutService.cs" />
