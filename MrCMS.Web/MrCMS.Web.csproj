@@ -1624,6 +1624,10 @@
     <Folder Include="Themes\Default\Shared\" />
     <Folder Include="Themes\Default\Views\Pages\" />
     <Folder Include="Themes\Default\Views\Widgets\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\" />
+    <Folder Include="Themes\Ecommerce\Content\" />
+    <Folder Include="Themes\Ecommerce\Shared\" />
+    <Folder Include="Themes\Ecommerce\Views\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
