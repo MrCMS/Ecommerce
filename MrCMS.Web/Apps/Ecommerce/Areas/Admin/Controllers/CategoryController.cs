@@ -6,7 +6,8 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Website.Controllers;
-
+using System;
+using System.Linq;
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class CategoryController : MrCMSAppAdminController<EcommerceApp>
@@ -31,6 +32,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public JsonResult Search(string term, List<int> ids)
         {
             return Json(_categoryService.Search(term, ids ?? new List<int>()));
+        }
+
+        [HttpGet]
+        public JsonResult SearchCategories(string term)
+        {
+            if (!string.IsNullOrWhiteSpace(term))
+                return Json(_categoryService.Search(term).Select(x => new { Name = x.Name, CategoryID = x.Id }).Take(15).ToList());
+
+            return Json(String.Empty, JsonRequestBehavior.AllowGet);
         }
     }
 }
