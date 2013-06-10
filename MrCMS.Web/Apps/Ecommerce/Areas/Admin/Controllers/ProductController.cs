@@ -8,16 +8,11 @@ using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
 using MrCMS.Models;
-using MrCMS.Entities.Documents.Media;
-using System.IO;
 using System.Web;
-using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using System;
-using MrCMS.Website;
-using MrCMS.Entities.Multisite;
+
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class ProductController : MrCMSAppAdminController<EcommerceApp>
@@ -104,7 +99,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             if (string.IsNullOrWhiteSpace(term))
                 return Json(_categoryService.GetCategories(product, String.Empty, 1).Select(x => new { Name = x.Name, CategoryID = x.Id }).Take(10).ToList());
 
-            return Json(_categoryService.GetCategories(product, term, 1).Select(x=>new { Name=x.Name, CategoryID=x.Id }).Take(10).ToList(), JsonRequestBehavior.AllowGet);
+            return Json(_categoryService.GetCategories(product, term, 1).Select(x => new { Name = x.Name, CategoryID = x.Id }).Take(10).ToList(), JsonRequestBehavior.AllowGet);
         }
 
 
@@ -128,12 +123,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult AddSpecification(Product product)
         {
             ViewData["product"] = product;
-            List<ProductSpecificationAttribute> attributes=_productOptionManager.ListSpecificationAttributes().ToList().Where(x=>x.Options.Count()>0 
-                && product.SpecificationValues.Where(v=>v.Option.Id==x.Id).Count()==0).ToList();
+            List<ProductSpecificationAttribute> attributes = _productOptionManager.ListSpecificationAttributes().ToList().Where(x => x.Options.Any()
+                && product.SpecificationValues.All(v => v.Option.Id != x.Id)).ToList();
 
             ViewData["specification-attributes"] = new SelectList(attributes, "Id", "Name");
-            ViewData["specification-attributes-options"] = new SelectList(attributes.Count() > 0 ? attributes.First().Options : new List<ProductSpecificationAttributeOption>(), "Id", "Name");
-            return PartialView(new ProductSpecificationValue() { Product=product });
+            ViewData["specification-attributes-options"] = new SelectList(attributes.Any() ? attributes.First().Options : new List<ProductSpecificationAttributeOption>(), "Id", "Name");
+            return PartialView(new ProductSpecificationValue() { Product = product });
         }
 
         [HttpGet]
@@ -144,7 +139,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 List<SelectListItem> options = new List<SelectListItem>();
                 foreach (var item in _productOptionManager.GetSpecificationAttribute(specificationAttributeId).Options.OrderBy(x => x.DisplayOrder).ToList())
                 {
-                    options.Add(new SelectListItem() { Selected=false, Text=item.Name, Value=item.Id.ToString() });
+                    options.Add(new SelectListItem() { Selected = false, Text = item.Name, Value = item.Id.ToString() });
                 }
                 return Json(options);
             }
@@ -155,7 +150,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddSpecification(string Value, int Option=0,int ProductId=0)
+        public JsonResult AddSpecification(string Value, int Option = 0, int ProductId = 0)
         {
             try
             {
@@ -328,7 +323,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             var product = _documentService.GetDocument<Product>(model.ProductId);
             if (!string.IsNullOrWhiteSpace(model.Option1))
             {
-                _productOptionManager.UpdateAttributeOption(model.Option1, model.Option1Id,product);
+                _productOptionManager.UpdateAttributeOption(model.Option1, model.Option1Id, product);
             }
             else
             {
@@ -377,7 +372,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 }
             }
             _documentService.SaveDocument(product);
-   
+
             return RedirectToAction("Edit", "Webpage", new { id = model.ProductId });
         }
 
@@ -385,10 +380,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             if (id != 0)
             {
-                if(_productService.AnyExistingProductWithSKU(sku,id))
-                    return Json("There is already an SKU stored with that value.", JsonRequestBehavior.AllowGet);
-                else
-                    return Json(true, JsonRequestBehavior.AllowGet);
+                return _productService.AnyExistingProductWithSKU(sku, id)
+                           ? Json("There is already an SKU stored with that value.", JsonRequestBehavior.AllowGet)
+                           : Json(true, JsonRequestBehavior.AllowGet);
             }
             return Json(String.Empty);
         }
@@ -402,7 +396,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             try
             {
-                byte[] file=_importExportManager.ExportProductsToExcel();
+                byte[] file = _importExportManager.ExportProductsToExcel();
                 ViewBag.ExportStatus = "Products successfully exported.";
                 return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MrCMS-ExportProducts-" + DateTime.UtcNow + ".xlsx");
             }

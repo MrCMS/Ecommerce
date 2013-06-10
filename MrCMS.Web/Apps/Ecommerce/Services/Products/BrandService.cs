@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using NHibernate;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
@@ -61,6 +59,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             _session.Transact(session => session.Delete(brand));
         }
+
         public bool AnyExistingBrandsWithName(string name, int id)
         {
             return _session.QueryOver<Brand>()

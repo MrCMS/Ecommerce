@@ -2,7 +2,7 @@
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
-    public class OrderPlaced : Webpage
+    public class OrderPlaced : Webpage, IUniquePage
     {
          
     }

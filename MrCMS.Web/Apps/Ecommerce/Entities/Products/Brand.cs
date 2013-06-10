@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using MrCMS.Entities;
-using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
-using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Settings;
-using MrCMS.Website;
+﻿using MrCMS.Entities;
 using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Products

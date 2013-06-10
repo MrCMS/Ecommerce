@@ -2,7 +2,7 @@
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
-    public class PaymentDetails : Webpage, IUniquePage
+    public class EnterOrderEmail : Webpage, IUniquePage
     {
          
     }

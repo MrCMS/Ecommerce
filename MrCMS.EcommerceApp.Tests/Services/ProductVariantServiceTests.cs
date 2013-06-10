@@ -1,8 +1,6 @@
 ﻿using FluentAssertions;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 using MrCMS.Helpers;
@@ -11,7 +9,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
 {
     public class ProductVariantServiceTests : InMemoryDatabaseTest
     {
-        private ProductVariantService _productVariantService;
+        private readonly ProductVariantService _productVariantService;
 
         public ProductVariantServiceTests()
         {
