@@ -9,25 +9,25 @@ using System.ComponentModel;
 
 namespace MrCMS.Web.Apps.Ecommerce.Widgets
 {
-    public class FeaturedProducts : Widget
+    public class FeaturedCategories : Widget
     {
-        [DisplayName("Featured Products")]
-        public virtual string ListOfFeaturedProducts { get; set; }
+        [DisplayName("Featured Categories")]
+        public virtual string ListOfFeaturedCategories { get; set; }
 
         public override object GetModel(NHibernate.ISession session)
         {
-            int productId = 0;
-            FeaturedProductsViewModel model = new FeaturedProductsViewModel() { Title = this.Name, Products = new List<Product>() };
+            int id = 0;
+            FeaturedCategoriesViewModel model = new FeaturedCategoriesViewModel() { Title = this.Name, Categories = new List<Category>() };
             try
             {
-                string[] rawProductValues = ListOfFeaturedProducts.Split(',');
-                foreach (var value in rawProductValues)
+                string[] rawValues = ListOfFeaturedCategories.Split(',');
+                foreach (var value in rawValues)
                 {
-                    string[] products = value.Split('/');
-                    productId = 0;
-                    Int32.TryParse(products[0], out productId);
-                    if (productId != 0)
-                        model.Products.Add(session.QueryOver<Product>().Where(x => x.Id == productId).Cacheable().SingleOrDefault());
+                    string[] items = value.Split('/');
+                    id = 0;
+                    Int32.TryParse(items[0], out id);
+                    if (id != 0)
+                        model.Categories.Add(session.QueryOver<Category>().Where(x => x.Id == id).Cacheable().SingleOrDefault());
                 }
             }
             catch (Exception)
@@ -39,9 +39,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
         }
     }
 
-    public class FeaturedProductsViewModel
+    public class FeaturedCategoriesViewModel
     {
-        public IList<Product> Products { get; set; }
+        public IList<Category> Categories { get; set; }
         public string Title { get; set; }
     }
 }

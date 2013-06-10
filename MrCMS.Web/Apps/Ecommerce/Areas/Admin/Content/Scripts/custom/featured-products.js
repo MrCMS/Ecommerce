@@ -20,9 +20,9 @@ $(function () {
         var button = $(this);
         var productId = button.data('product-id');
         var productName = button.data('product-name');
-        $("#FeaturedProducts").tagit("createTag", productId + "/" + productName);
+        $("#ListOfFeaturedProducts").tagit("createTag", productId + "/" + productName);
         return false;
     });
-    $("#FeaturedProducts").tagit();
+    $("#ListOfFeaturedProducts").tagit();
 })
 

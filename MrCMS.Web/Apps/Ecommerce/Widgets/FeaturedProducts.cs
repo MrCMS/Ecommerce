@@ -12,22 +12,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
     public class FeaturedProducts : Widget
     {
         [DisplayName("Featured Products")]
-        public virtual string FeaturedProducts { get; set; }
+        public virtual string ListOfFeaturedProducts { get; set; }
 
         public override object GetModel(NHibernate.ISession session)
         {
-            int productId = 0;
+            int id = 0;
             FeaturedProductsViewModel model = new FeaturedProductsViewModel() { Title = this.Name, Products = new List<Product>() };
             try
             {
-                string[] rawProductValues = FeaturedProducts.Split(',');
-                foreach (var value in rawProductValues)
+                string[] rawValues = ListOfFeaturedProducts.Split(',');
+                foreach (var value in rawValues)
                 {
-                    string[] products = value.Split('/');
-                    productId = 0;
-                    Int32.TryParse(products[0], out productId);
-                    if (productId != 0)
-                        model.Products.Add(session.QueryOver<Product>().Where(x => x.Id == productId).Cacheable().SingleOrDefault());
+                    string[] items = value.Split('/');
+                    id = 0;
+                    Int32.TryParse(items[0], out id);
+                    if (id != 0)
+                        model.Products.Add(session.QueryOver<Product>().Where(x => x.Id == id).Cacheable().SingleOrDefault());
                 }
             }
             catch (Exception)
