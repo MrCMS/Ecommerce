@@ -10,9 +10,9 @@
     <meta name="keywords" content="@Model.MetaKeywords" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @{
-        Html.IncludeCss("~/Apps/Core/Content/bootstrap/css/bootstrap.css");
-        Html.IncludeCss("~/Apps/Core/Content/bootstrap/css/bootstrap-responsive.css");
-        Html.IncludeCss("~/Apps/Core/Content/Styles/style.css");
+        Html.IncludeCss("~/Apps/Ecommerce/Content/bootstrap/css/bootstrap.css");
+        Html.IncludeCss("~/Apps/Ecommerce/Content/bootstrap/css/bootstrap-responsive.css");
+        Html.IncludeCss("~/Apps/Ecommerce/Content/Styles/style.css");
     }
     @Html.RenderCss()
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -22,34 +22,79 @@
     @Html.Raw(Model.CustomHeaderScripts)
 </head>
 <body>
+
+    <div id="wrap">
+    <div class="container">
+        <div class="pull-left">
+            <img src="/Apps/Ecommerce/Content/Images/mrcms-logo.png" />
+        </div>
+ 
+         <div class="pull-right">
+           <div id="top-menu-box">
+               <div class="pull-left">
+               <a href="#">Stores</a>
+                   </div>
+               <div class="pull-right">
+               <a href="#">Your Account</a>
+                   </div>
+           </div>
+             <button class="btn btn-large btn-info btn-checkout" type="button">Checkout</button>
+        </div>
+
+                <div id="basket-info-box" class="pull-right">
+           <i class="icon-shopping-cart"></i> Your basket 0 items - &pound;0.00
+        </div>
+
+         <div id="search-box" class="pull-right">
+             <input type="text" class="input-xlarge" placeholder="e.g : Shorts"/>
+            <button class="btn" type="button">Search</button>
+        </div>
+    </div>
+    <div id="navbar-wrapper">
     <div class="container">
         <div class="masthead">
-            <h3 class="muted">Mr CMS - not just another CMS</h3>
             <div class="navbar">
                 <div class="navbar-inner">
-                    <div class="container">
-                        @RenderZone("Main Navigation")
-                    </div>
+                    <ul class="nav">
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Information</a></li>
+                <li><a href="#">Delivery Details</a></li>
+                <li><a href="#">Shop Locations</a></li>
+                <li><a href="#">Contact us</a></li>
+              </ul>
                 </div>
             </div>
         </div>
-          @RenderZone("Header")
+        </div>
+        </div>
+      <div class="container">
+        @RenderZone("Header") &nbsp;
         @RenderZone("Before Content")
         @RenderBody()
-        @RenderZone("After Content")
-           @RenderZone("Footer")
-
-        <hr>
-
-        <footer>
-            <p>&copy; Mr CMS 2013</p>
-        </footer>
-
+        @RenderZone("After Content")  &nbsp;
+        @RenderZone("Footer")
+      </div>
+      <div id="push"></div>
     </div>
+          
+    <div id="footer">
+        <div class="container">
+      <ul>
+          <li><a href="#">About &bull;</a></li>
+           <li><a href="#">Contact Us &bull;</a></li>
+           <li><a href="#">Privacy Policy & Cookie Info &bull;</a></li>
+          <li><a href="#">Mr CMS</a></li>
+      </ul>
+    </div>
+ </div>
+
+
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    @{ Html.IncludeScript("~/Apps/Core/Content/bootstrap/js/bootstrap.min.js");
-       Html.IncludeScript("~/Apps/Core/Content/Scripts/jquery.validate.min.js");
-       Html.IncludeScript("~/Apps/Core/Content/Scripts/jquery.validate.unobtrusive.min.js");}
+    @{ Html.IncludeScript("~/Apps/Ecommerce/Content/bootstrap/js/bootstrap.min.js");
+       Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.min.js");
+       Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.unobtrusive.min.js");}
     @Html.RenderScripts()
     @if (CurrentRequestData.CurrentUserIsAdmin && SiteSettings<SiteSettings>().EnableInlineEditing)
     {
