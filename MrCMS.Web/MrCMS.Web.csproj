@@ -1242,11 +1242,12 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ImportExport.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\MakeSingleVariant.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceSettings\Edit.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedXProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Web.config" />
     <Content Include="Apps\Ecommerce\Views\Shared\_EcommerceLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\FeaturedCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\FeaturedProducts.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedCategories.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedProducts.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

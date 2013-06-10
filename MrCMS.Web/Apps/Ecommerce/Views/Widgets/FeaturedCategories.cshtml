@@ -1,5 +1,5 @@
 ﻿@using MrCMS.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Widgets.FeaturedProductsViewModel
+@model MrCMS.Web.Apps.Ecommerce.Widgets.FeaturedCategoriesViewModel
 @if (Model != null)
 {
     <hr />
@@ -9,31 +9,20 @@
     }
 
     <div class="row-fluid">
-    @foreach (var item in Model.Products)
+    @foreach (var item in Model.Categories)
     {
             <div class="span3">
                 <div style="height:200px; overflow:hidden;" >
-                @if(item.Images.Count()>0)
+                @if(item.Products.Count()>0)
                 {
-                    <img src="@(item.Images.First<MrCMS.Entities.Documents.Media.MediaFile>().FileUrl)" class="img-rounded pull-left span12" />
+                    if(item.Products.First<MrCMS.Web.Apps.Ecommerce.Pages.Product>().Images.Count()>0)
+                    {
+                    <img src="@(item.Products.First<MrCMS.Web.Apps.Ecommerce.Pages.Product>().Images.First<MrCMS.Entities.Documents.Media.MediaFile>().FileUrl)" class="img-rounded pull-left span12" />
+                    }
                 }
                 </div>
                     <div class="clearfix"></div>
-                <h4 class="product-title"><a href="/@item.LiveUrlSegment">@item.Name</a></h4>
-                <div style="height:130px;">@(item.Abstract.Length>255?item.Abstract.Substring(0,250)+"...":item.Abstract)</div>
-                    <h1 class="product-price">
-                    &pound;
-                    @if (item.PricePreTax == 0 && item.Variants.Count>0)
-                    {
-                        @(item.Variants.OrderBy(x=>x.Price).First<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant>().Price)
-                    }
-                    else
-                    {
-                        @item.PricePreTax;
-                    }
-                </h1>
-                <span>shop price &pound;@(item.PreviousPrice.HasValue?item.PreviousPrice.Value.ToString("#.##"):"")</span>
-
+                <h4 class="category-title"><a href="/@item.LiveUrlSegment">@item.Name</a></h4>
            </div>
     }
     </div>
