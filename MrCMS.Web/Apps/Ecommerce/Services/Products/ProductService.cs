@@ -46,6 +46,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             return new ProductPagedList(pagedList, productContainerId);
         }
 
+        public IList<Product> Search(string queryTerm)
+        {
+            if (!string.IsNullOrWhiteSpace(queryTerm))
+            {
+                return _session.QueryOver<Product>().Where(product => product.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)).Cacheable().List();
+            }
+            else
+            {
+                return new List<Product>();
+            }
+        }
+
         public void MakeMultiVariant(MakeMultivariantModel model)
         {
             var product = _documentService.GetDocument<Product>(model.ProductId);
