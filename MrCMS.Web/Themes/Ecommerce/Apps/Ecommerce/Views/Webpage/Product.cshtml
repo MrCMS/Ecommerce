@@ -1,4 +1,5 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+@using MrCMS.Helpers
 
 <ul class="breadcrumb">
 <li><a href="#">Home</a> <span class="divider">/</span></li>
@@ -18,7 +19,7 @@
             <div class="clearfix"></div>
             <div id="product-image-thumbnails">
             <ul class="thumbnails">
-            @foreach(var item in Model.Images)
+            @foreach (var item in Model.Images)
             {
                 <li class="span3">
                 <img src="@(item.FileUrl)" />
@@ -31,19 +32,18 @@
             <h3>@Model.Name</h3>
             Exclusive price
             <h1 class="product-price">
-                    &pound;
                     @if (Model.PricePreTax == 0 && Model.Variants.Count > 0)
                     {
-                        @(Model.Variants.OrderBy(x=>x.Price).First<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant>().Price)
+                        @Html.Raw("&pound;" + Model.Variants.OrderBy(x => x.Price).First<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant>().Price.ToString())
                     }
                     else
                     {
-                        @Model.PricePreTax
+                        @Html.Raw("&pound;" + Model.PricePreTax.ToString())
                     }
                 </h1>
-            <span>shop price: <span style="text-decoration:line-through">&pound;@(Model.PreviousPrice.HasValue?Model.PreviousPrice.Value.ToString("#.##"):"")</span></span>
+            <span>shop price: <span style="text-decoration:line-through">&pound;@(Model.PreviousPrice.HasValue ? Model.PreviousPrice.Value.ToString("#.##") : "")</span></span>
             <br /> <br />
-            <div>@(Model.Abstract.Length>255?Model.Abstract.Substring(0,250)+"...":Model.Abstract)</div>
+            <div>@(Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract)</div>
             <br />
             <div id="mail-print-buttons">
             <i class="icon-envelope"></i> <i class="icon-print"></i>
@@ -79,25 +79,25 @@
     <div class="span4">
         @if (Model.AttributeOptions.Count > 0)
         {
-            foreach (var option in Model.AttributeOptions)
+            for (int i = 0; i < Model.AttributeOptions.Count; i++)
             {
-                <pre class="product-specifications-filter">
-                <label class="pull-left">Select @option.Name&nbsp;</label>
-                <select class="pull-right">
-                    @foreach (var optionValue in option.Values)
+                <pre class="product-variants-filter">
+                <label class="pull-left">Select @Model.AttributeOptions[i].Name&nbsp;</label>
+                <select class="pull-right" id='@(Html.Encode("attributeOption"+i))'>
+                    @foreach (var optionValue in Model.AttributeOptions[i].Values)
                     {
-                        <option value="@optionValue.Id">@optionValue.Value</option>
+                        <option value="@optionValue.ProductVariant.Id">@optionValue.Value</option>
                     }
                 </select>
                </pre>
             }
         }
-        @if (Model.PriceBreaks.Count() > 0)
+        @if (Model.PriceBreaks.Count() > 0 && Model.Variants.Count() == 0)
         {
-            <span class="product-specifications-filter">
+            <div id="product-pricebreaks">
+            <div class="product-pricebreaks-title">
                 PRICE BREAKS - The more you buy, the more you save.
-            </span>
-            <br /><br />
+            </div>
              <table class="table table-bordered table-condensed">
                  <tr>
                      <th>Quantity</th>
@@ -111,11 +111,49 @@
                  </tr> 
             }
             </table>
+             </div>
+        }
+        else if (Model.Variants.Count > 0)
+        {
+            <div id="product-variants-pricebreaks">
+            <div class="product-pricebreaks-title">
+                PRICE BREAKS - The more you buy, the more you save.
+            </div>
+             <table id="product-pricebreaks-table" class="table table-bordered table-condensed">
+                 <tr>
+                     <th>Quantity</th>
+                     <th>Price</th>
+                 </tr>
+                 @if (Model.Variants.First<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant>().PriceBreaks.Count() > 0)
+                 {
+                     foreach (var item in Model.Variants.First<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant>().PriceBreaks)
+                     {
+                         <tr>
+                             <td>@item.Quantity</td>
+                             <td>&pound;@item.Price.ToString("#.##")</td>
+                         </tr> 
+                     }
+                 }
+                 else
+                 {
+                     <tr>
+                             <td>1</td>
+                             <td>&pound;@(Model.Variants.First<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant>().Price.ToString("#.##"))</td>
+                    </tr>
+                 }
+            </table>
+             </div>
         }
 
+        <pre id="product-addtobasket">
+                <label class="pull-left">Quantity&nbsp;</label>
+                <input type="text" class="input-mini pull-left" />
+                <button class="btn btn-info btn-addtobasket pull-right span7" type="button">Add to basket</button>
+             </pre>
         <hr />
-        @if(Model.SpecificationValues.Count>0)
+        @if (Model.SpecificationValues.Count > 0)
         {
+            <div id="product-specifications">
             <h4>Specifications</h4>
             <table class="table table-bordered table-striped table-condensed">
             @foreach (var item in Model.SpecificationValues)
@@ -126,6 +164,9 @@
                  </tr>
             }
              </table>
+            </div>
         }
     </div>
 </div>
+
+@{ Html.IncludeScript("~/Themes/Ecommerce/Apps/Ecommerce/Content/Scripts/custom/product.js"); }

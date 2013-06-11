@@ -330,5 +330,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             product.Variants.Clear();
             _documentService.SaveDocument<Product>(product);
         }
+
+        
     }
 }
