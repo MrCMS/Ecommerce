@@ -35,6 +35,10 @@
     width:150px;
     margin:15px 0px 0px 0px;
 }
+.btn-addtobasket
+{
+    width:150px;
+}
 #basket-info-box
 {
     color:#3F3F3F;
@@ -112,7 +116,7 @@ h4.category-title
 {
     margin:0;
 }
-pre.product-specifications-filter
+pre.product-variants-filter
 {
     background-color: #F5F5F5;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -128,7 +132,41 @@ pre.product-specifications-filter
     word-break:normal;
     word-wrap:normal;
 }
-pre.product-specifications-filter label
+pre#product-addtobasket
+{
+    background-color: #F5F5F5;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0;
+    line-height: 0;
+    margin: 0px 0px 10px 0px;
+    padding: 10px 10px 10px 10px;
+    overflow:hidden;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size:10px;
+    text-wrap:normal;
+    white-space:normal;
+    word-break:normal;
+    word-wrap:normal;
+}
+pre.product-variants-filter label, pre#product-addtobasket label
 {
     margin:7px 0px 0px 0px;
 }
+pre.product-variants-filter input[type="text"], pre#product-addtobasket input[type="text"]
+{
+    margin:0;
+}
+pre.product-variants-filter select, pre#product-addtobasket select
+{
+    margin:0;
+}
+.product-pricebreaks-title
+{
+    background-color: #C8C8C8;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    padding:5px;
+    margin:0px 0px 5px 0px;
+    font-weight:bold;
+    font-size:12px;
+}
+
