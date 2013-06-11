@@ -226,13 +226,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 Quantity = model.Quantity,
                 Price = model.Price
             };
+
             productVariant.PriceBreaks.Add(priceBreak);
 
             _session.Transact(session =>
             {
-                session.SaveOrUpdate(productVariant);
                 session.SaveOrUpdate(priceBreak);
+                session.SaveOrUpdate(productVariant);
             });
+
             return priceBreak;
         }
 
@@ -249,8 +251,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
             _session.Transact(session =>
                                   {
-                                      session.SaveOrUpdate(product);
                                       session.SaveOrUpdate(priceBreak);
+                                      session.SaveOrUpdate(product);
                                   });
             return priceBreak;
         }
