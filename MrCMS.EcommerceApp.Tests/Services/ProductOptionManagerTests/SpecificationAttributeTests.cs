@@ -88,7 +88,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
                               new ProductSpecificationValue
                                   {
                                       Value = "Value" + i,
-                                      Option = option,
+                                      ProductSpecificationAttribute = option,
                                       Product = product
                                   })
                           .ToList();
@@ -118,7 +118,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
                               new ProductSpecificationValue
                                   {
                                       Value = "Value" + i,
-                                      Option = option,
+                                      ProductSpecificationAttribute = option,
                                       Product = product
                                   })
                           .ToList();

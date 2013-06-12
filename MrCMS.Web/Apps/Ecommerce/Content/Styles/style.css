@@ -169,4 +169,49 @@ pre.product-variants-filter select, pre#product-addtobasket select
     font-weight:bold;
     font-size:12px;
 }
-
+.product-filter-box-title
+{
+    padding:5px 0px 5px 12px;
+    margin:0px 0px 5px 0px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+}
+.product-filter-box-slider
+{
+    margin:5px 0px 5px 0px;
+}
+#product-filter-box-options, #product-filter-box-specifications
+{
+    margin:5px 0px 5px 0px;
+}
+#products-operations
+{
+    overflow:hidden;
+    margin:5px 0px 5px 0px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+#products-operations #sorting
+{
+    margin:0px 20px 0px 0px;
+}
+#products-operations #sorting label
+{
+    float:left;
+    margin:5px 10px 0px 0px;
+}
+#products-operations #show label
+{
+    float:left;
+    margin:5px 10px 0px 0px;
+}
+#products .item
+{
+    margin:5px 0px 5px 0px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+#products .item .span3 .btn
+{
+    display:block;
+    margin:20px 0px 5px 0px;
+}

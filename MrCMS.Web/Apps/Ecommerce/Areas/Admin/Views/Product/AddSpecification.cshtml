@@ -13,10 +13,8 @@
         @Html.Hidden("ProductId",Model.Product.Id)
         @if((ViewData["specification-attributes"] as IEnumerable<SelectListItem>).Count()>0)
         {
-     @Html.DisplayTextFor(x=>x.Option)
-    @Html.DropDownListFor(x=>x.Option, ViewData["specification-attributes"] as IEnumerable<SelectListItem>)
+    @Html.DropDownList("Option", ViewData["specification-attributes"] as IEnumerable<SelectListItem>)
         <br />
-         @Html.DisplayTextFor(x=>x.Value)
      @Html.DropDownListFor(x=>x.Value, ViewData["specification-attributes-options"] as IEnumerable<SelectListItem>)
         }
         else

@@ -31,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapAreaRoute("Admin controllers", "Admin", "Admin/Apps/Ecommerce/{controller}/{action}/{id}",
                                  new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                                  new[] { typeof(ProductController).Namespace});
-            context.MapRoute("Product Variant controller - GetPriceBreaksForProductVariant", "Apps/Ecommerce/ProductVariant/GetPriceBreaksForProductVariant", new { controller = "ProductVariant", action = "GetPriceBreaksForProductVariant" });
+            context.MapRoute("Product Variant - GetPriceBreaksForProductVariant", "Apps/Ecommerce/ProductVariant/GetPriceBreaksForProductVariant", new { controller = "ProductVariant", action = "GetPriceBreaksForProductVariant" });
         }
     }
 }

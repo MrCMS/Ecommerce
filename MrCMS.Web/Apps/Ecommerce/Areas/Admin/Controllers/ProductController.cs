@@ -124,7 +124,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             ViewData["product"] = product;
             List<ProductSpecificationAttribute> attributes = _productOptionManager.ListSpecificationAttributes().ToList().Where(x => x.Options.Any()
-                && product.SpecificationValues.All(v => v.Option.Id != x.Id)).ToList();
+                && product.SpecificationValues.All(v => v.ProductSpecificationAttribute.Id != x.Id)).ToList();
 
             ViewData["specification-attributes"] = new SelectList(attributes, "Id", "Name");
             ViewData["specification-attributes-options"] = new SelectList(attributes.Any() ? attributes.First().Options : new List<ProductSpecificationAttributeOption>(), "Id", "Name");
@@ -189,7 +189,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 {
                     var sortItems = product.SpecificationValues.OrderBy(x => x.DisplayOrder)
                                 .Select(
-                                    arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Option.Name })
+                                    arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.ProductSpecificationAttribute.Name })
                                 .ToList();
                     ViewBag.Product = product;
                     return View(sortItems);
