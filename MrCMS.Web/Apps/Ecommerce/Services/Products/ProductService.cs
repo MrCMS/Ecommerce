@@ -318,16 +318,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             product.SKU = product.Variants.First().SKU;
             product.StockRemaining = product.Variants.First().StockRemaining;
             product.AttributeOptions.Clear();
-            _session.Transact(session =>
-            {
-                product.Variants.ForEach(variant =>
-                {
-                    variant.AttributeValues.Clear();
-                    session.Update(variant);
-                });
-            });
+            _session.Transact(session => product.Variants.ForEach(variant =>
+                                                                      {
+                                                                          variant.AttributeValues.Clear();
+                                                                          session.Update(variant);
+                                                                      }));
             product.Variants.Clear();
-            _documentService.SaveDocument<Product>(product);
+            _documentService.SaveDocument(product);
         }
 
         
