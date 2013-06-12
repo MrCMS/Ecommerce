@@ -247,7 +247,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                      Quantity = model.Quantity,
                                      Price = model.Price
                                  };
-            product.PriceBreaks.Add(priceBreak);
 
             _session.Transact(session =>
                                   {
