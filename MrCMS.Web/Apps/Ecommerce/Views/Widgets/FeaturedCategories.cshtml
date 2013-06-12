@@ -1,0 +1,29 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Widgets.FeaturedCategoriesViewModel
+@if (Model != null)
+{
+    <hr />
+    if (!String.IsNullOrEmpty(Model.Title))
+    {
+    <h4>@Model.Title</h4>
+    }
+
+    <div class="row-fluid">
+    @foreach (var item in Model.Categories)
+    {
+            <div class="span3">
+                <div style="height:200px; overflow:hidden;" >
+                @if(item.Products.Count()>0)
+                {
+                    if(item.Products.First<MrCMS.Web.Apps.Ecommerce.Pages.Product>().Images.Count()>0)
+                    {
+                    <img src="@(item.Products.First<MrCMS.Web.Apps.Ecommerce.Pages.Product>().Images.First<MrCMS.Entities.Documents.Media.MediaFile>().FileUrl)" class="img-rounded pull-left span12" />
+                    }
+                }
+                </div>
+                    <div class="clearfix"></div>
+                <h4 class="category-title"><a href="/@item.LiveUrlSegment">@item.Name</a></h4>
+           </div>
+    }
+    </div>
+}
