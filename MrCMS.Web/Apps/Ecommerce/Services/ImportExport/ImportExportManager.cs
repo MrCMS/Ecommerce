@@ -280,8 +280,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                     }
 
                                                     ProductSpecificationAttribute option = _productOptionManager.GetSpecificationAttributeByName(specificationValue[0]);
-                                                    if (product.SpecificationValues.Where(x => x.Option.Id == option.Id && x.Product.Id == product.Id).Count() == 0)
-                                                        product.SpecificationValues.Add(new ProductSpecificationValue() { Option = option, Value = specificationValue[1], Product = product });
+                                                    if (product.SpecificationValues.Where(x => x.ProductSpecificationAttribute.Id == option.Id && x.Product.Id == product.Id).Count() == 0)
+                                                        product.SpecificationValues.Add(new ProductSpecificationValue() { ProductSpecificationAttribute = option, Value = specificationValue[1], Product = product });
                                                 }
                                             }
                                         }
@@ -384,7 +384,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     {
                         foreach (var item in products[i].SpecificationValues)
                         {
-                            wsProducts.Cells["Q" + rowNumber.ToString()].Value += item.Option.Name + ":" + item.Value + ";";
+                            wsProducts.Cells["Q" + rowNumber.ToString()].Value += item.ProductSpecificationAttribute.Name + ":" + item.Value + ";";
                         }
                     }
 

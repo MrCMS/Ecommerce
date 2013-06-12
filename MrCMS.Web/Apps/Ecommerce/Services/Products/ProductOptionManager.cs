@@ -97,7 +97,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public void SetSpecificationValue(Product product, ProductSpecificationAttribute productSpecificationAttribute, string Value)
         {
-            var values = _session.QueryOver<ProductSpecificationValue>().Where(specificationValue => specificationValue.Option == productSpecificationAttribute && specificationValue.Product == product).Cacheable().List();
+            var values = _session.QueryOver<ProductSpecificationValue>().Where(specificationValue => specificationValue.ProductSpecificationAttribute == productSpecificationAttribute && specificationValue.Product == product).Cacheable().List();
             if (values.Any())
             {
                 var specificationValue = values.First();
@@ -109,7 +109,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 ProductSpecificationValue productSpecificationValue = new ProductSpecificationValue
                 {
                     Product = product,
-                    Option = productSpecificationAttribute,
+                    ProductSpecificationAttribute = productSpecificationAttribute,
                     Value = Value
                 };
                 product.SpecificationValues.Add(productSpecificationValue);
@@ -134,6 +134,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             }));
         }
 
+        public IList<ProductAttributeOption> GetAllAttributeOptions()
+        {
+            return _session.QueryOver<ProductAttributeOption>().Cacheable().List();
+        }
         public ProductAttributeOption GetAttributeOption(int id)
         {
             return _session.QueryOver<ProductAttributeOption>().Where(x => x.Id == id).Cacheable().SingleOrDefault();

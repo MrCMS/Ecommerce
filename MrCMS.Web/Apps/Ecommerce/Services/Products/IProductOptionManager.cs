@@ -28,6 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void UpdateSpecificationValueDisplayOrder(IList<SortItem> options);
         ProductSpecificationValue GetSpecificationValue(int id);
 
+        IList<ProductAttributeOption> GetAllAttributeOptions();
         ProductAttributeOption GetAttributeOption(int id);
         ProductAttributeOption GetAttributeOptionByName(string name);
         void AddAttributeOption(ProductAttributeOption productAttributeOption);
