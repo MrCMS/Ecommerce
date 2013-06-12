@@ -14,6 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
             mapping.HasManyToMany(product => product.AttributeOptions).Table("ProductAttributes").Not.Inverse();
             mapping.HasMany(product => product.PriceBreaks)
                    .KeyColumn("ItemId")
+                   .ForeignKeyConstraintName("no")
                    .Where("ItemType = '" + typeof (Product).FullName + "'");
         }
     }
@@ -24,6 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
             mapping.HasMany(variant => variant.AttributeValues).KeyColumn("ProductVariantId").Cascade.All();
             mapping.HasMany(variant => variant.PriceBreaks)
                    .KeyColumn("ItemId")
+                   .ForeignKeyConstraintName("no")
                    .Where("ItemType = '" + typeof(ProductVariant).FullName + "'");
         }
     }
