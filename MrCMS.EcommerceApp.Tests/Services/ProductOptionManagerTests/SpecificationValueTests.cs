@@ -66,13 +66,13 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             var value1 =  new ProductSpecificationValue
             {
                 Product = product,
-                Option = option,
+                ProductSpecificationAttribute = option,
                 Value = "11"
             };
             var value2 = new ProductSpecificationValue
             {
                 Product = product,
-                Option = option,
+                ProductSpecificationAttribute = option,
                 Value = "13"
             };
 
@@ -84,7 +84,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
            
             var sortItems = product.SpecificationValues.OrderBy(x => x.DisplayOrder)
                                 .Select(
-                                    arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Option.Name })
+                                    arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.ProductSpecificationAttribute.Name })
                                 .ToList();
             sortItems[0].Order = 0;
             sortItems[1].Order = 1;
@@ -99,7 +99,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             var specValue = new ProductSpecificationValue
                                 {
                                     Product = product,
-                                    Option = option,
+                                    ProductSpecificationAttribute = option,
                                     Value = value
                                 };
             Session.Transact(session => session.Save(specValue));

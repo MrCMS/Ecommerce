@@ -178,7 +178,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual string GetSpecification(string name)
         {
-            var spec = SpecificationValues.FirstOrDefault(value => value.Option.Name == name);
+            var spec = SpecificationValues.FirstOrDefault(value => value.ProductSpecificationAttribute.Name == name);
             if (spec == null)
                 return null;
             return spec.Value;

@@ -70,5 +70,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
 
             return _session.Paged(queryOver, page, 10);
         }
+        public IList<Category> GetAll()
+        {
+            return _session.QueryOver<Category>().Cacheable().List();
+        }
     }
 }
