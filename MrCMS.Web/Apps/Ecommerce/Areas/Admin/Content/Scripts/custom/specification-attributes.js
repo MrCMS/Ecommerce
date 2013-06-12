@@ -3,6 +3,7 @@
         pId = $("#ProductId").val();
         saId = $("#Option").val();
         noOfOptions = $("#Option option").length;
+        alert(noOfOptions);
         if (noOfOptions > 0) {
             saValue = $("#Value option:selected").text();
             $.post('/Admin/Apps/Ecommerce/Product/AddSpecification',
