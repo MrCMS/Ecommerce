@@ -407,7 +407,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     }
 
                 }
-
+                wsProducts.Cells["C:C"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
+                wsProducts.Cells["G:G"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
                 wsProducts.Cells["A:B"].AutoFitColumns();
                 wsProducts.Cells["D:F"].AutoFitColumns();
                 wsProducts.Cells["I:Q"].AutoFitColumns();
