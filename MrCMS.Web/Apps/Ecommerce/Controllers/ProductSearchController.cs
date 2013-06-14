@@ -3,11 +3,9 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using NHibernate.Mapping;
-using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System.Linq;
-using System.Collections;
+
 using System;
 using System.Collections.Generic;
 using MrCMS.Website;
@@ -34,18 +32,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             ProductPagedList products = _productService.Search();
             ViewBag.ProductOptions = _productOptionManager.GetAllAttributeOptions();
             ViewBag.ProductSpecifications = _productOptionManager.ListSpecificationAttributes();
-            decimal productPriceRangeMin= 0;
-            decimal productPriceRangeMax=0;
-            foreach (var product in (IPagedList<Product>)products)
+            decimal productPriceRangeMin = 0;
+            decimal productPriceRangeMax = 0;
+            foreach (var product in products)
             {
-                if (product.Variants.Count() > 0)
+                if (product.Variants.Any())
                 {
                     foreach (var variant in product.Variants)
                     {
-                        if(variant.Price<productPriceRangeMin)
-                            productPriceRangeMin=variant.Price;
-                        if(variant.Price>productPriceRangeMax)
-                            productPriceRangeMax=variant.Price;
+                        if (variant.Price < productPriceRangeMin)
+                            productPriceRangeMin = variant.Price;
+                        if (variant.Price > productPriceRangeMax)
+                            productPriceRangeMax = variant.Price;
                     }
                 }
             }

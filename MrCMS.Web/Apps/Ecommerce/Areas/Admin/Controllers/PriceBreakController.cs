@@ -1,12 +1,8 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Website.Controllers;
-using System.Linq;
-using System;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {

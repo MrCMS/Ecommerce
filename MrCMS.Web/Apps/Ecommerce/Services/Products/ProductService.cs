@@ -2,7 +2,6 @@
 using System.Linq;
 using MrCMS.Paging;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -48,14 +47,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public IList<Product> Search(string queryTerm)
         {
-            if (!string.IsNullOrWhiteSpace(queryTerm))
-            {
-                return _session.QueryOver<Product>().Where(product => product.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)).Cacheable().List();
-            }
-            else
-            {
-                return new List<Product>();
-            }
+            return !string.IsNullOrWhiteSpace(queryTerm)
+                       ? _session.QueryOver<Product>()
+                                 .Where(product => product.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere))
+                                 .Cacheable()
+                                 .List()
+                       : new List<Product>();
         }
 
         public void MakeMultiVariant(MakeMultivariantModel model)
@@ -247,7 +244,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                      Quantity = model.Quantity,
                                      Price = model.Price
                                  };
-            product.PriceBreaks.Add(priceBreak);
 
             _session.Transact(session =>
                                   {
@@ -319,16 +315,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             product.SKU = product.Variants.First().SKU;
             product.StockRemaining = product.Variants.First().StockRemaining;
             product.AttributeOptions.Clear();
-            _session.Transact(session =>
-            {
-                product.Variants.ForEach(variant =>
-                {
-                    variant.AttributeValues.Clear();
-                    session.Update(variant);
-                });
-            });
+            _session.Transact(session => product.Variants.ForEach(variant =>
+                                                                      {
+                                                                          variant.AttributeValues.Clear();
+                                                                          session.Update(variant);
+                                                                      }));
             product.Variants.Clear();
-            _documentService.SaveDocument<Product>(product);
+            _documentService.SaveDocument(product);
         }
 
         
