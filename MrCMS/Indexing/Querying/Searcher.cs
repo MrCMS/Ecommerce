@@ -40,6 +40,19 @@ namespace MrCMS.Indexing.Querying
             return new StaticPagedList<TEntity>(entities, pageNumber, pageSize, topDocs.TotalHits);
         }
 
+        public IPagedList<TEntity> SearchWithSort(Query query, int pageNumber, int pageSize, Sort sortBy, Filter filter = null)
+        {
+            var topDocs = _searcher.Search(query, filter, pageNumber * pageSize,sortBy);
+
+            var entities =
+                Definition.Convert(_session,
+                                   topDocs.ScoreDocs.Skip((pageNumber - 1) * pageSize)
+                                          .Take(pageSize)
+                                          .Select(doc => _searcher.Doc(doc.Doc)));
+
+            return new StaticPagedList<TEntity>(entities, pageNumber, pageSize, topDocs.TotalHits);
+        }
+
         public int Total(Query query, Filter filter = null)
         {
             var topDocs = _searcher.Search(query, filter, int.MaxValue);

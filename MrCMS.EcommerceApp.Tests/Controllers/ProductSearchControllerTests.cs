@@ -17,13 +17,15 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
         private readonly ProductSearchController _controller;
         private readonly IProductOptionManager _productOptionManager;
         private readonly IProductService _productService;
+        private readonly IProductSearchService _productSearchService;
 
         public ProductSearchControllerTests()
         {
             _productOptionManager = A.Fake<IProductOptionManager>();
             _productService = A.Fake<IProductService>();
-            _categoryService = A.Fake<ICategoryService>(); ;
-            _controller = new ProductSearchController(_categoryService, _productOptionManager, _productService) { RequestMock = A.Fake<HttpRequestBase>() };
+            _categoryService = A.Fake<ICategoryService>();
+            _productSearchService = A.Fake<IProductSearchService>();
+            _controller = new ProductSearchController(_categoryService, _productOptionManager, _productService, _productSearchService) { RequestMock = A.Fake<HttpRequestBase>() };
         }
 
         private ProductSearch GetProductSearch()
