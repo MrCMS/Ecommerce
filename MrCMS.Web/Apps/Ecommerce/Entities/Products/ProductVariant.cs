@@ -9,6 +9,7 @@ using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using System.Linq;
 using NHibernate;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 {
@@ -72,10 +73,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual decimal GetPrice(int quantity)
         {
-            if (PriceBreaks.Count > 0)
+            if (this.GetPriceBreaks().Any())
             {
-                List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
-                if (priceBreaks.Count > 0)
+                List<PriceBreak> priceBreaks = this.GetPriceBreaks().Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
+                if (priceBreaks.Any())
                     return priceBreaks.First().GetPrice() * quantity;
             }
 
@@ -105,24 +106,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             return Price;
         }
 
-        public virtual IList<PriceBreak> PriceBreaks
-        {
-            get
-            {
-                return MrCMSApplication.Get<ISession>()
-                                       .QueryOver<PriceBreak>()
-                                       .Where(@break => @break.Item == this)
-                                       .Cacheable()
-                                       .List();
-            }
-        }
-
         public virtual decimal GetPriceIncludingPriceBreaks(int quantity)
         {
-            if (PriceBreaks.Count > 0)
+            if (this.GetPriceBreaks().Any())
             {
-                List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
-                if (priceBreaks.Count > 0)
+                List<PriceBreak> priceBreaks = this.GetPriceBreaks().Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
+                if (priceBreaks.Any())
                     return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
                                       ? priceBreaks.First().Price
                                       : TaxRate != null
