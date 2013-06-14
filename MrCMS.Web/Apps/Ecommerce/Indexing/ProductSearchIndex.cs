@@ -14,6 +14,8 @@ using MrCMS.Indexing.Utils;
 using MrCMS.Helpers;
 using NHibernate.Criterion;
 using Version = Lucene.Net.Util.Version;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using System.Collections;
 
 namespace MrCMS.Web.Apps.Ecommerce.Indexing
 {
@@ -58,7 +60,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
             return new StandardAnalyzer(Version.LUCENE_30);
         }
 
-
         public string IndexName { get { return "Product Search Index"; } }
 
         public IEnumerable<FieldDefinition<Product>> Definitions
@@ -73,6 +74,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                 yield return MetaDescription;
                 yield return UrlSegment;
                 yield return PublishOn;
+                yield return Price;
+                yield return Specifications;
+                yield return Options;
             }
         }
         public static FieldDefinition<Product> Id { get { return _id; } }
@@ -83,7 +87,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
         public static FieldDefinition<Product> MetaDescription { get { return _metaDescription; } }
         public static FieldDefinition<Product> UrlSegment { get { return _urlSegment; } }
         public static FieldDefinition<Product> PublishOn { get { return _publishOn; } }
-
+        public static DecimalFieldDefinition<Product> Price { get { return _price; } }
+        public static FieldDefinition<Product> Specifications { get { return _specifications; } }
+        public static FieldDefinition<Product> Options { get { return _options; } }
 
         private static readonly FieldDefinition<Product> _id =
             new StringFieldDefinition<Product>("id", webpage => webpage.Id.ToString(), Field.Store.YES,
@@ -119,5 +125,36 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                                          DateTools.DateToString(webpage.PublishOn.GetValueOrDefault(DateTime.MaxValue),
                                                                 DateTools.Resolution.SECOND), Field.Store.NO,
                                          Field.Index.NOT_ANALYZED);
+
+        private static readonly DecimalFieldDefinition<Product> _price =
+            new DecimalFieldDefinition<Product>("price", webpage => webpage.Variants.Any() ? webpage.Variants.Select(pv => pv.Price).Min() : webpage.Price, Field.Store.YES,
+                                         Field.Index.ANALYZED);
+
+        private static readonly FieldDefinition<Product> _specifications =
+          new StringFieldDefinition<Product>("specifications",
+                                         product =>
+                                         product.SpecificationValues.Distinct().Select(specification => GetSpecificationValue(specification)),
+                                       Field.Store.NO, Field.Index.NOT_ANALYZED);
+
+        private static readonly FieldDefinition<Product> _options =
+  new StringFieldDefinition<Product>("options",
+                                 product =>
+                                 product.Variants.Distinct().Select(option => GetOptionValues(option.AttributeValues)),
+                               Field.Store.NO, Field.Index.NOT_ANALYZED);
+
+        public static string GetOptionValues(IList<ProductAttributeValue> values)
+        {
+            string optionValues = String.Empty;
+            foreach (var item in values)
+            {
+                optionValues += item.ProductAttributeOption.Name.ToLower() + item.Value.ToLower()+",";
+            }
+            return optionValues;
+        }
+
+        public static string GetSpecificationValue(ProductSpecificationValue entity)
+        {
+            return entity.ProductSpecificationAttribute.Name.ToLower() + ":" + entity.Value.ToLower();
+        }
     }
 }
