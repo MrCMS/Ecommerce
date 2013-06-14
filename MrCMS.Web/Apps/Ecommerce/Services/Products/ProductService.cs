@@ -10,6 +10,7 @@ using MrCMS.Helpers;
 using NHibernate.Criterion;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
@@ -224,7 +225,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 Price = model.Price
             };
 
-            productVariant.PriceBreaks.Add(priceBreak);
+            productVariant.GetPriceBreaks().Add(priceBreak);
 
             _session.Transact(session =>
             {
@@ -292,9 +293,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             switch (type)
             {
                 case "Product":
-                    return _session.Get<Product>(id).PriceBreaks;
+                    return _session.Get<Product>(id).GetPriceBreaks();
                 case "ProductVariant":
-                    return _session.Get<ProductVariant>(id).PriceBreaks;
+                    return _session.Get<ProductVariant>(id).GetPriceBreaks();
                 default:
                     throw new IndexOutOfRangeException("type");
             }
