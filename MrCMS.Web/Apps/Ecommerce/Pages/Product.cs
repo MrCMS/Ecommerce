@@ -26,7 +26,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             SpecificationValues = new List<ProductSpecificationValue>();
             Categories = new List<Category>();
             AttributeOptions = new List<ProductAttributeOption>();
-            PriceBreaks = new List<PriceBreak>();
         }
 
         public virtual MediaCategory Gallery { get; set; }
@@ -122,12 +121,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             return Price * quantity;
         }
 
+        public virtual IList<PriceBreak> PriceBreaks
+        {
+            get
+            {
+                return MrCMSApplication.Get<ISession>()
+                                       .QueryOver<PriceBreak>()
+                                       .Where(@break => @break.Item == this)
+                                       .Cacheable()
+                                       .List();
+            }
+        }
+
         public virtual decimal GetSaving(int quantity)
         {
-            if (PreviousPrice != 0)
-                return ((PreviousPrice*quantity)-GetPrice(quantity)).Value;
-            else
-                return (Price * quantity) - GetPrice(quantity);
+            return PreviousPrice != 0
+                       ? ((PreviousPrice*quantity) - GetPrice(quantity)).Value
+                       : (Price*quantity) - GetPrice(quantity);
         }
 
         public virtual decimal GetTax(int quantity)
@@ -144,8 +154,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             return Price;
         }
-
-        public virtual IList<PriceBreak> PriceBreaks { get; set; }
 
         public virtual TaxRate TaxRate { get; set; }
 
