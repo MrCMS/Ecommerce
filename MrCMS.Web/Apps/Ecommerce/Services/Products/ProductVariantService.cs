@@ -63,16 +63,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             if (id != 0)
             {
-                ProductVariant productVariant = _session.QueryOver<ProductVariant>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
-                if (productVariant.PriceBreaks.Count() > 0)
+                var productVariant = _session.Get<ProductVariant>(id);
+                if (productVariant.PriceBreaks.Any())
                     return productVariant.PriceBreaks;
-                else
-                    return new List<PriceBreak>();
             }
-            else
-            {
-                return new List<PriceBreak>();
-            }
+            return new List<PriceBreak>();
         }
     }
 }

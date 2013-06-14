@@ -1,21 +1,19 @@
-﻿
-using MrCMS.Helpers;
+﻿using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using NHibernate;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
 using System.Web;
-using System.Web.Mvc;
 using System.Linq;
-namespace MrCMS.Web.Apps.Ecommerce.Services.Products
+using MrCMS.Web.Apps.Ecommerce.Helpers;
+
+namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public class ImportExportManager : IImportExportManager
     {
@@ -59,24 +57,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                 {
                                     Product product = new Product();
                                     string url = String.Empty, sku = String.Empty, name = String.Empty;
+                                    var productsWorksheet = excelFile.Workbook.Worksheets[2];
                                     //Url
-                                    if (excelFile.Workbook.Worksheets[2].Cells[row, 1] != null && excelFile.Workbook.Worksheets[2].Cells[row, 1].Value != null)
-                                        url = excelFile.Workbook.Worksheets[2].Cells[row, 1].Value.ToString();
+                                    if (productsWorksheet.HasValue(row, 1))
+                                        url = productsWorksheet.GetValue<string>(row, 1);
                                     //SKU
-                                    if (excelFile.Workbook.Worksheets[2].Cells[row, 12] != null && excelFile.Workbook.Worksheets[2].Cells[row, 12].Value != null)
-                                        sku = excelFile.Workbook.Worksheets[2].Cells[row, 12].Value.ToString();
+                                    if (productsWorksheet.Cells[row, 12] != null && productsWorksheet.Cells[row, 12].Value != null)
+                                        sku = productsWorksheet.Cells[row, 12].Value.ToString();
                                     //Name
-                                    if (excelFile.Workbook.Worksheets[2].Cells[row, 2] != null && excelFile.Workbook.Worksheets[2].Cells[row, 2].Value != null)
-                                        name = excelFile.Workbook.Worksheets[2].Cells[row, 2].Value.ToString();
+                                    if (productsWorksheet.Cells[row, 2] != null && productsWorksheet.Cells[row, 2].Value != null)
+                                        name = productsWorksheet.Cells[row, 2].Value.ToString();
 
-                                    product = _productService.GetByUrl(url);
-
-                                    if (product == null)
-                                    {
-                                        product = new Product();
-                                        product.SKU = sku;
-                                        product.Name = name;
-                                    }
+                                    product = _productService.GetByUrl(url)
+                                              ?? new Product
+                                                     {
+                                                         SKU = sku,
+                                                         Name = name,
+                                                         Parent = _documentService.GetUniquePage<ProductSearch>()
+                                                     };
 
                                     if (!String.IsNullOrWhiteSpace(product.UrlSegment) && !String.IsNullOrWhiteSpace(sku) && String.IsNullOrWhiteSpace(name))
                                     {
@@ -88,38 +86,38 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                         productVariant.SKU = sku;
 
                                         //Base Price
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 9] != null && excelFile.Workbook.Worksheets[2].Cells[row, 9].Value != null)
+                                        if (productsWorksheet.Cells[row, 9] != null && productsWorksheet.Cells[row, 9].Value != null)
                                         {
                                             decimal BasePrice = 0;
-                                            Decimal.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 9].Value.ToString(), out BasePrice);
+                                            Decimal.TryParse(productsWorksheet.Cells[row, 9].Value.ToString(), out BasePrice);
                                             productVariant.BasePrice = BasePrice;
                                         }
                                         //Previous Price
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 10] != null && excelFile.Workbook.Worksheets[2].Cells[row, 10].Value != null)
+                                        if (productsWorksheet.Cells[row, 10] != null && productsWorksheet.Cells[row, 10].Value != null)
                                         {
                                             decimal PreviousPrice = 0;
-                                            Decimal.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 10].Value.ToString(), out PreviousPrice);
+                                            Decimal.TryParse(productsWorksheet.Cells[row, 10].Value.ToString(), out PreviousPrice);
                                             productVariant.PreviousPrice = PreviousPrice;
                                         }
                                         //Stock
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 11] != null && excelFile.Workbook.Worksheets[2].Cells[row, 11].Value != null)
+                                        if (productsWorksheet.Cells[row, 11] != null && productsWorksheet.Cells[row, 11].Value != null)
                                         {
                                             int StockRemaining = 0;
-                                            Int32.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 11].Value.ToString(), out StockRemaining);
+                                            Int32.TryParse(productsWorksheet.Cells[row, 11].Value.ToString(), out StockRemaining);
                                             productVariant.StockRemaining = StockRemaining;
                                         }
                                         //Tax Rate
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 14] != null && excelFile.Workbook.Worksheets[2].Cells[row, 14].Value != null)
+                                        if (productsWorksheet.Cells[row, 14] != null && productsWorksheet.Cells[row, 14].Value != null)
                                         {
                                             int taxRateID = 0;
-                                            Int32.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 14].Value.ToString(), out taxRateID);
+                                            Int32.TryParse(productsWorksheet.Cells[row, 14].Value.ToString(), out taxRateID);
                                             productVariant.TaxRate = _taxRateManager.Get(taxRateID);
                                         }
                                         //Weight
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 15] != null && excelFile.Workbook.Worksheets[2].Cells[row, 15].Value != null)
+                                        if (productsWorksheet.Cells[row, 15] != null && productsWorksheet.Cells[row, 15].Value != null)
                                         {
                                             decimal Weight = 0;
-                                            Decimal.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 15].Value.ToString(), out Weight);
+                                            Decimal.TryParse(productsWorksheet.Cells[row, 15].Value.ToString(), out Weight);
                                             productVariant.Weight = Weight;
                                         }
 
@@ -130,9 +128,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                         }
                                         else
                                         {
-                                            if (excelFile.Workbook.Worksheets[2].Cells[row, 1] != null && excelFile.Workbook.Worksheets[2].Cells[row, 1].Value != null)
+                                            if (productsWorksheet.Cells[row, 1] != null && productsWorksheet.Cells[row, 1].Value != null)
                                             {
-                                                product = _productService.GetByUrl(excelFile.Workbook.Worksheets[2].Cells[row, 1].Value.ToString());
+                                                product = _productService.GetByUrl(productsWorksheet.Cells[row, 1].Value.ToString());
                                                 productVariant.Product = product;
                                             }
                                         }
@@ -142,9 +140,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                             productVariant = _productVariantService.GetProductVariantBySKU(productVariant.SKU);
 
                                             //Option Values
-                                            if (excelFile.Workbook.Worksheets[2].Cells[row, 13] != null && excelFile.Workbook.Worksheets[2].Cells[row, 13].Value != null)
+                                            if (productsWorksheet.Cells[row, 13] != null && productsWorksheet.Cells[row, 13].Value != null)
                                             {
-                                                string rawOptions = excelFile.Workbook.Worksheets[2].Cells[row, 13].Value.ToString();
+                                                string rawOptions = productsWorksheet.Cells[row, 13].Value.ToString();
                                                 string[] options = rawOptions.Split(';');
                                                 foreach (var item in options)
                                                 {
@@ -157,9 +155,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                             _productOptionManager.AddAttributeOption(new ProductAttributeOption() { Name = optionValue[0] });
                                                         }
                                                         ProductAttributeOption option = _productOptionManager.GetAttributeOptionByName(optionValue[0]);
-                                                        if (productVariant.Product.AttributeOptions.Where(x => x.Id == option.Id).Count() == 0)
+                                                        if (productVariant.Product.AttributeOptions.All(x => x.Id != option.Id))
                                                             product.AttributeOptions.Add(option);
-                                                        if (productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).Count() == 0)
+                                                        if (productVariant.AttributeValues.All(x => x.ProductAttributeOption.Id != option.Id))
                                                         {
                                                             productVariant.AttributeValues.Add(new ProductAttributeValue()
                                                             {
@@ -171,7 +169,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                     }
                                                 }
                                             }
-                                            _documentService.SaveDocument<Product>(product);
+                                            _documentService.SaveDocument(product);
                                             _productVariantService.Update(productVariant);
                                         }
                                         else
@@ -181,74 +179,74 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                     else
                                     {
                                         //Description
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 3] != null && excelFile.Workbook.Worksheets[2].Cells[row, 3].Value != null)
-                                            product.BodyContent = excelFile.Workbook.Worksheets[2].Cells[row, 3].Value.ToString();
+                                        if (productsWorksheet.Cells[row, 3] != null && productsWorksheet.Cells[row, 3].Value != null)
+                                            product.BodyContent = productsWorksheet.Cells[row, 3].Value.ToString();
                                         //Meta Title
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 4] != null && excelFile.Workbook.Worksheets[2].Cells[row, 4].Value != null)
-                                            product.MetaTitle = excelFile.Workbook.Worksheets[2].Cells[row, 4].Value.ToString();
+                                        if (productsWorksheet.Cells[row, 4] != null && productsWorksheet.Cells[row, 4].Value != null)
+                                            product.MetaTitle = productsWorksheet.Cells[row, 4].Value.ToString();
                                         //Meta Description
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 5] != null && excelFile.Workbook.Worksheets[2].Cells[row, 5].Value != null)
-                                            product.MetaDescription = excelFile.Workbook.Worksheets[2].Cells[row, 5].Value.ToString();
+                                        if (productsWorksheet.Cells[row, 5] != null && productsWorksheet.Cells[row, 5].Value != null)
+                                            product.MetaDescription = productsWorksheet.Cells[row, 5].Value.ToString();
                                         //Meta Keywords
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 6] != null && excelFile.Workbook.Worksheets[2].Cells[row, 6].Value != null)
-                                            product.MetaKeywords = excelFile.Workbook.Worksheets[2].Cells[row, 6].Value.ToString();
+                                        if (productsWorksheet.Cells[row, 6] != null && productsWorksheet.Cells[row, 6].Value != null)
+                                            product.MetaKeywords = productsWorksheet.Cells[row, 6].Value.ToString();
                                         //Abstract
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 7] != null && excelFile.Workbook.Worksheets[2].Cells[row, 7].Value != null)
-                                            product.Abstract = excelFile.Workbook.Worksheets[2].Cells[row, 7].Value.ToString();
+                                        if (productsWorksheet.Cells[row, 7] != null && productsWorksheet.Cells[row, 7].Value != null)
+                                            product.Abstract = productsWorksheet.Cells[row, 7].Value.ToString();
                                         //Brand
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 8] != null && excelFile.Workbook.Worksheets[2].Cells[row, 8].Value != null)
+                                        if (productsWorksheet.Cells[row, 8] != null && productsWorksheet.Cells[row, 8].Value != null)
                                         {
-                                            string brandName = excelFile.Workbook.Worksheets[2].Cells[row, 8].Value.ToString();
+                                            string brandName = productsWorksheet.Cells[row, 8].Value.ToString();
                                             if (!_brandService.AnyExistingBrandsWithName(brandName, 0))
                                                 _brandService.Add(new Brand() { Name = brandName });
                                             product.Brand = _brandService.GetBrandByName(brandName); ;
                                         }
                                         //Base Price
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 9] != null && excelFile.Workbook.Worksheets[2].Cells[row, 9].Value != null)
+                                        if (productsWorksheet.Cells[row, 9] != null && productsWorksheet.Cells[row, 9].Value != null)
                                         {
                                             decimal BasePrice = 0;
-                                            Decimal.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 9].Value.ToString(), out BasePrice);
+                                            Decimal.TryParse(productsWorksheet.Cells[row, 9].Value.ToString(), out BasePrice);
                                             product.BasePrice = BasePrice;
                                         }
                                         //Previous Price
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 10] != null && excelFile.Workbook.Worksheets[2].Cells[row, 10].Value != null)
+                                        if (productsWorksheet.Cells[row, 10] != null && productsWorksheet.Cells[row, 10].Value != null)
                                         {
                                             decimal PreviousPrice = 0;
-                                            Decimal.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 10].Value.ToString(), out PreviousPrice);
+                                            Decimal.TryParse(productsWorksheet.Cells[row, 10].Value.ToString(), out PreviousPrice);
                                             product.PreviousPrice = PreviousPrice;
                                         }
                                         //Stock
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 11] != null && excelFile.Workbook.Worksheets[2].Cells[row, 11].Value != null)
+                                        if (productsWorksheet.Cells[row, 11] != null && productsWorksheet.Cells[row, 11].Value != null)
                                         {
                                             int StockRemaining = 0;
-                                            Int32.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 11].Value.ToString(), out StockRemaining);
+                                            Int32.TryParse(productsWorksheet.Cells[row, 11].Value.ToString(), out StockRemaining);
                                             product.StockRemaining = StockRemaining;
                                         }
                                         //Tax Rate
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 14] != null && excelFile.Workbook.Worksheets[2].Cells[row, 14].Value != null)
+                                        if (productsWorksheet.Cells[row, 14] != null && productsWorksheet.Cells[row, 14].Value != null)
                                         {
                                             int taxRateID = 0;
-                                            Int32.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 14].Value.ToString(), out taxRateID);
+                                            Int32.TryParse(productsWorksheet.Cells[row, 14].Value.ToString(), out taxRateID);
                                             product.TaxRate = _taxRateManager.Get(taxRateID);
                                         }
                                         //Weight
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 15] != null && excelFile.Workbook.Worksheets[2].Cells[row, 15].Value != null)
+                                        if (productsWorksheet.Cells[row, 15] != null && productsWorksheet.Cells[row, 15].Value != null)
                                         {
                                             decimal Weight = 0;
-                                            Decimal.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 15].Value.ToString(), out Weight);
+                                            Decimal.TryParse(productsWorksheet.Cells[row, 15].Value.ToString(), out Weight);
                                             product.Weight = Weight;
                                         }
                                         //Categories
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 16] != null && excelFile.Workbook.Worksheets[2].Cells[row, 16].Value != null)
+                                        if (productsWorksheet.Cells[row, 16] != null && productsWorksheet.Cells[row, 16].Value != null)
                                         {
-                                            string rawCategories = excelFile.Workbook.Worksheets[2].Cells[row, 16].Value.ToString();
+                                            string rawCategories = productsWorksheet.Cells[row, 16].Value.ToString();
                                             string[] categories = rawCategories.Split(';');
                                             foreach (var item in categories)
                                             {
                                                 int categoryID = 0;
                                                 Int32.TryParse(item, out categoryID);
                                                 Category category = _documentService.GetDocument<Category>(categoryID);
-                                                if (category != null && product.Categories.Where(x => x.Id == category.Id).Count() == 0)
+                                                if (category != null && !product.Categories.Any(x => x.Id == category.Id))
                                                     product.Categories.Add(category);
                                             }
                                         }
@@ -264,9 +262,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                         product = _productService.Get(product.Id);
 
                                         //Specifications
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 17] != null && excelFile.Workbook.Worksheets[2].Cells[row, 17].Value != null)
+                                        if (productsWorksheet.Cells[row, 17] != null && productsWorksheet.Cells[row, 17].Value != null)
                                         {
-                                            string rawSpecifications = excelFile.Workbook.Worksheets[2].Cells[row, 17].Value.ToString();
+                                            string rawSpecifications = productsWorksheet.Cells[row, 17].Value.ToString();
                                             string[] specifications = rawSpecifications.Split(';');
                                             foreach (var item in specifications)
                                             {
@@ -280,13 +278,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                     }
 
                                                     ProductSpecificationAttribute option = _productOptionManager.GetSpecificationAttributeByName(specificationValue[0]);
-                                                    if (product.SpecificationValues.Where(x => x.ProductSpecificationAttribute.Id == option.Id && x.Product.Id == product.Id).Count() == 0)
+                                                    if (!product.SpecificationValues.Any(x => x.ProductSpecificationAttribute.Id == option.Id && x.Product.Id == product.Id))
                                                         product.SpecificationValues.Add(new ProductSpecificationValue() { ProductSpecificationAttribute = option, Value = specificationValue[1], Product = product });
                                                 }
                                             }
                                         }
                                         lastAddedProductID = product.Id;
-                                        _documentService.SaveDocument<Product>(product);
+                                        _documentService.SaveDocument(product);
                                     }
                                 }
                                 messages.Add("All products were successfully imported.");
