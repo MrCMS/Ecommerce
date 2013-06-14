@@ -234,6 +234,8 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
     <Compile Include="Apps\Ecommerce\Pages\EnterOrderEmail.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\IProductSearchService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\ProductSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingMethod.cs" />
@@ -1680,6 +1682,7 @@
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Webpage\Product.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\ProductSearch\ProductSearch.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\ProductSearch\Results.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
