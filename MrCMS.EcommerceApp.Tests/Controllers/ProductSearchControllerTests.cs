@@ -30,7 +30,7 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
 
         private ProductSearch GetProductSearch()
         {
-            return new ProductSearch {Layout = new Layout()};
+            return new ProductSearch { Layout = new Layout() };
         }
 
         [Fact]
