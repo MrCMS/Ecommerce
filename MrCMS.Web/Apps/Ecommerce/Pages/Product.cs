@@ -9,6 +9,7 @@ using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System.Linq;
 using MrCMS.Helpers;
@@ -111,26 +112,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual decimal GetPrice(int quantity)
         {
-            if (PriceBreaks.Count > 0)
+            if (this.GetPriceBreaks().Any())
             {
-                List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
-                if (priceBreaks.Count > 0)
+                List<PriceBreak> priceBreaks = this.GetPriceBreaks().Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
+                if (priceBreaks.Any())
                     return priceBreaks.First().GetPrice() * quantity;
             }
 
             return Price * quantity;
-        }
-
-        public virtual IList<PriceBreak> PriceBreaks
-        {
-            get
-            {
-                return MrCMSApplication.Get<ISession>()
-                                       .QueryOver<PriceBreak>()
-                                       .Where(@break => @break.Item == this)
-                                       .Cacheable()
-                                       .List();
-            }
         }
 
         public virtual decimal GetSaving(int quantity)
