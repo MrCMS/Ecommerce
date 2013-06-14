@@ -7,6 +7,7 @@
 </ul>
 @RenderZone("Before Content")
 @Html.HiddenFor(x=>x.Id)
+@Html.HiddenFor(x=>x.LiveUrlSegment)
 <div class="row-fluid">
     <div class="span3">
         <div class="product-filter-box-title">
@@ -50,7 +51,7 @@
                          <option value="0">All</option>
                         @foreach (var optionValue in option.Values.Select(x=>x.Value).Distinct())
                         {
-                                <option value="@(optionValue)">@optionValue</option>
+                                <option value="@Html.Encode(option.Name+optionValue)">@optionValue</option>
                         }
                         </select>
                         </a>
@@ -77,7 +78,7 @@
                          <option value="0">All</option>
                         @foreach (var specificationValue in specification.Values.Select(x=>x.Value).Distinct())
                         {
-                                <option value="@(specificationValue)">@specificationValue</option>
+                                <option value="@(specification.Name+":"+specificationValue)">@specificationValue</option>
                         }
                         </select>
                         </a>
@@ -88,6 +89,28 @@
            </div>
     </div>
     <div class="span9">
+            <div id="products-operations">
+    <div id="stats" class="pull-left"></div>
+    <div id="show" class="pull-right">
+        <label>Show</label>
+            <select class="pull-right" id="options">
+                @foreach (var item in MrCMS.Website.MrCMSApplication.Get<MrCMS.Web.Apps.Ecommerce.Settings.EcommerceSettings>().CategoryProductsPerPage.Split(','))
+                {
+                    <option value="@item">@item products per page</option>
+                }
+            </select>
+    </div>
+    <div id="sorting" class="pull-right">
+        <label>Sort by</label>
+            <select class="pull-right" id="product-sorting-options">
+                <option value="1">Relevance</option>
+                <option value="2">Name A-Z</option>
+                <option value="3">Name Z-A</option>
+                <option value="4">Price Highest-Lowest</option>
+                <option value="5">Price Lowest-Highest</option>
+            </select>
+    </div>
+        </div>
             @{Html.RenderAction("Results", "ProductSearch");}
     </div>
 </div>

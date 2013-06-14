@@ -4,21 +4,7 @@
 <div id="products-wrapper">
 @if (Model.Count() > 0)
 {
-    <div id="products-operations">
-    <div id="stats" class="pull-left">Showing 1 - 12 of @(Model.Count())</div>
-    <div id="show" class="pull-right">
-        <label>Show</label>
-            <select class="pull-right" id="options">
-                <option value="6">6 products per page</option>
-            </select>
-    </div>
-    <div id="sorting" class="pull-right">
-        <label>Sort by</label>
-            <select class="pull-right" id="product-sorting-options">
-                <option value="1">Most popular</option>
-            </select>
-    </div>
-        </div>
+    <div id="TotalItemCount" style="display:none">@Model.TotalItemCount</div><div id="PageSize" style="display:none">@Model.Count</div>
     <div class="clearfix"></div>
     <div id="products row-fluid">
             @foreach (var item in Model)
@@ -49,15 +35,22 @@
                             </h1>
                             shop price <span style="text-decoration:line-through">&pound;@(item.PreviousPrice.HasValue?item.PreviousPrice.Value.ToString("#.##"):"")</span>
                             <br /><br />
+                            <a href="/@item.LiveUrlSegment">
                             <button class="btn btn-info span12" type="button">More info</button>
+                            </a>
                             </div>
                         </div>
                     <div class="clearfix"></div>
                 </div>
             }
     </div>
-    <div id="products-paging">
+      <div id="products-paging">
         @Html.Pager(Model, "ProductSearch", i => new { pageNo = i })
     </div>
+   
 }
-    </div>
+</div>
+<script>
+    $('#PageSize').change();
+    $('#PageCount').change();
+</script>

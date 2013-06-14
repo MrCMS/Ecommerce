@@ -26,7 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public interface IProductSearchService
     {
-        IPagedList<Product> SearchProducts(List<string> options = null, List<string> specifications = null, decimal priceFrom = 0, decimal priceTo = 0, int page = 1, int pageSize = 10);
+        IPagedList<Product> SearchProducts(string sortBy, List<string> options = null, List<string> specifications = null, decimal priceFrom = 0, decimal priceTo = 0, int page = 1, int pageSize = 10);
     }
 
     public class ProductSearchQuery : ICloneable
@@ -62,6 +62,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 booleanQuery.Add(GetSpecificationsQuery(), Occur.MUST);
             if (PriceFrom>=0 && PriceTo!=0)
                 booleanQuery.Add(GetPriceRangeQuery(), Occur.MUST);
+
             return booleanQuery;
         }
 
