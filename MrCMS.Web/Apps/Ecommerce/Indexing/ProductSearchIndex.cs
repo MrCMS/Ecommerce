@@ -68,6 +68,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
             {
                 yield return Id;
                 yield return Name;
+                yield return NameSort;
                 yield return BodyContent;
                 yield return MetaTitle;
                 yield return MetaKeywords;
@@ -81,6 +82,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
         }
         public static FieldDefinition<Product> Id { get { return _id; } }
         public static FieldDefinition<Product> Name { get { return _name; } }
+        public static FieldDefinition<Product> NameSort { get { return _nameSort; } }
         public static FieldDefinition<Product> BodyContent { get { return _bodyContent; } }
         public static FieldDefinition<Product> MetaTitle { get { return _metaTitle; } }
         public static FieldDefinition<Product> MetaKeywords { get { return _metaKeywords; } }
@@ -98,6 +100,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
         private static readonly FieldDefinition<Product> _name =
             new StringFieldDefinition<Product>("name", webpage => webpage.Name, Field.Store.YES,
                                          Field.Index.ANALYZED);
+
+        private static readonly FieldDefinition<Product> _nameSort =
+           new StringFieldDefinition<Product>("nameSort", webpage => webpage.Name.Trim().ToLower(), Field.Store.NO,
+                                        Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Product> _bodyContent =
             new StringFieldDefinition<Product>("bodycontent", webpage => webpage.BodyContent, Field.Store.NO,

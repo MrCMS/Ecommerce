@@ -8,6 +8,8 @@ using System.Linq;
 
 using System;
 using System.Collections.Generic;
+using MrCMS.Website;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class ProductSearchController : MrCMSAppUIController<EcommerceApp>
@@ -53,14 +55,38 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Results(string options,string specifications, int pageNo = 0, decimal productPriceRangeMin = 0, decimal productPriceRangeMax = 0)
+        public PartialViewResult Results(string sortBy,string options,string specifications, decimal productPriceRangeMin = 0, decimal productPriceRangeMax = 0, int pageNo = 0, int pageSize=0)
         {
-            List<string> specifications2 = new List<string>();
-            //specifications2.Add("width:1");
-            List<string> options2 = new List<string>();
-            //options2.Add("storage16,networklte,");
-            ProductPagedList products = new ProductPagedList(_productSearchService.SearchProducts(options2, specifications2, productPriceRangeMin, productPriceRangeMax,pageNo==0?1:pageNo,4), null);
-            //ProductPagedList products = _productService.Search();
+            List<string> specs = new List<string>();
+            if (!String.IsNullOrWhiteSpace(specifications))
+            {
+                try
+                {
+                    string[] rawSpecs = specifications.Split(',');
+                    foreach (var item in rawSpecs)
+                    {
+                        if(item!=String.Empty)
+                            specs.Add(item);
+                    }
+                }
+                catch (Exception)
+                {
+                    
+                }
+            }
+            List<string> ops = new List<string>();
+            if (!String.IsNullOrWhiteSpace(options))
+            {
+                ops.Add(options);
+            }
+
+            ProductPagedList products = new ProductPagedList(_productSearchService.SearchProducts(sortBy,
+                ops, 
+                specs, 
+                productPriceRangeMin, 
+                productPriceRangeMax, 
+                pageNo == 0 ? 1 : pageNo,
+                pageSize==0 ? Int32.Parse(MrCMSApplication.Get<EcommerceSettings>().CategoryProductsPerPage.Split(',').First()) : pageSize), null);
 
             return PartialView(products);
         }

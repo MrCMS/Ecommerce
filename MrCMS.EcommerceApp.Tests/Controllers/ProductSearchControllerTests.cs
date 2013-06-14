@@ -17,7 +17,7 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
         private readonly ProductSearchController _controller;
         private readonly IProductOptionManager _productOptionManager;
         private readonly IProductService _productService;
-        private IProductSearchService _productSearchService;
+        private readonly IProductSearchService _productSearchService;
 
         public ProductSearchControllerTests()
         {
