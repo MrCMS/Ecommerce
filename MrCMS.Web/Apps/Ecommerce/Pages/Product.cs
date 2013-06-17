@@ -27,6 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             SpecificationValues = new List<ProductSpecificationValue>();
             Categories = new List<Category>();
             AttributeOptions = new List<ProductAttributeOption>();
+            PriceBreaks = new List<PriceBreak>();
         }
 
         public virtual MediaCategory Gallery { get; set; }
@@ -112,9 +113,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual decimal GetPrice(int quantity)
         {
-            if (this.GetPriceBreaks().Any())
+            if (PriceBreaks.Any())
             {
-                List<PriceBreak> priceBreaks = this.GetPriceBreaks().Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
+                List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
                 if (priceBreaks.Any())
                     return priceBreaks.First().GetPrice() * quantity;
             }
@@ -223,6 +224,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         }
 
         public virtual IList<ProductAttributeOption> AttributeOptions { get; set; }
+        public virtual IList<PriceBreak> PriceBreaks { get; set; }
 
         public virtual Brand Brand { get; set; }
 
