@@ -139,6 +139,7 @@
     <Compile Include="Models\CartModelTests.cs" />
     <Compile Include="Pages\CategoryTests.cs" />
     <Compile Include="Pages\ProductTests\ProductAvailabilityTests.cs" />
+    <Compile Include="Pages\ProductTests\ProductPersistenceTests.cs" />
     <Compile Include="Pages\ProductTests\ProductVariantsTests.cs" />
     <Compile Include="Pages\ProductTests\ProductPricingTests.cs" />
     <Compile Include="Pages\ProductTests\ProductStockLevelTests.cs" />
