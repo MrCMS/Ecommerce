@@ -21,9 +21,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             _productSearcher = productSearcher;
         }
-        public IPagedList<Product> SearchProducts(string sortBy,List<string> options = null, List<string> specifications = null, decimal priceFrom = 0, decimal priceTo = 0, int page = 1, int pageSize = 10)
+        public IPagedList<Product> SearchProducts(string sortBy,List<string> options = null, List<string> specifications = null, decimal priceFrom = 0, decimal priceTo = 0, int page = 1, int pageSize = 10, int categoryId=0)
         {
-            var searchQuery = new ProductSearchQuery(options,specifications, priceFrom, priceTo);
+            var searchQuery = new ProductSearchQuery(options,specifications, priceFrom, priceTo,categoryId);
             Sort sort = null;
             switch (sortBy)
             {

@@ -78,6 +78,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                 yield return Price;
                 yield return Specifications;
                 yield return Options;
+                yield return Categories;
             }
         }
         public static FieldDefinition<Product> Id { get { return _id; } }
@@ -92,6 +93,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
         public static DecimalFieldDefinition<Product> Price { get { return _price; } }
         public static FieldDefinition<Product> Specifications { get { return _specifications; } }
         public static FieldDefinition<Product> Options { get { return _options; } }
+        public static FieldDefinition<Product> Categories { get { return _categories; } }
 
         private static readonly FieldDefinition<Product> _id =
             new StringFieldDefinition<Product>("id", webpage => webpage.Id.ToString(), Field.Store.YES,
@@ -148,6 +150,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                                  product.Variants.Distinct().Select(option => GetOptionValues(option.AttributeValues)),
                                Field.Store.NO, Field.Index.NOT_ANALYZED);
 
+        private static readonly FieldDefinition<Product> _categories =
+  new StringFieldDefinition<Product>("categories",
+                                 product => product.Categories.Distinct().Select(category =>category.Id.ToString()),
+                               Field.Store.NO, Field.Index.NOT_ANALYZED);
+
         public static decimal GetPrice(Product entity)
         {
             decimal price = 0;
@@ -158,9 +165,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
             }
             else
                 return entity.Price;
-                //TEMP
-                //return 0;
-
         }
 
         public static string GetOptionValues(IList<ProductAttributeValue> values)
