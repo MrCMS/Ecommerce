@@ -1685,6 +1685,7 @@
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\ProductSearch\ProductSearch.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\ProductSearch\Results.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\CategoryContainer\CategoryContainer.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Webpage\Category.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
