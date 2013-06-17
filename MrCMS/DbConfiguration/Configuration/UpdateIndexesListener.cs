@@ -14,28 +14,6 @@ namespace MrCMS.DbConfiguration.Configuration
 {
     public class UpdateIndexesListener : IPostUpdateEventListener, IPostInsertEventListener, IPostDeleteEventListener
     {
-        private static List<Type> GetDefinitionTypes(Type entityType)
-        {
-            var indexDefinitionTypes = TypeHelper.GetAllConcreteTypesAssignableFrom(typeof(IIndexDefinition<>));
-            var definitionTypes = indexDefinitionTypes.Where(type =>
-                                                                 {
-                                                                     var indexDefinitionInterface =
-                                                                         type.GetInterfaces()
-                                                                             .FirstOrDefault(
-                                                                                 interfaceType =>
-                                                                                 interfaceType.IsGenericType &&
-                                                                                 interfaceType.GetGenericTypeDefinition() ==
-                                                                                 typeof(IIndexDefinition<>));
-                                                                     var genericArgument =
-                                                                         indexDefinitionInterface.GetGenericArguments()[
-                                                                             0];
-
-                                                                     return
-                                                                         genericArgument.IsAssignableFrom(entityType);
-                                                                 }).ToList();
-            return definitionTypes;
-        }
-
         public void OnPostUpdate(PostUpdateEvent @event)
         {
             TaskExecutor.ExecuteLater(new UpdateIndexesTask(@event.Entity as SiteEntity));
