@@ -18,6 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public ProductVariant()
         {
             AttributeValues = new List<ProductAttributeValue>();
+            PriceBreaks = new List<PriceBreak>();
         }
         [DisplayName("Price Pre Tax")]
         public virtual decimal PricePreTax
@@ -73,9 +74,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual decimal GetPrice(int quantity)
         {
-            if (this.GetPriceBreaks().Any())
+            if (PriceBreaks.Any())
             {
-                List<PriceBreak> priceBreaks = this.GetPriceBreaks().Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
+                List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
                 if (priceBreaks.Any())
                     return priceBreaks.First().GetPrice() * quantity;
             }
@@ -108,9 +109,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual decimal GetPriceIncludingPriceBreaks(int quantity)
         {
-            if (this.GetPriceBreaks().Any())
+            if (PriceBreaks.Any())
             {
-                List<PriceBreak> priceBreaks = this.GetPriceBreaks().Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
+                List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
                 if (priceBreaks.Any())
                     return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
                                       ? priceBreaks.First().Price
@@ -168,6 +169,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual Product Product { get; set; }
 
         public virtual IList<ProductAttributeValue> AttributeValues { get; set; }
+        public virtual IList<PriceBreak> PriceBreaks { get; set; }
 
     }
 }
