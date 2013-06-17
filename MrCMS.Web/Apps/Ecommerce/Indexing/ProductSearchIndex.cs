@@ -157,9 +157,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                 return price;
             }
             else
-                //return entity.Price;
+                return entity.Price;
                 //TEMP
-                return 0;
+                //return 0;
 
         }
 
