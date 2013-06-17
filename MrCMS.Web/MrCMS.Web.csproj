@@ -197,6 +197,7 @@
     <Compile Include="Apps\Ecommerce\Binders\DiscountLimitationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductVariantController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductSearchController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
@@ -1408,6 +1409,7 @@
     <Content Include="Docs\UpgradeNotes.txt" />
     <Content Include="Global.asax" />
     <Content Include="Apps\Ecommerce\Content\Scripts\facebook.js" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\category.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\product-search.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\product.js" />
     <Content Include="x64\SQLite.Interop.dll">
@@ -1685,7 +1687,8 @@
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\ProductSearch\ProductSearch.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\ProductSearch\Results.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\CategoryContainer\CategoryContainer.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Webpage\Category.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Category\Category.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Category\Results.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
