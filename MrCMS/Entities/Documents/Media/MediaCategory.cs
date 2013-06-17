@@ -17,8 +17,8 @@ namespace MrCMS.Entities.Documents.Media
         [DisplayName("Path")]
         public override string UrlSegment { get; set; }
 
-        public virtual string MetaTitle { get; set; }
-        public virtual string MetaDescription { get; set; }
+        //public virtual string MetaTitle { get; set; }
+        //public virtual string MetaDescription { get; set; }
 
         [DisplayName("Is Gallery")]
         public virtual bool IsGallery { get; set; }

@@ -38,7 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             }
             else
             {
-                pagedList = _session.Paged(QueryOver.Of<Product>(), page, 1);
+                pagedList = _session.Paged(QueryOver.Of<Product>(), page, 10);
             }
 
             var productContainer = _documentService.GetUniquePage<ProductSearch>();
@@ -91,7 +91,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             product.BasePrice = 0;
             product.SKU = null;
             product.StockRemaining = null;
-            _documentService.SaveDocument<Product>(product);
+            _documentService.SaveDocument(product);
         }
 
         private IList<ProductAttributeValue> GetAttributeValues(MakeMultivariantModel model, ProductVariant productVariant)
