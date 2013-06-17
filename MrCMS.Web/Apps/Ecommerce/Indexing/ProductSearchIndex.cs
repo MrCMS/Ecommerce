@@ -133,8 +133,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                                          Field.Index.NOT_ANALYZED);
 
         private static readonly DecimalFieldDefinition<Product> _price =
-            new DecimalFieldDefinition<Product>("price", webpage => webpage.Variants.Any() ? webpage.Variants.Select(pv => pv.Price).Min() : webpage.Price, Field.Store.YES,
-                                         Field.Index.ANALYZED);
+            new DecimalFieldDefinition<Product>("price", webpage => GetPrice(webpage), Field.Store.NO,
+                                         Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Product> _specifications =
           new StringFieldDefinition<Product>("specifications",
@@ -148,19 +148,40 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                                  product.Variants.Distinct().Select(option => GetOptionValues(option.AttributeValues)),
                                Field.Store.NO, Field.Index.NOT_ANALYZED);
 
+        public static decimal GetPrice(Product entity)
+        {
+            decimal price = 0;
+            if (entity.Variants.Any())
+            {
+                price = entity.Variants.Select(pv => pv.Price).Min();
+                return price;
+            }
+            else
+                //return entity.Price;
+                //TEMP
+                return 0;
+
+        }
+
         public static string GetOptionValues(IList<ProductAttributeValue> values)
         {
             string optionValues = String.Empty;
-            foreach (var item in values)
+            if (values.Count() > 0)
             {
-                optionValues += item.ProductAttributeOption.Name.ToLower() + item.Value.ToLower()+",";
+                foreach (var item in values)
+                {
+                    optionValues += item.ProductAttributeOption.Name.ToLower() + item.Value.ToLower() + ",";
+                }
             }
             return optionValues;
         }
 
         public static string GetSpecificationValue(ProductSpecificationValue entity)
         {
-            return entity.ProductSpecificationAttribute.Name.ToLower() + ":" + entity.Value.ToLower();
+            if (entity != null)
+                return entity.ProductSpecificationAttribute.Name.ToLower() + ":" + entity.Value.ToLower();
+            else
+                return String.Empty;
         }
     }
 }
