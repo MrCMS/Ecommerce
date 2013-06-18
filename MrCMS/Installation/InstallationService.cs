@@ -286,7 +286,8 @@ namespace MrCMS.Installation
 
                     //save settings
                     SetUpInitialData(model, connectionString, model.DatabaseType);
-                    
+
+
                     var connectionStringSettings = new ConnectionStringSettings("mrcms", connectionString)
                         {
                             ProviderName = GetProviderName(model.DatabaseType)
@@ -307,7 +308,6 @@ namespace MrCMS.Installation
 
             return result;
         }
-
         private string GetProviderName(DatabaseType databaseType)
         {
             switch (databaseType)
@@ -349,13 +349,26 @@ namespace MrCMS.Installation
             ISessionFactory sessionFactory = configurator.CreateSessionFactory();
             ISession session = sessionFactory.OpenSession();
 
-            var siteService = new SiteService(session, _context.Request);
-
             var site = new Site { Name = model.SiteName, BaseUrl = model.SiteUrl };
-            CurrentRequestData.CurrentSite = site;
-            siteService.SaveSite(site);
+            session.Transact(s => s.Save(site));
 
             MrCMSApp.InstallApps(session, model, site);
+
+            InitializeIndices(site, session);
+        }
+
+        private static void InitializeIndices(Site site, ISession session)
+        {
+            var currentSite = new CurrentSite(site);
+            var service = new IndexService(session, currentSite);
+            IndexService.GetIndexManagerOverride =
+                (indexType, indexDefinitionInterface) =>
+                Activator.CreateInstance(typeof (FSDirectoryIndexManager<,>).MakeGenericType(
+                    indexDefinitionInterface.GetGenericArguments()[0], indexType), currentSite) as IIndexManagerBase;
+            var mrCMSIndices = service.GetIndexes();
+            mrCMSIndices.ForEach(index => service.Reindex(index.TypeName));
+            mrCMSIndices.ForEach(index => service.Optimise(index.TypeName));
+            IndexService.GetIndexManagerOverride = null;
         }
 
         public virtual void RestartAppDomain()
