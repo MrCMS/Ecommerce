@@ -141,7 +141,7 @@ namespace MrCMS.Settings
             var settings =
                 _session.QueryOver<Setting>().Cacheable()
                         .List()
-                        .Where(setting => setting.Site == site);
+                        .Where(setting => setting.Site.Id == site.Id);
             //format: <name, <id, value>>
             var dictionary = new Dictionary<string, KeyValuePair<int, string>>();
             foreach (var s in settings)

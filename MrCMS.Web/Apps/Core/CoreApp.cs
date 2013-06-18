@@ -37,8 +37,6 @@ namespace MrCMS.Web.Apps.Core
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
         {
             //settings
-            var mediaSettings = new MediaSettings();
-            session.Transact(sess => sess.Save(site));
             CurrentRequestData.CurrentSite = site;
             var currentSite = new CurrentSite(site);
 
@@ -120,6 +118,7 @@ namespace MrCMS.Web.Apps.Core
             siteSettings.EnableInlineEditing = true;
             siteSettings.SiteIsLive = true;
 
+            var mediaSettings = new MediaSettings {Site = site};
             mediaSettings.ThumbnailImageHeight = 50;
             mediaSettings.ThumbnailImageWidth = 50;
             mediaSettings.LargeImageHeight = 800;
@@ -132,7 +131,7 @@ namespace MrCMS.Web.Apps.Core
 
             var configurationProvider = new ConfigurationProvider(new SettingService(session),
                                                                   currentSite);
-            var fileSystemSettings = new FileSystemSettings { StorageType = typeof(FileSystem).FullName };
+            var fileSystemSettings = new FileSystemSettings {StorageType = typeof (FileSystem).FullName, Site = site};
             configurationProvider.SaveSettings(siteSettings);
             configurationProvider.SaveSettings(mediaSettings);
             configurationProvider.SaveSettings(fileSystemSettings);

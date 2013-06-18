@@ -1694,6 +1694,8 @@
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\CategoryContainer\CategoryContainer.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Category\Category.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Category\Results.cshtml" />
+    <Content Include="Themes\Ecommerce\Shared\Web.config" />
+    <Content Include="Themes\Ecommerce\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
@@ -1704,8 +1706,6 @@
     <Folder Include="Themes\Default\Shared\" />
     <Folder Include="Themes\Default\Views\Pages\" />
     <Folder Include="Themes\Default\Views\Widgets\" />
-    <Folder Include="Themes\Ecommerce\Shared\" />
-    <Folder Include="Themes\Ecommerce\Views\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
