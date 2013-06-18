@@ -6,7 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.Metadata
 {
-    public class ProductMetadata : DocumentMetadataMap<Product>
+    public class CartMetadata : DocumentMetadataMap<Cart>
     {
         public override ChildrenListType ChildrenListType
         {
@@ -15,7 +15,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
 
         public override IEnumerable<Type> ChildrenList
         {
-            get { yield break; }
+            get { yield return typeof(Cart); }
         }
 
         public override bool RequiresParent { get { return true; } }
@@ -28,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
 
         public override string WebGetController
         {
-            get { return "Product"; }
+            get { return "Cart"; }
         }
         public override string WebGetAction
         {
