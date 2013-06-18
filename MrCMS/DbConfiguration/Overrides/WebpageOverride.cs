@@ -28,7 +28,7 @@ namespace MrCMS.DbConfiguration.Overrides
             mapping.Map(webpage => webpage.FormDesign).CustomType<VarcharMax>().Length(4001);
             mapping.Map(webpage => webpage.SubmitButtonCssClass).Length(100);
             mapping.Map(webpage => webpage.SubmitButtonText).Length(100);
-            
+
             mapping.HasMany(posting => posting.Urls).Cascade.Delete();
 
             //Permission mappings
