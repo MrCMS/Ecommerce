@@ -8,6 +8,7 @@
 @RenderZone("Before Content")
 @Html.HiddenFor(x=>x.Id)
 @Html.HiddenFor(x=>x.LiveUrlSegment)
+@Html.HiddenFor(x=>x.UrlSegment)
 <div class="row-fluid">
     <div class="span3">
         <div class="product-filter-box-title">
@@ -111,7 +112,7 @@
             </select>
     </div>
         </div>
-            @{Html.RenderAction("Results", "ProductSearch");}
+            @{Html.RenderAction("Results", "ProductSearch",new { searchTerm=ViewBag.SearchTerm});}
     </div>
 </div>
 

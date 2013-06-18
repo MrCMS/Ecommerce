@@ -39,7 +39,8 @@
                 productPriceRangeMin: $("#product-price-range-min-value").html(),
                 productPriceRangeMax: $("#product-price-range-max-value").html(),
                 pageNo: 1,
-                pageSize: $("#show #options").val()
+                pageSize: $("#show #options").val(),
+                searchTerm: $("#searchTerm").val()
             }, function (products) {
                 products = products.replace(/\?action=ProductSearch/gi, $("#LiveUrlSegment").val() + "?action=ProductSearch");
                 $('#products-wrapper').replaceWith(products);

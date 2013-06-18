@@ -40,7 +40,8 @@
                 productPriceRangeMax: $("#product-price-range-max-value").html(),
                 pageNo: 1,
                 pageSize: $("#show #options").val(),
-                categoryId: $("#Id").val()
+                categoryId: $("#Id").val(),
+                searchTerm: $("#searchTerm").val()
             }, function (products) {
                 products = products.replace(/\?action=Category/gi, $("#LiveUrlSegment").val() + "?action=Category");
                 $('#products-wrapper').replaceWith(products);
