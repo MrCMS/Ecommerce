@@ -198,6 +198,10 @@
     <Compile Include="Apps\Ecommerce\Controllers\CartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\OrderPlacedController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\SetDeliveryDetailsController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\PaymentDetailsController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\EnterOrderEmailController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductVariantController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductSearchController.cs" />
@@ -237,6 +241,10 @@
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ProductHelper.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\OrderPlacedMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\SetDeliveryDetailsMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\PaymentDetailsMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\EnterOrderEmailMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Pages\EnterOrderEmail.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductSearchService.cs" />
@@ -412,6 +420,7 @@
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\respond.min.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\wizard.js" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\images\ui-bg_glass_55_fbf9ee_1x400.png" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\images\ui-bg_glass_65_ffffff_1x400.png" />
@@ -1701,6 +1710,11 @@
     <Content Include="Themes\Ecommerce\Views\Web.config" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\Cart.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\Details.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\EnterOrderEmail.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\PaymentDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\SetDeliveryDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\OrderPlaced.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\BasicDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
