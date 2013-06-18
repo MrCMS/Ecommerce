@@ -5,6 +5,7 @@ using FluentAssertions;
 using MrCMS.Entities.Documents.Layout;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Controllers
@@ -12,10 +13,12 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
     public class CategoryContainerControllerTests
     {
         private readonly CategoryContainerController _controller;
+        private readonly ICategoryService _categoryService;
 
         public CategoryContainerControllerTests()
         {
-            _controller = new CategoryContainerController {RequestMock = A.Fake<HttpRequestBase>()};
+            _categoryService = A.Fake<ICategoryService>();
+            _controller = new CategoryContainerController(_categoryService) {RequestMock = A.Fake<HttpRequestBase>()};
         }
 
         private CategoryContainer GetCategoryContainer()
