@@ -27,7 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _productSearchService = productSearchService;
         }
 
-        public ViewResult Show(ProductSearch page, string searchTerm)
+        public ViewResult Show(ProductSearch page, string searchTerm = null)
         {
             ViewBag.ProductOptions = _productOptionManager.GetAllAttributeOptions();
             ViewBag.ProductSpecifications = _productOptionManager.ListSpecificationAttributes();
