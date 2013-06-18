@@ -21,34 +21,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             _productSearcher = productSearcher;
         }
-        public IPagedList<Product> SearchProducts(string sortBy,List<string> options = null, List<string> specifications = null, decimal priceFrom = 0, decimal priceTo = 0, int page = 1, int pageSize = 10)
+        public IPagedList<Product> SearchProducts(string sortBy, List<string> options = null, List<string> specifications = null, decimal priceFrom = 0, decimal priceTo = 0, int page = 1, int pageSize = 10)
         {
-            var searchQuery = new ProductSearchQuery(options,specifications, priceFrom, priceTo);
+            var searchQuery = new ProductSearchQuery(options, specifications, priceFrom, priceTo);
             Sort sort = null;
             switch (sortBy)
             {
                 case "1":
-                    sort = new Sort(new SortField[] { SortField.FIELD_SCORE, SortField.FIELD_DOC});
+                    sort = new Sort(new[] { SortField.FIELD_SCORE, SortField.FIELD_DOC });
                     break;
                 case "2":
-                    sort = new Sort(new SortField[] {SortField.FIELD_SCORE, new SortField("nameSort", SortField.STRING)});
+                    sort = new Sort(new[] { SortField.FIELD_SCORE, new SortField("nameSort", SortField.STRING) });
                     break;
                 case "3":
-                    sort = new Sort(new SortField[] { SortField.FIELD_SCORE, new SortField("nameSort", SortField.STRING, true) });
+                    sort = new Sort(new[] { SortField.FIELD_SCORE, new SortField("nameSort", SortField.STRING, true) });
                     break;
                 case "4":
-                    sort = new Sort(new SortField[] { SortField.FIELD_SCORE, new SortField("price", SortField.STRING, true) });
+                    sort = new Sort(new[] { SortField.FIELD_SCORE, new SortField("price", SortField.STRING, true) });
                     break;
                 case "5":
-                    sort = new Sort(new SortField[] { SortField.FIELD_SCORE, new SortField("price", SortField.STRING) });
-                    break;
-                default:
+                    sort = new Sort(new[] { SortField.FIELD_SCORE, new SortField("price", SortField.STRING) });
                     break;
             }
-            if(sort!=null)
-                return _productSearcher.SearchWithSort(searchQuery.GetQuery(), page, pageSize, sort, null);
-            else
-                return _productSearcher.Search(searchQuery.GetQuery(), page, pageSize, null);
+            return _productSearcher.Search(searchQuery.GetQuery(), page, pageSize, null, sort);
         }
     }
 }
