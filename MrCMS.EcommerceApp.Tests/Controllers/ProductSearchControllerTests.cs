@@ -25,7 +25,7 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
             _productService = A.Fake<IProductService>();
             _categoryService = A.Fake<ICategoryService>();
             _productSearchService = A.Fake<IProductSearchService>();
-            _controller = new ProductSearchController(_categoryService, _productOptionManager, _productService, _productSearchService) { RequestMock = A.Fake<HttpRequestBase>() };
+            _controller = new ProductSearchController(_categoryService, _productOptionManager, _productSearchService) { RequestMock = A.Fake<HttpRequestBase>() };
         }
 
         private ProductSearch GetProductSearch()

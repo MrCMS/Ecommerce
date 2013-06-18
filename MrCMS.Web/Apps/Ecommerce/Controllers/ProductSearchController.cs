@@ -5,25 +5,23 @@ using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System.Linq;
-
 using System;
 using System.Collections.Generic;
 using MrCMS.Website;
 using MrCMS.Web.Apps.Ecommerce.Settings;
+
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class ProductSearchController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly ICategoryService _categoryService;
         private readonly IProductOptionManager _productOptionManager;
-        private readonly IProductService _productService;
         private readonly IProductSearchService _productSearchService;
 
-        public ProductSearchController(ICategoryService categoryService, IProductOptionManager productOptionManager, IProductService productService, IProductSearchService productSearchService)
+        public ProductSearchController(ICategoryService categoryService, IProductOptionManager productOptionManager, IProductSearchService productSearchService)
         {
             _categoryService = categoryService;
             _productOptionManager = productOptionManager;
-            _productService = productService;
             _productSearchService = productSearchService;
         }
 

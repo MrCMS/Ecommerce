@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Entities.Documents.Web;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
