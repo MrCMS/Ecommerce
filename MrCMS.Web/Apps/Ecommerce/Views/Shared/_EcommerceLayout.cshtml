@@ -56,7 +56,8 @@
         <div class="masthead">
             <div class="navbar">
                 <div class="navbar-inner">
-                    <ul class="nav">
+                            @RenderZone("Header")
+             @*       <ul class="nav">
                 <li class="active"><a href="#">Home</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Products</a></li>
@@ -64,15 +65,12 @@
                 <li><a href="#">Delivery Details</a></li>
                 <li><a href="#">Shop Locations</a></li>
                 <li><a href="#">Contact us</a></li>
-              </ul>
+              </ul>*@
                 </div>
             </div>
         </div>
         </div>
         </div>
-           <div class="container">
-        @RenderZone("Header")
-               </div>
       <div class="container">
         @RenderBody()
            </div>
@@ -114,6 +112,7 @@ Mel tale veri possit ne, his cu sale legere prompta. Ut odio admodum deterruisse
        Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.min.js");
        Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.unobtrusive.min.js");
        Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/facebook.js");
+       Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/bootstrap.dropdown.js");
      }
     @Html.RenderScripts()
     @if (CurrentRequestData.CurrentUserIsAdmin && SiteSettings<SiteSettings>().EnableInlineEditing)
@@ -125,5 +124,8 @@ Mel tale veri possit ne, his cu sale legere prompta. Ut odio admodum deterruisse
         @RenderSection("JavascriptBlockInclude")
     }
     @Html.Raw(Model.CustomFooterScripts)
+    <script>
+        $('.dropdown-toggle').dropdownHover();
+    </script>
 </body>
 </html>
