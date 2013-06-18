@@ -405,6 +405,7 @@
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.min.js" />
     <Content Include="Apps\Ecommerce\Content\Images\mrcms-logo.png" />
     <Content Include="Apps\Ecommerce\Content\Scripts\bootstrap.dropdown.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\ecommerce.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.unobtrusive.min.js" />

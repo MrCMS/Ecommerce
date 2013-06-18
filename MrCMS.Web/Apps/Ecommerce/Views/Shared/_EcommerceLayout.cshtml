@@ -47,8 +47,8 @@
         </div>
 
          <div id="search-box" class="pull-right">
-             <input type="text" class="input-xlarge" placeholder="e.g : Shorts"/>
-            <button class="btn" type="button">Search</button>
+             <input type="text" class="input-xlarge" placeholder="e.g : Shorts" id="searchTerm" name="searchTerm" value="@ViewBag.SearchTerm"/>
+            <button class="btn" type="button" id="searchButton" name="searchButton">Search</button>
         </div>
     </div>
     <div id="navbar-wrapper">
@@ -57,15 +57,6 @@
             <div class="navbar">
                 <div class="navbar-inner">
                             @RenderZone("Header")
-             @*       <ul class="nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">Information</a></li>
-                <li><a href="#">Delivery Details</a></li>
-                <li><a href="#">Shop Locations</a></li>
-                <li><a href="#">Contact us</a></li>
-              </ul>*@
                 </div>
             </div>
         </div>
@@ -113,7 +104,8 @@ Mel tale veri possit ne, his cu sale legere prompta. Ut odio admodum deterruisse
        Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.unobtrusive.min.js");
        Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/facebook.js");
        Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/bootstrap.dropdown.js");
-     }
+       Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/ecommerce.js");
+    }
     @Html.RenderScripts()
     @if (CurrentRequestData.CurrentUserIsAdmin && SiteSettings<SiteSettings>().EnableInlineEditing)
     {
@@ -124,8 +116,5 @@ Mel tale veri possit ne, his cu sale legere prompta. Ut odio admodum deterruisse
         @RenderSection("JavascriptBlockInclude")
     }
     @Html.Raw(Model.CustomFooterScripts)
-    <script>
-        $('.dropdown-toggle').dropdownHover();
-    </script>
 </body>
 </html>
