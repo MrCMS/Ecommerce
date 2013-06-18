@@ -13,6 +13,7 @@
                 <a href="#" class="dropdown-toggle js-activated" data-toggle="dropdown">@page.Text</a>
                 @if (page.Children.Any())
                 {
+                    @Html.Hidden("ProductSearchUrl", page.Url);
                     <ul class="dropdown-menu">
                         @foreach (var record in page.Children)
                         {
