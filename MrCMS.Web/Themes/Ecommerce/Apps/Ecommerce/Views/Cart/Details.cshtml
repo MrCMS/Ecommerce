@@ -1,0 +1,51 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+@using MrCMS.Helpers
+
+<div class="row-fluid">
+<div class="span8">
+    <h4>Items</h4>
+    @if(Model.Items.Any())
+    {
+        <table class="table table-bordered table-condensed">
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+        @foreach (var item in Model.Items)
+        {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Quantity</td>
+            <td>&pound;@item.Price.ToString("#.##")</td>
+        </tr> 
+        }
+        </table>
+    }
+    else
+    {
+        <span>You haven't added any items.</span>
+    }
+</div>
+<div class="span4">
+    @if(Model.Items.Any())
+    {
+    <h4>Your Order</h4>
+    <br />
+    <div>
+        <div class="span6">Order</div>
+        <div>&pound;@Model.TotalPreShipping</div>
+    </div>
+     <div class="clearfix"></div>
+     <div>
+        <div class="span6">Shipping</div>
+        <div>&pound;@(Model.ShippingTotal!=null?Model.ShippingTotal:0)</div>
+    </div>
+    <div class="clearfix"></div>
+    <div>
+        <div class="span6">Total</div>
+        <div>&pound;@Model.Total</div>
+    </div>
+    }
+</div>
+</div>
