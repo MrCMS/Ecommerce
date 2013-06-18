@@ -12,5 +12,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         IEnumerable<AutoCompleteResult> Search(string query, List<int> ids);
         IPagedList<Category> GetCategories(Product product, string query, int page);
         IList<Category> GetAll();
+        CategoryContainer GetSiteCategoryContainer();
     }
 }

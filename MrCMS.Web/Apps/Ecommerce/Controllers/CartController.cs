@@ -1,6 +1,8 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
@@ -13,9 +15,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _getCart = getCart;
         }
 
-        public PartialViewResult Show()
+        public ViewResult Show(Cart page)
         {
-            return PartialView(_getCart.GetCart());
+            return View(page);
+        }
+
+        [HttpGet]
+        public ViewResult Details(Cart page)
+        {
+            return View(_getCart.GetCart());
         }
     }
 }

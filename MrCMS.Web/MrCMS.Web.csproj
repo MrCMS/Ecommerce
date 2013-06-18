@@ -198,6 +198,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\CartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\ProductController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductVariantController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductSearchController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ProductHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Pages\EnterOrderEmail.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductSearchService.cs" />
@@ -1304,6 +1306,7 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\EcommerceNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\_CheckoutLayout.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -1688,7 +1691,7 @@
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\TextPage.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config" />
-    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Webpage\Product.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Product\Product.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\ProductSearch\ProductSearch.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\ProductSearch\Results.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\CategoryContainer\CategoryContainer.cshtml" />
@@ -1696,6 +1699,8 @@
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Category\Results.cshtml" />
     <Content Include="Themes\Ecommerce\Shared\Web.config" />
     <Content Include="Themes\Ecommerce\Views\Web.config" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\Cart.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />

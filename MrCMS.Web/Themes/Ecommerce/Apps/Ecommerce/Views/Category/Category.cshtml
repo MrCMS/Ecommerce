@@ -2,8 +2,9 @@
 @using MrCMS.Helpers
 
 <ul class="breadcrumb">
-<li><a href="#">Home</a> <span class="divider">/</span></li>
-<li class="active">Products</li>
+<li><a href="/">Home</a> <span class="divider">/</span></li>
+<li><a href="/@ViewBag.CategoryContainerUrl">Categories</a> <span class="divider">/</span></li>
+<li class="active">@Model.Name</li>
 </ul>
 @RenderZone("Before Content")
 @Html.HiddenFor(x=>x.Id)
