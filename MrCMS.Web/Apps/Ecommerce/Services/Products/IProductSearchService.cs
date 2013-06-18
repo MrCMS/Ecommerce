@@ -26,7 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public interface IProductSearchService
     {
-        IPagedList<Product> SearchProducts(string sortBy, List<string> options = null, List<string> specifications = null, decimal priceFrom = 0, decimal priceTo = 0, int page = 1, int pageSize = 10);
+        IPagedList<Product> SearchProducts(string sortBy, List<string> options = null, List<string> specifications = null, decimal priceFrom = 0, decimal priceTo = 0, int page = 1, int pageSize = 10, int categoryId = 0);
     }
 
     public class ProductSearchQuery : ICloneable
@@ -35,9 +35,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public List<string> Specifications { get; set; }
         public double PriceFrom { get; set; }
         public double PriceTo { get; set; }
+        public int CategoryID { get; set; }
 
-        public ProductSearchQuery(List<string> options = null, List<string> specifications = null, decimal _PriceFrom = 0, decimal _PriceTo = 0)
+        public ProductSearchQuery(List<string> options = null, List<string> specifications = null, decimal _PriceFrom = 0, decimal _PriceTo = 0, int categoryId=0)
         {
+            if (categoryId != 0)
+                CategoryID = categoryId;
             if (options != null)
                 Options = options;
             else
@@ -52,7 +55,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public Query GetQuery()
         {
-            if (!Options.Any() && !Specifications.Any() && PriceFrom == 0 && PriceTo == 0)
+            if (!Options.Any() && !Specifications.Any() && PriceFrom == 0 && PriceTo == 0 && CategoryID==0)
                 return new MatchAllDocsQuery();
 
             var booleanQuery = new BooleanQuery();
@@ -62,7 +65,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 booleanQuery.Add(GetSpecificationsQuery(), Occur.MUST);
             if (PriceFrom>=0 && PriceTo!=0)
                 booleanQuery.Add(GetPriceRangeQuery(), Occur.MUST);
-
+            if (PriceFrom >= 0 && PriceTo != 0)
+                booleanQuery.Add(GetPriceRangeQuery(), Occur.MUST);
+            if (CategoryID!=0)
+                booleanQuery.Add(GetCategoriesQuery(), Occur.MUST);
             return booleanQuery;
         }
 
@@ -82,6 +88,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
             foreach (var type in Specifications)
                 booleanQuery.Add(new TermQuery(new Term(ProductSearchIndex.Specifications.FieldName, type)),
+                                 Occur.MUST);
+
+            return booleanQuery;
+        }
+
+        private Query GetCategoriesQuery()
+        {
+            var booleanQuery = new BooleanQuery();
+
+            booleanQuery.Add(new TermQuery(new Term(ProductSearchIndex.Categories.FieldName, CategoryID.ToString())),
                                  Occur.MUST);
 
             return booleanQuery;
@@ -108,7 +124,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 Specifications = Specifications,
                 Options=Options,
                 PriceFrom = PriceFrom,
-                PriceTo = PriceTo
+                PriceTo = PriceTo,
+                CategoryID = CategoryID
             };
         }
     }
