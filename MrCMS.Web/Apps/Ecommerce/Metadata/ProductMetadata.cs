@@ -25,5 +25,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
         {
             get { return "Ecommerce"; }
         }
+
+        public override string WebGetController
+        {
+            get { return "Product"; }
+        }
+        public override string WebGetAction
+        {
+            get { return "Show"; }
+        }
     }
 }
