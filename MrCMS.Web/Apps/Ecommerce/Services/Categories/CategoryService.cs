@@ -8,6 +8,7 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using NHibernate.Criterion;
+using MrCMS.Entities.Multisite;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
 {
@@ -15,10 +16,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
     {
         private readonly ISession _session;
         private readonly IDocumentService _documentService;
+        private readonly CurrentSite _currentSite;
 
-        public CategoryService(ISession session, IDocumentService documentService)
+        public CategoryService(ISession session, CurrentSite currentSite, IDocumentService documentService)
         {
             _session = session;
+            _currentSite = currentSite;
             _documentService = documentService;
         }
 
@@ -73,6 +76,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         public IList<Category> GetAll()
         {
             return _session.QueryOver<Category>().Cacheable().List();
+        }
+        public CategoryContainer GetSiteCategoryContainer()
+        {
+            IList<CategoryContainer> categoryContainers = _session.QueryOver<CategoryContainer>().Where(x => x.Site == _currentSite.Site).Cacheable().List();
+            if (categoryContainers.Any())
+                return _session.QueryOver<CategoryContainer>().Cacheable().List().First();
+            else
+                return null;
         }
     }
 }

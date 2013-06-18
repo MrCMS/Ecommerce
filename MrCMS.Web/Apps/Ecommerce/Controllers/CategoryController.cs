@@ -39,6 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 ViewBag.IsSubCategory = true;
             else
                 ViewBag.IsSubCategory = false;
+            ViewBag.CategoryContainerUrl = _categoryService.GetSiteCategoryContainer().LiveUrlSegment;
             return View(page);
         }
         
