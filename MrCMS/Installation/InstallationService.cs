@@ -352,6 +352,7 @@ namespace MrCMS.Installation
             var siteService = new SiteService(session, _context.Request);
 
             var site = new Site { Name = model.SiteName, BaseUrl = model.SiteUrl };
+            CurrentRequestData.CurrentSite = site;
             siteService.SaveSite(site);
 
             MrCMSApp.InstallApps(session, model, site);
