@@ -21,7 +21,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         }
 
         [HttpGet]
-        public ViewResult Details(Cart page)
+        public ViewResult Details()
+        {
+            return View(_getCart.GetCart());
+        }
+        [HttpGet]
+        public ViewResult BasicDetails()
         {
             return View(_getCart.GetCart());
         }

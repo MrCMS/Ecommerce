@@ -245,3 +245,121 @@ pre.product-variants-filter select, pre#product-addtobasket select
    text-align:center;
    height:200px;
 }
+#checkout-nav-buttons
+{
+    margin:40px 0px 0px 0px;
+}
+.wizard {
+}
+.wizard ul {
+  list-style: none outside none;
+  padding: 0;
+  margin: 0;
+}
+.wizard ul li {
+  float: left;
+  margin: 0;
+  padding: 0 20px 0 30px;
+  height: 46px;
+  line-height: 46px;
+  position: relative;
+  background: #ededed;
+  font-size: 16px;
+  cursor: default;
+}
+.wizard ul li .chevron {
+  border: 23px solid transparent;
+  border-right: 0;
+  display: block;
+  position: absolute;
+  right: -14px;
+  top: 0;
+}
+.wizard ul li .chevron:before {
+  border: 24px solid transparent;
+  border-left: 14px solid #ededed;
+  border-right: 0;
+  content: "";
+  display: block;
+  position: absolute;
+  right: 1px;
+  top: -24px;
+}
+.wizard ul li.complete {
+  background: #f3f4f5;
+}
+.wizard ul li.complete:hover {
+  background: #e7eff8;
+  cursor: pointer;
+}
+.wizard ul li.complete:hover .chevron:before {
+  border-left: 14px solid #4B525C;
+}
+.wizard ul li.complete .chevron:before {
+  border-left: 14px solid #4B525C;
+}
+.wizard ul li.active {
+  background: #4B525C;
+  color:#FFFFFF;
+}
+.wizard ul li.active .chevron:before {
+  border-left: 14px solid #4B525C;
+}
+.wizard ul li .badge {
+  margin-right: 8px;
+}
+.wizard ul li:nth-child(1) {
+  border-radius: 4px 0 0 4px;
+  padding-left: 20px;
+  z-index: 10;
+}
+.wizard ul li:nth-child(2) {
+  z-index: 9;
+}
+.wizard ul li:nth-child(3) {
+  z-index: 8;
+}
+.wizard ul li:nth-child(4) {
+  z-index: 7;
+}
+.wizard ul li:nth-child(5) {
+  z-index: 6;
+}
+.wizard ul li:nth-child(6) {
+  z-index: 5;
+}
+.wizard ul li:nth-child(7) {
+  z-index: 4;
+}
+.wizard ul li:nth-child(8) {
+  z-index: 3;
+}
+.wizard ul li:nth-child(9) {
+  z-index: 2;
+}
+.wizard ul li:nth-child(10) {
+  z-index: 1;
+}
+.wizard .actions {
+  line-height: 44px;
+  float: right;
+  padding-right: 15px;
+  vertical-align: middle;
+}
+.wizard .actions a {
+  line-height: 45px;
+  font-size: 12px;
+  margin-right: 8px;
+}
+.wizard .actions .btn-prev i {
+  margin-right: 5px;
+}
+.wizard .actions .btn-next i {
+  margin-left: 5px;
+}
+.step-content .step-pane {
+  display: none;
+}
+.step-content .active {
+  display: block;
+}

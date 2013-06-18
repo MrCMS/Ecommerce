@@ -1,0 +1,27 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail
+@using MrCMS.Helpers
+
+<br />
+<div class="row-fluid">
+<div class="span8">
+<h4>Email address</h4>
+<span>Enter your Email address *:</span>
+<br />
+<input type="text" class="input-xxlarge" />
+<br />
+<span>Do you have a password?</span>
+<br />
+<br />
+<label class="radio">
+<input name="havePassword" type="radio" />No (You can create an account later)
+</label>
+<label class="radio">
+<input name="havePassword" type="radio" />Yes
+</label>
+<br />
+<button class="btn btn-info" type="button" id="continue" name="continue">Continue</button>
+</div>
+<div class="span4">
+@{Html.RenderAction("BasicDetails", "Cart");}
+</div>
+</div>
