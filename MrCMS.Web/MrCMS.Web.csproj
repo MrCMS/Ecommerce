@@ -328,6 +328,7 @@
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Settings\PaymentSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\EcommerceNavigation.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedCategories.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedProducts.cs" />
     <Compile Include="Apps\Galleries\GalleriesApp.cs" />
@@ -403,6 +404,7 @@
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.js" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.min.js" />
     <Content Include="Apps\Ecommerce\Content\Images\mrcms-logo.png" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\bootstrap.dropdown.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.unobtrusive.min.js" />
@@ -1299,6 +1301,8 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\FeaturedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedProducts.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\EcommerceNavigation.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

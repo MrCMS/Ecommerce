@@ -4,8 +4,8 @@
 .navbar .navbar-inner { padding: 0;  border:0 }
 .navbar .nav { margin: 0; display: table; width: 100%;}
 .nav { margin: 0;}
-.navbar .nav li { display: table-cell; width: 1%; float: none; }
-.navbar .nav li a { text-align: center; border-left: 1px solid rgba(255,255,255,.75); border-right: 1px solid rgba(0,0,0,.1); }
+/*.navbar .nav li { display: table-cell; width: 1%; float: none; }*/
+.navbar .nav li a { text-align: left; border-left: 1px solid rgba(255,255,255,.75); border-right: 1px solid rgba(0,0,0,.1); }
 .navbar .nav li:first-child a { border-left: 0; }
 .navbar .nav li:last-child a { border-right: 0; }
 
