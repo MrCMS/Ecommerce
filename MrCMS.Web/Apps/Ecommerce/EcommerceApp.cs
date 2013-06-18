@@ -1,7 +1,10 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Apps;
+using MrCMS.Entities.Multisite;
+using MrCMS.Installation;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
+using NHibernate;
 using Ninject;
 
 namespace MrCMS.Web.Apps.Ecommerce
@@ -34,6 +37,11 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Product Variant - GetPriceBreaksForProductVariant", "Apps/Ecommerce/ProductVariant/GetPriceBreaksForProductVariant", new { controller = "ProductVariant", action = "GetPriceBreaksForProductVariant" });
             context.MapRoute("Product Search - Results", "Apps/Ecommerce/ProductSearch/Results", new { controller = "ProductSearch", action = "Results" });
             context.MapRoute("Category - Results", "Apps/Ecommerce/Category/Results", new { controller = "Category", action = "Results" });
+        }
+
+        protected override void OnInstallation(ISession session, InstallModel model, Site site)
+        {
+
         }
     }
 }
