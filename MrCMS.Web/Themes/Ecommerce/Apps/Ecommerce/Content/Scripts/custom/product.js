@@ -1,6 +1,7 @@
 ﻿$(function () {
     $('.product-variants-filter select').live("change", function () {
         var productVariantId = $(this).val();
+        $("#IdVariant").val(productVariantId);
         $.getJSON('/Apps/Ecommerce/ProductVariant/GetPriceBreaksForProductVariant',
             { productVariantId: productVariantId }, function (response) {
                 $("#product-pricebreaks-table").empty();
@@ -11,5 +12,8 @@
                 })
             });
     });
+
+    var productVariantId = $(".product-variants-filter select").val();
+    $("#IdVariant").val(productVariantId);
 })
 

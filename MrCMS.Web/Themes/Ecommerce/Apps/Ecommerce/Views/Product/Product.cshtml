@@ -146,7 +146,11 @@
         }
         @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
         {
-       @Html.HiddenFor(x=>x.Id)
+       if(!Model.Variants.Any())
+       {
+        @Html.HiddenFor(x=>x.Id)
+       }
+       @Html.Hidden("IdVariant", 0)
         <pre id="product-addtobasket">
                 <label class="pull-left">Quantity&nbsp;</label>
                 <input type="text" class="input-mini pull-left" value="1" id="quantity" name="quantity" />

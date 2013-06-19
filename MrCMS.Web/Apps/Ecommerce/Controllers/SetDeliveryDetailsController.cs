@@ -4,6 +4,7 @@ using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
@@ -20,8 +21,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public ViewResult Show(SetDeliveryDetails page)
         {
-            ViewBag.ShopUrl = _productSearchService.GetSiteProductSearch().LiveUrlSegment;
-            ViewBag.BasketUrl = _getCart.GetSiteCart().LiveUrlSegment;
+            ViewBag.ShopUrl = UniquePageHelper.GetUrl<ProductSearch>();
+            ViewBag.BasketUrl = UniquePageHelper.GetUrl<Cart>();
             return View(page);
         }
     }

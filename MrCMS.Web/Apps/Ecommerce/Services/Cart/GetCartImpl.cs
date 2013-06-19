@@ -14,12 +14,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
     public class GetCartImpl : IGetCart
     {
         private readonly ISession _session;
-        private readonly CurrentSite _currentSite;
 
-        public GetCartImpl(ISession session, CurrentSite currentSite)
+        public GetCartImpl(ISession session)
         {
             _session = session;
-             _currentSite = currentSite;
         }
 
         public CartModel GetCart()
@@ -75,15 +73,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             return shippingMethodId.HasValue
                        ? _session.Get<ShippingMethod>(shippingMethodId.Value)
                        : null;
-        }
-
-        public MrCMS.Web.Apps.Ecommerce.Pages.Cart GetSiteCart()
-        {
-            IList<MrCMS.Web.Apps.Ecommerce.Pages.Cart> carts = _session.QueryOver<MrCMS.Web.Apps.Ecommerce.Pages.Cart>().Where(x => x.Site == _currentSite.Site).Cacheable().List();
-            if (carts.Any())
-                return _session.QueryOver<MrCMS.Web.Apps.Ecommerce.Pages.Cart>().Cacheable().List().First();
-            else
-                return null;
         }
     }
 }
