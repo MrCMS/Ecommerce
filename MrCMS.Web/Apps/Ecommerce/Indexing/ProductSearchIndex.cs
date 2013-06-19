@@ -145,26 +145,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                                        Field.Store.NO, Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Product> _options =
-  new StringFieldDefinition<Product>("options",
-                                 product =>
-                                 product.Variants.Distinct().Select(option => GetOptionValues(option.AttributeValues)),
-                               Field.Store.NO, Field.Index.NOT_ANALYZED);
+            new StringFieldDefinition<Product>("options",
+                                               product =>
+                                               product.Variants.Distinct().Select(option => GetOptionValues(option.AttributeValues)),
+                                               Field.Store.NO, Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Product> _categories =
-  new StringFieldDefinition<Product>("categories",
-                                 product => product.Categories.Distinct().Select(category =>category.Id.ToString()),
-                               Field.Store.NO, Field.Index.NOT_ANALYZED);
+            new StringFieldDefinition<Product>("categories",
+                                               product =>
+                                               product.Categories.Distinct().Select(category => category.Id.ToString()),
+                                               Field.Store.NO, Field.Index.NOT_ANALYZED);
 
         public static decimal GetPrice(Product entity)
         {
-            decimal price = 0;
-            if (entity.Variants.Any())
-            {
-                price = entity.Variants.Select(pv => pv.Price).Min();
-                return price;
-            }
-            else
-                return entity.Price;
+            return !entity.Variants.Any() ? entity.Price : entity.Variants.Select(pv => pv.Price).Min();
         }
 
         public static string GetOptionValues(IList<ProductAttributeValue> values)

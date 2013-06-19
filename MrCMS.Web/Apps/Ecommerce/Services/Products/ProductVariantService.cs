@@ -1,6 +1,5 @@
 ﻿using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Helpers;
 using NHibernate;
 using NHibernate.Criterion;
 using System.Collections.Generic;
@@ -65,8 +64,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (id != 0)
             {
                 var productVariant = _session.Get<ProductVariant>(id);
-                if (productVariant.GetPriceBreaks().Any())
-                    return productVariant.GetPriceBreaks();
+                if (productVariant.PriceBreaks.Any())
+                    return productVariant.PriceBreaks;
             }
             return new List<PriceBreak>();
         }

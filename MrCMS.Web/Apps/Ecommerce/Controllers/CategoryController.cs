@@ -15,16 +15,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class CategoryController : MrCMSAppUIController<EcommerceApp>
     {
-       private readonly ICategoryService _categoryService;
+        private readonly ICategoryService _categoryService;
         private readonly IProductOptionManager _productOptionManager;
-        private readonly IProductService _productService;
         private readonly IProductSearchService _productSearchService;
 
-        public CategoryController(ICategoryService categoryService, IProductOptionManager productOptionManager, IProductService productService, IProductSearchService productSearchService)
+        public CategoryController(ICategoryService categoryService, IProductOptionManager productOptionManager, IProductSearchService productSearchService)
         {
             _categoryService = categoryService;
             _productOptionManager = productOptionManager;
-            _productService = productService;
             _productSearchService = productSearchService;
         }
 
@@ -42,9 +40,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             ViewBag.CategoryContainerUrl = _categoryService.GetSiteCategoryContainer().LiveUrlSegment;
             return View(page);
         }
-        
+
         [HttpGet]
-        public PartialViewResult Results(string searchTerm,string sortBy, string options, string specifications, decimal productPriceRangeMin = 0, decimal productPriceRangeMax = 0, int pageNo = 0, int pageSize = 0, int categoryId = 0)
+        public PartialViewResult Results(string searchTerm, string sortBy, string options, string specifications, decimal productPriceRangeMin = 0, decimal productPriceRangeMax = 0, int pageNo = 0, int pageSize = 0, int categoryId = 0)
         {
             List<string> specs = new List<string>();
             if (!String.IsNullOrWhiteSpace(specifications))
@@ -77,7 +75,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 productPriceRangeMin,
                 productPriceRangeMax,
                 pageNo == 0 ? 1 : pageNo,
-                pageSize == 0 ? Int32.Parse(MrCMSApplication.Get<EcommerceSettings>().CategoryProductsPerPage.Split(',').First()) : pageSize,categoryId), null);
+                pageSize == 0 ? Int32.Parse(MrCMSApplication.Get<EcommerceSettings>().CategoryProductsPerPage.Split(',').First()) : pageSize, categoryId), null);
 
             return PartialView(products);
         }
