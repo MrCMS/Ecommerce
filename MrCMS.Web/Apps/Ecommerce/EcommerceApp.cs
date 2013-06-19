@@ -51,6 +51,8 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Cart - Order Placed", "Apps/Ecommerce/Cart/OrderPlaced", new { controller = "Cart", action = "OrderPlaced" });
             context.MapRoute("Cart - Payment Details", "Apps/Ecommerce/Cart/PaymentDetails", new { controller = "Cart", action = "PaymentDetails" });
             context.MapRoute("Cart - Set Delivery Details", "Apps/Ecommerce/Cart/SetDeliveryDetails", new { controller = "Cart", action = "SetDeliveryDetails" });
+            context.MapRoute("Cart - Cart Panel", "Apps/Ecommerce/Cart/CartPanel", new { controller = "Cart", action = "CartPanel" });
+            context.MapRoute("Cart - Add to Cart", "Apps/Ecommerce/Cart/AddToCart", new { controller = "Cart", action = "AddToCart" });
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)

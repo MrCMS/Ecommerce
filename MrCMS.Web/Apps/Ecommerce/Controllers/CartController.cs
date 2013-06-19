@@ -10,10 +10,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     public class CartController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly IGetCart _getCart;
+        private readonly ICartManager _cartManager;
+        private readonly IProductService _productService;
 
-        public CartController(IGetCart getCart)
+        public CartController(IGetCart getCart, ICartManager cartManager, IProductService productService)
         {
             _getCart = getCart;
+            _cartManager = cartManager;
+            _productService = productService;
         }
 
         public ViewResult Show(Cart page)
@@ -60,6 +64,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public ViewResult SetDeliveryDetails()
         {
             return View(_getCart.GetCart());
+        }
+        [HttpGet]
+        public ViewResult CartPanel()
+        {
+            ViewBag.BasketUrl = _getCart.GetSiteCart().LiveUrlSegment;
+            return View(_getCart.GetCart());
+        }
+        [HttpPost]
+        public RedirectResult AddToCart(int Id=0, int quantity=0)
+        {
+            Product product = _productService.Get(Id);
+            if (product != null && quantity>0)
+                _cartManager.AddToCart(product, quantity);
+            return Redirect("/"+_getCart.GetSiteCart().LiveUrlSegment);
         }
     }
 }

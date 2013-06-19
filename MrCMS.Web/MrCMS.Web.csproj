@@ -1721,6 +1721,7 @@
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\OrderPlaced.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\PaymentDetails.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\SetDeliveryDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\CartPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
@@ -1731,6 +1732,7 @@
     <Folder Include="Themes\Default\Shared\" />
     <Folder Include="Themes\Default\Views\Pages\" />
     <Folder Include="Themes\Default\Views\Widgets\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Webpage\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
