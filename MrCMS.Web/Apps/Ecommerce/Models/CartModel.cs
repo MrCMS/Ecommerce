@@ -81,6 +81,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public Guid UserGuid { get; set; }
 
         public string DiscountCode { get; set; }
+        public string OrderEmail { get; set; }
 
         public Address ShippingAddress { get; set; }
         public Address BillingAddress { get; set; }

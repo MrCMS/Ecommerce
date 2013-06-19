@@ -9,4 +9,6 @@
     $("#searchButton").click(function(){
         window.location = $("#ProductSearchUrl").val() +"?searchTerm="+ $("#searchTerm").val();
     });
+
+    $('#checkout').wizard()
 })

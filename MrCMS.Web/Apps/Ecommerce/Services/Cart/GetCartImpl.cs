@@ -7,16 +7,19 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website;
 using NHibernate;
+using MrCMS.Entities.Multisite;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
     public class GetCartImpl : IGetCart
     {
         private readonly ISession _session;
+        private readonly CurrentSite _currentSite;
 
-        public GetCartImpl(ISession session)
+        public GetCartImpl(ISession session, CurrentSite currentSite)
         {
             _session = session;
+             _currentSite = currentSite;
         }
 
         public CartModel GetCart()
@@ -64,6 +67,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             return shippingMethodId.HasValue
                        ? _session.Get<ShippingMethod>(shippingMethodId.Value)
                        : null;
+        }
+
+        public MrCMS.Web.Apps.Ecommerce.Pages.Cart GetSiteCart()
+        {
+            IList<MrCMS.Web.Apps.Ecommerce.Pages.Cart> carts = _session.QueryOver<MrCMS.Web.Apps.Ecommerce.Pages.Cart>().Where(x => x.Site == _currentSite.Site).Cacheable().List();
+            if (carts.Any())
+                return _session.QueryOver<MrCMS.Web.Apps.Ecommerce.Pages.Cart>().Cacheable().List().First();
+            else
+                return null;
         }
     }
 }
