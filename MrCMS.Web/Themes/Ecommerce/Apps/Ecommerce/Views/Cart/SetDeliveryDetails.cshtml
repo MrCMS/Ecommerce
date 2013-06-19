@@ -1,0 +1,60 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+@using MrCMS.Helpers
+
+<br />
+<div class="row-fluid">
+<div class="span8">
+<h4>Who shall we deliver to?</h4>
+ <br />
+<div>
+    <div class="span4">First Name*:</div>
+    <div><input type="text" name="fname" class="input-xlarge" /></div>
+</div>
+<div>
+    <div class="span4">Last Name*:</div>
+    <div><input type="text" name="lname" class="input-xlarge" /></div>
+</div>
+<div>
+    <div class="span4">Phone Number*:</div>
+    <div><input type="text" name="phone" class="input-xlarge" /></div>
+</div>
+<hr />
+<h4>Where would you like to deliver?</h4>
+    <br />
+<div>
+    <div class="span4">Address 1*:</div>
+    <div><input type="text" name="address1" class="input-xlarge" /></div>
+</div>
+<div>
+    <div class="span4">Address 2:</div>
+    <div><input type="text" name="address2" class="input-xlarge" /></div>
+</div>
+    <div>
+<div class="span4">Town or City*:</div>
+    <div><input type="text" name="townorcity" class="input-xlarge" /></div>
+</div>
+   <div>
+<div class="span4">County:</div>
+    <div><input type="text" name="county" class="input-xlarge" /></div>
+</div>
+       <div>
+<div class="span4">Country*:</div>
+    <div>
+        <select name="country" class="input-xlarge">
+            <option value="value">United Kingdom</option>
+        </select>
+    </div>
+</div>
+       <div>
+<div class="span4">Postcode (zip)*:</div>
+    <div><input type="text" name="address1" class="input-medium" /></div>
+</div>
+<br />
+<button class="btn btn-info" type="button" id="continue" name="continue">Continue</button>
+</div>
+<div class="span4">
+@{Html.RenderAction("BasicDetails", "Cart");}
+<hr />
+@{Html.RenderAction("OrderEmail", "Cart");}
+</div>
+</div>
