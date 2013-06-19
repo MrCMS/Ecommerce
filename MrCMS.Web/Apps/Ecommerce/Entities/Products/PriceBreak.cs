@@ -12,13 +12,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual IBuyableItem Item { get; set; }
         public virtual int Quantity { get; set; }
         public virtual decimal Price { get; set; }
-        public virtual decimal GetPrice()
+        public virtual decimal PriceExcludingTax
         {
-           return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
-                                      ? Price
-                                      : Item.TaxRatePercentage != 0
-                                            ? Price * Item.TaxRatePercentage
-                                            : Price, 2, MidpointRounding.AwayFromZero);
+            get { return TaxAwarePrice.GetPriceExcludingTax(Price, TaxRate); }
+        }
+        public virtual decimal PriceIncludingTax
+        {
+            get { return TaxAwarePrice.GetPriceIncludingTax(Price, TaxRate); }
+        }
+
+        public virtual TaxRate TaxRate
+        {
+            get
+            {
+                return Item != null ? Item.TaxRate : null;
+            }
         }
     }
 }
