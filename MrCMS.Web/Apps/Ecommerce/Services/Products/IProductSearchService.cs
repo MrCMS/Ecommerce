@@ -27,7 +27,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     public interface IProductSearchService
     {
         IPagedList<Product> SearchProducts(string searchTerm,string sortBy, List<string> options = null, List<string> specifications = null, decimal priceFrom = 0, decimal priceTo = 0, int page = 1, int pageSize = 10, int categoryId = 0);
-        ProductSearch GetSiteProductSearch();
     }
 
     public class ProductSearchQuery : ICloneable

@@ -4,10 +4,12 @@
 <br />
 <div class="row-fluid">
 <div class="span8">
+@using (Html.BeginForm("AddEmailToCart", "Cart", FormMethod.Post))
+{
 <h4>Email address</h4>
 <span>Enter your Email address *:</span>
 <br />
-<input type="text" class="input-xxlarge" />
+<input type="text" class="input-xxlarge" id="email" name="email" />
 <br />
 <span>Do you have a password?</span>
 <br />
@@ -19,7 +21,8 @@
 <input name="havePassword" type="radio" />Yes
 </label>
 <br />
-<button class="btn btn-info" type="button" id="continue" name="continue">Continue</button>
+<button class="btn btn-info" type="submit" id="continue" name="continue">Continue</button>
+ }
 </div>
 <div class="span4">
 @{Html.RenderAction("BasicDetails", "Cart");}

@@ -22,6 +22,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                 variant =>
                                 variant.SKU.IsInsensitiveLike(sku, MatchMode.Exact)).SingleOrDefault();
         }
+        public ProductVariant Get(int id)
+        {
+            return _session.QueryOver<ProductVariant>()
+                            .Where(
+                                variant =>
+                                variant.Id == id).SingleOrDefault();
+        }
         public void Add(ProductVariant productVariant)
         {
             if (productVariant.Product != null)
