@@ -31,8 +31,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                            Items = GetItems(),
                            ShippingAddress = GetShippingAddress(),
                            BillingAddress = GetBillingAddress(),
-                           ShippingMethod = GetShippingMethod()
+                           ShippingMethod = GetShippingMethod(),
                        };
+        }
+
+        private decimal? GetShippingTotal()
+        {
+            if (GetItems().Any())
+                return 0;
+            else
+                return GetItems().Sum(x => x.Price);
         }
 
         private List<CartItem> GetItems()

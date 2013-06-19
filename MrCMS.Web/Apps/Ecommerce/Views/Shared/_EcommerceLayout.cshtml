@@ -30,21 +30,7 @@
             <img src="/Apps/Ecommerce/Content/Images/mrcms-logo.png" />
         </div>
  
-         <div class="pull-right">
-           <div id="top-menu-box">
-               <div class="pull-left">
-               <a href="#">Stores</a>
-                   </div>
-               <div class="pull-right">
-               <a href="#">Your Account</a>
-                   </div>
-           </div>
-             <button class="btn btn-large btn-info btn-checkout" type="button">Checkout</button>
-        </div>
-
-                <div id="basket-info-box" class="pull-right">
-           <i class="icon-shopping-cart"></i> Your basket 0 items - &pound;0.00
-        </div>
+        @{Html.RenderAction("CartPanel", "Cart");}
 
          <div id="search-box" class="pull-right">
              <input type="text" class="input-xlarge" placeholder="e.g : Shorts" id="searchTerm" name="searchTerm" value="@ViewBag.SearchTerm"/>
