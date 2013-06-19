@@ -1715,6 +1715,12 @@
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\SetDeliveryDetails.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\OrderPlaced.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\BasicDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\OrderEmail.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\DeliveryDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\EnterOrderEmail.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\OrderPlaced.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\PaymentDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\SetDeliveryDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
