@@ -4,9 +4,99 @@
 <br />
 <div class="row-fluid">
 <div class="span8">
-
+<h4>Payment details</h4>
+@using (Html.BeginForm("PaymentDetails", "Cart", FormMethod.Post))
+{
+<div>
+    <div class="span4">Card Type*:</div>
+    <div>
+         <select id="CartType" name="CartType">
+                <option value="visa">Visa</option>
+                <option value="visaelectron">Visa Electron</option>
+                <option value="maestro">Maestro</option>
+                <option value="amex">American Express</option>
+            </select>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div>
+    <div class="span4">Card Number*:</div>
+    <div><input type="text" name="CardNumber" class="input-xlarge" /></div>
+</div>
+<div>
+    <div class="span4">Card Verification Code*:</div>
+    <div><input type="text" name="CardVerificationCode" class="input-small" /></div>
+</div>
+     <div>
+    <div class="span4">Start Date:</div>
+    <div>
+        <div class="pull-left">
+            <select id="startmonth" name="startmonth">
+                <option value="0">MM</option>
+                @for (int i = 1; i < 13; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+        </div>
+        <div class="pull-left">
+            <select id="startyear" name="startyear">
+                <option value="0">YYYY</option>
+                @for (int i = DateTime.Now.Year - 10; i < DateTime.Now.Year+1; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>
+     <div>
+    <div class="span4">End Date*:</div>
+      <div>
+         <div class="pull-left">
+            <select id="endmonth" name="endmonth">
+                @for (int i = 1; i < 13; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+         </div>
+        <div class="pull-left">
+            <select id="endyear" name="endyear">
+                @for (int i = DateTime.Now.Year; i < DateTime.Now.Year+16; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>
+ <div>
+    <div class="span4">Name On Card*:</div>
+    <div><input type="text" name="NameOnCard" class="input-xlarge" /></div>
+</div>
+ <div>
+    <div class="span4">Card Issue Number*:</div>
+    <div><input type="text" name="Card Issue Number" class="input-medium" /> Maestro/Solo only</div>
+</div>
+<hr />
+<h4>Billing address</h4>
+ <p>
+      <label class="checkbox">
+<input type="checkbox" checked="checked"> Use delivery address (@Model.ShippingAddress.Name @Model.ShippingAddress.PhoneNumber @Model.ShippingAddress.Company @Model.ShippingAddress.Address1, 
+          @Model.ShippingAddress.Address1 @Model.ShippingAddress.City @Model.ShippingAddress.PostalCode @Model.ShippingAddress.Country.Name)
+</label>
+ </p>
+<hr />
+<h4>Newsletter</h4>
+ <p>
+      <label class="checkbox">
+<input type="checkbox" checked="checked"> Sign up to Mr CMS Newsletter for the latest deals and news direct to your inbox.
+</label>
+ </p>
 <br />
-<button class="btn btn-info" type="button" id="continue" name="continue">Place order</button>
+<button class="btn btn-info" type="submit" id="continue" name="continue">Place order</button>
+}
 </div>
 <div class="span4">
 @{Html.RenderAction("BasicDetails", "Cart");}
