@@ -23,7 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public CartModel GetCart()
         {
-            return new CartModel
+            CartModel cart=new CartModel
                        {
                            User = CurrentRequestData.CurrentUser,
                            UserGuid = CurrentRequestData.UserGuid,
@@ -33,6 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                            ShippingMethod = GetShippingMethod(),
                            OrderEmail = GetOrderEmail()
                        };
+            return cart;
         }
 
         private decimal? GetShippingTotal()

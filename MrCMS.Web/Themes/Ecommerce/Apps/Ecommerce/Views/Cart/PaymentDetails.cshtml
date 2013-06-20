@@ -31,7 +31,7 @@
     <div class="span4">Start Date:</div>
     <div>
         <div class="pull-left">
-            <select id="startmonth" name="startmonth">
+            <select id="startmonth" name="StartMonth">
                 <option value="0">MM</option>
                 @for (int i = 1; i < 13; i++)
                 {
@@ -40,7 +40,7 @@
             </select>
         </div>
         <div class="pull-left">
-            <select id="startyear" name="startyear">
+            <select id="startyear" name="StartYear">
                 <option value="0">YYYY</option>
                 @for (int i = DateTime.Now.Year - 10; i < DateTime.Now.Year+1; i++)
                 {
@@ -54,7 +54,7 @@
     <div class="span4">End Date*:</div>
       <div>
          <div class="pull-left">
-            <select id="endmonth" name="endmonth">
+            <select id="endmonth" name="EndMonth">
                 @for (int i = 1; i < 13; i++)
                 {
                     <option value="@i">@i</option>
@@ -62,7 +62,7 @@
             </select>
          </div>
         <div class="pull-left">
-            <select id="endyear" name="endyear">
+            <select id="endyear" name="EndYear">
                 @for (int i = DateTime.Now.Year; i < DateTime.Now.Year+16; i++)
                 {
                     <option value="@i">@i</option>
@@ -77,16 +77,59 @@
 </div>
  <div>
     <div class="span4">Card Issue Number*:</div>
-    <div><input type="text" name="Card Issue Number" class="input-medium" /> Maestro/Solo only</div>
+    <div><input type="text" name="CardIssueNumber" class="input-medium" /> Maestro/Solo only</div>
 </div>
 <hr />
 <h4>Billing address</h4>
- <p>
-      <label class="checkbox">
-<input type="checkbox" checked="checked"> Use delivery address (@Model.ShippingAddress.Name @Model.ShippingAddress.PhoneNumber @Model.ShippingAddress.Company @Model.ShippingAddress.Address1, 
-          @Model.ShippingAddress.Address1 @Model.ShippingAddress.City @Model.ShippingAddress.PostalCode @Model.ShippingAddress.Country.Name)
+<p>
+      <label class="checkbox" id="">
+<input type="checkbox" checked="checked" id="useDeliveryAddress" name="UseDeliveryAddress"> Use delivery address <span id="deliveryAddress">(@Model.ShippingAddress.Name @Model.ShippingAddress.PhoneNumber @Model.ShippingAddress.Company @Model.ShippingAddress.Address1, 
+          @Model.ShippingAddress.Address1 @Model.ShippingAddress.City @Model.ShippingAddress.PostalCode @Model.ShippingAddress.Country.Name)</span>
 </label>
- </p>
+    </p>
+    
+     <div id="billingAddress" style="display:none">
+                     <div>
+                <div class="span4">First Name*:</div>
+                <div>
+                    <input type="text" name="FirstName" class="input-xlarge" value="@(Model.BillingAddress!=null?Model.BillingAddress.FirstName:String.Empty)" /></div>
+            </div>
+            <div>
+                <div class="span4">Last Name*:</div>
+                <div><input type="text" name="LastName" class="input-xlarge" value="@(Model.BillingAddress!=null?Model.BillingAddress.LastName:String.Empty)" /></div>
+            </div>
+            <div>
+                <div class="span4">Phone Number*:</div>
+                <div><input type="text" name="PhoneNumber" class="input-xlarge" value="@(Model.BillingAddress!=null?Model.BillingAddress.PhoneNumber:String.Empty)" /></div>
+            </div>
+            <div>
+                <div class="span4">Address 1*:</div>
+                <div><input type="text" name="Address1" class="input-xlarge" value="@(Model.BillingAddress!=null?Model.BillingAddress.Address1:String.Empty)" /></div>
+            </div>
+            <div>
+                <div class="span4">Address 2:</div>
+                <div><input type="text" name="Address2" class="input-xlarge" value="@(Model.BillingAddress!=null?Model.BillingAddress.Address2:String.Empty)"/></div>
+            </div>
+                <div>
+            <div class="span4">Town or City*:</div>
+                <div><input type="text" name="City" class="input-xlarge" value="@(Model.BillingAddress!=null?Model.BillingAddress.City:String.Empty)"/></div>
+            </div>
+               <div>
+            <div class="span4">County:</div>
+                <div><input type="text" name="StateProvince" class="input-xlarge" value="@(Model.BillingAddress!=null?Model.BillingAddress.StateProvince:String.Empty)"/></div>
+            </div>
+                   <div>
+            <div class="span4">Country*:</div>
+                <div>
+                     @Html.DropDownList("Country.Id", ViewData["countries"] as IEnumerable<SelectListItem>, new { @class="input-xlarge" })
+                </div>
+            </div>
+                   <div>
+            <div class="span4">Postcode (zip)*:</div>
+                <div><input type="text" name="PostalCode" class="input-medium" value="@(Model.BillingAddress!=null?Model.BillingAddress.PostalCode:String.Empty)" /></div>
+            </div>
+     </div>
+ 
 <hr />
 <h4>Newsletter</h4>
  <p>
@@ -106,3 +149,5 @@
 @{Html.RenderAction("DeliveryDetails", "Cart");}
 </div>
 </div>
+
+@{ Html.IncludeScript("~/Themes/Ecommerce/Apps/Ecommerce/Content/Scripts/custom/payment-details.js"); }

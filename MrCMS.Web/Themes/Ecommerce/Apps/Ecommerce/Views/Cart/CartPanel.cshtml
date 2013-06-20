@@ -3,14 +3,11 @@
 
 <div class="pull-right">
 <div id="top-menu-box">
-    <div class="pull-left">
-    <a href="#">Stores</a>
-        </div>
     <div class="pull-right">
     <a href="#">Your Account</a>
         </div>
 </div>
-    <a class="btn btn-large btn-info btn-checkout" href="@ViewBag.BasketUrl">Checkout</a>
+    <a class="btn btn-large btn-info btn-checkout" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Checkout</a>
 </div>
 
     <div id="basket-info-box" class="pull-right">
