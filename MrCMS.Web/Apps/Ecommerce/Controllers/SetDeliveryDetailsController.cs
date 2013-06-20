@@ -21,8 +21,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public ViewResult Show(SetDeliveryDetails page)
         {
-            ViewBag.ShopUrl = UniquePageHelper.GetUrl<ProductSearch>();
-            ViewBag.BasketUrl = UniquePageHelper.GetUrl<Cart>();
             return View(page);
         }
     }

@@ -1427,6 +1427,7 @@
     <Content Include="Global.asax" />
     <Content Include="Apps\Ecommerce\Content\Scripts\facebook.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\category.js" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\payment-details.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\product-search.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\product.js" />
     <Content Include="x64\SQLite.Interop.dll">
@@ -1718,7 +1719,6 @@
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\OrderEmail.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\DeliveryDetails.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\EnterOrderEmail.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\OrderPlaced.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\PaymentDetails.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\SetDeliveryDetails.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\CartPanel.cshtml" />
