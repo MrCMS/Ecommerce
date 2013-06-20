@@ -4,27 +4,27 @@
 <br />
 <div class="row-fluid">
 <div class="span8">
-@using (Html.BeginForm("AddEmailToCart", "Cart", FormMethod.Post))
+@using (Html.BeginForm("EnterOrderEmail", "Cart", FormMethod.Post))
 {
 <h4>Email address</h4>
 <span>Enter your Email address *:</span>
 <br />
-<input type="text" class="input-xxlarge" id="email" name="email" />
+<input type="text" class="input-xxlarge" id="email" name="email" value="@(Model.User!=null?Model.User.Email:String.Empty)" />
 <br />
 <span>Do you have a password?</span>
 <br />
 <br />
 <label class="radio">
-<input name="havePassword" type="radio" />No (You can create an account later)
+<input name="havePassword" type="radio" value="false" />No (You can create an account later)
 </label>
 <label class="radio">
-<input name="havePassword" type="radio" />Yes
+<input name="havePassword" type="radio" value="true" />Yes
 </label>
 <br />
 <button class="btn btn-info" type="submit" id="continue" name="continue">Continue</button>
  }
 </div>
 <div class="span4">
-@{Html.RenderAction("BasicDetails", "Cart");}
+@{Html.RenderAction("BasicDetails","Cart");}
 </div>
 </div>

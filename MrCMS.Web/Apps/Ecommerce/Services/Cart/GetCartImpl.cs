@@ -8,6 +8,7 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website;
 using NHibernate;
 using MrCMS.Entities.Multisite;
+using System;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
@@ -30,6 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                            ShippingAddress = GetShippingAddress(),
                            BillingAddress = GetBillingAddress(),
                            ShippingMethod = GetShippingMethod(),
+                           OrderEmail = GetOrderEmail()
                        };
         }
 
@@ -50,21 +52,37 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                         .List().ToList();
         }
 
-        private Address GetShippingAddress()
+        public Address GetShippingAddress()
         {
             return CurrentRequestData.CurrentContext.Session != null
                        ? CurrentRequestData.CurrentContext.Session["current.shipping-address"] as Address
                        : null;
         }
 
-        private Address GetBillingAddress()
+        public void SetShippingAddress(Address address)
+        {
+            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session["current.shipping-address"] != null)
+                CurrentRequestData.CurrentContext.Session["current.shipping-address"] = address;
+            else
+                CurrentRequestData.CurrentContext.Session.Add("current.shipping-address", address);
+        }
+
+        public Address GetBillingAddress()
         {
             return CurrentRequestData.CurrentContext.Session != null
                        ? CurrentRequestData.CurrentContext.Session["current.billing-address"] as Address
                        : null;
         }
 
-        private ShippingMethod GetShippingMethod()
+        public void SetBillingAddress(Address address)
+        {
+            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session["current.billing-address"] != null)
+                CurrentRequestData.CurrentContext.Session["current.billing-address"] = address;
+            else
+                CurrentRequestData.CurrentContext.Session.Add("current.billing-address", address);
+        }
+
+        public ShippingMethod GetShippingMethod()
         {
             var shippingMethodId = CurrentRequestData.CurrentContext.Session != null
                                        ? CurrentRequestData.CurrentContext.Session["current.shipping-method-id"] as int?
@@ -74,5 +92,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                        ? _session.Get<ShippingMethod>(shippingMethodId.Value)
                        : null;
         }
+
+        public void SetShippingMethod(int shippingMethodId)
+        {
+            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session["current.shipping-method-id"] != null)
+                CurrentRequestData.CurrentContext.Session["current.shipping-method-id"] = shippingMethodId;
+            else
+                CurrentRequestData.CurrentContext.Session.Add("current.shipping-method-id", shippingMethodId);
+        }
+
+        public void SetOrderEmail(string value)
+        {
+            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session["current.order-email"] != null)
+                CurrentRequestData.CurrentContext.Session["current.order-email"] = value;
+            else
+                CurrentRequestData.CurrentContext.Session.Add("current.order-email", value);
+        }
+        public string GetOrderEmail()
+        {
+            return CurrentRequestData.CurrentContext.Session != null
+                           ? CurrentRequestData.CurrentContext.Session["current.order-email"] as string
+                           : String.Empty;
+        }
+
     }
 }
