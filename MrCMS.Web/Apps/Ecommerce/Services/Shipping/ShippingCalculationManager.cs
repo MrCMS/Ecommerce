@@ -44,11 +44,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
                                   {
                                       if (shippingCalculation.ShippingMethod != null)
                                           shippingCalculation.ShippingMethod.ShippingCalculations.Add(shippingCalculation);
+                                      if(shippingCalculation.Country!=null)
+                                          shippingCalculation.Country.ShippingCalculations.Add(shippingCalculation);
                                       session.Save(shippingCalculation);
                                   });
-            _session.Evict(typeof(ShippingCalculation));
-            _session.Evict(typeof(ShippingMethod));
-            _session.Evict(typeof(Country));
         }
 
         public void Update(ShippingCalculation shippingCalculation)

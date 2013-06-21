@@ -31,7 +31,14 @@
                         @foreach (var option in Model.AttributeOptions)
                         {
                             <td>
-                                @variant.AttributeValues.FirstOrDefault(value => value.Option.Name == option.Name).Value
+                                @{
+                                    var productAttributeValue = variant.AttributeValues.FirstOrDefault(value => value.ProductAttributeOption.Name == option.Name);
+                                }
+                                @if (productAttributeValue != null)
+                                {
+                                    @productAttributeValue.Value
+                                }
+
                             </td>
                         }
                         <td>

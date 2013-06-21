@@ -1,8 +1,8 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
@@ -10,10 +10,11 @@ using MrCMS.Website;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using System;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
+using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class CartController : MrCMSAppUIController<EcommerceApp>
@@ -24,9 +25,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IProductVariantService _productVariantService;
         private readonly ICountryService _countryService;
         private readonly IOrderService _orderService;
+        private readonly IShippingMethodManager _shippingMethodManager;
 
         public CartController(IGetCart getCart, ICartManager cartManager, IProductService productService,
-            IProductVariantService productVariantService, ICountryService countryService, IOrderService orderService)
+            IProductVariantService productVariantService, ICountryService countryService, IOrderService orderService,IShippingMethodManager shippingMethodManager)
         {
             _getCart = getCart;
             _cartManager = cartManager;
@@ -34,6 +36,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _productVariantService = productVariantService;
             _countryService = countryService;
             _orderService = orderService;
+            _shippingMethodManager = shippingMethodManager;
         }
 
         public ViewResult Show(Cart page)
@@ -79,22 +82,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpGet]
         public ActionResult EnterOrderEmail()
         {
-            if (_getCart.GetCart().Items.Count == 0)
-                return Redirect(UniquePageHelper.GetUrl<Cart>());
-            if (String.IsNullOrWhiteSpace(_getCart.GetOrderEmail()) && CurrentRequestData.CurrentUser != null)
-                _getCart.SetOrderEmail(CurrentRequestData.CurrentUser.Email);
             return View(_getCart.GetCart());
         }
         [HttpPost]
-        public RedirectResult EnterOrderEmail(string email, bool havePassword=true)
+        public RedirectResult EnterOrderEmail(string OrderEmail, bool havePassword=true)
         {
-            if(!String.IsNullOrWhiteSpace(email))
+            if (ModelState.IsValid)
             {
-                _getCart.SetOrderEmail(email);
-                return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
+                if (!String.IsNullOrWhiteSpace(OrderEmail))
+                {
+                    _getCart.SetOrderEmail(OrderEmail);
+                    return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
+                }
+                else
+                    return Redirect(UniquePageHelper.GetUrl<EnterOrderEmail>());
             }
             else
+            {
                 return Redirect(UniquePageHelper.GetUrl<EnterOrderEmail>());
+            }
         }
         [HttpGet]
         public ActionResult SetDeliveryDetails()
@@ -106,35 +112,39 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             {
                 if (CurrentRequestData.CurrentUser != null)
                 {
-                    Address address = new Address();
-                    address.FirstName = CurrentRequestData.CurrentUser.FirstName != null ? CurrentRequestData.CurrentUser.FirstName : String.Empty;
-                    address.LastName = CurrentRequestData.CurrentUser.LastName != null ? CurrentRequestData.CurrentUser.LastName : String.Empty;
-                    address.UserGuid = CurrentRequestData.UserGuid;
+                    var address = new Address
+                        {
+                            FirstName = CurrentRequestData.CurrentUser.FirstName ?? String.Empty,
+                            LastName = CurrentRequestData.CurrentUser.LastName ?? String.Empty,
+                            UserGuid = CurrentRequestData.UserGuid
+                        };
                     _getCart.SetShippingAddress(address);
                 }
                 else
                 {
-                    Address address = new Address();
+                    var address = new Address();
                     _getCart.SetShippingAddress(address);
                 }
             }
             List<SelectListItem> countries = _countryService.GetAllCountries().BuildSelectItemList(country => country.Name, country => country.Id.ToString(), null, emptyItem: null);
             if (_getCart.GetShippingAddress().Country != null)
             {
-                countries.Where(x => x.Value == _getCart.GetShippingAddress().Country.Id.ToString()).SingleOrDefault().Selected = true;
+                countries.SingleOrDefault(x => x.Value == _getCart.GetShippingAddress().Country.Id.ToString()).Selected = true;
             }
             ViewData["countries"] = countries;
             return View(_getCart.GetCart());
         }
         [HttpPost]
-        public RedirectResult SetDeliveryDetails(Address address)
+        public RedirectResult SetDeliveryDetails(Address address, ShippingMethod shippingMethod)
         {
-            if (address != null)
+            if (address != null && shippingMethod!=null)
             {
                 address.UserGuid = CurrentRequestData.UserGuid;
                 _getCart.SetShippingAddress(address);
+                _getCart.SetShippingMethod(shippingMethod.Id);
+                return Redirect(UniquePageHelper.GetUrl<PaymentDetails>());
             }
-            return Redirect(UniquePageHelper.GetUrl<PaymentDetails>());
+            return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
         }
         [HttpGet]
         public ActionResult PaymentDetails()
@@ -142,22 +152,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (_getCart.GetCart().Items.Count == 0)
                 return Redirect(UniquePageHelper.GetUrl<Cart>());
 
-            List<SelectListItem> countries = _countryService.GetAllCountries().BuildSelectItemList(country => country.Name, country => country.Id.ToString(), null, emptyItem: null);
+            var countries = _countryService.GetAllCountries().BuildSelectItemList(country => country.Name, country => country.Id.ToString(), null, emptyItem: null);
             if (_getCart.GetBillingAddress()!= null && _getCart.GetBillingAddress().Country != null)
             {
-                countries.Where(x => x.Value == _getCart.GetBillingAddress().Country.Id.ToString()).SingleOrDefault().Selected = true;
+                countries.SingleOrDefault(x => x.Value == _getCart.GetBillingAddress().Country.Id.ToString()).Selected = true;
             }
             ViewData["countries"] = countries;
 
             if (_getCart.GetShippingAddress() == null)
                 return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
             else
-                return View(_getCart.GetCart());
+                return View(new PaymentDetailsModel(){CartModel = _getCart.GetCart()});
         }
         [HttpPost]
-        public ActionResult PaymentDetails(Address address, string CardNumber, string CardVerificationCode, 
-            string NameOnCard, string CardIssueNumber, bool UseDeliveryAddress=false,
-            int CartType=0, int StartMonth=0,int StartYear=0, int EndMonth=0, int EndYear=0)
+        public ActionResult PaymentDetails(Address address, PaymentDetailsModel paymentDetailsModel)
         {
             if (address != null && !String.IsNullOrWhiteSpace(address.FirstName))
             {
@@ -177,14 +185,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             }
             else
             {
-                List<SelectListItem> countries = _countryService.GetAllCountries().BuildSelectItemList(country => country.Name, country => country.Id.ToString(), null, emptyItem: null);
+                var countries = _countryService.GetAllCountries().BuildSelectItemList(country => country.Name, country => country.Id.ToString(), null, emptyItem: null);
                 if (_getCart.GetBillingAddress() != null && _getCart.GetBillingAddress().Country != null)
                 {
-                    countries.Where(x => x.Value == _getCart.GetBillingAddress().Country.Id.ToString()).SingleOrDefault().Selected = true;
+                    countries.SingleOrDefault(x => x.Value == _getCart.GetBillingAddress().Country.Id.ToString()).Selected = true;
                 }
                 ViewData["countries"] = countries;
                 return View(_getCart.GetCart());
             }
+        }
+        [HttpGet]
+        public ActionResult ShippingMethods(int id=0)
+        {
+            if (id != 0)
+            {
+                var country = _countryService.Get(id);
+                if(country!=null)
+                    return View(country.GetShippingMethods());
+            }
+            return View();
         }
         
     }

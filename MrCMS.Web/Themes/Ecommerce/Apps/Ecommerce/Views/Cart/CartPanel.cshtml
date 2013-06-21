@@ -14,10 +14,10 @@
 <i class="icon-shopping-cart"></i> Your basket has
         @if(Model.Items.Any())
         {
-            @Model.Items.Count() <span>items - &pound;@Model.Total</span>
+            @Model.Items.Count() <span>items - &pound;@Model.Total.ToString("#.##")</span>
         }
         else
         {
-            <span>not items.</span>
+            <span>no items.</span>
         }
 </div>

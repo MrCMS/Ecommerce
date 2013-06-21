@@ -14,9 +14,9 @@
                 {
                     <div class="span3">
                         <div class="category-photo">
-                        @if(item.Products.Count()>0)
+                        @if(item.Products.Any())
                         {
-                            if(item.Products.First<MrCMS.Web.Apps.Ecommerce.Pages.Product>().Images.Count()>0)
+                            if(item.Products.First<MrCMS.Web.Apps.Ecommerce.Pages.Product>().Images.Any())
                             {
                             <img src="@(item.Products.First<MrCMS.Web.Apps.Ecommerce.Pages.Product>().Images.First<MrCMS.Entities.Documents.Media.MediaFile>().FileUrl)" class="img-rounded pull-left span12" />
                             }

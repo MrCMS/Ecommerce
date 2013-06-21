@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
+using System.ComponentModel.DataAnnotations;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
@@ -81,6 +82,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public Guid UserGuid { get; set; }
 
         public string DiscountCode { get; set; }
+
+        [Required]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Invalid Email Address")]
         public string OrderEmail { get; set; }
 
         public Address ShippingAddress { get; set; }

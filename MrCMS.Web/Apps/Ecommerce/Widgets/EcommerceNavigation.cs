@@ -26,10 +26,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
                 session.QueryOver<Webpage>().Where(
                     webpage => webpage.Parent == null && webpage.PublishOn != null && 
                         webpage.PublishOn <= CurrentRequestData.Now && webpage.RevealInNavigation && webpage.Site == Site
-                        //&& !webpage.DocumentType.IsInsensitiveLike("EnterOrderEmail", MatchMode.End)
-                        //&& !webpage.DocumentType.IsInsensitiveLike("PaymentDetails", MatchMode.End)
-                        //&& !webpage.DocumentType.IsInsensitiveLike("SetDeliveryDetails", MatchMode.End)
-                        //&& !webpage.DocumentType.IsInsensitiveLike("OrderPlaced", MatchMode.End)
+                        && !webpage.DocumentType.IsInsensitiveLike("EnterOrderEmail", MatchMode.End)
+                        && !webpage.DocumentType.IsInsensitiveLike("PaymentDetails", MatchMode.End)
+                        && !webpage.DocumentType.IsInsensitiveLike("SetDeliveryDetails", MatchMode.End)
+                        && !webpage.DocumentType.IsInsensitiveLike("OrderPlaced", MatchMode.End)
                         ).Cacheable()
                        .List().OrderBy(webpage => webpage.DisplayOrder)
                        .Select(webpage => new NavigationRecord
