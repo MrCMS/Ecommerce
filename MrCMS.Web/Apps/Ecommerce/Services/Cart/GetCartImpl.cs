@@ -2,6 +2,7 @@
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
+using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -23,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public CartModel GetCart()
         {
-            CartModel cart=new CartModel
+            var cart=new CartModel
                        {
                            User = CurrentRequestData.CurrentUser,
                            UserGuid = CurrentRequestData.UserGuid,
@@ -31,7 +32,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                            ShippingAddress = GetShippingAddress(),
                            BillingAddress = GetBillingAddress(),
                            ShippingMethod = GetShippingMethod(),
-                           OrderEmail = GetOrderEmail()
+                           OrderEmail = GetOrderEmail(),
                        };
             return cart;
         }
@@ -40,8 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             if (GetItems().Any())
                 return 0;
-            else
-                return GetItems().Sum(x => x.Price);
+            return GetItems().Sum(x => x.Price);
         }
 
         private List<CartItem> GetItems()

@@ -1,4 +1,4 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+﻿@model MrCMS.Web.Apps.Ecommerce.Models.PaymentDetailsModel
 @using MrCMS.Helpers
 
 <br />
@@ -83,8 +83,8 @@
 <h4>Billing address</h4>
 <p>
       <label class="checkbox" id="">
-<input type="checkbox" checked="checked" id="useDeliveryAddress" name="UseDeliveryAddress"> Use delivery address <span id="deliveryAddress">(@Model.ShippingAddress.Name @Model.ShippingAddress.PhoneNumber @Model.ShippingAddress.Company @Model.ShippingAddress.Address1, 
-          @Model.ShippingAddress.Address1 @Model.ShippingAddress.City @Model.ShippingAddress.PostalCode @Model.ShippingAddress.Country.Name)</span>
+<input type="checkbox" checked="checked" id="useDeliveryAddress" name="UseDeliveryAddress"> Use delivery address <span id="deliveryAddress">(@Model.CartModel.ShippingAddress.Name @Model.CartModel.ShippingAddress.PhoneNumber @Model.CartModel.ShippingAddress.Company @Model.CartModel.ShippingAddress.Address1, 
+          @Model.CartModel.ShippingAddress.Address1 @Model.CartModel.ShippingAddress.City @Model.CartModel.ShippingAddress.PostalCode @Model.CartModel.ShippingAddress.Country.Name)</span>
 </label>
     </p>
     
@@ -92,31 +92,31 @@
                      <div>
                 <div class="span4">First Name*:</div>
                 <div>
-                    <input type="text" name="FirstName" class="input-xlarge" value="@(Model.BillingAddress!=null?Model.BillingAddress.FirstName:String.Empty)" /></div>
+                    <input type="text" name="FirstName" class="input-xlarge" value="@(Model.CartModel.BillingAddress!=null?Model.CartModel.BillingAddress.FirstName:String.Empty)" data-val="true" required/></div>
             </div>
             <div>
                 <div class="span4">Last Name*:</div>
-                <div><input type="text" name="LastName" class="input-xlarge" value="@(Model.BillingAddress!=null?Model.BillingAddress.LastName:String.Empty)" /></div>
+                <div><input type="text" name="LastName" class="input-xlarge" value="@(Model.CartModel.BillingAddress!=null?Model.CartModel.BillingAddress.LastName:String.Empty)" data-val="true" required/></div>
             </div>
             <div>
                 <div class="span4">Phone Number*:</div>
-                <div><input type="text" name="PhoneNumber" class="input-xlarge" value="@(Model.BillingAddress!=null?Model.BillingAddress.PhoneNumber:String.Empty)" /></div>
+                <div><input type="text" name="PhoneNumber" class="input-xlarge" value="@(Model.CartModel.BillingAddress!=null?Model.CartModel.BillingAddress.PhoneNumber:String.Empty)" data-val="true" required/></div>
             </div>
             <div>
                 <div class="span4">Address 1*:</div>
-                <div><input type="text" name="Address1" class="input-xlarge" value="@(Model.BillingAddress!=null?Model.BillingAddress.Address1:String.Empty)" /></div>
+                <div><input type="text" name="Address1" class="input-xlarge" value="@(Model.CartModel.BillingAddress!=null?Model.CartModel.BillingAddress.Address1:String.Empty)" data-val="true" required/></div>
             </div>
             <div>
                 <div class="span4">Address 2:</div>
-                <div><input type="text" name="Address2" class="input-xlarge" value="@(Model.BillingAddress!=null?Model.BillingAddress.Address2:String.Empty)"/></div>
+                <div><input type="text" name="Address2" class="input-xlarge" value="@(Model.CartModel.BillingAddress!=null?Model.CartModel.BillingAddress.Address2:String.Empty)"/></div>
             </div>
                 <div>
             <div class="span4">Town or City*:</div>
-                <div><input type="text" name="City" class="input-xlarge" value="@(Model.BillingAddress!=null?Model.BillingAddress.City:String.Empty)"/></div>
+                <div><input type="text" name="City" class="input-xlarge" value="@(Model.CartModel.BillingAddress!=null?Model.CartModel.BillingAddress.City:String.Empty)" data-val="true" required/></div>
             </div>
                <div>
             <div class="span4">County:</div>
-                <div><input type="text" name="StateProvince" class="input-xlarge" value="@(Model.BillingAddress!=null?Model.BillingAddress.StateProvince:String.Empty)"/></div>
+                <div><input type="text" name="StateProvince" class="input-xlarge" value="@(Model.CartModel.BillingAddress!=null?Model.CartModel.BillingAddress.StateProvince:String.Empty)"/></div>
             </div>
                    <div>
             <div class="span4">Country*:</div>
@@ -126,7 +126,7 @@
             </div>
                    <div>
             <div class="span4">Postcode (zip)*:</div>
-                <div><input type="text" name="PostalCode" class="input-medium" value="@(Model.BillingAddress!=null?Model.BillingAddress.PostalCode:String.Empty)" /></div>
+                <div><input type="text" name="PostalCode" class="input-medium" value="@(Model.CartModel.BillingAddress!=null?Model.CartModel.BillingAddress.PostalCode:String.Empty)" data-val="true" required/></div>
             </div>
      </div>
  
@@ -134,7 +134,7 @@
 <h4>Newsletter</h4>
  <p>
       <label class="checkbox">
-<input type="checkbox" checked="checked"> Sign up to Mr CMS Newsletter for the latest deals and news direct to your inbox.
+<input type="checkbox" checked="checked" name="SignUpForNewsletter"> Sign up to Mr CMS Newsletter for the latest deals and news direct to your inbox.
 </label>
  </p>
 <br />

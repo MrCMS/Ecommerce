@@ -15,21 +15,27 @@
             Filter by Category
         </div>
         <div class="row-fluid">
-          <ul class="nav nav-tabs nav-stacked return-delivery-box">
+          <ul class="nav nav-tabs nav-stacked">
                 @foreach (var parent in (List<MrCMS.Web.Apps.Ecommerce.Pages.Category>)ViewBag.Categories)
                 {
-                    if (ViewBag.IsSubCategory==true)
+                    if (ViewBag.IsSubCategory == true)
                     {
-                        foreach (var child in parent.Parent.Children)
+                        if(parent.Id==Model.Parent.Id)
                         {
-                             <li>
-                        <a href="/@child.UrlSegment">@child.Name <i class="icon-chevron-right pull-right"></i></a>
-                         @foreach (var childValue in child.Children)
-                         {
-                            <a class="subitem" href="/@childValue.UrlSegment">@childValue.Name</a>
-                         }
+                            <li>
+                            <a href="/@parent.UrlSegment">@parent.Name <i class="icon-chevron-right pull-right"></i></a>
+                             @foreach (var childValue in parent.Children)
+                             {
+                                <a class="subitem" href="/@childValue.UrlSegment">@childValue.Name</a>
+                             }
                              </li>
-                        } 
+                        }
+                        else
+                        {
+                            <li>
+                            <a href="/@parent.LiveUrlSegment">@parent.Name <i class="icon-chevron-right pull-right"></i></a>
+                            </li>
+                        }
                     }
                     else if(parent.Id==Model.Id && ViewBag.IsSubCategory==false)
                     {
@@ -39,13 +45,13 @@
                          {
                             <a class="subitem" href="/@childValue.UrlSegment">@childValue.Name</a>
                          }
-                             </li>
+                         </li>
                     }
                     else
                     {
-                        <li>
+                       <li>
                         <a href="/@parent.LiveUrlSegment">@parent.Name <i class="icon-chevron-right pull-right"></i></a>
-                    </li>
+                        </li>
                     }
                 }
           </ul>
@@ -65,13 +71,12 @@
             Filter by Options
         </div>
         <div class="row-fluid">
-            <ul id="product-filter-box-options" class="nav nav-tabs nav-stacked return-delivery-box">
+            <ul id="product-filter-box-options" class="nav nav-tabs nav-stacked ">
            @foreach (var option in (List<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductAttributeOption>)ViewBag.ProductOptions)
            {
-               if (option.Values.Select(x => x.Value).Distinct().Count() > 0)
+               if (option.Values.Select(x => x.Value).Distinct().Any())
                {
                 <li>
-                        <a>
                         @option.Name
                         <br/>
                         <select id="@(Html.Encode("product-option-values-"+option.Name))" class="span12">
@@ -81,7 +86,6 @@
                                 <option value="@Html.Encode(option.Name+optionValue)">@optionValue</option>
                         }
                         </select>
-                        </a>
                 </li>
                 } 
            }
@@ -92,13 +96,12 @@
             Filter by Specifications
         </div>
         <div class="row-fluid">
-            <ul id="product-filter-box-specifications" class="nav nav-tabs nav-stacked return-delivery-box">
+            <ul id="product-filter-box-specifications" class="nav nav-tabs nav-stacked ">
            @foreach (var specification in (List<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationAttribute>)ViewBag.ProductSpecifications)
            {
-               if(specification.Values.Select(x=>x.Value).Distinct().Count()>0)
+               if(specification.Values.Select(x=>x.Value).Distinct().Any())
                {
                <li>
-                        <a>
                         @specification.Name
                         <br/>
                         <select id="@(Html.Encode("product-specification-values-"+specification.Name))" class="span12">
@@ -108,7 +111,6 @@
                                 <option value="@(specification.Name+":"+specificationValue)">@specificationValue</option>
                         }
                         </select>
-                        </a>
                 </li>
               }
            }

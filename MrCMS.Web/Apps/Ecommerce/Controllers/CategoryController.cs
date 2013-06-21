@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Entities.Documents.Web;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
@@ -34,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             ViewBag.ProductSpecifications = _productOptionManager.ListSpecificationAttributes();
             ViewBag.ProductPriceRangeMin = 0;
             ViewBag.ProductPriceRangeMax = 5000;
-            ViewBag.Categories = _categoryService.GetAll().Where(x => x.Parent != null && x.Parent.Parent == null && x.Products.Count() > 0).ToList();
+            ViewBag.Categories = _categoryService.GetAll().Where(x => x.Parent != null && x.Parent.Parent == null && x.Products.Any()).ToList();
             if (page.Parent != null && page.Parent.Parent != null)
                 ViewBag.IsSubCategory = true;
             else

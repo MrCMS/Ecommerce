@@ -1,5 +1,4 @@
-﻿@using MrCMS.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Widgets.FeaturedProductsViewModel
+﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.FeaturedProductsViewModel
 @if (Model != null)
 {
     <hr />
@@ -12,25 +11,25 @@
     {
             <div class="span3">
                 <div style="height:200px; overflow:hidden;" >
-                @if(item.Images.Count()>0)
+                @if(item.Images.Any())
                 {
-                    <img src="@(item.Images.First<MrCMS.Entities.Documents.Media.MediaFile>().FileUrl)" class="img-rounded pull-left span12" />
+                    <img src="@(item.Images.First<MrCMS.Entities.Documents.Media.MediaFile>().FileUrl)" class="img-rounded pull-left span12" alt="@item.Name" />
                 }
                 </div>
                     <div class="clearfix"></div>
                 <h4 class="product-title"><a href="/@item.LiveUrlSegment">@item.Name</a></h4>
                 <div style="height:130px;">@(item.Abstract.Length>255?item.Abstract.Substring(0,250)+"...":item.Abstract)</div>
                     <h1 class="product-price">
-                    @if (item.PricePreTax == 0 && item.Variants.Count>0)
+                    @if (item.PricePreTax == 0 && item.Variants.Any())
                     {
-                        @Html.Raw("&pound;"+item.Variants.OrderBy(x=>x.Price).First<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant>().Price.ToString())
+                        @Html.Raw("&pound;"+item.Variants.OrderBy(x=>x.Price).First<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant>().Price.ToString("#.##"))
                     }
                     else
                     {
-                        @Html.Raw("&pound;"+item.PricePreTax.ToString());
+                        @Html.Raw("&pound;"+item.PricePreTax.ToString("#.##"));
                     }
                 </h1>
-                <span>shop price &pound;@(item.PreviousPrice.HasValue?item.PreviousPrice.Value.ToString("#.##"):"")</span>
+                <span>shop price &pound;@(item.PreviousPrice.HasValue?item.PreviousPrice.Value.ToString("#.##"):String.Empty)</span>
 
            </div>
     }

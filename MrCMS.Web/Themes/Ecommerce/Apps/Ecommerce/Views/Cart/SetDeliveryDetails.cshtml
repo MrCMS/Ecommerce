@@ -1,12 +1,12 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
-@using MrCMS.Helpers
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 
 <br />
 <div class="row-fluid">
 <div class="span8">
 <h4>Who shall we deliver to?</h4>
  <br />
-@using (Html.BeginForm("SetDeliveryDetails", "Cart", FormMethod.Post))
+@using (Html.BeginForm("SetDeliveryDetails", "Cart", FormMethod.Post,new { id="deliveryDetails"}))
 {
 <div>
     <div class="span4">First Name*:</div>
@@ -50,8 +50,10 @@
 <div class="span4">Postcode (zip)*:</div>
     <div><input type="text" name="PostalCode" class="input-medium" value="@(Model.ShippingAddress!=null?Model.ShippingAddress.PostalCode:String.Empty)" /></div>
 </div>
-<br />
-<button class="btn btn-info" type="submit" id="continue" name="continue">Continue</button>
+    <div id="shippingMethods">
+    </div>
+    <br />
+    <button class="btn btn-info" type="button" id="continue" name="continue">Continue</button>
 }
 </div>
 <div class="span4">
@@ -60,3 +62,4 @@
 @{Html.RenderAction("OrderEmail", "Cart");}
 </div>
 </div>
+@{ Html.IncludeScript("~/Themes/Ecommerce/Apps/Ecommerce/Content/Scripts/custom/shipping-methods.js"); }

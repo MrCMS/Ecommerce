@@ -25,21 +25,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _productSearchService = productSearchService;
         }
 
-        public ViewResult Show(ProductSearch page, string searchTerm = null)
+        public ViewResult Show(ProductSearch page, string q = null)
         {
             ViewBag.ProductOptions = _productOptionManager.GetAllAttributeOptions();
             ViewBag.ProductSpecifications = _productOptionManager.ListSpecificationAttributes();
             ViewBag.ProductPriceRangeMin = 0;
             ViewBag.ProductPriceRangeMax = 5000;
-            ViewBag.Categories = _categoryService.GetAll().Where(x => x.Parent != null && x.Parent.Parent == null && x.Products.Count() > 0).ToList();
-            ViewBag.SearchTerm = searchTerm;
+            ViewBag.Categories = _categoryService.GetAll().Where(x => x.Parent != null && x.Parent.Parent == null && x.Products.Any()).ToList();
+            ViewBag.SearchTerm = q;
             return View(page);
         }
 
         [HttpGet]
         public PartialViewResult Results(string searchTerm,string sortBy,string options,string specifications, decimal productPriceRangeMin = 0, decimal productPriceRangeMax = 0, int pageNo = 0, int pageSize=0)
         {
-            List<string> specs = new List<string>();
+            var specs = new List<string>();
             if (!String.IsNullOrWhiteSpace(specifications))
             {
                 try
@@ -56,13 +56,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                     
                 }
             }
-            List<string> ops = new List<string>();
+            var ops = new List<string>();
             if (!String.IsNullOrWhiteSpace(options))
             {
                 ops.Add(options);
             }
 
-            ProductPagedList products = new ProductPagedList(_productSearchService.SearchProducts(
+            var products = new ProductPagedList(_productSearchService.SearchProducts(
                 searchTerm,
                 sortBy,
                 ops, 
