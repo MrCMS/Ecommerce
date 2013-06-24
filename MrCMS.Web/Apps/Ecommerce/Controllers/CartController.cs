@@ -294,6 +294,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             }
             return View();
         }
-        
+
+        [HttpPost]
+        public JsonResult AddShippingMethod(int id = 0)
+        {
+            if (id != 0)
+            {
+                var shippingMethod = _shippingMethodManager.Get(id);
+                if (shippingMethod != null)
+                {
+                    _getCart.SetShippingMethod(shippingMethod.Id);
+                    return Json(true);
+                }
+            }
+            return Json(false);
+        }
     }
 }

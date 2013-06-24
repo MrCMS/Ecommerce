@@ -46,10 +46,11 @@
          @Html.DropDownList("Country.Id", ViewData["countries"] as IEnumerable<SelectListItem>, new { @class="input-xlarge" })
     </div>
 </div>
-       <div>
-<div class="span4">Postcode (zip)*:</div>
-    <div><input type="text" name="PostalCode" class="input-medium" value="@(Model.ShippingAddress!=null?Model.ShippingAddress.PostalCode:String.Empty)" /></div>
-</div>
+    <div>
+        <div class="span4">Postcode (zip)*:</div>
+        <div><input type="text" name="PostalCode" class="input-medium" value="@(Model.ShippingAddress!=null?Model.ShippingAddress.PostalCode:String.Empty)" /></div>
+    </div>
+    @Html.Hidden("ShippingMethodValue",Model.ShippingMethod!=null?Model.ShippingMethod.Id:0)
     <div id="shippingMethods">
     </div>
     <br />
