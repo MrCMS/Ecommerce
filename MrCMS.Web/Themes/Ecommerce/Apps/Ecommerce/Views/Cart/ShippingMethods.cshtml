@@ -1,4 +1,5 @@
-﻿@model List<MrCMS.Web.Apps.Ecommerce.Entities.Shipping.ShippingMethod>
+﻿@using MrCMS.Helpers
+@model List<MrCMS.Web.Apps.Ecommerce.Entities.Shipping.ShippingMethod>
 
 <hr/>
 @if (Model!=null && Model.Any())
@@ -17,3 +18,4 @@ else
 {
     <span>Choosen country does not have any shipping method specified. Please contact System Administration.</span><br/>
 }
+@{ Html.IncludeScript("~/Themes/Ecommerce/Apps/Ecommerce/Content/Scripts/custom/shipping-methods.js"); }
