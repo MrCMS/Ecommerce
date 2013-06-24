@@ -51,9 +51,16 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Cart - Order Placed", "Apps/Ecommerce/Cart/OrderPlaced", new { controller = "Cart", action = "OrderPlaced" });
             context.MapRoute("Cart - Payment Details", "Apps/Ecommerce/Cart/PaymentDetails", new { controller = "Cart", action = "PaymentDetails" });
             context.MapRoute("Cart - Set Delivery Details", "Apps/Ecommerce/Cart/SetDeliveryDetails", new { controller = "Cart", action = "SetDeliveryDetails" });
+            context.MapRoute("Cart - Shipping Methods", "Apps/Ecommerce/Cart/ShippingMethods", new { controller = "Cart", action = "ShippingMethods" });
             context.MapRoute("Cart - Cart Panel", "Apps/Ecommerce/Cart/CartPanel", new { controller = "Cart", action = "CartPanel" });
             context.MapRoute("Cart - Add to Cart", "Apps/Ecommerce/Cart/AddToCart", new { controller = "Cart", action = "AddToCart" });
-            context.MapRoute("Cart - Shipping Methods", "Apps/Ecommerce/Cart/ShippingMethods", new { controller = "Cart", action = "ShippingMethods" });
+            context.MapRoute("Cart - Edit Cart Item", "Apps/Ecommerce/Cart/EditCartItem", new { controller = "Cart", action = "EditCartItem" });
+            context.MapRoute("Cart - Delete Cart Item", "Apps/Ecommerce/Cart/DeleteCartItem", new { controller = "Cart", action = "DeleteCartItem" });
+            context.MapRoute("Cart - Discount Code", "Apps/Ecommerce/Cart/DiscountCode", new { controller = "Cart", action = "DiscountCode" });
+            context.MapRoute("Cart - Add Discount Code", "Apps/Ecommerce/Cart/AddDiscountCode", new { controller = "Cart", action = "AddDiscountCode" });
+            context.MapRoute("Cart - Edit Discount Code", "Apps/Ecommerce/Cart/EditDiscountCode", new { controller = "Cart", action = "EditDiscountCode" });
+            context.MapRoute("Cart - Is Discount Code Valid", "Apps/Ecommerce/Cart/IsDiscountCodeValid", new { controller = "Cart", action = "IsDiscountCodeValid" });
+
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)

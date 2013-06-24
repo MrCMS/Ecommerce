@@ -15,6 +15,8 @@ using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
+using MrCMS.Web.Apps.Ecommerce.Services.Discounts;
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class CartController : MrCMSAppUIController<EcommerceApp>
@@ -26,9 +28,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly ICountryService _countryService;
         private readonly IOrderService _orderService;
         private readonly IShippingMethodManager _shippingMethodManager;
+        private readonly IDiscountManager _discountManager;
 
         public CartController(IGetCart getCart, ICartManager cartManager, IProductService productService,
-            IProductVariantService productVariantService, ICountryService countryService, IOrderService orderService,IShippingMethodManager shippingMethodManager)
+            IProductVariantService productVariantService, ICountryService countryService, IOrderService orderService,
+            IShippingMethodManager shippingMethodManager, IDiscountManager discountManager)
         {
             _getCart = getCart;
             _cartManager = cartManager;
@@ -37,6 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _countryService = countryService;
             _orderService = orderService;
             _shippingMethodManager = shippingMethodManager;
+            _discountManager = discountManager;
         }
 
         public ViewResult Show(Cart page)
@@ -58,6 +63,90 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (productVariant != null && quantity > 0)
                 _cartManager.AddToCart(productVariant, quantity);
             return Redirect(UniquePageHelper.GetUrl<Cart>());
+        }
+        [HttpGet]
+        public ViewResult EditCartItem(CartItem item)
+        {
+            return View("EditCartItem",item);
+        }
+        [ActionName("EditCartItem")]
+        [HttpPost]
+        public ActionResult EditCartItem_POST(CartItem item)
+        {
+            if (ModelState.IsValid)
+            {
+                _cartManager.UpdateQuantity(item, item.Quantity);
+                return Redirect(UniquePageHelper.GetUrl<Cart>());
+            }
+            return PartialView(item);
+        }
+        [HttpGet]
+        public PartialViewResult DeleteCartItem(CartItem item)
+        {
+            return PartialView(item);
+        }
+        [ActionName("DeleteCartItem")]
+        [HttpPost]
+        public ActionResult DeleteCartItem_POST(CartItem item)
+        {
+            _cartManager.Delete(item);
+            return Redirect(UniquePageHelper.GetUrl<Cart>());
+        }
+        [HttpGet]
+        public ViewResult DiscountCode()
+        {
+            return View(_getCart.GetCart());
+        }
+        [HttpGet]
+        public ViewResult AddDiscountCode()
+        {
+            return View(_getCart.GetCart());
+        }
+        [ActionName("AddDiscountCode")]
+        [HttpPost]
+        public ActionResult AddDiscountCode_POST(CartModel model)
+        {
+            if (model != null && !String.IsNullOrWhiteSpace(model.DiscountCode) && ValidateDiscountCode(model.DiscountCode))
+            {
+                _getCart.SetDiscountCode(model.DiscountCode);
+                return Redirect(UniquePageHelper.GetUrl<Cart>());
+            }
+            return PartialView(_getCart.GetCart());
+        }
+        [HttpGet]
+        public ViewResult EditDiscountCode()
+        {
+            return View(_getCart.GetCart());
+        }
+        [ActionName("EditDiscountCode")]
+        [HttpPost]
+        public ActionResult EditDiscountCode_POST(CartModel model)
+        {
+            if (model != null && !String.IsNullOrWhiteSpace(model.DiscountCode) && ValidateDiscountCode(model.DiscountCode))
+            {
+                _getCart.SetDiscountCode(model.DiscountCode);
+                return Redirect(UniquePageHelper.GetUrl<Cart>());
+            }
+            return PartialView(_getCart.GetCart());
+        }
+        public JsonResult IsDiscountCodeValid(string discountCode)
+        {
+            return Json(ValidateDiscountCode(discountCode), JsonRequestBehavior.AllowGet);
+        }
+
+        private bool ValidateDiscountCode(string discountCode)
+        {
+            if (!String.IsNullOrWhiteSpace(discountCode))
+            {
+                var discount = _discountManager.GetByCode(discountCode);
+                if (discount != null)
+                {
+                    if (discount.IsCodeValid(discountCode))
+                        return true;
+                }
+            }
+            
+            return false;
         }
         [HttpGet]
         public ViewResult Details()

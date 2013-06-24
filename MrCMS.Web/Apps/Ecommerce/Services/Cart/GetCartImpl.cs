@@ -10,6 +10,7 @@ using MrCMS.Website;
 using NHibernate;
 using MrCMS.Entities.Multisite;
 using System;
+using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
@@ -33,6 +34,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                            BillingAddress = GetBillingAddress(),
                            ShippingMethod = GetShippingMethod(),
                            OrderEmail = GetOrderEmail(),
+                           DiscountCode = GetDiscountCode(),
+                           Discount = GetDiscount()
                        };
             return cart;
         }
@@ -51,6 +54,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                         .Where(item => item.UserGuid == CurrentRequestData.UserGuid)
                         .Cacheable()
                         .List().ToList();
+        }
+
+        private Discount GetDiscount()
+        {
+            if (!String.IsNullOrWhiteSpace(GetDiscountCode()))
+                return
+                    _session.QueryOver<Discount>()
+                            .Where(item => item.Code.IsInsensitiveLike(GetDiscountCode(), MatchMode.Exact))
+                            .Cacheable()
+                            .SingleOrDefault();
+            else
+                return null;
         }
 
         public Address GetShippingAddress()
@@ -115,6 +130,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                            ? CurrentRequestData.CurrentContext.Session["current.order-email"] as string
                            : String.Empty;
         }
-
+        public void SetDiscountCode(string value)
+        {
+            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session["current.discount-code"] != null)
+                CurrentRequestData.CurrentContext.Session["current.discount-code"] = value;
+            else
+                CurrentRequestData.CurrentContext.Session.Add("current.discount-code", value);
+        }
+        public string GetDiscountCode()
+        {
+            return CurrentRequestData.CurrentContext.Session != null
+                           ? CurrentRequestData.CurrentContext.Session["current.discount-code"] as string
+                           : String.Empty;
+        }
     }
 }
