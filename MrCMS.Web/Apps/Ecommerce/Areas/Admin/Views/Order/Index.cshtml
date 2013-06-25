@@ -1,70 +1,116 @@
 ﻿@using MrCMS.Helpers
-@using MrCMS.Logging
-@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order>
+@model MrCMS.Web.Apps.Ecommerce.Models.OrderSearchModel
 @{
     ViewBag.Title = "Orders";
 }
 
-<fieldset>
-    <legend>Orders
-    </legend>
-    @if (Model.Count == 0)
-    {
-        @:No orders.
+@using (Html.BeginForm("Index", "Order", FormMethod.Get))
+{
+    <fieldset>
+        <legend>Orders
+            <span class="btn-group  display-inline  pull-right">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </span>
+        </legend>
+        @if (Model.Results!=null && !Model.Results.Any())
+        {
+            @:No orders.
         }
-    else
-    {
-        <table class="table table-condensed table-striped">
-            <thead>
-                <tr>
-                    <th>User
-                    </th>
-                    <th>Subtotal
-                    </th>
-                    <th>Tax
-                    </th>
-                    <th>Discount Code
-                    </th>
-                    <th>Total
-                    </th>
-                    <th>Total after Refunds
-                    </th>
-                    <th>Actions
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        else
+        {
+            <h4>
+                Filter orders
+            </h4>
+            <div class="row-fluid">
+                <div class="span4">
+                    <div>
+                        <div class="span4">Email:</div>
+                        <div>
+                            @Html.EditorFor(x=>x.Email,new {@class="input-medium"})
+                        </div>
+                    </div>
+                    <div>
+                        <div class="span4">Order Id:</div>
+                        <div>
+                            @Html.EditorFor(x=>x.OrderId,new {@class="input-medium"})
+                        </div>
+                    </div>
+                    <div>
+                        <div class="span4">Date From:</div>
+                        <div>
+                            @Html.EditorFor(x=>x.DateFrom,new {@class="input-medium"})
+                        </div>
+                    </div>
+                    <div>
+                        <div class="span4">Payment Status:</div>
+                        <div>
+                            @Html.DropDownList("PaymentStatus", ViewData["PaymentStatuses"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
+                        </div>
+                    </div>
+                </div>
+                <div class="span4">
+                    <div>
+                        <div class="span4">Last Name:</div>
+                        <div>
+                            @Html.EditorFor(x=>x.LastName,new {@class="input-medium"})
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div>
+                        <div class="span4">Date To:</div>
+                        <div>
+                            @Html.EditorFor(x=>x.DateTo,new {@class="input-medium"})
+                        </div>
+                    </div>
+                    <div>
+                        <div class="span4">Shipping Status:</div>
+                        <div>
+                            @Html.DropDownList("ShippingStatus", ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <table class="table table-condensed table-striped">
+                <thead>
                     <tr>
-                        <td>
-                            @(item.User != null ? item.User.Name : String.Empty)
-                        </td>
-                        <td>
-                            @item.Subtotal.ToString("C")
-                        </td>
-                        <td>
-                            @item.Tax.ToString("C")
-                        </td>
-                        <td>
-                            @item.DiscountCode
-                        </td>
-                        <td>
-                            @item.Total.ToString("C")
-                        </td>
-                        <td>
-                            @item.TotalAfterRefunds.ToString("C")
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                @Html.ActionLink("Edit", "Edit", "Order", new { id = item.Id }, new { @class = "btn btn-mini" })
-                            </div>
-                        </td>
+                        <th>Email
+                        </th>
+                        <th>Payment Status
+                        </th>
+                        <th>Shipping Status
+                        </th>
+                        <th>Amount
+                        </th>
+                        <th>Created On
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    }
-    @Html.Pager(Model, "Index", i => new { page = i })
-</fieldset>
-
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Results)
+                    {
+                        <tr>
+                            <td>
+                                @item.OrderEmail
+                            </td>
+                            <td>
+                                @item.PaymentStatus
+                            </td>
+                            <td>
+                                @item.ShippingStatus
+                            </td>
+                            <td>
+                                &pound;@item.Total.ToString("#.##")
+                            </td>
+                            <td>
+                                @item.CreatedOn
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        @Html.Pager(Model.Results, "Index", i => new {page = i})
+    </fieldset>
+}

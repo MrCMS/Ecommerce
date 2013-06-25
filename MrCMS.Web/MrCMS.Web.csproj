@@ -240,13 +240,17 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ProductHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\OrderPlacedMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\SetDeliveryDetailsMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\PaymentDetailsMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\EnterOrderEmailMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Models\OrderSearchModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaymentDetailsModel.cs" />
     <Compile Include="Apps\Ecommerce\Pages\EnterOrderEmail.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderSearchService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\OrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />

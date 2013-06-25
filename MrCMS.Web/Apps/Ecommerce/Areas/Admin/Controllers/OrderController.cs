@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
+using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -19,19 +21,39 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IShippingStatusService _shippingStatusService;
         private readonly IPaymentStatusService _paymentStatusService;
         private readonly IShippingMethodManager _shippingMethodManager;
+        private readonly IOrderSearchService _orderSearchService;
 
-        public OrderController(IOrderService orderService, IShippingStatusService shippingStatusService, IPaymentStatusService paymentStatusService, IShippingMethodManager shippingMethodManager)
+        public OrderController(IOrderService orderService, IShippingStatusService shippingStatusService,
+            IPaymentStatusService paymentStatusService, IShippingMethodManager shippingMethodManager,
+            IOrderSearchService orderSearchService)
         {
             _orderService = orderService;
             _shippingStatusService = shippingStatusService;
             _paymentStatusService = paymentStatusService;
             _shippingMethodManager = shippingMethodManager;
+            _orderSearchService = orderSearchService;
         }
 
         [HttpGet]
-        public ViewResult Index(int page = 1)
+        public ViewResult Index(OrderSearchModel model, int page = 1)
         {
-            return View(_orderService.GetPaged(page));
+            if (model.DateFrom.ToString().Contains("1.1.0001."))
+                model.DateFrom = DateTime.Now;
+            if (model.DateTo.ToString().Contains("1.1.0001."))
+                model.DateTo = DateTime.Now;
+            ViewData["ShippingStatuses"] = _shippingStatusService.GetOptions();
+            ViewData["PaymentStatuses"] = _paymentStatusService.GetOptions();
+            model.Results = new PagedList<Order>(null, 1, 10);
+            try
+            {
+                model.Results=_orderSearchService.SearchOrders(model.Email, model.LastName, model.OrderId, model.DateFrom, model.DateTo, model.PaymentStatus, model.ShippingStatus, page);
+            }
+            catch (Exception)
+            {
+                model.Results = _orderService.GetPaged(page);
+            }
+
+            return View("Index", model);
         }
 
         [HttpGet]
