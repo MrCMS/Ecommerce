@@ -26,33 +26,33 @@
                     <div>
                         <div class="span4">Email:</div>
                         <div>
-                            @Html.EditorFor(x=>x.Email,new {@class="input-medium"})
+                            @Html.TextBoxFor(x=>x.Email,new {@class="input-medium"})
                         </div>
                     </div>
                     <div>
                         <div class="span4">Order Id:</div>
                         <div>
-                            @Html.EditorFor(x=>x.OrderId,new {@class="input-medium"})
+                            @Html.TextBoxFor(x=>x.OrderId,new {@class="input-medium"})
                         </div>
                     </div>
                     <div>
                         <div class="span4">Date From:</div>
                         <div>
-                            @Html.EditorFor(x=>x.DateFrom,new {@class="input-medium"})
+                            @Html.TextBoxFor(x=>x.DateFrom,new {@class="input-medium"})
                         </div>
                     </div>
                     <div>
-                        <div class="span4">Payment Status:</div>
+                        <div class="span6">Payment Status:</div>
                         <div>
                             @Html.DropDownList("PaymentStatus", ViewData["PaymentStatuses"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
                         </div>
                     </div>
                 </div>
-                <div class="span4">
+                <div class="span6">
                     <div>
                         <div class="span4">Last Name:</div>
                         <div>
-                            @Html.EditorFor(x=>x.LastName,new {@class="input-medium"})
+                            @Html.TextBoxFor(x=>x.LastName,new {@class="input-medium"})
                         </div>
                     </div>
                     <br/>
@@ -60,7 +60,7 @@
                     <div>
                         <div class="span4">Date To:</div>
                         <div>
-                            @Html.EditorFor(x=>x.DateTo,new {@class="input-medium"})
+                            @Html.TextBoxFor(x=>x.DateTo,new {@class="input-medium"})
                         </div>
                     </div>
                     <div>

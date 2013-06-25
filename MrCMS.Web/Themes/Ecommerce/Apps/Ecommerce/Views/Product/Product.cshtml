@@ -34,11 +34,11 @@
             <h1 class="product-price">
                     @if (Model.PricePreTax == 0 && Model.Variants.Any())
                     {
-                        @Html.Raw("&pound;" + Model.Variants.OrderBy(x => x.Price).First<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant>().Price.ToString("#.##"))
+                        @Html.Raw("&pound;" + Model.Variants.OrderBy(x => x.Price).First().Price.ToString("#.##"))
                     }
                     else
                     {
-                        @Html.Raw("&pound;" + Model.PricePreTax.ToString("#.##"))
+                        @Html.Raw("&pound;" + Model.Price.ToString("#.##"))
                     }
                 </h1>
             <span>shop price: <span style="text-decoration:line-through">&pound;@(Model.PreviousPrice.HasValue ? Model.PreviousPrice.Value.ToString("#.##") : "")</span></span>

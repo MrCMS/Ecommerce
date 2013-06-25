@@ -16,7 +16,7 @@
                     <div class="span3 photo">
                     @if(item.Images.Any())
                     {
-                            <img src="@(item.Images.First<MrCMS.Entities.Documents.Media.MediaFile>().FileUrl)" class="img-rounded pull-left span12" alt="@item.Name" />
+                            <img src="@(item.Images.First().FileUrl)" class="img-rounded pull-left span12" alt="@item.Name" />
                     }
                     </div>
                     <div class="span6">
@@ -29,11 +29,11 @@
                             <h1 class="product-price">
                                         @if (item.PricePreTax == 0 && item.Variants.Any())
                                         {
-                                            @Html.Raw("&pound;"+item.Variants.OrderBy(x=>x.Price).First<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant>().Price.ToString())
+                                            @Html.Raw("&pound;"+item.Variants.OrderBy(x=>x.Price).First().Price.ToString("#.##"))
                                         }
                                         else
                                         {
-                                            @Html.Raw("&pound;"+item.PricePreTax.ToString("#.##"));
+                                            @Html.Raw("&pound;"+item.Price.ToString("#.##"));
                                         }
                             </h1>
                             shop price <span style="text-decoration:line-through">&pound;@(item.PreviousPrice.HasValue?item.PreviousPrice.Value.ToString("#.##"):String.Empty)</span>
