@@ -45,5 +45,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
                 .BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(), rate => rate == taxRate,
                                      emptyItem: null);
         }
+
+        public void SetAllDefaultToFalse()
+        {
+            _session.CreateSQLQuery("UPDATE TaxRate SET IsDefault=0").ExecuteUpdate();
+        }
     }
 }

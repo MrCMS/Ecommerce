@@ -75,5 +75,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _configurationProvider.SaveSettings(settings);
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public RedirectToRouteResult MakeDefault(TaxRate taxRate)
+        {
+            _taxRateManager.SetAllDefaultToFalse();
+            taxRate.IsDefault = true;
+            _taxRateManager.Update(taxRate);
+            return RedirectToAction("Index");
+        }
     }
 }
