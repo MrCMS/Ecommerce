@@ -3,7 +3,7 @@
 
 <ul class="breadcrumb">
 <li><a href="/">Home</a> <span class="divider">/</span></li>
-<li><a href="/@ViewBag.CategoryContainerUrl">Categories</a> <span class="divider">/</span></li>
+<li><a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.CategoryContainer>())">Categories</a> <span class="divider">/</span></li>
 <li class="active">@Model.Name</li>
 </ul>
 @RenderZone("Before Content")

@@ -101,7 +101,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             get
             {
-                return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
+                return Math.Round(!MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
                                       ? BasePrice
                                       : TaxRate != null
                                             ? BasePrice * (TaxRate.Multiplier)

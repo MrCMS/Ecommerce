@@ -67,8 +67,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get
             {
-                return Math.Round(TaxRate == null ? PricePreTax : PricePreTax * TaxRate.Multiplier, 2,
-                                  MidpointRounding.AwayFromZero);
+                return Math.Round(!MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
+                                      ? BasePrice
+                                      : TaxRate != null
+                                            ? BasePrice * (TaxRate.Multiplier)
+                                            : BasePrice, 2, MidpointRounding.AwayFromZero);
             }
         }
 
@@ -113,7 +116,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             {
                 List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
                 if (priceBreaks.Any())
-                    return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
+                    return Math.Round(!MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
                                       ? priceBreaks.First().Price
                                       : TaxRate != null
                                             ? priceBreaks.First().Price * (TaxRate.Multiplier)

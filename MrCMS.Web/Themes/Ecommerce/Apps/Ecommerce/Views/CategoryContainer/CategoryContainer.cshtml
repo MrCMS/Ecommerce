@@ -16,9 +16,9 @@
                         <div class="category-photo">
                         @if(item.Products.Any())
                         {
-                            if(item.Products.First<MrCMS.Web.Apps.Ecommerce.Pages.Product>().Images.Any())
+                            if(item.Products.First().Images.Any())
                             {
-                            <img src="@(item.Products.First<MrCMS.Web.Apps.Ecommerce.Pages.Product>().Images.First<MrCMS.Entities.Documents.Media.MediaFile>().FileUrl)" class="img-rounded pull-left span12" />
+                            <img src="@(item.Products.First().Images.First().FileUrl)" class="img-rounded pull-left span12" />
                             }
                         }
                         </div>
