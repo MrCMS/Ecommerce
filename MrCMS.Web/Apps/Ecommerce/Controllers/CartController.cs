@@ -17,6 +17,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Discounts;
+using System.Linq;
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class CartController : MrCMSAppUIController<EcommerceApp>
@@ -265,7 +266,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             {
                 _getCart.SetBillingAddress(_getCart.GetShippingAddress());
             }
-
+            if (paymentDetailsModel != null && !String.IsNullOrWhiteSpace(paymentDetailsModel.CartType))
+            {
+                _getCart.SetPaymentMethod(paymentDetailsModel.CartType);
+            }
+            
             if (_getCart.GetCart().Items.Count > 0)
             {
                 //TODO: IMPLEMENT PAYMENT GATEWAY PROCEDURES
@@ -289,8 +294,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (id != 0)
             {
                 var country = _countryService.Get(id);
-                if(country!=null)
-                    return View(country.GetShippingMethods());
+                if (country != null)
+                {
+                    var t = country.GetShippingMethods().Where(x => x.CanBeUsed(_getCart.GetCart())).ToList();
+                    return View(t);
+                }
             }
             return View();
         }
@@ -306,6 +314,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                     _getCart.SetShippingMethod(shippingMethod.Id);
                     return Json(true);
                 }
+            }
+            else
+            {
+                _getCart.SetShippingMethod(0);
             }
             return Json(false);
         }

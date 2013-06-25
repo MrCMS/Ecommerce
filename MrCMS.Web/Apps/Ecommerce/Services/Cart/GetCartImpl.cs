@@ -143,5 +143,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                            ? CurrentRequestData.CurrentContext.Session["current.discount-code"] as string
                            : String.Empty;
         }
+        public void SetPaymentMethod(string value)
+        {
+            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session["current.payment-method"] != null)
+                CurrentRequestData.CurrentContext.Session["current.payment-method"] = value;
+            else
+                CurrentRequestData.CurrentContext.Session.Add("current.payment-method", value);
+        }
+        public string GetPaymentMethod()
+        {
+            return CurrentRequestData.CurrentContext.Session != null
+                           ? CurrentRequestData.CurrentContext.Session["current.payment-method"] as string
+                           : String.Empty;
+        }
     }
 }

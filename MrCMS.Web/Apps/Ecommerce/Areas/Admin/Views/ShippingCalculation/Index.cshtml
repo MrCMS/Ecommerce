@@ -40,7 +40,14 @@
                     @shippingCalculation.Description
                 </td>
                 <td>
-                    &pound;@shippingCalculation.Amount.ToString("#.##")
+                    @if (shippingCalculation.Amount != null && shippingCalculation.Amount > 0)
+                    {
+                        <span>&pound;</span>@shippingCalculation.Amount.ToString("#.##")
+                    }
+                    else
+                    {
+                        <span>&pound;0</span>
+                    }
                 </td>
                 <td>
                     <div class="btn-group pull-right">

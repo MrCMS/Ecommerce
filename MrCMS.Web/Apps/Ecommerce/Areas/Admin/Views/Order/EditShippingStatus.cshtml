@@ -8,6 +8,7 @@
     <div class="modal-body">
         @Html.HiddenFor(x => x.Id)
         @Html.HiddenFor(x => x.User.Id)
+       @Html.Hidden("index",(bool)ViewBag.Index)
        
         @Html.DropDownListFor(x => x.ShippingStatus, ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>)
     </div>

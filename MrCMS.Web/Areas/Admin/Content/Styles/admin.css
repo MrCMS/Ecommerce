@@ -76,3 +76,16 @@ section.admin-header h3 { margin: 0px; }
 ul.nav { margin-bottom: 10px;}
 
 .main-content legend { line-height: 37px;}
+
+/*Table design for forms*/
+.table-noborders {
+    margin-left: 0px;
+}
+.table-noborders th, .table-noborders td {
+    border-top: none;
+    padding: 0px;
+}
+/*Drop down list is always short few pixels than other controls when using same width*/
+select.input-medium {
+    width: 164px;
+}

@@ -81,10 +81,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditShippingStatus(Order order)
+        public ActionResult EditShippingStatus(Order order,bool index=false)
         {
             ViewData["ShippingStatuses"] = _shippingStatusService.GetOptions();
-            ViewData["PaymentStatuses"] = _paymentStatusService.GetOptions();
+            ViewBag.Index = index;
             return order != null
                        ? (ActionResult)View(order)
                        : RedirectToAction("Edit", "Order", new { id = order.Id });
@@ -92,11 +92,36 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("EditShippingStatus")]
         [HttpPost]
-        public RedirectToRouteResult EditShippingStatus_POST(Order order)
+        public RedirectToRouteResult EditShippingStatus_POST(Order order, bool index = false)
         {
             order.User = CurrentRequestData.CurrentUser;
             _orderService.Save(order);
-            return RedirectToAction("Edit", "Order", new { id = order.Id });
+            if(!index)
+                return RedirectToAction("Edit", "Order", new { id = order.Id });
+            else
+                return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult EditPaymentStatus(Order order, bool index = false)
+        {
+            ViewData["PaymentStatuses"] = _paymentStatusService.GetOptions();
+            ViewBag.Index = index;
+            return order != null
+                       ? (ActionResult)View(order)
+                       : RedirectToAction("Edit", "Order", new { id = order.Id });
+        }
+
+        [ActionName("EditPaymentStatus")]
+        [HttpPost]
+        public RedirectToRouteResult EditPaymentStatus_POST(Order order, bool index = false)
+        {
+            order.User = CurrentRequestData.CurrentUser;
+            _orderService.Save(order);
+            if (!index)
+                return RedirectToAction("Edit", "Order", new { id = order.Id });
+            else
+                return RedirectToAction("Index");
         }
 
         public ActionResult PlaceNewOrder()

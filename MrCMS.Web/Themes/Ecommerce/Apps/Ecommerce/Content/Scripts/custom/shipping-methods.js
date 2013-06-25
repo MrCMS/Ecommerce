@@ -6,16 +6,23 @@
            }, function (shippingMethods) {
                $('#shippingMethods').html(shippingMethods);
                $("#ShippingMethodValue").change();
+               updateShippingMethod();
            });
-        
     });
     
     $(document).on('change', "select[id='Country_Id']", function () {
         search();
+        $("#shippingMethods").change();
     });
     
     $(document).on('change', "select[id='ShippingMethods']", function () {
         updateShippingMethod();
+    });
+    
+    $(document).on('change', "#shippingMethods", function () {
+        parent.$.get('/Apps/Ecommerce/Cart/BasicDetails', function (result) {
+            parent.$('#basic-details').replaceWith(result);
+        });
     });
     
     $(document).on('change', "#ShippingMethodValue", function () {

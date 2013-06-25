@@ -5,7 +5,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
     public class PaymentDetailsModel
     {
         public CartModel CartModel { get; set; }
-        public int CartType { get; set; }
+        public string CartType { get; set; }
         public string CardNumber { get; set; }
         public string CardVerificationCode { get; set; }
         public int StartMonth { get; set; }
