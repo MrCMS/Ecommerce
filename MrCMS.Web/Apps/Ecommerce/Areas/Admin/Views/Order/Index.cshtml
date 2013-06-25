@@ -85,6 +85,8 @@
                         </th>
                         <th>Created On
                         </th>
+                         <th>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -105,6 +107,11 @@
                             </td>
                             <td>
                                 @item.CreatedOn
+                            </td>
+                             <td>
+                                <div class="btn-group">
+                                    @Html.ActionLink("Details", "Edit", "Order", new { id = item.Id }, new { @class = "btn btn-mini"})
+                                </div>
                             </td>
                         </tr>
                     }
