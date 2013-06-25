@@ -1,24 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Lucene.Net.Analysis.Standard;
-using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
-using MrCMS.Entities.Documents.Layout;
-using MrCMS.Entities.Documents.Media;
-using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Indexes;
 using MrCMS.Indexing.Management;
-using MrCMS.Models;
 using MrCMS.Paging;
-using MrCMS.Website;
-using Document = MrCMS.Entities.Documents.Document;
 using Version = Lucene.Net.Util.Version;
-using NHibernate;
-using NHibernate.Criterion;
 using MrCMS.Web.Apps.Ecommerce.Indexing;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 
