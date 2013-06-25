@@ -11,10 +11,16 @@
 </div>
     <div class="clearfix"></div>
     <div>
-                <div class="span6">Shipping</div>
-            <div>
-             @Html.Raw(Model.ShippingTotal.HasValue?"&pound;"+Model.ShippingTotal.Value.ToString("#.##"):"Will be calculated on the checkout.<br/><br/>")
-               </div>
+            @if (Model.ShippingTotal.HasValue)
+            {
+                if (Model.ShippingTotal.Value > 0)
+                {
+                    <div class="span6">Shipping</div>
+                    <div>
+                     @Html.Raw("&pound;"+Model.ShippingTotal.Value.ToString("#.##"))
+                     </div>
+                }
+            }
 </div>
 <div class="clearfix"></div>
 <div>

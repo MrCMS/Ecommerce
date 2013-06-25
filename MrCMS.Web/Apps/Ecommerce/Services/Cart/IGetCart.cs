@@ -18,5 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         void SetShippingMethod(int shippingMethodId);
         void SetDiscountCode(string value);
         string GetDiscountCode();
+        void SetPaymentMethod(string value);
+        string GetPaymentMethod();
     }
 }

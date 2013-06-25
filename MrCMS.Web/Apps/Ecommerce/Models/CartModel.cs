@@ -71,7 +71,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public decimal Tax
         {
-            get { return Items.Sum(item => item.Tax) + ShippingTax.GetValueOrDefault(); }
+            get
+            {
+                return Items.Sum(item => item.Tax) + ShippingTax.GetValueOrDefault();
+            }
         }
 
         public bool CanCheckout
