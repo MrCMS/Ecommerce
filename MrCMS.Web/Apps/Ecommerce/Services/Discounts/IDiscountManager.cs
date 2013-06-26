@@ -7,6 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Discounts
     {
         IList<Discount> GetAll();
         Discount Get(int discountId);
+        Discount GetByCode(string code);
         void Add(Discount discount);
         void Save(Discount discount, DiscountLimitation discountLimitation, DiscountApplication discountApplication);
         void Delete(Discount discount);

@@ -138,15 +138,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         private string GetCartTotalValue()
         {
             return UpperBound.HasValue
-                       ? string.Format("{0:C} to {1:C}", LowerBound, UpperBound)
-                       : string.Format("{0:C} or greater", LowerBound);
+                       ? string.Format("{0:C} to {1:C}", LowerBound.ToString("#.##"), UpperBound.Value.ToString("#.##"))
+                       : string.Format("{0:C} or greater", LowerBound.ToString("#.##"));
         }
 
         private string GetCartWeightValue()
         {
             return UpperBound.HasValue
-                       ? string.Format("{0}kg to {1}kg", LowerBound, UpperBound)
-                       : string.Format("{0}kg or greater", LowerBound);
+                       ? string.Format("{0}kg to {1}kg", LowerBound.ToString("#.##"), UpperBound.Value.ToString("#.##"))
+                       : string.Format("{0}kg or greater", LowerBound.ToString("#.##"));
         }
     }
 

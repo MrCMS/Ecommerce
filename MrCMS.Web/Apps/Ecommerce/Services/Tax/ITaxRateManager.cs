@@ -12,5 +12,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
         void Update(TaxRate taxRate);
         void Delete(TaxRate taxRate);
         List<SelectListItem> GetOptions(TaxRate taxRate = null);
+        void SetAllDefaultToFalse();
     }
 }

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.Mvc;
 using MrCMS.Entities.People;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
@@ -68,7 +71,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public decimal Tax
         {
-            get { return Items.Sum(item => item.Tax) + ShippingTax.GetValueOrDefault(); }
+            get
+            {
+                return Items.Sum(item => item.Tax) + ShippingTax.GetValueOrDefault();
+            }
         }
 
         public bool CanCheckout
@@ -80,7 +86,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public Guid UserGuid { get; set; }
 
+        [Required]
+        [Remote("IsDiscountCodeValid", "Cart", AdditionalFields = "DiscountCode")]
+        [DisplayName("Discount Code")]
         public string DiscountCode { get; set; }
+
+        [Required]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Invalid Email Address")]
         public string OrderEmail { get; set; }
 
         public Address ShippingAddress { get; set; }

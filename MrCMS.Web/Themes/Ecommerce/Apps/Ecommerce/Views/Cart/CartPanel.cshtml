@@ -1,0 +1,23 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+@using MrCMS.Helpers
+
+<div class="pull-right">
+<div id="top-menu-box">
+    <div class="pull-right">
+    <a href="#">Your Account</a>
+        </div>
+</div>
+    <a class="btn btn-large btn-info btn-checkout" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Checkout</a>
+</div>
+
+    <div id="basket-info-box" class="pull-right">
+<i class="icon-shopping-cart"></i> Your basket has
+        @if(Model.Items.Any())
+        {
+            @Model.Items.Count() <span>items - &pound;@Model.Total.ToString("#.##")</span>
+        }
+        else
+        {
+            <span>no items.</span>
+        }
+</div>

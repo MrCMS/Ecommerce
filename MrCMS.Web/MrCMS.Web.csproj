@@ -239,13 +239,18 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\OrderPlacedMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Models\TaxAwarePrice.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\SetDeliveryDetailsMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\PaymentDetailsMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\EnterOrderEmailMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Models\OrderSearchModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\PaymentDetailsModel.cs" />
     <Compile Include="Apps\Ecommerce\Pages\EnterOrderEmail.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderSearchService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\OrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
@@ -420,7 +425,6 @@
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\respond.min.js" />
-    <Content Include="Apps\Ecommerce\Content\Scripts\wizard.js" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\images\ui-bg_glass_55_fbf9ee_1x400.png" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\images\ui-bg_glass_65_ffffff_1x400.png" />
@@ -1316,6 +1320,8 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\EcommerceNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_CheckoutLayout.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\_EcommercePopup.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\EditPaymentStatus.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -1427,6 +1433,9 @@
     <Content Include="Global.asax" />
     <Content Include="Apps\Ecommerce\Content\Scripts\facebook.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\category.js" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\shipping-methods.js" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\enter-order-email.js" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\payment-details.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\product-search.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\product.js" />
     <Content Include="x64\SQLite.Interop.dll">
@@ -1718,9 +1727,15 @@
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\OrderEmail.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\DeliveryDetails.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\EnterOrderEmail.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\OrderPlaced.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\PaymentDetails.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\SetDeliveryDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\CartPanel.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\ShippingMethods.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\EditCartItem.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\DeleteCartItem.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\DiscountCode.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\EditDiscountCode.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\AddDiscountCode.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />

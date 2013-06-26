@@ -20,7 +20,7 @@
     <br />
     <br />
     <div class="clearfix"></div>
-    foreach (ShippingMethod shippingMethod in country.GetShippingMethods())
+    foreach (var shippingMethod in country.GetShippingMethods())
     {
          <strong>@shippingMethod.Name</strong>
  
@@ -40,7 +40,14 @@
                     @shippingCalculation.Description
                 </td>
                 <td>
-                    @shippingCalculation.Amount.ToString("C")
+                    @if (shippingCalculation.Amount != null && shippingCalculation.Amount > 0)
+                    {
+                        <span>&pound;</span>@shippingCalculation.Amount.ToString("#.##")
+                    }
+                    else
+                    {
+                        <span>&pound;0</span>
+                    }
                 </td>
                 <td>
                     <div class="btn-group pull-right">

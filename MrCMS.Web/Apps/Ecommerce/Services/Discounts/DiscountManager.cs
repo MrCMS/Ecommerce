@@ -4,6 +4,7 @@ using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using NHibernate;
 using System.Linq;
+using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Discounts
 {
@@ -24,6 +25,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Discounts
         public Discount Get(int discountId)
         {
             return _session.QueryOver<Discount>().Where(x => x.Id == discountId).Cacheable().SingleOrDefault();
+        }
+
+        public Discount GetByCode(string code)
+        {
+            return
+                _session.QueryOver<Discount>()
+                        .Where(product => product.Code.IsInsensitiveLike(code, MatchMode.Exact))
+                        .Cacheable()
+                        .SingleOrDefault();
         }
 
         public void Add(Discount discount)

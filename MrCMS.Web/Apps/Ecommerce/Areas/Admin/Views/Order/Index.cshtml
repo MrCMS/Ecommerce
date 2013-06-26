@@ -1,70 +1,132 @@
 ﻿@using MrCMS.Helpers
-@using MrCMS.Logging
-@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order>
+@model MrCMS.Web.Apps.Ecommerce.Models.OrderSearchModel
 @{
     ViewBag.Title = "Orders";
 }
 
-<fieldset>
-    <legend>Orders
-    </legend>
-    @if (Model.Count == 0)
-    {
-        @:No orders.
+@using (Html.BeginForm("Index", "Order", FormMethod.Get))
+{
+    <fieldset>
+        <legend>Orders
+            <span class="btn-group  display-inline  pull-right">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </span>
+        </legend>
+        @if (Model.Results!=null && !Model.Results.Any())
+        {
+            @:No orders.
         }
-    else
-    {
-        <table class="table table-condensed table-striped">
-            <thead>
-                <tr>
-                    <th>User
-                    </th>
-                    <th>Subtotal
-                    </th>
-                    <th>Tax
-                    </th>
-                    <th>Discount Code
-                    </th>
-                    <th>Total
-                    </th>
-                    <th>Total after Refunds
-                    </th>
-                    <th>Actions
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        else
+        {
+            <h4>
+                Filter orders
+            </h4>
+             <table class="table table-noborders">
+                     <tr>
+                         <td class="span2">
+                             Email:
+                         </td>
+                         <td class="span2">
+                             @Html.TextBoxFor(x=>x.Email,new {@class="input-medium"})
+                         </td>
+                         <td class="span2">
+                             Last Name:
+                         </td>
+                         <td class="span6">
+                             @Html.TextBoxFor(x=>x.LastName,new {@class="input-medium"})
+                         </td>
+                     </tr>
+                     <tr>
+                          <td class="span2">
+                             Order Id:
+                         </td>
+                          <td class="span2">
+                             @Html.TextBoxFor(x=>x.OrderId,new {@class="input-medium"})
+                         </td>
+                          <td class="span2">
+                            
+                         </td>
+                         <td class="span6">
+                        
+                         </td>
+                     </tr>
+                     <tr>
+                         <td class="span2">
+                             Date From:
+                         </td>
+                         <td class="span2">
+                             @Html.TextBoxFor(x=>x.DateFrom,new {@class="input-medium date-time-picker"})
+                         </td>
+                         <td class="span2">
+                             Date To:
+                         </td>
+                         <td class="span6">
+                             @Html.TextBoxFor(x=>x.DateTo,new {@class="input-medium date-time-picker"})
+                         </td>
+                     </tr>
+                     <tr>
+                         <td class="span2">
+                             Payment Status:
+                         </td>
+                         <td class="span2">
+                              @Html.DropDownList("PaymentStatus", ViewData["PaymentStatuses"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
+                         </td>
+                         <td class="span2">
+                             Shipping Status:
+                         </td>
+                         <td class="span6">
+                        @Html.DropDownList("ShippingStatus", ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
+                         </td>
+                     </tr>
+            </table>
+           
+            <hr/>
+            <table class="table table-condensed table-striped">
+                <thead>
                     <tr>
-                        <td>
-                            @(item.User != null ? item.User.Name : String.Empty)
-                        </td>
-                        <td>
-                            @item.Subtotal.ToString("C")
-                        </td>
-                        <td>
-                            @item.Tax.ToString("C")
-                        </td>
-                        <td>
-                            @item.DiscountCode
-                        </td>
-                        <td>
-                            @item.Total.ToString("C")
-                        </td>
-                        <td>
-                            @item.TotalAfterRefunds.ToString("C")
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                @Html.ActionLink("Edit", "Edit", "Order", new { id = item.Id }, new { @class = "btn btn-mini" })
-                            </div>
-                        </td>
+                        <th>Email
+                        </th>
+                        <th>Payment Status
+                        </th>
+                        <th>Shipping Status
+                        </th>
+                        <th>Amount
+                        </th>
+                        <th>Created On
+                        </th>
+                         <th>
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    }
-    @Html.Pager(Model, "Index", i => new { page = i })
-</fieldset>
-
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Results)
+                    {
+                        <tr>
+                            <td>
+                                @item.OrderEmail
+                            </td>
+                            <td>
+                                @Html.ActionLink(item.PaymentStatus.ToString(), "EditPaymentStatus", "Order", new { id = item.Id, index=true}, new { data_toggle = "fb-modal" })
+                            </td>
+                            <td>
+                                @Html.ActionLink(item.ShippingStatus.ToString(), "EditShippingStatus", "Order", new { id = item.Id, index=true}, new { data_toggle = "fb-modal" })
+                            </td>
+                            <td>
+                                &pound;@item.Total.ToString("#.##")
+                            </td>
+                            <td>
+                                @item.CreatedOn
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    @Html.ActionLink("Details", "Edit", "Order", new { id = item.Id }, new { @class = "btn btn-mini"})
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        @Html.Pager(Model.Results, "Index", i => new {page = i})
+    </fieldset>
+}

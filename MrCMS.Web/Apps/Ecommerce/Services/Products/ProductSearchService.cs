@@ -51,13 +51,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             }
             return _productSearcher.Search(searchQuery.GetQuery(), page, pageSize, null, sort);
         }
-        public ProductSearch GetSiteProductSearch()
-        {
-            IList<ProductSearch> productSearchers = _session.QueryOver<ProductSearch>().Where(x => x.Site == _currentSite.Site).Cacheable().List();
-            if (productSearchers.Any())
-                return _session.QueryOver<ProductSearch>().Cacheable().List().First();
-            else
-                return null;
-        }
     }
 }

@@ -3,12 +3,14 @@
     $("#searchTerm").keypress(function (e) {
         if (e.which == 13) {
             e.preventDefault();
-            window.location = $("#ProductSearchUrl").val() +"?searchTerm="+ $("#searchTerm").val();
+            if ($("#searchTerm").val() !== "") {
+                window.location = $("#ProductSearchUrl").val() + "?q=" + $("#searchTerm").val();
+            }
         }
     });
-    $("#searchButton").click(function(){
-        window.location = $("#ProductSearchUrl").val() +"?searchTerm="+ $("#searchTerm").val();
+    $("#searchButton").click(function() {
+        if ($("#searchTerm").val() !== "") {
+            window.location = $("#ProductSearchUrl").val() + "?q=" + $("#searchTerm").val();
+        }
     });
-
-    $('#checkout').wizard()
 })

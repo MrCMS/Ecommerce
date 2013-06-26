@@ -1,22 +1,31 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
-@using MrCMS.Helpers
 
+<div id="basic-details">
 @if(Model.Items.Any())
 {
 <h4>Your Order</h4>
 <br />
 <div>
     <div class="span6">Order</div>
-    <div>&pound;@Model.TotalPreShipping</div>
+    <div>&pound;@Model.TotalPreShipping.ToString("#.##")</div>
 </div>
     <div class="clearfix"></div>
     <div>
-    <div class="span6">Shipping</div>
-    <div>&pound;@(Model.ShippingTotal!=null?Model.ShippingTotal:0)</div>
+            @if (Model.ShippingTotal.HasValue)
+            {
+                if (Model.ShippingTotal.Value > 0)
+                {
+                    <div class="span6">Shipping</div>
+                    <div>
+                     @Html.Raw("&pound;"+Model.ShippingTotal.Value.ToString("#.##"))
+                     </div>
+                }
+            }
 </div>
 <div class="clearfix"></div>
 <div>
-    <div class="span6">Total</div>
-    <div>&pound;@Model.Total</div>
+    <div class="span6">Total</div>  
+    <div>&pound;@Model.Total.ToString("#.##")</div>
 </div>
 }
+</div>
