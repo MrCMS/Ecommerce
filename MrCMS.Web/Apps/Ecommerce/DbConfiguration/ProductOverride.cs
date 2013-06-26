@@ -12,9 +12,6 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
         {
             mapping.HasManyToMany(product => product.Categories).Table("ProductCategories").Not.Inverse();
             mapping.HasManyToMany(product => product.AttributeOptions).Table("ProductAttributes").Not.Inverse();
-            mapping.HasMany(product => product.PriceBreaks)
-                   .KeyColumn("ItemId")
-                   .Where("ItemType = '" + typeof(Product).FullName + "'");
         }
     }
     public class ProductVariantOverride : IAutoMappingOverride<ProductVariant>
@@ -22,9 +19,6 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
         public void Override(AutoMapping<ProductVariant> mapping)
         {
             mapping.HasMany(variant => variant.AttributeValues).KeyColumn("ProductVariantId").Cascade.All();
-            mapping.HasMany(variant => variant.PriceBreaks)
-                   .KeyColumn("ItemId")
-                   .Where("ItemType = '" + typeof(ProductVariant).FullName + "'");
         }
     }
 }
