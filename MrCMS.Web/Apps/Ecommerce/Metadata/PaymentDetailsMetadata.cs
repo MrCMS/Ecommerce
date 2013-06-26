@@ -4,7 +4,7 @@ using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Metadata;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 
-namespace MrCMS.Web.Apps.Ecommerce.Metadata
+namespace MrCMS.Web.Apps.Ecommerce.Metadata.CartAndCheckout
 {
     public class PaymentDetailsMetadata : DocumentMetadataMap<PaymentDetails>
     {
@@ -15,7 +15,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
 
         public override IEnumerable<Type> ChildrenList
         {
-            get { yield return typeof(PaymentDetails); }
+            get { yield return typeof(OrderPlaced); }
         }
 
         public override bool RequiresParent { get { return true; } }
@@ -33,6 +33,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
         public override string WebGetAction
         {
             get { return "Show"; }
+        }
+        public override bool ChildrenMaintainHierarchy
+        {
+            get { return false; }
         }
     }
 }
