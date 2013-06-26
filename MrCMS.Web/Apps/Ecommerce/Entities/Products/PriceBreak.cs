@@ -14,7 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual decimal Price { get; set; }
         public virtual decimal GetPrice()
         {
-           return Math.Round(!MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
+           return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
                                       ? Price
                                       : Item.TaxRatePercentage != 0
                                             ? Price * Item.TaxRatePercentage
