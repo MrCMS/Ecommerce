@@ -15,7 +15,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
 
         public override IEnumerable<Type> ChildrenList
         {
-            get { yield return typeof(EnterOrderEmail); }
+            get { yield return typeof(SetDeliveryDetails); }
         }
 
         public override bool RequiresParent { get { return true; } }
@@ -33,6 +33,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
         public override string WebGetAction
         {
             get { return "Show"; }
+        }
+        public override bool ChildrenMaintainHierarchy
+        {
+            get { return false; }
         }
     }
 }
