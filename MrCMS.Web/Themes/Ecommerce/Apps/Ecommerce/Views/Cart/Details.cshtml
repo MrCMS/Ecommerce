@@ -1,16 +1,16 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
-@using MrCMS.Helpers
 
 <div class="row-fluid">
 <div class="span8">
     <h4>Items</h4>
     @if(Model.Items.Any())
     {
-        <table class="table table-bordered table-condensed">
+        <table class="table table-striped">
         <tr>
             <th>Product</th>
             <th>Quantity</th>
             <th>Price</th>
+            <th></th>
         </tr>
         @foreach (var item in Model.Items)
         {
@@ -18,6 +18,12 @@
             <td>@item.Name</td>
             <td>@item.Quantity</td>
             <td>&pound;@item.Price.ToString("#.##")</td>
+            <td>
+                <div class="btn-group">
+                    @Html.ActionLink("Edit", "EditCartItem", "Cart", new { id = item.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                    @Html.ActionLink("Delete", "DeleteCartItem", "Cart", new { id = item.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                </div>
+             </td>
         </tr> 
         }
         </table>
@@ -34,18 +40,24 @@
     <br />
     <div>
         <div class="span6">Order</div>
-        <div>&pound;@Model.TotalPreShipping</div>
-    </div>
-     <div class="clearfix"></div>
-     <div>
-        <div class="span6">Shipping</div>
-        <div>&pound;@(Model.ShippingTotal!=null?Model.ShippingTotal:0)</div>
+        <div>&pound;@Model.TotalPreShipping.ToString("#.##")
+        </div>
     </div>
     <div class="clearfix"></div>
     <div>
+                <div class="span6">Shipping</div>
+            <div>
+             @Html.Raw(Model.ShippingTotal.HasValue?"&pound;"+Model.ShippingTotal.Value.ToString("#.##"):"Will be calculated on the checkout.<br/><br/>")
+               </div>
+   
+</div>
+    <div class="clearfix"></div>
+    <div>
         <div class="span6">Total</div>
-        <div>&pound;@Model.Total</div>
+        <div>&pound;@Model.Total.ToString("#.##")</div>
     </div>
     }
+    
+    @{Html.RenderAction("DiscountCode", "Cart");}
 </div>
 </div>

@@ -4,6 +4,7 @@ using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
@@ -18,7 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public ViewResult Show(Product page)
         {
-            ViewBag.ProductSearchUrl = _productSearchService.GetSiteProductSearch().LiveUrlSegment;
+            ViewBag.ProductSearchUrl = UniquePageHelper.GetUrl<ProductSearch>();
             return View(page);
         }
     }

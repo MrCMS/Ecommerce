@@ -69,7 +69,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
             calls.Where(
                 call =>
                 call.Method.Name == "SearchDocuments" && call.Method.GetGenericArguments()[0] == typeof (Document) &&
-                call.Arguments[0] == "test").Should().HaveCount(1);
+                call.Arguments[0] as string == "test").Should().HaveCount(1);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
             calls.Where(
                 call =>
                 call.Method.Name == "SearchDocuments" && call.Method.GetGenericArguments()[0] == typeof(TextPage) &&
-                call.Arguments[0] == "test").Should().HaveCount(1);
+                call.Arguments[0] as string == "test").Should().HaveCount(1);
         }
 
         [Fact]

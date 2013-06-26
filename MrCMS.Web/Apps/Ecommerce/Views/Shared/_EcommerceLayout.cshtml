@@ -27,39 +27,23 @@
     <div id="wrap">
     <div class="container">
         <div class="pull-left">
-            <img src="/Apps/Ecommerce/Content/Images/mrcms-logo.png" />
+            <img src="/Apps/Ecommerce/Content/Images/mrcms-logo.png" alt="logo"/>
         </div>
  
-         <div class="pull-right">
-           <div id="top-menu-box">
-               <div class="pull-left">
-               <a href="#">Stores</a>
-                   </div>
-               <div class="pull-right">
-               <a href="#">Your Account</a>
-                   </div>
-           </div>
-             <button class="btn btn-large btn-info btn-checkout" type="button">Checkout</button>
-        </div>
-
-                <div id="basket-info-box" class="pull-right">
-           <i class="icon-shopping-cart"></i> Your basket 0 items - &pound;0.00
-        </div>
+        @{Html.RenderAction("CartPanel", "Cart");}
 
          <div id="search-box" class="pull-right">
-             <input type="text" class="input-xlarge" placeholder="e.g : Shorts" id="searchTerm" name="searchTerm" value="@ViewBag.SearchTerm"/>
+             <input type="text" class="input-xlarge" placeholder="e.g : Shorts" id="searchTerm" name="searchTerm" value="@ViewBag.SearchTerm" />
             <button class="btn" type="button" id="searchButton" name="searchButton">Search</button>
         </div>
     </div>
     <div id="navbar-wrapper">
     <div class="container">
-        <div class="masthead">
             <div class="navbar">
                 <div class="navbar-inner">
                             @RenderZone("Header")
                 </div>
             </div>
-        </div>
         </div>
         </div>
       <div class="container">

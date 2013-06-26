@@ -1,6 +1,5 @@
 ﻿using MrCMS.Entities;
 using System.Collections.Generic;
-using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Models;

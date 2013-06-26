@@ -12,5 +12,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void Delete(ProductVariant productVariant);
         bool AnyExistingProductVariantWithSKU(string sku, int id);
         IList<PriceBreak> GetAllPriceBreaksForProductVariant(int id);
+        ProductVariant Get(int id);
     }
 }

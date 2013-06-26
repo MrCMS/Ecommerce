@@ -4,6 +4,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using NHibernate;
 using MrCMS.Helpers;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
@@ -27,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 existingItem.Quantity += quantity;
             else
             {
-                existingItem = new CartItem {Item = item, Quantity = quantity};
+                existingItem = new CartItem {Item = item, Quantity = quantity, UserGuid=CurrentRequestData.UserGuid};
                 cartModel.Items.Add(existingItem);
             }
             _session.Transact(session => session.SaveOrUpdate(existingItem));

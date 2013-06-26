@@ -2,7 +2,7 @@
 @using MrCMS.Helpers
 
 <ul class="breadcrumb">
-<li><a href="#">Home</a> <span class="divider">/</span></li>
+<li><a href="/">Home</a> <span class="divider">/</span></li>
 <li class="active">Products</li>
 </ul>
 @RenderZone("Before Content")
@@ -15,7 +15,7 @@
             Filter by Category
         </div>
         <div class="row-fluid">
-          <ul class="nav nav-tabs nav-stacked return-delivery-box">
+          <ul class="nav nav-tabs nav-stacked ">
                 @foreach (var item in (List<MrCMS.Web.Apps.Ecommerce.Pages.Category>)ViewBag.Categories)
                 {
                      <li>
@@ -39,13 +39,12 @@
             Filter by Options
         </div>
         <div class="row-fluid">
-            <ul id="product-filter-box-options" class="nav nav-tabs nav-stacked return-delivery-box">
+            <ul id="product-filter-box-options" class="nav nav-tabs nav-stacked ">
            @foreach (var option in (List<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductAttributeOption>)ViewBag.ProductOptions)
            {
-               if (option.Values.Select(x => x.Value).Distinct().Count() > 0)
+               if (option.Values.Select(x => x.Value).Distinct().Any())
                {
                 <li>
-                        <a>
                         @option.Name
                         <br/>
                         <select id="@(Html.Encode("product-option-values-"+option.Name))" class="span12">
@@ -55,7 +54,6 @@
                                 <option value="@Html.Encode(option.Name+optionValue)">@optionValue</option>
                         }
                         </select>
-                        </a>
                 </li>
                 } 
            }
@@ -66,13 +64,12 @@
             Filter by Specifications
         </div>
         <div class="row-fluid">
-            <ul id="product-filter-box-specifications" class="nav nav-tabs nav-stacked return-delivery-box">
+            <ul id="product-filter-box-specifications" class="nav nav-tabs nav-stacked ">
            @foreach (var specification in (List<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationAttribute>)ViewBag.ProductSpecifications)
            {
-               if(specification.Values.Select(x=>x.Value).Distinct().Count()>0)
+               if(specification.Values.Select(x=>x.Value).Distinct().Any())
                {
                <li>
-                        <a>
                         @specification.Name
                         <br/>
                         <select id="@(Html.Encode("product-specification-values-"+specification.Name))" class="span12">
@@ -82,7 +79,6 @@
                                 <option value="@(specification.Name+":"+specificationValue)">@specificationValue</option>
                         }
                         </select>
-                        </a>
                 </li>
               }
            }

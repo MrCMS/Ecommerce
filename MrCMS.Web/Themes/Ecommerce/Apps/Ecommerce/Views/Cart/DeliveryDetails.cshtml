@@ -2,20 +2,28 @@
 @using MrCMS.Helpers
 
 <p><strong>Delivery Details</strong></p>
-<br />
-@*@Model.ShippingAddress.Name
-<br />
+<p>
+@Model.ShippingAddress.Name
+</p>
+<p>
 @Model.ShippingAddress.PhoneNumber
-<br />
-<br />
+</p>
+<p>
 @Model.ShippingAddress.Company
-<br />
+</p>
+<p>
 @Model.ShippingAddress.Address1
-<br />
+</p>
+<p>
 @Model.ShippingAddress.Address1
-<br />
+</p>
+<p>
 @Model.ShippingAddress.City
-<br />
+</p>
+<p>
 @Model.ShippingAddress.PostalCode
-<br />
-@Model.ShippingAddress.Country.Name*@
+</p>
+<p>
+@Model.ShippingAddress.Country.Name
+    </p>
+<a class="btn btn-info" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.SetDeliveryDetails>())">Edit</a>

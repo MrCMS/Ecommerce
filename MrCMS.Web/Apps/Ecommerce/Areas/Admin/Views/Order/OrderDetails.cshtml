@@ -1,69 +1,65 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
 <div class="tab-pane active" id="order-details">
+    <p>
+        Customer: @Model.OrderEmail
+    </p>
+    <p>
+        Order Subtotal (ex TAX): &pound;@Model.Subtotal.ToString("#.##")
+    </p>
+     <p>
+        Order Shipping (ex TAX): &pound;@(Model.ShippingTotal!=null?Model.ShippingTotal.Value.ToString("#.##"):"0")
+    </p>
+    <p>
+        Order Tax: &pound;@Model.Tax.ToString("#.##")
+    </p>
+    <p>
+        Order Total: &pound;@Model.Total.ToString("#.##")
+    </p>
+    <br/>
+    @Html.LabelFor(x => x.PaymentMethod, new { @class= "pull-left" }): &nbsp;
+    @Html.DisplayFor(x => x.PaymentMethod)
+    <div class="clearfix"></div>
+    @Html.LabelFor(x => x.PaymentStatus, new { @class= "pull-left" }): &nbsp;
+   @Html.ActionLink(Model.PaymentStatus.ToString(), "EditPaymentStatus", "Order", new { id = Model.Id}, new { data_toggle = "fb-modal" })
+    <div class="clearfix"></div>
+        <br/>
+    @Html.LabelFor(x => x.ShippingMethod, new { @class= "pull-left" }): &nbsp;
+    @Html.DisplayFor(x => x.ShippingMethod.Name)
+    <div class="clearfix"></div>
+    @Html.LabelFor(x => x.ShippingStatus, new { @class= "pull-left" }): &nbsp;
+    @Html.ActionLink(Model.ShippingStatus.ToString(), "EditShippingStatus", "Order", new { id = Model.Id}, new { data_toggle = "fb-modal" })
+    <div class="clearfix"></div>
+        <br/>
     <div class="row-fluid">
-         <div class="span12">
-        Order #@Model.Id @(Model.User!=null?" placed by "+Model.User.Name:String.Empty) on @Model.CreatedOn
-              <hr />
-             </div>
+        <div class="span6">
+            <h4>Shipping Address
+                @Html.ActionLink("Edit", "Edit", "Address", new { addressType = 1, orderID = Model.Id, addressID = Model.ShippingAddress != null ? Model.ShippingAddress.Id : 0 }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+            </h4>
+            <div class="pull-left">
+                @if (Model.ShippingAddress != null)
+                {
+                    @Model.ShippingAddress.Address1<div class="clearfix"></div>
+                    @Model.ShippingAddress.Address2<div class="clearfix"></div>
+                    @Model.ShippingAddress.City<div class="clearfix"></div>
+                    @Model.ShippingAddress.PostalCode
+                }
+            </div>
         </div>
-        <div class="row-fluid">
-         <div class="span6">
-    <h3>Pricing</h3>
-
-    @Html.LabelFor(x => x.Total, new { @class= "pull-left" }): &nbsp;
-&pound; @Html.DisplayFor(x => x.TotalAfterRefunds)
-<div class="clearfix"></div>
-@Html.LabelFor(x => x.Tax, new { @class= "pull-left" }): &nbsp;
-&pound; @Html.DisplayFor(x => x.Tax)
-             </div>
-                 <div class="span6">
-       <h3>Payment info</h3>
-
-@Html.LabelFor(x => x.PaymentMethod, new { @class= "pull-left" }): &nbsp;
-@Html.DisplayFor(x => x.PaymentMethod)
-<div class="clearfix"></div>
-@Html.LabelFor(x => x.PaymentStatus, new { @class= "pull-left" }): &nbsp;
-@Html.DisplayFor(x => x.PaymentStatus)
-             </div>
+        <div class="span6">
+            <h4>Billing Address
+                @Html.ActionLink("Edit", "Edit", "Address", new { addressType = 2, orderID = Model.Id, addressID = Model.BillingAddress != null ? Model.BillingAddress.Id : 0 }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+            </h4>
+            <div class="pull-left">
+                @if (Model.BillingAddress != null)
+                {
+                    @Model.BillingAddress.Address1<div class="clearfix"></div>
+                    @Model.BillingAddress.Address2<div class="clearfix"></div>
+                    @Model.BillingAddress.City<div class="clearfix"></div>
+                    @Model.BillingAddress.PostalCode
+                }
+            </div>
         </div>
-
-          <div class="row-fluid">
-         <div class="span6">
-    <h3>Shipping</h3>
-             <div class="pull-left">
-                 @if (Model.ShippingAddress != null)
-                 {
-                     @Model.ShippingAddress.Address1<div class="clearfix"></div>
-                     @Model.ShippingAddress.Address2<div class="clearfix"></div>
-                     @Model.ShippingAddress.City<div class="clearfix"></div>
-                     @Model.ShippingAddress.PostalCode
-                 }
-             </div>
-               @Html.ActionLink("Edit", "Edit", "Address", new { addressType = 1, orderID = Model.Id, addressID = Model.ShippingAddress != null ? Model.ShippingAddress.Id : 0 }, new { @class = "btn btn-mini pull-right", data_toggle = "fb-modal" })
-             </div>
-                 <div class="span6">
-       <h3>Billing</h3>
-                     <div class="pull-left">
-                 @if (Model.BillingAddress != null)
-                 {
-                     @Model.BillingAddress.Address1<div class="clearfix"></div>
-                     @Model.BillingAddress.Address2<div class="clearfix"></div>
-                     @Model.BillingAddress.City<div class="clearfix"></div>
-                     @Model.BillingAddress.PostalCode
-                 }
-             </div>
-                     @Html.ActionLink("Edit", "Edit", "Address", new { addressType = 2, orderID = Model.Id, addressID = Model.BillingAddress != null ? Model.BillingAddress.Id : 0 }, new { @class = "btn btn-mini  pull-right", data_toggle = "fb-modal" })
-             </div>
-        </div>
-    <br />
-           <div class="row-fluid">
-         <div class="span6">
-             @Html.LabelFor(x => x.ShippingStatus, new { @class= "pull-left" }): &nbsp;  @Html.DisplayFor(x => x.ShippingStatus)
-             <div class="clearfix"></div>
-             <br />
-              @Html.ActionLink("Edit", "EditShippingStatus", "Order", new { id = Model.Id}, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-             </div>
-        </div>
-
     </div>
+
+</div>
