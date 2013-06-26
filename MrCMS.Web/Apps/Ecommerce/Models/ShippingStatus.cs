@@ -3,8 +3,7 @@
     public enum ShippingStatus
     {
         Pending,
-        Processing,
-        Sent,
+        Shipped,
         Cancelled
     }
 }

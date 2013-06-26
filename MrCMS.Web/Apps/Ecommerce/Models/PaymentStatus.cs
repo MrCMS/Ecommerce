@@ -3,8 +3,9 @@
     public enum PaymentStatus
     {
         Pending,
-        Processing,
         Paid,
-        Refunded
+        PartiallyRefunded,
+        Refunded,
+        Cancelled
     }
 }
