@@ -13,12 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
             get { return ChildrenListType.WhiteList; }
         }
 
-        public override IEnumerable<Type> ChildrenList
-        {
-            get { yield return typeof(Cart); }
-        }
-
-        public override bool RequiresParent { get { return true; } }
+        public override bool RequiresParent { get { return false; } }
         public override bool AutoBlacklist { get { return true; } }
 
         public override string App

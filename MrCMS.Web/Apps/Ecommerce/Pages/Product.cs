@@ -25,7 +25,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             SpecificationValues = new List<ProductSpecificationValue>();
             Categories = new List<Category>();
             AttributeOptions = new List<ProductAttributeOption>();
-            PriceBreaks = new List<PriceBreak>();
         }
 
         public virtual MediaCategory Gallery { get; set; }
@@ -64,24 +63,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         [DisplayName("Price Pre Tax")]
         public virtual decimal PricePreTax
         {
-            get
-            {
-                return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
-                                      ? BasePrice / ((TaxRatePercentage + 100) / 100)
-                                      : BasePrice, 2, MidpointRounding.AwayFromZero);
-            }
+            get { return TaxAwarePrice.GetPriceExcludingTax(BasePrice, TaxRate); }
         }
 
         public virtual decimal Weight { get; set; }
 
-        public virtual decimal ReducedBy
+        public virtual decimal ReducedByIncludingTax
         {
             get
             {
-                return !PreviousPrice.HasValue
+                return !PreviousPriceIncludingTax.HasValue
                            ? 0
-                           : PreviousPrice > Price
-                                 ? PreviousPrice.Value - Price
+                           : PreviousPriceIncludingTax > Price
+                                 ? PreviousPriceIncludingTax.Value - Price
+                                 : 0;
+            }
+        }
+        public virtual decimal ReducedByExcludingTax
+        {
+            get
+            {
+                return !PreviousPriceExcludingTax.HasValue
+                           ? 0
+                           : PreviousPriceExcludingTax > PricePreTax
+                                 ? PreviousPriceExcludingTax.Value - PricePreTax
                                  : 0;
             }
         }
@@ -89,9 +94,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         [DisplayName("Previous Price")]
         public virtual decimal? PreviousPrice { get; set; }
 
+        public virtual decimal? PreviousPriceIncludingTax
+        {
+            get { return TaxAwarePrice.GetPriceIncludingTax(PreviousPrice, TaxRate); }
+        }
+
+        public virtual decimal? PreviousPriceExcludingTax
+        {
+            get { return TaxAwarePrice.GetPriceExcludingTax(PreviousPrice, TaxRate); }
+        }
+
         public virtual decimal ReducedByPercentage
         {
-            get { return PreviousPrice.HasValue ? ReducedBy / PreviousPrice.Value : 0; }
+            get
+            {
+                return PreviousPriceIncludingTax.GetValueOrDefault() > 0
+                           ? ReducedByIncludingTax / PreviousPriceIncludingTax.Value
+                           : 0;
+            }
         }
 
         [DisplayName("Price")]
@@ -99,14 +119,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual decimal Price
         {
-            get
-            {
-                return Math.Round(!MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
-                                      ? BasePrice
-                                      : TaxRate != null
-                                            ? BasePrice * (TaxRate.Multiplier)
-                                            : BasePrice, 2, MidpointRounding.AwayFromZero);
-            }
+            get { return TaxAwarePrice.GetPriceIncludingTax(BasePrice, TaxRate); }
         }
 
         public virtual decimal GetPrice(int quantity)
@@ -115,7 +128,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             {
                 List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
                 if (priceBreaks.Any())
-                    return priceBreaks.First().GetPrice() * quantity;
+                    return priceBreaks.First().PriceIncludingTax * quantity;
             }
 
             return Price * quantity;
@@ -123,8 +136,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual decimal GetSaving(int quantity)
         {
-            return PreviousPrice != 0
-                       ? ((PreviousPrice*quantity) - GetPrice(quantity)).Value
+            return PreviousPriceIncludingTax.GetValueOrDefault() != 0
+                       ? ((PreviousPriceIncludingTax*quantity) - GetPrice(quantity)).Value
                        : (Price*quantity) - GetPrice(quantity);
         }
 
@@ -222,7 +235,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         }
 
         public virtual IList<ProductAttributeOption> AttributeOptions { get; set; }
-        public virtual IList<PriceBreak> PriceBreaks { get; set; }
 
         public virtual Brand Brand { get; set; }
 
@@ -243,6 +255,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         public virtual string EditUrl
         {
             get { return "~/Admin/Webpage/Edit/" + Id; }
+        }
+
+        public virtual IList<PriceBreak> PriceBreaks
+        {
+            get
+            {
+                return MrCMSApplication.Get<ISession>()
+                                       .QueryOver<PriceBreak>()
+                                       .Where(@break => @break.Item == this)
+                                       .Cacheable()
+                                       .List();
+            }
         }
     }
 }
