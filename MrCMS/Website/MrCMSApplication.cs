@@ -49,9 +49,6 @@ namespace MrCMS.Website
             ControllerBuilder.Current.SetControllerFactory(new MrCMSControllerFactory());
         }
 
-        //public static User OverriddenUser { get; set; }
-
-
         private static bool IsFileRequest(Uri uri)
         {
             var absolutePath = uri.AbsolutePath;
