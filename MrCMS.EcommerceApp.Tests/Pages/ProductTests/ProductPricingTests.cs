@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
@@ -21,32 +23,36 @@ namespace MrCMS.EcommerceApp.Tests.Pages.ProductTests
             MrCMSApplication.OverrideKernel(_mockingKernel);
         }
 
+        ~ProductPricingTests()
+        {
+        }
+
         [Fact]
-        public void Product_ReducedBy_IsZeroIfPreviousPriceIsNotSet()
+        public void Product_ReducedByIncludingTax_IsZeroIfPreviousPriceIsNotSet()
         {
             var product = new Product { BasePrice = 1, PreviousPrice = null };
 
-            var reducedPrice = product.ReducedBy;
+            var reducedPrice = product.ReducedByIncludingTax;
 
             reducedPrice.Should().Be(0);
         }
 
         [Fact]
-        public void Product_ReducedBy_ShouldBeTheDifferenceIfThePreviousPriceIsGreaterThanThePrice()
+        public void Product_ReducedByIncludingTax_ShouldBeTheDifferenceIfThePreviousPriceIsGreaterThanThePrice()
         {
             var product = new Product { BasePrice = 1, PreviousPrice = 2 };
 
-            var reducedPrice = product.ReducedBy;
+            var reducedPrice = product.ReducedByIncludingTax;
 
             reducedPrice.Should().Be(1);
         }
 
         [Fact]
-        public void Product_ReducedBy_ShouldBeZeroIfPriceIsGreaterThanPreviousPrice()
+        public void Product_ReducedByIncludingTax_ShouldBeZeroIfPriceIsGreaterThanPreviousPrice()
         {
             var product = new Product { BasePrice = 2, PreviousPrice = 1 };
 
-            var reducedPrice = product.ReducedBy;
+            var reducedPrice = product.ReducedByIncludingTax;
 
             reducedPrice.Should().Be(0);
         }
@@ -172,5 +178,56 @@ namespace MrCMS.EcommerceApp.Tests.Pages.ProductTests
 
             product.Price.Should().Be(6);
         }
+
+        [Fact]
+        public void Product_GetPrice_ShouldReturnPriceTimesQuantityIfThereAreNoPriceBreaks()
+        {
+            var testablePriceProduct = new TestableProduct { PriceOverride = 10 };
+
+            testablePriceProduct.GetPrice(3).Should().Be(30);
+        }
+
+        [Fact]
+        public void Product_GetPrice_ShouldReturnMatchingPriceBreakTimesQuantityIfItExists()
+        {
+            _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { LoadedPricesIncludeTax = true });
+            var testablePriceProduct = new TestableProduct { PriceOverride = 10 };
+            testablePriceProduct.PriceBreaksOverride.Add(new TestablePriceBreak { Price = 8, Quantity = 3 });
+
+            testablePriceProduct.GetPrice(3).Should().Be(24);
+        }
+
+        [Fact]
+        public void Product_GetPrice_ShouldReturnPriceTimeQuantityIfPriceBreakIsNotReached()
+        {
+            var testablePriceProduct = new TestableProduct { PriceOverride = 10 };
+            testablePriceProduct.PriceBreaksOverride.Add(new TestablePriceBreak { Price = 8, Quantity = 3 });
+
+            testablePriceProduct.GetPrice(2).Should().Be(20);
+        }
+
+        [Fact]
+        public void Product_GetSaving_ShouldBeZeroIfNoPreviousPriceOrPriceBreak()
+        {
+            var testablePriceProduct = new TestableProduct { PriceOverride = 10 };
+
+            testablePriceProduct.GetSaving(3).Should().Be(0);
+        }
+    }
+
+    public class TestableProduct : Product
+    {
+        public TestableProduct() { PriceBreaksOverride = new List<PriceBreak>(); }
+
+        public override decimal Price { get { return PriceOverride ?? base.Price; } }
+        public virtual decimal? PriceOverride { get; set; }
+
+        public override IList<PriceBreak> PriceBreaks { get { return PriceBreaksOverride; } }
+        public virtual IList<PriceBreak> PriceBreaksOverride { get; set; }
+    }
+
+    public class TestablePriceBreak : PriceBreak
+    {
+        
     }
 }

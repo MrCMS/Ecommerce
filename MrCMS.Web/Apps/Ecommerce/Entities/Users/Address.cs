@@ -1,9 +1,6 @@
 ﻿using System;
 using MrCMS.Entities;
-using MrCMS.Entities.People;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Users
