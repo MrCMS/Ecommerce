@@ -36,7 +36,6 @@ namespace MrCMS.Website
             MrCMSApp.RegisterAllApps();
             AreaRegistration.RegisterAllAreas();
 
-            RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
             RegisterServices(bootstrapper.Kernel);
@@ -106,11 +105,6 @@ namespace MrCMS.Website
             var scheduledTaskManager = Get<IScheduledTaskManager>();
             foreach (var scheduledTask in scheduledTaskManager.GetDueTasks())
                 TaskExecutor.ExecuteLater(scheduledTaskManager.GetTask(scheduledTask));
-        }
-
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
-        {
-            filters.Add(new HandleErrorAttribute());
         }
 
         public abstract string RootNamespace { get; }
