@@ -296,8 +296,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 var country = _countryService.Get(id);
                 if (country != null)
                 {
-                    var t = country.GetShippingMethods().Where(x => x.CanBeUsed(_getCart.GetCart())).ToList();
-                    return View(t);
+                    return View(country.GetShippingMethods().Where(x => x.CanBeUsed(_getCart.GetCart())).ToList(););
                 }
             }
             return View();

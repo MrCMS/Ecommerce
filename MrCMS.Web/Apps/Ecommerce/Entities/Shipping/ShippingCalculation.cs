@@ -57,7 +57,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         {
             get
             {
-                return Math.Round(!MrCMSApplication.Get<TaxSettings>().ShippingRateIncludesTax
+                return Math.Round(MrCMSApplication.Get<TaxSettings>().ShippingRateIncludesTax
                                       ? BaseAmount
                                       : TaxRate != null
                                             ? BaseAmount * (TaxRate.Multiplier)

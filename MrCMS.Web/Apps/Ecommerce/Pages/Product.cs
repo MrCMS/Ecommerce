@@ -101,7 +101,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             get
             {
-                return Math.Round(!MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
+                return Math.Round(MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax
                                       ? BasePrice
                                       : TaxRate != null
                                             ? BasePrice * (TaxRate.Multiplier)
@@ -113,7 +113,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             if (PriceBreaks.Any())
             {
-                List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
+                var priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
                 if (priceBreaks.Any())
                     return priceBreaks.First().GetPrice() * quantity;
             }
