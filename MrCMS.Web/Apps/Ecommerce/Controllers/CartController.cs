@@ -17,7 +17,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Discounts;
-using System.Linq;
+
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class CartController : MrCMSAppUIController<EcommerceApp>
@@ -296,8 +296,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 var country = _countryService.Get(id);
                 if (country != null)
                 {
-                    var t = country.GetShippingMethods().Where(x => x.CanBeUsed(_getCart.GetCart())).ToList();
-                    return View(t);
+                    return View(country.GetShippingMethods().Where(x => x.CanBeUsed(_getCart.GetCart())).ToList());
                 }
             }
             return View();

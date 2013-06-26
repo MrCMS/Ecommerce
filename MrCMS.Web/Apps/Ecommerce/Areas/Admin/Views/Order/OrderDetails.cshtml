@@ -8,7 +8,7 @@
         Order Subtotal (ex TAX): &pound;@Model.Subtotal.ToString("#.##")
     </p>
      <p>
-        Order Shipping (ex TAX): &pound;@(Model.ShippingTotal!=null?Model.ShippingTotal.Value.ToString("#.##"):"0")
+        Order Shipping (ex TAX): &pound;@((Model.ShippingTax!=null && Model.ShippingTax!=null)?(Model.ShippingTotal.Value-Model.ShippingTax.Value).ToString("#.##"):"0")
     </p>
     <p>
         Order Tax: &pound;@Model.Tax.ToString("#.##")

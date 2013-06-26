@@ -75,6 +75,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                 Tax = cartModel.Tax,
                                 Total = cartModel.Total,
                                 ShippingTotal = cartModel.ShippingTotal,
+                                ShippingTax = cartModel.ShippingTax,
                                 User = cartModel.User,
                                 Weight = cartModel.Weight,
                                 OrderEmail=cartModel.OrderEmail,
