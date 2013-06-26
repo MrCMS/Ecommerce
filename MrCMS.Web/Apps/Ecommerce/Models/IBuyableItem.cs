@@ -1,10 +1,13 @@
-﻿namespace MrCMS.Web.Apps.Ecommerce.Models
+﻿using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
+
+namespace MrCMS.Web.Apps.Ecommerce.Models
 {
     public interface IBuyableItem
     {
         int Id { get; }
         string SKU { get; }
         decimal TaxRatePercentage { get; }
+        TaxRate TaxRate { get; }
         decimal GetPrice(int quantity);
         decimal GetSaving(int quantity);
         decimal GetTax(int quantity);
