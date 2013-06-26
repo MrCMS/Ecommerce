@@ -1575,8 +1575,6 @@
     <Content Include="Areas\Admin\Content\less\utilities.less" />
     <Content Include="Areas\Admin\Content\less\variables.less" />
     <Content Include="Areas\Admin\Content\less\wells.less" />
-    <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.js.orig" />
-    <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.min.js.map" />
     <Content Include="Areas\Admin\Views\Form\AddOption.cshtml" />
     <Content Include="Areas\Admin\Views\Form\AddProperty.cshtml" />
     <Content Include="Areas\Admin\Views\Form\DeleteOption.cshtml" />
@@ -1699,6 +1697,7 @@
     <Content Include="Areas\Admin\Views\Widget\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\PriceBreak\Delete.cshtml" />
+    <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Properties\PublishProfiles\v0.1.1.pubxml" />
     <None Include="Properties\PublishProfiles\v0.1.pubxml" />
     <None Include="Properties\PublishProfiles\v0.2.pubxml" />
