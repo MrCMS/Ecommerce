@@ -4,7 +4,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website.Controllers;
-
+using System.Linq;
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class TaxRateController : MrCMSAppAdminController<EcommerceApp>
@@ -23,7 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public ViewResult Index()
         {
             ViewData["settings"] = _taxSettings;
-            var taxRates = _taxRateManager.GetAll();
+            var taxRates = _taxRateManager.GetAll().OrderByDescending(x=>x.IsDefault).ThenBy(x=>x.Percentage).ToList();
             return View(taxRates);
         }
 
