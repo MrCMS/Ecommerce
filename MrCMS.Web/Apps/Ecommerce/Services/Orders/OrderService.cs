@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
 using MrCMS.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Entities;
-using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using NHibernate;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Website;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
+using MrCMS.Entities.People;
+using NHibernate.Criterion;
+using Order = MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 {
@@ -51,18 +49,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             }
 
             //IP
-            string IP = String.Empty;
-            string rawIP = CurrentRequestData.CurrentContext.Request.ServerVariables["HTTP_X_FORWARD_FOR"];
-            if (!String.IsNullOrEmpty(rawIP))
+            var ip = String.Empty;
+            var rawIp = CurrentRequestData.CurrentContext.Request.ServerVariables["HTTP_X_FORWARD_FOR"];
+            if (!String.IsNullOrEmpty(rawIp))
             {
-                String[] ipAddress = rawIP.Split(',');
+                String[] ipAddress = rawIp.Split(',');
                 if (ipAddress.Length != 0)
                 {
-                    IP = ipAddress[0];
+                    ip = ipAddress[0];
                 }
             }
             else
-                IP = CurrentRequestData.CurrentContext.Request.ServerVariables["REMOTE_ADDR"];
+                ip = CurrentRequestData.CurrentContext.Request.ServerVariables["REMOTE_ADDR"];
 
             var order = new Order
                             {
@@ -79,7 +77,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                 User = cartModel.User,
                                 Weight = cartModel.Weight,
                                 OrderEmail=cartModel.OrderEmail,
-                                CustomerIP=IP
+                                CustomerIP=ip
                             };
             _session.Transact(session => session.SaveOrUpdate(order));
             order = Get(order.Id); 
@@ -123,6 +121,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         public Order Get(int id)
         {
             return _session.QueryOver<Order>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
+        }
+
+        public IPagedList<Order> GetOrdersByUser(User user, int pageNum, int pageSize = 10)
+        {
+            var id = user.Id;
+            var email = user.Email;
+            return _session.QueryOver<Order>().Where(x => x.User.Id == id &&
+                x.OrderEmail.IsInsensitiveLike(email, MatchMode.Exact)).OrderBy(x => x.CreatedOn).Desc.Paged(pageNum, pageSize);
         }
     }
 }

@@ -1,8 +1,6 @@
-﻿using System;
-using MrCMS.Entities.Widget;
+﻿using MrCMS.Entities.Widget;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using System.Collections.Generic;
-using System.ComponentModel;
 using NHibernate;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Web.Apps.Core.Models;
@@ -30,6 +28,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
                         && !webpage.DocumentType.IsInsensitiveLike("PaymentDetails", MatchMode.End)
                         && !webpage.DocumentType.IsInsensitiveLike("SetDeliveryDetails", MatchMode.End)
                         && !webpage.DocumentType.IsInsensitiveLike("OrderPlaced", MatchMode.End)
+                        && !webpage.DocumentType.IsInsensitiveLike("UserLogin", MatchMode.End)
+                        && !webpage.DocumentType.IsInsensitiveLike("UserRegistration", MatchMode.End)
+                        && !webpage.DocumentType.IsInsensitiveLike("UserAccount", MatchMode.End)
                         ).Cacheable()
                        .List().OrderBy(webpage => webpage.DisplayOrder)
                        .Select(webpage => new NavigationRecord
