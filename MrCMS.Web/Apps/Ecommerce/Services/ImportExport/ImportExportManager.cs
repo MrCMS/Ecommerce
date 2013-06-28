@@ -74,7 +74,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                     if (product == null)
                                     {
                                         product = new Product();
-                                        product.SKU = sku;
                                         product.Name = name;
                                     }
 
@@ -203,40 +202,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                 _brandService.Add(new Brand() { Name = brandName });
                                             product.Brand = _brandService.GetBrandByName(brandName); ;
                                         }
-                                        //Base Price
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 9] != null && excelFile.Workbook.Worksheets[2].Cells[row, 9].Value != null)
-                                        {
-                                            decimal BasePrice = 0;
-                                            Decimal.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 9].Value.ToString(), out BasePrice);
-                                            product.BasePrice = BasePrice;
-                                        }
-                                        //Previous Price
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 10] != null && excelFile.Workbook.Worksheets[2].Cells[row, 10].Value != null)
-                                        {
-                                            decimal PreviousPrice = 0;
-                                            Decimal.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 10].Value.ToString(), out PreviousPrice);
-                                            product.PreviousPrice = PreviousPrice;
-                                        }
-                                        //Stock
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 11] != null && excelFile.Workbook.Worksheets[2].Cells[row, 11].Value != null)
-                                        {
-                                            int StockRemaining = 0;
-                                            Int32.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 11].Value.ToString(), out StockRemaining);
-                                            product.StockRemaining = StockRemaining;
-                                        }
+
                                         //Tax Rate
                                         if (excelFile.Workbook.Worksheets[2].Cells[row, 14] != null && excelFile.Workbook.Worksheets[2].Cells[row, 14].Value != null)
                                         {
                                             int taxRateID = 0;
                                             Int32.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 14].Value.ToString(), out taxRateID);
                                             product.TaxRate = _taxRateManager.Get(taxRateID);
-                                        }
-                                        //Weight
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 15] != null && excelFile.Workbook.Worksheets[2].Cells[row, 15].Value != null)
-                                        {
-                                            decimal Weight = 0;
-                                            Decimal.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 15].Value.ToString(), out Weight);
-                                            product.Weight = Weight;
                                         }
                                         //Categories
                                         if (excelFile.Workbook.Worksheets[2].Cells[row, 16] != null && excelFile.Workbook.Worksheets[2].Cells[row, 16].Value != null)
@@ -366,13 +338,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     wsProducts.Cells["G" + rowNumber.ToString()].Value = products[i].Abstract;
                     if (products[i].Brand != null)
                         wsProducts.Cells["H" + rowNumber.ToString()].Value = products[i].Brand.Name;
-                    wsProducts.Cells["I" + rowNumber.ToString()].Value = products[i].BasePrice;
-                    wsProducts.Cells["J" + rowNumber.ToString()].Value = products[i].PreviousPrice;
-                    wsProducts.Cells["K" + rowNumber.ToString()].Value = products[i].StockRemaining;
-                    wsProducts.Cells["L" + rowNumber.ToString()].Value = products[i].SKU;
                     if (products[i].TaxRate != null)
                         wsProducts.Cells["N" + rowNumber.ToString()].Value = products[i].TaxRate.Id;
-                    wsProducts.Cells["O" + rowNumber.ToString()].Value = products[i].Weight;
                     if (products[i].Categories.Count > 0)
                     {
                         foreach (var item in products[i].Categories)

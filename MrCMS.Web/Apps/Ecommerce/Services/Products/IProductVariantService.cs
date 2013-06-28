@@ -1,6 +1,8 @@
-﻿using MrCMS.Web.Apps.Ecommerce.Entities;
+﻿using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using System.Collections.Generic;
+using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
@@ -10,8 +12,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void Add(ProductVariant productVariant);
         void Update(ProductVariant productVariant);
         void Delete(ProductVariant productVariant);
-        bool AnyExistingProductVariantWithSKU(string sku, int id);
-        IList<PriceBreak> GetAllPriceBreaksForProductVariant(int id);
+        bool AnyExistingProductVariantWithSKU(string sku, ProductVariant productVariant);
         ProductVariant Get(int id);
+        List<SelectListItem> GetOptions();
+        PriceBreak AddPriceBreak(AddPriceBreakModel model);
+        bool IsPriceBreakQuantityValid(int quantity, ProductVariant productVariant);
+        bool IsPriceBreakPriceValid(decimal price, ProductVariant productVariant, int quantity);
+        void DeletePriceBreak(PriceBreak priceBreak);
     }
 }

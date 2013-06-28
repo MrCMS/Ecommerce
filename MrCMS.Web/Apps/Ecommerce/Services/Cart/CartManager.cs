@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
-using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using NHibernate;
 using MrCMS.Helpers;
 using MrCMS.Website;
@@ -19,7 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _session = session;
         }
 
-        public void AddToCart(IBuyableItem item, int quantity)
+        public void AddToCart(ProductVariant item, int quantity)
         {
             var cartModel = _getCart.GetCart();
 

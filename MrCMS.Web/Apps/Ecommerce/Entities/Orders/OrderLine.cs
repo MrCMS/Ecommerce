@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
-using MrCMS.Web.Apps.Ecommerce.Models;
 using System;
 using MrCMS.Entities.People;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
@@ -17,7 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
     {
         public virtual Order Order { get; set; }
         [DisplayName("Product")]
-        public virtual IBuyableItem ProductVariant { get; set; }
+        public virtual ProductVariant ProductVariant { get; set; }
         public virtual int Quantity { get; set; }
         [DisplayName("Unit Price")]
         public virtual decimal UnitPrice { get; set; }
