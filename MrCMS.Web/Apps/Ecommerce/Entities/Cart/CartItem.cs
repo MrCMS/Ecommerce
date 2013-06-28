@@ -1,13 +1,13 @@
 ﻿using System;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
-using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 {
     public class CartItem : SiteEntity
     {
-        public virtual IBuyableItem Item { get; set; }
+        public virtual ProductVariant Item { get; set; }
         public virtual Guid UserGuid { get; set; }
         public virtual int Quantity { get; set; }
         public virtual decimal Price

@@ -1,12 +1,12 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
-using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
     public interface ICartManager
     {
-        void AddToCart(IBuyableItem item, int quantity);
+        void AddToCart(ProductVariant item, int quantity);
         void Delete(CartItem item);
         void UpdateQuantity(CartItem item, int quantity);
         void EmptyBasket();

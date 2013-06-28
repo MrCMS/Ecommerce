@@ -17,7 +17,7 @@ using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
-    public class Product : Webpage, IBuyableItem
+    public class Product : Webpage
     {
         public Product()
         {
@@ -29,24 +29,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual MediaCategory Gallery { get; set; }
 
-        public virtual ProductAvailability Availability
-        {
-            get
-            {
-                if (PublishOn.HasValue && PublishOn <= DateTime.UtcNow)
-                    return ProductAvailability.Available;
-                return ProductAvailability.PreOrder;
-            }
-        }
-
-        public virtual bool InStock
-        {
-            get { return !StockRemaining.HasValue || StockRemaining > 0; }
-        }
-
-        [Remote("IsUniqueSKU", "Product", AdditionalFields = "Id")]
-        public virtual string SKU { get; set; }
-
         public virtual decimal TaxRatePercentage
         {
             get
@@ -57,111 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             }
         }
 
-        [DisplayName("Stock Remaining")]
-        public virtual int? StockRemaining { get; set; }
-
-        [DisplayName("Price Pre Tax")]
-        public virtual decimal PricePreTax
-        {
-            get { return TaxAwarePrice.GetPriceExcludingTax(BasePrice, TaxRate); }
-        }
-
-        public virtual decimal Weight { get; set; }
-
-        public virtual decimal ReducedByIncludingTax
-        {
-            get
-            {
-                return !PreviousPriceIncludingTax.HasValue
-                           ? 0
-                           : PreviousPriceIncludingTax > Price
-                                 ? PreviousPriceIncludingTax.Value - Price
-                                 : 0;
-            }
-        }
-        public virtual decimal ReducedByExcludingTax
-        {
-            get
-            {
-                return !PreviousPriceExcludingTax.HasValue
-                           ? 0
-                           : PreviousPriceExcludingTax > PricePreTax
-                                 ? PreviousPriceExcludingTax.Value - PricePreTax
-                                 : 0;
-            }
-        }
-
-        [DisplayName("Previous Price")]
-        public virtual decimal? PreviousPrice { get; set; }
-
-        public virtual decimal? PreviousPriceIncludingTax
-        {
-            get { return TaxAwarePrice.GetPriceIncludingTax(PreviousPrice, TaxRate); }
-        }
-
-        public virtual decimal? PreviousPriceExcludingTax
-        {
-            get { return TaxAwarePrice.GetPriceExcludingTax(PreviousPrice, TaxRate); }
-        }
-
-        public virtual decimal ReducedByPercentage
-        {
-            get
-            {
-                return PreviousPriceIncludingTax.GetValueOrDefault() > 0
-                           ? ReducedByIncludingTax / PreviousPriceIncludingTax.Value
-                           : 0;
-            }
-        }
-
-        [DisplayName("Price")]
-        public virtual decimal BasePrice { get; set; }
-
-        public virtual decimal Price
-        {
-            get { return TaxAwarePrice.GetPriceIncludingTax(BasePrice, TaxRate); }
-        }
-
-        public virtual decimal GetPrice(int quantity)
-        {
-            if (PriceBreaks.Any())
-            {
-                List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
-                if (priceBreaks.Any())
-                    return priceBreaks.First().PriceIncludingTax * quantity;
-            }
-
-            return Price * quantity;
-        }
-
-        public virtual decimal GetSaving(int quantity)
-        {
-            return PreviousPriceIncludingTax.GetValueOrDefault() != 0
-                       ? ((PreviousPriceIncludingTax*quantity) - GetPrice(quantity)).Value
-                       : (Price*quantity) - GetPrice(quantity);
-        }
-
-        public virtual decimal GetTax(int quantity)
-        {
-            return Math.Round(GetPrice(quantity) - GetPricePreTax(quantity), 2, MidpointRounding.AwayFromZero);
-        }
-
-        public virtual decimal GetPricePreTax(int quantity)
-        {
-            return Math.Round(GetPrice(quantity) / ((TaxRatePercentage + 100) / 100), 2, MidpointRounding.AwayFromZero);
-        }
-
-        public virtual decimal GetUnitPrice()
-        {
-            return Price;
-        }
-
         public virtual TaxRate TaxRate { get; set; }
-
-        public virtual decimal Tax
-        {
-            get { return Price - PricePreTax; }
-        }
 
         public virtual bool HasVariants
         {
@@ -171,11 +49,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         public virtual IList<ProductVariant> Variants { get; set; }
 
         public virtual IList<ProductSpecificationValue> SpecificationValues { get; set; }
-
-        public virtual bool CanBuy(int quantity)
-        {
-            return quantity > 0 && (!StockRemaining.HasValue || StockRemaining >= quantity);
-        }
 
         public virtual string GetSpecification(string name)
         {
@@ -201,6 +74,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         protected override void CustomInitialization(IDocumentService service, ISession session)
         {
             base.CustomInitialization(service, session);
+
+            var productVariant = new ProductVariant
+                                     {
+                                     };
+            Variants.Add(productVariant);
+            productVariant.Product = this;
+            session.Transact(s => s.Save(productVariant));
 
             var mediaCategory = service.GetDocumentByUrl<MediaCategory>("product-galleries");
             if (mediaCategory == null)
@@ -255,18 +135,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         public virtual string EditUrl
         {
             get { return "~/Admin/Webpage/Edit/" + Id; }
-        }
-
-        public virtual IList<PriceBreak> PriceBreaks
-        {
-            get
-            {
-                return MrCMSApplication.Get<ISession>()
-                                       .QueryOver<PriceBreak>()
-                                       .Where(@break => @break.Item == this)
-                                       .Cacheable()
-                                       .List();
-            }
         }
     }
 }

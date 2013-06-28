@@ -14,7 +14,7 @@ using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 {
-    public class ProductVariant : SiteEntity, IBuyableItem
+    public class ProductVariant : SiteEntity
     {
         public ProductVariant()
         {
@@ -65,7 +65,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get
             {
-                return PreviousPrice != null
+                return PreviousPrice != null && PreviousPrice != 0
                            ? ReducedBy / PreviousPrice.Value
                            : 0;
             }
@@ -91,8 +91,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual decimal GetSaving(int quantity)
         {
             return PreviousPriceIncludingTax.GetValueOrDefault() != 0
-                       ? ((PreviousPriceIncludingTax*quantity) - GetPrice(quantity)).Value
-                       : (Price*quantity) - GetPrice(quantity);
+                       ? ((PreviousPriceIncludingTax * quantity) - GetPrice(quantity)).Value
+                       : (Price * quantity) - GetPrice(quantity);
         }
 
         public virtual decimal GetTax(int quantity)

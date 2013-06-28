@@ -53,20 +53,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult MakeMultiVariant(Product product)
-        {
-            return PartialView(new MakeMultivariantModel { ProductId = product.Id });
-        }
-
-        [HttpPost]
-        public RedirectToRouteResult MakeMultiVariant(MakeMultivariantModel model)
-        {
-            _productService.MakeMultiVariant(model);
-
-            return RedirectToAction("Edit", "Webpage", new { id = model.ProductId });
-        }
-
-        [HttpGet]
         public PartialViewResult Categories(Product product)
         {
             return PartialView(product);
@@ -131,7 +117,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             var options = attributes.Any()
                               ? attributes.First().Options
                               : new List<ProductSpecificationAttributeOption>();
-            options.Add(new ProductSpecificationAttributeOption(){Id=0,Name = "Other"});
+            options.Add(new ProductSpecificationAttributeOption() { Id = 0, Name = "Other" });
             ViewData["specification-attributes-options"] = new SelectList(options, "Id", "Name");
             return PartialView(new ProductSpecificationValue() { Product = product });
         }
@@ -141,7 +127,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             try
             {
-                var options = _productOptionManager.GetSpecificationAttribute(specificationAttributeId).Options.OrderBy(x => x.DisplayOrder).ToList().Select(item => new SelectListItem() {Selected = false, Text = item.Name, Value = item.Id.ToString()}).ToList();
+                var options = _productOptionManager.GetSpecificationAttribute(specificationAttributeId).Options.OrderBy(x => x.DisplayOrder).ToList().Select(item => new SelectListItem() { Selected = false, Text = item.Name, Value = item.Id.ToString() }).ToList();
                 return Json(options);
             }
             catch
@@ -155,10 +141,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             if (!String.IsNullOrWhiteSpace(Value) && Option != 0 && ProductId != 0)
             {
-                var option=_productOptionManager.GetSpecificationAttribute(Option);
-                if(!_productOptionManager.ListSpecificationAttributeOptions(Option).Any(x => x.Name == Value))
+                var option = _productOptionManager.GetSpecificationAttribute(Option);
+                if (!_productOptionManager.ListSpecificationAttributeOptions(Option).Any(x => x.Name == Value))
                     _productOptionManager.AddSpecificationAttributeOption(new ProductSpecificationAttributeOption() { Site = CurrentSite, Name = Value, ProductSpecificationAttribute = option });
-                _productOptionManager.SetSpecificationValue(_productService.Get(ProductId),option,Value);
+                _productOptionManager.SetSpecificationValue(_productService.Get(ProductId), option, Value);
                 return Json(true);
             }
 
@@ -378,17 +364,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return RedirectToAction("Edit", "Webpage", new { id = model.ProductId });
         }
 
-        public JsonResult IsUniqueSKU(string sku, int id)
-        {
-            if (id != 0)
-            {
-                return _productService.AnyExistingProductWithSKU(sku, id)
-                           ? Json("There is already an SKU stored with that value.", JsonRequestBehavior.AllowGet)
-                           : Json(true, JsonRequestBehavior.AllowGet);
-            }
-            return Json(String.Empty);
-        }
-
         public ViewResult ImportExport()
         {
             return View();
@@ -423,26 +398,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return View("ImportExport");
         }
 
-        [HttpGet]
-        public PartialViewResult MakeSingleVariant(Product product)
-        {
-            return PartialView(product);
-        }
-
-        [HttpPost]
-        [ActionName("MakeSingleVariant")]
-        public RedirectToRouteResult MakeSingleVariant_POST(Product product)
-        {
-            _productService.MakeSingleVariant(product);
-
-            return RedirectToAction("Edit", "Webpage", new { id = product.Id });
-        }
 
         [HttpGet]
         public JsonResult SearchProducts(string term)
         {
             if (!string.IsNullOrWhiteSpace(term))
-                return Json(_productService.Search(term).Select(x => new { Name = x.Name, ProductID=x.Id }).Take(15).ToList());
+                return Json(_productService.Search(term).Select(x => new { Name = x.Name, ProductID = x.Id }).Take(15).ToList());
 
             return Json(String.Empty, JsonRequestBehavior.AllowGet);
         }

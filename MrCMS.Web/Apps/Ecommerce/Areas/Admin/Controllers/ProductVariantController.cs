@@ -39,7 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectToRouteResult Add_POST(ProductVariant productVariant)
         {
             _productVariantService.Add(productVariant);
-            return RedirectToAction("Edit", "Webpage", new {id = productVariant.Product.Id});
+            return RedirectToAction("Edit", "Webpage", new { id = productVariant.Product.Id });
         }
 
         [HttpGet]
@@ -69,6 +69,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _productVariantService.Delete(productVariant);
             return RedirectToAction("Edit", "Webpage", new { id = productVariant.Product.Id });
+        }
+
+        public JsonResult IsUniqueSKU(string sku, ProductVariant productVariant)
+        {
+            if (productVariant != null)
+            {
+                return _productVariantService.AnyExistingProductVariantWithSKU(sku, productVariant)
+                           ? Json("There is already an SKU stored with that value.", JsonRequestBehavior.AllowGet)
+                           : Json(true, JsonRequestBehavior.AllowGet);
+            }
+            return Json(String.Empty);
         }
     }
 }

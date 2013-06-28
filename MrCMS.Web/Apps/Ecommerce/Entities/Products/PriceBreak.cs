@@ -1,15 +1,12 @@
 ﻿using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Settings;
-using MrCMS.Website;
-using System;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 {
     public class PriceBreak : SiteEntity
     {
-        public virtual IBuyableItem Item { get; set; }
+        public virtual ProductVariant Item { get; set; }
         public virtual int Quantity { get; set; }
         public virtual decimal Price { get; set; }
         public virtual decimal PriceExcludingTax

@@ -283,7 +283,6 @@
     <Compile Include="Apps\Ecommerce\Models\CountryToAdd.cs" />
     <Compile Include="Apps\Ecommerce\Models\DeliveryStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\EcommerceAdminMenuModel.cs" />
-    <Compile Include="Apps\Ecommerce\Models\IBuyableItem.cs" />
     <Compile Include="Apps\Ecommerce\Models\IShippingCalculationRequest.cs" />
     <Compile Include="Apps\Ecommerce\Models\MakeMultivariantModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaymentStatus.cs" />

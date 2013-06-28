@@ -18,8 +18,6 @@
                     <tr>
                         <th>Name
                         </th>
-                        <th>SKU
-                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,9 +26,6 @@
                         <tr>
                             <td>
                                 @Html.ActionLink(product.Name, "Edit", "Webpage", new { id = product.Id }, null)
-                            </td>
-                            <td>
-                                @product.SKU
                             </td>
                         </tr>
                     }
