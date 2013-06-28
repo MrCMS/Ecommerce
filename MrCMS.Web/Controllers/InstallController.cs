@@ -28,7 +28,7 @@ namespace MrCMS.Web.Controllers
             //set page timeout to 5 minutes
             Server.ScriptTimeout = 300;
 
-            InstallModel model = installModel.DatabaseType == DatabaseType.Auto
+            var model = installModel.DatabaseType == DatabaseType.Auto
                                      ? new InstallModel
                                      {
                                          SiteUrl = Request.Url.Authority,
