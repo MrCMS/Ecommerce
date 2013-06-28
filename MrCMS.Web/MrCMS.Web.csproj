@@ -1334,6 +1334,7 @@
     <Content Include="Apps\Ecommerce\Views\Shared\_EcommercePopup.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\EditPaymentStatus.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_PasswordLayout.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Category.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -1445,6 +1446,7 @@
     <Content Include="Global.asax" />
     <Content Include="Apps\Ecommerce\Content\Scripts\facebook.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\category.js" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\cart.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\forgotten-password.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\user-account.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\user-registration.js" />
