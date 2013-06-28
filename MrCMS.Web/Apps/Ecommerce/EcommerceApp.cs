@@ -12,6 +12,8 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using Ninject;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Core.Pages;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 
 namespace MrCMS.Web.Apps.Ecommerce
 {
@@ -79,6 +81,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var currentSite = new CurrentSite(site);
             var configurationProvider = new ConfigurationProvider(new SettingService(session), currentSite);
             var siteSettings = configurationProvider.GetSiteSettings<SiteSettings>();
+            var ecommerceSettings = configurationProvider.GetSiteSettings<EcommerceSettings>();
             var documentService = new DocumentService(session, siteSettings, currentSite);
 
             var productSearch = new ProductSearch
@@ -116,6 +119,80 @@ namespace MrCMS.Web.Apps.Ecommerce
                 layoutAreaService.SaveArea(area);
             siteSettings.DefaultLayoutId = layout.Id;
             configurationProvider.SaveSettings(siteSettings);
+            ecommerceSettings.CategoryProductsPerPage = "12,20,40";
+            ecommerceSettings.PageSizeAdmin = 20;
+            configurationProvider.SaveSettings(ecommerceSettings);
+            var checkoutLayout = new Layout
+            {
+                Name = "Checkout Layout",
+                UrlSegment = "~/Apps/Ecommerce/Views/Shared/_CheckoutLayout.cshtml",
+                LayoutAreas = new List<LayoutArea>()
+            };
+            documentService.AddDocument(checkoutLayout);
+
+            var welcome = new TextPage
+            {
+                Name = "Welcome",
+                UrlSegment = "shop",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(welcome);
+            var yourBasket = new Cart
+            {
+                Name = "Your Basket",
+                UrlSegment = "basket",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(yourBasket);
+            var enterOrderEmail = new EnterOrderEmail
+            {
+                Name = "Enter Order Email",
+                UrlSegment = "enter-order-email",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(enterOrderEmail);
+            var setPaymentDetails = new PaymentDetails
+            {
+                Name = "Set Payment Details",
+                UrlSegment = "set-payment-details",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(setPaymentDetails);
+            var setDeliveryDetails = new SetDeliveryDetails
+            {
+                Name = "Set Delivery Details",
+                UrlSegment = "set-delivery-details",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(setDeliveryDetails);
+            var orderPlaced = new OrderPlaced
+            {
+                Name = "Order Placed",
+                UrlSegment = "order-placed",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(orderPlaced);
+            var myAccount = new UserAccount
+            {
+                Name = "My Account",
+                UrlSegment = "my-account",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(myAccount);
+            var login = new UserLogin
+            {
+                Name = "Login",
+                UrlSegment = "log-in",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(login);
+            var registration = new UserRegistration()
+            {
+                Name = "User Registration",
+                UrlSegment = "register",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(registration);
         }
     }
 }
