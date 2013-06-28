@@ -2,10 +2,6 @@
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Helpers;
-using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {

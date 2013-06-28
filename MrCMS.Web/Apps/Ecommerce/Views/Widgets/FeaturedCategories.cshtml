@@ -11,13 +11,10 @@
     @foreach (var item in Model.Categories)
     {
             <div class="span3">
-                <div style="height:200px; overflow:hidden;" >
-                @if(item.Products.Count()>0)
+                <div style="height:130px; overflow:hidden;" >
+                @if(item.FeatureImage!=null)
                 {
-                    if(item.Products.First<MrCMS.Web.Apps.Ecommerce.Pages.Product>().Images.Count()>0)
-                    {
-                    <img src="@(item.Products.First<MrCMS.Web.Apps.Ecommerce.Pages.Product>().Images.First<MrCMS.Entities.Documents.Media.MediaFile>().FileUrl)" class="img-rounded pull-left span12" />
-                    }
+                    <img src="@(item.FeatureImage)" class="img-rounded pull-left span12" alt="@item.Name"/>
                 }
                 </div>
                     <div class="clearfix"></div>

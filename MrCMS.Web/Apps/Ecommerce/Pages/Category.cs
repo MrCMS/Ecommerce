@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Web.Mvc;
+using System.Xml;
 using MrCMS.Entities.Documents.Web;
 using System.Linq;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Core.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
@@ -30,6 +34,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         public virtual string ContainerUrl
         {
             get { return (Parent as Webpage).LiveUrlSegment; }
+        }
+
+        [DisplayName("Featured Image")]
+        public virtual string FeatureImage { get; set; }
+
+        public override void AddCustomSitemapData(UrlHelper urlHelper, XmlNode url, XmlDocument xmlDocument)
+        {
+            if (!string.IsNullOrEmpty(FeatureImage))
+            {
+                var image = url.AppendChild(xmlDocument.CreateElement("image:image"));
+                var imageLoc = image.AppendChild(xmlDocument.CreateElement("image:loc"));
+                imageLoc.InnerText = urlHelper.AbsoluteContent(FeatureImage);
+            }
         }
     }
 }

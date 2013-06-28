@@ -3,6 +3,7 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("Add", "Brand", FormMethod.Post))
 {
+    @Html.Hidden("productId",ViewBag.ProductId as string)
     <div class="modal-header">
         <h3>Add Brand</h3>
     </div>

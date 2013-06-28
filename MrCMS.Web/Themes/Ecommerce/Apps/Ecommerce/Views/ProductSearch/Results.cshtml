@@ -21,7 +21,7 @@
                     </div>
                     <div class="span6">
                         <h4><a href="/@item.LiveUrlSegment">@item.Name</a></h4>
-                        @(item.Abstract.Length>255?item.Abstract.Substring(0,250)+"...":item.Abstract)
+                        @(item.Abstract!=null?(item.Abstract.Length>255?item.Abstract.Substring(0,250)+"...":item.Abstract):String.Empty)
                     </div>
                     <div class="span3">
                         <div class="pull-right">

@@ -17,10 +17,13 @@
     </fieldset>
 
     @Html.HiddenFor(x => x.Id)
-    @Html.LabelFor(x => x.Name)
-    @Html.EditorFor(x => x.Name)
-    @Html.LabelFor(x => x.Code)
-    @Html.EditorFor(x => x.Code)
+     @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name)
+        @Html.ValidationMessageFor(x=>x.Name)
+        <br/>
+        @Html.LabelFor(x => x.Code)
+        @Html.TextBoxFor(x => x.Code)
+         @Html.ValidationMessageFor(x=>x.Code)
     @Html.LabelFor(x => x.ValidFrom)
     @Html.EditorFor(x => x.ValidFrom)
     @Html.LabelFor(x => x.ValidUntil)

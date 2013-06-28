@@ -1,4 +1,6 @@
-﻿using MrCMS.Web.Apps.Ecommerce.Models;
+﻿using System.Collections.Generic;
+using MrCMS.Entities.People;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
@@ -10,5 +12,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         IPagedList<Order> GetPaged(int pageNum, int pageSize = 10);
         void Save(Order item);
         Order Get(int id);
+        IPagedList<Order> GetOrdersByUser(User user, int pageNum, int pageSize = 10);
     }
 }
