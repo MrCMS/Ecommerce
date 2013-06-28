@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using MrCMS.Models;
 using System.Web;
 using System;
+using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -123,11 +124,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult AddSpecification(Product product)
         {
             ViewData["product"] = product;
-            List<ProductSpecificationAttribute> attributes = _productOptionManager.ListSpecificationAttributes().ToList().Where(x => x.Options.Any()
+            var attributes = _productOptionManager.ListSpecificationAttributes().ToList().Where(x => x.Options.Any()
                 && product.SpecificationValues.All(v => v.ProductSpecificationAttribute.Id != x.Id)).ToList();
 
             ViewData["specification-attributes"] = new SelectList(attributes, "Id", "Name");
-            ViewData["specification-attributes-options"] = new SelectList(attributes.Any() ? attributes.First().Options : new List<ProductSpecificationAttributeOption>(), "Id", "Name");
+            var options = attributes.Any()
+                              ? attributes.First().Options
+                              : new List<ProductSpecificationAttributeOption>();
+            options.Add(new ProductSpecificationAttributeOption(){Id=0,Name = "Other"});
+            ViewData["specification-attributes-options"] = new SelectList(options, "Id", "Name");
             return PartialView(new ProductSpecificationValue() { Product = product });
         }
 
@@ -136,11 +141,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             try
             {
-                List<SelectListItem> options = new List<SelectListItem>();
-                foreach (var item in _productOptionManager.GetSpecificationAttribute(specificationAttributeId).Options.OrderBy(x => x.DisplayOrder).ToList())
-                {
-                    options.Add(new SelectListItem() { Selected = false, Text = item.Name, Value = item.Id.ToString() });
-                }
+                var options = _productOptionManager.GetSpecificationAttribute(specificationAttributeId).Options.OrderBy(x => x.DisplayOrder).ToList().Select(item => new SelectListItem() {Selected = false, Text = item.Name, Value = item.Id.ToString()}).ToList();
                 return Json(options);
             }
             catch
@@ -152,15 +153,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         public JsonResult AddSpecification(string Value, int Option = 0, int ProductId = 0)
         {
-            try
+            if (!String.IsNullOrWhiteSpace(Value) && Option != 0 && ProductId != 0)
             {
-                _productOptionManager.SetSpecificationValue(_productService.Get(ProductId), _productOptionManager.GetSpecificationAttribute(Option), Value);
+                var option=_productOptionManager.GetSpecificationAttribute(Option);
+                if(!_productOptionManager.ListSpecificationAttributeOptions(Option).Any(x => x.Name == Value))
+                    _productOptionManager.AddSpecificationAttributeOption(new ProductSpecificationAttributeOption() { Site = CurrentSite, Name = Value, ProductSpecificationAttribute = option });
+                _productOptionManager.SetSpecificationValue(_productService.Get(ProductId),option,Value);
                 return Json(true);
             }
-            catch
-            {
-                return Json(false);
-            }
+
+            return Json(false);
         }
 
         [HttpGet]

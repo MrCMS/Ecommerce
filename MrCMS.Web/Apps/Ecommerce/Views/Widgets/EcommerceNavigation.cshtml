@@ -39,7 +39,7 @@
         }
         else
         {
-            <li @*class="@(activePages.Any(s => s == page.Url.ToString()) ? "active" : "")"*@>
+            <li class="@(activePages.Any(s => s == page.Url.ToString()) ? "active" : "")">
                 <a href="@page.Url">@page.Text</a>
             </li>      
         }
