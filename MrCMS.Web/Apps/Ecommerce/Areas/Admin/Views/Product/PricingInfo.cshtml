@@ -4,7 +4,7 @@
     <div class="row-fluid">
         <div class="span2">
             @Html.LabelFor(product => product.BasePrice)
-            @Html.TextBoxFor(product => product.BasePrice, new { @class = "span12" })
+            @Html.TextBoxFor(product => product.BasePrice, new { @class = "span12", @Value = string.Format("{0:0.00}", Model.BasePrice) })
             @Html.ValidationMessageFor(product => product.BasePrice)
             @if (Model.PriceBreaks.Any())
             {
@@ -19,7 +19,7 @@
                                 {
                                     <tr>
                                         <td>@priceBreak.Quantity</td>
-                                         <td>@priceBreak.Price</td>
+                                         <td>@priceBreak.Price.ToString("#.##")</td>
                                          <td>@Html.ActionLink("Delete", "Delete", "PriceBreak", new { id = priceBreak.Id }, new { @class = "btn btn-danger btn-mini pull-right", data_toggle = "fb-modal" })</td>
                                     </tr>
                                 }
@@ -30,11 +30,11 @@
         </div>
         <div class="span2">
             @Html.LabelFor(product => product.PreviousPrice)
-            @Html.TextBoxFor(product => product.PreviousPrice, new { @class = "span12" })
+            @Html.TextBoxFor(product => product.PreviousPrice, new { @class = "span12", @Value = string.Format("{0:0.00}", Model.PreviousPrice) })
         </div>
         <div class="span2">
             @Html.LabelFor(product => product.StockRemaining)
-            @Html.TextBoxFor(product => product.StockRemaining, new { @class = "span12" })
+            @Html.TextBoxFor(product => product.StockRemaining, new { @class = "span12", @Value = string.Format("{0:0.00}", Model.StockRemaining) })
         </div>
         <div class="span2">
             @Html.LabelFor(product => product.SKU)
@@ -49,8 +49,8 @@
         </div>
          }
         <div class="span2">
-            @Html.LabelFor(product => product.Weight)
-            @Html.TextBoxFor(product => product.Weight, new { @class = "span12" })
+            <span>Weight (g)</span>
+            @Html.TextBoxFor(product => product.Weight, new { @class = "span12", @Value = string.Format("{0:0}", Model.Weight)  })
             @Html.ValidationMessageFor(product => product.Weight)
         </div>
     </div>
@@ -66,13 +66,13 @@ else
         </div>
         }
         <div class="span2">
-            @Html.LabelFor(product => product.Weight)
-            @Html.TextBoxFor(product => product.Weight, new { @class = "span12" })
+              <span>Weight (g)</span>
+            @Html.TextBoxFor(product => product.Weight, new { @class = "span12", @Value = string.Format("{0:0}", Model.Weight)  })
             @Html.ValidationMessageFor(product => product.Weight)
         </div>
          <div class="span2">
             @Html.LabelFor(product => product.PreviousPrice)
-            @Html.TextBoxFor(product => product.PreviousPrice, new { @class = "span12" })
+            @Html.TextBoxFor(product => product.PreviousPrice, new { @class = "span12" , @Value = string.Format("{0:0.00}", Model.Weight)})
         </div>
     </div>
 }
@@ -111,7 +111,7 @@ else
                         @variant.SKU
                     </td>
                     <td>
-                        @variant.BasePrice @Html.ActionLink("Add price break", "Add", "PriceBreak", new { id = variant.Id, type = "ProductVariant" }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                        @variant.BasePrice.ToString("#.##") @Html.ActionLink("Add price break", "Add", "PriceBreak", new { id = variant.Id, type = "ProductVariant" }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
                         @if (variant.PriceBreaks.Any())
                         {
                             <h5>Price Breaks</h5>
@@ -125,7 +125,7 @@ else
                                 {
                                     <tr>
                                         <td>@priceBreak.Quantity</td>
-                                         <td>@priceBreak.Price</td>
+                                         <td>@priceBreak.Price.ToString("#.##")</td>
                                          <td>@Html.ActionLink("Delete", "Delete", "PriceBreak", new { id = priceBreak.Id }, new { @class = "btn btn-danger btn-mini pull-right", data_toggle = "fb-modal" })</td>
                                     </tr>
                                 }

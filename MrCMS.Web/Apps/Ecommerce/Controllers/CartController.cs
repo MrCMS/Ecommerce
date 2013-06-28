@@ -10,7 +10,6 @@ using MrCMS.Website;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using System;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
-using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
@@ -154,6 +153,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         {
             return View(_getCart.GetCart());
         }
+        [HttpPost]
+        public JsonResult UpdateQuantity(int quantity=0,int cartId=0)
+        {
+            if (quantity > 0 && cartId != 0)
+            {
+                var cartItem=_getCart.GetCart().Items.SingleOrDefault(x => x.Id==cartId);
+                if(cartItem!=null)
+                    _cartManager.UpdateQuantity(cartItem, quantity);
+                return Json(true);
+            }
+            return Json(false);
+        }
         [HttpGet]
         public ViewResult BasicDetails()
         {
@@ -184,14 +195,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                     _getCart.SetOrderEmail(OrderEmail);
                     return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
                 }
-                else
-                    return Redirect(UniquePageHelper.GetUrl<EnterOrderEmail>());
             }
-            else
-            {
-                return Redirect(UniquePageHelper.GetUrl<EnterOrderEmail>());
-            }
+            return Redirect(UniquePageHelper.GetUrl<EnterOrderEmail>());
         }
+
         [HttpGet]
         public ActionResult SetDeliveryDetails()
         {
@@ -216,7 +223,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                     _getCart.SetShippingAddress(address);
                 }
             }
-            List<SelectListItem> countries = _countryService.GetAllCountries().BuildSelectItemList(country => country.Name, country => country.Id.ToString(), null, emptyItem: null);
+            var countries = _countryService.GetAllCountries().BuildSelectItemList(country => country.Name, country => country.Id.ToString(), null, emptyItem: null);
             if (_getCart.GetShippingAddress().Country != null)
             {
                 countries.SingleOrDefault(x => x.Value == _getCart.GetShippingAddress().Country.Id.ToString()).Selected = true;

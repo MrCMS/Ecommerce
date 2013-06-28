@@ -1,5 +1,6 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
 @using MrCMS.Helpers
+@using System.Linq
 
 <ul class="breadcrumb">
 <li><a href="/">Home</a> <span class="divider">/</span></li>
@@ -13,7 +14,7 @@
         <div class="span4">
             @if (Model.Images.Any())
             {
-                <img src="@(Model.Images.First<MrCMS.Entities.Documents.Media.MediaFile>().FileUrl)" />
+                <img src="@(Model.Images.First<MrCMS.Entities.Documents.Media.MediaFile>().FileUrl)" alt="@Model.Name" />
             }
             <br /><br />
             <div class="clearfix"></div>
@@ -30,8 +31,10 @@
         </div>
         <div class="span8">
             <h3>@Model.Name</h3>
-            Exclusive price
-            <h1 class="product-price">
+            @if (Model.PricePreTax > 0 || Model.Price > 0)
+            {
+                <span>Exclusive price</span>
+                <h1 class="product-price">
                     @if (Model.PricePreTax == 0 && Model.Variants.Any())
                     {
                         @Html.Raw("&pound;" + Model.Variants.OrderBy(x => x.Price).First().Price.ToString("#.##"))
@@ -41,9 +44,10 @@
                         @Html.Raw("&pound;" + Model.Price.ToString("#.##"))
                     }
                 </h1>
-            <span>shop price: <span style="text-decoration:line-through">&pound;@(Model.PreviousPrice.HasValue ? Model.PreviousPrice.Value.ToString("#.##") : "")</span></span>
+                <span>shop price: <span style="text-decoration: line-through">&pound;@(Model.PreviousPrice.HasValue ? Model.PreviousPrice.Value.ToString("#.##") : "")</span></span>
+            }
             <br /> <br />
-            <div>@(Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract)</div>
+            @(Model.Abstract!=null?(Model.Abstract.Length>255?Model.Abstract.Substring(0,250)+"...":Model.Abstract):String.Empty)
             <br />
             <div id="mail-print-buttons">
             <i class="icon-envelope"></i> <i class="icon-print"></i>
@@ -79,12 +83,12 @@
     <div class="span4">
         @if (Model.AttributeOptions.Any())
         {
-            for (int i = 0; i < Model.AttributeOptions.Count; i++)
+            foreach (var item in Model.AttributeOptions.OrderBy(x => x.DisplayOrder))
             {
                 <pre class="product-variants-filter">
-                <label class="pull-left">Select @Model.AttributeOptions[i].Name&nbsp;</label>
-                <select class="pull-right" id='@(Html.Encode("attributeOption"+i))'>
-                    @foreach (var optionValue in Model.AttributeOptions[i].Values)
+                <label class="pull-left">Select @item.Name&nbsp;</label>
+                <select class="pull-right" id='@(Html.Encode("attributeOption" + item.Id))'>
+                    @foreach (var optionValue in item.Values)
                     {
                         <option value="@optionValue.ProductVariant.Id">@optionValue.Value</option>
                     }
@@ -92,7 +96,7 @@
                </pre>
             }
         }
-        @if(Model.PriceBreaks.Any() && !Model.Variants.Any())
+        @if (Model.PriceBreaks.Any())
         {
             <div id="product-pricebreaks">
             <div class="product-pricebreaks-title">
@@ -113,7 +117,7 @@
             </table>
              </div>
         }
-        else if (Model.Variants.Any())
+        else if (Model.Variants.Any() && !Model.PriceBreaks.Any())
         {
             <div id="product-variants-pricebreaks">
             <div class="product-pricebreaks-title">
@@ -124,9 +128,9 @@
                      <th>Quantity</th>
                      <th>Price</th>
                  </tr>
-                 @if (Model.Variants.First<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant>().PriceBreaks.Any())
+                 @if (Model.Variants.Any() && Model.Variants.First().PriceBreaks.Any())
                  {
-                     foreach (var item in Model.Variants.First<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant>().PriceBreaks)
+                     foreach (var item in Model.Variants.First().PriceBreaks)
                      {
                          <tr>
                              <td>@item.Quantity</td>
@@ -138,7 +142,7 @@
                  {
                      <tr>
                              <td>1</td>
-                             <td>&pound;@(Model.Variants.First<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant>().Price.ToString("#.##"))</td>
+                             <td>&pound;@(Model.Variants.First().Price.ToString("#.##"))</td>
                     </tr>
                  }
             </table>
@@ -146,33 +150,33 @@
         }
         @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
         {
-       if(!Model.Variants.Any())
-       {
-        @Html.HiddenFor(x=>x.Id)
-       }
-       @Html.Hidden("IdVariant", 0)
-        <pre id="product-addtobasket">
-                <label class="pull-left">Quantity&nbsp;</label>
-                <input type="text" class="input-mini pull-left" value="1" id="quantity" name="quantity" />
-                <button class="btn btn-info btn-addtobasket pull-right span7" type="submit">Add to basket</button>
-             </pre>
-        }
-        <hr />
-        @if (Model.SpecificationValues.Any())
-        {
-            <div id="product-specifications">
-            <h4>Specifications</h4>
-            <table class="table table-bordered table-striped table-condensed">
-            @foreach (var item in Model.SpecificationValues)
+                if (!Model.Variants.Any())
+                {
+                    @Html.HiddenFor(x => x.Id)
+                        }
+                   @Html.Hidden("IdVariant", 0)
+                    <pre id="product-addtobasket">
+                            <label class="pull-left">Quantity&nbsp;</label>
+                            <input type="text" class="input-mini pull-left" value="1" id="quantity" name="quantity" />
+                            <button class="btn btn-info btn-addtobasket pull-right span7" type="submit">Add to basket</button>
+                         </pre>
+         }
+            <hr />
+            @if (Model.SpecificationValues.Any())
             {
-                 <tr>
-                     <td><strong>@item.ProductSpecificationAttribute.Name</strong></td>
-                     <td>@item.Value</td>
-                 </tr>
+                <div id="product-specifications">
+                <h4>Specifications</h4>
+                <table class="table table-bordered table-striped table-condensed">
+                @foreach (var item in Model.SpecificationValues.OrderBy(x=>x.DisplayOrder))
+                {
+                     <tr>
+                         <td><strong>@item.ProductSpecificationAttribute.Name</strong></td>
+                         <td>@item.Value</td>
+                     </tr>
+                }
+                 </table>
+                </div>
             }
-             </table>
-            </div>
-        }
     </div>
 </div>
 

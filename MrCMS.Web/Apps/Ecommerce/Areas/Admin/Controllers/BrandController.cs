@@ -26,19 +26,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Add()
+        public PartialViewResult Add(int productId=0)
         {
+            ViewBag.ProductID = productId;
             return PartialView(new Brand());
         }
 
         [ActionName("Add")]
         [HttpPost]
-        public ActionResult Add_POST(Brand brand)
+        public ActionResult Add_POST(Brand brand, int productId=0)
         {
             if (ModelState.IsValid)
             {
                 _brandService.Add(brand);
-                return RedirectToAction("Index");
+                if(productId==0)
+                    return RedirectToAction("Index");
+                else
+                    return RedirectToAction("Edit", "Webpage", new { id = productId });
             }
             return PartialView(brand);
         }

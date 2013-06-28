@@ -239,7 +239,11 @@ pre.product-variants-filter select, pre#product-addtobasket select
 {
     overflow:hidden;
    text-align:center;
-   height:200px;
+   height:130px;
+}
+.category-photo img
+{
+    width: 100%;
 }
 #checkout-nav-buttons
 {

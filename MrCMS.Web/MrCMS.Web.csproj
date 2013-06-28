@@ -198,6 +198,9 @@
     <Compile Include="Apps\Ecommerce\Controllers\CartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\UserRegistrationController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\UserLoginController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\OrderPlacedController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SetDeliveryDetailsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PaymentDetailsController.cs" />
@@ -241,13 +244,21 @@
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\UserAccountMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\UserRegistrationMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\UserLoginMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\OrderPlacedMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Models\UserAccountModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\UserRegistrationModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\TaxAwarePrice.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\SetDeliveryDetailsMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\PaymentDetailsMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\EnterOrderEmailMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Models\OrderSearchModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaymentDetailsModel.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\UserRegistration.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\UserAccount.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\UserLogin.cs" />
     <Compile Include="Apps\Ecommerce\Pages\EnterOrderEmail.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderSearchService.cs" />
@@ -1322,6 +1333,8 @@
     <Content Include="Apps\Ecommerce\Views\Shared\_CheckoutLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_EcommercePopup.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\EditPaymentStatus.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\_PasswordLayout.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Category.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -1433,11 +1446,18 @@
     <Content Include="Global.asax" />
     <Content Include="Apps\Ecommerce\Content\Scripts\facebook.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\category.js" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\cart.js" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\forgotten-password.js" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\user-account.js" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\user-registration.js" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\user-login.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\shipping-methods.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\enter-order-email.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\payment-details.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\product-search.js" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Content\Scripts\custom\product.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\password-reset.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\forgotten-password.js" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1714,7 +1734,6 @@
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\CategoryContainer\CategoryContainer.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Category\Category.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Category\Results.cshtml" />
-    <Content Include="Themes\Ecommerce\Shared\Web.config" />
     <Content Include="Themes\Ecommerce\Views\Web.config" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\Cart.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\Details.cshtml" />
@@ -1735,6 +1754,17 @@
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\DiscountCode.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\EditDiscountCode.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\AddDiscountCode.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\UserLogin.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\UserLoginDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\UserRegistration.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\UserRegistrationDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\UserAccount.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\UserAccountDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\UserAccountOrders.cshtml" />
+    <Content Include="Themes\Ecommerce\Views\Login\ForgottenPassword.cshtml" />
+    <Content Include="Themes\Ecommerce\Views\Login\ForgottenPasswordSent.cshtml" />
+    <Content Include="Themes\Ecommerce\Views\Login\PasswordReset.cshtml" />
+    <Content Include="Themes\Ecommerce\Views\Login\ResetComplete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
