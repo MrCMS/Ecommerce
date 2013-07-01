@@ -9,8 +9,11 @@
     <div class="modal-body">
         @Html.LabelFor(x => x.Name)
         @Html.TextBoxFor(x => x.Name)
+        @Html.ValidationMessageFor(x=>x.Name)
+        <br/>
         @Html.LabelFor(x => x.Code)
         @Html.TextBoxFor(x => x.Code)
+         @Html.ValidationMessageFor(x=>x.Code)
     </div>
     <div class="modal-footer">
         <input type="submit" class="btn-primary btn" value="Add Discount" />

@@ -156,9 +156,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                                                product.Categories.Distinct().Select(category => category.Id.ToString()),
                                                Field.Store.NO, Field.Index.NOT_ANALYZED);
 
-        public static decimal GetPrice(Product entity)
+        public static IEnumerable<decimal> GetPrice(Product entity)
         {
-            return !entity.Variants.Any() ? entity.Price : entity.Variants.Select(pv => pv.Price).Min();
+            return entity.Variants.Select(pv => pv.Price);
         }
 
         public static string GetOptionValues(IList<ProductAttributeValue> values)

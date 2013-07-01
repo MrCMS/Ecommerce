@@ -7,6 +7,7 @@ using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using System.ComponentModel.DataAnnotations;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
 {
@@ -17,7 +18,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
             Orders = new List<Order>();
         }
 
+        [Required]
         public virtual string Name { get; set; }
+        [Required]
+        [StringLength(30, ErrorMessage = "Minimum length for code is {2} characters.", MinimumLength = 3)]
         public virtual string Code { get; set; }
         public virtual IList<Order> Orders { get; set; }
 

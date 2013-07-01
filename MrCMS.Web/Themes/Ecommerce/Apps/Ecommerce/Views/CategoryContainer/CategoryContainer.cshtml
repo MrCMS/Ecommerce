@@ -4,7 +4,7 @@
 @if (Model != null)
 {
     <h4>Categories</h4>
-   
+   <br/>
     if(((List<MrCMS.Web.Apps.Ecommerce.Pages.Category>)ViewBag.Categories).Any())
     {
         foreach (var items in ((List<MrCMS.Web.Apps.Ecommerce.Pages.Category>)ViewBag.Categories).Chunk(4))
@@ -14,12 +14,9 @@
                 {
                     <div class="span3">
                         <div class="category-photo">
-                        @if(item.Products.Any())
+                        @if(item.FeatureImage!=null)
                         {
-                            if(item.Products.First().Images.Any())
-                            {
-                            <img src="@(item.Products.First().Images.First().FileUrl)" class="img-rounded pull-left span12" />
-                            }
+                            <img src="@(item.FeatureImage)" class="img-rounded pull-left span12" alt="@item.Name"/>
                         }
                         </div>
                         <div class="clearfix"></div>

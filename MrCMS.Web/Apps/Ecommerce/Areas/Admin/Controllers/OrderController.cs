@@ -46,7 +46,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             model.Results = new PagedList<Order>(null, 1, 10);
             try
             {
-                model.Results=_orderSearchService.SearchOrders(model.Email, model.LastName, model.OrderId, model.DateFrom, model.DateTo, model.PaymentStatus, model.ShippingStatus, page);
+                model.Results = _orderSearchService.SearchOrders(model.Email, model.LastName, model.OrderId, model.DateFrom, model.DateTo, model.PaymentStatus, model.ShippingStatus, page);
             }
             catch (Exception)
             {
@@ -81,7 +81,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditShippingStatus(Order order,bool index=false)
+        public ActionResult EditShippingStatus(Order order, bool index = false)
         {
             ViewData["ShippingStatuses"] = _shippingStatusService.GetOptions();
             ViewBag.Index = index;
@@ -96,7 +96,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             order.User = CurrentRequestData.CurrentUser;
             _orderService.Save(order);
-            if(!index)
+            if (!index)
                 return RedirectToAction("Edit", "Order", new { id = order.Id });
             else
                 return RedirectToAction("Index");
@@ -122,27 +122,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 return RedirectToAction("Edit", "Order", new { id = order.Id });
             else
                 return RedirectToAction("Index");
-        }
-
-        public ActionResult PlaceNewOrder()
-        {
-            _orderService.PlaceOrder(new CartModel
-                                         {
-                                             Items = new List<CartItem>
-                                                         {
-                                                             new CartItem
-                                                                 {
-                                                                     Item =
-                                                                         MrCMSApplication.Get<IProductService>()
-                                                                                         .Search()[0],
-                                                                     Quantity = 3
-                                                                 }
-                                                         },
-                                             User = CurrentRequestData.CurrentUser,
-                                             ShippingAddress = new Address{},
-                                             ShippingMethod = _shippingMethodManager.GetAll()[0]
-                                         });
-            return RedirectToAction("Index");
         }
     }
 }

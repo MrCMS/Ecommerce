@@ -79,63 +79,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             viewResult.Model.Should().BeNull();
         }
-
-        [Fact]
-        public void ProductController_MakeMultiVariantGet_ShouldReturnAPartialViewResult()
-        {
-            var product = new Product();
-
-            var result = _productController.MakeMultiVariant(product);
-
-            result.Should().BeOfType<PartialViewResult>();
-        }
-
-        [Fact]
-        public void ProductController_MakeMultivariantGet_ReturnsThePassedObjectAsTheModel()
-        {
-            var product = new Product();
-
-            var result = _productController.MakeMultiVariant(product);
-
-            result.Model.Should().BeOfType<MakeMultivariantModel>();
-        }
-
-        [Fact]
-        public void ProductController_MakeMultiVariantPost_ShouldCallTheMakeMultiVariantMethodOfTheServiceWithThePassedArguments()
-        {
-            var multiVariantModel = new MakeMultivariantModel();
-
-            var result = _productController.MakeMultiVariant(multiVariantModel);
-
-            A.CallTo(() => _productService.MakeMultiVariant(multiVariantModel))
-             .MustHaveHappened();
-        }
-
-        [Fact]
-        public void ProductController_MakeMultiVariantPost_ShouldReturnARedirectToRouteResult()
-        {
-            var multiVariantModel = new MakeMultivariantModel();
-
-            var result = _productController.MakeMultiVariant(multiVariantModel);
-
-            result.Should().BeOfType<RedirectToRouteResult>();
-        }
-
-        [Fact]
-        public void ProductController_MakeMultiVariantPost_ShouldRedirectToTheWebpageEditActionForTheProductId()
-        {
-            var multiVariantModel = new MakeMultivariantModel
-                {
-                    ProductId = 123
-                };
-
-            var result = _productController.MakeMultiVariant(multiVariantModel);
-
-            result.RouteValues["controller"].Should().Be("Webpage");
-            result.RouteValues["action"].Should().Be("Edit");
-            result.RouteValues["id"].Should().Be(123);
-        }
-
         //[Fact]
         //public void ProductController_ViewCategories_ShouldReturnAPartialViewResult()
         //{

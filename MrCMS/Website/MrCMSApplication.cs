@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Web;
@@ -160,12 +159,6 @@ namespace MrCMS.Website
         }
 
         protected abstract void RegisterAppSpecificRoutes(RouteCollection routes);
-
-        //public static Layout OverridenDefaultLayout { get; set; }
-        //public static Layout GetDefaultLayout(Webpage page)
-        //{
-        //    return OverridenDefaultLayout ?? Get<IDocumentService>().GetDefaultLayout(page);
-        //}
 
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
         private static IKernel _kernel;

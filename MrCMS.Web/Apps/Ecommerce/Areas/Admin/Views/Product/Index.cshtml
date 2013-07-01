@@ -18,10 +18,6 @@
                     <tr>
                         <th>Name
                         </th>
-                        <th>Price
-                        </th>
-                        <th>Stock remaining
-                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,12 +26,6 @@
                         <tr>
                             <td>
                                 @Html.ActionLink(product.Name, "Edit", "Webpage", new { id = product.Id }, null)
-                            </td>
-                            <td>
-                                @product.Price.ToString("0.00")
-                            </td>
-                            <td>
-                                @(product.StockRemaining.HasValue ? product.StockRemaining.ToString() : "-")
                             </td>
                         </tr>
                     }

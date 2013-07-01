@@ -3,6 +3,7 @@
     <div class="span3">
         @Html.LabelFor(product => product.Brand.Id, "Brand")
         @Html.DropDownListFor(product => product.Brand.Id, ViewData["brands"] as IEnumerable<SelectListItem>, new { @class = "span12" })
+         <a href="@Url.Action("Add", "Brand", new { productId = Model.Id })" class="btn btn-mini btn-success" data-toggle="fb-modal">Add New</a>
     </div>
     <div class="span9">
         @Html.LabelFor(product => product.Abstract)

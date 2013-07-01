@@ -11,7 +11,6 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
     {
         public void Override(AutoMapping<CartItem> mapping)
         {
-            mapping.ReferencesAny(item => item.Item).AutoMap("ItemType", "ItemId");
         }
     }
 }
