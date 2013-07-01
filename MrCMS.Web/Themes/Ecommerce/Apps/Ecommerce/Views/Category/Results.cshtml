@@ -1,5 +1,4 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Models.ProductPagedList
-@using MrCMS.Entities.Documents.Media
 @using MrCMS.Helpers
 
 <div id="products-wrapper">
@@ -27,17 +26,15 @@
                     <div class="span3">
                         <div class="pull-right">
                         Exclusive price
-                            <h1 class="product-price">
-                                        @if (item.PricePreTax == 0 && item.Variants.Count>0)
+                            
+                                        @if (item.Variants.Count>0)
                                         {
+                                            <h1 class="product-price">
                                             @Html.Raw("&pound;"+item.Variants.OrderBy(x=>x.Price).First().Price.ToString("#.##"))
+                                                </h1>
+                                            <span>shop price </span><span style="text-decoration:line-through">&pound;@(item.Variants.OrderBy(x=>x.Price).First().Price.ToString("#.##"))</span>
                                         }
-                                        else
-                                        {
-                                            @Html.Raw("&pound;"+item.Price.ToString("#.##"));
-                                        }
-                            </h1>
-                            shop price <span style="text-decoration:line-through">&pound;@(item.PreviousPrice.HasValue?item.PreviousPrice.Value.ToString("#.##"):"")</span>
+                            
                             <br /><br />
                             <a href="/@item.LiveUrlSegment" class="btn btn-info span12">
                             More info
