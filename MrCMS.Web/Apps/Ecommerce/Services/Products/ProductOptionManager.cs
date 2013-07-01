@@ -106,7 +106,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             }
             else
             {
-                ProductSpecificationValue productSpecificationValue = new ProductSpecificationValue
+                var productSpecificationValue = new ProductSpecificationValue
                 {
                     Product = product,
                     ProductSpecificationAttribute = productSpecificationAttribute,

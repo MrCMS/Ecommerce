@@ -10,8 +10,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     {
         ProductPagedList Search(string queryTerm = null, int page = 1);
         IList<Product> Search(string queryTerm);
-        void MakeMultiVariant(MakeMultivariantModel model);
-        void MakeSingleVariant(Product product);
         void AddCategory(Product product, int categoryId);
         void RemoveCategory(Product product, int categoryId);
         List<SelectListItem> GetOptions();
@@ -19,10 +17,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         Product GetByName(string name);
         Product GetByUrl(string url);
         IList<Product> GetAll();
-        PriceBreak AddPriceBreak(AddPriceBreakModel model);
-        void DeletePriceBreak(PriceBreak priceBreak);
-        bool IsPriceBreakQuantityValid(int quantity, int id, string type);
-        bool IsPriceBreakPriceValid(decimal price, int id, string type, int quantity);
-        bool AnyExistingProductWithSKU(string sku, int id);
     }
 }

@@ -4,8 +4,18 @@
 <div class="pull-right">
 <div id="top-menu-box">
     <div class="pull-right">
-    <a href="#">Your Account</a>
-        </div>
+        
+        @if (MrCMS.Website.CurrentRequestData.CurrentUser != null)
+        {
+            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.UserLogin>()+"?logout=true")">Logout</a>
+            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.UserAccount>())">My Account</a>
+        }
+        else
+        {
+            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.UserLogin>())">Login</a>
+            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.UserRegistration>())">Register</a>
+        }
+    </div>
 </div>
     <a class="btn btn-large btn-info btn-checkout" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Checkout</a>
 </div>

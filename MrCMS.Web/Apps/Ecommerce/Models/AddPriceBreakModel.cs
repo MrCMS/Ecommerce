@@ -5,10 +5,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
     public class AddPriceBreakModel
     {
         public int Id { get; set; }
-        public string Type { get; set; }
-        [Remote("IsQuantityValid", "PriceBreak", AdditionalFields = "Id,Type")]
+        [Remote("IsQuantityValid", "PriceBreak", AdditionalFields = "Id")]
         public int Quantity { get; set; }
-        [Remote("IsPriceValid", "PriceBreak", AdditionalFields = "Id,Type,Quantity")]
+        [Remote("IsPriceValid", "PriceBreak", AdditionalFields = "Id,Quantity")]
         public decimal Price { get; set; }
     }
 }

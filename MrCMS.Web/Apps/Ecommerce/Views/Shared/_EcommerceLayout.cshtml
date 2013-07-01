@@ -27,44 +27,53 @@
     <div id="wrap">
     <div class="container">
         <div class="pull-left">
-            <img src="/Apps/Ecommerce/Content/Images/mrcms-logo.png" alt="logo"/>
+             <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">
+             <img src="/Apps/Ecommerce/Content/Images/mrcms-logo.png" alt="logo"/>
+                 </a>
         </div>
- 
-        @{Html.RenderAction("CartPanel", "Cart");}
+        @{
+            Html.RenderAction("CartPanel", "Cart");
+        }
+        <div id="search-box" class="pull-right">
+                 <input type="text" class="input-xlarge" placeholder="e.g : Shorts" id="searchTerm" name="searchTerm" value="@ViewBag.SearchTerm" />
+                 <button class="btn" type="button" id="searchButton" name="searchButton">Search</button>
+             </div>
 
-         <div id="search-box" class="pull-right">
-             <input type="text" class="input-xlarge" placeholder="e.g : Shorts" id="searchTerm" name="searchTerm" value="@ViewBag.SearchTerm" />
-            <button class="btn" type="button" id="searchButton" name="searchButton">Search</button>
-        </div>
     </div>
-    <div id="navbar-wrapper">
-    <div class="container">
-            <div class="navbar">
-                <div class="navbar-inner">
-                            @RenderZone("Header")
+
+        <div id="navbar-wrapper">
+            <div class="container">
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        @RenderZone("Header")
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
+
+
+              
       <div class="container">
         @RenderBody()
            </div>
-           <div class="container">
-        @RenderZone("After Content")
-        @RenderZone("Footer")
-                   <br />
-      </div>
-        <div id="bottom-box">
-             <div class="container">
-            <h1>WELCOME TO YOUR ECOMMERCE</h1>
-            <p>
-                Lorem ipsum dolor sit amet, volumus conclusionemque an vix, dolor noster meliore usu te, ne sit facete convenire scribentur. Ut quot aperiri lobortis his, posse graeci inciderint cum et, vel rebum prompta albucius ei. Est ad civibus corrumpit torquatos, qui reque bonorum voluptaria ex. Usu option verterem ea. Vis veritus ponderum posidonium ex, ea falli eirmod persius vim. Et est vocibus percipit, nec suavitate vituperatoribus ei.
-Periculis suscipiantur ne has, et debet suscipit oportere vim. An iuvaret sensibus per, in mei idque oblique. At sea case erroribus, quot tibique facilisi mei ei, porro accommodare sed ut. Vix sumo concludaturque te. Id eos utamur consulatu. Posse partiendo eloquentiam cu sed, vis soleat labores facilisi id, constituto vituperata liberavisse eam no.
-Mel tale veri possit ne, his cu sale legere prompta. Ut odio admodum deterruisset duo. Nec graece deleniti ei, fastidii eligendi lobortis at vel. Has case prompta alterum ei, cum omnesque detraxit in.
-            </p>
-                  <button class="btn" type="button">Read More</button>
+        <div class="container">
+            @RenderZone("After Content")
+            @RenderZone("Footer")
+            <br />
         </div>
-        </div>
+ 
+            <div id="bottom-box">
+                <div class="container">
+                    <h1>WELCOME TO YOUR ECOMMERCE</h1>
+                    <p>
+                        Lorem ipsum dolor sit amet, volumus conclusionemque an vix, dolor noster meliore usu te, ne sit facete convenire scribentur. Ut quot aperiri lobortis his, posse graeci inciderint cum et, vel rebum prompta albucius ei. Est ad civibus corrumpit torquatos, qui reque bonorum voluptaria ex. Usu option verterem ea. Vis veritus ponderum posidonium ex, ea falli eirmod persius vim. Et est vocibus percipit, nec suavitate vituperatoribus ei.
+                        Periculis suscipiantur ne has, et debet suscipit oportere vim. An iuvaret sensibus per, in mei idque oblique. At sea case erroribus, quot tibique facilisi mei ei, porro accommodare sed ut. Vix sumo concludaturque te. Id eos utamur consulatu. Posse partiendo eloquentiam cu sed, vis soleat labores facilisi id, constituto vituperata liberavisse eam no.
+                        Mel tale veri possit ne, his cu sale legere prompta. Ut odio admodum deterruisset duo. Nec graece deleniti ei, fastidii eligendi lobortis at vel. Has case prompta alterum ei, cum omnesque detraxit in.
+                    </p>
+                    <button class="btn" type="button">Read More</button>
+                </div>
+            </div>
+ 
       <div id="push"></div>
     </div>
           
@@ -91,14 +100,16 @@ Mel tale veri possit ne, his cu sale legere prompta. Ut odio admodum deterruisse
        Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/ecommerce.js");
     }
     @Html.RenderScripts()
-    @if (CurrentRequestData.CurrentUserIsAdmin && SiteSettings<SiteSettings>().EnableInlineEditing)
-    {
-        Html.RenderAction("InPageEditor", "InPageAdmin", new { id = Model.Id, area = "Admin" });
-    }
-    @if (IsSectionDefined("JavascriptBlockInclude"))
-    {
-        @RenderSection("JavascriptBlockInclude")
-    }
-    @Html.Raw(Model.CustomFooterScripts)
+
+        @if (CurrentRequestData.CurrentUserIsAdmin && SiteSettings<SiteSettings>().EnableInlineEditing)
+         {
+             Html.RenderAction("InPageEditor", "InPageAdmin", new {id = Model.Id, area = "Admin"});
+         }
+        @if (IsSectionDefined("JavascriptBlockInclude"))
+         {
+             @RenderSection("JavascriptBlockInclude")
+         }
+        @Html.Raw(Model.CustomFooterScripts);
+ 
 </body>
 </html>

@@ -50,7 +50,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             var index = _taxRateController.Index();
 
-            index.Model.Should().Be(taxRates);
+            index.Model.ShouldBeEquivalentTo(taxRates);
         }
 
         [Fact]

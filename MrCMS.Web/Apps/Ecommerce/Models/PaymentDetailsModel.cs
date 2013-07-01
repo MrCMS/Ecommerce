@@ -1,6 +1,4 @@
-﻿using System.Web.Mvc;
-
-namespace MrCMS.Web.Apps.Ecommerce.Models
+﻿namespace MrCMS.Web.Apps.Ecommerce.Models
 {
     public class PaymentDetailsModel
     {

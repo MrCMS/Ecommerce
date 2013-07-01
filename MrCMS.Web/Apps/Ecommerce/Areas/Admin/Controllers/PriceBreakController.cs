@@ -8,35 +8,35 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class PriceBreakController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly IProductService _productService;
+        private readonly IProductVariantService _productVariantService;
 
-        public PriceBreakController(IProductService productService)
+        public PriceBreakController(IProductVariantService productVariantService)
         {
-            _productService = productService;
+            _productVariantService = productVariantService;
         }
 
         [HttpGet]
-        public PartialViewResult Add(int id, string type)
+        public PartialViewResult Add(int id)
         {
-            return PartialView(new AddPriceBreakModel {Id = id, Type = type});
+            return PartialView(new AddPriceBreakModel { Id = id });
         }
 
         [HttpPost]
         public RedirectResult Add(AddPriceBreakModel model)
         {
-            var priceBreak = _productService.AddPriceBreak(model);
+            var priceBreak = _productVariantService.AddPriceBreak(model);
 
             return Redirect(priceBreak.Item.EditUrl);
         }
 
-        public JsonResult IsQuantityValid(int quantity, int id, string type)
+        public JsonResult IsQuantityValid(int quantity, ProductVariant productVariant)
         {
-            return Json(_productService.IsPriceBreakQuantityValid(quantity, id, type), JsonRequestBehavior.AllowGet);
+            return Json(_productVariantService.IsPriceBreakQuantityValid(quantity, productVariant), JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult IsPriceValid(decimal price, int id, string type, int quantity)
+        public JsonResult IsPriceValid(decimal price, ProductVariant productVariant, int quantity)
         {
-            return Json(_productService.IsPriceBreakPriceValid(price, id, type,quantity), JsonRequestBehavior.AllowGet);
+            return Json(_productVariantService.IsPriceBreakPriceValid(price, productVariant, quantity), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -49,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("Delete")]
         public RedirectResult Delete_POST(PriceBreak priceBreak)
         {
-            _productService.DeletePriceBreak(priceBreak);
+            _productVariantService.DeletePriceBreak(priceBreak);
 
             return Redirect(priceBreak.Item.EditUrl);
         }

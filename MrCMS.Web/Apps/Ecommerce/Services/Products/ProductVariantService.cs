@@ -1,5 +1,7 @@
-﻿using MrCMS.Helpers;
+﻿using System.Web.Mvc;
+using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using NHibernate;
 using NHibernate.Criterion;
 using System.Collections.Generic;
@@ -28,12 +30,45 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                 variant =>
                                 variant.Id == id).SingleOrDefault();
         }
+
+        public List<SelectListItem> GetOptions()
+        {
+            return _session.QueryOver<ProductVariant>()
+                           .Cacheable()
+                           .List()
+                           .BuildSelectItemList(item => item.Name,
+                                                item => item.Id.ToString(),
+                                                emptyItemText: null);
+        }
+
+        public PriceBreak AddPriceBreak(AddPriceBreakModel model)
+        {
+            var productVariant = _session.Get<ProductVariant>(model.Id);
+            var priceBreak = new PriceBreak
+            {
+                Item = productVariant,
+                Quantity = model.Quantity,
+                Price = model.Price
+            };
+
+            _session.Transact(session =>
+            {
+                session.SaveOrUpdate(priceBreak);
+                session.SaveOrUpdate(productVariant);
+            });
+
+            return priceBreak;
+        }
+
+        public void DeletePriceBreak(PriceBreak priceBreak)
+        {
+            _session.Transact(session => session.Delete(priceBreak));
+        }
+
         public void Add(ProductVariant productVariant)
         {
             if (productVariant.Product != null)
             {
-                if (productVariant.Weight != 0)
-                    productVariant.Weight = productVariant.Product.Weight;
                 productVariant.Product.Variants.Add(productVariant);
 
                 foreach (ProductAttributeValue t in productVariant.AttributeValues)
@@ -58,23 +93,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             _session.Transact(session => session.Delete(productVariant));
         }
 
-        public bool AnyExistingProductVariantWithSKU(string sku, int id)
+        public bool AnyExistingProductVariantWithSKU(string sku, ProductVariant productVariant)
         {
             return _session.QueryOver<ProductVariant>()
                            .Where(
-                               productVariant =>
-                               productVariant.SKU.IsInsensitiveLike(sku, MatchMode.Exact) && productVariant.Id != id)
+                               variant =>
+                               variant.SKU.IsInsensitiveLike(sku, MatchMode.Exact) && variant.Id != productVariant.Id)
                            .RowCount() > 0;
         }
-        public IList<PriceBreak> GetAllPriceBreaksForProductVariant(int id)
+
+        public bool IsPriceBreakQuantityValid(int quantity, ProductVariant productVariant)
         {
-            if (id != 0)
-            {
-                var productVariant = _session.Get<ProductVariant>(id);
-                if (productVariant.PriceBreaks.Any())
-                    return productVariant.PriceBreaks;
-            }
-            return new List<PriceBreak>();
+            return quantity > 1 && productVariant.PriceBreaks.All(@break => @break.Quantity != quantity);
+        }
+
+        public bool IsPriceBreakPriceValid(decimal price, ProductVariant productVariant, int quantity)
+        {
+            var priceBreaks = productVariant.PriceBreaks;
+            return price < productVariant.BasePrice && price > 0
+                   && priceBreaks.Where(@break => @break.Quantity < quantity).All(@break => @break.Price > price)
+                   && priceBreaks.Where(@break => @break.Quantity > quantity).All(@break => @break.Price < price);
         }
     }
 }

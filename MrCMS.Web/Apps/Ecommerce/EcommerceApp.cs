@@ -12,6 +12,8 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using Ninject;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Core.Pages;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 
 namespace MrCMS.Web.Apps.Ecommerce
 {
@@ -44,6 +46,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Product Search - Results", "Apps/Ecommerce/ProductSearch/Results", new { controller = "ProductSearch", action = "Results" });
             context.MapRoute("Category - Results", "Apps/Ecommerce/Category/Results", new { controller = "Category", action = "Results" });
             context.MapRoute("Cart - Details", "Apps/Ecommerce/Cart/Details", new { controller = "Cart", action = "Details" });
+            context.MapRoute("Cart - Update Quantity", "Apps/Ecommerce/Cart/UpdateQuantity", new { controller = "Cart", action = "UpdateQuantity" });
             context.MapRoute("Cart - Basic Details", "Apps/Ecommerce/Cart/BasicDetails", new { controller = "Cart", action = "BasicDetails" });
             context.MapRoute("Cart - Delivery Details", "Apps/Ecommerce/Cart/DeliveryDetails", new { controller = "Cart", action = "DeliveryDetails" });
             context.MapRoute("Cart - Order Email", "Apps/Ecommerce/Cart/OrderEmail", new { controller = "Cart", action = "OrderEmail" });
@@ -61,7 +64,16 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Cart - Add Discount Code", "Apps/Ecommerce/Cart/AddDiscountCode", new { controller = "Cart", action = "AddDiscountCode" });
             context.MapRoute("Cart - Edit Discount Code", "Apps/Ecommerce/Cart/EditDiscountCode", new { controller = "Cart", action = "EditDiscountCode" });
             context.MapRoute("Cart - Is Discount Code Valid", "Apps/Ecommerce/Cart/IsDiscountCodeValid", new { controller = "Cart", action = "IsDiscountCodeValid" });
-
+            context.MapRoute("User Login", "Apps/Ecommerce/UserLogin/UserLogin", new { controller = "UserLogin", action = "UserLogin" });
+            context.MapRoute("User Login Details", "Apps/Ecommerce/UserLogin/UserLoginDetails", new { controller = "UserLogin", action = "UserLoginDetails" });
+            context.MapRoute("User Login POST", "Apps/Ecommerce/UserLogin/Login", new { controller = "UserLogin", action = "Login" });
+            context.MapRoute("User Registration", "Apps/Ecommerce/UserRegistration/UserRegistration", new { controller = "UserRegistration", action = "UserRegistration" });
+            context.MapRoute("User Registration Details", "Apps/Ecommerce/UserRegistration/UserRegistrationDetails", new { controller = "UserRegistration", action = "UserRegistrationDetails" });
+            context.MapRoute("User Register", "Apps/Ecommerce/UserRegistration/Register", new { controller = "UserRegistration", action = "Register" });
+            context.MapRoute("User Account", "Apps/Ecommerce/UserAccount/UserAccount", new { controller = "UserAccount", action = "UserAccount" });
+            context.MapRoute("User Account Details", "Apps/Ecommerce/UserAccount/UserAccountDetails", new { controller = "UserAccount", action = "UserAccountDetails" });
+            context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders", new { controller = "UserAccount", action = "UserAccountOrders" });
+            context.MapRoute("User Update Account", "Apps/Ecommerce/UserAccount/UpdateAccount", new { controller = "UserAccount", action = "UpdateAccount" });
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
@@ -69,6 +81,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var currentSite = new CurrentSite(site);
             var configurationProvider = new ConfigurationProvider(new SettingService(session), currentSite);
             var siteSettings = configurationProvider.GetSiteSettings<SiteSettings>();
+            var ecommerceSettings = configurationProvider.GetSiteSettings<EcommerceSettings>();
             var documentService = new DocumentService(session, siteSettings, currentSite);
 
             var productSearch = new ProductSearch
@@ -106,6 +119,80 @@ namespace MrCMS.Web.Apps.Ecommerce
                 layoutAreaService.SaveArea(area);
             siteSettings.DefaultLayoutId = layout.Id;
             configurationProvider.SaveSettings(siteSettings);
+            ecommerceSettings.CategoryProductsPerPage = "12,20,40";
+            ecommerceSettings.PageSizeAdmin = 20;
+            configurationProvider.SaveSettings(ecommerceSettings);
+            var checkoutLayout = new Layout
+            {
+                Name = "Checkout Layout",
+                UrlSegment = "~/Apps/Ecommerce/Views/Shared/_CheckoutLayout.cshtml",
+                LayoutAreas = new List<LayoutArea>()
+            };
+            documentService.AddDocument(checkoutLayout);
+
+            var welcome = new TextPage
+            {
+                Name = "Welcome",
+                UrlSegment = "shop",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(welcome);
+            var yourBasket = new Cart
+            {
+                Name = "Your Basket",
+                UrlSegment = "basket",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(yourBasket);
+            var enterOrderEmail = new EnterOrderEmail
+            {
+                Name = "Enter Order Email",
+                UrlSegment = "enter-order-email",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(enterOrderEmail);
+            var setPaymentDetails = new PaymentDetails
+            {
+                Name = "Set Payment Details",
+                UrlSegment = "set-payment-details",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(setPaymentDetails);
+            var setDeliveryDetails = new SetDeliveryDetails
+            {
+                Name = "Set Delivery Details",
+                UrlSegment = "set-delivery-details",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(setDeliveryDetails);
+            var orderPlaced = new OrderPlaced
+            {
+                Name = "Order Placed",
+                UrlSegment = "order-placed",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(orderPlaced);
+            var myAccount = new UserAccount
+            {
+                Name = "My Account",
+                UrlSegment = "my-account",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(myAccount);
+            var login = new UserLogin
+            {
+                Name = "Login",
+                UrlSegment = "log-in",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(login);
+            var registration = new UserRegistration()
+            {
+                Name = "User Registration",
+                UrlSegment = "register",
+                RevealInNavigation = true
+            };
+            documentService.AddDocument(registration);
         }
     }
 }

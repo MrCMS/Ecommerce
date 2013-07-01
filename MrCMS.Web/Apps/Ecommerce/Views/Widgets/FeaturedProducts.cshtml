@@ -18,7 +18,7 @@
                 </div>
                     <div class="clearfix"></div>
                 <h4 class="product-title"><a href="/@item.LiveUrlSegment">@item.Name</a></h4>
-                <div style="height:130px;">@(item.Abstract.Length>255?item.Abstract.Substring(0,250)+"...":item.Abstract)</div>
+                <div style="height:130px;">@(item.Abstract!=null?(item.Abstract.Length>255?item.Abstract.Substring(0,250)+"...":item.Abstract):String.Empty)</div>
                     <h1 class="product-price">
                     @if (item.PricePreTax == 0 && item.Variants.Any())
                     {

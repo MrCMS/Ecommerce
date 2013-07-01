@@ -18,48 +18,48 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     {
         private readonly IOrderLineService _orderLineService;
         private readonly IOrderService _orderService;
-        private readonly IProductService _productService;
+        private readonly IProductVariantService _productVariantService;
 
-        public OrderLineController(IOrderLineService orderLineService, IOrderService orderService, IProductService productService)
+        public OrderLineController(IOrderLineService orderLineService, IOrderService orderService, IProductVariantService productVariantService)
         {
             _orderLineService = orderLineService;
             _orderService = orderService;
-            _productService = productService;
+            _productVariantService = productVariantService;
         }
 
         [HttpGet]
         public ViewResult Edit(OrderLine orderLine)
         {
-            ViewData["products"] = _productService.GetOptions();
+            ViewData["products"] = _productVariantService.GetOptions();
             ViewData["ProductID"] = orderLine.ProductVariant.Id;
             return View(orderLine);
         }
 
         [ActionName("Edit")]
         [HttpPost]
-        public ActionResult Edit_POST(OrderLine orderLine, int ProductID)
+        public ActionResult Edit_POST(OrderLine orderLine, int variantId)
         {
             if (orderLine.Order != null)
             {
-                Product product = _productService.Get(ProductID);
-                if (product.CanBuy(orderLine.Quantity))
+                var productVariant = _productVariantService.Get(variantId);
+                if (productVariant.CanBuy(orderLine.Quantity))
                 {
-                    orderLine.ProductVariant = product;
-                    orderLine.Subtotal = orderLine.Quantity * product.PricePreTax;
-                    orderLine.Weight = orderLine.Quantity * product.Weight;
-                    orderLine.UnitPrice = product.Price;
-                    orderLine.Tax = orderLine.Quantity * product.Tax;
-                    orderLine.TaxRate = product.TaxRate.Percentage;
+                    orderLine.ProductVariant = productVariant;
+                    orderLine.Subtotal = orderLine.Quantity * productVariant.PricePreTax;
+                    orderLine.Weight = orderLine.Quantity * productVariant.Weight;
+                    orderLine.UnitPrice = productVariant.Price;
+                    orderLine.Tax = orderLine.Quantity * productVariant.Tax;
+                    orderLine.TaxRate = productVariant.TaxRate.Percentage;
                     orderLine.Order.OrderLines.Add(orderLine);
                 }
                 else
                 {
-                    ModelState.AddModelError("Quantity", "Requested Quantity is not available for purchase. "+(product.StockRemaining.HasValue?"Stock remaining:"+product.StockRemaining.Value:String.Empty));
+                    ModelState.AddModelError("Quantity", "Requested Quantity is not available for purchase. "+(productVariant.StockRemaining.HasValue?"Stock remaining:"+productVariant.StockRemaining.Value:String.Empty));
                 }
 
-                if (orderLine.Discount > (orderLine.Quantity * product.PricePreTax))
+                if (orderLine.Discount > (orderLine.Quantity * productVariant.PricePreTax))
                 {
-                    ModelState.AddModelError("Discount", "Discount value cannot be greater than Subtotal. (" + (orderLine.Quantity * product.PricePreTax) + ")");
+                    ModelState.AddModelError("Discount", "Discount value cannot be greater than Subtotal. (" + (orderLine.Quantity * productVariant.PricePreTax) + ")");
                 }
 
                 if (ModelState.IsValid)
@@ -69,7 +69,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 }
                 else
                 {
-                    ViewData["products"] = _productService.GetOptions();
+                    ViewData["products"] = _productVariantService.GetOptions();
                     ViewData["ProductID"] = orderLine.ProductVariant.Id;
                     return View(orderLine);
                 }
