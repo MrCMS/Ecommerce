@@ -11,6 +11,11 @@
 <table class="table table-condensed table-striped">
     <thead>
         <tr>
+             @if (Model.Variants.Any(x => !string.IsNullOrEmpty(x.Name)))
+             {
+                 <th>Name
+                 </th>
+             }
             @foreach (var option in Model.AttributeOptions.OrderBy(x => x.DisplayOrder))
             {
                 <th>@option.Name
@@ -30,6 +35,16 @@
         @foreach (var variant in Model.Variants)
         {
             <tr>
+                <td>
+                    @if (!String.IsNullOrWhiteSpace(variant.Name))
+                    {
+                        <span>@variant.Name</span>
+                    }
+                    else
+                    {
+                        <span>@Model.Name</span>
+                    }
+                </td>
                 @foreach (var option in Model.AttributeOptions.OrderBy(x => x.DisplayOrder))
                 {
                     var productAttributeValue = variant.AttributeValues.FirstOrDefault(value => value.ProductAttributeOption.Name == option.Name);

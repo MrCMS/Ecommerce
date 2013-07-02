@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services.Inventory;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Website.Controllers;
@@ -13,17 +14,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     {
         private readonly IProductVariantService _productVariantService;
         private readonly ITaxRateManager _taxRateManager;
+        private readonly ITrackingPolicyService _trackingPolicyService;
 
-        public ProductVariantController(IProductVariantService productVariantService, ITaxRateManager taxRateManager)
+        public ProductVariantController(IProductVariantService productVariantService, ITaxRateManager taxRateManager, ITrackingPolicyService trackingPolicyService)
         {
             _productVariantService = productVariantService;
             _taxRateManager = taxRateManager;
+            _trackingPolicyService = trackingPolicyService;
         }
 
         [HttpGet]
         public PartialViewResult Add(Product product)
         {
-            ViewData["taxrates"] = _taxRateManager.GetOptions();
+            ViewData["tracking-policy"] = _trackingPolicyService.GetOptions();
             return
                 PartialView(new ProductVariant
                                 {
@@ -45,7 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult Edit(ProductVariant productVariant)
         {
-            ViewData["taxrates"] = _taxRateManager.GetOptions(productVariant.TaxRate);
+            ViewData["tracking-policy"] = _trackingPolicyService.GetOptions();
             return PartialView(productVariant);
         }
 

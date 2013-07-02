@@ -29,6 +29,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual MediaCategory Gallery { get; set; }
 
+        [DisplayName("Tax Rate")]
+        public virtual TaxRate TaxRate { get; set; }
+
         public virtual decimal TaxRatePercentage
         {
             get
@@ -39,7 +42,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             }
         }
 
-        public virtual TaxRate TaxRate { get; set; }
+        public virtual decimal Tax
+        {
+            get { return Variants.Sum(x => x.Tax); }
+        }
 
         public virtual bool HasVariants
         {
@@ -77,6 +83,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
             var productVariant = new ProductVariant
                                      {
+                                         Name = this.Name,
+                                         TrackingPolicy = TrackingPolicy.DontTrack,
+                                         BasePrice = 0
                                      };
             Variants.Add(productVariant);
             productVariant.Product = this;

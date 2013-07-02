@@ -97,7 +97,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         [Fact]
         public void CartItem_TaxRatePercentage_ShouldReturnTheTaxRateInPercentage()
         {
-            A.CallTo(() => _productVariant.TaxRatePercentage).Returns(20);
+            A.CallTo(() => _productVariant.Product.TaxRatePercentage).Returns(20);
             var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
 
             var taxRatePercentage = cartItem.TaxRatePercentage;
