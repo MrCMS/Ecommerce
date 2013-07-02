@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using MrCMS.Entities;
-using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using System.Linq;
 using NHibernate;
-using MrCMS.Web.Apps.Ecommerce.Helpers;
-using NHibernate.Criterion;
+using System.ComponentModel.DataAnnotations;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 {
@@ -25,12 +22,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get
             {
-                return TaxAwarePrice.GetPriceExcludingTax(BasePrice, TaxRate);
+                return TaxAwarePrice.GetPriceExcludingTax(BasePrice, Product.TaxRate);
             }
         }
 
         public virtual decimal Weight { get; set; }
-        public virtual string Name { get { return Product.Name; } }
+        [StringLength(400)]
+        public virtual string Name { get; set; }
         public virtual string EditUrl { get { return Product.EditUrl; } }
 
         [DisplayName("Price")]
@@ -41,12 +39,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual decimal? PreviousPriceIncludingTax
         {
-            get { return TaxAwarePrice.GetPriceIncludingTax(PreviousPrice, TaxRate); }
+            get { return TaxAwarePrice.GetPriceIncludingTax(PreviousPrice, Product.TaxRate); }
         }
 
         public virtual decimal? PreviousPriceExcludingTax
         {
-            get { return TaxAwarePrice.GetPriceExcludingTax(PreviousPrice, TaxRate); }
+            get { return TaxAwarePrice.GetPriceExcludingTax(PreviousPrice, Product.TaxRate); }
         }
 
         public virtual decimal ReducedBy
@@ -73,7 +71,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual decimal Price
         {
-            get { return TaxAwarePrice.GetPriceIncludingTax(BasePrice, TaxRate); }
+            get { return TaxAwarePrice.GetPriceIncludingTax(BasePrice, Product.TaxRate); }
         }
 
         public virtual decimal GetPrice(int quantity)
@@ -102,7 +100,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual decimal GetPricePreTax(int quantity)
         {
-            return Math.Round(GetPrice(quantity) / ((TaxRatePercentage + 100) / 100), 2, MidpointRounding.AwayFromZero);
+            return Math.Round(GetPrice(quantity) / ((Product.TaxRatePercentage + 100) / 100), 2, MidpointRounding.AwayFromZero);
         }
 
         public virtual decimal GetUnitPrice()
@@ -110,20 +108,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             return Price;
         }
 
-        [DisplayName("Tax Rate")]
-        public virtual TaxRate TaxRate { get; set; }
+        public virtual string SKU { get; set; }
 
         public virtual decimal Tax { get { return Price - PricePreTax; } }
-        public virtual string SKU { get; set; }
-        public virtual decimal TaxRatePercentage
-        {
-            get
-            {
-                return TaxRate == null
-                           ? 0
-                           : TaxRate.Percentage;
-            }
-        }
 
         public virtual bool CanBuy(int quantity)
         {
@@ -164,5 +151,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                                        .List();
             }
         }
+
+        [StringLength(200)]
+        public virtual string Barcode { get; set; }
+        [DisplayName("Tracking Policy")]
+        public virtual TrackingPolicy TrackingPolicy { get; set; }
     }
 }

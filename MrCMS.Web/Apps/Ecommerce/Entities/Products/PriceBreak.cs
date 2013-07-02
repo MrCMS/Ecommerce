@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get
             {
-                return Item != null ? Item.TaxRate : null;
+                return Item != null ? Item.Product.TaxRate : null;
             }
         }
     }

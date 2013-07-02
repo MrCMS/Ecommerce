@@ -112,7 +112,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                         {
                                             int taxRateID = 0;
                                             Int32.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 14].Value.ToString(), out taxRateID);
-                                            productVariant.TaxRate = _taxRateManager.Get(taxRateID);
+                                            productVariant.Product.TaxRate = _taxRateManager.Get(taxRateID);
                                         }
                                         //Weight
                                         if (excelFile.Workbook.Worksheets[2].Cells[row, 15] != null && excelFile.Workbook.Worksheets[2].Cells[row, 15].Value != null)
@@ -365,7 +365,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                         wsProducts.Cells["K" + (j + 1 + rowNumber).ToString()].Value = products[i].Variants[j].StockRemaining;
                         wsProducts.Cells["L" + (j + 1 + rowNumber).ToString()].Value = products[i].Variants[j].SKU;
                         if (products[i].TaxRate != null)
-                            wsProducts.Cells["N" + (j + 1 + rowNumber).ToString()].Value = products[i].Variants[j].TaxRate.Id;
+                            wsProducts.Cells["N" + (j + 1 + rowNumber).ToString()].Value = products[i].Variants[j].Product.TaxRate.Id;
                         wsProducts.Cells["O" + (j + 1 + rowNumber).ToString()].Value = products[i].Variants[j].Weight;
                         foreach (var item in products[i].Variants[j].AttributeValues)
                         {
