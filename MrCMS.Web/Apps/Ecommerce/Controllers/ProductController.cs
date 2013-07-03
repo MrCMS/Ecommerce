@@ -17,8 +17,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _productSearchService = productSearchService;
         }
 
-        public ViewResult Show(Product page)
+        public ViewResult Show(Product page, int pv=0)
         {
+            ViewBag.Id = pv;
             ViewBag.ProductSearchUrl = UniquePageHelper.GetUrl<ProductSearch>();
             return View(page);
         }
