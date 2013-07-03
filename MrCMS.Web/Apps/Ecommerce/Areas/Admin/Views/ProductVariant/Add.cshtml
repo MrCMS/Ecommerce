@@ -1,27 +1,78 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
-@using (Html.BeginForm("Add", "ProductVariant", new { id = "" }, FormMethod.Post))
+@using (Html.BeginForm("Add", "ProductVariant", new {id=""}, FormMethod.Post))
 {
     <div class="modal-header">
         <h3>Add Product Variant</h3>
     </div>
     <div class="modal-body">
+         <div class="row-fluid">
+        @Html.HiddenFor(variant => variant.Product.Id)
+        @Html.LabelFor(variant => variant.Name)
+        @Html.TextBoxFor(variant => variant.Name, new { @class="span12" })
+             </div>
+         <div class="row-fluid">
         @for (int index = 0; index < Model.Product.AttributeOptions.Count; index++)
         {
-            var option = Model.Product.AttributeOptions[index];
+
+                var sc = 2;
+                if (Model.Product.AttributeOptions.Count == 3)
+                {
+                    sc = 4;
+                }
+                else if (Model.Product.AttributeOptions.Count == 2)
+                {
+                    sc = 6;
+                }
+                else
+                {
+                    sc = 12;
+                }
+
+                var option = Model.Product.AttributeOptions[index];
+            
+            <div class='@Html.Raw("span"+sc)'>
             @Html.LabelFor(variant => variant.AttributeValues[index].Value, option.Name)
-            @Html.TextBoxFor(variant => variant.AttributeValues[index].Value)
+            @Html.TextBoxFor(variant => variant.AttributeValues[index].Value, new { @class="span12" })
+           @Html.Hidden("AttributeValues["+index+"].Id", Model.AttributeValues[index].Id)
             @Html.Hidden("AttributeValues["+index+"].ProductAttributeOption.Id", option.Id.ToString())
+            </div>
         }
+             </div>
+        <div class="row-fluid">
+        <div class="span6">
         @Html.LabelFor(variant => variant.SKU)
-        @Html.TextBoxFor(variant => variant.SKU)
+        @Html.TextBoxFor(variant => variant.SKU, new { @class="span12" })
+             </div>
+         <div class="span6">
+        @Html.LabelFor(variant => variant.Barcode)
+        @Html.TextBoxFor(variant => variant.Barcode, new { @class="span12" })
+             </div>
+            </div>
+        <div class="row-fluid">
+              <div class="span6">
         @Html.LabelFor(variant => variant.BasePrice)
-        @Html.TextBoxFor(variant => variant.BasePrice)
+        @Html.TextBoxFor(variant => variant.BasePrice, new { @class="span12" })
+                  </div>
+              <div class="span6">
+          @Html.LabelFor(variant => variant.PreviousPrice)
+        @Html.TextBoxFor(variant => variant.PreviousPrice, new { @class="span12" })
+                  </div>
+         </div>
+        <div class="row-fluid">
+            <div class="span4">
+        @Html.LabelFor(variant => variant.Weight)
+        @Html.TextBoxFor(variant => variant.Weight, new { @class="span12" })
+                  </div>
+              <div class="span4">
         @Html.LabelFor(variant => variant.StockRemaining)
-        @Html.TextBoxFor(variant => variant.StockRemaining)
-        @Html.LabelFor(variant => variant.TaxRate.Id, "Tax Rate")
-        @Html.DropDownListFor(variant => variant.TaxRate.Id, ViewData["taxrates"] as IEnumerable<SelectListItem>)
-        @Html.HiddenFor(variant => variant.Product.Id)
+        @Html.TextBoxFor(variant => variant.StockRemaining, new { @class="span12" })
+                  </div>
+              <div class="span4">
+        @Html.LabelFor(product => product.TrackingPolicy)
+        @Html.DropDownListFor(product => product.TrackingPolicy, ViewData["tracking-policy"] as IEnumerable<SelectListItem>, new { @class="span12" })
+        </div>
+        </div>
     </div>
     <div class="modal-footer">
         <input type="submit" class="btn-primary btn" value="Add Product Variant" />

@@ -16,7 +16,7 @@
                 @foreach (var item in Model.Items)
                 {
                     <tr>
-                        <td>@item.Name</td>
+                        <td>@(String.IsNullOrWhiteSpace(item.Name)?item.Item.Product.Name:item.Name)</td>
                         <td><input type="text" class="input-small" name="@Html.Raw("quantity-"+item.Id)" value="@item.Quantity"/></td>
                         <td>&pound;@item.Price.ToString("#.##")</td>
                         <td>

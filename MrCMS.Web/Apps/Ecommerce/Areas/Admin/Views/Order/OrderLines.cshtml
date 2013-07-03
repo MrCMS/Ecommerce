@@ -30,8 +30,8 @@
             </th>
              <th>Weight
             </th>
-            <th>Actions
-            </th>
+        @*    <th>Actions
+            </th>*@
         </tr>
     </thead>
     <tbody>
@@ -39,7 +39,7 @@
         {
             <tr>
                 <td>
-                @item.ProductVariant.Name
+                @(String.IsNullOrWhiteSpace(item.ProductVariant.Name)?item.ProductVariant.Product.Name:item.ProductVariant.Name)
                 </td>
                  <td>
                 @item.ProductVariant.SKU
@@ -65,11 +65,11 @@
                  <td>
                     @item.Weight.ToString("n2")
                 </td>
-                <td>
+         @*       <td>
                     <div class="btn-group">
                         @Html.ActionLink("Edit", "Edit", "OrderLine" , new { id = item.Id }, new { @class = "btn btn-mini" })
                     </div>
-                </td>
+                </td>*@
             </tr>
         }
     </tbody>

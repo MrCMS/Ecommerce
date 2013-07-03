@@ -11,6 +11,8 @@
 <table class="table table-condensed table-striped">
     <thead>
         <tr>
+              <th>Name
+                 </th>
             @foreach (var option in Model.AttributeOptions.OrderBy(x => x.DisplayOrder))
             {
                 <th>@option.Name
@@ -22,6 +24,8 @@
             </th>
             <th>Stock Remaining
             </th>
+            <th>Weight (g)
+            </th>
             <th>Actions
             </th>
         </tr>
@@ -30,6 +34,16 @@
         @foreach (var variant in Model.Variants)
         {
             <tr>
+                <td>
+                    @if (!String.IsNullOrWhiteSpace(variant.Name))
+                    {
+                        <span>@variant.Name</span>
+                    }
+                    else
+                    {
+                        <span>@Model.Name</span>
+                    }
+                </td>
                 @foreach (var option in Model.AttributeOptions.OrderBy(x => x.DisplayOrder))
                 {
                     var productAttributeValue = variant.AttributeValues.FirstOrDefault(value => value.ProductAttributeOption.Name == option.Name);
@@ -66,6 +80,9 @@
                 </td>
                 <td>
                     @variant.StockRemaining
+                </td>
+                <td>
+                    @variant.Weight.ToString("#.##")
                 </td>
                 <td>
                     <div class="btn-group">
