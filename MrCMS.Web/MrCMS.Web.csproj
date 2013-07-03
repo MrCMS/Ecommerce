@@ -241,6 +241,8 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\GeneralHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Models\TrackingPolicy.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
@@ -260,6 +262,8 @@
     <Compile Include="Apps\Ecommerce\Pages\UserAccount.cs" />
     <Compile Include="Apps\Ecommerce\Pages\UserLogin.cs" />
     <Compile Include="Apps\Ecommerce\Pages\EnterOrderEmail.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\ITrackingPolicyService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\TrackingPolicyService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductSearchService.cs" />

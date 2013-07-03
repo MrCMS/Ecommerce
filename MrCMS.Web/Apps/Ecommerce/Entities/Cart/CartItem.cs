@@ -32,7 +32,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         }
         public virtual decimal TaxRatePercentage
         {
-            get { return Item.TaxRatePercentage; }
+            get { return Item.Product.TaxRatePercentage; }
         }
         public virtual decimal Weight
         {

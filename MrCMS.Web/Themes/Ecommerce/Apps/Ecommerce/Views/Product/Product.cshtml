@@ -37,15 +37,18 @@
                 {
                     <span>Exclusive price</span>
                     <h1 class="product-price">
-
                         @Html.Raw("&pound;" + primaryVariant.Price.ToString("#.##"))
                     </h1>
-                    <span>shop price: <span style="text-decoration: line-through">&pound;@(primaryVariant.PreviousPrice.HasValue ? primaryVariant.PreviousPrice.Value.ToString("#.##") : "")</span></span>
+                    if(primaryVariant.PreviousPrice.HasValue)
+                    {
+                    <span>shop price: <span style="text-decoration: line-through">&pound;@(primaryVariant.PreviousPrice.Value.ToString("#.##"))</span></span>
+                    }
                 }
-                <br />
-                <br />
+                <br /><br />
+                <p>
                 @(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)
-                <br />
+                </p>
+
                 <div id="mail-print-buttons">
                     <i class="icon-envelope"></i><i class="icon-print"></i>
                 </div>
@@ -79,71 +82,54 @@
         <br />
     </div>
     <div class="span4">
-        @if (Model.AttributeOptions.Any())
+        @if (Model.Variants.Any())
         {
-            foreach (var item in Model.AttributeOptions.OrderBy(x => x.DisplayOrder))
-            {
             <pre class="product-variants-filter">
-                <label class="pull-left">Select @item.Name&nbsp;</label>
-                <select class="pull-right" id='@(Html.Encode("attributeOption" + item.Id))'>
-                    @foreach (var optionValue in item.Values)
+                <select id='variants' class="span12">
+                    @foreach (var variant in Model.Variants)
                     {
-                        <option value="@optionValue.ProductVariant.Id">@optionValue.Value</option>
+                        var title=String.Empty;
+                        if (!Model.AttributeOptions.Any())
+                        {
+                            title = Model.Name + "-" + variant.SKU;
+                        }
+                        else
+                        {
+                            title=(variant.Name!=null?variant.Name:Model.Name)+" ";
+                            foreach (var attributeValue in variant.AttributeValues)
+                            {
+                                title+=attributeValue.Value+" ";
+                            }
+                            title+="£"+variant.Price;
+                        }
+                        <option value="@variant.Id">@title</option>
                     }
                 </select>
                </pre>
-            }
         }
-        @if (primaryVariant.PriceBreaks.Any())
-        {
-            <div id="product-pricebreaks">
-                <div class="product-pricebreaks-title">
-                    PRICE BREAKS - The more you buy, the more you save.
-                </div>
-                <table class="table table-bordered table-condensed">
-                    <tr>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                    </tr>
-                    @foreach (var item in primaryVariant.PriceBreaks)
-                    {
-                        <tr>
-                            <td>@item.Quantity</td>
-                            <td>&pound;@item.Price.ToString("#.##")</td>
-                        </tr> 
-                    }
-                </table>
-            </div>
-        }
-        else if (Model.Variants.Any() && !primaryVariant.PriceBreaks.Any())
+
+        @if (Model.Variants.Any())
         {
             <div id="product-variants-pricebreaks">
-                <div class="product-pricebreaks-title">
-                    PRICE BREAKS - The more you buy, the more you save.
-                </div>
-                <table id="product-pricebreaks-table" class="table table-bordered table-condensed">
-                    <tr>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                    </tr>
-                    @if (Model.Variants.Any() && primaryVariant.PriceBreaks.Any())
+                    @if (primaryVariant.PriceBreaks.Any())
                     {
-                        foreach (var item in primaryVariant.PriceBreaks)
+                        <div class="product-pricebreaks-title">
+                        PRICE BREAKS - The more you buy, the more you save.
+                    </div>
+                        <table id="product-pricebreaks-table" class="table table-bordered table-condensed">
+                        <tr>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                        </tr>
+                        @foreach (var item in primaryVariant.PriceBreaks)
                         {
                         <tr>
                             <td>@item.Quantity</td>
                             <td>&pound;@item.Price.ToString("#.##")</td>
                         </tr> 
                         }
+                        </table>
                     }
-                    else
-                    {
-                        <tr>
-                            <td>1</td>
-                            <td>&pound;@primaryVariant.Price.ToString("#.##")</td>
-                        </tr>
-                    }
-                </table>
             </div>
         }
         @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))

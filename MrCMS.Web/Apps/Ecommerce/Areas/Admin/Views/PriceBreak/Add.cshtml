@@ -9,7 +9,6 @@
     </div>
     <div class="modal-body">
         @Html.HiddenFor(model => model.Id)
-        @Html.HiddenFor(model => model.Type)
         @Html.LabelFor(model => model.Quantity)
         @Html.TextBoxFor(model => model.Quantity)
         @Html.ValidationMessageFor(model => model.Quantity)
