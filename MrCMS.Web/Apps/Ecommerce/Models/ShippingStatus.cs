@@ -1,10 +1,9 @@
-﻿namespace MrCMS.Web.Apps.Ecommerce.Models
+namespace MrCMS.Web.Apps.Ecommerce.Models
 {
     public enum ShippingStatus
     {
         Pending,
-        Processing,
-        Sent,
+        Shipped,
         Cancelled
     }
 }

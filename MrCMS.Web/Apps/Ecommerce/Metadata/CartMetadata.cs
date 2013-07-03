@@ -13,6 +13,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
             get { return ChildrenListType.WhiteList; }
         }
 
+        public override IEnumerable<Type> ChildrenList
+        {
+            get { yield return typeof(EnterOrderEmail); }
+        }
+
         public override bool RequiresParent { get { return false; } }
         public override bool AutoBlacklist { get { return true; } }
 
@@ -28,6 +33,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
         public override string WebGetAction
         {
             get { return "Show"; }
+        }
+        public override bool ChildrenMaintainHierarchy
+        {
+            get { return false; }
         }
     }
 }
