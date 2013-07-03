@@ -11,11 +11,8 @@
 <table class="table table-condensed table-striped">
     <thead>
         <tr>
-             @if (Model.Variants.Any(x => !string.IsNullOrEmpty(x.Name)))
-             {
-                 <th>Name
+              <th>Name
                  </th>
-             }
             @foreach (var option in Model.AttributeOptions.OrderBy(x => x.DisplayOrder))
             {
                 <th>@option.Name
@@ -26,6 +23,8 @@
             <th>Price
             </th>
             <th>Stock Remaining
+            </th>
+            <th>Weight (g)
             </th>
             <th>Actions
             </th>
@@ -81,6 +80,9 @@
                 </td>
                 <td>
                     @variant.StockRemaining
+                </td>
+                <td>
+                    @variant.Weight.ToString("#.##")
                 </td>
                 <td>
                     <div class="btn-group">

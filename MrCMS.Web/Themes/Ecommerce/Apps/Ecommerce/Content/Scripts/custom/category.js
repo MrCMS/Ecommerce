@@ -78,26 +78,31 @@
         var pageSize = parseInt($('#PageSize').text(), 10);
         var pageNumber = parseInt($('#PageNumber').text(), 10);
         var totalItemCount = parseInt($('#TotalItemCount').text(), 10);
-        if (pageSize === 1 && totalItemCount === 1) {
-            $('#stats').html("Showing 1 result");
-        } else {
-            var start;
-            if (pageSize === 1 && pageNumber === 1) {
-                start = 1;
-            }
-            if (pageSize === 1 && pageNumber > 0) {
-                start = (pageSize * pageNumber) - pageSize;
-            }
-            else {
-                start = (pageSize * pageNumber) - pageSize + 1;
-            }
-            var end = (pageSize * pageNumber);
-
-            if ($('#PageSize').text() === "1") {
-                $('#stats').html("Showing item #" + (start + 1) + " of " + totalItemCount + " results");
+        if (!isNaN(pageSize)) {
+            if (pageSize === 1 && totalItemCount === 1) {
+                $('#stats').html("Showing 1 result");
             } else {
-                $('#stats').html("Showing " + start + " - " + end + " of " + totalItemCount + " results");
+                var start;
+                if (pageSize === 1 && pageNumber === 1) {
+                    start = 1;
+                }
+                if (pageSize === 1 && pageNumber > 0) {
+                    start = (pageSize * pageNumber) - pageSize;
+                }
+                else {
+                    start = (pageSize * pageNumber) - pageSize + 1;
+                }
+                var end = (pageSize * pageNumber);
+
+                if ($('#PageSize').text() === "1") {
+                    $('#stats').html("Showing item #" + (start + 1) + " of " + totalItemCount + " results");
+                } else {
+                    $('#stats').html("Showing " + start + " - " + end + " of " + totalItemCount + " results");
+                }
             }
+        }
+        else {
+            $('#stats').html("");
         }
     }
 

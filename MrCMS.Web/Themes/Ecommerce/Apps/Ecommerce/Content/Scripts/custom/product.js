@@ -1,7 +1,7 @@
 ﻿$(function () {
     $('.product-variants-filter select').live("change", function () {
         productVariantId = $(this).val();
-        $("#IdVariant").val(productVariantId);
+        $("#Id").val(productVariantId);
         $.getJSON('/Apps/Ecommerce/ProductVariant/GetPriceBreaksForProductVariant',
             { id: productVariantId }, function (response) {
                 $("#product-pricebreaks-table").empty();
