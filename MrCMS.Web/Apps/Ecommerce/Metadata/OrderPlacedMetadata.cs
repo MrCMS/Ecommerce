@@ -34,5 +34,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
         {
             get { return "Show"; }
         }
+        public override bool ChildrenMaintainHierarchy
+        {
+            get { return false; }
+        }
     }
 }
