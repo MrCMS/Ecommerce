@@ -39,10 +39,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Add")]
         [HttpPost]
-        public RedirectToRouteResult Add_POST(ProductVariant productVariant)
+        public ActionResult Add_POST(ProductVariant productVariant)
         {
-            _productVariantService.Add(productVariant);
-            return RedirectToAction("Edit", "Webpage", new { id = productVariant.Product.Id });
+            if (ModelState.IsValid)
+            {
+                _productVariantService.Add(productVariant);
+                return RedirectToAction("Edit", "Webpage", new { id = productVariant.Product.Id });
+            }
+
+            ViewData["tracking-policy"] = _trackingPolicyService.GetOptions();
+            return PartialView(productVariant);
         }
 
         [HttpGet]
