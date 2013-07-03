@@ -74,10 +74,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 foreach (ProductAttributeValue t in productVariant.AttributeValues)
                 {
                     t.ProductVariant = productVariant;
-                    if (productVariant.Product.AttributeOptions.All(x => x.Id != t.ProductAttributeOption.Id))
-                    {
-                        productVariant.Product.AttributeOptions.Add(t.ProductAttributeOption);
-                    }
                 }
                 _session.Transact(session => session.Save(productVariant));
             }

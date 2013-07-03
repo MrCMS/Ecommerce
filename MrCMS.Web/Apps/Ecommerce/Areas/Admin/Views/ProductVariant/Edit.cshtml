@@ -29,13 +29,13 @@
                 {
                     sc = 12;
                 }
-
+            
                 var option = Model.Product.AttributeOptions[index];
             
             <div class='@Html.Raw("span"+sc)'>
             @Html.LabelFor(variant => variant.AttributeValues[index].Value, option.Name)
             @Html.TextBoxFor(variant => variant.AttributeValues[index].Value, new { @class="span12" })
-            @Html.Hidden("AttributeValues["+index+"].ProductAttributeOption.Id", option.Id.ToString())
+            @Html.Hidden("AttributeValues["+index+"].Id", Model.AttributeValues[index].Id)
             </div>
         }
              </div>
@@ -59,12 +59,16 @@
         @Html.TextBoxFor(variant => variant.PreviousPrice, new { @class="span12" })
                   </div>
          </div>
-        <div class="row-fluid">
-              <div class="span6">
+                <div class="row-fluid">
+            <div class="span4">
+        @Html.LabelFor(variant => variant.Weight)
+        @Html.TextBoxFor(variant => variant.Weight, new { @class="span12" })
+                  </div>
+              <div class="span4">
         @Html.LabelFor(variant => variant.StockRemaining)
         @Html.TextBoxFor(variant => variant.StockRemaining, new { @class="span12" })
                   </div>
-              <div class="span6">
+              <div class="span4">
         @Html.LabelFor(product => product.TrackingPolicy)
         @Html.DropDownListFor(product => product.TrackingPolicy, ViewData["tracking-policy"] as IEnumerable<SelectListItem>, new { @class="span12" })
         </div>

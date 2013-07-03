@@ -28,19 +28,17 @@
                         </div>
                         <div class="span3">
                             <div class="pull-right">
-                                Exclusive price
+                                @if(variant.Price!=null && variant.Price>0)
+                                {
+                                    <span>Exclusive price</span>
                                 <h1 class="product-price">
-                                    @if (variant.PricePreTax == 0 && item.Variants.Any())
-                                    {
-                                        @Html.Raw("&pound;" + variant.Price.ToString("#.##"))
-                                    }
-                                    else
-                                    {
-                                        @Html.Raw("&pound;" + variant.Price.ToString("#.##"))
-                                        ;
-                                    }
+                                    @Html.Raw("&pound;" + variant.Price.ToString("#.##"))
                                 </h1>
-                                shop price <span style="text-decoration: line-through">&pound;@(variant.PreviousPrice.HasValue ? variant.PreviousPrice.Value.ToString("#.##") : String.Empty)</span>
+                                }
+                                @if (variant.PreviousPrice.HasValue)
+                                {
+                                <span>shop price: <span style="text-decoration: line-through">&pound;@(variant.PreviousPrice.Value.ToString("#.##"))</span></span>
+                                }
                                 <br /><br />
                                 <a href="/@item.LiveUrlSegment" class="btn btn-info span12">
                                     More info
