@@ -75,6 +75,11 @@
         </div>
     </div>
     <div class="modal-footer">
+           <div class="pull-left">
+               @Html.ValidationMessageFor(variant => variant.BasePrice)
+         </div>
+              <div class="pull-right">
         <input type="submit" class="btn-primary btn" value="Add Product Variant" />
+                  </div>
     </div>
 }
