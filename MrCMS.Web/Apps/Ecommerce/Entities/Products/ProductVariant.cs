@@ -31,6 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual string Name { get; set; }
         public virtual string EditUrl { get { return Product.EditUrl; } }
 
+        [Required]
         [DisplayName("Price")]
         public virtual decimal BasePrice { get; set; }
 
