@@ -33,26 +33,26 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _orderLineController = new OrderLineController(_orderLineService, _orderService, _productVariantService);
         }
 
-        [Fact]
-        public void OrderLineController_Edit_ReturnsAViewResult()
-        {
-            var item = new OrderLine();
-            item.ProductVariant = new ProductVariant() { Id = 1 };
+        //[Fact]
+        //public void OrderLineController_Edit_ReturnsAViewResult()
+        //{
+        //    var item = new OrderLine();
+        //    item.ProductVariant = new ProductVariant() { Id = 1 };
 
-            var result = _orderLineController.Edit(item);
+        //    var result = _orderLineController.Edit(item);
 
-            result.Should().BeOfType<ViewResult>();
-        }
+        //    result.Should().BeOfType<ViewResult>();
+        //}
 
-        [Fact]
-        public void OrderLineController_Edit_ReturnsThePassedObjectAsTheModel()
-        {
-            var item = new OrderLine();
-            item.ProductVariant = new ProductVariant() { Id = 1 };
+        //[Fact]
+        //public void OrderLineController_Edit_ReturnsThePassedObjectAsTheModel()
+        //{
+        //    var item = new OrderLine();
+        //    item.ProductVariant = new ProductVariant() { Id = 1 };
 
-            var result = _orderLineController.Edit(item);
+        //    var result = _orderLineController.Edit(item);
 
-            result.As<ViewResult>().Model.Should().Be(item);
-        }
+        //    result.As<ViewResult>().Model.Should().Be(item);
+        //}
     }
 }
