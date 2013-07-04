@@ -5,6 +5,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Paging;
 using System;
 using NHibernate.Criterion;
+using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
@@ -67,6 +68,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                option =>
                                option.Name.IsInsensitiveLike(name, MatchMode.Exact) && option.Id != id)
                            .RowCount() > 0;
+        }
+        public List<SelectListItem> GetOptions()
+        {
+            _session.Evict(typeof(Brand));
+            return GetAll().BuildSelectItemList(item => item.Name, item => item.Id.ToString(), null, String.Empty);
         }
     }
 }
