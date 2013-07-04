@@ -26,6 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult Add(Product product)
         {
+            ViewData["tax-rate-options"] = _taxRateManager.GetOptions();
             ViewData["tracking-policy"] = _trackingPolicyService.GetOptions();
             return
                 PartialView(new ProductVariant
@@ -46,7 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 _productVariantService.Add(productVariant);
                 return RedirectToAction("Edit", "Webpage", new { id = productVariant.Product.Id });
             }
-
+            ViewData["tax-rate-options"] = _taxRateManager.GetOptions(productVariant.TaxRate);
             ViewData["tracking-policy"] = _trackingPolicyService.GetOptions();
             return PartialView(productVariant);
         }
@@ -54,16 +55,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult Edit(ProductVariant productVariant)
         {
+            ViewData["tax-rate-options"] = _taxRateManager.GetOptions(productVariant.TaxRate);
             ViewData["tracking-policy"] = _trackingPolicyService.GetOptions();
             return PartialView(productVariant);
         }
 
         [ActionName("Edit")]
         [HttpPost]
-        public RedirectToRouteResult Edit_POST(ProductVariant productVariant)
+        public ActionResult Edit_POST(ProductVariant productVariant)
         {
-            _productVariantService.Update(productVariant);
-            return RedirectToAction("Edit", "Webpage", new { id = productVariant.Product.Id });
+            if (ModelState.IsValid)
+            {
+                _productVariantService.Update(productVariant);
+                return RedirectToAction("Edit", "Webpage", new { id = productVariant.Product.Id });
+            }
+            ViewData["tax-rate-options"] = _taxRateManager.GetOptions(productVariant.TaxRate);
+            ViewData["tracking-policy"] = _trackingPolicyService.GetOptions();
+            return PartialView(productVariant);
         }
 
         [HttpGet]
@@ -80,15 +88,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return RedirectToAction("Edit", "Webpage", new { id = productVariant.Product.Id });
         }
 
-        public JsonResult IsUniqueSKU(string sku, ProductVariant productVariant)
+        public JsonResult IsUniqueSKU(string SKU, int Id=0)
         {
-            if (productVariant != null)
-            {
-                return _productVariantService.AnyExistingProductVariantWithSKU(sku, productVariant)
+            return _productVariantService.AnyExistingProductVariantWithSKU(SKU, Id)
                            ? Json("There is already an SKU stored with that value.", JsonRequestBehavior.AllowGet)
                            : Json(true, JsonRequestBehavior.AllowGet);
-            }
-            return Json(String.Empty);
         }
     }
 }

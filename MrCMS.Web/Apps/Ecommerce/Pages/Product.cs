@@ -29,19 +29,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual MediaCategory Gallery { get; set; }
 
-        [DisplayName("Tax Rate")]
-        public virtual TaxRate TaxRate { get; set; }
-
-        public virtual decimal TaxRatePercentage
-        {
-            get
-            {
-                return TaxRate == null
-                           ? 0
-                           : TaxRate.Percentage;
-            }
-        }
-
         public virtual decimal Tax
         {
             get { return Variants.Sum(x => x.Tax); }

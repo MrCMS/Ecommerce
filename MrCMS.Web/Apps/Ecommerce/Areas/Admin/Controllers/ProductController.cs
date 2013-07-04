@@ -25,9 +25,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IProductOptionManager _productOptionManager;
         private readonly IFileService _fileService;
         private readonly IImportExportManager _importExportManager;
+        private readonly IBrandService _brandService;
 
         public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService, ITaxRateManager taxRateManager,
-            IProductOptionManager productOptionManager, IFileService fileService, IImportExportManager importExportManager)
+            IProductOptionManager productOptionManager, IFileService fileService, IImportExportManager importExportManager, IBrandService brandService)
         {
             _productService = productService;
             _documentService = documentService;
@@ -36,6 +37,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _productOptionManager = productOptionManager;
             _fileService = fileService;
             _importExportManager = importExportManager;
+            _brandService = brandService;
         }
 
         /// <summary>
@@ -207,7 +209,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         public PartialViewResult PricingInfo(Product product)
         {
-            ViewData["tax-rate-options"] = _taxRateManager.GetOptions(product.TaxRate);
             return PartialView(product);
         }
 
@@ -406,6 +407,41 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 return Json(_productService.Search(term).Select(x => new { Name = x.Name, ProductID = x.Id }).Take(15).ToList());
 
             return Json(String.Empty, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public PartialViewResult Brands(Product product,string brandId)
+        {
+            var options = _brandService.GetOptions();
+            if (!String.IsNullOrWhiteSpace(brandId))
+            {
+                if (options.Where(x => x.Value == brandId).SingleOrDefault() != null)
+                    options.Where(x => x.Value == brandId).SingleOrDefault().Selected=true;
+            }
+            ViewData["brands"] = options;
+            return PartialView(product);
+        }
+
+        [HttpGet]
+        public PartialViewResult AddBrand(Product product)
+        {
+            ViewData["product"] = product;
+            return PartialView(new Brand());
+        }
+
+        [HttpPost]
+        [ActionName("AddBrand")]
+        public JsonResult AddBrand_POST(string name)
+        {
+            if (!String.IsNullOrWhiteSpace(name) && !_brandService.AnyExistingBrandsWithName(name,0))
+            {
+                _brandService.Add(new Brand() { Name=name,Site=CurrentSite });
+                return Json(_brandService.GetBrandByName(name).Id);
+            }
+            else
+            {
+                return Json(false);
+            }
         }
     }
 }
