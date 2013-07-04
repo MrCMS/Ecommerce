@@ -417,6 +417,7 @@
     <Content Include="Apps\Core\Content\Styles\style.css" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-products.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-variant.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\products.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\tax-rates.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\specification-attributes.js" />
@@ -1338,6 +1339,8 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\EditPaymentStatus.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_PasswordLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Category.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddBrand.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Brands.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

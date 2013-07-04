@@ -89,12 +89,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             _session.Transact(session => session.Delete(productVariant));
         }
 
-        public bool AnyExistingProductVariantWithSKU(string sku, ProductVariant productVariant)
+        public bool AnyExistingProductVariantWithSKU(string sku, int id)
         {
             return _session.QueryOver<ProductVariant>()
                            .Where(
                                variant =>
-                               variant.SKU.IsInsensitiveLike(sku, MatchMode.Exact) && variant.Id != productVariant.Id)
+                               variant.SKU.IsInsensitiveLike(sku, MatchMode.Exact) && variant.Id != id)
                            .RowCount() > 0;
         }
 

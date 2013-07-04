@@ -1,0 +1,21 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model MrCMS.Web.Apps.Ecommerce.Entities.Products.Brand
+@{ 
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+    var product = ViewData["product"] as Product;
+}
+<div class="modal-header">
+    <h3>Add Brand</h3>
+</div>
+    @Html.Hidden("productId",product.Id)
+        <div class="modal-body">
+        @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name)
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+
+<div class="modal-footer">
+    <button id="close" class="btn-primary btn">Save Brand</button>
+</div>
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/brands.js"); }
