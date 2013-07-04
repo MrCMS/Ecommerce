@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Lucene.Net.Analysis.Standard;
+using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
@@ -43,6 +44,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             PriceFrom = Double.Parse(_PriceFrom.ToString());
             PriceTo = Double.Parse(_PriceTo.ToString());
             SearchTerm = searchTerm;
+        }
+
+        public Filter GetFilter()
+        {
+            var dateValue = DateTools.DateToString(DateTime.UtcNow, DateTools.Resolution.SECOND);
+            var filter = FieldCacheRangeFilter.NewStringRange(ProductSearchIndex.PublishOn.FieldName, null,
+                                                              dateValue, false, true);
+            return filter;
         }
 
         public Query GetQuery()
