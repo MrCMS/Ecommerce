@@ -15,6 +15,8 @@ using System.Drawing;
 using System.Web;
 using System.Web.Mvc;
 using System.Linq;
+using MrCMS.Website;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public class ImportExportManager : IImportExportManager
@@ -57,211 +59,181 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
                                 for (var row = 2; row <= rowCount; row++)
                                 {
-                                    Product product = new Product();
-                                    string url = String.Empty, sku = String.Empty, name = String.Empty;
-                                    //Url
-                                    if (excelFile.Workbook.Worksheets[2].Cells[row, 1] != null && excelFile.Workbook.Worksheets[2].Cells[row, 1].Value != null)
-                                        url = excelFile.Workbook.Worksheets[2].Cells[row, 1].Value.ToString();
-                                    //SKU
-                                    if (excelFile.Workbook.Worksheets[2].Cells[row, 12] != null && excelFile.Workbook.Worksheets[2].Cells[row, 12].Value != null)
-                                        sku = excelFile.Workbook.Worksheets[2].Cells[row, 12].Value.ToString();
-                                    //Name
-                                    if (excelFile.Workbook.Worksheets[2].Cells[row, 2] != null && excelFile.Workbook.Worksheets[2].Cells[row, 2].Value != null)
-                                        name = excelFile.Workbook.Worksheets[2].Cells[row, 2].Value.ToString();
+                                    string url = GetValueFromRow(excelFile, 2, row, 1)
+                                    , productName = GetValueFromRow(excelFile, 2, row, 2)
+                                    , description = GetValueFromRow(excelFile, 2, row, 3)
+                                    , seoTitle = GetValueFromRow(excelFile, 2, row, 4)
+                                    , seoDescription = GetValueFromRow(excelFile, 2, row, 5)
+                                    , seoKeywords = GetValueFromRow(excelFile, 2, row, 6)
+                                    , productAbstract = GetValueFromRow(excelFile, 2, row, 7)
+                                    , brand = GetValueFromRow(excelFile, 2, row, 8)
+                                    , categories = GetValueFromRow(excelFile, 2, row, 9)
+                                    , specifications = GetValueFromRow(excelFile, 2, row, 10)
+                                    , variantName = GetValueFromRow(excelFile, 2, row, 11)
+                                    , price = GetValueFromRow(excelFile, 2, row, 12)
+                                    , previousPrice = GetValueFromRow(excelFile, 2, row, 13)
+                                    , taxRate = GetValueFromRow(excelFile, 2, row, 14)
+                                    , weight = GetValueFromRow(excelFile, 2, row, 15)
+                                    , stock = GetValueFromRow(excelFile, 2, row, 16)
+                                    , trackingPolicy = GetValueFromRow(excelFile, 2, row, 17)
+                                    , sku = GetValueFromRow(excelFile, 2, row, 18)
+                                    , barcode = GetValueFromRow(excelFile, 2, row, 19)
+                                    , option1Name = GetValueFromRow(excelFile, 2, row, 20)
+                                    , option1Value = GetValueFromRow(excelFile, 2, row, 21)
+                                    , option2Name = GetValueFromRow(excelFile, 2, row, 22)
+                                    , option2Value = GetValueFromRow(excelFile, 2, row, 23)
+                                    , option3Name = GetValueFromRow(excelFile, 2, row, 24)
+                                    , option3Value = GetValueFromRow(excelFile, 2, row, 25)
+                                    , image1 = GetValueFromRow(excelFile, 2, row, 26)
+                                    , image2 = GetValueFromRow(excelFile, 2, row, 27)
+                                    , image3 = GetValueFromRow(excelFile, 2, row, 28);
 
-                                    product = _productService.GetByUrl(url);
+                                    Product product = _productService.GetByUrl(url);
 
                                     if (product == null)
-                                    {
                                         product = new Product();
-                                        product.Name = name;
+                                    else
+                                        lastAddedProductID = product.Id;
+
+                                    product.Parent = _documentService.GetUniquePage<ProductSearch>();
+                                    product.Name = productName;
+                                    product.BodyContent = description;
+                                    product.MetaTitle = seoTitle;
+                                    product.MetaDescription = seoDescription;
+                                    product.MetaKeywords = seoKeywords;
+                                    product.Abstract = productAbstract;
+                                    if (!_brandService.AnyExistingBrandsWithName(brand, 0))
+                                        _brandService.Add(new Brand() { Name = brand });
+                                    product.Brand = _brandService.GetBrandByName(brand);
+
+                                    //Categories
+                                    string[] Cats = categories.Split(';');
+                                    foreach (var item in Cats)
+                                    {
+                                        int categoryID = 0;
+                                        Int32.TryParse(item, out categoryID);
+                                        Category category = _documentService.GetDocument<Category>(categoryID);
+                                        if (category != null && product.Categories.Where(x => x.Id == category.Id).Count() == 0)
+                                            product.Categories.Add(category);
                                     }
 
-                                    if (!String.IsNullOrWhiteSpace(product.UrlSegment) && !String.IsNullOrWhiteSpace(sku) && String.IsNullOrWhiteSpace(name))
+                                    if(lastAddedProductID==0)
                                     {
-                                        ProductVariant productVariant = _productVariantService.GetProductVariantBySKU(sku);
-                                        if (productVariant == null)
-                                        {
-                                            productVariant = new ProductVariant();
-                                        }
-                                        productVariant.SKU = sku;
-
-                                        //Base Price
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 9] != null && excelFile.Workbook.Worksheets[2].Cells[row, 9].Value != null)
-                                        {
-                                            decimal BasePrice = 0;
-                                            Decimal.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 9].Value.ToString(), out BasePrice);
-                                            productVariant.BasePrice = BasePrice;
-                                        }
-                                        //Previous Price
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 10] != null && excelFile.Workbook.Worksheets[2].Cells[row, 10].Value != null)
-                                        {
-                                            decimal PreviousPrice = 0;
-                                            Decimal.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 10].Value.ToString(), out PreviousPrice);
-                                            productVariant.PreviousPrice = PreviousPrice;
-                                        }
-                                        //Stock
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 11] != null && excelFile.Workbook.Worksheets[2].Cells[row, 11].Value != null)
-                                        {
-                                            int StockRemaining = 0;
-                                            Int32.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 11].Value.ToString(), out StockRemaining);
-                                            productVariant.StockRemaining = StockRemaining;
-                                        }
-                                        //Tax Rate
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 14] != null && excelFile.Workbook.Worksheets[2].Cells[row, 14].Value != null)
-                                        {
-                                            int taxRateID = 0;
-                                            Int32.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 14].Value.ToString(), out taxRateID);
-                                            productVariant.TaxRate = _taxRateManager.Get(taxRateID);
-                                        }
-                                        //Weight
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 15] != null && excelFile.Workbook.Worksheets[2].Cells[row, 15].Value != null)
-                                        {
-                                            decimal Weight = 0;
-                                            Decimal.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 15].Value.ToString(), out Weight);
-                                            productVariant.Weight = Weight;
-                                        }
-
-                                        if (lastAddedProductID != 0)
-                                        {
-                                            product = _productService.Get(lastAddedProductID);
-                                            productVariant.Product = product;
-                                        }
-                                        else
-                                        {
-                                            if (excelFile.Workbook.Worksheets[2].Cells[row, 1] != null && excelFile.Workbook.Worksheets[2].Cells[row, 1].Value != null)
-                                            {
-                                                product = _productService.GetByUrl(excelFile.Workbook.Worksheets[2].Cells[row, 1].Value.ToString());
-                                                productVariant.Product = product;
-                                            }
-                                        }
-                                        if (productVariant.Product != null)
-                                        {
-                                            _productVariantService.Add(productVariant);
-                                            productVariant = _productVariantService.GetProductVariantBySKU(productVariant.SKU);
-
-                                            //Option Values
-                                            if (excelFile.Workbook.Worksheets[2].Cells[row, 13] != null && excelFile.Workbook.Worksheets[2].Cells[row, 13].Value != null)
-                                            {
-                                                string rawOptions = excelFile.Workbook.Worksheets[2].Cells[row, 13].Value.ToString();
-                                                string[] options = rawOptions.Split(';');
-                                                foreach (var item in options)
-                                                {
-                                                    if (item != String.Empty)
-                                                    {
-                                                        string[] optionValue = item.Split(':');
-
-                                                        if (!_productOptionManager.AnyExistingAttributeOptionsWithName(optionValue[0]))
-                                                        {
-                                                            _productOptionManager.AddAttributeOption(new ProductAttributeOption() { Name = optionValue[0] });
-                                                        }
-                                                        ProductAttributeOption option = _productOptionManager.GetAttributeOptionByName(optionValue[0]);
-                                                        if (productVariant.Product.AttributeOptions.Where(x => x.Id == option.Id).Count() == 0)
-                                                            product.AttributeOptions.Add(option);
-                                                        if (productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).Count() == 0)
-                                                        {
-                                                            productVariant.AttributeValues.Add(new ProductAttributeValue()
-                                                            {
-                                                                ProductAttributeOption = option,
-                                                                ProductVariant = productVariant,
-                                                                Value = optionValue[1]
-                                                            });
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            _documentService.SaveDocument<Product>(product);
-                                            _productVariantService.Update(productVariant);
-                                        }
-                                        else
-                                            messages.Add("Product Variant with the following information (SKU:" + productVariant.SKU + ") cannot be stored in database because Parent Product was not identified.");
-
+                                        product.UrlSegment = url;
+                                        _documentService.AddDocument<Product>(product);
                                     }
                                     else
+                                         _documentService.SaveDocument<Product>(product);
+                                    product = _productService.Get(product.Id);
+
+                                    //Specifications
+                                    string[] Specs = specifications.Split(';');
+                                    foreach (var item in Specs)
                                     {
-                                        //Description
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 3] != null && excelFile.Workbook.Worksheets[2].Cells[row, 3].Value != null)
-                                            product.BodyContent = excelFile.Workbook.Worksheets[2].Cells[row, 3].Value.ToString();
-                                        //Meta Title
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 4] != null && excelFile.Workbook.Worksheets[2].Cells[row, 4].Value != null)
-                                            product.MetaTitle = excelFile.Workbook.Worksheets[2].Cells[row, 4].Value.ToString();
-                                        //Meta Description
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 5] != null && excelFile.Workbook.Worksheets[2].Cells[row, 5].Value != null)
-                                            product.MetaDescription = excelFile.Workbook.Worksheets[2].Cells[row, 5].Value.ToString();
-                                        //Meta Keywords
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 6] != null && excelFile.Workbook.Worksheets[2].Cells[row, 6].Value != null)
-                                            product.MetaKeywords = excelFile.Workbook.Worksheets[2].Cells[row, 6].Value.ToString();
-                                        //Abstract
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 7] != null && excelFile.Workbook.Worksheets[2].Cells[row, 7].Value != null)
-                                            product.Abstract = excelFile.Workbook.Worksheets[2].Cells[row, 7].Value.ToString();
-                                        //Brand
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 8] != null && excelFile.Workbook.Worksheets[2].Cells[row, 8].Value != null)
+                                        if (item != String.Empty)
                                         {
-                                            string brandName = excelFile.Workbook.Worksheets[2].Cells[row, 8].Value.ToString();
-                                            if (!_brandService.AnyExistingBrandsWithName(brandName, 0))
-                                                _brandService.Add(new Brand() { Name = brandName });
-                                            product.Brand = _brandService.GetBrandByName(brandName); ;
-                                        }
+                                            string[] specificationValue = item.Split(':');
 
-                                        //Tax Rate
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 14] != null && excelFile.Workbook.Worksheets[2].Cells[row, 14].Value != null)
-                                        {
-                                            int taxRateID = 0;
-                                            Int32.TryParse(excelFile.Workbook.Worksheets[2].Cells[row, 14].Value.ToString(), out taxRateID);
-                                            //product.TaxRate = _taxRateManager.Get(taxRateID);
-                                        }
-                                        //Categories
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 16] != null && excelFile.Workbook.Worksheets[2].Cells[row, 16].Value != null)
-                                        {
-                                            string rawCategories = excelFile.Workbook.Worksheets[2].Cells[row, 16].Value.ToString();
-                                            string[] categories = rawCategories.Split(';');
-                                            foreach (var item in categories)
+                                            if (!_productOptionManager.AnyExistingSpecificationAttributesWithName(specificationValue[0]))
                                             {
-                                                int categoryID = 0;
-                                                Int32.TryParse(item, out categoryID);
-                                                Category category = _documentService.GetDocument<Category>(categoryID);
-                                                if (category != null && product.Categories.Where(x => x.Id == category.Id).Count() == 0)
-                                                    product.Categories.Add(category);
+                                                _productOptionManager.AddSpecificationAttribute(new ProductSpecificationAttribute() { Name = specificationValue[0] });
+                                            }
+
+                                            ProductSpecificationAttribute option = _productOptionManager.GetSpecificationAttributeByName(specificationValue[0]);
+                                            if (product.SpecificationValues.Where(x => x.ProductSpecificationAttribute.Id == option.Id && x.Product.Id == product.Id).Count() == 0)
+                                                product.SpecificationValues.Add(new ProductSpecificationValue() { ProductSpecificationAttribute = option, Value = specificationValue[1], Product = product });
+                                            if (!option.Options.Where(x => x.Name == specificationValue[1]).Any())
+                                            {
+                                                option.Options.Add(new ProductSpecificationAttributeOption() { ProductSpecificationAttribute = option, Name = specificationValue[1] });
+                                                _productOptionManager.UpdateSpecificationAttribute(option);
                                             }
                                         }
-                                        if (String.IsNullOrWhiteSpace(product.UrlSegment))
-                                        {
-                                            product.UrlSegment = url;
-                                            _documentService.AddDocument<Product>(product);
-                                        }
-                                        else
-                                        {
-                                            _documentService.SaveDocument<Product>(product);
-                                        }
-                                        product = _productService.Get(product.Id);
-
-                                        //Specifications
-                                        if (excelFile.Workbook.Worksheets[2].Cells[row, 17] != null && excelFile.Workbook.Worksheets[2].Cells[row, 17].Value != null)
-                                        {
-                                            string rawSpecifications = excelFile.Workbook.Worksheets[2].Cells[row, 17].Value.ToString();
-                                            string[] specifications = rawSpecifications.Split(';');
-                                            foreach (var item in specifications)
-                                            {
-                                                if (item != String.Empty)
-                                                {
-                                                    string[] specificationValue = item.Split(':');
-
-                                                    if (!_productOptionManager.AnyExistingSpecificationAttributesWithName(specificationValue[0]))
-                                                    {
-                                                        _productOptionManager.AddSpecificationAttribute(new ProductSpecificationAttribute() { Name = specificationValue[0] });
-                                                    }
-
-                                                    ProductSpecificationAttribute option = _productOptionManager.GetSpecificationAttributeByName(specificationValue[0]);
-                                                    if (product.SpecificationValues.Where(x => x.ProductSpecificationAttribute.Id == option.Id && x.Product.Id == product.Id).Count() == 0)
-                                                        product.SpecificationValues.Add(new ProductSpecificationValue() { ProductSpecificationAttribute = option, Value = specificationValue[1], Product = product });
-                                                }
-                                            }
-                                        }
-                                        lastAddedProductID = product.Id;
-                                        _documentService.SaveDocument<Product>(product);
                                     }
+                                    product.Variants.Clear();
+                                    _documentService.SaveDocument<Product>(product);
+
+                                    ProductVariant productVariant = _productVariantService.GetProductVariantBySKU(sku);
+                                    if (productVariant == null)
+                                    {
+                                        productVariant = new ProductVariant();
+                                    }
+                                    productVariant.Name = variantName;
+                                    productVariant.SKU = sku;
+                                    productVariant.Barcode = barcode;
+                                    productVariant.BasePrice = GeneralHelper.ChangeTypeFromString<decimal>(price);
+                                    productVariant.PreviousPrice = GeneralHelper.ChangeTypeFromString<decimal>(previousPrice);
+                                    productVariant.StockRemaining = GeneralHelper.ChangeTypeFromString<int>(stock);
+                                    productVariant.Weight = GeneralHelper.ChangeTypeFromString<decimal>(weight);
+                                    if (trackingPolicy == "Track")
+                                        productVariant.TrackingPolicy = TrackingPolicy.Track;
+                                    else
+                                        productVariant.TrackingPolicy = TrackingPolicy.DontTrack;
+                                    if (GeneralHelper.ChangeTypeFromString<int>(taxRate) != 0)
+                                    {
+                                        productVariant.TaxRate = _taxRateManager.Get(GeneralHelper.ChangeTypeFromString<int>(taxRate));
+                                    }
+                                    productVariant.Product = product;
+                                    _productVariantService.Update(productVariant);
+
+                                    productVariant = _productVariantService.GetProductVariantBySKU(sku);
+
+                                    //Options
+                                    productVariant.AttributeValues.Clear();
+                                    if (!String.IsNullOrWhiteSpace(option1Name) && !String.IsNullOrWhiteSpace(option1Value))
+                                    {
+                                        if (!_productOptionManager.AnyExistingAttributeOptionsWithName(option1Name))
+                                            _productOptionManager.AddAttributeOption(new ProductAttributeOption() { Name = option1Name });
+                                        var option = _productOptionManager.GetAttributeOptionByName(option1Name);
+                                        if (productVariant.Product.AttributeOptions.Where(x => x.Id == option.Id).Count() == 0)
+                                            product.AttributeOptions.Add(option);
+                                        if (productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).Count() == 0)
+                                        {
+                                            productVariant.AttributeValues.Add(new ProductAttributeValue()
+                                            {
+                                                ProductAttributeOption = option,
+                                                ProductVariant = productVariant,
+                                                Value = option1Value
+                                            });
+                                        }
+                                    }
+                                    if (!String.IsNullOrWhiteSpace(option2Name) && !String.IsNullOrWhiteSpace(option2Value))
+                                    {
+                                        if (!_productOptionManager.AnyExistingAttributeOptionsWithName(option2Name))
+                                            _productOptionManager.AddAttributeOption(new ProductAttributeOption() { Name = option2Name });
+                                        var option = _productOptionManager.GetAttributeOptionByName(option2Name);
+                                        if (productVariant.Product.AttributeOptions.Where(x => x.Id == option.Id).Count() == 0)
+                                            product.AttributeOptions.Add(option);
+                                        if (productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).Count() == 0)
+                                        {
+                                            productVariant.AttributeValues.Add(new ProductAttributeValue()
+                                            {
+                                                ProductAttributeOption = option,
+                                                ProductVariant = productVariant,
+                                                Value = option2Value
+                                            });
+                                        }
+                                    }
+                                    if (!String.IsNullOrWhiteSpace(option3Name) && !String.IsNullOrWhiteSpace(option3Value))
+                                    {
+                                        if (!_productOptionManager.AnyExistingAttributeOptionsWithName(option3Name))
+                                            _productOptionManager.AddAttributeOption(new ProductAttributeOption() { Name = option3Name });
+                                        var option = _productOptionManager.GetAttributeOptionByName(option3Name);
+                                        if (productVariant.Product.AttributeOptions.Where(x => x.Id == option.Id).Count() == 0)
+                                            product.AttributeOptions.Add(option);
+                                        if (productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).Count() == 0)
+                                        {
+                                            productVariant.AttributeValues.Add(new ProductAttributeValue()
+                                            {
+                                                ProductAttributeOption = option,
+                                                ProductVariant = productVariant,
+                                                Value = option3Value
+                                            });
+                                        }
+                                    }
+                                    _productVariantService.Update(productVariant);
+
                                 }
-                                messages.Add("All products were successfully imported.");
+                                messages.Add("All products and variants were successfully imported.");
                             }
                             else
                                 messages.Add("No Info or Products worksheets in file.");
@@ -278,6 +250,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 messages.Add("Error reading file. It is possible that file is corrupted.");
             }
             return messages;
+        }
+
+        private string GetValueFromRow(ExcelPackage excelFile, int worksheetId, int rowId, int cellId)
+        {
+            if (excelFile.Workbook.Worksheets[worksheetId].Cells[rowId, cellId] != null && excelFile.Workbook.Worksheets[worksheetId].Cells[rowId, cellId].Value != null)
+                return excelFile.Workbook.Worksheets[worksheetId].Cells[rowId, cellId].Value.ToString();
+            else
+                return String.Empty;
         }
 
         public byte[] ExportProductsToExcel()
@@ -302,83 +282,112 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
                 ExcelWorksheet wsProducts = excelFile.Workbook.Worksheets.Add("Products");
 
-                wsProducts.Cells["A1:Q1"].Style.Font.Bold = true;
-                wsProducts.Cells["A:Q"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                wsProducts.Cells["A1:AB1"].Style.Font.Bold = true;
+                wsProducts.Cells["A:AB"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 wsProducts.Cells["A1"].Value = "Url (Must not be changed!)";
-                wsProducts.Cells["B1"].Value = "Name";
+                wsProducts.Cells["B1"].Value = "Product Name";
                 wsProducts.Cells["C1"].Value = "Description";
                 wsProducts.Cells["D1"].Value = "SEO Title";
                 wsProducts.Cells["E1"].Value = "SEO Description";
-                wsProducts.Cells["F1"].Value = "SEO Title";
+                wsProducts.Cells["F1"].Value = "SEO Keywords";
                 wsProducts.Cells["G1"].Value = "Abstract";
                 wsProducts.Cells["H1"].Value = "Brand";
-                wsProducts.Cells["I1"].Value = "Price";
-                wsProducts.Cells["J1"].Value = "Previous Price";
-                wsProducts.Cells["K1"].Value = "Stock";
-                wsProducts.Cells["L1"].Value = "SKU";
-                wsProducts.Cells["M1"].Value = "Option Values";
+                wsProducts.Cells["I1"].Value = "Categories";
+                wsProducts.Cells["J1"].Value = "Specifications";
+                wsProducts.Cells["K1"].Value = "Variant Name";
+                wsProducts.Cells["L1"].Value = "Price";
+                wsProducts.Cells["M1"].Value = "Previous Price";
                 wsProducts.Cells["N1"].Value = "Tax Rate";
-                wsProducts.Cells["O1"].Value = "Weight";
-                wsProducts.Cells["P1"].Value = "Categories";
-                wsProducts.Cells["Q1"].Value = "Specifications";
+                wsProducts.Cells["O1"].Value = "Weight (g)";
+                wsProducts.Cells["P1"].Value = "Stock";
+                wsProducts.Cells["Q1"].Value = "Tracking Policy";
+                wsProducts.Cells["R1"].Value = "SKU";
+                wsProducts.Cells["S1"].Value = "Barcode";
+                wsProducts.Cells["T1"].Value = "Option 1 Name";
+                wsProducts.Cells["U1"].Value = "Option 1 Value";
+                wsProducts.Cells["V1"].Value = "Option 2 Name";
+                wsProducts.Cells["W1"].Value = "Option 2 Value";
+                wsProducts.Cells["X1"].Value = "Option 3 Name";
+                wsProducts.Cells["Y1"].Value = "Option 3 Value";
+                wsProducts.Cells["Z1"].Value = "Image 1";
+                wsProducts.Cells["AA1"].Value = "Image 2";
+                wsProducts.Cells["AB1"].Value = "Image 3";
 
-                IList<Product> products = _productService.GetAll();
+                IList<ProductVariant> productVariants = _productVariantService.GetAll();
 
-                int variantCounter = 0;
-                int rowNumber = 0;
-                for (int i = 0; i < products.Count; i++)
+                for (int i = 0; i < productVariants.Count; i++)
                 {
-                    rowNumber = i + 2 + variantCounter;
-                    wsProducts.Cells["A" + rowNumber.ToString()].Value = products[i].UrlSegment;
-                    wsProducts.Cells["B" + rowNumber.ToString()].Value = products[i].Name;
-                    wsProducts.Cells["C" + rowNumber.ToString()].Value = products[i].BodyContent;
-                    wsProducts.Cells["D" + rowNumber.ToString()].Value = products[i].MetaTitle;
-                    wsProducts.Cells["E" + rowNumber.ToString()].Value = products[i].MetaDescription;
-                    wsProducts.Cells["F" + rowNumber.ToString()].Value = products[i].MetaKeywords;
-                    wsProducts.Cells["G" + rowNumber.ToString()].Value = products[i].Abstract;
-                    if (products[i].Brand != null)
-                        wsProducts.Cells["H" + rowNumber.ToString()].Value = products[i].Brand.Name;
-                    //if (products[i].TaxRate != null)
-                    //    wsProducts.Cells["N" + rowNumber.ToString()].Value = products[i].TaxRate.Id;
-                    if (products[i].Categories.Count > 0)
+                    var rowId = i + 2;
+                    wsProducts.Cells["A" + rowId].Value = productVariants[i].Product.UrlSegment;
+                    wsProducts.Cells["B" + rowId].Value = productVariants[i].Product.Name;
+                    wsProducts.Cells["C" + rowId].Value = productVariants[i].Product.BodyContent;
+                    wsProducts.Cells["D" + rowId].Value = productVariants[i].Product.MetaTitle;
+                    wsProducts.Cells["E" + rowId].Value = productVariants[i].Product.MetaDescription;
+                    wsProducts.Cells["F" + rowId].Value = productVariants[i].Product.MetaKeywords;
+                    wsProducts.Cells["G" + rowId].Value = productVariants[i].Product.Abstract;
+                    if (productVariants[i].Product.Brand != null)
+                        wsProducts.Cells["H" + rowId].Value = productVariants[i].Product.Brand.Name;
+                    if (productVariants[i].Product.Categories.Count > 0)
                     {
-                        foreach (var item in products[i].Categories)
+                        foreach (var item in productVariants[i].Product.Categories)
                         {
-                            wsProducts.Cells["P" + rowNumber.ToString()].Value += item.Id + ";";
+                            wsProducts.Cells["I" + rowId].Value += item.Id + ";";
                         }
                     }
-                    if (products[i].SpecificationValues.Count > 0)
+                    if (productVariants[i].Product.SpecificationValues.Count > 0)
                     {
-                        foreach (var item in products[i].SpecificationValues)
+                        foreach (var item in productVariants[i].Product.SpecificationValues)
                         {
-                            wsProducts.Cells["Q" + rowNumber.ToString()].Value += item.ProductSpecificationAttribute.Name + ":" + item.Value + ";";
+                            wsProducts.Cells["J" + rowId].Value += item.ProductSpecificationAttribute.Name + ":" + item.Value + ";";
                         }
                     }
+                    wsProducts.Cells["K" + rowId].Value = productVariants[i].Name!=null?productVariants[i].Name:String.Empty;
+                    wsProducts.Cells["L" + rowId].Value = productVariants[i].BasePrice;
+                    wsProducts.Cells["M" + rowId].Value = productVariants[i].PreviousPrice;
+                    if (productVariants[i].TaxRate != null)
+                        wsProducts.Cells["N" + rowId].Value = productVariants[i].TaxRate.Id;
+                    wsProducts.Cells["O" + rowId].Value = productVariants[i].Weight;
+                    wsProducts.Cells["P" + rowId].Value = productVariants[i].StockRemaining;
+                    wsProducts.Cells["Q" + rowId].Value = productVariants[i].TrackingPolicy;
+                    wsProducts.Cells["R" + rowId].Value = productVariants[i].SKU;
+                    wsProducts.Cells["S" + rowId].Value = productVariants[i].Barcode;
 
-                    variantCounter = products[i].Variants.Count;
-
-                    for (int j = 0; j < products[i].Variants.Count; j++)
+                    for (int v = 0; v < productVariants[i].AttributeValues.OrderBy(x => x.ProductAttributeOption.DisplayOrder).Count(); v++)
                     {
-                        wsProducts.Cells["A" + (j + 1 + rowNumber).ToString()].Value = products[i].Variants[j].Product.UrlSegment;
-                        wsProducts.Cells["I" + (j + 1 + rowNumber).ToString()].Value = products[i].Variants[j].BasePrice;
-                        wsProducts.Cells["J" + (j + 1 + rowNumber).ToString()].Value = products[i].Variants[j].PreviousPrice;
-                        wsProducts.Cells["K" + (j + 1 + rowNumber).ToString()].Value = products[i].Variants[j].StockRemaining;
-                        wsProducts.Cells["L" + (j + 1 + rowNumber).ToString()].Value = products[i].Variants[j].SKU;
-                        //if (products[i].TaxRate != null)
-                        //    wsProducts.Cells["N" + (j + 1 + rowNumber).ToString()].Value = products[i].Variants[j].Product.TaxRate.Id;
-                        wsProducts.Cells["O" + (j + 1 + rowNumber).ToString()].Value = products[i].Variants[j].Weight;
-                        foreach (var item in products[i].Variants[j].AttributeValues)
+                        if (v == 0)
                         {
-                            wsProducts.Cells["M" + (j + 1 + rowNumber).ToString()].Value += item.ProductAttributeOption.Name + ":" + item.Value + ";";
+                            wsProducts.Cells["T" + rowId].Value += productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
+                            wsProducts.Cells["U" + rowId].Value += productVariants[i].AttributeValues[v].Value;
                         }
+                        else if (v == 1)
+                        {
+                            wsProducts.Cells["V" + rowId].Value += productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
+                            wsProducts.Cells["W" + rowId].Value += productVariants[i].AttributeValues[v].Value;
+                        }
+                        else
+                        {
+                            wsProducts.Cells["X" + rowId].Value += productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
+                            wsProducts.Cells["Y" + rowId].Value += productVariants[i].AttributeValues[v].Value;
+                        }
+
                     }
 
+                    if (productVariants[i].Product.Images.Any())
+                    {
+                        wsProducts.Cells["Z" + rowId].Value = "//"+CurrentRequestData.CurrentSite.BaseUrl+productVariants[i].Product.Images.First().FileUrl+"?update=no";
+                        if(productVariants[i].Product.Images.Count()>1)
+                            wsProducts.Cells["AA" + rowId].Value = "//" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[1].FileUrl + "?update=no";
+                        if (productVariants[i].Product.Images.Count() > 2)
+                            wsProducts.Cells["AB" + rowId].Value = "//" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[2].FileUrl + "?update=no";
+                    }
                 }
-                wsProducts.Cells["C:C"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
-                wsProducts.Cells["G:G"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
+                wsProducts.Cells["C:C"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                wsProducts.Cells["E:E"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                wsProducts.Cells["G:G"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 wsProducts.Cells["A:B"].AutoFitColumns();
-                wsProducts.Cells["D:F"].AutoFitColumns();
-                wsProducts.Cells["I:Q"].AutoFitColumns();
+                wsProducts.Cells["D:D"].AutoFitColumns();
+                wsProducts.Cells["F:F"].AutoFitColumns();
+                wsProducts.Cells["I:AB"].AutoFitColumns();
 
                 return excelFile.GetAsByteArray();
             }
