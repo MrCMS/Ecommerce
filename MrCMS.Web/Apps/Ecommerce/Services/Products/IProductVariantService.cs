@@ -8,6 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public interface IProductVariantService
     {
+        IList<ProductVariant> GetAll();
         ProductVariant GetProductVariantBySKU(string sku);
         void Add(ProductVariant productVariant);
         void Update(ProductVariant productVariant);

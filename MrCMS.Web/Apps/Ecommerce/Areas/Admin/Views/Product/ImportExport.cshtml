@@ -10,11 +10,10 @@
 
         <div class="row-fluid">
 
-                  <span class="alert alert-info">Import File must be in .xslx format. After clicking on "Import Products" any new products inside file will be added to database
-                      and existing ones will be updated with provided values in file.
-                  </span>
+                  <div class="alert alert-info">Import File must be in .xslx format. After clicking on "Import Products" any new products inside file
+                       will be added to database and existing ones will be updated with provided values in file.
+                  </div>
             <div class="clearfix"></div>
-                     <br />
                  @using (Html.BeginForm("ImportProducts", "Product", FormMethod.Post, new { enctype = "multipart/form-data"}))
                  {
                     <span class="btn btn-success fileinput-button"><span>Choose Import File</span>  
@@ -37,9 +36,7 @@
                     
                   <input type="submit" class="btn btn-primary" value="Import Products"/>
                  }
-              <br />
             <hr />
-            <br />
             <span class="btn-group display-inline">
                  <a href="@Url.Action("ExportProducts", "Product")" class="btn btn-primary">Export Products</a>
             </span>

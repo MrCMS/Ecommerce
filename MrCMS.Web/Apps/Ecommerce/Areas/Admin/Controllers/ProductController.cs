@@ -112,8 +112,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult AddSpecification(Product product)
         {
             ViewData["product"] = product;
-            var attributes = _productOptionManager.ListSpecificationAttributes().ToList().Where(x => x.Options.Any()
-                && product.SpecificationValues.All(v => v.ProductSpecificationAttribute.Id != x.Id)).ToList();
+            var attributes = _productOptionManager.ListSpecificationAttributes().ToList().Where(x =>product.SpecificationValues.All(v => v.ProductSpecificationAttribute.Id != x.Id)).ToList();
 
             ViewData["specification-attributes"] = new SelectList(attributes, "Id", "Name");
             var options = attributes.Any()
@@ -372,17 +371,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         public FileResult ExportProducts()
         {
-            try
-            {
+            //try
+            //{
                 byte[] file = _importExportManager.ExportProductsToExcel();
                 ViewBag.ExportStatus = "Products successfully exported.";
-                return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MrCMS-ExportProducts-" + DateTime.UtcNow + ".xlsx");
-            }
-            catch (Exception)
-            {
-                ViewBag.ExportStatus = "Products exporting has failed. Please try again and contact system administration if error continues to appear.";
-                return null;
-            }
+                return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MrCMS-Products-" + DateTime.UtcNow + ".xlsx");
+            //}
+            //catch (Exception)
+            //{
+            //    ViewBag.ExportStatus = "Products exporting has failed. Please try again and contact system administration if error continues to appear.";
+            //    return null;
+            //}
         }
 
         [HttpPost]

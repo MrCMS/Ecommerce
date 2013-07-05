@@ -354,7 +354,7 @@ namespace MrCMS.Helpers
                 {
                     return htmlHelper.Partial(model.GetType().Name, model);
                 }
-                catch (Exception exception)
+                catch (Exception)
                 {
                     //CurrentRequestData.ErrorSignal.Raise(exception);
                     return

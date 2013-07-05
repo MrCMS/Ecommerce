@@ -8,7 +8,6 @@
             },
             SKU: {
                 required: true,
-                number: true,
                 remote: {
                     url: "/Admin/Apps/Ecommerce/ProductVariant/IsUniqueSKU",
                     type: "get",
