@@ -126,7 +126,8 @@
                     }
                 </tbody>
             </table>
+            @Html.Pager(Model.Results, "Index", i => new {page = i})
         }
-        @Html.Pager(Model.Results, "Index", i => new {page = i})
+        
     </fieldset>
 }

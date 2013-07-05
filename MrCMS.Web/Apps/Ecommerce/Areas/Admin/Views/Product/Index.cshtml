@@ -13,6 +13,8 @@
                 <a href="@Url.Action("Add", "Webpage", new { id = Model.ProductContainerId })" class="btn btn-success">Add Product</a>
             </span>
             </legend>
+            @if (Model.Any())
+            {
             <table class="table table-condensed table-striped">
                 <thead>
                     <tr>
@@ -32,6 +34,11 @@
                 </tbody>
             </table>
             @Html.Pager(Model, "Index", p => new { p }, PagedListRenderOptions.PageNumbersOnly)
+            }
+            else
+            {
+                <p>No products.</p>    
+            }
         </fieldset>
     </form>
 }
