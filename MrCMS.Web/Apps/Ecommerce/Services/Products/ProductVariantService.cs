@@ -16,6 +16,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             _session = session;
         }
+        public IList<ProductVariant> GetAll()
+        {
+            return _session.QueryOver<ProductVariant>().Cacheable().List();
+        }
         public ProductVariant GetProductVariantBySKU(string sku)
         {
             return _session.QueryOver<ProductVariant>()
@@ -81,7 +85,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public void Update(ProductVariant productVariant)
         {
-            _session.Transact(session => session.Update(productVariant));
+            _session.Transact(session => session.SaveOrUpdate(productVariant));
         }
 
         public void Delete(ProductVariant productVariant)

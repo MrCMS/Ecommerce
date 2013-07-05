@@ -16,7 +16,12 @@
             @Html.DropDownList("Option", ViewData["specification-attributes"] as IEnumerable<SelectListItem>)
              <br />
              @Html.DropDownListFor(x=>x.Value, ViewData["specification-attributes-options"] as IEnumerable<SelectListItem>,new {@class="pull-left"})
-            <div id="other" class="pull-right" style="display:none">
+            var dc = "none";
+            if((ViewData["specification-attributes-options"] as IEnumerable<SelectListItem>).Count()==1)
+            {
+                dc = "block";
+            }
+            <div id="other" class="pull-right" style="display:@dc">
                 New option value: <input type="text" class="input-medium" id="new-option-value"/>
             </div>
         }
