@@ -17,6 +17,9 @@ using System.Web.Mvc;
 using System.Linq;
 using MrCMS.Website;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
+using System.Net;
+using System.IO;
+using MrCMS.Entities.Documents.Media;
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public class ImportExportManager : IImportExportManager
@@ -28,9 +31,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         private readonly IProductOptionManager _productOptionManager;
         private readonly IBrandService _brandService;
         private readonly ITaxRateManager _taxRateManager;
+        private readonly IFileService _fileService;
 
         public ImportExportManager(ISession session, IProductService productService, IProductVariantService productVariantService,
-            IDocumentService documentService, IProductOptionManager productOptionManager, IBrandService brandService, ITaxRateManager taxRateManager)
+            IDocumentService documentService, IProductOptionManager productOptionManager, IBrandService brandService, ITaxRateManager taxRateManager,
+            IFileService fileService)
         {
             _session = session;
             _productService = productService;
@@ -39,13 +44,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             _productOptionManager = productOptionManager;
             _brandService = brandService;
             _taxRateManager = taxRateManager;
+            _fileService = fileService;
         }
 
         public List<string> ImportProductsFromExcel(HttpPostedFileBase file)
         {
             List<string> messages = new List<string>();
-            try
-            {
+            //try
+            //{
                 using (ExcelPackage excelFile = new ExcelPackage(file.InputStream))
                 {
                     if (excelFile.Workbook != null)
@@ -56,6 +62,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                             {
                                 var rowCount = excelFile.Workbook.Worksheets[2].Dimension.End.Row;
                                 int lastAddedProductID = 0;
+                                var variantsInImportedFile = new List<ProductVariant>();
 
                                 for (var row = 2; row <= rowCount; row++)
                                 {
@@ -102,6 +109,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                     product.MetaDescription = seoDescription;
                                     product.MetaKeywords = seoKeywords;
                                     product.Abstract = productAbstract;
+                                    product.PublishOn = DateTime.UtcNow;
                                     if (!_brandService.AnyExistingBrandsWithName(brand, 0))
                                         _brandService.Add(new Brand() { Name = brand });
                                     product.Brand = _brandService.GetBrandByName(brand);
@@ -116,17 +124,39 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                         if (category != null && product.Categories.Where(x => x.Id == category.Id).Count() == 0)
                                             product.Categories.Add(category);
                                     }
-
                                     if(lastAddedProductID==0)
                                     {
                                         product.UrlSegment = url;
                                         _documentService.AddDocument<Product>(product);
+                                        //Delete Variant which is saved via DocumentTypeSetup
+                                        product.Variants.Clear();
                                     }
                                     else
                                          _documentService.SaveDocument<Product>(product);
+
                                     product = _productService.Get(product.Id);
 
+                                    if (!product.Images.Any())
+                                    {
+                                        if (!String.IsNullOrWhiteSpace(image1))
+                                            AddFile(image1.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
+                                        if (!String.IsNullOrWhiteSpace(image2))
+                                            AddFile(image2.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
+                                        if (!String.IsNullOrWhiteSpace(image3))
+                                            AddFile(image3.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
+                                    }
+                                    else
+                                    {
+                                        if (!String.IsNullOrWhiteSpace(image1) && image1.Contains("?update=yes"))
+                                            AddFile(image1.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
+                                        if (!String.IsNullOrWhiteSpace(image2) && image2.Contains("?update=yes"))
+                                            AddFile(image2.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
+                                        if (!String.IsNullOrWhiteSpace(image3) && image3.Contains("?update=yes"))
+                                            AddFile(image3.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
+                                    }
+
                                     //Specifications
+                                    product.SpecificationValues.Clear();
                                     string[] Specs = specifications.Split(';');
                                     foreach (var item in Specs)
                                     {
@@ -149,7 +179,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                             }
                                         }
                                     }
-                                    product.Variants.Clear();
+                                   
                                     _documentService.SaveDocument<Product>(product);
 
                                     ProductVariant productVariant = _productVariantService.GetProductVariantBySKU(sku);
@@ -172,13 +202,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                     {
                                         productVariant.TaxRate = _taxRateManager.Get(GeneralHelper.ChangeTypeFromString<int>(taxRate));
                                     }
+
+                                    //Save or Update
                                     productVariant.Product = product;
+                                    productVariant.AttributeValues.Clear();
                                     _productVariantService.Update(productVariant);
+                                    variantsInImportedFile.Add(productVariant);
 
                                     productVariant = _productVariantService.GetProductVariantBySKU(sku);
 
                                     //Options
-                                    productVariant.AttributeValues.Clear();
                                     if (!String.IsNullOrWhiteSpace(option1Name) && !String.IsNullOrWhiteSpace(option1Value))
                                     {
                                         if (!_productOptionManager.AnyExistingAttributeOptionsWithName(option1Name))
@@ -231,7 +264,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                         }
                                     }
                                     _productVariantService.Update(productVariant);
-
+                                    lastAddedProductID = 0;
+                                }
+                                foreach (var item in _productVariantService.GetAll())
+                                {
+                                    if (!variantsInImportedFile.Where(x => x.Id == item.Id).Any())
+                                        _productVariantService.Delete(item);
                                 }
                                 messages.Add("All products and variants were successfully imported.");
                             }
@@ -244,12 +282,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     else
                         messages.Add("Error reading file.");
                 }
-            }
-            catch (Exception)
-            {
-                messages.Add("Error reading file. It is possible that file is corrupted.");
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    messages.Add("Error reading file. It is possible that file is corrupted.");
+            //}
             return messages;
+        }
+
+        private void AddFile(string fileLocation, MediaCategory mediaCategory)
+        {
+            using (WebClient client = new WebClient())
+            {
+                string fileName = Path.GetFileName(fileLocation);
+                string fileExt = Path.GetExtension(fileLocation);
+                var downloadedFile = client.DownloadData(fileLocation);
+                _fileService.AddFile(new MemoryStream(downloadedFile), fileName, "image/png", downloadedFile.Length, mediaCategory);
+            }
         }
 
         private string GetValueFromRow(ExcelPackage excelFile, int worksheetId, int rowId, int cellId)
@@ -356,29 +405,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     {
                         if (v == 0)
                         {
-                            wsProducts.Cells["T" + rowId].Value += productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsProducts.Cells["U" + rowId].Value += productVariants[i].AttributeValues[v].Value;
+                            wsProducts.Cells["T" + rowId].Value = productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
+                            wsProducts.Cells["U" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
-                        else if (v == 1)
+                        if (v == 1)
                         {
-                            wsProducts.Cells["V" + rowId].Value += productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsProducts.Cells["W" + rowId].Value += productVariants[i].AttributeValues[v].Value;
+                            wsProducts.Cells["V" + rowId].Value = productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
+                            wsProducts.Cells["W" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
-                        else
+                        if (v == 2)
                         {
-                            wsProducts.Cells["X" + rowId].Value += productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsProducts.Cells["Y" + rowId].Value += productVariants[i].AttributeValues[v].Value;
+                            wsProducts.Cells["X" + rowId].Value = productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
+                            wsProducts.Cells["Y" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
 
                     }
 
                     if (productVariants[i].Product.Images.Any())
                     {
-                        wsProducts.Cells["Z" + rowId].Value = "//"+CurrentRequestData.CurrentSite.BaseUrl+productVariants[i].Product.Images.First().FileUrl+"?update=no";
+                        wsProducts.Cells["Z" + rowId].Value = "http://"+CurrentRequestData.CurrentSite.BaseUrl+productVariants[i].Product.Images.First().FileUrl+"?update=no";
                         if(productVariants[i].Product.Images.Count()>1)
-                            wsProducts.Cells["AA" + rowId].Value = "//" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[1].FileUrl + "?update=no";
+                            wsProducts.Cells["AA" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[1].FileUrl + "?update=no";
                         if (productVariants[i].Product.Images.Count() > 2)
-                            wsProducts.Cells["AB" + rowId].Value = "//" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[2].FileUrl + "?update=no";
+                            wsProducts.Cells["AB" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[2].FileUrl + "?update=no";
                     }
                 }
                 wsProducts.Cells["C:C"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
