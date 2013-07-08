@@ -114,7 +114,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual Brand Brand { get; set; }
 
-        [StringLength(1000)]
+        [StringLength(500)]
         public virtual string Abstract { get; set; }
 
         public virtual IEnumerable<MediaFile> Images
