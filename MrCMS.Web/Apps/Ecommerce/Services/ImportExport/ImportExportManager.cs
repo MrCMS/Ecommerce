@@ -51,6 +51,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public List<string> ImportProductsFromExcel(HttpPostedFileBase file)
         {
+            // try and load all data into temp objects
+            // Any parsing errors should be done here
+            // Any type checking should be done here
+            // if it fails, stop and return with a list of all errors
+
+            // Run business logic validation rules against temp objects, logging all validation errors, 
+            // rather than dropping out after the 1st one
+
+            // If it fails, return all messages and do not modify data
+
+            // If validation passes, perform import
+
+
             List<string> messages = new List<string>();
             //try
             //{
