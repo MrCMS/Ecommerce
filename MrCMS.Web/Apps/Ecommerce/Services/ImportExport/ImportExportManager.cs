@@ -62,6 +62,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                             {
                                 var rowCount = excelFile.Workbook.Worksheets[2].Dimension.End.Row;
                                 int lastAddedProductID = 0;
+                                var variantsInImportedFile = new List<ProductVariant>();
 
                                 for (var row = 2; row <= rowCount; row++)
                                 {
@@ -206,6 +207,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                     productVariant.Product = product;
                                     productVariant.AttributeValues.Clear();
                                     _productVariantService.Update(productVariant);
+                                    variantsInImportedFile.Add(productVariant);
 
                                     productVariant = _productVariantService.GetProductVariantBySKU(sku);
 
@@ -263,6 +265,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                     }
                                     _productVariantService.Update(productVariant);
                                     lastAddedProductID = 0;
+                                }
+                                foreach (var item in _productVariantService.GetAll())
+                                {
+                                    if (!variantsInImportedFile.Where(x => x.Id == item.Id).Any())
+                                        _productVariantService.Delete(item);
                                 }
                                 messages.Add("All products and variants were successfully imported.");
                             }
@@ -416,11 +423,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
                     if (productVariants[i].Product.Images.Any())
                     {
-                        wsProducts.Cells["Z" + rowId].Value = CurrentRequestData.CurrentContext.Request.IsSecureConnection?"https://":"http://"+CurrentRequestData.CurrentSite.BaseUrl+productVariants[i].Product.Images.First().FileUrl+"?update=no";
+                        wsProducts.Cells["Z" + rowId].Value = "http://"+CurrentRequestData.CurrentSite.BaseUrl+productVariants[i].Product.Images.First().FileUrl+"?update=no";
                         if(productVariants[i].Product.Images.Count()>1)
-                            wsProducts.Cells["AA" + rowId].Value = CurrentRequestData.CurrentContext.Request.IsSecureConnection ? "https://" : "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[1].FileUrl + "?update=no";
+                            wsProducts.Cells["AA" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[1].FileUrl + "?update=no";
                         if (productVariants[i].Product.Images.Count() > 2)
-                            wsProducts.Cells["AB" + rowId].Value = CurrentRequestData.CurrentContext.Request.IsSecureConnection ? "https://" : "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[2].FileUrl + "?update=no";
+                            wsProducts.Cells["AB" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[2].FileUrl + "?update=no";
                     }
                 }
                 wsProducts.Cells["C:C"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
