@@ -36,7 +36,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public ImportExportManager(ISession session, IProductService productService, IProductVariantService productVariantService,
             IDocumentService documentService, IProductOptionManager productOptionManager, IBrandService brandService, ITaxRateManager taxRateManager,
-            IFileService fileService,IIndexService indexService)
+            IFileService fileService, IIndexService indexService)
         {
             _session = session;
             _productService = productService;
@@ -51,283 +51,309 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public List<string> ImportProductsFromExcel(HttpPostedFileBase file)
         {
+            // try and load all data into temp objects
+            // Any parsing errors should be done here
+            // Any type checking should be done here
+            // if it fails, stop and return with a list of all errors
+
+            // Run business logic validation rules against temp objects, logging all validation errors, 
+            // rather than dropping out after the 1st one
+
+            // If it fails, return all messages and do not modify data
+
+            // If validation passes, perform import
+
+
             List<string> messages = new List<string>();
             //try
             //{
-                using (ExcelPackage excelFile = new ExcelPackage(file.InputStream))
+            using (ExcelPackage excelFile = new ExcelPackage(file.InputStream))
+            {
+                if (excelFile.Workbook != null)
                 {
-                    if (excelFile.Workbook != null)
+                    if (excelFile.Workbook.Worksheets.Count > 0)
                     {
-                        if (excelFile.Workbook.Worksheets.Count > 0)
+                        if (excelFile.Workbook.Worksheets[1].Name == "Info" && excelFile.Workbook.Worksheets[2].Name == "Products")
                         {
-                            if (excelFile.Workbook.Worksheets[1].Name == "Info" && excelFile.Workbook.Worksheets[2].Name == "Products")
+                            var rowCount = excelFile.Workbook.Worksheets[2].Dimension.End.Row;
+                            int lastAddedProductID = 0;
+                            var variantsInImportedFile = new List<ProductVariant>();
+
+                            for (var row = 2; row <= rowCount; row++)
                             {
-                                var rowCount = excelFile.Workbook.Worksheets[2].Dimension.End.Row;
-                                int lastAddedProductID = 0;
-                                var variantsInImportedFile = new List<ProductVariant>();
+                                string url = GetValueFromRow(excelFile, 2, row, 1)
+                                , productName = GetValueFromRow(excelFile, 2, row, 2)
+                                , description = GetValueFromRow(excelFile, 2, row, 3)
+                                , seoTitle = GetValueFromRow(excelFile, 2, row, 4)
+                                , seoDescription = GetValueFromRow(excelFile, 2, row, 5)
+                                , seoKeywords = GetValueFromRow(excelFile, 2, row, 6)
+                                , productAbstract = GetValueFromRow(excelFile, 2, row, 7)
+                                , brand = GetValueFromRow(excelFile, 2, row, 8)
+                                , categories = GetValueFromRow(excelFile, 2, row, 9)
+                                , specifications = GetValueFromRow(excelFile, 2, row, 10)
+                                , variantName = GetValueFromRow(excelFile, 2, row, 11)
+                                , price = GetValueFromRow(excelFile, 2, row, 12)
+                                , previousPrice = GetValueFromRow(excelFile, 2, row, 13)
+                                , taxRate = GetValueFromRow(excelFile, 2, row, 14)
+                                , weight = GetValueFromRow(excelFile, 2, row, 15)
+                                , stock = GetValueFromRow(excelFile, 2, row, 16)
+                                , trackingPolicy = GetValueFromRow(excelFile, 2, row, 17)
+                                , sku = GetValueFromRow(excelFile, 2, row, 18)
+                                , barcode = GetValueFromRow(excelFile, 2, row, 19)
+                                , option1Name = GetValueFromRow(excelFile, 2, row, 20)
+                                , option1Value = GetValueFromRow(excelFile, 2, row, 21)
+                                , option2Name = GetValueFromRow(excelFile, 2, row, 22)
+                                , option2Value = GetValueFromRow(excelFile, 2, row, 23)
+                                , option3Name = GetValueFromRow(excelFile, 2, row, 24)
+                                , option3Value = GetValueFromRow(excelFile, 2, row, 25)
+                                , image1 = GetValueFromRow(excelFile, 2, row, 26)
+                                , image2 = GetValueFromRow(excelFile, 2, row, 27)
+                                , image3 = GetValueFromRow(excelFile, 2, row, 28);
 
-                                for (var row = 2; row <= rowCount; row++)
+                                Product product = _productService.GetByUrl(url);
+
+                                if (product == null)
+                                    product = new Product();
+                                else
+                                    lastAddedProductID = product.Id;
+
+                                product.Parent = _documentService.GetUniquePage<ProductSearch>();
+                                product.Name = productName;
+                                product.BodyContent = description;
+                                product.MetaTitle = seoTitle;
+                                product.MetaDescription = seoDescription;
+                                product.MetaKeywords = seoKeywords;
+                                product.Abstract = productAbstract;
+                                product.PublishOn = DateTime.UtcNow;
+                                if (!_brandService.AnyExistingBrandsWithName(brand, 0))
+                                    _brandService.Add(new Brand() { Name = brand });
+                                var brandEntity = _brandService.GetBrandByName(brand);
+                                if (brandEntity != null)
+                                    product.Brand = brandEntity;
+
+                                //Categories
+                                string[] Cats = categories.Split(';');
+                                foreach (var item in Cats)
                                 {
-                                    string url = GetValueFromRow(excelFile, 2, row, 1)
-                                    , productName = GetValueFromRow(excelFile, 2, row, 2)
-                                    , description = GetValueFromRow(excelFile, 2, row, 3)
-                                    , seoTitle = GetValueFromRow(excelFile, 2, row, 4)
-                                    , seoDescription = GetValueFromRow(excelFile, 2, row, 5)
-                                    , seoKeywords = GetValueFromRow(excelFile, 2, row, 6)
-                                    , productAbstract = GetValueFromRow(excelFile, 2, row, 7)
-                                    , brand = GetValueFromRow(excelFile, 2, row, 8)
-                                    , categories = GetValueFromRow(excelFile, 2, row, 9)
-                                    , specifications = GetValueFromRow(excelFile, 2, row, 10)
-                                    , variantName = GetValueFromRow(excelFile, 2, row, 11)
-                                    , price = GetValueFromRow(excelFile, 2, row, 12)
-                                    , previousPrice = GetValueFromRow(excelFile, 2, row, 13)
-                                    , taxRate = GetValueFromRow(excelFile, 2, row, 14)
-                                    , weight = GetValueFromRow(excelFile, 2, row, 15)
-                                    , stock = GetValueFromRow(excelFile, 2, row, 16)
-                                    , trackingPolicy = GetValueFromRow(excelFile, 2, row, 17)
-                                    , sku = GetValueFromRow(excelFile, 2, row, 18)
-                                    , barcode = GetValueFromRow(excelFile, 2, row, 19)
-                                    , option1Name = GetValueFromRow(excelFile, 2, row, 20)
-                                    , option1Value = GetValueFromRow(excelFile, 2, row, 21)
-                                    , option2Name = GetValueFromRow(excelFile, 2, row, 22)
-                                    , option2Value = GetValueFromRow(excelFile, 2, row, 23)
-                                    , option3Name = GetValueFromRow(excelFile, 2, row, 24)
-                                    , option3Value = GetValueFromRow(excelFile, 2, row, 25)
-                                    , image1 = GetValueFromRow(excelFile, 2, row, 26)
-                                    , image2 = GetValueFromRow(excelFile, 2, row, 27)
-                                    , image3 = GetValueFromRow(excelFile, 2, row, 28);
+                                    int categoryID = 0;
+                                    Int32.TryParse(item, out categoryID);
+                                    Category category = _documentService.GetDocument<Category>(categoryID);
+                                    if (category != null && product.Categories.Where(x => x.Id == category.Id).Count() == 0)
+                                        product.Categories.Add(category);
+                                }
 
-                                    Product product = _productService.GetByUrl(url);
 
-                                    if (product == null)
-                                        product = new Product();
-                                    else
-                                        lastAddedProductID = product.Id;
+                                ProductVariant productVariant = _productVariantService.GetProductVariantBySKU(sku);
+                                if (productVariant == null)
+                                {
+                                    productVariant = new ProductVariant();
+                                }
+                                if (!String.IsNullOrWhiteSpace(productName))
+                                    productVariant.Name = variantName;
+                                if (!String.IsNullOrWhiteSpace(sku))
+                                    productVariant.SKU = sku;
+                                if (!String.IsNullOrWhiteSpace(barcode))
+                                    productVariant.Barcode = barcode;
+                                if (GeneralHelper.ChangeTypeFromString<decimal>(price) > 0)
+                                    productVariant.BasePrice = GeneralHelper.ChangeTypeFromString<decimal>(price);
+                                else
+                                {
+                                    messages.Add(productName + " - " + variantName + " (SKU:" + sku + ") was not imported because price field value is invalid.");
+                                    continue;
+                                }
+                                if (GeneralHelper.ChangeTypeFromString<decimal>(previousPrice) > 0)
+                                    productVariant.PreviousPrice = GeneralHelper.ChangeTypeFromString<decimal>(previousPrice);
+                                if (GeneralHelper.ChangeTypeFromString<decimal>(stock) > 0)
+                                    productVariant.StockRemaining = GeneralHelper.ChangeTypeFromString<int>(stock);
+                                if (GeneralHelper.ChangeTypeFromString<decimal>(weight) > 0)
+                                    productVariant.Weight = GeneralHelper.ChangeTypeFromString<decimal>(weight);
+                                if (trackingPolicy == "Track")
+                                    productVariant.TrackingPolicy = TrackingPolicy.Track;
+                                else
+                                    productVariant.TrackingPolicy = TrackingPolicy.DontTrack;
+                                if (GeneralHelper.ChangeTypeFromString<int>(taxRate) != 0)
+                                {
+                                    var taxRateEntity = _taxRateManager.Get(GeneralHelper.ChangeTypeFromString<int>(taxRate));
+                                    if (taxRateEntity != null)
+                                        productVariant.TaxRate = taxRateEntity;
+                                }
 
-                                    product.Parent = _documentService.GetUniquePage<ProductSearch>();
-                                    product.Name = productName;
-                                    product.BodyContent = description;
-                                    product.MetaTitle = seoTitle;
-                                    product.MetaDescription = seoDescription;
-                                    product.MetaKeywords = seoKeywords;
-                                    product.Abstract = productAbstract;
-                                    product.PublishOn = DateTime.UtcNow;
-                                    if (!_brandService.AnyExistingBrandsWithName(brand, 0))
-                                        _brandService.Add(new Brand() { Name = brand });
-                                    var brandEntity = _brandService.GetBrandByName(brand);
-                                    if (brandEntity != null)
-                                        product.Brand = brandEntity;
-
-                                    //Categories
-                                    string[] Cats = categories.Split(';');
-                                    foreach (var item in Cats)
-                                    {
-                                        int categoryID = 0;
-                                        Int32.TryParse(item, out categoryID);
-                                        Category category = _documentService.GetDocument<Category>(categoryID);
-                                        if (category != null && product.Categories.Where(x => x.Id == category.Id).Count() == 0)
-                                            product.Categories.Add(category);
-                                    }
-                                    
-                                   
-                                    ProductVariant productVariant = _productVariantService.GetProductVariantBySKU(sku);
-                                    if (productVariant == null)
-                                    {
-                                        productVariant = new ProductVariant();
-                                    }
-                                    if (!String.IsNullOrWhiteSpace(productName))
-                                        productVariant.Name = variantName;
-                                    if (!String.IsNullOrWhiteSpace(sku))
-                                        productVariant.SKU = sku;
-                                    if(!String.IsNullOrWhiteSpace(barcode))
-                                        productVariant.Barcode = barcode;
-                                    if(GeneralHelper.ChangeTypeFromString<decimal>(price)>0)
-                                        productVariant.BasePrice = GeneralHelper.ChangeTypeFromString<decimal>(price);
-                                    else
-                                    {
-                                        messages.Add(productName + " - " + variantName + " (SKU:" + sku + ") was not imported because price field value is invalid.");
-                                        continue;
-                                    }
-                                    if (GeneralHelper.ChangeTypeFromString<decimal>(previousPrice) > 0)
-                                        productVariant.PreviousPrice = GeneralHelper.ChangeTypeFromString<decimal>(previousPrice);
-                                    if (GeneralHelper.ChangeTypeFromString<decimal>(stock) > 0)
-                                        productVariant.StockRemaining = GeneralHelper.ChangeTypeFromString<int>(stock);
-                                    if (GeneralHelper.ChangeTypeFromString<decimal>(weight) > 0)
-                                        productVariant.Weight = GeneralHelper.ChangeTypeFromString<decimal>(weight);
-                                    if (trackingPolicy == "Track")
-                                        productVariant.TrackingPolicy = TrackingPolicy.Track;
-                                    else
-                                        productVariant.TrackingPolicy = TrackingPolicy.DontTrack;
-                                    if (GeneralHelper.ChangeTypeFromString<int>(taxRate) != 0)
-                                    {
-                                        var taxRateEntity = _taxRateManager.Get(GeneralHelper.ChangeTypeFromString<int>(taxRate));
-                                        if (taxRateEntity != null)
-                                            productVariant.TaxRate = taxRateEntity;
-                                    }
-
-                                    if (lastAddedProductID == 0)
-                                    {
-                                        product.UrlSegment = url;
-                                        _documentService.AddDocument<Product>(product);
-                                        //Delete Variant which is saved via DocumentTypeSetup
-                                        product.Variants.Clear();
-                                    }
-                                    else
-                                        _documentService.SaveDocument<Product>(product);
-
-                                    product = _productService.Get(product.Id);
-
-                                    if (!product.Images.Any())
-                                    {
-                                        if (!String.IsNullOrWhiteSpace(image1))
-                                            AddFile(image1.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
-                                        if (!String.IsNullOrWhiteSpace(image2))
-                                            AddFile(image2.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
-                                        if (!String.IsNullOrWhiteSpace(image3))
-                                            AddFile(image3.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
-                                    }
-                                    else
-                                    {
-                                        if (!String.IsNullOrWhiteSpace(image1) && image1.Contains("?update=yes"))
-                                            AddFile(image1.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
-                                        if (!String.IsNullOrWhiteSpace(image2) && image2.Contains("?update=yes"))
-                                            AddFile(image2.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
-                                        if (!String.IsNullOrWhiteSpace(image3) && image3.Contains("?update=yes"))
-                                            AddFile(image3.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
-                                    }
-
-                                    //Specifications
-                                    product.SpecificationValues.Clear();
-                                    string[] Specs = specifications.Split(';');
-                                    foreach (var item in Specs)
-                                    {
-                                        if (item != String.Empty)
-                                        {
-                                            string[] specificationValue = item.Split(':');
-
-                                            if (!_productOptionManager.AnyExistingSpecificationAttributesWithName(specificationValue[0]))
-                                            {
-                                                _productOptionManager.AddSpecificationAttribute(new ProductSpecificationAttribute() { Name = specificationValue[0] });
-                                            }
-
-                                            ProductSpecificationAttribute option = _productOptionManager.GetSpecificationAttributeByName(specificationValue[0]);
-                                            if (product.SpecificationValues.Where(x => x.ProductSpecificationAttribute.Id == option.Id && x.Product.Id == product.Id).Count() == 0)
-                                                product.SpecificationValues.Add(new ProductSpecificationValue() { ProductSpecificationAttribute = option, Value = specificationValue[1], Product = product });
-                                            else
-                                            {
-                                                product.SpecificationValues.Where(x => x.ProductSpecificationAttribute.Id == option.Id && x.Product.Id == product.Id).SingleOrDefault().Value = specificationValue[1];
-                                            }
-                                            if (!option.Options.Where(x => x.Name == specificationValue[1]).Any())
-                                            {
-                                                option.Options.Add(new ProductSpecificationAttributeOption() { ProductSpecificationAttribute = option, Name = specificationValue[1] });
-                                                _productOptionManager.UpdateSpecificationAttribute(option);
-                                            }
-                                        }
-                                    }
-
+                                if (lastAddedProductID == 0)
+                                {
+                                    product.UrlSegment = url;
+                                    _documentService.AddDocument<Product>(product);
+                                    //Delete Variant which is saved via DocumentTypeSetup
+                                    product.Variants.Clear();
+                                }
+                                else
                                     _documentService.SaveDocument<Product>(product);
 
-                                    //Save or Update Product Variant
-                                    productVariant.Product = product;
-                                    productVariant.AttributeValues.Clear();
-                                    _productVariantService.Update(productVariant);
-                                    variantsInImportedFile.Add(productVariant);
+                                product = _productService.Get(product.Id);
 
-                                    productVariant = _productVariantService.GetProductVariantBySKU(sku);
+                                if (!product.Images.Any())
+                                {
+                                    if (!String.IsNullOrWhiteSpace(image1))
+                                        AddFile(image1.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
+                                    if (!String.IsNullOrWhiteSpace(image2))
+                                        AddFile(image2.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
+                                    if (!String.IsNullOrWhiteSpace(image3))
+                                        AddFile(image3.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
+                                }
+                                else
+                                {
+                                    if (!String.IsNullOrWhiteSpace(image1) && image1.Contains("?update=yes"))
+                                        AddFile(image1.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
+                                    if (!String.IsNullOrWhiteSpace(image2) && image2.Contains("?update=yes"))
+                                        AddFile(image2.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
+                                    if (!String.IsNullOrWhiteSpace(image3) && image3.Contains("?update=yes"))
+                                        AddFile(image3.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
+                                }
 
-                                    //Options
-                                    if (!String.IsNullOrWhiteSpace(option1Name) && !String.IsNullOrWhiteSpace(option1Value))
-                                    {
-                                        if (!_productOptionManager.AnyExistingAttributeOptionsWithName(option1Name))
-                                            _productOptionManager.AddAttributeOption(new ProductAttributeOption() { Name = option1Name });
-                                        var option = _productOptionManager.GetAttributeOptionByName(option1Name);
-                                        if (productVariant.Product.AttributeOptions.Where(x => x.Id == option.Id).Count() == 0)
-                                            product.AttributeOptions.Add(option);
-                                        if (productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).Count() == 0)
-                                        {
-                                            productVariant.AttributeValues.Add(new ProductAttributeValue()
-                                            {
-                                                ProductAttributeOption = option,
-                                                ProductVariant = productVariant,
-                                                Value = option1Value
-                                            });
-                                        }
-                                        else
-                                        {
-                                            productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).SingleOrDefault().Value = option1Value;
-                                        }
-                                    }
-                                    if (!String.IsNullOrWhiteSpace(option2Name) && !String.IsNullOrWhiteSpace(option2Value))
-                                    {
-                                        if (!_productOptionManager.AnyExistingAttributeOptionsWithName(option2Name))
-                                            _productOptionManager.AddAttributeOption(new ProductAttributeOption() { Name = option2Name });
-                                        var option = _productOptionManager.GetAttributeOptionByName(option2Name);
-                                        if (productVariant.Product.AttributeOptions.Where(x => x.Id == option.Id).Count() == 0)
-                                            product.AttributeOptions.Add(option);
-                                        if (productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).Count() == 0)
-                                        {
-                                            productVariant.AttributeValues.Add(new ProductAttributeValue()
-                                            {
-                                                ProductAttributeOption = option,
-                                                ProductVariant = productVariant,
-                                                Value = option2Value
-                                            });
-                                        }
-                                        else
-                                        {
-                                            productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).SingleOrDefault().Value = option2Value;
-                                        }
-                                    }
-                                    if (!String.IsNullOrWhiteSpace(option3Name) && !String.IsNullOrWhiteSpace(option3Value))
-                                    {
-                                        if (!_productOptionManager.AnyExistingAttributeOptionsWithName(option3Name))
-                                            _productOptionManager.AddAttributeOption(new ProductAttributeOption() { Name = option3Name });
-                                        var option = _productOptionManager.GetAttributeOptionByName(option3Name);
-                                        if (productVariant.Product.AttributeOptions.Where(x => x.Id == option.Id).Count() == 0)
-                                            product.AttributeOptions.Add(option);
-                                        if (productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).Count() == 0)
-                                        {
-                                            productVariant.AttributeValues.Add(new ProductAttributeValue()
-                                            {
-                                                ProductAttributeOption = option,
-                                                ProductVariant = productVariant,
-                                                Value = option3Value
-                                            });
-                                        }
-                                        else
-                                        {
-                                            productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).SingleOrDefault().Value = option3Value;
-                                        }
-                                    }
-                                    _productVariantService.Update(productVariant);
-                                    messages.Add(String.IsNullOrWhiteSpace(productVariant.Name)?productVariant.Name:productVariant.Product.Name+ " (SKU:" + productVariant.SKU + ") successfully imported.");
-                                    lastAddedProductID = 0;
-                                }
-                                //Remove variants which don't exist in imported file
-                                foreach (var item in _productVariantService.GetAll())
+                                //Specifications
+                                //product.SpecificationValues.Clear();
+                                //string[] Specs = specifications.Split(';');
+                                //foreach (var item in Specs)
+                                //{
+                                //    if (item != String.Empty)
+                                //    {
+                                //        string[] specificationValue = item.Split(':');
+
+                                //        if (!_productOptionManager.AnyExistingSpecificationAttributesWithName(specificationValue[0]))
+                                //        {
+                                //            _productOptionManager.AddSpecificationAttribute(new ProductSpecificationAttribute() { Name = specificationValue[0] });
+                                //        }
+
+                                //        ProductSpecificationAttribute option = _productOptionManager.GetSpecificationAttributeByName(specificationValue[0]);
+                                //        if (
+                                //            product.SpecificationValues.Where(
+                                //                x =>
+                                //                x.ProductSpecificationAttribute.Id == option.Id &&
+                                //                x.Product.Id == product.Id).Count() == 0)
+                                //            product.SpecificationValues.Add(new ProductSpecificationValue()
+                                //                                                {
+                                //                                                    ProductSpecificationAttribute = option,
+                                //                                                    Value = specificationValue[1],
+                                //                                                    Product = product
+                                //                                                });
+                                //        else
+                                //        {
+                                //            product.SpecificationValues.Where(
+                                //                x =>
+                                //                x.ProductSpecificationAttribute.Id == option.Id &&
+                                //                x.Product.Id == product.Id).SingleOrDefault().Value =
+                                //                specificationValue[1];
+                                //        }
+                                //        if (!option.Options.Where(x => x.Name == specificationValue[1]).Any())
+                                //        {
+                                //            option.Options.Add(new ProductSpecificationAttributeOption() { ProductSpecificationAttribute = option, Name = specificationValue[1] });
+                                //            _productOptionManager.UpdateSpecificationAttribute(option);
+                                //        }
+                                //    }
+                                //}
+
+                                _documentService.SaveDocument<Product>(product);
+
+                                //Save or Update Product Variant
+                                productVariant.Product = product;
+                                productVariant.AttributeValues.Clear();
+                                _productVariantService.Update(productVariant);
+                                variantsInImportedFile.Add(productVariant);
+
+                                productVariant = _productVariantService.GetProductVariantBySKU(sku);
+
+                                //Options
+                                if (!String.IsNullOrWhiteSpace(option1Name) && !String.IsNullOrWhiteSpace(option1Value))
                                 {
-                                    if (!variantsInImportedFile.Where(x => x.Id == item.Id).Any())
+                                    if (!_productOptionManager.AnyExistingAttributeOptionsWithName(option1Name))
+                                        _productOptionManager.AddAttributeOption(new ProductAttributeOption() { Name = option1Name });
+                                    var option = _productOptionManager.GetAttributeOptionByName(option1Name);
+                                    if (productVariant.Product.AttributeOptions.Where(x => x.Id == option.Id).Count() == 0)
+                                        product.AttributeOptions.Add(option);
+                                    if (productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).Count() == 0)
                                     {
-                                        messages.Add(String.IsNullOrWhiteSpace(item.Name) ? item.Name : item.Product.Name + " (SKU:" + item.SKU + ") which doesn't exist in imported file was removed from database.");
-                                        _productVariantService.Delete(item);
+                                        productVariant.AttributeValues.Add(new ProductAttributeValue()
+                                        {
+                                            ProductAttributeOption = option,
+                                            ProductVariant = productVariant,
+                                            Value = option1Value
+                                        });
+                                    }
+                                    else
+                                    {
+                                        productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).SingleOrDefault().Value = option1Value;
                                     }
                                 }
-                                //Reindex Everything
-                                foreach (var item in  _indexService.GetIndexes().Where(x=>x.Name.Contains("Product")))
+                                if (!String.IsNullOrWhiteSpace(option2Name) && !String.IsNullOrWhiteSpace(option2Value))
                                 {
-                                    _indexService.Reindex(item.TypeName);
+                                    if (!_productOptionManager.AnyExistingAttributeOptionsWithName(option2Name))
+                                        _productOptionManager.AddAttributeOption(new ProductAttributeOption() { Name = option2Name });
+                                    var option = _productOptionManager.GetAttributeOptionByName(option2Name);
+                                    if (productVariant.Product.AttributeOptions.Where(x => x.Id == option.Id).Count() == 0)
+                                        product.AttributeOptions.Add(option);
+                                    if (productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).Count() == 0)
+                                    {
+                                        productVariant.AttributeValues.Add(new ProductAttributeValue()
+                                        {
+                                            ProductAttributeOption = option,
+                                            ProductVariant = productVariant,
+                                            Value = option2Value
+                                        });
+                                    }
+                                    else
+                                    {
+                                        productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).SingleOrDefault().Value = option2Value;
+                                    }
                                 }
-                                messages.Add("Product Index was successfully reindexed.");
+                                if (!String.IsNullOrWhiteSpace(option3Name) && !String.IsNullOrWhiteSpace(option3Value))
+                                {
+                                    if (!_productOptionManager.AnyExistingAttributeOptionsWithName(option3Name))
+                                        _productOptionManager.AddAttributeOption(new ProductAttributeOption() { Name = option3Name });
+                                    var option = _productOptionManager.GetAttributeOptionByName(option3Name);
+                                    if (productVariant.Product.AttributeOptions.Where(x => x.Id == option.Id).Count() == 0)
+                                        product.AttributeOptions.Add(option);
+                                    if (productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).Count() == 0)
+                                    {
+                                        productVariant.AttributeValues.Add(new ProductAttributeValue()
+                                        {
+                                            ProductAttributeOption = option,
+                                            ProductVariant = productVariant,
+                                            Value = option3Value
+                                        });
+                                    }
+                                    else
+                                    {
+                                        productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).SingleOrDefault().Value = option3Value;
+                                    }
+                                }
+                                _productVariantService.Update(productVariant);
+                                messages.Add(String.IsNullOrWhiteSpace(productVariant.Name) ? productVariant.Name : productVariant.Product.Name + " (SKU:" + productVariant.SKU + ") successfully imported.");
+                                lastAddedProductID = 0;
                             }
-                            else
-                                messages.Add("No Info or Products worksheets in file.");
+                            //Remove variants which don't exist in imported file
+                            foreach (var item in _productVariantService.GetAll())
+                            {
+                                if (!variantsInImportedFile.Where(x => x.Id == item.Id).Any())
+                                {
+                                    messages.Add(String.IsNullOrWhiteSpace(item.Name) ? item.Name : item.Product.Name + " (SKU:" + item.SKU + ") which doesn't exist in imported file was removed from database.");
+                                    _productVariantService.Delete(item);
+                                }
+                            }
+                            //Reindex Everything
+                            foreach (var item in _indexService.GetIndexes().Where(x => x.Name.Contains("Product")))
+                            {
+                                _indexService.Reindex(item.TypeName);
+                            }
+                            messages.Add("Product Index was successfully reindexed.");
                         }
                         else
-                            messages.Add("No worksheets in file.");
+                            messages.Add("No Info or Products worksheets in file.");
                     }
                     else
-                        messages.Add("Error reading file.");
+                        messages.Add("No worksheets in file.");
                 }
+                else
+                    messages.Add("Error reading file.");
+            }
             //}
             //catch (Exception)
             //{
@@ -429,14 +455,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                             wsProducts.Cells["I" + rowId].Value += item.Id + ";";
                         }
                     }
-                    if (productVariants[i].Product.SpecificationValues.Count > 0)
-                    {
-                        foreach (var item in productVariants[i].Product.SpecificationValues)
-                        {
-                            wsProducts.Cells["J" + rowId].Value += item.ProductSpecificationAttribute.Name + ":" + item.Value + ";";
-                        }
-                    }
-                    wsProducts.Cells["K" + rowId].Value = productVariants[i].Name!=null?productVariants[i].Name:String.Empty;
+                    //if (productVariants[i].Product.SpecificationValues.Count > 0)
+                    //{
+                    //    foreach (var item in productVariants[i].Product.SpecificationValues)
+                    //    {
+                    //        wsProducts.Cells["J" + rowId].Value += item.ProductSpecificationAttribute.Name + ":" + item.Value + ";";
+                    //    }
+                    //}
+                    wsProducts.Cells["K" + rowId].Value = productVariants[i].Name != null ? productVariants[i].Name : String.Empty;
                     wsProducts.Cells["L" + rowId].Value = productVariants[i].BasePrice;
                     wsProducts.Cells["M" + rowId].Value = productVariants[i].PreviousPrice;
                     if (productVariants[i].TaxRate != null)
@@ -469,8 +495,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
                     if (productVariants[i].Product.Images.Any())
                     {
-                        wsProducts.Cells["Z" + rowId].Value = "http://"+CurrentRequestData.CurrentSite.BaseUrl+productVariants[i].Product.Images.First().FileUrl+"?update=no";
-                        if(productVariants[i].Product.Images.Count()>1)
+                        wsProducts.Cells["Z" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.First().FileUrl + "?update=no";
+                        if (productVariants[i].Product.Images.Count() > 1)
                             wsProducts.Cells["AA" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[1].FileUrl + "?update=no";
                         if (productVariants[i].Product.Images.Count() > 2)
                             wsProducts.Cells["AB" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[2].FileUrl + "?update=no";
