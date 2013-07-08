@@ -68,7 +68,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public IList<ProductSpecificationAttributeOption> ListSpecificationAttributeOptions(int id)
         {
-            return _session.QueryOver<ProductSpecificationAttributeOption>().Where(x=>x.ProductSpecificationAttribute.Id==id).Cacheable().List();
+            return _session.QueryOver<ProductSpecificationAttributeOption>().Where(x => x.ProductSpecificationAttribute.Id == id).Cacheable().List();
         }
         public void AddSpecificationAttributeOption(ProductSpecificationAttributeOption option)
         {
@@ -95,13 +95,34 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             _session.Transact(session => session.Delete(option));
         }
 
-        public void SetSpecificationValue(Product product, ProductSpecificationAttribute productSpecificationAttribute, string Value)
+        public void SetSpecificationValue(Product product, ProductSpecificationAttribute productSpecificationAttribute, string value)
         {
-            var values = _session.QueryOver<ProductSpecificationValue>().Where(specificationValue => specificationValue.ProductSpecificationAttribute == productSpecificationAttribute && specificationValue.Product == product).Cacheable().List();
-            if (values.Any())
+            ProductSpecificationValue valueAlias = null;
+            ProductSpecificationAttributeOption optionAlias = null;
+            var specificationValue = _session.QueryOver(() => valueAlias)
+                                 .JoinAlias(() => valueAlias.ProductSpecificationAttributeOption, () => optionAlias)
+                                 .Where(
+                                     () => valueAlias.Product == product &&
+                                           optionAlias.ProductSpecificationAttribute == productSpecificationAttribute
+                ).Cacheable().SingleOrDefault();
+
+            var option =
+                productSpecificationAttribute.Options.FirstOrDefault(
+                    attributeOption =>
+                    string.Equals(attributeOption.Name, value, StringComparison.InvariantCultureIgnoreCase));
+            if (option == null)
             {
-                var specificationValue = values.First();
-                specificationValue.Value = Value;
+                option = new ProductSpecificationAttributeOption
+                             {
+                                 ProductSpecificationAttribute = productSpecificationAttribute,
+                                 Name = value
+                             };
+                _session.Save(option);
+            }
+
+            if (specificationValue != null)
+            {
+                specificationValue.ProductSpecificationAttributeOption = option;
                 _session.Transact(session => session.Update(specificationValue));
             }
             else
@@ -109,8 +130,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 var productSpecificationValue = new ProductSpecificationValue
                 {
                     Product = product,
-                    ProductSpecificationAttribute = productSpecificationAttribute,
-                    Value = Value
+                    ProductSpecificationAttributeOption = option
                 };
                 product.SpecificationValues.Add(productSpecificationValue);
                 _session.Transact(session => session.SaveOrUpdate(product));
@@ -209,17 +229,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
                     for (int i = 0; i < product.Variants.Count; i++)
                     {
-                         product.Variants[i].AttributeValues.Add(new ProductAttributeValue
-                            {
-                                ProductVariant = product.Variants[i],
-                                ProductAttributeOption = option,
-                                Value = String.Empty
-                            });
+                        product.Variants[i].AttributeValues.Add(new ProductAttributeValue
+                           {
+                               ProductVariant = product.Variants[i],
+                               ProductAttributeOption = option,
+                               Value = String.Empty
+                           });
                         _session.Transact(session => session.Update(product.Variants[i]));
                     }
                 }
             }
-      
+
             _session.Evict(typeof(ProductAttributeValue));
             _session.Evict(typeof(ProductAttributeOption));
             _session.Evict(typeof(ProductVariant));
@@ -283,7 +303,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             return _session.QueryOver<ProductAttributeOption>()
                            .Where(
                                option =>
-                               option.Name.IsInsensitiveLike(name, MatchMode.Exact) && option.Id==id)
+                               option.Name.IsInsensitiveLike(name, MatchMode.Exact) && option.Id == id)
                            .RowCount() > 0;
         }
         public bool AnyExistingAttributeOptionsWithName(string name)
