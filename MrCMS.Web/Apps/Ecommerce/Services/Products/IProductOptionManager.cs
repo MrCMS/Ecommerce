@@ -23,7 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void DeleteSpecificationAttributeOption(ProductSpecificationAttributeOption option);
         bool AnyExistingSpecificationAttributeOptionsWithName(string name, int id);
 
-        void SetSpecificationValue(Product product, ProductSpecificationAttribute productSpecificationAttribute, string Value);
+        void SetSpecificationValue(Product product, ProductSpecificationAttribute productSpecificationAttribute, string value);
         void DeleteSpecificationValue(ProductSpecificationValue specification);
         void UpdateSpecificationValueDisplayOrder(IList<SortItem> options);
         ProductSpecificationValue GetSpecificationValue(int id);

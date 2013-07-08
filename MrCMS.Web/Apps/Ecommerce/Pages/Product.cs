@@ -45,10 +45,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual string GetSpecification(string name)
         {
-            var spec = SpecificationValues.FirstOrDefault(value => value.ProductSpecificationAttribute.Name == name);
-            if (spec == null)
-                return null;
-            return spec.Value;
+            var spec = SpecificationValues.FirstOrDefault(value => value.ProductSpecificationAttributeOption.ProductSpecificationAttribute.Name == name);
+            return spec == null ? null : spec.Value;
         }
 
         public override void AdminViewData(ViewDataDictionary viewData, ISession session)

@@ -112,7 +112,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult AddSpecification(Product product)
         {
             ViewData["product"] = product;
-            var attributes = _productOptionManager.ListSpecificationAttributes().ToList().Where(x =>product.SpecificationValues.All(v => v.ProductSpecificationAttribute.Id != x.Id)).ToList();
+            var attributes =
+                _productOptionManager.ListSpecificationAttributes()
+                                     .ToList()
+                                     .Where(
+                                         x =>
+                                         product.SpecificationValues.All(
+                                             v =>
+                                             v.ProductSpecificationAttributeOption.ProductSpecificationAttribute.Id !=
+                                             x.Id))
+                                     .ToList();
 
             ViewData["specification-attributes"] = new SelectList(attributes, "Id", "Name");
             var options = attributes.Any()
@@ -177,9 +186,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 if (product != null)
                 {
                     var sortItems = product.SpecificationValues.OrderBy(x => x.DisplayOrder)
-                                .Select(
-                                    arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.ProductSpecificationAttribute.Name })
-                                .ToList();
+                                           .Select(
+                                               arg =>
+                                               new SortItem
+                                                   {
+                                                       Order = arg.DisplayOrder,
+                                                       Id = arg.Id,
+                                                       Name = arg.ProductSpecificationAttributeOption.ProductSpecificationAttribute.Name
+                                                   })
+                                           .ToList();
                     ViewBag.Product = product;
                     return View(sortItems);
                 }
