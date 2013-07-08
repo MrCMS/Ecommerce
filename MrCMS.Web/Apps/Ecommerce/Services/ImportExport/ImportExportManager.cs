@@ -143,13 +143,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                         productVariant.Barcode = barcode;
                                     if(GeneralHelper.ChangeTypeFromString<decimal>(price)>0)
                                         productVariant.BasePrice = GeneralHelper.ChangeTypeFromString<decimal>(price);
-                                    if (GeneralHelper.ChangeTypeFromString<decimal>(previousPrice) > 0)
-                                        productVariant.PreviousPrice = GeneralHelper.ChangeTypeFromString<decimal>(previousPrice);
                                     else
                                     {
                                         messages.Add(productName + " - " + variantName + " (SKU:" + sku + ") was not imported because price field value is invalid.");
                                         continue;
                                     }
+                                    if (GeneralHelper.ChangeTypeFromString<decimal>(previousPrice) > 0)
+                                        productVariant.PreviousPrice = GeneralHelper.ChangeTypeFromString<decimal>(previousPrice);
                                     if (GeneralHelper.ChangeTypeFromString<decimal>(stock) > 0)
                                         productVariant.StockRemaining = GeneralHelper.ChangeTypeFromString<int>(stock);
                                     if (GeneralHelper.ChangeTypeFromString<decimal>(weight) > 0)
