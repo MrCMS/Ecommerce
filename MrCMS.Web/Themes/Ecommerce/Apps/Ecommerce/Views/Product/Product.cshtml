@@ -153,7 +153,7 @@
                     @foreach (var item in Model.SpecificationValues.OrderBy(x => x.DisplayOrder))
                     {
                         <tr>
-                            <td><strong>@item.ProductSpecificationAttribute.Name</strong></td>
+                            <td><strong>@item.SpecificationName</strong></td>
                             <td>@item.Value</td>
                         </tr>
                     }
