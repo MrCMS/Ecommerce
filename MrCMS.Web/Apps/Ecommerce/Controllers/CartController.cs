@@ -109,6 +109,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             }
             return PartialView(_getCart.GetCart());
         }
+
+        [HttpPost]
+        public JsonResult AddDiscountCodeAjax(string discountCode)
+        {
+            if (String.IsNullOrWhiteSpace(discountCode))
+            {
+                _getCart.SetDiscountCode(discountCode);
+                return Json("Removed");
+            }
+            else if (!String.IsNullOrWhiteSpace(discountCode) && ValidateDiscountCode(discountCode))
+            {
+                _getCart.SetDiscountCode(discountCode);
+                return Json(discountCode);
+            }
+            return Json(false);
+        }
         [HttpGet]
         public ViewResult EditDiscountCode()
         {
