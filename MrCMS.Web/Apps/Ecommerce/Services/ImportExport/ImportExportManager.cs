@@ -32,10 +32,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         private readonly IBrandService _brandService;
         private readonly ITaxRateManager _taxRateManager;
         private readonly IFileService _fileService;
+        private readonly IIndexService _indexService;
 
         public ImportExportManager(ISession session, IProductService productService, IProductVariantService productVariantService,
             IDocumentService documentService, IProductOptionManager productOptionManager, IBrandService brandService, ITaxRateManager taxRateManager,
-            IFileService fileService)
+            IFileService fileService,IIndexService indexService)
         {
             _session = session;
             _productService = productService;
@@ -45,6 +46,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             _brandService = brandService;
             _taxRateManager = taxRateManager;
             _fileService = fileService;
+            _indexService = indexService;
         }
 
         public List<string> ImportProductsFromExcel(HttpPostedFileBase file)
@@ -266,10 +268,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                     _productVariantService.Update(productVariant);
                                     lastAddedProductID = 0;
                                 }
+                                //Remove variants which don't exist in imported file
                                 foreach (var item in _productVariantService.GetAll())
                                 {
                                     if (!variantsInImportedFile.Where(x => x.Id == item.Id).Any())
                                         _productVariantService.Delete(item);
+                                }
+                                //Reindex Everything
+                                foreach (var item in  _indexService.GetIndexes().Where(x=>x.Name.Contains("Product")))
+                                {
+                                    _indexService.Reindex(item.TypeName);
                                 }
                                 messages.Add("All products and variants were successfully imported.");
                             }
