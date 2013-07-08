@@ -114,7 +114,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                     product.PublishOn = DateTime.UtcNow;
                                     if (!_brandService.AnyExistingBrandsWithName(brand, 0))
                                         _brandService.Add(new Brand() { Name = brand });
-                                    product.Brand = _brandService.GetBrandByName(brand);
+                                    var brandEntity = _brandService.GetBrandByName(brand);
+                                    if (brandEntity != null)
+                                        product.Brand = brandEntity;
 
                                     //Categories
                                     string[] Cats = categories.Split(';');
@@ -126,7 +128,44 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                         if (category != null && product.Categories.Where(x => x.Id == category.Id).Count() == 0)
                                             product.Categories.Add(category);
                                     }
-                                    if(lastAddedProductID==0)
+                                    
+                                   
+                                    ProductVariant productVariant = _productVariantService.GetProductVariantBySKU(sku);
+                                    if (productVariant == null)
+                                    {
+                                        productVariant = new ProductVariant();
+                                    }
+                                    if (!String.IsNullOrWhiteSpace(productName))
+                                        productVariant.Name = variantName;
+                                    if (!String.IsNullOrWhiteSpace(sku))
+                                        productVariant.SKU = sku;
+                                    if(!String.IsNullOrWhiteSpace(barcode))
+                                        productVariant.Barcode = barcode;
+                                    if(GeneralHelper.ChangeTypeFromString<decimal>(price)>0)
+                                        productVariant.BasePrice = GeneralHelper.ChangeTypeFromString<decimal>(price);
+                                    if (GeneralHelper.ChangeTypeFromString<decimal>(previousPrice) > 0)
+                                        productVariant.PreviousPrice = GeneralHelper.ChangeTypeFromString<decimal>(previousPrice);
+                                    else
+                                    {
+                                        messages.Add(productName + " - " + variantName + " (SKU:" + sku + ") was not imported because price field value is invalid.");
+                                        continue;
+                                    }
+                                    if (GeneralHelper.ChangeTypeFromString<decimal>(stock) > 0)
+                                        productVariant.StockRemaining = GeneralHelper.ChangeTypeFromString<int>(stock);
+                                    if (GeneralHelper.ChangeTypeFromString<decimal>(weight) > 0)
+                                        productVariant.Weight = GeneralHelper.ChangeTypeFromString<decimal>(weight);
+                                    if (trackingPolicy == "Track")
+                                        productVariant.TrackingPolicy = TrackingPolicy.Track;
+                                    else
+                                        productVariant.TrackingPolicy = TrackingPolicy.DontTrack;
+                                    if (GeneralHelper.ChangeTypeFromString<int>(taxRate) != 0)
+                                    {
+                                        var taxRateEntity = _taxRateManager.Get(GeneralHelper.ChangeTypeFromString<int>(taxRate));
+                                        if (taxRateEntity != null)
+                                            productVariant.TaxRate = taxRateEntity;
+                                    }
+
+                                    if (lastAddedProductID == 0)
                                     {
                                         product.UrlSegment = url;
                                         _documentService.AddDocument<Product>(product);
@@ -134,7 +173,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                         product.Variants.Clear();
                                     }
                                     else
-                                         _documentService.SaveDocument<Product>(product);
+                                        _documentService.SaveDocument<Product>(product);
 
                                     product = _productService.Get(product.Id);
 
@@ -174,6 +213,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                             ProductSpecificationAttribute option = _productOptionManager.GetSpecificationAttributeByName(specificationValue[0]);
                                             if (product.SpecificationValues.Where(x => x.ProductSpecificationAttribute.Id == option.Id && x.Product.Id == product.Id).Count() == 0)
                                                 product.SpecificationValues.Add(new ProductSpecificationValue() { ProductSpecificationAttribute = option, Value = specificationValue[1], Product = product });
+                                            else
+                                            {
+                                                product.SpecificationValues.Where(x => x.ProductSpecificationAttribute.Id == option.Id && x.Product.Id == product.Id).SingleOrDefault().Value = specificationValue[1];
+                                            }
                                             if (!option.Options.Where(x => x.Name == specificationValue[1]).Any())
                                             {
                                                 option.Options.Add(new ProductSpecificationAttributeOption() { ProductSpecificationAttribute = option, Name = specificationValue[1] });
@@ -181,31 +224,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                             }
                                         }
                                     }
-                                   
+
                                     _documentService.SaveDocument<Product>(product);
 
-                                    ProductVariant productVariant = _productVariantService.GetProductVariantBySKU(sku);
-                                    if (productVariant == null)
-                                    {
-                                        productVariant = new ProductVariant();
-                                    }
-                                    productVariant.Name = variantName;
-                                    productVariant.SKU = sku;
-                                    productVariant.Barcode = barcode;
-                                    productVariant.BasePrice = GeneralHelper.ChangeTypeFromString<decimal>(price);
-                                    productVariant.PreviousPrice = GeneralHelper.ChangeTypeFromString<decimal>(previousPrice);
-                                    productVariant.StockRemaining = GeneralHelper.ChangeTypeFromString<int>(stock);
-                                    productVariant.Weight = GeneralHelper.ChangeTypeFromString<decimal>(weight);
-                                    if (trackingPolicy == "Track")
-                                        productVariant.TrackingPolicy = TrackingPolicy.Track;
-                                    else
-                                        productVariant.TrackingPolicy = TrackingPolicy.DontTrack;
-                                    if (GeneralHelper.ChangeTypeFromString<int>(taxRate) != 0)
-                                    {
-                                        productVariant.TaxRate = _taxRateManager.Get(GeneralHelper.ChangeTypeFromString<int>(taxRate));
-                                    }
-
-                                    //Save or Update
+                                    //Save or Update Product Variant
                                     productVariant.Product = product;
                                     productVariant.AttributeValues.Clear();
                                     _productVariantService.Update(productVariant);
@@ -230,6 +252,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                 Value = option1Value
                                             });
                                         }
+                                        else
+                                        {
+                                            productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).SingleOrDefault().Value = option1Value;
+                                        }
                                     }
                                     if (!String.IsNullOrWhiteSpace(option2Name) && !String.IsNullOrWhiteSpace(option2Value))
                                     {
@@ -246,6 +272,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                 ProductVariant = productVariant,
                                                 Value = option2Value
                                             });
+                                        }
+                                        else
+                                        {
+                                            productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).SingleOrDefault().Value = option2Value;
                                         }
                                     }
                                     if (!String.IsNullOrWhiteSpace(option3Name) && !String.IsNullOrWhiteSpace(option3Value))
@@ -264,22 +294,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                 Value = option3Value
                                             });
                                         }
+                                        else
+                                        {
+                                            productVariant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).SingleOrDefault().Value = option3Value;
+                                        }
                                     }
                                     _productVariantService.Update(productVariant);
+                                    messages.Add(String.IsNullOrWhiteSpace(productVariant.Name)?productVariant.Name:productVariant.Product.Name+ " (SKU:" + productVariant.SKU + ") successfully imported.");
                                     lastAddedProductID = 0;
                                 }
                                 //Remove variants which don't exist in imported file
                                 foreach (var item in _productVariantService.GetAll())
                                 {
                                     if (!variantsInImportedFile.Where(x => x.Id == item.Id).Any())
+                                    {
+                                        messages.Add(String.IsNullOrWhiteSpace(item.Name) ? item.Name : item.Product.Name + " (SKU:" + item.SKU + ") which doesn't exist in imported file was removed from database.");
                                         _productVariantService.Delete(item);
+                                    }
                                 }
                                 //Reindex Everything
                                 foreach (var item in  _indexService.GetIndexes().Where(x=>x.Name.Contains("Product")))
                                 {
                                     _indexService.Reindex(item.TypeName);
                                 }
-                                messages.Add("All products and variants were successfully imported.");
+                                messages.Add("Product Index was successfully reindexed.");
                             }
                             else
                                 messages.Add("No Info or Products worksheets in file.");
