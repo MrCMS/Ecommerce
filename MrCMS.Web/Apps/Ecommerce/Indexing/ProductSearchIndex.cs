@@ -176,10 +176,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
 
         public static string GetSpecificationValue(ProductSpecificationValue entity)
         {
-            if (entity != null)
-                return entity.ProductSpecificationAttribute.Name.ToLower() + ":" + entity.Value.ToLower();
-            else
-                return String.Empty;
+            return entity != null
+                       ? entity.ProductSpecificationAttributeOption.ProductSpecificationAttribute.Name.ToLower() + ":" +
+                         entity.Value.ToLower()
+                       : String.Empty;
         }
     }
 }

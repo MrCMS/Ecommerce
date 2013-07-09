@@ -60,7 +60,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
 
             var listSpecificationAttributes = productOptionManager.ListSpecificationAttributes();
 
-            AssertionExtensions.ShouldAllBeEquivalentTo<ProductSpecificationAttribute>(listSpecificationAttributes, productSpecificationAttributes);
+            listSpecificationAttributes.ShouldAllBeEquivalentTo(productSpecificationAttributes);
         }
 
         [Fact]
@@ -79,7 +79,8 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
         public void ProductOptionManager_DeleteSpecificationAttribute_ShouldRemoveAllValues()
         {
             var productOptionManager = GetProductOptionManager();
-            var option = new ProductSpecificationAttribute { Name = "Test" };
+            var attribute = new ProductSpecificationAttribute { Name = "Test" };
+            var option = new ProductSpecificationAttributeOption() { Name = "Test Value" };
             var product = new Product();
             var productSpecificationAttributes =
                 Enumerable.Range(1, 10)
@@ -87,20 +88,19 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
                               i =>
                               new ProductSpecificationValue
                                   {
-                                      Value = "Value" + i,
-                                      ProductSpecificationAttribute = option,
+                                      ProductSpecificationAttributeOption = option,
                                       Product = product
                                   })
                           .ToList();
-            option.Values = productSpecificationAttributes;
+            attribute.Values = productSpecificationAttributes;
             Session.Transact(session =>
                                  {
                                      session.Save(product);
-                                     session.Save(option);
+                                     session.Save(attribute);
                                      productSpecificationAttributes.ForEach(value => session.Save(value));
                                  });
 
-            productOptionManager.DeleteSpecificationAttribute(option);
+            productOptionManager.DeleteSpecificationAttribute(attribute);
 
             Session.QueryOver<ProductSpecificationValue>().RowCount().Should().Be(0);
         }
@@ -109,20 +109,20 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
         public void ProductOptionManager_DeleteSpecificationAttribute_ShouldLeaveProductIntact()
         {
             var productOptionManager = GetProductOptionManager();
-            var option = new ProductSpecificationAttribute { Name = "Test" };
+            var attribute = new ProductSpecificationAttribute { Name = "Test" };
+            var option = new ProductSpecificationAttributeOption() { Name = "Test Value" };
             var product = new Product();
             var productSpecificationAttributes =
                 Enumerable.Range(1, 10)
                           .Select(
                               i =>
                               new ProductSpecificationValue
-                                  {
-                                      Value = "Value" + i,
-                                      ProductSpecificationAttribute = option,
-                                      Product = product
+                              {
+                                  ProductSpecificationAttributeOption = option,
+                                  Product = product
                                   })
                           .ToList();
-            option.Values = productSpecificationAttributes;
+            attribute.Values = productSpecificationAttributes;
             Session.Transact(session =>
                                  {
                                      session.Save(product);
@@ -130,7 +130,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
                                      productSpecificationAttributes.ForEach(value => session.Save(value));
                                  });
 
-            productOptionManager.DeleteSpecificationAttribute(option);
+            productOptionManager.DeleteSpecificationAttribute(attribute);
 
             Session.QueryOver<Product>().RowCount().Should().Be(1);
         }
