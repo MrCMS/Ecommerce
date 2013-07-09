@@ -27,7 +27,7 @@
                         @foreach (var item in Model.SpecificationValues.OrderBy(x => x.DisplayOrder))
                         {
                             <tr>
-                                <td>@item.ProductSpecificationAttribute.Name</td>
+                                <td>@item.SpecificationName</td>
                                 <td>@item.Value</td>
                                 <td>@Html.ActionLink("Remove", "RemoveSpecification", "Product", new { id=Model.Id, specificationValueId = item.Id }, new { @class = "btn btn-danger btn-mini pull-right", data_toggle = "fb-modal" })</td>
                             </tr>

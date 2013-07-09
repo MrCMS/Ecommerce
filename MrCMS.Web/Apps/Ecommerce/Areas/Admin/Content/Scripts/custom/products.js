@@ -19,7 +19,7 @@ $(function () {
     'use strict';
 
 
-    // Initialize the jQuery File Upload widget:
+    // Initialize  the jQuery File Upload widget:
     $('#fileupload').fileupload();
 
     // Load existing files:

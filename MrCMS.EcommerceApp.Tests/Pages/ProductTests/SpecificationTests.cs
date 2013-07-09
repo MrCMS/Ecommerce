@@ -24,11 +24,16 @@ namespace MrCMS.EcommerceApp.Tests.Pages.ProductTests
             var product = new Product();
             product.SpecificationValues.Add(new ProductSpecificationValue
                                                 {
-                                                    Value = "value",
-                                                    ProductSpecificationAttribute =
-                                                        new ProductSpecificationAttribute
+                                                    ProductSpecificationAttributeOption =
+                                                        new ProductSpecificationAttributeOption
                                                             {
-                                                                Name = "Test"
+                                                                ProductSpecificationAttribute =
+                                                                    new ProductSpecificationAttribute
+                                                                        {
+                                                                            Name = "Test"
+                                                                        }
+                                                                ,
+                                                                Name = "value"
                                                             }
                                                 });
 
