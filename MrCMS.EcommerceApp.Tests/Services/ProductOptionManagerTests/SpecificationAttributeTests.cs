@@ -92,7 +92,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
                                       Product = product
                                   })
                           .ToList();
-            attribute.Values = productSpecificationAttributes;
+            option.Values = productSpecificationAttributes;
             Session.Transact(session =>
                                  {
                                      session.Save(product);
@@ -122,7 +122,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
                                   Product = product
                                   })
                           .ToList();
-            attribute.Values = productSpecificationAttributes;
+            option.Values = productSpecificationAttributes;
             Session.Transact(session =>
                                  {
                                      session.Save(product);
