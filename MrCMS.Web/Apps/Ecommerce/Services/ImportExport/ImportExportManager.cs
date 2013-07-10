@@ -78,7 +78,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
         private void Import(ProductImportDataTransferObject dataTransferObject)
         {
-            throw new NotImplementedException();
+            
         }
 
         /// <summary>
@@ -89,13 +89,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private Dictionary<string,List<string>> ValidateBusinessLogic(List<ProductImportDataTransferObject> productsToImport)
         {
             var errors = new Dictionary<string, List<string>>();
-            var rules = MrCMSApplication.GetAll<IProductImportValidationRule>();
+            var productRules = MrCMSApplication.GetAll<IProductImportValidationRule>();
+            var productVariantRules = MrCMSApplication.GetAll<IProductVariantImportValidationRule>();
 
-            foreach (var dataTransferObject in productsToImport)
+            foreach (var product in productsToImport)
             {
-                var productErrors = rules.SelectMany(rule => rule.GetErrors(dataTransferObject)).ToList();
+                var productErrors = productRules.SelectMany(rule => rule.GetErrors(product)).ToList();
                 if (productErrors.Any())
-                    errors.Add(dataTransferObject.UrlSegment, productErrors);
+                    errors.Add(product.UrlSegment, productErrors);
+
+                foreach (var variant in product.ProductVariants)
+                {
+                    var productVariantErrors = productVariantRules.SelectMany(rule => rule.GetErrors(variant)).ToList();
+                    if (productVariantErrors.Any())
+                    {
+                        if (!errors.Any(x => x.Key == product.UrlSegment))
+                            errors.Add(product.UrlSegment, productVariantErrors);
+                        else
+                            errors[product.UrlSegment].AddRange(productVariantErrors);
+                    }
+                        
+                }
             }
 
             return errors;
@@ -149,10 +163,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     else
                         handle = name;
 
-                    if (!parseErrors.Any(x => x.Key == handle))
+                    if (!productsToImport.Any(x => x.Name == name || x.UrlSegment == url))
                     {
-                        parseErrors.Add(handle, new List<string>());
-                        product.UrlSegment = worksheet.GetValue<string>(rowId, 1);
+                        if (!parseErrors.Any(x => x.Key == handle))
+                             parseErrors.Add(handle, new List<string>());
+                        if (worksheet.GetValue<string>(rowId, 1).HasValue())
+                            product.UrlSegment = worksheet.GetValue<string>(rowId, 1);
+                        else
+                            product.UrlSegment = _documentService.GetDocumentUrl(name, null);
                         if (worksheet.GetValue<string>(rowId, 2).HasValue())
                             product.Name = worksheet.GetValue<string>(rowId, 2);
                         else
@@ -208,9 +226,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                         }
 
                         //Images
-                        product.Image1 = worksheet.GetValue<string>(rowId, 26);
-                        product.Image2 = worksheet.GetValue<string>(rowId, 27);
-                        product.Image3 = worksheet.GetValue<string>(rowId, 28);
+                        if (worksheet.GetValue<string>(rowId, 26).HasValue())
+                            product.Images.Add(worksheet.GetValue<string>(rowId, 26));
+                        if (worksheet.GetValue<string>(rowId, 27).HasValue())
+                            product.Images.Add(worksheet.GetValue<string>(rowId, 27));
+                        if (worksheet.GetValue<string>(rowId, 28).HasValue())
+                            product.Images.Add(worksheet.GetValue<string>(rowId, 28));
 
                         productsToImport.Add(product);
                     }
@@ -223,25 +244,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                         var productVariant = new ProductVariantImportDataTransferObject();
 
                         productVariant.Name = worksheet.GetValue<string>(rowId,11);
-                        if (!worksheet.GetValue<string>(rowId, 12).IsConvertable<decimal>())
+                        if (!worksheet.GetValue<string>(rowId, 12).IsValidInput<decimal>())
                             parseErrors[handle].Add("Price value is not a valid decimal number.");
                         else if (worksheet.GetValue<string>(rowId,12).HasValue())
                             productVariant.Price = worksheet.GetValue<decimal>(rowId, 12);
                         else
                             parseErrors[handle].Add("Price is required.");
-                        if (!worksheet.GetValue<string>(rowId, 13).IsConvertable<decimal>())
+                        if (!worksheet.GetValue<string>(rowId, 13).IsValidInput<decimal>())
                             parseErrors[handle].Add("Previous Price value is not a valid decimal number.");
                         else
                             productVariant.PreviousPrice = worksheet.GetValue<decimal?>(rowId, 13);
-                        if (!worksheet.GetValue<string>(rowId, 14).IsConvertable<int>())
+                        if (!worksheet.GetValue<string>(rowId, 14).IsValidInput<int>())
                             parseErrors[handle].Add("Tax Rate Id value is not a valid number.");
                         else
                             productVariant.TaxRate = worksheet.GetValue<int>(rowId, 14);
-                        if (!worksheet.GetValue<string>(rowId, 15).IsConvertable<decimal>())
+                        if (!worksheet.GetValue<string>(rowId, 15).IsValidInput<decimal>())
                             parseErrors[handle].Add("Weight value is not a valid decimal number.");
                         else
                             productVariant.Weight = worksheet.GetValue<decimal?>(rowId, 15);
-                        if (!worksheet.GetValue<string>(rowId, 16).IsConvertable<int>())
+                        if (!worksheet.GetValue<string>(rowId, 16).IsValidInput<int>())
                             parseErrors[handle].Add("Stock value is not a valid decimal number.");
                         else
                             productVariant.Stock = worksheet.GetValue<int>(rowId, 16);
@@ -274,9 +295,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 //Remove handles with no errors
                 parseErrors = parseErrors.Where(x => x.Value.Any()).ToDictionary(pair => pair.Key, pair => pair.Value);
-
-                //Remove duplicate errors
-                parseErrors = parseErrors.GroupBy(pair => pair.Value).Select(group => group.First()).ToDictionary(pair => pair.Key, pair => pair.Value);
             }
 
             return productsToImport;
