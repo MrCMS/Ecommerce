@@ -9,7 +9,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
     {
         public ProductSpecificationAttribute()
         {
-            Values = new List<ProductSpecificationValue>();
             Options = new List<ProductSpecificationAttributeOption>();
         }
 
@@ -17,7 +16,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [Remote("IsUniqueAttribute", "ProductSpecificationAttribute", AdditionalFields = "Id")]
         public virtual string Name { get; set; }
 
-        public virtual IList<ProductSpecificationValue> Values { get; set; }
         public virtual IList<ProductSpecificationAttributeOption> Options { get; set; }
     }
 }
