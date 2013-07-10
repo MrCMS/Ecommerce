@@ -386,17 +386,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         public FileResult ExportProducts()
         {
-            //try
-            //{
+            try
+            {
                 byte[] file = _importExportManager.ExportProductsToExcel();
                 ViewBag.ExportStatus = "Products successfully exported.";
                 return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MrCMS-Products-" + DateTime.UtcNow + ".xlsx");
-            //}
-            //catch (Exception)
-            //{
-            //    ViewBag.ExportStatus = "Products exporting has failed. Please try again and contact system administration if error continues to appear.";
-            //    return null;
-            //}
+            }
+            catch (Exception)
+            {
+                ViewBag.ExportStatus = "Products exporting has failed. Please try again and contact system administration if error continues to appear.";
+                return null;
+            }
         }
 
         [HttpPost]

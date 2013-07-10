@@ -18,7 +18,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
         {
             return _session.QueryOver<TaxRate>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
         }
-
         public IList<TaxRate> GetAll()
         {
             return _session.QueryOver<TaxRate>().Cacheable().List();

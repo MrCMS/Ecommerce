@@ -10,6 +10,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     public interface IImportExportManager
     {
         byte[] ExportProductsToExcel();
-        List<string> ImportProductsFromExcel(HttpPostedFileBase file);
+        Dictionary<string, List<string>> ImportProductsFromExcel(HttpPostedFileBase file);
     }
 }
