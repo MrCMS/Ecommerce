@@ -85,6 +85,62 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             _fileService = fileService;
             _indexService = indexService;
         }
+        
+        public Dictionary<string, List<string>> ImportProductsFromExcel_GARY(HttpPostedFileBase file)
+        {
+            var spreadsheet = new ExcelPackage(file.InputStream);
+
+            Dictionary<string, List<string>> parseErrors;
+            var productsToImport = GetProductsFromSpreadSheet(spreadsheet, out parseErrors);
+            if (parseErrors.Any())
+                return parseErrors;
+            var businessLogicErrors = ValidateBusinessLogic(productsToImport);
+            if (businessLogicErrors.Any())
+                return businessLogicErrors;
+            ImportProductsFromDTOs(productsToImport);
+            return new Dictionary<string, List<string>>();
+        }
+
+        /// <summary>
+        /// Do import
+        /// </summary>
+        /// <param name="productsToImport"></param>
+        private void ImportProductsFromDTOs(List<ProductImportDataTransferObject> productsToImport)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Apply business logic here
+        /// </summary>
+        /// <param name="productsToImport"></param>
+        /// <returns></returns>
+        private Dictionary<string,List<string>> ValidateBusinessLogic(List<ProductImportDataTransferObject> productsToImport)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Try and get data out of the spreadsheet into the DTOs with parse and type checks
+        /// </summary>
+        /// <param name="spreadsheet"></param>
+        /// <param name="parseErrors"></param>
+        /// <returns></returns>
+        private List<ProductImportDataTransferObject> GetProductsFromSpreadSheet(ExcelPackage spreadsheet, out Dictionary<string, List<string>> parseErrors)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Object that will contain the product data from the spreadsheet
+        /// </summary>
+        private class ProductImportDataTransferObject
+        {
+            public List<ProductVariantImportDataTransferObject> ProductVariants { get; set; }
+            // etc.
+        }
+        private class ProductVariantImportDataTransferObject{}
+
 
         //IMPORT
         //public List<string> ImportProductsFromExcel(HttpPostedFileBase file)
@@ -399,7 +455,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         //    //}
         //    return messages;
         //}
-
+        
         public Dictionary<string, List<string>> ImportProductsFromExcel(HttpPostedFileBase file)
         {
             File = new ExcelPackage(file.InputStream);
