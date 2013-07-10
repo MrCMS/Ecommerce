@@ -35,7 +35,7 @@
                          foreach (var item in (Dictionary<string, List<string>>)ViewBag.Messages)
                          {
                              <span>
-                                 Product <strong>@item.Key</strong> has the following errors:
+                                 <strong>@item.Key</strong> has the following errors:
                              </span>
                             <ul>
                                 @foreach (string error in (List<string>)item.Value)

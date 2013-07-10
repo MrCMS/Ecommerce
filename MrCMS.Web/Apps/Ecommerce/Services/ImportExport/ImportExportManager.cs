@@ -18,6 +18,7 @@ using MrCMS.Web.Apps.Ecommerce.Helpers;
 using System.Net;
 using System.IO;
 using MrCMS.Entities.Documents.Media;
+using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
@@ -32,43 +33,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private readonly ITaxRateManager _taxRateManager;
         private readonly IFileService _fileService;
         private readonly IIndexService _indexService;
-
-        private ExcelPackage File { get; set; }
-        private ExcelWorksheet Products { get; set; }
-        private Dictionary<string, List<string>> FileErrors
-        {
-            get
-            {
-                var errors = new Dictionary<string, List<string>>();
-
-                errors.Add("file", new List<string>());
-
-                if (File == null)
-                    errors["file"].Add("No import file");
-                else
-                {
-                    if (File.Workbook == null)
-                        errors["file"].Add("Error reading Workbook from import file.");
-                    else
-                    {
-                        if (File.Workbook.Worksheets.Count == 0)
-                            errors["file"].Add("No worksheets in import file.");
-                        else
-                        {
-                            if (File.Workbook.Worksheets[1].Name != "Info" &&
-                                File.Workbook.Worksheets[2].Name != "Products")
-                                errors["file"].Add("Required 'Info' and 'Products' worksheets are not present in import file.");
-                        }
-                    }
-                }
-
-                errors = errors.Where(x => x.Value.Any()).ToDictionary(pair => pair.Key, pair => pair.Value);
-
-                return errors;
-            }
-        }
-        private Dictionary<string, List<string>> ValidationErrors { get; set; }
-        private List<int> ValidRows { get; set; }
 
         public ImportExportManager(ISession session, IProductService productService, IProductVariantService productVariantService,
             IDocumentService documentService, IProductOptionManager productOptionManager, IBrandService brandService, ITaxRateManager taxRateManager,
@@ -85,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _indexService = indexService;
         }
         
-        public Dictionary<string, List<string>> ImportProductsFromExcel_GARY(HttpPostedFileBase file)
+        public Dictionary<string, List<string>> ImportProductsFromExcel(HttpPostedFileBase file)
         {
             var spreadsheet = new ExcelPackage(file.InputStream);
 
@@ -131,7 +95,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             {
                 var productErrors = rules.SelectMany(rule => rule.GetErrors(dataTransferObject)).ToList();
                 if (productErrors.Any())
-                    errors.Add(dataTransferObject.Url, productErrors);
+                    errors.Add(dataTransferObject.UrlSegment, productErrors);
             }
 
             return errors;
@@ -145,208 +109,179 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// <returns></returns>
         private List<ProductImportDataTransferObject> GetProductsFromSpreadSheet(ExcelPackage spreadsheet, out Dictionary<string, List<string>> parseErrors)
         {
-            throw new NotImplementedException();
-        }
-        
-        public Dictionary<string, List<string>> ImportProductsFromExcel(HttpPostedFileBase file)
-        {
-            File = new ExcelPackage(file.InputStream);
-            Validate();
-            if (FileErrors.Any())
-                return FileErrors;
-            return ValidationErrors;
-        }
+            var productsToImport = new List<ProductImportDataTransferObject>();
+            parseErrors = new Dictionary<string, List<string>>();
 
-        private void Validate()
-        {
-            ValidRows = new List<int>();
-            ValidationErrors = new Dictionary<string, List<string>>();
-
-            if (!FileErrors.Any())
+            parseErrors.Add("file", new List<string>());
+            if (spreadsheet == null)
+                parseErrors["file"].Add("No import file");
+            else
             {
-                Products = File.Workbook.Worksheets[2];
-                var totalRows = File.Workbook.Worksheets[2].Dimension.End.Row;
+                if (spreadsheet.Workbook == null)
+                    parseErrors["file"].Add("Error reading Workbook from import file.");
+                else
+                {
+                    if (spreadsheet.Workbook.Worksheets.Count == 0)
+                        parseErrors["file"].Add("No worksheets in import file.");
+                    else
+                    {
+                        if (spreadsheet.Workbook.Worksheets.Count<2 && (!spreadsheet.Workbook.Worksheets.Where(x=>x.Name=="Info").Any() ||
+                            !spreadsheet.Workbook.Worksheets.Where(x => x.Name == "Products").Any()))
+                            parseErrors["file"].Add("One or both of the required worksheets (Info and Products) are not present in import file.");
+                    }
+                }
+            }
+
+            parseErrors = parseErrors.Where(x => x.Value.Any()).ToDictionary(pair => pair.Key, pair => pair.Value);
+
+            if (!parseErrors.Any())
+            {
+                var worksheet = spreadsheet.Workbook.Worksheets.Where(x => x.Name == "Products").SingleOrDefault();
+                var totalRows = worksheet.Dimension.End.Row;
                 for (var rowId = 2; rowId <= totalRows; rowId++)
                 {
-                    string handle = String.Empty;
-                    if (Products.GetValue<string>(rowId, 1).HasValue())
-                        handle = Products.GetValue<string>(rowId, 1);
-                    else if (Products.GetValue<string>(rowId, 2).HasValue())
-                        handle = Products.GetValue<string>(rowId, 2);
+                    var product = new ProductImportDataTransferObject();
+
+                    //Prepare handle name for storing and grouping errors
+                    string handle = String.Empty, url = worksheet.GetValue<string>(rowId, 1), name = worksheet.GetValue<string>(rowId, 2);
+                    if (url.HasValue())
+                        handle = url;
                     else
-                        handle = Products.GetValue<string>(rowId, 11);
+                        handle = name;
 
-                    if(!ValidationErrors.Any(x=>x.Key==handle))
-                        ValidationErrors.Add(handle, new List<string>());
-
-                    if (!Products.GetValue<string>(rowId, 2).HasValue())
-                        ValidationErrors[handle].Add("Product Name is required.");
-                    else
-                        ValidateStringField(handle, rowId, 2, "Product Name", 255);
-                    ValidateStringField(handle, rowId, 4, "Product SEO Title", 250);
-                    ValidateStringField(handle, rowId, 5, "Product SEO Description", 250);
-                    ValidateStringField(handle, rowId, 6, "Product SEO Keywords", 250);
-                    ValidateStringField(handle, rowId, 7, "Product Abstract", 500);
-                    ValidateStringField(handle, rowId, 8, "Product Brand", 255);
-                    ValidateCategories(handle, rowId, 9);
-                    ValidateSpecifications(handle, rowId, 10);
-                    ValidateImageField(handle, rowId, 26, "Product Image 1");
-                    ValidateImageField(handle, rowId, 27, "Product Image 2");
-                    ValidateImageField(handle, rowId, 28, "Product Image 3");
-
-                    string variantHandle = String.Empty;
-                    if (!Products.GetValue<string>(rowId, 18).HasValue())
+                    if (!parseErrors.Any(x => x.Key == handle))
                     {
-                        if (!Products.GetValue<string>(rowId, 11).HasValue())
-                            variantHandle = " (Name:" + Products.GetValue<string>(rowId, 11) + ")";
-                        ValidationErrors[handle].Add("Product Variant SKU " + variantHandle + " is required.");
-                    }
-                    else
-                    {
-                        variantHandle = " (SKU:" + Products.GetValue<string>(rowId, 18) + ")";
-                        ValidateStringField(handle, rowId, 18, "Product Variant SKU" + variantHandle, 255);
-                    }
-                    ValidateStringField(handle, rowId, 11, "Product Variant Name" + variantHandle, 255);
-                    if (!Products.GetValue<string>(rowId, 12).HasValue())
-                        ValidationErrors[handle].Add("Product Variant Price"+variantHandle+" is required.");
-                    else
-                        ValidateDecimalField(handle, rowId, 12, "Product Variant Price" ,variantHandle,true);
-                    ValidateDecimalField(handle, rowId, 13,"Product Variant Previous Price" ,variantHandle,false);
-                    ValidateTax(handle, rowId, 14, variantHandle);
-                    ValidateDecimalField(handle, rowId, 15, "Product Variant Weight", variantHandle,false);
-                    ValidateStock(handle, rowId, 16, variantHandle);
-                    ValidateTrackingPolicy(handle, rowId, 17, variantHandle);
-                    ValidateStringField(handle, rowId, 19, "Product Variant Barcode" + variantHandle, 14);
-                    ValidateStringField(handle, rowId, 20, "Product Variant Option 1 Name" + variantHandle, 255);
-                    ValidateStringField(handle, rowId, 21, "Product Variant Option 1 Value" + variantHandle, 255);
-                    ValidateStringField(handle, rowId, 22, "Product Variant Option 2 Name" + variantHandle, 255);
-                    ValidateStringField(handle, rowId, 23, "Product Variant Option 2 Value" + variantHandle, 255);
-                    ValidateStringField(handle, rowId, 24, "Product Variant Option 3 Name" + variantHandle, 255);
-                    ValidateStringField(handle, rowId, 25, "Product Variant Option 3 Value" + variantHandle, 255);
+                        parseErrors.Add(handle, new List<string>());
+                        product.UrlSegment = worksheet.GetValue<string>(rowId, 1);
+                        if (worksheet.GetValue<string>(rowId, 2).HasValue())
+                            product.Name = worksheet.GetValue<string>(rowId, 2);
+                        else
+                            parseErrors[handle].Add("Product Name is required.");
+                        product.Description = worksheet.GetValue<string>(rowId, 3);
+                        product.SEOTitle = worksheet.GetValue<string>(rowId, 4);
+                        product.SEODescription = worksheet.GetValue<string>(rowId, 5);
+                        product.SEOKeywords = worksheet.GetValue<string>(rowId, 6);
+                        product.Abstract = worksheet.GetValue<string>(rowId, 7);
+                        product.Brand = worksheet.GetValue<string>(rowId, 8);
 
-                    if (ValidationErrors[handle].Count == 0)
-                        ValidRows.Add(rowId);
-
-                    ValidationErrors[handle] = ValidationErrors[handle].GroupBy(pair => pair)
-                         .Select(group => group.First())
-                         .ToList();
-                }
-
-                ValidationErrors = ValidationErrors.Where(x => x.Value.Any()).ToDictionary(pair => pair.Key, pair => pair.Value);
-
-                ValidationErrors = ValidationErrors.GroupBy(pair => pair.Value)
-                         .Select(group => group.First())
-                         .ToDictionary(pair => pair.Key, pair => pair.Value);
-            }
-        }
-        private void ValidateStringField(string handle, int rowId, int colId, string fieldName, int maxLength)
-        {
-            if (!Products.GetValue<string>(rowId, colId).IsValidLength(maxLength))
-                ValidationErrors[handle].Add(fieldName + " value cannot have more than " + maxLength + " characters in length.");
-        }
-        private void ValidateImageField(string handle, int rowId, int colId, string fieldName)
-        {
-            if (!Products.GetValue<string>(rowId, colId).IsValidUrl())
-                ValidationErrors[handle].Add(fieldName + " value is not valid url.");
-        }
-        private void ValidateTrackingPolicy(string handle, int rowId, int colId, string variantHandle)
-        {
-            if (!Products.GetValue<string>(rowId, colId).HasValue() || (Products.GetValue<string>(rowId, colId) != "Track" && Products.GetValue<string>(rowId, colId) != "DontTrack"))
-                ValidationErrors[handle].Add("Product Variant Tracking Policy"+variantHandle+" must have either 'Track' or 'DontTrack' value.");
-        }
-        private void ValidateTax(string handle, int rowId, int colId, string variantHandle)
-        {
-            if (!Products.GetValue<string>(rowId, colId).HasValue() && MrCMS.Website.MrCMSApplication.Get<MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings>().TaxesEnabled)
-            {
-                if (!Products.GetValue<string>(rowId, colId).HasValue() && Products.GetValue<int>(rowId, colId) == 0)
-                {
-                    ValidationErrors[handle].Add("Product Variant Tax Rate is required (because Taxes are enabled inside MrCMS).");
-                }
-                else
-                {
-                    if (_taxRateManager.Get(Products.GetValue<int>(rowId, colId)) == null)
-                        ValidationErrors[handle].Add("Product Variant Tax Rate" + variantHandle + " value is not valid (doesn't exist).");
-                }
-            }
-            else
-            {
-                if (Products.GetValue<string>(rowId, colId).HasValue() && Products.GetValue<int>(rowId, colId)!=0)
-                {
-                    if(_taxRateManager.Get(Products.GetValue<int>(rowId, colId))==null)
-                        ValidationErrors[handle].Add("Product Variant Tax Rate" + variantHandle + " value is not valid (doesn't exist).");
-                }
-            }
-        }
-        private void ValidateDecimalField(string handle, int rowId, int colId,string fieldName, string variantHandle, bool isRequired)
-        {
-            if (isRequired)
-            {
-                if (!Products.GetValue<decimal?>(rowId, colId).HasValue)
-                    ValidationErrors[handle].Add(fieldName + variantHandle + " is required.");
-                else
-                {
-                    if (Products.GetValue<decimal?>(rowId, colId).Value < 0)
-                        ValidationErrors[handle].Add(fieldName + variantHandle + " must have value greater than or equal to 0.");
-                }
-            }
-            else
-            {
-                if (Products.GetValue<decimal?>(rowId, colId).HasValue && Products.GetValue<decimal?>(rowId, colId).Value < 0)
-                    ValidationErrors[handle].Add(fieldName + variantHandle + " must have value greater than or equal to 0.");
-            }
-        }
-        private void ValidateStock(string handle, int rowId, int colId, string variantHandle)
-        {
-            if (Products.GetValue<string>(rowId, 17).HasValue() && 
-                Products.GetValue<string>(rowId, 17) == "Track" &&
-                !Products.GetValue<string>(rowId, colId).HasValue())
-                ValidationErrors[handle].Add("Product Variant Stock Remaining" + variantHandle + " must have value if Tracking is enabled.");
-        }
-        private void ValidateCategories(string handle, int rowId, int colId)
-        {
-            try
-            {
-                string[] Cats = Products.GetValue<string>(rowId, colId).Split(';');
-                foreach (var item in Cats)
-                {
-                    if (!String.IsNullOrWhiteSpace(item))
-                    {
-                        int catId = 0;
-                        Int32.TryParse(item, out catId);
-                        if (_documentService.GetDocument<Category>(catId) == null)
-                            ValidationErrors[handle].Add("Product Category with Id: '" + item + "' doesn't exist in system.");
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                ValidationErrors[handle].Add("Product Categories field value contains illegal characters / Not in correct format - Items must be split by ;");
-            }
-        }
-        private void ValidateSpecifications(string handle, int rowId, int colId)
-        {
-            if (!String.IsNullOrWhiteSpace(Products.GetValue<string>(rowId, colId)))
-            {
-                try
-                {
-                    if (!Products.GetValue<string>(rowId, colId).Contains(":"))
-                        ValidationErrors[handle].Add("Product Specifications field value contains illegal characters / Not in correct format - Names and Values (Item) must be split with :, and items must be split by ;");
-                    string[] Specs = Products.GetValue<string>(rowId, colId).Split(';');
-                    foreach (var item in Specs)
-                    {
-                        if (!String.IsNullOrWhiteSpace(item))
+                        //Categories
+                        try
                         {
-                            string[] specificationValue = item.Split(':');
+                            string[] Cats = worksheet.GetValue<string>(rowId, 9).Split(';');
+                            foreach (var item in Cats)
+                            {
+                                if (!String.IsNullOrWhiteSpace(item))
+                                {
+                                    int catId = 0;
+                                    Int32.TryParse(item, out catId);
+                                    product.Categories.Add(catId);
+                                }
+                            }
                         }
+                        catch (Exception)
+                        {
+                            parseErrors[handle].Add("Product Categories field value contains illegal characters / not in correct format.");
+                        }
+
+                        //Specifications
+                        if (!String.IsNullOrWhiteSpace(worksheet.GetValue<string>(rowId, 10)))
+                        {
+                            try
+                            {
+                                if (!worksheet.GetValue<string>(rowId, 10).Contains(":"))
+                                    parseErrors[handle].Add("Product Specifications field value contains illegal characters / not in correct format. Names and Values (Item) must be split with :, and items must be split by ;");
+                                string[] Specs = worksheet.GetValue<string>(rowId, 10).Split(';');
+                                foreach (var item in Specs)
+                                {
+                                    if (!String.IsNullOrWhiteSpace(item))
+                                    {
+                                        string[] specificationValue = item.Split(':');
+                                        if (!String.IsNullOrWhiteSpace(specificationValue[0]) && !String.IsNullOrWhiteSpace(specificationValue[1]))
+                                            product.Specifications.Add(specificationValue[0], specificationValue[1]);
+                                    }
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                parseErrors[handle].Add("Product Specifications field value contains illegal characters / not in correct format. Names and Values (Item) must be split with :, and items must be split by ;");
+                            }
+                        }
+
+                        //Images
+                        product.Image1 = worksheet.GetValue<string>(rowId, 26);
+                        product.Image2 = worksheet.GetValue<string>(rowId, 27);
+                        product.Image3 = worksheet.GetValue<string>(rowId, 28);
+
+                        productsToImport.Add(product);
+                    }
+                    else
+                        product = productsToImport.Where(x => x.Name == name && x.UrlSegment == url).SingleOrDefault();
+
+                    //Variants
+                    if (product != null)
+                    {
+                        var productVariant = new ProductVariantImportDataTransferObject();
+
+                        productVariant.Name = worksheet.GetValue<string>(rowId,11);
+                        if (!worksheet.GetValue<string>(rowId, 12).IsConvertable<decimal>())
+                            parseErrors[handle].Add("Price value is not a valid decimal number.");
+                        else if (worksheet.GetValue<string>(rowId,12).HasValue())
+                            productVariant.Price = worksheet.GetValue<decimal>(rowId, 12);
+                        else
+                            parseErrors[handle].Add("Price is required.");
+                        if (!worksheet.GetValue<string>(rowId, 13).IsConvertable<decimal>())
+                            parseErrors[handle].Add("Previous Price value is not a valid decimal number.");
+                        else
+                            productVariant.PreviousPrice = worksheet.GetValue<decimal?>(rowId, 13);
+                        if (!worksheet.GetValue<string>(rowId, 14).IsConvertable<int>())
+                            parseErrors[handle].Add("Tax Rate Id value is not a valid number.");
+                        else
+                            productVariant.TaxRate = worksheet.GetValue<int>(rowId, 14);
+                        if (!worksheet.GetValue<string>(rowId, 15).IsConvertable<int>())
+                            parseErrors[handle].Add("Weight value is not a valid decimal number.");
+                        else
+                            productVariant.Weight = worksheet.GetValue<decimal?>(rowId, 15);
+                        if (!worksheet.GetValue<string>(rowId, 16).IsConvertable<int>())
+                            parseErrors[handle].Add("Stock value is not a valid decimal number.");
+                        else
+                            productVariant.Stock = worksheet.GetValue<int>(rowId, 16);
+                        if (!worksheet.GetValue<string>(rowId, 17).HasValue() ||
+                            (worksheet.GetValue<string>(rowId, 17) != "Track" &&
+                            worksheet.GetValue<string>(rowId, 17) != "DontTrack"))
+                            parseErrors[handle].Add("Tracking Policy must have either 'Track' or 'DontTrack' value.");
+                        else
+                        {
+                            if (worksheet.GetValue<string>(rowId, 17) == "Track")
+                                productVariant.TrackingPolicy = TrackingPolicy.Track;
+                            else
+                                productVariant.TrackingPolicy = TrackingPolicy.DontTrack;
+                        }
+                        if (worksheet.GetValue<string>(rowId, 18).HasValue())
+                            productVariant.SKU = worksheet.GetValue<string>(rowId, 18);
+                        else
+                            parseErrors[handle].Add("SKU is required.");
+                        productVariant.Barcode = worksheet.GetValue<string>(rowId, 19);
+                        if (worksheet.GetValue<string>(rowId, 20).HasValue() && worksheet.GetValue<string>(rowId, 21).HasValue())
+                            productVariant.Options.Add(worksheet.GetValue<string>(rowId, 20), worksheet.GetValue<string>(rowId, 21));
+                        if (worksheet.GetValue<string>(rowId, 22).HasValue() && worksheet.GetValue<string>(rowId, 23).HasValue())
+                            productVariant.Options.Add(worksheet.GetValue<string>(rowId, 22), worksheet.GetValue<string>(rowId, 23));
+                        if (worksheet.GetValue<string>(rowId, 24).HasValue() && worksheet.GetValue<string>(rowId, 25).HasValue())
+                            productVariant.Options.Add(worksheet.GetValue<string>(rowId, 24), worksheet.GetValue<string>(rowId, 25));
+
+                        product.ProductVariants.Add(productVariant);
                     }
                 }
-                catch (Exception)
-                {
-                    ValidationErrors[handle].Add("Product Specifications field value contains illegal characters / Not in correct format - Names and Values (Item) must be split with :, and items must be split by ;");
-                }
-            }
-        }
 
+                //Remove handles with no errors
+                parseErrors = parseErrors.Where(x => x.Value.Any()).ToDictionary(pair => pair.Key, pair => pair.Value);
+
+                //Remove duplicate errors
+                parseErrors = parseErrors.GroupBy(pair => pair.Value).Select(group => group.First()).ToDictionary(pair => pair.Key, pair => pair.Value);
+            }
+
+            return productsToImport;
+        }
+       
         private void AddProductImage(string fileLocation, MediaCategory mediaCategory)
         {
             using (WebClient client = new WebClient())
