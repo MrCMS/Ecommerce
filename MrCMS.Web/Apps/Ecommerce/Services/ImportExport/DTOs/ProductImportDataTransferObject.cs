@@ -12,6 +12,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs
             ProductVariants = new List<ProductVariantImportDataTransferObject>();
             Categories = new List<int>();
             Specifications = new Dictionary<string, string>();
+            Images = new List<string>();
         }
 
         public List<ProductVariantImportDataTransferObject> ProductVariants { get; set; }
@@ -26,8 +27,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs
         public string Brand { get; set; }
         public List<int> Categories { get; set; }
         public Dictionary<string, string> Specifications { get; set; }
-        public string Image1 { get; set; }
-        public string Image2 { get; set; }
-        public string Image3 { get; set; }
+        public List<string> Images { get; set; }
     }
 }

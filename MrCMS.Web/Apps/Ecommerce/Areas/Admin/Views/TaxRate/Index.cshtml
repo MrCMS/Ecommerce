@@ -15,7 +15,7 @@
  }
     </legend>
 </fieldset>
-    @Html.CheckBox("TaxStatus", (ViewData["settings"] as TaxSettings).TaxesEnabled, new { @class = "pull-left" })     <span>&nbsp;Enable Taxes?</span>
+    @Html.CheckBox("TaxesEnabled", (ViewData["settings"] as TaxSettings).TaxesEnabled, new { @class = "pull-left" })     <span>&nbsp;Enable Taxes?</span>
 <br /><br />
 
  if ((ViewData["settings"] as TaxSettings).TaxesEnabled)

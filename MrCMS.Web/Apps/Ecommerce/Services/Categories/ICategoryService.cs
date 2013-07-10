@@ -13,5 +13,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         IPagedList<Category> GetCategories(Product product, string query, int page);
         IList<Category> GetAll();
         CategoryContainer GetSiteCategoryContainer();
+        Category Get(int id);
     }
 }

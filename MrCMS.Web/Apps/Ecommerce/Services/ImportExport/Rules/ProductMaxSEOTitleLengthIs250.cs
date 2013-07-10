@@ -1,8 +1,8 @@
 ﻿namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.Rules
 {
-    public class MaxSEOTitleLengthIs250 : MaxStringLength
+    public class ProductMaxSEOTitleLengthIs250 : ProductMaxStringLength
     {
-        public MaxSEOTitleLengthIs250()
+        public ProductMaxSEOTitleLengthIs250()
             : base("SEO Title", o => o.SEOTitle, 250)
         {
         }
