@@ -3,7 +3,7 @@
     public class MaxSEOTitleLengthIs250 : MaxStringLength
     {
         public MaxSEOTitleLengthIs250()
-            : base("SEO Title", o => o.SeoTitle, 250)
+            : base("SEO Title", o => o.SEOTitle, 250)
         {
         }
     }

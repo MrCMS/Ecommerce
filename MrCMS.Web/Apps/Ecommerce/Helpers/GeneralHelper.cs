@@ -14,28 +14,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
                 .SingleOrDefault() as DescriptionAttribute;
             return attribute == null ? value.ToString() : attribute.Description;
         }
-
-        public static bool IsValidLength(this string value, int maxLength, int minLength = 0)
-        {
-            if (!String.IsNullOrWhiteSpace(value))
-            {
-                if (minLength == 0)
-                    return value.Length <= maxLength;
-                else
-                    return value.Length <= maxLength && value.Length >= minLength;
-            }
-            else
-                return true;
-        }
         public static bool HasValue(this string value)
         {
             return !String.IsNullOrWhiteSpace(value);
         }
-        public static bool IsValidUrl(this string value)
-        {
-            return true;
-            //var uri=new Uri(String.Empty);
-            //return Uri.TryCreate(value,UriKind.Absolute,out uri);
-        }
+        public static bool IsConvertable<T>(this string value) where T : struct
+         {
+             try
+             {
+                 if (value.HasValue())
+                 {
+                     var convertedValue=Convert.ChangeType(value, typeof(T));
+                 }
+                 return true;
+             }
+             catch (Exception)
+             {
+                 return false;
+             }
+         }
     }
 }
