@@ -8,17 +8,17 @@
 {
 <fieldset>
     <legend>Tax  
- @if ((ViewData["settings"] as TaxSettings).TaxStatus)
+ @if ((ViewData["settings"] as TaxSettings).TaxesEnabled)
  {
       <span class="btn-group  display-inline pull-right" id="add-tax-rate"><a href="@Url.Action("Add", "TaxRate")" class="btn btn-primary" data-toggle="fb-modal">
         Add Tax Rate</a> </span>
  }
     </legend>
 </fieldset>
-    @Html.CheckBox("TaxStatus", (ViewData["settings"] as TaxSettings).TaxStatus, new { @class = "pull-left" })     <span>&nbsp;Enable Taxes?</span>
+    @Html.CheckBox("TaxStatus", (ViewData["settings"] as TaxSettings).TaxesEnabled, new { @class = "pull-left" })     <span>&nbsp;Enable Taxes?</span>
 <br /><br />
 
- if ((ViewData["settings"] as TaxSettings).TaxStatus)
+ if ((ViewData["settings"] as TaxSettings).TaxesEnabled)
  {
     <h4>
     Tax Categories</h4>
