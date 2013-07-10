@@ -237,7 +237,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                             parseErrors[handle].Add("Tax Rate Id value is not a valid number.");
                         else
                             productVariant.TaxRate = worksheet.GetValue<int>(rowId, 14);
-                        if (!worksheet.GetValue<string>(rowId, 15).IsConvertable<int>())
+                        if (!worksheet.GetValue<string>(rowId, 15).IsConvertable<decimal>())
                             parseErrors[handle].Add("Weight value is not a valid decimal number.");
                         else
                             productVariant.Weight = worksheet.GetValue<decimal?>(rowId, 15);
