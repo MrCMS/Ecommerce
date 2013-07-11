@@ -595,7 +595,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     wsProducts.Cells["R" + rowId].Value = productVariants[i].SKU;
                     wsProducts.Cells["S" + rowId].Value = productVariants[i].Barcode;
 
-                    for (int v = 0; v < productVariants[i].AttributeValues.OrderBy(x => x.ProductAttributeOption.DisplayOrder).Count(); v++)
+                    for (var v = 0; v < productVariants[i].AttributeValues.OrderBy(x => x.ProductAttributeOption.DisplayOrder).Count(); v++)
                     {
                         if (v == 0)
                         {
@@ -612,7 +612,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                             wsProducts.Cells["X" + rowId].Value = productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
                             wsProducts.Cells["Y" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
-
                     }
 
                     if (!productVariants[i].Product.Images.Any()) continue;
