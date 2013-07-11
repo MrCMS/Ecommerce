@@ -100,7 +100,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
                                      productSpecificationAttributes.ForEach(value => session.Save(value));
                                  });
 
-            productOptionManager.DeleteSpecificationAttribute(attribute);
+            productOptionManager.DeleteSpecificationAttributeOption(option);
 
             Session.QueryOver<ProductSpecificationValue>().RowCount().Should().Be(0);
         }
