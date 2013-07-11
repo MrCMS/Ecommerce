@@ -57,8 +57,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public RedirectResult AddToCart(ProductVariant productVariant, int quantity = 0)
         {
             if (productVariant != null && quantity > 0)
+            {
                 _cartManager.AddToCart(productVariant, quantity);
-            return Redirect(UniquePageHelper.GetUrl<Cart>());
+                return Redirect(UniquePageHelper.GetUrl<Cart>());
+            }
+            return Redirect(UniquePageHelper.GetUrl<ProductSearch>());
         }
         [HttpGet]
         public ViewResult EditCartItem(CartItem item)
