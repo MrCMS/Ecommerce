@@ -38,6 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         IList<ProductAttributeOption> ListAttributeOptions();
         void DeleteAttributeOption(ProductAttributeOption option);
         void SetAttributeValue(ProductVariant productVariant, string attributeName, string value);
+        void DeleteProductAttributeValue(ProductAttributeValue value);
         bool AnyExistingAttributeOptionsWithName(ProductAttributeOption option);
         bool AnyExistingAttributeOptionsWithName(string name, int id);
         bool AnyExistingAttributeOptionsWithName(string name);
