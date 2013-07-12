@@ -15,6 +15,7 @@ using Xunit;
 using OfficeOpenXml;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using EnumerableHelper = MrCMS.Helpers.EnumerableHelper;
 
 namespace MrCMS.EcommerceApp.Tests.Services
 {
@@ -31,64 +32,26 @@ namespace MrCMS.EcommerceApp.Tests.Services
         }
 
         [Fact]
-        public void ImportProductsValidationService_ValidateBusinessLogic_ShouldReturnNoErrors()
+        public void ImportProductsValidationService_ValidateBusinessLogic_CallsAllIoCRegisteredRulesOnAllProducts()
         {
             var mockingKernel = new MockingKernel();
-            var productImportValidationRule = A.Fake<IProductImportValidationRule>();
+            var productImportValidationRules =
+                Enumerable.Range(1, 10).Select(i => A.Fake<IProductImportValidationRule>()).ToList();
             var productVariantImportValidationRule = A.Fake<IProductVariantImportValidationRule>();
-            mockingKernel.Bind<IProductImportValidationRule>()
-                         .ToMethod(context => productImportValidationRule)
-                         .InSingletonScope();
+            productImportValidationRules.ForEach(rule => mockingKernel.Bind<IProductImportValidationRule>()
+                                                                      .ToMethod(context => rule));
             mockingKernel.Bind<IProductVariantImportValidationRule>()
                          .ToMethod(context => productVariantImportValidationRule)
                          .InSingletonScope();
             MrCMSApplication.OverrideKernel(mockingKernel);
 
-            var product=new ProductImportDataTransferObject()
-                {
-                    UrlSegment = "test-url",
-                    Name = "test test test test test test test test " +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test " +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test"+ 
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test " +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test" +
-                           "test test test test test test test test"
-                };
+            var products = Enumerable.Range(1, 10).Select(i => new ProductImportDataTransferObject()).ToList();
 
-            var products = new List<ProductImportDataTransferObject>(){product};
+            _importProductsValidationService.ValidateBusinessLogic(products);
 
-            var errors = _importProductsValidationService.ValidateBusinessLogic(products);
-
-            errors.Count.ShouldBeEquivalentTo(0);
+            productImportValidationRules.ForEach(
+                rule =>
+                EnumerableHelper.ForEach(products, product => A.CallTo(() => rule.GetErrors(product)).MustHaveHappened()));
         }
 
         [Fact]
