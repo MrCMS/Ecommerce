@@ -3,6 +3,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
+using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Website.Controllers;
@@ -293,9 +294,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult ManageOptions(Product product)
         {
-            MakeMultivariantModel model = new MakeMultivariantModel();
-            model.ProductId = product.Id;
-            if (product.AttributeOptions.Count() > 0)
+            var model = new MakeMultivariantModel {ProductId = product.Id};
+            if (product.AttributeOptions.Any())
             {
                 try
                 {
@@ -314,7 +314,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 }
                 catch (Exception)
                 {
-
+                    return PartialView(model);
                 }
             }
             return PartialView(model);
@@ -404,7 +404,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             if (document != null && document.ContentLength > 0 && document.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             {
-                ViewBag.Messages = _importExportManager.ImportProductsFromExcel(document);
+                ViewBag.Messages = _importExportManager.ImportProductsFromExcel(document.InputStream);
             }
             else
             {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
-using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.Rules
 {
