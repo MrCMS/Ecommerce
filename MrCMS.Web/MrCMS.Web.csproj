@@ -262,6 +262,10 @@
     <Compile Include="Apps\Ecommerce\Pages\UserAccount.cs" />
     <Compile Include="Apps\Ecommerce\Pages\UserLogin.cs" />
     <Compile Include="Apps\Ecommerce\Pages\EnterOrderEmail.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductsValidationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductsValidationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductsService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductImportDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductVariantImportDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductImagesHaveValidUrl.cs" />
