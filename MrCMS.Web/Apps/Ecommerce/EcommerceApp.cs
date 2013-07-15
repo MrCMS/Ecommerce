@@ -88,7 +88,7 @@ namespace MrCMS.Web.Apps.Ecommerce
 
             var productSearch = new ProductSearch
                                     {
-                                        Name = "Product Search",
+                                        Name = "Product Search Container",
                                         UrlSegment = "products",
                                         RevealInNavigation = true
                                     };

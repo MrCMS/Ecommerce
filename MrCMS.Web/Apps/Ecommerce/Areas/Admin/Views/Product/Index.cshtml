@@ -20,6 +20,9 @@
                     <tr>
                         <th>Name
                         </th>
+                        <th>
+                            # of variants
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,6 +31,9 @@
                         <tr>
                             <td>
                                 @Html.ActionLink(product.Name, "Edit", "Webpage", new { id = product.Id }, null)
+                            </td>
+                            <td>
+                                @product.Variants.Count
                             </td>
                         </tr>
                     }
