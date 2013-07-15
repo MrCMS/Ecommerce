@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using FakeItEasy;
 using FluentAssertions;
+using MrCMS.Helpers;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
@@ -63,7 +65,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         }
 
         [Fact]
-        public void ImportProductsService_ImportProduct_ShouldCallGetOfProductService()
+        public void ImportProductsService_ImportProduct_ShouldNotCallGetOfProductService()
         {
             var product = new ProductImportDataTransferObject()
             {
@@ -72,7 +74,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
 
             _importProductsService.ImportProduct(product);
 
-            A.CallTo(() => _productService.Get(0)).MustHaveHappened();
+            A.CallTo(() => _productService.Get(0)).MustNotHaveHappened();
         }
 
         [Fact]
@@ -162,6 +164,45 @@ namespace MrCMS.EcommerceApp.Tests.Services
             _importProductsService.ImportProduct(product);
 
             A.CallTo(() => _productOptionManager.GetSpecificationAttributeByName("Storage")).MustHaveHappened();
+        }
+
+        [Fact]
+        public void ImportProductsService_ImportProduct_ShouldSetProductPrimaryProperties()
+        {
+            var product = new ProductImportDataTransferObject()
+            {
+                UrlSegment = "test-url",
+                Name="Test Product",
+                Abstract = "Test Abstract",
+                Description = "Test Description",
+                SEODescription = "Test SEO Description",
+                SEOKeywords = "Test, Thought",
+                SEOTitle = "Test SEO Title"
+            };
+
+            var result=_importProductsService.ImportProduct(product);
+
+            result.UrlSegment.ShouldBeEquivalentTo("test-url");
+            result.Name.ShouldBeEquivalentTo("Test Product");
+            result.Abstract.ShouldBeEquivalentTo("Test Abstract");
+            result.BodyContent.ShouldBeEquivalentTo("Test Description");
+            result.MetaDescription.ShouldBeEquivalentTo("Test SEO Description");
+            result.MetaKeywords.ShouldBeEquivalentTo("Test, Thought");
+            result.MetaTitle.ShouldBeEquivalentTo("Test SEO Title");
+        }
+
+        [Fact]
+        public void ImportProductsService_ImportBrand_ShouldSetProductBrand()
+        {
+            var product = new ProductImportDataTransferObject()
+            {
+                UrlSegment = "test-url",
+                Brand = "Test Brand"
+            };
+
+            var result = _importProductsService.ImportBrand(product);
+
+            result.Name.ShouldBeEquivalentTo("Test Brand");
         }
     }
 }

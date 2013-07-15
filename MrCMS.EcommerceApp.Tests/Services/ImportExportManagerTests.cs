@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using FakeItEasy;
 using FluentAssertions;
-using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
-using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using OfficeOpenXml;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services
@@ -41,32 +37,6 @@ namespace MrCMS.EcommerceApp.Tests.Services
             var result = _importExportManager.ImportProductsFromExcel(GetDefaultStream());
 
             result.Should().HaveCount(0);
-        }
-
-        [Fact]
-        public void ImportExportManager_ImportProductsFromExcel_ShouldCallGetIndexesOfIndexService()
-        {
-            _importExportManager.ImportProductsFromExcel(GetDefaultStream());
-
-            A.CallTo(() => _indexService.GetIndexes()).MustHaveHappened();
-        }
-
-        [Fact]
-        public void ImportExportManager_ImportProductsFromExcel_ShouldCallImportProductsFromDTOsOfImportProductsService()
-        {
-            _importExportManager.ImportProductsFromExcel(GetDefaultStream());
-
-            A.CallTo(() => _importProductsService.ImportProductsFromDTOs(new List<ProductImportDataTransferObject>())).MustHaveHappened();
-        }
-
-        [Fact]
-        public void ImportExportManager_ImportProductsFromExcel_ShouldCallValidateBusinessLogicOfImportProductsValidationService()
-        {
-            var productsToImport = A.Fake<List<ProductImportDataTransferObject>>();
-
-            _importExportManager.ImportProductsFromExcel(GetDefaultStream());
-
-            A.CallTo(() => _importProductsValidationService.ValidateBusinessLogic(productsToImport)).MustHaveHappened();
         }
 
         [Fact]

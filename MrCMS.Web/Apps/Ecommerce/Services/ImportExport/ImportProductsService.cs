@@ -54,7 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// Import from DTOs
         /// </summary>
         /// <param name="dataTransferObject"></param>
-        public void ImportProduct(ProductImportDataTransferObject dataTransferObject)
+        public Product ImportProduct(ProductImportDataTransferObject dataTransferObject)
         {
             var product = _documentService.GetDocumentByUrl<Product>(dataTransferObject.UrlSegment) ?? new Product();
 
@@ -71,9 +71,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             //Brand
             if (!_brandService.AnyExistingBrandsWithName(dataTransferObject.Brand, 0))
                 _brandService.Add(new Brand() { Name = dataTransferObject.Brand });
-            var brandEntity = _brandService.GetBrandByName(dataTransferObject.Brand);
-            if (brandEntity != null)
-                product.Brand = brandEntity;
+            product.Brand=_brandService.GetBrandByName(dataTransferObject.Brand);
 
             //Categories
             product.Categories.Clear();
@@ -94,7 +92,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             else
                 _documentService.SaveDocument<Product>(product);
 
-            product = _productService.Get(product.Id);
+            if(product.Id!=0)
+                product = _productService.Get(product.Id);
 
             //Images
             ImportProductImages(dataTransferObject, product);
@@ -104,6 +103,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
             //Variants
             ImportVariants(dataTransferObject, product);
+
+            return product;
+        }
+
+        public Brand ImportBrand(ProductImportDataTransferObject dataTransferObject)
+        {
+            if (!_brandService.AnyExistingBrandsWithName(dataTransferObject.Brand, 0))
+                _brandService.Add(new Brand() {Name = dataTransferObject.Brand});
+            return _brandService.GetBrandByName(dataTransferObject.Brand);
         }
 
         /// <summary>
@@ -111,7 +119,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// </summary>
         /// <param name="dataTransferObject"></param>
         /// <param name="product"></param>
-        public void ImportSpecifications(ProductImportDataTransferObject dataTransferObject, Product product)
+        public IEnumerable<ProductSpecificationValue> ImportSpecifications(ProductImportDataTransferObject dataTransferObject, Product product)
         {
             product.SpecificationValues.Clear();
             foreach (var item in dataTransferObject.Specifications)
@@ -138,6 +146,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             }
 
             _documentService.SaveDocument(product);
+            return dataTransferObject.Specifications.Any() ? product.SpecificationValues : null;
         }
 
         /// <summary>
@@ -145,7 +154,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// </summary>
         /// <param name="dataTransferObject"></param>
         /// <param name="product"></param>
-        public void ImportVariants(ProductImportDataTransferObject dataTransferObject, Product product)
+        public IEnumerable<ProductVariant> ImportVariants(ProductImportDataTransferObject dataTransferObject, Product product)
         {
             foreach (var item in dataTransferObject.ProductVariants)
             {
@@ -205,6 +214,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             }
 
             _documentService.SaveDocument(product);
+
+            return dataTransferObject.ProductVariants.Any() ? product.Variants : null;
         }
 
         /// <summary>
@@ -212,7 +223,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// </summary>
         /// <param name="dataTransferObject"></param>
         /// <param name="product"></param>
-        public void ImportProductImages(ProductImportDataTransferObject dataTransferObject, Product product)
+        public IEnumerable<MediaFile> ImportProductImages(ProductImportDataTransferObject dataTransferObject, Product product)
         {
             // We want to always look at all of the urls in the file, and only not import when it is set to update = no
             foreach (var imageUrl in dataTransferObject.Images)
@@ -233,6 +244,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     ImportImageToGallery(result.ToString(), product.Gallery);
                 }
             }
+
+            return dataTransferObject.Images.Any() ? product.Images : null;
         }
 
         /// <summary>
