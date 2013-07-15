@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using MrCMS.Apps;
 using MrCMS.Entities.Documents.Layout;
@@ -119,6 +120,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             foreach (var area in areas)
                 layoutAreaService.SaveArea(area);
             siteSettings.DefaultLayoutId = layout.Id;
+            siteSettings.ThemeName = "Ecommerce";
             configurationProvider.SaveSettings(siteSettings);
             ecommerceSettings.CategoryProductsPerPage = "12,20,40";
             ecommerceSettings.PageSizeAdmin = 20;
@@ -135,65 +137,83 @@ namespace MrCMS.Web.Apps.Ecommerce
             {
                 Name = "Welcome",
                 UrlSegment = "shop",
-                RevealInNavigation = true
+                RevealInNavigation = true,
+                PublishOn = DateTime.UtcNow
             };
             documentService.AddDocument(welcome);
             var yourBasket = new Cart
             {
                 Name = "Your Basket",
                 UrlSegment = "basket",
-                RevealInNavigation = true
+                RevealInNavigation = true,
+                PublishOn = DateTime.UtcNow
             };
             documentService.AddDocument(yourBasket);
             var enterOrderEmail = new EnterOrderEmail
             {
                 Name = "Enter Order Email",
                 UrlSegment = "enter-order-email",
-                RevealInNavigation = true
+                RevealInNavigation = true,
+                Parent = yourBasket,
+                DisplayOrder = 0,
+                PublishOn = DateTime.UtcNow
             };
             documentService.AddDocument(enterOrderEmail);
             var setPaymentDetails = new PaymentDetails
             {
                 Name = "Set Payment Details",
                 UrlSegment = "set-payment-details",
-                RevealInNavigation = true
+                RevealInNavigation = true,
+                Parent = yourBasket,
+                DisplayOrder = 1,
+                PublishOn = DateTime.UtcNow
             };
             documentService.AddDocument(setPaymentDetails);
             var setDeliveryDetails = new SetDeliveryDetails
             {
                 Name = "Set Delivery Details",
                 UrlSegment = "set-delivery-details",
-                RevealInNavigation = true
+                RevealInNavigation = true,
+                Parent = yourBasket,
+                DisplayOrder = 2,
+                PublishOn = DateTime.UtcNow
             };
             documentService.AddDocument(setDeliveryDetails);
             var orderPlaced = new OrderPlaced
             {
                 Name = "Order Placed",
                 UrlSegment = "order-placed",
-                RevealInNavigation = true
+                RevealInNavigation = true,
+                Parent = yourBasket,
+                DisplayOrder = 3,
+                PublishOn = DateTime.UtcNow
             };
             documentService.AddDocument(orderPlaced);
             var myAccount = new UserAccount
             {
                 Name = "My Account",
                 UrlSegment = "my-account",
-                RevealInNavigation = true
+                RevealInNavigation = true,
+                PublishOn = DateTime.UtcNow
             };
             documentService.AddDocument(myAccount);
             var login = new UserLogin
             {
                 Name = "Login",
                 UrlSegment = "log-in",
-                RevealInNavigation = true
+                RevealInNavigation = true,
+                PublishOn = DateTime.UtcNow
             };
             documentService.AddDocument(login);
             var registration = new UserRegistration()
             {
                 Name = "User Registration",
                 UrlSegment = "register",
-                RevealInNavigation = true
+                RevealInNavigation = true,
+                PublishOn = DateTime.UtcNow
             };
             documentService.AddDocument(registration);
+            
         }
     }
 }
