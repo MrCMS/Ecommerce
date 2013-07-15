@@ -35,16 +35,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         [Required]
         [DisplayName("Price")]
+        [DisplayFormat(DataFormatString = "{0:n0}")]
         public virtual decimal BasePrice { get; set; }
 
         [DisplayName("Previous Price")]
+        [DisplayFormat(DataFormatString = "{0:n0}")]
         public virtual decimal? PreviousPrice { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:n0}")]
         public virtual decimal? PreviousPriceIncludingTax
         {
             get { return TaxAwarePrice.GetPriceIncludingTax(PreviousPrice, TaxRate); }
         }
 
+        [DisplayFormat(DataFormatString = "{0:n0}")]
         public virtual decimal? PreviousPriceExcludingTax
         {
             get { return TaxAwarePrice.GetPriceExcludingTax(PreviousPrice, TaxRate); }
