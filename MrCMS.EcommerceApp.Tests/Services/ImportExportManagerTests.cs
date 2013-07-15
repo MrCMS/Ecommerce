@@ -13,13 +13,22 @@ namespace MrCMS.EcommerceApp.Tests.Services
         private IImportProductsService _importProductsService;
         private IProductVariantService _productVariantService;
         private IIndexService _indexService;
+        private ImportExportManager _importExportManager;
 
+        public ImportExportManagerTests()
+        {
+            _importProductsValidationService = A.Fake<IImportProductsValidationService>();
+            _importProductsService = A.Fake<IImportProductsService>();
+            _productVariantService = A.Fake<IProductVariantService>();
+            _indexService = A.Fake<IIndexService>();
+
+            _importExportManager = new ImportExportManager(_importProductsValidationService, _importProductsService, _productVariantService,
+                                                           _indexService);
+        }
         [Fact]
         public void ImportExportManager_ExportProductsToExcel_ShouldReturnByteArray()
         {
-            var importExportManager = GetImportExportManager();
-
-            var result = importExportManager.ExportProductsToExcel();
+            var result = _importExportManager.ExportProductsToExcel();
 
             result.Should().BeOfType<byte[]>();
         }
@@ -27,22 +36,10 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ImportExportManager_ExportProductsToExcel_ShouldCallGetAllOfProductVariantService()
         {
-            var importExportManager = GetImportExportManager();
-
-            importExportManager.ExportProductsToExcel();
+            _importExportManager.ExportProductsToExcel();
 
             A.CallTo(() => _productVariantService.GetAll()).MustHaveHappened();
         }
 
-        ImportExportManager GetImportExportManager()
-        {
-            _importProductsValidationService = A.Fake<IImportProductsValidationService>();
-            _importProductsService = A.Fake<IImportProductsService>();
-            _productVariantService = A.Fake<IProductVariantService>();
-            _indexService = A.Fake<IIndexService>();
-
-            return new ImportExportManager(_importProductsValidationService, _importProductsService, _productVariantService,
-            _indexService);
-        }
     }
 }
