@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FakeItEasy;
+using MrCMS.Entities.Documents.Media;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
@@ -23,10 +25,12 @@ namespace MrCMS.EcommerceApp.Tests.Services
     {
         private IDocumentService _documentService;
         private ImportProductsValidationService _importProductsValidationService;
+        private IFileService _fileService;
        
         public ImportProductsValidationServiceTests()
         {
             _documentService = A.Fake<IDocumentService>();
+            _fileService = A.Fake<IFileService>();
             A.Fake<IImportExportManager>();
             _importProductsValidationService= new ImportProductsValidationService(_documentService);
         }
@@ -55,16 +59,6 @@ namespace MrCMS.EcommerceApp.Tests.Services
         }
 
         [Fact]
-        public void ImportProductsValidationService_ValidateAndImportProductsWithVariants_ShouldReturnListOfProductsAndNoErrors()
-        {
-            var parseErrors = new Dictionary<string, List<string>>();
-            var products = _importProductsValidationService.ValidateAndImportProductsWithVariants(GetSpreadsheet(), ref parseErrors);
-
-            products.Count.ShouldBeEquivalentTo(1);
-            parseErrors.Count.ShouldBeEquivalentTo(0);
-        }
-
-        [Fact]
         public void ImportProductsValidationService_ValidateImportFile_ShouldReturnNoErrors()
         {
             var file = new FileInfo("test.xslx");
@@ -77,29 +71,141 @@ namespace MrCMS.EcommerceApp.Tests.Services
             errors.Count.ShouldBeEquivalentTo(0);
         }
 
+        [Fact]
+        public void ImportProductsValidationService_ValidateAndImportProductsWithVariants_ShouldReturnListOfProductsAndNoErrors()
+        {
+            var parseErrors = new Dictionary<string, List<string>>();
+            var products = _importProductsValidationService.ValidateAndImportProductsWithVariants(GetSpreadsheet(), ref parseErrors);
+
+            products.Count.ShouldBeEquivalentTo(1);
+            parseErrors.Count.ShouldBeEquivalentTo(0);
+        }
+
+        [Fact]
+        public void ImportProductsValidationService_ValidateAndImportProductsWithVariants_ShouldReturnProductWithPrimaryPropertiesSet()
+        {
+            var parseErrors = new Dictionary<string, List<string>>();
+            var products = _importProductsValidationService.ValidateAndImportProductsWithVariants(GetSpreadsheet(), ref parseErrors);
+
+            products.First().UrlSegment.ShouldBeEquivalentTo("test-url");
+            products.First().Name.ShouldBeEquivalentTo("Test Product");
+            products.First().Abstract.ShouldBeEquivalentTo("Test Abstract");
+            products.First().Description.ShouldBeEquivalentTo("Test Description");
+            products.First().SEODescription.ShouldBeEquivalentTo("Test SEO Description");
+            products.First().SEOKeywords.ShouldBeEquivalentTo("Test, Thought");
+            products.First().SEOTitle.ShouldBeEquivalentTo("Test SEO Title");
+        }
+
+        [Fact]
+        public void ImportProductsValidationService_ValidateAndImportProductsWithVariants_ShouldReturnProductWithCategoriesSet()
+        {
+            var parseErrors = new Dictionary<string, List<string>>();
+            var products = _importProductsValidationService.ValidateAndImportProductsWithVariants(GetSpreadsheet(), ref parseErrors);
+
+            products.First().Categories.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void ImportProductsValidationService_ValidateAndImportProductsWithVariants_ShouldReturnProductWithSpecificationsSet()
+        {
+            var parseErrors = new Dictionary<string, List<string>>();
+            var products = _importProductsValidationService.ValidateAndImportProductsWithVariants(GetSpreadsheet(), ref parseErrors);
+
+            products.First().Specifications.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void ImportProductsValidationService_ValidateAndImportProductsWithVariants_ShouldReturnProductWithImagesSet()
+        {
+            var parseErrors = new Dictionary<string, List<string>>();
+            var products = _importProductsValidationService.ValidateAndImportProductsWithVariants(GetSpreadsheet(), ref parseErrors);
+
+            products.First().Images.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void ImportProductsValidationService_ValidateAndImportProductsWithVariants_ShouldReturnProductVairantWithPrimaryPropertiesSet()
+        {
+            var parseErrors = new Dictionary<string, List<string>>();
+            var products = _importProductsValidationService.ValidateAndImportProductsWithVariants(GetSpreadsheet(), ref parseErrors);
+
+            products.First().ProductVariants.First().PreviousPrice.ShouldBeEquivalentTo(2);
+            products.First().ProductVariants.First().Price.ShouldBeEquivalentTo(1);
+            products.First().ProductVariants.First().SKU.ShouldBeEquivalentTo("123");
+            products.First().ProductVariants.First().Name.ShouldBeEquivalentTo("Test Product Variant");
+            products.First().ProductVariants.First().TrackingPolicy.ShouldBeEquivalentTo(TrackingPolicy.Track);
+            products.First().ProductVariants.First().Weight.ShouldBeEquivalentTo(8);
+            products.First().ProductVariants.First().Barcode.ShouldBeEquivalentTo("456");
+            products.First().ProductVariants.First().Stock.ShouldBeEquivalentTo(5);
+
+            products.First().ProductVariants.First().TaxRate.ShouldBeEquivalentTo(3);
+        }
+
+        [Fact]
+        public void ImportProductsValidationService_ValidateAndImportProductsWithVariants_ShouldReturnProductVariantWithOptionsSet()
+        {
+            var parseErrors = new Dictionary<string, List<string>>();
+            var products = _importProductsValidationService.ValidateAndImportProductsWithVariants(GetSpreadsheet(), ref parseErrors);
+
+            products.First().ProductVariants.First().Options.Should().HaveCount(1);
+        }
+
         private ExcelPackage GetSpreadsheet()
         {
             var product = new Product()
                 {
-                    Name = "Test",
                     UrlSegment = "test-url",
-                    Abstract = "test",
-                    BodyContent = "test",
-                    MetaDescription = "test",
-                    MetaTitle = "test",
-                    MetaKeywords = "test"
+                    Name = "Test Product",
+                    Abstract = "Test Abstract",
+                    BodyContent = "Test Description",
+                    MetaDescription = "Test SEO Description",
+                    MetaKeywords = "Test, Thought",
+                    MetaTitle = "Test SEO Title",
+                    Categories = new List<Category>(){new Category(){Id=1,Name = "Tablets"}},
+                    SpecificationValues = new List<ProductSpecificationValue>()
+                        {
+                            new ProductSpecificationValue()
+                                {
+                                    Id = 1, 
+                                    ProductSpecificationAttributeOption = new ProductSpecificationAttributeOption()
+                                        {
+                                            Id=1,Name = "16GB",
+                                            ProductSpecificationAttribute = new ProductSpecificationAttribute()
+                                                {
+                                                    Id=1,Name = "Storage"
+                                                }
+                                        }
+                                }
+                        },
+                    Gallery = GetProductGallery()
                 };
             var productVariants = new List<ProductVariant>()
                 {
                     new ProductVariant()
                         {
                             Product = product,
-                            Name = "Test Variant",
+                            TaxRate = new TaxRate(){ Id=3, Name = "GLOBAL"},
+                            Name = "Test Product Variant",
                             BasePrice = 1,
-                            StockRemaining = 1,
+                            StockRemaining = 5,
                             TrackingPolicy = TrackingPolicy.Track,
-                            Weight = 0,
-                            SKU = "123"
+                            Weight = 8,
+                            SKU = "123",
+                            PreviousPrice = 2,
+                            Barcode = "456",
+                            AttributeValues = new List<ProductAttributeValue>()
+                                {
+                                    new ProductAttributeValue()
+                                        {
+                                            Id = 1,
+                                            Value = "16GB",
+                                            ProductAttributeOption = new ProductAttributeOption()
+                                                {
+                                                    Id=1,
+                                                    Name = "Storage"
+                                                }
+                                        }
+                                }
                         }
                 };
 
@@ -212,6 +318,26 @@ namespace MrCMS.EcommerceApp.Tests.Services
             }
 
             return spreadsheet;
+        }
+
+        private MediaCategory GetProductGallery()
+        {
+            var gallery = new MediaCategory()
+                {
+                    Id=1,
+                    Name = "Product Gallery"
+                };
+            var mediaFile = new MediaFile
+            {
+                FileUrl = "http://www.thought.co.uk/Content/images/logo-white.png",
+                FileName = "logo-white.png",
+                ContentType = "image/png",
+                MediaCategory = gallery,
+                FileExtension = Path.GetExtension("logo-white.png")
+            };
+            gallery.Files.Add(mediaFile);
+
+            return gallery;
         }
     }
 }

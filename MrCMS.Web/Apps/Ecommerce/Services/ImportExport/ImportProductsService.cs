@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Web.Mvc;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
@@ -69,18 +68,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             product.PublishOn = DateTime.UtcNow;
 
             //Brand
-            Brand brand = _brandService.GetBrandByName(dataTransferObject.Brand);
+            var brand = _brandService.GetBrandByName(dataTransferObject.Brand);
             if (brand == null)
             {
                 brand = new Brand {Name = dataTransferObject.Brand};
                 _brandService.Add(brand);
             }
             product.Brand = brand;
-
-
-            //if (!_brandService.AnyExistingBrandsWithName(dataTransferObject.Brand, 0))
-            //    _brandService.Add(new Brand() { Name = dataTransferObject.Brand });
-            //product.Brand=_brandService.GetBrandByName(dataTransferObject.Brand);
 
             //Categories
             product.Categories.Clear();
@@ -212,6 +206,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     }
                 }
 
+                if (!product.Variants.Any(x=>x.Id==productVariant.Id))
+                    product.Variants.Add(productVariant);
+
                 _productVariantService.Update(productVariant);
             }
 
@@ -234,13 +231,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 if (Uri.TryCreate(imageUrl, UriKind.Absolute, out result))
                 {
                     // substring(1) should remove the leading ? 
-                    var parts = result.Query.Substring(1).Split('&');
-                    var parameters = parts.Select(s => s.Split('=')).ToDictionary(strings => strings[0], strings => strings[1]);
-                    if (parameters.ContainsKey("update"))
+                    if (!String.IsNullOrWhiteSpace(result.Query))
                     {
-                        if (parameters["update"] == "no")
+                        var parts = result.Query.Substring(1).Split('&');
+                        var parameters = parts.Select(s => s.Split('='))
+                                              .ToDictionary(strings => strings[0], strings => strings[1]);
+                        if (parameters.ContainsKey("update"))
                         {
-                            continue;
+                            if (parameters["update"] == "no" && product.Images.Any(x=>x.FileName==result.ToString()))
+                            {
+                                continue;
+                            }
                         }
                     }
                     ImportImageToGallery(result.ToString(), product.Gallery);

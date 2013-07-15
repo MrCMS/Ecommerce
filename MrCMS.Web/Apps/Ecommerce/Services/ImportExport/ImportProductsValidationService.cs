@@ -97,7 +97,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     //Categories
                                     try
                                     {
-                                        var value = worksheet.GetValue<string>(rowId, 10);
+                                        var value = worksheet.GetValue<string>(rowId, 9);
                                         if (!String.IsNullOrWhiteSpace(value))
                                         {
                                             var Cats = value.Split(';');
@@ -180,7 +180,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     if (!worksheet.GetValue<string>(rowId, 13).IsValidInput<decimal>())
                                         parseErrors[handle].Add("Previous Price value is not a valid decimal number.");
                                     else
-                                        productVariant.PreviousPrice = worksheet.GetValue<decimal?>(rowId, 13);
+                                        productVariant.PreviousPrice = worksheet.GetValue<decimal>(rowId, 13);
                                     if (!worksheet.GetValue<string>(rowId, 14).IsValidInput<int>())
                                         parseErrors[handle].Add("Tax Rate Id value is not a valid number.");
                                     else
@@ -188,7 +188,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     if (!worksheet.GetValue<string>(rowId, 15).IsValidInput<decimal>())
                                         parseErrors[handle].Add("Weight value is not a valid decimal number.");
                                     else
-                                        productVariant.Weight = worksheet.GetValue<decimal?>(rowId, 15);
+                                        productVariant.Weight = worksheet.GetValue<decimal>(rowId, 15);
                                     if (!worksheet.GetValue<string>(rowId, 16).IsValidInput<int>())
                                         parseErrors[handle].Add("Stock value is not a valid decimal number.");
                                     else
@@ -263,6 +263,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
             return parseErrors.Where(x => x.Value.Any()).ToDictionary(pair => pair.Key, pair => pair.Value);
         }
-
     }
 }
