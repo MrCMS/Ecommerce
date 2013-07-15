@@ -69,9 +69,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             product.PublishOn = DateTime.UtcNow;
 
             //Brand
-            if (!_brandService.AnyExistingBrandsWithName(dataTransferObject.Brand, 0))
-                _brandService.Add(new Brand() { Name = dataTransferObject.Brand });
-            product.Brand=_brandService.GetBrandByName(dataTransferObject.Brand);
+            Brand brand = _brandService.GetBrandByName(dataTransferObject.Brand);
+            if (brand == null)
+            {
+                brand = new Brand {Name = dataTransferObject.Brand};
+                _brandService.Add(brand);
+            }
+            product.Brand = brand;
+
+
+            //if (!_brandService.AnyExistingBrandsWithName(dataTransferObject.Brand, 0))
+            //    _brandService.Add(new Brand() { Name = dataTransferObject.Brand });
+            //product.Brand=_brandService.GetBrandByName(dataTransferObject.Brand);
 
             //Categories
             product.Categories.Clear();
@@ -105,13 +114,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             ImportVariants(dataTransferObject, product);
 
             return product;
-        }
-
-        public Brand ImportBrand(ProductImportDataTransferObject dataTransferObject)
-        {
-            if (!_brandService.AnyExistingBrandsWithName(dataTransferObject.Brand, 0))
-                _brandService.Add(new Brand() {Name = dataTransferObject.Brand});
-            return _brandService.GetBrandByName(dataTransferObject.Brand);
         }
 
         /// <summary>

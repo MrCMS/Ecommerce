@@ -14,6 +14,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         IEnumerable<ProductVariant> ImportVariants(ProductImportDataTransferObject dataTransferObject, Product product);
         IEnumerable<MediaFile> ImportProductImages(ProductImportDataTransferObject dataTransferObject, Product product);
         bool ImportImageToGallery(string fileLocation, MediaCategory mediaCategory);
-        Brand ImportBrand(ProductImportDataTransferObject dataTransferObject);
     }
 }

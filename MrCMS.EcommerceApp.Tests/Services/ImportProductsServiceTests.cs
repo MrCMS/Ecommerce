@@ -13,7 +13,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.EcommerceApp.Tests.Services
 {
-    public class ImportProductsServiceTests : InMemoryDatabaseTest
+    public class ImportProductsServiceTests 
     {
         private readonly IProductService _productService;
         private readonly IProductVariantService _productVariantService;
@@ -51,18 +51,6 @@ namespace MrCMS.EcommerceApp.Tests.Services
             A.CallTo(() => _documentService.GetDocumentByUrl<Product>(product.UrlSegment)).MustHaveHappened();
         }
 
-        [Fact]
-        public void ImportProductsService_ImportProduct_ShouldCallAnyExistingBrandsWithNameOfBrandService()
-        {
-            var product = new ProductImportDataTransferObject()
-            {
-                Brand = "test",
-            };
-
-            _importProductsService.ImportProduct(product);
-
-            A.CallTo(() => _brandService.AnyExistingBrandsWithName(product.Brand,0)).MustHaveHappened();
-        }
 
         [Fact]
         public void ImportProductsService_ImportProduct_ShouldNotCallGetOfProductService()
@@ -191,8 +179,10 @@ namespace MrCMS.EcommerceApp.Tests.Services
             result.MetaTitle.ShouldBeEquivalentTo("Test SEO Title");
         }
 
+
+
         [Fact]
-        public void ImportProductsService_ImportBrand_ShouldSetProductBrand()
+        public void ImportProductsService_ImportProducts_ShouldSetProductBrandIfItAlreadyExists()
         {
             var product = new ProductImportDataTransferObject()
             {
@@ -200,9 +190,46 @@ namespace MrCMS.EcommerceApp.Tests.Services
                 Brand = "Test Brand"
             };
 
-            var result = _importProductsService.ImportBrand(product);
+            var brand = new Brand {Name = "Test Brand"};
+            A.CallTo(() => _brandService.GetBrandByName("Test Brand")).Returns(brand);
 
-            result.Name.ShouldBeEquivalentTo("Test Brand");
+            Product importProduct = _importProductsService.ImportProduct(product);
+
+            importProduct.Brand.Should().Be(brand);
+        }
+
+        [Fact]
+        public void ImportProductsService_ImportProducts_ShouldAddANewBrandIfItDoesNotExist()
+        {
+            var product = new ProductImportDataTransferObject()
+            {
+                UrlSegment = "test-url",
+                Brand = "Test Brand"
+            };
+
+            var brand = new Brand { Name = "Test Brand" };
+            A.CallTo(() => _brandService.GetBrandByName("Test Brand")).Returns(null);
+
+            Product importProduct = _importProductsService.ImportProduct(product);
+
+            A.CallTo(() => _brandService.Add(A<Brand>.Ignored)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void ImportProductsService_ImportProducts_ShouldSetTheBrandToOneWithTheCorrectNameIfItDoesNotExist()
+        {
+            var product = new ProductImportDataTransferObject()
+            {
+                UrlSegment = "test-url",
+                Brand = "Test Brand"
+            };
+
+            var brand = new Brand { Name = "Test Brand" };
+            A.CallTo(() => _brandService.GetBrandByName("Test Brand")).Returns(null);
+
+            Product importProduct = _importProductsService.ImportProduct(product);
+
+            importProduct.Brand.Name.Should().Be(brand.Name);
         }
     }
 }
