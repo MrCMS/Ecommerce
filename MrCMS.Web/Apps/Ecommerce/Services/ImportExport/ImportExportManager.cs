@@ -17,15 +17,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private readonly IImportProductsValidationService _importProductsValidationService;
         private readonly IImportProductsService _importProductsService;
         private readonly IProductVariantService _productVariantService;
-        private readonly IIndexService _indexService;
 
-        public ImportExportManager(IImportProductsValidationService importProductsValidationService, IImportProductsService importProductsService, IProductVariantService productVariantService,
-            IIndexService indexService)
+        public ImportExportManager(IImportProductsValidationService importProductsValidationService, IImportProductsService importProductsService, IProductVariantService productVariantService)
         {
             _importProductsValidationService = importProductsValidationService;
             _importProductsService = importProductsService;
             _productVariantService = productVariantService;
-            _indexService = indexService;
         }
 
         #region Import Products
@@ -41,11 +38,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             if (businessLogicErrors.Any())
                 return businessLogicErrors;
             _importProductsService.ImportProductsFromDTOs(productsToImport);
-            //Reindex Everything
-            foreach (var item in _indexService.GetIndexes().Where(x => x.Name.Contains("Product")))
-            {
-                _indexService.Reindex(item.TypeName);
-            }
             return new Dictionary<string, List<string>>();
         }
 

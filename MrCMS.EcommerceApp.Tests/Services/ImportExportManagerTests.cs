@@ -16,7 +16,6 @@ namespace MrCMS.EcommerceApp.Tests.Services
         private IImportProductsValidationService _importProductsValidationService;
         private IImportProductsService _importProductsService;
         private IProductVariantService _productVariantService;
-        private IIndexService _indexService;
         private ImportExportManager _importExportManager;
 
         public ImportExportManagerTests()
@@ -24,10 +23,8 @@ namespace MrCMS.EcommerceApp.Tests.Services
             _importProductsValidationService = A.Fake<IImportProductsValidationService>();
             _importProductsService = A.Fake<IImportProductsService>();
             _productVariantService = A.Fake<IProductVariantService>();
-            _indexService = A.Fake<IIndexService>();
 
-            _importExportManager = new ImportExportManager(_importProductsValidationService, _importProductsService, _productVariantService,
-                                                           _indexService);
+            _importExportManager = new ImportExportManager(_importProductsValidationService, _importProductsService, _productVariantService);
         }
 
         [Fact]
