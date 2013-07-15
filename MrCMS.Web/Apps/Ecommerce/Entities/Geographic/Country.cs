@@ -22,6 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Geographic
         public virtual string Name { get; set; }
         [Required]
         [DisplayName("ISO Code (2 letters)")]
+        [StringLength(2)]
         public virtual string ISOTwoLetterCode { get; set; }
         public virtual int DisplayOrder { get; set; }
 
