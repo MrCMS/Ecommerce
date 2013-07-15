@@ -5,7 +5,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 {
     public class TaxSettings : SiteSettingsBase
     {
-        [DisplayName("Loaded Prices Include Tax")]
+        [DisplayName("Input Prices Include Tax")]
         public bool LoadedPricesIncludeTax { get; set; }
 
         [DisplayName("Shipping Rates Include Tax")]
