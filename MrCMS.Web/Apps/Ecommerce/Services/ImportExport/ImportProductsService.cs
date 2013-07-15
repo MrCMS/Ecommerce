@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Web.Mvc;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
@@ -10,6 +11,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
@@ -115,28 +117,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             foreach (var item in dataTransferObject.Specifications)
             {
                 if (!_productOptionManager.AnyExistingSpecificationAttributesWithName(item.Key))
-                    _productOptionManager.AddSpecificationAttribute(new ProductSpecificationAttribute() { Name = item.Key });
+                    _productOptionManager.AddSpecificationAttribute(new ProductSpecificationAttribute { Name = item.Key });
                 var option = _productOptionManager.GetSpecificationAttributeByName(item.Key);
                 if (!option.Options.Any(x => x.Name == item.Value))
                 {
-                    option.Options.Add(new ProductSpecificationAttributeOption()
-                    {
-                        ProductSpecificationAttribute = option,
-                        Name = item.Value
-                    });
+                    option.Options.Add(new ProductSpecificationAttributeOption
+                                           {
+                                               ProductSpecificationAttribute = option,
+                                               Name = item.Value
+                                           });
                     _productOptionManager.UpdateSpecificationAttribute(option);
                 }
                 var optionValue = option.Options.SingleOrDefault(x => x.Name == item.Value);
-                if (
-                    !product.SpecificationValues.Any(
-                        x =>
-                        optionValue != null &&
-                        (x.ProductSpecificationAttributeOption.Id == optionValue.Id && x.Product.Id == product.Id)))
-                    product.SpecificationValues.Add(new ProductSpecificationValue()
-                    {
-                        ProductSpecificationAttributeOption = optionValue,
-                        Product = product,
-                    });
+                if (!product.SpecificationValues.Any(x => optionValue != null && (x.ProductSpecificationAttributeOption.Id == optionValue.Id && x.Product.Id == product.Id)))
+                    product.SpecificationValues.Add(new ProductSpecificationValue
+                                                        {
+                                                            ProductSpecificationAttributeOption = optionValue,
+                                                            Product = product,
+                                                        });
             }
 
             _documentService.SaveDocument(product);
@@ -179,17 +177,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 {
                     var option = _productOptionManager.GetAttributeOptionByName(opt.Key);
                     if (option == null)
-                        _productOptionManager.AddAttributeOption(new ProductAttributeOption() { Name = opt.Key });
-                    option = _productOptionManager.GetAttributeOptionByName(opt.Key);
+                    {
+                        _productOptionManager.AddAttributeOption(new ProductAttributeOption { Name = opt.Key });
+                        option = _productOptionManager.GetAttributeOptionByName(opt.Key);
+                    }
                     if (!productVariant.Product.AttributeOptions.Any(x => x.Id == option.Id))
                         product.AttributeOptions.Add(option);
                     if (!productVariant.AttributeValues.Any(x => x.ProductAttributeOption.Id == option.Id))
-                        productVariant.AttributeValues.Add(new ProductAttributeValue()
-                        {
-                            ProductAttributeOption = option,
-                            ProductVariant = productVariant,
-                            Value = opt.Value
-                        });
+                    {
+                        productVariant.AttributeValues.Add(new ProductAttributeValue
+                                                              {
+                                                                  ProductAttributeOption = option,
+                                                                  ProductVariant = productVariant,
+                                                                  Value = opt.Value
+                                                              });
+                    }
                     else
                     {
                         var productAttributeValue =
@@ -202,7 +204,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 _productVariantService.Update(productVariant);
             }
 
-            _documentService.SaveDocument<Product>(product);
+            _documentService.SaveDocument(product);
         }
 
         /// <summary>
@@ -212,22 +214,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// <param name="product"></param>
         public void ImportProductImages(ProductImportDataTransferObject dataTransferObject, Product product)
         {
-            if (!product.Images.Any())
+            // We want to always look at all of the urls in the file, and only not import when it is set to update = no
+            foreach (var imageUrl in dataTransferObject.Images)
             {
-                foreach (var image in dataTransferObject.Images)
+                Uri result;
+                if (Uri.TryCreate(imageUrl, UriKind.Absolute, out result))
                 {
-                    if (!String.IsNullOrWhiteSpace(image))
-                        ImportImageToGallery(image.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
-                }
-            }
-            else
-            {
-                foreach (
-                    var image in
-                        dataTransferObject.Images.Where(
-                            image => !String.IsNullOrWhiteSpace(image) && image.Contains("?update=yes")))
-                {
-                    ImportImageToGallery(image.Replace("?update=no", "").Replace("?update=yes", ""), product.Gallery);
+                    // substring(1) should remove the leading ? 
+                    var parts = result.Query.Substring(1).Split('&');
+                    var parameters = parts.Select(s => s.Split('=')).ToDictionary(strings => strings[0], strings => strings[1]);
+                    if (parameters.ContainsKey("update"))
+                    {
+                        if (parameters["update"] == "no")
+                        {
+                            continue;
+                        }
+                    }
+                    ImportImageToGallery(result.ToString(), product.Gallery);
                 }
             }
         }
@@ -239,24 +242,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// <param name="mediaCategory"></param>
         public bool ImportImageToGallery(string fileLocation, MediaCategory mediaCategory)
         {
-            using (var client = new WebClient())
+            // rather than using webclient, this has been refactored to use HttpWebRequest/Response 
+            // so that we can get the content type from the response, rather than assuming it
+            try
             {
-                var fileName = Path.GetFileName(fileLocation);
-                try
+                var httpWebRequest = HttpWebRequest.Create(fileLocation) as HttpWebRequest;
+
+                var httpWebResponse = httpWebRequest.GetResponse() as HttpWebResponse;
+                using (var responseStream = httpWebResponse.GetResponseStream())
                 {
-                    var downloadedFile = client.DownloadData(fileLocation);
-                    if (downloadedFile != null)
-                    {
-                        _fileService.AddFile(new MemoryStream(downloadedFile), fileName, "image/png",
-                                             downloadedFile.Length, mediaCategory);
-                        return true;
-                    }
-                    return false;
+                    var memoryStream = new MemoryStream();
+                    responseStream.CopyTo(memoryStream);
+
+                    var fileName = Path.GetFileName(fileLocation);
+                    _fileService.AddFile(memoryStream, fileName, httpWebResponse.ContentType,
+                                         (int)memoryStream.Length, mediaCategory);
                 }
-                catch (Exception)
-                {
-                    return false;
-                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                CurrentRequestData.ErrorSignal.Raise(ex);
+                return false;
             }
         }
     }

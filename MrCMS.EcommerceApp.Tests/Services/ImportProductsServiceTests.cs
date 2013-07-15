@@ -13,25 +13,38 @@ namespace MrCMS.EcommerceApp.Tests.Services
 {
     public class ImportProductsServiceTests : InMemoryDatabaseTest
     {
-        private IProductService _productService;
-        private IProductVariantService _productVariantService;
-        private IDocumentService _documentService;
-        private IProductOptionManager _productOptionManager;
-        private IBrandService _brandService;
-        private ITaxRateManager _taxRateManager;
-        private IFileService _fileService;
+        private readonly IProductService _productService;
+        private readonly IProductVariantService _productVariantService;
+        private readonly IDocumentService _documentService;
+        private readonly IProductOptionManager _productOptionManager;
+        private readonly IBrandService _brandService;
+        private readonly ITaxRateManager _taxRateManager;
+        private readonly IFileService _fileService;
+        private readonly ImportProductsService _importProductsService;
+
+        public ImportProductsServiceTests()
+        {
+            _productService = A.Fake<IProductService>();
+            _productVariantService = A.Fake<IProductVariantService>();
+            _documentService = A.Fake<IDocumentService>();
+            _productOptionManager = A.Fake<IProductOptionManager>();
+            _brandService = A.Fake<IBrandService>();
+            _taxRateManager = A.Fake<ITaxRateManager>();
+            _fileService = A.Fake<IFileService>();
+
+            _importProductsService = new ImportProductsService(_productService, _productVariantService, _documentService, _productOptionManager, _brandService,
+                                                               _taxRateManager, _fileService);
+        }
 
         [Fact]
         public void ImportProductsService_ImportProduct_ShouldCallGetGetDocumentByUrlOfDocumentService()
         {
-            var importProductsService = GetImportProductsService();
-
             var product = new ProductImportDataTransferObject()
             {
                 UrlSegment = "test-url",
             };
 
-            importProductsService.ImportProduct(product);
+            _importProductsService.ImportProduct(product);
 
             A.CallTo(() => _documentService.GetDocumentByUrl<Product>(product.UrlSegment)).MustHaveHappened();
         }
@@ -39,14 +52,12 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ImportProductsService_ImportProduct_ShouldCallAnyExistingBrandsWithNameOfBrandService()
         {
-            var importProductsService = GetImportProductsService();
-
             var product = new ProductImportDataTransferObject()
             {
                 Brand = "test",
             };
 
-            importProductsService.ImportProduct(product);
+            _importProductsService.ImportProduct(product);
 
             A.CallTo(() => _brandService.AnyExistingBrandsWithName(product.Brand,0)).MustHaveHappened();
         }
@@ -54,14 +65,12 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ImportProductsService_ImportProduct_ShouldCallGetOfProductService()
         {
-            var importProductsService = GetImportProductsService();
-
             var product = new ProductImportDataTransferObject()
             {
                 UrlSegment = "test-url",
             };
 
-            importProductsService.ImportProduct(product);
+            _importProductsService.ImportProduct(product);
 
             A.CallTo(() => _productService.Get(0)).MustHaveHappened();
         }
@@ -69,15 +78,13 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ImportProductsService_ImportProduct_ShouldCallGetDocumentOfDocumentService()
         {
-            var importProductsService = GetImportProductsService();
+            var product = new ProductImportDataTransferObject
+                              {
+                                  UrlSegment = "test-url",
+                                  Categories = new List<int> {1}
+                              };
 
-            var product = new ProductImportDataTransferObject()
-            {
-                UrlSegment = "test-url",
-                Categories = new List<int>() {1}
-            };
-
-            importProductsService.ImportProduct(product);
+            _importProductsService.ImportProduct(product);
 
             A.CallTo(() => _documentService.GetDocument<Category>(1)).MustHaveHappened();
         }
@@ -85,9 +92,9 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ImportProductsService_ImportImageToGallery_ShouldCallReturnTrue()
         {
-            var importProductsService = GetImportProductsService();
-
-            var result=importProductsService.ImportImageToGallery("http://www.thought.co.uk/Content/images/logo-white.png",null);
+            var result =
+                _importProductsService.ImportImageToGallery("http://www.thought.co.uk/Content/images/logo-white.png",
+                                                           null);
 
             result.Should().BeTrue();
         }
@@ -95,19 +102,17 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ImportProductsService_ImportProduct_ShouldCallGetProductVariantBySKUOfProductVariantService()
         {
-            var importProductsService = GetImportProductsService();
+            var productVariant = new ProductVariantImportDataTransferObject
+                                     {
+                                         SKU = "123"
+                                     };
+            var product = new ProductImportDataTransferObject
+                              {
+                                  UrlSegment = "test-url",
+                                  ProductVariants = new List<ProductVariantImportDataTransferObject>() {productVariant}
+                              };
 
-            var productVariant = new ProductVariantImportDataTransferObject()
-                {
-                    SKU = "123"
-                };
-            var product = new ProductImportDataTransferObject()
-                {
-                    UrlSegment = "test-url",
-                    ProductVariants = new List<ProductVariantImportDataTransferObject>() { productVariant }
-                };
-
-            importProductsService.ImportProduct(product);
+            _importProductsService.ImportProduct(product);
 
             A.CallTo(() => _productVariantService.GetProductVariantBySKU(productVariant.SKU)).MustHaveHappened();
         }
@@ -115,8 +120,6 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ImportProductsService_ImportProduct_ShouldCallGetAttributeOptionByNameOfProductOptionManager()
         {
-            var importProductsService = GetImportProductsService();
-
             var productVariant = new ProductVariantImportDataTransferObject()
             {
                 SKU = "123",
@@ -128,7 +131,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
                 ProductVariants = new List<ProductVariantImportDataTransferObject>() { productVariant }
             };
 
-            importProductsService.ImportProduct(product);
+            _importProductsService.ImportProduct(product);
 
             A.CallTo(() => _productOptionManager.GetAttributeOptionByName("Storage")).MustHaveHappened();
         }
@@ -136,15 +139,13 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ImportProductsService_ImportProduct_ShouldCallAnyExistingSpecificationAttributesWithNameOfProductOptionManager()
         {
-            var importProductsService = GetImportProductsService();
-
             var product = new ProductImportDataTransferObject()
             {
                 UrlSegment = "test-url",
                 Specifications = new Dictionary<string, string>() {{"Storage","16GB"}}
             };
 
-            importProductsService.ImportProduct(product);
+            _importProductsService.ImportProduct(product);
 
             A.CallTo(() => _productOptionManager.AnyExistingSpecificationAttributesWithName("Storage")).MustHaveHappened();
         }
@@ -152,31 +153,15 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ImportProductsService_ImportProduct_ShouldCallGetSpecificationAttributeByNameOfProductOptionManager()
         {
-            var importProductsService = GetImportProductsService();
-
             var product = new ProductImportDataTransferObject()
             {
                 UrlSegment = "test-url",
                 Specifications = new Dictionary<string, string>() { { "Storage", "16GB" } }
             };
 
-            importProductsService.ImportProduct(product);
+            _importProductsService.ImportProduct(product);
 
             A.CallTo(() => _productOptionManager.GetSpecificationAttributeByName("Storage")).MustHaveHappened();
-        }
-
-        ImportProductsService GetImportProductsService()
-        {
-            _productService = A.Fake<IProductService>();
-            _productVariantService = A.Fake<IProductVariantService>();
-            _documentService = A.Fake<IDocumentService>();
-            _productOptionManager = A.Fake<IProductOptionManager>();
-            _brandService = A.Fake<IBrandService>();
-            _taxRateManager = A.Fake<ITaxRateManager>();
-            _fileService = A.Fake<IFileService>();
-
-            return new ImportProductsService(_productService, _productVariantService, _documentService, _productOptionManager, _brandService,
-                _taxRateManager,_fileService);
         }
     }
 }
