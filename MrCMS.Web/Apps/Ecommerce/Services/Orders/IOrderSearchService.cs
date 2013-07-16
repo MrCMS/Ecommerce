@@ -2,11 +2,9 @@
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
-using MrCMS.Entities.Indexes;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Indexing;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 {
