@@ -131,9 +131,11 @@
             </div>
               <div class="clearfix"></div>
             <div>
-                <div class="span6">Shipping</div>
+                <div class="span6">
+                    @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new { @class="input-xlarge" })
+                </div>
                 <div class="pull-right value">
-                    @Html.Raw(Model.ShippingTotal.HasValue?"&pound;"+Model.ShippingTotal.Value.ToString("#.##"):"Will be calculated on the checkout.<br/><br/>")
+                    @Html.Raw(Model.ShippingTotal.HasValue?"&pound;"+Model.ShippingTotal.Value.ToString("#.##"):"Please choose shipping method.<br/><br/>")
                 </div>
    
             </div>

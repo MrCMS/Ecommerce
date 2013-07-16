@@ -1,4 +1,5 @@
-﻿using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
+﻿using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
+using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
@@ -20,5 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         string GetDiscountCode();
         void SetPaymentMethod(string value);
         string GetPaymentMethod();
+        Country GetCountry();
+        void SetCountry(int id);
     }
 }

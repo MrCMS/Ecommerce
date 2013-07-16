@@ -1,26 +1,29 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
+using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class PaymentDetailsController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly IGetCart _getCart;
-        private readonly IProductSearchService _productSearchService;
 
-        public PaymentDetailsController(IGetCart getCart, IProductSearchService productSearchService)
+        public PaymentDetailsController(IGetCart getCart)
         {
-            _productSearchService = productSearchService;
             _getCart = getCart;
         }
 
-        public ViewResult Show(PaymentDetails page)
+        public ActionResult Show(PaymentDetails page)
         {
+            if (_getCart.GetShippingMethod() == null)
+                return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
+            if (_getCart.GetCart().Items.Count == 0)
+                return Redirect(UniquePageHelper.GetUrl<Cart>());
+            if (String.IsNullOrWhiteSpace(_getCart.GetOrderEmail()))
+                return Redirect(UniquePageHelper.GetUrl<EnterOrderEmail>());
             return View(page);
         }
     }

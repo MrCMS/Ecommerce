@@ -19,7 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
             return !String.IsNullOrWhiteSpace(value);
         }
         public static bool IsValidInput<T>(this string value) where T : struct
-         {
+        {
              try
              {
                  if (value.HasValue())
@@ -32,6 +32,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
              {
                  return false;
              }
-         }
+        }
     }
 }
