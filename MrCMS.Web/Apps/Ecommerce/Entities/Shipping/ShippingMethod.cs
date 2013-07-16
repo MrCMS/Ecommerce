@@ -19,6 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         public virtual string Description { get; set; }
         public virtual IList<ShippingCalculation> ShippingCalculations { get; set; }
         public virtual IList<Order> Orders { get; set; }
+        public virtual int DisplayOrder { get; set; }
 
         public virtual TaxRate TaxRate { get; set; }
 

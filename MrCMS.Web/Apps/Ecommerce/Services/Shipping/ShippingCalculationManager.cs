@@ -69,8 +69,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         {
             var shippingCalculations = _session.QueryOver<ShippingCalculation>().Cacheable().List();
             return shippingCalculations.Where(x => x.CanBeUsed(cart))
-                        .OrderBy(x => x.Country.Name)
-                        .ThenBy(x => x.GetPrice(cart))
+                        .OrderBy(x => x.Country.DisplayOrder)
+                        .ThenBy(x => x.ShippingMethod.DisplayOrder)
                         .BuildSelectItemList(item => item.Country.ISOTwoLetterCode + " - " + item.ShippingMethod.Name + " - £" + item.GetPrice(cart)
                         , item => item.Id.ToString(), emptyItemText: null);
 

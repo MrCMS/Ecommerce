@@ -23,20 +23,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly ICartManager _cartManager;
         private readonly ICountryService _countryService;
         private readonly IOrderService _orderService;
-        private readonly IShippingMethodManager _shippingMethodManager;
         private readonly IShippingCalculationManager _shippingCalculationManager;
         private readonly IDiscountManager _discountManager;
 
         public CartController(IGetCart getCart, ICartManager cartManager,
-            ICountryService countryService, IOrderService orderService,
-            IShippingMethodManager shippingMethodManager, IDiscountManager discountManager,
+            ICountryService countryService, IOrderService orderService, IDiscountManager discountManager,
             IShippingCalculationManager shippingCalculationManager)
         {
             _getCart = getCart;
             _cartManager = cartManager;
             _countryService = countryService;
             _orderService = orderService;
-            _shippingMethodManager = shippingMethodManager;
             _discountManager = discountManager;
             _shippingCalculationManager = shippingCalculationManager;
         }
