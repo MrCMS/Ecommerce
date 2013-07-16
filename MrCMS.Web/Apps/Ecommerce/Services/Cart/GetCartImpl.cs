@@ -24,11 +24,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public CartModel GetCart()
         {
-            var address = new Address();
-            if (GetShippingAddress() == null && GetCountry()!=null)
+            var address = GetShippingAddress() ?? new Address();
+            if (GetCountry()!=null)
                 address.Country = GetCountry();
-            else
-                address = GetShippingAddress();
             var cart=new CartModel
                        {
                            User = CurrentRequestData.CurrentUser,
