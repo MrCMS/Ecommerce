@@ -83,8 +83,17 @@
 <h4>Billing address</h4>
 <p>
       <label class="checkbox" id="">
-<input type="checkbox" checked="checked" id="useDeliveryAddress" name="UseDeliveryAddress"> Use delivery address <span id="deliveryAddress">(@Model.CartModel.ShippingAddress.Name @Model.CartModel.ShippingAddress.PhoneNumber @Model.CartModel.ShippingAddress.Company @Model.CartModel.ShippingAddress.Address1, 
-          @Model.CartModel.ShippingAddress.Address1 @Model.CartModel.ShippingAddress.City @Model.CartModel.ShippingAddress.PostalCode @Model.CartModel.ShippingAddress.Country.Name)</span>
+          <input type="checkbox" checked="checked" id="useDeliveryAddress" name="UseDeliveryAddress"> Use delivery address 
+          <span id="deliveryAddress">
+              (@(Model.CartModel.ShippingAddress.Name??String.Empty) 
+              @(Model.CartModel.ShippingAddress.PhoneNumber??String.Empty) 
+              @(Model.CartModel.ShippingAddress.Company??String.Empty) 
+              @(Model.CartModel.ShippingAddress.Address1??String.Empty),
+              @(Model.CartModel.ShippingAddress.Address2??String.Empty) 
+              @(Model.CartModel.ShippingAddress.City??String.Empty) 
+              @(Model.CartModel.ShippingAddress.PostalCode??String.Empty) 
+              @(Model.CartModel.ShippingAddress.Country!=null?Model.CartModel.ShippingAddress.Country.Name:String.Empty)
+        </span>
 </label>
     </p>
     

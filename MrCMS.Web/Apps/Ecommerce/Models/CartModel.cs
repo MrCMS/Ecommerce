@@ -99,6 +99,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public Address BillingAddress { get; set; }
 
         public ShippingMethod ShippingMethod { get; set; }
+        public int ShippingCalculation
+        {
+            get
+            {
+                return (ShippingMethod!=null?
+                    ShippingMethod.GetShippingCalculation(this) != null? 
+                    ShippingMethod.GetShippingCalculation(this).Id:0 
+                    : 0);
+            }
+        }
 
         public decimal? ShippingTotal { get { return ShippingMethod == null ? null : ShippingMethod.GetPrice(this); } }
         public decimal? ShippingTax { get { return ShippingMethod == null ? null : ShippingMethod.GetTax(this); } }

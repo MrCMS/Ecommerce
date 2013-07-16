@@ -9,6 +9,7 @@ using MrCMS.Website;
 using NHibernate;
 using System;
 using NHibernate.Criterion;
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
@@ -23,12 +24,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public CartModel GetCart()
         {
+            var address = new Address();
+            if (GetShippingAddress() == null && GetCountry()!=null)
+                address.Country = GetCountry();
+            else
+                address = GetShippingAddress();
             var cart=new CartModel
                        {
                            User = CurrentRequestData.CurrentUser,
                            UserGuid = CurrentRequestData.UserGuid,
                            Items = GetItems(),
-                           ShippingAddress = GetShippingAddress(),
+                           ShippingAddress = address,
                            BillingAddress = GetBillingAddress(),
                            ShippingMethod = GetShippingMethod(),
                            OrderEmail = GetOrderEmail(),
@@ -153,6 +159,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             return CurrentRequestData.CurrentContext.Session != null
                            ? CurrentRequestData.CurrentContext.Session["current.payment-method"] as string
                            : String.Empty;
+        }
+
+        public void SetCountry(int id)
+        {
+            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session["current.country-id"] != null)
+                CurrentRequestData.CurrentContext.Session["current.country-id"] = id;
+            else
+                CurrentRequestData.CurrentContext.Session.Add("current.country-id", id);
+        }
+        public Country GetCountry()
+        {
+            var id = CurrentRequestData.CurrentContext.Session != null
+                                        ? CurrentRequestData.CurrentContext.Session["current.country-id"] as int?
+                                        : null;
+
+            return id.HasValue
+                       ? _session.Get<Country>(id.Value)
+                       : null;
         }
     }
 }
