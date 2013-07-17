@@ -1,12 +1,8 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Settings;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Website.Controllers;
-using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
@@ -44,12 +40,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (shippingCalculation.ShippingMethod != null)
+                if (shippingCalculation.ShippingMethod != null && _shippingCalculationManager.IsValidForAdding(shippingCalculation))
                 {
                     _shippingCalculationManager.Add(shippingCalculation);
+                    return RedirectToAction("Index");
                 }
-                return RedirectToAction("Index");
+                else
+                    ViewBag.Message =
+                        "Shipping calculation with provided values overlap existing calculations in the system.";
             }
+            ViewData["criterias"] = _shippingCalculationManager.GetCriteriaOptions();
+            ViewData["shipping-methods"] = _shippingMethodManager.GetOptions();
             return PartialView(shippingCalculation);
         }
 
@@ -68,12 +69,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (shippingCalculation.ShippingMethod != null)
+                if (shippingCalculation.ShippingMethod != null &&
+                    _shippingCalculationManager.IsValidForAdding(shippingCalculation))
                 {
                     _shippingCalculationManager.Update(shippingCalculation);
+                    return RedirectToAction("Index");
                 }
-                return RedirectToAction("Index");
+                else
+                    ViewBag.Message =
+                        "Shipping calculation with provided values overlap existing calculations in the system.";
             }
+            ViewData["criterias"] = _shippingCalculationManager.GetCriteriaOptions();
+            ViewData["shipping-methods"] = _shippingMethodManager.GetOptions();
             return PartialView(shippingCalculation);
         }
 
