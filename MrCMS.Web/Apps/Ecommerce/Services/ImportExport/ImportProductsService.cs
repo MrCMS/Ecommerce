@@ -64,13 +64,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             product.PublishOn = DateTime.UtcNow;
 
             //Brand
-            var brand = _brandService.GetBrandByName(dataTransferObject.Brand);
-            if (brand == null)
+            if (!String.IsNullOrWhiteSpace(dataTransferObject.Brand))
             {
-                brand = new Brand { Name = dataTransferObject.Brand };
-                _brandService.Add(brand);
+                var brand = _brandService.GetBrandByName(dataTransferObject.Brand);
+                if (brand == null)
+                {
+                    brand = new Brand {Name = dataTransferObject.Brand};
+                    _brandService.Add(brand);
+                }
+                product.Brand = brand;
             }
-            product.Brand = brand;
 
             //Categories
             product.Categories.Clear();

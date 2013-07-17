@@ -63,17 +63,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             {
                 var wsInfo = excelFile.Workbook.Worksheets.Add("Info");
 
-                wsInfo.Cells["A1:C1"].Style.Font.Bold = true;
-                wsInfo.Cells["A:C"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                wsInfo.Cells["A1:D1"].Style.Font.Bold = true;
+                wsInfo.Cells["A:D"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 wsInfo.Cells["A1"].Value = "MrCMS Version";
                 wsInfo.Cells["B1"].Value = "Entity Type for Export";
                 wsInfo.Cells["C1"].Value = "Export Date";
+                wsInfo.Cells["D1"].Value = "Export Source";
 
                 wsInfo.Cells["A2"].Value = MrCMSHtmlHelper.AssemblyVersion(null);
                 wsInfo.Cells["B2"].Value = "Product";
                 wsInfo.Cells["C2"].Style.Numberformat.Format = "YYYY-MM-DDThh:mm:ss.sTZD";
                 wsInfo.Cells["C2"].Value = DateTime.UtcNow;
-                wsInfo.Cells["A:C"].AutoFitColumns();
+                wsInfo.Cells["D2"].Value = "MrCMS " + MrCMSHtmlHelper.AssemblyVersion(null);
+
+                wsInfo.Cells["A:D"].AutoFitColumns();
                 wsInfo.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                 wsInfo.Cells["A4"].Value = "Please do not change any values inside this file.";
 
