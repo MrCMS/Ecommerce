@@ -1,15 +1,11 @@
-﻿using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Pages;
-using System.Collections.Generic;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.IO;
 
-namespace MrCMS.Web.Apps.Ecommerce.Services.Products
+namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public interface IImportExportManager
     {
         byte[] ExportProductsToExcel();
-        List<string> ImportProductsFromExcel(HttpPostedFileBase file);
+        Dictionary<string, List<string>> ImportProductsFromExcel(Stream file);
     }
 }

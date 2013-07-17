@@ -70,7 +70,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                                      {
                                          Name = this.Name,
                                          TrackingPolicy = TrackingPolicy.DontTrack,
-                                         BasePrice = 0
+                                         StockRemaining = 0,
+                                         BasePrice = (decimal)0.00,
+                                         Weight = 0
                                      };
             Variants.Add(productVariant);
             productVariant.Product = this;

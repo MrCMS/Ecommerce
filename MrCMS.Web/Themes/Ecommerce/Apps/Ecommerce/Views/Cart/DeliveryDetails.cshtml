@@ -3,27 +3,27 @@
 
 <p><strong>Delivery Details</strong></p>
 <p>
-@Model.ShippingAddress.Name
+@(Model.ShippingAddress.Name??String.Empty)
 </p>
 <p>
-@Model.ShippingAddress.PhoneNumber
+@(Model.ShippingAddress.PhoneNumber??String.Empty)
 </p>
 <p>
-@Model.ShippingAddress.Company
+@(Model.ShippingAddress.Company??String.Empty)
 </p>
 <p>
-@Model.ShippingAddress.Address1
+@(Model.ShippingAddress.Address1??String.Empty)
 </p>
 <p>
-@Model.ShippingAddress.Address1
+@(Model.ShippingAddress.Address1??String.Empty)
 </p>
 <p>
-@Model.ShippingAddress.City
+@(Model.ShippingAddress.City??String.Empty)
 </p>
 <p>
-@Model.ShippingAddress.PostalCode
+@(Model.ShippingAddress.PostalCode??String.Empty)
 </p>
 <p>
-@Model.ShippingAddress.Country.Name
+@(Model.ShippingAddress.Country!=null?Model.ShippingAddress.Country.Name:String.Empty)
     </p>
 <a class="btn btn-info" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.SetDeliveryDetails>())">Edit</a>

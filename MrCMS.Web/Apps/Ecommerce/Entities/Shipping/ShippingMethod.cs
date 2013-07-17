@@ -19,6 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         public virtual string Description { get; set; }
         public virtual IList<ShippingCalculation> ShippingCalculations { get; set; }
         public virtual IList<Order> Orders { get; set; }
+        public virtual int DisplayOrder { get; set; }
 
         public virtual TaxRate TaxRate { get; set; }
 
@@ -32,10 +33,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         public virtual decimal? GetPrice(CartModel model)
         {
             var shippingCalculation = GetCheapestShippingCalculation(model);
+            if(model.ShippingAddress != null && model.ShippingAddress.Country != null)
+                shippingCalculation = ShippingCalculations.FirstOrDefault(calculation => calculation.CanBeUsed(model) && calculation.Country.Id==model.ShippingAddress.Country.Id);
 
             return shippingCalculation != null
                        ? shippingCalculation.GetPrice(model)
                        : null;
+        }
+
+        public virtual ShippingCalculation GetShippingCalculation(CartModel model)
+        {
+            if (model.ShippingAddress != null && model.ShippingAddress.Country != null)
+                return ShippingCalculations.FirstOrDefault(calculation => calculation.CanBeUsed(model) && calculation.Country.Id == model.ShippingAddress.Country.Id);
+            return GetCheapestShippingCalculation(model);
         }
 
         public virtual decimal? GetTax(CartModel model)
@@ -47,7 +57,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
                        : null;
         }
 
-        private ShippingCalculation GetCheapestShippingCalculation(CartModel model)
+        public virtual ShippingCalculation GetCheapestShippingCalculation(CartModel model)
         {
             return ShippingCalculations.Where(calculation => calculation.CanBeUsed(model)).OrderBy(calculation => calculation.GetPrice(model)).FirstOrDefault();
         }

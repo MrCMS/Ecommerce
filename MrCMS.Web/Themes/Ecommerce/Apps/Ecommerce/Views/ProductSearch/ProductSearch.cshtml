@@ -67,14 +67,14 @@
             <ul id="product-filter-box-specifications" class="nav nav-tabs nav-stacked ">
            @foreach (var specification in (List<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationAttribute>)ViewBag.ProductSpecifications)
            {
-               if(specification.Values.Select(x=>x.Value).Distinct().Any())
+               if(specification.Options.Select(x=>x.ProductSpecificationAttribute).Distinct().Any())
                {
                <li>
                         @specification.Name
                         <br/>
                         <select id="@(Html.Encode("product-specification-values-"+specification.Name))" class="span12">
                          <option value="0">All</option>
-                        @foreach (var specificationValue in specification.Values.Select(x=>x.Value).Distinct())
+                        @foreach (var specificationValue in specification.Options.Select(x => x.ProductSpecificationAttribute).Distinct())
                         {
                                 <option value="@(specification.Name+":"+specificationValue)">@specificationValue</option>
                         }

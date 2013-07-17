@@ -290,6 +290,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 }));
             }
         }
+        public void DeleteProductAttributeValue(ProductAttributeValue value)
+        {
+            _session.Transact(session => session.Delete(value));
+        }
         public bool AnyExistingAttributeOptionsWithName(ProductAttributeOption option)
         {
             return _session.QueryOver<ProductAttributeOption>()

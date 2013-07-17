@@ -15,7 +15,7 @@
             </th>
             <th>Stock Remaining
             </th>
-            <th>Weight (g)
+            <th>Weight (kg)
             </th>
             <th>Actions
             </th>
@@ -46,7 +46,7 @@
                     @variant.SKU
                 </td>
                 <td>
-                    @variant.BasePrice.ToString("#.##") @Html.ActionLink("Add price break", "Add", "PriceBreak", new { id = variant.Id, type = "ProductVariant" }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                    @string.Format("{0:n0}",variant.BasePrice) @Html.ActionLink("Add price break", "Add", "PriceBreak", new { id = variant.Id, type = "ProductVariant" }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
                     @if (variant.PriceBreaks.Any())
                     {
                         <h5>Price Breaks</h5>
@@ -60,7 +60,7 @@
                             {
                                 <tr>
                                     <td>@priceBreak.Quantity</td>
-                                    <td>@priceBreak.Price.ToString("#.##")</td>
+                                    <td>@string.Format("{0:n0}",priceBreak.Price)</td>
                                     <td>@Html.ActionLink("Delete", "Delete", "PriceBreak", new { id = priceBreak.Id }, new { @class = "btn btn-danger btn-mini pull-right", data_toggle = "fb-modal" })</td>
                                 </tr>
                             }
@@ -73,7 +73,7 @@
                     @variant.StockRemaining
                 </td>
                 <td>
-                    @variant.Weight.ToString("#.##")
+                    @string.Format("{0:n0}",variant.Weight)
                 </td>
                 <td>
                     <div class="btn-group">

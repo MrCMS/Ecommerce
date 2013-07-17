@@ -7,6 +7,7 @@
     <fieldset>
         <legend>Countries
             <span class="btn-group  display-inline  pull-right">
+                @Html.ActionLink("Sort", "Sort", null, new { @class = "btn", data_toggle = "fb-modal" })
                 @Html.ActionLink("Add", "Add", null, new { @class = "btn btn-primary", data_toggle = "fb-modal" })
             </span>
         </legend>
@@ -14,6 +15,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>ISO Code</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -53,6 +55,7 @@
                                 </table>
                             }
                         </td>
+                        <td>@country.ISOTwoLetterCode</td>
                         <td>
                             <div class="btn-group">
                                 @Html.ActionLink("Edit", "Edit", "Country", new { id = country.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
