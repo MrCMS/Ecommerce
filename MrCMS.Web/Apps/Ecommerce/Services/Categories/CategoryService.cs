@@ -77,6 +77,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         {
             return _session.QueryOver<Category>().Cacheable().List();
         }
+        public Category Get(int id)
+        {
+            return _session.QueryOver<Category>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
+        }
         public CategoryContainer GetSiteCategoryContainer()
         {
             IList<CategoryContainer> categoryContainers = _session.QueryOver<CategoryContainer>().Where(x => x.Site == _currentSite.Site).Cacheable().List();

@@ -1,26 +1,3 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Cart
 
-<ul class="breadcrumb">
-<li><a href="/">Home</a> <span class="divider">/</span></li>
-    <li><a href="@(MrCMS.Helpers.UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">Products</a> <span class="divider">/</span></li>
-    <li class="active">Basket</li>
-</ul>
-<div class="row-fluid">
- <div class="pull-left">
-<h4>Shopping Basket</h4>
- </div>
-     <div class="pull-right">
- <a class="btn btn-info" href="@(MrCMS.Helpers.UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay securely NOW!</a>
- </div>
-</div>
-
 @{Html.RenderAction("Details", "Cart", new { page = Model.Id });}
-
-<div class="row-fluid">
- <div class="pull-left">
-<a class="btn" href="@(MrCMS.Helpers.UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">Continue Shopping</a>
- </div>
-     <div class="pull-right">
- <a class="btn btn-info" href="@(MrCMS.Helpers.UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay securely NOW!</a>
- </div>
-</div>

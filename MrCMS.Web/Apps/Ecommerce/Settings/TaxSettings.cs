@@ -5,14 +5,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 {
     public class TaxSettings : SiteSettingsBase
     {
-        [DisplayName("Loaded Prices Include Tax")]
+        [DisplayName("Input Prices Include Tax")]
         public bool LoadedPricesIncludeTax { get; set; }
 
         [DisplayName("Shipping Rates Include Tax")]
         public bool ShippingRateIncludesTax { get; set; }
 
         [DisplayName("Taxes Enabled?")]
-        public bool TaxStatus{ get; set; }
+        public bool TaxesEnabled{ get; set; }
 
         public override bool RenderInSettings
         {

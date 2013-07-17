@@ -1,4 +1,7 @@
 ﻿$(function () {
+    $(document).on('change', "select[id='ShippingCalculation']", function () {
+        updateShippingMethod();
+    });
     $(document).on('click', "#update-basket", function () {
         update();
     });
@@ -54,6 +57,18 @@
         }
         $("div[class*='title']").html("Current discount code: " + discountCode);
     }
-
+    function updateShippingMethod() {
+        $.post('/Apps/Ecommerce/Cart/AddShippingMethod',
+           { id: $("select[id='ShippingCalculation']").val() },
+           function (response) {
+               parent.$.get('/Apps/Ecommerce/Cart/Details', function (items) {
+                   parent.$('#details').replaceWith(items);
+                   setDiscountCode();
+               });
+           });
+    }
+    
     setDiscountCode();
+    $("select[id='ShippingCalculation']").change();
+    
 })

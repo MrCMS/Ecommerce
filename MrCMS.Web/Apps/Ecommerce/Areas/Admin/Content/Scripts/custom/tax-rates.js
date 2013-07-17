@@ -1,5 +1,5 @@
 ﻿$(function () {
-    $('#TaxStatus').click(function () {
+    $('#TaxesEnabled').click(function () {
         $('form#Settings').submit();
     });
 })

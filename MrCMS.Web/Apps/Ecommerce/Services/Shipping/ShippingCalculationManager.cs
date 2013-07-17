@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using NHibernate;
 using MrCMS.Helpers;
 using System.Linq;
-using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 {
@@ -58,6 +58,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         public void Delete(ShippingCalculation shippingCalculation)
         {
             _session.Transact(session => session.Delete(shippingCalculation));
+        }
+
+        public ShippingCalculation Get(int id)
+        {
+            return _session.QueryOver<ShippingCalculation>().Where(x => x.Id==id).Cacheable().SingleOrDefault();
+        }
+
+        public List<SelectListItem> GetAllWhichCanBeUsedForCart(CartModel cart)
+        {
+            var shippingCalculations = _session.QueryOver<ShippingCalculation>().Cacheable().List();
+            return shippingCalculations.Where(x => x.CanBeUsed(cart))
+                        .OrderBy(x => x.Country.DisplayOrder)
+                        .ThenBy(x => x.ShippingMethod.DisplayOrder)
+                        .BuildSelectItemList(item => item.Country.ISOTwoLetterCode + " - " + item.ShippingMethod.Name + " - £" + item.GetPrice(cart)
+                        , item => item.Id.ToString(), emptyItemText: null);
+
         }
     }
 }

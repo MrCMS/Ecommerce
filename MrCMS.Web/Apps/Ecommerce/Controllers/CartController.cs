@@ -3,7 +3,6 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Website;
@@ -12,7 +11,6 @@ using System;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Discounts;
@@ -23,25 +21,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly IGetCart _getCart;
         private readonly ICartManager _cartManager;
-        private readonly IProductService _productService;
-        private readonly IProductVariantService _productVariantService;
         private readonly ICountryService _countryService;
         private readonly IOrderService _orderService;
-        private readonly IShippingMethodManager _shippingMethodManager;
+        private readonly IShippingCalculationManager _shippingCalculationManager;
         private readonly IDiscountManager _discountManager;
 
-        public CartController(IGetCart getCart, ICartManager cartManager, IProductService productService,
-            IProductVariantService productVariantService, ICountryService countryService, IOrderService orderService,
-            IShippingMethodManager shippingMethodManager, IDiscountManager discountManager)
+        public CartController(IGetCart getCart, ICartManager cartManager,
+            ICountryService countryService, IOrderService orderService, IDiscountManager discountManager,
+            IShippingCalculationManager shippingCalculationManager)
         {
             _getCart = getCart;
             _cartManager = cartManager;
-            _productService = productService;
-            _productVariantService = productVariantService;
             _countryService = countryService;
             _orderService = orderService;
-            _shippingMethodManager = shippingMethodManager;
             _discountManager = discountManager;
+            _shippingCalculationManager = shippingCalculationManager;
         }
 
         public ViewResult Show(Cart page)
@@ -57,8 +51,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public RedirectResult AddToCart(ProductVariant productVariant, int quantity = 0)
         {
             if (productVariant != null && quantity > 0)
+            {
                 _cartManager.AddToCart(productVariant, quantity);
-            return Redirect(UniquePageHelper.GetUrl<Cart>());
+                return Redirect(UniquePageHelper.GetUrl<Cart>());
+            }
+            return Redirect(UniquePageHelper.GetUrl<ProductSearch>());
         }
         [HttpGet]
         public ViewResult EditCartItem(CartItem item)
@@ -163,6 +160,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpGet]
         public ViewResult Details()
         {
+            ViewData["shipping-calculations"] = _shippingCalculationManager.GetAllWhichCanBeUsedForCart(_getCart.GetCart());
             return View(_getCart.GetCart());
         }
         [HttpPost]
@@ -225,7 +223,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                         {
                             FirstName = CurrentRequestData.CurrentUser.FirstName ?? String.Empty,
                             LastName = CurrentRequestData.CurrentUser.LastName ?? String.Empty,
-                            UserGuid = CurrentRequestData.UserGuid
+                            UserGuid = CurrentRequestData.UserGuid,
+                            Country = _getCart.GetCountry()
                         };
                     _getCart.SetShippingAddress(address);
                 }
@@ -240,17 +239,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             {
                 countries.SingleOrDefault(x => x.Value == _getCart.GetShippingAddress().Country.Id.ToString()).Selected = true;
             }
+            ViewData["shipping-calculations"] = _shippingCalculationManager.GetAllWhichCanBeUsedForCart(_getCart.GetCart());
             ViewData["countries"] = countries;
             return View(_getCart.GetCart());
         }
         [HttpPost]
-        public RedirectResult SetDeliveryDetails(Address address, ShippingMethod shippingMethod)
+        public RedirectResult SetDeliveryDetails(Address address)
         {
-            if (address != null && shippingMethod!=null)
+            if (address != null)
             {
                 address.UserGuid = CurrentRequestData.UserGuid;
                 _getCart.SetShippingAddress(address);
-                _getCart.SetShippingMethod(shippingMethod.Id);
                 return Redirect(UniquePageHelper.GetUrl<PaymentDetails>());
             }
             return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
@@ -270,8 +269,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
             if (_getCart.GetShippingAddress() == null)
                 return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
-            else
-                return View(new PaymentDetailsModel(){CartModel = _getCart.GetCart()});
+            return View(new PaymentDetailsModel(){CartModel = _getCart.GetCart()});
         }
         [HttpPost]
         public ActionResult PaymentDetails(Address address, PaymentDetailsModel paymentDetailsModel)
@@ -296,16 +294,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
                 return Redirect(UniquePageHelper.GetUrl<OrderPlaced>()+"?orderID="+ _orderService.PlaceOrder(_getCart.GetCart()).ToString());
             }
-            else
+
+            var countries = _countryService.GetAllCountries().BuildSelectItemList(country => country.Name, country => country.Id.ToString(), null, emptyItem: null);
+            if (_getCart.GetBillingAddress() != null && _getCart.GetBillingAddress().Country != null)
             {
-                var countries = _countryService.GetAllCountries().BuildSelectItemList(country => country.Name, country => country.Id.ToString(), null, emptyItem: null);
-                if (_getCart.GetBillingAddress() != null && _getCart.GetBillingAddress().Country != null)
-                {
-                    countries.SingleOrDefault(x => x.Value == _getCart.GetBillingAddress().Country.Id.ToString()).Selected = true;
-                }
-                ViewData["countries"] = countries;
-                return View(_getCart.GetCart());
+                countries.SingleOrDefault(x => x.Value == _getCart.GetBillingAddress().Country.Id.ToString()).Selected = true;
             }
+            ViewData["countries"] = countries;
+            return View(_getCart.GetCart());
         }
         [HttpGet]
         public ActionResult ShippingMethods(int id=0)
@@ -326,16 +322,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         {
             if (id != 0)
             {
-                var shippingMethod = _shippingMethodManager.Get(id);
-                if (shippingMethod != null)
+                var shippingCalculation = _shippingCalculationManager.Get(id);
+                if (shippingCalculation != null)
                 {
-                    _getCart.SetShippingMethod(shippingMethod.Id);
+                    _getCart.SetCountry(shippingCalculation.Country.Id);
+                    _getCart.SetShippingMethod(shippingCalculation.ShippingMethod.Id);
                     return Json(true);
                 }
             }
             else
             {
                 _getCart.SetShippingMethod(0);
+            }
+            return Json(false);
+        }
+        [HttpPost]
+        public JsonResult GetShippingCalculationCountry(int id = 0)
+        {
+            if (id != 0)
+            {
+                var shippingCalculation = _shippingCalculationManager.Get(id);
+                if (shippingCalculation != null)
+                {
+                    return Json(shippingCalculation.Country.Id);
+                }
             }
             return Json(false);
         }

@@ -11,15 +11,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     public class ProductController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly IProductSearchService _productSearchService;
+        private readonly IProductVariantService _productVariantService;
 
-        public ProductController(IProductSearchService productSearchService)
+        public ProductController(IProductSearchService productSearchService, IProductVariantService productVariantService)
         {
             _productSearchService = productSearchService;
+            _productVariantService = productVariantService;
         }
 
         public ViewResult Show(Product page, int pv=0)
         {
-            ViewBag.Id = pv;
+            if(_productVariantService.Get(pv)!=null)
+                ViewBag.Id = pv;
+            else
+                ViewBag.Id = 0;
             ViewBag.ProductSearchUrl = UniquePageHelper.GetUrl<ProductSearch>();
             return View(page);
         }

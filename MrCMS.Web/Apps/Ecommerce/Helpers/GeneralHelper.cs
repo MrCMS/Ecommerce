@@ -14,18 +14,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
                 .SingleOrDefault() as DescriptionAttribute;
             return attribute == null ? value.ToString() : attribute.Description;
         }
-
-        public static T ChangeTypeFromString<T>(string value) where T : struct
+        public static bool HasValue(this string value)
         {
-            try
-            {
-                return (T)Convert.ChangeType(value, typeof(T));
-            }
-            catch (Exception)
-            {
-                return default(T);
-            }
-
+            return !String.IsNullOrWhiteSpace(value);
+        }
+        public static bool IsValidInput<T>(this string value) where T : struct
+        {
+             try
+             {
+                 if (value.HasValue())
+                 {
+                     var convertedValue=Convert.ChangeType(value, typeof(T));
+                 }
+                 return true;
+             }
+             catch (Exception)
+             {
+                 return false;
+             }
         }
     }
 }

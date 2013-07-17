@@ -96,6 +96,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 });
             }
             _session.Transact(session => session.SaveOrUpdate(order));
+            _session.Evict(typeof(Order));
             _cartManager.EmptyBasket();
             return order.Id;
         }
