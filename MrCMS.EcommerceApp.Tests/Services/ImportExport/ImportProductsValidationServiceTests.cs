@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using FakeItEasy;
 using MrCMS.Entities.Documents.Media;
+using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
@@ -17,9 +18,8 @@ using Xunit;
 using OfficeOpenXml;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using EnumerableHelper = MrCMS.Helpers.EnumerableHelper;
 
-namespace MrCMS.EcommerceApp.Tests.Services
+namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
     public class ImportProductsValidationServiceTests : InMemoryDatabaseTest
     {

@@ -16,25 +16,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public class ImportProductsService : IImportProductsService
     {
-        private readonly IProductService _productService;
-        private readonly IProductVariantService _productVariantService;
         private readonly IDocumentService _documentService;
-        private readonly IProductOptionManager _productOptionManager;
         private readonly IBrandService _brandService;
-        private readonly ITaxRateManager _taxRateManager;
-        private readonly IFileService _fileService;
+        private readonly IImportSpecificationsService _importSpecificationsService;
+        private readonly IImportProductVariantsService _importProductVariantsService;
+        private readonly IImportProductImagesService _importProductImagesService;
 
-        public ImportProductsService(IProductService productService, IProductVariantService productVariantService,
-            IDocumentService documentService, IProductOptionManager productOptionManager, IBrandService brandService, ITaxRateManager taxRateManager,
-            IFileService fileService)
+        public ImportProductsService(IDocumentService documentService, IBrandService brandService,
+             IImportSpecificationsService importSpecificationsService, IImportProductVariantsService importProductVariantsService,
+            IImportProductImagesService importProductImagesService)
         {
-            _productService = productService;
-            _productVariantService = productVariantService;
             _documentService = documentService;
-            _productOptionManager = productOptionManager;
             _brandService = brandService;
-            _taxRateManager = taxRateManager;
-            _fileService = fileService;
+            _importSpecificationsService = importSpecificationsService;
+            _importProductVariantsService = importProductVariantsService;
+            _importProductImagesService = importProductImagesService;
         }
 
         /// <summary>
@@ -71,7 +67,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             var brand = _brandService.GetBrandByName(dataTransferObject.Brand);
             if (brand == null)
             {
-                brand = new Brand {Name = dataTransferObject.Brand};
+                brand = new Brand { Name = dataTransferObject.Brand };
                 _brandService.Add(brand);
             }
             product.Brand = brand;
@@ -89,198 +85,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
             if (product.Id == 0)
             {
-                _documentService.AddDocument<Product>(product);
+                _documentService.AddDocument(product);
                 product.Variants.Clear();
             }
             else
-                _documentService.SaveDocument<Product>(product);
-
-            if(product.Id!=0)
-                product = _productService.Get(product.Id);
+                _documentService.SaveDocument(product);
 
             //Images
-            ImportProductImages(dataTransferObject, product);
+            _importProductImagesService.ImportProductImages(dataTransferObject, product);
 
             //Specifications
-            ImportSpecifications(dataTransferObject, product);
+            _importSpecificationsService.ImportSpecifications(dataTransferObject, product);
 
             //Variants
-            ImportVariants(dataTransferObject, product);
+            _importProductVariantsService.ImportVariants(dataTransferObject, product);
+
+            _documentService.SaveDocument(product);
 
             return product;
         }
 
-        /// <summary>
-        /// Add Specifications
-        /// </summary>
-        /// <param name="dataTransferObject"></param>
-        /// <param name="product"></param>
-        public IEnumerable<ProductSpecificationValue> ImportSpecifications(ProductImportDataTransferObject dataTransferObject, Product product)
-        {
-            product.SpecificationValues.Clear();
-            foreach (var item in dataTransferObject.Specifications)
-            {
-                if (!_productOptionManager.AnyExistingSpecificationAttributesWithName(item.Key))
-                    _productOptionManager.AddSpecificationAttribute(new ProductSpecificationAttribute { Name = item.Key });
-                var option = _productOptionManager.GetSpecificationAttributeByName(item.Key);
-                if (!option.Options.Any(x => x.Name == item.Value))
-                {
-                    option.Options.Add(new ProductSpecificationAttributeOption
-                                           {
-                                               ProductSpecificationAttribute = option,
-                                               Name = item.Value
-                                           });
-                    _productOptionManager.UpdateSpecificationAttribute(option);
-                }
-                var optionValue = option.Options.SingleOrDefault(x => x.Name == item.Value);
-                if (!product.SpecificationValues.Any(x => optionValue != null && (x.ProductSpecificationAttributeOption.Id == optionValue.Id && x.Product.Id == product.Id)))
-                    product.SpecificationValues.Add(new ProductSpecificationValue
-                                                        {
-                                                            ProductSpecificationAttributeOption = optionValue,
-                                                            Product = product,
-                                                        });
-            }
-
-            _documentService.SaveDocument(product);
-            return dataTransferObject.Specifications.Any() ? product.SpecificationValues : null;
-        }
-
-        /// <summary>
-        /// Add Variants
-        /// </summary>
-        /// <param name="dataTransferObject"></param>
-        /// <param name="product"></param>
-        public IEnumerable<ProductVariant> ImportVariants(ProductImportDataTransferObject dataTransferObject, Product product)
-        {
-            foreach (var item in dataTransferObject.ProductVariants)
-            {
-                var productVariant = _productVariantService.GetProductVariantBySKU(item.SKU) ?? new ProductVariant();
-
-                productVariant.Name = item.Name;
-                productVariant.SKU = item.SKU;
-                productVariant.Barcode = item.Barcode;
-                productVariant.BasePrice = item.Price;
-                productVariant.PreviousPrice = item.PreviousPrice;
-                productVariant.StockRemaining = item.Stock;
-                productVariant.Weight = item.Weight.HasValue ? item.Weight.Value : 0;
-                productVariant.TrackingPolicy = item.TrackingPolicy;
-                productVariant.TaxRate = _taxRateManager.Get(item.TaxRate.HasValue ? item.TaxRate.Value : 0);
-                productVariant.Product = product;
-
-                for (var i = productVariant.AttributeValues.Count - 1; i >= 0; i--)
-                {
-                    var value = productVariant.AttributeValues[i];
-                    productVariant.AttributeValues.Remove(value);
-                    _productOptionManager.DeleteProductAttributeValue(value);
-                }
-
-                _productVariantService.Update(productVariant);
-
-                productVariant = _productVariantService.GetProductVariantBySKU(item.SKU);
-
-                foreach (var opt in item.Options)
-                {
-                    var option = _productOptionManager.GetAttributeOptionByName(opt.Key);
-                    if (option == null)
-                    {
-                        _productOptionManager.AddAttributeOption(new ProductAttributeOption { Name = opt.Key });
-                        option = _productOptionManager.GetAttributeOptionByName(opt.Key);
-                    }
-                    if (!productVariant.Product.AttributeOptions.Any(x => x.Id == option.Id))
-                        product.AttributeOptions.Add(option);
-                    if (!productVariant.AttributeValues.Any(x => x.ProductAttributeOption.Id == option.Id))
-                    {
-                        productVariant.AttributeValues.Add(new ProductAttributeValue
-                                                              {
-                                                                  ProductAttributeOption = option,
-                                                                  ProductVariant = productVariant,
-                                                                  Value = opt.Value
-                                                              });
-                    }
-                    else
-                    {
-                        var productAttributeValue =
-                            productVariant.AttributeValues.SingleOrDefault(x => x.ProductAttributeOption.Id == option.Id);
-                        if (productAttributeValue != null)
-                            productAttributeValue.Value = opt.Value;
-                    }
-                }
-
-                if (!product.Variants.Any(x=>x.Id==productVariant.Id))
-                    product.Variants.Add(productVariant);
-
-                _productVariantService.Update(productVariant);
-            }
-
-            _documentService.SaveDocument(product);
-
-            return dataTransferObject.ProductVariants.Any() ? product.Variants : null;
-        }
-
-        /// <summary>
-        /// Add Product Images
-        /// </summary>
-        /// <param name="dataTransferObject"></param>
-        /// <param name="product"></param>
-        public IEnumerable<MediaFile> ImportProductImages(ProductImportDataTransferObject dataTransferObject, Product product)
-        {
-            // We want to always look at all of the urls in the file, and only not import when it is set to update = no
-            foreach (var imageUrl in dataTransferObject.Images)
-            {
-                Uri result;
-                if (Uri.TryCreate(imageUrl, UriKind.Absolute, out result))
-                {
-                    // substring(1) should remove the leading ? 
-                    if (!String.IsNullOrWhiteSpace(result.Query))
-                    {
-                        var parts = result.Query.Substring(1).Split('&');
-                        var parameters = parts.Select(s => s.Split('='))
-                                              .ToDictionary(strings => strings[0], strings => strings[1]);
-                        if (parameters.ContainsKey("update"))
-                        {
-                            if (parameters["update"] == "no" && product.Images.Any(x=>x.FileName==result.ToString()))
-                            {
-                                continue;
-                            }
-                        }
-                    }
-                    ImportImageToGallery(result.ToString(), product.Gallery);
-                }
-            }
-
-            return dataTransferObject.Images.Any() ? product.Images : null;
-        }
-
-        /// <summary>
-        /// Add image to Product Gallery
-        /// </summary>
-        /// <param name="fileLocation"></param>
-        /// <param name="mediaCategory"></param>
-        public bool ImportImageToGallery(string fileLocation, MediaCategory mediaCategory)
-        {
-            // rather than using webclient, this has been refactored to use HttpWebRequest/Response 
-            // so that we can get the content type from the response, rather than assuming it
-            try
-            {
-                var httpWebRequest = HttpWebRequest.Create(fileLocation) as HttpWebRequest;
-
-                var httpWebResponse = httpWebRequest.GetResponse() as HttpWebResponse;
-                using (var responseStream = httpWebResponse.GetResponseStream())
-                {
-                    var memoryStream = new MemoryStream();
-                    responseStream.CopyTo(memoryStream);
-
-                    var fileName = Path.GetFileName(fileLocation);
-                    _fileService.AddFile(memoryStream, fileName, httpWebResponse.ContentType,
-                                         (int)memoryStream.Length, mediaCategory);
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                CurrentRequestData.ErrorSignal.Raise(ex);
-                return false;
-            }
-        }
     }
 }
