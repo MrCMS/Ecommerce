@@ -70,13 +70,13 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ShippingCalculationController_AddPOST_CallsIShippingCalculationManagerAddWithPassedShippingCalculationIfItHasCountry()
+        public void ShippingCalculationController_AddPOST_CallsIShippingCalculationManagerIsValidForAddingWithPassedShippingCalculationIfItHasCountry()
         {
             var shippingCalculation = new ShippingCalculation {ShippingMethod = new ShippingMethod()};
 
             var add = _shippingCalculationController.Add_POST(shippingCalculation);
 
-            A.CallTo(() => _shippingCalculationManager.Add(shippingCalculation)).MustHaveHappened();
+            A.CallTo(() => _shippingCalculationManager.IsValidForAdding(shippingCalculation)).MustHaveHappened();
         }
 
         [Fact]
@@ -100,13 +100,13 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ShippingCalculationController_EditPOST_ShouldCallITaxManagerUpdateForAShippingCalculationWithACountry()
+        public void ShippingCalculationController_EditPOST_ShouldCallITaxManagerIsValidForAddingForAShippingCalculationWithACountry()
         {
             var shippingCalculation = new ShippingCalculation { ShippingMethod = new ShippingMethod() };
 
             var editPost = _shippingCalculationController.Edit_POST(shippingCalculation);
 
-            A.CallTo(() => _shippingCalculationManager.Update(shippingCalculation)).MustHaveHappened();
+            A.CallTo(() => _shippingCalculationManager.IsValidForAdding(shippingCalculation)).MustHaveHappened();
         }
 
         [Fact]
