@@ -9,7 +9,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 
-namespace MrCMS.EcommerceApp.Tests.Services
+namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
     public class ImportProductsServiceTests
     {
