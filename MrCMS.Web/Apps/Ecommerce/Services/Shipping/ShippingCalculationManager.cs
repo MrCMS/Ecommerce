@@ -8,6 +8,7 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using NHibernate;
 using MrCMS.Helpers;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 {
@@ -55,6 +56,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             _session.Transact(session => session.Update(shippingCalculation));
         }
 
+        public bool IsValidForAdding(ShippingCalculation shippingCalculation)
+        {
+            var lowerBound = shippingCalculation.LowerBound;
+            var upperBound = shippingCalculation.UpperBound.HasValue ? shippingCalculation.UpperBound.Value : 0;
+            var calcs = _session.QueryOver<ShippingCalculation>()
+                .Where(x =>
+                    x.Id != shippingCalculation.Id &&
+                    x.ShippingCriteria == shippingCalculation.ShippingCriteria &&
+                    x.Country.Id == shippingCalculation.Country.Id &&
+                    x.ShippingMethod.Id == shippingCalculation.ShippingMethod.Id)
+                .Cacheable().List();
+            if(upperBound>0)
+                return !calcs.Any(x => (x.LowerBound <= lowerBound && lowerBound <= x.UpperBound)
+                    || (x.LowerBound <= upperBound && (upperBound <= x.UpperBound || x.UpperBound==null)));
+            return !calcs.Any(x => (x.LowerBound <= lowerBound && lowerBound <= x.UpperBound) || x.UpperBound==null);
+        }
+
         public void Delete(ShippingCalculation shippingCalculation)
         {
             _session.Transact(session => session.Delete(shippingCalculation));
@@ -75,5 +93,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
                         , item => item.Id.ToString(), emptyItemText: null);
 
         }
+
     }
 }

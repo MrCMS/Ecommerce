@@ -13,5 +13,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         void Delete(ShippingCalculation shippingCalculation);
         ShippingCalculation Get(int id);
         List<SelectListItem> GetAllWhichCanBeUsedForCart(CartModel cart);
+        bool IsValidForAdding(ShippingCalculation shippingCalculation);
     }
 }
