@@ -149,9 +149,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CartManagerTests.cs" />
     <Compile Include="Services\CategoryServiceTests.cs" />
+    <Compile Include="Services\ImportProductImagesServiceTests.cs" />
+    <Compile Include="Services\ImportProductSpecificationsServiceTests.cs" />
     <Compile Include="Services\ImportProductsValidationServiceTests.cs" />
     <Compile Include="Services\ImportProductsServiceTests.cs" />
     <Compile Include="Services\ImportExportManagerTests.cs" />
+    <Compile Include="Services\ImportProductVariantsServiceTests.cs" />
     <Compile Include="Services\ProductServiceTests.cs" />
     <Compile Include="Services\NotificationTemplateProcessorTests.cs" />
     <Compile Include="Services\CountryServiceTests.cs" />
