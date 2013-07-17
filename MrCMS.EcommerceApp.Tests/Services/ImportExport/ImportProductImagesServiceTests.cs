@@ -4,7 +4,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using Xunit;
 
-namespace MrCMS.EcommerceApp.Tests.Services
+namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
     public class ImportProductImagesServiceTests
     {
