@@ -25,13 +25,7 @@
     padding-bottom: 8px;
     padding-top: 8px;
 }
-
-#wrap {
-    height: auto !important;
-    margin: 0 auto -60px;
-    min-height: 100%;
-}
-#push, #footer {
+#footer {
     padding:10px 0px 0px 0px;
     height: 60px;
     text-align:center;
