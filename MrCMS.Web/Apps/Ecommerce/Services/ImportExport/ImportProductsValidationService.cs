@@ -232,7 +232,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 //Remove handles with no errors
                 parseErrors = parseErrors.Where(x => x.Value.Any()).ToDictionary(pair => pair.Key, pair => pair.Value);
             }
-
+            var i = productsToImport.Where(x => x.ProductVariants.Count == 0).ToList();
             return productsToImport;
         }
 
