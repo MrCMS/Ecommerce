@@ -64,7 +64,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 {
                     if (spreadsheet.Workbook != null)
                     {
-                        var worksheet = spreadsheet.Workbook.Worksheets.SingleOrDefault(x => x.Name == "Products");
+                        var worksheet = spreadsheet.Workbook.Worksheets.SingleOrDefault(x => x.Name == "Items");
                         if (worksheet != null)
                         {
                             var totalRows = worksheet.Dimension.End.Row;
@@ -232,7 +232,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 //Remove handles with no errors
                 parseErrors = parseErrors.Where(x => x.Value.Any()).ToDictionary(pair => pair.Key, pair => pair.Value);
             }
-
+            var i = productsToImport.Where(x => x.ProductVariants.Count == 0).ToList();
             return productsToImport;
         }
 
@@ -254,9 +254,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     {
                         if (spreadsheet.Workbook.Worksheets.Count < 2 ||
                             !spreadsheet.Workbook.Worksheets.Any(x => x.Name == "Info") ||
-                             !spreadsheet.Workbook.Worksheets.Any(x => x.Name == "Products"))
+                             !spreadsheet.Workbook.Worksheets.Any(x => x.Name == "Items"))
                             parseErrors["file"].Add(
-                                "One or both of the required worksheets (Info and Products) are not present in import file.");
+                                "One or both of the required worksheets (Info and Items) are not present in import file.");
                     }
                 }
             }
