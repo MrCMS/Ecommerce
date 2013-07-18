@@ -336,8 +336,6 @@
     <Compile Include="Apps\Ecommerce\Pages\ProductSearch.cs" />
     <Compile Include="Apps\Ecommerce\Pages\SetDeliveryDetails.cs" />
     <Compile Include="Apps\Ecommerce\Payment\GoogleCheckout\IGoogleCheckoutService.cs" />
-    <Compile Include="Apps\Ecommerce\Payment\PaypalExpress\IPaypalExpressInterface.cs" />
-    <Compile Include="Apps\Ecommerce\Payment\PaypalExpress\PaypalExpressCheckoutService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartImpl.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartManager.cs" />
@@ -1808,6 +1806,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
+    <Folder Include="Apps\Ecommerce\Payment\PaypalExpress\" />
     <Folder Include="Apps\Ecommerce\Queries\" />
     <Folder Include="App_Data\" />
     <Folder Include="Themes\Default\Apps\" />
