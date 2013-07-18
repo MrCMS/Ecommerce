@@ -179,7 +179,6 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountLimitationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\NotificationTemplateSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderController.cs" />
-    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderLineController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderNoteController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderRefundController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\PriceBreakController.cs" />
@@ -358,11 +357,9 @@
     <Compile Include="Apps\Ecommerce\Services\Geographic\RegionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportExportManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportExportManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderLineService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderRefundService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\OrderLineService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderRefundService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderService.cs" />
