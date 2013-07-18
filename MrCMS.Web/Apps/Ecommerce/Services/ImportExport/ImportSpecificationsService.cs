@@ -10,10 +10,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     public class ImportSpecificationsService : IImportSpecificationsService
     {
         private readonly IProductOptionManager _productOptionManager;
+        private readonly IProductVariantService _productVariantService;
 
-        public ImportSpecificationsService(IProductOptionManager productOptionManager)
+        public ImportSpecificationsService(IProductOptionManager productOptionManager, IProductVariantService productVariantService)
         {
             _productOptionManager = productOptionManager;
+            _productVariantService = productVariantService;
         }
 
         public IEnumerable<ProductSpecificationValue> ImportSpecifications(ProductImportDataTransferObject dataTransferObject, Product product)
@@ -71,9 +73,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     var productAttributeValue =
                         productVariant.AttributeValues.SingleOrDefault(x => x.ProductAttributeOption.Id == option.Id);
                     if (productAttributeValue != null)
-                        productAttributeValue.Value = opt.Value;
+                    {
+                       productVariant.AttributeValues.SingleOrDefault(x => x.ProductAttributeOption.Id == option.Id).Value = opt.Value;
+                    }
                 }
             }
+            _productVariantService.Update(productVariant);
         }
     }
 }
