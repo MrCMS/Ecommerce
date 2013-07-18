@@ -109,7 +109,6 @@
     <Compile Include="Admin\Controllers\EcommerceSettingsControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductSpecificationAttributeOptionControllerTests.cs" />
     <Compile Include="Admin\Controllers\OrderRefundControllerTests.cs" />
-    <Compile Include="Admin\Controllers\OrderLineControllerTests.cs" />
     <Compile Include="Admin\Controllers\OrderNoteControllerTests.cs" />
     <Compile Include="Admin\Controllers\DiscountApplicationControllerTests.cs" />
     <Compile Include="Admin\Controllers\DiscountControllerTests.cs" />
