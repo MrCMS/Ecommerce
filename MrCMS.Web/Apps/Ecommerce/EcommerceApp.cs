@@ -109,11 +109,12 @@ namespace MrCMS.Web.Apps.Ecommerce
             var layout = new Layout
                              {
                                  Name = "Ecommerce Layout",
-                                 UrlSegment = "~/Apps/Ecommerce/Views/Shared/_EcommerceLayout.cshtml",
+                                 UrlSegment = "~/Themes/Ecommerce/Apps/Ecommerce/Views/Shared/_EcommerceLayout.cshtml",
                                  LayoutAreas = new List<LayoutArea>()
                              };
             var areas = new List<LayoutArea>
                                      {
+                                         new LayoutArea {AreaName = "Logo", Layout = layout},
                                          new LayoutArea {AreaName = "Header", Layout = layout},
                                          new LayoutArea {AreaName = "After Content", Layout = layout},
                                          new LayoutArea {AreaName = "Before Content", Layout = layout},
@@ -132,6 +133,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                     Text = GetFooterLinksText()
                 };
             widgetService.AddWidget(footerLinksWidget);
+            
 
             siteSettings.DefaultLayoutId = layout.Id;
             siteSettings.ThemeName = "Ecommerce";
@@ -142,7 +144,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var checkoutLayout = new Layout
             {
                 Name = "Checkout Layout",
-                UrlSegment = "~/Apps/Ecommerce/Views/Shared/_CheckoutLayout.cshtml",
+                UrlSegment = "~/Themes/Ecommerce/Apps/Ecommerce/Views/Shared/_CheckoutLayout.cshtml",
                 LayoutAreas = new List<LayoutArea>()
             };
             documentService.AddDocument(checkoutLayout);
