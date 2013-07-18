@@ -12,13 +12,7 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 namespace MrCMS.Web.Apps.Ecommerce.Services.Payments
 {
     public class PaymentStatusService : IPaymentStatusService
-    {
-        public PaymentStatusService()
-        {
-            
-        }
-
-        public List<SelectListItem> GetOptions()
+    {        public List<SelectListItem> GetOptions()
         {
             return
                 Enum.GetValues(typeof (PaymentStatus))
