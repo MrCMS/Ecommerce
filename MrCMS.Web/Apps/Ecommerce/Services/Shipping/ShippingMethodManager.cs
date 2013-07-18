@@ -28,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 
         public List<SelectListItem> GetOptions()
         {
-            return GetAll().BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(), emptyItemText: "None");
+            return GetAll().BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(), emptyItemText: null);
         }
 
         public void Add(ShippingMethod ShippingMethod)
