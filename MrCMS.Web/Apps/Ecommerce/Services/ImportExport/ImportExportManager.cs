@@ -63,17 +63,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             {
                 var wsInfo = excelFile.Workbook.Worksheets.Add("Info");
 
-                wsInfo.Cells["A1:C1"].Style.Font.Bold = true;
-                wsInfo.Cells["A:C"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                wsInfo.Cells["A1:D1"].Style.Font.Bold = true;
+                wsInfo.Cells["A:D"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 wsInfo.Cells["A1"].Value = "MrCMS Version";
                 wsInfo.Cells["B1"].Value = "Entity Type for Export";
                 wsInfo.Cells["C1"].Value = "Export Date";
+                wsInfo.Cells["D1"].Value = "Export Source";
 
                 wsInfo.Cells["A2"].Value = MrCMSHtmlHelper.AssemblyVersion(null);
                 wsInfo.Cells["B2"].Value = "Product";
                 wsInfo.Cells["C2"].Style.Numberformat.Format = "YYYY-MM-DDThh:mm:ss.sTZD";
                 wsInfo.Cells["C2"].Value = DateTime.UtcNow;
-                wsInfo.Cells["A:C"].AutoFitColumns();
+                wsInfo.Cells["D2"].Value = "MrCMS " + MrCMSHtmlHelper.AssemblyVersion(null);
+
+                wsInfo.Cells["A:D"].AutoFitColumns();
                 wsInfo.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                 wsInfo.Cells["A4"].Value = "Please do not change any values inside this file.";
 
@@ -116,12 +119,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 {
                     var rowId = i + 2;
                     wsProducts.Cells["A" + rowId].Value = productVariants[i].Product.UrlSegment;
+                    wsProducts.Cells["A" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     wsProducts.Cells["B" + rowId].Value = productVariants[i].Product.Name;
+                    wsProducts.Cells["B" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     wsProducts.Cells["C" + rowId].Value = productVariants[i].Product.BodyContent;
+                    wsProducts.Cells["C" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
                     wsProducts.Cells["D" + rowId].Value = productVariants[i].Product.MetaTitle;
                     wsProducts.Cells["E" + rowId].Value = productVariants[i].Product.MetaDescription;
+                    wsProducts.Cells["E" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
                     wsProducts.Cells["F" + rowId].Value = productVariants[i].Product.MetaKeywords;
                     wsProducts.Cells["G" + rowId].Value = productVariants[i].Product.Abstract;
+                    wsProducts.Cells["G" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
                     if (productVariants[i].Product.Brand != null)
                         wsProducts.Cells["H" + rowId].Value = productVariants[i].Product.Brand.Name;
                     if (productVariants[i].Product.Categories.Count > 0)
@@ -175,9 +183,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     if (productVariants[i].Product.Images.Count() > 2)
                         wsProducts.Cells["AB" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[2].FileUrl + "?update=no";
                 }
-                wsProducts.Cells["C:C"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                wsProducts.Cells["E:E"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                wsProducts.Cells["G:G"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 wsProducts.Cells["A:B"].AutoFitColumns();
                 wsProducts.Cells["D:D"].AutoFitColumns();
                 wsProducts.Cells["F:F"].AutoFitColumns();

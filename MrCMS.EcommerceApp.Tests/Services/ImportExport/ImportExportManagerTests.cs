@@ -5,7 +5,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 
-namespace MrCMS.EcommerceApp.Tests.Services
+namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
     public class ImportExportManagerTests : InMemoryDatabaseTest
     {
