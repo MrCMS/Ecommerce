@@ -132,5 +132,35 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             get { return "~/Admin/Webpage/Edit/" + Id; }
         }
+
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
+        public virtual decimal? DisplayPrice
+        {
+            get
+            {
+                if (Variants.Any())
+                {
+                    return Variants.Count == 1
+                               ? Variants.First().Price
+                               : Variants.OrderBy(x => x.Price).First().Price;
+                }
+                return null;
+            }
+        }
+
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
+        public virtual decimal? DisplayPreviousPrice
+        {
+            get
+            {
+                if (Variants.Any())
+                {
+                    return Variants.Count == 1
+                               ? Variants.First().PreviousPriceIncludingTax
+                               : Variants.OrderBy(x => x.Price).First().PreviousPriceIncludingTax;
+                }
+                return null;
+            }
+        }
     }
 }

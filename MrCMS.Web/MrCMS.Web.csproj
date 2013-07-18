@@ -1378,6 +1378,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Brands.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Sort.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Country\Sort.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\ProductCard.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
