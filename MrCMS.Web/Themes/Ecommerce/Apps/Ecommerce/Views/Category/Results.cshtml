@@ -35,7 +35,7 @@
                                     @Html.Raw("&pound;" + variant.Price.ToString("#.##"))
                                 </h1>
                                 }
-                                @if (variant.PreviousPrice.HasValue)
+                                @if(variant.PreviousPrice.HasValue && variant.PreviousPrice.Value>0)
                                 {
                                 <span>shop price: <span style="text-decoration: line-through">&pound;@(variant.PreviousPrice.Value.ToString("#.##"))</span></span>
                                 }

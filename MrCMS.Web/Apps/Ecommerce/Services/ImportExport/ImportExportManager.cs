@@ -119,12 +119,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 {
                     var rowId = i + 2;
                     wsProducts.Cells["A" + rowId].Value = productVariants[i].Product.UrlSegment;
+                    wsProducts.Cells["A" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     wsProducts.Cells["B" + rowId].Value = productVariants[i].Product.Name;
+                    wsProducts.Cells["B" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     wsProducts.Cells["C" + rowId].Value = productVariants[i].Product.BodyContent;
+                    wsProducts.Cells["C" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
                     wsProducts.Cells["D" + rowId].Value = productVariants[i].Product.MetaTitle;
                     wsProducts.Cells["E" + rowId].Value = productVariants[i].Product.MetaDescription;
+                    wsProducts.Cells["E" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
                     wsProducts.Cells["F" + rowId].Value = productVariants[i].Product.MetaKeywords;
                     wsProducts.Cells["G" + rowId].Value = productVariants[i].Product.Abstract;
+                    wsProducts.Cells["G" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
                     if (productVariants[i].Product.Brand != null)
                         wsProducts.Cells["H" + rowId].Value = productVariants[i].Product.Brand.Name;
                     if (productVariants[i].Product.Categories.Count > 0)
@@ -178,9 +183,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     if (productVariants[i].Product.Images.Count() > 2)
                         wsProducts.Cells["AB" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[2].FileUrl + "?update=no";
                 }
-                wsProducts.Cells["C:C"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                wsProducts.Cells["E:E"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                wsProducts.Cells["G:G"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 wsProducts.Cells["A:B"].AutoFitColumns();
                 wsProducts.Cells["D:D"].AutoFitColumns();
                 wsProducts.Cells["F:F"].AutoFitColumns();
