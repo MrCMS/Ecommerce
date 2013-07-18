@@ -1,7 +1,7 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.CategoryContainer
 @using MrCMS.Helpers
 
-@if (Model != null)
+@if (Model != null && ((List<MrCMS.Web.Apps.Ecommerce.Pages.Category>)ViewBag.Categories).Any())
 {
     <h4>Categories</h4>
    <br/>

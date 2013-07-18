@@ -41,13 +41,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                               .ToDictionary(strings => strings[0], strings => strings[1]);
                         if (parameters.ContainsKey("update"))
                         {
-                            if (parameters["update"] == "no" && product.Images.Any(x => x.FileName == result.ToString()))
+                            if (parameters["update"] == "no" || product.Images.Any(x => x.FileName == result.ToString()))
                             {
                                 continue;
                             }
                         }
                     }
-                    ImportImageToGallery(result.ToString(), product.Gallery);
+                    ImportImageToGallery(imageUrl.Replace("?update=no","").Replace("?update=yes",""), product.Gallery);
                 }
             }
 
