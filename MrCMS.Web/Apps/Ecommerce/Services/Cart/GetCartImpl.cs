@@ -15,6 +15,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
     public class GetCartImpl : IGetCart
     {
+        private const string CurrentShippingAddressKey = "current.shipping-address";
+        private const string CurrentBillingAddressKey = "current.billing-address";
+        private const string CurrentShippingMethodIdKey = "current.shipping-method-id";
+        private const string CurrentOrderEmailKey = "current.order-email";
+        private const string CurrentDiscountCodeKey = "current.discount-code";
+        private const string CurrentPaymentMethodKey = "current.payment-method";
+        private const string CurrentCountryIdKey = "current.country-id";
         private readonly ISession _session;
 
         public GetCartImpl(ISession session)
@@ -25,9 +32,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public CartModel GetCart()
         {
             var address = GetShippingAddress() ?? new Address();
-            if (GetCountry()!=null)
+            if (GetCountry() != null)
                 address.Country = GetCountry();
-            var cart=new CartModel
+            var cart = new CartModel
                        {
                            User = CurrentRequestData.CurrentUser,
                            UserGuid = CurrentRequestData.UserGuid,
@@ -73,37 +80,37 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public Address GetShippingAddress()
         {
             return CurrentRequestData.CurrentContext.Session != null
-                       ? CurrentRequestData.CurrentContext.Session["current.shipping-address"] as Address
+                       ? CurrentRequestData.CurrentContext.Session[CurrentShippingAddressKey] as Address
                        : null;
         }
 
         public void SetShippingAddress(Address address)
         {
-            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session["current.shipping-address"] != null)
-                CurrentRequestData.CurrentContext.Session["current.shipping-address"] = address;
+            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session[CurrentShippingAddressKey] != null)
+                CurrentRequestData.CurrentContext.Session[CurrentShippingAddressKey] = address;
             else
-                CurrentRequestData.CurrentContext.Session.Add("current.shipping-address", address);
+                CurrentRequestData.CurrentContext.Session.Add(CurrentShippingAddressKey, address);
         }
 
         public Address GetBillingAddress()
         {
             return CurrentRequestData.CurrentContext.Session != null
-                       ? CurrentRequestData.CurrentContext.Session["current.billing-address"] as Address
+                       ? CurrentRequestData.CurrentContext.Session[CurrentBillingAddressKey] as Address
                        : null;
         }
 
         public void SetBillingAddress(Address address)
         {
-            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session["current.billing-address"] != null)
-                CurrentRequestData.CurrentContext.Session["current.billing-address"] = address;
+            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session[CurrentBillingAddressKey] != null)
+                CurrentRequestData.CurrentContext.Session[CurrentBillingAddressKey] = address;
             else
-                CurrentRequestData.CurrentContext.Session.Add("current.billing-address", address);
+                CurrentRequestData.CurrentContext.Session.Add(CurrentBillingAddressKey, address);
         }
 
         public ShippingMethod GetShippingMethod()
         {
             var shippingMethodId = CurrentRequestData.CurrentContext.Session != null
-                                       ? CurrentRequestData.CurrentContext.Session["current.shipping-method-id"] as int?
+                                       ? CurrentRequestData.CurrentContext.Session[CurrentShippingMethodIdKey] as int?
                                        : null;
 
             return shippingMethodId.HasValue
@@ -113,63 +120,63 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public void SetShippingMethod(int shippingMethodId)
         {
-            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session["current.shipping-method-id"] != null)
-                CurrentRequestData.CurrentContext.Session["current.shipping-method-id"] = shippingMethodId;
+            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session[CurrentShippingMethodIdKey] != null)
+                CurrentRequestData.CurrentContext.Session[CurrentShippingMethodIdKey] = shippingMethodId;
             else
-                CurrentRequestData.CurrentContext.Session.Add("current.shipping-method-id", shippingMethodId);
+                CurrentRequestData.CurrentContext.Session.Add(CurrentShippingMethodIdKey, shippingMethodId);
         }
 
         public void SetOrderEmail(string value)
         {
-            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session["current.order-email"] != null)
-                CurrentRequestData.CurrentContext.Session["current.order-email"] = value;
+            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session[CurrentOrderEmailKey] != null)
+                CurrentRequestData.CurrentContext.Session[CurrentOrderEmailKey] = value;
             else
-                CurrentRequestData.CurrentContext.Session.Add("current.order-email", value);
+                CurrentRequestData.CurrentContext.Session.Add(CurrentOrderEmailKey, value);
         }
         public string GetOrderEmail()
         {
             return CurrentRequestData.CurrentContext.Session != null
-                           ? CurrentRequestData.CurrentContext.Session["current.order-email"] as string
+                           ? CurrentRequestData.CurrentContext.Session[CurrentOrderEmailKey] as string
                            : String.Empty;
         }
         public void SetDiscountCode(string value)
         {
-            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session["current.discount-code"] != null)
-                CurrentRequestData.CurrentContext.Session["current.discount-code"] = value;
+            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session[CurrentDiscountCodeKey] != null)
+                CurrentRequestData.CurrentContext.Session[CurrentDiscountCodeKey] = value;
             else
-                CurrentRequestData.CurrentContext.Session.Add("current.discount-code", value);
+                CurrentRequestData.CurrentContext.Session.Add(CurrentDiscountCodeKey, value);
         }
         public string GetDiscountCode()
         {
             return CurrentRequestData.CurrentContext.Session != null
-                           ? CurrentRequestData.CurrentContext.Session["current.discount-code"] as string
+                           ? CurrentRequestData.CurrentContext.Session[CurrentDiscountCodeKey] as string
                            : String.Empty;
         }
         public void SetPaymentMethod(string value)
         {
-            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session["current.payment-method"] != null)
-                CurrentRequestData.CurrentContext.Session["current.payment-method"] = value;
+            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session[CurrentPaymentMethodKey] != null)
+                CurrentRequestData.CurrentContext.Session[CurrentPaymentMethodKey] = value;
             else
-                CurrentRequestData.CurrentContext.Session.Add("current.payment-method", value);
+                CurrentRequestData.CurrentContext.Session.Add(CurrentPaymentMethodKey, value);
         }
         public string GetPaymentMethod()
         {
             return CurrentRequestData.CurrentContext.Session != null
-                           ? CurrentRequestData.CurrentContext.Session["current.payment-method"] as string
+                           ? CurrentRequestData.CurrentContext.Session[CurrentPaymentMethodKey] as string
                            : String.Empty;
         }
 
         public void SetCountry(int id)
         {
-            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session["current.country-id"] != null)
-                CurrentRequestData.CurrentContext.Session["current.country-id"] = id;
+            if (CurrentRequestData.CurrentContext.Session != null && CurrentRequestData.CurrentContext.Session[CurrentCountryIdKey] != null)
+                CurrentRequestData.CurrentContext.Session[CurrentCountryIdKey] = id;
             else
-                CurrentRequestData.CurrentContext.Session.Add("current.country-id", id);
+                CurrentRequestData.CurrentContext.Session.Add(CurrentCountryIdKey, id);
         }
         public Country GetCountry()
         {
             var id = CurrentRequestData.CurrentContext.Session != null
-                                        ? CurrentRequestData.CurrentContext.Session["current.country-id"] as int?
+                                        ? CurrentRequestData.CurrentContext.Session[CurrentCountryIdKey] as int?
                                         : null;
 
             return id.HasValue

@@ -106,11 +106,13 @@
     <Reference Include="Ninject.Web.Mvc">
       <HintPath>..\packages\Ninject.MVC3.3.0.0.6\lib\net40-full\Ninject.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="PayPalCoreSDK">
-      <HintPath>..\packages\PayPalCoreSDK.1.2.0\lib\PayPalCoreSDK.dll</HintPath>
+    <Reference Include="PayPalCoreSDK, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PayPalCoreSDK.1.3.2\lib\PayPalCoreSDK.dll</HintPath>
     </Reference>
-    <Reference Include="PayPalMerchantSDK">
-      <HintPath>..\packages\PayPalMerchantSDK.2.4.100\lib\PayPalMerchantSDK.dll</HintPath>
+    <Reference Include="PayPalMerchantSDK, Version=2.5.103.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PayPalMerchantSDK.2.5.103\lib\PayPalMerchantSDK.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.SQLite, Version=1.0.82.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -197,6 +199,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\CartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\PayPalExpressCheckoutController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserRegistrationController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserLoginController.cs" />
@@ -261,6 +264,14 @@
     <Compile Include="Apps\Ecommerce\Pages\UserAccount.cs" />
     <Compile Include="Apps\Ecommerce\Pages\UserLogin.cs" />
     <Compile Include="Apps\Ecommerce\Pages\EnterOrderEmail.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalExpressService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalInterfaceService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalOrderService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalRequestService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalSecurityService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalShippingService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressCheckoutSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductImagesService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductVariantsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportSpecificationsService.cs" />
@@ -1806,7 +1817,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
-    <Folder Include="Apps\Ecommerce\Payment\PaypalExpress\" />
     <Folder Include="Apps\Ecommerce\Queries\" />
     <Folder Include="App_Data\" />
     <Folder Include="Themes\Default\Apps\" />
