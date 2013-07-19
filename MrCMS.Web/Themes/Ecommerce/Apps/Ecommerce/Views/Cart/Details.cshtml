@@ -120,13 +120,13 @@
         {
             <div>
                 <div class="span6">Subtotal before delivery charges</div>
-                <div class="pull-right value">&pound;@Model.TotalPreShipping.ToString("#.##")
+                <div class="pull-right value">@Html.DisplayFor(model => model.TotalPreShipping)
                 </div>
             </div>
              <div class="clearfix"></div>
             <div>
                 <div class="span6">VAT</div>
-                <div class="pull-right value">&pound;@Model.Tax.ToString("#.##")
+                <div class="pull-right value">@Html.DisplayFor(model => model.Tax)
                 </div>
             </div>
               <div class="clearfix"></div>
@@ -135,14 +135,23 @@
                     @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new { @class="input-xlarge" })
                 </div>
                 <div class="pull-right value">
-                    @Html.Raw(Model.ShippingTotal.HasValue?"&pound;"+Model.ShippingTotal.Value.ToString("#.##"):"Please choose shipping method.<br/><br/>")
+                    @if (Model.ShippingTotal.HasValue)
+                    {
+                        @Html.DisplayFor(model => model.ShippingTotal)
+                    }
+                    else
+                    {
+                        <text>
+                            Please choose a shipping method
+                        </text>
+                    }
                 </div>
    
             </div>
             <div class="total-divider"></div>
             <div>
                 <div class="span6">Total</div>
-                <div class="pull-right total">&pound;@Model.Total.ToString("#.##")</div>
+                <div class="pull-right total">@Html.DisplayFor(model => model.Total)</div>
             </div>
         }
  </div>

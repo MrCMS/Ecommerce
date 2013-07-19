@@ -64,7 +64,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             var file = new FileInfo("test.xslx");
             var spreadsheet = new ExcelPackage(file);
             spreadsheet.Workbook.Worksheets.Add("Info");
-            spreadsheet.Workbook.Worksheets.Add("Products");
+            spreadsheet.Workbook.Worksheets.Add("Items");
 
             var errors = _importProductsValidationService.ValidateImportFile(spreadsheet);
 
@@ -211,8 +211,9 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 
             var file = new FileInfo("test.xslx");
             var spreadsheet = new ExcelPackage(file);
+            
             spreadsheet.Workbook.Worksheets.Add("Info");
-            var wsProducts = spreadsheet.Workbook.Worksheets.Add("Products");
+            var wsProducts = spreadsheet.Workbook.Worksheets.Add("Items");
 
             wsProducts.Cells["A1"].Value = "Url (Must not be changed!)";
             wsProducts.Cells["B1"].Value = "Product Name";

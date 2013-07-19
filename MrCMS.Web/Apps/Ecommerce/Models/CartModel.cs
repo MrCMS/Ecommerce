@@ -42,6 +42,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public Discount Discount { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public decimal DiscountAmount
         {
             get
@@ -59,16 +60,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             }
         }
 
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public virtual decimal Total
         {
             get { return TotalPreShipping + ShippingTotal.GetValueOrDefault(); }
         }
 
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public virtual decimal TotalPreShipping
         {
             get { return TotalPreDiscount - DiscountAmount; }
         }
 
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public decimal Tax
         {
             get
@@ -110,6 +114,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             }
         }
 
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public decimal? ShippingTotal { get { return ShippingMethod == null ? null : ShippingMethod.GetPrice(this); } }
         public decimal? ShippingTax { get { return ShippingMethod == null ? null : ShippingMethod.GetTax(this); } }
 

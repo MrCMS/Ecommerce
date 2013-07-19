@@ -14,11 +14,13 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
     {
         private readonly IProductOptionManager _productOptionManager;
         private readonly ImportSpecificationsService _importSpecificationsService;
+        private readonly IProductVariantService _productVariantService;
 
         public ImportProductSpecificationsServiceTests()
         {
             _productOptionManager = A.Fake<IProductOptionManager>();
-            _importSpecificationsService = new ImportSpecificationsService(_productOptionManager);
+            _productVariantService = A.Fake<IProductVariantService>();
+            _importSpecificationsService = new ImportSpecificationsService(_productOptionManager, _productVariantService);
         }
 
 
