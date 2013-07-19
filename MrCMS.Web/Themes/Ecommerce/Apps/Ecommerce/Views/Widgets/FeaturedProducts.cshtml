@@ -1,0 +1,16 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Widgets.FeaturedProductsViewModel
+@if (Model != null)
+{
+    <hr />
+    if (!String.IsNullOrEmpty(Model.Title))
+    {
+    <h4>@Model.Title</h4>
+    }
+    <div class="row-fluid">
+    @foreach (var item in Model.Products)
+    {
+        Html.RenderPartial("ProductCardFeatured", item);
+    }
+    </div>
+}

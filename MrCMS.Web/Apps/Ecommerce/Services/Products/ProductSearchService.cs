@@ -49,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     sort = new Sort(new[] { SortField.FIELD_SCORE, new SortField("price", SortField.STRING) });
                     break;
             }
-            return _productSearcher.Search(searchQuery.GetQuery(), page, pageSize, null, sort);
+            return _productSearcher.Search(searchQuery.GetQuery(), page, pageSize, searchQuery.GetFilter(), sort);
         }
     }
 }

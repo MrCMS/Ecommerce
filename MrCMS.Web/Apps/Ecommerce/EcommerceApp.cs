@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Apps;
 using MrCMS.Entities.Documents.Layout;
@@ -7,6 +8,7 @@ using MrCMS.Entities.Multisite;
 using MrCMS.Installation;
 using MrCMS.Services;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Core.Widgets;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -86,7 +88,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var siteSettings = configurationProvider.GetSiteSettings<SiteSettings>();
             var ecommerceSettings = configurationProvider.GetSiteSettings<EcommerceSettings>();
             var documentService = new DocumentService(session, siteSettings, currentSite);
-
+            var widgetService = new WidgetService(session);
             var productSearch = new ProductSearch
                                     {
                                         Name = "Product Search Container",
@@ -107,19 +109,32 @@ namespace MrCMS.Web.Apps.Ecommerce
             var layout = new Layout
                              {
                                  Name = "Ecommerce Layout",
-                                 UrlSegment = "~/Apps/Ecommerce/Views/Shared/_EcommerceLayout.cshtml",
+                                 UrlSegment = "~/Themes/Ecommerce/Apps/Ecommerce/Views/Shared/_EcommerceLayout.cshtml",
                                  LayoutAreas = new List<LayoutArea>()
                              };
             var areas = new List<LayoutArea>
                                      {
+                                         new LayoutArea {AreaName = "Logo", Layout = layout},
                                          new LayoutArea {AreaName = "Header", Layout = layout},
                                          new LayoutArea {AreaName = "After Content", Layout = layout},
+                                         new LayoutArea {AreaName = "Before Content", Layout = layout},
                                          new LayoutArea {AreaName = "Footer", Layout = layout}
                                      };
             documentService.AddDocument(layout);
             var layoutAreaService = new LayoutAreaService(session);
             foreach (var area in areas)
                 layoutAreaService.SaveArea(area);
+
+            //widget setup footer links
+            var footerLinksWidget = new TextWidget
+                {
+                    LayoutArea = areas.Single(x => x.AreaName == "Footer"),
+                    Name = "Footer links",
+                    Text = GetFooterLinksText()
+                };
+            widgetService.AddWidget(footerLinksWidget);
+            
+
             siteSettings.DefaultLayoutId = layout.Id;
             siteSettings.ThemeName = "Ecommerce";
             configurationProvider.SaveSettings(siteSettings);
@@ -129,7 +144,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var checkoutLayout = new Layout
             {
                 Name = "Checkout Layout",
-                UrlSegment = "~/Apps/Ecommerce/Views/Shared/_CheckoutLayout.cshtml",
+                UrlSegment = "~/Themes/Ecommerce/Apps/Ecommerce/Views/Shared/_CheckoutLayout.cshtml",
                 LayoutAreas = new List<LayoutArea>()
             };
             documentService.AddDocument(checkoutLayout);
@@ -215,6 +230,11 @@ namespace MrCMS.Web.Apps.Ecommerce
             };
             documentService.AddDocument(registration);
             
+        }
+
+        private string GetFooterLinksText()
+        {
+            return @"<ul><li><a href=""#"">About &bull;</a></li><li><a href=""#"">Contact Us &bull;</a></li><li><a href=""#"">Privacy Policy &amp; Cookie Info &bull;</a></li><li><a href=""#"">Mr CMS</a></li></ul>";
         }
     }
 }
