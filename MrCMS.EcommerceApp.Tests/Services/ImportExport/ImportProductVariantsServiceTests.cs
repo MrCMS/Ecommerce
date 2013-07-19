@@ -2,6 +2,7 @@
 using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -21,6 +22,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         private readonly ITaxRateManager _taxRateManager;
         private readonly IProductOptionManager _productOptionManager;
         private readonly ImportProductVariantsService _importProductVariantsService;
+        private readonly IDocumentService _documentService;
 
         public ImportProductVariantsServiceTests()
         {
@@ -28,7 +30,10 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             _taxRateManager = A.Fake<ITaxRateManager>();
             _productOptionManager = A.Fake<IProductOptionManager>();
             _importSpecificationsService = A.Fake<IImportSpecificationsService>();
-            _importProductVariantsService = new ImportProductVariantsService(_importSpecificationsService, _productVariantService, _taxRateManager, _productOptionManager);
+            _documentService = A.Fake<IDocumentService>();
+            _importProductVariantsService = new ImportProductVariantsService(_importSpecificationsService,
+                                                                             _productVariantService, _taxRateManager,
+                                                                             _productOptionManager, _documentService);
         }
         [Fact]
         public void ImportProductVariantsService_ImportVariants_ShouldSetProductVariantTaxRate()
