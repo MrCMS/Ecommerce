@@ -1,0 +1,20 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+<div class="span3">
+    <div style="overflow: hidden;">
+        @if (Model.Images.Any())
+        {
+            <img src="@(Model.Images.First().FileUrl)" class="img-rounded pull-left span12" alt="@Model.Name" />
+        }
+    </div>
+    <div class="clearfix"></div>
+    <h4 class="product-title"><a href="/@Model.LiveUrlSegment">@Model.Name</a></h4>
+    <div style="height: 130px;">@(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)</div>
+    <h1 class="product-price">
+        @Html.DisplayFor(product => product.DisplayPrice)
+    </h1>
+    @if (Model.DisplayPreviousPrice.HasValue)
+    {
+        <span>previous price @Html.DisplayFor(product => product.DisplayPreviousPrice)
+        </span>
+    }
+</div>

@@ -5,6 +5,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
+using MrCMS.Services;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
@@ -14,13 +15,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private readonly IProductVariantService _productVariantService;
         private readonly ITaxRateManager _taxRateManager;
         private readonly IProductOptionManager _productOptionManager;
+        private readonly IDocumentService _documentService;
 
-        public ImportProductVariantsService(IImportSpecificationsService importSpecificationsService, IProductVariantService productVariantService, ITaxRateManager taxRateManager, IProductOptionManager productOptionManager)
+        public ImportProductVariantsService(IImportSpecificationsService importSpecificationsService, 
+            IProductVariantService productVariantService, ITaxRateManager taxRateManager,
+            IProductOptionManager productOptionManager, IDocumentService documentService)
         {
             _importSpecificationsService = importSpecificationsService;
             _productVariantService = productVariantService;
             _taxRateManager = taxRateManager;
             _productOptionManager = productOptionManager;
+            _documentService = documentService;
         }
 
         public IEnumerable<ProductVariant> ImportVariants(ProductImportDataTransferObject dataTransferObject, Product product)
@@ -39,6 +44,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 productVariant.TrackingPolicy = item.TrackingPolicy;
                 productVariant.TaxRate = _taxRateManager.Get(item.TaxRate.HasValue ? item.TaxRate.Value : 0);
                 productVariant.Product = product;
+                product.Variants.Add(productVariant);
+
+                _productVariantService.Add(productVariant);
+                _documentService.SaveDocument(product);
 
                 for (var i = productVariant.AttributeValues.Count - 1; i >= 0; i--)
                 {
@@ -47,16 +56,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     _productOptionManager.DeleteProductAttributeValue(value);
                 }
 
-                _productVariantService.Update(productVariant);
-
                 productVariant = _productVariantService.GetProductVariantBySKU(item.SKU);
 
                _importSpecificationsService.ImportVariantSpecifications(item, product, productVariant);
-
-                if (!product.Variants.Any(x => x.Id == productVariant.Id))
-                    product.Variants.Add(productVariant);
-
-                _productVariantService.Update(productVariant);
             }
 
             return dataTransferObject.ProductVariants.Any() ? product.Variants : null;
