@@ -35,27 +35,7 @@
             <tbody>
         @foreach (ShippingCalculation shippingCalculation in shippingMethod.ShippingCalculations.Where(x=>x.Country.Id==country.Id).OrderBy(calculation => calculation.ShippingCriteria).ThenBy(calculation => calculation.LowerBound))
         {
-            <tr>
-                <td>
-                    @shippingCalculation.Description
-                </td>
-                <td>
-                    @if (shippingCalculation.Amount != null && shippingCalculation.Amount > 0)
-                    {
-                        <span>&pound;</span>@shippingCalculation.Amount.ToString("#.##")
-                    }
-                    else
-                    {
-                        <span>&pound;0</span>
-                    }
-                </td>
-                <td>
-                    <div class="btn-group pull-right">
-                        @Html.ActionLink("Edit", "Edit", "ShippingCalculation", new { id = shippingCalculation.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                        @Html.ActionLink("Delete", "Delete", "ShippingCalculation", new { id = shippingCalculation.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
-                    </div>
-                </td>
-            </tr>
+            Html.RenderPartial("CalculationRow", shippingCalculation);
         }
         </tbody>
         </table>

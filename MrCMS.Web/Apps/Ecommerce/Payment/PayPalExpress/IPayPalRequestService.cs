@@ -36,7 +36,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                 cppHeaderImage = _payPalExpressCheckoutSettings.LogoImageURL,
                 cppCartBorderColor = _payPalExpressCheckoutSettings.CartBorderColor,
                 PaymentDetails = _payPalOrderService.GetPaymentDetails(cart),
-                BuyerEmail = _payPalOrderService.GetBuyerEmail(),
+                BuyerEmail = _payPalOrderService.GetBuyerEmail(cart),
                 MaxAmount = _payPalOrderService.GetMaxAmount(cart)
             };
 

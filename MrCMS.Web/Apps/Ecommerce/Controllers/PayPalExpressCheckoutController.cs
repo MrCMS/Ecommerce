@@ -20,6 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _documentService = documentService;
         }
 
+        [HttpPost]
         public ActionResult SetExpressCheckout()
         {
             var response = _payPalExpressService.GetSetExpressCheckoutRedirectUrl(_getCart.GetCart());

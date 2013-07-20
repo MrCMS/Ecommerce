@@ -5,6 +5,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Website;
 using NHibernate;
 using System;
@@ -23,10 +24,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private const string CurrentPaymentMethodKey = "current.payment-method";
         private const string CurrentCountryIdKey = "current.country-id";
         private readonly ISession _session;
+        private readonly IPaymentMethodService _paymentMethodService;
 
-        public GetCartImpl(ISession session)
+        public GetCartImpl(ISession session, IPaymentMethodService paymentMethodService)
         {
             _session = session;
+            _paymentMethodService = paymentMethodService;
         }
 
         public CartModel GetCart()
@@ -35,17 +38,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             if (GetCountry() != null)
                 address.Country = GetCountry();
             var cart = new CartModel
-                       {
-                           User = CurrentRequestData.CurrentUser,
-                           UserGuid = CurrentRequestData.UserGuid,
-                           Items = GetItems(),
-                           ShippingAddress = address,
-                           BillingAddress = GetBillingAddress(),
-                           ShippingMethod = GetShippingMethod(),
-                           OrderEmail = GetOrderEmail(),
-                           DiscountCode = GetDiscountCode(),
-                           Discount = GetDiscount()
-                       };
+                           {
+                               User = CurrentRequestData.CurrentUser,
+                               UserGuid = CurrentRequestData.UserGuid,
+                               Items = GetItems(),
+                               ShippingAddress = address,
+                               BillingAddress = GetBillingAddress(),
+                               ShippingMethod = GetShippingMethod(),
+                               OrderEmail = GetOrderEmail(),
+                               DiscountCode = GetDiscountCode(),
+                               Discount = GetDiscount(),
+                               AnyStandardPaymentMethodsAvailable = _paymentMethodService.AnyStandardMethodsEnabled(),
+                               PayPalExpressAvailable = _paymentMethodService.PayPalExpressCheckoutIsEnabled()
+                           };
             return cart;
         }
 
