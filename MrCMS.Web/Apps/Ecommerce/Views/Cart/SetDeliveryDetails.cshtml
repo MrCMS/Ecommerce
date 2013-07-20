@@ -1,0 +1,74 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+
+<br />
+<div class="row-fluid">
+    <div class="span8">
+        <h4>
+            Select postage
+        </h4>
+        <br/>
+         <div>
+                <div class="span4">Postage selection*:</div>
+             <div>
+                  @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new { @class="input-xlarge" })
+             </div>
+         </div>
+        <hr />
+        <h4>Who shall we deliver to?</h4>
+        <br />
+        @using (Html.BeginForm("SetDeliveryDetails", "Cart", FormMethod.Post,new { id="deliveryDetails"}))
+        {
+            <div>
+                <div class="span4">First Name*:</div>
+                <div>
+                    <input type="text" name="FirstName" class="input-xlarge" value="@(Model.ShippingAddress!=null?Model.ShippingAddress.FirstName:String.Empty)" /></div>
+            </div>
+            <div>
+                <div class="span4">Last Name*:</div>
+                <div><input type="text" name="LastName" class="input-xlarge" value="@(Model.ShippingAddress!=null?Model.ShippingAddress.LastName:String.Empty)" /></div>
+            </div>
+            <div>
+                <div class="span4">Phone Number*:</div>
+                <div><input type="text" name="PhoneNumber" class="input-xlarge" value="@(Model.ShippingAddress!=null?Model.ShippingAddress.PhoneNumber:String.Empty)" /></div>
+            </div>
+            <hr />
+            <h4>Where would you like to deliver?</h4>
+            <br />
+            <div>
+                <div class="span4">Address 1*:</div>
+                <div><input type="text" name="Address1" class="input-xlarge" value="@(Model.ShippingAddress!=null?Model.ShippingAddress.Address1:String.Empty)" /></div>
+            </div>
+            <div>
+                <div class="span4">Address 2:</div>
+                <div><input type="text" name="Address2" class="input-xlarge" value="@(Model.ShippingAddress!=null?Model.ShippingAddress.Address2:String.Empty)"/></div>
+            </div>
+            <div>
+                <div class="span4">Town or City*:</div>
+                <div><input type="text" name="City" class="input-xlarge" value="@(Model.ShippingAddress!=null?Model.ShippingAddress.City:String.Empty)"/></div>
+            </div>
+            <div>
+                <div class="span4">County:</div>
+                <div><input type="text" name="StateProvince" class="input-xlarge" value="@(Model.ShippingAddress!=null?Model.ShippingAddress.StateProvince:String.Empty)"/></div>
+            </div>
+            <div>
+                <div class="span4">Country*:</div>
+                <div>
+                    @Html.DropDownList("Country.Id", ViewData["countries"] as IEnumerable<SelectListItem>, new { @class="input-xlarge" })
+                </div>
+            </div>
+            <div>
+                <div class="span4">Postcode (zip)*:</div>
+                <div><input type="text" name="PostalCode" class="input-medium" value="@(Model.ShippingAddress!=null?Model.ShippingAddress.PostalCode:String.Empty)" /></div>
+            </div>
+            <br />
+            <button class="btn btn-info" type="button" id="continue" name="continue">Continue</button>
+        }
+    </div>
+<div class="span4">
+@{Html.RenderAction("BasicDetails", "Cart");}
+<hr />
+@{Html.RenderAction("OrderEmail", "Cart");}
+</div>
+</div>
+@{ Html.IncludeScript("~/Themes/Ecommerce/Apps/Ecommerce/Content/Scripts/custom/shipping-methods.js"); }
