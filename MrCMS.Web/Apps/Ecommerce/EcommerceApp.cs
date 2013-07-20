@@ -112,7 +112,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var layout = new Layout
                              {
                                  Name = "Ecommerce Layout",
-                                 UrlSegment = "~/Themes/Ecommerce/Apps/Ecommerce/Views/Shared/_EcommerceLayout.cshtml",
+                                 UrlSegment = "~/Apps/Ecommerce/Views/Shared/_EcommerceLayout.cshtml",
                                  LayoutAreas = new List<LayoutArea>()
                              };
             var areas = new List<LayoutArea>
@@ -147,7 +147,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var checkoutLayout = new Layout
             {
                 Name = "Checkout Layout",
-                UrlSegment = "~/Themes/Ecommerce/Apps/Ecommerce/Views/Shared/_CheckoutLayout.cshtml",
+                UrlSegment = "~/Apps/Ecommerce/Views/Shared/_CheckoutLayout.cshtml",
                 LayoutAreas = new List<LayoutArea>()
             };
             documentService.AddDocument(checkoutLayout);

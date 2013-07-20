@@ -41,7 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Results(string searchTerm, string sortBy, string options, string specifications, decimal productPriceRangeMin = 0, decimal productPriceRangeMax = 0, int pageNo = 0, int pageSize = 0, int categoryId = 0)
+        public PartialViewResult ProductResults(string searchTerm, string sortBy, string options, string specifications, decimal productPriceRangeMin = 0, decimal productPriceRangeMax = 0, int pageNo = 0, int pageSize = 0, int categoryId = 0)
         {
             List<string> specs = new List<string>();
             if (!String.IsNullOrWhiteSpace(specifications))
