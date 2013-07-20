@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
@@ -10,6 +11,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         public virtual ProductVariant Item { get; set; }
         public virtual Guid UserGuid { get; set; }
         public virtual int Quantity { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public virtual decimal Price
         {
             get { return Item.GetPrice(Quantity); }

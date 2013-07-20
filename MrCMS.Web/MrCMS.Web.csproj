@@ -58,9 +58,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentNHibernate.1.3.0.733\lib\FluentNHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="GCheckout">
-      <HintPath>..\packages\Google.Checkout.2.5.0.14\lib\GCheckout.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -174,6 +171,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\PayPalExpressCheckoutSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductSpecificationAttributeOptionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountApplicationController.cs" />
@@ -264,6 +262,7 @@
     <Compile Include="Apps\Ecommerce\Pages\UserAccount.cs" />
     <Compile Include="Apps\Ecommerce\Pages\UserLogin.cs" />
     <Compile Include="Apps\Ecommerce\Pages\EnterOrderEmail.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\IPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalExpressService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalInterfaceService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalOrderService.cs" />
@@ -271,6 +270,7 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalSecurityService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressCheckoutSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressCheckoutPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductImagesService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductVariantsService.cs" />
@@ -346,7 +346,6 @@
     <Compile Include="Apps\Ecommerce\Pages\Product.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ProductSearch.cs" />
     <Compile Include="Apps\Ecommerce\Pages\SetDeliveryDetails.cs" />
-    <Compile Include="Apps\Ecommerce\Payment\GoogleCheckout\IGoogleCheckoutService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartImpl.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartManager.cs" />
@@ -396,7 +395,6 @@
     <Compile Include="Apps\Ecommerce\Services\Templating\NotificationTemplateSettingsManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
-    <Compile Include="Apps\Ecommerce\Settings\PaymentSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\EcommerceNavigation.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedCategories.cs" />
@@ -1385,6 +1383,8 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Country\Sort.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Shared\ProductCardFeatured.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Shared\ProductCard.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\CalculationRow.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\PayPalExpressCheckoutSettings\View.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -1815,6 +1815,7 @@
     <Content Include="Themes\Ecommerce\Views\Login\ForgottenPasswordSent.cshtml" />
     <Content Include="Themes\Ecommerce\Views\Login\PasswordReset.cshtml" />
     <Content Include="Themes\Ecommerce\Views\Login\ResetComplete.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />

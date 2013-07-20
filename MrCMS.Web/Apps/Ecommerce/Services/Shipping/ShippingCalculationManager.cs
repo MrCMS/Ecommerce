@@ -24,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         public List<SelectListItem> GetCriteriaOptions()
         {
             return
-                Enum.GetValues(typeof (ShippingCriteria))
+                Enum.GetValues(typeof(ShippingCriteria))
                     .Cast<ShippingCriteria>()
                     .BuildSelectItemList(GetDescription,
                                          criteria => criteria.ToString(), emptyItem: null);
@@ -45,7 +45,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
                                   {
                                       if (shippingCalculation.ShippingMethod != null)
                                           shippingCalculation.ShippingMethod.ShippingCalculations.Add(shippingCalculation);
-                                      if(shippingCalculation.Country!=null)
+                                      if (shippingCalculation.Country != null)
                                           shippingCalculation.Country.ShippingCalculations.Add(shippingCalculation);
                                       session.Save(shippingCalculation);
                                   });
@@ -67,10 +67,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
                     x.Country.Id == shippingCalculation.Country.Id &&
                     x.ShippingMethod.Id == shippingCalculation.ShippingMethod.Id)
                 .Cacheable().List();
-            if(upperBound>0)
+            if (upperBound > 0)
                 return !calcs.Any(x => (x.LowerBound <= lowerBound && lowerBound <= x.UpperBound)
-                    || (x.LowerBound <= upperBound && (upperBound <= x.UpperBound || x.UpperBound==null)));
-            return !calcs.Any(x => (x.LowerBound <= lowerBound && lowerBound <= x.UpperBound) || x.UpperBound==null);
+                    || (x.LowerBound <= upperBound && (upperBound <= x.UpperBound || x.UpperBound == null)));
+            return !calcs.Any(x => (x.LowerBound <= lowerBound && lowerBound <= x.UpperBound) || x.UpperBound == null);
         }
 
         public void Delete(ShippingCalculation shippingCalculation)
@@ -80,17 +80,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 
         public ShippingCalculation Get(int id)
         {
-            return _session.QueryOver<ShippingCalculation>().Where(x => x.Id==id).Cacheable().SingleOrDefault();
+            return _session.QueryOver<ShippingCalculation>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
         }
 
         public List<SelectListItem> GetAllWhichCanBeUsedForCart(CartModel cart)
         {
             var shippingCalculations = _session.QueryOver<ShippingCalculation>().Cacheable().List();
             return shippingCalculations.Where(x => x.CanBeUsed(cart))
-                        .OrderBy(x => x.Country.DisplayOrder)
-                        .ThenBy(x => x.ShippingMethod.DisplayOrder)
-                        .BuildSelectItemList(item => item.Country.ISOTwoLetterCode + " - " + item.ShippingMethod.Name + " - £" + item.GetPrice(cart)
-                        , item => item.Id.ToString(), emptyItemText: null);
+                                       .OrderBy(x => x.Country.DisplayOrder)
+                                       .ThenBy(x => x.ShippingMethod.DisplayOrder)
+                                       .Where(calculation => calculation.GetPrice(cart).HasValue)
+                                       .BuildSelectItemList(
+                                           item =>
+                                           string.Format("{0} - {1} - {2}", item.Country.Name, item.ShippingMethod.Name,
+                                                         item.GetPrice(cart).Value.ToString("C2"))
+                                           , item => item.Id.ToString(), emptyItemText: null);
 
         }
 

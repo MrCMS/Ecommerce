@@ -26,20 +26,19 @@
     <div id="fb-root"></div>
     <div class="container">
         <div class="row-fluid">
-            <div class="4">
+            <div class="span4">
                 <a href="/">
                     <img src="/Apps/Ecommerce/Content/Images/mrcms-logo.png" alt="logo" />
                 </a>
             </div>
+        @{
+            Html.RenderAction("CartPanel", "Cart");
+        }
+        <div id="search-box" class="span8">
+            <input type="text" class="input-xlarge" placeholder="e.g : Shorts" id="searchTerm" name="searchTerm" value="@ViewBag.SearchTerm" />
+            <button class="btn" type="button" id="searchButton" name="searchButton">Search</button>
         </div>
-    </div>
-    @{
-        Html.RenderAction("CartPanel", "Cart");
-    }
-    <div id="search-box" class="pull-right">
-        <input type="text" class="input-xlarge" placeholder="e.g : Shorts" id="searchTerm" name="searchTerm" value="@ViewBag.SearchTerm" />
-        <button class="btn" type="button" id="searchButton" name="searchButton">Search</button>
-    </div>
+        </div>
 
     </div>
 

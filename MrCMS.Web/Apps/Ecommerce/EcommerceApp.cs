@@ -14,7 +14,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using Ninject;
-using MrCMS.Helpers;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 
@@ -32,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce
 
         }
 
-        public override System.Collections.Generic.IEnumerable<System.Type> BaseTypes
+        public override IEnumerable<Type> BaseTypes
         {
             get
             {
@@ -79,6 +78,10 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("User Account Details", "Apps/Ecommerce/UserAccount/UserAccountDetails", new { controller = "UserAccount", action = "UserAccountDetails" });
             context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders", new { controller = "UserAccount", action = "UserAccountOrders" });
             context.MapRoute("User Update Account", "Apps/Ecommerce/UserAccount/UpdateAccount", new { controller = "UserAccount", action = "UpdateAccount" });
+            context.MapRoute("PayPal Express Checkout - SetExpressCheckout",
+                             "Apps/Ecommerce/PayPalExpress/SetExpressCheckout",
+                             new {controller = "PayPalExpressCheckout", action = "SetExpressCheckout"},
+                             new[] {typeof (PayPalExpressCheckoutSettingsController).Namespace});
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
