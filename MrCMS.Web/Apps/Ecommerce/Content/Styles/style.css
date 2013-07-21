@@ -7,6 +7,7 @@
 .navbar .nav li a { text-align: left; border-left: 1px solid rgba(255,255,255,.75); border-right: 1px solid rgba(0,0,0,.1); }
 .navbar .nav li:first-child a { border-left: 0; }
 .navbar .nav li:last-child a { border-right: 0; }
+.margin-bottom-10 { margin-bottom: 10px;}
 
 .nav-tabs.nav-stacked > li:first-child > a.subitem {
     border-top-left-radius: 4px;
@@ -234,7 +235,8 @@ pre.product-variants-filter select, pre#product-addtobasket select
 }
 #checkout-nav-buttons
 {
-    margin:40px 0px 0px 0px;
+    margin: 20px 0 0 0;
+    text-align: right;
 }
 .wizard {
     
