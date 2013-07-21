@@ -36,55 +36,13 @@
             <div id="slider-range" class="product-filter-box-slider"></div>
         </div>
         <br />
-        <div class="product-filter-box-title">
-            Filter by Options
-        </div>
-        <div class="row-fluid">
-            <ul id="product-filter-box-options" class="nav nav-tabs nav-stacked ">
-                @foreach (var option in (List<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductAttributeOption>)ViewBag.ProductOptions)
-                {
-                    if (option.Values.Select(x => x.Value).Distinct().Any())
-                    {
-                    <li>
-                        @option.Name
-                        <br />
-                        <select id="@(Html.Encode("product-option-values-" + option.Name))" class="span12">
-                            <option value="0">All</option>
-                            @foreach (var optionValue in option.Values.Select(x => x.Value).Distinct())
-                            {
-                                <option value="@Html.Encode(option.Name + optionValue)">@optionValue</option>
-                            }
-                        </select>
-                    </li>
-                    }
-                }
-            </ul>
-        </div>
+        @{
+            Html.RenderPartial("SearchOptions", ViewBag.ProductOptions as List<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductAttributeOption>);
+        }
         <br />
-        <div class="product-filter-box-title">
-            Filter by Specifications
-        </div>
-        <div class="row-fluid">
-            <ul id="product-filter-box-specifications" class="nav nav-tabs nav-stacked ">
-                @foreach (var specification in (List<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationAttribute>)ViewBag.ProductSpecifications)
-                {
-                    if (specification.Options.Select(x => x.ProductSpecificationAttribute).Distinct().Any())
-                    {
-                    <li>
-                        @specification.Name
-                        <br />
-                        <select id="@(Html.Encode("product-specification-values-" + specification.Name))" class="span12">
-                            <option value="0">All</option>
-                            @foreach (var specificationValue in specification.Options.Select(x => x.ProductSpecificationAttribute).Distinct())
-                            {
-                                <option value="@(specification.Name + ":" + specificationValue)">@specificationValue</option>
-                            }
-                        </select>
-                    </li>
-                    }
-                }
-            </ul>
-        </div>
+        @{
+            Html.RenderPartial("SearchSpecifications", ViewBag.ProductSpecifications as List<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationAttribute>);
+        }
     </div>
     <div class="span9">
         <div id="products-operations">
