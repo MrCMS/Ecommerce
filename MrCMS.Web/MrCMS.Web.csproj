@@ -1387,6 +1387,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\PayPalExpressCheckoutSettings\View.cshtml" />
     <Content Include="Themes\Ecommerce\Views\Shared\Logo.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductResults.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\_BaseLayout.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
