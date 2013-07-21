@@ -1817,6 +1817,8 @@
     <Content Include="Themes\Ecommerce\Views\Shared\SearchBox.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
     <Content Include="Themes\Ecommerce\Views\Shared\UserLinks.cshtml" />
+    <Content Include="Themes\Ecommerce\Views\Shared\SearchOptions.cshtml" />
+    <Content Include="Themes\Ecommerce\Views\Shared\SearchSpecifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
