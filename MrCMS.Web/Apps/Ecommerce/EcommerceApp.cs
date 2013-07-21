@@ -175,7 +175,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = true,
                 Parent = yourBasket,
                 DisplayOrder = 0,
-                PublishOn = DateTime.UtcNow
+                PublishOn = DateTime.UtcNow,
+                Layout = checkoutLayout
             };
             documentService.AddDocument(enterOrderEmail);
             var setPaymentDetails = new PaymentDetails
@@ -185,7 +186,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = true,
                 Parent = yourBasket,
                 DisplayOrder = 1,
-                PublishOn = DateTime.UtcNow
+                PublishOn = DateTime.UtcNow,
+                Layout = checkoutLayout
             };
             documentService.AddDocument(setPaymentDetails);
             var setDeliveryDetails = new SetDeliveryDetails
@@ -195,7 +197,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = true,
                 Parent = yourBasket,
                 DisplayOrder = 2,
-                PublishOn = DateTime.UtcNow
+                PublishOn = DateTime.UtcNow,
+                Layout = checkoutLayout
             };
             documentService.AddDocument(setDeliveryDetails);
             var orderPlaced = new OrderPlaced
@@ -205,7 +208,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = true,
                 Parent = yourBasket,
                 DisplayOrder = 3,
-                PublishOn = DateTime.UtcNow
+                PublishOn = DateTime.UtcNow,
+                Layout = checkoutLayout
             };
             documentService.AddDocument(orderPlaced);
             var myAccount = new UserAccount
