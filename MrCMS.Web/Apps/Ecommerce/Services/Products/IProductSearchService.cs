@@ -27,23 +27,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public List<string> Specifications { get; set; }
         public double PriceFrom { get; set; }
         public double PriceTo { get; set; }
-        public int CategoryID { get; set; }
+        public int CategoryId { get; set; }
         public string SearchTerm { get; set; }
 
-        public ProductSearchQuery(string searchTerm = "", List<string> options = null, List<string> specifications = null, decimal _PriceFrom = 0, decimal _PriceTo = 0, int categoryId = 0)
+        public ProductSearchQuery(string searchTerm = "", List<string> options = null, List<string> specifications = null, decimal priceFrom = 0, decimal priceTo = 0, int categoryId = 0)
         {
             if (categoryId != 0)
-                CategoryID = categoryId;
-            if (options != null)
-                Options = options;
-            else
-                Options = new List<string>();
-            if (specifications != null)
-                Specifications = specifications;
-            else
-                Specifications = new List<string>();
-            PriceFrom = Double.Parse(_PriceFrom.ToString());
-            PriceTo = Double.Parse(_PriceTo.ToString());
+                CategoryId = categoryId;
+            Options = options ?? new List<string>();
+            Specifications = specifications ?? new List<string>();
+            PriceFrom = Double.Parse(priceFrom.ToString());
+            PriceTo = Double.Parse(priceTo.ToString());
             SearchTerm = searchTerm;
         }
 
@@ -57,7 +51,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public Query GetQuery()
         {
-            if (!Options.Any() && !Specifications.Any() && PriceFrom == 0 && PriceTo == 0 && CategoryID == 0 && String.IsNullOrWhiteSpace(SearchTerm))
+            if (!Options.Any() && !Specifications.Any() && PriceFrom == 0 && PriceTo == 0 && CategoryId == 0 && String.IsNullOrWhiteSpace(SearchTerm))
                 return new MatchAllDocsQuery();
 
             var booleanQuery = new BooleanQuery();
@@ -69,7 +63,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 booleanQuery.Add(GetPriceRangeQuery(), Occur.MUST);
             if (PriceFrom >= 0 && PriceTo != 0)
                 booleanQuery.Add(GetPriceRangeQuery(), Occur.MUST);
-            if (CategoryID != 0)
+            if (CategoryId != 0)
                 booleanQuery.Add(GetCategoriesQuery(), Occur.MUST);
             if (!String.IsNullOrWhiteSpace(SearchTerm))
             {
@@ -111,7 +105,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             var booleanQuery = new BooleanQuery();
 
-            booleanQuery.Add(new TermQuery(new Term(ProductSearchIndex.Categories.FieldName, CategoryID.ToString())),
+            booleanQuery.Add(new TermQuery(new Term(ProductSearchIndex.Categories.FieldName, CategoryId.ToString())),
                                  Occur.MUST);
 
             return booleanQuery;
@@ -140,7 +134,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 Options = Options,
                 PriceFrom = PriceFrom,
                 PriceTo = PriceTo,
-                CategoryID = CategoryID
+                CategoryId = CategoryId
             };
         }
     }
