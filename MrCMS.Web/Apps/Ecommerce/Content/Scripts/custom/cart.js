@@ -20,7 +20,7 @@
         });
         return false;
     }
-    $(document).on('click', "#add-discount-code", function () {
+    $(document).on('click', "#apply-discount-code", function () {
         var discountCode = $("#discount-code").val();
             $.post('/Apps/Ecommerce/Cart/AddDiscountCodeAjax/',
                 { discountCode: discountCode },
@@ -37,22 +37,14 @@
                 });
         return false;
     });
-    $(document).on('click', "#update-discount-code", function () {
+    $(document).on('click', "#apply-discount-code", function () {
         var discountCode = $("#DiscountCode").val();
-        $("#add-discount-code-box").show();
-        $("#discount-code-box").hide();
         $("div[class*='title']").html("Current discount code: " + discountCode);
         return false;
     });
     function setDiscountCode() {
         var discountCode = $("#DiscountCode").val();
-        if (discountCode === "") {
-            $("#add-discount-code-box").show();
-            $("#discount-code-box").hide();
-        }
-        else {
-            $("#add-discount-code-box").hide();
-            $("#discount-code-box").show();
+        if (discountCode !== "") {
             $("#discount-code").val(discountCode);
         }
         $("div[class*='title']").html("Current discount code: " + discountCode);

@@ -62,15 +62,11 @@
         <div class="row-fluid" id="cart-discount">
             <div class="pull-right">
                 @Html.HiddenFor(x => x.DiscountCode)
-
-                <div id="add-discount-code-box" style="display: none">
-                    <button id="add-discount-code" class="btn pull-right">Add Discount Code</button>
-                    <input type="text" id="discount-code" class="pull-right" />
-                    <div class="title pull-right">Add Discount Code</div>
-                </div>
-                <div id="discount-code-box" style="display: none">
-                    <button id="update-discount-code" class="btn pull-right">Update Discount Code</button>
-                    <div class="title pull-right"></div>
+                
+                <div id="discount-code-box">
+                    <button id="apply-discount-code" class="btn pull-right">Apply Discount Code</button>
+                    <input type="text" id="discount-code" class="pull-right" value="@(!String.IsNullOrWhiteSpace(Model.DiscountCode)?Model.DiscountCode:string.Empty)" />
+                    <div class="title pull-right">Discount Code</div>
                 </div>
 
             </div>
