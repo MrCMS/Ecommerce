@@ -1,0 +1,53 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Settings
+@using MrCMS.Website
+@model MrCMS.Entities.Documents.Web.Webpage
+@{
+    Layout = "_BaseLayout.cshtml";
+}
+<div id="fb-root"></div>
+<div class="container">
+    <div class="row-fluid">
+        <div class="span3">
+            @{Html.RenderPartial("Logo");}
+        </div>
+        <div class="span6">
+            @{Html.RenderPartial("SearchBox");}
+        </div>
+        <div class="span3">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="pull-right">
+                        @{Html.RenderPartial("UserLinks");}
+                    </div>
+                </div>
+            </div>
+            @{
+                Html.RenderAction("CartPanel", "Cart");
+            }
+        </div>
+    </div>
+</div>
+
+
+<div id="navbar-wrapper">
+    <div class="container">
+        <div class="navbar">
+            <div class="navbar-inner">
+                @RenderZone("Header")
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    @RenderZone("Before Content")
+    @RenderBody()
+    @RenderZone("After Content")
+</div>
+
+<div id="footer">
+    <div class="container">
+        @RenderZone("Footer")
+    </div>
+</div>

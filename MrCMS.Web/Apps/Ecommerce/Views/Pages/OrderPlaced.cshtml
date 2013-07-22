@@ -1,0 +1,16 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.OrderPlaced
+@using MrCMS.Helpers
+
+<h4>
+    Woahh! That was fast!
+</h4>
+<p>
+    Your order (ID:@ViewBag.orderID) was successfully processed.
+</p>
+<p>
+    Thank you for shopping with Mr CMS Ecommerce!
+</p>
+<br />
+       <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-info" >
+                              Return to shop
+                        </a>

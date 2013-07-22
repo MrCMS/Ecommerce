@@ -1,0 +1,143 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+<div id="details">
+    <ul class="breadcrumb">
+        <li><a href="/">Home</a> <span class="divider">/</span></li>
+        <li><a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">Products</a> <span class="divider">/</span></li>
+        <li class="active">Basket</li>
+    </ul>
+    <div class="row-fluid">
+        <div class="pull-left">
+            <h4>Shopping Basket</h4>
+        </div>
+        <div class="pull-right">
+            @if (Model.CanEnterPaymentFlow)
+            {
+                <a class="btn btn-info" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay securely NOW!</a>
+            }
+        </div>
+    </div>
+    <div class="row-fluid" id="cart-items">
+        <div class="span12">
+            @if (Model.Items.Any())
+            {
+                <div class="row-fluid" id="header">
+                    <div class="span4 header-item">
+                        <span class="pull-left">Item description
+                        </span>
+                    </div>
+                    <div class="span3 header-item">
+                        <span class="pull-left">Your options
+                        </span>
+                    </div>
+                    <div class="span2 header-item">
+                        Quantity
+                    </div>
+                    <div class="span3 header-item">
+                        <span class="pull-right">Price
+                        </span>
+                    </div>
+                </div>
+                foreach (var item in Model.Items)
+                {
+                    Html.RenderPartial("CartItem", item);
+                }
+
+            }
+            else
+            {
+                <span>No items in basket.</span>
+            }
+        </div>
+    </div>
+
+    @if (Model.Items.Any())
+    {
+        <div class="row-fluid">
+            <div class="pull-right">
+                <button type="button" class="btn" id="update-basket">Update Basket</button>
+            </div>
+        </div>
+        <div class="row-fluid" id="cart-discount">
+            <div class="pull-right">
+                @Html.HiddenFor(x => x.DiscountCode)
+
+                <div id="add-discount-code-box" style="display: none">
+                    <button id="add-discount-code" class="btn pull-right">Add Discount Code</button>
+                    <input type="text" id="discount-code" class="pull-right" />
+                    <div class="title pull-right">Add Discount Code</div>
+                </div>
+                <div id="discount-code-box" style="display: none">
+                    <button id="update-discount-code" class="btn pull-right">Update Discount Code</button>
+                    <div class="title pull-right"></div>
+                </div>
+
+            </div>
+        </div>
+    }
+    <div class="row-fluid">
+        <div class="span6">
+        </div>
+        <div class="span6 pull-right" id="cart-summary">
+            @if (Model.Items.Any())
+            {
+                <div>
+                    <div class="span6">Subtotal before delivery charges</div>
+                    <div class="pull-right value">@Html.DisplayFor(model => model.TotalPreShipping)
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div>
+                    <div class="span6">VAT</div>
+                    <div class="pull-right value">@Html.DisplayFor(model => model.Tax)
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div>
+                    <div class="span6">
+                        @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new { @class = "input-xlarge" })
+                    </div>
+                    <div class="pull-right value">
+                        @if (Model.ShippingTotal.HasValue)
+                        {
+                            @Html.DisplayFor(model => model.ShippingTotal)
+                        }
+                        else
+                        {
+                            <text>
+                            Please choose a shipping method
+                        </text>
+                        }
+                    </div>
+
+                </div>
+                <div class="total-divider"></div>
+                <div>
+                    <div class="span6">Total</div>
+                    <div class="pull-right total">@Html.DisplayFor(model => model.Total)</div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="pull-left">
+            <a class="btn" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">Continue Shopping</a>
+        </div>
+        <div class="pull-right">
+            @if (Model.CanEnterPaymentFlow)
+            {
+                <a class="btn btn-info" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay securely NOW!</a>
+            }
+            @if (Model.CanUsePayPalExpress)
+            {
+                using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
+                {
+                    <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />
+                }
+            }
+        </div>
+    </div>
+
+</div>
+
+@{ Html.IncludeScript("~/Themes/Ecommerce/Apps/Ecommerce/Content/Scripts/custom/cart.js"); }
