@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Linq;
+using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
@@ -45,9 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                     _shippingCalculationManager.Add(shippingCalculation);
                     return RedirectToAction("Index");
                 }
-                else
-                    ViewBag.Message =
-                        "Shipping calculation with provided values overlap existing calculations in the system.";
+                ViewBag.Message = "Shipping calculation with provided values overlap existing calculations in the system.";
             }
             ViewData["criterias"] = _shippingCalculationManager.GetCriteriaOptions();
             ViewData["shipping-methods"] = _shippingMethodManager.GetOptions();
@@ -75,9 +75,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                     _shippingCalculationManager.Update(shippingCalculation);
                     return RedirectToAction("Index");
                 }
-                else
-                    ViewBag.Message =
-                        "Shipping calculation with provided values overlap existing calculations in the system.";
+                ViewBag.Message = "Shipping calculation with provided values overlap existing calculations in the system.";
             }
             ViewData["criterias"] = _shippingCalculationManager.GetCriteriaOptions();
             ViewData["shipping-methods"] = _shippingMethodManager.GetOptions();
@@ -98,5 +96,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+
+        public JsonResult IsValidShippingCalculation(string shippingCriteria, ShippingMethod shippingMethod, Country country, decimal lowerBound = 0, decimal upperBound = 0, int id = 0)
+        {
+            var shippingCalculation = new ShippingCalculation
+                {
+                    LowerBound = lowerBound,
+                    UpperBound = upperBound,
+                    Id = id,
+                    ShippingMethod = shippingMethod,
+                    Country = country
+                };
+
+            if (!string.IsNullOrWhiteSpace(shippingCriteria))
+            {
+                shippingCalculation.ShippingCriteria =Enum.GetValues(typeof (ShippingCriteria)).Cast<ShippingCriteria>().SingleOrDefault(x => x.ToString() == shippingCriteria);
+            }
+
+            return !_shippingCalculationManager.IsValidForAdding(shippingCalculation)
+                           ? Json("Shipping calculation with provided values overlap existing calculations in the system.", JsonRequestBehavior.AllowGet)
+                           : Json(true, JsonRequestBehavior.AllowGet);
+        }
     }
 }

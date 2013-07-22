@@ -88,9 +88,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return RedirectToAction("Edit", "Webpage", new { id = productVariant.Product.Id });
         }
 
-        public JsonResult IsUniqueSKU(string SKU, int Id=0)
+        public JsonResult IsUniqueSKU(string sku, int Id=0)
         {
-            return _productVariantService.AnyExistingProductVariantWithSKU(SKU, Id)
+            return _productVariantService.AnyExistingProductVariantWithSKU(sku, Id)
                            ? Json("There is already an SKU stored with that value.", JsonRequestBehavior.AllowGet)
                            : Json(true, JsonRequestBehavior.AllowGet);
         }

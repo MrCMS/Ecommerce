@@ -244,6 +244,7 @@
     <Compile Include="Apps\Ecommerce\Helpers\EnumHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\GeneralHelper.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategorySearchModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\TaxAwareShippingRate.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductOptionModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductValueModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\TrackingPolicy.cs" />
@@ -310,7 +311,6 @@
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductMaxSEOTitleLengthIs250.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductMaxStringLength.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantTaxRateIdIsValid.cs" />
-    <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantTaxRateMustExistIfIsEnabled.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\ITrackingPolicyService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\TrackingPolicyService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderSearchService.cs" />
@@ -478,6 +478,16 @@
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.min.js" />
     <Content Include="Apps\Ecommerce\Content\Images\mrcms-logo.png" />
     <Content Include="Apps\Ecommerce\Content\Scripts\bootstrap.dropdown.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\cart.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\category.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\enter-order-email.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\payment-details.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\product-search.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\product.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\shipping-methods.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\user-account.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\user-login.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\user-registration.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\ecommerce.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.min.js" />

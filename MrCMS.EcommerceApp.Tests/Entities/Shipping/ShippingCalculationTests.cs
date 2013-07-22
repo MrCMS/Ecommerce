@@ -24,7 +24,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
         [Fact]
         public void ShippingCalculation_PricePreTax_ShouldBeBasePriceIfShippingPricesDoNotIncludeTax()
         {
-            _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { ShippingRateIncludesTax = false });
+            _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { TaxesEnabled = true, ShippingRateIncludesTax = false });
             var shippingCalculation = new TestableShippingCalculation
             {
                 OverrideTaxRate = new TaxRate { Percentage = 20 },
@@ -60,7 +60,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
         [Fact]
         public void ShippingCalculation_Price_ShouldBeBasePricePlusTaxIfShippingPricesDoNotIncludeTax()
         {
-            _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { ShippingRateIncludesTax = false });
+            _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { TaxesEnabled = true, ShippingRateIncludesTax = false });
             var shippingCalculation = new TestableShippingCalculation
             {
                 OverrideTaxRate = new TaxRate { Percentage = 20 },

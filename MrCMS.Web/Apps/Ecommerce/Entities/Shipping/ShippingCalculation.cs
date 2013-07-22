@@ -1,10 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Web.Mvc;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Settings;
-using MrCMS.Website;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,6 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         public virtual ShippingCriteria ShippingCriteria { get; set; }
         [DisplayName("Lower Bound")]
         [Required]
+        [Remote("IsValidShippingCalculation", "ShippingCalculation", AdditionalFields = "Id,ShippingMethod.Id,Country.Id,ShippingCriteria,UpperBound")]
         public virtual decimal LowerBound { get; set; }
         [DisplayName("Upper Bound")]
         public virtual decimal? UpperBound { get; set; }
@@ -44,25 +44,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         [DisplayName("Amount Pre Tax")]
         public virtual decimal AmountPreTax
         {
-            get
-            {
-                return Math.Round(MrCMSApplication.Get<TaxSettings>().ShippingRateIncludesTax
-                                      ? BaseAmount / ((TaxRatePercentage + 100) / 100)
-                                      : BaseAmount, 2, MidpointRounding.AwayFromZero);
-            }
+            get { return TaxAwareShippingRate.GetPriceExcludingTax(BaseAmount, TaxRate); }
         }
 
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public virtual decimal Amount
         {
-            get
-            {
-                return Math.Round(MrCMSApplication.Get<TaxSettings>().ShippingRateIncludesTax
-                                      ? BaseAmount
-                                      : TaxRate != null
-                                            ? BaseAmount * (TaxRate.Multiplier)
-                                            : BaseAmount, 2, MidpointRounding.AwayFromZero);
-            }
+            get { return TaxAwareShippingRate.GetPriceIncludingTax(BaseAmount, TaxRate); }
         }
 
         [DisplayName("Shipping Method")]
