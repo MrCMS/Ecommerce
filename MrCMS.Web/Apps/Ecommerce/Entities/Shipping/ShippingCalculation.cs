@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Web.Mvc;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -15,6 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         public virtual ShippingCriteria ShippingCriteria { get; set; }
         [DisplayName("Lower Bound")]
         [Required]
+        [Remote("IsValidShippingCalculation", "ShippingCalculation", AdditionalFields = "Id,ShippingMethod.Id,Country.Id,ShippingCriteria,UpperBound")]
         public virtual decimal LowerBound { get; set; }
         [DisplayName("Upper Bound")]
         public virtual decimal? UpperBound { get; set; }
