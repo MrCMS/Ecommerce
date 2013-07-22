@@ -252,7 +252,7 @@
     <Compile Include="Apps\Ecommerce\Metadata\OrderPlacedMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Models\UserAccountModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\UserRegistrationModel.cs" />
-    <Compile Include="Apps\Ecommerce\Models\TaxAwarePrice.cs" />
+    <Compile Include="Apps\Ecommerce\Models\TaxAwareProductPrice.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\SetDeliveryDetailsMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\PaymentDetailsMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\EnterOrderEmailMetadata.cs" />

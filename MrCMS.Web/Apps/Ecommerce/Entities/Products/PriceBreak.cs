@@ -11,11 +11,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual decimal Price { get; set; }
         public virtual decimal PriceExcludingTax
         {
-            get { return TaxAwarePrice.GetPriceExcludingTax(Price, TaxRate); }
+            get { return TaxAwareProductPrice.GetPriceExcludingTax(Price, TaxRate); }
         }
         public virtual decimal PriceIncludingTax
         {
-            get { return TaxAwarePrice.GetPriceIncludingTax(Price, TaxRate); }
+            get { return TaxAwareProductPrice.GetPriceIncludingTax(Price, TaxRate); }
         }
 
         public virtual TaxRate TaxRate
