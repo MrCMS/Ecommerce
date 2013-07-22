@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Website.Controllers;
 using System;
