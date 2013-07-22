@@ -1,0 +1,18 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+
+<hr/>
+<h4>Discount</h4>
+@if(!String.IsNullOrWhiteSpace(Model.DiscountCode))
+{
+    <div>
+        <div class="span6">Discount Code</div>
+        <div>@Model.DiscountCode</div>
+    </div>
+    <div class="clearfix"></div>
+    @Html.ActionLink("Edit Discount Code", "EditDiscountCode", "Cart", new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+}
+else
+{
+    <p>No discount code applied.</p>
+    @Html.ActionLink("Add Discount Code", "AddDiscountCode", "Cart", new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+}

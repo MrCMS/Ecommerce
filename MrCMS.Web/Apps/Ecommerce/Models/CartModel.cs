@@ -42,6 +42,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public Discount Discount { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public decimal DiscountAmount
         {
             get
@@ -59,16 +60,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             }
         }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public virtual decimal Total
         {
             get { return TotalPreShipping + ShippingTotal.GetValueOrDefault(); }
         }
 
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public virtual decimal TotalPreShipping
         {
             get { return TotalPreDiscount - DiscountAmount; }
         }
 
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public decimal Tax
         {
             get
@@ -103,13 +107,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get
             {
-                return (ShippingMethod!=null?
-                    ShippingMethod.GetShippingCalculation(this) != null? 
-                    ShippingMethod.GetShippingCalculation(this).Id:0 
+                return (ShippingMethod != null ?
+                    ShippingMethod.GetShippingCalculation(this) != null ?
+                    ShippingMethod.GetShippingCalculation(this).Id : 0
                     : 0);
             }
         }
 
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public decimal? ShippingTotal { get { return ShippingMethod == null ? null : ShippingMethod.GetPrice(this); } }
         public decimal? ShippingTax { get { return ShippingMethod == null ? null : ShippingMethod.GetTax(this); } }
 
@@ -117,5 +122,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get { return Items.Any() ? Items.Sum(item => item.Weight) : decimal.Zero; }
         }
+
+        public string ItemCountText
+        {
+            get
+            {
+                switch (Items.Count)
+                {
+                    case 0:
+                        return "no items";
+                    case 1:
+                        return "1 item";
+                    default:
+                        return string.Format("{0} items", Items.Count);
+                }
+            }
+        }
+        public bool AnyStandardPaymentMethodsAvailable { get; set; }
+        public bool CanEnterPaymentFlow { get { return Items.Any() && AnyStandardPaymentMethodsAvailable; } }
+        public bool PayPalExpressAvailable { get; set; }
+        public bool CanUsePayPalExpress { get { return Items.Any() && PayPalExpressAvailable; } }
     }
 }

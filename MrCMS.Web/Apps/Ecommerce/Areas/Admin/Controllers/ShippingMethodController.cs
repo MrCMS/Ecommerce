@@ -1,4 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using MrCMS.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
@@ -64,6 +67,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectToRouteResult Delete_POST(ShippingMethod option)
         {
             _shippingMethodManager.Delete(option);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult Sort()
+        {
+            var sortItems = _shippingMethodManager.GetAll().OrderBy(x => x.DisplayOrder)
+                            .Select(
+                                arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Name })
+                            .ToList();
+            return View(sortItems);
+        }
+
+        [HttpPost]
+        public ActionResult Sort(List<SortItem> items)
+        {
+            if (items != null && items.Count > 0)
+            {
+                _shippingMethodManager.UpdateDisplayOrder(items);
+            }
             return RedirectToAction("Index");
         }
     }

@@ -6,7 +6,6 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
@@ -53,6 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
             }
         }
 
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public virtual decimal Amount
         {
             get
@@ -68,7 +68,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         [DisplayName("Shipping Method")]
         public virtual ShippingMethod ShippingMethod { get; set; }
 
-         [Required]
+        [Required]
         public virtual Country Country { get; set; }
 
         public virtual bool CanBeUsed(CartModel model)
@@ -111,7 +111,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         public virtual decimal? GetTax(CartModel model)
         {
             var price = GetPrice(model);
-            return price == null ? (decimal?) null : Tax;
+            return price == null ? (decimal?)null : Tax;
         }
 
         public virtual decimal Tax

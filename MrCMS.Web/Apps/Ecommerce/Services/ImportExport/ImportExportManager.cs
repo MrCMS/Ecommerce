@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using MrCMS.Helpers;
-using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using OfficeOpenXml;
@@ -63,125 +62,141 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             {
                 var wsInfo = excelFile.Workbook.Worksheets.Add("Info");
 
-                wsInfo.Cells["A1:C1"].Style.Font.Bold = true;
-                wsInfo.Cells["A:C"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                wsInfo.Cells["A1:D1"].Style.Font.Bold = true;
+                wsInfo.Cells["A:D"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 wsInfo.Cells["A1"].Value = "MrCMS Version";
                 wsInfo.Cells["B1"].Value = "Entity Type for Export";
                 wsInfo.Cells["C1"].Value = "Export Date";
+                wsInfo.Cells["D1"].Value = "Export Source";
 
                 wsInfo.Cells["A2"].Value = MrCMSHtmlHelper.AssemblyVersion(null);
                 wsInfo.Cells["B2"].Value = "Product";
                 wsInfo.Cells["C2"].Style.Numberformat.Format = "YYYY-MM-DDThh:mm:ss.sTZD";
                 wsInfo.Cells["C2"].Value = DateTime.UtcNow;
-                wsInfo.Cells["A:C"].AutoFitColumns();
+                wsInfo.Cells["D2"].Value = "MrCMS " + MrCMSHtmlHelper.AssemblyVersion(null);
+
+                wsInfo.Cells["A:D"].AutoFitColumns();
                 wsInfo.Cells["A4"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                 wsInfo.Cells["A4"].Value = "Please do not change any values inside this file.";
 
-                var wsProducts = excelFile.Workbook.Worksheets.Add("Products");
+                var wsItems = excelFile.Workbook.Worksheets.Add("Items");
 
-                wsProducts.Cells["A1:AB1"].Style.Font.Bold = true;
-                wsProducts.Cells["A:AB"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                wsProducts.Cells["A1"].Value = "Url (Must not be changed!)";
-                wsProducts.Cells["B1"].Value = "Product Name";
-                wsProducts.Cells["C1"].Value = "Description";
-                wsProducts.Cells["D1"].Value = "SEO Title";
-                wsProducts.Cells["E1"].Value = "SEO Description";
-                wsProducts.Cells["F1"].Value = "SEO Keywords";
-                wsProducts.Cells["G1"].Value = "Abstract";
-                wsProducts.Cells["H1"].Value = "Brand";
-                wsProducts.Cells["I1"].Value = "Categories";
-                wsProducts.Cells["J1"].Value = "Specifications";
-                wsProducts.Cells["K1"].Value = "Variant Name";
-                wsProducts.Cells["L1"].Value = "Price";
-                wsProducts.Cells["M1"].Value = "Previous Price";
-                wsProducts.Cells["N1"].Value = "Tax Rate";
-                wsProducts.Cells["O1"].Value = "Weight (g)";
-                wsProducts.Cells["P1"].Value = "Stock";
-                wsProducts.Cells["Q1"].Value = "Tracking Policy";
-                wsProducts.Cells["R1"].Value = "SKU";
-                wsProducts.Cells["S1"].Value = "Barcode";
-                wsProducts.Cells["T1"].Value = "Option 1 Name";
-                wsProducts.Cells["U1"].Value = "Option 1 Value";
-                wsProducts.Cells["V1"].Value = "Option 2 Name";
-                wsProducts.Cells["W1"].Value = "Option 2 Value";
-                wsProducts.Cells["X1"].Value = "Option 3 Name";
-                wsProducts.Cells["Y1"].Value = "Option 3 Value";
-                wsProducts.Cells["Z1"].Value = "Image 1";
-                wsProducts.Cells["AA1"].Value = "Image 2";
-                wsProducts.Cells["AB1"].Value = "Image 3";
+                wsItems.Cells["A1:AB1"].Style.Font.Bold = true;
+                wsItems.Cells["A:AB"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                wsItems.Cells["A1"].Value = "Url (Must not be changed!)";
+                wsItems.Cells["B1"].Value = "Product Name";
+                wsItems.Cells["C1"].Value = "Description";
+                wsItems.Cells["D1"].Value = "SEO Title";
+                wsItems.Cells["E1"].Value = "SEO Description";
+                wsItems.Cells["F1"].Value = "SEO Keywords";
+                wsItems.Cells["G1"].Value = "Abstract";
+                wsItems.Cells["H1"].Value = "Brand";
+                wsItems.Cells["I1"].Value = "Categories";
+                wsItems.Cells["J1"].Value = "Specifications";
+                wsItems.Cells["K1"].Value = "Variant Name";
+                wsItems.Cells["L1"].Value = "Price";
+                wsItems.Cells["M1"].Value = "Previous Price";
+                wsItems.Cells["N1"].Value = "Tax Rate";
+                wsItems.Cells["O1"].Value = "Weight (g)";
+                wsItems.Cells["P1"].Value = "Stock";
+                wsItems.Cells["Q1"].Value = "Tracking Policy";
+                wsItems.Cells["R1"].Value = "SKU";
+                wsItems.Cells["S1"].Value = "Barcode";
+                wsItems.Cells["T1"].Value = "Option 1 Name";
+                wsItems.Cells["U1"].Value = "Option 1 Value";
+                wsItems.Cells["V1"].Value = "Option 2 Name";
+                wsItems.Cells["W1"].Value = "Option 2 Value";
+                wsItems.Cells["X1"].Value = "Option 3 Name";
+                wsItems.Cells["Y1"].Value = "Option 3 Value";
+                wsItems.Cells["Z1"].Value = "Image 1";
+                wsItems.Cells["AA1"].Value = "Image 2";
+                wsItems.Cells["AB1"].Value = "Image 3";
 
                 var productVariants = _productVariantService.GetAll();
 
                 for (var i = 0; i < productVariants.Count; i++)
                 {
                     var rowId = i + 2;
-                    wsProducts.Cells["A" + rowId].Value = productVariants[i].Product.UrlSegment;
-                    wsProducts.Cells["B" + rowId].Value = productVariants[i].Product.Name;
-                    wsProducts.Cells["C" + rowId].Value = productVariants[i].Product.BodyContent;
-                    wsProducts.Cells["D" + rowId].Value = productVariants[i].Product.MetaTitle;
-                    wsProducts.Cells["E" + rowId].Value = productVariants[i].Product.MetaDescription;
-                    wsProducts.Cells["F" + rowId].Value = productVariants[i].Product.MetaKeywords;
-                    wsProducts.Cells["G" + rowId].Value = productVariants[i].Product.Abstract;
+                    wsItems.Cells["A" + rowId].Value = productVariants[i].Product.UrlSegment;
+                    wsItems.Cells["A" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    wsItems.Cells["B" + rowId].Value = productVariants[i].Product.Name;
+                    wsItems.Cells["B" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    wsItems.Cells["C" + rowId].Value = productVariants[i].Product.BodyContent;
+                    wsItems.Cells["C" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
+                    wsItems.Cells["D" + rowId].Value = productVariants[i].Product.MetaTitle;
+                    wsItems.Cells["E" + rowId].Value = productVariants[i].Product.MetaDescription;
+                    wsItems.Cells["E" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
+                    wsItems.Cells["F" + rowId].Value = productVariants[i].Product.MetaKeywords;
+                    wsItems.Cells["G" + rowId].Value = productVariants[i].Product.Abstract;
+                    wsItems.Cells["G" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
                     if (productVariants[i].Product.Brand != null)
-                        wsProducts.Cells["H" + rowId].Value = productVariants[i].Product.Brand.Name;
+                        wsItems.Cells["H" + rowId].Value = productVariants[i].Product.Brand.Name;
                     if (productVariants[i].Product.Categories.Count > 0)
                     {
                         foreach (var item in productVariants[i].Product.Categories)
                         {
-                            wsProducts.Cells["I" + rowId].Value += item.Id + ";";
+                            wsItems.Cells["I" + rowId].Value += item.Id + ";";
                         }
                     }
                     if (productVariants[i].Product.SpecificationValues.Count > 0)
                     {
                         foreach (var item in productVariants[i].Product.SpecificationValues)
                         {
-                            wsProducts.Cells["J" + rowId].Value += item.SpecificationName + ":" + item.Value + ";";
+                            wsItems.Cells["J" + rowId].Value += item.SpecificationName + ":" + item.Value + ";";
                         }
+                        wsItems.Cells["J" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     }
-                    wsProducts.Cells["K" + rowId].Value = productVariants[i].Name ?? String.Empty;
-                    wsProducts.Cells["L" + rowId].Value = productVariants[i].BasePrice;
-                    wsProducts.Cells["M" + rowId].Value = productVariants[i].PreviousPrice;
+                    wsItems.Cells["K" + rowId].Value = productVariants[i].Name ?? String.Empty;
+                    wsItems.Cells["L" + rowId].Value = productVariants[i].BasePrice;
+                    wsItems.Cells["M" + rowId].Value = productVariants[i].PreviousPrice;
                     if (productVariants[i].TaxRate != null)
-                        wsProducts.Cells["N" + rowId].Value = productVariants[i].TaxRate.Id;
-                    wsProducts.Cells["O" + rowId].Value = productVariants[i].Weight;
-                    wsProducts.Cells["P" + rowId].Value = productVariants[i].StockRemaining;
-                    wsProducts.Cells["Q" + rowId].Value = productVariants[i].TrackingPolicy;
-                    wsProducts.Cells["R" + rowId].Value = productVariants[i].SKU;
-                    wsProducts.Cells["S" + rowId].Value = productVariants[i].Barcode;
+                        wsItems.Cells["N" + rowId].Value = productVariants[i].TaxRate.Id;
+                    wsItems.Cells["O" + rowId].Value = productVariants[i].Weight;
+                    wsItems.Cells["P" + rowId].Value = productVariants[i].StockRemaining;
+                    wsItems.Cells["Q" + rowId].Value = productVariants[i].TrackingPolicy;
+                    wsItems.Cells["R" + rowId].Value = productVariants[i].SKU;
+                    wsItems.Cells["S" + rowId].Value = productVariants[i].Barcode;
 
                     for (var v = 0; v < productVariants[i].AttributeValues.OrderBy(x => x.ProductAttributeOption.DisplayOrder).Count(); v++)
                     {
                         if (v == 0)
                         {
-                            wsProducts.Cells["T" + rowId].Value = productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsProducts.Cells["U" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                            wsItems.Cells["T" + rowId].Value = productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
+                            wsItems.Cells["U" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
                         if (v == 1)
                         {
-                            wsProducts.Cells["V" + rowId].Value = productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsProducts.Cells["W" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                            wsItems.Cells["V" + rowId].Value = productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
+                            wsItems.Cells["W" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
                         if (v == 2)
                         {
-                            wsProducts.Cells["X" + rowId].Value = productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsProducts.Cells["Y" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                            wsItems.Cells["X" + rowId].Value = productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
+                            wsItems.Cells["Y" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
                     }
 
                     if (!productVariants[i].Product.Images.Any()) continue;
-                    wsProducts.Cells["Z" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.First().FileUrl + "?update=no";
+                    wsItems.Cells["Z" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.First().FileUrl + "?update=no";
+                    wsItems.Cells["Z" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+
                     if (productVariants[i].Product.Images.Count() > 1)
-                        wsProducts.Cells["AA" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[1].FileUrl + "?update=no";
+                    {
+                        wsItems.Cells["AA" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[1].FileUrl + "?update=no";
+                        wsItems.Cells["AA" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    }
                     if (productVariants[i].Product.Images.Count() > 2)
-                        wsProducts.Cells["AB" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[2].FileUrl + "?update=no";
+                    {
+                        wsItems.Cells["AB" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl +
+                                                            productVariants[i].Product.Images.ToList()[2].FileUrl +
+                                                            "?update=no";
+                        wsItems.Cells["AB" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    }
                 }
-                wsProducts.Cells["C:C"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                wsProducts.Cells["E:E"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                wsProducts.Cells["G:G"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                wsProducts.Cells["A:B"].AutoFitColumns();
-                wsProducts.Cells["D:D"].AutoFitColumns();
-                wsProducts.Cells["F:F"].AutoFitColumns();
-                wsProducts.Cells["I:AB"].AutoFitColumns();
+                wsItems.Cells["A:B"].AutoFitColumns();
+                wsItems.Cells["D:D"].AutoFitColumns();
+                wsItems.Cells["F:F"].AutoFitColumns();
+                wsItems.Cells["I:AB"].AutoFitColumns();
 
                 return excelFile.GetAsByteArray();
             }

@@ -131,7 +131,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
             new StringFieldDefinition<Product>("publishOn",
                                          webpage =>
                                          DateTools.DateToString(webpage.PublishOn.GetValueOrDefault(DateTime.MaxValue),
-                                                                DateTools.Resolution.SECOND), Field.Store.NO,
+                                                                DateTools.Resolution.SECOND), Field.Store.YES,
                                          Field.Index.NOT_ANALYZED);
 
         private static readonly DecimalFieldDefinition<Product> _price =

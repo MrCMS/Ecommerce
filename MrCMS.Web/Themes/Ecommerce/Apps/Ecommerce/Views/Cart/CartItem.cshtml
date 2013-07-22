@@ -1,0 +1,35 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Cart.CartItem
+<div class="row-fluid row">
+    <div class="span4 cell">
+        <div class="span4 photo">
+            @if (Model.Item.Product.Images.Any())
+            {
+                <img src="@(Model.Item.Product.Images.First().FileUrl)" class="img-rounded pull-left span12" alt="@Model.Name" />
+            }
+        </div>
+        <div class="span8 name">
+            @Model.Name
+        </div>
+    </div>
+    <div class="span3 cell">
+        @foreach (var option in Model.Item.AttributeValues)
+        {
+            <p class="pull-left">
+                <strong>
+                    @option.ProductAttributeOption.Name
+                </strong>
+                <span>:</span>
+                @option.Value
+            </p>
+        }
+    </div>
+    <div class="span2 cell">
+        <input type="text" class="input-mini" name="@Html.Raw("quantity-" + Model.Id)" value="@Model.Quantity" data-cart-id="@Model.Id"/>
+    </div>
+    <div class="span3 cell">
+        <div class="pull-right price">
+            <h4>@Html.DisplayFor(item => item.Price)</h4>
+            @Html.ActionLink("Delete", "DeleteCartItem", "Cart", new { id = Model.Id }, new { data_toggle = "fb-modal" })
+        </div>
+    </div>
+</div>

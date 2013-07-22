@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using NHibernate;
 using NHibernate.Criterion;
@@ -21,12 +21,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Geographic
 
         public IList<Country> GetAllCountries()
         {
-            return _session.QueryOver<Country>().CacheMode(CacheMode.Put).List();
+            return _session.QueryOver<Country>().OrderBy(x=>x.DisplayOrder).Asc.CacheMode(CacheMode.Put).List();
         }
 
-        public Country Get(int CountryId)
+        public Country Get(int id)
         {
-            return _session.QueryOver<Country>().Where(x => x.Id == CountryId).Cacheable().SingleOrDefault();
+            return _session.QueryOver<Country>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
         }
 
         public bool AnyExistingCountriesWithName(string name, int id=0)
@@ -81,6 +81,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Geographic
         public List<SelectListItem> GetOptions()
         {
             return GetAllCountries().BuildSelectItemList(country => country.Name, rate => rate.Id.ToString(),null, String.Empty);
+        }
+
+        public void UpdateDisplayOrder(IList<SortItem> options)
+        {
+            _session.Transact(session => options.ForEach(item =>
+            {
+                var formItem = session.Get<Country>(item.Id);
+                formItem.DisplayOrder = item.Order;
+                session.Update(formItem);
+            }));
         }
     }
 }
