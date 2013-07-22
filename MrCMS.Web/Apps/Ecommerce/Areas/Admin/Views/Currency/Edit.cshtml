@@ -1,0 +1,25 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Currencies.Currency
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
+@using (Html.BeginForm("Edit", "Currency", FormMethod.Post))
+{
+    <div class="modal-header">
+        <h3>Edit Currency</h3>
+    </div>
+    <div class="modal-body">
+        @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name)
+        @Html.ValidationMessageFor(x => x.Name)
+        @Html.LabelFor(x => x.Code)
+        @Html.TextBoxFor(x => x.Code)
+        @Html.ValidationMessageFor(x => x.Code)
+        @Html.LabelFor(x => x.Rate)
+        @Html.TextBoxFor(x => x.Rate)
+        @Html.ValidationMessageFor(x => x.Rate)
+        @Html.LabelFor(x => x.Format)
+        @Html.TextBoxFor(x => x.Format)
+        @Html.ValidationMessageFor(x => x.Format)
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Edit Currency" />
+    </div>
+}

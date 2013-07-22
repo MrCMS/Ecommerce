@@ -27,6 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                         new ChildMenuItem("Product Specification Attributes",
                                                                           "/Admin/Apps/Ecommerce/ProductSpecificationAttribute"),
                                                         new ChildMenuItem("Discounts", "/Admin/Apps/Ecommerce/Discount"),
+                                                        new ChildMenuItem("Currencies", "/Admin/Apps/Ecommerce/Currency"),
                                                         
                                                     }
                                             },

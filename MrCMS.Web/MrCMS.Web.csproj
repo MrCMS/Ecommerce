@@ -171,6 +171,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CurrencyController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\PayPalExpressCheckoutSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductSpecificationAttributeOptionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
@@ -221,6 +222,7 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\ShippingMethodOverride.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceApp.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Cart\CartItem.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Currencies\Currency.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\FixedAmountFromOrder.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderHasXOrMoreItems.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderTotalGreaterThanX.cs" />
@@ -277,6 +279,7 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressCheckoutSettings.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressCheckoutPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalShippingService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Currencies\ICurrencyService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductImagesService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductVariantsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportSpecificationsService.cs" />
@@ -1404,6 +1407,10 @@
     <Content Include="Apps\Ecommerce\Views\ProductSearch\Results.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductSearch\Query.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Delete.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
