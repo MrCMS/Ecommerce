@@ -24,6 +24,14 @@
         @Html.LabelFor(x => x.BaseAmount)
         @Html.TextBoxFor(x => x.BaseAmount)
           @Html.ValidationMessageFor(x => x.BaseAmount)
+        @if (!String.IsNullOrWhiteSpace(ViewBag.Message))
+        {
+            <br/>
+            <p>
+                @ViewBag.Message
+            </p>
+            <br/>
+        }
     </div>
     <div class="modal-footer">
          <button class="btn btn-primary" id="save-edit" data-action="save" data-form-id="edit-shipping-calculation">

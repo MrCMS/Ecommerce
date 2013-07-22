@@ -1,0 +1,15 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Shipping.ShippingCalculation
+<tr>
+    <td>
+        @Model.Description
+    </td>
+    <td>
+        @Html.DisplayFor(calculation => calculation.Amount)
+    </td>
+    <td>
+        <div class="btn-group pull-right">
+            @Html.ActionLink("Edit", "Edit", "ShippingCalculation", new { id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+            @Html.ActionLink("Delete", "Delete", "ShippingCalculation", new { id = Model.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+        </div>
+    </td>
+</tr>

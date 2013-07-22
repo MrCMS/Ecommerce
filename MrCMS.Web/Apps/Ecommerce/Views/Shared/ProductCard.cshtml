@@ -1,0 +1,36 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+<div></div>
+@if (Model.Variants.Any())
+{
+    <div class="item">
+        <div class="span3 photo">
+            @if (Model.Images.Any())
+            {
+                <img src="@(Model.Images.First().FileUrl)" class="img-rounded pull-left span12" alt="@Model.Name" />
+            }
+        </div>
+    </div>
+    <div class="span6">
+        <h4><a href="/@Model.LiveUrlSegment">@Model.Name</a></h4>
+        @(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)
+    </div>
+    <div class="span3">
+        <div class="pull-right">
+
+            <span>Exclusive price</span>
+            <h1 class="product-price">
+                @Model.DisplayPrice
+            </h1>
+            @if (Model.DisplayPreviousPrice.HasValue)
+            {
+                <span>shop price: <span style="text-decoration: line-through">@Model.DisplayPreviousPrice </span></span>
+            }
+
+            <br />
+            <br />
+            <a href="@Model.LiveUrlSegment" class="btn btn-info span12">More info
+            </a>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+}

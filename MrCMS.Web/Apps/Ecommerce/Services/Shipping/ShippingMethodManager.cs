@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
-using MrCMS.Web.Apps.Ecommerce.Models;
 using NHibernate;
 using MrCMS.Helpers;
 
@@ -20,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 
         public IList<ShippingMethod> GetAll()
         {
-            return _session.QueryOver<ShippingMethod>().Cacheable().List();
+            return _session.QueryOver<ShippingMethod>().OrderBy(x=>x.DisplayOrder).Asc.Cacheable().List();
         }
 
         public ShippingMethod Get(int id)
@@ -30,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 
         public List<SelectListItem> GetOptions()
         {
-            return GetAll().BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(), emptyItemText: "None");
+            return GetAll().BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(), emptyItemText: null);
         }
 
         public void Add(ShippingMethod ShippingMethod)
@@ -49,6 +47,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         public void Delete(ShippingMethod ShippingMethod)
         {
             _session.Transact(session => session.Delete(ShippingMethod));
+        }
+
+        public void UpdateDisplayOrder(IList<SortItem> options)
+        {
+            _session.Transact(session => options.ForEach(item =>
+            {
+                var formItem = session.Get<ShippingMethod>(item.Id);
+                formItem.DisplayOrder = item.Order;
+                session.Update(formItem);
+            }));
         }
     }
 }

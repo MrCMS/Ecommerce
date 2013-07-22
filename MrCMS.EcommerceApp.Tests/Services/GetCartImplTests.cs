@@ -5,10 +5,9 @@ using System.Web;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Entities.People;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website;
 using Xunit;
@@ -18,20 +17,22 @@ namespace MrCMS.EcommerceApp.Tests.Services
 {
     public class GetCartImplTests : InMemoryDatabaseTest
     {
+        private readonly IPaymentMethodService _paymentMethodService;
+        private readonly GetCartImpl _getCartImpl;
+
         public GetCartImplTests()
         {
             var currentUser = new User();
             Session.Transact(session => session.Save(currentUser));
             CurrentRequestData.CurrentUser = currentUser;
             A.CallTo(() => CurrentRequestData.CurrentContext.Session).Returns(new FakeHttpSessionState());
-        
+            _paymentMethodService = A.Fake<IPaymentMethodService>();
+            _getCartImpl = new GetCartImpl(Session,_paymentMethodService);
         }
         [Fact]
         public void GetCartImpl_GetCart_ReturnsACartModel()
         {
-            var getCartImpl = GetGetCartImpl();
-
-            var cartModel = getCartImpl.GetCart();
+            var cartModel = _getCartImpl.GetCart();
 
             cartModel.Should().BeOfType<CartModel>();
         }
@@ -39,9 +40,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void GetCartImpl_GetCart_ShouldReturnUserIfCurrentUserIsSet()
         {
-            var getCartImpl = GetGetCartImpl();
-
-            var cartModel = getCartImpl.GetCart();
+            var cartModel = _getCartImpl.GetCart();
 
             cartModel.User.Should().Be(CurrentRequestData.CurrentUser);
         }
@@ -49,7 +48,6 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void GetCartImpl_GetCart_ShouldReturnCartItemsIfTheyMatchUserGuid()
         {
-            var getCartImpl = GetGetCartImpl();
             var cartItems = Enumerable.Range(1, 10)
                                       .Select(i =>
                                               new CartItem
@@ -58,7 +56,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
                                                   }).ToList();
             Session.Transact(session => cartItems.ForEach(item => session.Save(item)));
 
-            var cartModel = getCartImpl.GetCart();
+            var cartModel = _getCartImpl.GetCart();
 
             cartModel.Items.ShouldBeEquivalentTo(cartItems);
         }
@@ -67,9 +65,8 @@ namespace MrCMS.EcommerceApp.Tests.Services
         public void GetCartImpl_GetCart_IfCurrentUserIsNullModelUserShouldBeNull()
         {
             CurrentRequestData.CurrentUser = null;
-            var getCartImpl = GetGetCartImpl();
 
-            var cartModel = getCartImpl.GetCart();
+            var cartModel = _getCartImpl.GetCart();
 
             cartModel.User.Should().BeNull();
         }
@@ -80,16 +77,10 @@ namespace MrCMS.EcommerceApp.Tests.Services
             CurrentRequestData.CurrentUser = null;
             var userGuid = Guid.NewGuid();
             CurrentRequestData.UserGuid = userGuid;
-            var getCartImpl = GetGetCartImpl();
 
-            var cartModel = getCartImpl.GetCart();
+            var cartModel = _getCartImpl.GetCart();
 
             cartModel.UserGuid.Should().Be(userGuid);
-        }
-
-        GetCartImpl GetGetCartImpl()
-        {
-            return new GetCartImpl(Session);
         }
     }
 

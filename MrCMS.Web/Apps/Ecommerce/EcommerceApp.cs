@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Apps;
 using MrCMS.Entities.Documents.Layout;
@@ -7,12 +8,12 @@ using MrCMS.Entities.Multisite;
 using MrCMS.Installation;
 using MrCMS.Services;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Core.Widgets;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using Ninject;
-using MrCMS.Helpers;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 
@@ -30,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce
 
         }
 
-        public override System.Collections.Generic.IEnumerable<System.Type> BaseTypes
+        public override IEnumerable<Type> BaseTypes
         {
             get
             {
@@ -77,6 +78,10 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("User Account Details", "Apps/Ecommerce/UserAccount/UserAccountDetails", new { controller = "UserAccount", action = "UserAccountDetails" });
             context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders", new { controller = "UserAccount", action = "UserAccountOrders" });
             context.MapRoute("User Update Account", "Apps/Ecommerce/UserAccount/UpdateAccount", new { controller = "UserAccount", action = "UpdateAccount" });
+            context.MapRoute("PayPal Express Checkout - SetExpressCheckout",
+                             "Apps/Ecommerce/PayPalExpress/SetExpressCheckout",
+                             new {controller = "PayPalExpressCheckout", action = "SetExpressCheckout"},
+                             new[] {typeof (PayPalExpressCheckoutSettingsController).Namespace});
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
@@ -86,7 +91,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var siteSettings = configurationProvider.GetSiteSettings<SiteSettings>();
             var ecommerceSettings = configurationProvider.GetSiteSettings<EcommerceSettings>();
             var documentService = new DocumentService(session, siteSettings, currentSite);
-
+            var widgetService = new WidgetService(session);
             var productSearch = new ProductSearch
                                     {
                                         Name = "Product Search Container",
@@ -112,14 +117,27 @@ namespace MrCMS.Web.Apps.Ecommerce
                              };
             var areas = new List<LayoutArea>
                                      {
+                                         new LayoutArea {AreaName = "Logo", Layout = layout},
                                          new LayoutArea {AreaName = "Header", Layout = layout},
                                          new LayoutArea {AreaName = "After Content", Layout = layout},
+                                         new LayoutArea {AreaName = "Before Content", Layout = layout},
                                          new LayoutArea {AreaName = "Footer", Layout = layout}
                                      };
             documentService.AddDocument(layout);
             var layoutAreaService = new LayoutAreaService(session);
             foreach (var area in areas)
                 layoutAreaService.SaveArea(area);
+
+            //widget setup footer links
+            var footerLinksWidget = new TextWidget
+                {
+                    LayoutArea = areas.Single(x => x.AreaName == "Footer"),
+                    Name = "Footer links",
+                    Text = GetFooterLinksText()
+                };
+            widgetService.AddWidget(footerLinksWidget);
+            
+
             siteSettings.DefaultLayoutId = layout.Id;
             siteSettings.ThemeName = "Ecommerce";
             configurationProvider.SaveSettings(siteSettings);
@@ -157,7 +175,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = true,
                 Parent = yourBasket,
                 DisplayOrder = 0,
-                PublishOn = DateTime.UtcNow
+                PublishOn = DateTime.UtcNow,
+                Layout = checkoutLayout
             };
             documentService.AddDocument(enterOrderEmail);
             var setPaymentDetails = new PaymentDetails
@@ -167,7 +186,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = true,
                 Parent = yourBasket,
                 DisplayOrder = 1,
-                PublishOn = DateTime.UtcNow
+                PublishOn = DateTime.UtcNow,
+                Layout = checkoutLayout
             };
             documentService.AddDocument(setPaymentDetails);
             var setDeliveryDetails = new SetDeliveryDetails
@@ -177,7 +197,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = true,
                 Parent = yourBasket,
                 DisplayOrder = 2,
-                PublishOn = DateTime.UtcNow
+                PublishOn = DateTime.UtcNow,
+                Layout = checkoutLayout
             };
             documentService.AddDocument(setDeliveryDetails);
             var orderPlaced = new OrderPlaced
@@ -187,7 +208,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = true,
                 Parent = yourBasket,
                 DisplayOrder = 3,
-                PublishOn = DateTime.UtcNow
+                PublishOn = DateTime.UtcNow,
+                Layout = checkoutLayout
             };
             documentService.AddDocument(orderPlaced);
             var myAccount = new UserAccount
@@ -215,6 +237,11 @@ namespace MrCMS.Web.Apps.Ecommerce
             };
             documentService.AddDocument(registration);
             
+        }
+
+        private string GetFooterLinksText()
+        {
+            return @"<ul><li><a href=""#"">About &bull;</a></li><li><a href=""#"">Contact Us &bull;</a></li><li><a href=""#"">Privacy Policy &amp; Cookie Info &bull;</a></li><li><a href=""#"">Mr CMS</a></li></ul>";
         }
     }
 }

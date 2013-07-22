@@ -13,14 +13,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
 
         public override object GetModel(NHibernate.ISession session)
         {
-            int id = 0;
-            FeaturedProductsViewModel model = new FeaturedProductsViewModel() { Title = this.Name, Products = new List<Product>() };
+            var model = new FeaturedProductsViewModel() { Title = this.Name, Products = new List<Product>() };
             try
             {
                 string[] rawValues = ListOfFeaturedProducts.Split(',');
                 foreach (var value in rawValues)
                 {
                     string[] items = value.Split('/');
+                    int id = 0;
                     if (Int32.TryParse(items[0], out id) && id != 0)
                         model.Products.Add(session.Get<Product>(id));
                 }

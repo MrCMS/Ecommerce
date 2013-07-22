@@ -1,7 +1,7 @@
-﻿using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Entities;
+﻿using System.Linq;
+using System.Web.Mvc;
+using MrCMS.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Website.Controllers;
 using System.Collections.Generic;
@@ -74,8 +74,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             if (_countryService.AnyExistingCountriesWithName(name, Id))
                 return Json("There is already a country stored with that name.", JsonRequestBehavior.AllowGet);
-            else
-                return Json(true, JsonRequestBehavior.AllowGet);
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult Sort()
+        {
+            var sortItems = _countryService.GetAllCountries().OrderBy(x => x.DisplayOrder)
+                            .Select(
+                                arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Name })
+                            .ToList();
+            return View(sortItems);
+        }
+
+        [HttpPost]
+        public ActionResult Sort(List<SortItem> items)
+        {
+            if (items != null && items.Count > 0)
+            {
+                _countryService.UpdateDisplayOrder(items);
+            }
+            return RedirectToAction("Index");
         }
     }
 }
