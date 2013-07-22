@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
-using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
-using MrCMS.Web.Apps.Ecommerce.Services.Tax;
+using MrCMS.Web.Apps.Ecommerce.Services.Currencies;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using Xunit;
 
@@ -16,12 +14,14 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private readonly EcommerceSettingsController _ecommerceSettingsController;
         private readonly IConfigurationProvider _configurationProvider;
         private readonly EcommerceSettings _ecommerceSettings;
+        private readonly ICurrencyService _currencyService;
 
         public EcommerceSettingsControllerTests()
         {
             _configurationProvider = A.Fake<IConfigurationProvider>();
             _ecommerceSettings = new EcommerceSettings();
-            _ecommerceSettingsController = new EcommerceSettingsController(_configurationProvider, _ecommerceSettings);
+            _currencyService = A.Fake<ICurrencyService>();
+            _ecommerceSettingsController = new EcommerceSettingsController(_configurationProvider, _ecommerceSettings, _currencyService);
         }
 
         [Fact]

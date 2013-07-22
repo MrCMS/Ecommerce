@@ -1,10 +1,7 @@
 ﻿using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.Services.Currencies;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
@@ -13,20 +10,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     {
         private readonly IConfigurationProvider _configurationProvider;
         private readonly EcommerceSettings _ecommerceSettings;
+        private readonly ICurrencyService _currencyService;
 
-        public EcommerceSettingsController(IConfigurationProvider configurationProvider, EcommerceSettings ecommerceSettings)
+        public EcommerceSettingsController(IConfigurationProvider configurationProvider, EcommerceSettings ecommerceSettings,
+             ICurrencyService currencyService)
         {
             _configurationProvider = configurationProvider;
             _ecommerceSettings = ecommerceSettings;
+            _currencyService = currencyService;
         }
 
         [HttpGet]
         public ActionResult Edit()
         {
-            if (_ecommerceSettings.SearchProductsPerPage == String.Empty)
-                _ecommerceSettings.SearchProductsPerPage = "12,20,40";
-            if (_ecommerceSettings.PageSizeAdmin == 0)
-                _ecommerceSettings.PageSizeAdmin = 20;
+            ViewData["currency-options"] = _currencyService.Options(_ecommerceSettings.CurrencyId);
             return View(_ecommerceSettings);
         }
 
