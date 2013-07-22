@@ -53,6 +53,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual decimal? ShippingTotal { get; set; }
         [DisplayName("Shipping Tax")]
         public virtual decimal? ShippingTax { get; set; }
+        [DisplayName("Shipping Tax Percentage")]
+        public virtual decimal? ShippingTaxPercentage { get; set; }
         [DisplayName("Shipping Status")]
         public virtual ShippingStatus ShippingStatus { get; set; }
 
