@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.Currencies;
 using NHibernate;
 using MrCMS.Helpers;
@@ -11,6 +12,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Currencies
         void Add(Currency currency);
         void Update(Currency currency);
         void Delete(Currency currency);
+        List<SelectListItem> Options(int id);
     }
 
     public class CurrencyService : ICurrencyService
@@ -40,6 +42,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Currencies
         public void Delete(Currency currency)
         {
             _session.Transact(session => session.Delete(currency));
+        }
+
+        public List<SelectListItem> Options(int id)
+        {
+            return GetAll().BuildSelectItemList(currency => currency.Name,
+                                                currency => currency.Id.ToString(), currency => currency.Id == id,
+                                                emptyItem: null);
         }
     }
 }

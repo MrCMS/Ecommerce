@@ -3,12 +3,16 @@
 @{
     ViewBag.Title = "Edit Ecommerce Settings";
 }
- 
+
 
 @using (Html.BeginForm("Edit", "EcommerceSettings", FormMethod.Post))
 {
     <fieldset>
         <legend>Ecommerce Settings
+            
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Save Settings" />
+            </span>
         </legend>
         @Html.HiddenFor(settings => settings.Site.Id)
         @Html.LabelFor(x => x.PageSizeAdmin)
@@ -18,7 +22,9 @@
         @Html.LabelFor(x => x.SearchProductsPerPage)
         @Html.TextBoxFor(x => x.SearchProductsPerPage)
         @Html.ValidationMessageFor(x => x.SearchProductsPerPage)
-        <br />
-    <input type="submit" class="btn-primary btn" value="Save Settings" />
-        </fieldset>
+
+        @Html.LabelFor(x => x.CurrencyId)
+        @Html.DropDownListFor(x => x.CurrencyId, ViewData["currency-options"] as IEnumerable<SelectListItem>)
+        @Html.ValidationMessageFor(x => x.CurrencyId)
+    </fieldset>
 }

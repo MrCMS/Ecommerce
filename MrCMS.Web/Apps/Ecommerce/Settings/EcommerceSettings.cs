@@ -1,12 +1,13 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Entities;
 using MrCMS.Settings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Web;
 using MrCMS.Helpers;
+using MrCMS.Website;
+using NHibernate;
+using MrCMS.Web.Apps.Ecommerce.Entities.Currencies;
 
 namespace MrCMS.Web.Apps.Ecommerce.Settings
 {
@@ -42,5 +43,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         {
             get { return false; }
         }
+
+        [DisplayName("Site Currency")]
+        public int CurrencyId { get; set; }
+
+        public Currency Currency { get { return MrCMSApplication.Get<ISession>().Get<Currency>(CurrencyId); } }
     }
 }

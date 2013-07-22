@@ -11,8 +11,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Currencies
         [StringLength(3, MinimumLength = 3)]
         public virtual string Code { get; set; }
         [Required]
-        public virtual decimal Rate { get; set; }
-        [Required]
         public virtual string Format { get; set; }
 
         public virtual string FormatPrice(decimal price)

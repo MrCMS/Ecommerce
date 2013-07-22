@@ -243,6 +243,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\CurrencyFormattingHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\EnumHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\GeneralHelper.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategorySearchModel.cs" />
