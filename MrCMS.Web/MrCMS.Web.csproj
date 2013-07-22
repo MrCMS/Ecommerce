@@ -477,8 +477,6 @@
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\cart.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\category.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\enter-order-email.js" />
-    <Content Include="Apps\Ecommerce\Content\Scripts\custom\forgotten-password.js" />
-    <Content Include="Apps\Ecommerce\Content\Scripts\custom\password-reset.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\payment-details.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\product-search.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\product.js" />
