@@ -307,7 +307,6 @@
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductMaxSEOTitleLengthIs250.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductMaxStringLength.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantTaxRateIdIsValid.cs" />
-    <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantTaxRateMustExistIfIsEnabled.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\ITrackingPolicyService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\TrackingPolicyService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderSearchService.cs" />
