@@ -6,6 +6,6 @@
         Paid,
         PartiallyRefunded,
         Refunded,
-        Cancelled
+        Voided
     }
 }
