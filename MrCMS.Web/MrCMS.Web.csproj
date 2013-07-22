@@ -1832,7 +1832,6 @@
     <Folder Include="Themes\Default\Views\Widgets\" />
     <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\" />
     <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Shared\" />
-    <Folder Include="Themes\Ecommerce\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
