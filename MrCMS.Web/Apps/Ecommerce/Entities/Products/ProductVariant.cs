@@ -24,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get
             {
-                return TaxAwarePrice.GetPriceExcludingTax(BasePrice, TaxRate);
+                return TaxAwareProductPrice.GetPriceExcludingTax(BasePrice, TaxRate);
             }
         }
 
@@ -45,13 +45,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [DisplayFormat(DataFormatString = "{0:n0}")]
         public virtual decimal? PreviousPriceIncludingTax
         {
-            get { return TaxAwarePrice.GetPriceIncludingTax(PreviousPrice, TaxRate); }
+            get { return TaxAwareProductPrice.GetPriceIncludingTax(PreviousPrice, TaxRate); }
         }
 
         [DisplayFormat(DataFormatString = "{0:n0}")]
         public virtual decimal? PreviousPriceExcludingTax
         {
-            get { return TaxAwarePrice.GetPriceExcludingTax(PreviousPrice, TaxRate); }
+            get { return TaxAwareProductPrice.GetPriceExcludingTax(PreviousPrice, TaxRate); }
         }
 
         public virtual decimal ReducedBy
@@ -78,7 +78,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual decimal Price
         {
-            get { return TaxAwarePrice.GetPriceIncludingTax(BasePrice, TaxRate); }
+            get { return TaxAwareProductPrice.GetPriceIncludingTax(BasePrice, TaxRate); }
         }
 
         public virtual decimal GetPrice(int quantity)

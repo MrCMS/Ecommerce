@@ -5,9 +5,9 @@ using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
-    public class TaxAwarePrice
+    public class TaxAwareProductPrice
     {
-        public static TaxAwarePrice Create(decimal? value, TaxRate rate, bool? loadedPricesIncludeTax = null)
+        public static TaxAwareProductPrice Create(decimal? value, TaxRate rate, bool? loadedPricesIncludeTax = null)
         {
             return PriceCreator(value, rate, loadedPricesIncludeTax);
         }
@@ -29,8 +29,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             return PriceCreator(value, rate, loadedPricesIncludeTax).PriceIncludingTax;
         }
 
-        public static Func<decimal?, TaxRate, bool?, TaxAwarePrice> PriceCreator =
-            (arg1, rate, arg3) => new TaxAwarePrice(arg1, rate, arg3);
+        public static Func<decimal?, TaxRate, bool?, TaxAwareProductPrice> PriceCreator =
+            (arg1, rate, arg3) => new TaxAwareProductPrice(arg1, rate, arg3);
 
         private readonly decimal? _value;
         private readonly TaxRate _taxRate;
@@ -41,7 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get { return _taxRate != null ? _taxRate.Percentage : 0m; }
         }
 
-        public TaxAwarePrice(decimal? value, TaxRate taxRate, bool? loadedPricesIncludeTax = null)
+        public TaxAwareProductPrice(decimal? value, TaxRate taxRate, bool? loadedPricesIncludeTax = null)
         {
             _value = value;
             _taxRate = taxRate;

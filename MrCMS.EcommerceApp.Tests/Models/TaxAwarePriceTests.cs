@@ -10,7 +10,7 @@ namespace MrCMS.EcommerceApp.Tests.Models
         [Fact]
         public void TaxAwarePrice_PriceExcludingTax_IsNullWhenPassedValueIsNull()
         {
-            var taxAwarePrice = new TaxAwarePrice(null, new TaxRate());
+            var taxAwarePrice = new TaxAwareProductPrice(null, new TaxRate());
 
             taxAwarePrice.PriceExcludingTax.Should().Be(null);
         }
@@ -18,7 +18,7 @@ namespace MrCMS.EcommerceApp.Tests.Models
         [Fact]
         public void TaxAwarePrice_PriceIncludingTax_IsNullWhenPassedValueIsNull()
         {
-            var taxAwarePrice = new TaxAwarePrice(null, new TaxRate());
+            var taxAwarePrice = new TaxAwareProductPrice(null, new TaxRate());
 
             taxAwarePrice.PriceIncludingTax.Should().Be(null);
         }
