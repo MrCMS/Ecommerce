@@ -3,8 +3,6 @@ using System.ComponentModel;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Settings;
-using MrCMS.Website;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using System.ComponentModel.DataAnnotations;
 
@@ -44,25 +42,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         [DisplayName("Amount Pre Tax")]
         public virtual decimal AmountPreTax
         {
-            get
-            {
-                return Math.Round(MrCMSApplication.Get<TaxSettings>().ShippingRateIncludesTax
-                                      ? BaseAmount / ((TaxRatePercentage + 100) / 100)
-                                      : BaseAmount, 2, MidpointRounding.AwayFromZero);
-            }
+            get { return TaxAwareShippingRate.GetPriceExcludingTax(BaseAmount, TaxRate); }
         }
 
         [DisplayFormat(DataFormatString = "{0:C2}")]
         public virtual decimal Amount
         {
-            get
-            {
-                return Math.Round(MrCMSApplication.Get<TaxSettings>().ShippingRateIncludesTax
-                                      ? BaseAmount
-                                      : TaxRate != null
-                                            ? BaseAmount * (TaxRate.Multiplier)
-                                            : BaseAmount, 2, MidpointRounding.AwayFromZero);
-            }
+            get { return TaxAwareShippingRate.GetPriceIncludingTax(BaseAmount, TaxRate); }
         }
 
         [DisplayName("Shipping Method")]

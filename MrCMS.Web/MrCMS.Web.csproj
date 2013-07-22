@@ -242,6 +242,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\GeneralHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Models\TaxAwareShippingCost.cs" />
     <Compile Include="Apps\Ecommerce\Models\TrackingPolicy.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
@@ -474,6 +475,18 @@
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.min.js" />
     <Content Include="Apps\Ecommerce\Content\Images\mrcms-logo.png" />
     <Content Include="Apps\Ecommerce\Content\Scripts\bootstrap.dropdown.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\cart.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\category.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\enter-order-email.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\forgotten-password.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\password-reset.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\payment-details.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\product-search.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\product.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\shipping-methods.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\user-account.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\user-login.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\user-registration.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\ecommerce.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.min.js" />
