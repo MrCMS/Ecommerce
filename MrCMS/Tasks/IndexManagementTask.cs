@@ -11,7 +11,7 @@ namespace MrCMS.Tasks
 {
     public abstract class IndexManagementTask : BackgroundTask
     {
-        protected readonly SiteEntity Entity;
+        protected SiteEntity Entity;
 
         protected IndexManagementTask(SiteEntity entity)
         {
@@ -43,6 +43,7 @@ namespace MrCMS.Tasks
         {
             if (Entity != null)
             {
+                Entity = Session.Get(Entity.GetType(), Entity.Id) as SiteEntity;
                 CurrentRequestData.SetTaskSite(Session.Get<Site>(Entity.Site.Id));
                 ExecuteLogic();
                 CurrentRequestData.SetTaskSite(null);
