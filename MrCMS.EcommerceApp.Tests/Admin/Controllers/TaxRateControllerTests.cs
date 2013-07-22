@@ -175,15 +175,5 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             A.CallTo(() => _configurationProvider.SaveSettings(taxSettings)).MustHaveHappened();
         }
-
-        [Fact]
-        public void TaxRateController_Settings_ShouldReturnARedirectToIndex()
-        {
-            var taxSettings = new TaxSettings();
-
-            var result = _taxRateController.Settings(taxSettings);
-
-            result.RouteValues["action"].Should().Be("Index");
-        }
     }
 }

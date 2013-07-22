@@ -42,7 +42,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 productVariant.StockRemaining = item.Stock;
                 productVariant.Weight = item.Weight.HasValue ? item.Weight.Value : 0;
                 productVariant.TrackingPolicy = item.TrackingPolicy;
-                productVariant.TaxRate = _taxRateManager.Get(item.TaxRate.HasValue ? item.TaxRate.Value : 0);
+                productVariant.TaxRate = (item.TaxRate.HasValue && item.TaxRate.Value!=0)?_taxRateManager.Get(item.TaxRate.Value):_taxRateManager.GetDefaultRate();
                 productVariant.Product = product;
                 product.Variants.Add(productVariant);
 

@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Models;
