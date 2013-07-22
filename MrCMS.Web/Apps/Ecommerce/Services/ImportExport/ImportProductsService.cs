@@ -56,7 +56,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             product.MetaDescription = dataTransferObject.SEODescription;
             product.MetaKeywords = dataTransferObject.SEOKeywords;
             product.Abstract = dataTransferObject.Abstract;
-            product.PublishOn = DateTime.UtcNow;
 
             //Brand
             if (!String.IsNullOrWhiteSpace(dataTransferObject.Brand))

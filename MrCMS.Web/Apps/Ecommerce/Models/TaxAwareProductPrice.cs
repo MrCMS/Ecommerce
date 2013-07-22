@@ -61,7 +61,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         private bool LoadedPricesIncludeTax
         {
-            get { return _loadedPricesIncludeTax ?? MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax; }
+            get
+            {
+                return _loadedPricesIncludeTax ?? (!MrCMSApplication.Get<TaxSettings>().TaxesEnabled ||
+                        MrCMSApplication.Get<TaxSettings>().LoadedPricesIncludeTax);
+            }
         }
 
         public decimal? PriceIncludingTax
