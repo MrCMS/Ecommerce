@@ -1,109 +1,128 @@
-﻿$(function() {
-    $("#slider-range").slider({
-        range: true,
-        min: parseInt($("#product-price-range-min").val(),10),
-        max: parseInt($("#product-price-range-max").val(), 10),
-        values: [parseInt($("#product-price-range-min").val(), 10), parseInt($("#product-price-range-max").val(), 10)],
-        change: function(event, ui) {
-            $("#product-price-range-min-value").html(ui.values[0]);
-            $("#product-price-range-max-value").html(ui.values[1]);
-            search();
-        }
+﻿$(function () {
+    var History = window.History; // Note: We are using a capital H instead of a lower h
+    $(document).on('change', '#product-search-container input, #product-search-container select', function () {
+        var data = getData(1);
+
+        History.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
     });
-    $(document).on('change', "select[id*='product-option-values-']", function() {
-        search();
-    });
-    $(document).on('change', "select[id*='product-specification-values-']", function() {
-        search();
-    });
-    $(document).on('change', "#show #options", function() {
-        search();
-    });
-    $(document).on('change', "#PageSize", function() {
-        setStats();
-    });
-    $(document).on('change', "#TotalItemCount", function() {
-        setStats();
-    });
-    $(document).on('change', "#PageNumber", function() {
-        setStats();
-    });
-    $(document).on('change', "#product-sorting-options", function() {
-        search();
+    function getPage(href) {
+        var querystring = href.split('?')[1];
+        var parts = querystring.split('&');
+        return $.grep(parts, function (el, index) {
+            return el.split('=')[0] == "page";
+        })[0].split('=')[1];
+    }
+    $(document).on('click', '#product-results-container .pagination a', function () {
+        if ($(this).attr('href') === undefined)
+            return false;
+        var page = getPage($(this).attr('href'));
+        var data = getData(page);
+
+        History.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
+        return false;
     });
 
-    function search() {
-        $.get('/Apps/Ecommerce/ProductSearch/Results',
-            {
-                id: $("#Id").val(),
-                sortBy: $("#product-sorting-options").val(),
-                options: getOptionValues(),
-                specifications: getSpecificationValues(),
-                productPriceRangeMin: $("#product-price-range-min-value").html(),
-                productPriceRangeMax: $("#product-price-range-max-value").html(),
-                pageNo: 1,
-                pageSize: $("#show #options").val(),
-                searchTerm: $("#searchTerm").val()
-            }, function(products) {
-                products = products.replace(/\?action=ProductSearch/gi, $("#LiveUrlSegment").val() + "?action=ProductSearch");
-                $('#products-wrapper').replaceWith(products);
-                if ($('#PageSize').text() === "0" || $('#products .item').length === 0) {
-                    $('#stats').html("");
-                }
-            });
+    function getData(page) {
+        var specifications = $('#product-query-container select[name="Specifications"]').map(function (index, element) { return $(element).val(); }).toArray();
+        var options = $('#product-query-container select[name="Options"]').map(function (index, element) { return $(element).val(); }).toArray();
+        var sortBy = $('#SortBy').val();
+        var pageSize = $('#PageSize').val();
+        var categoryId = $('#CategoryId').val();
+
+        return {
+            Specifications: specifications.join(','),
+            Options: options.join(','),
+            SortBy: sortBy,
+            PageSize: pageSize,
+            CategoryId: categoryId,
+            PriceFrom: getFromValue(),
+            PriceTo: getToValue(),
+            Page: page
+        };
+    }
+    function getFromValue() {
+        var value = $("#slider-range").slider("values", 0);
+        return value == 0 ? null : value;
     }
 
-    function getOptionValues() {
-        var optionValues = "";
-        $("select[id *= 'product-option-values-']").each(function(index) {
-            if ($(this).val() !== "0") {
-                optionValues += $(this).val().toLowerCase() + ",";
+    function getToValue() {
+        var value = $("#slider-range").slider("values", 1);
+        return value == $('#MaxPrice').val() ? null : value;
+    }
+
+    function buildUpQueryString(data) {
+        var sortByDefault = $('#SortBy option').eq(0).val();
+        var pageSizeDefault = $('#PageSize option').eq(0).val();
+        if (data.Specifications.length == 0 && data.Options.length == 0
+            && data.SortBy == sortByDefault
+            && data.PageSize == pageSizeDefault
+            && data.PriceFrom == null
+            && data.PriceTo == null
+            && data.Page <= 1)
+            return "";
+        var queryString = "";
+        if (data.Specifications.length > 0) {
+            queryString += "Specifications=" + data.Specifications;
+        }
+        if (data.Options.length > 0) {
+            if (queryString.length > 0) queryString += "&";
+            queryString += "Options=" + data.Options;
+        }
+        if (data.SortBy != sortByDefault) {
+            if (queryString.length > 0) queryString += "&";
+            queryString += "SortBy=" + data.SortBy;
+        }
+        if (data.PageSize != pageSizeDefault) {
+            if (queryString.length > 0) queryString += "&";
+            queryString += "PageSize=" + data.PageSize;
+        }
+        if (data.PriceFrom != null) {
+            if (queryString.length > 0) queryString += "&";
+            queryString += "PriceFrom=" + data.PriceFrom;
+        }
+        if (data.PriceTo != null) {
+            if (queryString.length > 0) queryString += "&";
+            queryString += "PriceTo=" + data.PriceTo;
+        }
+        if (data.Page > 1) {
+            if (queryString.length > 0) queryString += "&";
+            queryString += "Page=" + data.Page;
+        }
+
+        return "?" + queryString;
+    }
+
+    // Bind to StateChange Event
+    History.Adapter.bind(window, 'statechange', function () { // Note: We are using statechange instead of popstate
+        var State = History.getState();
+        $.get('/search/query', State.data, function (response) {
+            $('#product-query-container').replaceWith(response);
+            initializeSlider();
+        });
+        $.get('/search/results', State.data, function (response) {
+            $('#product-results-container').replaceWith(response);
+            if ($(window).width() <= 767) {
+                $(document).scrollTop($("#product-results-container").offset().top);
             }
         });
-        return optionValues;
-    }
-
-    function getSpecificationValues() {
-        var specificationValues = "";
-        $("select[id *= 'product-specification-values-']").each(function(index) {
-            if ($(this).val() !== "0") {
-                specificationValues += $(this).val().toLowerCase() + ",";
+    });
+    function initializeSlider() {
+        $("#slider-range").slider({
+            range: true,
+            min: 0,
+            max: $('#MaxPrice').val(),
+            values: [parseInt($('#PriceFrom').val()), parseInt($('#PriceTo').val())],
+            slide: function (event, ui) {
+                $("#amount").text("£" + ui.values[0] + " - £" + ui.values[1]);
+            },
+            change: function (event, ui) {
+                var data = getData(1);
+                History.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
             }
         });
-        return specificationValues;
+        $("#amount").text("£" + $("#slider-range").slider("values", 0) +
+            " - £" + $("#slider-range").slider("values", 1));
     }
 
-    function setStats() {
-        var pageSize = parseInt($('#PageSize').text(), 10);
-        var pageNumber = parseInt($('#PageNumber').text(), 10);
-        var totalItemCount = parseInt($('#TotalItemCount').text(), 10);
-        if (!isNaN(pageSize)) {
-            if (pageSize === 1 && totalItemCount === 1) {
-                $('#stats').html("Showing 1 result");
-            } else {
-                var start;
-                if (pageSize === 1 && pageNumber === 1) {
-                    start = 1;
-                }
-                if (pageSize === 1 && pageNumber > 0) {
-                    start = (pageSize * pageNumber) - pageSize;
-                }
-                else {
-                    start = (pageSize * pageNumber) - pageSize + 1;
-                }
-                var end = (pageSize * pageNumber);
-
-                if ($('#PageSize').text() === "1") {
-                    $('#stats').html("Showing item #" + (start + 1) + " of " + totalItemCount + " results");
-                } else {
-                    $('#stats').html("Showing " + start + " - " + end + " of " + totalItemCount + " results");
-                }
-            }
-        }
-        else {
-            $('#stats').html("");
-        }
-    }
-
-    setStats();
+    initializeSlider();
 });

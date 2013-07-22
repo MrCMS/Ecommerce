@@ -26,7 +26,8 @@ namespace MrCMS.Indexing.Management
         public override IEnumerable<AbstractField> GetFields(T obj)
         {
             var values = GetValues(obj);
-            return values.Select(value => new NumericField(FieldName).SetDoubleValue(Convert.ToDouble((decimal) value)));
+            return values.Select(value => new NumericField(FieldName, Store, Index != Field.Index.NO).SetDoubleValue(
+                Convert.ToDouble(value)));
         }
     }
 }

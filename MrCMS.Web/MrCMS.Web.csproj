@@ -241,7 +241,11 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\EnumHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\GeneralHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Models\CategorySearchModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ProductOptionModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ProductValueModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\TrackingPolicy.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
@@ -1385,9 +1389,11 @@
     <Content Include="Apps\Ecommerce\Views\Shared\ProductCard.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\CalculationRow.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\PayPalExpressCheckoutSettings\View.cshtml" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\jquery.history.js" />
     <Content Include="Themes\Ecommerce\Views\Shared\Logo.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\ProductResults.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductSearch\Results.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_BaseLayout.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductSearch\Query.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -1820,6 +1826,7 @@
     <Content Include="Themes\Ecommerce\Views\Shared\UserLinks.cshtml" />
     <Content Include="Themes\Ecommerce\Views\Shared\SearchOptions.cshtml" />
     <Content Include="Themes\Ecommerce\Views\Shared\SearchSpecifications.cshtml" />
+    <Content Include="Themes\Ecommerce\Views\Shared\SearchCategories.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />

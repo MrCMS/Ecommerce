@@ -1,55 +1,69 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Indexes;
 using MrCMS.Helpers;
 using MrCMS.Indexing.Querying;
+using MrCMS.Indexing.Utils;
 using MrCMS.Models;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Indexing;
 using Lucene.Net.Search;
 using NHibernate;
-using MrCMS.Entities.Multisite;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public class ProductSearchService : IProductSearchService
     {
-        private readonly ISession _session;
         private readonly ISearcher<Product, ProductSearchIndex> _productSearcher;
-         private readonly CurrentSite _currentSite;
 
-         public ProductSearchService(ISession session, CurrentSite currentSite, ISearcher<Product, ProductSearchIndex> productSearcher)
+        public ProductSearchService(ISearcher<Product, ProductSearchIndex> productSearcher)
         {
-            _session = session;
-            _currentSite = currentSite;
             _productSearcher = productSearcher;
         }
-        public IPagedList<Product> SearchProducts(string searchTerm,string sortBy,List<string> options = null, List<string> specifications = null, decimal priceFrom = 0, decimal priceTo = 0, int page = 1, int pageSize = 10, int categoryId=0)
+
+        public IPagedList<Product> SearchProducts(ProductSearchQuery query)
         {
-            var searchQuery = new ProductSearchQuery(searchTerm,options, specifications, priceFrom, priceTo, categoryId);
-            Sort sort = null;
-            switch (sortBy)
-            {
-                case "1":
-                    sort = new Sort(new[] { SortField.FIELD_SCORE, SortField.FIELD_DOC });
-                    break;
-                case "2":
-                    sort = new Sort(new[] { SortField.FIELD_SCORE, new SortField("nameSort", SortField.STRING) });
-                    break;
-                case "3":
-                    sort = new Sort(new[] { SortField.FIELD_SCORE, new SortField("nameSort", SortField.STRING, true) });
-                    break;
-                case "4":
-                    sort = new Sort(new[] { SortField.FIELD_SCORE, new SortField("price", SortField.STRING, true) });
-                    break;
-                case "5":
-                    sort = new Sort(new[] { SortField.FIELD_SCORE, new SortField("price", SortField.STRING) });
-                    break;
-            }
-            return _productSearcher.Search(searchQuery.GetQuery(), page, pageSize, searchQuery.GetFilter(), sort);
+            return _productSearcher.Search(query.GetQuery(), query.Page, query.PageSize, query.GetFilter(), query.GetSort());
+        }
+
+        public double GetMaxPrice(ProductSearchQuery query)
+        {
+            var clone = query.Clone() as ProductSearchQuery;
+            clone.PriceTo = null;
+            var search = _productSearcher.IndexSearcher.Search(clone.GetQuery(), clone.GetFilter(), int.MaxValue);
+            var documents = search.ScoreDocs.Select(doc => _productSearcher.IndexSearcher.Doc(doc.Doc)).ToList();
+            var max = documents.Select(document => document.GetValue<decimal>(ProductSearchIndex.Price.FieldName)).Max();
+            return Convert.ToDouble(max);
+        }
+
+        public List<int> GetSpecifications(ProductSearchQuery query)
+        {
+            var clone = query.Clone() as ProductSearchQuery;
+            clone.Specifications = new List<int>();
+            var search = _productSearcher.IndexSearcher.Search(clone.GetQuery(), clone.GetFilter(), int.MaxValue);
+            var documents = search.ScoreDocs.Select(doc => _productSearcher.IndexSearcher.Doc(doc.Doc)).ToList();
+            return
+                documents.SelectMany(
+                    document =>
+                    document.GetValues(ProductSearchIndex.Specifications.FieldName).Select(s => Convert.ToInt32(s))).Distinct()
+                         .ToList();
+        }
+
+        public List<int> GetOptions(ProductSearchQuery query)
+        {
+            var clone = query.Clone() as ProductSearchQuery;
+            clone.Specifications = new List<int>();
+            var search = _productSearcher.IndexSearcher.Search(clone.GetQuery(), clone.GetFilter(), int.MaxValue);
+            var documents = search.ScoreDocs.Select(doc => _productSearcher.IndexSearcher.Doc(doc.Doc)).ToList();
+            return
+                documents.SelectMany(
+                    document =>
+                    document.GetValues(ProductSearchIndex.Options.FieldName).Select(s => Convert.ToInt32(s))).Distinct()
+                         .ToList();
         }
     }
 }

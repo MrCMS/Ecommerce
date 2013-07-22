@@ -1,44 +1,87 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Web.Mvc;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using MrCMS.Entities.Indexes;
+using MrCMS.Helpers;
 using MrCMS.Indexing.Management;
 using MrCMS.Paging;
+using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using Version = Lucene.Net.Util.Version;
 using MrCMS.Web.Apps.Ecommerce.Indexing;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using Filter = Lucene.Net.Search.Filter;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public interface IProductSearchService
     {
-        IPagedList<Product> SearchProducts(string searchTerm, string sortBy, List<string> options = null, List<string> specifications = null, decimal priceFrom = 0, decimal priceTo = 0, int page = 1, int pageSize = 10, int categoryId = 0);
+        IPagedList<Product> SearchProducts(ProductSearchQuery query);
+        double GetMaxPrice(ProductSearchQuery query);
+        List<int> GetSpecifications(ProductSearchQuery query);
+        List<int> GetOptions(ProductSearchQuery query);
     }
 
     public class ProductSearchQuery : ICloneable
     {
-        public List<string> Options { get; set; }
-        public List<string> Specifications { get; set; }
-        public double PriceFrom { get; set; }
-        public double PriceTo { get; set; }
-        public int CategoryId { get; set; }
-        public string SearchTerm { get; set; }
-
-        public ProductSearchQuery(string searchTerm = "", List<string> options = null, List<string> specifications = null, decimal priceFrom = 0, decimal priceTo = 0, int categoryId = 0)
+        public ProductSearchQuery()
         {
-            if (categoryId != 0)
-                CategoryId = categoryId;
-            Options = options ?? new List<string>();
-            Specifications = specifications ?? new List<string>();
-            PriceFrom = Double.Parse(priceFrom.ToString());
-            PriceTo = Double.Parse(priceTo.ToString());
-            SearchTerm = searchTerm;
+            Options = new List<int>();
+            Specifications = new List<int>();
+            Page = 1;
+            PageSize = 10;
+        }
+
+        public double MaxPrice
+        {
+            get
+            {
+                return MrCMSApplication.Get<IProductSearchService>().GetMaxPrice(this);
+            }
+        }
+
+        public List<int> Options { get; set; }
+        public List<int> Specifications { get; set; }
+        public double PriceFrom { get; set; }
+        public double? PriceTo { get; set; }
+        public int? CategoryId { get; set; }
+        public string SearchTerm { get; set; }
+        public int Page { get; set; }
+        public int PageSize { get; set; }
+
+        public ProductSearchSort SortBy { get; set; }
+
+        public IEnumerable<SelectListItem> PerPageOptions
+        {
+            get
+            {
+                var options = MrCMSApplication.Get<EcommerceSettings>().SearchProductsPerPage.Split(',').Where(s =>
+                {
+                    int result;
+                    return int.TryParse(s, out result);
+                }).Select(s => Convert.ToInt32(s));
+                return options.BuildSelectItemList(i => string.Format("{0} products per page", i), i => i.ToString(),
+                                                   i => i == PageSize, emptyItem: null);
+            }
+        }
+        public IEnumerable<SelectListItem> SortByOptions
+        {
+            get
+            {
+                return Enum.GetValues(typeof(ProductSearchSort))
+                           .Cast<ProductSearchSort>()
+                           .BuildSelectItemList(sort => sort.GetDescription(), sort => Convert.ToInt32(sort).ToString(),
+                                                sort => sort == SortBy, emptyItem: null);
+            }
         }
 
         public Filter GetFilter()
@@ -51,7 +94,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public Query GetQuery()
         {
-            if (!Options.Any() && !Specifications.Any() && PriceFrom == 0 && PriceTo == 0 && CategoryId == 0 && String.IsNullOrWhiteSpace(SearchTerm))
+            if (!Options.Any() && !Specifications.Any() && Math.Abs(PriceFrom - 0) < 0.01 && !PriceTo.HasValue && !CategoryId.HasValue && string.IsNullOrWhiteSpace(SearchTerm))
                 return new MatchAllDocsQuery();
 
             var booleanQuery = new BooleanQuery();
@@ -59,12 +102,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 booleanQuery.Add(GetOptionsQuery(), Occur.MUST);
             if (Specifications.Any())
                 booleanQuery.Add(GetSpecificationsQuery(), Occur.MUST);
-            if (PriceFrom >= 0 && PriceTo != 0)
-                booleanQuery.Add(GetPriceRangeQuery(), Occur.MUST);
-            if (PriceFrom >= 0 && PriceTo != 0)
-                booleanQuery.Add(GetPriceRangeQuery(), Occur.MUST);
-            if (CategoryId != 0)
+            if (CategoryId.HasValue)
                 booleanQuery.Add(GetCategoriesQuery(), Occur.MUST);
+            if (PriceFrom > 0 || PriceTo.HasValue)
+                booleanQuery.Add(GetPriceRangeQuery(), Occur.MUST);
             if (!String.IsNullOrWhiteSpace(SearchTerm))
             {
                 var fuzzySearchTerm = MakeFuzzy(SearchTerm);
@@ -85,7 +126,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             BooleanQuery query = new BooleanQuery();
 
             foreach (var type in Options)
-                query.Add(new TermQuery(new Term(ProductSearchIndex.Options.FieldName, type)), Occur.MUST);
+                query.Add(new TermQuery(new Term(ProductSearchIndex.Options.FieldName, type.ToString())), Occur.MUST);
 
             return query;
         }
@@ -95,7 +136,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var booleanQuery = new BooleanQuery();
 
             foreach (var type in Specifications)
-                booleanQuery.Add(new TermQuery(new Term(ProductSearchIndex.Specifications.FieldName, type)),
+                booleanQuery.Add(new TermQuery(new Term(ProductSearchIndex.Specifications.FieldName, type.ToString())),
                                  Occur.MUST);
 
             return booleanQuery;
@@ -118,24 +159,57 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                        {
                                            NumericRangeQuery.NewDoubleRange(
                                                ProductSearchIndex.Price.FieldName,
-                                               PriceFrom, PriceTo, true, true),
+                                               PriceFrom, PriceTo, true, PriceTo.HasValue),
                                            Occur.MUST
                                        }
                                    };
             return booleanQuery;
         }
 
+        public Sort GetSort()
+        {
+            switch (SortBy)
+            {
+                case ProductSearchSort.NameAToZ:
+                    return new Sort(new[] { SortField.FIELD_SCORE, new SortField("nameSort", SortField.STRING) });
+                case ProductSearchSort.NameZToA:
+                    return new Sort(new[] { SortField.FIELD_SCORE, new SortField("nameSort", SortField.STRING, true) });
+                case ProductSearchSort.PriceLowToHigh:
+                    return new Sort(new[] { SortField.FIELD_SCORE, new SortField("price", SortField.DOUBLE) });
+                case ProductSearchSort.PriceHighToLow:
+                    return new Sort(new[] { SortField.FIELD_SCORE, new SortField("price", SortField.DOUBLE, true) });
+                default:
+                    return Sort.RELEVANCE;
+            }
+        }
+
         public object Clone()
         {
             return new ProductSearchQuery
-            {
-                SearchTerm = SearchTerm,
-                Specifications = Specifications,
-                Options = Options,
-                PriceFrom = PriceFrom,
-                PriceTo = PriceTo,
-                CategoryId = CategoryId
-            };
+                       {
+                           CategoryId = CategoryId,
+                           Options = Options,
+                           Page = Page,
+                           PageSize = PageSize,
+                           PriceFrom = PriceFrom,
+                           PriceTo = PriceTo,
+                           SearchTerm = SearchTerm,
+                           SortBy = SortBy,
+                           Specifications = Specifications
+                       };
         }
+    }
+
+    public enum ProductSearchSort
+    {
+        Relevance = 1,
+        [Description("Name A-Z")]
+        NameAToZ = 2,
+        [Description("Name Z-A")]
+        NameZToA = 3,
+        [Description("Price Low-High")]
+        PriceLowToHigh = 4,
+        [Description("Price High-Low")]
+        PriceHighToLow = 5,
     }
 }

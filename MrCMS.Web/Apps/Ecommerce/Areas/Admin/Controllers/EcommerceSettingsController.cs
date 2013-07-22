@@ -23,8 +23,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Edit()
         {
-            if (_ecommerceSettings.CategoryProductsPerPage == String.Empty)
-                _ecommerceSettings.CategoryProductsPerPage = "12,20,40";
+            if (_ecommerceSettings.SearchProductsPerPage == String.Empty)
+                _ecommerceSettings.SearchProductsPerPage = "12,20,40";
             if (_ecommerceSettings.PageSizeAdmin == 0)
                 _ecommerceSettings.PageSizeAdmin = 20;
             return View(_ecommerceSettings);

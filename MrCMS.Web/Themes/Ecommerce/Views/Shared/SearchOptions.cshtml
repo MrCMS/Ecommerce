@@ -1,4 +1,7 @@
-﻿@model List<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductAttributeOption>
+﻿@using MrCMS.Web.Apps.Ecommerce.Services.Products
+@model List<MrCMS.Web.Apps.Ecommerce.Models.ProductOptionModel>
+@{ var query = ViewData["query"] as ProductSearchQuery;}
+
 <div class="product-filter-box-title">
     Filter by Options
 </div>
@@ -6,16 +9,17 @@
     <ul id="product-filter-box-options" class="nav nav-tabs nav-stacked ">
         @foreach (var option in Model)
         {
-            if (option.Values.Select(x => x.Value).Distinct().Any())
+            if (option.Values.Any())
             {
             <li>
-                @option.Name
-                <br />
-                <select id="@(Html.Encode("product-option-values-" + option.Name))" class="span12">
-                    <option value="0">All</option>
-                    @foreach (var optionValue in option.Values.Select(x => x.Value).Distinct())
+                <label for="options-@option.Id">@option.Name</label>
+                <select name="Options" id="options-@option.Id" class="span12">
+                    <option value="">All</option>
+                    @foreach (var optionValue in option.Values)
                     {
-                        <option value="@Html.Encode(option.Name + optionValue)">@optionValue</option>
+                        <option value="@optionValue.Id"@(query.Options.Contains(optionValue.Id) ? " selected=\"selected\"" : string.Empty)>
+                            @optionValue.Name
+                        </option>
                     }
                 </select>
             </li>

@@ -1,0 +1,58 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Entities.Products
+@using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@using MrCMS.Web.Apps.Ecommerce.Services.Products
+@model MrCMS.Web.Apps.Ecommerce.Services.Products.ProductSearchQuery
+@{
+    var categories = ViewData["categories"] as CategorySearchModel;
+    var options = ViewData["product-options"] as List<ProductOptionModel>;
+    var specifications = ViewData["product-specifications"] as List<ProductOptionModel>;
+}
+<div class="span3" id="product-query-container">
+    <div class="product-filter-box-title">
+        Filter by Category
+    </div>
+    <div class="row-fluid">
+        @Html.HiddenFor(query => query.CategoryId)
+        <ul class="nav nav-tabs nav-stacked ">
+            @{ var depth = 0;}
+            @if (categories.Hierarchy.Any())
+            {
+                <li>
+                    <a href="@(UniquePageHelper.GetUrl<ProductSearch>())">Products<i class="icon-chevron-right pull-right"></i></a>
+                </li>
+                depth++;
+            }
+            @foreach (var parent in categories.Hierarchy)
+            {
+                <li>
+                    <a href="/@parent.LiveUrlSegment">@string.Format("{0} {1}", new string('-', depth), parent.Name) <i class="icon-chevron-right pull-right"></i></a>
+                </li>              
+                depth++;
+            }
+            @foreach (var item in categories.Children)
+            {
+                <li>
+                    <a href="/@item.LiveUrlSegment">@string.Format("{0} {1}", new string('-', depth), item.Name) <i class="icon-chevron-right pull-right"></i></a>
+                </li>
+            }
+        </ul>
+    </div>
+    <br />
+    <div class="product-filter-box-title">
+        Filter by Price
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            @Html.HiddenFor(query => query.PriceFrom)
+            @Html.Hidden("PriceTo", Model.PriceTo ?? Model.MaxPrice)
+            @Html.HiddenFor(query => query.MaxPrice)
+            <span id="amount"></span>
+            <div id="slider-range"></div>
+            <br />
+        </div>
+    </div>
+    @{ Html.RenderPartial("SearchOptions", new ViewDataDictionary(options) { { "query", Model } }); }
+    @{ Html.RenderPartial("SearchSpecifications", new ViewDataDictionary(specifications) { { "query", Model } }); }
+</div>

@@ -14,5 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         IList<Category> GetAll();
         CategoryContainer GetSiteCategoryContainer();
         Category Get(int id);
+        List<Category> GetRootCategories();
+        CategorySearchModel GetCategoriesForSearch(int? categoryId);
     }
 }

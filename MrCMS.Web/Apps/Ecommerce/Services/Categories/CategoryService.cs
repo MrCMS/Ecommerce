@@ -81,6 +81,39 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         {
             return _session.QueryOver<Category>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
         }
+
+        public List<Category> GetRootCategories()
+        {
+            var categoryContainer = _documentService.GetUniquePage<CategoryContainer>();
+            return categoryContainer.PublishedChildren.OfType<Category>().ToList();
+        }
+
+        public CategorySearchModel GetCategoriesForSearch(int? categoryId)
+        {
+            if (!categoryId.HasValue)
+                return GetRootCategoryModel();
+
+            var category = _session.Get<Category>(categoryId);
+            var categories = category.PublishedChildren.OfType<Category>().ToList();
+            var hierarchy = category.ActivePages.OfType<Category>().ToList();
+            hierarchy.Reverse();
+            return new CategorySearchModel
+                       {
+                           Children = categories,
+                           Hierarchy = hierarchy
+                       };
+        }
+
+        private CategorySearchModel GetRootCategoryModel()
+        {
+            var categoryContainer = _documentService.GetUniquePage<CategoryContainer>();
+            var categories = categoryContainer.PublishedChildren.OfType<Category>().ToList();
+            return new CategorySearchModel
+                       {
+                           Children = categories
+                       };
+        }
+
         public CategoryContainer GetSiteCategoryContainer()
         {
             IList<CategoryContainer> categoryContainers = _session.QueryOver<CategoryContainer>().Where(x => x.Site == _currentSite.Site).Cacheable().List();
