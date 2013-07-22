@@ -242,7 +242,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\GeneralHelper.cs" />
-    <Compile Include="Apps\Ecommerce\Models\TaxAwareShippingCost.cs" />
+    <Compile Include="Apps\Ecommerce\Models\TaxAwareShippingRate.cs" />
     <Compile Include="Apps\Ecommerce\Models\TrackingPolicy.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
