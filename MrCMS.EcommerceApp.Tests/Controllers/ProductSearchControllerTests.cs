@@ -38,7 +38,7 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
         {
             var productSearch = GetProductSearch();
 
-            var show = _controller.Show(productSearch);
+            var show = _controller.Show(productSearch, new ProductSearchQuery());
 
             show.Should().BeOfType<ViewResult>();
         }
@@ -48,7 +48,7 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
         {
             var productSearch = GetProductSearch();
 
-            var show = _controller.Show(productSearch);
+            var show = _controller.Show(productSearch, new ProductSearchQuery());
 
             show.Model.Should().BeOfType<ProductSearch>();
         }

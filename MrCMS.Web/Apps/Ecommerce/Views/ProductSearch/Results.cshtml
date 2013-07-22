@@ -1,0 +1,43 @@
+﻿﻿@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Ecommerce.Pages.Product>
+@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Services.Products
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@{
+    var query = ViewData["query"] as ProductSearchQuery;
+}
+<div class="span9" id="product-results-container">
+    <div id="products-operations">
+        <div id="stats" class="pull-left">
+            Showing @(Model.PageSize > 1 ? Model.FirstItemOnPage + " - " + Model.LastItemOnPage : Model.PageNumber.ToString()) of @Model.TotalItemCount
+        </div>
+        <div id="show" class="pull-right">
+            <label for="PageSize">Show</label>
+            @Html.DropDownList("PageSize", query.PerPageOptions)
+        </div>
+        <div id="sorting" class="pull-right">
+            <label for="SortBy">Sort by</label>
+            @Html.DropDownList("SortBy", query.SortByOptions)
+        </div>
+    </div>
+    <div id="products-wrapper">
+        @if (Model.Any())
+        {
+            <div class="row-fluid">
+                <div id="products">
+                    @foreach (var product in Model)
+                    {
+                        Html.RenderPartial("ProductCard", product);
+                    }
+                </div>
+            </div>
+            <div id="products-paging">
+                @Html.PageCurrentPage(Model, i => new { page = i }, PagedListRenderOptions.OnlyShowFivePagesAtATime)
+            </div>
+
+        }
+        else
+        {
+            <text>No products to display, please refine your search.</text>
+        }
+    </div>
+</div>

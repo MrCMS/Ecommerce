@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Models;
 
@@ -42,5 +43,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         bool AnyExistingAttributeOptionsWithName(ProductAttributeOption option);
         bool AnyExistingAttributeOptionsWithName(string name, int id);
         bool AnyExistingAttributeOptionsWithName(string name);
+        
+        List<ProductOptionModel> GetSearchAttributeOptions(List<int> values);
+        List<ProductOptionModel> GetSearchSpecificationAttributes(List<int> optionValues);
     }
 }

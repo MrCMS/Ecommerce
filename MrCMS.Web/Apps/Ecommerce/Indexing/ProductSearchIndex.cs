@@ -14,8 +14,6 @@ using MrCMS.Indexing.Utils;
 using MrCMS.Helpers;
 using NHibernate.Criterion;
 using Version = Lucene.Net.Util.Version;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using System.Collections;
 
 namespace MrCMS.Web.Apps.Ecommerce.Indexing
 {
@@ -135,51 +133,48 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                                          Field.Index.NOT_ANALYZED);
 
         private static readonly DecimalFieldDefinition<Product> _price =
-            new DecimalFieldDefinition<Product>("price", webpage => GetPrice(webpage), Field.Store.NO,
+            new DecimalFieldDefinition<Product>("price", product => GetPrices(product), Field.Store.YES,
                                          Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Product> _specifications =
           new StringFieldDefinition<Product>("specifications",
                                          product =>
-                                         product.SpecificationValues.Distinct().Select(specification => GetSpecificationValue(specification)),
-                                       Field.Store.NO, Field.Index.NOT_ANALYZED);
+                                         product.SpecificationValues.Select(value => value.Id.ToString()).Distinct(),
+                                       Field.Store.YES, Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Product> _options =
             new StringFieldDefinition<Product>("options",
                                                product =>
-                                               product.Variants.Distinct().Select(option => GetOptionValues(option.AttributeValues)),
-                                               Field.Store.NO, Field.Index.NOT_ANALYZED);
+                                               product.Variants.SelectMany(variant => variant.AttributeValues.Select(value => value.Id)).Select(i => i.ToString()),
+                                               Field.Store.YES, Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Product> _categories =
             new StringFieldDefinition<Product>("categories",
                                                product =>
-                                               product.Categories.Distinct().Select(category => category.Id.ToString()),
+                                               GetCategories(product.Categories),
                                                Field.Store.NO, Field.Index.NOT_ANALYZED);
 
-        public static IEnumerable<decimal> GetPrice(Product entity)
+        private static IEnumerable<string> GetCategories(IEnumerable<Category> categories)
+        {
+            var list = new List<Category>();
+            list.AddRange(categories.SelectMany(GetCategoryHierarchy));
+            return list.Distinct().Select(category => category.Id.ToString());
+        }
+
+        private static IEnumerable<Category> GetCategoryHierarchy(Category category)
+        {
+            yield return category;
+            var parent = category.Parent.Unproxy() as Category;
+            while (parent != null)
+            {
+                yield return parent;
+                parent = parent.Parent.Unproxy() as Category;
+            }
+        }
+
+        public static IEnumerable<decimal> GetPrices(Product entity)
         {
             return entity.Variants.Select(pv => pv.Price);
-        }
-
-        public static string GetOptionValues(IList<ProductAttributeValue> values)
-        {
-            string optionValues = String.Empty;
-            if (values.Count() > 0)
-            {
-                foreach (var item in values)
-                {
-                    optionValues += item.ProductAttributeOption.Name.ToLower() + item.Value.ToLower() + ",";
-                }
-            }
-            return optionValues;
-        }
-
-        public static string GetSpecificationValue(ProductSpecificationValue entity)
-        {
-            return entity != null
-                       ? entity.ProductSpecificationAttributeOption.ProductSpecificationAttribute.Name.ToLower() + ":" +
-                         entity.Value.ToLower()
-                       : String.Empty;
         }
     }
 }

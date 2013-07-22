@@ -19,7 +19,7 @@
 
             <span>Exclusive price</span>
             <h1 class="product-price">
-                @Model.DisplayPrice
+                @Html.DisplayFor(product => product.DisplayPrice)
             </h1>
             @if (Model.DisplayPreviousPrice.HasValue)
             {

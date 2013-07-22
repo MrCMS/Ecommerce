@@ -3,6 +3,7 @@ using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using NHibernate.Criterion;
@@ -317,6 +318,58 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                option =>
                                option.Name.IsInsensitiveLike(name, MatchMode.Exact))
                            .RowCount() > 0;
+        }
+
+        public List<ProductOptionModel> GetSearchAttributeOptions(List<int> values)
+        {
+            var productAttributeValues = _session.QueryOver<ProductAttributeValue>().Fetch(value => value.ProductAttributeOption).Eager.Where(value => value.Id.IsIn(values)).Cacheable().List();
+
+            var productAttributeOptions = productAttributeValues.Select(value => value.ProductAttributeOption).Distinct().ToList();
+
+            return productAttributeOptions.Select(option => new ProductOptionModel
+                                                                {
+                                                                    Name = option.Name,
+                                                                    Id = option.Id,
+                                                                    Values =
+                                                                        productAttributeValues.Where(
+                                                                            value =>
+                                                                            value.ProductAttributeOption == option)
+                                                                                              .Distinct()
+                                                                                              .Select(
+                                                                                                  value =>
+                                                                                                  new ProductValueModel
+                                                                                                      {
+                                                                                                          Name = value.Value,
+                                                                                                          Id = value.Id
+                                                                                                      }).ToList()
+                                                                }).ToList();
+        }
+
+        public List<ProductOptionModel> GetSearchSpecificationAttributes(List<int> optionValues)
+        {
+            var productSpecificationAttributeOptions = _session.QueryOver<ProductSpecificationAttributeOption>().Fetch(value => value.ProductSpecificationAttribute).Eager.Where(option => option.Id.IsIn(optionValues)).Cacheable().List();
+            var productSpecificationAttributes = productSpecificationAttributeOptions.Select(value => value.ProductSpecificationAttribute).Distinct().ToList();
+
+            return productSpecificationAttributes.Select(attribute => new ProductOptionModel
+                                                                          {
+                                                                              Name = attribute.Name,
+                                                                              Id = attribute.Id,
+                                                                              Values =
+                                                                                  productSpecificationAttributeOptions
+                                                                                  .Where(
+                                                                                      value =>
+                                                                                      value
+                                                                                          .ProductSpecificationAttribute ==
+                                                                                      attribute)
+                                                                                  .Distinct()
+                                                                                  .Select(
+                                                                                      value =>
+                                                                                      new ProductValueModel
+                                                                                          {
+                                                                                              Name = value.Name,
+                                                                                              Id = value.Id
+                                                                                          }).ToList()
+                                                                          }).ToList();
         }
     }
 }

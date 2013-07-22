@@ -9,13 +9,14 @@ using MrCMS.Installation;
 using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Core.Widgets;
-using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using Ninject;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Settings;
+using ProductController = MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers.ProductController;
 
 namespace MrCMS.Web.Apps.Ecommerce
 {
@@ -45,8 +46,6 @@ namespace MrCMS.Web.Apps.Ecommerce
                                  new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                                  new[] { typeof(ProductController).Namespace });
             context.MapRoute("Product Variant - GetPriceBreaksForProductVariant", "Apps/Ecommerce/ProductVariant/GetPriceBreaksForProductVariant", new { controller = "ProductVariant", action = "GetPriceBreaksForProductVariant" });
-            context.MapRoute("Product Search - Results", "Apps/Ecommerce/ProductSearch/Results", new { controller = "ProductSearch", action = "Results" });
-            context.MapRoute("Category - Results", "Apps/Ecommerce/Category/Results", new { controller = "Category", action = "Results" });
             context.MapRoute("Cart - Details", "Apps/Ecommerce/Cart/Details", new { controller = "Cart", action = "Details" });
             context.MapRoute("Cart - Update Quantity", "Apps/Ecommerce/Cart/UpdateQuantity", new { controller = "Cart", action = "UpdateQuantity" });
             context.MapRoute("Cart - Basic Details", "Apps/Ecommerce/Cart/BasicDetails", new { controller = "Cart", action = "BasicDetails" });
@@ -80,8 +79,16 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("User Update Account", "Apps/Ecommerce/UserAccount/UpdateAccount", new { controller = "UserAccount", action = "UpdateAccount" });
             context.MapRoute("PayPal Express Checkout - SetExpressCheckout",
                              "Apps/Ecommerce/PayPalExpress/SetExpressCheckout",
-                             new {controller = "PayPalExpressCheckout", action = "SetExpressCheckout"},
-                             new[] {typeof (PayPalExpressCheckoutSettingsController).Namespace});
+                             new { controller = "PayPalExpressCheckout", action = "SetExpressCheckout" },
+                             new[] { typeof(PayPalExpressCheckoutController).Namespace });
+            context.MapRoute("Product Search - Query",
+                             "search/query",
+                             new { controller = "ProductSearch", action = "Query" },
+                             new[] { typeof(ProductSearchController).Namespace });
+            context.MapRoute("Product Search - Results",
+                             "search/results",
+                             new { controller = "ProductSearch", action = "Results" },
+                             new[] { typeof(ProductSearchController).Namespace });
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
@@ -136,12 +143,12 @@ namespace MrCMS.Web.Apps.Ecommerce
                     Text = GetFooterLinksText()
                 };
             widgetService.AddWidget(footerLinksWidget);
-            
+
 
             siteSettings.DefaultLayoutId = layout.Id;
             siteSettings.ThemeName = "Ecommerce";
             configurationProvider.SaveSettings(siteSettings);
-            ecommerceSettings.CategoryProductsPerPage = "12,20,40";
+            ecommerceSettings.SearchProductsPerPage = "12,20,40";
             ecommerceSettings.PageSizeAdmin = 20;
             configurationProvider.SaveSettings(ecommerceSettings);
             var checkoutLayout = new Layout
@@ -236,7 +243,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 PublishOn = DateTime.UtcNow
             };
             documentService.AddDocument(registration);
-            
+
         }
 
         private string GetFooterLinksText()
