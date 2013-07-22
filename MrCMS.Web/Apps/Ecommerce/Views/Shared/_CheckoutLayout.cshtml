@@ -1,0 +1,55 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Settings
+@using MrCMS.Website
+@model MrCMS.Entities.Documents.Web.Webpage
+@{
+    Layout = "_BaseLayout.cshtml";
+    var currentPage = CurrentRequestData.CurrentPage;
+    var activePages = currentPage.ActivePages.Select(webpage => webpage.DocumentType).ToList();
+}
+
+<div class="container">
+    <div class="row-fluid margin-bottom-10">
+        <div class="span4">
+            @{Html.RenderPartial("Logo");}
+        </div>
+        <div class="span8">
+            <div id="checkout-nav-buttons">
+                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())" class="btn btn-large btn-info" >Basket
+                </a>
+                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-large btn-info" >Return to shop
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div id="checkout" class="wizard">
+                <ul class="steps">
+                    <li class="span2 @(activePages.Contains("EnterOrderEmail", StringComparer.OrdinalIgnoreCase) ? "active" : "")">
+                        <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Welcome
+                        </a>
+                        <span class="chevron"></span></li>
+                    <li class="span2 @(activePages.Contains("SetDeliveryDetails", StringComparer.OrdinalIgnoreCase) ? "active" : "")">Delivery
+                                <span class="chevron"></span></li>
+                    <li class="span2 @(activePages.Contains("PaymentDetails", StringComparer.OrdinalIgnoreCase) ? "active" : "")">Payment
+                                <span class="chevron"></span></li>
+                    <li class="span2 @(activePages.Contains("OrderPlaced", StringComparer.OrdinalIgnoreCase) ? "active" : "")">Receipt
+                                <span class="chevron"></span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+

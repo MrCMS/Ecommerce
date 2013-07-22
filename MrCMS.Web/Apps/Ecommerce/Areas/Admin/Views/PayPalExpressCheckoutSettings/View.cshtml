@@ -1,0 +1,50 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress.PayPalExpressCheckoutSettings
+@{
+    ViewBag.Title = "PayPal Express Checkout Settings";
+}
+@using (Html.BeginForm("Save", "PayPalExpressCheckoutSettings", FormMethod.Post))
+{
+    <fieldset>
+        <legend>PayPal Express Checkout Settings
+        
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </span>
+        </legend>
+        @Html.InlineCheckboxFor(settings => settings.Enabled, null, null)
+
+        @Html.InlineCheckboxFor(settings => settings.IsLive, null, null)
+
+        @Html.LabelFor(settings => settings.LocaleCode)
+        @Html.TextBoxFor(settings => settings.LocaleCode)
+
+        @Html.LabelFor(settings => settings.LogoImageURL)
+        @Html.TextBoxFor(settings => settings.LogoImageURL)
+
+        @Html.LabelFor(settings => settings.CartBorderColor)
+        @Html.TextBoxFor(settings => settings.CartBorderColor)
+
+        @Html.InlineCheckboxFor(settings => settings.RequireConfirmedShippingAddress, null, null)
+
+        @Html.InlineCheckboxFor(settings => settings.HaveBusinessAccount, null, null)
+
+        @Html.LabelFor(settings => settings.UserName)
+        @Html.TextBoxFor(settings => settings.UserName)
+
+        @Html.LabelFor(settings => settings.Password)
+        @Html.TextBoxFor(settings => settings.Password)
+
+        @Html.LabelFor(settings => settings.Signature)
+        @Html.TextBoxFor(settings => settings.Signature)
+
+        @Html.LabelFor(settings => settings.SubjectEmailAddress)
+        @Html.TextBoxFor(settings => settings.SubjectEmailAddress)
+
+        @Html.LabelFor(settings => settings.Currency)
+        @Html.DropDownListFor(settings => settings.Currency, Model.CurrencyOptions)
+
+        @Html.LabelFor(settings => settings.PaymentAction)
+        @Html.DropDownListFor(settings => settings.PaymentAction, Model.PaymentActionOptions)
+    </fieldset>
+}

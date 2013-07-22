@@ -14,7 +14,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using Ninject;
-using MrCMS.Helpers;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 
@@ -32,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce
 
         }
 
-        public override System.Collections.Generic.IEnumerable<System.Type> BaseTypes
+        public override IEnumerable<Type> BaseTypes
         {
             get
             {
@@ -79,6 +78,10 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("User Account Details", "Apps/Ecommerce/UserAccount/UserAccountDetails", new { controller = "UserAccount", action = "UserAccountDetails" });
             context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders", new { controller = "UserAccount", action = "UserAccountOrders" });
             context.MapRoute("User Update Account", "Apps/Ecommerce/UserAccount/UpdateAccount", new { controller = "UserAccount", action = "UpdateAccount" });
+            context.MapRoute("PayPal Express Checkout - SetExpressCheckout",
+                             "Apps/Ecommerce/PayPalExpress/SetExpressCheckout",
+                             new {controller = "PayPalExpressCheckout", action = "SetExpressCheckout"},
+                             new[] {typeof (PayPalExpressCheckoutSettingsController).Namespace});
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
@@ -109,7 +112,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var layout = new Layout
                              {
                                  Name = "Ecommerce Layout",
-                                 UrlSegment = "~/Themes/Ecommerce/Apps/Ecommerce/Views/Shared/_EcommerceLayout.cshtml",
+                                 UrlSegment = "~/Apps/Ecommerce/Views/Shared/_EcommerceLayout.cshtml",
                                  LayoutAreas = new List<LayoutArea>()
                              };
             var areas = new List<LayoutArea>
@@ -144,7 +147,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var checkoutLayout = new Layout
             {
                 Name = "Checkout Layout",
-                UrlSegment = "~/Themes/Ecommerce/Apps/Ecommerce/Views/Shared/_CheckoutLayout.cshtml",
+                UrlSegment = "~/Apps/Ecommerce/Views/Shared/_CheckoutLayout.cshtml",
                 LayoutAreas = new List<LayoutArea>()
             };
             documentService.AddDocument(checkoutLayout);
@@ -172,7 +175,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = true,
                 Parent = yourBasket,
                 DisplayOrder = 0,
-                PublishOn = DateTime.UtcNow
+                PublishOn = DateTime.UtcNow,
+                Layout = checkoutLayout
             };
             documentService.AddDocument(enterOrderEmail);
             var setPaymentDetails = new PaymentDetails
@@ -182,7 +186,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = true,
                 Parent = yourBasket,
                 DisplayOrder = 1,
-                PublishOn = DateTime.UtcNow
+                PublishOn = DateTime.UtcNow,
+                Layout = checkoutLayout
             };
             documentService.AddDocument(setPaymentDetails);
             var setDeliveryDetails = new SetDeliveryDetails
@@ -192,7 +197,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = true,
                 Parent = yourBasket,
                 DisplayOrder = 2,
-                PublishOn = DateTime.UtcNow
+                PublishOn = DateTime.UtcNow,
+                Layout = checkoutLayout
             };
             documentService.AddDocument(setDeliveryDetails);
             var orderPlaced = new OrderPlaced
@@ -202,7 +208,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = true,
                 Parent = yourBasket,
                 DisplayOrder = 3,
-                PublishOn = DateTime.UtcNow
+                PublishOn = DateTime.UtcNow,
+                Layout = checkoutLayout
             };
             documentService.AddDocument(orderPlaced);
             var myAccount = new UserAccount
