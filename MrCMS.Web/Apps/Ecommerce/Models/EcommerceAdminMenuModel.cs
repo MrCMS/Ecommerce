@@ -27,7 +27,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                         new ChildMenuItem("Product Specification Attributes",
                                                                           "/Admin/Apps/Ecommerce/ProductSpecificationAttribute"),
                                                         new ChildMenuItem("Discounts", "/Admin/Apps/Ecommerce/Discount"),
-                                                        new ChildMenuItem("Currencies", "/Admin/Apps/Ecommerce/Currency"),
                                                         
                                                     }
                                             },
@@ -47,6 +46,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                     {
                                                          new ChildMenuItem("Global Settings",
                                                                           "/Admin/Apps/Ecommerce/EcommerceSettings/Edit"),
+                                                        new ChildMenuItem("Currencies", "/Admin/Apps/Ecommerce/Currency"),
                                                         new ChildMenuItem("Geographic Data",
                                                                           "/Admin/Apps/Ecommerce/Country"),
                                                         new ChildMenuItem("Taxes", "/Admin/Apps/Ecommerce/TaxRate"),
