@@ -81,8 +81,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                 OrderEmail=cartModel.OrderEmail,
                                 CustomerIP=ip
                             };
-            _session.Transact(session => session.SaveOrUpdate(order));
-            order = Get(order.Id); 
+
             foreach (var item in cartModel.Items)
             {
                 var options =  string.Join(", ",item.Item.AttributeValues.Select(value => value.FormattedValue)))
@@ -103,7 +102,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 });
             }
             _session.Transact(session => session.SaveOrUpdate(order));
-            _session.Evict(typeof(Order));
             _cartManager.EmptyBasket();
             return order.Id;
         }
