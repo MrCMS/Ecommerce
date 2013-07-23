@@ -198,6 +198,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\CartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\GoogleAnalyticsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PayPalExpressCheckoutController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserRegistrationController.cs" />
@@ -1412,6 +1413,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\AnalyticsCode.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
