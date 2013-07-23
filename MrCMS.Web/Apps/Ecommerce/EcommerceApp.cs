@@ -49,8 +49,11 @@ namespace MrCMS.Web.Apps.Ecommerce
                                  new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                                  new[] { typeof(ProductController).Namespace });
             context.MapRoute("Product Variant - GetPriceBreaksForProductVariant", "Apps/Ecommerce/ProductVariant/GetPriceBreaksForProductVariant", new { controller = "ProductVariant", action = "GetPriceBreaksForProductVariant" });
-            context.MapRoute("Cart - Details", "Apps/Ecommerce/Cart/Details", new { controller = "Cart", action = "Details" });
-            context.MapRoute("Cart - Update Quantity", "Apps/Ecommerce/Cart/UpdateQuantity", new { controller = "Cart", action = "UpdateQuantity" });
+            context.MapRoute("Cart - Details", "Apps/Ecommerce/CartDetails", new { controller = "Cart", action = "Details" });
+            context.MapRoute("Cart - Update Quantity", "Apps/Ecommerce/UpdateQuantity", new { controller = "Cart", action = "UpdateQuantity" });
+            context.MapRoute("Cart - Add to Cart", "Apps/Ecommerce/AddToCart", new { controller = "Cart", action = "AddToCart" });
+            context.MapRoute("Cart - Edit Cart Item", "Apps/Ecommerce/EditCartItem", new { controller = "Cart", action = "EditCartItem" });
+            context.MapRoute("Cart - Delete Cart Item", "Apps/Ecommerce/DeleteCartItem", new { controller = "Cart", action = "DeleteCartItem" });
             //context.MapRoute("Cart - Basic Details", "Apps/Ecommerce/Cart/BasicDetails", new { controller = "Cart", action = "BasicDetails" });
             //context.MapRoute("Cart - Delivery Details", "Apps/Ecommerce/Cart/DeliveryDetails", new { controller = "Cart", action = "DeliveryDetails" });
             //context.MapRoute("Cart - Order Email", "Apps/Ecommerce/Cart/OrderEmail", new { controller = "Cart", action = "OrderEmail" });
@@ -62,9 +65,6 @@ namespace MrCMS.Web.Apps.Ecommerce
             //context.MapRoute("Cart - Add Shipping Method", "Apps/Ecommerce/Cart/AddShippingMethod", new { controller = "Cart", action = "AddShippingMethod" });
             //context.MapRoute("Cart - Get Shipping Calculation Country", "Apps/Ecommerce/Cart/GetShippingCalculationCountry", new { controller = "Cart", action = "GetShippingCalculationCountry" });
             //context.MapRoute("Cart - Cart Panel", "Apps/Ecommerce/Cart/CartPanel", new { controller = "Cart", action = "CartPanel" });
-            //context.MapRoute("Cart - Add to Cart", "Apps/Ecommerce/Cart/AddToCart", new { controller = "Cart", action = "AddToCart" });
-            //context.MapRoute("Cart - Edit Cart Item", "Apps/Ecommerce/Cart/EditCartItem", new { controller = "Cart", action = "EditCartItem" });
-            //context.MapRoute("Cart - Delete Cart Item", "Apps/Ecommerce/Cart/DeleteCartItem", new { controller = "Cart", action = "DeleteCartItem" });
             //context.MapRoute("Cart - Discount Code", "Apps/Ecommerce/Cart/DiscountCode", new { controller = "Cart", action = "DiscountCode" });
             //context.MapRoute("Cart - Add Discount Code", "Apps/Ecommerce/Cart/AddDiscountCode", new { controller = "Cart", action = "AddDiscountCode" });
             //context.MapRoute("Cart - Add Discount Code Ajax", "Apps/Ecommerce/Cart/AddDiscountCodeAjax", new { controller = "Cart", action = "AddDiscountCodeAjax" });

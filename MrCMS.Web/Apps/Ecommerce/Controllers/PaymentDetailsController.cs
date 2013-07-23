@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website.Controllers;
@@ -24,6 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 return Redirect(UniquePageHelper.GetUrl<EnterOrderEmail>());
             if (_cart.Empty)
                 return Redirect(UniquePageHelper.GetUrl<Cart>());
+            ViewData["cart"] = _cart;
             return View(page);
         }
     }

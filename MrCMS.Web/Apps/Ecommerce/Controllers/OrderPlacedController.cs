@@ -7,14 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class OrderPlacedController : MrCMSAppUIController<EcommerceApp>
     {
-        private readonly IGetCart _getCart;
-
-        public OrderPlacedController(IGetCart getCart)
-        {
-            _getCart = getCart;
-        }
-
-        public ViewResult Show(OrderPlaced page,int orderID=0)
+        public ViewResult Show(OrderPlaced page, int orderID = 0)
         {
             ViewBag.orderID = orderID;
             return View(page);

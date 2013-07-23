@@ -18,8 +18,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
             OrderLines = new List<OrderLine>();
             OrderNotes = new List<OrderNote>();
             OrderRefunds = new List<OrderRefund>();
+            Guid = Guid.NewGuid();
         }
 
+        public virtual Guid Guid { get; set; }
         public virtual decimal Subtotal { get; set; }
 
         public virtual decimal Tax { get; set; }

@@ -1,10 +1,18 @@
 ﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
 @model MrCMS.Web.Apps.Ecommerce.Pages.PaymentDetails
+@{ var cart = ViewData["cart"] as CartModel;}
 
 <div class="row-fluid">
     <div class="span8">
         <h4>Payment details</h4>
-       
+        @{ Html.RenderPartial("SelectMethod", cart);}
+        <div id="payment-confirmation">
+            @if (!string.IsNullOrWhiteSpace(cart.PaymentMethod))
+            {
+                Html.RenderAction(cart.PaymentMethod, "PaymentMethod");
+            }
+        </div>
     </div>
     <div class="span4">
         @{Html.RenderAction("Summary", "Checkout");}
