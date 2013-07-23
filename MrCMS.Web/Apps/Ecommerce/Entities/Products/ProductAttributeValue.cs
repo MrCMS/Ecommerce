@@ -7,5 +7,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual ProductAttributeOption ProductAttributeOption { get; set; }
         public virtual string Value { get; set; }
         public virtual ProductVariant ProductVariant { get; set; }
+
+        public virtual string FormattedValue
+        {
+            get
+            {
+                return ProductAttributeOption != null ? string.Format("{0} - {1}", ProductAttributeOption.Name, Value) : Value;
+            }
+        }
     }
 }

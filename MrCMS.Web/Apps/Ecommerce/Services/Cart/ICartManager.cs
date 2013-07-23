@@ -16,6 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         void SetOrderEmail(string email);
         void SetShippingAddress(Address address);
         void SetBillingAddress(Address address);
+        void SetBillingAddressSameAsShippingAddress(bool value);
         void SetDiscountCode(string code);
         void SetPaymentMethod(string methodName);
         void SetShippingInfo(ShippingCalculation shippingCalculation);

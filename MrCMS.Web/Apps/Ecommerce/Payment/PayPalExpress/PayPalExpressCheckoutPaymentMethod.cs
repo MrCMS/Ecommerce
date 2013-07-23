@@ -9,6 +9,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
             get { return "PayPal Express Checkout"; }
         }
 
+        public override string SystemName
+        {
+            get { return "PayPalExpressCheckout"; }
+        }
+
         public override PaymentType PaymentType
         {
             get { return PaymentType.PayPalExpress; }

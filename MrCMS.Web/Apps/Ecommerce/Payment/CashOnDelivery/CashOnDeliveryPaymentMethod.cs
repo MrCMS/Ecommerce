@@ -11,6 +11,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CashOnDelivery
             get { return "Cash On Delivery"; }
         }
 
+        public override string SystemName
+        {
+            get { return "CashOnDelivery"; }
+        }
+
         public override PaymentType PaymentType
         {
             get { return PaymentType.ServiceBased; }

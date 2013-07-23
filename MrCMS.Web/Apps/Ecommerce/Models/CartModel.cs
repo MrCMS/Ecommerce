@@ -130,6 +130,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public Country Country { get; set; }
 
         public string PaymentMethod { get; set; }
+
+        [DisplayName("Billing Address same as Shipping Address?")]
+        public bool BillingAddressSameAsShippingAddress { get; set; }
+
+        public bool NeedToSetBillingAddress { get { return !BillingAddressSameAsShippingAddress && BillingAddress == null; } }
     }
 
 }

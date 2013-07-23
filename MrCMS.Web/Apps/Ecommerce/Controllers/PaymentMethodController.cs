@@ -25,6 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         }
 
         [HttpPost]
+        [ActionName("CashOnDelivery")]
         public RedirectResult CashOnDelivery_POST()
         {
             var order = _orderService.PlaceOrder(_cartModel);
