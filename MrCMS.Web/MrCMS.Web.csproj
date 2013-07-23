@@ -199,6 +199,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GoogleAnalyticsController.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\IGoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PayPalExpressCheckoutController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserRegistrationController.cs" />
@@ -282,6 +283,7 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressCheckoutPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Currencies\ICurrencyService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\GoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductImagesService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductVariantsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportSpecificationsService.cs" />
