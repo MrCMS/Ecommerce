@@ -1,0 +1,25 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Website
+@model CartModel
+<div class="row-fluid">
+    <div class="span8">
+        @if (CurrentRequestData.CurrentUser == null)
+        {
+            Html.RenderPartial("SetOrderEmailAndLogin", new EmailAndLoginModel { OrderEmail = Model.OrderEmail });
+        }
+        else
+        {
+            using (Html.BeginForm("SetOrderEmail", "EnterOrderEmail", FormMethod.Post))
+            {
+            <h4>Email address</h4>
+            @Html.LabelFor(model => model.OrderEmail, "Enter your Email address *:")
+            @Html.TextBoxFor(x => x.OrderEmail, new { @class = "input-xxlarge" })
+            @Html.ValidationMessageFor(x => x.OrderEmail)
+            <input class="btn btn-info" type="submit" id="continue" name="continue" value="Continue" />
+            }
+        }
+    </div>
+    <div class="span4">
+        @{Html.RenderAction("Summary", "Checkout");}
+    </div>
+</div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
@@ -8,42 +9,42 @@ using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
-    public class PayPalExpressCheckoutSettingsController : MrCMSAppAdminController<EcommerceApp>
+    public class PaymentSettingsController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly IConfigurationProvider _configurationProvider;
-        private readonly PayPalExpressCheckoutSettings _payPalExpressCheckoutSettings;
+        private readonly PaymentSettings _paymentSettings;
 
-        public PayPalExpressCheckoutSettingsController(IConfigurationProvider configurationProvider, PayPalExpressCheckoutSettings payPalExpressCheckoutSettings)
+        public PaymentSettingsController(IConfigurationProvider configurationProvider, PaymentSettings paymentSettings)
         {
             _configurationProvider = configurationProvider;
-            _payPalExpressCheckoutSettings = payPalExpressCheckoutSettings;
+            _paymentSettings = paymentSettings;
         }
 
         [HttpGet]
         public ActionResult Index()
         {
-            return View(_payPalExpressCheckoutSettings);
+            return View(_paymentSettings);
         }
 
         [HttpPost]
-        public ActionResult Save([IoCModelBinder(typeof(PayPalExpressCheckoutSettingsModelBinder))] PayPalExpressCheckoutSettings settings)
+        public ActionResult Save([IoCModelBinder(typeof(PaymentSettingsModelBinder))] PaymentSettings settings)
         {
             _configurationProvider.SaveSettings(settings);
             return RedirectToAction("Index");
         }
 
-        private class PayPalExpressCheckoutSettingsModelBinder : MrCMSDefaultModelBinder
+        private class PaymentSettingsModelBinder : MrCMSDefaultModelBinder
         {
             private readonly IConfigurationProvider _configurationProvider;
 
-            public PayPalExpressCheckoutSettingsModelBinder(ISession session, IConfigurationProvider configurationProvider)
+            public PaymentSettingsModelBinder(ISession session, IConfigurationProvider configurationProvider)
                 : base(() => session)
             {
                 _configurationProvider = configurationProvider;
             }
             protected override object CreateModel(ControllerContext controllerContext, ModelBindingContext bindingContext, Type modelType)
             {
-                return _configurationProvider.GetSiteSettings<PayPalExpressCheckoutSettings>();
+                return _configurationProvider.GetSiteSettings<PaymentSettings>();
             }
         }
     }
