@@ -1,0 +1,34 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.EmailAndLoginModel
+@{
+    var errorMessages = TempData.ErrorMessages();
+}
+@if (errorMessages.Any())
+{
+    <ul>
+        @foreach (var message in errorMessages)
+        {
+            <li>@message</li>
+        }
+    </ul>
+}
+@using (Html.BeginForm("SetOrderEmailAndLogin", "EnterOrderEmail", FormMethod.Post))
+{
+    <h4>Email address</h4>
+    @Html.LabelFor(model => model.OrderEmail, "Enter your Email address *:")
+    @Html.TextBoxFor(x => x.OrderEmail, new { @class = "input-xxlarge" })
+    @Html.ValidationMessageFor(x => x.OrderEmail)
+
+    <span>Do you have a password?</span>
+    <label class="radio">
+        @Html.RadioButtonFor(model => model.HavePassword, false)
+    </label>
+    <label class="radio">
+        @Html.RadioButtonFor(model => model.HavePassword, true)
+    </label>
+    <div id="password-box" style="display: none">
+        @Html.PasswordFor(model => model.Password)
+    </div>
+    <input class="btn btn-info" type="submit" id="continue" name="continue" value="Continue" />
+}
+@{ Html.IncludeScript("~/Themes/Ecommerce/Content/Scripts/custom/enter-order-email.js"); }

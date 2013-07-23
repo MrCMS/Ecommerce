@@ -19,33 +19,47 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class CartController : MrCMSAppUIController<EcommerceApp>
     {
-        private readonly IGetCart _getCart;
         private readonly ICartManager _cartManager;
         private readonly ICountryService _countryService;
         private readonly IOrderService _orderService;
-        private readonly IShippingCalculationManager _shippingCalculationManager;
         private readonly IDiscountManager _discountManager;
+        private readonly IOrderShippingService _orderShippingService;
+        private readonly CartModel _cart;
 
-        public CartController(IGetCart getCart, ICartManager cartManager,
+        public CartController(ICartManager cartManager,
             ICountryService countryService, IOrderService orderService, IDiscountManager discountManager,
-            IShippingCalculationManager shippingCalculationManager)
+            IOrderShippingService orderShippingService, CartModel cart)
         {
-            _getCart = getCart;
             _cartManager = cartManager;
             _countryService = countryService;
             _orderService = orderService;
             _discountManager = discountManager;
-            _shippingCalculationManager = shippingCalculationManager;
+            _orderShippingService = orderShippingService;
+            _cart = cart;
         }
 
         public ViewResult Show(Cart page)
         {
+            SetupViewData();
             return View(page);
         }
+
+        private void SetupViewData()
+        {
+            ViewData["cart"] = _cart;
+            ViewData["shipping-calculations"] = _orderShippingService.GetShippingOptions(_cart);
+        }
+
         [HttpGet]
         public ViewResult CartPanel()
         {
-            return View(_getCart.GetCart());
+            return View(_cart);
+        }
+        [HttpGet]
+        public PartialViewResult Details()
+        {
+            SetupViewData();
+            return PartialView(_cart);
         }
         [HttpPost]
         public RedirectResult AddToCart(ProductVariant productVariant, int quantity = 0)
@@ -88,12 +102,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpGet]
         public ViewResult DiscountCode()
         {
-            return View(_getCart.GetCart());
+            return View(_cart);
         }
         [HttpGet]
         public ViewResult AddDiscountCode()
         {
-            return View(_getCart.GetCart());
+            return View(_cart);
         }
         [ActionName("AddDiscountCode")]
         [HttpPost]
@@ -101,10 +115,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         {
             if (model != null && !String.IsNullOrWhiteSpace(model.DiscountCode) && ValidateDiscountCode(model.DiscountCode))
             {
-                _getCart.SetDiscountCode(model.DiscountCode);
+                _cartManager.SetDiscountCode(model.DiscountCode);
                 return Redirect(UniquePageHelper.GetUrl<Cart>());
             }
-            return PartialView(_getCart.GetCart());
+            return PartialView(_cart);
         }
 
         [HttpPost]
@@ -112,12 +126,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         {
             if (String.IsNullOrWhiteSpace(discountCode))
             {
-                _getCart.SetDiscountCode(discountCode);
+                _cartManager.SetDiscountCode(discountCode);
                 return Json("Removed");
             }
             else if (!String.IsNullOrWhiteSpace(discountCode) && ValidateDiscountCode(discountCode))
             {
-                _getCart.SetDiscountCode(discountCode);
+                _cartManager.SetDiscountCode(discountCode);
                 return Json(discountCode);
             }
             return Json(false);
@@ -125,7 +139,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpGet]
         public ViewResult EditDiscountCode()
         {
-            return View(_getCart.GetCart());
+            return View(_cart);
         }
         [ActionName("EditDiscountCode")]
         [HttpPost]
@@ -133,10 +147,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         {
             if (model != null && !String.IsNullOrWhiteSpace(model.DiscountCode) && ValidateDiscountCode(model.DiscountCode))
             {
-                _getCart.SetDiscountCode(model.DiscountCode);
+                _cartManager.SetDiscountCode(model.DiscountCode);
                 return Redirect(UniquePageHelper.GetUrl<Cart>());
             }
-            return PartialView(_getCart.GetCart());
+            return PartialView(_cart);
         }
         public JsonResult IsDiscountCodeValid(string discountCode)
         {
@@ -157,43 +171,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
             return false;
         }
-        [HttpGet]
-        public ViewResult Details()
-        {
-            ViewData["shipping-calculations"] = _shippingCalculationManager.GetAllWhichCanBeUsedForCart(_getCart.GetCart());
-            return View(_getCart.GetCart());
-        }
+
         [HttpPost]
         public JsonResult UpdateQuantity(int quantity = 0, int cartId = 0)
         {
             if (quantity > 0 && cartId != 0)
             {
-                var cartItem = _getCart.GetCart().Items.SingleOrDefault(x => x.Id == cartId);
+                var cartItem = _cart.Items.SingleOrDefault(x => x.Id == cartId);
                 if (cartItem != null)
                     _cartManager.UpdateQuantity(cartItem, quantity);
                 return Json(true);
             }
             return Json(false);
         }
-        [HttpGet]
-        public ViewResult BasicDetails()
-        {
-            return View(_getCart.GetCart());
-        }
-        [HttpGet]
-        public ViewResult DeliveryDetails()
-        {
-            return View(_getCart.GetCart());
-        }
-        [HttpGet]
-        public ViewResult OrderEmail()
-        {
-            return View(_getCart.GetCart());
-        }
+
         [HttpGet]
         public ActionResult EnterOrderEmail()
         {
-            return View(_getCart.GetCart());
+            return View(_cart);
         }
         [HttpPost]
         public RedirectResult EnterOrderEmail(string OrderEmail, bool havePassword = true)
@@ -202,54 +197,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             {
                 if (!String.IsNullOrWhiteSpace(OrderEmail))
                 {
-                    _getCart.SetOrderEmail(OrderEmail);
+                    _cartManager.SetOrderEmail(OrderEmail);
                     return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
                 }
             }
             return Redirect(UniquePageHelper.GetUrl<EnterOrderEmail>());
         }
 
-        [HttpGet]
-        public ActionResult SetDeliveryDetails()
-        {
-            if (_getCart.GetCart().Items.Count == 0)
-                return Redirect(UniquePageHelper.GetUrl<Cart>());
-
-            if (_getCart.GetShippingAddress() == null)
-            {
-                if (CurrentRequestData.CurrentUser != null)
-                {
-                    var address = new Address
-                        {
-                            FirstName = CurrentRequestData.CurrentUser.FirstName ?? String.Empty,
-                            LastName = CurrentRequestData.CurrentUser.LastName ?? String.Empty,
-                            UserGuid = CurrentRequestData.UserGuid,
-                            Country = _getCart.GetCountry()
-                        };
-                    _getCart.SetShippingAddress(address);
-                }
-                else
-                {
-                    var address = new Address();
-                    _getCart.SetShippingAddress(address);
-                }
-            }
-            var countries = _countryService.GetAllCountries().BuildSelectItemList(country => country.Name, country => country.Id.ToString(), null, emptyItem: null);
-            if (_getCart.GetShippingAddress().Country != null)
-            {
-                countries.SingleOrDefault(x => x.Value == _getCart.GetShippingAddress().Country.Id.ToString()).Selected = true;
-            }
-            ViewData["shipping-calculations"] = _shippingCalculationManager.GetAllWhichCanBeUsedForCart(_getCart.GetCart());
-            ViewData["countries"] = countries;
-            return View(_getCart.GetCart());
-        }
         [HttpPost]
         public RedirectResult SetDeliveryDetails(Address address)
         {
             if (address != null)
             {
                 address.UserGuid = CurrentRequestData.UserGuid;
-                _getCart.SetShippingAddress(address);
+                _cartManager.SetShippingAddress(address);
                 return Redirect(UniquePageHelper.GetUrl<PaymentDetails>());
             }
             return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
@@ -257,19 +218,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpGet]
         public ActionResult PaymentDetails()
         {
-            if (_getCart.GetCart().Items.Count == 0)
+            if (_cart.Items.Count == 0)
                 return Redirect(UniquePageHelper.GetUrl<Cart>());
 
             var countries = _countryService.GetAllCountries().BuildSelectItemList(country => country.Name, country => country.Id.ToString(), null, emptyItem: null);
-            if (_getCart.GetBillingAddress() != null && _getCart.GetBillingAddress().Country != null)
+            if (_cart.BillingAddress != null && _cart.BillingAddress.Country != null)
             {
-                countries.SingleOrDefault(x => x.Value == _getCart.GetBillingAddress().Country.Id.ToString()).Selected = true;
+                countries.SingleOrDefault(x => x.Value == _cart.BillingAddress.Country.Id.ToString()).Selected = true;
             }
             ViewData["countries"] = countries;
 
-            if (_getCart.GetShippingAddress() == null)
+            if (_cart.ShippingAddress == null)
                 return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
-            return View(new PaymentDetailsModel() { CartModel = _getCart.GetCart() });
+            return View(new PaymentDetailsModel() { CartModel = _cart });
         }
         [HttpPost]
         public ActionResult PaymentDetails(Address address, PaymentDetailsModel paymentDetailsModel)
@@ -277,77 +238,32 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (address != null && !String.IsNullOrWhiteSpace(address.FirstName))
             {
                 address.UserGuid = CurrentRequestData.UserGuid;
-                _getCart.SetBillingAddress(address);
+                _cartManager.SetBillingAddress(address);
             }
             else
             {
-                _getCart.SetBillingAddress(_getCart.GetShippingAddress());
+                _cartManager.SetBillingAddress(_cart.ShippingAddress);
             }
             if (paymentDetailsModel != null && !String.IsNullOrWhiteSpace(paymentDetailsModel.CartType))
             {
-                _getCart.SetPaymentMethod(paymentDetailsModel.CartType);
+                _cartManager.SetPaymentMethod(paymentDetailsModel.CartType);
             }
 
-            if (_getCart.GetCart().Items.Count > 0)
+            if (_cart.Items.Count > 0)
             {
                 //TODO: IMPLEMENT PAYMENT GATEWAY PROCEDURES
 
-                return Redirect(UniquePageHelper.GetUrl<OrderPlaced>() + "?orderID=" + _orderService.PlaceOrder(_getCart.GetCart()).ToString());
+                return Redirect(UniquePageHelper.GetUrl<OrderPlaced>() + "?orderID=" + _orderService.PlaceOrder(_cart).ToString());
             }
 
             var countries = _countryService.GetAllCountries().BuildSelectItemList(country => country.Name, country => country.Id.ToString(), null, emptyItem: null);
-            if (_getCart.GetBillingAddress() != null && _getCart.GetBillingAddress().Country != null)
+            if (_cart.BillingAddress != null && _cart.BillingAddress.Country != null)
             {
-                countries.SingleOrDefault(x => x.Value == _getCart.GetBillingAddress().Country.Id.ToString()).Selected = true;
+                countries.SingleOrDefault(x => x.Value == _cart.BillingAddress.Country.Id.ToString()).Selected = true;
             }
             ViewData["countries"] = countries;
-            return View(_getCart.GetCart());
-        }
-        [HttpGet]
-        public ActionResult ShippingMethods(int id = 0)
-        {
-            if (id != 0)
-            {
-                var country = _countryService.Get(id);
-                if (country != null)
-                {
-                    return View(country.GetShippingMethods().Where(x => x.CanBeUsed(_getCart.GetCart())).ToList());
-                }
-            }
-            return View();
+            return View(_cart);
         }
 
-        [HttpPost]
-        public JsonResult AddShippingMethod(int id = 0)
-        {
-            if (id != 0)
-            {
-                var shippingCalculation = _shippingCalculationManager.Get(id);
-                if (shippingCalculation != null)
-                {
-                    _getCart.SetCountry(shippingCalculation.Country.Id);
-                    _getCart.SetShippingMethod(shippingCalculation.ShippingMethod.Id);
-                    return Json(true);
-                }
-            }
-            else
-            {
-                _getCart.SetShippingMethod(0);
-            }
-            return Json(false);
-        }
-        [HttpPost]
-        public JsonResult GetShippingCalculationCountry(int id = 0)
-        {
-            if (id != 0)
-            {
-                var shippingCalculation = _shippingCalculationManager.Get(id);
-                if (shippingCalculation != null)
-                {
-                    return Json(shippingCalculation.Country.Id);
-                }
-            }
-            return Json(false);
-        }
     }
 }
