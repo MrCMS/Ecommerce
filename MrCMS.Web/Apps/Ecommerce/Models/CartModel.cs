@@ -11,6 +11,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Payment;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
@@ -124,7 +125,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public bool PayPalExpressAvailable { get; set; }
         public bool CanUsePayPalExpress { get { return Items.Any() && PayPalExpressAvailable; } }
 
+        public IEnumerable<IPaymentMethod> AvailablePaymentMethods { get; set; }
+
         public Country Country { get; set; }
+
+        public string PaymentMethod { get; set; }
     }
 
 }

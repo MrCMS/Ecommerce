@@ -200,6 +200,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\PaymentMethodController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PayPalExpressCheckoutController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserRegistrationController.cs" />
@@ -248,6 +249,7 @@
     <Compile Include="Apps\Ecommerce\Helpers\CurrencyFormattingHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\EnumHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\GeneralHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Models\CashOnDeliveryConfirmModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategorySearchModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\EmailAndLoginModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\TaxAwareShippingRate.cs" />
@@ -1421,6 +1423,8 @@
     <Content Include="Apps\Ecommerce\Views\SetDeliveryDetails\DeliveryAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Views\EnterOrderEmail\SetEmailForm.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\SetOrderEmailAndLogin.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\PaymentDetails\SelectMethod.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Methods\CashOnDelivery.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

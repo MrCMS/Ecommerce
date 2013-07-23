@@ -30,6 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment
     {
         bool AnyStandardMethodsEnabled();
         bool PayPalExpressCheckoutIsEnabled();
+        List<IPaymentMethod> GetAllAvailableMethods();
     }
 
     public class PaymentMethodService : IPaymentMethodService
@@ -58,6 +59,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment
         public bool PayPalExpressCheckoutIsEnabled()
         {
             return PaymentMethods.OfType<PayPalExpressCheckoutPaymentMethod>().First().Enabled;
+        }
+
+        public List<IPaymentMethod> GetAllAvailableMethods()
+        {
+            return PaymentMethods.FindAll(method => method.Enabled);
         }
     }
 

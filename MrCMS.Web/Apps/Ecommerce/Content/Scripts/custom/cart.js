@@ -9,10 +9,10 @@
         $('input[type="text"][name^="quantity-"]').each(function (index, element) {
             var quantity = $(element).val();
             var cartId = $(this).data('cart-id');
-            $.post('/Apps/Ecommerce/Cart/UpdateQuantity/',
+            $.post('/Apps/Ecommerce/UpdateQuantity/',
                 { quantity: quantity, cartId: cartId },
                 function (response) {
-                    parent.$.get('/Apps/Ecommerce/Cart/Details', function (items) {
+                    parent.$.get('/Apps/Ecommerce/CartDetails', function (items) {
                         parent.$('#details').replaceWith(items);
                         setDiscountCode();
                     });

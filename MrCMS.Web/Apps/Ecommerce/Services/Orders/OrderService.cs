@@ -21,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         private readonly ICountryService _countryService;
         private readonly ICartManager _cartManager;
 
-        public OrderService(ISession session, GetCartImpl getCartImpl,ICountryService countryService,ICartManager cartManager)
+        public OrderService(ISession session, GetCartImpl getCartImpl, ICountryService countryService, ICartManager cartManager)
         {
             _session = session;
             _getCartImpl = getCartImpl;
@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             _cartManager = cartManager;
         }
 
-        public int PlaceOrder(CartModel cartModel)
+        public Order PlaceOrder(CartModel cartModel)
         {
             cartModel.ShippingAddress.Site = CurrentRequestData.CurrentSite;
             cartModel.BillingAddress.Site = CurrentRequestData.CurrentSite;
@@ -64,8 +64,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
             var order = new Order
                             {
-                                ShippingAddress=cartModel.ShippingAddress,
-                                BillingAddress=cartModel.BillingAddress,
+                                ShippingAddress = cartModel.ShippingAddress,
+                                BillingAddress = cartModel.BillingAddress,
                                 ShippingMethod = cartModel.ShippingMethod,
                                 Subtotal = cartModel.Subtotal,
                                 Discount = cartModel.Discount,
@@ -76,29 +76,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                 ShippingTax = cartModel.ShippingTax,
                                 User = cartModel.User,
                                 Weight = cartModel.Weight,
-                                OrderEmail=cartModel.OrderEmail,
-                                CustomerIP=ip
+                                OrderEmail = cartModel.OrderEmail,
+                                CustomerIP = ip
                             };
-            _session.Transact(session => session.SaveOrUpdate(order));
-            order = Get(order.Id); 
+
             foreach (var item in cartModel.Items)
             {
-                order.OrderLines.Add(new OrderLine()
-                {
-                    Order=order,
-                    UnitPrice=item.Price,
-                    Weight=item.Weight,
-                    TaxRate=item.TaxRatePercentage,
-                    Tax=item.Tax,
-                    Quantity=item.Quantity,
-                    ProductVariant=item.Item,
-                    Subtotal=item.PricePreTax*item.Quantity
+                order.OrderLines.Add(new OrderLine
+                    {
+                    Order = order,
+                    UnitPrice = item.Price,
+                    Weight = item.Weight,
+                    TaxRate = item.TaxRatePercentage,
+                    Tax = item.Tax,
+                    Quantity = item.Quantity,
+                    ProductVariant = item.Item,
+                    Subtotal = item.PricePreTax * item.Quantity
                 });
             }
             _session.Transact(session => session.SaveOrUpdate(order));
-            _session.Evict(typeof(Order));
             _cartManager.EmptyBasket();
-            return order.Id;
+            return order;
         }
 
         public IPagedList<Order> GetPaged(int pageNum, int pageSize = 10)
