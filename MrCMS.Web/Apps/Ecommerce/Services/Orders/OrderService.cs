@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using MrCMS.Helpers;
 using NHibernate;
 using MrCMS.Paging;
@@ -17,14 +17,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
     public class OrderService : IOrderService
     {
         private readonly ISession _session;
-        private readonly GetCartImpl _getCartImpl;
         private readonly ICountryService _countryService;
         private readonly ICartManager _cartManager;
 
-        public OrderService(ISession session, GetCartImpl getCartImpl, ICountryService countryService, ICartManager cartManager)
+        public OrderService(ISession session, ICountryService countryService, ICartManager cartManager)
         {
             _session = session;
-            _getCartImpl = getCartImpl;
             _countryService = countryService;
             _cartManager = cartManager;
         }
@@ -82,17 +80,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
             foreach (var item in cartModel.Items)
             {
+                var options = string.Join(", ", item.Item.AttributeValues.Select(value => value.FormattedValue));
+
                 order.OrderLines.Add(new OrderLine
                     {
-                    Order = order,
-                    UnitPrice = item.Price,
-                    Weight = item.Weight,
-                    TaxRate = item.TaxRatePercentage,
-                    Tax = item.Tax,
-                    Quantity = item.Quantity,
-                    ProductVariant = item.Item,
-                    Subtotal = item.PricePreTax * item.Quantity
-                });
+                        Order = order,
+                        UnitPrice = item.Price,
+                        Weight = item.Weight,
+                        TaxRate = item.TaxRatePercentage,
+                        Tax = item.Tax,
+                        Quantity = item.Quantity,
+                        ProductVariant = item.Item,
+                        Subtotal = item.PricePreTax * item.Quantity,
+                        SKU = item.Item.SKU,
+                        Name = !string.IsNullOrEmpty(item.Item.Name) ? item.Item.Name : item.Item.Product.Name,
+                        Options = options
+                    });
             }
             _session.Transact(session => session.SaveOrUpdate(order));
             _cartManager.EmptyBasket();

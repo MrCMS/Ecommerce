@@ -9,6 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment
     public interface IPaymentMethod
     {
         string Name { get; }
+        string SystemName { get; }
         PaymentType PaymentType { get; }
         bool Enabled { get; }
         bool UseStandardFlow { get; }
@@ -17,6 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment
     public abstract class BasePaymentMethod : IPaymentMethod
     {
         public abstract string Name { get; }
+        public abstract string SystemName { get; }
         public abstract PaymentType PaymentType { get; }
         public abstract bool Enabled { get; }
 

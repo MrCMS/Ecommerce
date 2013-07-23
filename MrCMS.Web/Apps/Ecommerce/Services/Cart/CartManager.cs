@@ -14,6 +14,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
     public class CartManager : ICartManager
     {
         public const string CurrentShippingAddressKey = "current.shipping-address";
+        public const string CurrentBillingAddressSameAsShippingAddressKey =
+            "current.billing-address-same-as-shipping-address";
         public const string CurrentBillingAddressKey = "current.billing-address";
         public const string CurrentShippingMethodIdKey = "current.shipping-method-id";
         public const string CurrentOrderEmailKey = "current.order-email";
@@ -70,6 +72,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public void SetBillingAddress(Address address)
         {
             SetSessionItem(CurrentBillingAddressKey, address);
+        }
+
+        public void SetBillingAddressSameAsShippingAddress(bool value)
+        {
+            SetSessionItem(CurrentBillingAddressSameAsShippingAddressKey, value);
         }
 
         public void SetDiscountCode(string code)

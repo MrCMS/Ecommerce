@@ -101,6 +101,26 @@ namespace MrCMS.Web.Apps.Ecommerce
                              new {controller = "Checkout", action = "Summary"},
                              new[] {typeof (CheckoutController).Namespace});
 
+            context.MapRoute("Confirm Order - Cash On Delivery",
+                             "Apps/Ecommerce/Confirm/CashOnDelivery",
+                             new {controller = "PaymentMethod", action = "CashOnDelivery"},
+                             new[] {typeof (PaymentMethodController).Namespace});
+
+            context.MapRoute("Checkout - Billing Address same as Shipping Address",
+                             "Apps/Ecommerce/PaymentDetails/BillingAddressSameAsShippingAddress",
+                             new { controller = "PaymentDetails", action = "BillingAddressSameAsShippingAddress" },
+                             new[] { typeof(PaymentDetailsController).Namespace });
+
+            context.MapRoute("Checkout - Update Billing Address",
+                             "Apps/Ecommerce/PaymentDetails/UpdateBillingAddress",
+                             new { controller = "PaymentDetails", action = "UpdateBillingAddress" },
+                             new[] { typeof(PaymentDetailsController).Namespace });
+            
+            context.MapRoute("Checkout - Save Billing Address",
+                             "Apps/Ecommerce/PaymentDetails/SaveBillingAddress",
+                             new { controller = "PaymentDetails", action = "SaveBillingAddress" },
+                             new[] { typeof(PaymentDetailsController).Namespace });
+
             context.MapRoute("User Login", "Apps/Ecommerce/UserLogin/UserLogin", new { controller = "UserLogin", action = "UserLogin" });
             context.MapRoute("User Login Details", "Apps/Ecommerce/UserLogin/UserLoginDetails", new { controller = "UserLogin", action = "UserLoginDetails" });
             context.MapRoute("User Login POST", "Apps/Ecommerce/UserLogin/Login", new { controller = "UserLogin", action = "Login" });

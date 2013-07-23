@@ -40,6 +40,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                                UserGuid = CurrentRequestData.UserGuid,
                                Items = GetItems(),
                                ShippingAddress = GetShippingAddress(),
+                               BillingAddressSameAsShippingAddress = GetBillingAddressSameAsShippingAddress(),
                                BillingAddress = GetBillingAddress(),
                                Country = GetCountry(),
                                OrderEmail = GetOrderEmail(),
@@ -48,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                                AnyStandardPaymentMethodsAvailable = _paymentMethodService.AnyStandardMethodsEnabled(),
                                PayPalExpressAvailable = _paymentMethodService.PayPalExpressCheckoutIsEnabled(),
                                AvailablePaymentMethods = availablePaymentMethods,
-                               PaymentMethod = GetPaymentMethod() ?? (availablePaymentMethods.Count() == 1 ? availablePaymentMethods.First().Name : null)
+                               PaymentMethod = GetPaymentMethod() ?? (availablePaymentMethods.Count() == 1 ? availablePaymentMethods.First().SystemName : null)
                            };
             cart.ShippingMethod = GetShippingMethod(cart);
             return cart;
@@ -77,12 +78,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         private Address GetShippingAddress()
         {
-            return GetSessionValue<Address>(CartManager.CurrentShippingAddressKey);
+            var shippingAddress = GetSessionValue<Address>(CartManager.CurrentShippingAddressKey);
+            if (shippingAddress != null)
+            {
+                shippingAddress.Country = GetCountry();
+            }
+            return shippingAddress;
         }
 
+        private bool GetBillingAddressSameAsShippingAddress()
+        {
+            return GetSessionValue<bool>(CartManager.CurrentBillingAddressSameAsShippingAddressKey, true);
+        }
         private Address GetBillingAddress()
         {
-            return GetSessionValue<Address>(CartManager.CurrentBillingAddressKey);
+            var billingAddress = GetBillingAddressSameAsShippingAddress() ? GetShippingAddress() : GetSessionValue<Address>(CartManager.CurrentBillingAddressKey);
+            if (billingAddress != null)
+            {
+                billingAddress.Country = GetCountry();
+            }
+            return billingAddress;
         }
 
         private ShippingMethod GetShippingMethod(CartModel cart)
@@ -116,14 +131,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                    _session.QueryOver<Country>().Cacheable().Take(1).SingleOrDefault();
         }
 
-        private T GetSessionValue<T>(string key)
+        private T GetSessionValue<T>(string key, T defaultValue = default(T))
         {
             if (CurrentRequestData.CurrentContext.Session != null)
             {
                 try { return (T)Convert.ChangeType(CurrentRequestData.CurrentContext.Session[key], typeof(T)); }
                 catch { }
             }
-            return default(T);
+            return defaultValue;
         }
     }
 }
