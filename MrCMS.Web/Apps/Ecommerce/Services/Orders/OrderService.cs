@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MrCMS.Helpers;
 using NHibernate;
 using MrCMS.Paging;
@@ -83,6 +84,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             order = Get(order.Id); 
             foreach (var item in cartModel.Items)
             {
+                var options = item.Item.AttributeValues.Aggregate("", (current, attribute) => current + attribute.Value);
+
                 order.OrderLines.Add(new OrderLine()
                 {
                     Order=order,
@@ -92,7 +95,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                     Tax=item.Tax,
                     Quantity=item.Quantity,
                     ProductVariant=item.Item,
-                    Subtotal=item.PricePreTax*item.Quantity
+                    Subtotal=item.PricePreTax*item.Quantity,
+                    SKU = item.Item.SKU,
+                    Name = !string.IsNullOrEmpty(item.Item.Name) ? item.Item.Name : item.Item.Product.Name,
+                    Options = options
                 });
             }
             _session.Transact(session => session.SaveOrUpdate(order));
