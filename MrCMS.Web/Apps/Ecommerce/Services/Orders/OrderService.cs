@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using NHibernate;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
@@ -84,8 +85,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             order = Get(order.Id); 
             foreach (var item in cartModel.Items)
             {
-                var options = item.Item.AttributeValues.Aggregate("", (current, attribute) => current + attribute.Value);
-
+                var options =  string.Join(", ",item.Item.AttributeValues.Select(value => value.FormattedValue)))
+                
                 order.OrderLines.Add(new OrderLine()
                 {
                     Order=order,
