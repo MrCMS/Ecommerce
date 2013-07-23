@@ -1,0 +1,17 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Payment.PaymentSettings
+@{
+    ViewBag.Title = "Payment Settings";
+}
+@using (Html.BeginForm("Save", "PaymentSettings", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Payment Settings
+        
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </span>
+        </legend>
+        @Html.InlineCheckboxFor(settings => settings.CashOnDeliveryEnabled, null, null)
+    </fieldset>
+}
