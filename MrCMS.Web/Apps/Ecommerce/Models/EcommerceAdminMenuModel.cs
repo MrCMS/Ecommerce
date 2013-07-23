@@ -56,8 +56,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                                           "/Admin/Apps/Ecommerce/ShippingMethod"),
                                                         new ChildMenuItem("Shipping Calculations",
                                                                           "/Admin/Apps/Ecommerce/ShippingCalculation"),
+                                                        new ChildMenuItem("Payment Settings",
+                                                                          "/Admin/Apps/Ecommerce/PaymentSettings"),
                                                         new ChildMenuItem("PayPal Express Checkout",
-                                                                          "/Admin/Apps/Ecommerce/PayPalExpressCheckoutSettings/View"),
+                                                                          "/Admin/Apps/Ecommerce/PayPalExpressCheckoutSettings"),
                                                     }
                                             }
                                         });

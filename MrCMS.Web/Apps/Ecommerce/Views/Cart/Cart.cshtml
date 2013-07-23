@@ -1,3 +1,2 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Cart
-
-@{Html.RenderAction("Details", "Cart", new { page = Model.Id });}
+@{Html.RenderPartial("Details", ViewData["cart"]);}

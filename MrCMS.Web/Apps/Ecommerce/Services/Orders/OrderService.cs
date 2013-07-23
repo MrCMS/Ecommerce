@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using NHibernate;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
@@ -79,10 +81,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                 OrderEmail=cartModel.OrderEmail,
                                 CustomerIP=ip
                             };
-            _session.Transact(session => session.SaveOrUpdate(order));
-            order = Get(order.Id); 
+
             foreach (var item in cartModel.Items)
             {
+                var options =  string.Join(", ",item.Item.AttributeValues.Select(value => value.FormattedValue)))
+                
                 order.OrderLines.Add(new OrderLine()
                 {
                     Order=order,
@@ -92,11 +95,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                     Tax=item.Tax,
                     Quantity=item.Quantity,
                     ProductVariant=item.Item,
-                    Subtotal=item.PricePreTax*item.Quantity
+                    Subtotal=item.PricePreTax*item.Quantity,
+                    SKU = item.Item.SKU,
+                    Name = !string.IsNullOrEmpty(item.Item.Name) ? item.Item.Name : item.Item.Product.Name,
+                    Options = options
                 });
             }
             _session.Transact(session => session.SaveOrUpdate(order));
-            _session.Evict(typeof(Order));
             _cartManager.EmptyBasket();
             return order.Id;
         }

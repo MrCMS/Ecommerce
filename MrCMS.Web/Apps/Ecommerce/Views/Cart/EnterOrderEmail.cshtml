@@ -1,37 +1,36 @@
 ﻿@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
-
 <br />
 <div class="row-fluid">
-<div class="span8">
-@using (Html.BeginForm("EnterOrderEmail", "Cart", FormMethod.Post))
-{
-<h4>Email address</h4>
-<span>Enter your Email address *:</span>
-<br />
-@Html.TextBoxFor(x=>x.OrderEmail, new{@class="input-xxlarge"})
-<br />
-@Html.ValidationMessageFor(x=>x.OrderEmail)
-<br />
-<span>Do you have a password?</span>
-<br />
-<br />
-<label class="radio">
-<input name="havePassword" type="radio" value="false" @(MrCMS.Website.CurrentRequestData.CurrentUser==null?"checked=checked":String.Empty) data-val="true" data-val-required="Do you have password or not?" required />No (You can create an account later)
-</label>
-<label class="radio">
-    <input name="havePassword" type="radio" value="true" @(MrCMS.Website.CurrentRequestData.CurrentUser!=null?"checked=checked":String.Empty) data-val="true" data-val-required="Do you have password or not?" required />Yes (We will load data for payment and delivery automatically from your profile.)
-</label>
-    <div id="password-box" style="display:none">
-        <input type="password" id="password" name="password" placeholder="Enter your password" />
-    </div> 
-<br />
-<button class="btn btn-info" type="button" id="continue" name="continue">Continue</button>
- }
-</div>
-<div class="span4">
-@{Html.RenderAction("BasicDetails","Cart");}
-</div>
+    <div class="span8">
+        @using (Html.BeginForm("EnterOrderEmail", "Cart", FormMethod.Post))
+        {
+            <h4>Email address</h4>
+            <span>Enter your Email address *:</span>
+            <br />
+            @Html.TextBoxFor(x => x.OrderEmail, new { @class = "input-xxlarge" })
+            <br />
+            @Html.ValidationMessageFor(x => x.OrderEmail)
+            <br />
+            <span>Do you have a password?</span>
+            <br />
+            <br />
+            <label class="radio">
+                <input name="havePassword" type="radio" value="false" @(MrCMS.Website.CurrentRequestData.CurrentUser == null ? "checked=checked" : String.Empty) data-val="true" data-val-required="Do you have password or not?" required />No (You can create an account later)
+            </label>
+            <label class="radio">
+                <input name="havePassword" type="radio" value="true" @(MrCMS.Website.CurrentRequestData.CurrentUser != null ? "checked=checked" : String.Empty) data-val="true" data-val-required="Do you have password or not?" required />Yes (We will load data for payment and delivery automatically from your profile.)
+            </label>
+            <div id="password-box" style="display: none">
+                <input type="password" id="password" name="password" placeholder="Enter your password" />
+            </div> 
+            <br />
+            <input class="btn btn-info" type="submit" id="continue" name="continue" value="Continue" />
+        }
+    </div>
+    <div class="span4">
+        @{Html.RenderAction("BasicDetails", "Cart");}
+    </div>
 </div>
 
-@{ Html.IncludeScript("~/Themes/Ecommerce/Apps/Ecommerce/Content/Scripts/custom/enter-order-email.js"); }
+@{ Html.IncludeScript("~/Themes/Ecommerce/Content/Scripts/custom/enter-order-email.js"); }

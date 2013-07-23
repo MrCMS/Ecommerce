@@ -1,3 +1,19 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Pages.PaymentDetails
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Pages.PaymentDetails
 
-@{Html.RenderAction("PaymentDetails", "Cart");}
+<div class="row-fluid">
+    <div class="span8">
+        <h4>Payment details</h4>
+       
+    </div>
+    <div class="span4">
+        @{Html.RenderAction("Summary", "Checkout");}
+        <hr />
+        @{Html.RenderAction("OrderEmail", "Checkout");}
+        <hr />
+        @{Html.RenderAction("DeliveryDetails", "Checkout");}
+    </div>
+</div>
+
+@{ Html.IncludeScript("~/Themes/Ecommerce/Apps/Ecommerce/Content/Scripts/custom/payment-details.js"); }
+
