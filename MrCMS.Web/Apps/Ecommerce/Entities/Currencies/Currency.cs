@@ -15,7 +15,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Currencies
 
         public virtual string FormatPrice(decimal price)
         {
-            return price.ToString(string.Format("{{0:{0}}}", Format));
+            return price.ToString(Format);
         }
     }
 }

@@ -9,6 +9,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Website;
 using Xunit;
 using MrCMS.Helpers;
@@ -19,6 +20,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
     {
         private readonly IPaymentMethodService _paymentMethodService;
         private readonly GetCartImpl _getCartImpl;
+        private readonly IOrderShippingService _orderShippingService;
 
         public GetCartImplTests()
         {
@@ -27,7 +29,8 @@ namespace MrCMS.EcommerceApp.Tests.Services
             CurrentRequestData.CurrentUser = currentUser;
             A.CallTo(() => CurrentRequestData.CurrentContext.Session).Returns(new FakeHttpSessionState());
             _paymentMethodService = A.Fake<IPaymentMethodService>();
-            _getCartImpl = new GetCartImpl(Session,_paymentMethodService);
+            _orderShippingService = A.Fake<IOrderShippingService>();
+            _getCartImpl = new GetCartImpl(Session, _paymentMethodService, _orderShippingService);
         }
         [Fact]
         public void GetCartImpl_GetCart_ReturnsACartModel()

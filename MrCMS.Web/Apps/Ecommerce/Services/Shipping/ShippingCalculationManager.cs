@@ -9,6 +9,7 @@ using NHibernate;
 using MrCMS.Helpers;
 using System.Linq;
 using System.Linq.Expressions;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 {
@@ -83,20 +84,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             return _session.QueryOver<ShippingCalculation>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
         }
 
-        public List<SelectListItem> GetAllWhichCanBeUsedForCart(CartModel cart)
-        {
-            var shippingCalculations = _session.QueryOver<ShippingCalculation>().Cacheable().List();
-            return shippingCalculations.Where(x => x.CanBeUsed(cart))
-                                       .OrderBy(x => x.Country.DisplayOrder)
-                                       .ThenBy(x => x.ShippingMethod.DisplayOrder)
-                                       .Where(calculation => calculation.GetPrice(cart).HasValue)
-                                       .BuildSelectItemList(
-                                           item =>
-                                           string.Format("{0} - {1} - {2}", item.Country.Name, item.ShippingMethod.Name,
-                                                         item.GetPrice(cart).Value.ToString("C2"))
-                                           , item => item.Id.ToString(), emptyItemText: null);
-
-        }
 
     }
 }
