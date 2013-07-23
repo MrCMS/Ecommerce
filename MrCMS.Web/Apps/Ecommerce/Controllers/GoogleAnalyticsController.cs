@@ -73,7 +73,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             //TODO proper order lines!
             foreach (var orderLine in order.OrderLines)
             {
-                trackingCodeSb.Append(string.Format(AddItem, order.Id, orderLine.ProductVariant.SKU, orderLine.ProductVariant.Product.Name, "", orderLine.UnitPrice, orderLine.Quantity));
+                trackingCodeSb.Append(string.Format(AddItem, order.Id, orderLine.SKU, orderLine.Name, orderLine.Options , orderLine.UnitPrice, orderLine.Quantity));
             }
 
             trackingCodeSb.Append(TrackTrans);

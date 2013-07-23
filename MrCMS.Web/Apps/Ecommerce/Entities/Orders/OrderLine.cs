@@ -14,6 +14,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 {
     public class OrderLine : SiteEntity
     {
+        //product title or product variant name if available
+        public virtual string Name { get; set; }
+        //ie blue large cotton
+        public virtual string Options { get; set; }
+        public virtual string SKU { get; set; }
         public virtual Order Order { get; set; }
         [DisplayName("Product")]
         public virtual ProductVariant ProductVariant { get; set; }
