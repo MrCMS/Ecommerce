@@ -11,7 +11,6 @@ namespace MrCMS.EcommerceApp.Tests.Services
 {
     public class CartManagerTests : InMemoryDatabaseTest
     {
-        private static IGetCart _getCart;
         private CartModel _cartModel;
         private ProductVariant _productVariant = new ProductVariant();
         private CartManager _cartManager;
@@ -19,10 +18,8 @@ namespace MrCMS.EcommerceApp.Tests.Services
         public CartManagerTests()
         {
             _cartModel = new CartModel();
-            _getCart = A.Fake<IGetCart>();
-            A.CallTo(() => _getCart.GetCart()).Returns(_cartModel);
-            Session.Transact(session1 => session1.SaveOrUpdate(_productVariant));
-            _cartManager = new CartManager(_getCart, Session);
+            Session.Transact(session => session.SaveOrUpdate(_productVariant));
+            _cartManager = new CartManager(_cartModel, Session);
         }
         [Fact]
         public void CartManager_AddToCart_AddsAnItemToTheCart()

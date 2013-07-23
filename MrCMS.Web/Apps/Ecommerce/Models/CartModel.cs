@@ -5,10 +5,12 @@ using MrCMS.Entities.People;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
@@ -19,6 +21,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             Items = new List<CartItem>();
         }
         public List<CartItem> Items { get; set; }
+        public bool Empty
+        {
+            get { return !Items.Any(); }
+        }
 
         public decimal Subtotal
         {
@@ -103,16 +109,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public Address BillingAddress { get; set; }
 
         public ShippingMethod ShippingMethod { get; set; }
-        public int ShippingCalculation
-        {
-            get
-            {
-                return (ShippingMethod != null ?
-                    ShippingMethod.GetShippingCalculation(this) != null ?
-                    ShippingMethod.GetShippingCalculation(this).Id : 0
-                    : 0);
-            }
-        }
 
         [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public decimal? ShippingTotal { get { return ShippingMethod == null ? null : ShippingMethod.GetPrice(this); } }
@@ -123,24 +119,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get { return Items.Any() ? Items.Sum(item => item.Weight) : decimal.Zero; }
         }
 
-        public string ItemCountText
-        {
-            get
-            {
-                switch (Items.Count)
-                {
-                    case 0:
-                        return "no items";
-                    case 1:
-                        return "1 item";
-                    default:
-                        return string.Format("{0} items", Items.Count);
-                }
-            }
-        }
         public bool AnyStandardPaymentMethodsAvailable { get; set; }
         public bool CanEnterPaymentFlow { get { return Items.Any() && AnyStandardPaymentMethodsAvailable; } }
         public bool PayPalExpressAvailable { get; set; }
         public bool CanUsePayPalExpress { get { return Items.Any() && PayPalExpressAvailable; } }
+
+        public Country Country { get; set; }
     }
+
 }

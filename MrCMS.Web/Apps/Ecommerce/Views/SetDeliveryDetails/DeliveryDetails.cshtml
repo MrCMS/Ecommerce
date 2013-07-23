@@ -1,0 +1,25 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+<br />
+<div class="row-fluid">
+    <div class="span8">
+        <h4>Select postage
+        </h4>
+        <br />
+        <div>
+            <div class="span4">Postage selection*:</div>
+            <div>
+                @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>)
+            </div>
+        </div>
+        <hr />
+        @{Html.RenderAction("DeliveryAddress", "SetDeliveryDetails");}
+
+    </div>
+    <div class="span4">
+        @{Html.RenderAction("Summary", "Checkout");}
+        <hr />
+        @{Html.RenderAction("OrderEmail", "Checkout");}
+    </div>
+</div>
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/shipping-methods.js"); }
