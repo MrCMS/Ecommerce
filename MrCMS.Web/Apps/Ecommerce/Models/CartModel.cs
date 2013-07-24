@@ -114,6 +114,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public decimal? ShippingTotal { get { return ShippingMethod == null ? null : ShippingMethod.GetPrice(this); } }
         public decimal? ShippingTax { get { return ShippingMethod == null ? null : ShippingMethod.GetTax(this); } }
+        public decimal? ShippingTaxPercentage
+        {
+            get { return ShippingTotal.GetValueOrDefault() == 0 ? (decimal?)null : ShippingTax.GetValueOrDefault() / ShippingTotal.GetValueOrDefault(); }
+        }
 
         public virtual decimal Weight
         {

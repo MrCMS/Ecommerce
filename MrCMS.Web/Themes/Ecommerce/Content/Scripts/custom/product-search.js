@@ -111,6 +111,7 @@
             range: true,
             min: 0,
             max: $('#MaxPrice').val(),
+            step: 0.01,
             values: [parseInt($('#PriceFrom').val()), parseInt($('#PriceTo').val())],
             slide: function (event, ui) {
                 $("#amount").text("£" + ui.values[0] + " - £" + ui.values[1]);
