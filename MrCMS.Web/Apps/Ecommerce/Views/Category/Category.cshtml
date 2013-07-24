@@ -7,23 +7,19 @@
     var parentCategories = Model.ActivePages.Skip(1).Where(webpage => webpage is Category).ToList();
     parentCategories.Reverse();
 }
-
-<ul class="breadcrumb">
-    <li><a href="/">Home</a> <span class="divider">/</span></li>
-    <li><a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">Products</a> <span class="divider">/</span></li>
-    @foreach (var category in parentCategories)
-    {
-        <li><a href="/@category.LiveUrlSegment">@category.Name</a> <span class="divider">/</span></li>
-    }
-    <li class="active">@Model.Name</li>
-</ul>
-@RenderZone("Before Content")
 @Html.HiddenFor(x => x.Id)
 @Html.HiddenFor(x => x.LiveUrlSegment)
 
+
 <div class="row-fluid" id="product-search-container">
-    @{ Html.RenderAction("Query", "ProductSearch", new { query });}
-    @{ Html.RenderAction("Results", "ProductSearch", new { query });}
+    <div class="span3">
+        @{ Html.RenderAction("Query", "ProductSearch", new { query });}
+    </div>
+    <div class="span9">
+        <h1 class="category-title">@Editable(Model, category => category.Name)</h1>
+        @{ Html.RenderAction("Results", "ProductSearch", new { query });}
+        @Editable(Model, category => category.BodyContent, true)
+    </div>
 </div>
 @{
     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.history.js");

@@ -1875,7 +1875,6 @@
     <Content Include="Themes\Ecommerce\Views\Shared\SearchOptions.cshtml" />
     <Content Include="Themes\Ecommerce\Views\Shared\SearchSpecifications.cshtml" />
     <Content Include="Themes\Ecommerce\Views\Shared\SearchCategories.cshtml" />
-    <Content Include="Themes\Ecommerce\Views\Cart\CartPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />
