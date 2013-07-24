@@ -128,6 +128,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             }
         }
 
+        public virtual string DisplayImageUrl
+        {
+            get
+            {
+                if (Images.Any())
+                {
+                    return Gallery.Files.OrderBy(file => file.DisplayOrder).First().FileUrl;
+                }
+                return MrCMSApplication.Get<EcommerceSettings>().DefaultNoProductImage;
+            }
+        }
+
         public virtual string EditUrl
         {
             get { return "~/Admin/Webpage/Edit/" + Id; }
