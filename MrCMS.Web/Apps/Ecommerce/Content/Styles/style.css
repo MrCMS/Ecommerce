@@ -9,6 +9,8 @@
 .navbar .nav li:last-child a { border-right: 0; }
 .margin-bottom-10 { margin-bottom: 10px;}
 
+h1 { font-size: 24px;font-weight: normal;margin-top: 5px;}
+
 .nav-tabs.nav-stacked > li:first-child > a.subitem {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
@@ -83,6 +85,10 @@
     color:#0172B8;
     font-size:28px;
     font-weight: bold;
+}
+h1.category-title
+{
+    margin: 0;
 }
 h4.category-title
 {

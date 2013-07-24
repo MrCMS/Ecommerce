@@ -4,19 +4,18 @@
 @{
     var query = ViewData["query"] as ProductSearchQuery;
 }
-
-<ul class="breadcrumb">
-    <li><a href="/">Home</a> <span class="divider">/</span></li>
-    <li class="active">Products</li>
-</ul>
-@RenderZone("Before Content")
 @Html.HiddenFor(x => x.Id)
 @Html.HiddenFor(x => x.LiveUrlSegment)
 @Html.HiddenFor(x => x.UrlSegment)
 
 <div class="row-fluid" id="product-search-container">
-    @{ Html.RenderPartial("Query", query);}
-    @{ Html.RenderAction("Results", "ProductSearch", new { query });}
+    <div class="span3">
+        @{ Html.RenderAction("Query", "ProductSearch", new { query });}
+    </div>
+    <div class="span9">
+        @{ Html.RenderAction("Results", "ProductSearch", new { query });}
+        @Editable(Model, page => page.BodyContent, true)
+    </div>
 </div>
 @{
     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.history.js");
