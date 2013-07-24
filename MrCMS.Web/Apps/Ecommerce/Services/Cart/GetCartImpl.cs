@@ -35,7 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             //if (GetCountry() != null)
             //    address.Country = GetCountry();
             var availablePaymentMethods = _paymentMethodService.GetAllAvailableMethods();
-            
+
             //remove deleted product items from cart
             var cartItems = GetItems();
             DeleteNullProducts(cartItems);
@@ -57,7 +57,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                                AvailablePaymentMethods = availablePaymentMethods,
                                PaymentMethod = GetPaymentMethod() ?? (availablePaymentMethods.Count() == 1 ? availablePaymentMethods.First().SystemName : null)
                            };
-            
+
             cart.ShippingMethod = GetShippingMethod(cart);
             return cart;
         }
@@ -73,22 +73,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         private void DeleteNullProducts(IEnumerable<CartItem> items)
         {
-            foreach (var cartItem in items.Where(x=>x.Item==null))
+            foreach (var cartItem in items.Where(x => x.Item == null))
             {
-                _session.Transact(session => _session.Delete(cartItem));
+                CartItem item = cartItem;
+                _session.Transact(session => _session.Delete(item));
             }
         }
 
         private Discount GetDiscount()
         {
-            if (!String.IsNullOrWhiteSpace(GetDiscountCode()))
-                return
-                    _session.QueryOver<Discount>()
-                            .Where(item => item.Code.IsInsensitiveLike(GetDiscountCode(), MatchMode.Exact))
-                            .Cacheable()
-                            .SingleOrDefault();
-            else
-                return null;
+            return !String.IsNullOrWhiteSpace(GetDiscountCode())
+                       ? _session.QueryOver<Discount>()
+                                 .Where(item => item.Code.IsInsensitiveLike(GetDiscountCode(), MatchMode.Exact))
+                                 .Cacheable()
+                                 .SingleOrDefault()
+                       : null;
         }
 
         private Address GetShippingAddress()
@@ -133,7 +132,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             return GetSessionValue<string>(CartManager.CurrentDiscountCodeKey);
         }
 
-        public string GetPaymentMethod()
+        private string GetPaymentMethod()
         {
             return GetSessionValue<string>(CartManager.CurrentPaymentMethodKey);
         }
