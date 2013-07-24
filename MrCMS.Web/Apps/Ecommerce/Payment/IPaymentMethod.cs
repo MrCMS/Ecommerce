@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MrCMS.Helpers;
 using System.Linq;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment

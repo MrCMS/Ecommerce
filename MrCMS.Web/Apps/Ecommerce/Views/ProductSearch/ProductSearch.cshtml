@@ -13,14 +13,12 @@
 @Html.HiddenFor(x => x.Id)
 @Html.HiddenFor(x => x.LiveUrlSegment)
 @Html.HiddenFor(x => x.UrlSegment)
-@*@Html.Hidden("product-price-range-min", (Int32)ViewBag.ProductPriceRangeMin)
-@Html.Hidden("product-price-range-max", (Int32)ViewBag.ProductPriceRangeMax)*@
 
 <div class="row-fluid" id="product-search-container">
     @{ Html.RenderPartial("Query", query);}
     @{ Html.RenderAction("Results", "ProductSearch", new { query });}
 </div>
 @{
-    Html.IncludeScript("~/Themes/Ecommerce/Content/Scripts/jquery.history.js");
-    Html.IncludeScript("~/Themes/Ecommerce/Content/Scripts/custom/product-search.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.history.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/product-search.js");
 }

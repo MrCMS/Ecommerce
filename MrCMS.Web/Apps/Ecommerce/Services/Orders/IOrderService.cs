@@ -8,7 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 {
     public interface IOrderService
     {
-        Order PlaceOrder(CartModel cartModel);
+        Order PlaceOrder(CartModel cartModel, PaymentStatus paymentStatus);
         IPagedList<Order> GetPaged(int pageNum, int pageSize = 10);
         void Save(Order item);
         Order Get(int id);

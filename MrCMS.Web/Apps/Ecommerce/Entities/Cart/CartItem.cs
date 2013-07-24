@@ -52,9 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         public virtual decimal GetDiscountAmount(Discount discount, string discountCode)
         {
             return discount != null
-
                        ? discount.GetDiscount(this, discountCode)
-
                        : decimal.Zero;
         }
     }
