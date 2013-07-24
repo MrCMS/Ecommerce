@@ -48,5 +48,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         public int CurrencyId { get; set; }
 
         public Currency Currency { get { return MrCMSApplication.Get<ISession>().Get<Currency>(CurrencyId); } }
+
+        [DisplayName("Previous Price text")]
+        public string PreviousPriceText { get; set; }
     }
 }

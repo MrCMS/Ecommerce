@@ -162,5 +162,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                 return null;
             }
         }
+
+        public virtual string PreviousPriceText
+        {
+            get
+            {
+                return MrCMSApplication.Get<EcommerceSettings>().PreviousPriceText; 
+            }
+        }
     }
 }

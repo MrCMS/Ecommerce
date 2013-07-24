@@ -23,13 +23,12 @@
             </h1>
             @if (Model.DisplayPreviousPrice.HasValue)
             {
-                <span>shop price: <span style="text-decoration: line-through">@Model.DisplayPreviousPrice </span></span>
+                <span>@Model.PreviousPriceText<span style="text-decoration: line-through">@Model.DisplayPreviousPrice </span></span>
             }
 
             <br />
             <br />
-            <a href="@Model.LiveUrlSegment" class="btn btn-info span12">More info
-            </a>
+            <a href="@Model.LiveUrlSegment" class="btn btn-info span12">View</a>
         </div>
     </div>
     <div class="clearfix"></div>
