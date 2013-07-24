@@ -202,6 +202,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\GoogleAnalyticsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PaymentMethodController.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\RequestHelper.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\IGoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PayPalExpressCheckoutController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
@@ -509,6 +510,7 @@
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\user-login.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\user-registration.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\ecommerce.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\jquery.history.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.unobtrusive.min.js" />

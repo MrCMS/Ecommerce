@@ -22,19 +22,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IProductService _productService;
         private readonly IDocumentService _documentService;
         private readonly ICategoryService _categoryService;
-        private readonly ITaxRateManager _taxRateManager;
         private readonly IProductOptionManager _productOptionManager;
         private readonly IFileService _fileService;
         private readonly IImportExportManager _importExportManager;
         private readonly IBrandService _brandService;
 
-        public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService, ITaxRateManager taxRateManager,
+        public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService, 
             IProductOptionManager productOptionManager, IFileService fileService, IImportExportManager importExportManager, IBrandService brandService)
         {
             _productService = productService;
             _documentService = documentService;
             _categoryService = categoryService;
-            _taxRateManager = taxRateManager;
             _productOptionManager = productOptionManager;
             _fileService = fileService;
             _importExportManager = importExportManager;

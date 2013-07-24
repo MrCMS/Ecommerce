@@ -22,7 +22,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
                     string[] items = value.Split('/');
                     int id = 0;
                     if (Int32.TryParse(items[0], out id) && id != 0)
-                        model.Products.Add(session.Get<Product>(id));
+                    {
+                        var product = session.Get<Product>(id);
+                        if (product != null)
+                            model.Products.Add(product);
+                    }
+
                 }
             }
             catch (Exception)

@@ -37,7 +37,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var search = _productSearcher.IndexSearcher.Search(clone.GetQuery(), clone.GetFilter(), int.MaxValue);
             var documents = search.ScoreDocs.Select(doc => _productSearcher.IndexSearcher.Doc(doc.Doc)).ToList();
             var max = documents.Select(document => document.GetValue<decimal>(ProductSearchIndex.Price.FieldName)).Max();
-            return Convert.ToDouble(max);
+            return Convert.ToDouble(Math.Ceiling(max/5.0m)*5m);
         }
 
         public List<int> GetSpecifications(ProductSearchQuery query)

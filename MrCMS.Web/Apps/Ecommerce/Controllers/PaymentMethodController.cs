@@ -28,8 +28,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [ActionName("CashOnDelivery")]
         public RedirectResult CashOnDelivery_POST()
         {
-            var order = _orderService.PlaceOrder(_cartModel);
-            return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new {id = order.Guid}));
+            var order = _orderService.PlaceOrder(_cartModel, PaymentStatus.Pending);
+            return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new { id = order.Guid }));
         }
     }
 }

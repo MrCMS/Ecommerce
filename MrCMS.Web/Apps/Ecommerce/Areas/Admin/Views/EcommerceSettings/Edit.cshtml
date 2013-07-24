@@ -22,6 +22,14 @@
         @Html.LabelFor(x => x.SearchProductsPerPage)
         @Html.TextBoxFor(x => x.SearchProductsPerPage)
         @Html.ValidationMessageFor(x => x.SearchProductsPerPage)
+        
+        @Html.LabelFor(x => x.PreviousPriceText)
+        @Html.TextBoxFor(x => x.PreviousPriceText)
+        @Html.ValidationMessageFor(x => x.PreviousPriceText)
+        
+        @Html.LabelFor(x => x.DefaultNoProductImage)
+        @Html.TextBoxFor(x => x.DefaultNoProductImage,new{@class="media-selector"})
+        @Html.ValidationMessageFor(x => x.DefaultNoProductImage)
 
         @Html.LabelFor(x => x.CurrencyId)
         @Html.DropDownListFor(x => x.CurrencyId, ViewData["currency-options"] as IEnumerable<SelectListItem>)

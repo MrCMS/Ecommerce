@@ -22,14 +22,17 @@
     <div id="products-wrapper">
         @if (Model.Any())
         {
-            <div class="row-fluid">
-                <div id="products">
-                    @foreach (var product in Model)
-                    {
-                        Html.RenderPartial("ProductCard", product);
-                    }
-                </div>
+            <div id="products">
+                @foreach (var product in Model)
+                {
+                    <div class="row-fluid">
+                        @{ Html.RenderPartial("ProductCard", product); }
+                    </div>
+                    
+                    <hr />
+                }
             </div>
+           
             <div id="products-paging">
                 @Html.PageCurrentPage(Model, i => new { page = i }, PagedListRenderOptions.OnlyShowFivePagesAtATime)
             </div>
