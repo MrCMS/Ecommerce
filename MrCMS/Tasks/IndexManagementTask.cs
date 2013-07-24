@@ -43,11 +43,16 @@ namespace MrCMS.Tasks
         {
             if (Entity != null)
             {
-                Entity = Session.Get(Entity.GetType(), Entity.Id) as SiteEntity;
+                Entity = GetObject();
                 CurrentRequestData.SetTaskSite(Session.Get<Site>(Entity.Site.Id));
                 ExecuteLogic();
                 CurrentRequestData.SetTaskSite(null);
             }
+        }
+
+        protected virtual SiteEntity GetObject()
+        {
+            return Session.Get(Entity.GetType(), Entity.Id) as SiteEntity;
         }
 
         protected abstract void ExecuteLogic();
