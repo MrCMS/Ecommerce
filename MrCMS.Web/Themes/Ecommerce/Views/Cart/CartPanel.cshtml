@@ -1,6 +1,5 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 @using MrCMS.Helpers
-@using MrCMS.Web.Apps.Ecommerce.Helpers
 
 <div class="row-fluid">
     <div class="span7">
@@ -8,7 +7,7 @@
             <i class="icon-shopping-cart"></i>Your basket has
             @if (Model.Items.Any())
             {
-                @Model.Items.Count() <span>items - &pound;@Model.Total.ToCurrencyFormat()</span>
+                @Model.Items.Count() <span>items - &pound;@Model.Total.ToString("#.##")</span>
             }
             else
             {

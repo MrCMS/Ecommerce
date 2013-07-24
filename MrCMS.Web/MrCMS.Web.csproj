@@ -421,6 +421,7 @@
     <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\BreadCrumb.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\EcommerceNavigation.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedCategories.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedProducts.cs" />
@@ -1439,6 +1440,8 @@
     <Content Include="Apps\Ecommerce\Views\PaymentMethod\CashOnDelivery.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PaymentDetails\BillingAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PaymentDetails\SetBillingAddress.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\SocialLinks.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\BreadCrumb.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -1872,6 +1875,7 @@
     <Content Include="Themes\Ecommerce\Views\Shared\SearchOptions.cshtml" />
     <Content Include="Themes\Ecommerce\Views\Shared\SearchSpecifications.cshtml" />
     <Content Include="Themes\Ecommerce\Views\Shared\SearchCategories.cshtml" />
+    <Content Include="Themes\Ecommerce\Views\Cart\CartPanel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />

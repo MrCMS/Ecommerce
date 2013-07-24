@@ -77,12 +77,12 @@
     font-size: 16px;
 }
 
-
-h1.product-price
+.product-price
 {
     margin:5px 0px 5px 0px;
     color:#0172B8;
     font-size:28px;
+    font-weight: bold;
 }
 h4.category-title
 {
@@ -96,10 +96,11 @@ h4.category-title
     overflow:hidden;
     margin:0px 20px 0px 0px;
 }
-.product-details
-{
-    overflow:hidden;
+
+#product-description-container h4{
+    margin-top: 0;
 }
+
 #mail-print-buttons
 {
     margin:0px 10px 0px 0px;
