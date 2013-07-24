@@ -14,6 +14,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
+using MrCMS.Web.Apps.Ecommerce.Services.Currencies;
 using NHibernate;
 using Ninject;
 using MrCMS.Web.Apps.Core.Pages;
@@ -152,6 +153,8 @@ namespace MrCMS.Web.Apps.Ecommerce
             var siteSettings = configurationProvider.GetSiteSettings<SiteSettings>();
             var ecommerceSettings = configurationProvider.GetSiteSettings<EcommerceSettings>();
             var documentService = new DocumentService(session, siteSettings, currentSite);
+            var currencyService = new CurrencyService(session);
+
             var widgetService = new WidgetService(session);
             var productSearch = new ProductSearch
                                     {
@@ -297,6 +300,15 @@ namespace MrCMS.Web.Apps.Ecommerce
                 PublishOn = DateTime.UtcNow
             };
             documentService.AddDocument(registration);
+
+            //add currency
+            var britishCurrency = new MrCMS.Web.Apps.Ecommerce.Entities.Currencies.Currency
+                {
+                    Name = "British Pound",
+                    Code = "GDP",
+                    Format = "£0.00"
+                };
+            currencyService.Add(britishCurrency);
 
         }
 
