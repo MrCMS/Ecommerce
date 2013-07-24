@@ -16,6 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         ProductVariant Get(int id);
         List<SelectListItem> GetOptions();
         PriceBreak AddPriceBreak(AddPriceBreakModel model);
+        PriceBreak AddPriceBreak(PriceBreak item);
         bool IsPriceBreakQuantityValid(int quantity, ProductVariant productVariant);
         bool IsPriceBreakPriceValid(decimal price, ProductVariant productVariant, int quantity);
         void DeletePriceBreak(PriceBreak priceBreak);

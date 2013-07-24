@@ -291,9 +291,13 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Currencies\ICurrencyService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\GoogleAnalyticsService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductUrlHistoryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductUrlHistoryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductVariantPriceBreaksService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductVariantPriceBreaksService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductImagesService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductVariantsService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportSpecificationsService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductSpecificationsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductImagesService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductsValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductsValidationService.cs" />
@@ -302,7 +306,9 @@
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductImportDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductVariantImportDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductVariantsService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportSpecificationsService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductSpecificationsService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductUrlHistoryIsValid.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantPriceBreaksAreValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductImagesHaveValidUrl.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantOptionsAreValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductCategoriesExist.cs" />

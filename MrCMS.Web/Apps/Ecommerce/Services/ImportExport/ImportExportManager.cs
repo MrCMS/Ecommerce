@@ -25,6 +25,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         }
 
         #region Import Products
+        /// <summary>
+        /// Import Products From Excel
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
         public Dictionary<string, List<string>> ImportProductsFromExcel(Stream file)
         {
             var spreadsheet = new ExcelPackage(file);
@@ -56,6 +61,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         #endregion
 
         #region Export Products
+        /// <summary>
+        /// Export Products To Excel
+        /// </summary>
+        /// <returns></returns>
         public byte[] ExportProductsToExcel()
         {
             using (var excelFile = new ExcelPackage())
@@ -81,8 +90,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 var wsItems = excelFile.Workbook.Worksheets.Add("Items");
 
-                wsItems.Cells["A1:AB1"].Style.Font.Bold = true;
-                wsItems.Cells["A:AB"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                wsItems.Cells["A1:AD1"].Style.Font.Bold = true;
+                wsItems.Cells["A:AD"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 wsItems.Cells["A1"].Value = "Url (Must not be changed!)";
                 wsItems.Cells["B1"].Value = "Product Name";
                 wsItems.Cells["C1"].Value = "Description";
@@ -111,6 +120,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 wsItems.Cells["Z1"].Value = "Image 1";
                 wsItems.Cells["AA1"].Value = "Image 2";
                 wsItems.Cells["AB1"].Value = "Image 3";
+                wsItems.Cells["AC1"].Value = "Price Breaks";
+                wsItems.Cells["AD1"].Value = "Url History";
 
                 var productVariants = _productVariantService.GetAll();
 
@@ -176,6 +187,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                         }
                     }
 
+                    if (productVariants[i].PriceBreaks.Count > 0)
+                    {
+                        foreach (var item in productVariants[i].PriceBreaks)
+                        {
+                            wsItems.Cells["AC" + rowId].Value += item.Quantity + ":" + item.Price.ToString("#.##") + ";";
+                        }
+                        wsItems.Cells["AC" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    }
+                    if (productVariants[i].Product.Urls.Count > 0)
+                    {
+                        foreach (var item in productVariants[i].Product.Urls)
+                        {
+                            wsItems.Cells["AD" + rowId].Value += item.UrlSegment + ",";
+                        }
+                        wsItems.Cells["AD" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    }
+
                     if (!productVariants[i].Product.Images.Any()) continue;
                     wsItems.Cells["Z" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.First().FileUrl + "?update=no";
                     wsItems.Cells["Z" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
@@ -196,7 +224,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 wsItems.Cells["A:B"].AutoFitColumns();
                 wsItems.Cells["D:D"].AutoFitColumns();
                 wsItems.Cells["F:F"].AutoFitColumns();
-                wsItems.Cells["I:AB"].AutoFitColumns();
+                wsItems.Cells["I:AD"].AutoFitColumns();
 
                 return excelFile.GetAsByteArray();
             }

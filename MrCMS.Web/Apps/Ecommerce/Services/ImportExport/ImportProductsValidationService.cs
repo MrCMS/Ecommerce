@@ -54,6 +54,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             return errors;
         }
 
+        /// <summary>
+        /// Validate And Import Products With Variants
+        /// </summary>
+        /// <param name="spreadsheet"></param>
+        /// <param name="parseErrors"></param>
+        /// <returns></returns>
         public List<ProductImportDataTransferObject> ValidateAndImportProductsWithVariants(ExcelPackage spreadsheet, ref Dictionary<string, List<string>> parseErrors)
         {
             var productsToImport = new List<ProductImportDataTransferObject>();
@@ -158,6 +164,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     if (worksheet.GetValue<string>(rowId, 28).HasValue())
                                         product.Images.Add(worksheet.GetValue<string>(rowId, 28));
 
+                                    //Url History
+                                    try
+                                    {
+                                        var value = worksheet.GetValue<string>(rowId, 30);
+                                        if (!String.IsNullOrWhiteSpace(value))
+                                        {
+                                            var urlHistory = value.Split(',');
+                                            foreach (var item in urlHistory)
+                                            {
+                                                if (!String.IsNullOrWhiteSpace(item))
+                                                {
+                                                    product.UrlHistory.Add(item);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                        parseErrors[handle].Add(
+                                            "Product Url History field value contains illegal characters / not in correct format.");
+                                    }
+
                                     productsToImport.Add(product);
                                 }
                                 else
@@ -209,6 +237,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     else
                                         parseErrors[handle].Add("SKU is required.");
                                     productVariant.Barcode = worksheet.GetValue<string>(rowId, 19);
+
+                                    //Options
                                     if (worksheet.GetValue<string>(rowId, 20).HasValue() &&
                                         worksheet.GetValue<string>(rowId, 21).HasValue())
                                         productVariant.Options.Add(worksheet.GetValue<string>(rowId, 20),
@@ -221,6 +251,43 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                         worksheet.GetValue<string>(rowId, 25).HasValue())
                                         productVariant.Options.Add(worksheet.GetValue<string>(rowId, 24),
                                                                    worksheet.GetValue<string>(rowId, 25));
+
+                                    //Price Breaks
+                                    if (!String.IsNullOrWhiteSpace(worksheet.GetValue<string>(rowId, 29)))
+                                    {
+                                        try
+                                        {
+                                            var value = worksheet.GetValue<string>(rowId, 29);
+                                            if (!String.IsNullOrWhiteSpace(value))
+                                            {
+                                                if (!worksheet.GetValue<string>(rowId, 29).Contains(":"))
+                                                    parseErrors[handle].Add("Product Variant Price Breaks field value contains illegal characters / not in correct format. Quantity and Price (Item) must be split with :, and items must be split by ;");
+                                                var priceBreaks = value.Split(';');
+                                                foreach (var item in priceBreaks)
+                                                {
+                                                    if (!String.IsNullOrWhiteSpace(item))
+                                                    {
+                                                        string[] priceBreak = item.Split(':');
+                                                        if (!String.IsNullOrWhiteSpace(priceBreak[0]) &&
+                                                            !String.IsNullOrWhiteSpace(priceBreak[1]))
+                                                        {
+                                                            var quantity = Int32.Parse(priceBreak[0]);
+                                                            var price = Decimal.Parse(priceBreak[1]);
+                                                            productVariant.PriceBreaks.Add(quantity, price);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        catch (ArgumentException)
+                                        {
+                                            parseErrors[handle].Add("Product Variant Price Breaks field contains duplicate price breaks.");
+                                        }
+                                        catch (Exception)
+                                        {
+                                            parseErrors[handle].Add("Product Variant Price Breaks field value contains illegal characters / not in correct format. Quantity and Price (Item) must be split with :, and items must be split by ;");
+                                        }
+                                    }
 
                                     product.ProductVariants.Add(productVariant);
                                 }
@@ -236,6 +303,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             return productsToImport;
         }
 
+        /// <summary>
+        /// Validate Import File
+        /// </summary>
+        /// <param name="spreadsheet"></param>
+        /// <returns></returns>
         public Dictionary<string, List<string>> ValidateImportFile(ExcelPackage spreadsheet)
         {
             var parseErrors = new Dictionary<string, List<string>> { { "file", new List<string>() } };

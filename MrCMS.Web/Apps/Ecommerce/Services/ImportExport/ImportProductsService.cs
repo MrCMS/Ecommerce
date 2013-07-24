@@ -13,19 +13,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     {
         private readonly IDocumentService _documentService;
         private readonly IBrandService _brandService;
-        private readonly IImportSpecificationsService _importSpecificationsService;
+        private readonly IImportProductSpecificationsService _importSpecificationsService;
         private readonly IImportProductVariantsService _importProductVariantsService;
         private readonly IImportProductImagesService _importProductImagesService;
+        private readonly IImportProductUrlHistoryService _importUrlHistoryService;
 
         public ImportProductsService(IDocumentService documentService, IBrandService brandService,
-             IImportSpecificationsService importSpecificationsService, IImportProductVariantsService importProductVariantsService,
-            IImportProductImagesService importProductImagesService)
+             IImportProductSpecificationsService importSpecificationsService, IImportProductVariantsService importProductVariantsService,
+            IImportProductImagesService importProductImagesService, IImportProductUrlHistoryService importUrlHistoryService)
         {
             _documentService = documentService;
             _brandService = brandService;
             _importSpecificationsService = importSpecificationsService;
             _importProductVariantsService = importProductVariantsService;
             _importProductImagesService = importProductImagesService;
+            _importUrlHistoryService = importUrlHistoryService;
         }
 
         /// <summary>
@@ -87,6 +89,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             }
             else
                 _documentService.SaveDocument(product);
+
+            //Url History
+            _importUrlHistoryService.ImportUrlHistory(dataTransferObject, product);
 
             //Images
             _importProductImagesService.ImportProductImages(dataTransferObject, product);

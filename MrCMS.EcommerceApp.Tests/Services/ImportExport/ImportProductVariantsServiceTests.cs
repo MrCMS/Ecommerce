@@ -17,7 +17,8 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
     public class ImportProductVariantsServiceTests
     {
-        private readonly IImportSpecificationsService _importSpecificationsService;
+        private readonly IImportProductVariantPriceBreaksService _importProductVariantPriceBreaksService;
+        private readonly IImportProductSpecificationsService _importSpecificationsService;
         private readonly IProductVariantService _productVariantService;
         private readonly ITaxRateManager _taxRateManager;
         private readonly IProductOptionManager _productOptionManager;
@@ -26,12 +27,13 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 
         public ImportProductVariantsServiceTests()
         {
+            _importProductVariantPriceBreaksService = A.Fake<IImportProductVariantPriceBreaksService>();
             _productVariantService = A.Fake<IProductVariantService>();
             _taxRateManager = A.Fake<ITaxRateManager>();
             _productOptionManager = A.Fake<IProductOptionManager>();
-            _importSpecificationsService = A.Fake<IImportSpecificationsService>();
+            _importSpecificationsService = A.Fake<IImportProductSpecificationsService>();
             _documentService = A.Fake<IDocumentService>();
-            _importProductVariantsService = new ImportProductVariantsService(_importSpecificationsService,
+            _importProductVariantsService = new ImportProductVariantsService(_importProductVariantPriceBreaksService,_importSpecificationsService,
                                                                              _productVariantService, _taxRateManager,
                                                                              _productOptionManager, _documentService);
         }
@@ -146,7 +148,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         }
 
         [Fact]
-        public void ImportProductsService_ImportProduct_ShouldCallGetProductVariantBySKUOfProductVariantService()
+        public void ImportProductVariantsService_ImportVariants_ShouldCallGetProductVariantBySKUOfProductVariantService()
         {
             var productVariant = new ProductVariantImportDataTransferObject
                                      {
@@ -162,6 +164,30 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             _importProductVariantsService.ImportVariants(productDTO, product);
 
             A.CallTo(() => _productVariantService.GetProductVariantBySKU(productVariant.SKU)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void ImportProductVariantsService_ImportVariants_ShouldCallImportVariantPriceBreaksOfImportProductVariantPriceBreaksService()
+        {
+            var productVariantDTO = new ProductVariantImportDataTransferObject
+            {
+                SKU = "123",
+                PriceBreaks = new Dictionary<int, decimal>(){ {10,299} }
+            };
+            var productDTO = new ProductImportDataTransferObject
+            {
+                UrlSegment = "test-url",
+                ProductVariants = new List<ProductVariantImportDataTransferObject>() { productVariantDTO }
+            };
+
+            var product = new Product();
+
+            var productVariant = new ProductVariant() { Name = "Test Product Variant" };
+            A.CallTo(() => _productVariantService.GetProductVariantBySKU(productVariantDTO.SKU)).Returns(productVariant);
+
+            _importProductVariantsService.ImportVariants(productDTO, product);
+
+            A.CallTo(() => _importProductVariantPriceBreaksService.ImportVariantPriceBreaks(productVariantDTO, productVariant)).MustHaveHappened();
         }
     }
 }
