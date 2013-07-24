@@ -18,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             get { return TaxAwareProductPrice.GetPriceIncludingTax(Price, TaxRate); }
         }
 
-        public virtual TaxRate TaxRate
+        protected virtual TaxRate TaxRate
         {
             get
             {

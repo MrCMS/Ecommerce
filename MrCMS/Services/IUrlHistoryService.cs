@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Web;
-using MrCMS.Entities.People;
-using MrCMS.Models;
 
 namespace MrCMS.Services
 {
@@ -10,5 +6,6 @@ namespace MrCMS.Services
     {
         void Delete(UrlHistory urlHistory);
         void Add(UrlHistory urlHistory);
+        UrlHistory GetByUrlSegment(string urlSegment);
     }
 }

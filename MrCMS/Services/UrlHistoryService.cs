@@ -1,6 +1,7 @@
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
 using NHibernate;
+using NHibernate.Criterion;
 
 namespace MrCMS.Services
 {
@@ -21,6 +22,11 @@ namespace MrCMS.Services
         public void Add(UrlHistory urlHistory)
         {
             _session.Transact(session => session.Save(urlHistory));
-        }    
+        }
+
+        public UrlHistory GetByUrlSegment(string urlSegment)
+        {
+            return _session.QueryOver<UrlHistory>().Where(x => x.UrlSegment.IsLike(urlSegment, MatchMode.Exact)).Cacheable(). SingleOrDefault();
+        }
     }
 }

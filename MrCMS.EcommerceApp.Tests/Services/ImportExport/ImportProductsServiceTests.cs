@@ -16,21 +16,24 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         private readonly IDocumentService _documentService;
         private readonly IBrandService _brandService;
         private readonly ImportProductsService _importProductsService;
-        private readonly IImportSpecificationsService _importSpecificationsService;
+        private readonly IImportProductSpecificationsService _importSpecificationsService;
         private readonly IImportProductVariantsService _importProductVariantsService;
         private readonly IImportProductImagesService _importProductImagesService;
+        private readonly IImportProductUrlHistoryService _importProductUrlHistoryService;
 
         public ImportProductsServiceTests()
         {
             _documentService = A.Fake<IDocumentService>();
             _brandService = A.Fake<IBrandService>();
-            _importSpecificationsService = A.Fake<IImportSpecificationsService>();
+            _importSpecificationsService = A.Fake<IImportProductSpecificationsService>();
             _importProductVariantsService = A.Fake<IImportProductVariantsService>();
             _importProductImagesService = A.Fake<IImportProductImagesService>();
+            _importProductUrlHistoryService = A.Fake<IImportProductUrlHistoryService>();
             _importProductsService = new ImportProductsService(_documentService, _brandService,
                                                                _importSpecificationsService,
                                                                _importProductVariantsService,
-                                                               _importProductImagesService);
+                                                               _importProductImagesService,
+                                                               _importProductUrlHistoryService);
         }
 
         [Fact]
@@ -113,7 +116,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 
             A.CallTo(() => _brandService.GetBrandByName("Test Brand")).Returns(null);
 
-            var importProduct = _importProductsService.ImportProduct(product);
+            _importProductsService.ImportProduct(product);
 
             A.CallTo(() => _brandService.Add(A<Brand>.Ignored)).MustHaveHappened();
         }
@@ -153,6 +156,23 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             var importProduct = _importProductsService.ImportProduct(productDTO);
 
             importProduct.Categories.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void ImportProductService_ImportProducts_ShouldCallImportUrlHistoryOfImportProductUrlHistoryService()
+        {
+            var productDTO = new ProductImportDataTransferObject
+            {
+                UrlSegment = "test-url",
+                UrlHistory = new List<string>(){ "test-url-old"}
+            };
+
+            var product = new Product() { Name = "Test Product" };
+            A.CallTo(() => _documentService.GetDocumentByUrl<Product>(productDTO.UrlSegment)).Returns(product);
+
+            _importProductsService.ImportProduct(productDTO);
+
+            A.CallTo(() => _importProductUrlHistoryService.ImportUrlHistory(productDTO, product)).MustHaveHappened();
         }
     }
 }

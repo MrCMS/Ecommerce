@@ -7,12 +7,12 @@ using MrCMS.Web.Apps.Ecommerce.Services.Products;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
-    public class ImportSpecificationsService : IImportSpecificationsService
+    public class ImportProductSpecificationsService : IImportProductSpecificationsService
     {
         private readonly IProductOptionManager _productOptionManager;
         private readonly IProductVariantService _productVariantService;
 
-        public ImportSpecificationsService(IProductOptionManager productOptionManager, IProductVariantService productVariantService)
+        public ImportProductSpecificationsService(IProductOptionManager productOptionManager, IProductVariantService productVariantService)
         {
             _productOptionManager = productOptionManager;
             _productVariantService = productVariantService;

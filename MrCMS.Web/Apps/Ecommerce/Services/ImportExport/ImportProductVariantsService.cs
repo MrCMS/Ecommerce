@@ -11,13 +11,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public class ImportProductVariantsService : IImportProductVariantsService
     {
-        private readonly IImportSpecificationsService _importSpecificationsService;
+        private readonly IImportProductVariantPriceBreaksService _importPriceBreaksService;
+        private readonly IImportProductSpecificationsService _importSpecificationsService;
         private readonly IProductVariantService _productVariantService;
         private readonly ITaxRateManager _taxRateManager;
         private readonly IProductOptionManager _productOptionManager;
         private readonly IDocumentService _documentService;
 
-        public ImportProductVariantsService(IImportSpecificationsService importSpecificationsService, 
+        public ImportProductVariantsService(IImportProductVariantPriceBreaksService importPriceBreaksService, IImportProductSpecificationsService importSpecificationsService, 
             IProductVariantService productVariantService, ITaxRateManager taxRateManager,
             IProductOptionManager productOptionManager, IDocumentService documentService)
         {
@@ -26,6 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _taxRateManager = taxRateManager;
             _productOptionManager = productOptionManager;
             _documentService = documentService;
+            _importPriceBreaksService = importPriceBreaksService;
         }
 
         public IEnumerable<ProductVariant> ImportVariants(ProductImportDataTransferObject dataTransferObject, Product product)
@@ -44,6 +46,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 productVariant.TrackingPolicy = item.TrackingPolicy;
                 productVariant.TaxRate = (item.TaxRate.HasValue && item.TaxRate.Value!=0)?_taxRateManager.Get(item.TaxRate.Value):_taxRateManager.GetDefaultRate();
                 productVariant.Product = product;
+
                 product.Variants.Add(productVariant);
 
                 _productVariantService.Add(productVariant);
@@ -58,11 +61,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 productVariant = _productVariantService.GetProductVariantBySKU(item.SKU);
 
+                //Price Breaks
+                _importPriceBreaksService.ImportVariantPriceBreaks(item,productVariant);
+
+                //Specifications
                _importSpecificationsService.ImportVariantSpecifications(item, product, productVariant);
             }
 
             return dataTransferObject.ProductVariants.Any() ? product.Variants : null;
         }
-
     }
 }

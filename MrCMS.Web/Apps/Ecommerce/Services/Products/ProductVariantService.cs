@@ -64,6 +64,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             return priceBreak;
         }
 
+        public PriceBreak AddPriceBreak(PriceBreak item)
+        {
+            _session.Transact(session => session.Save(item));
+
+            return item;
+        }
+
         public void DeletePriceBreak(PriceBreak priceBreak)
         {
             _session.Transact(session => session.Delete(priceBreak));

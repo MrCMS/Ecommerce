@@ -7,6 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs
         public ProductVariantImportDataTransferObject()
         {
             Options = new Dictionary<string, string>();
+            PriceBreaks = new Dictionary<int, decimal>();
         }
 
         public string Name { get; set; }
@@ -19,5 +20,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs
         public string SKU { get; set; }
         public string Barcode { get; set; }
         public Dictionary<string, string> Options { get; set; }
+        public Dictionary<int, decimal> PriceBreaks { get; set; }
     }
 }
