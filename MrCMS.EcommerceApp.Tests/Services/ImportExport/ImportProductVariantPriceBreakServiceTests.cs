@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FakeItEasy;
+using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
@@ -8,6 +9,8 @@ using NHibernate;
 using Ninject.MockingKernel;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Helpers;
+using System.Linq;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
@@ -33,15 +36,17 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 
             var productVariantDTO = new ProductVariantImportDataTransferObject
             {
-                PriceBreaks = new Dictionary<int, decimal>(){{10,299}}
+                PriceBreaks = new Dictionary<int, decimal>() { { 10, 299 } }
             };
             var productVariant = new ProductVariant();
 
-            var priceBreak = new PriceBreak() { Price = 299, Quantity = 10 };
+            var priceBreaks = _importProductUrlHistoryService.ImportVariantPriceBreaks(productVariantDTO, productVariant);
 
-            _importProductUrlHistoryService.ImportVariantPriceBreaks(productVariantDTO, productVariant);
-
-            A.CallTo(() => _productVariantService.AddPriceBreak(priceBreak)).MustHaveHappened();
+            priceBreaks.Should().HaveCount(1);
+            var priceBreak = priceBreaks.ToList()[0];
+            priceBreak.Price.Should().Be(299);
+            priceBreak.Quantity.Should().Be(10);
+            priceBreak.Item.Should().Be(productVariant);
         }
     }
 }
