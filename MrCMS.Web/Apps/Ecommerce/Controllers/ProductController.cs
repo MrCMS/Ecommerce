@@ -19,13 +19,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _productVariantService = productVariantService;
         }
 
-        public ViewResult Show(Product page, int pv=0)
+        public ViewResult Show(Product page, int? variant)
         {
-            if(_productVariantService.Get(pv)!=null)
-                ViewBag.Id = pv;
-            else
-                ViewBag.Id = 0;
-            ViewBag.ProductSearchUrl = UniquePageHelper.GetUrl<ProductSearch>();
+            if (variant.HasValue)
+                ViewData["selected-variant"] = _productVariantService.Get(variant.Value);
             return View(page);
         }
     }
