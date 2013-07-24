@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
@@ -34,11 +35,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             //if (GetCountry() != null)
             //    address.Country = GetCountry();
             var availablePaymentMethods = _paymentMethodService.GetAllAvailableMethods();
+            
+            //remove deleted product items from cart
+            var cartItems = GetItems();
+            DeleteNullProducts(cartItems);
+
             var cart = new CartModel
                            {
                                User = CurrentRequestData.CurrentUser,
                                UserGuid = CurrentRequestData.UserGuid,
-                               Items = GetItems(),
+                               Items = cartItems,
                                ShippingAddress = GetShippingAddress(),
                                BillingAddressSameAsShippingAddress = GetBillingAddressSameAsShippingAddress(),
                                BillingAddress = GetBillingAddress(),
@@ -51,6 +57,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                                AvailablePaymentMethods = availablePaymentMethods,
                                PaymentMethod = GetPaymentMethod() ?? (availablePaymentMethods.Count() == 1 ? availablePaymentMethods.First().SystemName : null)
                            };
+            
             cart.ShippingMethod = GetShippingMethod(cart);
             return cart;
         }
@@ -62,6 +69,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                         .Where(item => item.UserGuid == CurrentRequestData.UserGuid)
                         .Cacheable()
                         .List().ToList();
+        }
+
+        private void DeleteNullProducts(IEnumerable<CartItem> items)
+        {
+            foreach (var cartItem in items.Where(x=>x.Item==null))
+            {
+                _session.Transact(session => _session.Delete(cartItem));
+            }
         }
 
         private Discount GetDiscount()
