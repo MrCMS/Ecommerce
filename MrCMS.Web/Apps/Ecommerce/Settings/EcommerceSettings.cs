@@ -17,6 +17,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         public int PageSizeAdmin { get; set; }
         [DisplayName("Search Products per Page")]
         public string SearchProductsPerPage { get; set; }
+        [DisplayName("Previous Price text")]
+        public string PreviousPriceText { get; set; }
+
+        [DisplayName("Default no image")]
+        public string DefaultNoProductImage { get; set; }
 
         public IEnumerable<int> ProductPerPageOptions
         {
@@ -49,7 +54,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 
         public Currency Currency { get { return MrCMSApplication.Get<ISession>().Get<Currency>(CurrencyId); } }
 
-        [DisplayName("Previous Price text")]
-        public string PreviousPriceText { get; set; }
+        
     }
 }
