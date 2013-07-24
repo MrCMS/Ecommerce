@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using System.ComponentModel;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Users
 {
@@ -39,5 +40,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Users
         public virtual string PhoneNumber { get; set; }
 
         public virtual Guid UserGuid { get; set; }
+
+        public virtual Address Clone(ISession session)
+        {
+            return new Address
+                       {
+                           Address1 = Address1,
+                           Address2 = Address2,
+                           City = City,
+                           Company = Company,
+                           Country = Country == null ? null : session.Get<Country>(Country.Id),
+                           FirstName =FirstName,
+                           LastName = LastName,
+                           PhoneNumber = PhoneNumber,
+                           PostalCode = PostalCode,
+                           StateProvince = StateProvince,
+                           Title = Title,
+                           UserGuid = UserGuid
+                       };
+        }
     }
 }

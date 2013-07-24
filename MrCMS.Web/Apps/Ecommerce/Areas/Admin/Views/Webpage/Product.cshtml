@@ -1,7 +1,11 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
 <div class="row-fluid">
     <div class="span3">
-            @{Html.RenderAction("Brands", "Product", new { id = Model.Id });}
+        <div id="brands">
+            @Html.LabelFor(product => product.Brand.Id, "Brand")
+            @Html.DropDownListFor(product => product.Brand.Id, ViewData["brands"] as IEnumerable<SelectListItem>, new { @class = "span12" })
+            @Html.ActionLink("Add New", "AddBrand", "Product", new { id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+        </div>
     </div>
     <div class="span9">
         @Html.LabelFor(product => product.Abstract)

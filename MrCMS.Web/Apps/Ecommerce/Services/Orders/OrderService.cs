@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using NHibernate;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website;
-using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Entities.People;
 using NHibernate.Criterion;
 using Order = MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order;
@@ -17,53 +17,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
     public class OrderService : IOrderService
     {
         private readonly ISession _session;
-        private readonly ICountryService _countryService;
         private readonly ICartManager _cartManager;
 
-        public OrderService(ISession session, ICountryService countryService, ICartManager cartManager)
+        public OrderService(ISession session, ICartManager cartManager)
         {
             _session = session;
-            _countryService = countryService;
             _cartManager = cartManager;
         }
 
-        public Order PlaceOrder(CartModel cartModel)
+        public Order PlaceOrder(CartModel cartModel, PaymentStatus paymentStatus)
         {
-            cartModel.ShippingAddress.Site = CurrentRequestData.CurrentSite;
-            cartModel.BillingAddress.Site = CurrentRequestData.CurrentSite;
-
-            //WE NEED TO DO THIS, BECAUSE OF THE 
-            //a different object with the same identifier value was already associated with the session: 1
-            //ERROR
-            cartModel.ShippingAddress.Country = _countryService.Get(cartModel.ShippingAddress.Country.Id);
-            cartModel.BillingAddress.Country = _countryService.Get(cartModel.BillingAddress.Country.Id);
-
-            if (cartModel.ShippingAddress != null && cartModel.ShippingAddress == cartModel.BillingAddress)
-                _session.Transact(session => session.SaveOrUpdate(cartModel.ShippingAddress));
-            else
-            {
-                _session.Transact(session => session.SaveOrUpdate(cartModel.ShippingAddress));
-                _session.Transact(session => session.SaveOrUpdate(cartModel.BillingAddress));
-            }
-
-            //IP
-            var ip = String.Empty;
-            var rawIp = CurrentRequestData.CurrentContext.Request.ServerVariables["HTTP_X_FORWARD_FOR"];
-            if (!String.IsNullOrEmpty(rawIp))
-            {
-                String[] ipAddress = rawIp.Split(',');
-                if (ipAddress.Length != 0)
-                {
-                    ip = ipAddress[0];
-                }
-            }
-            else
-                ip = CurrentRequestData.CurrentContext.Request.ServerVariables["REMOTE_ADDR"];
-
             var order = new Order
                             {
-                                ShippingAddress = cartModel.ShippingAddress,
-                                BillingAddress = cartModel.BillingAddress,
+                                ShippingAddress = cartModel.ShippingAddress.Clone(_session),
+                                BillingAddress = cartModel.BillingAddress.Clone(_session),
                                 ShippingMethod = cartModel.ShippingMethod,
                                 Subtotal = cartModel.Subtotal,
                                 Discount = cartModel.Discount,
@@ -75,7 +42,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                 User = cartModel.User,
                                 Weight = cartModel.Weight,
                                 OrderEmail = cartModel.OrderEmail,
-                                CustomerIP = ip
+                                CustomerIP = RequestHelper.GetIP(),
+                                PaymentMethod = cartModel.PaymentMethod,
+                                ShippingStatus = ShippingStatus.Pending,
+                                ShippingTaxPercentage = cartModel.ShippingTaxPercentage,
+                                PaymentStatus = paymentStatus,
+                                PaidDate = paymentStatus == PaymentStatus.Paid ? CurrentRequestData.Now : (DateTime?) null
                             };
 
             foreach (var item in cartModel.Items)
@@ -94,7 +66,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                         Subtotal = item.PricePreTax * item.Quantity,
                         SKU = item.Item.SKU,
                         Name = !string.IsNullOrEmpty(item.Item.Name) ? item.Item.Name : item.Item.Product.Name,
-                        Options = options
+                        Options = options,
+                        Discount = item.GetDiscountAmount(cartModel.Discount,cartModel.DiscountCode),
                     });
             }
             _session.Transact(session => session.SaveOrUpdate(order));

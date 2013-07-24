@@ -1,6 +1,1 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
-<div id="brands">
-   @Html.LabelFor(product => product.Brand.Id, "Brand")
-        @Html.DropDownListFor(product => product.Brand.Id, ViewData["brands"] as IEnumerable<SelectListItem>, new { @class = "span12" })
-    @Html.ActionLink("Add New", "AddBrand", "Product", new { id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-</div>

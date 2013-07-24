@@ -10,22 +10,33 @@ namespace MrCMS.EcommerceApp.Tests.Pages.ProductTests
     public class ProductVariantsTests
     {
         [Fact]
-        public void Product_HasVariants_FalseIfNoVariants()
+        public void Product_IsMultiVariant_FalseIfNoVariants()
         {
             var product = new Product();
 
-            var hasVariants = product.HasVariants;
+            var isMultiVariant = product.IsMultiVariant;
 
-            hasVariants.Should().BeFalse();
+            isMultiVariant.Should().BeFalse();
         }
-
         [Fact]
-        public void Product_HasVariants_TrueIfAnyVariants()
+        public void Product_IsMultiVariant_FalseIf1Variant()
         {
             var product = new Product();
             product.Variants.Add(new ProductVariant());
 
-            var hasVariants = product.HasVariants;
+            var isMultiVariant = product.IsMultiVariant;
+
+            isMultiVariant.Should().BeFalse();
+        }
+
+        [Fact]
+        public void Product_HasVariants_TrueIfMoreThan1Variants()
+        {
+            var product = new Product();
+            product.Variants.Add(new ProductVariant());
+            product.Variants.Add(new ProductVariant());
+
+            var hasVariants = product.IsMultiVariant;
 
             hasVariants.Should().BeTrue();
         }

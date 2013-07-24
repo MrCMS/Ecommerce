@@ -34,9 +34,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             get { return Variants.Sum(x => x.Tax); }
         }
 
-        public virtual bool HasVariants
+        public virtual bool IsMultiVariant
         {
-            get { return Variants.Any(); }
+            get { return Variants.Count > 1; }
         }
 
         public virtual IList<ProductVariant> Variants { get; set; }
@@ -57,7 +57,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                                         .Cacheable()
                                         .List()
                                         .BuildSelectItemList(brand => brand.Name, brand => brand.Id.ToString(),
-                                                             brand => brand == Brand, "None selected");
+                                                             brand => brand == Brand, "Please select...");
         }
 
         public virtual IList<Category> Categories { get; set; }
@@ -68,11 +68,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
             var productVariant = new ProductVariant
                                      {
-                                         Name = this.Name,
+                                         Name = Name,
                                          TrackingPolicy = TrackingPolicy.DontTrack,
-                                         StockRemaining = 0,
-                                         BasePrice = (decimal)0.00,
-                                         Weight = 0
                                      };
             Variants.Add(productVariant);
             productVariant.Product = this;
@@ -85,7 +82,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                                     {
                                         Name = "Product Galleries",
                                         UrlSegment = "product-galleries",
-                                        IsGallery = true
+                                        IsGallery = true,
+                                        HideInAdminNav = true
                                     };
                 service.AddDocument(mediaCategory);
             }
@@ -94,7 +92,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                                          Name = Name,
                                          UrlSegment = "product-galleries/" + UrlSegment,
                                          IsGallery = true,
-                                         Parent = mediaCategory
+                                         Parent = mediaCategory,
+                                         HideInAdminNav = true
                                      };
             Gallery = productGallery;
 
@@ -125,6 +124,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                            ? (IEnumerable<MediaFile>)
                              Gallery.Files.Where(file => file.IsImage).OrderBy(file => file.DisplayOrder)
                            : new List<MediaFile>();
+            }
+        }
+
+        public virtual string DisplayImageUrl
+        {
+            get
+            {
+                return Images.Any()
+                           ? Images.First().FileUrl
+                           : MrCMSApplication.Get<EcommerceSettings>().DefaultNoProductImage;
             }
         }
 
@@ -167,8 +176,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             get
             {
-                return MrCMSApplication.Get<EcommerceSettings>().PreviousPriceText; 
+                return MrCMSApplication.Get<EcommerceSettings>().PreviousPriceText;
             }
+        }
+
+        public virtual IEnumerable<ProductVariant> VariantsByPrice
+        {
+            get { return Variants.OrderBy(variant => variant.Price); }
         }
     }
 }
