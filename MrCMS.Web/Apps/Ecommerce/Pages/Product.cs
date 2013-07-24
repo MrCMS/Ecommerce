@@ -34,9 +34,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             get { return Variants.Sum(x => x.Tax); }
         }
 
-        public virtual bool HasVariants
+        public virtual bool IsMultiVariant
         {
-            get { return Variants.Any(); }
+            get { return Variants.Count > 1; }
         }
 
         public virtual IList<ProductVariant> Variants { get; set; }
@@ -57,7 +57,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                                         .Cacheable()
                                         .List()
                                         .BuildSelectItemList(brand => brand.Name, brand => brand.Id.ToString(),
-                                                             brand => brand == Brand, "None selected");
+                                                             brand => brand == Brand, "Please select...");
         }
 
         public virtual IList<Category> Categories { get; set; }
@@ -132,11 +132,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             get
             {
-                if (Images.Any())
-                {
-                    return Gallery.Files.OrderBy(file => file.DisplayOrder).First().FileUrl;
-                }
-                return MrCMSApplication.Get<EcommerceSettings>().DefaultNoProductImage;
+                return Images.Any()
+                           ? Images.First().FileUrl
+                           : MrCMSApplication.Get<EcommerceSettings>().DefaultNoProductImage;
             }
         }
 
@@ -179,8 +177,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             get
             {
-                return MrCMSApplication.Get<EcommerceSettings>().PreviousPriceText; 
+                return MrCMSApplication.Get<EcommerceSettings>().PreviousPriceText;
             }
+        }
+
+        public virtual IEnumerable<ProductVariant> VariantsByPrice
+        {
+            get { return Variants.OrderBy(variant => variant.Price); }
         }
     }
 }

@@ -10,6 +10,7 @@ using NHibernate;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 {
@@ -149,6 +150,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual Product Product { get; set; }
 
         public virtual IList<ProductAttributeValue> AttributeValues { get; set; }
+        public virtual IEnumerable<ProductAttributeValue> AttributeValuesOrdered { get { return AttributeValues.OrderBy(value => value.DisplayOrder); } }
         public virtual IList<PriceBreak> PriceBreaks
         {
             get
@@ -176,6 +178,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                 return TaxRate == null
                            ? 0
                            : TaxRate.Percentage;
+            }
+        }
+
+        public virtual string DisplayName
+        {
+            get { return Name ?? Product.Name; }
+        }
+        public virtual string SelectOptionName
+        {
+            get
+            {
+                var title = string.Empty;
+                if (!string.IsNullOrWhiteSpace(Name)) title = Name + " - ";
+
+                if (AttributeValues.Any())
+                {
+                    title += string.Join(", ", AttributeValuesOrdered.Select(value => value.Value));
+                }
+
+                title += " - " + Price.ToCurrencyFormat();
+
+                return title;
             }
         }
     }

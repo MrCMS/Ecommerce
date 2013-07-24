@@ -1,63 +1,55 @@
 ﻿@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
 <div class="tab-pane" id="variants">
-    @if (Model.HasVariants)
-    {
-        <div class="btn-group">
-            <a href="@Url.Action("Add", "ProductVariant", new { id = Model.Id })" class="btn btn-success" data-toggle="fb-modal">Add Variant</a>
-        </div>
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>SKU
+    <div class="btn-group">
+        <a href="@Url.Action("Add", "ProductVariant", new { id = Model.Id })" class="btn btn-success" data-toggle="fb-modal">Add Variant</a>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>SKU
+                </th>
+                @foreach (var option in Model.AttributeOptions)
+                {
+                    <th>@option.Name
                     </th>
+                }
+                <th>Price
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var variant in Model.Variants)
+            {
+                <tr>
+                    <td>
+                        @variant.SKU
+                    </td>
                     @foreach (var option in Model.AttributeOptions)
                     {
-                        <th>@option.Name
-                        </th>
-                    }
-                    <th>Price
-                    </th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var variant in Model.Variants)
-                {
-                    <tr>
                         <td>
-                            @variant.SKU
-                        </td>
-                        @foreach (var option in Model.AttributeOptions)
-                        {
-                            <td>
-                                @{
-                                    var productAttributeValue = variant.AttributeValues.FirstOrDefault(value => value.ProductAttributeOption.Name == option.Name);
-                                }
-                                @if (productAttributeValue != null)
-                                {
-                                    @productAttributeValue.Value
-                                }
+                            @{
+                        var productAttributeValue = variant.AttributeValues.FirstOrDefault(value => value.ProductAttributeOption.Name == option.Name);
+                            }
+                            @if (productAttributeValue != null)
+                            {
+                                @productAttributeValue.Value
+                            }
 
-                            </td>
-                        }
-                        <td>
-                            @variant.Price
                         </td>
-                        <td>
-                            <div class="btn-group">
-                                @Html.ActionLink("Edit", "Edit", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                                @Html.ActionLink("Delete", "Delete", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        @Html.ActionLink("Make multi-variant", "MakeMultiVariant", "Product", new { id = Model.Id }, new { @class = "btn btn-primary", data_toggle = "fb-modal" })
-        
-    }
+                    }
+                    <td>
+                        @variant.Price
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            @Html.ActionLink("Edit", "Edit", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                            @Html.ActionLink("Delete", "Delete", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
