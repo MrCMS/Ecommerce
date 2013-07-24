@@ -68,11 +68,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
             var productVariant = new ProductVariant
                                      {
-                                         Name = this.Name,
+                                         Name = Name,
                                          TrackingPolicy = TrackingPolicy.DontTrack,
-                                         StockRemaining = 0,
-                                         BasePrice = (decimal)0.00,
-                                         Weight = 0
                                      };
             Variants.Add(productVariant);
             productVariant.Product = this;
@@ -85,7 +82,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                                     {
                                         Name = "Product Galleries",
                                         UrlSegment = "product-galleries",
-                                        IsGallery = true
+                                        IsGallery = true,
+                                        HideInAdminNav = true
                                     };
                 service.AddDocument(mediaCategory);
             }
@@ -94,7 +92,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                                          Name = Name,
                                          UrlSegment = "product-galleries/" + UrlSegment,
                                          IsGallery = true,
-                                         Parent = mediaCategory
+                                         Parent = mediaCategory,
+                                         HideInAdminNav = true
                                      };
             Gallery = productGallery;
 
