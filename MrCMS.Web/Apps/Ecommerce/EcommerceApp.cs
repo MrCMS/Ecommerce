@@ -207,6 +207,8 @@ namespace MrCMS.Web.Apps.Ecommerce
             configurationProvider.SaveSettings(siteSettings);
             ecommerceSettings.SearchProductsPerPage = "12,20,40";
             ecommerceSettings.PageSizeAdmin = 20;
+            ecommerceSettings.PreviousPriceText = "Previous price";
+
             configurationProvider.SaveSettings(ecommerceSettings);
             var checkoutLayout = new Layout
             {
