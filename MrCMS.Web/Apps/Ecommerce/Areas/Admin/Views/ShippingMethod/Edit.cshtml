@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Shipping.ShippingMethod
+﻿@using MrCMS.Web.Apps.Ecommerce.Settings
+@model MrCMS.Web.Apps.Ecommerce.Entities.Shipping.ShippingMethod
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 @using (Html.BeginForm("Edit", "ShippingMethod", FormMethod.Post))
 {
@@ -10,8 +11,11 @@
         @Html.TextBoxFor(x => x.Name)
         @Html.LabelFor(x => x.Description)
         @Html.TextAreaFor(x => x.Description)
-        @Html.LabelFor(x => x.TaxRate.Id, "Tax Rate")
-        @Html.DropDownListFor(x => x.TaxRate.Id, ViewData["tax-rates"] as IEnumerable<SelectListItem>)
+        @if (MrCMS.Website.MrCMSApplication.Get<TaxSettings>().ShippingRateTaxesEnabled)
+        {
+            @Html.LabelFor(x => x.TaxRate.Id, "Tax Rate")
+            @Html.DropDownListFor(x => x.TaxRate.Id, ViewData["tax-rates"] as IEnumerable<SelectListItem>)
+        }
     </div>
     <div class="modal-footer">
         <input type="submit" class="btn-primary btn" value="Update Shipping Method" />

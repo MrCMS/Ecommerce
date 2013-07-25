@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FakeItEasy;
+using FluentAssertions;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
@@ -32,12 +34,14 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 
             var product = new Product() { UrlSegment = "test-url" };
 
-            var urlHistory = new UrlHistory() { UrlSegment = "test-url", Webpage = product };
             A.CallTo(() => _urlHistoryService.GetByUrlSegment("test-url")).Returns(null);
 
-            _importProductUrlHistoryService.ImportUrlHistory(productDTO, product);
+            var urlHistory = _importProductUrlHistoryService.ImportUrlHistory(productDTO, product);
 
-            A.CallTo(() => _urlHistoryService.Add(urlHistory)).MustHaveHappened();
+            urlHistory.Should().HaveCount(1);
+            var urlHistoryItem = urlHistory.ToList()[0];
+            urlHistoryItem.UrlSegment.Should().Be("test-url");
+            urlHistoryItem.Webpage.Should().Be(product);
         }
     }
 }
