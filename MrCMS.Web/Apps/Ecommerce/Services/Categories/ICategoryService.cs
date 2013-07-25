@@ -16,6 +16,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         Category Get(int id);
         List<Category> GetRootCategories();
         CategorySearchModel GetCategoriesForSearch(int? categoryId);
-        void SetOrders(List<SortItem> items);
     }
 }
