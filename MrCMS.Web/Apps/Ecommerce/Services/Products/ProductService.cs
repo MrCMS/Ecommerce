@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using MrCMS.Models;
 using MrCMS.Paging;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
@@ -106,7 +107,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                         .SingleOrDefault();
             if (productAttributeOption == null)
             {
-                _session.Transact(session => session.Save(new ProductAttributeOption() { Name=optionName }));
+                _session.Transact(session => session.Save(new ProductAttributeOption() { Name = optionName }));
                 productAttributeOption =
                 _session.QueryOver<ProductAttributeOption>()
                         .Where(option => option.Name.IsInsensitiveLike(optionName, MatchMode.Exact))
@@ -161,6 +162,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public IList<Product> GetAll()
         {
             return _session.QueryOver<Product>().Cacheable().List();
+        }
+
+        public void SetCategoryOrder(Product product, List<SortItem> items)
+        {
+            _session.Transact(session =>
+                {
+                    items.ForEach(item =>
+                        {
+                            var category = session.Get<Category>(item.Id);
+                            if (category != null)
+                            {
+                                product.Categories.Remove(category);
+                                product.Categories.Insert(item.Order, category);
+                            }
+                        });
+                    session.Update(product);
+                }
+
+    );
         }
     }
 }
