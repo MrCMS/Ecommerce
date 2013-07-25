@@ -1,4 +1,5 @@
-﻿using MrCMS.Entities.Documents.Web;
+﻿using System.Collections.Generic;
+using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
@@ -14,15 +15,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _urlHistoryService = urlHistoryService;
         }
 
-        public void ImportUrlHistory(ProductImportDataTransferObject item, Product product)
+        public IEnumerable<UrlHistory> ImportUrlHistory(ProductImportDataTransferObject item, Product product)
         {
             foreach (var urlHistoryItem in item.UrlHistory)
             {
                 var urlHistory = _urlHistoryService.GetByUrlSegment(urlHistoryItem);
                 if (urlHistory == null)
                 {
-                    urlHistory = new UrlHistory() { UrlSegment = urlHistoryItem, Webpage = product };
+                    urlHistory = new UrlHistory()
+                        {
+                            UrlSegment = urlHistoryItem, 
+                            Webpage = product
+                        };
                     _urlHistoryService.Add(urlHistory);
+                    yield return urlHistory;
                 }
             }
         }
