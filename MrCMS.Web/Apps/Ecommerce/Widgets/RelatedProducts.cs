@@ -7,7 +7,7 @@ using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Widgets
 {
-    public class RelatedProduct : Widget 
+    public class RelatedProducts : Widget 
     {
         public override object GetModel(NHibernate.ISession session)
         {
@@ -16,9 +16,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
             var products = new List<Product>();
             if (page is Product)
             {
+                var product = (Product) page;
                 model.Title = "Related Products";
-                if (!((Product) page).Categories.Any())
-                        products.AddRange(((Product)page).Categories.First().Products);
+                if (product.Categories.Any())
+                    products.AddRange(product.Categories.First().Products.Where(x => x.Id != product.Id));
             }
             model.Products = products.Distinct().ToList();
             return model;

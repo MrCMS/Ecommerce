@@ -1,5 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.FeaturedProductsViewModel
-@if (Model != null)
+﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.RelatedProductsViewModel
+@if (Model != null && Model.Products.Any())
 {
     <hr />
     if (!String.IsNullOrEmpty(Model.Title))
