@@ -11,6 +11,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             Hierarchy = new List<Category>();
             Children = new List<Category>();
         }
+
         public List<Category> Hierarchy { get; set; }
         public List<Category> Children { get; set; }
 

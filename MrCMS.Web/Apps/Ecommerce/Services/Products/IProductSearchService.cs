@@ -30,10 +30,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         List<int> GetSpecifications(ProductSearchQuery query);
         List<int> GetOptions(ProductSearchQuery query);
         List<int> GetBrands(ProductSearchQuery query);
+        List<int> GetCategories(ProductSearchQuery query);
     }
 
     public class ProductSearchQuery : ICloneable
     {
+        private double? _maxPrice;
+
         public ProductSearchQuery()
         {
             Options = new List<int>();
@@ -44,10 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public double MaxPrice
         {
-            get
-            {
-                return MrCMSApplication.Get<IProductSearchService>().GetMaxPrice(this);
-            }
+            get { return (double) (_maxPrice = _maxPrice ?? MrCMSApplication.Get<IProductSearchService>().GetMaxPrice(this)); }
         }
 
         public List<int> Options { get; set; }

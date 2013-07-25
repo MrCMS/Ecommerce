@@ -6,6 +6,7 @@ using MrCMS.Paging;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using NHibernate;
 using NHibernate.Criterion;
 using MrCMS.Entities.Multisite;
@@ -16,13 +17,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
     {
         private readonly ISession _session;
         private readonly IDocumentService _documentService;
+        private readonly IProductSearchService _productSearchService;
         private readonly CurrentSite _currentSite;
 
-        public CategoryService(ISession session, CurrentSite currentSite, IDocumentService documentService)
+        public CategoryService(ISession session, CurrentSite currentSite, IDocumentService documentService,IProductSearchService productSearchService)
         {
             _session = session;
             _currentSite = currentSite;
             _documentService = documentService;
+            _productSearchService = productSearchService;
         }
 
         public CategoryPagedList Search(string queryTerm = null, int page = 1)
@@ -88,27 +91,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
             return categoryContainer.PublishedChildren.OfType<Category>().ToList();
         }
 
-        public CategorySearchModel GetCategoriesForSearch(int? categoryId)
+        public CategorySearchModel GetCategoriesForSearch(ProductSearchQuery query)
         {
-            if (!categoryId.HasValue)
-                return GetRootCategoryModel();
+            var availableCategories = _productSearchService.GetCategories(query);
+            if (!query.CategoryId.HasValue)
+                return GetRootCategoryModel(availableCategories);
 
-            var category = _session.Get<Category>(categoryId);
-            var categories = category.PublishedChildren.OfType<Category>().ToList();
-            var hierarchy = category.ActivePages.OfType<Category>().ToList();
+            var category = _session.Get<Category>(query.CategoryId);
+            var categories = category.PublishedChildren.OfType<Category>().Where(cat=>availableCategories.Contains(cat.Id)).ToList();
+            var hierarchy = category.ActivePages.OfType<Category>().Where(cat => availableCategories.Contains(cat.Id)).ToList();
             hierarchy.Reverse();
-            return new CategorySearchModel
+            return new CategorySearchModel()
                        {
                            Children = categories,
                            Hierarchy = hierarchy
                        };
         }
         
-        private CategorySearchModel GetRootCategoryModel()
+        private CategorySearchModel GetRootCategoryModel(List<int> availableCategories)
         {
             var categoryContainer = _documentService.GetUniquePage<CategoryContainer>();
-            var categories = categoryContainer.PublishedChildren.OfType<Category>().ToList();
-            return new CategorySearchModel
+            var categories = categoryContainer.PublishedChildren.OfType<Category>().Where(cat => availableCategories.Contains(cat.Id)).ToList();
+            return new CategorySearchModel()
                        {
                            Children = categories
                        };
