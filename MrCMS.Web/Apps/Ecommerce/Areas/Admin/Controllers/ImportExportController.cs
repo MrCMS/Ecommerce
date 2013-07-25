@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return View();
         }
         [HttpGet]
-        public FileResult ExportProducts()
+        public ActionResult ExportProducts()
         {
             try
             {
@@ -59,7 +59,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return View();
         }
         [HttpGet]
-        public FileResult ExportToGoogleBase()
+        public ActionResult ExportProductsToGoogleBase()
         {
             try
             {
