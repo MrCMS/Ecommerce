@@ -179,8 +179,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                         });
                     session.Update(product);
                 }
-
-    );
+            );
         }
     }
 }
