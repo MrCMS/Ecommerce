@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MrCMS.Entities.Documents;
-using MrCMS.Entities.Documents.Web;
-using MrCMS.Entities.Indexes;
-using MrCMS.Helpers;
 using MrCMS.Indexing.Querying;
 using MrCMS.Indexing.Utils;
-using MrCMS.Models;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Indexing;
-using Lucene.Net.Search;
-using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
@@ -36,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             clone.PriceTo = null;
             var search = _productSearcher.IndexSearcher.Search(clone.GetQuery(), clone.GetFilter(), int.MaxValue);
             var documents = search.ScoreDocs.Select(doc => _productSearcher.IndexSearcher.Doc(doc.Doc)).ToList();
-            var max = documents.Select(document => document.GetValue<decimal>(ProductSearchIndex.Price.FieldName)).Max();
+            var max = documents.Count>0?documents.Select(document => document.GetValue<decimal>(ProductSearchIndex.Price.FieldName)).Max():0;
             return Convert.ToDouble(Math.Ceiling(max/5.0m)*5m);
         }
 
