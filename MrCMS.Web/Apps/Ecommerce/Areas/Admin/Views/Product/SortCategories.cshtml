@@ -21,7 +21,7 @@
         <h3>Sort Product Specification Atrribute Options</h3>
     </div>
     <div class="modal-body">
-         @Html.Hidden("productId", ((MrCMS.Web.Apps.Ecommerce.Pages.Product)ViewBag.Product).Id)
+         @Html.Hidden("Id", ((MrCMS.Web.Apps.Ecommerce.Pages.Product)ViewBag.Product).Id)
          <ul id="sortable">
             @if (Model.Any())
             {
