@@ -29,26 +29,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             return PriceCreator(value, rate, shippingRateIncludesTax).PriceIncludingTax;
         }
 
-        public static Func<decimal?, TaxRate, bool?, TaxAwareShippingRate> PriceCreator =
+        private static Func<decimal?, TaxRate, bool?, TaxAwareShippingRate> PriceCreator =
             (arg1, rate, arg3) => new TaxAwareShippingRate(arg1, rate, arg3);
 
         private readonly decimal? _value;
         private readonly TaxRate _taxRate;
         private readonly bool? _shippingRateIncludesTax;
 
-        protected decimal TaxRatePercentage
+        private decimal TaxRatePercentage
         {
             get { return _taxRate != null ? _taxRate.Percentage : 0m; }
         }
 
-        public TaxAwareShippingRate(decimal? value, TaxRate taxRate, bool? shippingRateIncludesTax = null)
+        private TaxAwareShippingRate(decimal? value, TaxRate taxRate, bool? shippingRateIncludesTax = null)
         {
             _value = value;
             _taxRate = taxRate;
             _shippingRateIncludesTax = shippingRateIncludesTax;
         }
 
-        public decimal? PriceExcludingTax
+        private decimal? PriceExcludingTax
         {
             get
             {
@@ -63,12 +63,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get
             {
-                return _shippingRateIncludesTax ?? (!MrCMSApplication.Get<TaxSettings>().TaxesEnabled ||
+                return _shippingRateIncludesTax ?? (!MrCMSApplication.Get<TaxSettings>().TaxesEnabled || 
+                    !MrCMSApplication.Get<TaxSettings>().ShippingRateTaxesEnabled ||
                        MrCMSApplication.Get<TaxSettings>().ShippingRateIncludesTax);
             }
         }
 
-        public decimal? PriceIncludingTax
+        private decimal? PriceIncludingTax
         {
             get
             {
