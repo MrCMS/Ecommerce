@@ -11,7 +11,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.Rules
 
         public ProductCategoriesExist(ICategoryService categoryService)
         {
-            _categoryService = categoryService;
+            _categoryService = categoryService; 
         }
 
         public IEnumerable<string> GetErrors(ProductImportDataTransferObject product)
