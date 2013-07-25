@@ -1449,6 +1449,7 @@
     <Content Include="Apps\Ecommerce\Views\Shared\ProductSpecifications.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_SearchLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortCategories.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\RelatedProducts.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
