@@ -27,7 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IImportExportManager _importExportManager;
         private readonly IBrandService _brandService;
 
-        public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService, 
+        public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService,
             IProductOptionManager productOptionManager, IFileService fileService, IImportExportManager importExportManager, IBrandService brandService)
         {
             _productService = productService;
@@ -292,7 +292,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult ManageOptions(Product product)
         {
-            var model = new MakeMultivariantModel {ProductId = product.Id};
+            var model = new MakeMultivariantModel { ProductId = product.Id };
             if (product.AttributeOptions.Any())
             {
                 try
@@ -331,7 +331,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 if (model.Option1Id != 0)
                 {
                     ProductAttributeOption option = _productOptionManager.GetAttributeOption(model.Option1Id);
-                    foreach (var item in option.Values.Where(x => x.ProductAttributeOption.Id == option.Id && x.ProductVariant.Product.Id==product.Id).ToList())
+                    foreach (var item in option.Values.Where(x => x.ProductAttributeOption.Id == option.Id && x.ProductVariant.Product.Id == product.Id).ToList())
                     {
                         option.Values.Remove(item);
                     }
@@ -422,13 +422,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Brands(Product product,string brandId)
+        public PartialViewResult Brands(Product product, string brandId)
         {
             var options = _brandService.GetOptions();
             if (!String.IsNullOrWhiteSpace(brandId))
             {
                 if (options.Where(x => x.Value == brandId).SingleOrDefault() != null)
-                    options.Where(x => x.Value == brandId).SingleOrDefault().Selected=true;
+                    options.Where(x => x.Value == brandId).SingleOrDefault().Selected = true;
             }
             ViewData["brands"] = options;
             return PartialView(product);
@@ -445,9 +445,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("AddBrand")]
         public JsonResult AddBrand_POST(string name)
         {
-            if (!String.IsNullOrWhiteSpace(name) && !_brandService.AnyExistingBrandsWithName(name,0))
+            if (!String.IsNullOrWhiteSpace(name) && !_brandService.AnyExistingBrandsWithName(name, 0))
             {
-                _brandService.Add(new Brand() { Name=name,Site=CurrentSite });
+                _brandService.Add(new Brand() { Name = name, Site = CurrentSite });
                 return Json(_brandService.GetBrandByName(name).Id);
             }
             else
@@ -457,35 +457,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult SortCategories(int productId = 0)
+        public ActionResult SortCategories(Product product)
         {
-            if (productId != 0)
-            {
-                Product product = _productService.Get(productId);
-                if (product != null)
-                {
-                    var sortItems = product.Categories.OrderBy(x => x.DisplayOrder)
-                                           .Select(
-                                               arg =>
-                                               new SortItem
-                                               {
-                                                   Order = arg.DisplayOrder,
-                                                   Id = arg.Id,
-                                                   Name = arg.Name
-                                               })
-                                           .ToList();
-                    ViewBag.Product = product;
-                    return View(sortItems);
-                }
-            }
-            return RedirectToAction("Edit", "Webpage", new { id = productId });
+            IList<Category> categories = product.Categories;
+            var sortItems = categories
+                .Select(
+                    arg =>
+                    new SortItem
+                        {
+                            Order = categories.IndexOf(arg),
+                            Id = arg.Id,
+                            Name = arg.Name
+                        })
+                .ToList();
+            ViewBag.Product = product;
+            return View(sortItems);
         }
 
         [HttpPost]
-        public ActionResult SortCategories(int productId, List<SortItem> items)
+        public ActionResult SortCategories(Product product, List<SortItem> items)
         {
-            _categoryService.SetOrders(items);
-            return RedirectToAction("Edit", "Webpage", new { id = productId });
+            _productService.SetCategoryOrder(product, items);
+            return RedirectToAction("Edit", "Webpage", new { id = product.Id });
         }
     }
 }
