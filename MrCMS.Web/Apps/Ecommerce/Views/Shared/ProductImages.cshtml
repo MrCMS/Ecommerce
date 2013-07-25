@@ -1,0 +1,14 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Pages.Product  
+@Html.RenderImage(Model.DisplayImageUrl)
+<div class="clearfix"></div>
+<div id="product-image-thumbnails">
+    <ul class="thumbnails">
+        @foreach (var item in Model.Images)
+        {
+            <li class="span3">
+                @Html.RenderImage(item.FileUrl, Model.Name)
+            </li>
+        }
+    </ul>
+</div>

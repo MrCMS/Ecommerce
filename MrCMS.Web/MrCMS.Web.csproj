@@ -1442,6 +1442,11 @@
     <Content Include="Apps\Ecommerce\Views\PaymentDetails\SetBillingAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\SocialLinks.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\BreadCrumb.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\_ProductLayout.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\ProductImages.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\ProductPricebreaks.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\ProductSpecifications.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\_SearchLayout.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

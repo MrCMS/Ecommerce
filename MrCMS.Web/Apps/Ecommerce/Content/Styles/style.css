@@ -125,7 +125,7 @@ h4.category-title
     margin:0;
 }
 
-pre.product-variants-filter
+.product-variants-filter
 {
     background-color: #F5F5F5;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -141,7 +141,7 @@ pre.product-variants-filter
     word-break:normal;
     word-wrap:normal;
 }
-pre#product-addtobasket
+#product-addtobasket
 {
     background-color: #F5F5F5;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -157,15 +157,15 @@ pre#product-addtobasket
     word-break:normal;
     word-wrap:normal;
 }
-pre.product-variants-filter label, pre#product-addtobasket label
+.product-variants-filter label, pre#product-addtobasket label
 {
     margin:7px 0px 0px 0px;
 }
-pre.product-variants-filter input[type="text"], pre#product-addtobasket input[type="text"]
+.product-variants-filter input[type="text"], pre#product-addtobasket input[type="text"]
 {
     margin:0;
 }
-pre.product-variants-filter select, pre#product-addtobasket select
+.product-variants-filter select, pre#product-addtobasket select
 {
     margin:0;
 }
