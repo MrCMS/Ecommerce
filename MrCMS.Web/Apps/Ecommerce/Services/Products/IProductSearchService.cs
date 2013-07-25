@@ -29,6 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         double GetMaxPrice(ProductSearchQuery query);
         List<int> GetSpecifications(ProductSearchQuery query);
         List<int> GetOptions(ProductSearchQuery query);
+        List<int> GetBrands(ProductSearchQuery query);
     }
 
     public class ProductSearchQuery : ICloneable
@@ -84,6 +85,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             }
         }
 
+        public int? BrandId { get; set; }
+
         public Filter GetFilter()
         {
             var dateValue = DateTools.DateToString(CurrentRequestData.Now, DateTools.Resolution.SECOND);
@@ -94,7 +97,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public Query GetQuery()
         {
-            if (!Options.Any() && !Specifications.Any() && Math.Abs(PriceFrom - 0) < 0.01 && !PriceTo.HasValue && !CategoryId.HasValue && string.IsNullOrWhiteSpace(SearchTerm))
+            if (!Options.Any() && !Specifications.Any() && Math.Abs(PriceFrom - 0) < 0.01 && !PriceTo.HasValue && !CategoryId.HasValue && string.IsNullOrWhiteSpace(SearchTerm)
+            && !BrandId.HasValue)
                 return new MatchAllDocsQuery();
 
             var booleanQuery = new BooleanQuery();
@@ -114,8 +118,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 var query = q.Parse(fuzzySearchTerm);
                 booleanQuery.Add(query, Occur.MUST);
             }
+            if (BrandId.HasValue)
+                booleanQuery.Add(GetBrandQuery(), Occur.MUST);
             return booleanQuery;
         }
+
         private string MakeFuzzy(string keywords)
         {
             var split = keywords.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -163,6 +170,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                            Occur.MUST
                                        }
                                    };
+            return booleanQuery;
+        }
+
+
+        private Query GetBrandQuery()
+        {
+            var booleanQuery = new BooleanQuery();
+
+            booleanQuery.Add(new TermQuery(new Term(ProductSearchIndex.Brand.FieldName, BrandId.ToString())),
+                                 Occur.MUST);
+
             return booleanQuery;
         }
 

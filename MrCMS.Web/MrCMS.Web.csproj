@@ -1449,6 +1449,7 @@
     <Content Include="Apps\Ecommerce\Views\Shared\ProductSpecifications.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_SearchLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortCategories.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductSearch\SearchBrands.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -1879,9 +1880,9 @@
     <Content Include="Themes\Ecommerce\Views\Shared\SearchBox.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
     <Content Include="Themes\Ecommerce\Views\Shared\UserLinks.cshtml" />
-    <Content Include="Themes\Ecommerce\Views\Shared\SearchOptions.cshtml" />
-    <Content Include="Themes\Ecommerce\Views\Shared\SearchSpecifications.cshtml" />
-    <Content Include="Themes\Ecommerce\Views\Shared\SearchCategories.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductSearch\SearchOptions.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductSearch\SearchSpecifications.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductSearch\SearchCategories.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Ecommerce\Areas\Admin\Content\Styles\" />

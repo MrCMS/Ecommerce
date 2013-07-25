@@ -16,5 +16,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void Delete(Brand item);
         bool AnyExistingBrandsWithName(string name, int id);
         List<SelectListItem> GetOptions();
+        List<SelectListItem> GetAvailableBrands(ProductSearchQuery query);
     }
 }
