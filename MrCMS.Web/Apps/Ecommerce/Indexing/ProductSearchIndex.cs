@@ -77,6 +77,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                 yield return Specifications;
                 yield return Options;
                 yield return Categories;
+                yield return Brand;
             }
         }
         public static FieldDefinition<Product> Id { get { return _id; } }
@@ -92,6 +93,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
         public static FieldDefinition<Product> Specifications { get { return _specifications; } }
         public static FieldDefinition<Product> Options { get { return _options; } }
         public static FieldDefinition<Product> Categories { get { return _categories; } }
+        public static FieldDefinition<Product> Brand { get { return _brand; } }
 
         private static readonly FieldDefinition<Product> _id =
             new StringFieldDefinition<Product>("id", webpage => webpage.Id.ToString(), Field.Store.YES,
@@ -153,6 +155,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                                                product =>
                                                GetCategories(product.Categories),
                                                Field.Store.NO, Field.Index.NOT_ANALYZED);
+
+        private static readonly FieldDefinition<Product> _brand =
+            new StringFieldDefinition<Product>("brand",
+                                               product => GetBrand(product),
+                                               Field.Store.YES, Field.Index.NOT_ANALYZED);
+
+        private static IEnumerable<string> GetBrand(Product product)
+        {
+            if (product.Brand != null)
+                yield return product.Brand.Id.ToString();
+        }
 
         private static IEnumerable<string> GetCategories(IEnumerable<Category> categories)
         {
