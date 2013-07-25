@@ -29,10 +29,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             clone.PriceTo = null;
             var search = _productSearcher.IndexSearcher.Search(clone.GetQuery(), clone.GetFilter(), int.MaxValue);
             var documents = search.ScoreDocs.Select(doc => _productSearcher.IndexSearcher.Doc(doc.Doc)).ToList();
-            decimal max = 500m;
+            var max = documents.Count > 0
+                          ? documents.Select(document => document.GetValue<decimal>(ProductSearchIndex.Price.FieldName)).Max()
+                          : 0;
             if (documents.Any())
                 max = documents.Select(document => document.GetValue<decimal>(ProductSearchIndex.Price.FieldName)).Max();
-            return Convert.ToDouble(Math.Ceiling(max/5.0m)*5m);
+            return Convert.ToDouble(Math.Ceiling(max / 5.0m) * 5m);
         }
 
         public List<int> GetSpecifications(ProductSearchQuery query)
@@ -51,7 +53,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public List<int> GetOptions(ProductSearchQuery query)
         {
             var clone = query.Clone() as ProductSearchQuery;
-            clone.Specifications = new List<int>();
+            clone.Options = new List<int>();
             var search = _productSearcher.IndexSearcher.Search(clone.GetQuery(), clone.GetFilter(), int.MaxValue);
             var documents = search.ScoreDocs.Select(doc => _productSearcher.IndexSearcher.Doc(doc.Doc)).ToList();
             return
