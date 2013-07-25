@@ -5,7 +5,7 @@
 @{
     var query = ViewData["query"] as ProductSearchQuery;
 }
-<div class="span9" id="product-results-container">
+<div id="product-results-container">
     <div id="products-operations">
         <div id="stats" class="pull-left">
             Showing @(Model.PageSize > 1 ? Model.FirstItemOnPage + " - " + Model.LastItemOnPage : Model.PageNumber.ToString()) of @Model.TotalItemCount

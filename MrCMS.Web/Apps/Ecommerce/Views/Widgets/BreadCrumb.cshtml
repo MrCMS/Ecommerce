@@ -1,0 +1,10 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Website
+@model IEnumerable<MrCMS.Entities.Documents.Web.Webpage>
+<ul class="breadcrumb">
+    <li><a href="/">Home</a> <span class="divider">/</span></li>
+    @foreach (var p in Model.Reverse().ToList())
+    {
+        <li><a href="/@p.LiveUrlSegment">@p.Name</a> <span class="divider">/</span></li>
+    }
+</ul>
