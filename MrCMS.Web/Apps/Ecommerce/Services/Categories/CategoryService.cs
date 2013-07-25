@@ -103,17 +103,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
                            Hierarchy = hierarchy
                        };
         }
-
-        public void SetOrders(List<SortItem> items)
-        {
-            _session.Transact(session => items.ForEach(item =>
-            {
-                var category = session.Get<Category>(item.Id);
-                category.DisplayOrder = item.Order;
-                session.Update(category);
-            }));
-        }
-
+        
         private CategorySearchModel GetRootCategoryModel()
         {
             var categoryContainer = _documentService.GetUniquePage<CategoryContainer>();
