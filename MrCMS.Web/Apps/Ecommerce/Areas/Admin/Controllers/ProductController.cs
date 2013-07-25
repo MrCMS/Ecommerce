@@ -455,5 +455,37 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 return Json(false);
             }
         }
+
+        [HttpGet]
+        public ActionResult SortCategories(int productId = 0)
+        {
+            if (productId != 0)
+            {
+                Product product = _productService.Get(productId);
+                if (product != null)
+                {
+                    var sortItems = product.Categories.OrderBy(x => x.DisplayOrder)
+                                           .Select(
+                                               arg =>
+                                               new SortItem
+                                               {
+                                                   Order = arg.DisplayOrder,
+                                                   Id = arg.Id,
+                                                   Name = arg.Name
+                                               })
+                                           .ToList();
+                    ViewBag.Product = product;
+                    return View(sortItems);
+                }
+            }
+            return RedirectToAction("Edit", "Webpage", new { id = productId });
+        }
+
+        [HttpPost]
+        public ActionResult SortCategories(int productId, List<SortItem> items)
+        {
+            _categoryService.SetOrders(items);
+            return RedirectToAction("Edit", "Webpage", new { id = productId });
+        }
     }
 }
