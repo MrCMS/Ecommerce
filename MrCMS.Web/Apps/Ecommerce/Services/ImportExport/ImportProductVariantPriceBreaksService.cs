@@ -17,6 +17,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
         public IEnumerable<PriceBreak> ImportVariantPriceBreaks(ProductVariantImportDataTransferObject item, ProductVariant productVariant)
         {
+            var priceBreaks = new List<PriceBreak>();
             foreach (var priceBreakItem in item.PriceBreaks)
             {
                 var priceBreak = productVariant.PriceBreaks.SingleOrDefault(x => x.Quantity == priceBreakItem.Key);
@@ -29,9 +30,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                             Item = productVariant
                         };
                     _productVariantService.AddPriceBreak(priceBreak);
-                    yield return priceBreak;
+                    priceBreaks.Add(priceBreak);
                 }
             }
+            return priceBreaks;
         }
     }
 }

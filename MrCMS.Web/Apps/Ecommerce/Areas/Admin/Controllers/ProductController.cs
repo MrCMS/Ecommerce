@@ -5,7 +5,6 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using System.Linq;
@@ -13,7 +12,6 @@ using System.Collections.Generic;
 using MrCMS.Models;
 using System.Web;
 using System;
-using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -376,41 +374,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
             return RedirectToAction("Edit", "Webpage", new { id = model.ProductId });
         }
-
-        public ViewResult ImportExport()
-        {
-            return View();
-        }
-
-        public FileResult ExportProducts()
-        {
-            try
-            {
-                byte[] file = _importExportManager.ExportProductsToExcel();
-                ViewBag.ExportStatus = "Products successfully exported.";
-                return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MrCMS-Products-" + DateTime.UtcNow + ".xlsx");
-            }
-            catch (Exception)
-            {
-                ViewBag.ExportStatus = "Products exporting has failed. Please try again and contact system administration if error continues to appear.";
-                return null;
-            }
-        }
-
-        [HttpPost]
-        public ViewResult ImportProducts(HttpPostedFileBase document)
-        {
-            if (document != null && document.ContentLength > 0 && document.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-            {
-                ViewBag.Messages = _importExportManager.ImportProductsFromExcel(document.InputStream);
-            }
-            else
-            {
-                ViewBag.ImportStatus = "Please choose non-empty Excel (.xslx) file before uploading.";
-            }
-            return View("ImportExport");
-        }
-
 
         [HttpGet]
         public JsonResult SearchProducts(string term)
