@@ -33,5 +33,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
         {
             get { return "Show"; }
         }
+
+        public override string DefaultLayoutName
+        {
+            get
+            {
+                return "Search Layout";
+            }
+        }
     }
 }

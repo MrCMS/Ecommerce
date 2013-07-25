@@ -12,18 +12,7 @@
     <div class="span8">
         <div class="row-fluid">
             <div class="span4">
-                @Html.RenderImage(Model.DisplayImageUrl)
-                <div class="clearfix"></div>
-                <div id="product-image-thumbnails">
-                    <ul class="thumbnails">
-                        @foreach (var item in Model.Images)
-                        {
-                            <li class="span3">
-                                @Html.RenderImage(item.FileUrl, Model.Name)
-                            </li>
-                        }
-                    </ul>
-                </div>
+                @{ Html.RenderPartial("ProductImages", Model); }
             </div>
             <div class="span8">
                 <h1>@Model.Name</h1>
@@ -40,9 +29,10 @@
                 <p>
                     @Model.Abstract
                 </p>
-                
-                @{Html.RenderPartial("SocialLinks");}
 
+                @{Html.RenderPartial("SocialLinks");}
+                
+                @RenderZone("Below Product Price")
             </div>
         </div>
     </div>
@@ -54,37 +44,19 @@
             </div>
         }
 
-        <div id="product-variants-pricebreaks">
-            @if (selectedVariant.PriceBreaks.Any())
-            {
-                <div class="product-pricebreaks-title">
-                    PRICE BREAKS - The more you buy, the more you save.
-                </div>
-                <table id="product-pricebreaks-table" class="table table-bordered table-condensed">
-                    <tr>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                    </tr>
-                    @foreach (var item in selectedVariant.PriceBreaks)
-                    {
-                        <tr>
-                            <td>@item.Quantity</td>
-                            <td>@item.Price.ToCurrencyFormat()</td>
-                        </tr> 
-                    }
-                </table>
-            }
-        </div>
+        @{Html.RenderPartial("ProductPricebreaks", Model);}
 
         @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
         {
             @Html.Hidden("Id", selectedVariant.Id)
-            <pre id="product-addtobasket">
-                            <label class="pull-left">Quantity&nbsp;</label>
-                            <input type="text" class="input-mini pull-left" value="1" id="quantity" name="quantity" />
-                            <button class="btn btn-info btn-addtobasket pull-right span7" type="submit">Add to basket</button>
-                         </pre>
+            <div id="product-addtobasket">
+                <label class="pull-left">Quantity&nbsp;</label>
+                <input type="text" class="input-mini pull-left" value="1" id="quantity" name="quantity" />
+                <button class="btn btn-info btn-addtobasket pull-right span7" type="submit">Add to basket</button>
+            </div>
         }
+        
+        @RenderZone("Below Add to cart")
     </div>
 </div>
 
@@ -97,22 +69,9 @@
     </div>
     @if (hasSpecifications)
     {
-        <div id="product-specifications">
-            <h4>Specifications</h4>
-            <table class="table table-bordered table-striped table-condensed">
-                @foreach (var item in Model.SpecificationValues.OrderBy(x => x.DisplayOrder))
-                {
-                    <tr>
-                        <td><strong>@item.SpecificationName</strong></td>
-                        <td>@item.Value</td>
-                    </tr>
-                }
-            </table>
-        </div>
+        Html.RenderPartial("ProductSpecifications", Model);
     }
 </div>
-
-
 
 
 @{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/product.js"); }

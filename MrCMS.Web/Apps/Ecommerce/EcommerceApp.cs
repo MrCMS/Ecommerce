@@ -77,15 +77,15 @@ namespace MrCMS.Web.Apps.Ecommerce
                              new { controller = "SetDeliveryDetails", action = "DeliveryAddress" },
                              new[] { typeof(SetDeliveryDetailsController).Namespace });
 
-           context.MapRoute("Set Delivery Details - Set Shipping Method",
-                             "Apps/Ecommerce/SetDeliveryDetails/SetShipping",
-                             new { controller = "SetDeliveryDetails", action = "SetShipping" },
-                             new[] { typeof(SetDeliveryDetailsController).Namespace });
+            context.MapRoute("Set Delivery Details - Set Shipping Method",
+                              "Apps/Ecommerce/SetDeliveryDetails/SetShipping",
+                              new { controller = "SetDeliveryDetails", action = "SetShipping" },
+                              new[] { typeof(SetDeliveryDetailsController).Namespace });
 
-           context.MapRoute("Set Delivery Details - Set Shipping Address",
-                             "Apps/Ecommerce/SetDeliveryDetails/SetAddress",
-                             new { controller = "SetDeliveryDetails", action = "SetAddress" },
-                             new[] { typeof(SetDeliveryDetailsController).Namespace });
+            context.MapRoute("Set Delivery Details - Set Shipping Address",
+                              "Apps/Ecommerce/SetDeliveryDetails/SetAddress",
+                              new { controller = "SetDeliveryDetails", action = "SetAddress" },
+                              new[] { typeof(SetDeliveryDetailsController).Namespace });
 
             context.MapRoute("Enter Order Email - Set Order Email",
                              "Apps/Ecommerce/SetOrderEmail",
@@ -99,13 +99,13 @@ namespace MrCMS.Web.Apps.Ecommerce
 
             context.MapRoute("Checkout - Price Summary",
                              "Apps/Ecommerce/Checkout/Summary",
-                             new {controller = "Checkout", action = "Summary"},
-                             new[] {typeof (CheckoutController).Namespace});
+                             new { controller = "Checkout", action = "Summary" },
+                             new[] { typeof(CheckoutController).Namespace });
 
             context.MapRoute("Confirm Order - Cash On Delivery",
                              "Apps/Ecommerce/Confirm/CashOnDelivery",
-                             new {controller = "PaymentMethod", action = "CashOnDelivery"},
-                             new[] {typeof (PaymentMethodController).Namespace});
+                             new { controller = "PaymentMethod", action = "CashOnDelivery" },
+                             new[] { typeof(PaymentMethodController).Namespace });
 
             context.MapRoute("Checkout - Billing Address same as Shipping Address",
                              "Apps/Ecommerce/PaymentDetails/BillingAddressSameAsShippingAddress",
@@ -116,7 +116,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                              "Apps/Ecommerce/PaymentDetails/UpdateBillingAddress",
                              new { controller = "PaymentDetails", action = "UpdateBillingAddress" },
                              new[] { typeof(PaymentDetailsController).Namespace });
-            
+
             context.MapRoute("Checkout - Save Billing Address",
                              "Apps/Ecommerce/PaymentDetails/SaveBillingAddress",
                              new { controller = "PaymentDetails", action = "SaveBillingAddress" },
@@ -158,7 +158,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var widgetService = new WidgetService(session);
             var productSearch = new ProductSearch
                                     {
-                                        Name = "Product Search Container",
+                                        Name = "Products",
                                         UrlSegment = "products",
                                         RevealInNavigation = true
                                     };
@@ -173,36 +173,90 @@ namespace MrCMS.Web.Apps.Ecommerce
             documentService.AddDocument(categoryContainer);
             documentService.PublishNow(categoryContainer);
 
-            var layout = new Layout
+            //base layout
+            var baseLayout = new Layout
+            {
+                Name = "Base Ecommerce Layout",
+                UrlSegment = "~/Apps/Ecommerce/Views/Shared/_BaseLayout.cshtml",
+                LayoutAreas = new List<LayoutArea>()
+            };
+            documentService.AddDocument(baseLayout);
+            //ecommerce main layout
+            var eCommerceLayout = new Layout
                              {
                                  Name = "Ecommerce Layout",
                                  UrlSegment = "~/Apps/Ecommerce/Views/Shared/_EcommerceLayout.cshtml",
-                                 LayoutAreas = new List<LayoutArea>()
+                                 LayoutAreas = new List<LayoutArea>(),
+                                 Parent = baseLayout
                              };
-            var areas = new List<LayoutArea>
+            var ecommerceLayoutArea = new List<LayoutArea>
                                      {
-                                         new LayoutArea {AreaName = "Logo", Layout = layout},
-                                         new LayoutArea {AreaName = "Header", Layout = layout},
-                                         new LayoutArea {AreaName = "After Content", Layout = layout},
-                                         new LayoutArea {AreaName = "Before Content", Layout = layout},
-                                         new LayoutArea {AreaName = "Footer", Layout = layout}
+                                         new LayoutArea {AreaName = "Logo", Layout = eCommerceLayout},
+                                         new LayoutArea {AreaName = "Header", Layout = eCommerceLayout},
+                                         new LayoutArea {AreaName = "After Content", Layout = eCommerceLayout},
+                                         new LayoutArea {AreaName = "Before Content", Layout = eCommerceLayout},
+                                         new LayoutArea {AreaName = "Footer", Layout = eCommerceLayout}
                                      };
-            documentService.AddDocument(layout);
+            documentService.AddDocument(eCommerceLayout);
             var layoutAreaService = new LayoutAreaService(session);
-            foreach (var area in areas)
+            foreach (var area in ecommerceLayoutArea)
+                layoutAreaService.SaveArea(area);
+            //checkout layout
+            var checkoutLayout = new Layout
+            {
+                Name = "Checkout Layout",
+                UrlSegment = "~/Apps/Ecommerce/Views/Shared/_CheckoutLayout.cshtml",
+                LayoutAreas = new List<LayoutArea>(),
+                Parent = eCommerceLayout
+            };
+            documentService.AddDocument(checkoutLayout);
+            //product layout
+            var productLayout = new Layout
+            {
+                Name = "Product Layout",
+                UrlSegment = "~/Apps/Ecommerce/Views/Shared/_ProductLayout.cshtml",
+                LayoutAreas = new List<LayoutArea>(),
+                Parent = eCommerceLayout
+            };
+            var productLayoutAreas = new List<LayoutArea>
+                                     {
+                                         new LayoutArea {AreaName = "Below Product Price", Layout = productLayout},
+                                         new LayoutArea {AreaName = "Below Add to cart", Layout = productLayout}
+                                     };
+
+            documentService.AddDocument(productLayout);
+            foreach (var area in productLayoutAreas)
+                layoutAreaService.SaveArea(area);
+
+            //category/search layout
+            var searchLayout = new Layout
+            {
+                Name = "Search Layout",
+                UrlSegment = "~/Apps/Ecommerce/Views/Shared/_SearchLayout.cshtml",
+                LayoutAreas = new List<LayoutArea>(),
+                Parent = eCommerceLayout
+            };
+            var searchLayoutAreas = new List<LayoutArea>
+                                     {
+                                         new LayoutArea {AreaName = "Before filtrs", Layout = searchLayout},
+                                         new LayoutArea {AreaName = "After filters", Layout = searchLayout}
+                                     };
+
+            documentService.AddDocument(searchLayout);
+            foreach (var area in searchLayoutAreas)
                 layoutAreaService.SaveArea(area);
 
             //widget setup footer links
             var footerLinksWidget = new TextWidget
                 {
-                    LayoutArea = areas.Single(x => x.AreaName == "Footer"),
+                    LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Footer"),
                     Name = "Footer links",
                     Text = GetFooterLinksText()
                 };
             widgetService.AddWidget(footerLinksWidget);
 
 
-            siteSettings.DefaultLayoutId = layout.Id;
+            siteSettings.DefaultLayoutId = eCommerceLayout.Id;
             siteSettings.ThemeName = "Ecommerce";
             configurationProvider.SaveSettings(siteSettings);
             ecommerceSettings.SearchProductsPerPage = "12,20,40";
@@ -210,13 +264,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             ecommerceSettings.PreviousPriceText = "Previous price";
 
             configurationProvider.SaveSettings(ecommerceSettings);
-            var checkoutLayout = new Layout
-            {
-                Name = "Checkout Layout",
-                UrlSegment = "~/Apps/Ecommerce/Views/Shared/_CheckoutLayout.cshtml",
-                LayoutAreas = new List<LayoutArea>()
-            };
-            documentService.AddDocument(checkoutLayout);
+            
 
             var welcome = new TextPage
             {

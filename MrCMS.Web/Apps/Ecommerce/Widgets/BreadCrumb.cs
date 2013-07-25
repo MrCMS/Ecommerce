@@ -8,7 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
     {
         public override object GetModel(NHibernate.ISession session)
         {
-            var pages = CurrentRequestData.CurrentPage.ActivePages.OrderBy();
+            var pages = CurrentRequestData.CurrentPage.ActivePages;
 
             return pages;
         }
