@@ -10,18 +10,13 @@
     </div>
     <div class="span3">
         <div class="pull-right">
-
-            <span>Exclusive price</span>
             <h1 class="product-price">
                 @Html.DisplayFor(product => product.DisplayPrice)
             </h1>
             @if (Model.DisplayPreviousPrice.HasValue)
             {
                 <span>@Model.PreviousPriceText <span style="text-decoration: line-through">@Model.DisplayPreviousPrice </span></span>
-            }
-
-            <br />
-            <br />
+            }   
             <a href="@Model.LiveUrlSegment" class="btn btn-info span12">View</a>
         </div>
     </div>

@@ -5,37 +5,21 @@
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @{
     var selectedVariant = ViewData["selected-variant"] as ProductVariant ?? Model.VariantsByPrice.First();
+    var hasSpecifications = Model.SpecificationValues.Any();
 }
 @Html.HiddenFor(x => x.UrlSegment)
-<ul class="breadcrumb">
-    <li><a href="/">Home</a> <span class="divider">/</span></li>
-    <li><a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">Products</a> <span class="divider">/</span></li>
-    <li class="active">@Editable(Model, model => model.Name)</li>
-</ul>
-
 <div class="row-fluid">
     <div class="span8">
         <div class="row-fluid">
             <div class="span4">
-                @Html.RenderImage(Model.DisplayImageUrl)
-                <div class="clearfix"></div>
-                <div id="product-image-thumbnails">
-                    <ul class="thumbnails">
-                        @foreach (var item in Model.Images)
-                        {
-                            <li class="span3">
-                                @Html.RenderImage(item.FileUrl, Model.Name)
-                            </li>
-                        }
-                    </ul>
-                </div>
+                @{ Html.RenderPartial("ProductImages", Model); }
             </div>
             <div class="span8">
-                <h3>@Model.Name</h3>
+                <h1>@Model.Name</h1>
 
-                <h1 class="product-price">
+                <div class="product-price">
                     @selectedVariant.Price.ToCurrencyFormat()
-                </h1>
+                </div>
                 @if (selectedVariant.PreviousPrice.HasValue)
                 {
                     <span>
@@ -46,22 +30,11 @@
                     @Model.Abstract
                 </p>
 
-                <div id="mail-print-buttons">
-                    <i class="icon-envelope"></i><i class="icon-print"></i>
-                </div>
-                @*TWITTER*@
-                <a href="https://twitter.com/share" class="twitter-share-button" data-url="@this.Request.Url.AbsoluteUri" data-count="none" data-hashtags="products">Tweet</a>
-                <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
-                @*PINTEREST*@
-                <a href="//pinterest.com/pin/create/button/" data-pin-do="buttonBookmark">
-                    <img src="//assets.pinterest.com/images/pidgets/pin_it_button.png" /></a>
-                @*FB*@
-                <div class="fb-like" data-href="@this.Request.Url.AbsoluteUri" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+                @{Html.RenderPartial("SocialLinks");}
+                
+                @RenderZone("Below Product Price")
             </div>
         </div>
-        <hr />
-        <h4>Full Description</h4>
-        @Editable(Model, model => model.BodyContent, true)
     </div>
     <div class="span4">
         @if (Model.IsMultiVariant)
@@ -71,54 +44,34 @@
             </div>
         }
 
-        <div id="product-variants-pricebreaks">
-            @if (selectedVariant.PriceBreaks.Any())
-            {
-                <div class="product-pricebreaks-title">
-                    PRICE BREAKS - The more you buy, the more you save.
-                </div>
-                <table id="product-pricebreaks-table" class="table table-bordered table-condensed">
-                    <tr>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                    </tr>
-                    @foreach (var item in selectedVariant.PriceBreaks)
-                    {
-                        <tr>
-                            <td>@item.Quantity</td>
-                            <td>@item.Price.ToCurrencyFormat()</td>
-                        </tr> 
-                    }
-                </table>
-            }
-        </div>
+        @{Html.RenderPartial("ProductPricebreaks", Model);}
 
         @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
         {
             @Html.Hidden("Id", selectedVariant.Id)
-            <pre id="product-addtobasket">
-                            <label class="pull-left">Quantity&nbsp;</label>
-                            <input type="text" class="input-mini pull-left" value="1" id="quantity" name="quantity" />
-                            <button class="btn btn-info btn-addtobasket pull-right span7" type="submit">Add to basket</button>
-                         </pre>
-        }
-        <hr />
-        @if (Model.SpecificationValues.Any())
-        {
-            <div id="product-specifications">
-                <h4>Specifications</h4>
-                <table class="table table-bordered table-striped table-condensed">
-                    @foreach (var item in Model.SpecificationValues.OrderBy(x => x.DisplayOrder))
-                    {
-                        <tr>
-                            <td><strong>@item.SpecificationName</strong></td>
-                            <td>@item.Value</td>
-                        </tr>
-                    }
-                </table>
+            <div id="product-addtobasket">
+                <label class="pull-left">Quantity&nbsp;</label>
+                <input type="text" class="input-mini pull-left" value="1" id="quantity" name="quantity" />
+                <button class="btn btn-info btn-addtobasket pull-right span7" type="submit">Add to basket</button>
             </div>
         }
+        
+        @RenderZone("Below Add to cart")
     </div>
 </div>
+
+<hr class="small-margin " />
+
+<div class="row-fluid" id="product-description-container">
+    <div class="@(hasSpecifications ? "span8" : "span12")">
+        <h4>Description</h4>
+        @Editable(Model, product => product.BodyContent)
+    </div>
+    @if (hasSpecifications)
+    {
+        Html.RenderPartial("ProductSpecifications", Model);
+    }
+</div>
+
 
 @{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/product.js"); }

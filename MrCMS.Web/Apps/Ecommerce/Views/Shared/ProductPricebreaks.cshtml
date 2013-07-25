@@ -1,0 +1,27 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Entities.Products
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Pages.Product  
+@{
+    var selectedVariant = ViewData["selected-variant"] as ProductVariant ?? Model.VariantsByPrice.First();
+}
+<div id="product-variants-pricebreaks">
+    @if (selectedVariant.PriceBreaks.Any())
+    {
+        <div class="product-pricebreaks-title">
+            PRICE BREAKS - The more you buy, the more you save.
+        </div>
+        <table id="product-pricebreaks-table" class="table table-bordered table-condensed">
+            <tr>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+            @foreach (var item in selectedVariant.PriceBreaks)
+            {
+                <tr>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price.ToCurrencyFormat()</td>
+                </tr> 
+            }
+        </table>
+    }
+</div>
