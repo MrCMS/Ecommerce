@@ -20,8 +20,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.Rules
             foreach (var item in product.UrlHistory)
             {
                 var document = _documentService.GetDocumentByUrl<Product>(product.UrlSegment);
-                if (!_documentService.UrlIsValidForWebpage(item, document.Id))
-                    errors.Add(string.Format("Url:{0} is not valid url (possibly already exists).",item));
+                if (!_documentService.UrlIsValidForWebpage(item, document!=null?(int?)document.Id:null))
+                        errors.Add(string.Format("Url:{0} is not valid url (possibly already exists).",item));
             }
             return errors;
         }
