@@ -6,6 +6,7 @@
         </div>
         <div class="span6">
             <div class="btn-group pull-right">
+                @Html.ActionLink("Sort", "SortCategories", "Product", new { productId = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
                 @Html.ActionLink("Add", "AddCategory", "Product", new { id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
             </div>
         </div>
@@ -22,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var category in Model.Categories)
+                        @foreach (var category in Model.Categories.OrderBy(c=>c.DisplayOrder))
                         {
                             <tr>
                                 <td>@category.NestedName</td>
