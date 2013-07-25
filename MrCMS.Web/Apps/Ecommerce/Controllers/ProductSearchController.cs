@@ -46,7 +46,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             ViewData["product-brands"] = _brandService.GetAvailableBrands(query);
             ViewData["product-price-range-min"] = 0;
             ViewData["product-price-range-max"] = 5000;
-            ViewData["categories"] = _categoryService.GetCategoriesForSearch(query.CategoryId);
+            ViewData["categories"] = _categoryService.GetCategoriesForSearch(query);
         }
 
         public PartialViewResult Query([IoCModelBinder(typeof(ProductSearchQueryModelBinder))]ProductSearchQuery query)

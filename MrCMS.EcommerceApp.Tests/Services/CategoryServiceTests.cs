@@ -7,6 +7,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
+using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services
@@ -14,12 +15,14 @@ namespace MrCMS.EcommerceApp.Tests.Services
     public class CategoryServiceTests :InMemoryDatabaseTest
     {
         private readonly IDocumentService _documentService;
+        private readonly IProductSearchService _productSearchService;
         private readonly CategoryService _categoryService;
 
         public CategoryServiceTests()
         {
             _documentService = A.Fake<IDocumentService>();
-            _categoryService = new CategoryService(Session, new CurrentSite(CurrentSite), _documentService);
+            _productSearchService = A.Fake<IProductSearchService>();
+            _categoryService = new CategoryService(Session, new CurrentSite(CurrentSite), _documentService, _productSearchService);
         }
 
         [Fact]

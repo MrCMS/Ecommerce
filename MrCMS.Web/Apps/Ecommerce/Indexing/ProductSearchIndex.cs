@@ -154,7 +154,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
             new StringFieldDefinition<Product>("categories",
                                                product =>
                                                GetCategories(product.Categories),
-                                               Field.Store.NO, Field.Index.NOT_ANALYZED);
+                                               Field.Store.YES, Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Product> _brand =
             new StringFieldDefinition<Product>("brand",

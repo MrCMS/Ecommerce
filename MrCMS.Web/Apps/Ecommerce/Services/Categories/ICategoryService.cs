@@ -3,6 +3,7 @@ using MrCMS.Models;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services.Products;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
 {
@@ -15,6 +16,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         CategoryContainer GetSiteCategoryContainer();
         Category Get(int id);
         List<Category> GetRootCategories();
-        CategorySearchModel GetCategoriesForSearch(int? categoryId);
+        CategorySearchModel GetCategoriesForSearch(ProductSearchQuery query);
     }
 }
