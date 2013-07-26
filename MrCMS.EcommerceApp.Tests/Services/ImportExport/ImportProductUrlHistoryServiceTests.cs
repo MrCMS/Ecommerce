@@ -23,7 +23,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         }
 
 
-        [Fact]
+        [Fact(Skip = "To be refactored")]
         public void ImportProductUrlHistoryService_ImportUrlHistory_ShouldCallUrlHistoryServiceAdd()
         {
             var productDTO = new ProductImportDataTransferObject

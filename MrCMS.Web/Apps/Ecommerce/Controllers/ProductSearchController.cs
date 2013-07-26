@@ -19,12 +19,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly ICategoryService _categoryService;
         private readonly IProductOptionManager _productOptionManager;
         private readonly IProductSearchService _productSearchService;
+        private readonly IBrandService _brandService;
 
-        public ProductSearchController(ICategoryService categoryService, IProductOptionManager productOptionManager, IProductSearchService productSearchService)
+        public ProductSearchController(ICategoryService categoryService,
+                                       IProductOptionManager productOptionManager,
+                                       IProductSearchService productSearchService,
+                                       IBrandService brandService)
         {
             _categoryService = categoryService;
             _productOptionManager = productOptionManager;
             _productSearchService = productSearchService;
+            _brandService = brandService;
         }
 
         public ViewResult Show(ProductSearch page, [IoCModelBinder(typeof(ProductSearchQueryModelBinder))]ProductSearchQuery query)
@@ -36,11 +41,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         private void SetViewData(ProductSearchQuery query)
         {
-            ViewData["product-options"] = _productOptionManager.GetSearchAttributeOptions(_productSearchService.GetOptions(query));
-            ViewData["product-specifications"] = _productOptionManager.GetSearchSpecificationAttributes(_productSearchService.GetSpecifications(query));
+            ViewData["product-options"] = _productOptionManager.GetSearchAttributeOptions(query);
+            ViewData["product-specifications"] = _productOptionManager.GetSearchSpecificationAttributes(query);
+            ViewData["product-brands"] = _brandService.GetAvailableBrands(query);
             ViewData["product-price-range-min"] = 0;
             ViewData["product-price-range-max"] = 5000;
-            ViewData["categories"] = _categoryService.GetCategoriesForSearch(query.CategoryId);
+            ViewData["categories"] = _categoryService.GetCategoriesForSearch(query);
         }
 
         public PartialViewResult Query([IoCModelBinder(typeof(ProductSearchQueryModelBinder))]ProductSearchQuery query)
@@ -74,13 +80,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                             {
                                 Specifications =
                                     (controllerContext.HttpContext.Request["Specifications"] ??
-                                     string.Empty).Split(new[] {','},
+                                     string.Empty).Split(new[] { ',' },
                                                          StringSplitOptions.RemoveEmptyEntries)
                                                   .Select(s => Convert.ToInt32(s))
                                                   .ToList(),
                                 Options =
                                     (controllerContext.HttpContext.Request["Options"] ?? string.Empty)
-                                    .Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries)
+                                    .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                                     .Select(s => Convert.ToInt32(s))
                                     .ToList(),
                                 PageSize = !string.IsNullOrWhiteSpace(controllerContext.HttpContext.Request["PageSize"])
@@ -93,14 +99,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                                 CategoryId =
                                     !string.IsNullOrWhiteSpace(controllerContext.HttpContext.Request["CategoryId"])
                                         ? Convert.ToInt32(controllerContext.HttpContext.Request["CategoryId"])
-                                        : (int?) null,
+                                        : (int?)null,
                                 PriceFrom =
                                     !string.IsNullOrWhiteSpace(controllerContext.HttpContext.Request["PriceFrom"])
                                         ? Convert.ToDouble(controllerContext.HttpContext.Request["PriceFrom"])
                                         : 0,
                                 PriceTo = !string.IsNullOrWhiteSpace(controllerContext.HttpContext.Request["PriceTo"])
                                               ? Convert.ToDouble(controllerContext.HttpContext.Request["PriceTo"])
-                                              : (double?) null,
+                                              : (double?)null,
+                                BrandId =
+                                    !string.IsNullOrWhiteSpace(controllerContext.HttpContext.Request["BrandId"])
+                                        ? Convert.ToInt32(controllerContext.HttpContext.Request["BrandId"])
+                                        : (int?)null,
+                                SearchTerm = controllerContext.HttpContext.Request["SearchTerm"]
                             };
 
             model.SortBy = !string.IsNullOrWhiteSpace(controllerContext.HttpContext.Request["SortBy"])

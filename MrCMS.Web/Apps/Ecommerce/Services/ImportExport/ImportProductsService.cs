@@ -6,6 +6,8 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using NHibernate;
+using MrCMS.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
@@ -17,10 +19,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private readonly IImportProductVariantsService _importProductVariantsService;
         private readonly IImportProductImagesService _importProductImagesService;
         private readonly IImportProductUrlHistoryService _importUrlHistoryService;
+        private readonly ISession _session;
 
         public ImportProductsService(IDocumentService documentService, IBrandService brandService,
              IImportProductSpecificationsService importSpecificationsService, IImportProductVariantsService importProductVariantsService,
-            IImportProductImagesService importProductImagesService, IImportProductUrlHistoryService importUrlHistoryService)
+            IImportProductImagesService importProductImagesService, IImportProductUrlHistoryService importUrlHistoryService, ISession session)
         {
             _documentService = documentService;
             _brandService = brandService;
@@ -28,6 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _importProductVariantsService = importProductVariantsService;
             _importProductImagesService = importProductImagesService;
             _importUrlHistoryService = importUrlHistoryService;
+            _session = session;
         }
 
         /// <summary>
@@ -36,10 +40,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// <param name="productsToImport"></param>
         public void ImportProductsFromDTOs(IEnumerable<ProductImportDataTransferObject> productsToImport)
         {
-            foreach (var dataTransferObject in productsToImport)
-            {
-                ImportProduct(dataTransferObject);
-            }
+            _session.Transact(session => 
+                                  {
+                                      foreach (var dataTransferObject in productsToImport)
+                                      {
+                                          ImportProduct(dataTransferObject);
+                                      }
+                                  });
         }
 
         /// <summary>
@@ -65,7 +72,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 var brand = _brandService.GetBrandByName(dataTransferObject.Brand);
                 if (brand == null)
                 {
-                    brand = new Brand {Name = dataTransferObject.Brand};
+                    brand = new Brand { Name = dataTransferObject.Brand };
                     _brandService.Add(brand);
                 }
                 product.Brand = brand;

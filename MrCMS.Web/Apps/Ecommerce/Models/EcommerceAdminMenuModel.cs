@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using MrCMS.Models;
-using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
@@ -35,9 +34,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                 new List<IMenuItem>
                                                     {
                                                         new ChildMenuItem("Import/Export Products",
-                                                                          "/Admin/Apps/Ecommerce/Product/ImportExport"),
+                                                                          "/Admin/Apps/Ecommerce/ImportExport/Products"),
                                                         new ChildMenuItem("Google Base Integration",
-                                                                          "/Admin/Apps/Ecommerce/GoogleBase"),
+                                                                          "/Admin/Apps/Ecommerce/ImportExport/GoogleBase"),
                                                     }
                                             },
                                             {

@@ -11,8 +11,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public class ImportProductVariantsService : IImportProductVariantsService
     {
-        private readonly IImportProductVariantPriceBreaksService _importPriceBreaksService;
-        private readonly IImportProductSpecificationsService _importSpecificationsService;
+        private readonly IImportProductVariantPriceBreaksService _importProductVariantPriceBreaksService;
+        private readonly IImportProductSpecificationsService _importProductSpecificationsService;
         private readonly IProductVariantService _productVariantService;
         private readonly ITaxRateManager _taxRateManager;
         private readonly IProductOptionManager _productOptionManager;
@@ -22,12 +22,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             IProductVariantService productVariantService, ITaxRateManager taxRateManager,
             IProductOptionManager productOptionManager, IDocumentService documentService)
         {
-            _importSpecificationsService = importSpecificationsService;
+            _importProductSpecificationsService = importSpecificationsService;
             _productVariantService = productVariantService;
             _taxRateManager = taxRateManager;
             _productOptionManager = productOptionManager;
             _documentService = documentService;
-            _importPriceBreaksService = importPriceBreaksService;
+            _importProductVariantPriceBreaksService = importPriceBreaksService;
         }
 
         public IEnumerable<ProductVariant> ImportVariants(ProductImportDataTransferObject dataTransferObject, Product product)
@@ -62,10 +62,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 productVariant = _productVariantService.GetProductVariantBySKU(item.SKU);
 
                 //Price Breaks
-                _importPriceBreaksService.ImportVariantPriceBreaks(item,productVariant);
+                _importProductVariantPriceBreaksService.ImportVariantPriceBreaks(item,productVariant);
 
                 //Specifications
-               _importSpecificationsService.ImportVariantSpecifications(item, product, productVariant);
+               _importProductSpecificationsService.ImportVariantSpecifications(item, product, productVariant);
             }
 
             return dataTransferObject.ProductVariants.Any() ? product.Variants : null;

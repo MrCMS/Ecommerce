@@ -18,6 +18,7 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
         private readonly IProductOptionManager _productOptionManager;
         private readonly IProductService _productService;
         private readonly IProductSearchService _productSearchService;
+        private readonly IBrandService _brandService;
 
         public ProductSearchControllerTests()
         {
@@ -25,7 +26,8 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
             _productService = A.Fake<IProductService>();
             _categoryService = A.Fake<ICategoryService>();
             _productSearchService = A.Fake<IProductSearchService>();
-            _controller = new ProductSearchController(_categoryService, _productOptionManager, _productSearchService) { RequestMock = A.Fake<HttpRequestBase>() };
+            _brandService = A.Fake<IBrandService>();
+            _controller = new ProductSearchController(_categoryService, _productOptionManager, _productSearchService, _brandService) { RequestMock = A.Fake<HttpRequestBase>() };
         }
 
         private ProductSearch GetProductSearch()

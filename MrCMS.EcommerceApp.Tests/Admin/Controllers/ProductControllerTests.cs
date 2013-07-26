@@ -8,12 +8,9 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Apps.Ecommerce.Services.Tax;
-using MrCMS.Website.ActionResults;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
@@ -81,25 +78,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             viewResult.Model.Should().BeNull();
         }
-        //[Fact]
-        //public void ProductController_ViewCategories_ShouldReturnAPartialViewResult()
-        //{
-        //    var product = new Product { Id = 123 };
-
-        //    var result = _productController.ViewCategories(product);
-
-        //    result.Should().BeOfType<PartialViewResult>();
-        //}
-
-        //[Fact]
-        //public void ProductController_ViewCategories_ShouldReturnThePassedProductAsTheModel()
-        //{
-        //    var product = new Product { Id = 123 };
-
-        //    var result = _productController.ViewCategories(product);
-
-        //    result.Model.Should().Be(product);
-        //}
 
         [Fact]
         public void ProductController_AddCategory_ShouldReturnAPartialViewResult()

@@ -10,7 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.Rules
         {
             if (productVariant.TrackingPolicy == TrackingPolicy.Track)
             {
-                if (productVariant.Stock == 0)
+                if (!productVariant.Stock.HasValue)
                    yield return ("Variant Stock must have value if Tracking Policy is set to 'Track'.");
             }
         }

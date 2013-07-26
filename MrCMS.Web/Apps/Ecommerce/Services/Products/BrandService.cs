@@ -6,17 +6,21 @@ using MrCMS.Paging;
 using System;
 using NHibernate.Criterion;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public class BrandService : IBrandService
     {
         private readonly ISession _session;
+        private readonly IProductSearchService _productSearchService;
 
-        public BrandService(ISession session)
+        public BrandService(ISession session, IProductSearchService productSearchService)
         {
             _session = session;
+            _productSearchService = productSearchService;
         }
+
         public Brand GetBrandByName(string name)
         {
             return _session.QueryOver<Brand>()
@@ -71,8 +75,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         }
         public List<SelectListItem> GetOptions()
         {
-            _session.Evict(typeof(Brand));
             return GetAll().BuildSelectItemList(item => item.Name, item => item.Id.ToString(), null, String.Empty);
+        }
+
+        public List<SelectListItem> GetAvailableBrands(ProductSearchQuery query)
+        {
+            var brands = _productSearchService.GetBrands(query);
+            var items = GetAll().Where(item => brands.Contains(item.Id));
+            return items.BuildSelectItemList(brand => brand.Name, brand => brand.Id.ToString(),
+                                             brand => brand.Id == query.BrandId, "All Brands");
         }
     }
 }

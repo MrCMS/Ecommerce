@@ -8,7 +8,12 @@
 <div id="product-results-container">
     <div id="products-operations">
         <div id="stats" class="pull-left">
-            Showing @(Model.PageSize > 1 ? Model.FirstItemOnPage + " - " + Model.LastItemOnPage : Model.PageNumber.ToString()) of @Model.TotalItemCount
+            @if (Model.Any())
+            {
+                <text>
+                    Showing @(Model.PageSize > 1 ? Model.FirstItemOnPage + " - " + Model.LastItemOnPage : Model.PageNumber.ToString()) of @Model.TotalItemCount
+                </text>
+            }
         </div>
         <div id="show" class="pull-right">
             <label for="PageSize">Show</label>
@@ -28,7 +33,6 @@
                     <div class="row-fluid">
                         @{ Html.RenderPartial("ProductCard", product); }
                     </div>
-                    
                     <hr />
                 }
             </div>

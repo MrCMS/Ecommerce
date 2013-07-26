@@ -1,4 +1,5 @@
-﻿using MrCMS.Web.Apps.Ecommerce.Entities;
+﻿using FakeItEasy;
+using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
@@ -16,14 +17,21 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
 {
     public class SpecificationValueTests : InMemoryDatabaseTest
     {
+        private readonly IProductSearchService _productSearchService;
+        private readonly ProductOptionManager _productOptionManager;
+
+        public SpecificationValueTests()
+        {
+            _productSearchService = A.Fake<IProductSearchService>();
+            _productOptionManager = new ProductOptionManager(Session, _productSearchService);
+        }
         [Fact]
         public void ProductOptionManager_SetSpecificationValue_CreatesValueIfOptionExists()
         {
-            var productOptionManager = GetProductOptionManager();
             var product = CreateProduct("Product");
             var option = CreateOption("Test");
 
-            productOptionManager.SetSpecificationValue(product, option, "Value");
+            _productOptionManager.SetSpecificationValue(product, option, "Value");
 
             Session.QueryOver<ProductSpecificationValue>().RowCount().Should().Be(1);
         }
@@ -31,12 +39,11 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
         [Fact]
         public void ProductOptionManager_SetSpecificationValue_UpdatesAnExistingValueIfOneExists()
         {
-            var productOptionManager = GetProductOptionManager();
             var product = CreateProduct("Product");
             var option = CreateOption("Test");
             var value = CreateValue(product, option, "Value");
 
-            productOptionManager.SetSpecificationValue(product, option, "Updated Value");
+            _productOptionManager.SetSpecificationValue(product, option, "Updated Value");
 
             Session.QueryOver<ProductSpecificationValue>().RowCount().Should().Be(1);
             Session.QueryOver<ProductSpecificationValue>().List().First().Value.Should().Be("Updated Value");
@@ -45,13 +52,12 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
         [Fact]
         public void ProductOptionManager_DeleteSpecificationValue_ShouldRemoveSpecificationValue()
         {
-            var productOptionManager = GetProductOptionManager();
             var product = CreateProduct("Product");
             var option = CreateOption("Size");
             var value = CreateValue(product, option, "11''");
             Session.Transact(session => session.Save(value));
 
-            productOptionManager.DeleteSpecificationValue(value);
+            _productOptionManager.DeleteSpecificationValue(value);
 
             Session.QueryOver<ProductSpecificationValue>().RowCount().Should().Be(0);
         }
@@ -59,7 +65,6 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
         [Fact]
         public void ProductOptionManager_UpdateSpecificationValueDisplayOrder_ShouldChangeDisplayOrder()
         {
-            var productOptionManager = GetProductOptionManager();
             var product = CreateProduct("Product");
             var option = CreateOption("Size");
 
@@ -101,7 +106,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             sortItems[0].Order = 0;
             sortItems[1].Order = 1;
 
-            productOptionManager.UpdateSpecificationValueDisplayOrder(sortItems);
+            _productOptionManager.UpdateSpecificationValueDisplayOrder(sortItems);
 
             Session.QueryOver<ProductSpecificationValue>().Where(x => x.DisplayOrder != 0).RowCount().Should().BeGreaterThan(0);
         }
@@ -133,11 +138,6 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             var product = new Product { Name = name };
             Session.Transact(session => session.Save(product));
             return product;
-        }
-
-        private static ProductOptionManager GetProductOptionManager()
-        {
-            return new ProductOptionManager(Session);
         }
     }
 }

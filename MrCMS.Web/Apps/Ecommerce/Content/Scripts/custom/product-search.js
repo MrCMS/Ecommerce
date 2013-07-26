@@ -2,9 +2,9 @@
     var History = window.History; // Note: We are using a capital H instead of a lower h
     $(document).on('change', '#product-search-container input, #product-search-container select', function () {
         var data = getData(1);
-
         History.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
     });
+
     function getPage(href) {
         var querystring = href.split('?')[1];
         var parts = querystring.split('&');
@@ -28,6 +28,8 @@
         var sortBy = $('#SortBy').val();
         var pageSize = $('#PageSize').val();
         var categoryId = $('#CategoryId').val();
+        var brandId = $('#BrandId').val();
+        var searchTerm = $('#searchTerm').val();
 
         return {
             Specifications: specifications.join(','),
@@ -37,6 +39,8 @@
             CategoryId: categoryId,
             PriceFrom: getFromValue(),
             PriceTo: getToValue(),
+            BrandId: brandId,
+            SearchTerm: searchTerm,
             Page: page
         };
     }
@@ -53,11 +57,14 @@
     function buildUpQueryString(data) {
         var sortByDefault = $('#SortBy option').eq(0).val();
         var pageSizeDefault = $('#PageSize option').eq(0).val();
+        var brandDefault = $('#BrandId option').eq(0).val();
         if (data.Specifications.length == 0 && data.Options.length == 0
             && data.SortBy == sortByDefault
             && data.PageSize == pageSizeDefault
             && data.PriceFrom == null
             && data.PriceTo == null
+            && data.SearchTerm == ''
+            && data.BrandId == brandDefault
             && data.Page <= 1)
             return "";
         var queryString = "";
@@ -83,6 +90,14 @@
         if (data.PriceTo != null) {
             if (queryString.length > 0) queryString += "&";
             queryString += "PriceTo=" + data.PriceTo;
+        }
+        if (data.BrandId != brandDefault) {
+            if (queryString.length > 0) queryString += "&";
+            queryString += "BrandId=" + data.BrandId;
+        }
+        if (data.SearchTerm != '') {
+            if (queryString.length > 0) queryString += "&";
+            queryString += "SearchTerm=" + data.SearchTerm;
         }
         if (data.Page > 1) {
             if (queryString.length > 0) queryString += "&";

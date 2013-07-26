@@ -17,14 +17,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private readonly IImportProductsService _importProductsService;
         private readonly IProductVariantService _productVariantService;
 
-        public ImportExportManager(IImportProductsValidationService importProductsValidationService, IImportProductsService importProductsService, IProductVariantService productVariantService)
+        public ImportExportManager(IImportProductsValidationService importProductsValidationService, 
+            IImportProductsService importProductsService, 
+            IProductVariantService productVariantService)
         {
             _importProductsValidationService = importProductsValidationService;
             _importProductsService = importProductsService;
             _productVariantService = productVariantService;
         }
 
-        #region Import Products
+        #region Products
         /// <summary>
         /// Import Products From Excel
         /// </summary>
@@ -58,9 +60,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             return _importProductsValidationService.ValidateAndImportProductsWithVariants(spreadsheet, ref parseErrors);
         }
 
-        #endregion
-
-        #region Export Products
         /// <summary>
         /// Export Products To Excel
         /// </summary>
@@ -228,6 +227,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 return excelFile.GetAsByteArray();
             }
+        }
+        #endregion
+
+        #region Google Base
+        /// <summary>
+        /// Export Products To Google Base
+        /// </summary>
+        /// <returns></returns>
+        public byte[] ExportProductsToGoogleBase()
+        {
+            return null;
         }
         #endregion
     }

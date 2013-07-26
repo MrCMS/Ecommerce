@@ -14,10 +14,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     public class ProductOptionManager : IProductOptionManager
     {
         private readonly ISession _session;
+        private readonly IProductSearchService _productSearchService;
 
-        public ProductOptionManager(ISession session)
+        public ProductOptionManager(ISession session, IProductSearchService productSearchService)
         {
             _session = session;
+            _productSearchService = productSearchService;
         }
 
         public IList<ProductSpecificationAttribute> ListSpecificationAttributes()
@@ -319,8 +321,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                            .RowCount() > 0;
         }
 
-        public List<ProductOptionModel> GetSearchAttributeOptions(List<int> values)
+        public List<ProductOptionModel> GetSearchAttributeOptions(ProductSearchQuery query)
         {
+            var values = _productSearchService.GetOptions(query);
             var productAttributeValues = _session.QueryOver<ProductAttributeValue>().Fetch(value => value.ProductAttributeOption).Eager.Where(value => value.Id.IsIn(values)).Cacheable().List();
 
             var productAttributeOptions = productAttributeValues.Select(value => value.ProductAttributeOption).Distinct().ToList();
@@ -344,9 +347,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                                 }).ToList();
         }
 
-        public List<ProductOptionModel> GetSearchSpecificationAttributes(List<int> optionValues)
+        public List<ProductOptionModel> GetSearchSpecificationAttributes(ProductSearchQuery query)
         {
-            var productSpecificationAttributeOptions = _session.QueryOver<ProductSpecificationAttributeOption>().Fetch(value => value.ProductSpecificationAttribute).Eager.Where(option => option.Id.IsIn(optionValues)).Cacheable().List();
+            var values = _productSearchService.GetSpecifications(query);
+            var productSpecificationAttributeOptions =
+                _session.QueryOver<ProductSpecificationAttributeOption>()
+                        .Fetch(value => value.ProductSpecificationAttribute)
+                        .Eager.Where(option => option.Id.IsIn(values))
+                        .Cacheable()
+                        .List();
             var productSpecificationAttributes = productSpecificationAttributeOptions.Select(value => value.ProductSpecificationAttribute).Distinct().ToList();
 
             return productSpecificationAttributes.Select(attribute => new ProductOptionModel
