@@ -101,7 +101,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     product.Brand = worksheet.GetValue<string>(rowId, 8);
                                     if (worksheet.GetValue<string>(rowId, 31).HasValue())
                                     {
-                                        if (!worksheet.GetValue<string>(rowId, 31).IsValidInput<DateTime>())
+                                        if (!worksheet.GetValue<string>(rowId, 31).IsValidDateTime())
                                             parseErrors[handle].Add("Publish Date is not a valid date.");
                                         else
                                             product.PublishDate = worksheet.GetValue<DateTime>(rowId, 31);
