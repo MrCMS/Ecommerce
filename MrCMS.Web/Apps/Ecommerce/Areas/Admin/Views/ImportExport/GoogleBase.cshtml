@@ -1,24 +1,72 @@
-﻿@model dynamic
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.GoogleBaseModel
 @{
     ViewBag.Title = "Google Base Integration";
 }
 
 <fieldset>
-        <legend>Google Base Integration
-        </legend>
-
+    <legend>Google Base Integration
+        <span class="btn-group  display-inline  pull-right">
+            <a href="@Url.Action("ExportProductsToGoogleBase", "ImportExport")" class="btn btn-primary">Export Products</a>
+        </span>
+    </legend>
+    
+    @if (!string.IsNullOrWhiteSpace(Model.Status))
+    {
         <div class="row-fluid">
-             <span class="btn-group display-inline">
-                 <a href="@Url.Action("ExportProductsToGoogleBase", "ImportExport")" class="btn btn-primary">Export Products to Google Base</a>
-            </span>
+            <span class="alert alert-info">@Html.Encode(Model.Status)</span>
             <div class="clearfix"></div>
-                    
-            @if (ViewBag.ExportStatus != null)
-            {
-                <br />
-                <span class="alert alert-info">@ViewBag.ExportStatus</span>
-                <div class="clearfix"></div>
-            }
-           
         </div>
+        <div class="clearfix"></div>
+        <hr/>
+    }
+    
+    @{ Html.RenderPartial("GoogleBaseSettings", ViewData["settings"] as MrCMS.Web.Apps.Ecommerce.Settings.GoogleBaseSettings); }
+    
+    <hr/>
+    
+    @using (Html.BeginForm("GoogleBase", "ImportExport", FormMethod.Get, new {id="Filter"}))
+    {
+        @Html.DropDownListFor(x=>x.Category, ViewData["categories"] as IEnumerable<SelectListItem>,new {@class="input-xlarge"})
+        <br/>
+        @Html.TextBoxFor(x=>x.Name,new {@class="input-medium search-query"})
+        <button type="submit" class="btn btn-primary">Search</button>
+        <br/>
+        if (Model.Items.Count == 0)
+        {
+            <br/>
+            <p>
+                No products found.
+            </p>
+        }
+        else
+        {
+            <table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>Product
+                        </th>
+                        <th>Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                <button type="submit" id="update" class="btn btn-mini">Update</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        @Html.Pager(Model.Items, "GoogleBase", i => new {page = i})
+    }
+
 </fieldset>
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/google-base.js");}
