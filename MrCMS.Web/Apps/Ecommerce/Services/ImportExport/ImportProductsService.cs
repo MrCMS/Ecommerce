@@ -82,7 +82,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             product.Categories.Clear();
             foreach (var item in dataTransferObject.Categories)
             {
-                var category = _documentService.GetDocument<Category>(item);
+                var category = _documentService.GetDocumentByUrl<Category>(item);
                 if (category != null && !product.Categories.Any(x => x.Id == category.Id))
                     product.Categories.Add(category);
             }

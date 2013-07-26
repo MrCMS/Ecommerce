@@ -89,8 +89,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 var wsItems = excelFile.Workbook.Worksheets.Add("Items");
 
-                wsItems.Cells["A1:AD1"].Style.Font.Bold = true;
-                wsItems.Cells["A:AD"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                wsItems.Cells["A1:AE1"].Style.Font.Bold = true;
+                wsItems.Cells["A:AE"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 wsItems.Cells["A1"].Value = "Url (Must not be changed!)";
                 wsItems.Cells["B1"].Value = "Product Name";
                 wsItems.Cells["C1"].Value = "Description";
@@ -121,6 +121,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 wsItems.Cells["AB1"].Value = "Image 3";
                 wsItems.Cells["AC1"].Value = "Price Breaks";
                 wsItems.Cells["AD1"].Value = "Url History";
+                wsItems.Cells["AE1"].Value = "Publish Date";
 
                 var productVariants = _productVariantService.GetAll();
 
@@ -203,6 +204,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                         wsItems.Cells["AD" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     }
 
+                    if (productVariants[i].Product.Published)
+                        wsItems.Cells["AE" + rowId].Value = productVariants[i].Product.PublishOn;
+                    wsItems.Cells["AE" + rowId].Style.Numberformat.Format = "YYYY-MM-DDThh:mm:ss.sTZD";
+
                     if (!productVariants[i].Product.Images.Any()) continue;
                     wsItems.Cells["Z" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.First().FileUrl + "?update=no";
                     wsItems.Cells["Z" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
@@ -223,7 +228,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 wsItems.Cells["A:B"].AutoFitColumns();
                 wsItems.Cells["D:D"].AutoFitColumns();
                 wsItems.Cells["F:F"].AutoFitColumns();
-                wsItems.Cells["I:AD"].AutoFitColumns();
+                wsItems.Cells["I:AE"].AutoFitColumns();
 
                 return excelFile.GetAsByteArray();
             }
