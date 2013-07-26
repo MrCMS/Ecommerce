@@ -146,7 +146,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     {
                         foreach (var item in productVariants[i].Product.Categories)
                         {
-                            wsItems.Cells["I" + rowId].Value += item.Id + ";";
+                            wsItems.Cells["I" + rowId].Value += item.UrlSegment + ";";
                         }
                     }
                     if (productVariants[i].Product.SpecificationValues.Count > 0)
