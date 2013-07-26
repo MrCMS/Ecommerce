@@ -35,6 +35,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
                  return false;
              }
         }
-
+        public static bool IsValidDateTime(this string value)
+        {
+            try
+            {
+                DateTime result;
+                DateTime.TryParse(value, out result);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }
