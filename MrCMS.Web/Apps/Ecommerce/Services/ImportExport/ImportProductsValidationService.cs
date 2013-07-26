@@ -25,7 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// </summary>
         /// <param name="productsToImport"></param>
         /// <returns></returns>
-        public Dictionary<string,List<string>> ValidateBusinessLogic(IEnumerable<ProductImportDataTransferObject> productsToImport)
+        public Dictionary<string, List<string>> ValidateBusinessLogic(IEnumerable<ProductImportDataTransferObject> productsToImport)
         {
             var errors = new Dictionary<string, List<string>>();
             var productRules = MrCMSApplication.GetAll<IProductImportValidationRule>();
@@ -47,7 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                         else
                             errors[product.UrlSegment].AddRange(productVariantErrors);
                     }
-                        
+
                 }
             }
 
@@ -125,26 +125,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     }
 
                                     //Specifications
-                                    if (!String.IsNullOrWhiteSpace(worksheet.GetValue<string>(rowId, 10)))
+                                    var specificationsValue = worksheet.GetValue<string>(rowId, 10);
+                                    if (!String.IsNullOrWhiteSpace(specificationsValue))
                                     {
                                         try
                                         {
-                                            var value = worksheet.GetValue<string>(rowId, 10);
-                                            if (!String.IsNullOrWhiteSpace(value))
+                                            if (!String.IsNullOrWhiteSpace(specificationsValue))
                                             {
-                                                if (!worksheet.GetValue<string>(rowId, 10).Contains(":"))
+                                                if (!specificationsValue.Contains(":"))
                                                     parseErrors[handle].Add(
                                                         "Product Specifications field value contains illegal characters / not in correct format. Names and Values (Item) must be split with :, and items must be split by ;");
-                                                var specs = value.Split(';');
+                                                var specs = specificationsValue.Split(';');
                                                 foreach (var item in specs)
                                                 {
                                                     if (!String.IsNullOrWhiteSpace(item))
                                                     {
                                                         string[] specificationValue = item.Split(':');
-                                                        if (!String.IsNullOrWhiteSpace(specificationValue[0]) &&
-                                                            !String.IsNullOrWhiteSpace(specificationValue[1]))
-                                                            product.Specifications.Add(specificationValue[0],
-                                                                                       specificationValue[1]);
+                                                        if (!String.IsNullOrWhiteSpace(specificationValue[0]) && !String.IsNullOrWhiteSpace(specificationValue[1]) && !product.Specifications.ContainsKey(specificationValue[0]))
+                                                            product.Specifications.Add(specificationValue[0], specificationValue[1]);
                                                     }
                                                 }
                                             }
@@ -220,7 +218,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     if (!worksheet.GetValue<string>(rowId, 16).IsValidInput<int>())
                                         parseErrors[handle].Add("Stock value is not a valid decimal number.");
                                     else
-                                        productVariant.Stock = worksheet.GetValue<int>(rowId, 16);
+                                        productVariant.Stock = worksheet.HasValue(rowId, 16)
+                                                                   ? worksheet.GetValue<int>(rowId, 16)
+                                                                   : (int?) null;
                                     if (!worksheet.GetValue<string>(rowId, 17).HasValue() ||
                                         (worksheet.GetValue<string>(rowId, 17) != "Track" &&
                                          worksheet.GetValue<string>(rowId, 17) != "DontTrack"))
@@ -268,8 +268,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                                     if (!String.IsNullOrWhiteSpace(item))
                                                     {
                                                         string[] priceBreak = item.Split(':');
-                                                        if (!String.IsNullOrWhiteSpace(priceBreak[0]) &&
-                                                            !String.IsNullOrWhiteSpace(priceBreak[1]))
+                                                        if (!String.IsNullOrWhiteSpace(priceBreak[0]) && !String.IsNullOrWhiteSpace(priceBreak[1]) && !productVariant.PriceBreaks.ContainsKey(Int32.Parse(priceBreak[0])))
                                                         {
                                                             var quantity = Int32.Parse(priceBreak[0]);
                                                             var price = Decimal.Parse(priceBreak[1]);
