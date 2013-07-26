@@ -9,6 +9,7 @@ using Ninject.Activation;
 using Ninject.Extensions.Conventions.BindingGenerators;
 using Ninject.Syntax;
 using MrCMS.Helpers;
+using Ninject.Web.Common;
 
 namespace MrCMS.IoC
 {
@@ -22,7 +23,7 @@ namespace MrCMS.IoC
                 return list;
             }
 
-            bindingRoot.Bind(type).ToMethod(context => GetValue(type, context));
+            bindingRoot.Bind(type).ToMethod(context => GetValue(type, context)).InRequestScope();
 
             return list;
         }

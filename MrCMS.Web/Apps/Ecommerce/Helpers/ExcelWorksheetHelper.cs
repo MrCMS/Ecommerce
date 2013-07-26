@@ -7,7 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
     {
          public static bool HasValue(this ExcelWorksheet sheet, int row, int column)
          {
-             return GetBaseValue(sheet,row,column) == null;
+             return GetBaseValue(sheet,row,column) != null;
          }
 
          private static object GetBaseValue(ExcelWorksheet sheet, int row, int column)

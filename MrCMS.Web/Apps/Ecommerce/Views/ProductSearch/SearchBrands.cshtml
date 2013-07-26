@@ -1,0 +1,12 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Services.Products
+@model List<SelectListItem>
+@{ var query = ViewData["query"] as ProductSearchQuery;}
+@if (Model.Any())
+{
+    <div class="product-filter-box-title">
+        Filter by Brand
+    </div>
+    <div class="row-fluid">
+        @Html.DropDownList("BrandId", Model, new { @class = "span12" })
+    </div>
+}

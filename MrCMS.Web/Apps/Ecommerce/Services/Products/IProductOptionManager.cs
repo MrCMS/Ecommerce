@@ -44,7 +44,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         bool AnyExistingAttributeOptionsWithName(string name, int id);
         bool AnyExistingAttributeOptionsWithName(string name);
         
-        List<ProductOptionModel> GetSearchAttributeOptions(List<int> values);
-        List<ProductOptionModel> GetSearchSpecificationAttributes(List<int> optionValues);
+        List<ProductOptionModel> GetSearchAttributeOptions(ProductSearchQuery query);
+        List<ProductOptionModel> GetSearchSpecificationAttributes(ProductSearchQuery query);
     }
 }
