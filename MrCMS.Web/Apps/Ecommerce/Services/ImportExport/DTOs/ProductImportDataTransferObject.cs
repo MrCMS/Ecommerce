@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs
 {
@@ -10,7 +11,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs
         public ProductImportDataTransferObject()
         {
             ProductVariants = new List<ProductVariantImportDataTransferObject>();
-            Categories = new List<int>();
+            Categories = new List<string>();
             Specifications = new Dictionary<string, string>();
             Images = new List<string>();
             UrlHistory = new List<string>();
@@ -26,9 +27,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs
         public string SEOKeywords { get; set; }
         public string Abstract { get; set; }
         public string Brand { get; set; }
-        public List<int> Categories { get; set; }
+        public List<string> Categories { get; set; }
         public Dictionary<string, string> Specifications { get; set; }
         public List<string> Images { get; set; }
         public List<string> UrlHistory { get; set; }
+        public DateTime? PublishDate { get; set; }
     }
 }
