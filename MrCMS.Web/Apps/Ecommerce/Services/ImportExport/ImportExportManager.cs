@@ -79,7 +79,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 wsInfo.Cells["A2"].Value = MrCMSHtmlHelper.AssemblyVersion(null);
                 wsInfo.Cells["B2"].Value = "Product";
-                wsInfo.Cells["C2"].Style.Numberformat.Format = "YYYY-MM-DDThh:mm:ss.sTZD";
+                wsInfo.Cells["C2"].Style.Numberformat.Format = "YYYY-MM-DD hh:mm:ss";
                 wsInfo.Cells["C2"].Value = DateTime.UtcNow;
                 wsInfo.Cells["D2"].Value = "MrCMS " + MrCMSHtmlHelper.AssemblyVersion(null);
 
@@ -206,7 +206,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                     if (productVariants[i].Product.Published)
                         wsItems.Cells["AE" + rowId].Value = productVariants[i].Product.PublishOn;
-                    wsItems.Cells["AE" + rowId].Style.Numberformat.Format = "YYYY-MM-DDThh:mm:ss.sTZD";
+                    wsItems.Cells["AE" + rowId].Style.Numberformat.Format = "YYYY-MM-DD hh:mm:ss";
 
                     if (!productVariants[i].Product.Images.Any()) continue;
                     wsItems.Cells["Z" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.First().FileUrl + "?update=no";
