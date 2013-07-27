@@ -208,6 +208,14 @@
     <Compile Include="Apps\Ecommerce\Models\CartUpdateValue.cs" />
     <Compile Include="Apps\Ecommerce\Models\GoogleBaseModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductCondition.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\GetExpressCheckoutResponse.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalCartManager.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalUrlService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalResponse.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalUrlService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\SetExpressCheckoutResponse.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\IGoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PayPalExpressCheckoutController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
@@ -383,9 +391,9 @@
     <Compile Include="Apps\Ecommerce\Pages\ProductSearch.cs" />
     <Compile Include="Apps\Ecommerce\Pages\SetDeliveryDetails.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Cart\GetCartImpl.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\CartBuilder.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Cart\IGetCart.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\ICartBuilder.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\CategoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\ICategoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Discounts\DiscountApplicationService.cs" />

@@ -7,6 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
     public interface IPayPalRequestService
     {
         SetExpressCheckoutReq GetSetExpressCheckoutRequest(CartModel cart);
+        GetExpressCheckoutDetailsReq GetGetExpressCheckoutRequest(string token);
     }
 
     public class PayPalRequestService : IPayPalRequestService
@@ -16,7 +17,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
         private readonly IPayPalOrderService _payPalOrderService;
         private readonly PayPalExpressCheckoutSettings _payPalExpressCheckoutSettings;
 
-        public PayPalRequestService(IPayPalUrlService payPalUrlService, IPayPalShippingService payPalShippingService,IPayPalOrderService payPalOrderService, PayPalExpressCheckoutSettings payPalExpressCheckoutSettings)
+        public PayPalRequestService(IPayPalUrlService payPalUrlService, IPayPalShippingService payPalShippingService, IPayPalOrderService payPalOrderService, PayPalExpressCheckoutSettings payPalExpressCheckoutSettings)
         {
             _payPalUrlService = payPalUrlService;
             _payPalShippingService = payPalShippingService;
@@ -45,6 +46,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                 SetExpressCheckoutRequestDetails = setExpressCheckoutRequestDetailsType
             };
             return new SetExpressCheckoutReq { SetExpressCheckoutRequest = setExpressCheckoutRequestType };
+        }
+
+        public GetExpressCheckoutDetailsReq GetGetExpressCheckoutRequest(string token)
+        {
+            return new GetExpressCheckoutDetailsReq
+            {
+                GetExpressCheckoutDetailsRequest = new GetExpressCheckoutDetailsRequestType { Token = token }
+            };
         }
     }
 }
