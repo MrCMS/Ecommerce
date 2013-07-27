@@ -108,6 +108,11 @@ namespace MrCMS.Web.Apps.Ecommerce
                              new { controller = "PaymentMethod", action = "CashOnDelivery" },
                              new[] { typeof(PaymentMethodController).Namespace });
 
+            context.MapRoute("Confirm Order - PayPal Express Checkout",
+                             "Apps/Ecommerce/Confirm/PayPalExpressCheckout",
+                             new { controller = "PaymentMethod", action = "PayPalExpressCheckout" },
+                             new[] { typeof(PaymentMethodController).Namespace });
+
             context.MapRoute("Checkout - Billing Address same as Shipping Address",
                              "Apps/Ecommerce/PaymentDetails/BillingAddressSameAsShippingAddress",
                              new { controller = "PaymentDetails", action = "BillingAddressSameAsShippingAddress" },

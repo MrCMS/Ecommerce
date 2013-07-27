@@ -43,25 +43,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public static Address GetAddress(this AddressType address)
         {
-            string[] fullname = address.Name.Trim()
-                                                      .Split(new char[] { ' ' }, 2,
-                                                             StringSplitOptions.RemoveEmptyEntries);
-            string firstName = fullname[0];
-            string lastName = string.Empty;
-            if (fullname.Length > 1)
-                lastName = fullname[1];
-            return new Address
-                       {
-                           Address1 = address.Street1,
-                           Address2 = address.Street2,
-                           City = address.CityName,
-                           Country = GetCountry(address.Country),
-                           FirstName = firstName,
-                           LastName = lastName,
-                           PhoneNumber = address.Phone,
-                           PostalCode = address.PostalCode,
-                           StateProvince = address.StateOrProvince,
-                       };
+            if (address != null)
+            {
+                string[] fullname = address.Name.Trim()
+                                           .Split(new char[] { ' ' }, 2,
+                                                  StringSplitOptions.RemoveEmptyEntries);
+                string firstName = fullname[0];
+                string lastName = string.Empty;
+                if (fullname.Length > 1)
+                    lastName = fullname[1];
+                return new Address
+                           {
+                               Address1 = address.Street1,
+                               Address2 = address.Street2,
+                               City = address.CityName,
+                               Country = GetCountry(address.Country),
+                               FirstName = firstName,
+                               LastName = lastName,
+                               PhoneNumber = address.Phone,
+                               PostalCode = address.PostalCode,
+                               StateProvince = address.StateOrProvince,
+                           };
+            }
+            return null;
         }
 
         private static Country GetCountry(CountryCodeType? country)
