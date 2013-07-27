@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using MrCMS.Entities.People;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
@@ -10,7 +9,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Payment;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
@@ -94,7 +92,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public Guid UserGuid { get; set; }
 
         [Required]
-        [Remote("IsDiscountCodeValid", "Cart", AdditionalFields = "DiscountCode")]
         [DisplayName("Discount Code")]
         public string DiscountCode { get; set; }
 
@@ -145,6 +142,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get { return Items.Sum(item => item.Quantity); }
         }
-    }
 
+        public string PayPalExpressToken { get; set; }
+        public string PayPalExpressPayerId { get; set; }
+    }
 }

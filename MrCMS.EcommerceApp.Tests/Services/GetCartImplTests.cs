@@ -19,7 +19,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
     public class GetCartImplTests : InMemoryDatabaseTest
     {
         private readonly IPaymentMethodService _paymentMethodService;
-        private readonly GetCartImpl _getCartImpl;
+        private readonly CartBuilder _cartBuilder;
         private readonly IOrderShippingService _orderShippingService;
 
         public GetCartImplTests()
@@ -30,12 +30,12 @@ namespace MrCMS.EcommerceApp.Tests.Services
             A.CallTo(() => CurrentRequestData.CurrentContext.Session).Returns(new FakeHttpSessionState());
             _paymentMethodService = A.Fake<IPaymentMethodService>();
             _orderShippingService = A.Fake<IOrderShippingService>();
-            _getCartImpl = new GetCartImpl(Session, _paymentMethodService, _orderShippingService);
+            _cartBuilder = new CartBuilder(Session, _paymentMethodService, _orderShippingService);
         }
         [Fact]
         public void GetCartImpl_GetCart_ReturnsACartModel()
         {
-            var cartModel = _getCartImpl.GetCart();
+            var cartModel = _cartBuilder.BuildCart();
 
             cartModel.Should().BeOfType<CartModel>();
         }
@@ -43,7 +43,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void GetCartImpl_GetCart_ShouldReturnUserIfCurrentUserIsSet()
         {
-            var cartModel = _getCartImpl.GetCart();
+            var cartModel = _cartBuilder.BuildCart();
 
             cartModel.User.Should().Be(CurrentRequestData.CurrentUser);
         }
@@ -59,7 +59,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
                                                   }).ToList();
             Session.Transact(session => cartItems.ForEach(item => session.Save(item)));
 
-            var cartModel = _getCartImpl.GetCart();
+            var cartModel = _cartBuilder.BuildCart();
 
             cartModel.Items.ShouldBeEquivalentTo(cartItems);
         }
@@ -69,7 +69,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         {
             CurrentRequestData.CurrentUser = null;
 
-            var cartModel = _getCartImpl.GetCart();
+            var cartModel = _cartBuilder.BuildCart();
 
             cartModel.User.Should().BeNull();
         }
@@ -81,7 +81,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
             var userGuid = Guid.NewGuid();
             CurrentRequestData.UserGuid = userGuid;
 
-            var cartModel = _getCartImpl.GetCart();
+            var cartModel = _cartBuilder.BuildCart();
 
             cartModel.UserGuid.Should().Be(userGuid);
         }

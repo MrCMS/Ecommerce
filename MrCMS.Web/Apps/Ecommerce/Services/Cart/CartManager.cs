@@ -23,6 +23,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public const string CurrentDiscountCodeKey = "current.discount-code";
         public const string CurrentPaymentMethodKey = "current.payment-method";
         public const string CurrentCountryIdKey = "current.country-id";
+        public const string CurrentPayPalExpressToken = "current.paypal-express-token";
+        public const string CurrentPayPalExpressPayerId = "current.paypal-express-payer-id";
 
         private readonly CartModel _cart;
         private readonly ISession _session;
@@ -123,6 +125,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
             SetSessionItem(CurrentShippingMethodIdKey, shippingCalculation.ShippingMethod.Id);
             SetSessionItem(CurrentCountryIdKey, shippingCalculation.Country.Id);
+        }
+
+        public void SetPayPalExpressInfo(string token, string payerId)
+        {
+            SetSessionItem(CurrentPayPalExpressToken, token);
+            SetSessionItem(CurrentPayPalExpressPayerId, payerId);
         }
 
         private static void SetSessionItem<T>(string key, T item)

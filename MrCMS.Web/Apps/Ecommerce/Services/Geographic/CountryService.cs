@@ -92,5 +92,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Geographic
                 session.Update(formItem);
             }));
         }
+
+        public Country GetCountryByCode(string code)
+        {
+            return _session.QueryOver<Country>()
+                           .Where(country => country.ISOTwoLetterCode.IsInsensitiveLike(code, MatchMode.Exact))
+                           .Take(1)
+                           .Cacheable()
+                           .SingleOrDefault();
+        }
     }
 }

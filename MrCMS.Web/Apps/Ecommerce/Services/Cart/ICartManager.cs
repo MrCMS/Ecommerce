@@ -24,5 +24,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         void SetDiscountCode(string code);
         void SetPaymentMethod(string methodName);
         void SetShippingInfo(ShippingCalculation shippingCalculation);
+        void SetPayPalExpressInfo(string token, string payerId);
     }
 }

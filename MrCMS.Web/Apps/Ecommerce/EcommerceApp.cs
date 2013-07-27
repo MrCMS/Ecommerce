@@ -33,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce
 
         protected override void RegisterServices(IKernel kernel)
         {
-            kernel.Rebind<CartModel>().ToMethod(context => context.Kernel.Get<IGetCart>().GetCart()).InRequestScope();
+            kernel.Rebind<CartModel>().ToMethod(context => context.Kernel.Get<ICartBuilder>().BuildCart()).InRequestScope();
         }
 
         public override IEnumerable<Type> BaseTypes
@@ -145,6 +145,11 @@ namespace MrCMS.Web.Apps.Ecommerce
                              "search/results",
                              new { controller = "ProductSearch", action = "Results" },
                              new[] { typeof(ProductSearchController).Namespace });
+
+            context.MapRoute("Checkout - PayPal Return Handler",
+                             "Apps/Ecommerce/PayPalExpressCheckout/ReturnHandler",
+                             new {controller = "PayPalExpressCheckout", action = "Return"},
+                             new[] {typeof (PayPalExpressCheckoutController).Namespace});
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
@@ -265,7 +270,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             ecommerceSettings.PreviousPriceText = "Previous price";
 
             configurationProvider.SaveSettings(ecommerceSettings);
-            
+
 
             var welcome = new TextPage
             {
