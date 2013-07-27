@@ -2,6 +2,7 @@
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Website;
 using PayPal.Exception;
@@ -42,13 +43,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public static Address GetAddress(this AddressType address)
         {
-                string[] fullname = address.Name.Trim()
-                                                          .Split(new char[] { ' ' }, 2,
-                                                                 StringSplitOptions.RemoveEmptyEntries);
-                string firstName = fullname[0];
-                string lastName = string.Empty;
-                if (fullname.Length > 1)
-                    lastName = fullname[1];
+            string[] fullname = address.Name.Trim()
+                                                      .Split(new char[] { ' ' }, 2,
+                                                             StringSplitOptions.RemoveEmptyEntries);
+            string firstName = fullname[0];
+            string lastName = string.Empty;
+            if (fullname.Length > 1)
+                lastName = fullname[1];
             return new Address
                        {
                            Address1 = address.Street1,
@@ -68,6 +69,41 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
             return !country.HasValue
                        ? null
                        : MrCMSApplication.Get<ICountryService>().GetCountryByCode(country.Value.ToString());
+        }
+
+        public static BasicAmountType GetAmountType(this decimal value)
+        {
+            return new BasicAmountType
+            {
+                value = value.ToString("0.00"),
+                currencyID = MrCMSApplication.Get<PayPalExpressCheckoutSettings>().Currency
+            };
+        }
+
+        public static BasicAmountType GetAmountType(this decimal? value)
+        {
+            return value.HasValue ? GetAmountType(value.Value) : null;
+        }
+
+        public static PaymentStatus GetPaymentStatus(this PaymentStatusCodeType? status)
+        {
+            if (!status.HasValue)
+                return PaymentStatus.Pending;
+
+            switch (status.Value)
+            {
+                case PaymentStatusCodeType.COMPLETED:
+                case PaymentStatusCodeType.PROCESSED:
+                    return PaymentStatus.Paid;
+                case PaymentStatusCodeType.REFUNDED:
+                    return PaymentStatus.Refunded;
+                case PaymentStatusCodeType.PARTIALLYREFUNDED:
+                    return PaymentStatus.PartiallyRefunded;
+                case PaymentStatusCodeType.VOIDED:
+                    return PaymentStatus.Voided;
+                default:
+                    return PaymentStatus.Pending;
+            }
         }
     }
 }

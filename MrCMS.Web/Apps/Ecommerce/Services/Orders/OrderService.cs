@@ -25,54 +25,63 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             _cartManager = cartManager;
         }
 
-        public Order PlaceOrder(CartModel cartModel, PaymentStatus paymentStatus)
+        public Order PlaceOrder(CartModel cartModel, Action<Order> postCreationActions)
         {
-            var order = new Order
-                            {
-                                ShippingAddress = cartModel.ShippingAddress.Clone(_session),
-                                BillingAddress = cartModel.BillingAddress.Clone(_session),
-                                ShippingMethod = cartModel.ShippingMethod,
-                                Subtotal = cartModel.Subtotal,
-                                Discount = cartModel.Discount,
-                                DiscountCode = cartModel.DiscountCode,
-                                Tax = cartModel.Tax,
-                                Total = cartModel.Total,
-                                ShippingTotal = cartModel.ShippingTotal,
-                                ShippingTax = cartModel.ShippingTax,
-                                User = cartModel.User,
-                                Weight = cartModel.Weight,
-                                OrderEmail = cartModel.OrderEmail,
-                                CustomerIP = RequestHelper.GetIP(),
-                                PaymentMethod = cartModel.PaymentMethod,
-                                ShippingStatus = ShippingStatus.Pending,
-                                ShippingTaxPercentage = cartModel.ShippingTaxPercentage,
-                                PaymentStatus = paymentStatus,
-                                PaidDate = paymentStatus == PaymentStatus.Paid ? CurrentRequestData.Now : (DateTime?) null
-                            };
+            return _session.Transact(session =>
+                                   {
+                                       var order = new Order
+                                                       {
+                                                           ShippingAddress = cartModel.ShippingAddress.Clone(_session),
+                                                           BillingAddress = cartModel.BillingAddress.Clone(_session),
+                                                           ShippingMethod = cartModel.ShippingMethod,
+                                                           Subtotal = cartModel.Subtotal,
+                                                           Discount = cartModel.Discount,
+                                                           DiscountCode = cartModel.DiscountCode,
+                                                           Tax = cartModel.Tax,
+                                                           Total = cartModel.Total,
+                                                           ShippingTotal = cartModel.ShippingTotal,
+                                                           ShippingTax = cartModel.ShippingTax,
+                                                           User = cartModel.User,
+                                                           Weight = cartModel.Weight,
+                                                           OrderEmail = cartModel.OrderEmail,
+                                                           CustomerIP = RequestHelper.GetIP(),
+                                                           PaymentMethod = cartModel.PaymentMethod,
+                                                           ShippingStatus = ShippingStatus.Pending,
+                                                           ShippingTaxPercentage = cartModel.ShippingTaxPercentage,
+                                                       };
 
-            foreach (var item in cartModel.Items)
-            {
-                var options = string.Join(", ", item.Item.AttributeValues.Select(value => value.FormattedValue));
+                                       foreach (var item in cartModel.Items)
+                                       {
+                                           var options = string.Join(", ",
+                                                                     item.Item.AttributeValues.Select(
+                                                                         value => value.FormattedValue));
 
-                order.OrderLines.Add(new OrderLine
-                    {
-                        Order = order,
-                        UnitPrice = item.Price,
-                        Weight = item.Weight,
-                        TaxRate = item.TaxRatePercentage,
-                        Tax = item.Tax,
-                        Quantity = item.Quantity,
-                        ProductVariant = item.Item,
-                        Subtotal = item.PricePreTax * item.Quantity,
-                        SKU = item.Item.SKU,
-                        Name = !string.IsNullOrEmpty(item.Item.Name) ? item.Item.Name : item.Item.Product.Name,
-                        Options = options,
-                        Discount = item.GetDiscountAmount(cartModel.Discount,cartModel.DiscountCode),
-                    });
-            }
-            _session.Transact(session => session.SaveOrUpdate(order));
-            _cartManager.EmptyBasket();
-            return order;
+                                           order.OrderLines.Add(new OrderLine
+                                                                    {
+                                                                        Order = order,
+                                                                        UnitPrice = item.Price,
+                                                                        Weight = item.Weight,
+                                                                        TaxRate = item.TaxRatePercentage,
+                                                                        Tax = item.Tax,
+                                                                        Quantity = item.Quantity,
+                                                                        ProductVariant = item.Item,
+                                                                        Subtotal = item.PricePreTax * item.Quantity,
+                                                                        SKU = item.Item.SKU,
+                                                                        Name =
+                                                                            !string.IsNullOrEmpty(item.Item.Name)
+                                                                                ? item.Item.Name
+                                                                                : item.Item.Product.Name,
+                                                                        Options = options,
+                                                                        Discount =
+                                                                            item.GetDiscountAmount(cartModel.Discount,
+                                                                                                   cartModel.DiscountCode),
+                                                                    });
+                                       }
+                                       postCreationActions(order);
+                                       session.SaveOrUpdate(order);
+                                       _cartManager.EmptyBasket();
+                                       return order;
+                                   });
         }
 
         public IPagedList<Order> GetPaged(int pageNum, int pageSize = 10)

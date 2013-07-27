@@ -149,7 +149,8 @@
     <Compile Include="Metadata\ProductContainerMetadataTests.cs" />
     <Compile Include="Metadata\ProductMetadataTests.cs" />
     <Compile Include="Models\CartModelTests.cs" />
-    <Compile Include="Models\TaxAwarePriceTests.cs" />
+    <Compile Include="Models\TaxAwareProductPriceTests.cs" />
+    <Compile Include="Models\TaxAwareShippingRateTests.cs" />
     <Compile Include="Pages\CategoryTests.cs" />
     <Compile Include="Pages\ProductTests\ProductPersistenceTests.cs" />
     <Compile Include="Pages\ProductTests\ProductVariantsTests.cs" />

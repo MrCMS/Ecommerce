@@ -21,6 +21,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         private readonly IPaymentMethodService _paymentMethodService;
         private readonly CartBuilder _cartBuilder;
         private readonly IOrderShippingService _orderShippingService;
+        private ICartSessionManager _cartSessionManager;
 
         public GetCartImplTests()
         {
@@ -30,7 +31,8 @@ namespace MrCMS.EcommerceApp.Tests.Services
             A.CallTo(() => CurrentRequestData.CurrentContext.Session).Returns(new FakeHttpSessionState());
             _paymentMethodService = A.Fake<IPaymentMethodService>();
             _orderShippingService = A.Fake<IOrderShippingService>();
-            _cartBuilder = new CartBuilder(Session, _paymentMethodService, _orderShippingService);
+            _cartSessionManager = A.Fake<ICartSessionManager>();
+            _cartBuilder = new CartBuilder(Session, _paymentMethodService, _orderShippingService, _cartSessionManager);
         }
         [Fact]
         public void GetCartImpl_GetCart_ReturnsACartModel()

@@ -21,10 +21,20 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
             MrCMSApplication.OverrideKernel(_mockingKernel);
         }
 
-        [Fact]
-        public void ShippingCalculation_PricePreTax_ShouldBeBasePriceIfShippingPricesDoNotIncludeTax()
+        private void SetTaxSettings(bool taxesEnabled = false, bool shippingRatesIncludeTax = false)
         {
-            _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { TaxesEnabled = true, ShippingRateIncludesTax = false });
+            _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings
+                                                                       {
+                                                                           TaxesEnabled = taxesEnabled,
+                                                                           ShippingRateTaxesEnabled = taxesEnabled,
+                                                                           ShippingRateIncludesTax = shippingRatesIncludeTax
+                                                                       });
+        }
+
+        [Fact]
+        public void ShippingCalculation_AmountPreTax_ShouldBeBaseAmountIfShippingAmountsDoNotIncludeTaxAndTaxesAreEnabled()
+        {
+            SetTaxSettings(true, false);
             var shippingCalculation = new TestableShippingCalculation
             {
                 OverrideTaxRate = new TaxRate { Percentage = 20 },
@@ -34,9 +44,9 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
         }
 
         [Fact]
-        public void ShippingCalculation_PricePreTax_ShouldBeBasePriceLessTaxIfShippingPricesDoNotIncludeTax()
+        public void ShippingCalculation_AmountPreTax_ShouldBeBaseAmountLessTaxIfShippingAmountsDoIncludeTaxAndTaxesAreEnabled()
         {
-            _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { ShippingRateIncludesTax = true });
+            SetTaxSettings(true, true);
             var shippingCalculation = new TestableShippingCalculation
             {
                 OverrideTaxRate = new TaxRate { Percentage = 20 },
@@ -46,9 +56,9 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
         }
 
         [Fact]
-        public void ShippingCalculation_Price_ShouldBeBasePriceIfShippingPricesDoIncludeTax()
+        public void ShippingCalculation_Amount_ShouldBeBaseAmountIfShippingAmountsDoIncludeTaxAndTaxesAreEnabled()
         {
-            _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { ShippingRateIncludesTax = true });
+            SetTaxSettings(true, true);
             var shippingCalculation = new TestableShippingCalculation
             {
                 OverrideTaxRate = new TaxRate { Percentage = 20 },
@@ -58,15 +68,39 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
         }
 
         [Fact]
-        public void ShippingCalculation_Price_ShouldBeBasePricePlusTaxIfShippingPricesDoNotIncludeTax()
+        public void ShippingCalculation_Amount_ShouldBeBaseAmountPlusTaxIfShippingAmountsDoNotIncludeTax()
         {
-            _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { TaxesEnabled = true, ShippingRateIncludesTax = false });
+            SetTaxSettings(true, false);
             var shippingCalculation = new TestableShippingCalculation
             {
                 OverrideTaxRate = new TaxRate { Percentage = 20 },
                 BaseAmount = 12
             };
             shippingCalculation.Amount.Should().Be(14.4m);
+        }
+
+        [Fact]
+        public void ShippingCalculation_AmountPreTax_ShouldBeBaseAmountIfShippingTaxIsNotEnabled()
+        {
+            SetTaxSettings(false);
+            var shippingCalculation = new TestableShippingCalculation
+            {
+                OverrideTaxRate = new TaxRate { Percentage = 20 },
+                BaseAmount = 12
+            };
+            shippingCalculation.AmountPreTax.Should().Be(12);
+        }
+
+        [Fact]
+        public void ShippingCalculation_Amount_ShouldBeBaseAmountIfShippingTaxIsNotEnabled()
+        {
+            SetTaxSettings(false);
+            var shippingCalculation = new TestableShippingCalculation
+            {
+                OverrideTaxRate = new TaxRate { Percentage = 20 },
+                BaseAmount = 12
+            };
+            shippingCalculation.Amount.Should().Be(12);
         }
 
         [Fact]
@@ -204,21 +238,19 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
         [Fact]
         public void ShippingCalculation_GetTax_IfGetPriceReturnsNullShouldReturnNull()
         {
-            var shippingCalculation = new TestableShippingCalculation {GetPriceIsNull = true};
+            var shippingCalculation = new TestableShippingCalculation { GetPriceIsNull = true };
 
             var tax = shippingCalculation.GetTax(new CartModel());
 
             tax.Should().Be(null);
         }
-
-
     }
 
     [DoNotMap]
     public class TestableShippingCalculation : ShippingCalculation
     {
         public TaxRate OverrideTaxRate { get; set; }
-        public override Web.Apps.Ecommerce.Entities.Tax.TaxRate TaxRate
+        public override TaxRate TaxRate
         {
             get { return OverrideTaxRate ?? base.TaxRate; }
         }
@@ -226,7 +258,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
         public bool GetPriceIsNull { get; set; }
         public decimal? OverrideGetPrice { get; set; }
 
-        public override decimal? GetPrice(Web.Apps.Ecommerce.Models.CartModel model)
+        public override decimal? GetPrice(CartModel model)
         {
             if (GetPriceIsNull) return null;
             return OverrideGetPrice ?? base.GetPrice(model);
