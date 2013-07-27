@@ -51,10 +51,11 @@ namespace MrCMS.Web.Apps.Ecommerce
                                  new[] { typeof(ProductController).Namespace });
             context.MapRoute("Product Variant - GetPriceBreaksForProductVariant", "Apps/Ecommerce/ProductVariant/GetPriceBreaksForProductVariant", new { controller = "ProductVariant", action = "GetPriceBreaksForProductVariant" });
             context.MapRoute("Cart - Details", "Apps/Ecommerce/CartDetails", new { controller = "Cart", action = "Details" });
-            context.MapRoute("Cart - Update Quantity", "Apps/Ecommerce/UpdateQuantity", new { controller = "Cart", action = "UpdateQuantity" });
+            context.MapRoute("Cart - Update Basket", "Apps/Ecommerce/UpdateBasket", new { controller = "Cart", action = "UpdateBasket" });
             context.MapRoute("Cart - Add to Cart", "Apps/Ecommerce/AddToCart", new { controller = "Cart", action = "AddToCart" });
             context.MapRoute("Cart - Edit Cart Item", "Apps/Ecommerce/EditCartItem", new { controller = "Cart", action = "EditCartItem" });
             context.MapRoute("Cart - Delete Cart Item", "Apps/Ecommerce/DeleteCartItem", new { controller = "Cart", action = "DeleteCartItem" });
+            context.MapRoute("Cart - Apply Discount Code", "Apps/Ecommerce/ApplyDiscountCode", new { controller = "Cart", action = "ApplyDiscountCode" });
             //context.MapRoute("Cart - Basic Details", "Apps/Ecommerce/Cart/BasicDetails", new { controller = "Cart", action = "BasicDetails" });
             //context.MapRoute("Cart - Delivery Details", "Apps/Ecommerce/Cart/DeliveryDetails", new { controller = "Cart", action = "DeliveryDetails" });
             //context.MapRoute("Cart - Order Email", "Apps/Ecommerce/Cart/OrderEmail", new { controller = "Cart", action = "OrderEmail" });

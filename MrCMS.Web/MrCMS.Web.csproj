@@ -204,6 +204,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PaymentMethodController.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\RequestHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Models\CartUpdateValue.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\IGoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PayPalExpressCheckoutController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
@@ -1564,7 +1565,6 @@
     <Content Include="Global.asax" />
     <Content Include="Apps\Ecommerce\Content\Scripts\facebook.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\category.js" />
-    <Content Include="Themes\Ecommerce\Content\Scripts\custom\cart.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-account.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-registration.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-login.js" />

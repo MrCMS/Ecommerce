@@ -1,8 +1,11 @@
-﻿using MrCMS.Web.Apps.Ecommerce.Entities;
+﻿using System.Collections.Generic;
+using MrCMS.Web.Apps.Ecommerce.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
+using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
@@ -11,6 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         void AddToCart(ProductVariant item, int quantity);
         void Delete(CartItem item);
         void UpdateQuantity(CartItem item, int quantity);
+        void UpdateQuantities(List<CartUpdateValue> quantities);
         void EmptyBasket();
 
         void SetOrderEmail(string email);
