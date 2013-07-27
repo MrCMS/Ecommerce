@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -8,6 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     public interface IProductVariantService
     {
         IList<ProductVariant> GetAll();
+        IPagedList<ProductVariant> GetAllVariants(string queryTerm, int categoryId = 0, int page = 1);
         ProductVariant GetProductVariantBySKU(string sku);
         void Add(ProductVariant productVariant);
         void Update(ProductVariant productVariant);

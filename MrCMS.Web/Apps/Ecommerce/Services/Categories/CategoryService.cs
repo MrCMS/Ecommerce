@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Models;
@@ -10,6 +11,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using NHibernate;
 using NHibernate.Criterion;
 using MrCMS.Entities.Multisite;
+using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
 {
@@ -79,6 +81,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         public IList<Category> GetAll()
         {
             return _session.QueryOver<Category>().Cacheable().List();
+        }
+        public IList<SelectListItem> GetOptions()
+        {
+            return GetAll().OrderBy(x=>x.ParentId).BuildSelectItemList(item => item.Name, item => item.Id.ToString(),null, new SelectListItem());
         }
         public Category Get(int id)
         {
