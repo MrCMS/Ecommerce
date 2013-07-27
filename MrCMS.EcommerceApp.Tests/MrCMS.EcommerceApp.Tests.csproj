@@ -188,16 +188,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MrCMS.Web\MrCMS.Web.csproj">
-      <Project>{e64f6811-8373-4310-9cce-3fbca0d87826}</Project>
-      <Name>MrCMS.Web</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MrCMS\MrCMS.csproj">
-      <Project>{9D6ECC0F-CDA1-43E2-B88B-BC01299EB9CE}</Project>
-      <Name>MrCMS</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Helpers\" />
     <Folder Include="Indexing\" />
     <Folder Include="Stubs\" />
@@ -209,6 +199,16 @@
     <Content Include="x86\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MrCMS.Web\MrCMS.Web.csproj">
+      <Project>{e64f6811-8373-4310-9cce-3fbca0d87826}</Project>
+      <Name>MrCMS.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MrCMS\MrCMS.csproj">
+      <Project>{9d6ecc0f-cda1-43e2-b88b-bc01299eb9ce}</Project>
+      <Name>MrCMS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

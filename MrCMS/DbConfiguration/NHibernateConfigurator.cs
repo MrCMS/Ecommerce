@@ -8,11 +8,13 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using MrCMS.DbConfiguration.Configuration;
 using MrCMS.DbConfiguration.Conventions;
+using MrCMS.DbConfiguration.Filters;
 using MrCMS.DbConfiguration.Mapping;
 using MrCMS.Entities;
 using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Documents.Web.FormProperties;
+using MrCMS.Entities.People;
 using MrCMS.Entities.Widget;
 using MrCMS.Website;
 using NHibernate;
@@ -127,15 +129,22 @@ namespace MrCMS.DbConfiguration
             });
 
             var iPersistenceConfigurer = GetPersistenceConfigurer();
+            var addFromAssemblyOf =
+                AutoMap.Assemblies(new MrCMSMappingConfiguration(), finalAssemblies)
+                       .IgnoreBase<SystemEntity>()
+                       .IgnoreBase<SiteEntity>()
+                       .IncludeBase<Document>()
+                       .IncludeBase<Webpage>()
+                       .IncludeBase<UserProfileData>()
+                       .IncludeBase<Widget>()
+                       .IncludeBase<FormProperty>()
+                       .IncludeAppBases()
+                       .UseOverridesFromAssemblies(assemblies.Where(assembly => !assembly.GlobalAssemblyCache).ToArray())
+                       .Conventions.AddFromAssemblyOf<CustomForeignKeyConvention>();
+            addFromAssemblyOf.Add(typeof(NotDeletedFilter));
             var config = Fluently.Configure()
                 .Database(iPersistenceConfigurer)
-                .Mappings(m => m.AutoMappings.Add(AutoMap.Assemblies(new MrCMSMappingConfiguration(), finalAssemblies)
-                                                .IgnoreBase<SystemEntity>().IgnoreBase<SiteEntity>()
-                                                .IncludeBase<Document>().IncludeBase<Webpage>()
-                                                .IncludeBase<Widget>().IncludeBase<FormProperty>()
-                                                .IncludeAppBases()
-                                                .UseOverridesFromAssemblies(assemblies.Where(assembly => !assembly.GlobalAssemblyCache).ToArray())
-                                                .Conventions.AddFromAssemblyOf<CustomForeignKeyConvention>()))
+                .Mappings(m => m.AutoMappings.Add(addFromAssemblyOf))
                 .Cache(builder =>
                 {
                     if (CacheEnabled)
@@ -164,9 +173,10 @@ namespace MrCMS.DbConfiguration
         private void AppendListeners(NHibernate.Cfg.Configuration configuration)
         {
             var saveOrUpdateListener = new SaveOrUpdateListener();
-            var updateIndexesListener = new UpdateIndexesListener();
+            var updateIndexesListener = new UpdateIndicesListener();
             var postCommitEventListener = new PostCommitEventListener();
             var urlHistoryListener = new UrlHistoryListener();
+            var documentSoftDeleteListener = new DocumentSoftDeleteListener();
             configuration.EventListeners.SaveOrUpdateEventListeners =
                  new ISaveOrUpdateEventListener[]
                       {
@@ -189,6 +199,9 @@ namespace MrCMS.DbConfiguration
                                                                                  postCommitEventListener,
                                                                                  urlHistoryListener
                                                                              });
+
+            configuration.SetListener(ListenerType.Delete, documentSoftDeleteListener);
+
             if (!InDevelopment && CurrentRequestData.DatabaseIsInstalled)
             {
                 configuration.AppendListeners(ListenerType.PostCommitUpdate, new IPostUpdateEventListener[]
