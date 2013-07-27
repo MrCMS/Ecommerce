@@ -42,6 +42,9 @@
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\packages\EPPlus.3.1.3.3\lib\net35\EPPlus.dll</HintPath>
+    </Reference>
     <Reference Include="FluentNHibernate, Version=1.3.0.733, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentNHibernate.1.3.0.733\lib\FluentNHibernate.dll</HintPath>
@@ -140,19 +143,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ACL\ACLRule.cs" />
+    <Compile Include="ACL\ACLSettings.cs" />
+    <Compile Include="ACL\Rules\AdminAccessACL.cs" />
+    <Compile Include="ACL\Rules\IndexACL.cs" />
+    <Compile Include="ACL\Rules\InlineEditingACL.cs" />
+    <Compile Include="ACL\Rules\RoleACL.cs" />
+    <Compile Include="ACL\Rules\SiteSettingsACL.cs" />
+    <Compile Include="ACL\Rules\SystemAdminMenuACL.cs" />
+    <Compile Include="ACL\Rules\UserACL.cs" />
+    <Compile Include="ACL\TypeACLRule.cs" />
     <Compile Include="Apps\MrCMSApp.cs" />
     <Compile Include="Apps\MrCMSAppRegistrationContext.cs" />
     <Compile Include="DbConfiguration\ConfigHelper.cs" />
     <Compile Include="DbConfiguration\Configuration\DatabaseType.cs" />
+    <Compile Include="DbConfiguration\Configuration\DocumentSoftDeleteListener.cs" />
     <Compile Include="DbConfiguration\Configuration\PostCommitEventListener.cs" />
     <Compile Include="DbConfiguration\Configuration\SaveOrUpdateListener.cs" />
-    <Compile Include="DbConfiguration\Configuration\UpdateIndexesListener.cs" />
+    <Compile Include="DbConfiguration\Configuration\UpdateIndicesListener.cs" />
     <Compile Include="DbConfiguration\Configuration\UrlHistoryListener.cs" />
     <Compile Include="DbConfiguration\Conventions\CacheConvention.cs" />
     <Compile Include="DbConfiguration\Conventions\DateTimeConvention.cs" />
+    <Compile Include="DbConfiguration\Conventions\DeletedFilterConvention.cs" />
     <Compile Include="DbConfiguration\Conventions\ForeignKeyConvention.cs" />
     <Compile Include="DbConfiguration\Conventions\HasManyConvention.cs" />
     <Compile Include="DbConfiguration\Conventions\ReferencesConvention.cs" />
+    <Compile Include="DbConfiguration\Filters\NotDeletedFilter.cs" />
     <Compile Include="DbConfiguration\LogEntryOverride.cs" />
     <Compile Include="DbConfiguration\Mapping\MrCMSMapClassAttribute.cs" />
     <Compile Include="DbConfiguration\Mapping\MrCmsMappingConfiguration.cs" />
@@ -169,6 +185,7 @@
     <Compile Include="DbConfiguration\Overrides\SettingOverride.cs" />
     <Compile Include="DbConfiguration\Overrides\SiteOverride.cs" />
     <Compile Include="DbConfiguration\Overrides\UserOverride.cs" />
+    <Compile Include="DbConfiguration\Overrides\UserProfileDataOverride.cs" />
     <Compile Include="DbConfiguration\Overrides\UserRoleOverride.cs" />
     <Compile Include="DbConfiguration\Overrides\WebpageOverride.cs" />
     <Compile Include="DbConfiguration\Overrides\WidgetOverride.cs" />
@@ -179,6 +196,7 @@
     <Compile Include="DbConfiguration\Types\LocalNullableDateTimeData.cs" />
     <Compile Include="DbConfiguration\Types\NullableDateTimeData.cs" />
     <Compile Include="DbConfiguration\Types\VarCharMax.cs" />
+    <Compile Include="Entities\ACL\ACLRole.cs" />
     <Compile Include="Entities\Assets\Activity.cs" />
     <Compile Include="Entities\Assets\ActivityType.cs" />
     <Compile Include="Entities\Documents\Metadata\DefaultDocumentMetadata.cs" />
@@ -195,6 +213,8 @@
     <Compile Include="Entities\Documents\Web\FormProperties\TextBox.cs" />
     <Compile Include="Entities\Documents\Web\UrlHistory.cs" />
     <Compile Include="Entities\Indexes\DocumentIndexDefinition.cs" />
+    <Compile Include="Entities\People\IBelongToUser.cs" />
+    <Compile Include="Entities\People\UserProfileData.cs" />
     <Compile Include="Entities\SiteEntity.cs" />
     <Compile Include="Entities\Documents\Document.cs" />
     <Compile Include="Entities\Documents\DocumentMetadata.cs" />
@@ -228,6 +248,7 @@
     <Compile Include="Helpers\DocumentExtensions.cs" />
     <Compile Include="Helpers\DocumentMetadataHelper.cs" />
     <Compile Include="Helpers\EnumerableHelper.cs" />
+    <Compile Include="Helpers\ImportHelper.cs" />
     <Compile Include="Helpers\MrCMSHtmlHelper.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="Helpers\PagingHelper.cs" />
@@ -244,6 +265,7 @@
     <Compile Include="Indexing\Management\IIndexDefinition.cs" />
     <Compile Include="Indexing\Management\IIndexManager.cs" />
     <Compile Include="Indexing\Management\IndexCreationResult.cs" />
+    <Compile Include="Indexing\Management\IndexDefinition.cs" />
     <Compile Include="Indexing\Management\IndexManager.cs" />
     <Compile Include="Indexing\Management\IndexResult.cs" />
     <Compile Include="Indexing\Management\IntegerFieldDefinition.cs" />
@@ -271,7 +293,14 @@
     <Compile Include="Membership\Internals\RoleProvider.cs" />
     <Compile Include="Membership\MrCmsMembershipProvider.cs" />
     <Compile Include="Membership\MrCmsRoleProvider.cs" />
-    <Compile Include="Models\AddPageWidgetModel.cs" />
+    <Compile Include="Models\ACLAvailableModel.cs" />
+    <Compile Include="Models\ACLGroup.cs" />
+    <Compile Include="Models\ACLModel.cs" />
+    <Compile Include="Models\ACLOperation.cs" />
+    <Compile Include="Models\ACLRoleModel.cs" />
+    <Compile Include="Models\ACLRuleModel.cs" />
+    <Compile Include="Models\ACLRuleOperationModel.cs" />
+    <Compile Include="Models\ACLUpdateRecord.cs" />
     <Compile Include="Models\AddWidgetModel.cs" />
     <Compile Include="Models\AsyncListModel.cs" />
     <Compile Include="Models\AutoCompleteResult.cs" />
@@ -284,7 +313,6 @@
     <Compile Include="Models\LayoutTreeListModel.cs" />
     <Compile Include="Models\PageWidgetSortModel.cs" />
     <Compile Include="Models\PostingsModel.cs" />
-    <Compile Include="Models\ResetPasswordViewModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\SearchResultModel.cs" />
@@ -301,8 +329,27 @@
     <Compile Include="Paging\PagedListMetaData.cs" />
     <Compile Include="Paging\StaticPagedList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ACLService.cs" />
     <Compile Include="Services\AuthorisationService.cs" />
     <Compile Include="Services\AzureFileSystem.cs" />
+    <Compile Include="Services\IACLService.cs" />
+    <Compile Include="Services\ImportExport\DTOs\DocumentImportDataTransferObject.cs" />
+    <Compile Include="Services\ImportExport\IImportExportManager.cs" />
+    <Compile Include="Services\ImportExport\IImportDocumentsService.cs" />
+    <Compile Include="Services\ImportExport\IImportDocumentsValidationService.cs" />
+    <Compile Include="Services\ImportExport\ImportExportManager.cs" />
+    <Compile Include="Services\ImportExport\ImportDocumentsService.cs" />
+    <Compile Include="Services\ImportExport\ImportDocumentsValidationService.cs" />
+    <Compile Include="Services\ImportExport\Rules\DocumentTypeIsValid.cs" />
+    <Compile Include="Services\ImportExport\Rules\DocumentUrlHistoryItemsAreValid.cs" />
+    <Compile Include="Services\ImportExport\Rules\DocumentMaxUrlSegmentLengthIs255.cs" />
+    <Compile Include="Services\ImportExport\Rules\IDocumentImportValidationRule.cs" />
+    <Compile Include="Services\ImportExport\Rules\DocumentMaxNameLengthIs255.cs" />
+    <Compile Include="Services\ImportExport\Rules\DocumentMaxStringLength.cs" />
+    <Compile Include="Services\ImportExport\Rules\DocumentMaxMetaDescriptionLengthIs250.cs" />
+    <Compile Include="Services\ImportExport\Rules\DocumentMaxMetaKeywordsLengthIs250.cs" />
+    <Compile Include="Services\ImportExport\Rules\DocumentMaxMetaTitleLengthIs250.cs" />
+    <Compile Include="Services\ImportExport\Rules\DocumentParentIsValid.cs" />
     <Compile Include="Services\IUrlHistoryService.cs" />
     <Compile Include="Services\DocumentService.cs" />
     <Compile Include="Services\FileService.cs" />
@@ -323,13 +370,13 @@
     <Compile Include="Services\ISiteSettingsService.cs" />
     <Compile Include="Services\ISiteService.cs" />
     <Compile Include="Services\ITagService.cs" />
+    <Compile Include="Services\IUserProfileDataService.cs" />
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\IWidgetService.cs" />
     <Compile Include="Services\LayoutAreaService.cs" />
     <Compile Include="Models\SiteTree.cs" />
     <Compile Include="Models\SiteTreeNode.cs" />
     <Compile Include="Services\NavigationService.cs" />
-    <Compile Include="Services\ResetPasswordService.cs" />
     <Compile Include="Services\RoleService.cs" />
     <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\SiteService.cs" />
@@ -343,7 +390,7 @@
     <Compile Include="Settings\GenericListTypeConverter.cs" />
     <Compile Include="Settings\GlobalSettingsBase.cs" />
     <Compile Include="Settings\IConfigurationProvider.cs" />
-    <Compile Include="Settings\ISiteSettings.cs" />
+    <Compile Include="Settings\SettingsBase.cs" />
     <Compile Include="Settings\ISettingService.cs" />
     <Compile Include="Settings\MailSettings.cs" />
     <Compile Include="Settings\MediaSelectorAttribute.cs" />
@@ -357,6 +404,7 @@
     <Compile Include="Shortcodes\Forms\CheckBoxListRenderer.cs" />
     <Compile Include="Shortcodes\Forms\CustomFormRenderer.cs" />
     <Compile Include="Shortcodes\Forms\DefaultFormRenderer.cs" />
+    <Compile Include="Shortcodes\Forms\DropDownListOptionRenderer.cs" />
     <Compile Include="Shortcodes\Forms\DropDownListRenderer.cs" />
     <Compile Include="Shortcodes\Forms\DynamicFormElementRenderer.cs" />
     <Compile Include="Shortcodes\Forms\ElementRendererManager.cs" />
@@ -364,6 +412,7 @@
     <Compile Include="Shortcodes\Forms\FormRenderingManager.cs" />
     <Compile Include="Shortcodes\FormShortcodeParser.cs" />
     <Compile Include="Shortcodes\Forms\FormSubmittedStatus.cs" />
+    <Compile Include="Shortcodes\Forms\IDropDownListOptionRenderer.cs" />
     <Compile Include="Shortcodes\Forms\IElementRendererManager.cs" />
     <Compile Include="Shortcodes\Forms\ILabelRenderer.cs" />
     <Compile Include="Shortcodes\Forms\ISubmittedMessageRenderer.cs" />
@@ -380,14 +429,16 @@
     <Compile Include="Shortcodes\Forms\ValidationMessaageRenderer.cs" />
     <Compile Include="Shortcodes\IShortcodeParser.cs" />
     <Compile Include="Tasks\BackgroundTask.cs" />
-    <Compile Include="Tasks\DeleteIndexesTask.cs" />
+    <Compile Include="Tasks\DeleteIndicesTask.cs" />
     <Compile Include="Tasks\IndexManagementTask.cs" />
-    <Compile Include="Tasks\InsertIndexesTask.cs" />
+    <Compile Include="Tasks\InsertIndicesTask.cs" />
     <Compile Include="Tasks\IScheduledTaskManager.cs" />
     <Compile Include="Tasks\ScheduledTask.cs" />
+    <Compile Include="Tasks\ScheduledTaskManager.cs" />
     <Compile Include="Tasks\SendQueuedMessagesTask.cs" />
     <Compile Include="Tasks\TaskExecutor.cs" />
-    <Compile Include="Tasks\UpdateIndexesTask.cs" />
+    <Compile Include="Website\Binders\ACLUpdateModelBinder.cs" />
+    <Compile Include="Tasks\UpdateIndicesTask.cs" />
     <Compile Include="Website\Binders\AddDocumentModelBinder.cs" />
     <Compile Include="Website\Binders\AddFormPropertyModelBinder.cs" />
     <Compile Include="Website\Binders\AddUserModelBinder.cs" />
@@ -403,6 +454,9 @@
     <Compile Include="Website\Binders\SettingModelBinder.cs" />
     <Compile Include="Website\Binders\SiteSettingsModelBinder.cs" />
     <Compile Include="Website\Controllers\MrCMSAppUIController.cs" />
+    <Compile Include="Website\MrCMSACLRuleAttribute.cs" />
+    <Compile Include="Website\MrCMSBaseAuthorizationAttribute.cs" />
+    <Compile Include="Website\MrCMSTypeACLAttribute.cs" />
     <Compile Include="Website\Optimization\AsIsBundleOrderer.cs" />
     <Compile Include="Website\Optimization\IResourceBundler.cs" />
     <Compile Include="Website\Caching\CacheManager.cs" />
@@ -436,7 +490,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Readme\Elmah.txt" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

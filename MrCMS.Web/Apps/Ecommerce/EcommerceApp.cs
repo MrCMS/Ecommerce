@@ -128,16 +128,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                              new { controller = "PaymentDetails", action = "SaveBillingAddress" },
                              new[] { typeof(PaymentDetailsController).Namespace });
 
-            context.MapRoute("User Login", "Apps/Ecommerce/UserLogin/UserLogin", new { controller = "UserLogin", action = "UserLogin" });
-            context.MapRoute("User Login Details", "Apps/Ecommerce/UserLogin/UserLoginDetails", new { controller = "UserLogin", action = "UserLoginDetails" });
-            context.MapRoute("User Login POST", "Apps/Ecommerce/UserLogin/Login", new { controller = "UserLogin", action = "Login" });
-            context.MapRoute("User Registration", "Apps/Ecommerce/UserRegistration/UserRegistration", new { controller = "UserRegistration", action = "UserRegistration" });
-            context.MapRoute("User Registration Details", "Apps/Ecommerce/UserRegistration/UserRegistrationDetails", new { controller = "UserRegistration", action = "UserRegistrationDetails" });
-            context.MapRoute("User Register", "Apps/Ecommerce/UserRegistration/Register", new { controller = "UserRegistration", action = "Register" });
-            context.MapRoute("User Account", "Apps/Ecommerce/UserAccount/UserAccount", new { controller = "UserAccount", action = "UserAccount" });
-            context.MapRoute("User Account Details", "Apps/Ecommerce/UserAccount/UserAccountDetails", new { controller = "UserAccount", action = "UserAccountDetails" });
             context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders", new { controller = "UserAccount", action = "UserAccountOrders" });
-            context.MapRoute("User Update Account", "Apps/Ecommerce/UserAccount/UpdateAccount", new { controller = "UserAccount", action = "UpdateAccount" });
             context.MapRoute("PayPal Express Checkout - SetExpressCheckout",
                              "Apps/Ecommerce/PayPalExpress/SetExpressCheckout",
                              new { controller = "PayPalExpressCheckout", action = "SetExpressCheckout" },
@@ -160,7 +151,7 @@ namespace MrCMS.Web.Apps.Ecommerce
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
         {
             var currentSite = new CurrentSite(site);
-            var configurationProvider = new ConfigurationProvider(new SettingService(session), currentSite);
+            var configurationProvider = new ConfigurationProvider(new SettingService(session), currentSite, session);
             var siteSettings = configurationProvider.GetSiteSettings<SiteSettings>();
             var ecommerceSettings = configurationProvider.GetSiteSettings<EcommerceSettings>();
             var documentService = new DocumentService(session, siteSettings, currentSite);
@@ -337,31 +328,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 Layout = checkoutLayout
             };
             documentService.AddDocument(orderPlaced);
-            var myAccount = new UserAccount
-            {
-                Name = "My Account",
-                UrlSegment = "my-account",
-                RevealInNavigation = true,
-                PublishOn = DateTime.UtcNow
-            };
-            documentService.AddDocument(myAccount);
-            var login = new UserLogin
-            {
-                Name = "Login",
-                UrlSegment = "log-in",
-                RevealInNavigation = true,
-                PublishOn = DateTime.UtcNow
-            };
-            documentService.AddDocument(login);
-            var registration = new UserRegistration()
-            {
-                Name = "User Registration",
-                UrlSegment = "register",
-                RevealInNavigation = true,
-                PublishOn = DateTime.UtcNow
-            };
-            documentService.AddDocument(registration);
-
+            
             //add currency
             var britishCurrency = new MrCMS.Web.Apps.Ecommerce.Entities.Currencies.Currency
                 {

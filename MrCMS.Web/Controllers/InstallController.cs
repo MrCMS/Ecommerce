@@ -28,19 +28,22 @@ namespace MrCMS.Web.Controllers
             //set page timeout to 5 minutes
             Server.ScriptTimeout = 300;
 
-            var model = installModel.DatabaseType == DatabaseType.Auto
-                                     ? new InstallModel
-                                     {
-                                         SiteUrl = Request.Url.Authority,
-                                         AdminEmail = "admin@yoursite.com",
-                                         DatabaseConnectionString = "",
-                                         DatabaseType = DatabaseType.MsSql,
-                                         SqlAuthenticationType = "sqlauthentication",
-                                         SqlConnectionInfo = "sqlconnectioninfo_values",
-                                         SqlServerCreateDatabase = false,
-                                     }
-                                     : installModel;
-            return View(model);
+            // if it is a new setup
+            if (installModel.DatabaseType == DatabaseType.Auto)
+            {
+                ModelState.Clear();
+                installModel = new InstallModel
+                            {
+                                SiteUrl = Request.Url.Authority,
+                                AdminEmail = "admin@yoursite.com",
+                                DatabaseConnectionString = "",
+                                DatabaseType = DatabaseType.MsSql,
+                                SqlAuthenticationType = "sqlauthentication",
+                                SqlConnectionInfo = "sqlconnectioninfo_values",
+                                SqlServerCreateDatabase = false,
+                            };
+            }
+            return View(installModel);
         }
 
         [HttpPost]
@@ -55,52 +58,55 @@ namespace MrCMS.Web.Controllers
             InstallationResult installationResult = _installationService.Install(model);
 
             if (!installationResult.Success)
+            {
+                ViewData["installationResult"] = installationResult;
                 return View(model);
+            }
             else return Redirect("~");
         }
 
         private void SetInitialWebpages(InstallModel model)
         {
             model.BaseLayout = new Layout
-            {
-                Name = "Base Layout",
-                UrlSegment = "~/Apps/Core/Views/Shared/_BaseLayout.cshtml",
-                LayoutAreas = new List<LayoutArea>()
-            };
+                                   {
+                                       Name = "Base Layout",
+                                       UrlSegment = "~/Apps/Core/Views/Shared/_BaseLayout.cshtml",
+                                       LayoutAreas = new List<LayoutArea>()
+                                   };
             model.HomePage = new TextPage
-            {
-                Name = "Home",
-                UrlSegment = "home",
-                BodyContent = "Welcome to Mr CMS",
-                RevealInNavigation = true,
-            };
+                {
+                    Name = "Home",
+                    UrlSegment = "home",
+                    BodyContent = "<h1>Mr CMS</h1> <p>Welcome to Mr CMS, the only CMS you will need.</p><p> Turn on inline editing above, then click here. Pretty cool huh? </p>",
+                    RevealInNavigation = true,
+                };
             model.Error404 = new TextPage
-            {
-                Name = "404",
-                UrlSegment = "404",
-                BodyContent = "Sorry, this page cannot be found.",
-                RevealInNavigation = false,
-            };
+                {
+                    Name = "404",
+                    UrlSegment = "404",
+                    BodyContent = "<h1>404</h1><p>Sorry, this page cannot be found.</p>",
+                    RevealInNavigation = false,
+                };
             model.Error403 = new TextPage
-            {
-                Name = "403",
-                UrlSegment = "403",
-                BodyContent = "Sorry, you are not authorized to view this page.",
-                RevealInNavigation = false,
-            };
+                {
+                    Name = "403",
+                    UrlSegment = "403",
+                    BodyContent = "<h1>403</h1><p>Sorry, you are not authorized to view this page.</p>",
+                    RevealInNavigation = false,
+                };
             model.Error500 = new TextPage
-            {
-                Name = "500",
-                UrlSegment = "500",
-                BodyContent = "Sorry, there has been an error.",
-                RevealInNavigation = false,
-            };
+                {
+                    Name = "500",
+                    UrlSegment = "500",
+                    BodyContent = "<h1>500</h1><p>Sorry, there has been an error.</p>",
+                    RevealInNavigation = false,
+                };
 
             model.Page2 = new TextPage
             {
                 Name = "Page 2",
                 UrlSegment = "page-2",
-                BodyContent = "Just another page!",
+                BodyContent = "<h1>Another page</h1><p>Just another page!</p>",
                 RevealInNavigation = true,
             };
 
@@ -108,7 +114,7 @@ namespace MrCMS.Web.Controllers
             {
                 Name = "Contact us",
                 UrlSegment = "contact-us",
-                BodyContent = "Contact us at www.mrcms.co.uk.",
+                BodyContent = "<h1>Contact</h1>Contact us at www.mrcms.com (coming soon).",
                 RevealInNavigation = true,
             };
         }

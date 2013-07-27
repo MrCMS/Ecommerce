@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
+using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
 
@@ -24,9 +26,14 @@ namespace MrCMS.Services
             _session.Transact(session => session.Save(urlHistory));
         }
 
-        public UrlHistory GetByUrlSegment(string urlSegment)
+        public IEnumerable<UrlHistory> GetAllNotForDocument(Webpage document)
         {
-            return _session.QueryOver<UrlHistory>().Where(x => x.UrlSegment.IsLike(urlSegment, MatchMode.Exact)).Cacheable(). SingleOrDefault();
+            return _session.QueryOver<UrlHistory>().Where(x=>x.Webpage.Id!=document.Id).Cacheable().List();
+        }
+        public UrlHistory GetByUrlSegment(string url)
+        {
+            return _session.QueryOver<UrlHistory>().Where(x => x.Site == CurrentRequestData.CurrentSite
+                && x.UrlSegment.IsInsensitiveLike(url, MatchMode.Exact)).SingleOrDefault();
         }
     }
 }
