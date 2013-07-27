@@ -1,0 +1,11 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Settings.GoogleBaseSettings
+@Html.HiddenFor(settings => settings.Site.Id)
+
+@using (Html.BeginForm("GoogleBaseSettings", "ImportExport", FormMethod.Post, new {id="Settings"}))
+{
+    @Html.HiddenFor(settings => settings.Site.Id)
+    @Html.LabelFor(x => x.DefaultCategory)
+    @Html.DropDownListFor(x => x.DefaultCategory, ViewData["google-base-categories"] as IEnumerable<SelectListItem>,new {@class="input-xxlarge"})
+    @Html.LabelFor(x => x.DefaultCondition)
+    @Html.DropDownListFor(x => x.DefaultCondition, ViewData["product-conditions"] as IEnumerable<SelectListItem>,new {@class="input-medium"})
+}

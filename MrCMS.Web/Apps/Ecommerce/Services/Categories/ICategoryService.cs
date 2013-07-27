@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using MrCMS.Models;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -13,6 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         IEnumerable<AutoCompleteResult> Search(string query, List<int> ids);
         IPagedList<Category> GetCategories(Product product, string query, int page);
         IList<Category> GetAll();
+        IList<SelectListItem> GetOptions();
         CategoryContainer GetSiteCategoryContainer();
         Category Get(int id);
         List<Category> GetRootCategories();
