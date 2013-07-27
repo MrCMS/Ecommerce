@@ -7,75 +7,76 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 {
     public class TaxAwareShippingRate
     {
-        public static TaxAwareShippingRate Create(decimal? value, TaxRate rate, bool? shippingRateIncludesTax = null)
+        public static TaxAwareShippingRate Create(decimal? value, TaxRate rate, TaxSettings settings = null)
         {
-            return PriceCreator(value, rate, shippingRateIncludesTax);
+            return PriceCreator(value, rate, settings);
         }
 
-        public static decimal GetPriceExcludingTax(decimal value, TaxRate rate, bool? shippingRateIncludesTax = null)
+        public static decimal GetPriceExcludingTax(decimal value, TaxRate rate, TaxSettings settings = null)
         {
-            return PriceCreator(value, rate, shippingRateIncludesTax).PriceExcludingTax.GetValueOrDefault();
+            return PriceCreator(value, rate,  settings).PriceExcludingTax.GetValueOrDefault();
         }
-        public static decimal GetPriceIncludingTax(decimal value, TaxRate rate, bool? shippingRateIncludesTax = null)
+        public static decimal GetPriceIncludingTax(decimal value, TaxRate rate, TaxSettings settings = null)
         {
-            return PriceCreator(value, rate, shippingRateIncludesTax).PriceIncludingTax.GetValueOrDefault();
+            return PriceCreator(value, rate,  settings).PriceIncludingTax.GetValueOrDefault();
         }
-        public static decimal? GetPriceExcludingTax(decimal? value, TaxRate rate, bool? shippingRateIncludesTax = null)
+        public static decimal? GetPriceExcludingTax(decimal? value, TaxRate rate, TaxSettings settings = null)
         {
-            return PriceCreator(value, rate, shippingRateIncludesTax).PriceExcludingTax;
+            return PriceCreator(value, rate,  settings).PriceExcludingTax;
         }
-        public static decimal? GetPriceIncludingTax(decimal? value, TaxRate rate, bool? shippingRateIncludesTax = null)
+        public static decimal? GetPriceIncludingTax(decimal? value, TaxRate rate,  TaxSettings settings = null)
         {
-            return PriceCreator(value, rate, shippingRateIncludesTax).PriceIncludingTax;
+            return PriceCreator(value, rate, settings).PriceIncludingTax;
         }
 
-        private static Func<decimal?, TaxRate, bool?, TaxAwareShippingRate> PriceCreator =
-            (arg1, rate, arg3) => new TaxAwareShippingRate(arg1, rate, arg3);
+        private static Func<decimal?, TaxRate, TaxSettings, TaxAwareShippingRate> PriceCreator =
+            (arg1, rate, arg4) => new TaxAwareShippingRate(arg1, rate, arg4);
 
         private readonly decimal? _value;
         private readonly TaxRate _taxRate;
-        private readonly bool? _shippingRateIncludesTax;
+        private readonly TaxSettings _settings;
 
         private decimal TaxRatePercentage
         {
             get { return _taxRate != null ? _taxRate.Percentage : 0m; }
         }
 
-        private TaxAwareShippingRate(decimal? value, TaxRate taxRate, bool? shippingRateIncludesTax = null)
+        private TaxAwareShippingRate(decimal? value, TaxRate taxRate, TaxSettings settings = null)
         {
             _value = value;
             _taxRate = taxRate;
-            _shippingRateIncludesTax = shippingRateIncludesTax;
+            _settings = settings ?? MrCMSApplication.Get<TaxSettings>();
         }
 
-        private decimal? PriceExcludingTax
+        public decimal? PriceExcludingTax
         {
             get
             {
-                return !_value.HasValue ? (decimal?)null :
-                Math.Round(ShippingRateIncludesTax
+                if (!TaxesEnabled)
+                    return _value;
+
+                return !_value.HasValue
+                ? (decimal?)null :
+                Math.Round(_settings.ShippingRateIncludesTax
                                           ? _value.Value / ((TaxRatePercentage + 100) / 100)
                                           : _value.Value, 2, MidpointRounding.AwayFromZero);
             }
         }
 
-        private bool ShippingRateIncludesTax
+        public bool TaxesEnabled
         {
-            get
-            {
-                return _shippingRateIncludesTax ?? (!MrCMSApplication.Get<TaxSettings>().TaxesEnabled || 
-                    !MrCMSApplication.Get<TaxSettings>().ShippingRateTaxesEnabled ||
-                       MrCMSApplication.Get<TaxSettings>().ShippingRateIncludesTax);
-            }
+            get { return _settings.TaxesEnabled && _settings.ShippingRateTaxesEnabled; }
         }
 
-        private decimal? PriceIncludingTax
+        public decimal? PriceIncludingTax
         {
             get
             {
+                if (!TaxesEnabled)
+                    return _value;
                 return !_value.HasValue
                            ? (decimal?)null
-                           : Math.Round(ShippingRateIncludesTax
+                           : Math.Round(_settings.ShippingRateIncludesTax
                                             ? _value.Value
                                             : _taxRate != null
                                                   ? _value.Value * (_taxRate.Multiplier)

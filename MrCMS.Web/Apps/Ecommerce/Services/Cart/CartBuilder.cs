@@ -21,12 +21,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private readonly ISession _session;
         private readonly IPaymentMethodService _paymentMethodService;
         private readonly IOrderShippingService _orderShippingService;
+        private readonly ICartSessionManager _cartSessionManager;
 
-        public CartBuilder(ISession session, IPaymentMethodService paymentMethodService, IOrderShippingService orderShippingService)
+        public CartBuilder(ISession session, IPaymentMethodService paymentMethodService, IOrderShippingService orderShippingService, ICartSessionManager cartSessionManager)
         {
             _session = session;
             _paymentMethodService = paymentMethodService;
             _orderShippingService = orderShippingService;
+            _cartSessionManager = cartSessionManager;
         }
 
         public CartModel BuildCart()
@@ -42,6 +44,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
             var cart = new CartModel
                            {
+                               CartGuid = GetCartGuid(),
                                User = CurrentRequestData.CurrentUser,
                                UserGuid = CurrentRequestData.UserGuid,
                                Items = cartItems,
@@ -62,6 +65,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
             cart.ShippingMethod = GetShippingMethod(cart);
             return cart;
+        }
+
+        private Guid GetCartGuid()
+        {
+            var value = _cartSessionManager.GetSessionValue(CartManager.CurrentCartGuid, Guid.Empty);
+            if (value == Guid.Empty)
+            {
+                value = Guid.NewGuid();
+                _cartSessionManager.SetSessionValue(CartManager.CurrentCartGuid, value);
+            }
+            return value;
         }
 
         private List<CartItem> GetItems()
@@ -94,7 +108,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         private Address GetShippingAddress()
         {
-            var shippingAddress = GetSessionValue<Address>(CartManager.CurrentShippingAddressKey);
+            var shippingAddress = _cartSessionManager.GetSessionValue<Address>(CartManager.CurrentShippingAddressKey);
             if (shippingAddress != null)
             {
                 shippingAddress.Country = GetCountry();
@@ -104,11 +118,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         private bool GetBillingAddressSameAsShippingAddress()
         {
-            return GetSessionValue<bool>(CartManager.CurrentBillingAddressSameAsShippingAddressKey, true);
+            return _cartSessionManager.GetSessionValue(CartManager.CurrentBillingAddressSameAsShippingAddressKey, true);
         }
+
         private Address GetBillingAddress()
         {
-            var billingAddress = GetBillingAddressSameAsShippingAddress() ? GetShippingAddress() : GetSessionValue<Address>(CartManager.CurrentBillingAddressKey);
+            var billingAddress = GetBillingAddressSameAsShippingAddress() ? GetShippingAddress() : _cartSessionManager.GetSessionValue<Address>(CartManager.CurrentBillingAddressKey);
             if (billingAddress != null)
             {
                 billingAddress.Country = GetCountry();
@@ -118,7 +133,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         private ShippingMethod GetShippingMethod(CartModel cart)
         {
-            var id = GetSessionValue<int>(CartManager.CurrentShippingMethodIdKey);
+            var id = _cartSessionManager.GetSessionValue<int>(CartManager.CurrentShippingMethodIdKey);
 
             return _session.Get<ShippingMethod>(id) ??
                    _orderShippingService.GetDefaultShippingMethod(cart);
@@ -126,45 +141,35 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         private string GetOrderEmail()
         {
-            return GetSessionValue<string>(CartManager.CurrentOrderEmailKey);
+            return _cartSessionManager.GetSessionValue<string>(CartManager.CurrentOrderEmailKey);
         }
 
         private string GetDiscountCode()
         {
-            return GetSessionValue<string>(CartManager.CurrentDiscountCodeKey);
+            return _cartSessionManager.GetSessionValue<string>(CartManager.CurrentDiscountCodeKey);
         }
 
         private string GetPaymentMethod()
         {
-            return GetSessionValue<string>(CartManager.CurrentPaymentMethodKey);
+            return _cartSessionManager.GetSessionValue<string>(CartManager.CurrentPaymentMethodKey);
         }
 
         private string GetPayPalExpressToken()
         {
-            return GetSessionValue<string>(CartManager.CurrentPayPalExpressToken);
+            return _cartSessionManager.GetSessionValue<string>(CartManager.CurrentPayPalExpressToken);
         }
 
         private string GetPayPalExpressPayerId()
         {
-            return GetSessionValue<string>(CartManager.CurrentPayPalExpressPayerId);
+            return _cartSessionManager.GetSessionValue<string>(CartManager.CurrentPayPalExpressPayerId);
         }
 
         private Country GetCountry()
         {
-            var id = GetSessionValue<int>(CartManager.CurrentCountryIdKey);
+            var id = _cartSessionManager.GetSessionValue<int>(CartManager.CurrentCountryIdKey);
 
             return _session.Get<Country>(id) ??
                    _session.QueryOver<Country>().Cacheable().Take(1).SingleOrDefault();
-        }
-
-        private T GetSessionValue<T>(string key, T defaultValue = default(T))
-        {
-            if (CurrentRequestData.CurrentContext.Session != null)
-            {
-                try { return (T)Convert.ChangeType(CurrentRequestData.CurrentContext.Session[key], typeof(T)); }
-                catch { }
-            }
-            return defaultValue;
         }
     }
 }

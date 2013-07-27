@@ -213,6 +213,9 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalUrlService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalInterfaceService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalOrderService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalRequestService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalResponse.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalUrlService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\SetExpressCheckoutResponse.cs" />
@@ -303,6 +306,8 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressCheckoutSettings.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressCheckoutPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalShippingService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\CartSessionManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\ICartSessionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Currencies\ICurrencyService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\GoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseTaxonomyData.cs" />

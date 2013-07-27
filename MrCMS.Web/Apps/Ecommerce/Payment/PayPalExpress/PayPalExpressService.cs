@@ -1,5 +1,6 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Models;
 using PayPal.PayPalAPIInterfaceService.Model;
+using System.Linq;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 {
@@ -42,6 +43,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                          response.Errors.Add("An error occurred");
                          type.RaiseErrors();
                      });
+        }
+
+        public DoExpressCheckoutPaymentResponse DoExpressCheckout(CartModel cart)
+        {
+            var doExpressCheckoutPaymentResponseType = _payPalInterfaceService.DoExpressCheckout(cart);
+
+            return doExpressCheckoutPaymentResponseType
+                .HandleResponse<DoExpressCheckoutPaymentResponseType, DoExpressCheckoutPaymentResponse>(
+                    (type, response) =>
+                        {
+                            response.Details = type.DoExpressCheckoutPaymentResponseDetails;
+                        },
+                    (type, response) =>
+                        {
+                            response.Errors.Add("An error occurred");
+                            type.RaiseErrors();
+                        });
         }
     }
 }

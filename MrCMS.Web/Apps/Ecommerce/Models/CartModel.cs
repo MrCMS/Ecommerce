@@ -19,6 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             Items = new List<CartItem>();
         }
+        public Guid CartGuid { get; set; }
         public List<CartItem> Items { get; set; }
         public bool Empty
         {

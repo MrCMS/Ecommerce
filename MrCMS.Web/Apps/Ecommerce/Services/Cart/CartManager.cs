@@ -14,6 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
     public class CartManager : ICartManager
     {
+        public const string CurrentCartGuid = "current.cart-guid";
         public const string CurrentShippingAddressKey = "current.shipping-address";
         public const string CurrentBillingAddressSameAsShippingAddressKey =
             "current.billing-address-same-as-shipping-address";
@@ -28,12 +29,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         private readonly CartModel _cart;
         private readonly ISession _session;
+        private readonly ICartSessionManager _cartSessionManager;
 
-        public CartManager(CartModel cart, ISession session)
+        public CartManager(CartModel cart, ISession session, ICartSessionManager cartSessionManager)
         {
             _cart = cart;
             _session = session;
+            _cartSessionManager = cartSessionManager;
         }
+
 
         public void AddToCart(ProductVariant item, int quantity)
         {
@@ -91,52 +95,46 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public void SetShippingAddress(Address address)
         {
-            SetSessionItem(CurrentShippingAddressKey, address);
+            _cartSessionManager.SetSessionValue(CurrentShippingAddressKey, address);
         }
 
         public void SetBillingAddress(Address address)
         {
-            SetSessionItem(CurrentBillingAddressKey, address);
+            _cartSessionManager.SetSessionValue(CurrentBillingAddressKey, address);
         }
 
         public void SetBillingAddressSameAsShippingAddress(bool value)
         {
-            SetSessionItem(CurrentBillingAddressSameAsShippingAddressKey, value);
+            _cartSessionManager.SetSessionValue(CurrentBillingAddressSameAsShippingAddressKey, value);
         }
 
         public void SetDiscountCode(string code)
         {
-            SetSessionItem(CurrentDiscountCodeKey, code);
+            _cartSessionManager.SetSessionValue(CurrentDiscountCodeKey, code);
         }
 
         public void SetOrderEmail(string email)
         {
-            SetSessionItem(CurrentOrderEmailKey, email);
+            _cartSessionManager.SetSessionValue(CurrentOrderEmailKey, email);
         }
 
         public void SetPaymentMethod(string methodName)
         {
-            SetSessionItem(CurrentPaymentMethodKey, methodName);
+            _cartSessionManager.SetSessionValue(CurrentPaymentMethodKey, methodName);
         }
 
         public void SetShippingInfo(ShippingCalculation shippingCalculation)
         {
             if (shippingCalculation == null) return;
 
-            SetSessionItem(CurrentShippingMethodIdKey, shippingCalculation.ShippingMethod.Id);
-            SetSessionItem(CurrentCountryIdKey, shippingCalculation.Country.Id);
+            _cartSessionManager.SetSessionValue(CurrentShippingMethodIdKey, shippingCalculation.ShippingMethod.Id);
+            _cartSessionManager.SetSessionValue(CurrentCountryIdKey, shippingCalculation.Country.Id);
         }
 
         public void SetPayPalExpressInfo(string token, string payerId)
         {
-            SetSessionItem(CurrentPayPalExpressToken, token);
-            SetSessionItem(CurrentPayPalExpressPayerId, payerId);
-        }
-
-        private static void SetSessionItem<T>(string key, T item)
-        {
-            if (CurrentRequestData.CurrentContext.Session != null)
-                CurrentRequestData.CurrentContext.Session[key] = item;
+            _cartSessionManager.SetSessionValue(CurrentPayPalExpressToken, token);
+            _cartSessionManager.SetSessionValue(CurrentPayPalExpressPayerId, payerId);
         }
     }
 }

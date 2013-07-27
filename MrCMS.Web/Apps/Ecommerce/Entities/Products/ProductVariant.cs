@@ -4,6 +4,7 @@ using System.ComponentModel;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using System.Linq;
 using NHibernate;
@@ -175,9 +176,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get
             {
-                return TaxRate == null
-                           ? 0
-                           : TaxRate.Percentage;
+                return MrCMSApplication.Get<TaxSettings>().TaxesEnabled
+                           ? TaxRate == null
+                                 ? 0
+                                 : TaxRate.Percentage
+                           : 0;
             }
         }
 
