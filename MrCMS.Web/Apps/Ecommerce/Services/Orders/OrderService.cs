@@ -60,12 +60,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                     {
                                                                         Order = order,
                                                                         UnitPrice = item.UnitPrice,
+                                                                        UnitPricePreTax = item.UnitPricePreTax,
                                                                         Weight = item.Weight,
                                                                         TaxRate = item.TaxRatePercentage,
                                                                         Tax = item.Tax,
                                                                         Quantity = item.Quantity,
                                                                         ProductVariant = item.Item,
-                                                                        Subtotal = item.PricePreTax,
+                                                                        PricePreTax = item.PricePreTax,
+                                                                        Price = item.Price,
                                                                         SKU = item.Item.SKU,
                                                                         Name =
                                                                             !string.IsNullOrEmpty(item.Item.Name)

@@ -30,6 +30,8 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
                 LoadedPricesIncludeTax = loadedPricesIncludeTax
             });
         }
+
+
         [Fact]
         public void ProductVariant_ReducedBy_IsZeroIfPreviousPriceIsNotSet()
         {
@@ -89,7 +91,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         }
 
         [Fact]
-        public void ProductVariant_Price_WithTaxesEnabledAndRateSetShouldBeTheSameAsPricePreTax()
+        public void ProductVariant_Price_WithTaxesEnabledAndRateSetShouldBeBasePricePlusTax()
         {
             SetTaxSettings(true);
             var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 20 } };

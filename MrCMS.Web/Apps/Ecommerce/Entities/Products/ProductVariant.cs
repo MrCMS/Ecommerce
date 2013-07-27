@@ -112,10 +112,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             return Math.Round(GetPrice(quantity) / ((TaxRatePercentage + 100) / 100), 2, MidpointRounding.AwayFromZero);
         }
 
-        public virtual decimal GetUnitPrice()
-        {
-            return Price;
-        }
 
         [Required]
         [Remote("IsUniqueSKU", "ProductVariant", AdditionalFields = "Id")]
