@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
@@ -57,6 +58,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             item.Quantity = quantity;
 
             _session.Transact(session => session.Update(item));
+        }
+
+        public void UpdateQuantities(List<CartUpdateValue> quantities)
+        {
+            _session.Transact(session =>
+            {
+                foreach (var value in quantities)
+                {
+                    var cartItem = _cart.Items.FirstOrDefault(item => item.Id == value.ItemId);
+
+                    if (cartItem != null)
+                    {
+                        if (value.Quantity <= 0)
+                            session.Delete(cartItem);
+                        else
+                        {
+                            cartItem.Quantity = value.Quantity;
+                            session.Update(cartItem);
+                        }
+                    }
+                }
+            });
         }
 
         public void EmptyBasket()

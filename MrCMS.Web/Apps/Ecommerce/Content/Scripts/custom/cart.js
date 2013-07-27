@@ -3,63 +3,51 @@
         updateShippingMethod();
     });
     $(document).on('click', "#update-basket", function () {
-        update();
-    });
-    function update() {
-        $('input[type="text"][name^="quantity-"]').each(function (index, element) {
+        var values = $('input[type="text"][name^="quantity-"]').map(function (index, element) {
             var quantity = $(element).val();
             var cartId = $(this).data('cart-id');
-            $.post('/Apps/Ecommerce/UpdateQuantity/',
-                { quantity: quantity, cartId: cartId },
-                function (response) {
-                    parent.$.get('/Apps/Ecommerce/CartDetails', function (items) {
-                        parent.$('#details').replaceWith(items);
-                        setDiscountCode();
-                    });
-                });
-        });
+            return cartId + ":" + quantity;
+        }).toArray();
+
+        $.post('/Apps/Ecommerce/UpdateBasket',
+            { quantities: values.join(',') },
+            function (response) {
+                reloadCartDetails();
+            });
         return false;
+    });
+    function update() {
     }
     $(document).on('click', "#apply-discount-code", function () {
         var discountCode = $("#discount-code").val();
-            $.post('/Apps/Ecommerce/Cart/AddDiscountCodeAjax/',
-                { discountCode: discountCode },
-                function (response) {
-                    if (response === false) {
-                        alert("Discount code is not valid.");
-                    }
-                    else {
-                        parent.$.get('/Apps/Ecommerce/Cart/Details', function (items) {
-                            parent.$('#details').replaceWith(items);
-                            setDiscountCode();
-                        });
-                    }
-                });
+        $.post('/Apps/Ecommerce/ApplyDiscountCode',
+            { discountCode: discountCode },
+            function (response) {
+                reloadCartDetails();
+            });
         return false;
     });
-    $(document).on('click', "#apply-discount-code", function () {
-        var discountCode = $("#DiscountCode").val();
-        $("div[class*='title']").html("Current discount code: " + discountCode);
+    $(document).on('click', "a[data-action=delete-cart-item]", function () {
+        var id = $(this).data('id');
+        $.post('/Apps/Ecommerce/DeleteCartItem', { id: id }, function (response) {
+            reloadCartDetails();
+        });
         return false;
     });
-    function setDiscountCode() {
-        var discountCode = $("#DiscountCode").val();
-        if (discountCode !== "") {
-            $("#discount-code").val(discountCode);
-        }
-        $("div[class*='title']").html("Current discount code: " + discountCode);
-    }
+
     function updateShippingMethod() {
         $.post('/Apps/Ecommerce/SetDeliveryDetails/SetShipping',
            { id: $("select#ShippingCalculation").val() },
            function (response) {
-               parent.$.get('/Apps/Ecommerce/Cart/Details', function (items) {
-                   parent.$('#details').replaceWith(items);
-                   setDiscountCode();
-               });
+               reloadCartDetails();
            });
     }
 
+    function reloadCartDetails() {
+        parent.$.get('/Apps/Ecommerce/CartDetails', function (items) {
+            parent.$('#details').replaceWith(items);
+        });
+    }
+
     updateShippingMethod();
-    setDiscountCode();
 })

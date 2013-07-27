@@ -49,13 +49,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public Discount Discount { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public decimal DiscountAmount
         {
             get
             {
                 var discountAmount = Discount == null
-                                         ? 0
+                                         ? decimal.Zero
                                          : Discount.GetDiscount(this);
 
                 if (Discount != null && Items.Any())
@@ -67,19 +66,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             }
         }
 
-        [DisplayFormat(DataFormatString = "{0:C2}")]
         public virtual decimal Total
         {
             get { return TotalPreShipping + ShippingTotal.GetValueOrDefault(); }
         }
 
-        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public virtual decimal TotalPreShipping
         {
             get { return TotalPreDiscount - DiscountAmount; }
         }
 
-        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public decimal Tax
         {
             get
@@ -139,6 +135,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public bool BillingAddressSameAsShippingAddress { get; set; }
 
         public bool NeedToSetBillingAddress { get { return !BillingAddressSameAsShippingAddress && BillingAddress == null; } }
+
+        public bool HasDiscount
+        {
+            get { return Discount != null && DiscountAmount != decimal.Zero; }
+        }
+
+        public decimal ItemQuantity
+        {
+            get { return Items.Sum(item => item.Quantity); }
+        }
     }
 
 }
