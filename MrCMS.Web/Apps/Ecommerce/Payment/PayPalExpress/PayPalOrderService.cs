@@ -34,10 +34,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
             return cart.Items.Select(item => new PaymentDetailsItemType
                                                  {
                                                      Name = item.Name,
-                                                     Amount = item.Price.GetAmountType(),
+                                                     Amount = item.UnitPrice.GetAmountType(),
                                                      ItemCategory = ItemCategoryType.PHYSICAL,
                                                      Quantity = item.Quantity,
-                                                     Tax = item.Tax.GetAmountType()
+                                                     Tax = item.Tax.GetAmountType(),
                                                  }).ToList();
         }
 

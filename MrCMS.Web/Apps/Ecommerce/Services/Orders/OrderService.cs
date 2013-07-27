@@ -59,13 +59,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                            order.OrderLines.Add(new OrderLine
                                                                     {
                                                                         Order = order,
-                                                                        UnitPrice = item.Price,
+                                                                        UnitPrice = item.UnitPrice,
                                                                         Weight = item.Weight,
                                                                         TaxRate = item.TaxRatePercentage,
                                                                         Tax = item.Tax,
                                                                         Quantity = item.Quantity,
                                                                         ProductVariant = item.Item,
-                                                                        Subtotal = item.PricePreTax * item.Quantity,
+                                                                        Subtotal = item.PricePreTax,
                                                                         SKU = item.Item.SKU,
                                                                         Name =
                                                                             !string.IsNullOrEmpty(item.Item.Name)
@@ -75,6 +75,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                         Discount =
                                                                             item.GetDiscountAmount(cartModel.Discount,
                                                                                                    cartModel.DiscountCode),
+                                                                                                   
                                                                     });
                                        }
                                        postCreationActions(order);
