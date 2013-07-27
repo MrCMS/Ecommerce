@@ -12,7 +12,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
-    public class ImportProductsServiceTests
+    public class ImportProductsServiceTests : InMemoryDatabaseTest
     {
         private readonly IDocumentService _documentService;
         private readonly IBrandService _brandService;
@@ -36,7 +36,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                                                                _importSpecificationsService,
                                                                _importProductVariantsService,
                                                                _importProductImagesService,
-                                                               _importProductUrlHistoryService,_session);
+                                                               _importProductUrlHistoryService,Session);
         }
 
         [Fact]
@@ -53,17 +53,17 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         }
 
         [Fact]
-        public void ImportProductsService_ImportProduct_ShouldCallGetDocumentOfDocumentService()
+        public void ImportProductsService_ImportProduct_ShouldTryToLoadTheCategoryFromTheDocumentService()
         {
             var product = new ProductImportDataTransferObject
                               {
                                   UrlSegment = "test-url",
-                                  Categories = new List<int> { 1 }
+                                  Categories = new List<string> { "test-category" }
                               };
 
             _importProductsService.ImportProduct(product);
 
-            A.CallTo(() => _documentService.GetDocument<Category>(1)).MustHaveHappened();
+            A.CallTo(() => _documentService.GetDocumentByUrl<Category>("test-category")).MustHaveHappened();
         }
 
         [Fact]
@@ -147,7 +147,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             var productDTO = new ProductImportDataTransferObject()
             {
                 UrlSegment = "test-url",
-                Categories = new List<int>() { 1 }
+                Categories = new List<string>() { "test-category" }
             };
 
             var category = new Category() { Id = 1, Name = "Test Category" };

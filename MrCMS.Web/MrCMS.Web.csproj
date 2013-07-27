@@ -203,8 +203,11 @@
     <Compile Include="Apps\Ecommerce\Controllers\GoogleAnalyticsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PaymentMethodController.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\GoogleBase\GoogleBaseProduct.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\RequestHelper.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartUpdateValue.cs" />
+    <Compile Include="Apps\Ecommerce\Models\GoogleBaseModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ProductCondition.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\IGoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PayPalExpressCheckoutController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
@@ -294,6 +297,9 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Currencies\ICurrencyService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\GoogleAnalyticsService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseTaxonomyData.cs" />
+    <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseTaxonomyService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\GoogleBase\IGoogleBaseTaxonomyService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductUrlHistoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\IImportProductUrlHistoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductVariantPriceBreaksService.cs" />
@@ -339,7 +345,10 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductSearchService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\IProductConditionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductSearchService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\ProductConditionService.cs" />
+    <Compile Include="Apps\Ecommerce\Settings\GoogleBaseSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingMethod.cs" />
@@ -483,6 +492,7 @@
     <Content Include="Apps\Core\Content\Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Apps\Core\Content\Scripts\respond.min.js" />
     <Content Include="Apps\Core\Content\Styles\style.css" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\google-base.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-products.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-variant.js" />
@@ -1454,6 +1464,7 @@
     <Content Include="Apps\Ecommerce\Views\ProductSearch\SearchBrands.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\RelatedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ImportExport\GoogleBase.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ImportExport\GoogleBaseSettings.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

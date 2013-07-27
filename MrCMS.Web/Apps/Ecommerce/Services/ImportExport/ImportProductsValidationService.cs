@@ -99,6 +99,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     product.SEOKeywords = worksheet.GetValue<string>(rowId, 6);
                                     product.Abstract = worksheet.GetValue<string>(rowId, 7);
                                     product.Brand = worksheet.GetValue<string>(rowId, 8);
+                                    if (worksheet.GetValue<string>(rowId, 31).HasValue())
+                                    {
+                                        if (!worksheet.GetValue<string>(rowId, 31).IsValidDateTime())
+                                            parseErrors[handle].Add("Publish Date is not a valid date.");
+                                        else
+                                            product.PublishDate = worksheet.GetValue<DateTime>(rowId, 31);
+                                    }
 
                                     //Categories
                                     try
@@ -111,9 +118,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                             {
                                                 if (!String.IsNullOrWhiteSpace(item))
                                                 {
-                                                    var catId = 0;
-                                                    Int32.TryParse(item, out catId);
-                                                    product.Categories.Add(catId);
+                                                    if(!product.Categories.Any(x=>x==item))
+                                                        product.Categories.Add(item);
+                                                    else
+                                                    {
+                                                        parseErrors[handle].Add(
+                                                        "Product Categories field value contains duplicate values.");
+                                                        break;
+                                                    }
                                                 }
                                             }
                                         }
