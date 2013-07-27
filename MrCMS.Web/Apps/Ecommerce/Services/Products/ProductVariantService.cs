@@ -1,7 +1,9 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Helpers;
+using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using NHibernate.Criterion;
 using System.Collections.Generic;
@@ -19,6 +21,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public IList<ProductVariant> GetAll()
         {
             return _session.QueryOver<ProductVariant>().Cacheable().List();
+        }
+        public IPagedList<ProductVariant> GetAllVariants(string queryTerm,int categoryId = 0, int page = 1)
+        {
+            if(string.IsNullOrWhiteSpace(queryTerm) && categoryId == 0)
+                return _session.Paged(QueryOver.Of<ProductVariant>().Cacheable(), page, 1);
+
+            var items = GetAll().Where(item => (queryTerm == null || item.Name.Contains(queryTerm))).OrderBy(x => x.Product.Id).ToList();
+            if (categoryId>0)
+                items = items.Where(x => categoryId == 0 || x.Product.Categories.Any(c => c.Id == categoryId)).ToList();
+
+            return new PagedList<ProductVariant>(items, page, 1);;
         }
         public ProductVariant GetProductVariantBySKU(string sku)
         {
