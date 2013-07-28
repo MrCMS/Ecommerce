@@ -194,7 +194,9 @@ namespace MrCMS.Web.Apps.Ecommerce
             var ecommerceLayoutArea = new List<LayoutArea>
                                      {
                                          new LayoutArea {AreaName = "Header left", Layout = eCommerceLayout},
-                                         new LayoutArea {AreaName = "Header", Layout = eCommerceLayout},
+                                         new LayoutArea {AreaName = "Header Middle", Layout = eCommerceLayout},
+                                         new LayoutArea {AreaName = "Header Right", Layout = eCommerceLayout},
+                                         new LayoutArea {AreaName = "Navigation", Layout = eCommerceLayout},
                                          new LayoutArea {AreaName = "After Content", Layout = eCommerceLayout},
                                          new LayoutArea {AreaName = "Before Content", Layout = eCommerceLayout},
                                          new LayoutArea {AreaName = "Footer", Layout = eCommerceLayout}
