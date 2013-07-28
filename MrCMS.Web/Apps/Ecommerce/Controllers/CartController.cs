@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
@@ -10,7 +11,9 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
+using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
@@ -40,12 +43,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         {
             ViewData["cart"] = _cart;
             ViewData["shipping-calculations"] = _orderShippingService.GetShippingOptions(_cart);
-        }
-
-        [HttpGet]
-        public ViewResult CartPanel()
-        {
-            return View(_cart);
         }
 
         [HttpGet]
@@ -84,18 +81,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return PartialView(item);
         }
 
-        [HttpGet]
-        public PartialViewResult DeleteCartItem(CartItem item)
-        {
-            return PartialView(item);
-        }
-
         [ActionName("DeleteCartItem")]
         [HttpPost]
-        public ActionResult DeleteCartItem_POST(CartItem item)
+        public JsonResult DeleteCartItem_POST(CartItem item)
         {
             _cartManager.Delete(item);
-            return Redirect(UniquePageHelper.GetUrl<Cart>());
+            return Json(true);
         }
 
         [HttpGet]
@@ -110,84 +101,49 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return View(_cart);
         }
 
-        [ActionName("AddDiscountCode")]
         [HttpPost]
-        public ActionResult AddDiscountCode_POST(CartModel model)
-        {
-            if (model != null && !String.IsNullOrWhiteSpace(model.DiscountCode) &&
-                ValidateDiscountCode(model.DiscountCode))
-            {
-                _cartManager.SetDiscountCode(model.DiscountCode);
-                return Redirect(UniquePageHelper.GetUrl<Cart>());
-            }
-            return PartialView(_cart);
-        }
-
-        [HttpPost]
-        public JsonResult AddDiscountCodeAjax(string discountCode)
+        public JsonResult ApplyDiscountCode(string discountCode)
         {
             if (String.IsNullOrWhiteSpace(discountCode))
             {
                 _cartManager.SetDiscountCode(discountCode);
                 return Json("Removed");
             }
-            else if (!String.IsNullOrWhiteSpace(discountCode) && ValidateDiscountCode(discountCode))
-            {
-                _cartManager.SetDiscountCode(discountCode);
-                return Json(discountCode);
-            }
-            return Json(false);
-        }
-
-        [HttpGet]
-        public ViewResult EditDiscountCode()
-        {
-            return View(_cart);
+            _cartManager.SetDiscountCode(discountCode);
+            return Json(discountCode);
         }
 
         [HttpPost]
-        public ActionResult EditDiscountCode(CartModel model)
+        public JsonResult UpdateBasket([IoCModelBinder(typeof(UpdateBasketModelBinder))] List<CartUpdateValue> quantities)
         {
-            if (model != null && !String.IsNullOrWhiteSpace(model.DiscountCode) &&
-                ValidateDiscountCode(model.DiscountCode))
-            {
-                _cartManager.SetDiscountCode(model.DiscountCode);
-                return Redirect(UniquePageHelper.GetUrl<Cart>());
-            }
-            return PartialView(_cart);
+            _cartManager.UpdateQuantities(quantities);
+            return Json(true);
+        }
+    }
+
+    public class UpdateBasketModelBinder : MrCMSDefaultModelBinder
+    {
+        public UpdateBasketModelBinder(ISession session)
+            : base(() => session)
+        {
         }
 
-        public JsonResult IsDiscountCodeValid(string discountCode)
+        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-            return Json(ValidateDiscountCode(discountCode), JsonRequestBehavior.AllowGet);
-        }
+            var cartUpdateValues = new List<CartUpdateValue>();
 
-        private bool ValidateDiscountCode(string discountCode)
-        {
-            if (!String.IsNullOrWhiteSpace(discountCode))
-            {
-                Discount discount = _discountManager.GetByCode(discountCode);
-                if (discount != null)
-                {
-                    if (discount.IsCodeValid(discountCode))
-                        return true;
-                }
-            }
+            var splitQuantities = (controllerContext.HttpContext.Request["quantities"] ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-            return false;
-        }
-
-        [HttpPost]
-        public JsonResult UpdateQuantity(int quantity = 0, int cartId = 0)
-        {
-            if (quantity > 0 && cartId != 0)
-            {
-                CartItem cartItem = _cart.Items.SingleOrDefault(x => x.Id == cartId);
-                if (cartItem != null)
-                    _cartManager.UpdateQuantity(cartItem, quantity);
-                return Json(true);
-            }
-            return Json(false);
+            splitQuantities.ForEach(s =>
+                                        {
+                                            var strings = s.Split(':');
+                                            cartUpdateValues.Add(new CartUpdateValue
+                                            {
+                                                ItemId = Convert.ToInt32(strings[0]),
+                                                Quantity = Convert.ToInt32(strings[1])
+                                            });
+                                        });
+            return cartUpdateValues;
         }
     }
 }

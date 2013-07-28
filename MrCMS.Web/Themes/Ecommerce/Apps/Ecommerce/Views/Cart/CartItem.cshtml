@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Cart.CartItem
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.Cart.CartItem
 <div class="row-fluid row">
     <div class="span4 cell">
         <div class="span4 photo">
@@ -28,8 +29,8 @@
     </div>
     <div class="span3 cell">
         <div class="pull-right price">
-            <h4>@Html.DisplayFor(item => item.Price)</h4>
-            @Html.ActionLink("Delete", "DeleteCartItem", "Cart", new { id = Model.Id }, new { data_toggle = "fb-modal" })
+            <h4>@Model.Price.ToCurrencyFormat()</h4>
+            <a data-id="@Model.Id" data-action="delete-cart-item" href="#">Delete</a>
         </div>
     </div>
 </div>

@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using NHibernate;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 
@@ -15,11 +16,12 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
     {
         private readonly IDocumentService _documentService;
         private readonly IBrandService _brandService;
-        private readonly ImportProductsService _importProductsService;
         private readonly IImportProductSpecificationsService _importSpecificationsService;
         private readonly IImportProductVariantsService _importProductVariantsService;
         private readonly IImportProductImagesService _importProductImagesService;
         private readonly IImportProductUrlHistoryService _importProductUrlHistoryService;
+        private readonly ISession _session;
+        private readonly ImportProductsService _importProductsService;
 
         public ImportProductsServiceTests()
         {
@@ -29,6 +31,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             _importProductVariantsService = A.Fake<IImportProductVariantsService>();
             _importProductImagesService = A.Fake<IImportProductImagesService>();
             _importProductUrlHistoryService = A.Fake<IImportProductUrlHistoryService>();
+            _session = A.Fake<ISession>();
             _importProductsService = new ImportProductsService(_documentService, _brandService,
                                                                _importSpecificationsService,
                                                                _importProductVariantsService,
@@ -50,7 +53,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         }
 
         [Fact]
-        public void ImportProductsService_ImportProduct_ShouldCallGetDocumentOfDocumentService()
+        public void ImportProductsService_ImportProduct_ShouldTryToLoadTheCategoryFromTheDocumentService()
         {
             var product = new ProductImportDataTransferObject
                               {
@@ -60,7 +63,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 
             _importProductsService.ImportProduct(product);
 
-            A.CallTo(() => _documentService.GetDocument<Category>(1)).MustHaveHappened();
+            A.CallTo(() => _documentService.GetDocumentByUrl<Category>("test-category")).MustHaveHappened();
         }
 
         [Fact]

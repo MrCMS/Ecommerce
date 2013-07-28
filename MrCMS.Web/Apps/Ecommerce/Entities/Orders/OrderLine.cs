@@ -25,7 +25,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual int Quantity { get; set; }
         [DisplayName("Unit Price")]
         public virtual decimal UnitPrice { get; set; }
-        public virtual decimal Subtotal { get; set; }
+        public virtual decimal UnitPricePreTax { get; set; }
+        public virtual decimal Price { get; set; }
+        public virtual decimal PricePreTax { get; set; }
         public virtual decimal Tax { get; set; }
         [DisplayName("Tax Rate")]
         public virtual decimal TaxRate { get; set; }

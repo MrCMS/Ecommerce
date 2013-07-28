@@ -4,6 +4,7 @@ using System.ComponentModel;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using System.Linq;
 using NHibernate;
@@ -111,10 +112,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             return Math.Round(GetPrice(quantity) / ((TaxRatePercentage + 100) / 100), 2, MidpointRounding.AwayFromZero);
         }
 
-        public virtual decimal GetUnitPrice()
-        {
-            return Price;
-        }
 
         [Required]
         [Remote("IsUniqueSKU", "ProductVariant", AdditionalFields = "Id")]
@@ -175,9 +172,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get
             {
-                return TaxRate == null
-                           ? 0
-                           : TaxRate.Percentage;
+                return MrCMSApplication.Get<TaxSettings>().TaxesEnabled
+                           ? TaxRate == null
+                                 ? 0
+                                 : TaxRate.Percentage
+                           : 0;
             }
         }
 

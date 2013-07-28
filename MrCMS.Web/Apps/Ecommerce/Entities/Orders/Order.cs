@@ -79,5 +79,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual IList<OrderLine> OrderLines { get; set; }
         public virtual IList<OrderNote> OrderNotes { get; set; }
         public virtual IList<OrderRefund> OrderRefunds { get; set; }
+
+        public virtual string AuthorisationToken { get; set; }
+        public virtual string CaptureTransactionId { get; set; }
     }
 }

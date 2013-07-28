@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web.Routing;
+using MrCMS.Entities;
 using MrCMS.Entities.Documents.Layout;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
@@ -36,6 +37,9 @@ namespace MrCMS.Apps
 
         public static readonly Dictionary<Type, string> AppWebpages = new Dictionary<Type, string>();
         public static readonly Dictionary<Type, string> AppWidgets = new Dictionary<Type, string>();
+        public static readonly Dictionary<Type, string> AppUserProfileDatas = new Dictionary<Type, string>();
+        public static readonly Dictionary<Type, string> AppTypes = new Dictionary<Type, string>();
+        private static List<MrCMSApp> _allApps;
         public virtual IEnumerable<Type> BaseTypes { get { yield break; } }
 
         internal void CreateContextAndRegister(RouteCollection routes, object state)
@@ -49,6 +53,10 @@ namespace MrCMS.Apps
             webpageTypes.ForEach(type => AppWebpages[type] = AppName);
             var widgetTypes = TypeHelper.GetAllConcreteTypesAssignableFrom<Widget>().FindAll(type => type.Namespace.StartsWith(this.GetType().Namespace));
             widgetTypes.ForEach(type => AppWidgets[type] = AppName);
+            var userProfileTypes = TypeHelper.GetAllConcreteTypesAssignableFrom<UserProfileData>().FindAll(type => type.Namespace.StartsWith(this.GetType().Namespace));
+            userProfileTypes.ForEach(type => AppUserProfileDatas[type] = AppName);
+            var types = TypeHelper.GetAllConcreteMappedClassesAssignableFrom<SystemEntity>().FindAll(type => type.Namespace.StartsWith(this.GetType().Namespace));
+            types.ForEach(type => AppTypes[type] = AppName);
         }
 
         /// <summary>
@@ -62,27 +70,31 @@ namespace MrCMS.Apps
 
         private static void RegisterAllApps(RouteCollection routes, object state)
         {
-            foreach (Type type in TypeHelper.GetAllConcreteTypesAssignableFrom<MrCMSApp>())
-                ((MrCMSApp)Activator.CreateInstance(type)).CreateContextAndRegister(routes, state);
+            AllApps.ForEach(app => app.CreateContextAndRegister(routes, state));
         }
 
         public static void RegisterAllServices(IKernel kernel)
         {
-            foreach (Type type in TypeHelper.GetAllConcreteTypesAssignableFrom<MrCMSApp>())
-                ((MrCMSApp) Activator.CreateInstance(type)).RegisterServices(kernel);
+            AllApps.ForEach(app => app.RegisterServices(kernel));
         }
 
         public static void InstallApps(ISession session, InstallModel model, Site site)
         {
-            foreach (
-                var  app in
-                    TypeHelper.GetAllConcreteTypesAssignableFrom<MrCMSApp>()
-                              .Select(type => ((MrCMSApp) Activator.CreateInstance(type)))
-                              .OrderBy(app => app.InstallOrder))
-                app.OnInstallation(session, model, site);
+            AllApps.OrderBy(app => app.InstallOrder).ForEach(app => app.OnInstallation(session, model, site));
+        }
+
+        private static List<MrCMSApp> AllApps
+        {
+            get
+            {
+                return _allApps = _allApps ?? TypeHelper.GetAllConcreteTypesAssignableFrom<MrCMSApp>()
+                                                        .Select(type => ((MrCMSApp)Activator.CreateInstance(type))).ToList();
+            }
         }
 
         protected virtual int InstallOrder { get { return 10; } }
+
+        public static IEnumerable<string> AppNames { get { return AllApps.Select(app => app.AppName); } }
 
         protected abstract void RegisterServices(IKernel kernel);
 

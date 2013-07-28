@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MrCMS.Entities.People;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Paging;
@@ -8,7 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 {
     public interface IOrderService
     {
-        Order PlaceOrder(CartModel cartModel, PaymentStatus paymentStatus);
+        Order PlaceOrder(CartModel cartModel, Action<Order> postCreationActions);
         IPagedList<Order> GetPaged(int pageNum, int pageSize = 10);
         void Save(Order item);
         Order Get(int id);

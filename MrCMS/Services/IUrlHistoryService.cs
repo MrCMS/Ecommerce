@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MrCMS.Entities.Documents.Web;
 
 namespace MrCMS.Services
@@ -6,6 +7,7 @@ namespace MrCMS.Services
     {
         void Delete(UrlHistory urlHistory);
         void Add(UrlHistory urlHistory);
-        UrlHistory GetByUrlSegment(string urlSegment);
+        IEnumerable<UrlHistory> GetAllNotForDocument(Webpage document);
+        UrlHistory GetByUrlSegment(string url);
     }
 }

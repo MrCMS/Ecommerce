@@ -1,5 +1,6 @@
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Settings
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 <div id="details">
     <ul class="breadcrumb">
@@ -62,10 +63,10 @@
         <div class="row-fluid" id="cart-discount">
             <div class="pull-right">
                 @Html.HiddenFor(x => x.DiscountCode)
-                
+
                 <div id="discount-code-box">
                     <button id="apply-discount-code" class="btn pull-right">Apply Discount Code</button>
-                    <input type="text" id="discount-code" class="pull-right" value="@(!String.IsNullOrWhiteSpace(Model.DiscountCode)?Model.DiscountCode:string.Empty)" />
+                    <input type="text" id="discount-code" class="pull-right" />
                     <div class="title pull-right">Discount Code</div>
                 </div>
 
@@ -80,19 +81,28 @@
             {
                 <div>
                     <div class="span6">Subtotal before delivery charges</div>
-                    <div class="pull-right value">@Html.DisplayFor(model => model.TotalPreShipping)
+                    <div class="pull-right value">@Model.Subtotal.ToCurrencyFormat()
                     </div>
                 </div>
                 <div class="clearfix"></div>
+                if (Model.HasDiscount)
+                {
+                <div>
+                    <div class="span6">Discount</div>
+                    <div class="pull-right value">@((-Model.DiscountAmount).ToCurrencyFormat())
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                }
                 if (MrCMS.Website.MrCMSApplication.Get<TaxSettings>().TaxesEnabled)
                 {
-                    <div>
+                <div>
                     <div class="span6">VAT</div>
-                    <div class="pull-right value">@Html.DisplayFor(model => model.Tax)
+                    <div class="pull-right value">@Model.Tax.ToCurrencyFormat()
                     </div>
-                    </div>
-                }
+                </div>
                 <div class="clearfix"></div>
+                }
                 <div>
                     <div class="span6">
                         @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new { @class = "input-xlarge" })
@@ -100,13 +110,12 @@
                     <div class="pull-right value">
                         @if (Model.ShippingTotal.HasValue)
                         {
-                            @Html.DisplayFor(model => model.ShippingTotal)
+                            @Model.ShippingTotal.Value.ToCurrencyFormat()
                         }
                         else
                         {
-                            <span>
-                            Please choose a shipping method
-                           </span>
+                            <span>Please choose a shipping method
+                            </span>
                         }
                     </div>
 
@@ -114,7 +123,7 @@
                 <div class="total-divider"></div>
                 <div>
                     <div class="span6">Total</div>
-                    <div class="pull-right total">@Html.DisplayFor(model => model.Total)</div>
+                    <div class="pull-right total">@Model.Total.ToCurrencyFormat()</div>
                 </div>
             }
         </div>
@@ -132,7 +141,7 @@
             {
                 using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
                 {
-                    <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />
+                <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />
                 }
             }
         </div>

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
-using MrCMS.Entities.Multisite;
+using MrCMS.Entities;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Paging;
@@ -30,13 +30,9 @@ namespace MrCMS.Services
 
                                       if (user.Sites != null)
                                           user.Sites.Add(site);
-                                      else
-                                          user.Sites = new List<Site> { site };
 
                                       if (site.Users != null)
                                           site.Users.Add(user);
-                                      else
-                                          site.Users = new List<User> { user };
 
                                       session.Save(user);
                                       session.Update(site);
@@ -65,8 +61,9 @@ namespace MrCMS.Services
 
         public User GetUserByEmail(string email)
         {
+            string trim = email.Trim();
             return
-                _session.QueryOver<User>().Where(user => user.Email.IsLike(email, MatchMode.Exact)).Cacheable().
+                _session.QueryOver<User>().Where(user => user.Email==trim).Cacheable().
                     SingleOrDefault();
         }
 
@@ -91,21 +88,18 @@ namespace MrCMS.Services
                                       session.Delete(user);
                                   });
         }
-        
+
         /// <summary>
         /// Checks to see if the supplied email address is unique
         /// </summary>
         /// <param name="email"></param>
         /// <param name="id">The id of user to exlcude from check. Has to be string because of AdditionFields on Remote property</param>
         /// <returns></returns>
-        public bool IsUniqueEmail(string email, string id)
+        public bool IsUniqueEmail(string email, int? id = null)
         {
-            var userId = 0;
-            int.TryParse(id, out userId);
-
-            if (userId > 0)
+            if (id.HasValue)
             {
-                return _session.QueryOver<User>().Where(u => u.Email == email && u.Id != userId).RowCount() == 0;
+                return _session.QueryOver<User>().Where(u => u.Email == email && u.Id != id.Value).RowCount() == 0;
             }
             return _session.QueryOver<User>().Where(u => u.Email == email).RowCount() == 0;
         }
@@ -116,16 +110,32 @@ namespace MrCMS.Services
         /// <returns></returns>
         public int ActiveUsers()
         {
-            return _session.QueryOver<User>().Where(x=>x.IsActive).Cacheable().RowCount();
+            return _session.QueryOver<User>().Where(x => x.IsActive).Cacheable().RowCount();
         }
 
         /// <summary>
         /// Gets a count of none active users
         /// </summary>
         /// <returns></returns>
-        public int NoneActiveUsers()
+        public int NonActiveUsers()
         {
             return _session.QueryOver<User>().WhereNot(x => x.IsActive).Cacheable().RowCount();
+        }
+
+        public T Get<T>(User user) where T : SystemEntity, IBelongToUser
+        {
+            return _session.QueryOver<T>().Where(arg => arg.User == user).Take(1).Cacheable().SingleOrDefault();
+        }
+
+        public IList<T> GetAll<T>(User user) where T : SystemEntity, IBelongToUser
+        {
+            return _session.QueryOver<T>().Where(arg => arg.User == user).Cacheable().List();
+        }
+
+        public IPagedList<T> GetPaged<T>(User user, QueryOver<T> query = null, int page = 1, int pageSize = 10) where T : SystemEntity, IBelongToUser
+        {
+            return _session.Paged(query ?? QueryOver.Of<T>(), page, pageSize);
+            
         }
     }
 }
