@@ -65,8 +65,21 @@ namespace MrCMS.Website
             {
                 if ("admin".Equals(Convert.ToString(requestContext.RouteData.DataTokens["area"]),
                                    StringComparison.OrdinalIgnoreCase))
-                    controllerType = _adminControllers.SingleOrDefault(
+                {
+                    var controllers = _adminControllers.Where(
                         type => type.Name.Equals(controllerName + "Controller", StringComparison.OrdinalIgnoreCase));
+                    var controllersList = controllers as IList<Type> ?? controllers.ToList();
+                    if (controllersList.Count() > 1)
+                    {
+                        if (requestContext.RouteData.Values.ContainsValue("Apps"))
+                            return controllersList.SingleOrDefault(x => x.Namespace.Contains("Apps"));
+                        return controllersList.SingleOrDefault(x => !x.Namespace.Contains("Apps"));
+                    }
+                    else
+                    {
+                        controllerType = controllersList.SingleOrDefault();
+                    }
+                }
                 else
                     controllerType = _uiControllers.SingleOrDefault(
                         type => type.Name.Equals(controllerName + "Controller", StringComparison.OrdinalIgnoreCase));
