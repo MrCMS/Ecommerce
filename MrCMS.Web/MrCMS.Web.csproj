@@ -472,10 +472,12 @@
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\GoogleBaseSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\CartWidget.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\BreadCrumb.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\EcommerceNavigation.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedCategories.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedProducts.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\SearchBox.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\RelatedProducts.cs" />
     <Compile Include="Apps\Galleries\GalleriesApp.cs" />
     <Compile Include="Apps\Core\DbConfiguration\PlainTextWidgetOveride.cs" />
@@ -1534,6 +1536,18 @@
     <Content Include="Content\install\scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\category.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\enter-order-email.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\forgotten-password.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\password-reset.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\payment-details.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\product-search.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\product.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\shipping-methods.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-account.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-login.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-registration.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\jquery.history.js" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1710,7 +1724,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\AddDiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\Cart.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Cart\CartPanel.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\DeleteCartItem.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\Details.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\DiscountCode.cshtml" />
@@ -1755,7 +1768,6 @@
     <Content Include="Apps\Ecommerce\Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_CheckoutLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_EcommerceLayout.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\_PasswordLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_ProductLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_SearchLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Web.config" />
@@ -1765,6 +1777,7 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\RelatedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\CartWidget.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -1922,6 +1935,11 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="Properties\PublishProfiles\v0.3.pubxml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\SearchBox.cshtml" />
+    <Content Include="Themes\Ecommerce\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
@@ -1950,6 +1968,8 @@
     <Folder Include="Themes\Default\Shared\" />
     <Folder Include="Themes\Default\Views\Pages\" />
     <Folder Include="Themes\Default\Views\Widgets\" />
+    <Folder Include="Themes\Ecommerce\Apps\Core\Views\Pages\" />
+    <Folder Include="Themes\Ecommerce\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

@@ -46,12 +46,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         }
 
         [HttpGet]
-        public ViewResult CartPanel()
-        {
-            return View(_cart);
-        }
-
-        [HttpGet]
         public PartialViewResult Details()
         {
             SetupViewData();
