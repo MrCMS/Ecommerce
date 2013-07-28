@@ -9,22 +9,20 @@
 <div class="container">
     <div class="row-fluid">
         <div class="span3">
-            @{Html.RenderPartial("Logo");}
+            @RenderZone("Header left")
         </div>
         <div class="span6">
-            @{Html.RenderPartial("SearchBox");}
+            @RenderZone("Header Middle")
         </div>
         <div class="span3">
             <div class="row-fluid">
                 <div class="span12">
                     <div class="pull-right">
-                        @{Html.RenderPartial("UserLinks");}
+                        @RenderZone("User Links")
                     </div>
                 </div>
             </div>
-            @{
-                Html.RenderAction("CartPanel", "Cart");
-            }
+            @RenderZone("Header Right")
         </div>
     </div>
 </div>
@@ -33,7 +31,7 @@
     <div class="container">
         <div class="navbar">
             <div class="navbar-inner">
-                @RenderZone("Header")
+                @RenderZone("Navigation")
             </div>
         </div>
     </div>

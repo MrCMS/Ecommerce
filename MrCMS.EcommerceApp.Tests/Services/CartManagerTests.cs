@@ -14,12 +14,14 @@ namespace MrCMS.EcommerceApp.Tests.Services
         private CartModel _cartModel;
         private ProductVariant _productVariant = new ProductVariant();
         private CartManager _cartManager;
+        private ICartSessionManager _cartSessionManager;
 
         public CartManagerTests()
         {
             _cartModel = new CartModel();
             Session.Transact(session => session.SaveOrUpdate(_productVariant));
-            _cartManager = new CartManager(_cartModel, Session);
+            _cartSessionManager = A.Fake<ICartSessionManager>();
+            _cartManager = new CartManager(_cartModel, Session, _cartSessionManager);
         }
         [Fact]
         public void CartManager_AddToCart_AddsAnItemToTheCart()
@@ -60,7 +62,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void CartManager_Delete_ShouldRemoveCartItemFromModel()
         {
-            var cartItem = new CartItem {Item = _productVariant, Quantity = 1};
+            var cartItem = new CartItem { Item = _productVariant, Quantity = 1 };
             _cartModel.Items.Add(cartItem);
 
             _cartManager.Delete(cartItem);
@@ -71,7 +73,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void CartManager_Delete_ShouldRemoveCartItemFromDb()
         {
-            var cartItem = new CartItem {Item = _productVariant, Quantity = 1};
+            var cartItem = new CartItem { Item = _productVariant, Quantity = 1 };
             Session.Transact(session => session.Save(cartItem));
             _cartModel.Items.Add(cartItem);
 
@@ -83,7 +85,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void CartManager_UpdateQuantity_ShouldUpdateQuantityValueOfItem()
         {
-            var cartItem = new CartItem {Item = _productVariant, Quantity = 1};
+            var cartItem = new CartItem { Item = _productVariant, Quantity = 1 };
             Session.Transact(session => session.Save(cartItem));
             _cartModel.Items.Add(cartItem);
 

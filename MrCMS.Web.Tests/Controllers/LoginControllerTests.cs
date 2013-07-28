@@ -2,252 +2,125 @@
 using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
+using MrCMS.Entities.Documents.Layout;
+using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.People;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Core.Controllers;
+using MrCMS.Web.Apps.Core.Models;
+using MrCMS.Web.Apps.Core.Pages;
+using MrCMS.Web.Apps.Core.Services;
 using MrCMS.Web.Controllers;
+using MrCMS.Website;
 using Xunit;
 
 namespace MrCMS.Web.Tests.Controllers
 {
     public class LoginControllerTests
     {
-        private LoginController _loginController;
-        private IUserService _userService;
-        private IResetPasswordService _resetPasswordService;
-        private IAuthorisationService _authorisationService;
+        private readonly LoginController _loginController;
+        private readonly IUserService _userService;
+        private readonly IResetPasswordService _resetPasswordService;
+        private readonly IAuthorisationService _authorisationService;
+        private readonly IDocumentService _documentService;
+        private ILoginService _loginService;
 
         public LoginControllerTests()
         {
             _userService = A.Fake<IUserService>();
             _resetPasswordService = A.Fake<IResetPasswordService>();
             _authorisationService = A.Fake<IAuthorisationService>();
-            _loginController = new LoginController(_userService, _resetPasswordService, _authorisationService);
+            _documentService = A.Fake<IDocumentService>();
+            _loginService = A.Fake<ILoginService>();
+            _loginController = new LoginController(_userService, _resetPasswordService, _authorisationService, _documentService, _loginService);
+            // this allows LiveUrlSegment to work
+            MrCMSApplication.OverridenRootChildren = new List<Webpage>();
+            // initial setup as this is reused
+            A.CallTo(() => _documentService.GetUniquePage<LoginPage>())
+             .Returns(new LoginPage { UrlSegment = "login-page" });
         }
 
         [Fact]
-        public void LoginController_Get_ShouldReturnAViewResult()
+        public void LoginController_Show_ShouldReturnLoginPageAsModel()
         {
-            var result = _loginController.Get(null);
+            var result = _loginController.Show(new LoginPage { Layout = new Layout() });
 
-            result.Should().BeOfType<ViewResult>();
+            result.Model.Should().BeOfType<LoginPage>();
+        }
+
+        //[Fact]
+        //public void LoginController_Get_ShouldReturnPassedModel()
+        //{
+        //    var loginModel = new LoginController.LoginModel();
+
+        //    var result = _loginController.Get(loginModel);
+
+        //    result.Model.Should().Be(loginModel);
+        //}
+
+        [Fact]
+        public void LoginController_Post_IfModelIsNullReturnsRedirectToLoginPage()
+        {
+            var actionResult = _loginController.Post(null);
+
+            actionResult.Should().NotBeNull();
+            actionResult.Url.Should().Be("~/login-page");
         }
 
         [Fact]
-        public void LoginController_Get_ShouldReturnPassedModel()
+        public void LoginController_Post_IfModelIsNotNullButModelStateIsInvalidReturnRedirectToLoginPage()
         {
-            var loginModel = new LoginController.LoginModel();
+            _loginController.ModelState.AddModelError("test", "error");
+            var actionResult = _loginController.Post(new LoginModel());
+
+            actionResult.Should().NotBeNull();
+            actionResult.Url.Should().Be("~/login-page");
+        }
+
+        [Fact]
+        public void LoginController_Post_IfModelIsNotNullButModelStateIsInvalidShouldNotCallAuthenticateUser()
+        {
+            _loginController.ModelState.AddModelError("test", "error");
+            var loginModel = new LoginModel();
+            _loginController.Post(loginModel);
+
+            A.CallTo(() => _loginService.AuthenticateUser(loginModel)).MustNotHaveHappened();
+        }
+
+        [Fact]
+        public void LoginController_Post_IfAuthenticateUserReturnsSuccessShouldRedirectToReturnedUrl()
+        {
+            var loginModel = new LoginModel();
+            A.CallTo(() => _loginService.AuthenticateUser(loginModel))
+             .Returns(new LoginResult {Success = true, RedirectUrl = "redirect-url"});
             
-            var result = _loginController.Get(loginModel);
+            var redirectResult = _loginController.Post(loginModel);
 
-            result.Model.Should().Be(loginModel);
+            redirectResult.Url.Should().Be("redirect-url");
         }
 
         [Fact]
-        public void LoginController_Post_IfModelIsNullReturnsViewResult()
+        public void LoginController_Post_IfAuthenticateUserReturnsFailureRedirectToLoginPage()
         {
-            var actionResult = _loginController.Post(null);
+            var loginModel = new LoginModel();
+            A.CallTo(() => _loginService.AuthenticateUser(loginModel))
+             .Returns(new LoginResult { Success = false });
+            
+            var redirectResult = _loginController.Post(loginModel);
 
-            actionResult.Should().BeOfType<ViewResult>();
+            redirectResult.Url.Should().Be("~/login-page");
         }
 
         [Fact]
-        public void LoginController_Post_IfModelIsNullReturnsModelOfLoginModel()
+        public void LoginController_Post_IfAuthenticateUserReturnsFailureShouldSetMessageToModel()
         {
-            var actionResult = _loginController.Post(null);
+            var loginModel = new LoginModel();
+            A.CallTo(() => _loginService.AuthenticateUser(loginModel))
+             .Returns(new LoginResult { Success = false, Message = "failure message"});
+            
+            _loginController.Post(loginModel);
 
-            actionResult.As<ViewResult>().Model.Should().BeOfType<LoginController.LoginModel>();
-        }
-
-        [Fact]
-        public void LoginController_Post_IfModelIsSetAndGetUserByEmailIsNullReturnsViewResult()
-        {
-            var loginModel = new LoginController.LoginModel { Email = "test@example.com" };
-            A.CallTo(() => _userService.GetUserByEmail("test@example.com")).Returns(null);
-
-            var actionResult = _loginController.Post(loginModel);
-
-            actionResult.Should().BeOfType<ViewResult>();
-        }
-
-        [Fact]
-        public void LoginController_Post_IfModelIsSetAndGetUserByEmailIsNullPassesBackEmailRememberMeAndReturnUrl()
-        {
-            var loginModel = new LoginController.LoginModel
-            {
-                Email = "test@example.com",
-                RememberMe = true,
-                ReturnUrl = "test-url"
-            };
-            A.CallTo(() => _userService.GetUserByEmail("test@example.com")).Returns(null);
-
-            var actionResult = _loginController.Post(loginModel);
-
-            var model = actionResult.As<ViewResult>().Model.As<LoginController.LoginModel>();
-            model.Email.Should().Be("test@example.com");
-            model.RememberMe.Should().BeTrue();
-            model.ReturnUrl.Should().Be("test-url");
-        }
-
-        [Fact]
-        public void LoginController_Post_IfModelIsSetAndGetUserByEmailIsInactiveUserlReturnsViewResult()
-        {
-            var loginModel = new LoginController.LoginModel { Email = "test@example.com" };
-            A.CallTo(() => _userService.GetUserByEmail("test@example.com")).Returns(new User{IsActive=false});
-
-            var actionResult = _loginController.Post(loginModel);
-
-            actionResult.Should().BeOfType<ViewResult>();
-        }
-
-        [Fact]
-        public void LoginController_Post_IfModelIsSetAndGetUserByEmailIsInactiveUserPassesBackEmailRememberMeAndReturnUrl()
-        {
-            var loginModel = new LoginController.LoginModel
-            {
-                Email = "test@example.com",
-                RememberMe = true,
-                ReturnUrl = "test-url"
-            };
-            A.CallTo(() => _userService.GetUserByEmail("test@example.com")).Returns(new User { IsActive = false });
-
-            var actionResult = _loginController.Post(loginModel);
-
-            var model = actionResult.As<ViewResult>().Model.As<LoginController.LoginModel>();
-            model.Email.Should().Be("test@example.com");
-            model.RememberMe.Should().BeTrue();
-            model.ReturnUrl.Should().Be("test-url");
-        }
-
-        [Fact]
-        public void LoginController_Post_IfActiveUserIsLoadedIfValidateUserIsFalseReturnViewResult()
-        {
-            var loginModel = new LoginController.LoginModel { Email = "test@example.com",Password = "test-pass"};
-            var user = new User {IsActive = true};
-            A.CallTo(() => _userService.GetUserByEmail("test@example.com")).Returns(user);
-            A.CallTo(() => _authorisationService.ValidateUser(user, "test-pass")).Returns(false);
-
-            var actionResult = _loginController.Post(loginModel);
-
-            actionResult.Should().BeOfType<ViewResult>();
-        }
-
-        [Fact]
-        public void LoginController_Post_IfActiveUserIsLoadedIfValidateUserIsFalsePassesBackEmailRememberMeAndReturnUrl()
-        {
-            var loginModel = new LoginController.LoginModel
-                                 {
-                                     Email = "test@example.com",
-                                     RememberMe = true,
-                                     ReturnUrl = "test-url",
-                                     Password = "test-pass"
-                                 };
-            var user = new User {IsActive = true};
-            A.CallTo(() => _userService.GetUserByEmail("test@example.com")).Returns(user);
-            A.CallTo(() => _authorisationService.ValidateUser(user, "test-pass")).Returns(false);
-
-            var actionResult = _loginController.Post(loginModel);
-
-            var model = actionResult.As<ViewResult>().Model.As<LoginController.LoginModel>();
-            model.Email.Should().Be("test@example.com");
-            model.RememberMe.Should().BeTrue();
-            model.ReturnUrl.Should().Be("test-url");
-        }
-
-        [Fact]
-        public void LoginController_Post_IfActiveUserIsLoadedIfValidateUserIsTrueCallSetAuthCookieWithEmailAndRememberMe()
-        {
-            var loginModel = new LoginController.LoginModel
-            {
-                Email = "test@example.com",
-                Password = "test-pass",
-                RememberMe = true
-            };
-            var user = new User { IsActive = true };
-            A.CallTo(() => _userService.GetUserByEmail("test@example.com")).Returns(user);
-            A.CallTo(() => _authorisationService.ValidateUser(user, "test-pass")).Returns(true);
-
-            var actionResult = _loginController.Post(loginModel);
-
-            A.CallTo(() => _authorisationService.SetAuthCookie("test@example.com", true)).MustHaveHappened();
-        }
-
-        [Fact]
-        public void LoginController_Post_IfActiveUserIsLoadedIfValidateUserIsTrueReturnsRedirectResult()
-        {
-            var loginModel = new LoginController.LoginModel
-            {
-                Email = "test@example.com",
-                Password = "test-pass",
-                RememberMe = true
-            };
-            var user = new User { IsActive = true };
-            A.CallTo(() => _userService.GetUserByEmail("test@example.com")).Returns(user);
-            A.CallTo(() => _authorisationService.ValidateUser(user, "test-pass")).Returns(true);
-
-            var actionResult = _loginController.Post(loginModel);
-
-            actionResult.Should().BeOfType<RedirectResult>();
-        }
-
-        [Fact]
-        public void LoginController_Post_IfActiveUserIsLoadedIfValidateUserIsTrueRedirectsToReturnUrlIfSet()
-        {
-            var loginModel = new LoginController.LoginModel
-            {
-                Email = "test@example.com",
-                Password = "test-pass",
-                RememberMe = true,
-                ReturnUrl = "test-redirect"
-            };
-            var user = new User { IsActive = true };
-            A.CallTo(() => _userService.GetUserByEmail("test@example.com")).Returns(user);
-            A.CallTo(() => _authorisationService.ValidateUser(user, "test-pass")).Returns(true);
-
-            var actionResult = _loginController.Post(loginModel);
-
-            actionResult.As<RedirectResult>().Url.Should().Be("test-redirect");
-        }
-
-        [Fact]
-        public void LoginController_Post_IfActiveUserIsLoadedIfValidateUserIsTrueRedirectsToRootIfReturnUrlIsNotSet()
-        {
-            var loginModel = new LoginController.LoginModel
-            {
-                Email = "test@example.com",
-                Password = "test-pass",
-                RememberMe = true,
-                ReturnUrl = null
-            };
-            var user = new User { IsActive = true };
-            A.CallTo(() => _userService.GetUserByEmail("test@example.com")).Returns(user);
-            A.CallTo(() => _authorisationService.ValidateUser(user, "test-pass")).Returns(true);
-
-            var actionResult = _loginController.Post(loginModel);
-
-            actionResult.As<RedirectResult>().Url.Should().Be("~/");
-        }
-
-        [Fact]
-        public void LoginController_Post_IfActiveUserIsLoadedAndAdminIfValidateUserIsTrueRedirectsToAdminRootIfReturnUrlIsNotSet()
-        {
-            var loginModel = new LoginController.LoginModel
-            {
-                Email = "test@example.com",
-                Password = "test-pass",
-                RememberMe = true,
-                ReturnUrl = null
-            };
-            var user = new User
-                           {
-                               IsActive = true,
-                               Roles = new List<UserRole> {new UserRole {Name = UserRole.Administrator}}
-                           };
-            A.CallTo(() => _userService.GetUserByEmail("test@example.com")).Returns(user);
-            A.CallTo(() => _authorisationService.ValidateUser(user, "test-pass")).Returns(true);
-
-            var actionResult = _loginController.Post(loginModel);
-
-            actionResult.As<RedirectResult>().Url.Should().Be("~/admin");
+            loginModel.Message.Should().Be("failure message");
         }
 
         [Fact]
@@ -269,7 +142,7 @@ namespace MrCMS.Web.Tests.Controllers
         [Fact]
         public void LoginController_ForgottenPasswordGET_ShouldReturnAView()
         {
-            _loginController.ForgottenPassword().Should().NotBeNull();
+            _loginController.ForgottenPassword("").Should().NotBeNull();
         }
 
         [Fact]

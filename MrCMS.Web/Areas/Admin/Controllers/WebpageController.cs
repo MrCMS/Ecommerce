@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+using MrCMS.ACL;
 using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Layout;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
 using MrCMS.Services;
-using MrCMS.Settings;
 using MrCMS.Website;
 using MrCMS.Website.Binders;
 using NHibernate;
@@ -25,22 +24,6 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         {
             _formService = formService;
             _session = session;
-        }
-
-        protected override void OnAuthorization(AuthorizationContext filterContext)
-        {
-            base.OnAuthorization(filterContext);
-            var id = filterContext.RouteData.Values["id"];
-            int idVal;
-            if (!string.IsNullOrWhiteSpace(Convert.ToString(id)) && int.TryParse(Convert.ToString(id), out idVal))
-            {
-                var document = _documentService.GetDocument<Webpage>(idVal);
-                if (document != null && !document.IsAllowedForAdmin(CurrentRequestData.CurrentUser))
-                {
-                    TempData.ErrorMessages().Add("You are not allowed to view that page");
-                    filterContext.Result = new RedirectResult("~/admin");
-                }
-            }
         }
 
         public override ActionResult Add([IoCModelBinder(typeof(AddDocumentModelBinder))] Webpage doc)
@@ -65,7 +48,12 @@ namespace MrCMS.Web.Areas.Admin.Controllers
                                                              SelectListItemHelper.EmptyItem("Default Layout"));
 
             var documentTypeDefinitions =
-                (doc.Parent as Webpage).GetValidWebpageDocumentTypes(_documentService, CurrentSite).ToList();
+                (doc.Parent as Webpage).GetValidWebpageDocumentTypes(_documentService, CurrentSite)
+                                       .Where(
+                                           metadata =>
+                                           CurrentRequestData.CurrentUser.CanAccess<TypeACLRule>(TypeACLRule.Add,
+                                                                                             metadata.Type.FullName))
+                                       .ToList();
             ViewData["DocumentTypes"] = documentTypeDefinitions;
 
             doc.AdminViewData(ViewData, _session);
@@ -77,6 +65,29 @@ namespace MrCMS.Web.Areas.Admin.Controllers
                 if (!string.IsNullOrWhiteSpace(documentMetadata.App))
                     RouteData.DataTokens["app"] = documentMetadata.App;
             }
+        }
+        [MrCMSTypeACL(typeof(Webpage), TypeACLRule.Edit)]
+        public override ActionResult Edit_Get(Webpage doc)
+        {
+            return base.Edit_Get(doc);
+        }
+
+        [MrCMSTypeACL(typeof(Webpage), TypeACLRule.Edit)]
+        public override ActionResult Edit([IoCModelBinder(typeof(EditDocumentModelBinder))] Webpage doc)
+        {
+            return base.Edit(doc);
+        }
+
+        [MrCMSTypeACL(typeof(Webpage), TypeACLRule.Delete)]
+        public override ActionResult Delete_Get(Webpage document)
+        {
+            return base.Delete_Get(document);
+        }
+
+        [MrCMSTypeACL(typeof(Webpage), TypeACLRule.Delete)]
+        public override ActionResult Delete(Webpage document)
+        {
+            return base.Delete(document);
         }
 
         public override ActionResult Show(Webpage document)
@@ -128,7 +139,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         {
             _documentService.SetParent(webpage, parent);
 
-            return RedirectToAction("Edit", new {id = webpage.Id});
+            return RedirectToAction("Edit", new { id = webpage.Id });
         }
 
         public ActionResult ViewChanges(DocumentVersion documentVersion)

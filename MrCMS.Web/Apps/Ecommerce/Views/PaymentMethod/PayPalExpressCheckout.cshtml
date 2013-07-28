@@ -1,0 +1,6 @@
+﻿@model dynamic
+
+@using (Html.BeginForm("PayPalExpressCheckout", "PaymentMethod", FormMethod.Post))
+{
+    <input type="submit" class="btn btn-primary" value="Confirm Order" />
+}

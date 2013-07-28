@@ -16,5 +16,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Geographic
         List<SelectListItem> GetOptions();
         bool AnyExistingCountriesWithName(string name, int id = 0);
         void UpdateDisplayOrder(IList<SortItem> options);
+        Country GetCountryByCode(string code);
     }
 }

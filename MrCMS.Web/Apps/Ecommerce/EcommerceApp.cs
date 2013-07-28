@@ -33,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce
 
         protected override void RegisterServices(IKernel kernel)
         {
-            kernel.Rebind<CartModel>().ToMethod(context => context.Kernel.Get<IGetCart>().GetCart()).InRequestScope();
+            kernel.Rebind<CartModel>().ToMethod(context => context.Kernel.Get<ICartBuilder>().BuildCart()).InRequestScope();
         }
 
         public override IEnumerable<Type> BaseTypes
@@ -51,10 +51,11 @@ namespace MrCMS.Web.Apps.Ecommerce
                                  new[] { typeof(ProductController).Namespace });
             context.MapRoute("Product Variant - GetPriceBreaksForProductVariant", "Apps/Ecommerce/ProductVariant/GetPriceBreaksForProductVariant", new { controller = "ProductVariant", action = "GetPriceBreaksForProductVariant" });
             context.MapRoute("Cart - Details", "Apps/Ecommerce/CartDetails", new { controller = "Cart", action = "Details" });
-            context.MapRoute("Cart - Update Quantity", "Apps/Ecommerce/UpdateQuantity", new { controller = "Cart", action = "UpdateQuantity" });
+            context.MapRoute("Cart - Update Basket", "Apps/Ecommerce/UpdateBasket", new { controller = "Cart", action = "UpdateBasket" });
             context.MapRoute("Cart - Add to Cart", "Apps/Ecommerce/AddToCart", new { controller = "Cart", action = "AddToCart" });
             context.MapRoute("Cart - Edit Cart Item", "Apps/Ecommerce/EditCartItem", new { controller = "Cart", action = "EditCartItem" });
             context.MapRoute("Cart - Delete Cart Item", "Apps/Ecommerce/DeleteCartItem", new { controller = "Cart", action = "DeleteCartItem" });
+            context.MapRoute("Cart - Apply Discount Code", "Apps/Ecommerce/ApplyDiscountCode", new { controller = "Cart", action = "ApplyDiscountCode" });
             //context.MapRoute("Cart - Basic Details", "Apps/Ecommerce/Cart/BasicDetails", new { controller = "Cart", action = "BasicDetails" });
             //context.MapRoute("Cart - Delivery Details", "Apps/Ecommerce/Cart/DeliveryDetails", new { controller = "Cart", action = "DeliveryDetails" });
             //context.MapRoute("Cart - Order Email", "Apps/Ecommerce/Cart/OrderEmail", new { controller = "Cart", action = "OrderEmail" });
@@ -107,6 +108,11 @@ namespace MrCMS.Web.Apps.Ecommerce
                              new { controller = "PaymentMethod", action = "CashOnDelivery" },
                              new[] { typeof(PaymentMethodController).Namespace });
 
+            context.MapRoute("Confirm Order - PayPal Express Checkout",
+                             "Apps/Ecommerce/Confirm/PayPalExpressCheckout",
+                             new { controller = "PaymentMethod", action = "PayPalExpressCheckout" },
+                             new[] { typeof(PaymentMethodController).Namespace });
+
             context.MapRoute("Checkout - Billing Address same as Shipping Address",
                              "Apps/Ecommerce/PaymentDetails/BillingAddressSameAsShippingAddress",
                              new { controller = "PaymentDetails", action = "BillingAddressSameAsShippingAddress" },
@@ -122,16 +128,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                              new { controller = "PaymentDetails", action = "SaveBillingAddress" },
                              new[] { typeof(PaymentDetailsController).Namespace });
 
-            context.MapRoute("User Login", "Apps/Ecommerce/UserLogin/UserLogin", new { controller = "UserLogin", action = "UserLogin" });
-            context.MapRoute("User Login Details", "Apps/Ecommerce/UserLogin/UserLoginDetails", new { controller = "UserLogin", action = "UserLoginDetails" });
-            context.MapRoute("User Login POST", "Apps/Ecommerce/UserLogin/Login", new { controller = "UserLogin", action = "Login" });
-            context.MapRoute("User Registration", "Apps/Ecommerce/UserRegistration/UserRegistration", new { controller = "UserRegistration", action = "UserRegistration" });
-            context.MapRoute("User Registration Details", "Apps/Ecommerce/UserRegistration/UserRegistrationDetails", new { controller = "UserRegistration", action = "UserRegistrationDetails" });
-            context.MapRoute("User Register", "Apps/Ecommerce/UserRegistration/Register", new { controller = "UserRegistration", action = "Register" });
-            context.MapRoute("User Account", "Apps/Ecommerce/UserAccount/UserAccount", new { controller = "UserAccount", action = "UserAccount" });
-            context.MapRoute("User Account Details", "Apps/Ecommerce/UserAccount/UserAccountDetails", new { controller = "UserAccount", action = "UserAccountDetails" });
             context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders", new { controller = "UserAccount", action = "UserAccountOrders" });
-            context.MapRoute("User Update Account", "Apps/Ecommerce/UserAccount/UpdateAccount", new { controller = "UserAccount", action = "UpdateAccount" });
             context.MapRoute("PayPal Express Checkout - SetExpressCheckout",
                              "Apps/Ecommerce/PayPalExpress/SetExpressCheckout",
                              new { controller = "PayPalExpressCheckout", action = "SetExpressCheckout" },
@@ -144,12 +141,17 @@ namespace MrCMS.Web.Apps.Ecommerce
                              "search/results",
                              new { controller = "ProductSearch", action = "Results" },
                              new[] { typeof(ProductSearchController).Namespace });
+
+            context.MapRoute("Checkout - PayPal Return Handler",
+                             "Apps/Ecommerce/PayPalExpressCheckout/ReturnHandler",
+                             new {controller = "PayPalExpressCheckout", action = "Return"},
+                             new[] {typeof (PayPalExpressCheckoutController).Namespace});
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
         {
             var currentSite = new CurrentSite(site);
-            var configurationProvider = new ConfigurationProvider(new SettingService(session), currentSite);
+            var configurationProvider = new ConfigurationProvider(new SettingService(session), currentSite, session);
             var siteSettings = configurationProvider.GetSiteSettings<SiteSettings>();
             var ecommerceSettings = configurationProvider.GetSiteSettings<EcommerceSettings>();
             var documentService = new DocumentService(session, siteSettings, currentSite);
@@ -191,8 +193,10 @@ namespace MrCMS.Web.Apps.Ecommerce
                              };
             var ecommerceLayoutArea = new List<LayoutArea>
                                      {
-                                         new LayoutArea {AreaName = "Logo", Layout = eCommerceLayout},
-                                         new LayoutArea {AreaName = "Header", Layout = eCommerceLayout},
+                                         new LayoutArea {AreaName = "Header left", Layout = eCommerceLayout},
+                                         new LayoutArea {AreaName = "Header Middle", Layout = eCommerceLayout},
+                                         new LayoutArea {AreaName = "Header Right", Layout = eCommerceLayout},
+                                         new LayoutArea {AreaName = "Navigation", Layout = eCommerceLayout},
                                          new LayoutArea {AreaName = "After Content", Layout = eCommerceLayout},
                                          new LayoutArea {AreaName = "Before Content", Layout = eCommerceLayout},
                                          new LayoutArea {AreaName = "Footer", Layout = eCommerceLayout}
@@ -264,7 +268,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             ecommerceSettings.PreviousPriceText = "Previous price";
 
             configurationProvider.SaveSettings(ecommerceSettings);
-            
+
 
             var welcome = new TextPage
             {
@@ -326,31 +330,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 Layout = checkoutLayout
             };
             documentService.AddDocument(orderPlaced);
-            var myAccount = new UserAccount
-            {
-                Name = "My Account",
-                UrlSegment = "my-account",
-                RevealInNavigation = true,
-                PublishOn = DateTime.UtcNow
-            };
-            documentService.AddDocument(myAccount);
-            var login = new UserLogin
-            {
-                Name = "Login",
-                UrlSegment = "log-in",
-                RevealInNavigation = true,
-                PublishOn = DateTime.UtcNow
-            };
-            documentService.AddDocument(login);
-            var registration = new UserRegistration()
-            {
-                Name = "User Registration",
-                UrlSegment = "register",
-                RevealInNavigation = true,
-                PublishOn = DateTime.UtcNow
-            };
-            documentService.AddDocument(registration);
-
+            
             //add currency
             var britishCurrency = new MrCMS.Web.Apps.Ecommerce.Entities.Currencies.Currency
                 {

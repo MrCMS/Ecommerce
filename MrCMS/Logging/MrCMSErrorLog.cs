@@ -24,7 +24,7 @@ namespace MrCMS.Logging
         public MrCMSErrorLog(IDictionary config)
         {
             if (CurrentRequestData.DatabaseIsInstalled)
-                _session = MrCMSApplication.Get<ISessionFactory>().OpenSession();
+                _session = MrCMSApplication.Get<ISessionFactory>().OpenFilteredSession();
         }
 
         public override string Log(Error error)
@@ -55,10 +55,9 @@ namespace MrCMS.Logging
                 _session.QueryOver<Log>()
                         .Where(entry => entry.Type == LogEntryType.Error)
                         .OrderBy(entry => entry.CreatedOn).Desc
-                        .Paged(pageIndex + 1, pageSize,
-                                    entries =>
-                                    entries.Select(entry => new ErrorLogEntry(this, entry.Guid.ToString(), entry.Error)));
-            errorLogEntries.ForEach(entry => errorEntryList.Add(entry));
+                        .Paged(pageIndex + 1, pageSize);
+            errorLogEntries.ForEach(entry =>
+                                    errorEntryList.Add(new ErrorLogEntry(this, entry.Guid.ToString(), entry.Error)));
             return errorLogEntries.TotalItemCount;
         }
 

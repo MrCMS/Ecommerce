@@ -8,6 +8,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         private IDictionary<string, List<IMenuItem>> _children;
         public string Text { get { return "Ecommerce"; } }
         public string Url { get; private set; }
+        public bool CanShow { get { return true; } }
+
         public IDictionary<string, List<IMenuItem>> Children
         {
             get

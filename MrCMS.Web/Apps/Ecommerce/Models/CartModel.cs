@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using MrCMS.Entities.People;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
@@ -10,7 +9,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Payment;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
@@ -21,6 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             Items = new List<CartItem>();
         }
+        public Guid CartGuid { get; set; }
         public List<CartItem> Items { get; set; }
         public bool Empty
         {
@@ -49,13 +48,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public Discount Discount { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public decimal DiscountAmount
         {
             get
             {
                 var discountAmount = Discount == null
-                                         ? 0
+                                         ? decimal.Zero
                                          : Discount.GetDiscount(this);
 
                 if (Discount != null && Items.Any())
@@ -67,19 +65,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             }
         }
 
-        [DisplayFormat(DataFormatString = "{0:C2}")]
         public virtual decimal Total
         {
             get { return TotalPreShipping + ShippingTotal.GetValueOrDefault(); }
         }
 
-        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public virtual decimal TotalPreShipping
         {
             get { return TotalPreDiscount - DiscountAmount; }
         }
 
-        [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public decimal Tax
         {
             get
@@ -98,7 +93,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public Guid UserGuid { get; set; }
 
         [Required]
-        [Remote("IsDiscountCodeValid", "Cart", AdditionalFields = "DiscountCode")]
         [DisplayName("Discount Code")]
         public string DiscountCode { get; set; }
 
@@ -139,6 +133,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public bool BillingAddressSameAsShippingAddress { get; set; }
 
         public bool NeedToSetBillingAddress { get { return !BillingAddressSameAsShippingAddress && BillingAddress == null; } }
-    }
 
+        public bool HasDiscount
+        {
+            get { return Discount != null && DiscountAmount != decimal.Zero; }
+        }
+
+        public decimal ItemQuantity
+        {
+            get { return Items.Sum(item => item.Quantity); }
+        }
+
+        public string PayPalExpressToken { get; set; }
+        public string PayPalExpressPayerId { get; set; }
+    }
 }

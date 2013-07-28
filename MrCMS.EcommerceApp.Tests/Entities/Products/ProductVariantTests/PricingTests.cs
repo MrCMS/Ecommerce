@@ -19,7 +19,19 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         {
             _mockingKernel = new MockingKernel();
             MrCMSApplication.OverrideKernel(_mockingKernel);
+            SetTaxSettings();
         }
+
+        private void SetTaxSettings(bool taxesEnabled = false, bool loadedPricesIncludeTax = false)
+        {
+            _mockingKernel.Rebind<TaxSettings>().ToMethod(context => new TaxSettings
+            {
+                TaxesEnabled = taxesEnabled,
+                LoadedPricesIncludeTax = loadedPricesIncludeTax
+            });
+        }
+
+
         [Fact]
         public void ProductVariant_ReducedBy_IsZeroIfPreviousPriceIsNotSet()
         {
@@ -78,52 +90,88 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
             price.Should().Be(1);
         }
 
-        //[Fact]
-        //public void ProductVariant_Price_WithTaxRateSetShouldBeTheSameAsPricePreTax()
-        //{
-        //    var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 20 } };
+        [Fact]
+        public void ProductVariant_Price_WithTaxesEnabledAndRateSetShouldBeBasePricePlusTax()
+        {
+            SetTaxSettings(true);
+            var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 20 } };
 
-        //    var price = variant.Price;
+            var price = variant.Price;
 
-        //    price.Should().Be(1.2m);
-        //}
+            price.Should().Be(1.2m);
+        }
 
-        //[Fact]
-        //public void ProductVariant_Price_ShouldBeRoundedTo2DecimalPlaces()
-        //{
-        //    var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 17.5m } };
+        [Fact]
+        public void ProductVariant_Price_WithTaxesDisabledAndRateSetShouldBeTheSameAsPricePreTax()
+        {
+            SetTaxSettings(false);
+            var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 20 } };
 
-        //    var price = variant.Price;
+            var price = variant.Price;
 
-        //    price.Should().Be(1.18m);
-        //}
+            price.Should().Be(1);
+        }
 
-        //[Fact]
-        //public void ProductVariant_Tax_ShouldBePriceMinusPricePreTax()
-        //{
-        //    var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 17.5m } };
+        [Fact]
+        public void ProductVariant_Price_ShouldBeRoundedTo2DecimalPlaces()
+        {
+            SetTaxSettings(true);
+            var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 17.5m } };
 
-        //    var tax = variant.Tax;
+            var price = variant.Price;
 
-        //    tax.Should().Be(0.18m);
-        //}
+            price.Should().Be(1.18m);
+        }
 
-        //[Theory]
-        //[PropertyData("TaxRates")]
-        //public void ProductVariant_TaxRatePercentage_IsTakenFromTheTaxRatesPercentage(TaxRate rate, decimal expected)
-        //{
-        //    var productVariant = new ProductVariant { TaxRate = rate };
+        [Fact]
+        public void ProductVariant_Tax_IfTaxesAreEnabledShouldBePriceMinusPricePreTax()
+        {
+            SetTaxSettings(true);
+            var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 17.5m } };
 
-        //    productVariant.TaxRatePercentage.Should().Be(expected);
-        //}
+            var tax = variant.Tax;
 
-        //[Fact]
-        //public void ProductVariant_TaxRatePercentage_IsZeroWhenTaxRateIsNull()
-        //{
-        //    var productVariant = new ProductVariant { TaxRate = null };
+            tax.Should().Be(0.18m);
+        }
 
-        //    productVariant.TaxRatePercentage.Should().Be(0);
-        //}
+        [Fact]
+        public void ProductVariant_Tax_IfTaxesAreDisabledShouldBeZero()
+        {
+            SetTaxSettings(false);
+            var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 17.5m } };
+
+            var tax = variant.Tax;
+
+            tax.Should().Be(0m);
+        }
+
+        [Theory]
+        [PropertyData("TaxRates")]
+        public void ProductVariant_TaxRatePercentage_TaxesEnabledIsTakenFromTheTaxRatesPercentage(TaxRate rate, decimal expected)
+        {
+            SetTaxSettings(true);
+            var productVariant = new ProductVariant { TaxRate = rate };
+
+            productVariant.TaxRatePercentage.Should().Be(expected);
+        }
+
+        [Theory]
+        [PropertyData("TaxRates")]
+        public void ProductVariant_TaxRatePercentage_TaxesDisabledIsZero(TaxRate rate, decimal expected)
+        {
+            SetTaxSettings(false);
+            var productVariant = new ProductVariant { TaxRate = rate };
+
+            productVariant.TaxRatePercentage.Should().Be(0);
+        }
+
+        [Fact]
+        public void ProductVariant_TaxRatePercentage_IsZeroWhenTaxRateIsNull()
+        {
+            var productVariant = new ProductVariant { TaxRate = null };
+
+            productVariant.TaxRatePercentage.Should().Be(0);
+        }
 
         public static IEnumerable<object[]> TaxRates
         {
@@ -135,40 +183,40 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         }
 
 
-        //[Fact]
-        //public void ProductVariant_PricePreTax_IfStoreSettingsAreNotLoadedPricesIncludeTaxShouldBeSameAsBasePrice()
-        //{
-        //    _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { LoadedPricesIncludeTax = false });
-        //    var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
+        [Fact]
+        public void ProductVariant_PricePreTax_IfStoreSettingsAreNotLoadedPricesIncludeTaxShouldBeSameAsBasePrice()
+        {
+            SetTaxSettings(true, false);
+            var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
 
-        //    product.PricePreTax.Should().Be(6);
-        //}
+            product.PricePreTax.Should().Be(6);
+        }
 
-        //[Fact]
-        //public void ProductVariant_PricePreTax_IfStoreSettingsAreLoadedPricesIncludeTaxShouldBeBasePriceLessVat()
-        //{
-        //    _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { LoadedPricesIncludeTax = true });
-        //    var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
+        [Fact]
+        public void ProductVariant_PricePreTax_IfStoreSettingsAreLoadedPricesIncludeTaxShouldBeBasePriceLessVat()
+        {
+            SetTaxSettings(true, true);
+            var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
 
-        //    product.PricePreTax.Should().Be(5);
-        //}
+            product.PricePreTax.Should().Be(5);
+        }
 
-        //[Fact]
-        //public void ProductVariant_Price_IfStoreSettingsAreNotLoadedPricesIncludeTaxShouldBeBasePricePlusVAT()
-        //{
-        //    _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { LoadedPricesIncludeTax = false });
-        //    var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
+        [Fact]
+        public void ProductVariant_Price_IfStoreSettingsAreNotLoadedPricesIncludeTaxShouldBeBasePricePlusVAT()
+        {
+            SetTaxSettings(true, false);
+            var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
 
-        //    product.Price.Should().Be(7.2m);
-        //}
+            product.Price.Should().Be(7.2m);
+        }
 
-        //[Fact]
-        //public void ProductVariant_Price_IfStoreSettingsAreLoadedPricesIncludeTaxShouldBeSameAsBasePrice()
-        //{
-        //    _mockingKernel.Bind<TaxSettings>().ToMethod(context => new TaxSettings { LoadedPricesIncludeTax = true });
-        //    var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
+        [Fact]
+        public void ProductVariant_Price_IfStoreSettingsAreLoadedPricesIncludeTaxShouldBeSameAsBasePrice()
+        {
+            SetTaxSettings(true, true);
+            var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
 
-        //    product.Price.Should().Be(6);
-        //}
+            product.Price.Should().Be(6);
+        }
     }
 }

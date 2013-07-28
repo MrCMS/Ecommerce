@@ -2,12 +2,10 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Models;
 using MrCMS.Paging;
 using MrCMS.Services;
-using MrCMS.Website;
 using MrCMS.Helpers;
 using NHibernate;
 
@@ -15,7 +13,12 @@ namespace MrCMS.Entities.Documents
 {
     public abstract class Document : SiteEntity
     {
+        protected Document()
+        {
+            Versions = new List<DocumentVersion>();
+        }
         [Required]
+        [StringLength(255)]
         public virtual string Name { get; set; }
 
         public virtual Document Parent { get; set; }
@@ -94,7 +97,7 @@ namespace MrCMS.Entities.Documents
         }
 
         protected internal virtual void CustomInitialization(IDocumentService service, ISession session) { }
-
+        
         public virtual bool ShowInAdminNav { get { return true; } }
     }
 }

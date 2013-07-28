@@ -2,6 +2,7 @@
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Website.Controllers;
 
@@ -11,11 +12,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly CartModel _cartModel;
         private readonly IOrderService _orderService;
+        private readonly IPayPalExpressService _payPalExpressService;
 
-        public PaymentMethodController(CartModel cartModel, IOrderService orderService)
+        public PaymentMethodController(CartModel cartModel, IOrderService orderService, IPayPalExpressService payPalExpressService)
         {
             _cartModel = cartModel;
             _orderService = orderService;
+            _payPalExpressService = payPalExpressService;
         }
 
         [HttpGet]
@@ -28,7 +31,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [ActionName("CashOnDelivery")]
         public RedirectResult CashOnDelivery_POST()
         {
-            var order = _orderService.PlaceOrder(_cartModel, PaymentStatus.Pending);
+            var order = _orderService.PlaceOrder(_cartModel, o => { o.PaymentStatus = PaymentStatus.Pending; });
+            return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new { id = order.Guid }));
+        }
+
+        [HttpGet]
+        public PartialViewResult PayPalExpressCheckout()
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        [ActionName("PayPalExpressCheckout")]
+        public RedirectResult PayPalExpressCheckout_POST()
+        {
+            var response = _payPalExpressService.DoExpressCheckout(_cartModel);
+            var order = _orderService.PlaceOrder(_cartModel, response.UpdateOrder);
             return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new { id = order.Guid }));
         }
     }

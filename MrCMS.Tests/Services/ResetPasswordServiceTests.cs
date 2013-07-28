@@ -7,6 +7,8 @@ using MrCMS.Models;
 using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Tasks;
+using MrCMS.Web.Apps.Core.Models;
+using MrCMS.Web.Apps.Core.Services;
 using MrCMS.Website;
 using Xunit;
 using FluentAssertions;
@@ -23,7 +25,7 @@ namespace MrCMS.Tests.Services
             A.CallTo(() => httpRequestBase.Url).Returns(new Uri("http://www.example.com"));
             var resetPasswordService = new ResetPasswordService(Session, new SiteSettings(), new MailSettings(),
                                                                 A.Fake<UserService>(), httpRequestBase,
-                                                                A.Fake<IAuthorisationService>());
+                                                                A.Fake<IAuthorisationService>(), A.Fake<IDocumentService>());
 
             var user = new User();
 
@@ -39,7 +41,7 @@ namespace MrCMS.Tests.Services
             A.CallTo(() => httpRequestBase.Url).Returns(new Uri("http://www.example.com"));
             var resetPasswordService = new ResetPasswordService(Session, new SiteSettings(), new MailSettings(),
                                                                 A.Fake<UserService>(), httpRequestBase,
-                                                                A.Fake<IAuthorisationService>());
+                                                                A.Fake<IAuthorisationService>(), A.Fake<IDocumentService>());
 
             var user = new User();
 
@@ -55,7 +57,7 @@ namespace MrCMS.Tests.Services
             A.CallTo(() => httpRequestBase.Url).Returns(new Uri("http://www.example.com"));
             var resetPasswordService = new ResetPasswordService(Session, new SiteSettings(), new MailSettings(),
                                                                 A.Fake<UserService>(), httpRequestBase,
-                                                                A.Fake<IAuthorisationService>());
+                                                                A.Fake<IAuthorisationService>(), A.Fake<IDocumentService>());
 
             var user = new User();
 
@@ -70,7 +72,7 @@ namespace MrCMS.Tests.Services
             A.CallTo(() => httpRequestBase.Url).Returns(new Uri("http://www.example.com"));
             var resetPasswordService = new ResetPasswordService(Session, new SiteSettings(), new MailSettings(),
                                                                 A.Fake<UserService>(), httpRequestBase,
-                                                                A.Fake<IAuthorisationService>());
+                                                                A.Fake<IAuthorisationService>(), A.Fake<IDocumentService>());
 
             var user = new User();
 
@@ -86,7 +88,7 @@ namespace MrCMS.Tests.Services
             var userService = A.Fake<IUserService>();
             var resetPasswordService = new ResetPasswordService(Session, new SiteSettings(), new MailSettings(),
                                                                 userService, A.Fake<HttpRequestBase>(),
-                                                                authorisationService);
+                                                                authorisationService, A.Fake<IDocumentService>());
 
             var guid = Guid.NewGuid();
             var user = new User
@@ -116,7 +118,7 @@ namespace MrCMS.Tests.Services
             var userService = A.Fake<IUserService>();
             var resetPasswordService = new ResetPasswordService(Session, new SiteSettings(), new MailSettings(),
                                                                 userService, A.Fake<HttpRequestBase>(),
-                                                                authorisationService);
+                                                                authorisationService, A.Fake<IDocumentService>());
 
             var guid = Guid.NewGuid();
             var user = new User
@@ -146,7 +148,7 @@ namespace MrCMS.Tests.Services
             var userService = A.Fake<IUserService>();
             var resetPasswordService = new ResetPasswordService(Session, new SiteSettings(), new MailSettings(),
                                                                 userService, A.Fake<HttpRequestBase>(),
-                                                                authorisationService);
+                                                                authorisationService, A.Fake<IDocumentService>());
 
             var guid = Guid.NewGuid();
             var user = new User
@@ -176,7 +178,7 @@ namespace MrCMS.Tests.Services
             var userService = A.Fake<IUserService>();
             var resetPasswordService = new ResetPasswordService(Session, new SiteSettings(), new MailSettings(),
                                                                 userService, A.Fake<HttpRequestBase>(),
-                                                                authorisationService);
+                                                                authorisationService, A.Fake<IDocumentService>());
 
             var guid = Guid.NewGuid();
             var user = new User

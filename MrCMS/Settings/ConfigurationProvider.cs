@@ -5,6 +5,7 @@ using System.Reflection;
 using MrCMS.Entities.Multisite;
 using MrCMS.Entities.Settings;
 using MrCMS.Helpers;
+using NHibernate;
 
 namespace MrCMS.Settings
 {
@@ -12,11 +13,13 @@ namespace MrCMS.Settings
     {
         private readonly ISettingService _settingService;
         private readonly CurrentSite _currentSite;
+        private readonly ISession _session;
 
-        public ConfigurationProvider(ISettingService settingService, CurrentSite currentSite)
+        public ConfigurationProvider(ISettingService settingService, CurrentSite currentSite, ISession session)
         {
             _settingService = settingService;
             _currentSite = currentSite;
+            _session = session;
         }
 
 
@@ -27,13 +30,11 @@ namespace MrCMS.Settings
                                                    where prop.CanWrite && prop.CanRead
                                                    where prop.Name != "Site"
                                                    where
-                                                       prop.PropertyType.GetCustomTypeConverter()
+                                                       prop.PropertyType
+                                                           .GetCustomTypeConverter()
                                                            .CanConvertFrom(typeof(string))
                                                    select prop;
 
-            /* We do not clear cache after each setting update.
-             * This behavior can increase performance because cached settings will not be cleared 
-             * and loaded from database after each update */
             foreach (PropertyInfo prop in properties)
             {
                 string key = type.FullName + "." + prop.Name;
@@ -63,7 +64,7 @@ namespace MrCMS.Settings
             var methodInfo = GetType().GetMethodExt("GetSiteSettings");
 
             return TypeHelper.GetAllConcreteTypesAssignableFrom<SiteSettingsBase>()
-                             .Select(type => methodInfo.MakeGenericMethod(type).Invoke(this, new object[] {  }))
+                             .Select(type => methodInfo.MakeGenericMethod(type).Invoke(this, new object[] { }))
                              .OfType<SiteSettingsBase>().ToList();
 
         }

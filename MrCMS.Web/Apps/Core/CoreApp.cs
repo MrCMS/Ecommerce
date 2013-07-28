@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
 using MrCMS.Apps;
 using MrCMS.Entities.Documents.Layout;
 using MrCMS.Entities.Documents.Media;
@@ -7,10 +10,11 @@ using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Multisite;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
-using MrCMS.Indexing.Management;
 using MrCMS.Installation;
 using MrCMS.Services;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Core.Pages;
+using MrCMS.Web.Apps.Core.Widgets;
 using MrCMS.Website;
 using NHibernate;
 using Ninject;
@@ -31,12 +35,14 @@ namespace MrCMS.Web.Apps.Core
 
         protected override void RegisterServices(IKernel kernel)
         {
-            
+
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
         {
             //settings
+            var mediaSettings = new MediaSettings();
+            session.Transact(sess => sess.Save(site));
             CurrentRequestData.CurrentSite = site;
             var currentSite = new CurrentSite(site);
 
@@ -50,7 +56,10 @@ namespace MrCMS.Web.Apps.Core
 
             var documentService = new DocumentService(session, siteSettings, currentSite);
             var layoutAreaService = new LayoutAreaService(session);
-
+            var widgetService = new WidgetService(session);
+            var fileSystem = new FileSystem();
+            var imageProcessor = new ImageProcessor(session, fileSystem, mediaSettings);
+            var fileService = new FileService(session, fileSystem, imageProcessor, mediaSettings, currentSite);
             var user = new User
             {
                 Email = model.AdminEmail,
@@ -73,6 +82,20 @@ namespace MrCMS.Web.Apps.Core
                                               Layout = model.BaseLayout,
                                               Site = site
                                           },
+                                        new LayoutArea
+                                          {
+                                              AreaName = "Header Left",
+                                              CreatedOn = CurrentRequestData.Now,
+                                              Layout = model.BaseLayout,
+                                              Site = site
+                                          },
+                                        new LayoutArea
+                                          {
+                                              AreaName = "Header Right",
+                                              CreatedOn = CurrentRequestData.Now,
+                                              Layout = model.BaseLayout,
+                                              Site = site
+                                          },
                                       new LayoutArea
                                           {
                                               AreaName = "Before Content",
@@ -86,11 +109,36 @@ namespace MrCMS.Web.Apps.Core
                                               CreatedOn = CurrentRequestData.Now,
                                               Layout = model.BaseLayout,
                                               Site = site
+                                          },
+                                       new LayoutArea
+                                          {
+                                              AreaName = "Footer",
+                                              CreatedOn = CurrentRequestData.Now,
+                                              Layout = model.BaseLayout,
+                                              Site = site
                                           }
                                   };
 
             foreach (LayoutArea l in layoutAreas)
                 layoutAreaService.SaveArea(l);
+
+            var navigationWidget = new Navigation();
+            navigationWidget.LayoutArea = layoutAreas.Single(x => x.AreaName == "Main Navigation");
+            widgetService.AddWidget(navigationWidget);
+
+            
+            widgetService.AddWidget(new UserLinks
+            {
+                Name = "User Links",
+                LayoutArea = layoutAreas.Single(x => x.AreaName == "Header Right")
+            });
+
+            widgetService.AddWidget(new TextWidget
+            {
+                Name = "Footer text",
+                Text = "<p>© Mr CMS 2013</p>",
+                LayoutArea = layoutAreas.Single(x => x.AreaName == "Footer")
+            });
 
             documentService.AddDocument(model.HomePage);
             documentService.AddDocument(model.Page2);
@@ -98,18 +146,77 @@ namespace MrCMS.Web.Apps.Core
             documentService.AddDocument(model.Error403);
             documentService.AddDocument(model.Error404);
             documentService.AddDocument(model.Error500);
+
+            var loginPage = new LoginPage
+            {
+                Name = "Login",
+                UrlSegment = "login",
+                CreatedOn = CurrentRequestData.Now,
+                Layout = model.BaseLayout,
+                Site = site,
+                PublishOn = CurrentRequestData.Now,
+                DisplayOrder = 100,
+                RevealInNavigation = false
+            };
+            documentService.AddDocument(loginPage);
+
+            var forgottenPassword = new ForgottenPasswordPage
+            {
+                Name = "Forgot Password",
+                UrlSegment = "forgot-password",
+                CreatedOn = CurrentRequestData.Now,
+                Layout = model.BaseLayout,
+                Site = site,
+                PublishOn = CurrentRequestData.Now,
+                Parent = loginPage,
+                DisplayOrder = 0,
+                RevealInNavigation = false
+            };
+            documentService.AddDocument(forgottenPassword);
+
+            var resetPassword = new ResetPasswordPage
+            {
+                Name = "Reset Password",
+                UrlSegment = "reset-password",
+                CreatedOn = CurrentRequestData.Now,
+                Layout = model.BaseLayout,
+                Site = site,
+                PublishOn = CurrentRequestData.Now,
+                Parent = loginPage,
+                DisplayOrder = 1,
+                RevealInNavigation = false
+            };
+            documentService.AddDocument(resetPassword);
+
+            var userAccountPage = new UserAccountPage
+            {
+                Name = "My Account",
+                UrlSegment = "my-account",
+                CreatedOn = CurrentRequestData.Now,
+                Layout = model.BaseLayout,
+                Site = site,
+                PublishOn = CurrentRequestData.Now,
+                Parent = loginPage,
+                DisplayOrder = 1,
+                RevealInNavigation = false
+            };
+            documentService.AddDocument(userAccountPage);
+
+            var registerPage = new RegisterPage()
+            {
+                Name = "Register",
+                UrlSegment = "register",
+                CreatedOn = CurrentRequestData.Now,
+                Layout = model.BaseLayout,
+                Site = site,
+                PublishOn = CurrentRequestData.Now
+            };
+            documentService.AddDocument(registerPage);
+
             var webpages = session.QueryOver<Webpage>().List();
             webpages.ForEach(documentService.PublishNow);
 
-
-            var defaultMediaCategory = new MediaCategory
-            {
-                Name = "Default",
-                UrlSegment = "default",
-                Site = site
-            };
-            documentService.AddDocument(defaultMediaCategory);
-
+            
             siteSettings.DefaultLayoutId = model.BaseLayout.Id;
             siteSettings.Error403PageId = model.Error403.Id;
             siteSettings.Error404PageId = model.Error404.Id;
@@ -118,7 +225,6 @@ namespace MrCMS.Web.Apps.Core
             siteSettings.EnableInlineEditing = true;
             siteSettings.SiteIsLive = true;
 
-            var mediaSettings = new MediaSettings {Site = site};
             mediaSettings.ThumbnailImageHeight = 50;
             mediaSettings.ThumbnailImageWidth = 50;
             mediaSettings.LargeImageHeight = 800;
@@ -130,11 +236,32 @@ namespace MrCMS.Web.Apps.Core
             mediaSettings.ResizeQuality = 90;
 
             var configurationProvider = new ConfigurationProvider(new SettingService(session),
-                                                                  currentSite);
-            var fileSystemSettings = new FileSystemSettings {StorageType = typeof (FileSystem).FullName, Site = site};
+                                                                  currentSite, session);
+            var fileSystemSettings = new FileSystemSettings { StorageType = typeof(FileSystem).FullName };
             configurationProvider.SaveSettings(siteSettings);
             configurationProvider.SaveSettings(mediaSettings);
             configurationProvider.SaveSettings(fileSystemSettings);
+
+
+            var defaultMediaCategory = new MediaCategory
+            {
+                Name = "Default",
+                UrlSegment = "default",
+                Site = site
+            };
+            documentService.AddDocument(defaultMediaCategory);
+
+            var logoPath = HttpContext.Current.Server.MapPath("/Apps/Core/Content/images/mrcms-logo.png");
+            var fileStream = new FileStream(logoPath, FileMode.Open);
+            var dbFile = fileService.AddFile(fileStream, Path.GetFileName(logoPath), "image/png", fileStream.Length, defaultMediaCategory);
+
+            widgetService.AddWidget(new LinkedImage
+            {
+                Name = "Mr CMS Logo",
+                Image = dbFile.url,
+                Link = "/",
+                LayoutArea = layoutAreas.Single(x => x.AreaName == "Header Left")
+            });
 
 
             var adminUserRole = new UserRole
@@ -166,6 +293,13 @@ namespace MrCMS.Web.Apps.Core
 
         protected override void RegisterApp(MrCMSAppRegistrationContext context)
         {
+            context.MapRoute("User Registration", "Registration/RegistrationDetails", new { controller = "Registration", action = "RegistrationDetails" });
+            context.MapRoute("User Registration - check email", "Registration/CheckEmailIsNotRegistered", new { controller = "Registration", action = "CheckEmailIsNotRegistered" });
+
+            context.MapRoute("UserAccountController - account details", "UserAccount/UserAccountDetails", new { controller = "UserAccount", action = "UserAccountDetails" });
+            context.MapRoute("UserAccountController - check email isn't already registered", "UserAccount/IsUniqueEmail", new { controller = "UserAccount", action = "IsUniqueEmail" });
+
+            context.MapRoute("UserAccountController - change password", "UserAccount/ChangePassword", new { controller = "UserAccount", action = "ChangePassword" });
         }
     }
 }
