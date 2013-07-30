@@ -46,7 +46,7 @@ namespace MrCMS.Indexing.Querying
 
             return topDocs.TotalHits;
         }
-
+        
         public IList<TEntity> GetAll(Query query = null, Filter filter = null, Sort sort = null)
         {
             var topDocs = IndexSearcher.Search(query, filter, int.MaxValue, sort ?? Sort.RELEVANCE);

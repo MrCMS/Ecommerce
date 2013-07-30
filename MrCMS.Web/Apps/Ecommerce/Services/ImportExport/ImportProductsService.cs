@@ -40,13 +40,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// <param name="productsToImport"></param>
         public void ImportProductsFromDTOs(IEnumerable<ProductImportDataTransferObject> productsToImport)
         {
-            _session.Transact(session => 
-                                  {
-                                      foreach (var dataTransferObject in productsToImport)
-                                      {
-                                          ImportProduct(dataTransferObject);
-                                      }
-                                  });
+            foreach (var dataTransferObject in productsToImport)
+            {
+                ProductImportDataTransferObject transferObject = dataTransferObject;
+                _session.Transact(session =>
+                    {
+                        ImportProduct(transferObject);
+                    });
+            }
         }
 
         /// <summary>
