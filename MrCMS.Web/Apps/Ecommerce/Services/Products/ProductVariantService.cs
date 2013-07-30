@@ -39,14 +39,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             return _session.QueryOver<ProductVariant>()
                             .Where(
                                 variant =>
-                                variant.SKU.IsInsensitiveLike(sku, MatchMode.Exact)).SingleOrDefault();
+                                variant.SKU.IsInsensitiveLike(sku, MatchMode.Exact)).Cacheable().SingleOrDefault();
         }
         public ProductVariant Get(int id)
         {
             return _session.QueryOver<ProductVariant>()
                             .Where(
                                 variant =>
-                                variant.Id == id).SingleOrDefault();
+                                variant.Id == id).Cacheable().SingleOrDefault();
         }
 
         public List<SelectListItem> GetOptions()
