@@ -25,8 +25,8 @@
             <div class="clearfix"></div>
                  @using (Html.BeginForm("ImportProducts", "ImportExport", FormMethod.Post, new { enctype = "multipart/form-data" }))
                  {
-                    <span class="btn btn-success fileinput-button"><span>Choose Import File</span>  
-                         <input type="file" name="document" id="document" />  </span>
+                     <label>Choose Import File</label>
+                         <input type="file" name="document" id="document" />
                      <div class="clearfix"></div>
                      <br />
                      if(ViewBag.Messages!=null)
