@@ -11,61 +11,68 @@
                 @Html.ActionLink("Add", "Add", null, new { @class = "btn btn-primary", data_toggle = "fb-modal" })
             </span>
         </legend>
-        <table class="table table-condensed table-striped">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>ISO Code</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var country in Model)
-                {
+        @if (Model.Any())
+        {
+            <table class="table table-condensed table-striped">
+                <thead>
                     <tr>
-                        <td>
-                            @country.Name
-                            @if (country.Regions.Any())
-                            {
+                        <th>Name</th>
+                        <th>ISO Code</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var country in Model)
+                    {
+                        <tr>
+                            <td>
+                                @country.Name
+                                @if (country.Regions.Any())
+                                {
 
-                                <h5>Regions</h5>
+                                    <h5>Regions</h5>
 
-                                <table class="table table-condensed table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (var region in country.Regions)
-                                        {
-
+                                    <table class="table table-condensed table-striped">
+                                        <thead>
                                             <tr>
-                                                <td>@region.Name</td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        @Html.ActionLink("Edit", "Edit", "Region", new { id = region.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                                                        @Html.ActionLink("Delete", "Delete", "Region", new { id = region.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
-                                                    </div>
-                                                </td>
+                                                <th>Name</th>
+                                                <th>Actions</th>
                                             </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            }
-                        </td>
-                        <td>@country.ISOTwoLetterCode</td>
-                        <td>
-                            <div class="btn-group">
-                                @Html.ActionLink("Edit", "Edit", "Country", new { id = country.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                                @Html.ActionLink("Delete", "Delete", "Country", new { id = country.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
-                                @*@Html.ActionLink("Add Region", "Add", "Region", new { id = country.Id }, new { @class = "btn btn-mini btn-success", data_toggle = "fb-modal" })*@
-                            </div>
-                        </td>
-                    </tr> 
-                }
-            </tbody>
-        </table>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var region in country.Regions)
+                                            {
+
+                                                <tr>
+                                                    <td>@region.Name</td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            @Html.ActionLink("Edit", "Edit", "Region", new {id = region.Id}, new {@class = "btn btn-mini", data_toggle = "fb-modal"})
+                                                            @Html.ActionLink("Delete", "Delete", "Region", new {id = region.Id}, new {@class = "btn btn-mini btn-danger", data_toggle = "fb-modal"})
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                }
+                            </td>
+                            <td>@country.ISOTwoLetterCode</td>
+                            <td>
+                                <div class="btn-group">
+                                    @Html.ActionLink("Edit", "Edit", "Country", new {id = country.Id}, new {@class = "btn btn-mini", data_toggle = "fb-modal"})
+                                    @Html.ActionLink("Delete", "Delete", "Country", new {id = country.Id}, new {@class = "btn btn-mini btn-danger", data_toggle = "fb-modal"})
+                                    @*@Html.ActionLink("Add Region", "Add", "Region", new { id = country.Id }, new { @class = "btn btn-mini btn-success", data_toggle = "fb-modal" })*@
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No countries.</p>
+        }
     </fieldset>
 </form>

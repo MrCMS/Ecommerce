@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Helpers
 {
@@ -47,6 +48,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
             {
                 return false;
             }
+        }
+
+        public static IEnumerable<SelectListItem> SelectDefaultValue(this IEnumerable<SelectListItem> list, string value)
+        {
+            var newList = list;
+            if (newList != null && newList.Any() && !String.IsNullOrWhiteSpace(value))
+            {
+                foreach (var selectListItem in newList)
+                    selectListItem.Selected = false;
+                if (newList.SingleOrDefault(x => x.Value == value) != null)
+                    newList.SingleOrDefault(x => x.Value == value).Selected = true;
+            }
+            return newList;
         }
     }
 }

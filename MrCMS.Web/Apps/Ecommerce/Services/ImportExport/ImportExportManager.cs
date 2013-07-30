@@ -1,7 +1,15 @@
-﻿using System.IO;
+﻿using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Xml;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
@@ -13,20 +21,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public class ImportExportManager : IImportExportManager
     {
+        #region Props
         private readonly IImportProductsValidationService _importProductsValidationService;
         private readonly IImportProductsService _importProductsService;
         private readonly IProductVariantService _productVariantService;
+        private readonly IOrderShippingService _orderShippingService;
+        #endregion
 
-        public ImportExportManager(IImportProductsValidationService importProductsValidationService, 
-            IImportProductsService importProductsService, 
-            IProductVariantService productVariantService)
+        #region Ctor
+        public ImportExportManager(IImportProductsValidationService importProductsValidationService,
+                                   IImportProductsService importProductsService,
+                                   IProductVariantService productVariantService,
+                                   IOrderShippingService orderShippingService)
         {
             _importProductsValidationService = importProductsValidationService;
             _importProductsService = importProductsService;
             _productVariantService = productVariantService;
+            _orderShippingService = orderShippingService;
         }
+        #endregion
 
         #region Products
+
         /// <summary>
         /// Import Products From Excel
         /// </summary>
@@ -53,7 +69,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// <param name="spreadsheet"></param>
         /// <param name="parseErrors"></param>
         /// <returns></returns>
-        private List<ProductImportDataTransferObject> GetProductsFromSpreadSheet(ExcelPackage spreadsheet, out Dictionary<string, List<string>> parseErrors)
+        private List<ProductImportDataTransferObject> GetProductsFromSpreadSheet(ExcelPackage spreadsheet,
+                                                                                 out Dictionary<string, List<string>>
+                                                                                     parseErrors)
         {
             parseErrors = _importProductsValidationService.ValidateImportFile(spreadsheet);
 
@@ -168,21 +186,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     wsItems.Cells["R" + rowId].Value = productVariants[i].SKU;
                     wsItems.Cells["S" + rowId].Value = productVariants[i].Barcode;
 
-                    for (var v = 0; v < productVariants[i].AttributeValues.OrderBy(x => x.ProductAttributeOption.DisplayOrder).Count(); v++)
+                    for (var v = 0;
+                         v <
+                         productVariants[i].AttributeValues.OrderBy(x => x.ProductAttributeOption.DisplayOrder).Count();
+                         v++)
                     {
                         if (v == 0)
                         {
-                            wsItems.Cells["T" + rowId].Value = productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
+                            wsItems.Cells["T" + rowId].Value =
+                                productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
                             wsItems.Cells["U" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
                         if (v == 1)
                         {
-                            wsItems.Cells["V" + rowId].Value = productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
+                            wsItems.Cells["V" + rowId].Value =
+                                productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
                             wsItems.Cells["W" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
                         if (v == 2)
                         {
-                            wsItems.Cells["X" + rowId].Value = productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
+                            wsItems.Cells["X" + rowId].Value =
+                                productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
                             wsItems.Cells["Y" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
                     }
@@ -209,12 +233,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     wsItems.Cells["AE" + rowId].Style.Numberformat.Format = "YYYY-MM-DD hh:mm:ss";
 
                     if (!productVariants[i].Product.Images.Any()) continue;
-                    wsItems.Cells["Z" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.First().FileUrl + "?update=no";
+                    wsItems.Cells["Z" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl +
+                                                       productVariants[i].Product.Images.First().FileUrl + "?update=no";
                     wsItems.Cells["Z" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
 
                     if (productVariants[i].Product.Images.Count() > 1)
                     {
-                        wsItems.Cells["AA" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl + productVariants[i].Product.Images.ToList()[1].FileUrl + "?update=no";
+                        wsItems.Cells["AA" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl +
+                                                            productVariants[i].Product.Images.ToList()[1].FileUrl +
+                                                            "?update=no";
                         wsItems.Cells["AA" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     }
                     if (productVariants[i].Product.Images.Count() > 2)
@@ -233,17 +260,224 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 return excelFile.GetAsByteArray();
             }
         }
+
         #endregion
 
         #region Google Base
+
         /// <summary>
         /// Export Products To Google Base
         /// </summary>
         /// <returns></returns>
         public byte[] ExportProductsToGoogleBase()
         {
-            return null;
+            var ns = "http://base.google.com/ns/1.0";
+            var ms = new MemoryStream();
+            var xml = new XmlTextWriter(ms, Encoding.UTF8);
+
+            xml.WriteStartDocument();
+            xml.WriteStartElement("rss");
+            xml.WriteAttributeString("xmlns", "g", null, ns);
+            xml.WriteAttributeString("version", "2.0");
+            xml.WriteStartElement("channel");
+
+            //GENERAL FEED INFO
+            xml.WriteElementString("title", CurrentRequestData.CurrentSite.Name);
+            xml.WriteElementString("link", "http://"+CurrentRequestData.CurrentSite.BaseUrl);
+            xml.WriteElementString("description", " Products from " + CurrentRequestData.CurrentSite.Name+" online store");
+
+            var productVariants = _productVariantService.GetAllVariants(String.Empty);
+
+            foreach (var pv in productVariants)
+            {
+                ExportGoogleBaseProduct(ref xml, pv, ns);
+            }
+
+            xml.WriteEndElement();
+            xml.WriteEndElement();
+            xml.WriteEndDocument();
+
+            xml.Flush();
+            var file = ms.ToArray();
+            xml.Close();
+
+            return file;
         }
+
+        /// <summary>
+        /// Export Google BaseProduct
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <param name="pv"></param>
+        /// <param name="ns"></param>
+        private void ExportGoogleBaseProduct(ref XmlTextWriter xml, ProductVariant pv, string ns)
+        {
+            xml.WriteStartElement("item");
+
+            //TITLE
+            var title = pv.Name;
+            if (title.Length > 70)
+                title = title.Substring(0, 70);
+            xml.WriteElementString("title", title);
+
+            //LINK
+            xml.WriteElementString("link", string.Format("{0}?variant={1}",
+                                                         "http://" + CurrentRequestData.CurrentSite.BaseUrl + "/" +
+                                                         pv.Product.UrlSegment, pv.Id));
+
+            //DESCRIPTION
+            xml.WriteStartElement("description");
+            var description = pv.Product.BodyContent;
+            if (String.IsNullOrEmpty(description))
+                description = pv.Product.Abstract;
+            if (String.IsNullOrEmpty(description))
+                description = pv.Name;
+            if (String.IsNullOrEmpty(description))
+                description = pv.Product.Name;
+            xml.WriteCData(description);
+            xml.WriteEndElement();
+
+            //CONDITION
+            if (pv.GoogleBaseProduct != null)
+                xml.WriteElementString("g", "condition", ns, pv.GoogleBaseProduct.Condition.ToString());
+
+            //PRICE
+            xml.WriteElementString("g", "price", ns, pv.Price.ToCurrencyFormat());
+
+            //AVAILABILITY
+            var availability = "In Stock";
+            if (pv.TrackingPolicy == TrackingPolicy.Track && pv.StockRemaining!=null && pv.StockRemaining <= 0)
+                availability = "Out of Stock";
+            xml.WriteElementString("g", "availability", ns, availability);
+
+            //GOOGLE PRODUCT CATEGORY
+            if (pv.GoogleBaseProduct != null)
+            {
+                if (pv.GoogleBaseProduct != null &&
+                    !String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.OverrideCategory))
+                    xml.WriteElementString("g", "google_product_category", ns, pv.GoogleBaseProduct.OverrideCategory);
+                else
+                    xml.WriteElementString("g", "google_product_category", ns, pv.GoogleBaseProduct.Category);
+            }
+
+            //PRODUCT CATEGORY
+            if (pv.Product.Categories.Any())
+                xml.WriteElementString("g", "product_type", ns, pv.Product.Categories.First().Name);
+
+            //IMAGES
+            if (pv.Product.Images.Any())
+            {
+                xml.WriteElementString("g", "image_link", ns,
+                                       "http://" + CurrentRequestData.CurrentSite.BaseUrl + pv.Product.Images.First().FileUrl);
+            }
+            if (pv.Product.Images.Count() > 1)
+            {
+                xml.WriteElementString("g", "additional_image_link", ns,
+                                       "http://" + CurrentRequestData.CurrentSite.BaseUrl +
+                                       pv.Product.Images.ToList()[1].FileUrl);
+            }
+
+            //BRAND
+            if (pv.Product.Brand != null)
+                xml.WriteElementString("g", "brand", ns, pv.Product.Brand.Name);
+
+            //ID
+            xml.WriteElementString("g", "id", ns, pv.Id.ToString(new CultureInfo("en-GB", false).NumberFormat));
+
+            //GTIN - SKU
+            xml.WriteElementString("g", "gtin", ns, pv.SKU);
+
+            if (pv.GoogleBaseProduct != null)
+            {
+                //GENDER
+                xml.WriteElementString("g", "gender", ns, pv.GoogleBaseProduct.Gender.ToString());
+
+                //AGE GROUP
+                xml.WriteElementString("g", "age_group", ns, pv.GoogleBaseProduct.AgeGroup.ToString());
+            }
+
+            //ITEM GROUP ID
+            xml.WriteElementString("g", "item_group_id", ns,
+                                   pv.Product.Id.ToString(new CultureInfo("en-GB", false).NumberFormat));
+
+            if (pv.GoogleBaseProduct != null)
+            {
+                //COLOR
+                if (!String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.Color))
+                    xml.WriteElementString("g", "color", ns, pv.GoogleBaseProduct.Color);
+
+                //SIZE
+                if (!String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.Size))
+                    xml.WriteElementString("g", "size", ns, pv.GoogleBaseProduct.Size);
+
+                //PATTERN
+                if (!String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.Pattern))
+                    xml.WriteElementString("g", "pattern", ns, pv.GoogleBaseProduct.Pattern);
+
+                //MATERIAL
+                if (!String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.Material))
+                    xml.WriteElementString("g", "material", ns, pv.GoogleBaseProduct.Material);
+            }
+
+            //SHIPPING
+            SetGoogleBaseShipping(ref xml, pv, ns);
+
+            //WEIGHT
+            xml.WriteElementString("g", "shipping_weight", ns,
+                                   string.Format(CultureInfo.InvariantCulture,
+                                                 "{0} {1}", pv.Weight.ToString(new CultureInfo("en-GB", false).NumberFormat),
+                                                 "kg"));
+
+            //UNIT PRICING MEASURE
+            xml.WriteElementString("g", "unit_pricing_measure", ns,
+                                   string.Format(CultureInfo.InvariantCulture, "{0}{1}",
+                                                 pv.Weight.ToString(new CultureInfo("en-GB", false).NumberFormat),
+                                                 "kg"));
+
+            //ADWORDS
+            if (pv.GoogleBaseProduct != null)
+            {
+                if (!String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.Grouping))
+                    xml.WriteElementString("g", "adwords_grouping", ns, pv.GoogleBaseProduct.Grouping);
+                if (!String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.Labels))
+                    xml.WriteElementString("g", "adwords_labels", ns, pv.GoogleBaseProduct.Labels);
+                if (!String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.Redirect))
+                    xml.WriteElementString("g", "adwords_redirect", ns, pv.GoogleBaseProduct.Redirect);
+            }
+
+            xml.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Set Google Base Shipping
+        /// </summary>
+        /// <param name="pv"></param>
+        /// <param name="ns"></param>
+        /// <param name="xml"></param>
+        private void SetGoogleBaseShipping(ref XmlTextWriter xml, ProductVariant pv, string ns)
+        {
+            var cart = new CartModel()
+                {
+                    Items = new List<CartItem>()
+                        {
+                            new CartItem()
+                                {
+                                    Quantity = 1,
+                                    Item = pv
+                                }
+                        }
+                };
+            var shippingCalculations = _orderShippingService.GetCheapestShippingCalculationsForEveryCountry(cart);
+            foreach (var shippingCalculation in shippingCalculations)
+            {
+                xml.WriteStartElement("g", "shipping", ns);
+                xml.WriteElementString("g", "country", ns, shippingCalculation.Country.Name);
+                xml.WriteElementString("g", "service", ns, shippingCalculation.ShippingMethod.Name);
+                xml.WriteElementString("g", "price", ns,shippingCalculation.GetPrice(cart).Value.ToString(new CultureInfo("en-GB", false).NumberFormat));
+                xml.WriteEndElement();
+            }
+        }
+
         #endregion
     }
 }

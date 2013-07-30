@@ -25,6 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
     {
         List<SelectListItem> GetShippingOptions(CartModel cart);
         ShippingMethod GetDefaultShippingMethod(CartModel cart);
+        IEnumerable<ShippingCalculation> GetCheapestShippingCalculationsForEveryCountry(CartModel cart);
     }
 
     public class OrderShippingService : IOrderShippingService
@@ -61,6 +62,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
                                        .ThenBy(x => x.ShippingMethod.DisplayOrder)
                                        .Where(calculation => calculation.GetPrice(cart).HasValue);
             return shippingCalculations;
+        }
+
+        public IEnumerable<ShippingCalculation> GetCheapestShippingCalculationsForEveryCountry(CartModel cart)
+        {
+            return GetShippingCalculations(cart).GroupBy(x => x.Country).Select(s => new ShippingCalculation()
+                {
+                    Country = s.Key,
+                    ShippingMethod = s.OrderBy(x=>x.GetPrice(cart)).First().ShippingMethod,
+                    BaseAmount = s.OrderBy(x=>x.GetPrice(cart)).First().GetPrice(cart).GetValueOrDefault(),
+                    ShippingCriteria = s.OrderBy(x => x.GetPrice(cart)).First().ShippingCriteria
+                }).ToList();
         }
 
         public ShippingMethod GetDefaultShippingMethod(CartModel cart)
