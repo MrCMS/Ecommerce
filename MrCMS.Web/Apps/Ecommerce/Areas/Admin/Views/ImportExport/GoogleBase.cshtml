@@ -37,7 +37,6 @@
             @Html.TextBoxFor(x => x.Name, new {@class = "input-medium search-query"})
             <button type="submit" class="btn btn-primary">Search</button>
         }
-        <br/>
         @if (Model.Items.Count == 0)
         {
             <br/>
@@ -48,7 +47,6 @@
         else
         {
             <div class="clearfix"></div>
-            <br/>
             <table class="table table-condensed table-striped">
                 <tbody>
                     @foreach (var item in Model.Items)

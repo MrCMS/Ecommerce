@@ -111,17 +111,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult ExportProductsToGoogleBase()
         {
-            try
-            {
+            //try
+            //{
                 var file = _importExportManager.ExportProductsToGoogleBase();
                 ViewBag.ExportStatus = "Products successfully exported.";
                 return File(file, "application/rss+xml", "MrCMS-GoogleBase-Products.xml");
-            }
-            catch (Exception)
-            {
-                const string msg = "Google Base exporting has failed. Please try again and contact system administration if error continues to appear.";
-                return RedirectToAction("GoogleBase", new { status = msg });
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    const string msg = "Google Base exporting has failed. Please try again and contact system administration if error continues to appear.";
+            //    return RedirectToAction("GoogleBase", new { status = msg });
+            //}
         }
 
         [HttpPost]
