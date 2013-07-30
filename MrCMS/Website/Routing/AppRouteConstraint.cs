@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -45,7 +43,7 @@ namespace MrCMS.Website.Routing
             // get controller's methods
             return
                 controllerType.GetMethods()
-                              .Where(q => q.IsPublic && typeof (ActionResult).IsAssignableFrom(q.ReturnType))
+                              .Where(q => q.IsPublic && typeof(ActionResult).IsAssignableFrom(q.ReturnType))
                               .Any(info => info.Name.Equals(actionName, StringComparison.OrdinalIgnoreCase));
 
         }
