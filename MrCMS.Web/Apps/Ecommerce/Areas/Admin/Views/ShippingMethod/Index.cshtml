@@ -10,41 +10,50 @@
                 <a href="@Url.Action("Add", "ShippingMethod")" class="btn btn-primary"  data-toggle="fb-modal">Add Shipping Method</a>
             </span>
         </legend>
-        <table class="table table-condensed table-striped">
-            <thead>
-                <tr>
-                    <th>Name
-                    </th>
-                    <th>Description
-                    </th>
-                    <th>Tax Rate
-                    </th>
-                    <th>Actions
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        @if (Model.Any())
+        {
+            <table class="table table-condensed table-striped">
+                <thead>
                     <tr>
-                        <td>
-                            @item.Name
-                        </td>
-                        <td>
-                            @item.Description
-                        </td>
-                        <td>
-                            @item.TaxRateName
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                @Html.ActionLink("Edit", "Edit", "ShippingMethod", new { id = item.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                                @Html.ActionLink("Delete", "Delete", "ShippingMethod", new { id = item.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
-                            </div>
-                        </td>
+                        <th>Name
+                        </th>
+                        <th>Description
+                        </th>
+                        <th>Tax Rate
+                        </th>
+                        <th>Actions
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.Name
+                            </td>
+                            <td>
+                                @item.Description
+                            </td>
+                            <td>
+                                @item.TaxRateName
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    @Html.ActionLink("Edit", "Edit", "ShippingMethod", new {id = item.Id}, new {@class = "btn btn-mini", data_toggle = "fb-modal"})
+                                    @Html.ActionLink("Delete", "Delete", "ShippingMethod", new {id = item.Id}, new {@class = "btn btn-mini btn-danger", data_toggle = "fb-modal"})
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>
+                No shipping methods.
+            </p>
+        }
     </fieldset>
 </form>
