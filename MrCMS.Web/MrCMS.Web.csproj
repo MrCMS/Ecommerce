@@ -313,6 +313,8 @@
     <Compile Include="Apps\Ecommerce\Models\CashOnDeliveryConfirmModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategoryPagedList.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategorySearchModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\AgeGroup.cs" />
+    <Compile Include="Apps\Ecommerce\Models\Gender.cs" />
     <Compile Include="Apps\Ecommerce\Models\CountryToAdd.cs" />
     <Compile Include="Apps\Ecommerce\Models\DeliveryStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\EcommerceAdminMenuModel.cs" />
@@ -386,8 +388,10 @@
     <Compile Include="Apps\Ecommerce\Services\Geographic\ICountryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Geographic\IRegionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Geographic\RegionService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseTaxonomyData.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseTaxonomyService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\GoogleBase\IGoogleBaseProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\IGoogleBaseTaxonomyService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductImportDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductVariantImportDataTransferObject.cs" />
@@ -468,7 +472,11 @@
     <Compile Include="Apps\Ecommerce\Services\Templating\NotificationTemplateProcesor.cs" />
     <Compile Include="Apps\Ecommerce\Services\Templating\NotificationTemplateSettingsManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Users\AgeGroupService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Users\IAgeGroupService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Users\IGenderService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Users\GenderService.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\GoogleBaseSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />

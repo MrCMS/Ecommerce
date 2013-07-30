@@ -1,38 +1,44 @@
 ﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Models.GoogleBaseModel
 @{
     ViewBag.Title = "Google Base Integration";
+    var googleBaseCategories = ViewData["google-base-categories"] as IEnumerable<SelectListItem>;
+    var gender = ViewData["gender"] as IEnumerable<SelectListItem>;
+    var ageGroup = ViewData["age-group"] as IEnumerable<SelectListItem>;
+    var productConditions = ViewData["product-conditions"] as IEnumerable<SelectListItem>;
 }
 
 <fieldset>
-    <legend>Google Base Integration
-        <span class="btn-group  display-inline  pull-right">
-            <a href="@Url.Action("ExportProductsToGoogleBase", "ImportExport")" class="btn btn-primary">Export Products</a>
-        </span>
-    </legend>
+        <legend>Google Base Integration
+            <span class="btn-group  display-inline  pull-right">
+                <a href="@Url.Action("ExportProductsToGoogleBase", "ImportExport")" class="btn btn-primary">Export Products</a>
+            </span>
+        </legend>
     
-    @if (!string.IsNullOrWhiteSpace(Model.Status))
-    {
-        <div class="row-fluid">
-            <span class="alert alert-info">@Html.Encode(Model.Status)</span>
+        @if (!string.IsNullOrWhiteSpace(Model.Status))
+        {
+            <div class="row-fluid">
+                <span class="alert alert-info">@Html.Encode(Model.Status)</span>
+                <div class="clearfix"></div>
+            </div>
             <div class="clearfix"></div>
-        </div>
-        <div class="clearfix"></div>
+            <hr/>
+        }
+    
+        @{ Html.RenderPartial("GoogleBaseSettings", ViewData["settings"] as MrCMS.Web.Apps.Ecommerce.Settings.GoogleBaseSettings); }
+    
         <hr/>
-    }
     
-    @{ Html.RenderPartial("GoogleBaseSettings", ViewData["settings"] as MrCMS.Web.Apps.Ecommerce.Settings.GoogleBaseSettings); }
-    
-    <hr/>
-    
-    @using (Html.BeginForm("GoogleBase", "ImportExport", FormMethod.Get, new {id="Filter"}))
-    {
-        @Html.DropDownListFor(x=>x.Category, ViewData["categories"] as IEnumerable<SelectListItem>,new {@class="input-xlarge"})
+        @using (Html.BeginForm("GoogleBase", "ImportExport", FormMethod.Get, new {id = "Filter"}))
+        {
+            @Html.DropDownListFor(x => x.Category, ViewData["categories"] as IEnumerable<SelectListItem>, new {@class = "input-xlarge"})
+            <br/>
+            @Html.TextBoxFor(x => x.Name, new {@class = "input-medium search-query"})
+            <button type="submit" class="btn btn-primary">Search</button>
+        }
         <br/>
-        @Html.TextBoxFor(x=>x.Name,new {@class="input-medium search-query"})
-        <button type="submit" class="btn btn-primary">Search</button>
-        <br/>
-        if (Model.Items.Count == 0)
+        @if (Model.Items.Count == 0)
         {
             <br/>
             <p>
@@ -41,32 +47,51 @@
         }
         else
         {
+            <div class="clearfix"></div>
+            <br/>
             <table class="table table-condensed table-striped">
-                <thead>
-                    <tr>
-                        <th>Product
-                        </th>
-                        <th>Actions
-                        </th>
-                    </tr>
-                </thead>
                 <tbody>
                     @foreach (var item in Model.Items)
                     {
                         <tr>
                             <td>
-                                @item.Name
+                                <h4>&nbsp;@item.Name</h4>
+                                <br/>
+                                @Html.Label("override-category-" + item.Id, "Please choose category:")
+                                @Html.DropDownList("override-category-" + item.Id, googleBaseCategories.SelectDefaultValue(item.GoogleBaseProduct != null ? item.GoogleBaseProduct.Category : String.Empty), new {@class = "input-xlarge"})
                             </td>
                             <td>
-                                <button type="submit" id="update" class="btn btn-mini">Update</button>
+                                @Html.Label("override-condition-" + item.Id, "Product Condition:")
+                                @Html.DropDownList("override-condition-" + item.Id, productConditions.SelectDefaultValue(item.GoogleBaseProduct != null ? item.GoogleBaseProduct.Condition.ToString() : String.Empty), new {@class = "input-medium"})
+                                @Html.Label("gender-" + item.Id, "Gender:")
+                                @Html.DropDownList("gender-" + item.Id, gender.SelectDefaultValue(item.GoogleBaseProduct != null ? item.GoogleBaseProduct.Gender.ToString() : String.Empty), new {@class = "input-medium"})
+                                @Html.Label("age-group-" + item.Id, "Age Group:")
+                                @Html.DropDownList("age-group-" + item.Id, ageGroup.SelectDefaultValue(item.GoogleBaseProduct != null ? item.GoogleBaseProduct.AgeGroup.ToString() : String.Empty), new {@class = "input-medium"})
+                            </td>
+                            <td>
+                                @Html.Label("adwords-grouping-" + item.Id, "AdWords Grouping:")
+                                @Html.TextBox("adwords-grouping-" + item.Id, item.GoogleBaseProduct != null ? item.GoogleBaseProduct.Grouping : String.Empty, new {@class = "input-large", placeholder = "e.g: comforters"})
+                                @Html.Label("adwords-labels-" + item.Id, "AdWords Labels:")
+                                @Html.TextBox("adwords-labels-" + item.Id, item.GoogleBaseProduct != null ? item.GoogleBaseProduct.Labels : String.Empty, new {@class = "input-large", placeholder = "e.g: clothing, shoes"}) 
+                                @Html.Label("adwords-redirect-" + item.Id, "AdWords Redirect:")
+                                @Html.TextBox("adwords-redirect-" + item.Id, item.GoogleBaseProduct != null ? item.GoogleBaseProduct.Redirect : String.Empty, new {@class = "input-large", placeholder = "e.g: http://www.merchant.com/product.html"}) 
+                            </td>
+                            <td>
+                                <button type="submit" id="update-@item.Id" class="btn btn-mini"
+                                        data-product-variant-id="@item.Id" 
+                                        data-google-base-product-id="@(item.GoogleBaseProduct != null ? item.GoogleBaseProduct.Id : 0)">
+                                    Update
+                                </button>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
         }
+        
         @Html.Pager(Model.Items, "GoogleBase", i => new {page = i})
-    }
 
+ 
 </fieldset>
+
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/google-base.js");}

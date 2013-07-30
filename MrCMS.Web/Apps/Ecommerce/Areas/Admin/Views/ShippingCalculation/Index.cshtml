@@ -8,40 +8,47 @@
     <fieldset>
         <legend>Shipping Calculations
         </legend>
-
-@foreach (var country in Model)
+@if (!Model.Any())
 {
-    <div class="pull-left">
-        <h4>@country.Name</h4>
-    </div>
-     <div class="pull-right">
-        @Html.ActionLink("Add", "Add", "ShippingCalculation", new { id=country.Id }, new { @class = "btn btn-primary btn-mini", data_toggle = "fb-modal" })
-    </div>
-    <br />
-    <br />
-    <div class="clearfix"></div>
-    foreach (var shippingMethod in country.GetShippingMethods())
+    <p>
+        Please add at least one country and shipping method in order to add shipping calculations.
+    </p>
+}
+else
+{
+    foreach (var country in Model)
     {
-         <strong>@shippingMethod.Name</strong>
- 
-        <table class="table table-condensed table-striped">
-            <thead>
-                <tr>
-                    <th class="span4"></th>
-                    <th class="span2"></th>
-                    <th class="span2"></th>
-                </tr>
-            </thead>
-            <tbody>
-        @foreach (ShippingCalculation shippingCalculation in shippingMethod.ShippingCalculations.Where(x=>x.Country.Id==country.Id).OrderBy(calculation => calculation.ShippingCriteria).ThenBy(calculation => calculation.LowerBound))
-        {
-            Html.RenderPartial("CalculationRow", shippingCalculation);
-        }
-        </tbody>
-        </table>
+        <div class="pull-left">
+            <h4>@country.Name</h4>
+        </div>
+        <div class="pull-right">
+            @Html.ActionLink("Add", "Add", "ShippingCalculation", new {id = country.Id}, new {@class = "btn btn-primary btn-mini", data_toggle = "fb-modal"})
+        </div>
+        <br />
+        <br />
         <div class="clearfix"></div>
+        foreach (var shippingMethod in country.GetShippingMethods())
+        {
+            <strong>@shippingMethod.Name</strong>
+
+            <table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th class="span4"></th>
+                        <th class="span2"></th>
+                        <th class="span2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (ShippingCalculation shippingCalculation in shippingMethod.ShippingCalculations.Where(x => x.Country.Id == country.Id).OrderBy(calculation => calculation.ShippingCriteria).ThenBy(calculation => calculation.LowerBound))
+                    {
+                        Html.RenderPartial("CalculationRow", shippingCalculation);
+                    }
+                </tbody>
+            </table>
+            <div class="clearfix"></div>
+        }
     }
 }
-
     </fieldset>
 </form>

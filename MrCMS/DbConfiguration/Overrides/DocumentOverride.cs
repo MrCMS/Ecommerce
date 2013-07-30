@@ -1,6 +1,5 @@
 ﻿using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
-using MrCMS.Entities;
 using MrCMS.Entities.Documents;
 
 namespace MrCMS.DbConfiguration.Overrides
