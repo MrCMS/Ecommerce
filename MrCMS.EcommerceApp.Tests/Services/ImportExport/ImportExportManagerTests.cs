@@ -4,23 +4,26 @@ using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
     public class ImportExportManagerTests : InMemoryDatabaseTest
     {
-        private IImportProductsValidationService _importProductsValidationService;
-        private IImportProductsService _importProductsService;
-        private IProductVariantService _productVariantService;
-        private ImportExportManager _importExportManager;
+        private readonly IImportProductsValidationService _importProductsValidationService;
+        private readonly IImportProductsService _importProductsService;
+        private readonly IProductVariantService _productVariantService;
+        private readonly ImportExportManager _importExportManager;
+        private readonly IOrderShippingService _orderShippingService;
 
         public ImportExportManagerTests()
         {
             _importProductsValidationService = A.Fake<IImportProductsValidationService>();
             _importProductsService = A.Fake<IImportProductsService>();
             _productVariantService = A.Fake<IProductVariantService>();
+            _orderShippingService = A.Fake<IOrderShippingService>();
 
-            _importExportManager = new ImportExportManager(_importProductsValidationService, _importProductsService, _productVariantService);
+            _importExportManager = new ImportExportManager(_importProductsValidationService, _importProductsService, _productVariantService, _orderShippingService);
         }
 
         [Fact]
@@ -53,6 +56,30 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             _importExportManager.ExportProductsToExcel();
 
             A.CallTo(() => _productVariantService.GetAll()).MustHaveHappened();
+        }
+
+        [Fact]
+        public void ImportExportManager_ExportProductsToGoogleBase_ShouldNotBeNull()
+        {
+            var result = _importExportManager.ExportProductsToGoogleBase();
+
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void ImportExportManager_ExportProductsToGoogleBase_ShouldReturnByteArray()
+        {
+            var result = _importExportManager.ExportProductsToGoogleBase();
+
+            result.Should().BeOfType<byte[]>();
+        }
+
+        [Fact]
+        public void ImportExportManager_ExportProductsToGoogleBase_ShouldCallGetAllVariantsOfProductVariantService()
+        {
+            _importExportManager.ExportProductsToGoogleBase();
+
+            A.CallTo(() => _productVariantService.GetAllVariants(string.Empty,0,1)).MustHaveHappened();
         }
 
         private static Stream GetDefaultStream()

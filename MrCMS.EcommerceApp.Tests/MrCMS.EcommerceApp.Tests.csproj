@@ -115,6 +115,7 @@
   <ItemGroup>
     <Compile Include="Admin\Controllers\CategoryControllerTests.cs" />
     <Compile Include="Admin\Controllers\BrandControllerTests.cs" />
+    <Compile Include="Admin\Controllers\ImportExportControllerTests.cs" />
     <Compile Include="Admin\Controllers\EcommerceSettingsControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductSpecificationAttributeOptionControllerTests.cs" />
     <Compile Include="Admin\Controllers\OrderRefundControllerTests.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Services\ProductVariantServiceTests.cs" />
     <Compile Include="Services\RegionServiceTests.cs" />
     <Compile Include="Services\TaxRateManagerTests.cs" />
+    <Compile Include="Stubs\BasicHttpPostedFileBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -190,7 +192,6 @@
   <ItemGroup>
     <Folder Include="Helpers\" />
     <Folder Include="Indexing\" />
-    <Folder Include="Stubs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="x64\SQLite.Interop.dll">
