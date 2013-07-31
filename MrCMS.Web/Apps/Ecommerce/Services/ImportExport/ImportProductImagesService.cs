@@ -25,10 +25,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// </summary>
         /// <param name="dataTransferObject"></param>
         /// <param name="product"></param>
-        public IEnumerable<MediaFile> ImportProductImages(ProductImportDataTransferObject dataTransferObject, Product product)
+        public IEnumerable<MediaFile> ImportProductImages(List<string> images, MediaCategory mediaCategory)
         {
             // We want to always look at all of the urls in the file, and only not import when it is set to update = no
-            foreach (var imageUrl in dataTransferObject.Images)
+            foreach (var imageUrl in images)
             {
                 Uri result;
                 if (Uri.TryCreate(imageUrl, UriKind.Absolute, out result))
@@ -42,11 +42,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                         }
                     }
                     var resultWithOutQuery= !string.IsNullOrEmpty(result.Query) ? result.ToString().Replace(result.Query, "") : result.ToString();
-                    ImportImageToGallery(resultWithOutQuery, product.Gallery);
+                    ImportImageToGallery(resultWithOutQuery, mediaCategory);
                 }
             }
 
-            return dataTransferObject.Images.Any() ? product.Images : null;
+            return mediaCategory.Files;
         }
 
         /// <summary>
@@ -76,7 +76,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             }
             catch (Exception ex)
             {
-                CurrentRequestData.ErrorSignal.Raise(ex);
                 return false;
             }
         }

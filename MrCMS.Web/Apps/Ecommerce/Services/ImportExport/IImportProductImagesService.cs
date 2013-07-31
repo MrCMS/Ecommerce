@@ -12,7 +12,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// </summary>
         /// <param name="dataTransferObject"></param>
         /// <param name="product"></param>
-        IEnumerable<MediaFile> ImportProductImages(ProductImportDataTransferObject dataTransferObject, Product product);
+        IEnumerable<MediaFile> ImportProductImages(List<string> images, MediaCategory mediaCategory);
 
         /// <summary>
         /// Add image to Product Gallery
