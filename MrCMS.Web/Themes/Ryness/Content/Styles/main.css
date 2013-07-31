@@ -386,14 +386,14 @@ box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);}
 
 /* Portrait tablet to landscape and desktop */
 @media (min-width: 768px) and (max-width: 979px) {
-    .top-basket{line-height:22px;font-size:11px;padding:0 5px;}
+    .top-basket{line-height:22px;/*font-size:11px;*/padding:0 5px;}
     .header-links ul li a {padding-left:15px;font-size:11px;}
     .top-checkout input[type="submit"] {font-size:11px;padding: 1px;font-weight:normal;}
     .block .collapse {height:auto !important;overflow:visible !important;}
-    .all-contents {margin-left:25%;position:relative;z-index:899;background:#ffffff;margin-top:100px;overflow-x:hidden;}
+    /*.all-contents {margin-left:25%;position:relative;z-index:899;background:#ffffff;margin-top:100px;overflow-x:hidden;}*/
     .all-contents .container {width:100%;}
     .all-contents .textpage {padding:0 10px;}
-    header {position:fixed;top:0;left:0;background:#ffffff;z-index:999;width:100%;}
+    /*header {position:fixed;top:0;left:0;background:#ffffff;z-index:999;width:100%;}*/
     header .container {width:100% !important;}
     .tablet-menu {position:fixed;top:90px;left:0;width:23%;z-index:1;}
     .tablet-menu .span12 {min-height:0;}
