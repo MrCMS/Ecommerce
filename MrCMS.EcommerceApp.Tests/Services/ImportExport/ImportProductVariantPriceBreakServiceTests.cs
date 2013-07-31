@@ -16,15 +16,12 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
     public class ImportProductVariantPriceBreakServiceTests
     {
-        private readonly IProductVariantService _productVariantService;
         private readonly IImportProductVariantPriceBreaksService _importProductUrlHistoryService;
 
         public ImportProductVariantPriceBreakServiceTests()
         {
-            _productVariantService = A.Fake<IProductVariantService>();
-            _importProductUrlHistoryService = new ImportProductVariantPriceBreaksService(_productVariantService);
+            _importProductUrlHistoryService = new ImportProductVariantPriceBreaksService();
         }
-
 
         [Fact]
         public void ImportProductVariantPriceBreakService_ImportVariantPriceBreaks_ShouldCallProductVariantServiceAddPriceBreak()

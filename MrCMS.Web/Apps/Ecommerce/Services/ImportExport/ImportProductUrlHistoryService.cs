@@ -17,7 +17,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
         public IEnumerable<UrlHistory> ImportUrlHistory(ProductImportDataTransferObject item, Product product)
         {
-            var urlHistoryItems = new List<UrlHistory>();
             foreach (var urlHistoryItem in item.UrlHistory)
             {
                 var urlHistory = _urlHistoryService.GetByUrlSegment(urlHistoryItem);
@@ -28,11 +27,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                             UrlSegment = urlHistoryItem, 
                             Webpage = product
                         };
-                    _urlHistoryService.Add(urlHistory);
-                    urlHistoryItems.Add(urlHistory);
+                    product.Urls.Add(urlHistory);
                 }
             }
-            return urlHistoryItems;
+            return product.Urls;
         }
     }
 }

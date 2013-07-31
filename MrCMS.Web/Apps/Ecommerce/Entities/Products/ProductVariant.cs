@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using MrCMS.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -20,6 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public ProductVariant()
         {
             AttributeValues = new List<ProductAttributeValue>();
+            PriceBreaks = new List<PriceBreak>();
         }
         [DisplayName("Price Pre Tax")]
         public virtual decimal PricePreTax
@@ -148,17 +150,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual IList<ProductAttributeValue> AttributeValues { get; set; }
         public virtual IEnumerable<ProductAttributeValue> AttributeValuesOrdered { get { return AttributeValues.OrderBy(value => value.DisplayOrder); } }
-        public virtual IList<PriceBreak> PriceBreaks
-        {
-            get
-            {
-                return MrCMSApplication.Get<ISession>()
-                                       .QueryOver<PriceBreak>()
-                                       .Where(@break => @break.Item == this)
-                                       .Cacheable()
-                                       .List();
-            }
-        }
+        public virtual IList<PriceBreak> PriceBreaks { get; set; }
 
         [StringLength(200)]
         public virtual string Barcode { get; set; }
@@ -201,5 +193,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                 return title;
             }
         }
+
+        public virtual GoogleBaseProduct GoogleBaseProduct { get; set; }
+
     }
 }
