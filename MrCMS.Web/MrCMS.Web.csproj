@@ -227,11 +227,13 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\CountryOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountApplicationOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountLimitationOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\GoogleBaseProductOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\NotificationTemplateSettingsOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderLineOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderNoteOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\PriceBreakOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\ProductVariantOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ShippingMethodOverride.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceApp.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Cart\CartItem.cs" />
