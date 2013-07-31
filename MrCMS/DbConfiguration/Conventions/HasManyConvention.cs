@@ -47,6 +47,15 @@ namespace MrCMS.DbConfiguration.Conventions
             {
                 instance.Index(string.Format("IX_{0}_{1}", instance.EntityType.Name, instance.Property.Name));
             }
+
+            if (instance.Name == "DocumentType")
+            {
+                instance.Index(string.Format("IX_{0}_{1}", instance.EntityType.Name, instance.Property.Name));
+            }
+            if (instance.Name == "DisplayOrder")
+            {
+                instance.Index(string.Format("IX_{0}_{1}", instance.EntityType.Name, instance.Property.Name));
+            }
         }
     }
 }
