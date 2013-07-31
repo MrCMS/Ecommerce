@@ -19,8 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.Rules
             var errors = new List<string>();
             foreach (var item in product.UrlHistory)
             {
-                var document = _documentService.GetDocumentByUrl<Product>(product.UrlSegment);
-                if (!_documentService.UrlIsValidForWebpage(item, document!=null?(int?)document.Id:null))
+                if (!_documentService.UrlIsValidForWebpageUrlHistory(item))
                         errors.Add(string.Format("Url:{0} is not valid url (possibly already exists).",item));
             }
             return errors;
