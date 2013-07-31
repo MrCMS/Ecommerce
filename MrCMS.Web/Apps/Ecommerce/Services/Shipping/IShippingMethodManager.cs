@@ -66,13 +66,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 
         public IEnumerable<ShippingCalculation> GetCheapestShippingCalculationsForEveryCountry(CartModel cart)
         {
-            return GetShippingCalculations(cart).GroupBy(x => x.Country).Select(s => new ShippingCalculation()
-                {
-                    Country = s.Key,
-                    ShippingMethod = s.OrderBy(x=>x.GetPrice(cart)).First().ShippingMethod,
-                    BaseAmount = s.OrderBy(x=>x.GetPrice(cart)).First().GetPrice(cart).GetValueOrDefault(),
-                    ShippingCriteria = s.OrderBy(x => x.GetPrice(cart)).First().ShippingCriteria
-                }).ToList();
+            return GetShippingCalculations(cart).GroupBy(x => x.Country).Select(s => s.OrderBy(calculation => calculation.GetPrice(cart)).First()).ToList();
         }
 
         public ShippingMethod GetDefaultShippingMethod(CartModel cart)

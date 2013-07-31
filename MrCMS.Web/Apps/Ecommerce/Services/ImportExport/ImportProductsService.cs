@@ -74,7 +74,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 if (brand == null)
                 {
                     brand = new Brand { Name = dataTransferObject.Brand };
-                    _brandService.Add(brand);
                 }
                 product.Brand = brand;
             }
@@ -84,31 +83,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             foreach (var item in dataTransferObject.Categories)
             {
                 var category = _documentService.GetDocumentByUrl<Category>(item);
-                if (category != null && !product.Categories.Any(x => x.Id == category.Id))
+                if (category != null && product.Categories.All(x => x.Id != category.Id))
                     product.Categories.Add(category);
             }
 
             product.AttributeOptions.Clear();
-
-            if (product.Id == 0)
-            {
-                _documentService.AddDocument(product);
-                product.Variants.Clear();
-            }
-            else
-                _documentService.SaveDocument(product);
-
+            
             //Url History
             _importUrlHistoryService.ImportUrlHistory(dataTransferObject, product);
 
-            //Images
-            _importProductImagesService.ImportProductImages(dataTransferObject, product);
 
             //Specifications
             _importSpecificationsService.ImportSpecifications(dataTransferObject, product);
 
             //Variants
             _importProductVariantsService.ImportVariants(dataTransferObject, product);
+            
+            if (product.Id == 0)
+            {
+                _documentService.AddDocument(product);
+            }
+            else
+                _documentService.SaveDocument(product);
+
+            //Images
+            _importProductImagesService.ImportProductImages(dataTransferObject.Images, product.Gallery);
 
             _documentService.SaveDocument(product);
 
