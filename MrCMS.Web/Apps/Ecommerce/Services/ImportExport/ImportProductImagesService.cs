@@ -74,7 +74,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 }
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

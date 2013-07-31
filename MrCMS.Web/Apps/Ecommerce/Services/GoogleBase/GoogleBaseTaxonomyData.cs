@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
 {
@@ -11,7 +12,34 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             get { return GetRows(); }
         }
 
-        private static List<string> GetRows()
+        public static List<string> GetTaxonomyData(string url)
+        {
+            if (!String.IsNullOrWhiteSpace(url))
+            {
+                var result = DownloadRawTaxonomyData(url);
+                if (!String.IsNullOrWhiteSpace(result))
+                {
+                    var rows = DownloadRawTaxonomyData(url).Split(new[] { "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);
+                    rows.ToList().RemoveAt(0);
+                    return rows.ToList();
+                }
+            }
+            return null;
+        }
+        private static string DownloadRawTaxonomyData(string url)
+        {
+            try
+            {
+                var client = new WebClient();
+                return client.DownloadString(url);
+            }
+            catch (Exception)
+            {
+                return String.Empty;
+            }
+        }
+
+        private static IEnumerable<string> GetRows()
         {
             var rows = RawData.Split(new[] { "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);
             return rows.ToList();

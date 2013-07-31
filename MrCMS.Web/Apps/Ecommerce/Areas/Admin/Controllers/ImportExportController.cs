@@ -10,8 +10,6 @@ using MrCMS.Website.Controllers;
 using System.Web;
 using System;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Apps.Ecommerce.Services.Categories;
-using MrCMS.Web.Apps.Ecommerce.Services.Users;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
@@ -23,10 +21,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IConfigurationProvider _configurationProvider;
         private readonly GoogleBaseSettings _googleBaseSettings;
         private readonly IOptionService _optionService;
-        private readonly ICategoryService _categoryService;
-        private readonly IGoogleBaseService _googleBaseTaxonomyService;
+        private readonly IGoogleBaseService _googleBaseService;
         private readonly IProductVariantService _productVariantService;
-        private readonly IGoogleBaseProductService _googleBaseProductService;
         #endregion
 
         #region Ctor
@@ -34,19 +30,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             IConfigurationProvider configurationProvider, 
             GoogleBaseSettings googleBaseSettings,
             IOptionService optionService,
-            ICategoryService categoryService,
-            IGoogleBaseService googleBaseTaxonomyService,
-            IProductVariantService productVariantService,
-            IGoogleBaseProductService googleBaseProductService)
+            IGoogleBaseService googleBaseService,
+            IProductVariantService productVariantService)
         {
             _importExportManager = importExportManager;
             _configurationProvider = configurationProvider;
             _googleBaseSettings = googleBaseSettings;
             _optionService = optionService;
-            _categoryService = categoryService;
-            _googleBaseTaxonomyService = googleBaseTaxonomyService;
             _productVariantService = productVariantService;
-            _googleBaseProductService = googleBaseProductService;
+            _googleBaseService = googleBaseService;
         }
         #endregion
 
@@ -92,11 +84,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public ViewResult GoogleBase(GoogleBaseModel model)
         {
             ViewData["settings"] = _googleBaseSettings;
-            ViewData["google-base-categories"] = _googleBaseTaxonomyService.GetGoogleCategories();
-            ViewData["categories"] = _categoryService.GetOptions();
+            ViewData["google-base-categories"] = _googleBaseService.GetGoogleCategories();
+            ViewData["categories"] = _optionService.GetCategoryOptions();
             ViewData["product-conditions"] = _optionService.GetEnumOptions<ProductCondition>();
-            ViewData["gender"] = _optionService.GetEnumOptions<Gender>();
-            ViewData["age-group"] = _optionService.GetEnumOptions<AgeGroup>();
+            ViewData["genders"] = _optionService.GetEnumOptions<Gender>();
+            ViewData["age-groups"] = _optionService.GetEnumOptions<AgeGroup>();
 
             model.Items = _productVariantService.GetAllVariants(model.Name, model.Category.HasValue ? model.Category.Value : 0, model.Page);
             return View(model);
@@ -125,40 +117,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateGoogleBaseRecord(ProductVariant productVariant,
-                                                   string overrideCategory,
-                                                   string grouping,
-                                                   string labels,
-                                                   string redirect,
-                                                   int googleBaseProductId = 0,
-                                                   ProductCondition overrideCondition = ProductCondition.New,
-                                                   Gender gender = Gender.Male,
-                                                   AgeGroup ageGroup = AgeGroup.Adults)
+        public JsonResult UpdateGoogleBaseProduct(ProductVariant productVariant,GoogleBaseProduct googleBaseProduct)
         {
+            var msg = String.Empty;
             if (productVariant != null)
             {
-                var googleBaseProduct = _googleBaseProductService.Get(googleBaseProductId)
-                                        ?? new GoogleBaseProduct(){ProductVariant = productVariant};
-                if (!String.IsNullOrWhiteSpace(overrideCategory))
-                    googleBaseProduct.OverrideCategory = overrideCategory;
-                if (!String.IsNullOrWhiteSpace(grouping))
-                    googleBaseProduct.Grouping = grouping;
-                if (!String.IsNullOrWhiteSpace(labels))
-                    googleBaseProduct.Labels = labels;
-                if (!String.IsNullOrWhiteSpace(redirect))
-                    googleBaseProduct.Redirect = redirect;
-                googleBaseProduct.OverrideCondition = overrideCondition;
-                googleBaseProduct.Gender = gender;
-                googleBaseProduct.AgeGroup = ageGroup;
-                googleBaseProduct.Site = CurrentSite;
-
-                if(googleBaseProductId==0)
-                    _googleBaseProductService.Add(googleBaseProduct);
-                else
-                    _googleBaseProductService.Update(googleBaseProduct);
-                productVariant.GoogleBaseProduct= googleBaseProduct;
-                _productVariantService.Update(productVariant);
-
+                _googleBaseService.UpdateGoogleBaseProductAndVariant(productVariant,googleBaseProduct);
                 return Json(true);
             }
             return Json(false);
