@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -20,6 +20,10 @@ namespace MrCMS.Website
         {
             AppUiControllers =
                 MrCMSApp.AppTypes.Where(pair => typeof(MrCMSUIController).IsAssignableFrom(pair.Key))
+                        .GroupBy(pair => pair.Value)
+                        .ToDictionary(grouping => grouping.Key, grouping => grouping.Select(pair => pair.Key).ToList());
+            AppAdminControllers =
+                MrCMSApp.AppTypes.Where(pair => typeof(MrCMSAdminController).IsAssignableFrom(pair.Key))
                         .GroupBy(pair => pair.Value)
                         .ToDictionary(grouping => grouping.Key, grouping => grouping.Select(pair => pair.Key).ToList());
             AppAdminControllers =

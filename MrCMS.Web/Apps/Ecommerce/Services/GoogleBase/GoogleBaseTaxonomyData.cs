@@ -1,8 +1,30 @@
-﻿namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
 {
-    public class GoogleBaseTaxonomyData
+    public static class GoogleBaseTaxonomyData
     {
-        public static string RawData = @"
+        private static readonly List<string> _rows;
+
+        static GoogleBaseTaxonomyData()
+        {
+            _rows = GetRows();
+        }
+
+        public static List<string> Rows
+        {
+            get { return _rows; }
+        }
+
+        private static List<string> GetRows()
+        {
+            var rows = RawData.Split(new[] { "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);
+            return rows.ToList();
+        }
+
+        private const string RawData = @"
 Animals & Pet Supplies
 Animals & Pet Supplies > Live Animals
 Animals & Pet Supplies > Pet Supplies

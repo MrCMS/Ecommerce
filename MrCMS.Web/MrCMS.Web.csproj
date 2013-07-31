@@ -58,6 +58,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentNHibernate.1.3.0.733\lib\FluentNHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="HibernatingRhinos.Profiler.Appender">
+      <HintPath>..\packages\NHibernateProfiler.2.0.2186.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -254,11 +257,13 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\CountryOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountApplicationOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountLimitationOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\GoogleBaseProductOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\NotificationTemplateSettingsOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderLineOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderNoteOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\PriceBreakOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\ProductVariantOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ShippingMethodOverride.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceApp.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Cart\CartItem.cs" />
@@ -313,6 +318,8 @@
     <Compile Include="Apps\Ecommerce\Models\CashOnDeliveryConfirmModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategoryPagedList.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategorySearchModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\AgeGroup.cs" />
+    <Compile Include="Apps\Ecommerce\Models\Gender.cs" />
     <Compile Include="Apps\Ecommerce\Models\CountryToAdd.cs" />
     <Compile Include="Apps\Ecommerce\Models\DeliveryStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\EcommerceAdminMenuModel.cs" />
@@ -386,8 +393,10 @@
     <Compile Include="Apps\Ecommerce\Services\Geographic\ICountryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Geographic\IRegionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Geographic\RegionService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseTaxonomyData.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseTaxonomyService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\GoogleBase\IGoogleBaseProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\IGoogleBaseTaxonomyService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductImportDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductVariantImportDataTransferObject.cs" />
@@ -409,7 +418,6 @@
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductVariantsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\IProductImportValidationRule.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\IProductVariantImportValidationRule.cs" />
-    <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductCategoriesExist.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductImagesHaveValidUrl.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductMaxAbstractLengthIs500.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductMaxBrandLengthIs255.cs" />
@@ -468,17 +476,21 @@
     <Compile Include="Apps\Ecommerce\Services\Templating\NotificationTemplateProcesor.cs" />
     <Compile Include="Apps\Ecommerce\Services\Templating\NotificationTemplateSettingsManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Users\AgeGroupService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Users\IAgeGroupService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Users\IGenderService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Users\GenderService.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\GoogleBaseSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
-    <Compile Include="Apps\Ecommerce\Widgets\CartWidget.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\BreadCrumb.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\CartWidget.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\EcommerceNavigation.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedCategories.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedProducts.cs" />
-    <Compile Include="Apps\Ecommerce\Widgets\SearchBox.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\RelatedProducts.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\SearchBox.cs" />
     <Compile Include="Apps\Galleries\GalleriesApp.cs" />
     <Compile Include="Apps\Core\DbConfiguration\PlainTextWidgetOveride.cs" />
     <Compile Include="Apps\Core\DbConfiguration\TextWidgetOveride.cs" />
@@ -969,10 +981,13 @@
     <Content Include="Areas\Admin\Content\Scripts\custom\add-webpage.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\add-layout.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\add-category.js" />
+    <Content Include="Areas\Admin\Content\Scripts\custom\move-webpage.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\edit-webpage.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\file-system-settings.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\form-builder.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\media-category.js" />
+    <Content Include="Areas\Admin\Content\Scripts\custom\popup.js" />
+    <Content Include="Areas\Admin\Content\Scripts\custom\sort.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\tagging.js" />
     <Content Include="Areas\Admin\Content\Scripts\front-end-editing.js" />
     <Content Include="Areas\Admin\Content\Scripts\i18n\jquery-ui-i18n.js" />
@@ -1046,6 +1061,49 @@
     <Content Include="Areas\Admin\Content\Scripts\i18n\jquery.ui.datepicker-zh-TW.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.formbuilder.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.mrcms-mediaselector.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2-spinner.gif" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2.css" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2.min.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2.png" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2x2.png" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_ar.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_ca.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_cs.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_da.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_de.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_el.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_es.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_et.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_eu.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_fi.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_fr.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_gl.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_he.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_hr.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_hu.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_id.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_is.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_it.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_ja.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_ko.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_lt.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_lv.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_mk.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_nl.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_no.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_pl.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_pt-BR.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_pt-PT.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_ro.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_ru.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_sk.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_sv.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_tr.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_ua.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_vi.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_zh-CN.js" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_zh-TW.js" />
     <Content Include="Areas\Admin\Content\Scripts\tag-it.min.js" />
     <Content Include="Areas\Admin\Content\Styles\admin.css" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\css\bootstrap-responsive.css" />
@@ -1872,12 +1930,13 @@
     <Content Include="Apps\Ecommerce\Views\Shared\_SearchLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Web.config" />
     <Content Include="Apps\Ecommerce\Views\Widgets\BreadCrumb.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\CartWidget.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\EcommerceNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\RelatedProducts.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\SearchBox.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Widgets\CartWidget.cshtml" />
     <Content Include="Apps\Ryness\Views\Web.config" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\Slider.cshtml" />
@@ -1917,7 +1976,6 @@
     <Content Include="Areas\Admin\Views\MediaCategory\FileList.cshtml" />
     <Content Include="Areas\Admin\Views\MediaCategory\FileSelector.cshtml" />
     <Content Include="Areas\Admin\Views\LayoutArea\SortWidgets.cshtml" />
-    <Content Include="Areas\Admin\Views\Webpage\SortWidgets.cshtml" />
     <Content Include="Areas\Admin\Views\LayoutArea\SortWidgetsForPage.cshtml" />
     <Content Include="Areas\Admin\Views\Role\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Role\Add.cshtml" />
@@ -2032,6 +2090,12 @@
     <Content Include="Areas\Admin\Views\ACL\Group.cshtml" />
     <Content Include="Areas\Admin\Views\ImportExport\Documents.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\InPageEditorContainer.cshtml" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\component.json" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\LICENSE" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\README.md" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\release.sh" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2.jquery.json" />
+    <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_en.js.template" />
     <None Include="Properties\PublishProfiles\v0.1.1.pubxml" />
     <None Include="Properties\PublishProfiles\v0.1.pubxml" />
     <Content Include="Apps\Core\Views\Widgets\Navigation.cshtml" />
@@ -2043,7 +2107,6 @@
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config" />
-    <Content Include="Apps\Ecommerce\Views\Widgets\SearchBox.cshtml" />
     <Content Include="Themes\Ecommerce\Views\Web.config" />
     <Content Include="Themes\Ryness\Views\Web.config" />
     <Content Include="Themes\Ryness\Views\Shared\_BaseLayout.cshtml" />
@@ -2203,7 +2266,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>36181</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8001</IISUrl>
+          <IISUrl>http://localhost:8889</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

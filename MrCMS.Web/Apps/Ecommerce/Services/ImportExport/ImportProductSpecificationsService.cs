@@ -33,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                                ProductSpecificationAttribute = option,
                                                Name = item.Value
                                            });
-                    _productOptionManager.UpdateSpecificationAttribute(option);
+                    //_productOptionManager.UpdateSpecificationAttribute(option);
                 }
                 var optionValue = option.Options.SingleOrDefault(x => x.Name == item.Value);
                 if (!product.SpecificationValues.Any(x => optionValue != null && (x.ProductSpecificationAttributeOption.Id == optionValue.Id && x.Product.Id == product.Id)))
@@ -51,12 +51,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         {
             foreach (var opt in item.Options)
             {
-                var option = _productOptionManager.GetAttributeOptionByName(opt.Key);
-                if (option == null)
-                {
-                    _productOptionManager.AddAttributeOption(new ProductAttributeOption { Name = opt.Key });
-                    option = _productOptionManager.GetAttributeOptionByName(opt.Key);
-                }
+                var option = _productOptionManager.GetAttributeOptionByName(opt.Key) ??  new ProductAttributeOption {Name = opt.Key};
                 if (!productVariant.Product.AttributeOptions.Any(x => x.Id == option.Id))
                     product.AttributeOptions.Add(option);
                 if (!productVariant.AttributeValues.Any(x => x.ProductAttributeOption.Id == option.Id))
@@ -78,7 +73,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     }
                 }
             }
-            _productVariantService.Update(productVariant);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -80,16 +81,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                                 //Prepare handle name for storing and grouping errors
                                 string url = worksheet.GetValue<string>(rowId, 1), name = worksheet.GetValue<string>(rowId, 2);
-                                var handle = url.HasValue() ? url : name;
+                                var handle = GeneralHelper.HasValue(url) ? url : SeoHelper.TidyUrl(name);
 
+                                
                                 if (!productsToImport.Any(x => x.Name == name || x.UrlSegment == url))
                                 {
-                                    if (!parseErrors.Any(x => x.Key == handle))
+                                    if (parseErrors.All(x => x.Key != handle))
                                         parseErrors.Add(handle, new List<string>());
-                                    product.UrlSegment = worksheet.GetValue<string>(rowId, 1).HasValue()
+
+                                    product.UrlSegment = GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 1))
                                                              ? worksheet.GetValue<string>(rowId, 1)
                                                              : _documentService.GetDocumentUrl(name, null);
-                                    if (worksheet.GetValue<string>(rowId, 2).HasValue())
+                                    //skip duplicate url
+                                    if (productsToImport.Any(x => x.UrlSegment == product.UrlSegment))
+                                        continue;
+                                    
+                                    if (GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 2)))
                                         product.Name = worksheet.GetValue<string>(rowId, 2);
                                     else
                                         parseErrors[handle].Add("Product Name is required.");
@@ -99,7 +106,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     product.SEOKeywords = worksheet.GetValue<string>(rowId, 6);
                                     product.Abstract = worksheet.GetValue<string>(rowId, 7);
                                     product.Brand = worksheet.GetValue<string>(rowId, 8);
-                                    if (worksheet.GetValue<string>(rowId, 31).HasValue())
+                                    if (GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 31)))
                                     {
                                         if (!worksheet.GetValue<string>(rowId, 31).IsValidDateTime())
                                             parseErrors[handle].Add("Publish Date is not a valid date.");
@@ -167,11 +174,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     }
 
                                     //Images
-                                    if (worksheet.GetValue<string>(rowId, 26).HasValue())
+                                    if (GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 26)))
                                         product.Images.Add(worksheet.GetValue<string>(rowId, 26));
-                                    if (worksheet.GetValue<string>(rowId, 27).HasValue())
+                                    if (GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 27)))
                                         product.Images.Add(worksheet.GetValue<string>(rowId, 27));
-                                    if (worksheet.GetValue<string>(rowId, 28).HasValue())
+                                    if (GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 28)))
                                         product.Images.Add(worksheet.GetValue<string>(rowId, 28));
 
                                     //Url History
@@ -209,31 +216,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                         Name = worksheet.GetValue<string>(rowId, 11)
                                     };
 
-                                    if (!worksheet.GetValue<string>(rowId, 12).IsValidInput<decimal>())
+                                    if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 12)))
                                         parseErrors[handle].Add("Price value is not a valid decimal number.");
-                                    else if (worksheet.GetValue<string>(rowId, 12).HasValue())
+                                    else if (GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 12)))
                                         productVariant.Price = worksheet.GetValue<decimal>(rowId, 12);
                                     else
                                         parseErrors[handle].Add("Price is required.");
-                                    if (!worksheet.GetValue<string>(rowId, 13).IsValidInput<decimal>())
+                                    if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 13)))
                                         parseErrors[handle].Add("Previous Price value is not a valid decimal number.");
                                     else
                                         productVariant.PreviousPrice = worksheet.GetValue<decimal>(rowId, 13);
-                                    if (!worksheet.GetValue<string>(rowId, 14).IsValidInput<int>())
+                                    if (!GeneralHelper.IsValidInput<int>(worksheet.GetValue<string>(rowId, 14)))
                                         parseErrors[handle].Add("Tax Rate Id value is not a valid number.");
                                     else
                                         productVariant.TaxRate = worksheet.GetValue<int>(rowId, 14);
-                                    if (!worksheet.GetValue<string>(rowId, 15).IsValidInput<decimal>())
+                                    if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 15)))
                                         parseErrors[handle].Add("Weight value is not a valid decimal number.");
                                     else
                                         productVariant.Weight = worksheet.GetValue<decimal>(rowId, 15);
-                                    if (!worksheet.GetValue<string>(rowId, 16).IsValidInput<int>())
+                                    if (!GeneralHelper.IsValidInput<int>(worksheet.GetValue<string>(rowId, 16)))
                                         parseErrors[handle].Add("Stock value is not a valid decimal number.");
                                     else
                                         productVariant.Stock = worksheet.HasValue(rowId, 16)
                                                                    ? worksheet.GetValue<int>(rowId, 16)
                                                                    : (int?) null;
-                                    if (!worksheet.GetValue<string>(rowId, 17).HasValue() ||
+                                    if (!GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 17)) ||
                                         (worksheet.GetValue<string>(rowId, 17) != "Track" &&
                                          worksheet.GetValue<string>(rowId, 17) != "DontTrack"))
                                         parseErrors[handle].Add("Tracking Policy must have either 'Track' or 'DontTrack' value.");
@@ -244,23 +251,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                         else
                                             productVariant.TrackingPolicy = TrackingPolicy.DontTrack;
                                     }
-                                    if (worksheet.GetValue<string>(rowId, 18).HasValue())
+                                    if (GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 18)))
                                         productVariant.SKU = worksheet.GetValue<string>(rowId, 18);
                                     else
                                         parseErrors[handle].Add("SKU is required.");
                                     productVariant.Barcode = worksheet.GetValue<string>(rowId, 19);
 
                                     //Options
-                                    if (worksheet.GetValue<string>(rowId, 20).HasValue() &&
-                                        worksheet.GetValue<string>(rowId, 21).HasValue())
+                                    if (GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 20)) &&
+                                        GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 21)))
                                         productVariant.Options.Add(worksheet.GetValue<string>(rowId, 20),
                                                                    worksheet.GetValue<string>(rowId, 21));
-                                    if (worksheet.GetValue<string>(rowId, 22).HasValue() &&
-                                        worksheet.GetValue<string>(rowId, 23).HasValue())
+                                    if (GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 22)) &&
+                                        GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 23)))
                                         productVariant.Options.Add(worksheet.GetValue<string>(rowId, 22),
                                                                    worksheet.GetValue<string>(rowId, 23));
-                                    if (worksheet.GetValue<string>(rowId, 24).HasValue() &&
-                                        worksheet.GetValue<string>(rowId, 25).HasValue())
+                                    if (GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 24)) &&
+                                        GeneralHelper.HasValue(worksheet.GetValue<string>(rowId, 25)))
                                         productVariant.Options.Add(worksheet.GetValue<string>(rowId, 24),
                                                                    worksheet.GetValue<string>(rowId, 25));
 
