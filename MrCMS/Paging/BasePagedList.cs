@@ -16,7 +16,7 @@ namespace MrCMS.Paging
     public abstract class BasePagedList<T> : PagedListMetaData, IPagedList<T>
     {
         /// <summary>
-        /// 	The subset of items contained only within this one page of the superset.
+        /// 	The subset of items contained only within this one page of the superset. 
         /// </summary>
         protected readonly List<T> Subset = new List<T>();
 

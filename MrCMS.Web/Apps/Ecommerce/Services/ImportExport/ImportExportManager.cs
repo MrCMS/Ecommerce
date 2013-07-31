@@ -321,9 +321,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             xml.WriteElementString("title", title);
 
             //LINK
-            xml.WriteElementString("link", string.Format("{0}?variant={1}",
-                                                         "http://" + CurrentRequestData.CurrentSite.BaseUrl + "/" +
-                                                         pv.Product.UrlSegment, pv.Id));
+            xml.WriteElementString("link", string.Format("http://{0}/{1}?variant={2}", CurrentRequestData.CurrentSite.BaseUrl, pv.Product.UrlSegment, pv.Id));
 
             //DESCRIPTION
             xml.WriteStartElement("description");

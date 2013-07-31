@@ -22,6 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                                {
                                    OrderTotal = cart.Total.GetAmountType(),
                                    ItemTotal =cart.Subtotal.GetAmountType(),
+                                   TaxTotal = cart.Tax.GetAmountType(),
                                    ShippingTotal = cart.ShippingTotal.GetAmountType(),
                                    PaymentDetailsItem = GetPaymentDetailsItems(cart),
                                    PaymentAction = _payPalExpressCheckoutSettings.PaymentAction

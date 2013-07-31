@@ -8,16 +8,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public class ImportProductVariantPriceBreaksService : IImportProductVariantPriceBreaksService
     {
-        private readonly IProductVariantService _productVariantService;
-
-        public ImportProductVariantPriceBreaksService(IProductVariantService productVariantService)
-        {
-            _productVariantService = productVariantService;
-        }
-
         public IEnumerable<PriceBreak> ImportVariantPriceBreaks(ProductVariantImportDataTransferObject item, ProductVariant productVariant)
         {
-            var priceBreaks = new List<PriceBreak>();
             foreach (var priceBreakItem in item.PriceBreaks)
             {
                 var priceBreak = productVariant.PriceBreaks.SingleOrDefault(x => x.Quantity == priceBreakItem.Key);
@@ -29,11 +21,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                             Quantity = priceBreakItem.Key,
                             Item = productVariant
                         };
-                    _productVariantService.AddPriceBreak(priceBreak);
-                    priceBreaks.Add(priceBreak);
+                    productVariant.PriceBreaks.Add(priceBreak);
                 }
             }
-            return priceBreaks;
+            return productVariant.PriceBreaks;
         }
     }
 }
