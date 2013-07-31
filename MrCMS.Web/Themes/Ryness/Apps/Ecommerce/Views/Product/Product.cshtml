@@ -1,0 +1,143 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+@using MrCMS.Helpers
+@using System.Linq
+@using MrCMS.Web.Apps.Ecommerce.Entities.Products
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@{
+    var selectedVariant = ViewData["selected-variant"] as ProductVariant ?? Model.VariantsByPrice.First();
+    var hasSpecifications = Model.SpecificationValues.Any();
+}
+@Html.HiddenFor(x => x.UrlSegment)
+<div class="container margin-bottom-20">
+    <div class="content">
+        <div class="row-fluid">
+            <div class="span7">
+                <div class="row-fluid">
+                    <div class="span5">
+                        @{ Html.RenderPartial("ProductImages", Model); }
+                    </div>
+                    <div class="span7 product-des">
+                        <h1>@Model.Name</h1>
+                        <div class="product-price text-align-left">
+                            <span>Exclusive Price</span>
+                            @selectedVariant.Price.ToCurrencyFormat()
+
+                            @if (selectedVariant.PreviousPrice.HasValue)
+                            {
+                                <span>
+                                    @Model.PreviousPriceText <span>@selectedVariant.PreviousPrice.Value.ToCurrencyFormat()</span>
+                                </span>
+                            }
+                        </div>
+                        <p>
+                            @Model.Abstract
+                        </p>
+                        @{Html.RenderPartial("SocialLinks");}
+                        @RenderZone("Below Product Price")
+                    </div>
+                </div>
+            </div>
+            <div class="span5">
+                @if (Model.IsMultiVariant)
+                {
+                    <div class="row-fluid border-each margin-top-bottom-10 add-to-cart">
+                        <div class="span12 padding-10">
+                            <div class="row-fluid">
+                                <div class="span4">Variants</div>
+                                <div class="span8">
+                                    @Html.DropDownList("variant", Model.VariantsByPrice.BuildSelectItemList(variant => variant.SelectOptionName, variant => variant.Id.ToString(), variant => variant == selectedVariant, emptyItem: null), new { @class = "span12 variantdropdown" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @{Html.RenderPartial("ProductPricebreaks", Model);}
+                <!-- product add to cart start -->
+                @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                {
+                    @Html.Hidden("Id", selectedVariant.Id)
+                    <div class="row-fluid border-each margin-top-bottom-10 add-to-cart" id="product-addtobasket">
+                        <div class="span12 padding-10">
+                            <div class="row-fluid">
+                                <div class="span2">
+                                    <span class="hidden-tablet">Quantity</span>
+                                    <span class="hidden-desktop hidden-phone">Qty</span>
+                                </div>
+                                <div class="span2">
+                                    <div class="row-fluid">
+                                        <input type="text" class="span12" value="1" id="quantity" name="quantity" />
+                                    </div>
+                                </div>
+                                <div class="span8">
+                                    <div class="row-fluid">
+                                        <button class="generic-button red-gradient span12" type="submit">Add to basket</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <!-- product add to cart end -->
+                @RenderZone("Below Add to cart")
+            </div>
+        </div>
+        <!-- full description start -->
+        <div class="row-fluid">
+            <div class="span7">
+                <div class="row-fluid margin-top-bottom-10">
+                    <div class="content-title">
+                        <img src="/Themes/Ryness/Content/Images/des.jpg" alt="Description" />
+                        Full Description
+                    </div>
+                    <div class="content-details">
+                        @Editable(Model, product => product.BodyContent)
+                    </div>
+                    <div class="accordion" id="accordion2">
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">Delivery Details
+                                    <img src="/Themes/Ryness/Content/Images/van.jpg" alt="Van" />
+                                </a>
+                            </div>
+                            <div id="collapseOne" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    <p>Orders placed Monday to Friday before 2pm will generally be picked and packed for immediate despatch. Some products specify a longer delivery time in the product description (e.g. web specials). Please note that orders placed over the weekend or on public holidays will be processed on the next working day.</p>
+
+                                    <p>Orders over &pound;50 are delivered&nbsp;<strong>FREE</strong> (excluding mobile air conditioner units)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">Returns Information
+                                    <img src="/Themes/Ryness/Content/Images/parcel.jpg" alt="Parcel" />
+                                </a>
+                            </div>
+                            <div id="collapseTwo" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    <p>We offer a 28 Day Money Back Guarantee. If for any reason you are not completely delighted with your purchase you may download a returns form and return it within 28 days for a full refund or exchange.</p>
+                                    <p>Delivery costs back to us are not refundable.</p>
+                                    <p>This excludes cut cable, or special order items.</p>
+                                    <p><strong>A filled out returns form MUST BE included with any returned goods. Download <a href="http://www.ryness.co.uk/pdfs/returns_form.pdf" target="_blank">here</a></strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- full description end -->
+            <div class="span5">
+                <!-- product specifications start -->
+                @if (hasSpecifications)
+                {
+                    Html.RenderPartial("ProductSpecifications", Model);
+                }
+                <!-- product specifications end -->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    @RenderZone("Below Product Infomation")
+</div>
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/product.js"); }

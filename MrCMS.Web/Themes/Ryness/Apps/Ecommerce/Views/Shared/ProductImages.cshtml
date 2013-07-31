@@ -1,0 +1,14 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+<div class="row-fluid">
+    <div class="span12 border-each text-align-center">
+        <ul id="pikame">
+            @foreach (var item in Model.Images)
+            {
+                <li>
+                    <a href="#">@Html.RenderImage(item.FileUrl, Model.Name)</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

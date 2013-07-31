@@ -1,0 +1,26 @@
+﻿@using MrCMS.Website
+@model List<MrCMS.Web.Apps.Core.Models.NavigationRecord>
+<ul>
+    @foreach (var page in Model)
+    {
+        var setClass = "";
+        switch (page.Text.ToString())
+        {
+            case "My Account":
+                setClass = "ico-account";
+                break;
+            case "Login":
+                setClass = "ico-account";
+                break;
+            case "Register":
+                setClass = "ico-account";
+                break;
+            default:
+                setClass = "";
+                break;
+        }
+        <li><a href="@page.Url" title="@page.Text" class="@setClass">@page.Text</a></li>    
+    }
+    <li>//</li>
+    <li><a href="/stores" class="ico-stores">Stores</a></li>
+</ul>

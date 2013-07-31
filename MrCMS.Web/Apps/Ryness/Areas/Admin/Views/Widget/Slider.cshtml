@@ -1,0 +1,32 @@
+﻿@model MrCMS.Web.Apps.Ryness.Widgets.Slider
+           
+<div class="row-fluid">
+    <div class="span3">
+        @Html.LabelFor(slider => slider.SliderImage1)
+        @Html.TextBoxFor(slider => slider.SliderImage1, new { @class = "media-selector" })
+        
+        @Html.LabelFor(widget => widget.SliderUrl1)
+        @Html.TextBoxFor(widget => widget.SliderUrl1)
+    </div>
+    <div class="span3">
+        @Html.LabelFor(slider => slider.SliderImage2)
+        @Html.TextBoxFor(slider => slider.SliderImage2, new { @class = "media-selector" })
+        
+        @Html.LabelFor(widget => widget.SliderUrl2)
+        @Html.TextBoxFor(widget => widget.SliderUrl2)
+    </div>
+    <div class="span3">
+        @Html.LabelFor(slider => slider.SliderImage3)
+        @Html.TextBoxFor(slider => slider.SliderImage3, new { @class = "media-selector" })
+        
+        @Html.LabelFor(widget => widget.SliderUrl3)
+        @Html.TextBoxFor(widget => widget.SliderUrl3)
+    </div>
+    <div class="span3">
+        @Html.LabelFor(slider => slider.SliderImage4)
+        @Html.TextBoxFor(slider => slider.SliderImage4, new { @class = "media-selector" })
+        
+        @Html.LabelFor(widget => widget.SliderUrl4)
+        @Html.TextBoxFor(widget => widget.SliderUrl4)
+    </div>
+</div>

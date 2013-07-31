@@ -1,0 +1,11 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.SearchBox
+<div id="search-box">
+    <div class="row-fluid search-con search-gradient" style="padding:7px 0;">
+        <div class="span9 padding-left-10">
+            @Html.TextBox("searchTerm", Request.QueryString["SearchTerm"], new { @class = "span12 search-text no-margin-left", placeholder = "e.g : Wall Lights" })
+        </div>
+        <div class="span3 padding-right-10">
+            <button class="span12 btn" type="button" id="searchButton" name="searchButton">Search</button>
+        </div>
+    </div>
+</div>

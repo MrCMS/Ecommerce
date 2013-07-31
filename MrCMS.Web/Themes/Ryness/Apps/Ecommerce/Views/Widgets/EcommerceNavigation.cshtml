@@ -1,0 +1,53 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Website
+@model MrCMS.Web.Apps.Core.Models.NavigationList
+@{
+    var currentPage = CurrentRequestData.CurrentPage;
+    var activePages = currentPage.ActivePages.Select(webpage => "/" + webpage.LiveUrlSegment).ToList();
+}
+<ul class="nav">
+    @foreach (var page in Model)
+    {
+        if (page.Children.Any())
+        {
+            <li class="@(activePages.Any(s => s == page.Url.ToString()) ? "active" : "")">
+                <a href="@page.Url" class="dropdown-toggle" data-toggle="dropdown">@page.Text</a>
+                @if (page.Children.Any())
+                {
+                    @Html.Hidden("ProductSearchUrl", page.Url);
+                    <ul>
+                        <li><a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">All Categories</a></li>
+                        @foreach (var record in page.Children)
+                        {
+                            if(record.Children.Any())
+                            {
+                                <li>
+                                    <a href="@record.Url">@record.Text</a>
+                                    @Html.Partial("_EcommerceNavigationChildren", record)
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="@(activePages.Contains(record.Url.ToString(), StringComparer.OrdinalIgnoreCase) ? "active" : "")">
+                                    <a href="@record.Url">@record.Text</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                }
+            </li> 
+        }
+        else if (page.Text.ToString() == "Home")
+        {
+            <li class="@(activePages.Any(s => s == page.Url.ToString()) ? "active" : "")">
+                <a href="@page.Url" class="home"><img src="/Themes/Ryness/Content/Images/home.png" alt="Home"/></a>
+            </li>
+        }
+        else
+        {
+            <li class="@(activePages.Any(s => s == page.Url.ToString()) ? "active" : "")">
+                <a href="@page.Url">@page.Text</a>
+            </li>      
+        }
+    }
+</ul>

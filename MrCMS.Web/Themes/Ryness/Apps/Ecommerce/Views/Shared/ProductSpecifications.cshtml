@@ -1,0 +1,23 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+           
+<div class="row-fluid">
+    <div class="spec-title">
+        <img src="/Themes/Ryness/Content/Images/spec.jpg" alt="Specifications"/> Specifications
+    </div>
+    <div class="spec-details">
+        @foreach (var item in Model.SpecificationValues.OrderBy(x => x.DisplayOrder))
+        {
+            <div class="border-bottom">
+                <div class="row-fluid">
+                    <div class="span6 bold-font">
+                        @item.SpecificationName
+                    </div>
+                    <div class="span6">
+                        @item.Value
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

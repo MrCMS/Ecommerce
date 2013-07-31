@@ -1,0 +1,24 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product 
+<div class="span3">
+    <div class="product-picture text-align-center margin-top-10 padding-top-bottom-10"> 
+        @if (Model.Images.Any())
+        {
+            <img src="/Themes/Ryness/Content/Images/top-offer.png" alt="offer" title="offer" class="offer"/>
+            <a href="/@Model.LiveUrlSegment" title="@Model.Name">@RenderImage(Model.Images.First().FileUrl)</a>
+        }
+    </div>
+    <div class="product-brief">
+        <div class="product-abstract">
+            <h3><a href="/@Model.LiveUrlSegment">@Model.Name</a></h3>
+            @(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)
+        </div>
+        <div class="product-price">
+            @Html.DisplayFor(product => product.DisplayPrice)
+            @if (Model.DisplayPreviousPrice.HasValue)
+            {
+                <span>@Model.PreviousPriceText : @Html.DisplayFor(product => product.DisplayPreviousPrice)</span>
+            }
+            
+        </div>
+    </div>
+</div>
