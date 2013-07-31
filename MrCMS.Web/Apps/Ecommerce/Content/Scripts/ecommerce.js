@@ -1,5 +1,6 @@
 ﻿$(function () {
-    $('.dropdown-toggle').dropdownHover();
+    /*$('.dropdown-toggle').dropdownHover();*/
+
     $("#searchTerm").keypress(function (e) {
         if (e.which == 13) {
             e.preventDefault();

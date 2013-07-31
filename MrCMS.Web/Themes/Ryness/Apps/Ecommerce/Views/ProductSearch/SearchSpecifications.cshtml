@@ -1,0 +1,25 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Services.Products
+@model List<MrCMS.Web.Apps.Ecommerce.Models.ProductOptionModel>
+@{ var query = ViewData["query"] as ProductSearchQuery;}
+@if (Model.Any())
+{
+    <div class="filter-header">
+        By Specifications
+    </div>
+    <div class="block-container padding-left-right-10">
+            @foreach (var specification in Model)
+            {
+                <div class="row-fluid dashed-border-bottom">
+                <span>@specification.Name</span>
+                <select name="Specifications" id="specifications-@specification.Id" class="span12">
+                    <option value="">All</option>
+                    @foreach (var option in specification.Values)
+                    {
+                        <option value="@option.Id"@(query.Specifications.Contains(option.Id) ? " selected=\"selected\"" : string.Empty)>
+                            @option.Name
+                        </option>
+                    }
+                </select></div>
+            }
+    </div>
+}

@@ -1,0 +1,25 @@
+﻿@model MrCMS.Entities.Documents.Web.Webpage
+@{
+    Layout = "~/Themes/Ryness/Views/Shared/_ECommercelayout.cshtml";
+}
+<div class="container">
+    <div class="row-fluid padding-top-bottom-10">
+        <div class="span6">
+            <a href="/delivery-details"><img src="/Themes/Ryness/Content/Images/free-delivery.jpg" alt="Free delivery on orders over &pound;50" title="Free delivery on orders over &pound;50" /></a>
+        </div>
+        <div class="span6">
+            <a href="/returns-policy"><img src="/Themes/Ryness/Content/Images/return.jpg" alt="7 day no question returns" title="7 day no question returns" /></a>
+        </div>
+    </div>
+</div>
+@RenderZone("Before Content Home")
+<br/>
+<div class="welcome-con">
+    <div class="container">
+        <div class="row-fluid padding-top-bottom-20">
+            <div class="span12 text-align-center white-text">
+               @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>

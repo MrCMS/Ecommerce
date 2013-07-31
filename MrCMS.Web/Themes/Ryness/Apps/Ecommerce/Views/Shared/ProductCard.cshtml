@@ -1,0 +1,31 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+@if (Model.Variants.Any())
+{
+    <div class="span3 text-align-center">
+        <a href="/@Model.LiveUrlSegment">
+            @RenderImage(Model.DisplayImageUrl)
+        </a>
+    </div>
+    <div class="span6">
+        <div class="product-abstract">
+            <h3><a href="/@Model.LiveUrlSegment">@Model.Name</a></h3>
+            @(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)
+        </div>
+    </div>
+    <div class="span3 last">
+        <div class="product-price text-align-right">
+            <span>Exclusive price</span>
+            @Html.DisplayFor(product => product.DisplayPrice)
+            @if (Model.DisplayPreviousPrice.HasValue)
+            {
+                <span>@Model.PreviousPriceText : <span>@Model.DisplayPreviousPrice.Value.ToCurrencyFormat()</span></span>
+            }
+        </div>
+        <div class="more-info">
+            <div class="row-fluid text-align-center">
+                <a href="/@Model.LiveUrlSegment" class="generic-button big-red-gradient span9 offset3">More info</a>
+            </div>
+        </div>
+    </div>
+}

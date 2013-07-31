@@ -3,8 +3,7 @@
 
 @if (Model != null && ((List<MrCMS.Web.Apps.Ecommerce.Pages.Category>)ViewBag.Categories).Any())
 {
-    <h4>Categories</h4>
-   <br/>
+   <h1>Categories</h1>
     if(((List<MrCMS.Web.Apps.Ecommerce.Pages.Category>)ViewBag.Categories).Any())
     {
         foreach (var items in ((List<MrCMS.Web.Apps.Ecommerce.Pages.Category>)ViewBag.Categories).Chunk(4))
@@ -13,15 +12,17 @@
                 @foreach (var item in items)
                 {
                     <div class="span3">
-                        <div class="category-photo">
+                        <div class="category-photo text-align-center">
                         @if(item.FeatureImage!=null)
                         {
-                            <img src="@(item.FeatureImage)" class="img-rounded pull-left span12" alt="@item.Name"/>
+                            <a href="/@item.LiveUrlSegment" title="@item.Name">
+                                <img src="@(item.FeatureImage)" alt="@item.Name"/>
+                            </a>
                         }
                         </div>
                         <div class="clearfix"></div>
-                        <h4 class="category-title"><a href="/@item.LiveUrlSegment">@item.Name</a></h4>
-                        </div>
+                        <h3><a href="/@item.LiveUrlSegment">@item.Name</a></h3>
+                     </div>
                 }
             </div>
         }
