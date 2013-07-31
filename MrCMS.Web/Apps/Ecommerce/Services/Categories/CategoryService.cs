@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         private readonly IProductSearchService _productSearchService;
         private readonly CurrentSite _currentSite;
 
-        public CategoryService(ISession session, CurrentSite currentSite, IDocumentService documentService,IProductSearchService productSearchService)
+        public CategoryService(ISession session, CurrentSite currentSite, IDocumentService documentService, IProductSearchService productSearchService)
         {
             _session = session;
             _currentSite = currentSite;
@@ -84,7 +84,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         }
         public IList<SelectListItem> GetOptions()
         {
-            return GetAll().OrderBy(x=>x.ParentId).BuildSelectItemList(item => item.Name, item => item.Id.ToString(),null, new SelectListItem());
+            return GetAll().OrderBy(x => x.ParentId).BuildSelectItemList(item => item.Name, item => item.Id.ToString(), null, new SelectListItem());
         }
         public Category Get(int id)
         {
@@ -104,7 +104,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
                 return GetRootCategoryModel(availableCategories);
 
             var category = _session.Get<Category>(query.CategoryId);
-            var categories = category.PublishedChildren.OfType<Category>().Where(cat=>availableCategories.Contains(cat.Id)).ToList();
+            var categories = category.PublishedChildren.OfType<Category>().Where(cat => availableCategories.Contains(cat.Id)).ToList();
             var hierarchy = category.ActivePages.OfType<Category>().Where(cat => availableCategories.Contains(cat.Id)).ToList();
             hierarchy.Reverse();
             return new CategorySearchModel()
@@ -113,7 +113,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
                            Hierarchy = hierarchy
                        };
         }
-        
+
         private CategorySearchModel GetRootCategoryModel(List<int> availableCategories)
         {
             var categoryContainer = _documentService.GetUniquePage<CategoryContainer>();

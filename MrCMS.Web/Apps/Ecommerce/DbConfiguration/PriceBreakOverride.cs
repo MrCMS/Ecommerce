@@ -9,7 +9,6 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
     {
         public void Override(AutoMapping<PriceBreak> mapping)
         {
-            mapping.ReferencesAny(priceBreak => priceBreak.Item).AutoMap("ItemType", "ItemId");
         }
     }
 }
