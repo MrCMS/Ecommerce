@@ -9,6 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
     {
         public void Override(AutoMapping<PriceBreak> mapping)
         {
+            mapping.Map(x => x.Quantity).Index("IX_PriceBreak_Quanitity");
         }
     }
 }
