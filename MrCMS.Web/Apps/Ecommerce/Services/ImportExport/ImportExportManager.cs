@@ -123,7 +123,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 wsItems.Cells["L1"].Value = "Price";
                 wsItems.Cells["M1"].Value = "Previous Price";
                 wsItems.Cells["N1"].Value = "Tax Rate";
-                wsItems.Cells["O1"].Value = "Weight (g)";
+                wsItems.Cells["O1"].Value = "Weight (kg)";
                 wsItems.Cells["P1"].Value = "Stock";
                 wsItems.Cells["Q1"].Value = "Tracking Policy";
                 wsItems.Cells["R1"].Value = "SKU";

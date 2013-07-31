@@ -46,7 +46,7 @@
                     @variant.SKU
                 </td>
                 <td>
-                    @string.Format("{0:n0}",variant.BasePrice) @Html.ActionLink("Add price break", "Add", "PriceBreak", new { id = variant.Id, type = "ProductVariant" }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                    @variant.BasePrice @Html.ActionLink("Add price break", "Add", "PriceBreak", new { id = variant.Id, type = "ProductVariant" }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
                     @if (variant.PriceBreaks.Any())
                     {
                         <h5>Price Breaks</h5>
