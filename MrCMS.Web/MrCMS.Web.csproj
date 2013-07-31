@@ -1699,8 +1699,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\DownloadTemplate.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Images.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\MakeMultiVariant.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\MakeSingleVariant.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ManageOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\PricingButtons.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\PricingInfo.cshtml" />
