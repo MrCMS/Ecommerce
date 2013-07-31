@@ -15,6 +15,38 @@ namespace MrCMS.DbConfiguration.Conventions
             instance.Inverse();
             instance.Relationship.NotFound.Ignore();
             instance.ApplyFilter<NotDeletedFilter>();
+            instance.Key.ForeignKey(string.Format("FK_{0}_{1}", instance.ChildType.Name, instance.EntityType.Name));
+        }
+    }
+
+    public class AddGlobalIndexs : IPropertyConvention
+    {
+        public void Apply(IPropertyInstance instance)
+        {
+            if (instance.Name == "IsDeleted")
+            {
+                instance.Index(string.Format("IX_{0}_{1}", instance.EntityType.Name, instance.Property.Name));
+            }
+
+            if (instance.Name == "UrlSegment")
+            {
+                instance.Index(string.Format("IX_{0}_{1}", instance.EntityType.Name, instance.Property.Name));
+            }
+
+            if (instance.Name == "BaseUrl")
+            {
+                instance.Index(string.Format("IX_{0}_{1}", instance.EntityType.Name, instance.Property.Name));
+            }
+
+            if (instance.Name == "ParentId")
+            {
+                instance.Index(string.Format("IX_{0}_{1}", instance.EntityType.Name, instance.Property.Name));
+            }
+
+            if (instance.Name == "PublishedOn")
+            {
+                instance.Index(string.Format("IX_{0}_{1}", instance.EntityType.Name, instance.Property.Name));
+            }
         }
     }
 }
