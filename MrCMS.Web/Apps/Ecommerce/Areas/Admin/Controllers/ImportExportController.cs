@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Web.Mvc;
-using MrCMS.Paging;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
@@ -14,6 +12,7 @@ using System;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Users;
+using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -23,12 +22,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IImportExportManager _importExportManager; 
         private readonly IConfigurationProvider _configurationProvider;
         private readonly GoogleBaseSettings _googleBaseSettings;
-        private readonly IProductConditionService _productConditionService;
+        private readonly IOptionService _optionService;
         private readonly ICategoryService _categoryService;
-        private readonly IGoogleBaseTaxonomyService _googleBaseTaxonomyService;
+        private readonly IGoogleBaseService _googleBaseTaxonomyService;
         private readonly IProductVariantService _productVariantService;
-        private readonly IGenderService _genderService;
-        private readonly IAgeGroupService _ageGroupService;
         private readonly IGoogleBaseProductService _googleBaseProductService;
         #endregion
 
@@ -36,23 +33,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public ImportExportController(IImportExportManager importExportManager,
             IConfigurationProvider configurationProvider, 
             GoogleBaseSettings googleBaseSettings,
-            IProductConditionService productConditionService,
+            IOptionService optionService,
             ICategoryService categoryService,
-            IGoogleBaseTaxonomyService googleBaseTaxonomyService,
+            IGoogleBaseService googleBaseTaxonomyService,
             IProductVariantService productVariantService,
-            IGenderService genderService,
-            IAgeGroupService ageGroupService,
             IGoogleBaseProductService googleBaseProductService)
         {
             _importExportManager = importExportManager;
             _configurationProvider = configurationProvider;
             _googleBaseSettings = googleBaseSettings;
-            _productConditionService = productConditionService;
+            _optionService = optionService;
             _categoryService = categoryService;
             _googleBaseTaxonomyService = googleBaseTaxonomyService;
             _productVariantService = productVariantService;
-            _genderService = genderService;
-            _ageGroupService = ageGroupService;
             _googleBaseProductService = googleBaseProductService;
         }
         #endregion
@@ -99,11 +92,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public ViewResult GoogleBase(GoogleBaseModel model)
         {
             ViewData["settings"] = _googleBaseSettings;
-            ViewData["google-base-categories"] = _googleBaseTaxonomyService.GetOptions();
-            ViewData["product-conditions"] = _productConditionService.GetOptions();
+            ViewData["google-base-categories"] = _googleBaseTaxonomyService.GetGoogleCategories();
             ViewData["categories"] = _categoryService.GetOptions();
-            ViewData["gender"] = _genderService.GetOptions();
-            ViewData["age-group"] = _ageGroupService.GetOptions();
+            ViewData["product-conditions"] = _optionService.GetEnumOptions<ProductCondition>();
+            ViewData["gender"] = _optionService.GetEnumOptions<Gender>();
+            ViewData["age-group"] = _optionService.GetEnumOptions<AgeGroup>();
 
             model.Items = _productVariantService.GetAllVariants(model.Name, model.Category.HasValue ? model.Category.Value : 0, model.Page);
             return View(model);
@@ -111,17 +104,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult ExportProductsToGoogleBase()
         {
-            //try
-            //{
+            try
+            {
                 var file = _importExportManager.ExportProductsToGoogleBase();
                 ViewBag.ExportStatus = "Products successfully exported.";
                 return File(file, "application/rss+xml", "MrCMS-GoogleBase-Products.xml");
-            //}
-            //catch (Exception)
-            //{
-            //    const string msg = "Google Base exporting has failed. Please try again and contact system administration if error continues to appear.";
-            //    return RedirectToAction("GoogleBase", new { status = msg });
-            //}
+            }
+            catch (Exception)
+            {
+                const string msg = "Google Base exporting has failed. Please try again and contact system administration if error continues to appear.";
+                return RedirectToAction("GoogleBase", new { status = msg });
+            }
         }
 
         [HttpPost]

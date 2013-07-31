@@ -3,8 +3,8 @@ using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
 {
-    public interface IGoogleBaseTaxonomyService
+    public interface IGoogleBaseService
     {
-        List<SelectListItem> GetOptions();
+        List<SelectListItem> GetGoogleCategories();
     }
 }

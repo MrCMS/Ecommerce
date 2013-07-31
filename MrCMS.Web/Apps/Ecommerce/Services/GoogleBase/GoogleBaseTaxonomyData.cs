@@ -6,16 +6,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
 {
     public static class GoogleBaseTaxonomyData
     {
-        private static readonly List<string> _rows;
-
-        static GoogleBaseTaxonomyData()
+        public static IEnumerable<string> Rows
         {
-            _rows = GetRows();
-        }
-
-        public static List<string> Rows
-        {
-            get { return _rows; }
+            get { return GetRows(); }
         }
 
         private static List<string> GetRows()

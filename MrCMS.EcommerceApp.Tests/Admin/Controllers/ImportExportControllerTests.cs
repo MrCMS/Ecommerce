@@ -27,9 +27,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private readonly GoogleBaseSettings _googleBaseSettings;
         private readonly IProductConditionService _productConditionService;
         private readonly ICategoryService _categoryService;
-        private readonly IGoogleBaseTaxonomyService _googleBaseTaxonomyService;
+        private readonly IGoogleBaseService _googleBaseTaxonomyService;
         private readonly IProductVariantService _productVariantService;
-        private readonly IGenderService _genderService;
+        private readonly IEnumService _genderService;
         private readonly IAgeGroupService _ageGroupService;
         private readonly IGoogleBaseProductService _googleBaseProductService;
         private readonly ImportExportController _importExportController;
@@ -41,9 +41,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _googleBaseSettings = A.Fake<GoogleBaseSettings>();
             _productConditionService = A.Fake<IProductConditionService>();
             _categoryService = A.Fake<ICategoryService>();
-            _googleBaseTaxonomyService = A.Fake<IGoogleBaseTaxonomyService>();
+            _googleBaseTaxonomyService = A.Fake<IGoogleBaseService>();
             _productVariantService = A.Fake<IProductVariantService>();
-            _genderService = A.Fake<IGenderService>();
+            _genderService = A.Fake<IEnumService>();
             _ageGroupService = A.Fake<IAgeGroupService>();
             _googleBaseProductService = A.Fake<IGoogleBaseProductService>();
 
@@ -125,10 +125,10 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             _importExportController.GoogleBase(model);
 
-            A.CallTo(() => _googleBaseTaxonomyService.GetOptions()).MustHaveHappened();
+            A.CallTo(() => _googleBaseTaxonomyService.GetGoogleCategories()).MustHaveHappened();
             A.CallTo(() => _productConditionService.GetOptions()).MustHaveHappened();
             A.CallTo(() => _categoryService.GetOptions()).MustHaveHappened();
-            A.CallTo(() => _genderService.GetOptions()).MustHaveHappened();
+            A.CallTo(() => _genderService.GetGenderOptions()).MustHaveHappened();
             A.CallTo(() => _ageGroupService.GetOptions()).MustHaveHappened();
         }
 
