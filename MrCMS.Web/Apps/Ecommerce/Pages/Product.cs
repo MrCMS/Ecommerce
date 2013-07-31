@@ -66,14 +66,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             base.CustomInitialization(service, session);
 
-            var productVariant = new ProductVariant
-                                     {
-                                         Name = Name,
-                                         TrackingPolicy = TrackingPolicy.DontTrack,
-                                     };
-            Variants.Add(productVariant);
-            productVariant.Product = this;
-            session.Transact(s => s.Save(productVariant));
+            if (!Variants.Any())
+            {
+                var productVariant = new ProductVariant
+                    {
+                        Name = Name,
+                        TrackingPolicy = TrackingPolicy.DontTrack,
+                    };
+                Variants.Add(productVariant);
+                productVariant.Product = this;
+                session.Transact(s => s.Save(productVariant));
+            }
 
             var mediaCategory = service.GetDocumentByUrl<MediaCategory>("product-galleries");
             if (mediaCategory == null)
