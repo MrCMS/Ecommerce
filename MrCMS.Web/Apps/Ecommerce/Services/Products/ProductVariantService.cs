@@ -36,11 +36,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         }
         public ProductVariant GetProductVariantBySKU(string sku)
         {
+            var trim = sku.Trim();
             return _session.QueryOver<ProductVariant>()
-                            .Where(
-                                variant =>
-                                variant.SKU.IsInsensitiveLike(sku, MatchMode.Exact)).SingleOrDefault();
+                           .Where(
+                               variant =>
+                               variant.SKU == trim).Cacheable().SingleOrDefault();
         }
+
         public ProductVariant Get(int id)
         {
             return _session.QueryOver<ProductVariant>()
@@ -116,10 +118,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public bool AnyExistingProductVariantWithSKU(string sku, int id)
         {
+            var trim = sku.Trim();
             return _session.QueryOver<ProductVariant>()
                            .Where(
                                variant =>
-                               variant.SKU.IsInsensitiveLike(sku, MatchMode.Exact) && variant.Id != id)
+                               variant.SKU== trim && variant.Id != id)
                            .RowCount() > 0;
         }
 
