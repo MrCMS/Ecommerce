@@ -363,10 +363,8 @@
     <Compile Include="Apps\Ecommerce\Services\Geographic\ICountryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Geographic\IRegionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Geographic\RegionService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseTaxonomyData.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\GoogleBase\IGoogleBaseProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\IGoogleBaseService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductImportDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductVariantImportDataTransferObject.cs" />
@@ -1803,6 +1801,8 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\RelatedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\SearchBox.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ImportExport\GoogleBaseProduct.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ImportExport\GoogleBaseSearch.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

@@ -163,7 +163,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var pv = new ProductVariant();
 
-            var result = _importExportController.UpdateGoogleBaseRecord(pv,"Cat","Gro","Lab","Red",0,ProductCondition.New,Gender.Female,AgeGroup.Kids);
+            var result = _importExportController.UpdateGoogleBaseProduct(pv,"Cat","Gro","Lab","Red",0,ProductCondition.New,Gender.Female,AgeGroup.Kids);
 
             result.Should().BeOfType<JsonResult>();
         }
@@ -173,7 +173,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var pv = new ProductVariant();
 
-            var result = _importExportController.UpdateGoogleBaseRecord(pv, "Cat", "Gro", "Lab", "Red", 0, ProductCondition.New, Gender.Female, AgeGroup.Kids);
+            var result = _importExportController.UpdateGoogleBaseProduct(pv, "Cat", "Gro", "Lab", "Red", 0, ProductCondition.New, Gender.Female, AgeGroup.Kids);
 
             result.Data.Should().Be(true);
         }
@@ -181,7 +181,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ImportExportController_UpdateGoogleBaseRecord_ShouldReturnFalseIfProductVariantIsNotForwarded()
         {
-            var result = _importExportController.UpdateGoogleBaseRecord(null, "Cat", "Gro", "Lab", "Red", 0, ProductCondition.New, Gender.Female, AgeGroup.Kids);
+            var result = _importExportController.UpdateGoogleBaseProduct(null, "Cat", "Gro", "Lab", "Red", 0, ProductCondition.New, Gender.Female, AgeGroup.Kids);
 
             result.Data.Should().Be(false);
         }
@@ -191,7 +191,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var pv = new ProductVariant();
 
-            _importExportController.UpdateGoogleBaseRecord(pv, "Cat", "Gro", "Lab", "Red", 0, ProductCondition.New, Gender.Female, AgeGroup.Kids);
+            _importExportController.UpdateGoogleBaseProduct(pv, "Cat", "Gro", "Lab", "Red", 0, ProductCondition.New, Gender.Female, AgeGroup.Kids);
 
             A.CallTo(() => _productVariantService.Update(pv)).MustHaveHappened();
         }
@@ -212,7 +212,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             A.CallTo(() => _googleBaseProductService.Get(0)).Returns(gbp);
 
-            _importExportController.UpdateGoogleBaseRecord(pv, null, null, null,null, 0, ProductCondition.New, Gender.Female, AgeGroup.Kids);
+            _importExportController.UpdateGoogleBaseProduct(pv, null, null, null,null, 0, ProductCondition.New, Gender.Female, AgeGroup.Kids);
 
             A.CallTo(() => _googleBaseProductService.Add(gbp)).MustHaveHappened();
         }
@@ -234,7 +234,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             A.CallTo(() => _googleBaseProductService.Get(1)).Returns(gbp);
 
-            _importExportController.UpdateGoogleBaseRecord(pv, null, null, null, null, 1, ProductCondition.New, Gender.Female, AgeGroup.Kids);
+            _importExportController.UpdateGoogleBaseProduct(pv, null, null, null, null, 1, ProductCondition.New, Gender.Female, AgeGroup.Kids);
 
             A.CallTo(() => _googleBaseProductService.Update(gbp)).MustHaveHappened();
         }
