@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using System.Web;
 using System;
@@ -17,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class ImportExportController : MrCMSAppAdminController<EcommerceApp>
     {
         #region Props
-        private readonly IImportExportManager _importExportManager; 
+        private readonly IImportExportManager _importExportManager;
         private readonly IConfigurationProvider _configurationProvider;
         private readonly GoogleBaseSettings _googleBaseSettings;
         private readonly IOptionService _optionService;
@@ -27,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         #region Ctor
         public ImportExportController(IImportExportManager importExportManager,
-            IConfigurationProvider configurationProvider, 
+            IConfigurationProvider configurationProvider,
             GoogleBaseSettings googleBaseSettings,
             IOptionService optionService,
             IGoogleBaseService googleBaseService,
@@ -91,6 +92,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             ViewData["age-groups"] = _optionService.GetEnumOptions<AgeGroup>();
 
             model.Items = _productVariantService.GetAllVariants(model.Name, model.Category.HasValue ? model.Category.Value : 0, model.Page);
+
             return View(model);
         }
         [HttpGet]
@@ -117,17 +119,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateGoogleBaseProduct(ProductVariant productVariant,GoogleBaseProduct googleBaseProduct)
+        public JsonResult UpdateGoogleBaseProduct(GoogleBaseProduct googleBaseProduct)
         {
-            var msg = String.Empty;
-            if (productVariant != null)
+            try
             {
-                _googleBaseService.UpdateGoogleBaseProductAndVariant(productVariant,googleBaseProduct);
-                return Json(true);
+                _googleBaseService.SaveGoogleBaseProduct(googleBaseProduct);
+                return Json(googleBaseProduct.Id);
             }
-            return Json(false);
+            catch (Exception ex)
+            {
+                CurrentRequestData.ErrorSignal.Raise(ex);
+                return Json(false);
+            }
         }
 
+        [HttpGet]
+        public ActionResult GoogleBaseProduct(GoogleBaseProduct googleBaseProduct)
+        {
+            if (googleBaseProduct != null)
+            {
+                ViewData["google-base-categories"] = _googleBaseService.GetGoogleCategories();
+                ViewData["product-conditions"] = _optionService.GetEnumOptions<ProductCondition>();
+                ViewData["genders"] = _optionService.GetEnumOptions<Gender>();
+                ViewData["age-groups"] = _optionService.GetEnumOptions<AgeGroup>();
+                return PartialView(googleBaseProduct);
+            }
+            return RedirectToAction("GoogleBase");
+        }
         #endregion
     }
 }

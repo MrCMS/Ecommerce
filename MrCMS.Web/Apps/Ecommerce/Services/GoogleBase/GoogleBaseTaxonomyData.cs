@@ -19,7 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
                 var result = DownloadRawTaxonomyData(url);
                 if (!String.IsNullOrWhiteSpace(result))
                 {
-                    var rows = DownloadRawTaxonomyData(url).Split(new[] { "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);
+                    var rows = result.Split(new[] { "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);
                     rows.ToList().RemoveAt(0);
                     return rows.ToList();
                 }
