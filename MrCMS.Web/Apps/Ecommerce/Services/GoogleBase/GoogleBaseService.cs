@@ -24,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             _googleBaseSettings = googleBaseSettings;
         }
 
-        public GoogleBaseProduct Get(int id)
+        public GoogleBaseProduct GetGoogleBaseProduct(int id)
         {
             return _session.QueryOver<GoogleBaseProduct>().Where(x=>x.Id==id).SingleOrDefault();
         }
