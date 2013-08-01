@@ -26,7 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             var priceBreak = _productVariantService.AddPriceBreak(model);
 
-            return Redirect(priceBreak.Item.EditUrl);
+            return Redirect(priceBreak.ProductVariant.EditUrl);
         }
 
         public JsonResult IsQuantityValid(int quantity, ProductVariant productVariant)
@@ -51,7 +51,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _productVariantService.DeletePriceBreak(priceBreak);
 
-            return Redirect(priceBreak.Item.EditUrl);
+            return Redirect(priceBreak.ProductVariant.EditUrl);
         }
     }
 }
