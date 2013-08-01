@@ -80,6 +80,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
         #endregion
 
+        #region Google Base
         [HttpGet]
         public ViewResult GoogleBase(GoogleBaseModel model)
         {
@@ -91,6 +92,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             ViewData["age-groups"] = _optionService.GetEnumOptions<AgeGroup>();
 
             model.Items = _productVariantService.GetAllVariants(model.Name, model.Category.HasValue ? model.Category.Value : 0, model.Page);
+
             return View(model);
         }
         [HttpGet]
@@ -122,7 +124,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             try
             {
                 _googleBaseService.SaveGoogleBaseProduct(googleBaseProduct);
-                return Json(true);
+                return Json(googleBaseProduct.Id);
             }
             catch (Exception ex)
             {
@@ -130,5 +132,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 return Json(false);
             }
         }
+
+        [HttpGet]
+        public ActionResult GoogleBaseProduct(GoogleBaseProduct googleBaseProduct)
+        {
+            if (googleBaseProduct != null)
+            {
+                ViewData["google-base-categories"] = _googleBaseService.GetGoogleCategories();
+                ViewData["product-conditions"] = _optionService.GetEnumOptions<ProductCondition>();
+                ViewData["genders"] = _optionService.GetEnumOptions<Gender>();
+                ViewData["age-groups"] = _optionService.GetEnumOptions<AgeGroup>();
+                return PartialView(googleBaseProduct);
+            }
+            return RedirectToAction("GoogleBase");
+        }
+        #endregion
     }
 }

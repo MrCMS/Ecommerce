@@ -24,7 +24,9 @@
         <div class="clearfix"></div>
         foreach (var item in Model.Items)
         {
+            <div class="google-base-product-@item.Id">
             @Html.Partial("GoogleBaseProduct", item.GoogleBaseProduct ?? new GoogleBaseProduct{ProductVariant = item})
+            </div>
         }
     }
         
