@@ -6,7 +6,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 {
     public class PriceBreak : SiteEntity
     {
-        public virtual ProductVariant Item { get; set; }
+        public virtual ProductVariant ProductVariant { get; set; }
         public virtual int Quantity { get; set; }
         public virtual decimal Price { get; set; }
         public virtual decimal PriceExcludingTax
@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get
             {
-                return Item != null ? Item.TaxRate : null;
+                return ProductVariant != null ? ProductVariant.TaxRate : null;
             }
         }
     }

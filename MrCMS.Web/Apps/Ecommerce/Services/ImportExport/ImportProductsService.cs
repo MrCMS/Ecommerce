@@ -25,7 +25,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private readonly ISession _session;
         private readonly IProductVariantService _productVariantService;
         private List<Document> _allDocuments;
-        private IList<ProductVariant> _allVariants;
         private IList<Brand> _allBrands;
         private ProductSearch _uniquePage;
         private MediaCategory _productGalleriesCategory;
@@ -53,7 +52,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         public void ImportProductsFromDTOs(IEnumerable<ProductImportDataTransferObject> productsToImport)
         {
             _allDocuments = _documentService.GetAllDocuments<Document>().ToList();
-            _allVariants = _productVariantService.GetAll();
             _allBrands = _brandService.GetAll();
             _uniquePage = _documentService.GetUniquePage<ProductSearch>();
             _productGalleriesCategory = _documentService.GetDocumentByUrl<MediaCategory>("product-galleries");
