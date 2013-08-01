@@ -165,13 +165,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 _allDocuments.Add(product);
                 _allDocuments.Add(productGallery);
             }
-            //else
-            //    _documentService.SaveDocument(product);
-
-            ////Images
-            
-
-            //_documentService.SaveDocument(product);
 
             return product;
         }
