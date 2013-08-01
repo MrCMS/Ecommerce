@@ -5,39 +5,40 @@
     var gender = ViewData["genders"] as IEnumerable<SelectListItem>;
     var ageGroup = ViewData["age-groups"] as IEnumerable<SelectListItem>;
     var productConditions = ViewData["product-conditions"] as IEnumerable<SelectListItem>;
-}      
-
-@using (Html.BeginForm("UpdateGoogleBaseProduct", "ImportExport", FormMethod.Post, new { id = "GoogleBaseProductForm" + Model.ProductVariant.Id }))
-{
-<div class="row-fluid">
-    <div class="span6">
-        @Html.HiddenFor(x=>x.ProductVariant.Id)
-        @Html.HiddenFor(x=>x.Id)
-        <h4>&nbsp;@Model.ProductVariant.Name</h4>
-        <br/>
-        @Html.LabelFor(x=>x.OverrideCategory)
-        @Html.DropDownListFor(x=>x.OverrideCategory,GeneralHelper.SelectDefaultValue(googleBaseCategories,Model.OverrideCategory),new {@class = "span12"})
-        <br/> <br/>
-        <button type="button" id="update-@Model.ProductVariant.Id" data-product-variant-id="@Model.ProductVariant.Id" class="btn">
-            Update
-        </button>
-    </div>
-    <div class="span3">
-        @Html.LabelFor(x=>x.Condition)
-        @Html.DropDownListFor(x=>x.OverrideCondition,GeneralHelper.SelectDefaultValue(productConditions,Model.Condition.ToString()), new {@class = "span12"})
-        @Html.LabelFor(x=>x.Gender)
-        @Html.DropDownListFor(x=>x.Gender,GeneralHelper.SelectDefaultValue(gender,Model.Gender), new {@class = "span12"})
-        @Html.LabelFor(x=>x.AgeGroup)
-        @Html.DropDownListFor(x=>x.AgeGroup,GeneralHelper.SelectDefaultValue(ageGroup,Model.AgeGroup), new {@class = "span12"})
-    </div>
-    <div class="span3">
-        @Html.LabelFor(x=>x.Grouping)
-        @Html.TextBoxFor(x=>x.Grouping, new {@class = "span12", placeholder = "e.g: comforters"})
-        @Html.LabelFor(x=>x.Labels)
-        @Html.TextBoxFor(x=>x.Labels,new {@class = "span12", placeholder = "e.g: clothing, shoes"}) 
-        @Html.LabelFor(x=>x.Redirect)
-        @Html.TextBoxFor(x=>x.Redirect,new {@class = "span12", placeholder = "e.g: http://www.merchant.com/product.html"}) 
-    </div>
-</div>
 }
-<hr/>
+
+@using (Html.BeginForm("UpdateGoogleBaseProduct", "ImportExport", FormMethod.Post))
+{
+    <div class="row-fluid">
+        <div class="span6">
+            @Html.HiddenFor(x => x.ProductVariant.Id)
+            @Html.HiddenFor(x => x.Id)
+            <h4>&nbsp;@Model.ProductVariant.Name</h4>
+            <br />
+            @Html.LabelFor(x => x.OverrideCategory)
+            @Html.DropDownListFor(x => x.OverrideCategory, GeneralHelper.SelectDefaultValue(googleBaseCategories, Model.Category), new { @class = "span12" })
+            <br />
+            <br />
+            <button type="button" class="btn update-google-base-product" data-product-base-product-id="@Model.Id">
+                Update
+            </button>
+        </div>
+        <div class="span3">
+            @Html.LabelFor(x => x.Condition)
+            @Html.DropDownListFor(x => x.OverrideCondition, GeneralHelper.SelectDefaultValue(productConditions, Model.Condition.ToString()), new { @class = "span12" })
+            @Html.LabelFor(x => x.Gender)
+            @Html.DropDownListFor(x => x.Gender, GeneralHelper.SelectDefaultValue(gender, Model.Gender.ToString()), new { @class = "span12" })
+            @Html.LabelFor(x => x.AgeGroup)
+            @Html.DropDownListFor(x => x.AgeGroup, GeneralHelper.SelectDefaultValue(ageGroup, Model.AgeGroup.ToString()), new { @class = "span12" })
+        </div>
+        <div class="span3">
+            @Html.LabelFor(x => x.Grouping)
+            @Html.TextBoxFor(x => x.Grouping, new { @class = "span12", placeholder = "e.g: comforters" })
+            @Html.LabelFor(x => x.Labels)
+            @Html.TextBoxFor(x => x.Labels, new { @class = "span12", placeholder = "e.g: clothing, shoes" })
+            @Html.LabelFor(x => x.Redirect)
+            @Html.TextBoxFor(x => x.Redirect, new { @class = "span12", placeholder = "e.g: http://www.merchant.com/product.html" })
+        </div>
+    </div>
+}
+<hr />

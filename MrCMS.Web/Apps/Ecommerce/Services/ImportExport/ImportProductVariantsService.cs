@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Services;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
@@ -17,24 +18,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private readonly ITaxRateManager _taxRateManager;
         private readonly IProductOptionManager _productOptionManager;
         private readonly IDocumentService _documentService;
+        private readonly ISession _session;
+
+        private readonly IList<ProductVariant> _allVariants;
 
         public ImportProductVariantsService(IImportProductVariantPriceBreaksService importPriceBreaksService, IImportProductSpecificationsService importSpecificationsService, 
             IProductVariantService productVariantService, ITaxRateManager taxRateManager,
-            IProductOptionManager productOptionManager, IDocumentService documentService)
+            IProductOptionManager productOptionManager, IDocumentService documentService, ISession session)
         {
             _importProductSpecificationsService = importSpecificationsService;
             _productVariantService = productVariantService;
             _taxRateManager = taxRateManager;
             _productOptionManager = productOptionManager;
             _documentService = documentService;
+            _session = session;
             _importProductVariantPriceBreaksService = importPriceBreaksService;
+
+            _allVariants = _session.QueryOver<ProductVariant>().Fetch(x => x.PriceBreaks).Eager.List();
         }
 
         public IEnumerable<ProductVariant> ImportVariants(ProductImportDataTransferObject dataTransferObject, Product product)
         {
             foreach (var item in dataTransferObject.ProductVariants)
             {
-                var productVariant = _productVariantService.GetProductVariantBySKU(item.SKU) ?? new ProductVariant();
+                var productVariant = _allVariants.SingleOrDefault(x => x.SKU == item.SKU) ?? new ProductVariant();
 
                 productVariant.Name = item.Name;
                 productVariant.SKU = item.SKU;
@@ -49,8 +56,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 product.Variants.Add(productVariant);
 
-                //_productVariantService.Add(productVariant);
-                //_documentService.SaveDocument(product);
 
                 for (var i = productVariant.AttributeValues.Count - 1; i >= 0; i--)
                 {
@@ -58,8 +63,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     productVariant.AttributeValues.Remove(value);
                     _productOptionManager.DeleteProductAttributeValue(value);
                 }
-
-                //productVariant = _productVariantService.GetProductVariantBySKU(item.SKU);
 
                 //Price Breaks
                 _importProductVariantPriceBreaksService.ImportVariantPriceBreaks(item,productVariant);

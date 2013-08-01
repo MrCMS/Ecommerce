@@ -33,9 +33,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase
         }
 
         //Clothing & Accessories
-        public virtual string Gender { get; set; }
+        public virtual Gender Gender { get; set; }
         [DisplayName("Age Group")]
-        public virtual string AgeGroup { get; set; }
+        public virtual AgeGroup AgeGroup { get; set; }
 
         //Attributes
         public virtual string Material

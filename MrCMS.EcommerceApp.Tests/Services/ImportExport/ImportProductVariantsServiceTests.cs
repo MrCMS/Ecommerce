@@ -11,6 +11,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
+using NHibernate;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
@@ -35,7 +36,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             _documentService = A.Fake<IDocumentService>();
             _importProductVariantsService = new ImportProductVariantsService(_importProductVariantPriceBreaksService,_importSpecificationsService,
                                                                              _productVariantService, _taxRateManager,
-                                                                             _productOptionManager, _documentService);
+                                                                             _productOptionManager, _documentService, A.Fake<ISession>());
         }
         [Fact]
         public void ImportProductVariantsService_ImportVariants_ShouldSetProductVariantTaxRate()

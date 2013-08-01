@@ -3,16 +3,16 @@
     $('#Category').change(function () {
         $('form#Filter').submit();
     });
-    
+
     //UPDATE GOOGLE BASE PRODUCT
-    $(document).on('click', 'button[type="button"][id^="update-"]', function () {
-        var pv = $(this).data("product-variant-id");
+    $(document).on('click', 'button.update-google-base-product', function () {
         $.post('/Admin/Apps/Ecommerce/ImportExport/UpdateGoogleBaseProduct',
-                $('form#GoogleBaseProductForm'+pv).serialize()
-            ,
+                $(this).parents('form').serialize(),
             function (response) {
-                if (response === true) {
-                    location.reload();
+                if (response !== false) {
+                    parent.$.get('/Admin/Apps/Ecommerce/ImportExport/GoogleBaseProduct/' + response, function (result) {
+                        parent.$('#google-base-product-' + response).replaceWith(result);
+                    });
                 } else {
                     alert("Error happened during update operation. Please check your parameters and try again.");
                 }

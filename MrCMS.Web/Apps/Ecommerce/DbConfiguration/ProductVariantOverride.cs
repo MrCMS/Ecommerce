@@ -13,7 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
             mapping.HasOne(variant => variant.GoogleBaseProduct)
                    .PropertyRef(product => product.ProductVariant)
                    .Cascade.All();
-
+            mapping.HasMany(variant => variant.PriceBreaks).Cascade.All();
 
             mapping.Map(x => x.SKU).Index("IX_ProductVariant_SKU");
         }

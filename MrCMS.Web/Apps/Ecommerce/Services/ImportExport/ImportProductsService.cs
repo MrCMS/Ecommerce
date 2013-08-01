@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MrCMS.Entities.Documents;
+using MrCMS.Entities.Documents.Media;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -20,10 +22,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private readonly IImportProductImagesService _importProductImagesService;
         private readonly IImportProductUrlHistoryService _importUrlHistoryService;
         private readonly ISession _session;
+        private readonly IProductVariantService _productVariantService;
+        private List<Document> _allDocuments;
+        private IList<Brand> _allBrands;
+        private ProductSearch _uniquePage;
+        private MediaCategory _productGalleriesCategory;
+
 
         public ImportProductsService(IDocumentService documentService, IBrandService brandService,
              IImportProductSpecificationsService importSpecificationsService, IImportProductVariantsService importProductVariantsService,
-            IImportProductImagesService importProductImagesService, IImportProductUrlHistoryService importUrlHistoryService, ISession session)
+            IImportProductImagesService importProductImagesService, IImportProductUrlHistoryService importUrlHistoryService, ISession session, IProductVariantService productVariantService)
         {
             _documentService = documentService;
             _brandService = brandService;
@@ -32,6 +40,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _importProductImagesService = importProductImagesService;
             _importUrlHistoryService = importUrlHistoryService;
             _session = session;
+            _productVariantService = productVariantService;
+
+            _allDocuments=new List<Document>();
+            _allVariants=new List<ProductVariant>();
+            _allBrands=new List<Brand>();
         }
 
         /// <summary>
@@ -40,13 +53,39 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// <param name="productsToImport"></param>
         public void ImportProductsFromDTOs(IEnumerable<ProductImportDataTransferObject> productsToImport)
         {
+            _allDocuments = _documentService.GetAllDocuments<Document>().ToList();
+            _allBrands = _brandService.GetAll();
+            _uniquePage = _documentService.GetUniquePage<ProductSearch>();
+            _productGalleriesCategory = _documentService.GetDocumentByUrl<MediaCategory>("product-galleries");
+            if (_productGalleriesCategory == null)
+            {
+                _productGalleriesCategory = new MediaCategory
+                {
+                    Name = "Product Galleries",
+                    UrlSegment = "product-galleries",
+                    IsGallery = true,
+                    HideInAdminNav = true
+                };
+                _documentService.AddDocument(_productGalleriesCategory);
+            }
+
+            _session.Transact(session =>
+                {
+                    foreach (var dataTransferObject in productsToImport)
+                    {
+                        var transferObject = dataTransferObject;
+                        ImportProduct(transferObject);
+                    }
+                    _allDocuments.ForEach(session.SaveOrUpdate);
+                });
+
             foreach (var dataTransferObject in productsToImport)
             {
-                ProductImportDataTransferObject transferObject = dataTransferObject;
-                _session.Transact(session =>
-                    {
-                        ImportProduct(transferObject);
-                    });
+                var product =
+                    _allDocuments.OfType<Product>().FirstOrDefault(p => p.UrlSegment == dataTransferObject.UrlSegment);
+
+                if (product != null)
+                    _importProductImagesService.ImportProductImages(dataTransferObject.Images, product.Gallery);
             }
         }
 
@@ -56,9 +95,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// <param name="dataTransferObject"></param>
         public Product ImportProduct(ProductImportDataTransferObject dataTransferObject)
         {
-            var product = _documentService.GetDocumentByUrl<Product>(dataTransferObject.UrlSegment) ?? new Product();
+            if(_allDocuments==null)
+                _allDocuments=new List<Document>();
+            var product = 
+                _allDocuments.OfType<Product>()
+                             .SingleOrDefault(x => x.UrlSegment == dataTransferObject.UrlSegment) ??
+                             new Product();
 
-            product.Parent = _documentService.GetUniquePage<ProductSearch>();
+            product.Parent = _uniquePage;
             product.UrlSegment = dataTransferObject.UrlSegment;
             product.Name = dataTransferObject.Name;
             product.BodyContent = dataTransferObject.Description;
@@ -71,10 +115,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             //Brand
             if (!String.IsNullOrWhiteSpace(dataTransferObject.Brand))
             {
-                var brand = _brandService.GetBrandByName(dataTransferObject.Brand);
+                var dtoBrand = dataTransferObject.Brand.Trim();
+                var brand = _allBrands.SingleOrDefault(x => x.Name == dtoBrand);
                 if (brand == null)
                 {
-                    brand = new Brand { Name = dataTransferObject.Brand };
+                    brand = new Brand { Name = dtoBrand };
+                    _allBrands.Add(brand);
                 }
                 product.Brand = brand;
             }
@@ -83,34 +129,40 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             product.Categories.Clear();
             foreach (var item in dataTransferObject.Categories)
             {
-                var category = _documentService.GetDocumentByUrl<Category>(item);
+                var category = _allDocuments.OfType<Category>().SingleOrDefault(x => x.UrlSegment == item);
                 if (category != null && product.Categories.All(x => x.Id != category.Id))
-                    product.Categories.Add(category);
+                {
+                    product.Categories.Add((Category)category);
+                }
             }
 
             product.AttributeOptions.Clear();
-            
-            //Url History
+
+            ////Url History
             _importUrlHistoryService.ImportUrlHistory(dataTransferObject, product);
 
-
-            //Specifications
+            ////Specifications
             _importSpecificationsService.ImportSpecifications(dataTransferObject, product);
 
-            //Variants
+            ////Variants
             _importProductVariantsService.ImportVariants(dataTransferObject, product);
-            
+
             if (product.Id == 0)
             {
-                _documentService.AddDocument(product);
+                product.DisplayOrder = _allDocuments.Count(webpage => webpage.Parent == _uniquePage);
+                var productGallery = new MediaCategory
+                {
+                    Name = product.Name,
+                    UrlSegment = "product-galleries/" + product.UrlSegment,
+                    IsGallery = true,
+                    Parent = _productGalleriesCategory,
+                    HideInAdminNav = true
+                };
+                product.Gallery = productGallery;
+
+                _allDocuments.Add(product);
+                _allDocuments.Add(productGallery);
             }
-            else
-                _documentService.SaveDocument(product);
-
-            //Images
-            _importProductImagesService.ImportProductImages(dataTransferObject.Images, product.Gallery);
-
-            _documentService.SaveDocument(product);
 
             return product;
         }
