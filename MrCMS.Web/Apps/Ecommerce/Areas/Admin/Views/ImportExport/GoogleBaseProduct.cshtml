@@ -16,10 +16,10 @@
             <h4>&nbsp;@Model.ProductVariant.Name</h4>
             <br />
             @Html.LabelFor(x => x.OverrideCategory)
-            @Html.DropDownListFor(x => x.OverrideCategory, GeneralHelper.SelectDefaultValue(googleBaseCategories, Model.OverrideCategory), new { @class = "span12" })
+            @Html.DropDownListFor(x => x.OverrideCategory, GeneralHelper.SelectDefaultValue(googleBaseCategories, Model.Category), new { @class = "span12" })
             <br />
             <br />
-            <button type="button" class="btn update-google-base-product">
+            <button type="button" class="btn update-google-base-product" data-product-base-product-id="@Model.Id">
                 Update
             </button>
         </div>
@@ -27,9 +27,9 @@
             @Html.LabelFor(x => x.Condition)
             @Html.DropDownListFor(x => x.OverrideCondition, GeneralHelper.SelectDefaultValue(productConditions, Model.Condition.ToString()), new { @class = "span12" })
             @Html.LabelFor(x => x.Gender)
-            @Html.DropDownListFor(x => x.Gender, GeneralHelper.SelectDefaultValue(gender, Model.Gender), new { @class = "span12" })
+            @Html.DropDownListFor(x => x.Gender, GeneralHelper.SelectDefaultValue(gender, Model.Gender.ToString()), new { @class = "span12" })
             @Html.LabelFor(x => x.AgeGroup)
-            @Html.DropDownListFor(x => x.AgeGroup, GeneralHelper.SelectDefaultValue(ageGroup, Model.AgeGroup), new { @class = "span12" })
+            @Html.DropDownListFor(x => x.AgeGroup, GeneralHelper.SelectDefaultValue(ageGroup, Model.AgeGroup.ToString()), new { @class = "span12" })
         </div>
         <div class="span3">
             @Html.LabelFor(x => x.Grouping)
