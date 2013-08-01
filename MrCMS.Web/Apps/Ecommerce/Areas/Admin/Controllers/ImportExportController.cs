@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using System.Web;
 using System;
@@ -17,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class ImportExportController : MrCMSAppAdminController<EcommerceApp>
     {
         #region Props
-        private readonly IImportExportManager _importExportManager; 
+        private readonly IImportExportManager _importExportManager;
         private readonly IConfigurationProvider _configurationProvider;
         private readonly GoogleBaseSettings _googleBaseSettings;
         private readonly IOptionService _optionService;
@@ -27,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         #region Ctor
         public ImportExportController(IImportExportManager importExportManager,
-            IConfigurationProvider configurationProvider, 
+            IConfigurationProvider configurationProvider,
             GoogleBaseSettings googleBaseSettings,
             IOptionService optionService,
             IGoogleBaseService googleBaseService,
@@ -79,7 +80,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
         #endregion
 
-        #region Google Base
         [HttpGet]
         public ViewResult GoogleBase(GoogleBaseModel model)
         {
@@ -117,17 +117,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateGoogleBaseProduct(ProductVariant productVariant,GoogleBaseProduct googleBaseProduct)
+        public JsonResult UpdateGoogleBaseProduct(GoogleBaseProduct googleBaseProduct)
         {
-            var msg = String.Empty;
-            if (productVariant != null)
+            try
             {
-                _googleBaseService.UpdateGoogleBaseProductAndVariant(productVariant,googleBaseProduct);
+                _googleBaseService.SaveGoogleBaseProduct(googleBaseProduct);
                 return Json(true);
             }
-            return Json(false);
+            catch (Exception ex)
+            {
+                CurrentRequestData.ErrorSignal.Raise(ex);
+                return Json(false);
+            }
         }
-
-        #endregion
     }
 }
