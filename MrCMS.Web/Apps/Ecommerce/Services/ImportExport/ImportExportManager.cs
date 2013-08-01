@@ -21,14 +21,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public class ImportExportManager : IImportExportManager
     {
-        #region Props
         private readonly IImportProductsValidationService _importProductsValidationService;
         private readonly IImportProductsService _importProductsService;
         private readonly IProductVariantService _productVariantService;
         private readonly IOrderShippingService _orderShippingService;
-        #endregion
 
-        #region Ctor
         public ImportExportManager(IImportProductsValidationService importProductsValidationService,
                                    IImportProductsService importProductsService,
                                    IProductVariantService productVariantService,
@@ -39,9 +36,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _productVariantService = productVariantService;
             _orderShippingService = orderShippingService;
         }
-        #endregion
-
-        #region Products
 
         /// <summary>
         /// Import Products From Excel
@@ -261,10 +255,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             }
         }
 
-        #endregion
-
-        #region Google Base
-
         /// <summary>
         /// Export Products To Google Base
         /// </summary>
@@ -475,7 +465,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 xml.WriteEndElement();
             }
         }
-
-        #endregion
     }
 }
