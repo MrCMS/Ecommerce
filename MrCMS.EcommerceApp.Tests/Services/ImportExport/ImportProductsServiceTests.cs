@@ -36,7 +36,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                                                                _importSpecificationsService,
                                                                _importProductVariantsService,
                                                                _importProductImagesService,
-                                                               _importProductUrlHistoryService,Session);
+                                                               _importProductUrlHistoryService,Session, A.Fake<ProductVariantService>());
         }
 
         [Fact]
@@ -109,22 +109,6 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         }
 
         [Fact]
-        public void ImportProductsService_ImportProducts_ShouldAddANewBrandIfItDoesNotExist()
-        {
-            var product = new ProductImportDataTransferObject()
-            {
-                UrlSegment = "test-url",
-                Brand = "Test Brand"
-            };
-
-            A.CallTo(() => _brandService.GetBrandByName("Test Brand")).Returns(null);
-
-            _importProductsService.ImportProduct(product);
-
-            A.CallTo(() => _brandService.Add(A<Brand>.Ignored)).MustHaveHappened();
-        }
-
-        [Fact]
         public void ImportProductsService_ImportProducts_ShouldSetTheBrandToOneWithTheCorrectNameIfItDoesNotExist()
         {
             var product = new ProductImportDataTransferObject()
@@ -133,12 +117,11 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                 Brand = "Test Brand"
             };
 
-            var brand = new Brand { Name = "Test Brand" };
             A.CallTo(() => _brandService.GetBrandByName("Test Brand")).Returns(null);
 
             var importProduct = _importProductsService.ImportProduct(product);
 
-            importProduct.Brand.Name.Should().Be(brand.Name);
+            importProduct.Brand.Name.Should().Be("Test Brand");
         }
 
         [Fact]

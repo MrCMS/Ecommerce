@@ -1,24 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
 {
     public static class GoogleBaseTaxonomyData
     {
-        private static readonly List<string> _rows;
-
-        static GoogleBaseTaxonomyData()
+        public static IEnumerable<string> Rows
         {
-            _rows = GetRows();
+            get { return GetRows(); }
         }
 
-        public static List<string> Rows
+        public static List<string> GetTaxonomyData(string url)
         {
-            get { return _rows; }
+            if (!String.IsNullOrWhiteSpace(url))
+            {
+                var result = DownloadRawTaxonomyData(url);
+                if (!String.IsNullOrWhiteSpace(result))
+                {
+                    var rows = result.Split(new[] { "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);
+                    rows.ToList().RemoveAt(0);
+                    return rows.ToList();
+                }
+            }
+            return null;
+        }
+        private static string DownloadRawTaxonomyData(string url)
+        {
+            try
+            {
+                var client = new WebClient();
+                return client.DownloadString(url);
+            }
+            catch (Exception)
+            {
+                return String.Empty;
+            }
         }
 
-        private static List<string> GetRows()
+        private static IEnumerable<string> GetRows()
         {
             var rows = RawData.Split(new[] { "\n", "\r" }, StringSplitOptions.RemoveEmptyEntries);
             return rows.ToList();

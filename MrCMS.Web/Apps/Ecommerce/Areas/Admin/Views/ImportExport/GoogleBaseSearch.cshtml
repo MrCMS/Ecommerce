@@ -1,0 +1,36 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase
+@model MrCMS.Web.Apps.Ecommerce.Models.GoogleBaseModel
+
+<div class="tab-pane active" id="search">
+    <br />   
+    @using (Html.BeginForm("GoogleBase", "ImportExport", FormMethod.Get, new {id = "Filter"}))
+    {
+        @Html.DropDownListFor(x => x.Category, ViewData["categories"] as IEnumerable<SelectListItem>, new {@class = "input-xlarge"})
+        <br/>
+        @Html.TextBoxFor(x => x.Name, new {@class = "input-medium search-query", placeholder="Enter search term..."})
+        <button type="submit" class="btn btn-primary">Search</button>
+    }
+    <hr/>
+    @if (Model.Items.Count == 0)
+    {
+        <br/>
+        <p>
+            No products found.
+        </p>
+    }
+    else
+    {
+        <div class="clearfix"></div>
+        foreach (var item in Model.Items)
+        {
+            <div class="google-base-product-@item.Id">
+            @Html.Partial("GoogleBaseProduct", item.GoogleBaseProduct ?? new GoogleBaseProduct{ProductVariant = item})
+            </div>
+        }
+    }
+        
+    @Html.Pager(Model.Items, "GoogleBase", i => new {page = i})
+</div>
+
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/google-base.js");}

@@ -48,7 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             return _session.QueryOver<ProductVariant>()
                             .Where(
                                 variant =>
-                                variant.Id == id).SingleOrDefault();
+                                variant.Id == id).Cacheable().SingleOrDefault();
         }
 
         public List<SelectListItem> GetOptions()
@@ -66,7 +66,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var productVariant = _session.Get<ProductVariant>(model.Id);
             var priceBreak = new PriceBreak
             {
-                Item = productVariant,
+                ProductVariant = productVariant,
                 Quantity = model.Quantity,
                 Price = model.Price
             };

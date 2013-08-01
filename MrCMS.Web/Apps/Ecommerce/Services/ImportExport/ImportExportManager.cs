@@ -21,14 +21,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public class ImportExportManager : IImportExportManager
     {
-        #region Props
         private readonly IImportProductsValidationService _importProductsValidationService;
         private readonly IImportProductsService _importProductsService;
         private readonly IProductVariantService _productVariantService;
         private readonly IOrderShippingService _orderShippingService;
-        #endregion
 
-        #region Ctor
         public ImportExportManager(IImportProductsValidationService importProductsValidationService,
                                    IImportProductsService importProductsService,
                                    IProductVariantService productVariantService,
@@ -39,9 +36,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _productVariantService = productVariantService;
             _orderShippingService = orderShippingService;
         }
-        #endregion
-
-        #region Products
 
         /// <summary>
         /// Import Products From Excel
@@ -123,7 +117,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 wsItems.Cells["L1"].Value = "Price";
                 wsItems.Cells["M1"].Value = "Previous Price";
                 wsItems.Cells["N1"].Value = "Tax Rate";
-                wsItems.Cells["O1"].Value = "Weight (g)";
+                wsItems.Cells["O1"].Value = "Weight (kg)";
                 wsItems.Cells["P1"].Value = "Stock";
                 wsItems.Cells["Q1"].Value = "Tracking Policy";
                 wsItems.Cells["R1"].Value = "SKU";
@@ -260,10 +254,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 return excelFile.GetAsByteArray();
             }
         }
-
-        #endregion
-
-        #region Google Base
 
         /// <summary>
         /// Export Products To Google Base
@@ -475,7 +465,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 xml.WriteEndElement();
             }
         }
-
-        #endregion
     }
 }
