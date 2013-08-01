@@ -162,6 +162,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CartManagerTests.cs" />
     <Compile Include="Services\CategoryServiceTests.cs" />
+    <Compile Include="Services\GoogleBaseServiceTests.cs" />
+    <Compile Include="Services\OptionServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductVariantPriceBreakServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductUrlHistoryServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductImagesServiceTests.cs" />
