@@ -8,7 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
     public interface IGoogleBaseService
     {
         List<SelectListItem> GetGoogleCategories();
-        GoogleBaseProduct Get(int id);
+        GoogleBaseProduct GetGoogleBaseProduct(int id);
         void AddGoogleBaseProduct(GoogleBaseProduct item);
         void UpdateGoogleBaseProduct(GoogleBaseProduct item);
         void UpdateGoogleBaseProductAndVariant(ProductVariant productVariant, GoogleBaseProduct googleBaseProduct);
