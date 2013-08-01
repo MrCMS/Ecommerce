@@ -1,12 +1,8 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product 
-<div class="span3">
+<div class="span2">
     <div class="product-picture text-align-center margin-top-10 padding-top-bottom-10">
         @if (Model.Images.Any())
         {
-            if (ViewData["show-featured"] != null && (bool)ViewData["show-featured"])
-            {
-            <img src="/Themes/Ryness/Content/Images/top-offer.png" alt="offer" title="offer" class="offer" />
-            }
             <a href="/@Model.LiveUrlSegment" title="@Model.Name">@RenderImage(Model.Images.First().FileUrl)</a>
         }
     </div>

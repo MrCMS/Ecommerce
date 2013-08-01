@@ -1,5 +1,5 @@
 ﻿$(window).load(function () {
-    $('#slider').nivoSlider({ effect: 'fade', controlNav: false });
+    $('#slider').nivoSlider({ effect: 'fade', pauseTime: 8000, controlNav: false });
     $("#pikame").PikaChoose({ autoPlay: false });
 });
 
@@ -20,7 +20,7 @@ $(document).ready(function () {
                     $(".row-fluid .span3 .product-picture").attr("style", "height:" + currentHeight + "px !important");
             });
 
-            $(".row-fluid .span3 .category-picture a img").each(function () {
+            $(".row-fluid .span3 .category-picture").each(function () {
                 var currentHeight = $(this).height();
                 if (currentHeight > 97)
                     $(".row-fluid .span3 .category-picture").attr("style", "height:" + currentHeight + "px !important");

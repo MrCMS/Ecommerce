@@ -1,0 +1,93 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
+@model MrCMS.Web.Apps.Ecommerce.Pages.PaymentDetails
+@{ var cart = ViewData["cart"] as CartModel;}
+@{ var settingBillingAddress = ViewData["setting-billing-address"] is bool && (bool)ViewData["setting-billing-address"];}
+<div class="row-fluid margin-bottom-20">
+    <div class="span8">
+        <div class="border-grey margin-bottom-20">
+            <div class="sub-header grey-background">
+                Billing address
+            </div>
+            <div class="padding-20">
+                <div class="row-fluid">
+                    <div class="span3">
+                        @using (Html.BeginForm("BillingAddressSameAsShippingAddress", "PaymentDetails", FormMethod.Post))
+                        {
+                            <label class="checkbox">
+                                @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress)
+                                Use delivery address : 
+                            </label>
+                        }
+                    </div>
+                    <div class="span9">
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    @if (settingBillingAddress)
+                    {
+                        Html.RenderAction("SetBillingAddress", "PaymentDetails");
+                    }
+                    else if (!cart.BillingAddressSameAsShippingAddress)
+                    {
+                        <p>
+                            @cart.BillingAddress.Address1, @cart.BillingAddress.Address2, @cart.BillingAddress.City
+                        </p>
+                        using (Html.BeginForm("SetBillingAddress", "PaymentDetails", FormMethod.Post))
+                        {
+                            <input class="btn btn-primary" value="Change" type="submit" />
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        
+        @if (!settingBillingAddress)
+                {
+                    Html.RenderPartial("SelectMethod", cart);
+                    <div id="payment-confirmation">
+                        @if (!string.IsNullOrWhiteSpace(cart.PaymentMethod))
+                        {
+                            Html.RenderAction(cart.PaymentMethod, "PaymentMethod");
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>Select after updating billing address...</p>
+                }
+        
+@*        <div class="border-grey margin-bottom-20">
+            
+            <div class="sub-header grey-background">
+                Payment details
+            </div>
+            <div class="padding-20 payment">
+                
+            </div>
+        </div>*@
+        
+
+        <p class="cardtext">
+            You may be taken to your card issuer’s website for card validation. You will be returned to Ryness once the process is complete.
+        </p>
+    </div>
+    
+    <div class="span4 border-top-grey">
+        @{Html.RenderAction("Summary", "Checkout");}
+
+        @{Html.RenderAction("OrderEmail", "Checkout");}
+
+        @{Html.RenderAction("DeliveryDetails", "Checkout");}
+    </div>
+
+</div>
+
+        
+        @*<h4>Payment details</h4>
+        
+    </div>
+
+</div>*@
+
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/payment-details.js"); }

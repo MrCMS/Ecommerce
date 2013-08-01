@@ -1,0 +1,43 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+
+<div id="basic-details">
+@if(Model.Items.Any())
+{
+    <div class="sub-header">
+        Your Order
+    </div>
+    <div class="padding-20 grey-background bold-font margin-bottom-10">
+        <table>
+            <tr>
+                <td>Order</td>
+                <td class="padding-left-right-5">:</td>
+                <td>@Model.TotalPreShipping.ToCurrencyFormat()</td>
+            </tr>
+            <tr>
+                <td>Delivery</td>
+                <td class="padding-left-right-5">:</td>
+                <td>
+                    @if (Model.ShippingTotal.HasValue && Model.ShippingTotal.Value > 0)
+                    {
+                        @Model.ShippingTotal.Value.ToCurrencyFormat()
+                    }
+                </td>
+            </tr>
+            @if (Model.HasDiscount)
+            {
+                <tr>
+                    <td>Discount</td>
+                    <td class="padding-left-right-5">:</td>
+                    <td><span class="red">-@Model.DiscountAmount.ToCurrencyFormat()</span> (@Model.DiscountCode)</td>
+                </tr>
+            }
+            <tr>
+                <td>Total</td>
+                <td class="padding-left-right-5">:</td>
+                <td class="green">@Model.Total.ToCurrencyFormat()</td>
+            </tr>
+        </table>
+    </div>
+}
+</div>

@@ -1,0 +1,25 @@
+﻿@model MrCMS.Web.Apps.Ryness.Entities.Testimonial
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Edit", "Testimonial", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Edit Testimonial
+            <span class="btn-group  display-inline  pull-right">
+                @Html.ActionLink("Back to list", "Index", "Testimonial", null, new { @class = "btn" })
+                <a href="@Url.Action("Delete", "Testimonial", new { id = Model.Id })" class="btn btn-danger" data-toggle="fb-modal">Delete</a>
+                <input type="submit" class="btn-primary btn" value="Save" />
+            </span>
+        </legend>
+    </fieldset>
+    @Html.LabelFor(x => x.Name)
+    @Html.TextBoxFor(x => x.Name, new { @class = "span10" })
+    @Html.ValidationMessageFor(x => x.Name)
+    <br/>
+    @Html.LabelFor(x => x.Text)
+    @Html.TextAreaFor(x => x.Text, new { @class = "ckedit-enabled" })
+    @Html.ValidationMessageFor(x => x.Text)
+    <br/>
+    <input type="submit" class="btn-primary btn" value="Save" />
+}

@@ -1,0 +1,11 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+@using MrCMS.Helpers
+
+<div class="padding-20 grey-background margin-bottom-10">
+    <p><b>Your Email</b></p>
+    <p class="grey">@Model.OrderEmail</p>
+    @if (MrCMS.Website.CurrentRequestData.CurrentUser == null)
+    {
+        <a class="btn white-gradient" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Edit</a>
+    }
+</div>

@@ -512,9 +512,17 @@
     <Compile Include="Apps\Galleries\Metadata\GalleryMetaData.cs" />
     <Compile Include="Apps\Galleries\Pages\GalleryList.cs" />
     <Compile Include="Apps\Galleries\Pages\Gallery.cs" />
+    <Compile Include="Apps\Ryness\Areas\Admin\Controllers\TestimonialController.cs" />
+    <Compile Include="Apps\Ryness\Dbconfiguration\TestimonialOverride.cs" />
+    <Compile Include="Apps\Ryness\Entities\Testimonial.cs" />
+    <Compile Include="Apps\Ryness\Models\RynessMenuItems.cs" />
     <Compile Include="Apps\Ryness\RynessApp.cs" />
+    <Compile Include="Apps\Ryness\Services\ITestimonialService.cs" />
+    <Compile Include="Apps\Ryness\Services\TestimonialService.cs" />
     <Compile Include="Apps\Ryness\Widgets\RynessNavigation.cs" />
     <Compile Include="Apps\Ryness\Widgets\Slider.cs" />
+    <Compile Include="Apps\Ryness\Widgets\TopBanner.cs" />
+    <Compile Include="Apps\Ryness\Widgets\TopSellers.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\ACLController.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseDocumentController.cs" />
@@ -1695,6 +1703,7 @@
     <Content Include="Themes\Ryness\Content\Scripts\bootstrap-collapse.js" />
     <Content Include="Themes\Ryness\Content\Scripts\bootstrap.js" />
     <Content Include="Themes\Ryness\Content\Scripts\bootstrap.min.js" />
+    <Content Include="Themes\Ryness\Content\Scripts\checkout\checkout.js" />
     <Content Include="Themes\Ryness\Content\Scripts\custom.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.nivo.slider.pack.js" />
@@ -1703,6 +1712,7 @@
     <Content Include="Themes\Ryness\Content\Styles\bootstrap-responsive.min.css" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap.css" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap.min.css" />
+    <Content Include="Themes\Ryness\Content\Styles\checkout\main.css" />
     <Content Include="Themes\Ryness\Content\Styles\main.css" />
     <Content Include="Themes\Ryness\Content\Styles\menu.css" />
     <Content Include="Themes\Ryness\Content\Styles\nivo-slider.css" />
@@ -1942,6 +1952,12 @@
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\Slider.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\RynessNavigation.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\TopBanner.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Index.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Add.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Edit.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Delete.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\TopSellers.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2141,6 +2157,26 @@
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\RynessNavigation.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Cart\PaymentDetails.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Cart\Details.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\EnterOrderEmail\SetEmailForm.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\EnterOrderEmail\SetOrderEmailAndLogin.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Checkout\DeliveryDetails.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Checkout\OrderEmail.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Checkout\Summary.cshtml" />
+    <Content Include="Themes\Ryness\Views\Shared\_BaseCheckoutLayout.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\SetDeliveryDetails\DeliveryAddress.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\SetDeliveryDetails\DeliveryDetails.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentDetails\BillingAddress.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentDetails\SelectMethod.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentDetails\SetBillingAddress.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Pages\PaymentDetails.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentMethod\CashOnDelivery.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentMethod\PayPalExpressCheckout.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Pages\OrderPlaced.cshtml" />
+    <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
+    <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Shared\ProductCardTopSeller.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />

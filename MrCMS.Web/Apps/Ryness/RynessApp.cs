@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web.Mvc;
 using MrCMS.Apps;
+using MrCMS.Entities.Multisite;
+using MrCMS.Installation;
+using MrCMS.Web.Apps.Ryness.Areas.Admin.Controllers;
+using NHibernate;
+using Ninject;
 
 namespace MrCMS.Web.Apps.Ryness
 {
@@ -10,6 +12,9 @@ namespace MrCMS.Web.Apps.Ryness
     {
         protected override void RegisterApp(MrCMSAppRegistrationContext context)
         {
+            //context.MapAreaRoute("Admin controllers", "Admin", "Admin/Apps/Ryness/{controller}/{action}/{id}",
+            //                     new {controller = "Home", action = "Index", id = UrlParameter.Optional},
+            //                     new[] {typeof (TestimonialController).Namespace});
         }
 
         public override string AppName
@@ -17,12 +22,13 @@ namespace MrCMS.Web.Apps.Ryness
             get { return "Ryness"; }
         }
 
-        protected override void RegisterServices(Ninject.IKernel kernel)
+        protected override void RegisterServices(IKernel kernel)
         {
         }
 
-        protected override void OnInstallation(NHibernate.ISession session, Installation.InstallModel model, Entities.Multisite.Site site)
+        protected override void OnInstallation(ISession session, InstallModel model, Site site)
         {
+            
         }
     }
 }

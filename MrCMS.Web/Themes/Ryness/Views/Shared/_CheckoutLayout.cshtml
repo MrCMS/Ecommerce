@@ -3,53 +3,129 @@
 @using MrCMS.Website
 @model MrCMS.Entities.Documents.Web.Webpage
 @{
-    Layout = "_BaseLayout.cshtml";
+    Layout = "_BaseCheckoutLayout.cshtml";
     var currentPage = CurrentRequestData.CurrentPage;
     var activePages = currentPage.ActivePages.Select(webpage => webpage.DocumentType).ToList();
 }
 
 <div class="container">
-    <div class="row-fluid margin-bottom-10">
-        <div class="span4">
-            @{Html.RenderPartial("Logo");}
-        </div>
-        <div class="span8">
-            <div id="checkout-nav-buttons">
-                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())" class="btn btn-large btn-info" >Basket
-                </a>
-                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-large btn-info" >Return to shop
-                </a>
+    <header>
+        <div class="row-fluid padding-top-bottom-20 border-bottom-grey head hidden-phone">
+            <div class="span8">
+                <div class="row-fluid">
+                    <div class="span6 padding-top-bottom-10">
+                        <a href="/"><img src="/Themes/Ryness/Content/Images/checkout/logo.jpg" alt="Ryness - Lighting and Electrical" title="Ryness - Lighting and Electrical"/></a>
+                    </div>
+                    <div class="span6">
+                        <img src="/Themes/Ryness/Content/Images/checkout/securecheckout.gif" alt="Secure Checkout" title="Secure Checkout"/>
+                    </div>
+                </div>
+            </div>
+            <div class="span4">
+                <div class="row-fluid padding-top-bottom-30 top-buttons">
+                    <div class="span6">
+                        <span class="row-fluid">
+                            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())" class="btn red-gradient span12" >Basket</a>   
+                        </span>
+                    </div>
+                    <div class="span6">
+                        <span class="row-fluid">
+                            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn red-gradient span12" >Return to shop</a>     
+                        </span>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="navbar">
-        <div class="navbar-inner">
-            <div id="checkout" class="wizard">
-                <ul class="steps">
-                    <li class="span2 @(activePages.Contains("EnterOrderEmail", StringComparer.OrdinalIgnoreCase) ? "active" : "")">
-                        <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Welcome
-                        </a>
-                        <span class="chevron"></span></li>
-                    <li class="span2 @(activePages.Contains("SetDeliveryDetails", StringComparer.OrdinalIgnoreCase) ? "active" : "")">Delivery
-                                <span class="chevron"></span></li>
-                    <li class="span2 @(activePages.Contains("PaymentDetails", StringComparer.OrdinalIgnoreCase) ? "active" : "")">Payment
-                                <span class="chevron"></span></li>
-                    <li class="span2 @(activePages.Contains("OrderPlaced", StringComparer.OrdinalIgnoreCase) ? "active" : "")">Receipt
-                                <span class="chevron"></span></li>
-                </ul>
+        <!-- mobile header -->
+        <div class="hidden-desktop hidden-tablet row-fluid mobile-header">
+            <div class="span6">
+                <div class="row-fluid">
+                    <div class="span6 logo-container">
+                        <img src="/Themes/Ryness/Content/Images/checkout/logo.jpg" alt="Ryness - Lighting and Electrical" title="Ryness - Lighting and Electrical"/>
+                    </div>
+                    <div class="span6">
+                        <img src="/Themes/Ryness/Content/Images/checkout/securecheckout.gif" alt="Secure Checkout" title="Secure Checkout"/>
+                    </div>
+                </div>
+            </div>
+            <div class="span6">
+                <div class="row-fluid">
+                    <div class="span4">
+                        <div class="row-fluid">
+                            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())" class="btn red-gradient span12" >Basket</a>
+                        </div>
+                    </div>
+                    <div class="span8">
+                        <div class="row-fluid">
+                            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn red-gradient span12" >Return to shop</a>     
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="row-fluid">
+        <!-- end mobile header -->
+    </header>
+    
+    <div class="row-fluid padding-top-bottom-20 content">
         <div class="span12">
-            @RenderBody()
+            <div class="navbar navbar-inverse">
+                <div class="navbar-inner">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target="#navigation">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <div class="nav-collapse" id="navigation">
+                        <ul class="nav">
+                            <li>
+                                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())" title="Welcome" class="@(activePages.Contains("EnterOrderEmail", StringComparer.OrdinalIgnoreCase) ? "active" : "")">Welcome
+                                    <span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" title="#" class="@(activePages.Contains("SetDeliveryDetails", StringComparer.OrdinalIgnoreCase) ? "active" : "")">
+                                    <span class="back"></span>
+                                    Delivery
+                                    <span></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" title="#" class="@(activePages.Contains("PaymentDetails", StringComparer.OrdinalIgnoreCase) ? "active" : "")">
+                                    <span class="back"></span>
+                                    Payment
+                                    <span></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" title="#" class="@(activePages.Contains("OrderPlaced", StringComparer.OrdinalIgnoreCase) ? "active" : "")">
+                                    <span class="back"></span>
+                                    Receipt
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+    
+    @RenderBody()
+    
+    <div class="row-fluid padding-top-bottom-20 border-top-bottom-grey">
+        <div class="span12 align-center">
+            <img src="/Themes/Ryness/Content/Images/checkout/securepayment.gif" title="Secure Payment" alt="Secure Payment"/>
+        </div>
+    </div>
 
+    <footer>
+        <div class="row-fluid padding-top-bottom-20">
+            <div class="span12">
+                <p>Ryness is secure. Your details are kept secure at all times</p>
+                <p>Head Office - Ryness Electrical Supplies Ltd, 413 North End Road, London, SW6 1NS - <a href="mailto:sales@ryness.co.uk">sales@ryness.co.uk</a></p>
+                <p>Copyright 2013 Ryness. All rights reserved</p>
+            </div>
+        </div>
+    </footer>
+
+</div>
