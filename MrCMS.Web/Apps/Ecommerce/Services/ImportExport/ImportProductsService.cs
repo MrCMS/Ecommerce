@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Media;
-using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -44,6 +43,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _session = session;
             _productVariantService = productVariantService;
 
+            _allDocuments=new List<Document>();
+            _allVariants=new List<ProductVariant>();
+            _allBrands=new List<Brand>();
         }
 
         /// <summary>
@@ -73,7 +75,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 {
                     foreach (var dataTransferObject in productsToImport)
                     {
-                        ProductImportDataTransferObject transferObject = dataTransferObject;
+                        var transferObject = dataTransferObject;
                         ImportProduct(transferObject);
                     }
                     _allDocuments.ForEach(session.SaveOrUpdate);
@@ -95,10 +97,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// <param name="dataTransferObject"></param>
         public Product ImportProduct(ProductImportDataTransferObject dataTransferObject)
         {
-            var product =
+            if(_allDocuments==null)
+                _allDocuments=new List<Document>();
+            var product = 
                 _allDocuments.OfType<Product>()
                              .SingleOrDefault(x => x.UrlSegment == dataTransferObject.UrlSegment) ??
-                new Product();
+                             new Product();
 
             product.Parent = _uniquePage;
             product.UrlSegment = dataTransferObject.UrlSegment;
@@ -138,7 +142,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
             ////Url History
             _importUrlHistoryService.ImportUrlHistory(dataTransferObject, product);
-
 
             ////Specifications
             _importSpecificationsService.ImportSpecifications(dataTransferObject, product);

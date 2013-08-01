@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using NHibernate;
 using MrCMS.Web.Apps.Ecommerce.Settings;
