@@ -18,9 +18,9 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
     {
         private readonly IImportProductVariantPriceBreaksService _importProductUrlHistoryService;
 
-        public ImportProductVariantPriceBreakServiceTests()
+        public ImportProductVariantPriceBreakServiceTests(ISession session)
         {
-            _importProductUrlHistoryService = new ImportProductVariantPriceBreaksService();
+            _importProductUrlHistoryService = new ImportProductVariantPriceBreaksService(session);
         }
 
         [Fact]
@@ -43,7 +43,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             var priceBreak = priceBreaks.ToList()[0];
             priceBreak.Price.Should().Be(299);
             priceBreak.Quantity.Should().Be(10);
-            priceBreak.Item.Should().Be(productVariant);
+            priceBreak.ProductVariant.Should().Be(productVariant);
         }
     }
 }

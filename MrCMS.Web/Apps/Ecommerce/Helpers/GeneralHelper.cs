@@ -50,17 +50,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
             }
         }
 
-        public static IEnumerable<SelectListItem> SelectDefaultValue(this IEnumerable<SelectListItem> list, string value)
+        public static IEnumerable<SelectListItem> SelectDefaultValue(IEnumerable<SelectListItem> list, string value)
         {
-            var newList = list;
-            if (newList != null && newList.Any() && !String.IsNullOrWhiteSpace(value))
+            if (list != null && list.Any() && !String.IsNullOrWhiteSpace(value))
             {
-                foreach (var selectListItem in newList)
+                foreach (var selectListItem in list)
                     selectListItem.Selected = false;
-                if (newList.SingleOrDefault(x => x.Value == value) != null)
-                    newList.SingleOrDefault(x => x.Value == value).Selected = true;
+                if (list.SingleOrDefault(x => x.Value == value) != null)
+                    list.SingleOrDefault(x => x.Value == value).Selected = true;
             }
-            return newList;
+            return list;
         }
     }
 }

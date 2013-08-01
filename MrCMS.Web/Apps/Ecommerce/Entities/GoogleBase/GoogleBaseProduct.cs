@@ -1,4 +1,5 @@
-﻿using MrCMS.Entities;
+﻿using System.ComponentModel;
+using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase
         public virtual ProductVariant ProductVariant { get; set; }
 
         //Override Defaults
+        [DisplayName("Please choose Category")]
         public virtual string OverrideCategory { get; set; }
         public virtual string Category
         {
@@ -20,6 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase
                 return string.IsNullOrWhiteSpace(OverrideCategory) ? MrCMSApplication.Get<GoogleBaseSettings>().DefaultCategory : OverrideCategory;
             }
         }
+        [DisplayName("Product Condition")]
         public virtual ProductCondition? OverrideCondition { get; set; }
         public virtual ProductCondition Condition
         {
@@ -31,6 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase
 
         //Clothing & Accessories
         public virtual Gender Gender { get; set; }
+        [DisplayName("Age Group")]
         public virtual AgeGroup AgeGroup { get; set; }
 
         //Attributes
@@ -88,8 +92,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase
         }
 
         //AdWords
+        [DisplayName("AdWords Grouping")]
         public virtual string Grouping { get; set; }
+        [DisplayName("AdWords Labels")]
         public virtual string Labels { get; set; }
+        [DisplayName("AdWords Redirect")]
         public virtual string Redirect { get; set; }
     }
 }
