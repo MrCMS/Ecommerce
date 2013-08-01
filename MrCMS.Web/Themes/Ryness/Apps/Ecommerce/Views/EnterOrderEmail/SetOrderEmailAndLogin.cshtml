@@ -1,0 +1,49 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.EmailAndLoginModel
+@{
+    var errorMessages = TempData.ErrorMessages();
+}
+@if (errorMessages.Any())
+{
+    <ul>
+        @foreach (var message in errorMessages)
+        {
+            <li>@message</li>
+        }
+    </ul>
+}
+@using (Html.BeginForm("SetOrderEmailAndLogin", "EnterOrderEmail", FormMethod.Post))
+{
+    
+    <p>Enter your Email address <span class="red">*</span> :</p>
+    <div class="row-fluid">
+        @Html.TextBoxFor(x => x.OrderEmail, new { @class = "span6" })
+        @Html.ValidationMessageFor(x => x.OrderEmail)
+    </div>
+    <p>Do you have a password?</p>
+    <div class="row-fluid">
+        <div class="span12">
+            <label class="radio">
+                @Html.RadioButtonFor(model => model.HavePassword, false)
+                No (You can create an account later)
+            </label>
+        </div>
+    </div>
+    <div class="row-fluid password-container">
+        <div class="span2">
+            <label class="radio line-height-30">
+                @Html.RadioButtonFor(model => model.HavePassword, true, new { @class = "margin-top-10"})
+                Yes
+            </label>
+        </div>
+        <div class="span10 hidden" id="passwordbox">
+            <div class="row-fluid">
+                @Html.PasswordFor(model => model.Password)
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <input class="btn red-gradient span4" type="submit" id="continue" name="continue" value="Continue" />
+    </div>
+}
+@{ Html.IncludeScript("~/Themes/Ecommerce/Content/Scripts/custom/enter-order-email.js"); }

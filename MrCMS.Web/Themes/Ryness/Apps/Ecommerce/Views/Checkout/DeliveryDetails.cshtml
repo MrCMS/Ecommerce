@@ -1,0 +1,29 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+@using MrCMS.Helpers
+<div class="padding-20 grey-background margin-bottom-10">
+    <div class="row-fluid two-side-column">
+        <div class="span10">
+            <p>
+                <b>Delivery Details</b>
+            </p>
+        </div>
+        <div class="span2 align-right">
+            <img src="/Themes/Ryness/Content/Images/checkout/tick.png" alt="tick" />
+        </div>
+    </div>
+    <p>
+        @(Model.ShippingAddress.Name??String.Empty)<br />
+        @(Model.ShippingAddress.PhoneNumber??String.Empty)            
+    </p>
+    <p>
+        @(Model.ShippingAddress.Company??String.Empty)<br />
+        @(Model.ShippingAddress.Address1??String.Empty)<br />
+        @(Model.ShippingAddress.Address2??String.Empty)<br />
+        @(Model.ShippingAddress.City??String.Empty)<br />
+        @(Model.ShippingAddress.PostalCode??String.Empty)<br />
+        @(Model.ShippingAddress.Country!=null?Model.ShippingAddress.Country.Name:String.Empty)
+    </p>
+    <a class="btn white-gradient" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.SetDeliveryDetails>())">Edit</a>
+</div>
+
+

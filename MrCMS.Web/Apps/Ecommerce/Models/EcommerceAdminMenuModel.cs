@@ -9,7 +9,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public string Text { get { return "Ecommerce"; } }
         public string Url { get; private set; }
         public bool CanShow { get { return true; } }
-
         public IDictionary<string, List<IMenuItem>> Children
         {
             get

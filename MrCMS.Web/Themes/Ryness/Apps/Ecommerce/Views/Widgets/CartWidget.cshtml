@@ -8,7 +8,7 @@
             <img src="/Themes/Ryness/Content/Images/basket.jpg" alt="Basket"/>Your basket has
             @if (Model.ItemQuantity > 0)
             {
-                @Model.ItemQuantity <span>items - @Model.Total.ToCurrencyFormat()</span>
+                <a href="/basket">@Model.ItemQuantity</a><span> @(Model.ItemQuantity==1?"item":"items"). <a href="/basket">@Model.Total.ToCurrencyFormat()</a></span>
             }
             else
             {

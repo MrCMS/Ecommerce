@@ -1,0 +1,29 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+<div class="row-fluid margin-bottom-20">
+    <div class="span8">
+        <div class="border-grey margin-bottom-20">
+            <div class="sub-header grey-background">
+                Select Postage
+            </div>
+            <div class="padding-top-bottom-20">
+                <div class="row-fluid">
+                    <div class="span4 align-right line-height-30">
+                        Confirm Postage :
+                    </div>
+                    <div class="span8">
+                        @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new{ @class = "span8"})
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        @{Html.RenderAction("DeliveryAddress", "SetDeliveryDetails");}
+        
+    </div>
+    <div class="span4 border-top-grey">
+        @{Html.RenderAction("Summary", "Checkout");}
+        @{Html.RenderAction("OrderEmail", "Checkout");}
+     </div>
+</div>
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/shipping-methods.js"); }
