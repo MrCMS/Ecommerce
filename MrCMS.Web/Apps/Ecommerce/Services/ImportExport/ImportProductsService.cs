@@ -43,7 +43,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _productVariantService = productVariantService;
 
             _allDocuments=new List<Document>();
-            _allVariants=new List<ProductVariant>();
             _allBrands=new List<Brand>();
         }
 
