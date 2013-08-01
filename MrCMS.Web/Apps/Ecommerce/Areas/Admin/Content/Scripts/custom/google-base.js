@@ -9,8 +9,10 @@
         $.post('/Admin/Apps/Ecommerce/ImportExport/UpdateGoogleBaseProduct',
                 $(this).parents('form').serialize(),
             function (response) {
-                if (response === true) {
-                    location.reload();
+                if (response !== false) {
+                    parent.$.get('/Admin/Apps/Ecommerce/ImportExport/GoogleBaseProduct/' + response, function (result) {
+                        parent.$('#google-base-product-' + response).replaceWith(result);
+                    });
                 } else {
                     alert("Error happened during update operation. Please check your parameters and try again.");
                 }
