@@ -26,28 +26,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
 
         public GoogleBaseProduct GetGoogleBaseProduct(int id)
         {
-            return _session.QueryOver<GoogleBaseProduct>().Where(x=>x.Id==id).SingleOrDefault();
+            return _session.QueryOver<GoogleBaseProduct>().Where(x => x.Id == id).SingleOrDefault();
         }
 
-        public void AddGoogleBaseProduct(GoogleBaseProduct item)
+        public void SaveGoogleBaseProduct(GoogleBaseProduct item)
         {
-            _session.Transact(session => session.Save(item));
+            if (item.ProductVariant != null)
+                item.ProductVariant.GoogleBaseProduct = item;
+            _session.Transact(session => session.SaveOrUpdate(item));
         }
 
-        public void UpdateGoogleBaseProduct(GoogleBaseProduct item)
-        {
-            _session.Transact(session => session.Update(item));
-        }
-
-        public void UpdateGoogleBaseProductAndVariant(ProductVariant productVariant, GoogleBaseProduct googleBaseProduct)
-        {
-            if (googleBaseProduct.Id == 0)
-                AddGoogleBaseProduct(googleBaseProduct);
-            else
-                UpdateGoogleBaseProduct(googleBaseProduct);
-            productVariant.GoogleBaseProduct = googleBaseProduct;
-            _productVariantService.Update(productVariant);
-        }
 
         public List<SelectListItem> GetGoogleCategories()
         {
