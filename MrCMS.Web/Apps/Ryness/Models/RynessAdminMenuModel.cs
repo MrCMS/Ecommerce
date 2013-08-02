@@ -3,7 +3,7 @@ using MrCMS.Models;
 
 namespace MrCMS.Web.Apps.Ryness.Models
 {
-    public class RynessMenuItems : IAdminMenuItem
+    public class RynessAdminMenuModel : IAdminMenuItem
     {
         private Dictionary<string, List<IMenuItem>> _children;
         public string Text { get { return "Ryness"; } }
@@ -26,6 +26,6 @@ namespace MrCMS.Web.Apps.Ryness.Models
                     });
             }
         }
-        public int DisplayOrder { get { return 2; } }
+        public int DisplayOrder { get { return 49; } }
     }
 }

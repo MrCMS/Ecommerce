@@ -254,6 +254,8 @@
     <Compile Include="Apps\Ecommerce\Controllers\SetDeliveryDetailsController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CategoryOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\FeaturedCategoryWidgetOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\FeaturedProductsWidgetOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CountryOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountApplicationOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountLimitationOverride.cs" />
@@ -509,7 +511,7 @@
     <Compile Include="Apps\Ryness\Areas\Admin\Controllers\TestimonialController.cs" />
     <Compile Include="Apps\Ryness\Dbconfiguration\TestimonialOverride.cs" />
     <Compile Include="Apps\Ryness\Entities\Testimonial.cs" />
-    <Compile Include="Apps\Ryness\Models\RynessMenuItems.cs" />
+    <Compile Include="Apps\Ryness\Models\RynessAdminMenuModel.cs" />
     <Compile Include="Apps\Ryness\RynessApp.cs" />
     <Compile Include="Apps\Ryness\Services\ITestimonialService.cs" />
     <Compile Include="Apps\Ryness\Services\TestimonialService.cs" />
@@ -643,6 +645,7 @@
     <Content Include="Apps\Ecommerce\Content\Styles\themes\base\jquery.ui.tabs.css" />
     <Content Include="Apps\Ecommerce\Content\Styles\themes\base\jquery.ui.theme.css" />
     <Content Include="Apps\Galleries\Areas\Admin\Content\Scripts\gallery.js" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\Slider.cshtml" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\build-config.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\ckeditor.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\config.js" />
@@ -1943,7 +1946,6 @@
     <Content Include="Apps\Ryness\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ImportExport\GoogleBaseProduct.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ImportExport\GoogleBaseSearch.cshtml" />
-    <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\Slider.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\RynessNavigation.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\TopBanner.cshtml" />

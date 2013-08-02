@@ -12,9 +12,9 @@ namespace MrCMS.Web.Apps.Ryness
     {
         protected override void RegisterApp(MrCMSAppRegistrationContext context)
         {
-            //context.MapAreaRoute("Admin controllers", "Admin", "Admin/Apps/Ryness/{controller}/{action}/{id}",
-            //                     new {controller = "Home", action = "Index", id = UrlParameter.Optional},
-            //                     new[] {typeof (TestimonialController).Namespace});
+            context.MapAreaRoute("Ryness Admin controllers", "Admin", "Admin/Apps/Ryness/{controller}/{action}/{id}",
+                                 new {controller = "Home", action = "Index", id = UrlParameter.Optional},
+                                 new[] {typeof (TestimonialController).Namespace});
         }
 
         public override string AppName
