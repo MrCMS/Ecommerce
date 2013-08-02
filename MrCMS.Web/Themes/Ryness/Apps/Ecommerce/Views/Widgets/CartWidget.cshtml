@@ -8,11 +8,11 @@
             <img src="/Themes/Ryness/Content/Images/basket.jpg" alt="Basket"/>Your basket has
             @if (Model.ItemQuantity > 0)
             {
-                <a href="/basket">@Model.ItemQuantity</a><span> @(Model.ItemQuantity==1?"item":"items"). <a href="/basket">@Model.Total.ToCurrencyFormat()</a></span>
+                <a href="/basket">@Model.ItemQuantity</a><span> @(Model.ItemQuantity==1?"item":"items").<br/> <a href="/basket">@Model.Total.ToCurrencyFormat()</a></span>
             }
             else
             {
-                <span><a href="/basket">0</a> items.</span>
+                <span><a href="/basket" style="line-height:44px;">0</a> items.</span>
             }
         </div>
     </div>

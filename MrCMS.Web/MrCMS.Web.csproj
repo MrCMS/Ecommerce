@@ -510,7 +510,9 @@
     <Compile Include="Apps\Galleries\Pages\Gallery.cs" />
     <Compile Include="Apps\Ryness\Areas\Admin\Controllers\TestimonialController.cs" />
     <Compile Include="Apps\Ryness\Dbconfiguration\TestimonialOverride.cs" />
+    <Compile Include="Apps\Ryness\Entities\BuyingGuideInformation.cs" />
     <Compile Include="Apps\Ryness\Entities\Testimonial.cs" />
+    <Compile Include="Apps\Ryness\Metadata\BuyingGuideMetadata.cs" />
     <Compile Include="Apps\Ryness\Models\RynessAdminMenuModel.cs" />
     <Compile Include="Apps\Ryness\Pages\BuyingGuide.cs" />
     <Compile Include="Apps\Ryness\RynessApp.cs" />

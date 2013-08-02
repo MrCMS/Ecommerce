@@ -372,7 +372,7 @@ box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);}
 .cart-summary { border: 1px #ddd solid;}
 /* Large desktop */
 @media (min-width: 1200px) { 
-    .top-basket{line-height:44px;font-size:12px;}
+    .top-basket{line-height:22px;font-size:11px;}
     .block .collapse {height:auto !important;overflow:visible !important;}
     .basket-items {padding:8px 0;}
     .top-checkout .green-gradient {-webkit-border-radius: 0 3px 3px 0;-moz-border-radius: 0 3px 3px 0;-ms-border-radius: 0 3px 3px 0;-o-border-radius: 0 3px 3px 0;border-radius: 0 3px 3px 0;}
