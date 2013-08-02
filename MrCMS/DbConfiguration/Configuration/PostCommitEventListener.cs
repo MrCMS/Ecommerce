@@ -24,7 +24,7 @@ namespace MrCMS.DbConfiguration.Configuration
                 {
                     var ignorePropertyNames = new[]
                         {
-                            "UpdatedOn", "Id", "CreatedOn"
+                            "UpdatedOn", "Id", "CreatedOn", "DisplayOrder"
                         };
                     var propertyInfos =
                         @event.Entity.GetType().GetProperties().Where(
