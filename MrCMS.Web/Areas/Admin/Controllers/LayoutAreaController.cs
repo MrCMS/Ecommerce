@@ -73,7 +73,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult SortWidgets(LayoutArea area)
         {
-            return View(new PageWidgetSortModel(area.GetWidgets(), area));
+            return View(new PageWidgetSortModel(area.GetWidgets(), area, null));
         }
 
         [HttpPost]
