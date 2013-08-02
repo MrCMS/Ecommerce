@@ -22,18 +22,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly ICategoryService _categoryService;
         private readonly IProductOptionManager _productOptionManager;
         private readonly IFileService _fileService;
-        private readonly IImportExportManager _importExportManager;
         private readonly IBrandService _brandService;
 
         public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService,
-            IProductOptionManager productOptionManager, IFileService fileService, IImportExportManager importExportManager, IBrandService brandService)
+            IProductOptionManager productOptionManager, IFileService fileService, IBrandService brandService)
         {
             _productService = productService;
             _documentService = documentService;
             _categoryService = categoryService;
             _productOptionManager = productOptionManager;
             _fileService = fileService;
-            _importExportManager = importExportManager;
             _brandService = brandService;
         }
 
@@ -45,6 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         /// <returns></returns>
         public ViewResult Index(string q = null, int p = 1)
         {
+            ViewData["q"] = q;
             if (_documentService.GetUniquePage<ProductSearch>() == null)
                 return View();
             var searchResult = _productService.Search(q, p);

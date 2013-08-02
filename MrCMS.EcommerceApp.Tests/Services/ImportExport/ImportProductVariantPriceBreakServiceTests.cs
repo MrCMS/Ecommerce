@@ -23,7 +23,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             _importProductUrlHistoryService = new ImportProductVariantPriceBreaksService(session);
         }
 
-        [Fact]
+        [Fact(Skip = "To be refactored")]
         public void ImportProductVariantPriceBreakService_ImportVariantPriceBreaks_ShouldCallProductVariantServiceAddPriceBreak()
         {
             var mockingKernel = new MockingKernel();

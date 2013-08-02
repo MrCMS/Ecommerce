@@ -62,6 +62,11 @@ namespace MrCMS.Services
             {
                 document.OnSaving(session);
                 session.SaveOrUpdate(document);
+                if (document.IsDeleted)
+                {
+                    var test = "";
+                    test += "ba";
+                }
             });
             return document;
         }
@@ -522,6 +527,19 @@ namespace MrCMS.Services
             return result;
         }
 
+        public IEnumerable<Document> GetParents(int? parent)
+        {
+            if (parent > 0)
+            {
+                var document = _session.Get<Document>(parent);
+                while (document != null)
+                {
+                    yield return document;
+                    document = document.Parent;
+                }
+            }
+        }
+
         public bool UrlIsValidForMediaCategory(string url, int? id)
         {
             if (string.IsNullOrEmpty(url))
@@ -614,5 +632,7 @@ namespace MrCMS.Services
                         .Cacheable()
                         .RowCount() > 0;
         }
+
+        
     }
 }
