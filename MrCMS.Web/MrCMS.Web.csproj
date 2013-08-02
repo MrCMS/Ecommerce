@@ -517,6 +517,7 @@
     <Compile Include="Apps\Ryness\Services\TestimonialService.cs" />
     <Compile Include="Apps\Ryness\Widgets\RynessNavigation.cs" />
     <Compile Include="Apps\Ryness\Widgets\Slider.cs" />
+    <Compile Include="Apps\Ryness\Widgets\TestimonialWidget.cs" />
     <Compile Include="Apps\Ryness\Widgets\TopBanner.cs" />
     <Compile Include="Apps\Ryness\Widgets\TopSellers.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
@@ -1666,6 +1667,7 @@
     <Content Include="Themes\Ryness\Content\Images\logo.jpg" />
     <Content Include="Themes\Ryness\Content\Images\mail.jpg" />
     <Content Include="Themes\Ryness\Content\Images\map.jpg" />
+    <Content Include="Themes\Ryness\Content\Images\mapmarker.png" />
     <Content Include="Themes\Ryness\Content\Images\menu-active.jpg" />
     <Content Include="Themes\Ryness\Content\Images\menu-bg.jpg" />
     <Content Include="Themes\Ryness\Content\Images\open-bracket.jpg" />
@@ -1953,6 +1955,7 @@
     <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Edit.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Delete.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\TopSellers.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\TestimonialWidget.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2173,6 +2176,9 @@
     <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Shared\ProductCardTopSeller.cshtml" />
+    <Content Include="Themes\Ryness\Views\Shared\_ContentPageLayout.cshtml" />
+    <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
+    <Content Include="Themes\Ryness\Views\Shared\_BuyingGuideLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
