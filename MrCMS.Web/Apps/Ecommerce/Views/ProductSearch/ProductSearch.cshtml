@@ -10,7 +10,9 @@
 
 <div class="row-fluid" id="product-search-container">
     <div class="span3">
+        @RenderZone("Before Filters")
         @{ Html.RenderAction("Query", "ProductSearch", new { query });}
+        @RenderZone("After Filters")
     </div>
     <div class="span9">
         @{ Html.RenderAction("Results", "ProductSearch", new { query });}
