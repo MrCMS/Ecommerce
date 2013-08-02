@@ -512,6 +512,7 @@
     <Compile Include="Apps\Ryness\Dbconfiguration\TestimonialOverride.cs" />
     <Compile Include="Apps\Ryness\Entities\Testimonial.cs" />
     <Compile Include="Apps\Ryness\Models\RynessAdminMenuModel.cs" />
+    <Compile Include="Apps\Ryness\Pages\BuyingGuide.cs" />
     <Compile Include="Apps\Ryness\RynessApp.cs" />
     <Compile Include="Apps\Ryness\Services\ITestimonialService.cs" />
     <Compile Include="Apps\Ryness\Services\TestimonialService.cs" />
@@ -2178,7 +2179,6 @@
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Shared\ProductCardTopSeller.cshtml" />
     <Content Include="Themes\Ryness\Views\Shared\_ContentPageLayout.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
-    <Content Include="Themes\Ryness\Views\Shared\_BuyingGuideLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
@@ -2199,7 +2199,6 @@
     <Folder Include="Apps\Galleries\Views\Widgets\" />
     <Folder Include="Apps\Galleries\Widgets\" />
     <Folder Include="Apps\Ryness\Areas\Admin\Views\Webpage\" />
-    <Folder Include="Apps\Ryness\Pages\" />
     <Folder Include="Apps\Ryness\Views\Widgets\" />
     <Folder Include="App_Data\" />
     <Folder Include="Content\images\" />
