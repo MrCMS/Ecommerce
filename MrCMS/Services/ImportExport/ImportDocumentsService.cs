@@ -5,6 +5,7 @@ using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
 using MrCMS.Services.ImportExport.DTOs;
 using MrCMS.Entities.Documents;
+using NHibernate;
 
 namespace MrCMS.Services.ImportExport
 {
@@ -13,9 +14,12 @@ namespace MrCMS.Services.ImportExport
         private readonly IDocumentService _documentService;
         private readonly ITagService _tagService;
         private readonly IUrlHistoryService _urlHistoryService;
+        private readonly ISession _session;
+        private List<Document> _allDocuments;
 
-        public ImportDocumentsService(IDocumentService documentService, ITagService tagService, IUrlHistoryService urlHistoryService)
+        public ImportDocumentsService(IDocumentService documentService, ITagService tagService, IUrlHistoryService urlHistoryService, ISession session)
         {
+            _session = session;
             _documentService = documentService;
             _tagService = tagService;
             _urlHistoryService = urlHistoryService;
@@ -27,43 +31,53 @@ namespace MrCMS.Services.ImportExport
         /// <param name="items"></param>
         public void ImportDocumentsFromDTOs(IEnumerable<DocumentImportDataTransferObject> items)
         {
-            foreach (var dataTransferObject in items)
+            _allDocuments = _documentService.GetAllDocuments<Document>().ToList();
+
+            _session.Transact(session =>
             {
-                ImportDocument(dataTransferObject);
-            }
+                foreach (var dataTransferObject in items)
+                {
+                    var transferObject = dataTransferObject;
+                    ImportDocument(transferObject);
+                }
+                _allDocuments.ForEach(session.SaveOrUpdate);
+            });
         }
 
         /// <summary>
         /// Import from DTOs
         /// </summary>
-        /// <param name="dataTransferObject"></param>
-        public Webpage ImportDocument(DocumentImportDataTransferObject dataTransferObject)
+        /// <param name="documentDto"></param>
+        public Webpage ImportDocument(DocumentImportDataTransferObject documentDto)
         {
-            var documentByUrl = _documentService.GetDocumentByUrl<Webpage>(dataTransferObject.UrlSegment);
-            var document = documentByUrl ??
-                           (Webpage)
-                           Activator.CreateInstance(DocumentMetadataHelper.GetTypeByName(dataTransferObject.DocumentType));
-            
-            if (!String.IsNullOrEmpty(dataTransferObject.ParentUrl))
+            if (_allDocuments == null)
+                _allDocuments = new List<Document>();
+
+            var documentByUrl = _allDocuments.OfType<Webpage>().SingleOrDefault(x => x.UrlSegment == documentDto.UrlSegment);
+            var document = documentByUrl ??(Webpage)Activator.CreateInstance(DocumentMetadataHelper.GetTypeByName(documentDto.DocumentType));
+
+            if (!String.IsNullOrEmpty(documentDto.ParentUrl))
             {
-                var parent = _documentService.GetDocumentByUrl<Webpage>(dataTransferObject.ParentUrl);
+                var parent = _allDocuments.OfType<Webpage>().SingleOrDefault(x => x.UrlSegment == documentDto.ParentUrl);
+                document.Parent = parent;
                 document.SetParent(parent);
             }
-            if (dataTransferObject.UrlSegment != null)
-                document.UrlSegment = dataTransferObject.UrlSegment;
-            document.Name = dataTransferObject.Name;
-            document.BodyContent = dataTransferObject.BodyContent;
-            document.MetaTitle = dataTransferObject.MetaTitle;
-            document.MetaDescription = dataTransferObject.MetaDescription;
-            document.MetaKeywords = dataTransferObject.MetaKeywords;
-            document.RevealInNavigation = dataTransferObject.RevealInNavigation;
-            document.RequiresSSL = dataTransferObject.RequireSSL;
-            document.DisplayOrder = dataTransferObject.DisplayOrder;
-            if (dataTransferObject.PublishDate != null)
-                document.PublishOn = dataTransferObject.PublishDate;
-            
+            if (documentDto.UrlSegment != null)
+                document.UrlSegment = documentDto.UrlSegment;
+            document.Name = documentDto.Name;
+            document.BodyContent = documentDto.BodyContent;
+            document.MetaTitle = documentDto.MetaTitle;
+            document.MetaDescription = documentDto.MetaDescription;
+            document.MetaKeywords = documentDto.MetaKeywords;
+            document.RevealInNavigation = documentDto.RevealInNavigation;
+            document.RequiresSSL = documentDto.RequireSSL;
+            if (documentDto.PublishDate != null)
+                document.PublishOn = documentDto.PublishDate;
+            else
+                document.PublishOn = null;
+
             //Tags
-            foreach (var item in dataTransferObject.Tags)
+            foreach (var item in documentDto.Tags)
             {
                 var tag = _tagService.GetByName(item);
                 if (tag == null)
@@ -75,7 +89,7 @@ namespace MrCMS.Services.ImportExport
                     document.Tags.Add(tag);
             }
             //Url History
-            foreach (var item in dataTransferObject.UrlHistory)
+            foreach (var item in documentDto.UrlHistory)
             {
                 if (!String.IsNullOrWhiteSpace(item) && document.Urls.All(x => x.UrlSegment != item))
                 {
@@ -85,10 +99,10 @@ namespace MrCMS.Services.ImportExport
             }
 
             if (document.Id == 0)
-                _documentService.AddDocument(document);
-            else
-                _documentService.SaveDocument(document);
-
+            {
+                document.DisplayOrder = documentDto.DisplayOrder > 0 ? documentDto.DisplayOrder : _allDocuments.Count();
+                _allDocuments.Add(document);
+            }
 
             return document;
         }

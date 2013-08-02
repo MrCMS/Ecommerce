@@ -13,39 +13,43 @@
                 <a href="@Url.Action("Add", "Webpage", new { id = Model.ProductContainerId })" class="btn btn-success">Add Product</a>
             </span>
             </legend>
+
+            @using (Html.BeginForm("Index", "Product", FormMethod.Get))
+            {
+                @Html.TextBox("q", ViewData["q"], new { @class = "search-query" })
+                <input type="submit" value="Search" class="btn btn-primary" />
+            }
             @if (Model.Any())
             {
-            <table class="table table-condensed table-striped">
-                <thead>
-                    <tr>
-                        <th>Name
-                        </th>
-                        <th>
-                            # of variants
-                        </th>
-                        <th>
-                            Published
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var product in Model)
-                    {
+                <table class="table table-condensed table-striped">
+                    <thead>
                         <tr>
-                            <td>
-                                @Html.ActionLink(product.Name, "Edit", "Webpage", new { id = product.Id }, null)
-                            </td>
-                            <td>
-                                @product.Variants.Count
-                            </td>
-                            <td>
-                                @product.Published
-                            </td>
+                            <th>Name
+                            </th>
+                            <th># of variants
+                            </th>
+                            <th>Published
+                            </th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-            @Html.Pager(Model, "Index", p => new { p }, PagedListRenderOptions.PageNumbersOnly)
+                    </thead>
+                    <tbody>
+                        @foreach (var product in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(product.Name, "Edit", "Webpage", new { id = product.Id }, null)
+                                </td>
+                                <td>
+                                    @product.Variants.Count
+                                </td>
+                                <td>
+                                    @product.Published
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @Html.Pager(Model, "Index", p => new { p, q = ViewData["q"] }, PagedListRenderOptions.PageNumbersOnly)
             }
             else
             {
