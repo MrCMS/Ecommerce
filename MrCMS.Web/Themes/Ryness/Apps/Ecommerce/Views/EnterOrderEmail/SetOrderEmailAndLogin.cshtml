@@ -14,7 +14,6 @@
 }
 @using (Html.BeginForm("SetOrderEmailAndLogin", "EnterOrderEmail", FormMethod.Post))
 {
-    
     <p>Enter your Email address <span class="red">*</span> :</p>
     <div class="row-fluid">
         @Html.TextBoxFor(x => x.OrderEmail, new { @class = "span6" })
@@ -36,7 +35,7 @@
                 Yes
             </label>
         </div>
-        <div class="span10 hidden" id="passwordbox">
+        <div class="span10 hidden" id="password-box">
             <div class="row-fluid">
                 @Html.PasswordFor(model => model.Password)
             </div>
