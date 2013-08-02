@@ -2181,6 +2181,11 @@
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Shared\ProductCardTopSeller.cshtml" />
     <Content Include="Themes\Ryness\Views\Shared\_ContentPageLayout.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Pages\RegisterPage.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Pages\LoginPage.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Pages\ResetPasswordPage.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Pages\UserAccountPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
