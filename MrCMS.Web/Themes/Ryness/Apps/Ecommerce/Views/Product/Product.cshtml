@@ -17,7 +17,7 @@
                         @{ Html.RenderPartial("ProductImages", Model); }
                     </div>
                     <div class="span7 product-des">
-                        <h1>@Model.Name</h1>
+                        <h1>@Editable(Model, product => product.Name)</h1>
                         <div class="product-price text-align-left">
                             <span>Exclusive Price</span>
                             @selectedVariant.Price.ToCurrencyFormat()
@@ -29,9 +29,9 @@
                                 </span>
                             }
                         </div>
-                        <p>
-                            @Model.Abstract
-                        </p>
+
+                        @Editable(Model, product => product.Abstract, true)
+
                         @{Html.RenderPartial("SocialLinks");}
                         @RenderZone("Below Product Price")
                     </div>
@@ -81,16 +81,17 @@
                 @RenderZone("Below Add to cart")
             </div>
         </div>
-        <!-- full description start -->
-        <div class="row-fluid">
-            <div class="span7">
+
+        <div class="row-fluid" id="product-description-container">
+            <div class="@(hasSpecifications ? "span7" : "span12")">
+                <h4>Description</h4>
                 <div class="row-fluid margin-top-bottom-10">
                     <div class="content-title">
                         <img src="/Themes/Ryness/Content/Images/des.jpg" alt="Description" />
                         Full Description
                     </div>
                     <div class="content-details">
-                        @Editable(Model, product => product.BodyContent)
+                        @Editable(Model, product => product.BodyContent, true)
                     </div>
                     <div class="accordion" id="accordion2">
                         <div class="accordion-group">
@@ -124,16 +125,14 @@
                         </div>
                     </div>
                 </div>
+
             </div>
-            <!-- full description end -->
-            <div class="span5">
-                <!-- product specifications start -->
-                @if (hasSpecifications)
-                {
+            @if (hasSpecifications)
+            {
+                <div class="span5">
                     Html.RenderPartial("ProductSpecifications", Model);
-                }
-                <!-- product specifications end -->
-            </div>
+                </div>
+            }
         </div>
     </div>
 </div>

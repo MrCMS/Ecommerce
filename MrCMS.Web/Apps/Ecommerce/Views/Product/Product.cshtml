@@ -26,9 +26,9 @@
                         @Model.PreviousPriceText <span style="text-decoration: line-through">@selectedVariant.PreviousPrice.Value.ToCurrencyFormat()</span>
                     </span>
                 }
-                <p>
-                    @Model.Abstract
-                </p>
+                
+                
+                @Editable(Model, product => product.Abstract, true)
 
                 @{Html.RenderPartial("SocialLinks");}
                 
