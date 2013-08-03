@@ -9,7 +9,7 @@
     <div class="product-brief">
         <div class="product-abstract">
             <h3><a href="/@Model.LiveUrlSegment">@Model.Name</a></h3>
-            <p>@(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)</p>
+            @Editable(Model, product => product.Abstract)
         </div>
         <div class="product-price">
             @Html.DisplayFor(product => product.DisplayPrice)

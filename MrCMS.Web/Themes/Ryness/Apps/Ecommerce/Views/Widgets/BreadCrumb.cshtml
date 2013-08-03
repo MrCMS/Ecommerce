@@ -6,7 +6,7 @@
     <div class="container">
         <ul>
             <li><a href="/">Home</a></li>
-            @foreach (var p in Model.Reverse().ToList())
+            @foreach (var p in Model.ToList())
             {
                 <li><a href="/@p.LiveUrlSegment">@p.Name</a></li>
             }

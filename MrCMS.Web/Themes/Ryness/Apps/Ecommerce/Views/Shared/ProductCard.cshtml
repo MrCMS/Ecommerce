@@ -1,16 +1,17 @@
-﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+﻿@using System.Drawing
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
 @if (Model.Variants.Any())
 {
     <div class="span3 text-align-center">
         <a href="/@Model.LiveUrlSegment">
-            @RenderImage(Model.DisplayImageUrl)
+            @RenderImage(Model.DisplayImageUrl, new Size{Height = 150, Width = 150})
         </a>
     </div>
     <div class="span6">
         <div class="product-abstract">
             <h3><a href="/@Model.LiveUrlSegment">@Model.Name</a></h3>
-            @(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)
+            @Editable(Model, product => product.Abstract, true)
         </div>
     </div>
     <div class="span3 last">

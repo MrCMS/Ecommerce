@@ -151,7 +151,7 @@ namespace MrCMS.Web.Apps.Ecommerce
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
         {
             var currentSite = new CurrentSite(site);
-            var configurationProvider = new ConfigurationProvider(new SettingService(session), currentSite, session);
+            var configurationProvider = new ConfigurationProvider(new SettingService(session), currentSite);
             var siteSettings = configurationProvider.GetSiteSettings<SiteSettings>();
             var ecommerceSettings = configurationProvider.GetSiteSettings<EcommerceSettings>();
             var documentService = new DocumentService(session, siteSettings, currentSite);
