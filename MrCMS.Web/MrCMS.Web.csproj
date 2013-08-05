@@ -1649,6 +1649,7 @@
     <Content Include="Themes\Ryness\Content\Images\payment.jpg" />
     <Content Include="Themes\Ryness\Content\Images\phone.jpg" />
     <Content Include="Themes\Ryness\Content\Images\play.jpg" />
+    <Content Include="Themes\Ryness\Content\Images\print.gif" />
     <Content Include="Themes\Ryness\Content\Images\return-small.jpg" />
     <Content Include="Themes\Ryness\Content\Images\return.jpg" />
     <Content Include="Themes\Ryness\Content\Images\search-background-big.jpg" />
