@@ -3,11 +3,10 @@
 <div class="container">
     <h1>@Editable(Model, page => page.Name) </h1>
     <hr/>
-    @if (!string.IsNullOrEmpty(Model.FeatureImage))
+@*    @if (!string.IsNullOrEmpty(Model.FeatureImage))
     {
         @RenderImage(Model.FeatureImage, null, null, new { @class = "pull-right" })
-    }
+    }*@
     @Editable(Model, page => page.BodyContent, true)
-
     @{Html.RenderAction("RegistrationDetails", "Registration");}
 </div>
