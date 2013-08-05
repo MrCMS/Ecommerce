@@ -1,0 +1,29 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
+
+@using (Html.BeginForm("UpdateStock", "Stock", new { t = ViewData["treshold"]}, FormMethod.Post))
+{
+    <div class="row-fluid">
+        <div class="span3">
+            @Html.HiddenFor(x=>x.Id)
+            @Model.Name
+        </div>
+        <div class="span2">
+            @Model.SKU
+        </div>
+        <div class="span1">
+            @Model.Price
+        </div>
+        <div class="span2">
+            @Html.CheckBox("Published", Model.Product.Published, new {disabled = "disabled"})
+        </div>
+        <div class="span2">
+        @Html.TextBox("StockRemaining", Model.StockRemaining.GetValueOrDefault(), new {@class = "input-mini"})
+            </div>
+        <div class="span2">
+            <button type="submit" class="btn update-stock">
+                Update
+            </button>
+        </div>
+    </div>
+}
+<hr />

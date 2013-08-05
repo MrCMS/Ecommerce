@@ -23,13 +23,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             return _session.QueryOver<ProductVariant>().Cacheable().List();
         }
-        public IPagedList<ProductVariant> GetAllVariants(string queryTerm,int categoryId = 0, int page = 1)
+        public IPagedList<ProductVariant> GetAllVariantsWithLowStock(int treshold, int page = 1)
         {
-            if(string.IsNullOrWhiteSpace(queryTerm) && categoryId == 0)
+            var items = GetAll().Where(item => item.StockRemaining<=treshold && item.TrackingPolicy==TrackingPolicy.Track).OrderBy(x => x.Product.Id).ToList();
+            return new PagedList<ProductVariant>(items, page, MrCMSApplication.Get<EcommerceSettings>().PageSizeAdmin);
+        }
+        public List<ProductVariant> GetAllVariantsWithLowStock(int treshold)
+        {
+            return GetAll().Where(item => item.StockRemaining <= treshold && item.TrackingPolicy == TrackingPolicy.Track).OrderBy(x => x.Product.Id).ToList();
+        }
+        public IPagedList<ProductVariant> GetAllVariants(string queryTerm, int categoryId = 0, int page = 1)
+        {
+            if (string.IsNullOrWhiteSpace(queryTerm) && categoryId == 0)
                 return _session.Paged(QueryOver.Of<ProductVariant>().Cacheable(), page, MrCMSApplication.Get<EcommerceSettings>().PageSizeAdmin);
 
             var items = GetAll().Where(item => (queryTerm == null || item.Name.Contains(queryTerm))).OrderBy(x => x.Product.Id).ToList();
-            if (categoryId>0)
+            if (categoryId > 0)
                 items = items.Where(x => categoryId == 0 || x.Product.Categories.Any(c => c.Id == categoryId)).ToList();
 
             return new PagedList<ProductVariant>(items, page, MrCMSApplication.Get<EcommerceSettings>().PageSizeAdmin);

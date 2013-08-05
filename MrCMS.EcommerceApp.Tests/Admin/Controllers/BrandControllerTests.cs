@@ -2,9 +2,7 @@
 using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
-using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using Xunit;
 using System;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;

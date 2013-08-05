@@ -147,66 +147,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             A.CallTo(() => _configurationProvider.SaveSettings(settings)).MustHaveHappened();
         }
-        /*
-        [Fact]
-        public void ImportExportController_UpdateGoogleBaseRecord_ShouldReturnJsonResult()
-        {
-            var gbp = new GoogleBaseProduct()
-            {
-                OverrideCondition = ProductCondition.New,
-                Gender = "Female",
-                AgeGroup = "Male"
-            };
-            var pv = new ProductVariant();
 
-            var result = _importExportController.UpdateGoogleBaseProduct(pv, gbp);
-
-            result.Should().BeOfType<JsonResult>();
-        }
-
-        [Fact]
-        public void ImportExportController_UpdateGoogleBaseRecord_ShouldReturnTrueIfAllNecessaryValuesAreForwarded()
-        {
-            var gbp = new GoogleBaseProduct()
-            {
-                OverrideCondition = ProductCondition.New,
-                Gender = "Female",
-                AgeGroup = "Male"
-            };
-            var pv = new ProductVariant();
-
-            var result = _importExportController.UpdateGoogleBaseProduct(pv, gbp);
-            result.Data.Should().Be(true);
-        }
-
-        [Fact]
-        public void ImportExportController_UpdateGoogleBaseRecord_ShouldReturnFalseIfProductVariantIsNotForwarded()
-        {
-            var result = _importExportController.UpdateGoogleBaseProduct(null,null);
-
-            result.Data.Should().Be(false);
-        }
-
-        [Fact]
-        public void ImportExportController_UpdateGoogleBaseRecord_ShouldCallUpdateGoogleBaseProductAndVariant()
-        {
-            var gbp = new GoogleBaseProduct()
-            {
-                Id=1,
-                OverrideCondition = ProductCondition.New,
-                Gender = "Female",
-                AgeGroup = "Male"
-            };
-            var pv = new ProductVariant()
-            {
-                GoogleBaseProduct = gbp
-            };
-
-            A.CallTo(() => _googleBaseService.GetGoogleBaseProduct(1)).Returns(gbp);
-
-            _importExportController.UpdateGoogleBaseProduct(pv, gbp);
-
-            A.CallTo(() => _googleBaseService.UpdateGoogleBaseProductAndVariant(gbp)).MustHaveHappened();
-        }*/
     }
 }
