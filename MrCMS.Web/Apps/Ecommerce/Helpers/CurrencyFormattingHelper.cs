@@ -11,5 +11,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
 
             return currency != null ? currency.FormatPrice(price) : price.ToString("0.00");
         }
+        public static string ToCurrencyFormat(this decimal? price)
+        {
+            return price.HasValue ? ToCurrencyFormat(price.Value) : string.Empty;
+        }
     }
 }
