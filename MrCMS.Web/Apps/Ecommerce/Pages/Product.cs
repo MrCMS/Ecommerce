@@ -187,5 +187,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             get { return Variants.OrderBy(variant => variant.Price); }
         }
+
+        public virtual bool ShowPreviousPrice
+        {
+            get { return DisplayPreviousPrice.HasValue && DisplayPreviousPrice > DisplayPrice; }
+        }
     }
 }

@@ -122,7 +122,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var category = _documentService.GetDocument<Category>(categoryId);
             product.Categories.Add(category);
             category.Products.Add(product);
-            _session.Transact(session => session.SaveOrUpdate(product));
+            _session.Transact(session =>
+                                  {
+                                      session.SaveOrUpdate(product);
+                                      session.SaveOrUpdate(category);
+                                  });
         }
 
         public void RemoveCategory(Product product, int categoryId)
@@ -130,7 +134,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var category = _documentService.GetDocument<Category>(categoryId);
             product.Categories.Remove(category);
             category.Products.Remove(product);
-            _session.Transact(session => session.SaveOrUpdate(product));
+            _session.Transact(session =>
+                                  {
+                                      session.SaveOrUpdate(product);
+                                      session.SaveOrUpdate(category);
+                                  });
         }
 
         public List<SelectListItem> GetOptions()

@@ -6,6 +6,7 @@ using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using MrCMS.Entities.Multisite;
 using MrCMS.Indexing.Management;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website;
 using NHibernate;
@@ -17,7 +18,14 @@ using Version = Lucene.Net.Util.Version;
 
 namespace MrCMS.Web.Apps.Ecommerce.Indexing
 {
-    public class ProductSearchIndex : IIndexDefinition<Product>
+    public class ProductSearchIndex : IIndexDefinition<Product>,
+                                      IRelatedItemIndexDefinition<ProductVariant, Product>,
+                                      IRelatedItemIndexDefinition<ProductSpecificationAttribute, Product>,
+                                      IRelatedItemIndexDefinition<ProductSpecificationAttributeOption, Product>,
+                                      IRelatedItemIndexDefinition<ProductSpecificationValue, Product>,
+                                      IRelatedItemIndexDefinition<ProductAttributeOption, Product>,
+                                      IRelatedItemIndexDefinition<ProductAttributeValue, Product>,
+                                      IRelatedItemIndexDefinition<Category, Product>
     {
         public Document Convert(Product entity)
         {
@@ -58,7 +66,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
             return new StandardAnalyzer(Version.LUCENE_30);
         }
 
-        public string IndexName { get { return "Product Search Index"; } }
+        public string IndexName
+        {
+            get { return "Product Search Index"; }
+        }
 
         public IEnumerable<FieldDefinition<Product>> Definitions
         {
@@ -80,74 +91,134 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                 yield return Brand;
             }
         }
-        public static FieldDefinition<Product> Id { get { return _id; } }
-        public static FieldDefinition<Product> Name { get { return _name; } }
-        public static FieldDefinition<Product> NameSort { get { return _nameSort; } }
-        public static FieldDefinition<Product> BodyContent { get { return _bodyContent; } }
-        public static FieldDefinition<Product> MetaTitle { get { return _metaTitle; } }
-        public static FieldDefinition<Product> MetaKeywords { get { return _metaKeywords; } }
-        public static FieldDefinition<Product> MetaDescription { get { return _metaDescription; } }
-        public static FieldDefinition<Product> UrlSegment { get { return _urlSegment; } }
-        public static FieldDefinition<Product> PublishOn { get { return _publishOn; } }
-        public static DecimalFieldDefinition<Product> Price { get { return _price; } }
-        public static FieldDefinition<Product> Specifications { get { return _specifications; } }
-        public static FieldDefinition<Product> Options { get { return _options; } }
-        public static FieldDefinition<Product> Categories { get { return _categories; } }
-        public static FieldDefinition<Product> Brand { get { return _brand; } }
+
+        public static FieldDefinition<Product> Id
+        {
+            get { return _id; }
+        }
+
+        public static FieldDefinition<Product> Name
+        {
+            get { return _name; }
+        }
+
+        public static FieldDefinition<Product> NameSort
+        {
+            get { return _nameSort; }
+        }
+
+        public static FieldDefinition<Product> BodyContent
+        {
+            get { return _bodyContent; }
+        }
+
+        public static FieldDefinition<Product> MetaTitle
+        {
+            get { return _metaTitle; }
+        }
+
+        public static FieldDefinition<Product> MetaKeywords
+        {
+            get { return _metaKeywords; }
+        }
+
+        public static FieldDefinition<Product> MetaDescription
+        {
+            get { return _metaDescription; }
+        }
+
+        public static FieldDefinition<Product> UrlSegment
+        {
+            get { return _urlSegment; }
+        }
+
+        public static FieldDefinition<Product> PublishOn
+        {
+            get { return _publishOn; }
+        }
+
+        public static DecimalFieldDefinition<Product> Price
+        {
+            get { return _price; }
+        }
+
+        public static FieldDefinition<Product> Specifications
+        {
+            get { return _specifications; }
+        }
+
+        public static FieldDefinition<Product> Options
+        {
+            get { return _options; }
+        }
+
+        public static FieldDefinition<Product> Categories
+        {
+            get { return _categories; }
+        }
+
+        public static FieldDefinition<Product> Brand
+        {
+            get { return _brand; }
+        }
 
         private static readonly FieldDefinition<Product> _id =
             new StringFieldDefinition<Product>("id", webpage => webpage.Id.ToString(), Field.Store.YES,
-                                         Field.Index.NOT_ANALYZED);
+                                               Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Product> _name =
             new StringFieldDefinition<Product>("name", webpage => webpage.Name, Field.Store.YES,
-                                         Field.Index.ANALYZED);
+                                               Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Product> _nameSort =
-           new StringFieldDefinition<Product>("nameSort", webpage => webpage.Name.Trim().ToLower(), Field.Store.NO,
-                                        Field.Index.NOT_ANALYZED);
+            new StringFieldDefinition<Product>("nameSort", webpage => webpage.Name.Trim().ToLower(), Field.Store.NO,
+                                               Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Product> _bodyContent =
             new StringFieldDefinition<Product>("bodycontent", webpage => webpage.BodyContent, Field.Store.NO,
-                                         Field.Index.ANALYZED);
+                                               Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Product> _metaTitle =
             new StringFieldDefinition<Product>("metatitle", webpage => webpage.MetaTitle, Field.Store.NO,
-                                         Field.Index.ANALYZED);
+                                               Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Product> _metaKeywords =
             new StringFieldDefinition<Product>("metakeywords", webpage => webpage.MetaKeywords, Field.Store.NO,
-                                         Field.Index.ANALYZED);
+                                               Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Product> _metaDescription =
             new StringFieldDefinition<Product>("metadescription",
-                                         webpage => webpage.MetaDescription, Field.Store.NO, Field.Index.ANALYZED);
+                                               webpage => webpage.MetaDescription, Field.Store.NO, Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Product> _urlSegment =
             new StringFieldDefinition<Product>("urlsegment", webpage => webpage.UrlSegment, Field.Store.NO,
-                                         Field.Index.ANALYZED);
+                                               Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Product> _publishOn =
             new StringFieldDefinition<Product>("publishOn",
-                                         webpage =>
-                                         DateTools.DateToString(webpage.PublishOn.GetValueOrDefault(DateTime.MaxValue),
-                                                                DateTools.Resolution.SECOND), Field.Store.YES,
-                                         Field.Index.NOT_ANALYZED);
+                                               webpage =>
+                                               DateTools.DateToString(
+                                                   webpage.PublishOn.GetValueOrDefault(DateTime.MaxValue),
+                                                   DateTools.Resolution.SECOND), Field.Store.YES,
+                                               Field.Index.NOT_ANALYZED);
 
         private static readonly DecimalFieldDefinition<Product> _price =
             new DecimalFieldDefinition<Product>("price", product => GetPrices(product), Field.Store.YES,
-                                         Field.Index.NOT_ANALYZED);
+                                                Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Product> _specifications =
-          new StringFieldDefinition<Product>("specifications",
-                                         product =>
-                                         product.SpecificationValues.Select(value => value.Id.ToString()).Distinct(),
-                                       Field.Store.YES, Field.Index.NOT_ANALYZED);
+            new StringFieldDefinition<Product>("specifications",
+                                               product =>
+                                               product.SpecificationValues.Select(value => value.ProductSpecificationAttributeOption.Id.ToString())
+                                                      .Distinct(),
+                                               Field.Store.YES, Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Product> _options =
             new StringFieldDefinition<Product>("options",
                                                product =>
-                                               product.Variants.SelectMany(variant => variant.AttributeValues.Select(value => value.Id)).Select(i => i.ToString()),
+                                               product.Variants.SelectMany(
+                                                   variant => variant.AttributeValues.Select(value => value.Id))
+                                                      .Select(i => i.ToString()),
                                                Field.Store.YES, Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Product> _categories =
@@ -188,6 +259,44 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
         public static IEnumerable<decimal> GetPrices(Product entity)
         {
             return entity.Variants.Select(pv => pv.Price);
+        }
+
+        public IEnumerable<Product> GetEntitiesToUpdate(ProductVariant obj)
+        {
+            yield return obj.Product;
+        }
+
+        public IEnumerable<Product> GetEntitiesToUpdate(ProductSpecificationAttribute obj)
+        {
+            return from productSpecificationAttributeOption in obj.Options
+                   from productSpecificationValue in productSpecificationAttributeOption.Values
+                   select productSpecificationValue.Product;
+        }
+
+        public IEnumerable<Product> GetEntitiesToUpdate(ProductSpecificationAttributeOption obj)
+        {
+            return obj.Values.Select(productSpecificationValue => productSpecificationValue.Product);
+        }
+
+        public IEnumerable<Product> GetEntitiesToUpdate(ProductAttributeOption obj)
+        {
+            return obj.Products;
+        }
+
+        public IEnumerable<Product> GetEntitiesToUpdate(ProductAttributeValue obj)
+        {
+            if (obj.ProductVariant != null)
+                yield return obj.ProductVariant.Product;
+        }
+
+        public IEnumerable<Product> GetEntitiesToUpdate(Category obj)
+        {
+            return obj.Products;
+        }
+
+        public IEnumerable<Product> GetEntitiesToUpdate(ProductSpecificationValue obj)
+        {
+            yield return obj.Product;
         }
     }
 }
