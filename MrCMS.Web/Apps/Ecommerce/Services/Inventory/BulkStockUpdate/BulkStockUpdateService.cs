@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Inventory.BulkStockUpdate
             return noOfUpdatedItems;
         }
 
-        private ProductVariant BulkStockUpdate(BulkStockUpdateDataTransferObject itemDto, ref int noOfUpdatedItems)
+        public ProductVariant BulkStockUpdate(BulkStockUpdateDataTransferObject itemDto, ref int noOfUpdatedItems)
         {
             if (_allVariants == null)
                 _allVariants = new List<ProductVariant>();
