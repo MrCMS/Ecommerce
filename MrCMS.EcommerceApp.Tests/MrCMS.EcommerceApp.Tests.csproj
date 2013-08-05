@@ -196,6 +196,7 @@
   <ItemGroup>
     <Folder Include="Helpers\" />
     <Folder Include="Indexing\" />
+    <Folder Include="Services\BulkStockUpdate\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="x64\SQLite.Interop.dll">

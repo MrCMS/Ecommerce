@@ -414,7 +414,14 @@
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantStockIsValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantTaxRateIdIsValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantWeightEqOrGrThan0.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\DTOs\BulkStockUpdateDataTransferObject.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkStockUpdateService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkStockUpdateValidationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\IBulkStockUpdateValidationRule.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\ProductVariantSKUExists.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\IInventoryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\BulkStockUpdateService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\BulkStockUpdateValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\InventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
@@ -1952,6 +1959,7 @@
     <Content Include="Apps\Ryness\Views\Web.config" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReport.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\ProductVariant.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\BulkStockUpdate.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
