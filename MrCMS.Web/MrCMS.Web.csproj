@@ -418,10 +418,25 @@
     <Compile Include="Apps\Ecommerce\Services\Inventory\InventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\EmptyBasket.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderCancelled.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderFullyRefunded.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderPartiallyRefunded.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderPlaced.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderShipped.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOrderEvent.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\SendOrderCancelledEmailToCustomer.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\SendOrderFullyRefundedEmailToCustomer.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\SendOrderPartiallyRefundedEmailToCustomer.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\SendOrderPlacedEmailToCustomer.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\SendOrderPlacedEmailToStoreOwner.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\SendOrderShippedEmailToCustomer.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderEventService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderRefundService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\OrderEventService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderRefundService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderSearchService.cs" />
@@ -1653,6 +1668,7 @@
     <Content Include="Themes\Ryness\Content\Images\payment.jpg" />
     <Content Include="Themes\Ryness\Content\Images\phone.jpg" />
     <Content Include="Themes\Ryness\Content\Images\play.jpg" />
+    <Content Include="Themes\Ryness\Content\Images\print.gif" />
     <Content Include="Themes\Ryness\Content\Images\return-small.jpg" />
     <Content Include="Themes\Ryness\Content\Images\return.jpg" />
     <Content Include="Themes\Ryness\Content\Images\search-background-big.jpg" />
@@ -2163,6 +2179,11 @@
     <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\LoginBox.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\ChangePassword.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\PasswordReset.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />

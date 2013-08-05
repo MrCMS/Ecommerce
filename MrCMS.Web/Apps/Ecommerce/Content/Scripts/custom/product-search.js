@@ -95,7 +95,7 @@
             if (queryString.length > 0) queryString += "&";
             queryString += "BrandId=" + data.BrandId;
         }
-        if (data.SearchTerm != '') {
+        if (data.SearchTerm != '' && data.SearchTerm != undefined) {
             if (queryString.length > 0) queryString += "&";
             queryString += "SearchTerm=" + data.SearchTerm;
         }

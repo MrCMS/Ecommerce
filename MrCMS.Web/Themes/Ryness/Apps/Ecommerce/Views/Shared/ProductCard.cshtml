@@ -17,10 +17,10 @@
     <div class="span3 last">
         <div class="product-price text-align-right">
             <span>Exclusive price</span>
-            @Html.DisplayFor(product => product.DisplayPrice)
-            @if (Model.DisplayPreviousPrice.HasValue)
+            @Model.DisplayPrice.ToCurrencyFormat()
+            @if (Model.ShowPreviousPrice)
             {
-                <span>@Model.PreviousPriceText : <span>@Model.DisplayPreviousPrice.Value.ToCurrencyFormat()</span></span>
+                <span>@Model.PreviousPriceText : <span>@Model.DisplayPreviousPrice.ToCurrencyFormat()</span></span>
             }
         </div>
         <div class="more-info">
