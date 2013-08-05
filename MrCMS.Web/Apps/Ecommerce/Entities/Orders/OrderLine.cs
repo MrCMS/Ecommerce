@@ -33,5 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual decimal TaxRate { get; set; }
         public virtual decimal Discount { get; set; }
         public virtual decimal Weight { get; set; }
+
+        public virtual decimal Subtotal { get { return Quantity*UnitPrice; }}
     }
 }
