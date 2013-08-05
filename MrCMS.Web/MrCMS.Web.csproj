@@ -2173,6 +2173,11 @@
     <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\LoginBox.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\ChangePassword.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\PasswordReset.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
