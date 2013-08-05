@@ -15,7 +15,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public StockController(IProductVariantService productVariantService, IInventoryService inventoryService)
         {
             _productVariantService = productVariantService;
-            _inventoryService = inventoryService;
+            _inventoryService = inventoryService; 
         }
 
         [HttpGet]
