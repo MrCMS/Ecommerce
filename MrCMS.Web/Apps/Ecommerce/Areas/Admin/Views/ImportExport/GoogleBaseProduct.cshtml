@@ -19,7 +19,7 @@
             @Html.DropDownListFor(x => x.OverrideCategory, GeneralHelper.SelectDefaultValue(googleBaseCategories, Model.Category), new { @class = "span12" })
             <br />
             <br />
-            <button type="button" class="btn update-google-base-product" data-product-base-product-id="@Model.Id">
+            <button type="button" class="btn update-google-base-product" data-google-base-product-id="@Model.Id">
                 Update
             </button>
         </div>
