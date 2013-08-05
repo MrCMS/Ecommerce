@@ -1,15 +1,20 @@
-﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+﻿@using System.Drawing
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Entities.Cart.CartItem
 <div class="row-fluid cart-item">
     <div class="span8">
         <div class="span2 photo padding-top-bottom-10">
             @if (Model.Item.Product.Images.Any())
             {
-                <a href="/@Model.Item.Product.LiveUrlSegment" title="@Model.Name"><img src="@(Model.Item.Product.Images.First().FileUrl)" class="img-rounded span12" alt="@Model.Name" /></a>
+                <a href="/@Model.Item.Product.LiveUrlSegment" title="@Model.Name">
+                    <img src="@(Model.Item.Product.Images.First().FileUrl)" class="img-rounded span12" alt="@Model.Name" />
+                </a>
             }
         </div>
         <div class="span10 cart-item-info padding-top-bottom-10">
-            <div class="cart-item-name"><a href="/@Model.Item.Product.LiveUrlSegment">@Model.Name</a></div>
+            <div class="cart-item-name">
+                <a href="/@Model.Item.Product.LiveUrlSegment">@Model.Name</a>
+            </div>
             <a data-id="@Model.Id" data-action="delete-cart-item" href="#" class="bold-font">Delete</a>
         </div>
     </div>
