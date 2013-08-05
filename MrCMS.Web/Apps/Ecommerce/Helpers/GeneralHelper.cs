@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using MrCMS.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Helpers
 {
@@ -16,10 +17,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
                 .GetCustomAttributes(typeof(DescriptionAttribute), false)
                 .SingleOrDefault() as DescriptionAttribute;
             return attribute == null ? value.ToString() : attribute.Description;
-        }
-        public static bool HasValue(this string value)
-        {
-            return !String.IsNullOrWhiteSpace(value);
         }
         public static bool IsValidInput<T>(this string value) where T : struct
         {
