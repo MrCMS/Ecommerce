@@ -38,6 +38,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                                           "/Admin/Apps/Ecommerce/ImportExport/Products"),
                                                         new ChildMenuItem("Google Base Integration",
                                                                           "/Admin/Apps/Ecommerce/ImportExport/GoogleBase"),
+                                                        new ChildMenuItem("Low Stock Report",
+                                                                          "/Admin/Apps/Ecommerce/Stock/LowStockReport"),
+                                                        new ChildMenuItem("Bulk Stock Update",
+                                                                          "/Admin/Apps/Ecommerce/Stock/BulkStockUpdate"),
                                                     }
                                             },
                                             {
