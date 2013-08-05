@@ -8,7 +8,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using Xunit;
-using MrCMS.Web.Apps.Ecommerce.Services.Inventory;
+using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
@@ -17,14 +17,14 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private readonly ProductVariantController _productVariantController;
         private readonly IProductVariantService _productVariantService;
         private readonly ITaxRateManager _taxRateManager;
-        private readonly ITrackingPolicyService _trackingPolicyService;
+        private readonly IOptionService _optionService;
 
         public ProductVariantControllerTests()
         {
             _productVariantService = A.Fake<IProductVariantService>();
             _taxRateManager = A.Fake<ITaxRateManager>();
-            _trackingPolicyService = A.Fake<ITrackingPolicyService>();
-            _productVariantController = new ProductVariantController(_productVariantService, _taxRateManager, _trackingPolicyService);
+            _optionService = A.Fake<IOptionService>();
+            _productVariantController = new ProductVariantController(_productVariantService, _taxRateManager, _optionService);
         }
 
         [Fact]
@@ -73,17 +73,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             addPost.Should().BeOfType<RedirectToRouteResult>();
         }
-
-        //[Fact]
-        //public void ProductVariantController_AddPost_RedirectsToEditProductId()
-        //{
-        //    var productVariant = GetNewProductVariant();
-        //    var addPost = _productVariantController.Add_POST(productVariant);
-
-        //    addPost.RouteValues["action"].Should().Be("Edit");
-        //    addPost.RouteValues["controller"].Should().Be("Webpage");
-        //    addPost.RouteValues["id"].Should().Be(123);
-        //}
 
         [Fact]
         public void ProductVariantController_Edit_ReturnsAPartialViewResult()
@@ -135,18 +124,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             edit.Should().BeOfType<RedirectToRouteResult>();
         }
-
-        //[Fact]
-        //public void ProductVariantController_EditPost_ShouldRedirectToProductEdit()
-        //{
-        //    var productVariant = GetNewProductVariant();
-
-        //    var edit = _productVariantController.Edit_POST(productVariant);
-
-        //    edit.RouteValues["action"].Should().Be("Edit");
-        //    edit.RouteValues["controller"].Should().Be("Webpage");
-        //    edit.RouteValues["id"].Should().Be(123);
-        //}
 
         [Fact]
         public void ProductVariantController_Delete_ShouldReturnAPartialViewResult()

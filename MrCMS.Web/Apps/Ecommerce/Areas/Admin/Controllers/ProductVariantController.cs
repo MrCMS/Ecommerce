@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services.Inventory;
+using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Website.Controllers;
-using System;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -14,20 +14,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     {
         private readonly IProductVariantService _productVariantService;
         private readonly ITaxRateManager _taxRateManager;
-        private readonly ITrackingPolicyService _trackingPolicyService;
+        private readonly IOptionService _optionService;
 
-        public ProductVariantController(IProductVariantService productVariantService, ITaxRateManager taxRateManager, ITrackingPolicyService trackingPolicyService)
+        public ProductVariantController(IProductVariantService productVariantService, ITaxRateManager taxRateManager,
+            IOptionService optionService)
         {
             _productVariantService = productVariantService;
             _taxRateManager = taxRateManager;
-            _trackingPolicyService = trackingPolicyService;
+            _optionService = optionService;
         }
 
         [HttpGet]
         public PartialViewResult Add(Product product)
         {
             ViewData["tax-rate-options"] = _taxRateManager.GetOptions();
-            ViewData["tracking-policy"] = _trackingPolicyService.GetOptions();
+            ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
             return
                 PartialView(new ProductVariant
                                 {
@@ -48,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 return RedirectToAction("Edit", "Webpage", new { id = productVariant.Product.Id });
             }
             ViewData["tax-rate-options"] = _taxRateManager.GetOptions(productVariant.TaxRate);
-            ViewData["tracking-policy"] = _trackingPolicyService.GetOptions();
+            ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
             return PartialView(productVariant);
         }
 
@@ -56,7 +57,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult Edit(ProductVariant productVariant)
         {
             ViewData["tax-rate-options"] = _taxRateManager.GetOptions(productVariant.TaxRate);
-            ViewData["tracking-policy"] = _trackingPolicyService.GetOptions();
+            ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
             return PartialView(productVariant);
         }
 
@@ -70,7 +71,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 return RedirectToAction("Edit", "Webpage", new { id = productVariant.Product.Id });
             }
             ViewData["tax-rate-options"] = _taxRateManager.GetOptions(productVariant.TaxRate);
-            ViewData["tracking-policy"] = _trackingPolicyService.GetOptions();
+            ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
             return PartialView(productVariant);
         }
 

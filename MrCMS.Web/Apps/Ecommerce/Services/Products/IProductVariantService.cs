@@ -22,5 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         bool IsPriceBreakQuantityValid(int quantity, ProductVariant productVariant);
         bool IsPriceBreakPriceValid(decimal price, ProductVariant productVariant, int quantity);
         void DeletePriceBreak(PriceBreak priceBreak);
+        IPagedList<ProductVariant> GetAllVariantsWithLowStock(int treshold, int page = 1);
+        List<ProductVariant> GetAllVariantsWithLowStock(int treshold);
     }
 }
