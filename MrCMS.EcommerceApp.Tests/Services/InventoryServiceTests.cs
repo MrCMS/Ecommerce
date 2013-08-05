@@ -1,4 +1,5 @@
 ﻿using FakeItEasy;
+using MrCMS.Web.Apps.Ecommerce.Services.Inventory.BulkStockUpdate;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Services.Inventory;
@@ -9,11 +10,15 @@ namespace MrCMS.EcommerceApp.Tests.Services
     {
         private readonly IProductVariantService _productVariantService;
         private readonly IInventoryService _inventoryService;
+        private readonly IBulkStockUpdateValidationService _bulkStockUpdateValidationService;
+        private readonly IBulkStockUpdateService _bulkStockUpdateService;
 
         public InventoryServiceTests()
         {
+            _bulkStockUpdateValidationService =  A.Fake<IBulkStockUpdateValidationService>();
+            _bulkStockUpdateService =  A.Fake<IBulkStockUpdateService>();
             _productVariantService = A.Fake<IProductVariantService>();
-            _inventoryService = new InventoryService(A.Fake<ProductVariantService>());
+            _inventoryService = new InventoryService(_bulkStockUpdateValidationService, _bulkStockUpdateService,A.Fake<ProductVariantService>());
         }
 
         [Fact]

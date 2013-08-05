@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Web.Mvc;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
@@ -57,9 +58,42 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ViewResult BulkStockUpdate()
+        public ViewResult BulkStockUpdate(string status)
         {
+            if (!String.IsNullOrWhiteSpace(status))
+                ViewBag.Status = status;
             return View();
+        }
+
+        [HttpPost]
+        [ActionName("BulkStockUpdate")]
+        public ViewResult BulkStockUpdate_POST(HttpPostedFileBase document)
+        {
+            if (document != null && document.ContentLength > 0 && document.ContentType == "text/csv")
+            {
+                ViewBag.Messages = _inventoryService.BulkStockUpdate(document.InputStream);
+            }
+            else
+            {
+                ViewBag.ImportStatus = "Please choose non-empty CSV (.csv) file before uploading.";
+            }
+            return View("BulkStockUpdate");
+        }
+
+        [HttpPost]
+        public ActionResult ExportStockReport()
+        {
+            try
+            {
+                var file = _inventoryService.ExportStockReport();
+                ViewBag.ExportStatus = "Stock Report successfully exported.";
+                return File(file, "text/csv", "MrCMS-StockReport-" + DateTime.UtcNow + ".csv");
+            }
+            catch (Exception)
+            {
+                const string msg = "Stock Report exporting has failed. Please try again and contact system administration if error continues to appear.";
+                return RedirectToAction("BulkStockUpdate", new { status = msg });
+            }
         }
     }
 }
