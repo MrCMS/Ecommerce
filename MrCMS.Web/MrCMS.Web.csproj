@@ -504,6 +504,7 @@
     <Compile Include="Apps\Ryness\RynessApp.cs" />
     <Compile Include="Apps\Ryness\Services\ITestimonialService.cs" />
     <Compile Include="Apps\Ryness\Services\TestimonialService.cs" />
+    <Compile Include="Apps\Ryness\Widgets\NewsletterSignup.cs" />
     <Compile Include="Apps\Ryness\Widgets\RynessNavigation.cs" />
     <Compile Include="Apps\Ryness\Widgets\Slider.cs" />
     <Compile Include="Apps\Ryness\Widgets\TestimonialWidget.cs" />
@@ -1946,6 +1947,7 @@
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\TopSellers.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ryness\Views\Web.config" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\NewsletterSignup.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2178,6 +2180,7 @@
     <Content Include="Themes\Ryness\Apps\Core\Views\Shared\ChangePassword.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Shared\PasswordReset.cshtml" />
+    <Content Include="Themes\Ryness\Views\Widgets\NewsletterSignup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
