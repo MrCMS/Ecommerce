@@ -1,4 +1,5 @@
-﻿using FakeItEasy;
+﻿using System.IO;
+using FakeItEasy;
 using MrCMS.Web.Apps.Ecommerce.Services.Inventory.BulkStockUpdate;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
@@ -43,6 +44,52 @@ namespace MrCMS.EcommerceApp.Tests.Services
             var result = _inventoryService.ExportLowStockReport(11);
 
             result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void InventoryService_ExportStockReport_ShouldReturnByteArray()
+        {
+            var result = _inventoryService.ExportStockReport();
+
+            result.Should().BeOfType<byte[]>();
+        }
+
+        [Fact]
+        public void InventoryService_ExportStockReport_ShouldCallGetAllOfProductVariantService()
+        {
+            _inventoryService.ExportStockReport();
+
+            A.CallTo(() => _productVariantService.GetAll()).MustHaveHappened();
+        }
+
+        [Fact]
+        public void InventoryService_ExportStockReport_ShouldNotBeNull()
+        {
+            var result = _inventoryService.ExportStockReport();
+
+            result.Should().NotBeNull();
+        }
+
+
+        [Fact]
+        public void InventoryService_BulkStockUpdate_ShouldNotBeNull()
+        {
+            var result = _inventoryService.BulkStockUpdate(GetDefaultStream());
+
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void InventoryService_BulkStockUpdate_ShouldReturnDictionary()
+        {
+            var result = _inventoryService.BulkStockUpdate(GetDefaultStream());
+
+            result.Should().HaveCount(0);
+        }
+
+        private static Stream GetDefaultStream()
+        {
+            return new MemoryStream(0);
         }
     }
 }
