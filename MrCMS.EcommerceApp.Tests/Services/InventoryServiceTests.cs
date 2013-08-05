@@ -15,7 +15,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
 
         public InventoryServiceTests()
         {
-            _bulkStockUpdateValidationService =  A.Fake<IBulkStockUpdateValidationService>();
+            _bulkStockUpdateValidationService =  A.Fake<IBulkStockUpdateValidationService>(); 
             _bulkStockUpdateService =  A.Fake<IBulkStockUpdateService>();
             _productVariantService = A.Fake<IProductVariantService>();
             _inventoryService = new InventoryService(_bulkStockUpdateValidationService, _bulkStockUpdateService,A.Fake<ProductVariantService>());
