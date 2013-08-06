@@ -28,7 +28,6 @@ namespace MrCMS.EcommerceApp.Tests.Services
             var currentUser = new User();
             Session.Transact(session => session.Save(currentUser));
             CurrentRequestData.CurrentUser = currentUser;
-            A.CallTo(() => CurrentRequestData.CurrentContext.Session).Returns(new FakeHttpSessionState());
             _paymentMethodService = A.Fake<IPaymentMethodService>();
             _orderShippingService = A.Fake<IOrderShippingService>();
             _cartSessionManager = A.Fake<ICartSessionManager>();

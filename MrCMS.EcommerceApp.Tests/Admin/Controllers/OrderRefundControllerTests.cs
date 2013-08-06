@@ -22,7 +22,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
         public OrderRefundControllerTests()
         {
-            A.CallTo(() => CurrentRequestData.CurrentContext.Session).Returns(new FakeHttpSessionState());
             _orderRefundService = A.Fake<IOrderRefundService>();
             _orderService = A.Fake<IOrderService>();
             _orderRefundController = new OrderRefundController(_orderRefundService, _orderService);

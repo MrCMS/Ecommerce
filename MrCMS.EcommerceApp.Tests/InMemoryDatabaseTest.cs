@@ -11,7 +11,9 @@ using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Multisite;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
+using MrCMS.IoC;
 using MrCMS.Services;
+using MrCMS.Settings;
 using MrCMS.Tasks;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
@@ -19,25 +21,27 @@ using MrCMS.Website;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
+using Ninject;
+using Ninject.MockingKernel;
 
 namespace MrCMS.EcommerceApp.Tests
 {
     public abstract class MrCMSTest : IDisposable
     {
-        private readonly ListDictionary _listDictionary;
 
         protected MrCMSTest()
         {
-            var httpContextWrapper = A.Fake<HttpContextBase>();
-            _listDictionary = new ListDictionary();
-            A.CallTo(() => httpContextWrapper.Items).Returns(_listDictionary);
+            var mockingKernel = new MockingKernel();
+            mockingKernel.Load(new ContextModule());
+            MrCMSApplication.OverrideKernel(mockingKernel);
+            CurrentRequestData.SiteSettings = new SiteSettings();
         }
 
         public virtual void Dispose()
         {
-            _listDictionary.Clear();
         }
     }
+
 
     public abstract class InMemoryDatabaseTest : MrCMSTest
     {
