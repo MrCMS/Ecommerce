@@ -31,12 +31,10 @@ namespace MrCMS.EcommerceApp.Tests
             var httpContextWrapper = A.Fake<HttpContextBase>();
             _listDictionary = new ListDictionary();
             A.CallTo(() => httpContextWrapper.Items).Returns(_listDictionary);
-            CurrentRequestData.OverridenContext = httpContextWrapper;
         }
 
         public virtual void Dispose()
         {
-            CurrentRequestData.OverridenContext = null;
             _listDictionary.Clear();
         }
     }
@@ -74,8 +72,6 @@ namespace MrCMS.EcommerceApp.Tests
 
             SetupUser();
 
-            SetupRootChildren();
-
             CurrentSite = Session.Transact(session =>
                 {
                     var site = new Site { Name = "Current Site", BaseUrl = "www.currentsite.com" };
@@ -90,12 +86,6 @@ namespace MrCMS.EcommerceApp.Tests
         }
 
         protected Site CurrentSite { get; set; }
-
-
-        private void SetupRootChildren()
-        {
-            MrCMSApplication.OverridenRootChildren = new List<Webpage>();
-        }
 
         private void SetupUser()
         {

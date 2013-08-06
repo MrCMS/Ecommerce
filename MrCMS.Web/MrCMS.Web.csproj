@@ -160,6 +160,7 @@
     <Compile Include="Apps\Core\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Core\Controllers\RegisterController.cs" />
     <Compile Include="Apps\Core\Controllers\SearchPageController.cs" />
+    <Compile Include="Apps\Core\MessageTemplates\ResetPasswordMessageTemplate.cs" />
     <Compile Include="Apps\Core\Metadata\RegisterPageMedatData.cs" />
     <Compile Include="Apps\Core\Metadata\ResetPasswordPageMetaData.cs" />
     <Compile Include="Apps\Core\Metadata\ForgottenPasswordPageMetaData.cs" />
@@ -185,7 +186,6 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
-    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\StockController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CurrencyController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountApplicationController.cs" />
@@ -207,6 +207,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\RegionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingCalculationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingMethodController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\StockController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\TaxRateController.cs" />
     <Compile Include="Apps\Ecommerce\Binders\AddDiscountApplicationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Binders\AddDiscountLimitationModelBinder.cs" />
@@ -414,15 +415,15 @@
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantStockIsValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantTaxRateIdIsValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantWeightEqOrGrThan0.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\BulkStockUpdateService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\BulkStockUpdateValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\DTOs\BulkStockUpdateDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkStockUpdateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkStockUpdateValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\IBulkStockUpdateValidationRule.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\ProductVariantSKUExists.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\BulkStockUpdateService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\BulkStockUpdateValidationService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\InventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\IInventoryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\InventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\IStockReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\StockReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
@@ -526,6 +527,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\ACLController.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseDocumentController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MessageTemplateController.cs" />
     <Compile Include="Areas\Admin\Controllers\FileController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\ImageController.cs" />
@@ -565,7 +567,6 @@
     <Content Include="Apps\Core\Content\Images\mrcms-logo.png" />
     <Content Include="Apps\Core\Content\Scripts\forgot-password.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\stock.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-discount.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-product.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-categories.js" />
@@ -575,6 +576,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-variant.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\products.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\specification-attributes.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\stock.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\tax-rates.js" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-responsive.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-responsive.min.css" />
@@ -991,6 +993,7 @@
     <Content Include="Areas\Admin\Content\Scripts\custom\add-layout.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\add-category.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\add-site.js" />
+    <Content Include="Areas\Admin\Content\Scripts\custom\edit-message-template.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\form-sort.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\move-webpage.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\edit-webpage.js" />
@@ -1116,7 +1119,7 @@
     <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_zh-CN.js" />
     <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_zh-TW.js" />
     <Content Include="Areas\Admin\Content\Scripts\tag-it.min.js" />
-    <Content Include="Areas\Admin\Content\Styles\admin.css" />
+    <Content Include="Areas\Admin\Content\Styles\mrcms-admin.css" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\css\bootstrap-responsive.css" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\css\bootstrap-responsive.min.css" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\css\bootstrap.css" />
@@ -1147,7 +1150,6 @@
     <Content Include="Areas\Admin\Content\Styles\jquery-ui-bootstrap\jquery-ui-1.9.2.custom.css" />
     <Content Include="Areas\Admin\Content\Styles\jquery-ui-bootstrap\jquery.ui.1.10.0.ie.css" />
     <Content Include="Areas\Admin\Content\Styles\jquery-ui-bootstrap\jquery.ui.1.9.2.ie.css" />
-    <Content Include="Areas\Admin\Content\Styles\jquery.formbuilder.css" />
     <Content Include="Areas\Admin\Content\Styles\Images\contextmenu\cut.png" />
     <Content Include="Areas\Admin\Content\Styles\Images\contextmenu\door.png" />
     <Content Include="Areas\Admin\Content\Styles\Images\contextmenu\page_white_copy.png" />
@@ -1878,6 +1880,10 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Sort.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\BulkStockUpdate.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReport.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReportProductVariant.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReportProductVariants.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Edit.cshtml" />
@@ -1954,6 +1960,7 @@
     <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Edit.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Index.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\NewsletterSignup.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\RynessNavigation.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\Slider.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\TestimonialWidget.cshtml" />
@@ -1961,11 +1968,6 @@
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\TopSellers.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ryness\Views\Web.config" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReport.cshtml" />
-    <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\NewsletterSignup.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReportProductVariant.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\BulkStockUpdate.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReportProductVariants.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2112,6 +2114,10 @@
     <Content Include="Areas\Admin\Views\ACL\Index.cshtml" />
     <Content Include="Content\install\images\mr-cms-thumb.jpg" />
     <Content Include="Areas\Admin\Views\ACL\Group.cshtml" />
+    <Content Include="Areas\Admin\Views\MessageTemplate\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MessageTemplate\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\MessageTemplate\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\MessageTemplate\Reset.cshtml" />
     <Content Include="Areas\Admin\Views\ImportExport\Documents.cshtml" />
     <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\component.json" />
     <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\LICENSE" />
@@ -2121,6 +2127,7 @@
     <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_en.js.template" />
     <Content Include="Areas\Admin\Views\Search\GetBreadCrumb.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\CopyOptions.cshtml" />
+    <Content Include="Areas\Admin\Views\MessageTemplate\Tokens.cshtml" />
     <None Include="Properties\PublishProfiles\v0.1.1.pubxml" />
     <None Include="Properties\PublishProfiles\v0.1.pubxml" />
     <Content Include="Apps\Core\Views\Widgets\Navigation.cshtml" />
@@ -2138,6 +2145,11 @@
     <Content Include="Themes\Ryness\Apps\Core\Views\Pages\RegisterPage.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Pages\ResetPasswordPage.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Pages\UserAccountPage.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\ChangePassword.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\LoginBox.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\PasswordReset.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Web.config" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Widgets\UserLinks.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
@@ -2188,17 +2200,12 @@
     <Content Include="Themes\Ryness\Views\Shared\_ProductLayout.cshtml" />
     <Content Include="Themes\Ryness\Views\Shared\_SearchLayout.cshtml" />
     <Content Include="Themes\Ryness\Views\Web.config" />
+    <Content Include="Themes\Ryness\Views\Widgets\NewsletterSignup.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\RynessNavigation.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\Slider.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
-    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
-    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\LoginBox.cshtml" />
-    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\ChangePassword.cshtml" />
-    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
-    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\PasswordReset.cshtml" />
-    <Content Include="Themes\Ryness\Views\Widgets\NewsletterSignup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
@@ -2316,7 +2323,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>10516</DevelopmentServerPort>
+          <DevelopmentServerPort>45398</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:8888</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

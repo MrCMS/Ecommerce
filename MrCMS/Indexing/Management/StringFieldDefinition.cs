@@ -31,7 +31,7 @@ namespace MrCMS.Indexing.Management
         {
             var values = GetValues(obj).ToList();
             return
-                values.Select(s => new Field(FieldName, s ?? string.Empty, Store, Index) {Boost = Boost})
+                values.Select(s => new Field(FieldName, s ?? string.Empty, Store, Index) { Boost = Boost })
                       .Cast<AbstractField>()
                       .ToList();
         }

@@ -54,7 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
             return products.OrderBy(product => ids.IndexOf(product.Id));
         }
 
-        public string GetLocation(CurrentSite currentSite)
+        public string GetLocation(Site currentSite)
         {
             var location = string.Format("~/App_Data/Indexes/{0}/Products/", currentSite.Id);
             var mapPath = CurrentRequestData.CurrentContext.Server.MapPath(location);

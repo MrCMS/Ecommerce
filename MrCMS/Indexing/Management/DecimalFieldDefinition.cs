@@ -31,7 +31,7 @@ namespace MrCMS.Indexing.Management
             return
                 values.Select(
                     value =>
-                    new NumericField(FieldName, Store, Index != Field.Index.NO) {Boost = Boost}.SetDoubleValue(
+                    new NumericField(FieldName, Store, Index != Field.Index.NO) { Boost = Boost }.SetDoubleValue(
                         Convert.ToDouble(value))).Cast<AbstractField>().ToList();
         }
     }
