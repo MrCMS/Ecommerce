@@ -22,7 +22,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
         public OrderNoteControllerTests()
         {
-            A.CallTo(() => CurrentRequestData.CurrentContext.Session).Returns(new FakeHttpSessionState());
             _orderNoteService = A.Fake<IOrderNoteService>();
             _orderService = A.Fake<IOrderService>();
             _orderNoteController = new OrderNoteController(_orderNoteService, _orderService);

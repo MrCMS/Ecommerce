@@ -12,7 +12,7 @@ using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Payment.PayPalExpress
 {
-    public class PayPalUrlServiceTests 
+    public class PayPalUrlServiceTests : MrCMSTest
     {
         private readonly Site _currentSite;
         private readonly PayPalExpressCheckoutSettings _payPalExpressCheckoutSettings;
