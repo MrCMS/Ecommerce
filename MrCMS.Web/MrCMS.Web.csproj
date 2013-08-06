@@ -419,10 +419,12 @@
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkStockUpdateValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\IBulkStockUpdateValidationRule.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\ProductVariantSKUExists.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\IInventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\BulkStockUpdateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\BulkStockUpdateValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\InventoryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\IInventoryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\IStockReportService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\StockReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\EmptyBasket.cs" />
@@ -563,6 +565,7 @@
     <Content Include="Apps\Core\Content\Images\mrcms-logo.png" />
     <Content Include="Apps\Core\Content\Scripts\forgot-password.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\stock.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-discount.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-product.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-categories.js" />
@@ -1960,8 +1963,9 @@
     <Content Include="Apps\Ryness\Views\Web.config" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReport.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\NewsletterSignup.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\ProductVariant.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReportProductVariant.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\BulkStockUpdate.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReportProductVariants.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

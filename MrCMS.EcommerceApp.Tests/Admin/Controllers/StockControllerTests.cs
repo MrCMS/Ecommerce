@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Web.Mvc;
 using FakeItEasy;
+using MrCMS.EcommerceApp.Tests.Stubs;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Inventory;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
@@ -17,7 +19,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
         public StockControllerTests()
         {
-            _productVariantService = A.Fake<ProductVariantService>();
+            _productVariantService = A.Fake<IProductVariantService>();
             _inventoryService = A.Fake<IInventoryService>();
             _stockController=new StockController(_productVariantService,_inventoryService);
         }
@@ -25,44 +27,35 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void StockController_LowStockReport_ReturnsViewResult()
         {
-            var result = _stockController.LowStockReport(String.Empty,11);
+            var result = _stockController.LowStockReport(11);
 
             result.Should().BeOfType<ViewResult>();
         }
 
         [Fact]
-        public void StockController_LowStockReport_ShouldCallGetAllVariantsWithLowStock()
+        public void StockController_LowStockReportProductVariants_ReturnsPartialViewResult()
         {
-            _stockController.LowStockReport(String.Empty,11);
+            var result = _stockController.LowStockReportProductVariants(11,1);
 
-            A.CallTo(() => _productVariantService.GetAllVariantsWithLowStock(11)).MustHaveHappened();
+            result.Should().BeOfType<PartialViewResult>();
         }
 
         [Fact]
-        public void StockController_LowStockReport_ShouldSetTresholdInViewData()
+        public void StockController_LowStockReportProductVariants_ShouldCallGetAllVariantsWithLowStock()
         {
-            var result=_stockController.LowStockReport(String.Empty, 11);
+            _stockController.LowStockReportProductVariants(11, 1);
 
-            result.ViewData["treshold"].Should().NotBeNull();
-            result.ViewData["treshold"].Should().BeSameAs(11);
+            A.CallTo(() => _productVariantService.GetAllVariantsWithLowStock(11,1)).MustHaveHappened();
         }
 
         [Fact]
-        public void StockController_LowStockReport_ShouldSetStatusIfExportingFailed()
-        {
-            var result = _stockController.LowStockReport("Exporting failed.", 11);
-
-            ((object) result.ViewBag.Status).Should().NotBeNull();
-        }
-
-        [Fact]
-        public void StockController_UpdateStock_ReturnsRedirectToRouteResult()
+        public void StockController_UpdateStock_ReturnsJsonResult()
         {
             var pv = new ProductVariant(){Id=22};
 
             var result = _stockController.UpdateStock(pv, 11);
 
-            result.Should().BeOfType<RedirectToRouteResult>();
+            result.Should().BeOfType<JsonResult>();
         }
 
         [Fact]
@@ -78,7 +71,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void StockController_UpdateStock_ShouldCallUpdateOfProductVariantService()
         {
-            var pv = new ProductVariant() { Id = 22 };
+            var pv = new ProductVariant() { Id = 22, StockRemaining = 11};
 
             A.CallTo(() => _productVariantService.Get(22)).Returns(pv);
 
@@ -96,11 +89,45 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ImportExportController_ExportLowStockReport_ShouldCallExportProductsToGoogleBaseOfImportExportManager()
+        public void ImportExportController_ExportLowStockReport_ShouldCallExportLowStockReport()
         {
             _stockController.ExportLowStockReport(11);
 
             A.CallTo(() => _inventoryService.ExportLowStockReport(11)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void StockController_BulkStockUpdate_ReturnsViewResult()
+        {
+            var result = _stockController.BulkStockUpdate();
+
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public void StockController_BulkStockUpdatePOST_ShouldRedirectToBulkStockUpdate()
+        {
+            var file = new BasicHttpPostedFileBaseCSV();
+
+            var result=_stockController.BulkStockUpdate_POST(file);
+
+            result.RouteValues["action"].Should().Be("BulkStockUpdate");
+        }
+
+        [Fact]
+        public void StockController_ExportStockReport_ReturnsFileContentResult()
+        {
+            var result = _stockController.ExportStockReport();
+
+            result.Should().BeOfType<FileContentResult>();
+        }
+
+        [Fact]
+        public void StockController_ExportStockReport_ShouldCallExportStockReport()
+        {
+            _stockController.ExportStockReport();
+
+            A.CallTo(() => _inventoryService.ExportStockReport()).MustHaveHappened();
         }
     }
 }

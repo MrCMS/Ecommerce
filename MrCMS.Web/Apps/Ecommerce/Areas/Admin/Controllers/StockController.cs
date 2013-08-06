@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using System.Web.Mvc;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
@@ -20,79 +21,88 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ViewResult LowStockReport(string status,int t=10, int page = 1)
+        public ViewResult LowStockReport(int threshold = 10)
         {
-            if(!String.IsNullOrWhiteSpace(status))
-                ViewBag.Status = status;
-            ViewData["treshold"] = t;
-            var items = _productVariantService.GetAllVariantsWithLowStock(t, page);
-            return View(items);
+            if (TempData.ContainsKey("export-status"))
+                ViewBag.ExportStatus = TempData["export-status"];
+            ViewData["threshold"] = threshold;
+            return View();
+        }
+
+        [HttpGet]
+        public PartialViewResult LowStockReportProductVariants(int threshold = 10, int page = 1)
+        {
+            var items = _productVariantService.GetAllVariantsWithLowStock(threshold, page);
+            return PartialView(items);
         }
 
         [HttpPost]
-        public RedirectToRouteResult UpdateStock(ProductVariant productVariant, int t=10)
+        public JsonResult UpdateStock(ProductVariant productVariant, int threshold=10)
         {
             if (productVariant != null && productVariant.StockRemaining.HasValue)
             {
                 var pv = _productVariantService.Get(productVariant.Id);
                 pv.StockRemaining = productVariant.StockRemaining.Value;
                 _productVariantService.Update(productVariant);
+                return Json(true);
             }
-            return RedirectToAction("LowStockReport",new {t=t});
+            return Json(false);
         }
 
-        [HttpPost]
-        public ActionResult ExportLowStockReport(int treshold = 10)
+        [HttpGet]
+        public ActionResult ExportLowStockReport(int threshold = 10)
         {
             try
             {
-                var file = _inventoryService.ExportLowStockReport(treshold);
+                var file = _inventoryService.ExportLowStockReport(threshold);
                 ViewBag.ExportStatus = "Low Stock Report successfully exported.";
                 return File(file, "text/csv", "MrCMS-LowStockReport-"+DateTime.UtcNow+".csv");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                const string msg = "Low Stock Report exporting has failed. Please try again and contact system administration if error continues to appear.";
-                return RedirectToAction("LowStockReport", new {status=msg});
+                CurrentRequestData.ErrorSignal.Raise(ex);
+                ViewBag.ExportStatus = "Low Stock Report exporting has failed. Please try again and contact system administration if error continues to appear.";
+                return RedirectToAction("LowStockReport");
             }
         }
 
         [HttpGet]
-        public ViewResult BulkStockUpdate(string status)
+        public ViewResult BulkStockUpdate()
         {
-            if (!String.IsNullOrWhiteSpace(status))
-                ViewBag.Status = status;
+            if (TempData.ContainsKey("messages"))
+                ViewBag.Messages = TempData["messages"];
+            if (TempData.ContainsKey("import-status"))
+                ViewBag.ImportStatus = TempData["import-status"];
+            if (TempData.ContainsKey("export-status"))
+                ViewBag.ExportStatus = TempData["export-status"];
             return View();
         }
 
         [HttpPost]
         [ActionName("BulkStockUpdate")]
-        public ViewResult BulkStockUpdate_POST(HttpPostedFileBase document)
+        public RedirectToRouteResult BulkStockUpdate_POST(HttpPostedFileBase document)
         {
-            if (document != null && document.ContentLength > 0 && document.ContentType == "text/csv")
-            {
-                ViewBag.Messages = _inventoryService.BulkStockUpdate(document.InputStream);
-            }
+            if (document != null && document.ContentLength > 0 && (document.ContentType == "text/CSV" || document.ContentType == "text/csv"))
+                TempData["messages"] = _inventoryService.BulkStockUpdate(document.InputStream);
             else
-            {
-                ViewBag.ImportStatus = "Please choose non-empty CSV (.csv) file before uploading.";
-            }
-            return View("BulkStockUpdate");
+                TempData["import-status"] = "Please choose non-empty CSV (.csv) file before uploading.";
+            return RedirectToAction("BulkStockUpdate");
         }
 
-        [HttpPost]
+        [HttpGet]
         public ActionResult ExportStockReport()
         {
             try
             {
                 var file = _inventoryService.ExportStockReport();
-                ViewBag.ExportStatus = "Stock Report successfully exported.";
+                TempData["export-status"] = "Stock Report successfully exported.";
                 return File(file, "text/csv", "MrCMS-StockReport-" + DateTime.UtcNow + ".csv");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                const string msg = "Stock Report exporting has failed. Please try again and contact system administration if error continues to appear.";
-                return RedirectToAction("BulkStockUpdate", new { status = msg });
+                CurrentRequestData.ErrorSignal.Raise(ex);
+                TempData["export-status"] = "Stock Report exporting has failed. Please try again and contact system administration if error continues to appear.";
+                return RedirectToAction("BulkStockUpdate");
             }
         }
     }

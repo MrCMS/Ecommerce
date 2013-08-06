@@ -1,5 +1,5 @@
 ﻿@using MrCMS.Helpers
-@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant>
+@model dynamic
 @{
     ViewBag.Title = "Low Stock Report";
 }
@@ -7,10 +7,7 @@
 <fieldset>
     <legend>Low Stock Report
         <span class="btn-group  display-inline  pull-right">
-            @using (Html.BeginForm("ExportLowStockReport", "Stock", new { treshold = ViewData["treshold"] }, FormMethod.Post, new { style = "margin:0" }))
-            {
-                <input type="submit" class="btn btn-primary" value="Export Low Stock Report (CSV)" />
-            }
+            @Html.ActionLink("Export Low Stock Report (CSV)","ExportLowStockReport", "Stock", new {threshold=ViewData["threshold"]} ,new { @class="btn btn-primary"}))
         </span>
     </legend>
     @if(!String.IsNullOrWhiteSpace(ViewBag.Status))
@@ -23,42 +20,14 @@
     <div class="row-fluid">
     @using (Html.BeginForm("LowStockReport", "Stock", FormMethod.Get))
     {
-        <input type="text" class="search-query input-mini" placeholder="Treshold" id="treshold" name="t" value="@ViewData["treshold"]" />
+        <input type="text" class="search-query input-mini" placeholder="Threshold" id="threshold" name="threshold" value="@ViewData["threshold"]" />
         <input type="submit" class="btn btn-primary btn-success" value="Generate Report" />
     }
     </div>
     <hr />
-    @if (Model.Count == 0)
-    {
-        @:No products with low stock.
-    }
-    else
-    {
-         <div class="row-fluid">
-        <div class="span3">
-            <strong>Name</strong>
-        </div>
-        <div class="span2">
-           <strong>SKU</strong>
-        </div>
-        <div class="span1">
-            <strong>Price</strong>
-        </div>
-        <div class="span2">
-            <strong>Published</strong>
-        </div>
-        <div class="span2">
-        <strong>Stock Remaining</strong>
-            </div>
-        <div class="span2">
-            <strong>Actions</strong>
-        </div>
+    <div id="product-variants">
+        @{ Html.RenderAction("LowStockReportProductVariants", "Stock");}
     </div>
-        foreach (var item in Model)
-        {
-            @Html.Partial("ProductVariant", item);
-        }
-    }
 </fieldset>
 
-@Html.Pager(Model, "LowStockReport", i => new { page = i })
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/stock.js");}

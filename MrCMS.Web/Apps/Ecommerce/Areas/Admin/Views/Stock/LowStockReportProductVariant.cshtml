@@ -5,7 +5,7 @@
     <div class="row-fluid">
         <div class="span3">
             @Html.HiddenFor(x=>x.Id)
-            @Model.Name
+            <a href="@Model.EditUrl">@(!String.IsNullOrWhiteSpace(Model.Name)?Model.Name:Model.Product.Name)</a>
         </div>
         <div class="span2">
             @Model.SKU
