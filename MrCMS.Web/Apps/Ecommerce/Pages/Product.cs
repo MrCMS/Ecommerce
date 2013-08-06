@@ -142,7 +142,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual string EditUrl
         {
-            get { return "~/Admin/Webpage/Edit/" + Id; }
+            get { return "/Admin/Webpage/Edit/" + Id; }
         }
 
         [DisplayFormat(DataFormatString = "{0:£0.00}")]

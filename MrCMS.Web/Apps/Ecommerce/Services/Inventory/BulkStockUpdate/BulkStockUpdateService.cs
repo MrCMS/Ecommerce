@@ -42,9 +42,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Inventory.BulkStockUpdate
                 item.StockRemaining = itemDto.StockRemaining;
                 _productVariantService.Update(item);
                 noOfUpdatedItems++;
+                return item;
             }
-
-            return item;
+            return new ProductVariant();
         }
     }
 }

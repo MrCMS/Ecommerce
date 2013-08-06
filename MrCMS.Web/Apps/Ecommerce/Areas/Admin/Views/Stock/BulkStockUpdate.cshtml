@@ -6,10 +6,7 @@
 <fieldset>
     <legend>Bulk Stock Update
          <span class="btn-group  display-inline  pull-right">
-            @using (Html.BeginForm("ExportStockReport", "Stock", FormMethod.Post, new { style = "margin:0" }))
-            {
-                <input type="submit" class="btn btn-primary" value="Stock Report (CSV)" />
-            }
+            @Html.ActionLink("Stock Report (CSV)","ExportStockReport", "Stock", new { @class="btn btn-primary"}))
         </span>
     </legend>
     @if(!String.IsNullOrWhiteSpace(ViewBag.Status))

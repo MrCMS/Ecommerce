@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Services.Inventory.BulkStockUpdate;
@@ -57,29 +56,5 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             result.Should().BeOfType<ProductVariant>();
         }
 
-        [Fact]
-        public void BulkStockUpdateService_BulkStockUpdate_ShouldReturnProductVariant2()
-        {
-            var pv = new ProductVariant()
-            {
-                Id = 2,
-                SKU = "123",
-                StockRemaining = 11
-            };
-            var _allVariants = new List<ProductVariant>() { pv };
-            var noOfUpdatedItems = 0;
-            var item = new BulkStockUpdateDataTransferObject()
-            {
-                Name = "TP",
-                SKU = "123",
-                StockRemaining = 10
-            };
-           
-            A.CallTo(() => _allVariants.SingleOrDefault(x => x.SKU == item.SKU)).Returns(pv);
-
-            var result = _bulkStockUpdateService.BulkStockUpdate(item, ref noOfUpdatedItems);
-
-            result.Should().BeOfType<ProductVariant>();
-        }
     }
 }
