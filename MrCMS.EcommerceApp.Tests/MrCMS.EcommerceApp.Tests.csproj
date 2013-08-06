@@ -190,6 +190,7 @@
     <Compile Include="Services\ProductOptionManagerTests\SpecificationValueTests.cs" />
     <Compile Include="Services\ProductVariantServiceTests.cs" />
     <Compile Include="Services\RegionServiceTests.cs" />
+    <Compile Include="Services\StockReport\StockReportServiceTests.cs" />
     <Compile Include="Services\TaxRateManagerTests.cs" />
     <Compile Include="Stubs\BasicHttpPostedFileBase.cs" />
     <Compile Include="Stubs\BasicHttpPostedFileBaseCSV.cs" />
