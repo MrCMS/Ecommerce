@@ -23,7 +23,7 @@ namespace MrCMS.EcommerceApp.Tests.Pages.ProductTests
         {
             var product = new Product();
             var product2 = new Product();
-            var documentService = new DocumentService(Session, new SiteSettings(), new CurrentSite(CurrentSite));
+            var documentService = new DocumentService(Session, new SiteSettings(),CurrentSite);
 
             documentService.SaveDocument(product);
             documentService.SaveDocument(product2);
@@ -34,7 +34,7 @@ namespace MrCMS.EcommerceApp.Tests.Pages.ProductTests
         {
             var product = new Product();
             var product2 = new Product();
-            var documentService = new DocumentService(Session, new SiteSettings(), new CurrentSite(CurrentSite));
+            var documentService = new DocumentService(Session, new SiteSettings(),CurrentSite);
 
             documentService.AddDocument(product);
             documentService.AddDocument(product2);
@@ -46,7 +46,7 @@ namespace MrCMS.EcommerceApp.Tests.Pages.ProductTests
             var productSearch = new ProductSearch();
             Session.Transact(session => session.Save(productSearch));
             var product = new Product { Parent = productSearch };
-            var documentService = new DocumentService(Session, new SiteSettings(), new CurrentSite(CurrentSite));
+            var documentService = new DocumentService(Session, new SiteSettings(),CurrentSite);
 
             documentService.SaveDocument(product);
         }
@@ -58,7 +58,7 @@ namespace MrCMS.EcommerceApp.Tests.Pages.ProductTests
             Session.Transact(session => session.Save(productSearch));
             var product = new Product { Parent = productSearch };
             var product2 = new Product { Parent = productSearch };
-            var documentService = new DocumentService(Session, new SiteSettings(), new CurrentSite(CurrentSite));
+            var documentService = new DocumentService(Session, new SiteSettings(),CurrentSite);
 
             documentService.AddDocument(product);
             documentService.AddDocument(product2);

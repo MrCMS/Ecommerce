@@ -20,9 +20,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         private readonly ISession _session;
         private readonly IDocumentService _documentService;
         private readonly IProductSearchService _productSearchService;
-        private readonly CurrentSite _currentSite;
+        private readonly Site _currentSite;
 
-        public CategoryService(ISession session, CurrentSite currentSite, IDocumentService documentService, IProductSearchService productSearchService)
+        public CategoryService(ISession session, Site currentSite, IDocumentService documentService, IProductSearchService productSearchService)
         {
             _session = session;
             _currentSite = currentSite;
@@ -126,7 +126,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
 
         public CategoryContainer GetSiteCategoryContainer()
         {
-            IList<CategoryContainer> categoryContainers = _session.QueryOver<CategoryContainer>().Where(x => x.Site == _currentSite.Site).Cacheable().List();
+            IList<CategoryContainer> categoryContainers = _session.QueryOver<CategoryContainer>().Where(x => x.Site == _currentSite).Cacheable().List();
             if (categoryContainers.Any())
                 return _session.QueryOver<CategoryContainer>().Cacheable().List().First();
             else

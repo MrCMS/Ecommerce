@@ -14,7 +14,7 @@ namespace MrCMS.EcommerceApp.Tests.Payment.PayPalExpress
 {
     public class PayPalUrlServiceTests 
     {
-        private readonly CurrentSite _currentSite;
+        private readonly Site _currentSite;
         private readonly PayPalExpressCheckoutSettings _payPalExpressCheckoutSettings;
         private readonly SiteSettings _siteSettings;
         private readonly PayPalUrlService _payPalUrlService;
@@ -22,8 +22,7 @@ namespace MrCMS.EcommerceApp.Tests.Payment.PayPalExpress
 
         public PayPalUrlServiceTests()
         {
-            MrCMSApplication.OverridenRootChildren = new List<Webpage>();
-            _currentSite = new CurrentSite(new Site { BaseUrl = "www.example.com" });
+            _currentSite = new Site { BaseUrl = "www.example.com" };
             _payPalExpressCheckoutSettings = new PayPalExpressCheckoutSettings();
             _siteSettings = new SiteSettings();
             _documentService = A.Fake<IDocumentService>();

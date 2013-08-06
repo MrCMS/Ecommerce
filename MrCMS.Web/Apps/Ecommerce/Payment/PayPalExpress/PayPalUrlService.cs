@@ -9,11 +9,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
     public class PayPalUrlService : IPayPalUrlService
     {
         private readonly IDocumentService _documentService;
-        private readonly CurrentSite _currentSite;
+        private readonly Site _currentSite;
         private readonly PayPalExpressCheckoutSettings _payPalExpressCheckoutSettings;
         private readonly SiteSettings _siteSettings;
 
-        public PayPalUrlService(IDocumentService documentService, CurrentSite currentSite, PayPalExpressCheckoutSettings payPalExpressCheckoutSettings, SiteSettings siteSettings)
+        public PayPalUrlService(IDocumentService documentService, Site currentSite, PayPalExpressCheckoutSettings payPalExpressCheckoutSettings, SiteSettings siteSettings)
         {
             _documentService = documentService;
             _currentSite = currentSite;
