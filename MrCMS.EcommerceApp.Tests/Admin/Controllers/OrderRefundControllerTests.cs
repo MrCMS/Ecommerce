@@ -44,17 +44,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void OrderRefundController_AddPOST_CallsIOrderRefundServiceAddWithPassedOrderRefund()
-        {
-            var item = new OrderRefund();
-            item.Order = new Order { Id = 1 };
-
-            var add = _orderRefundController.Add_POST(item);
-
-            A.CallTo(() => _orderRefundService.Save(item)).MustHaveHappened();
-        }
-
-        [Fact]
         public void OrderRefundController_Delete_ReturnsAPartialView()
         {
             var delete = _orderRefundController.Delete(new OrderRefund());

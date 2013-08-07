@@ -15,6 +15,7 @@ namespace MrCMS.Helpers
     public static class TypeHelper
     {
         private static List<Type> _alltypes;
+        static List<Assembly> _mrCMSAssemblies;
 
         public static List<Type> MappedClasses { get { return GetAllConcreteTypesAssignableFrom<SystemEntity>().FindAll(type => !type.GetCustomAttributes(typeof(DoNotMapAttribute), true).Any()); } }
 
@@ -23,6 +24,15 @@ namespace MrCMS.Helpers
             return _alltypes ??
                    (_alltypes = AppDomain.CurrentDomain.GetAssemblies().Where(x => !x.GlobalAssemblyCache).SelectMany(GetLoadableTypes).Distinct().ToList());
         }
+        
+        public static List<Assembly> GetAllMrCMSAssemblies()
+        {
+            return
+                _mrCMSAssemblies =
+                _mrCMSAssemblies ??
+                GetAllTypesAssignableFrom<SystemEntity>().Select(type => type.Assembly).Distinct().ToList();
+        }
+
         public static List<Type> GetMappedClassesAssignableFrom<T>()
         {
             return MappedClasses.FindAll(type => typeof(T).IsAssignableFrom(type));
@@ -247,7 +257,6 @@ namespace MrCMS.Helpers
         /// <returns>The converted value.</returns>
         public static T To<T>(this object value)
         {
-            //return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
             return (T)To(value, typeof(T));
         }
 
