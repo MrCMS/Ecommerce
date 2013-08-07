@@ -17,7 +17,7 @@ namespace MrCMS.Web.Apps.Core.MessageTemplates
         {
             var resetPasswordPage = session.QueryOver<ResetPasswordPage>().SingleOrDefault();
 
-            string resetUrl = resetPasswordPage != null
+            var resetUrl = resetPasswordPage != null
                                   ? resetPasswordPage.AbsoluteUrl + "?id={ResetPasswordGuid}"
                                   : string.Empty;
 

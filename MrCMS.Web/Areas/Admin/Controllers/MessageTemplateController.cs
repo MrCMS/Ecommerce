@@ -88,9 +88,10 @@ namespace MrCMS.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public PartialViewResult Tokens(MessageTemplate messageTemplate)
+        public PartialViewResult Tokens(string type)
         {
-            return PartialView(_messageTemplateService.GetTokens(messageTemplate));
+            var template = _messageTemplateService.GetNew(type);
+            return PartialView(_messageTemplateService.GetTokens(template));
         }
     }
 }
