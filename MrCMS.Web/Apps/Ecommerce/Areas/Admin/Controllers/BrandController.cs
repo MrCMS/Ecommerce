@@ -79,11 +79,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult IsUniqueName(string name, int id=0)
         {
-            if (_brandService.AnyExistingBrandsWithName(name, id))
-                return Json("There is already a brand stored with that name.", JsonRequestBehavior.AllowGet);
-            else
-                return Json(true, JsonRequestBehavior.AllowGet);
-
+            return _brandService.AnyExistingBrandsWithName(name, id) ? Json("There is already a brand stored with that name.", JsonRequestBehavior.AllowGet) : Json(true, JsonRequestBehavior.AllowGet);
         }
     }
 }

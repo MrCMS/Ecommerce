@@ -33,16 +33,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Index(OrderSearchModel model, int page = 1)
         {
-            if (model.DateFrom.ToString().Contains("1.1.0001."))
-                model.DateFrom = DateTime.Now;
-            if (model.DateTo.ToString().Contains("1.1.0001."))
-                model.DateTo = DateTime.Now;
             ViewData["ShippingStatuses"] = _shippingStatusService.GetOptions();
             ViewData["PaymentStatuses"] = _paymentStatusService.GetOptions();
             model.Results = new PagedList<Order>(null, 1, 10);
             try
             {
-                model.Results = _orderSearchService.SearchOrders(model.Email, model.LastName, model.OrderId, model.DateFrom, model.DateTo, model.PaymentStatus, model.ShippingStatus, page);
+                model.Results = _orderSearchService.SearchOrders(model.Email, model.LastName, model.OrderId,
+                    model.DateFrom.HasValue ? model.DateFrom.Value : DateTime.Now, model.DateTo.HasValue ? model.DateTo.Value : DateTime.Now, 
+                    model.PaymentStatus, model.ShippingStatus, page);
             }
             catch (Exception)
             {
@@ -77,47 +75,62 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult EditShippingStatus(Order order, bool index = false)
+        public PartialViewResult Cancel(Order order)
         {
-            ViewData["ShippingStatuses"] = _shippingStatusService.GetOptions();
-            ViewBag.Index = index;
-            return order != null
-                       ? (ActionResult)View(order)
-                       : RedirectToAction("Edit", "Order", new { id = order.Id });
+            return PartialView(order);
         }
 
-        [ActionName("EditShippingStatus")]
+        [ActionName("Cancel")]
         [HttpPost]
-        public RedirectToRouteResult EditShippingStatus_POST(Order order, bool index = false)
+        public RedirectToRouteResult Cancel_POST(Order order)
         {
-            order.User = CurrentRequestData.CurrentUser;
-            _orderService.Save(order);
-            if (!index)
-                return RedirectToAction("Edit", "Order", new { id = order.Id });
-            else
-                return RedirectToAction("Index");
+            _orderService.Cancel(order);
+            return RedirectToAction("Edit", "Order", new {id = order.Id});
         }
 
         [HttpGet]
-        public ActionResult EditPaymentStatus(Order order, bool index = false)
+        public PartialViewResult MarkAsShipped(Order order, bool index = false)
         {
-            ViewData["PaymentStatuses"] = _paymentStatusService.GetOptions();
             ViewBag.Index = index;
-            return order != null
-                       ? (ActionResult)View(order)
-                       : RedirectToAction("Edit", "Order", new { id = order.Id });
+            return PartialView(order);
         }
 
-        [ActionName("EditPaymentStatus")]
+        [ActionName("MarkAsShipped")]
         [HttpPost]
-        public RedirectToRouteResult EditPaymentStatus_POST(Order order, bool index = false)
+        public RedirectToRouteResult MarkAsShipped_POST(Order order,bool index = false)
         {
-            order.User = CurrentRequestData.CurrentUser;
-            _orderService.Save(order);
-            if (!index)
-                return RedirectToAction("Edit", "Order", new { id = order.Id });
-            else
-                return RedirectToAction("Index");
+            _orderService.MarkAsShipped(order);
+            return !index ? RedirectToAction("Edit", "Order", new { id = order.Id }) : RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public PartialViewResult MarkAsPaid(Order order, bool index = false)
+        {
+            ViewBag.Index = index;
+            return PartialView(order);
+        }
+
+        [ActionName("MarkAsPaid")]
+        [HttpPost]
+        public RedirectToRouteResult MarkAsPaid_POST(Order order, bool index = false)
+        {
+            _orderService.MarkAsPaid(order);
+            return !index ? RedirectToAction("Edit", "Order", new { id = order.Id }) : RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public PartialViewResult MarkAsVoided(Order order, bool index = false)
+        {
+            ViewBag.Index = index;
+            return PartialView(order);
+        }
+
+        [ActionName("MarkAsVoided")]
+        [HttpPost]
+        public RedirectToRouteResult MarkAsVoided_POST(Order order, bool index = false)
+        {
+            _orderService.MarkAsVoided(order);
+            return !index ? RedirectToAction("Edit", "Order", new { id = order.Id }) : RedirectToAction("Index");
         }
     }
 }

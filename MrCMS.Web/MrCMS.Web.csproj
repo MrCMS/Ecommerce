@@ -1820,13 +1820,10 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderRefund\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderRefund\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Edit.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\EditPaymentStatus.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\EditShippingStatus.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderLines.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderNotes.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderRefunds.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\PaymentSettings\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\PayPalExpressCheckoutSettings\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\PriceBreak\Add.cshtml" />
@@ -1968,6 +1965,10 @@
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\TopSellers.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ryness\Views\Web.config" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Cancel.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsShipped.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsPaid.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsVoided.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

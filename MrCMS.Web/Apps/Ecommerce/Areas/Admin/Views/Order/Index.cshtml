@@ -1,11 +1,10 @@
 ﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
 @model MrCMS.Web.Apps.Ecommerce.Models.OrderSearchModel
 @{
     ViewBag.Title = "Orders";
 }
 
-@using (Html.BeginForm("Index", "Order", FormMethod.Get))
-{
     <fieldset>
         <legend>Orders
             <span class="btn-group  display-inline  pull-right">
@@ -21,29 +20,31 @@
             <h4>
                 Filter orders
             </h4>
-             <table class="table table-noborders">
+             using (Html.BeginForm("Index", "Order", FormMethod.Get))
+             {
+                 <table class="table table-noborders">
                      <tr>
                          <td class="span2">
                              Email:
                          </td>
                          <td class="span2">
-                             @Html.TextBoxFor(x=>x.Email,new {@class="input-medium"})
+                             @Html.TextBoxFor(x => x.Email, new {@class = "input-medium"})
                          </td>
                          <td class="span2">
                              Last Name:
                          </td>
                          <td class="span6">
-                             @Html.TextBoxFor(x=>x.LastName,new {@class="input-medium"})
+                             @Html.TextBoxFor(x => x.LastName, new {@class = "input-medium"})
                          </td>
                      </tr>
                      <tr>
-                          <td class="span2">
+                         <td class="span2">
                              Order Id:
                          </td>
-                          <td class="span2">
-                             @Html.TextBoxFor(x=>x.OrderId,new {@class="input-medium"})
+                         <td class="span2">
+                             @Html.TextBoxFor(x => x.OrderId, new {@class = "input-medium"})
                          </td>
-                          <td class="span2">
+                         <td class="span2">
                             
                          </td>
                          <td class="span6">
@@ -55,13 +56,13 @@
                              Date From:
                          </td>
                          <td class="span2">
-                             @Html.TextBoxFor(x=>x.DateFrom,new {@class="input-medium date-time-picker"})
+                             @Html.TextBoxFor(x => x.DateFrom, new {@class = "input-medium date-time-picker"})
                          </td>
                          <td class="span2">
                              Date To:
                          </td>
                          <td class="span6">
-                             @Html.TextBoxFor(x=>x.DateTo,new {@class="input-medium date-time-picker"})
+                             @Html.TextBoxFor(x => x.DateTo, new {@class = "input-medium date-time-picker"})
                          </td>
                      </tr>
                      <tr>
@@ -69,21 +70,23 @@
                              Payment Status:
                          </td>
                          <td class="span2">
-                              @Html.DropDownList("PaymentStatus", ViewData["PaymentStatuses"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
+                             @Html.DropDownList("PaymentStatus", ViewData["PaymentStatuses"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
                          </td>
                          <td class="span2">
                              Shipping Status:
                          </td>
                          <td class="span6">
-                        @Html.DropDownList("ShippingStatus", ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
+                             @Html.DropDownList("ShippingStatus", ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
                          </td>
                      </tr>
-            </table>
-           
+                 </table>
+             }
             <hr/>
             <table class="table table-condensed table-striped">
                 <thead>
                     <tr>
+                        <th>Order Id
+                        </th>
                         <th>Email
                         </th>
                         <th>Payment Status
@@ -94,7 +97,7 @@
                         </th>
                         <th>Created On
                         </th>
-                         <th>
+                        <th>
                         </th>
                     </tr>
                 </thead>
@@ -103,13 +106,38 @@
                     {
                         <tr>
                             <td>
+                                @item.Id
+                            </td>
+                            <td>
                                 @item.OrderEmail
                             </td>
                             <td>
-                                @Html.ActionLink(item.PaymentStatus.ToString(), "EditPaymentStatus", "Order", new { id = item.Id, index=true}, new { data_toggle = "fb-modal" })
+                                <div class="pull-left">
+                                    @item.PaymentStatus &nbsp;
+                                    </div>
+                                    <div class="pull-left">
+                                    @if (item.PaymentStatus == PaymentStatus.Pending)
+                                    {
+                                         @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = item.Id, index=true }, new { @class = "btn btn-mini",data_toggle = "fb-modal" })
+                                        <span></span>
+                                         @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = item.Id, index=true }, new { @class = "btn btn-mini",data_toggle = "fb-modal" })
+                                    }
+                                    @if (item.PaymentStatus == PaymentStatus.Paid)
+                                    {
+                                         <a href="@Url.Action("Add","OrderRefund",new { orderID = item.Id, index=true })" class="btn btn-mini" data-toggle="fb-modal">Add Order Refund</a>
+                                    }
+                                    </div>
                             </td>
                             <td>
-                                @Html.ActionLink(item.ShippingStatus.ToString(), "EditShippingStatus", "Order", new { id = item.Id, index=true}, new { data_toggle = "fb-modal" })
+                                    <div class="pull-left">
+                                    @item.ShippingStatus &nbsp;
+                                    </div>
+                                    <div class="pull-left">
+                                    @if (item.ShippingStatus != ShippingStatus.Shipped)
+                                    {
+                                         @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = item.Id, index=true }, new { @class = "btn btn-mini",data_toggle = "fb-modal" })
+                                    }
+                                    </div>
                             </td>
                             <td>
                                 &pound;@item.Total.ToString("#.##")
@@ -130,4 +158,3 @@
         }
         
     </fieldset>
-}

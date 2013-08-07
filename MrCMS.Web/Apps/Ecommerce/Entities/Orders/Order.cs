@@ -59,6 +59,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual decimal? ShippingTaxPercentage { get; set; }
         [DisplayName("Shipping Status")]
         public virtual ShippingStatus ShippingStatus { get; set; }
+        [DisplayName("Shipping Date")]
+        public virtual DateTime? ShippingDate { get; set; }
 
         public virtual Address ShippingAddress { get; set; }
         public virtual Address BillingAddress { get; set; }
@@ -82,5 +84,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 
         public virtual string AuthorisationToken { get; set; }
         public virtual string CaptureTransactionId { get; set; }
+
+        [DisplayName("Is Cancelled")]
+        public virtual bool IsCancelled { get; set; }
     }
 }
