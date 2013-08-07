@@ -1,0 +1,17 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Cancel", "Order", FormMethod.Post))
+{
+    @Html.HiddenFor(x => x.Id)
+    <div class="modal-header">
+        <h3>Cancel Order</h3>
+    </div>
+    <div class="modal-body">
+        Are you sure you want to cancel the order ? Cancelling this order will void payment and cancel shipping.
+        <br />
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn-primary btn" value="Cancel Order" />
+    </div>
+}

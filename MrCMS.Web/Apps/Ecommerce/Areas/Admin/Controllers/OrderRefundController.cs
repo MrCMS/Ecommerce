@@ -1,10 +1,5 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Entities;
-using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Services;
-using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Website.Controllers;
-using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Website;
@@ -25,9 +20,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Add(int orderID)
         {
-            OrderRefund orderRefund = new OrderRefund();
-            orderRefund.Order = _orderService.Get(orderID);
-            orderRefund.Amount = orderRefund.Order.Total;
+            var orderRefund = new OrderRefund {Order = _orderService.Get(orderID)};
+            orderRefund.Amount = orderRefund.Order.TotalAfterRefunds;
             orderRefund.User = CurrentRequestData.CurrentUser;
             return View(orderRefund);
         }
@@ -45,18 +39,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     orderRefund.Order.OrderRefunds.Add(orderRefund);
-                    _orderRefundService.Save(orderRefund);
+                    _orderRefundService.Add(orderRefund, orderRefund.Order);
                     return RedirectToAction("Edit", "Order", new { id = orderRefund.Order.Id });
                 }
-                else
-                {
-                    return View(orderRefund);
-                }
+                return View(orderRefund);
             }
-            else
-            {
-                return RedirectToAction("Index", "Order");
-            }
+            return RedirectToAction("Index", "Order");
         }
 
         [HttpGet]

@@ -6,7 +6,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
     public interface IOrderRefundService
     {
         IList<OrderRefund> GetAll();
-        void Save(OrderRefund item);
+        void Add(OrderRefund orderRefund, Order order);
         void Delete(OrderRefund item);
     }
 }

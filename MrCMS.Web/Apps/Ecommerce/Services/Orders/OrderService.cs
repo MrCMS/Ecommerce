@@ -2,10 +2,10 @@
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
+using MrCMS.Website;
 using NHibernate;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Entities.People;
 using NHibernate.Criterion;
@@ -95,6 +95,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public void Save(Order item)
         {
+            item.IsCancelled = false;
             _session.Transact(session => session.SaveOrUpdate(item));
         }
 
@@ -109,6 +110,34 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             var email = user.Email;
             return _session.QueryOver<Order>().Where(x => x.User.Id == id &&
                 x.OrderEmail.IsInsensitiveLike(email, MatchMode.Exact)).OrderBy(x => x.CreatedOn).Desc.Paged(pageNum, pageSize);
+        }
+
+        public void Cancel(Order order)
+        {
+            order.IsCancelled = true;
+            _session.Transact(session => session.Update(order));
+            _orderEventService.OrderCancelled(order);
+        }
+
+        public void MarkAsShipped(Order order)
+        {
+            order.ShippingDate = CurrentRequestData.Now;
+            order.ShippingStatus = ShippingStatus.Shipped;
+            _session.Transact(session => session.Update(order));
+            _orderEventService.OrderShipped(order);
+        }
+
+        public void MarkAsPaid(Order order)
+        {
+            order.PaidDate = CurrentRequestData.Now;
+            order.PaymentStatus = PaymentStatus.Paid;
+            _session.Transact(session => session.Update(order));
+        }
+
+        public void MarkAsVoided(Order order)
+        {
+            order.PaymentStatus = PaymentStatus.Voided;
+            _session.Transact(session => session.Update(order));
         }
     }
 }
