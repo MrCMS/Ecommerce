@@ -58,17 +58,7 @@
         <br/>
         @Html.CheckBoxFor(x => x.IsHtml, new { @class = "pull-left" }) <span>&nbsp;Is HTML?</span>
         
-        @if (ViewBag.AvailableTokens != null && ((List<string>) ViewBag.AvailableTokens).Any())
-        {
-            <hr/>
-            <strong>Available Tokens:</strong>
-            foreach (var token in (List<string>)ViewBag.AvailableTokens)
-            {
-               <span>@token</span><span>,</span>
-            }
-            <br/><br/>
-            <span>Add tokens in format     {TOKEN_NAME}   e.g:   {@(((List<string>) ViewBag.AvailableTokens).First())}   or    {ToString()}    for methods.</span>
-        }
+        @{ Html.RenderAction("Tokens", "MessageTemplate", new {type=Model.MessageTemplateType});}
         
 
     </fieldset>
