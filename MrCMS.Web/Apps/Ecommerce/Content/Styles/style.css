@@ -28,6 +28,45 @@ h1 { font-size: 24px;font-weight: normal;margin-top: 5px;}
     padding-bottom: 8px;
     padding-top: 8px;
 }
+
+
+/*SHOW SUB MENU*/
+ul.nav li:hover > .dropdown-menu {
+visibility: visible;
+display: block;
+}
+.dropdown-menu li:hover > .dropdown-menu {
+visibility: visible;
+display: block;
+}
+.dropdown-submenu > .dropdown-menu {
+    border-radius: 0 6px 6px 6px;
+    left: 100%;
+    margin-left: -1px;
+    margin-top: -6px;
+    /*top: -100%;*/
+    top: 0;
+    border-radius: 0;
+}
+.dropdown-menu {
+    background-clip: padding-box;
+    background-color: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    display: none;
+    float: left;
+    left: 0;
+    list-style: none outside none;
+    margin: 2px 0 0;
+    min-width: 160px;
+    padding: 5px 0;
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+}
+
+
 #footer {
     padding:10px 0px 0px 0px;
     height: 60px;
