@@ -72,7 +72,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                                              item.GetDiscountAmount(cartModel.Discount, cartModel.DiscountCode),
                                                                                      });
                                                         }
-                                                        postCreationActions(order);
+                                                        if(postCreationActions!=null)
+                                                            postCreationActions(order);
                                                         session.SaveOrUpdate(order);
                                                         return order;
                                                     });

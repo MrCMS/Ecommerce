@@ -1,8 +1,10 @@
 ﻿using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Entities.Messaging;
+using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Tests.Stubs;
+using MrCMS.Web.Apps.Ecommerce.MessageTemplates;
 using NHibernate;
 using Xunit;
 

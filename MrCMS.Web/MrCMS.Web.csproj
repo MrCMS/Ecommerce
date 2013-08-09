@@ -193,7 +193,6 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountLimitationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ImportExportController.cs" />
-    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\NotificationTemplateSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderNoteController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderRefundController.cs" />
@@ -478,10 +477,6 @@
     <Compile Include="Apps\Ecommerce\Services\Shipping\ShippingStatusService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\ITaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\TaxRateManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\MessageTemplates\IMessageTemplateProcessor.cs" />
-    <Compile Include="Apps\Ecommerce\Services\MessageTemplates\IMessageTemplateSettingsManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\MessageTemplates\MessageTemplateProcesor.cs" />
-    <Compile Include="Apps\Ecommerce\Services\MessageTemplates\MessageTemplateSettingsManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
@@ -1819,7 +1814,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ImportExport\GoogleBaseSearch.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ImportExport\GoogleBaseSettings.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ImportExport\Products.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\NotificationTemplateSettings\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderLine\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\Delete.cshtml" />
