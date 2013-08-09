@@ -24,3 +24,60 @@ nav ul li a {display:block;padding:10px 20px;background:#eaeaea;}
     .rightbar {background:#eaeaea;}
     #browse {display:inline-block;}
 }
+
+/*SHOW SUB MENU*/
+/*ul.nav li:hover > .dropdown-menu {
+visibility: visible;
+display: block;
+}
+.dropdown-menu li:hover > .dropdown-menu {
+visibility: visible;
+display: block;
+}
+.dropdown-menu {
+    background-clip: padding-box;
+    background-color: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    display: none;
+    float: left;
+    left: 0;
+    list-style: none outside none;
+    margin: 2px 0 0;
+    min-width: 160px;
+    padding: 5px 0;
+    position: absolute;
+    top: 100%;
+    z-index: 1000;
+}*/
+.navbar-inverse .nav > li ul li ul {
+    background: none repeat scroll 0 0 #DDDDDD;
+    border: 1px solid #DDDDDD;
+    display: none;
+    left: 220px;
+    list-style-type: none;
+    margin: -3px 0 0 0;
+    padding: 0;
+    position: absolute;
+    top: -100%;
+    width: 220px;
+    z-index: 999999;
+}
+.dropdown-menu {
+    border-radius: 0;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+}
+.dropdown-submenu > .dropdown-menu{
+    border-radius: 0;
+}
+.dropdown-menu:before, .dropdown-menu:after {
+    border: none !important;
+    content: none !important;
+    display: none !important;
+}
+.dropdown-submenu > a:after{
+    border: none !important;
+    content: none !important;
+    display: none !important;
+}
