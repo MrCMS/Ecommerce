@@ -1,17 +1,15 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Entities.Templating;
-using MrCMS.Web.Apps.Ecommerce.Services.Templating;
+using MrCMS.Web.Apps.Ecommerce.Services.MessageTemplates;
 using MrCMS.Website.Controllers;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class NotificationTemplateSettingsController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly INotificationTemplateSettingsManager _notificationTemplateSettingsManager;
+        private readonly IMessageTemplateSettingsManager _notificationTemplateSettingsManager;
 
-        public NotificationTemplateSettingsController(INotificationTemplateSettingsManager notificationTemplateSettingsManager)
+        public NotificationTemplateSettingsController(IMessageTemplateSettingsManager notificationTemplateSettingsManager)
         {
             _notificationTemplateSettingsManager = notificationTemplateSettingsManager;
         }
@@ -19,15 +17,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Edit()
         {
-            NotificationTemplateSettings settings = _notificationTemplateSettingsManager.Get();
+            var settings = _notificationTemplateSettingsManager.Get();
             if (settings == null)
-                settings = new NotificationTemplateSettings();
+                settings = new MessageTemplateSettings();
             return View(settings);
         }
 
         [HttpPost]
         [ActionName("Edit")]
-        public RedirectToRouteResult Edit_POST(NotificationTemplateSettings notificationTemplateSettings)
+        public RedirectToRouteResult Edit_POST(MessageTemplateSettings notificationTemplateSettings)
         {
             _notificationTemplateSettingsManager.Save(notificationTemplateSettings);
             return RedirectToAction("Edit");

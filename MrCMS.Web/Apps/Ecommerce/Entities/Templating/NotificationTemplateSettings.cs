@@ -3,12 +3,12 @@ using System.ComponentModel;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Templating
 {
-    public class NotificationTemplateSettings : SiteEntity
+    public class MessageTemplateSettings : SiteEntity
     {
         public virtual string OrderConfirmationTemplate { get; set; }
-        public virtual string ShippingNotificationTemplate { get; set; }
-        public virtual string CancelledNotificationTemplate { get; set; }
-        public virtual string OutOfStockNotificationTemplate { get; set; }
+        public virtual string ShippingMessageTemplate { get; set; }
+        public virtual string CancelledMessageTemplate { get; set; }
+        public virtual string OutOfStockMessageTemplate { get; set; }
 
         public virtual string Emails { get; set; }
         [DisplayName("Template")]

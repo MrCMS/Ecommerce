@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using System.Reflection;
 using MrCMS.Entities.Messaging;
 using MrCMS.Helpers;
 using NHibernate;
 using System.Linq;
 using System;
+using NHibernate.Criterion;
 
 namespace MrCMS.Services
 {
@@ -44,6 +44,13 @@ namespace MrCMS.Services
                 }
             }
             return null;
+        }
+
+        public MessageTemplate Get(string type)
+        {
+            var messageTemplates = _session.QueryOver<MessageTemplate>().Cacheable().List();
+            var messageTemplate=messageTemplates.SingleOrDefault(x => x.MessageTemplateType.Contains(type));
+            return messageTemplate ?? GetNew(type);
         }
 
         public MessageTemplate Reset(MessageTemplate messageTemplate)
