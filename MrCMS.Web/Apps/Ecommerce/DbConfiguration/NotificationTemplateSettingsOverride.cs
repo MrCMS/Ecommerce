@@ -7,13 +7,13 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
 {
-    public class NotificationTemplateSettingsOverride : IAutoMappingOverride<NotificationTemplateSettings>
+    public class NotificationTemplateSettingsOverride : IAutoMappingOverride<MessageTemplateSettings>
     {
-        public void Override(AutoMapping<NotificationTemplateSettings> mapping)
+        public void Override(AutoMapping<MessageTemplateSettings> mapping)
         {
             mapping.Map(model => model.OrderConfirmationTemplate).CustomType<VarcharMax>().Length(4001);
-            mapping.Map(model => model.CancelledNotificationTemplate).CustomType<VarcharMax>().Length(4001);
-            mapping.Map(model => model.ShippingNotificationTemplate).CustomType<VarcharMax>().Length(4001);
+            mapping.Map(model => model.CancelledMessageTemplate).CustomType<VarcharMax>().Length(4001);
+            mapping.Map(model => model.ShippingMessageTemplate).CustomType<VarcharMax>().Length(4001);
             mapping.Map(model => model.OwnerTemplate).CustomType<VarcharMax>().Length(4001);
         }
     }

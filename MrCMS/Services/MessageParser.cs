@@ -18,18 +18,23 @@ namespace MrCMS.Services
         {
             var template = _session.QueryOver<T>().Cacheable().SingleOrDefault();
 
-            return new QueuedMessage
-                {
-                    FromAddress = _messageTemplateParser.Parse(fromAddress ?? template.FromAddress, obj),
-                    FromName = _messageTemplateParser.Parse(fromName ?? template.FromName, obj),
-                    ToAddress = _messageTemplateParser.Parse(toAddress ?? template.ToAddress, obj),
-                    ToName = _messageTemplateParser.Parse(toName ?? template.ToName, obj),
-                    Cc = _messageTemplateParser.Parse(cc ?? template.Cc, obj),
-                    Bcc = _messageTemplateParser.Parse(bcc ?? template.Bcc, obj),
-                    Subject = _messageTemplateParser.Parse(template.Subject, obj),
-                    Body = _messageTemplateParser.Parse(template.Body, obj),
-                    IsHtml = template.IsHtml
-                };
+            if (template != null)
+            {
+                return new QueuedMessage
+                    {
+                        FromAddress = _messageTemplateParser.Parse(fromAddress ?? template.FromAddress, obj),
+                        FromName = _messageTemplateParser.Parse(fromName ?? template.FromName, obj),
+                        ToAddress = _messageTemplateParser.Parse(toAddress ?? template.ToAddress, obj),
+                        ToName = _messageTemplateParser.Parse(toName ?? template.ToName, obj),
+                        Cc = _messageTemplateParser.Parse(cc ?? template.Cc, obj),
+                        Bcc = _messageTemplateParser.Parse(bcc ?? template.Bcc, obj),
+                        Subject = _messageTemplateParser.Parse(template.Subject, obj),
+                        Body = _messageTemplateParser.Parse(template.Body, obj),
+                        IsHtml = template.IsHtml
+                    };
+            }
+
+            return null;
         }
     }
 }

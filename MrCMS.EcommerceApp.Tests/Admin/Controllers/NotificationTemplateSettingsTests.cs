@@ -11,11 +11,11 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
     public class NotificationTemplateSettingsControllerTests
     {
         private readonly NotificationTemplateSettingsController _notificationTemplateSettingsController;
-        private readonly INotificationTemplateSettingsManager _notificationTemplateSettingsManager;
+        private readonly IMessageTemplateSettingsManager _notificationTemplateSettingsManager;
 
         public NotificationTemplateSettingsControllerTests()
         {
-            _notificationTemplateSettingsManager = A.Fake<INotificationTemplateSettingsManager>();
+            _notificationTemplateSettingsManager = A.Fake<IMessageTemplateSettingsManager>();
             _notificationTemplateSettingsController =
                 new NotificationTemplateSettingsController(_notificationTemplateSettingsManager);
         }
@@ -39,7 +39,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void NotificationTemplateSettingsController_Edit_ShouldReturnTheResultOfTheGetMethod()
         {
-            var notificationTemplateSettings = new NotificationTemplateSettings();
+            var notificationTemplateSettings = new MessageTemplateSettings();
             A.CallTo(() => _notificationTemplateSettingsManager.Get()).Returns(notificationTemplateSettings);
             
             var result = _notificationTemplateSettingsController.Edit();
@@ -50,7 +50,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void NotificationTemplateSettingsController_EditPost_ShouldCallManagersSaveMethodWithPassedObject()
         {
-            var notificationTemplateSettings = new NotificationTemplateSettings();
+            var notificationTemplateSettings = new MessageTemplateSettings();
 
             _notificationTemplateSettingsController.Edit_POST(notificationTemplateSettings);
 
@@ -60,7 +60,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void NotificationTemplateSettingsController_EditPost_ShouldRedirectToEdit()
         {
-            var notificationTemplateSettings = new NotificationTemplateSettings();
+            var notificationTemplateSettings = new MessageTemplateSettings();
 
             var result = _notificationTemplateSettingsController.Edit_POST(notificationTemplateSettings);
 

@@ -9,11 +9,11 @@ namespace MrCMS.EcommerceApp.Tests.Services
 {
     public class NotificationTemplateProcessorTests
     {
-        private readonly NotificationTemplateProcesor _notificationTemplateProcessor;
+        private readonly MessageTemplateProcesor _notificationTemplateProcessor;
 
         public NotificationTemplateProcessorTests()
         {
-            _notificationTemplateProcessor = new NotificationTemplateProcesor();
+            _notificationTemplateProcessor = new MessageTemplateProcesor();
         }
 
         [Fact]

@@ -90,7 +90,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
 
         public PartialViewResult Tokens(string type)
         {
-            var template = _messageTemplateService.GetNew(type);
+            var template = _messageTemplateService.Get(type);
             return PartialView(_messageTemplateService.GetTokens(template));
         }
     }
