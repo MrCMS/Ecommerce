@@ -484,6 +484,7 @@
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\BreadCrumb.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CartWidget.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\CategoriesOnlyNavigation.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\EcommerceNavigation.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedCategories.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedProducts.cs" />
@@ -1952,7 +1953,7 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\RelatedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\SearchBox.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\_ChildCategories.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Add.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Delete.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Edit.cshtml" />
@@ -1970,6 +1971,8 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsShipped.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsPaid.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsVoided.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\CategoriesOnlyNavigation.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
