@@ -128,7 +128,6 @@
     <Compile Include="Admin\Controllers\DiscountApplicationControllerTests.cs" />
     <Compile Include="Admin\Controllers\DiscountControllerTests.cs" />
     <Compile Include="Admin\Controllers\DiscountLimitationControllerTests.cs" />
-    <Compile Include="Admin\Controllers\NotificationTemplateSettingsTests.cs" />
     <Compile Include="Admin\Controllers\OrderControllerTests.cs" />
     <Compile Include="Admin\Controllers\ShippingCalculationControllerTests.cs" />
     <Compile Include="Admin\Controllers\ShippingMethodControllerTests.cs" />
@@ -169,6 +168,8 @@
     <Compile Include="Services\BulkStockUpdate\BulkStockUpdateValidationServiceTests.cs" />
     <Compile Include="Services\CartManagerTests.cs" />
     <Compile Include="Services\CategoryServiceTests.cs" />
+    <Compile Include="Services\OrderRefundServiceTests.cs" />
+    <Compile Include="Services\OrderServiceTests.cs" />
     <Compile Include="Services\InventoryServiceTests.cs" />
     <Compile Include="Services\GoogleBaseServiceTests.cs" />
     <Compile Include="Services\OptionServiceTests.cs" />
@@ -181,7 +182,6 @@
     <Compile Include="Services\ImportExport\ImportExportManagerTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductVariantsServiceTests.cs" />
     <Compile Include="Services\ProductServiceTests.cs" />
-    <Compile Include="Services\NotificationTemplateProcessorTests.cs" />
     <Compile Include="Services\CountryServiceTests.cs" />
     <Compile Include="Services\GetCartImplTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\AttributeOptionTests.cs" />
