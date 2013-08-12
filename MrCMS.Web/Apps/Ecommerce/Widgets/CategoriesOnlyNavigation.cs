@@ -1,4 +1,5 @@
-﻿using MrCMS.Entities.Widget;
+﻿using System.ComponentModel;
+using MrCMS.Entities.Widget;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using System.Collections.Generic;
 using NHibernate;
@@ -12,6 +13,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
 {
     public class CategoriesOnlyNavigation : Widget
     {
+        [DisplayName("Max. number of levels for display in menu")]
+        public virtual int NoOfMenuLevels { get; set; }
+
         public override bool HasProperties
         {
             get { return false; }
@@ -31,23 +35,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
                        {
                            Text = MvcHtmlString.Create(webpage.Name),
                            Url = MvcHtmlString.Create("/" + webpage.LiveUrlSegment),
-                           Children = GetChildCategories(webpage)
+                           Children = GetChildCategories(webpage, 2)
                        }).ToList();
 
             return new NavigationList(navigationRecords.ToList());
         }
 
-        protected virtual List<NavigationRecord> GetChildCategories(Document entity)
+        protected virtual List<NavigationRecord> GetChildCategories(Document entity, int nextLevel)
         {
             var navigation = new List<NavigationRecord>();
-            if (entity.Children.Any())
+            if (nextLevel <= NoOfMenuLevels && entity.Children.Any())
             {
                 navigation.AddRange(entity.Children.Select(item => new NavigationRecord
-                    {
-                        Text = MvcHtmlString.Create(item.Name), 
-                        Url = MvcHtmlString.Create("/" + item.UrlSegment), 
-                        Children = GetChildCategories(item)
-                    }));
+                        {
+                            Text = MvcHtmlString.Create(item.Name),
+                            Url = MvcHtmlString.Create("/" + item.UrlSegment),
+                            Children = GetChildCategories(item, nextLevel + 1)
+                        }));
             }
             return navigation;
         }
