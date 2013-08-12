@@ -26,11 +26,11 @@ nav ul li a {display:block;padding:10px 20px;background:#eaeaea;}
 }
 
 /* Nav */
-.dropdown-menu {
+/*.dropdown-menu {
     border-radius: 0;
     box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
-}
-.dropdown-submenu > .dropdown-menu{
+}*/
+/*.dropdown-submenu > .dropdown-menu{
     border-radius: 0;
 }
 .dropdown-menu:before, .dropdown-menu:after {
@@ -42,4 +42,4 @@ nav ul li a {display:block;padding:10px 20px;background:#eaeaea;}
     border: none !important;
     content: none !important;
     display: none !important;
-}
+}*/
