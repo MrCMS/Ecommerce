@@ -9,14 +9,14 @@
     {
         if (page.Children.Any())
         {
-            <li class="dropdown">
+            <li>
                 <a href="@page.Url" class="dropdown-toggle" data-toggle="dropdown">@page.Text</a>
-                <ul class="dropdown-menu">
+                <ul>
                     @foreach (var record in page.Children)
                     {
                         if (record.Children.Any())
                         {
-                            <li class="dropdown-submenu">
+                            <li>
                                 <a href="@record.Url">@record.Text</a>
                                 @Html.Partial("_ChildCategories", record)
                             </li>
