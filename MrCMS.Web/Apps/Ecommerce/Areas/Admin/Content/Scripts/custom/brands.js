@@ -6,8 +6,8 @@
         }
     });
     $(document).on('click', 'button#close', function () {
-        var button = $(this);
         var name = $('#Name').val();
+        var productId = $('#productId').val();
         if (name !== "") {
             $.post('/Admin/Apps/Ecommerce/Product/AddBrand',
                 { name: name },
@@ -16,10 +16,10 @@
                         alert("Please try again with different name.");
                     }
                     else {
-                        parent.$.get('/Admin/Apps/Ecommerce/Product/Brands', { brandId: response }, function (brands) {
+                        parent.$.get('/Admin/Apps/Ecommerce/Product/Brands', { Id:productId, brandId: response }, function (brands) {
                             parent.$('#brands').replaceWith(brands);
+                            parent.$.fancybox.close();
                         });
-                        parent.$.fancybox.close();
                     }
                 });
         }

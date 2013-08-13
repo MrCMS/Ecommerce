@@ -216,6 +216,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\EnterOrderEmailController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GoogleAnalyticsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\OrderPlacedController.cs" />
@@ -289,6 +290,7 @@
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryContainerMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\UserAccountMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\EnterOrderEmailMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\OrderPlacedMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\PaymentDetailsMetadata.cs" />
@@ -322,6 +324,7 @@
     <Compile Include="Apps\Ecommerce\Models\TaxAwareProductPrice.cs" />
     <Compile Include="Apps\Ecommerce\Models\TaxAwareShippingRate.cs" />
     <Compile Include="Apps\Ecommerce\Models\TrackingPolicy.cs" />
+    <Compile Include="Apps\Ecommerce\Models\UserAccountOrdersModel.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Cart.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Category.cs" />
     <Compile Include="Apps\Ecommerce\Pages\CategoryContainer.cs" />
@@ -591,6 +594,7 @@
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.min.js" />
     <Content Include="Apps\Ecommerce\Content\Images\mrcms-logo.png" />
     <Content Include="Apps\Ecommerce\Content\Scripts\bootstrap.dropdown.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\cart.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\category.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\enter-order-email.js" />
@@ -2212,6 +2216,18 @@
     <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\LoginPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\RegisterPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\ResetPasswordPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\UserAccountPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\ChangePassword.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\LoginBox.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\PasswordReset.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\UserAccountOrders.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\UserAccountOrders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />

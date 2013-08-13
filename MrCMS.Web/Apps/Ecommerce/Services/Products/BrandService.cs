@@ -28,6 +28,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                 brand =>
                                 brand.Name.IsInsensitiveLike(name, MatchMode.Exact)).SingleOrDefault();
         }
+        public Brand GetById(int id)
+        {
+            return _session.QueryOver<Brand>().Where(x =>x.Id==id).SingleOrDefault();
+        }
         public IList<Brand> GetAll()
         {
             return _session.QueryOver<Brand>().Cacheable().List();

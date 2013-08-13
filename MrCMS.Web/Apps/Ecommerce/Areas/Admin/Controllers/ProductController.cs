@@ -384,13 +384,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Brands(Product product, string brandId)
+        public PartialViewResult Brands(Product product, int brandId=0)
         {
             var options = _brandService.GetOptions();
-            if (!String.IsNullOrWhiteSpace(brandId))
+            if (brandId > 0)
             {
-                if (options.Where(x => x.Value == brandId).SingleOrDefault() != null)
-                    options.Where(x => x.Value == brandId).SingleOrDefault().Selected = true;
+                var brand = _brandService.GetById(brandId);
+                if (brand != null)
+                {
+                    product.Brand = brand;
+                    _documentService.SaveDocument(product);
+                }
             }
             ViewData["brands"] = options;
             return PartialView(product);
@@ -412,10 +416,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 _brandService.Add(new Brand() { Name = name, Site = CurrentSite });
                 return Json(_brandService.GetBrandByName(name).Id);
             }
-            else
-            {
-                return Json(false);
-            }
+            return Json(false);
         }
 
         [HttpGet]
