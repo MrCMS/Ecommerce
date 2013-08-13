@@ -36,6 +36,9 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\WebGrease.1.1.0\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="CsvHelper">
+      <HintPath>..\packages\CsvHelper.2.2.2\lib\net40-client\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
@@ -152,7 +155,7 @@
     <Compile Include="Apps\MrCMSAppRegistrationContext.cs" />
     <Compile Include="DbConfiguration\ConfigHelper.cs" />
     <Compile Include="DbConfiguration\Configuration\DatabaseType.cs" />
-    <Compile Include="DbConfiguration\Configuration\DocumentSoftDeleteListener.cs" />
+    <Compile Include="DbConfiguration\Configuration\SoftDeleteListener.cs" />
     <Compile Include="DbConfiguration\Configuration\PostCommitEventListener.cs" />
     <Compile Include="DbConfiguration\Configuration\SaveOrUpdateListener.cs" />
     <Compile Include="DbConfiguration\Configuration\UpdateIndicesListener.cs" />
@@ -214,7 +217,10 @@
     <Compile Include="Entities\People\IBelongToUser.cs" />
     <Compile Include="Entities\People\UserProfileData.cs" />
     <Compile Include="Installation\SetupMessageTemplates.cs" />
+    <Compile Include="Services\IAuthorisationService.cs" />
+    <Compile Include="Services\IHashAlgorithm.cs" />
     <Compile Include="Services\IMessageTemplateService.cs" />
+    <Compile Include="Services\IPasswordEncryptionManager.cs" />
     <Compile Include="Services\ITokenProvider.cs" />
     <Compile Include="Services\MessageTemplateService.cs" />
     <Compile Include="Services\IMessageParser.cs" />
@@ -388,9 +394,12 @@
     <Compile Include="Models\SiteTree.cs" />
     <Compile Include="Models\SiteTreeNode.cs" />
     <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Services\PasswordManagementService.cs" />
     <Compile Include="Services\PropertyTokenProvider.cs" />
     <Compile Include="Services\RoleService.cs" />
     <Compile Include="Services\SearchService.cs" />
+    <Compile Include="Services\NopSHA1HashAlgorithm.cs" />
+    <Compile Include="Services\SHA512HashAlgorithm.cs" />
     <Compile Include="Services\SiteService.cs" />
     <Compile Include="Services\TagService.cs" />
     <Compile Include="Services\UrlHistoryService.cs" />

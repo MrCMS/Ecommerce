@@ -8,11 +8,11 @@ using System;
 
 namespace MrCMS.EcommerceApp.Tests.Services
 {
-    public class OrderServiceTests
+    public class OrderServiceTests : MrCMSTest
     {
-        private ISession _session;
-        private OrderService _orderService;
-        private IOrderEventService _orderEventService;
+        private readonly ISession _session;
+        private readonly OrderService _orderService;
+        private readonly IOrderEventService _orderEventService;
 
         public OrderServiceTests()
         {
@@ -30,7 +30,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
 
             _orderService.Cancel(order);
 
-            A.CallTo(()=>_orderEventService.OrderCancelled(order)).MustHaveHappened();
+            A.CallTo(() => _orderEventService.OrderCancelled(order)).MustHaveHappened();
         }
 
         [Fact]

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Core.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website.Controllers;
@@ -15,13 +16,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly CartModel _cart;
         private readonly ICartManager _cartManager;
+        private readonly IPasswordManagementService _passwordManagementService;
         private readonly IAuthorisationService _authorisationService;
         private readonly IUserService _userService;
 
-        public EnterOrderEmailController(CartModel cart, ICartManager cartManager, IAuthorisationService authorisationService, IUserService userService)
+        public EnterOrderEmailController(CartModel cart, ICartManager cartManager, IPasswordManagementService passwordManagementService, IAuthorisationService authorisationService, IUserService userService)
         {
             _cart = cart;
             _cartManager = cartManager;
+            _passwordManagementService = passwordManagementService;
             _authorisationService = authorisationService;
             _userService = userService;
         }
@@ -53,7 +56,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 var user = _userService.GetUserByEmail(model.OrderEmail);
                 if (user != null)
                 {
-                    if (_authorisationService.ValidateUser(user, model.Password))
+                    if (_passwordManagementService.ValidateUser(user, model.Password))
                     {
                         _authorisationService.SetAuthCookie(user.Email, false);
                         _cartManager.SetOrderEmail(model.OrderEmail);

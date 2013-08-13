@@ -46,12 +46,7 @@ namespace MrCMS.Website
 
         public static SiteSettings SiteSettings
         {
-            get
-            {
-                if (CurrentContext.Items.Contains("current.sitesettings"))
-                    return (SiteSettings)CurrentContext.Items["current.sitesettings"];
-                return null;
-            }
+            get { return (SiteSettings)CurrentContext.Items["current.sitesettings"]; }
             set { CurrentContext.Items["current.sitesettings"] = value; }
         }
 
@@ -78,10 +73,7 @@ namespace MrCMS.Website
 
         public static DateTime Now
         {
-            get
-            {
-                return TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo);
-            }
+            get { return TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo); }
         }
 
         public static HttpContextBase CurrentContext
