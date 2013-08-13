@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
@@ -109,8 +110,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             var id = user.Id;
             var email = user.Email;
-            return _session.QueryOver<Order>().Where(x => x.User.Id == id &&
+            return _session.QueryOver<Order>().Where(x => x.User.Id == id ||
                 x.OrderEmail.IsInsensitiveLike(email, MatchMode.Exact)).OrderBy(x => x.CreatedOn).Desc.Paged(pageNum, pageSize);
+        }
+
+        public IList<Order> GetOrdersByUser(User user)
+        {
+            var id = user.Id;
+            var email = user.Email;
+            return _session.QueryOver<Order>().Where(x => x.User.Id == id ||
+                x.OrderEmail.IsInsensitiveLike(email, MatchMode.Exact)).OrderBy(x => x.CreatedOn).Desc.Cacheable().List();
         }
 
         public void Cancel(Order order)

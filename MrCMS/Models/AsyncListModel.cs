@@ -4,16 +4,16 @@ namespace MrCMS.Models
 {
     public abstract class AsyncListModel<T>
     {
-        private readonly PagedList<T> _items;
+        private readonly IPagedList<T> _items;
         private readonly int _id;
 
-        protected AsyncListModel(PagedList<T> items, int id)
+        protected AsyncListModel(IPagedList<T> items, int id)
         {
             _items = items;
             _id = id;
         }
 
-        public PagedList<T> Items
+        public IPagedList<T> Items
         {
             get { return _items; }
         }

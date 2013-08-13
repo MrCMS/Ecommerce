@@ -2,9 +2,7 @@
 <div class="row-fluid">
     <div class="span3">
         <div id="brands">
-            @Html.LabelFor(product => product.Brand.Id, "Brand")
-            @Html.DropDownListFor(product => product.Brand.Id, ViewData["brands"] as IEnumerable<SelectListItem>, new { @class = "span12" })
-            @Html.ActionLink("Add New", "AddBrand", "Product", new { id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+            @{Html.RenderAction("Brands", "Product", new { id = Model.Id, brandId= Model.Brand!=null?Model.Brand.Id.ToString():String.Empty });}
         </div>
     </div>
     <div class="span9">

@@ -17,5 +17,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         bool AnyExistingBrandsWithName(string name, int id);
         List<SelectListItem> GetOptions();
         List<SelectListItem> GetAvailableBrands(ProductSearchQuery query);
+        Brand GetById(int id);
     }
 }
