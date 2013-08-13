@@ -17,21 +17,21 @@ namespace MrCMS.Web.Apps.Core.MessageTemplates
         {
             var resetPasswordPage = session.QueryOver<ResetPasswordPage>().SingleOrDefault();
 
-            var resetUrl = resetPasswordPage != null
+            string resetUrl = resetPasswordPage != null
                                   ? resetPasswordPage.AbsoluteUrl + "?id={ResetPasswordGuid}"
                                   : string.Empty;
 
             var fromName = CurrentRequestData.CurrentSite.Name;
             return new ResetPasswordMessageTemplate
-            {
-                ToAddress = "{Email}",
-                ToName = "{Name}",
-                Bcc = String.Empty,
-                Cc = String.Empty,
-                Subject = String.Format("{0} - Password Reset Request", fromName),
-                Body = string.Format("To reset your password please click <a href=\"{0}\">here</a>", resetUrl),
-                IsHtml = false
-            };
+                       {
+                           ToAddress = "{Email}",
+                           ToName = "{Name}",
+                           Bcc = String.Empty,
+                           Cc = String.Empty,
+                           Subject = String.Format("{0} - Password Reset Request", fromName),
+                           Body = string.Format("To reset your password please click <a href=\"{0}\">here</a>", resetUrl),
+                           IsHtml = false
+                       };
         }
 
         public override List<string> GetTokens(IMessageTemplateParser messageTemplateParser)

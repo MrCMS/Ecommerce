@@ -9,7 +9,7 @@ namespace MrCMS.DbConfiguration.Overrides
     {
         public void Override(AutoMapping<MessageTemplate> mapping)
         {
-            mapping.DiscriminateSubClassesOnColumn("MessageTemplateType");
+            mapping.DiscriminateSubClassesOnColumn("MessageTempateType");
             mapping.Map(template => template.Body).CustomType<VarcharMax>().Length(4001);
         }
     }

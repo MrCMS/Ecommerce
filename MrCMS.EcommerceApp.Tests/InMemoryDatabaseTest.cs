@@ -99,8 +99,6 @@ namespace MrCMS.EcommerceApp.Tests
                                IsActive = true,
                            };
 
-            new AuthorisationService().SetPassword(user, "password", "password");
-
             var adminUserRole = new UserRole
                                     {
                                         Name = UserRole.Administrator

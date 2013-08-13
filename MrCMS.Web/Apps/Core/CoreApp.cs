@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -68,9 +69,13 @@ namespace MrCMS.Web.Apps.Core
                 IsActive = true
             };
 
-            var authorisationService = new AuthorisationService();
-            authorisationService.ValidatePassword(model.AdminPassword, model.ConfirmPassword);
-            authorisationService.SetPassword(user, model.AdminPassword, model.ConfirmPassword);
+            var hashAlgorithms = new List<IHashAlgorithm> {new SHA512HashAlgorithm()};
+            var hashAlgorithmProvider = new HashAlgorithmProvider(hashAlgorithms);
+            var passwordEncryptionManager = new PasswordEncryptionManager(hashAlgorithmProvider, new UserService(session));
+            var passwordManagementService = new PasswordManagementService(passwordEncryptionManager);
+
+            passwordManagementService.ValidatePassword(model.AdminPassword, model.ConfirmPassword);
+            passwordManagementService.SetPassword(user, model.AdminPassword, model.ConfirmPassword);
             session.Transact(sess => sess.Save(user));
             CurrentRequestData.CurrentUser = user;
 
@@ -143,6 +148,7 @@ namespace MrCMS.Web.Apps.Core
             });
 
             documentService.AddDocument(model.HomePage);
+            CurrentRequestData.HomePage = model.HomePage;
             documentService.AddDocument(model.Page2);
             documentService.AddDocument(model.Page3);
             documentService.AddDocument(model.Error403);
@@ -276,6 +282,7 @@ namespace MrCMS.Web.Apps.Core
             var roleService = new RoleService(session);
             roleService.SaveRole(adminUserRole);
 
+            var authorisationService = new AuthorisationService();
             authorisationService.Logout();
             authorisationService.SetAuthCookie(user.Email, false);
 

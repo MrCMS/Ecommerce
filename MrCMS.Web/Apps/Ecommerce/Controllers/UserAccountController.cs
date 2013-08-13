@@ -1,6 +1,8 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Helpers;
+using MrCMS.Paging;
 using MrCMS.Web.Apps.Core.Pages;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
@@ -17,12 +19,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _orderService = orderService;
         }
 
-        public ActionResult UserAccountOrders(int page=1)
+        public ActionResult UserAccountOrders(int page = 1)
         {
             var user = CurrentRequestData.CurrentUser;
             if (user != null)
             {
-                var model = new UserAccountOrdersModel(_orderService.GetOrdersByUser(user,page), user.Id);
+                var ordersByUser = _orderService.GetOrdersByUser(user, page);
+                var model = new UserAccountOrdersModel(new PagedList<Order>(ordersByUser, ordersByUser.PageNumber, ordersByUser.PageSize), user.Id);
                 return View(model);
             }
             return Redirect(UniquePageHelper.GetUrl<LoginPage>());
