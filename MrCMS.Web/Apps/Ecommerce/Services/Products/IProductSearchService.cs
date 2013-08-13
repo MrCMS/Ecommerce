@@ -113,8 +113,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (!String.IsNullOrWhiteSpace(SearchTerm))
             {
                 var fuzzySearchTerm = MakeFuzzy(SearchTerm);
-                var q = new MultiFieldQueryParser(Version.LUCENE_30, FieldDefinition.GetFieldNames(
-                                                                          DocumentIndexDefinition.Name), new StandardAnalyzer(Version.LUCENE_30));
+                var q = new MultiFieldQueryParser(Version.LUCENE_30, FieldDefinition.GetFieldNames(DocumentIndexDefinition.Name,ProductSearchIndex.SKUs), new StandardAnalyzer(Version.LUCENE_30));
                 var query = q.Parse(fuzzySearchTerm);
                 booleanQuery.Add(query, Occur.MUST);
             }
@@ -130,7 +129,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         }
         private Query GetOptionsQuery()
         {
-            BooleanQuery query = new BooleanQuery();
+            var query = new BooleanQuery();
 
             foreach (var type in Options)
                 query.Add(new TermQuery(new Term(ProductSearchIndex.Options.FieldName, type.ToString())), Occur.MUST);
