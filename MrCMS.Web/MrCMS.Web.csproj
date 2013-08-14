@@ -271,6 +271,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Tax\TaxRate.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Templating\NotificationTemplateSettings.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Users\Address.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\CookieHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\CurrencyFormattingHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\EnumHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
@@ -358,6 +359,8 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalUrlService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\SetExpressCheckoutResponse.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\TrackingService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\ITrackingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\GoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\IGoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartBuilder.cs" />
@@ -489,6 +492,7 @@
     <Compile Include="Apps\Ecommerce\Widgets\BreadCrumb.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CartWidget.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CategoriesOnlyNavigation.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\RecentlyViewedItems.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\EcommerceNavigation.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedCategories.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedProducts.cs" />
@@ -1979,6 +1983,8 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\CategoriesOnlyNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\RecentlyViewedItems.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\RecentlyViewedItems.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

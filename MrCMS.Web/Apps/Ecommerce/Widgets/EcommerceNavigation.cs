@@ -1,13 +1,10 @@
 ﻿using MrCMS.Entities.Widget;
-using MrCMS.Web.Apps.Ecommerce.Pages;
-using System.Collections.Generic;
 using NHibernate;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Web.Apps.Core.Models;
 using System.Web.Mvc;
 using System.Linq;
 using MrCMS.Website;
-using MrCMS.Entities.Documents;
 using NHibernate.Criterion;
 namespace MrCMS.Web.Apps.Ecommerce.Widgets
 {

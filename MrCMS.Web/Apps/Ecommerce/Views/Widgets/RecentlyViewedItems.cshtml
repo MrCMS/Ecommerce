@@ -1,0 +1,13 @@
+﻿@model List<MrCMS.Web.Apps.Ecommerce.Pages.Product>
+@if (Model != null && Model.Any())
+{
+    <hr />
+    <h4>Recently Viewed Items</h4>
+
+    <div class="row-fluid">
+        @foreach (var item in Model)
+        {
+            Html.RenderPartial("ProductCardFeatured", item);
+        }
+    </div>
+}
