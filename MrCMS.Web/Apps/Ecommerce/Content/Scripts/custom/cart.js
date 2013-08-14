@@ -1,7 +1,19 @@
 ﻿$(function () {
+    $(document).on('click', "#empty-basket", function () {
+        var response = confirm("Are you sure you want to empty your basket? You can not undo this action.");
+        if (response === true) {
+            $.post('/Apps/Ecommerce/EmptyBasket',
+           function (response) {
+               reloadCartDetails();
+           });
+        }
+        return false;
+    });
+
     $(document).on('change', "select#ShippingCalculation", function () {
         updateShippingMethod();
     });
+    
     $(document).on('click', "#update-basket", function () {
         var values = $('input[type="text"][name^="quantity-"]').map(function (index, element) {
             var quantity = $(element).val();
@@ -16,8 +28,6 @@
             });
         return false;
     });
-    function update() {
-    }
     $(document).on('click', "#apply-discount-code", function () {
         var discountCode = $("#discount-code").val();
         $.post('/Apps/Ecommerce/ApplyDiscountCode',

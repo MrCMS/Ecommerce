@@ -119,6 +119,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _cartManager.UpdateQuantities(quantities);
             return Json(true);
         }
+
+        [HttpPost]
+        public JsonResult EmptyBasket()
+        {
+            _cartManager.EmptyBasket();
+            return Json(true);
+        }
     }
 
     public class UpdateBasketModelBinder : MrCMSDefaultModelBinder
