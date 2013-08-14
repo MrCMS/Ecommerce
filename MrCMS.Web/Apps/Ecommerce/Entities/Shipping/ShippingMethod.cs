@@ -33,8 +33,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         public virtual decimal? GetPrice(CartModel model)
         {
             var shippingCalculation = GetCheapestShippingCalculation(model);
-            if(model.ShippingAddress != null && model.ShippingAddress.Country != null)
-                shippingCalculation = ShippingCalculations.FirstOrDefault(calculation => calculation.CanBeUsed(model) && calculation.Country.Id==model.ShippingAddress.Country.Id);
+            if(model.Country != null)
+                shippingCalculation = ShippingCalculations.FirstOrDefault(calculation => calculation.CanBeUsed(model) && calculation.Country.Id==model.Country.Id);
 
             return shippingCalculation != null
                        ? shippingCalculation.GetPrice(model)
