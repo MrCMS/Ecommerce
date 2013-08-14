@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using MrCMS.Models;
 using MrCMS.Paging;
@@ -8,9 +9,13 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using MrCMS.Helpers;
-using NHibernate.Criterion;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using NHibernate.Criterion;
+using NHibernate.SqlCommand;
+using NHibernate.Transform;
+using NHibernate.Linq;
+using Order = MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
@@ -30,11 +35,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             IPagedList<Product> pagedList;
             if (!string.IsNullOrWhiteSpace(queryTerm))
             {
-                pagedList =
-                    _session.Paged(
-                        QueryOver.Of<Product>()
-                                 .Where(product => product.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)), page,
-                        10);
+                pagedList = new PagedList<Product>(_session.CreateCriteria<Product>()
+                                    .CreateCriteria("Variants")
+                                    .Add(Restrictions.Or(Restrictions.Eq("SKU", queryTerm), Restrictions.InsensitiveLike("Name", queryTerm,MatchMode.Anywhere)))
+                                    .List<Product>().Distinct(),page,10);
             }
             else
             {
