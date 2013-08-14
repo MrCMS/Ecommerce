@@ -1,13 +1,15 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Users.Address
-@using MrCMS.Web.Apps.Ecommerce.Helpers
 
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("Edit", "Address", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Edit Address</h3>
-    </div>
-    <div class="modal-body">
+    <fieldset>
+          <legend>Edit Address
+               <span class="btn-group  display-inline  pull-right">
+                  <input type="submit" class="btn-primary btn" value="Save" />
+            </span>
+        </legend>
+
         @Html.HiddenFor(x => x.Id)
         @Html.Hidden("orderID",ViewData["orderID"])
         @Html.Hidden("addressType",ViewData["addressType"])
@@ -52,10 +54,5 @@
         
              </div>
                    </div>
-        
-         
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Save" />
-    </div>
+         </fieldset>
 }

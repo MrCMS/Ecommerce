@@ -3,14 +3,14 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("Delete", "Discount", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Delete Discount</h3>
-    </div>
-    <div class="modal-body">
-        Are you sure you want to delete the discount @Model.Name ? Deleting this item can not be undone.
-        <br />
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Delete Discount" />
-    </div>
+    <fieldset>
+        <legend>Delete Discount
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Delete Discount" />
+            </span>
+        </legend>
+        <p>
+            Are you sure you want to delete the discount @Model.Name ? Deleting this item can not be undone.
+        </p>
+    </fieldset>
 }

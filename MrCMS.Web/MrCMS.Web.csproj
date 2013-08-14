@@ -573,6 +573,7 @@
     <Content Include="Apps\Core\Content\Images\mrcms-logo.png" />
     <Content Include="Apps\Core\Content\Scripts\forgot-password.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sorting.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-discount.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-product.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-categories.js" />
@@ -1819,7 +1820,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ImportExport\GoogleBaseSearch.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ImportExport\GoogleBaseSettings.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ImportExport\Products.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderLine\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\Edit.cshtml" />

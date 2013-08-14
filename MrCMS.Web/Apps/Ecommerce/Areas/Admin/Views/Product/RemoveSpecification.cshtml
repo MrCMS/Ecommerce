@@ -1,17 +1,20 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Pages
 @model Product
-@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
-   var specificationValue = ViewData["specification-value"] as MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationValue;}
-@using (Html.BeginForm("RemoveSpecification", "Product", new { id = Model.Id, specificationValueId = specificationValue.Id }, FormMethod.Post))
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+    var specificationValue = ViewData["specification-value"] as MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationValue;
+}
+@using (Html.BeginForm("RemoveSpecification", "Product", new {id = Model.Id, specificationValueId = specificationValue.Id}, FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Remove Category from Product</h3>
-    </div>
-    <div class="modal-body">
-        Are you sure you want to remove the specification @specificationValue.SpecificationName - @specificationValue.Value from the product @Model.Name? Removing this specification can not be undone.
-        <br />
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Remove Specification" />
-    </div>
+    <fieldset>
+        <legend>
+            Remove Specification from Product
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Remove Specification" />
+            </span>
+        </legend>
+        <p>
+            Are you sure you want to remove the specification @specificationValue.SpecificationName - @specificationValue.Value from the product @Model.Name? Removing this specification can not be undone.
+        </p>
+    </fieldset>
 }

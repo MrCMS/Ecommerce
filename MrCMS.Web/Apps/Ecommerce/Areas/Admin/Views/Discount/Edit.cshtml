@@ -9,34 +9,32 @@
 {
     <fieldset>
         <legend>Edit Discount
-                <span class="btn-group  display-inline  pull-right">
-                    <input type="submit" class="btn-primary btn" value="Update Discount" />
-                </span>
-
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Update Discount" />
+            </span>
         </legend>
-    </fieldset>
 
-    @Html.HiddenFor(x => x.Id)
-     @Html.LabelFor(x => x.Name)
+        @Html.HiddenFor(x => x.Id)
+        @Html.LabelFor(x => x.Name)
         @Html.TextBoxFor(x => x.Name)
-        @Html.ValidationMessageFor(x=>x.Name)
+        @Html.ValidationMessageFor(x => x.Name)
         <br/>
         @Html.LabelFor(x => x.Code)
         @Html.TextBoxFor(x => x.Code)
-         @Html.ValidationMessageFor(x=>x.Code)
-    @Html.LabelFor(x => x.ValidFrom)
-    @Html.EditorFor(x => x.ValidFrom)
-    @Html.LabelFor(x => x.ValidUntil)
-    @Html.EditorFor(x => x.ValidUntil)
-    @Html.LabelFor(x => x.Limitation)
-    @Html.DropDownList("LimitationOpt", Model.LimitationOptions, new { data_val_required = "Please select a limitation." })
-    <div id="limitationValue" style="display: none;">
-    </div>
-    @Html.LabelFor(x => x.Application)
-    @Html.DropDownList("ApplicationOpt", Model.ApplicationOptions, new { data_val_required = "Please select application." })
-    <div id="applicationValue" style="display: none;">
-    </div>
-    <br />
-    @Html.InfoBlock("Heads up! ", "Leave Valid From and Until blank to make discount valid forever")
-
+        @Html.ValidationMessageFor(x => x.Code)
+        @Html.LabelFor(x => x.ValidFrom)
+        @Html.EditorFor(x => x.ValidFrom)
+        @Html.LabelFor(x => x.ValidUntil)
+        @Html.EditorFor(x => x.ValidUntil)
+        @Html.LabelFor(x => x.Limitation)
+        @Html.DropDownList("LimitationOpt", Model.LimitationOptions, new {data_val_required = "Please select a limitation."})
+        <div id="limitationValue" style="display: none;">
+        </div>
+        @Html.LabelFor(x => x.Application)
+        @Html.DropDownList("ApplicationOpt", Model.ApplicationOptions, new {data_val_required = "Please select application."})
+        <div id="applicationValue" style="display: none;">
+        </div>
+        <br />
+        @Html.InfoBlock("Heads up! ", "Leave Valid From and Until blank to make discount valid forever")
+    </fieldset>
 }

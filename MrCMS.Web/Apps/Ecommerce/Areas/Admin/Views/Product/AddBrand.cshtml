@@ -5,17 +5,20 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
     var product = ViewData["product"] as Product;
 }
-<div class="modal-header">
-    <h3>Add Brand</h3>
-</div>
-        @Html.Hidden("productId",product.Id)
-        <div class="modal-body">
-        @Html.LabelFor(x => x.Name)
-        @Html.TextBoxFor(x => x.Name)
-        @Html.ValidationMessageFor(x => x.Name)
-    </div>
+<fieldset>
+    <legend>
+        Add Brand
+        <span class="btn-group  display-inline  pull-right">
+            <button id="close" class="btn-primary btn">Save Brand</button>
+        </span>
+    </legend>
 
-<div class="modal-footer">
-    <button id="close" class="btn-primary btn">Save Brand</button>
-</div>
+    @Html.Hidden("productId",product!=null?product.Id:0)
+      
+    @Html.LabelFor(x => x.Name)
+    @Html.TextBoxFor(x => x.Name)
+    @Html.ValidationMessageFor(x => x.Name)
+
+</fieldset>
+
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/brands.js"); }

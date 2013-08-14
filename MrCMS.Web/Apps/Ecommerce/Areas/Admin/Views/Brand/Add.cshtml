@@ -3,16 +3,17 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("Add", "Brand", FormMethod.Post))
 {
-    @Html.Hidden("productId",ViewBag.ProductId as string)
-    <div class="modal-header">
-        <h3>Add Brand</h3>
-    </div>
-    <div class="modal-body">
+      <fieldset>
+          <legend>Add Brand
+               <span class="btn-group  display-inline  pull-right">
+                 <input type="submit" class="btn-primary btn" value="Add Brand" />
+            </span>
+        </legend>
+        @Html.Hidden("productId",ViewBag.ProductId as string)
+
         @Html.LabelFor(x => x.Name)
         @Html.TextBoxFor(x => x.Name)
         @Html.ValidationMessageFor(x => x.Name)
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Add Brand" />
-    </div>
+
+     </fieldset>
 }

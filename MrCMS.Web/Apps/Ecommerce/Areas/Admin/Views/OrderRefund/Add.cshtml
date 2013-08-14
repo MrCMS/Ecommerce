@@ -3,22 +3,24 @@
 
 @using (Html.BeginForm("Add", "OrderRefund", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Add Order Refund</h3>
-    </div>
-    <div class="modal-body">
-       @Html.HiddenFor(x => x.Order.Id)
-    @Html.HiddenFor(x => x.User.Id)
-    @Html.LabelFor(x => x.Amount)
-    @Html.EditorFor(x => x.Amount)
-    <span class="text-error">
-    @Html.ValidationMessageFor(x => x.Amount)</span>
-    <br />
+    <fieldset>
+        <legend>
+            Add Order Refund
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Add Order Refund" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Order.Id)
+        @Html.HiddenFor(x => x.User.Id)
+        @Html.LabelFor(x => x.Amount)
+        @Html.EditorFor(x => x.Amount)
+        <span class="text-error">
+            @Html.ValidationMessageFor(x => x.Amount)</span>
         <br />
-    @Html.LabelFor(x => x.Note)
-    @Html.TextAreaFor(x => x.Note, new { style="width:500px;height:200px" })
-    </div>
-    <div class="modal-footer">
-       <input type="submit" class="btn-primary btn" value="Add Order Refund" />
-    </div>
+        <br />
+        @Html.LabelFor(x => x.Note)
+        @Html.TextAreaFor(x => x.Note, new {@class = "span12", style="height:250px"})
+
+    </fieldset>
 }

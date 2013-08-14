@@ -2,14 +2,16 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 @using (Html.BeginForm("Edit", "Region", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Edit Region</h3>
-    </div>
-    <div class="modal-body">
+    <fieldset>
+        <legend>
+            Edit Region
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Edit Region" />
+            </span>
+        </legend>
+
         @Html.LabelFor(region => region.Name)
         @Html.TextBoxFor(region => region.Name)
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Edit Region" />
-    </div>
+
+    </fieldset>
 }

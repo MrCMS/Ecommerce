@@ -2,10 +2,13 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 @using (Html.BeginForm("Add", "Currency", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Add Currency</h3>
-    </div>
-    <div class="modal-body">
+    <fieldset>
+        <legend>Add Currency
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Add Currency" />
+            </span>
+        </legend>
+
         @Html.LabelFor(x => x.Name)
         @Html.TextBoxFor(x => x.Name)
         @Html.ValidationMessageFor(x => x.Name)
@@ -15,8 +18,6 @@
         @Html.LabelFor(x => x.Format)
         @Html.TextBoxFor(x => x.Format)
         @Html.ValidationMessageFor(x => x.Format)
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Add Currency" />
-    </div>
+
+    </fieldset>
 }

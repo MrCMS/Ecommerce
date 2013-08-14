@@ -1,15 +1,11 @@
-﻿@using MrCMS.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Settings.EcommerceSettings
+﻿@model MrCMS.Web.Apps.Ecommerce.Settings.EcommerceSettings
 @{
     ViewBag.Title = "Edit Ecommerce Settings";
 }
-
-
 @using (Html.BeginForm("Edit", "EcommerceSettings", FormMethod.Post))
 {
     <fieldset>
         <legend>Ecommerce Settings
-            
             <span class="btn-group  display-inline  pull-right">
                 <input type="submit" class="btn-primary btn" value="Save Settings" />
             </span>
@@ -28,7 +24,7 @@
         @Html.ValidationMessageFor(x => x.PreviousPriceText)
         
         @Html.LabelFor(x => x.DefaultNoProductImage)
-        @Html.TextBoxFor(x => x.DefaultNoProductImage,new{@class="media-selector"})
+        @Html.TextBoxFor(x => x.DefaultNoProductImage, new {@class = "media-selector"})
         @Html.ValidationMessageFor(x => x.DefaultNoProductImage)
 
         @Html.LabelFor(x => x.CurrencyId)

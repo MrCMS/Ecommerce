@@ -3,19 +3,20 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("Delete", "ProductSpecificationAttribute", FormMethod.Post))
 {
-     @Html.HiddenFor(x => x.Id)
-    <div class="modal-header">
-        <h3>Delete Product Specification Atrribute</h3>
-    </div>
-    <div class="modal-body">
-        Are you sure you want to delete the product specification atrribute @Model.Name ? Deleting atrribute can not be undone.
-        <br />
-        <br />
+    <fieldset>
+        <legend>
+            Delete Product Specification Atrribute
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Delete Atrribute" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+        <p>
+            Are you sure you want to delete the product specification atrribute @Model.Name ? Deleting atrribute can not be undone.
+        </p>
         <div class="alert alert-warning">
             <strong>Warning:</strong> Deleting this specification attribute will delete all product specifications which have this attribute. It will also delete all options associated with this specification.
         </div>
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Delete Atrribute" />
-    </div>
+    </fieldset>
 }

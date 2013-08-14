@@ -9,7 +9,7 @@
             @Html.ActionLink("Stock Report (CSV)","ExportStockReport", "Stock", new { @class="btn btn-primary"}))
         </span>
     </legend>
-    @if(!String.IsNullOrWhiteSpace(ViewBag.Status))
+    @if (!String.IsNullOrWhiteSpace(ViewBag.Status))
     {
         <br />
         <span class="alert alert-info">@ViewBag.Status</span>
@@ -17,10 +17,10 @@
         <hr/>
     }
         <div class="row-fluid">
-                 @using (Html.BeginForm("BulkStockUpdate", "Stock", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                 @using (Html.BeginForm("BulkStockUpdate", "Stock", FormMethod.Post, new {enctype = "multipart/form-data"}))
                  {
                      <label>Choose Import File</label>
-                         <input type="file" name="document" id="document" />
+                     <input type="file" name="document" id="document" />
                      <div class="clearfix"></div>
                      <br />
                      if (ViewBag.Messages != null)
@@ -44,18 +44,18 @@
                              else
                              {
                                  <div class="alert alert-success">
-                                @item.Value.First()
-                                </div>
+                                     @item.Value.First()
+                                 </div>
                              }
                          }
                      }
-                     if(ViewBag.ImportStatus!=null)
+                     if (ViewBag.ImportStatus != null)
                      {
-                             <div class="alert alert-error">@ViewBag.ImportStatus</div>
-                            <div class="clearfix"></div>
+                         <div class="alert alert-error">@ViewBag.ImportStatus</div>
+                         <div class="clearfix"></div>
                      }
-                  
-                  <input type="submit" class="btn btn-primary" value="Start Bulk Stock Update"/>
+
+                     <input type="submit" class="btn btn-primary" value="Start Bulk Stock Update"/>
                  }
         </div>
 </fieldset>

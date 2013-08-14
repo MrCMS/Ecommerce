@@ -1,9 +1,9 @@
 ﻿@using MrCMS.Entities.Documents.Media
-@model MrCMS.Entities.Documents.Media.MediaCategory
+@model MediaCategory
 
 @if (Model != null && Model.Files.Count > 0)
 {
-    foreach (MediaFile file in Model.Files)
+    foreach (var file in Model.Files)
     {
         <tr>
             <td>@Html.CheckBox(@file.Id.ToString(), true, null)</td>
