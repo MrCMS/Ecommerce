@@ -35,10 +35,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             IPagedList<Product> pagedList;
             if (!string.IsNullOrWhiteSpace(queryTerm))
             {
-                pagedList = new PagedList<Product>(_session.CreateCriteria<Product>()
-                                    .CreateCriteria("Variants")
-                                    .Add(Restrictions.Or(Restrictions.Eq("SKU", queryTerm), Restrictions.InsensitiveLike("Name", queryTerm,MatchMode.Anywhere)))
-                                    .List<Product>().Distinct(),page,10);
+                Product productAlias = null;
+                ProductVariant productVariantAlias = null;
+                pagedList = _session.QueryOver(() => productAlias)
+                                    .JoinAlias(() => productAlias.Variants, () => productVariantAlias, JoinType.LeftOuterJoin)
+                                    .Where(
+                                        () =>
+                                        productVariantAlias.SKU == queryTerm ||
+                                        productAlias.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere) ||
+                                        productVariantAlias.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere))
+                                    .Paged(page, 10);
             }
             else
             {
