@@ -16,7 +16,6 @@ namespace MrCMS.Tests.Services
 {
     public class UserServiceTests : InMemoryDatabaseTest
     {
-        private static ISiteService _siteService;
         private UserService _userService;
         private ISession _session;
 
