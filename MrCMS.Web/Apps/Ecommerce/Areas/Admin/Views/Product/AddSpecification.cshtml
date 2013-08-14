@@ -4,6 +4,8 @@
 @{ 
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
     var product = ViewData["product"] as Product;
+    var specificationAttributes = ViewData["specification-attributes"] as IEnumerable<SelectListItem> ?? new List<SelectListItem>();
+    var specificationAttributesOptions = ViewData["specification-attributes-options"] as IEnumerable<SelectListItem> ?? new List<SelectListItem>();
 }
 <div class="modal-header">
     <h3>Add Specifications to Product</h3>
@@ -11,13 +13,13 @@
 <div class="modal-body">
     <div id="categories">
         @Html.Hidden("ProductId",Model.Product.Id)
-        @if((ViewData["specification-attributes"] as IEnumerable<SelectListItem>).Any())
+        @if (specificationAttributes.Any())
         {
-            @Html.DropDownList("Option", ViewData["specification-attributes"] as IEnumerable<SelectListItem>)
+            @Html.DropDownList("Option", specificationAttributes)
              <br />
-             @Html.DropDownListFor(x=>x.Value, ViewData["specification-attributes-options"] as IEnumerable<SelectListItem>,new {@class="pull-left"})
+             @Html.DropDownListFor(x=>x.Value, specificationAttributesOptions,new {@class="pull-left"})
             var dc = "none";
-            if((ViewData["specification-attributes-options"] as IEnumerable<SelectListItem>).Count()==1)
+            if (specificationAttributesOptions.Count() == 1)
             {
                 dc = "block";
             }
