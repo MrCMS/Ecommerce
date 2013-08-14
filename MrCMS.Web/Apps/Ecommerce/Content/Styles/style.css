@@ -179,13 +179,13 @@ h4.category-title
     word-break:normal;
     word-wrap:normal;
 }
-#product-addtobasket
-{
+#product-addtobasket {
     background-color: #F5F5F5;
+    border: 1px solid #000000;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 0;
     line-height: 0;
-    margin: 0px 0px 10px 0px;
+    margin: 0 0 10px 0;
     padding: 10px 10px 10px 10px;
     overflow:hidden;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -194,6 +194,12 @@ h4.category-title
     white-space:normal;
     word-break:normal;
     word-wrap:normal;
+}
+#product-addtobasket p {
+    line-height: 15px;
+    font-size:12px;
+    padding: 0;
+    margin: 0;
 }
 .product-variants-filter label, pre#product-addtobasket label
 {
