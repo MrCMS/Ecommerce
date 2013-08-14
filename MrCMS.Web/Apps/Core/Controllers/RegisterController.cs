@@ -1,4 +1,3 @@
-using System;
 using System.Web.Mvc;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
@@ -61,7 +60,9 @@ namespace MrCMS.Web.Apps.Core.Controllers
                 _passwordManagementService.SetPassword(user, model.Password, model.ConfirmPassword);
                 _userService.AddUser(user);
                 _authorisationService.SetAuthCookie(model.Email, false);
-                return !string.IsNullOrEmpty(model.ReturnUrl) ? Redirect("~/" + model.ReturnUrl) : Redirect("~/");
+                if (!string.IsNullOrEmpty(model.ReturnUrl))
+                    return Redirect("~/" + model.ReturnUrl);
+                return Redirect("~/");
             }
             return Redirect(UniquePageHelper.GetUrl<RegisterPage>());
         }

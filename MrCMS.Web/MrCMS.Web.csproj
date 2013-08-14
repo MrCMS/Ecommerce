@@ -64,8 +64,7 @@
     <Reference Include="HibernatingRhinos.Profiler.Appender">
       <HintPath>..\packages\NHibernateProfiler.2.0.2186.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
@@ -74,9 +73,38 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Lucene.Net">
       <HintPath>..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Analyzers">
+      <HintPath>..\packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.Analyzers.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Core">
+      <HintPath>..\packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.FastVectorHighlighter">
+      <HintPath>..\packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.FastVectorHighlighter.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Highlighter">
+      <HintPath>..\packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.Highlighter.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Memory">
+      <HintPath>..\packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Queries">
+      <HintPath>..\packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.Queries.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Regex">
+      <HintPath>..\packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.Regex.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.SimpleFacetedSearch">
+      <HintPath>..\packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.SimpleFacetedSearch.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.Snowball">
+      <HintPath>..\packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.Snowball.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net.Contrib.SpellChecker">
+      <HintPath>..\packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.SpellChecker.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -86,8 +114,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MySql.Data.6.6.4\lib\net40\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -114,6 +143,9 @@
     </Reference>
     <Reference Include="PayPalMerchantSDK">
       <HintPath>..\packages\PayPalMerchantSDK.2.5.103\lib\PayPalMerchantSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="RestApiSDK">
+      <HintPath>..\packages\RestApiSDK.0.7.3\lib\RestApiSDK.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.SQLite, Version=1.0.82.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -216,7 +248,6 @@
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
-    <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\EnterOrderEmailController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GoogleAnalyticsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\OrderPlacedController.cs" />
@@ -227,6 +258,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\ProductSearchController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductVariantController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SetDeliveryDetailsController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CategoryOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CountryOverride.cs" />
@@ -281,23 +313,23 @@
     <Compile Include="Apps\Ecommerce\Helpers\RequestHelper.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchIndex.cs" />
+    <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderCancelledEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderFullyRefundedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPartiallyRefundedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToStoreOwnerMessageTemplate.cs" />
-    <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderCancelledEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderShippedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\OrderTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryContainerMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryMetadata.cs" />
-    <Compile Include="Apps\Ecommerce\Metadata\UserAccountMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\EnterOrderEmailMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\OrderPlacedMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\PaymentDetailsMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\ProductMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\ProductSearchMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\SetDeliveryDetailsMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\UserAccountMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddPriceBreakModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\AgeGroup.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartModel.cs" />
@@ -359,10 +391,10 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalUrlService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\SetExpressCheckoutResponse.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Analytics\TrackingService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Analytics\ITrackingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\GoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\IGoogleAnalyticsService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\ITrackingService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\TrackingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartBuilder.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartSessionManager.cs" />
@@ -492,10 +524,10 @@
     <Compile Include="Apps\Ecommerce\Widgets\BreadCrumb.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CartWidget.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CategoriesOnlyNavigation.cs" />
-    <Compile Include="Apps\Ecommerce\Widgets\RecentlyViewedItems.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\EcommerceNavigation.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedCategories.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedProducts.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\RecentlyViewedItems.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\RelatedProducts.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\SearchBox.cs" />
     <Compile Include="Apps\Galleries\GalleriesApp.cs" />
@@ -578,7 +610,6 @@
     <Content Include="Apps\Core\Content\Images\mrcms-logo.png" />
     <Content Include="Apps\Core\Content\Scripts\forgot-password.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sorting.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-discount.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-product.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-categories.js" />
@@ -587,6 +618,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-variant.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\products.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sorting.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\specification-attributes.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\stock.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\tax-rates.js" />
@@ -1134,15 +1166,12 @@
     <Content Include="Areas\Admin\Content\Scripts\tag-it.min.js" />
     <Content Include="Areas\Admin\Content\Styles\mrcms-admin.css" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\css\bootstrap-responsive.css" />
-    <Content Include="Areas\Admin\Content\Styles\bootstrap\css\bootstrap-responsive.min.css" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\css\bootstrap.css" />
-    <Content Include="Areas\Admin\Content\Styles\bootstrap\css\bootstrap.min.css" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\img\glyphicons-halflings-white.png" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\img\glyphicons-halflings.png" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.js" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.min.js" />
-    <Content Include="Areas\Admin\Content\Styles\front-end-editing.css" />
-    <Content Include="Areas\Admin\Content\Styles\fileUpload.css" />
+    <Content Include="Areas\Admin\Content\Styles\mrcms-frontendediting.css" />
     <Content Include="Areas\Admin\Content\Styles\Images\glyphicons-halflings-white.png" />
     <Content Include="Areas\Admin\Content\Styles\Images\glyphicons-halflings.png" />
     <Content Include="Areas\Admin\Content\Styles\jquery-ui-bootstrap\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -1206,7 +1235,6 @@
     <Content Include="Content\install\bootstrap\js\bootstrap.min.js" />
     <Content Include="Content\install\scripts\jquery.validate.js" />
     <Content Include="Content\install\style.css" />
-    <Content Include="Areas\Admin\Content\Styles\jquery.contextMenu.css" />
     <Content Include="Areas\Admin\Content\Styles\jquery.fileupload-ui.css" />
     <Content Include="Areas\Admin\Content\Styles\jquery.treeview.css" />
     <Content Include="Areas\Admin\Content\less\bootstrap.css">
@@ -1220,33 +1248,6 @@
     <Content Include="Apps\Core\Content\Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Apps\Core\Content\Scripts\respond.min.js" />
     <Content Include="Apps\Core\Content\Styles\style.css" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\images\ui-icons_222222_256x240.png" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\images\ui-icons_454545_256x240.png" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\images\ui-icons_888888_256x240.png" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\jquery.ui.accordion.css" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\jquery.ui.all.css" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\jquery.ui.autocomplete.css" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\jquery.ui.base.css" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\jquery.ui.button.css" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\jquery.ui.core.css" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\jquery.ui.datepicker.css" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\jquery.ui.dialog.css" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\jquery.ui.progressbar.css" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\jquery.ui.resizable.css" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\jquery.ui.selectable.css" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\jquery.ui.slider.css" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\jquery.ui.tabs.css" />
-    <Content Include="Areas\Admin\Content\Styles\themes\base\jquery.ui.theme.css" />
     <Content Include="Docs\UpgradeNotes.txt" />
     <Content Include="Global.asax" />
     <Content Include="Areas\Admin\Content\Scripts\jquery-ui-timepicker-addon.js" />
@@ -1829,8 +1830,12 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderRefund\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderRefund\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Cancel.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsPaid.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsShipped.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsVoided.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderLines.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderNotes.cshtml" />
@@ -1902,11 +1907,14 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Product.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductAdmin.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductContainer.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\CategoriesOnlyNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\FeaturedCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\FeaturedProducts.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\RecentlyViewedItems.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\AddDiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\Cart.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\DeleteCartItem.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\Details.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\DiscountCode.cshtml" />
@@ -1914,7 +1922,6 @@
     <Content Include="Apps\Ecommerce\Views\Cart\EditDiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\EnterOrderEmail.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\PaymentDetails.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\EnterOrderEmail\SetOrderEmailAndLogin.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\ShippingMethods.cshtml" />
     <Content Include="Apps\Ecommerce\Views\CategoryContainer\CategoryContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Category\Category.cshtml" />
@@ -1922,6 +1929,7 @@
     <Content Include="Apps\Ecommerce\Views\Checkout\OrderEmail.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Checkout\Summary.cshtml" />
     <Content Include="Apps\Ecommerce\Views\EnterOrderEmail\SetEmailForm.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\EnterOrderEmail\SetOrderEmailAndLogin.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\EnterOrderEmail.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\OrderPlaced.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\PaymentDetails.cshtml" />
@@ -1956,12 +1964,15 @@
     <Content Include="Apps\Ecommerce\Views\Web.config" />
     <Content Include="Apps\Ecommerce\Views\Widgets\BreadCrumb.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\CartWidget.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\CategoriesOnlyNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\EcommerceNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedProducts.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\RecentlyViewedItems.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\RelatedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\SearchBox.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\_ChildCategories.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Add.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Delete.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Edit.cshtml" />
@@ -1975,16 +1986,6 @@
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\TopSellers.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ryness\Views\Web.config" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Cancel.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsShipped.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsPaid.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsVoided.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Widgets\CategoriesOnlyNavigation.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\CategoriesOnlyNavigation.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Widgets\RecentlyViewedItems.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\RecentlyViewedItems.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2145,14 +2146,32 @@
     <Content Include="Areas\Admin\Views\Search\GetBreadCrumb.cshtml" />
     <Content Include="Areas\Admin\Views\Sites\CopyOptions.cshtml" />
     <Content Include="Areas\Admin\Views\MessageTemplate\Tokens.cshtml" />
+    <Content Include="Areas\Admin\Views\Form\ClearFormData.cshtml" />
     <None Include="Properties\PublishProfiles\v0.1.1.pubxml" />
     <None Include="Properties\PublishProfiles\v0.1.pubxml" />
     <Content Include="Apps\Core\Views\Widgets\Navigation.cshtml" />
     <None Include="Properties\PublishProfiles\v0.2.pubxml" />
-    <Content Include="Themes\Default\Web.config">
+    <None Include="Properties\PublishProfiles\v0.3.pubxml" />
+    <Content Include="Themes\Default\Views\web.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Properties\PublishProfiles\v0.3.pubxml" />
+    <None Include="Themes\Default\Views\Web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="Themes\Default\Views\Web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\LoginPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\RegisterPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\ResetPasswordPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\UserAccountPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\ChangePassword.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\LoginBox.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\PasswordReset.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\UserAccountOrders.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config" />
@@ -2167,6 +2186,7 @@
     <Content Include="Themes\Ryness\Apps\Core\Views\Shared\PasswordReset.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\UserAccountOrders.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Web.config" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Widgets\UserLinks.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
@@ -2223,18 +2243,6 @@
     <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\LoginPage.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\RegisterPage.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\ResetPasswordPage.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\UserAccountPage.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\ChangePassword.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\LoginBox.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\PasswordReset.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
-    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\UserAccountOrders.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\UserAccountOrders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
@@ -2352,7 +2360,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2691</DevelopmentServerPort>
+          <DevelopmentServerPort>27465</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:8888</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
