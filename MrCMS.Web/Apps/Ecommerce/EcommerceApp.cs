@@ -130,6 +130,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                              new[] { typeof(PaymentDetailsController).Namespace });
 
             context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders", new { controller = "UserAccount", action = "UserAccountOrders" });
+            context.MapRoute("User Account Register Without Details", "Apps/Ecommerce/UserAccount/RegistrationWithoutDetails", new { controller = "UserAccount", action = "RegistrationWithoutDetails" });
 
             context.MapRoute("PayPal Express Checkout - SetExpressCheckout",
                              "Apps/Ecommerce/PayPalExpress/SetExpressCheckout",

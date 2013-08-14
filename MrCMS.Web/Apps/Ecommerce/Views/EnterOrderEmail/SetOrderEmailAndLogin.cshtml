@@ -27,8 +27,8 @@
         @Html.RadioButtonFor(model => model.HavePassword, true)
     </label>
     <div id="password-box" style="display: none">
-        @Html.PasswordFor(model => model.Password)
+         @Html.PasswordFor(model => model.Password, new { placeholder="Enter your password here"})
     </div>
     <input class="btn btn-info" type="submit" id="continue" name="continue" value="Continue" />
 }
-@{ Html.IncludeScript("~/Themes/Ecommerce/Content/Scripts/custom/enter-order-email.js"); }
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/enter-order-email.js"); }

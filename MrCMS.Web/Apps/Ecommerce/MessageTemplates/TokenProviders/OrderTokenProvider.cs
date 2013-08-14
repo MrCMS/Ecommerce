@@ -14,9 +14,9 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
         {
             return new Dictionary<string, Func<Order, string>>
                 {
-                    {"UserName",order => order.User.Name},
-                    {"UserFirstName",order => order.User.FirstName},
-                    {"UserLastName",order => order.User.LastName}
+                    {"UserName",order => order.User!=null?order.User.Name:String.Empty},
+                    {"UserFirstName",order => order.User!=null?order.User.FirstName:String.Empty},
+                    {"UserLastName",order => order.User!=null?order.User.LastName:String.Empty}
                 };
         }
     }

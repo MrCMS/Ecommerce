@@ -127,7 +127,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             if (shippingCalculation == null) return;
 
-            _cartSessionManager.SetSessionValue(CurrentShippingMethodIdKey, shippingCalculation.ShippingMethod.Id);
+            if (shippingCalculation.ShippingMethod != null)
+                _cartSessionManager.SetSessionValue(CurrentShippingMethodIdKey, shippingCalculation.ShippingMethod.Id);
+            if (shippingCalculation.Country != null)
             _cartSessionManager.SetSessionValue(CurrentCountryIdKey, shippingCalculation.Country.Id);
         }
 
