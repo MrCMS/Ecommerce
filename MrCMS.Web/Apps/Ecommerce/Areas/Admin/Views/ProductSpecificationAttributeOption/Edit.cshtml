@@ -2,10 +2,14 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 @using (Html.BeginForm("Edit", "ProductSpecificationAttributeOption", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Edit Product Specification Atrribute Option</h3>
-    </div>
-    <div class="modal-body">
+    <fieldset>
+        <legend>
+            Edit Product Specification Atrribute Option
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Update Atrribute Option" />
+            </span>
+        </legend>
+
         @Html.HiddenFor(x => x.Id)
         @Html.Hidden("attributeId", Model.ProductSpecificationAttribute.Id)
         @Html.HiddenFor(x => x.ProductSpecificationAttribute.Id)
@@ -13,8 +17,5 @@
         @Html.TextBoxFor(x => x.Name)
         <br />
         @Html.ValidationMessageFor(x => x.Name)
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Update Atrribute Option" />
-    </div>
+    </fieldset>
 }

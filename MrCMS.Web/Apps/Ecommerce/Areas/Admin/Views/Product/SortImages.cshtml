@@ -2,30 +2,21 @@
 @using MrCMS.Helpers
 @model List<MrCMS.Models.ImageSortItem>
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
-@section JavaScriptBlock
-{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#sortable").sortable({
-                update: function (event, ui) {
-                    $('#sortable li').each(function (index, domElement) {
-                        $(domElement).find('[name*="Order"]').val(index);
-                    });
-                }
-            });
-        });
-    </script>
-}
 
-@using (Html.BeginForm("SortImages", "Product", FormMethod.Post, new { id = "sort-media-category" }))
+@using (Html.BeginForm("SortImages", "Product", FormMethod.Post, new {id = "sort-media-category"}))
 {
-    <div class="modal-header">
-        <h3>Sort Product Images</h3>
-    </div>
-    <div class="modal-body">
-         @Html.Hidden("productId", ((MrCMS.Web.Apps.Ecommerce.Pages.Product)ViewBag.Product).Id)
-         <ul id="sortable">
-            @for (int i = 0; i < Model.Count; i++)
+    <fieldset>
+        <legend>
+            Sort Product Images
+            <span class="btn-group  display-inline  pull-right">
+                <button class="btn btn-primary" id="save" data-form-id="sort-media-category" data-action="save">
+                    Save & Close</button>
+            </span>
+        </legend>
+
+        @Html.Hidden("productId", ((MrCMS.Web.Apps.Ecommerce.Pages.Product) ViewBag.Product).Id)
+        <ul id="sortable">
+            @for (var i = 0; i < Model.Count; i++)
             {
                 <li>
                     <div class="row-fluid">
@@ -45,12 +36,7 @@
                 </li>
             }
         </ul>
-            @Html.InfoBlock("Heads up! ", "Drag items in to the order you would like then click save.")
-    </div>
-    <div class="modal-footer">
-            <button class="btn btn-primary" id="save" data-form-id="sort-media-category" data-action="save">
-        Save & Close</button>
-    </div>
+        @Html.InfoBlock("Heads up! ", "Drag items in to the order you would like then click save.")
+    </fieldset>
 }
-
-
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/sorting.js"); }

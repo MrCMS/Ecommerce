@@ -7,23 +7,27 @@
     var specificationAttributes = ViewData["specification-attributes"] as IEnumerable<SelectListItem> ?? new List<SelectListItem>();
     var specificationAttributesOptions = ViewData["specification-attributes-options"] as IEnumerable<SelectListItem> ?? new List<SelectListItem>();
 }
-<div class="modal-header">
-    <h3>Add Specifications to Product</h3>
-</div>
-<div class="modal-body">
+<fieldset>
+    <legend>
+        Add Specifications to Product
+        <span class="btn-group  display-inline  pull-right">
+            <button id="close" class="btn-primary btn">Save & Close</button>
+        </span>
+    </legend>
+
     <div id="categories">
         @Html.Hidden("ProductId",Model.Product.Id)
         @if (specificationAttributes.Any())
         {
             @Html.DropDownList("Option", specificationAttributes)
-             <br />
-             @Html.DropDownListFor(x=>x.Value, specificationAttributesOptions,new {@class="pull-left"})
+            <br />
+            @Html.DropDownListFor(x => x.Value, specificationAttributesOptions, new {@class = "pull-left"})
             var dc = "none";
             if (specificationAttributesOptions.Count() == 1)
             {
                 dc = "block";
             }
-            <div id="other" class="pull-right" style="display:@dc">
+            <div id="other" class="pull-right" style="display: @dc">
                 New option value: <input type="text" class="input-medium" id="new-option-value"/>
             </div>
         }
@@ -32,8 +36,7 @@
             <span>There are no specification attributes for adding. </span>
         }
     </div>
-</div>
-<div class="modal-footer">
-    <button id="close" class="btn-primary btn">Save & Close</button>
-</div>
+
+</fieldset>
+
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/specification-attributes.js"); }

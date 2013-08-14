@@ -2,10 +2,13 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 @using (Html.BeginForm("Edit", "Country", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Edit Country</h3>
-    </div>
-    <div class="modal-body">
+    <fieldset>
+        <legend>Edit Country
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Edit Country" />
+            </span>
+        </legend>
+
         @Html.HiddenFor(x => x.Id)
         @Html.LabelFor(x => x.Name)
         @Html.EditorFor(x => x.Name)
@@ -14,8 +17,6 @@
         @Html.LabelFor(x => x.ISOTwoLetterCode)
         @Html.EditorFor(x => x.ISOTwoLetterCode)
         @Html.ValidationMessageFor(x => x.ISOTwoLetterCode)
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Edit Country" />
-    </div>
+
+    </fieldset>
 }

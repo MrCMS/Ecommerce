@@ -3,15 +3,17 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("MarkAsVoided", "Order", FormMethod.Post))
 {
-    @Html.HiddenFor(x => x.Id)
-    <div class="modal-header">
-        <h3>Set Order Payment as Void</h3>
-    </div>
-    <div class="modal-body">
-        Are you sure you want to mark order payment void?
-        <br />
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Set Order Payment as Void" />
-    </div>
+    <fieldset>
+        <legend>Set Order Payment as Void
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Set Order Payment as Void" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+        
+        <p>
+            Are you sure you want to mark order payment void?
+        </p>
+    </fieldset>
 }

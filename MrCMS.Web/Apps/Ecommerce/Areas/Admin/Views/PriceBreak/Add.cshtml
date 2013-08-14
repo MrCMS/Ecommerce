@@ -4,10 +4,14 @@
 }
 @using (Html.BeginForm("Add", "PriceBreak", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Add Price Break</h3>
-    </div>
-    <div class="modal-body">
+    <fieldset>
+        <legend>
+            Add Price Break
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn btn-primary" value="Add Price Break" />
+            </span>
+        </legend>
+
         @Html.HiddenFor(model => model.Id)
         @Html.LabelFor(model => model.Quantity)
         @Html.TextBoxFor(model => model.Quantity)
@@ -15,8 +19,6 @@
         @Html.LabelFor(model => model.Price)
         @Html.TextBoxFor(model => model.Price)
         @Html.ValidationMessageFor(model => model.Price)
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn btn-primary" value="Add Price Break" />
-    </div>
+
+    </fieldset>
 }

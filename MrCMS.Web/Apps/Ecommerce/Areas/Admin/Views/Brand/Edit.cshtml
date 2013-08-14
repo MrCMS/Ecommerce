@@ -1,22 +1,18 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.Brand
-@{
-    ViewBag.Title = "Edit Brand";
-}
 
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("Edit", "Brand", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Edit Brand</h3>
-    </div>
-    <div class="modal-body">
+    <fieldset>
+        <legend>Edit Brand
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Save Changes" />
+            </span>
+        </legend>
         @Html.HiddenFor(x => x.Id)
 
         @Html.LabelFor(x => x.Name)
         @Html.TextBoxFor(x => x.Name)
         @Html.ValidationMessageFor(x => x.Name)
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Save Changes" />
-    </div>
+    </fieldset>
 }

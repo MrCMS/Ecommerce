@@ -3,10 +3,14 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 @using (Html.BeginForm("Edit", "ShippingMethod", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Edit Shipping Method</h3>
-    </div>
-    <div class="modal-body">
+    <fieldset>
+        <legend>
+            Edit Shipping Method
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Update Shipping Method" />
+            </span>
+        </legend>
+
         @Html.LabelFor(x => x.Name)
         @Html.TextBoxFor(x => x.Name)
         @Html.LabelFor(x => x.Description)
@@ -16,8 +20,5 @@
             @Html.LabelFor(x => x.TaxRate.Id, "Tax Rate")
             @Html.DropDownListFor(x => x.TaxRate.Id, ViewData["tax-rates"] as IEnumerable<SelectListItem>)
         }
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Update Shipping Method" />
-    </div>
+    </fieldset>
 }
