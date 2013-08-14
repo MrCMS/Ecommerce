@@ -1,20 +1,18 @@
-﻿@model IEnumerable<SelectListItem>
-           <fieldset>
-        <legend>
-            Select file
-            <span class="btn-group  display-inline  pull-right">
-                <input type="button" class="btn-primary btn" id="set-file" value="Select File" />
-            </span>
-        </legend>
-
-           <div id="file-selector">
-               @Html.Label("Category")
-               @Html.DropDownList("Category", Model)
-               @Html.Label("File")
-               @Html.DropDownList("File", new List<SelectListItem> { new SelectListItem { Text = "Select an file...", Value = "" } }, new { disabled = "disabled" })
-               <div id="file-selector-uploader">
-               </div>
-               <div id="file-selector-uploader-result">
-               </div>
-           </div>
-               </fieldset>
+﻿@using MrCMS.Helpers
+@model IEnumerable<SelectListItem>
+<div class="modal-header">
+    <h3>Select file</h3>
+</div>
+<div class="modal-body" id="file-selector">
+    @Html.Label("Category")
+    @Html.DropDownList("Category", Model)
+    @Html.Label("File")
+    @Html.DropDownList("File", new List<SelectListItem> { new SelectListItem { Text = "Select an file...", Value = "" } }, new { disabled = "disabled" })
+    <div id="file-selector-uploader">
+    </div>
+    <div id="file-selector-uploader-result">
+    </div>
+</div>
+<div class="modal-footer">
+    <input type="button" class="btn-primary btn" id="set-file" value="Select File" />
+</div>

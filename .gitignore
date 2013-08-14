@@ -86,4 +86,3 @@ MrCMS.Web/App_Data/*
 *.vspx
 NDependOut/*
 *.ndproj
-MrCMS.Web/deploy.config

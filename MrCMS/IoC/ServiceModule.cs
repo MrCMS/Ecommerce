@@ -72,7 +72,6 @@ namespace MrCMS.IoC
                                                           }
                                                           return context.Kernel.Get<FileSystem>();
                                                       }).InRequestScope();
-            Kernel.Bind(typeof(IMessageParser<,>)).To(typeof(MessageParser<,>)).InRequestScope();
         }
     }
 }

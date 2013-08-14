@@ -1,12 +1,9 @@
-﻿@model IEnumerable<SelectListItem>
-           <fieldset>
-        <legend>
-            Select image
-            <span class="btn-group  display-inline  pull-right">
-              <input type="button" class="btn-primary btn" id="set-image" value="Set Image" />
-            </span>
-        </legend>
-<div id="image-selector">
+﻿@using MrCMS.Helpers
+@model IEnumerable<SelectListItem>
+<div class="modal-header">
+    <h3>Select image</h3>
+</div>
+<div class="modal-body" id="image-selector">
     @Html.Label("Category")
     @Html.DropDownList("Category", Model)
     @Html.Label("Image")
@@ -20,4 +17,6 @@
     <div id="image-preview">
     </div>
 </div>
-</fieldset>
+<div class="modal-footer">
+    <input type="button" class="btn-primary btn" id="set-image" value="Set Image" />
+</div>

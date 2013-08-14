@@ -1,10 +1,8 @@
 ﻿@model dynamic
-@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	 
-<fieldset>
-        <legend>
-            Remove media
-            <span class="btn-group  display-inline  pull-right">
-                <button class="btn btn-primary" data-action="confirm">Confirm Remove Media</button>
-            </span>
-        </legend>  
-    </fieldset>
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+<div class="modal-header">
+    <h3 id="myModalLabel">Remove media</h3>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" data-action="confirm">Confirm Remove Media</button>
+</div>
