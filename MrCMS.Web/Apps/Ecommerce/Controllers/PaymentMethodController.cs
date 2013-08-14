@@ -32,7 +32,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public RedirectResult CashOnDelivery_POST()
         {
             var order = _orderService.PlaceOrder(_cartModel, o => { o.PaymentStatus = PaymentStatus.Pending; });
-            return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new { id = order.Guid }));
+            return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new { oid = order.Id }));
         }
 
         [HttpGet]
@@ -47,7 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         {
             var response = _payPalExpressService.DoExpressCheckout(_cartModel);
             var order = _orderService.PlaceOrder(_cartModel, response.UpdateOrder);
-            return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new { id = order.Guid }));
+            return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new { oid = order.Id }));
         }
     }
 }

@@ -320,6 +320,7 @@
     <Compile Include="Apps\Ecommerce\Models\ProductOptionModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductPagedList.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductValueModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\RegisterModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ShippingStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\TaxAwareProductPrice.cs" />
     <Compile Include="Apps\Ecommerce\Models\TaxAwareShippingRate.cs" />
@@ -1617,7 +1618,6 @@
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\category.js" />
-    <Content Include="Themes\Ecommerce\Content\Scripts\custom\enter-order-email.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\forgotten-password.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\password-reset.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\payment-details.js" />
@@ -1910,7 +1910,7 @@
     <Content Include="Apps\Ecommerce\Views\Cart\EditDiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\EnterOrderEmail.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\PaymentDetails.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Cart\SetOrderEmailAndLogin.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\EnterOrderEmail\SetOrderEmailAndLogin.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\ShippingMethods.cshtml" />
     <Content Include="Apps\Ecommerce\Views\CategoryContainer\CategoryContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Category\Category.cshtml" />
