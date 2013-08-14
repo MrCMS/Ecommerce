@@ -89,6 +89,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                 yield return Options;
                 yield return Categories;
                 yield return Brand;
+                yield return SKUs;
             }
         }
 
@@ -162,6 +163,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
             get { return _brand; }
         }
 
+        public static FieldDefinition<Product> SKUs
+        {
+            get { return _skus; }
+        }
+
         private static readonly FieldDefinition<Product> _id =
             new StringFieldDefinition<Product>("id", webpage => webpage.Id.ToString(), Field.Store.YES,
                                                Field.Index.NOT_ANALYZED);
@@ -232,6 +238,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                                                product => GetBrand(product),
                                                Field.Store.YES, Field.Index.NOT_ANALYZED);
 
+        private static readonly FieldDefinition<Product> _skus =
+            new StringFieldDefinition<Product>("skus",
+                                               product =>
+                                               GetSKUs(product.Variants),
+                                               Field.Store.YES, Field.Index.NOT_ANALYZED);
+
         private static IEnumerable<string> GetBrand(Product product)
         {
             if (product.Brand != null)
@@ -254,6 +266,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                 yield return parent;
                 parent = parent.Parent.Unproxy() as Category;
             }
+        }
+
+        private static IEnumerable<string> GetSKUs(IEnumerable<ProductVariant> productVariants)
+        {
+            return productVariants.Select(x=>x.SKU);
         }
 
         public static IEnumerable<decimal> GetPrices(Product entity)

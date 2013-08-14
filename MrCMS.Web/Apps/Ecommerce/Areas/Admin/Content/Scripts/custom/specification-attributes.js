@@ -13,8 +13,8 @@
                 function (response) {
                     parent.$.get('/Admin/Apps/Ecommerce/Product/Specifications/' + pId, function (products) {
                         parent.$('#specification-list').replaceWith(products);
+                        parent.$.fancybox.close();
                     });
-                    parent.$.fancybox.close();
                     return false;
                 });
         } else {

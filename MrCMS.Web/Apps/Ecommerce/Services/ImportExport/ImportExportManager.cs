@@ -226,23 +226,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                         wsItems.Cells["AE" + rowId].Value = productVariants[i].Product.PublishOn;
                     wsItems.Cells["AE" + rowId].Style.Numberformat.Format = "YYYY-MM-DD hh:mm:ss";
 
+                    //Images
                     if (!productVariants[i].Product.Images.Any()) continue;
-                    wsItems.Cells["Z" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl +
-                                                       productVariants[i].Product.Images.First().FileUrl + "?update=no";
+
+                    wsItems.Cells["Z" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.First().FileUrl);
                     wsItems.Cells["Z" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
 
                     if (productVariants[i].Product.Images.Count() > 1)
                     {
-                        wsItems.Cells["AA" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl +
-                                                            productVariants[i].Product.Images.ToList()[1].FileUrl +
-                                                            "?update=no";
+                        wsItems.Cells["AA" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.ToList()[1].FileUrl);
                         wsItems.Cells["AA" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     }
                     if (productVariants[i].Product.Images.Count() > 2)
                     {
-                        wsItems.Cells["AB" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl +
-                                                            productVariants[i].Product.Images.ToList()[2].FileUrl +
-                                                            "?update=no";
+                        wsItems.Cells["AB" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.ToList()[2].FileUrl);
                         wsItems.Cells["AB" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     }
                 }
@@ -253,6 +250,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 return excelFile.GetAsByteArray();
             }
+        }
+
+        private string GenerateImageUrlForExport(string imageUrl)
+        {
+            var siteUrl = "http://" + CurrentRequestData.CurrentSite.BaseUrl;
+
+            return (!imageUrl.Contains("http") && !imageUrl.Contains("https"))
+                                   ? (siteUrl + imageUrl + "?update=no")
+                                   : imageUrl + "?update=no";
         }
 
         /// <summary>
