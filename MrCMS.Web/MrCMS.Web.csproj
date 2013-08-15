@@ -124,6 +124,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\System.Data.SQLite.1.0.82.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -198,6 +199,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderRefundController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\PaymentSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\PayPalExpressCheckoutSettingsController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\PaypointSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\PriceBreakController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductSpecificationAttributeController.cs" />
@@ -216,6 +218,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\PaypointController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\EnterOrderEmailController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GoogleAnalyticsController.cs" />
@@ -308,6 +311,7 @@
     <Compile Include="Apps\Ecommerce\Models\DeliveryStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\EcommerceAdminMenuModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\EmailAndLoginModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\FailureDetails.cs" />
     <Compile Include="Apps\Ecommerce\Models\Gender.cs" />
     <Compile Include="Apps\Ecommerce\Models\GoogleBaseModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\IShippingCalculationRequest.cs" />
@@ -315,11 +319,15 @@
     <Compile Include="Apps\Ecommerce\Models\OrderSearchModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaymentDetailsModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaymentStatus.cs" />
+    <Compile Include="Apps\Ecommerce\Models\PaypointPaymentDetails.cs" />
+    <Compile Include="Apps\Ecommerce\Models\PaypointPaymentDetailsModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ProcessDetailsResponse.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductAvailability.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductCondition.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductOptionModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductPagedList.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductValueModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\RedirectDetails.cs" />
     <Compile Include="Apps\Ecommerce\Models\ShippingStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\TaxAwareProductPrice.cs" />
     <Compile Include="Apps\Ecommerce\Models\TaxAwareShippingRate.cs" />
@@ -357,6 +365,7 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalUrlService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\SetExpressCheckoutResponse.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Paypoint\PaypointPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\GoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\IGoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartBuilder.cs" />
@@ -435,6 +444,9 @@
     <Compile Include="Apps\Ecommerce\Services\Inventory\InventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\IStockReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\StockReportService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IPaypointPaymentService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IPaypointRequestHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IPaypointRequestService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\EmptyBasket.cs" />
@@ -462,6 +474,9 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Payments\IPaymentStatusService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Payments\PaymentStatusService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\PaypointPaymentService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\PaypointRequestHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Services\PaypointRequestService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BrandService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IBrandService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductOptionManager.cs" />
@@ -1874,7 +1889,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\ProductProperties.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\Variants.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Add.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\CalculationRow.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Index.cshtml" />
@@ -1978,6 +1992,10 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\CategoriesOnlyNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\CategoriesOnlyNavigation.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\PaymentMethod\Paypoint.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Paypoint\PaymentDetails.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Paypoint\Redirect3DSecure.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\PaypointSettings\Index.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2303,6 +2321,10 @@
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MrCMS.PaypointService\MrCMS.PaypointService.csproj">
+      <Project>{94c17669-9ac5-43d3-81b2-3ad0d2f223de}</Project>
+      <Name>MrCMS.PaypointService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MrCMS\MrCMS.csproj">
       <Project>{9D6ECC0F-CDA1-43E2-B88B-BC01299EB9CE}</Project>
       <Name>MrCMS</Name>
@@ -2322,6 +2344,9 @@
     <Content Include="Views\Install\Setup.cshtml" />
     <Content Include="Views\Shared\_Installation.cshtml" />
     <Content Include="Apps\Core\Views\Widgets\TextWidget.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

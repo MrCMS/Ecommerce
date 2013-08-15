@@ -6,6 +6,7 @@ using MrCMS.Apps;
 using MrCMS.Entities.Documents.Layout;
 using MrCMS.Entities.Multisite;
 using MrCMS.Installation;
+using MrCMS.PaypointService.API;
 using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Core.Widgets;
@@ -34,6 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce
         protected override void RegisterServices(IKernel kernel)
         {
             kernel.Rebind<CartModel>().ToMethod(context => context.Kernel.Get<ICartBuilder>().BuildCart()).InRequestScope();
+            kernel.Bind<SECVPN>().To<SECVPNClient>().InRequestScope();
         }
 
         public override IEnumerable<Type> BaseTypes

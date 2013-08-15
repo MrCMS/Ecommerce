@@ -1,0 +1,36 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Payment.Paypoint.PaypointSettings
+
+@{
+    ViewBag.Title = "Paypoint Settings";
+}
+@using (Html.BeginForm("Save", "PaypointSettings", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Paypoint Settings
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </span>
+        </legend>
+        @Html.InlineCheckboxFor(settings => settings.Enabled)
+
+        @Html.InlineCheckboxFor(settings => settings.ThreeDSecureEnabled)
+
+        @Html.InlineCheckboxFor(settings => settings.IsLive)
+
+        @Html.LabelFor(settings => settings.AccountName)
+        @Html.TextBoxFor(settings => settings.AccountName)
+
+        @Html.LabelFor(settings => settings.VPNPassword)
+        @Html.TextBoxFor(settings => settings.VPNPassword)
+
+        @Html.LabelFor(settings => settings.MPIMerchantName)
+        @Html.TextBoxFor(settings => settings.MPIMerchantName)
+
+        @Html.LabelFor(settings => settings.MPIMerchantUrl)
+        @Html.TextBoxFor(settings => settings.MPIMerchantUrl)
+
+        @Html.LabelFor(settings => settings.MPIDescription)
+        @Html.TextBoxFor(settings => settings.MPIDescription)
+    </fieldset>
+}

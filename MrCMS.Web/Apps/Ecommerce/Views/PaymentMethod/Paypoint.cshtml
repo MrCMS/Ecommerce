@@ -1,0 +1,66 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Models.PaypointPaymentDetailsModel  
+@{
+    var months = ViewData["months"] as IEnumerable<SelectListItem>;
+    var startYears = ViewData["start-years"] as IEnumerable<SelectListItem>;
+    var expiryYears = ViewData["expiry-years"] as IEnumerable<SelectListItem>;
+    var cardTypes = ViewData["card-types"] as IEnumerable<SelectListItem>;
+}
+@using (Html.BeginForm("Paypoint", "PaymentMethod", FormMethod.Post))
+{
+    <div>
+        <div class="span4">Card Type*:</div>
+        <div>
+            @Html.DropDownListFor(model => model.CardType, cardTypes)
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div>
+        <div class="span4">Card Number*:</div>
+        <div>
+            @Html.TextBoxFor(model => model.CardNumber, new { @class = "input-xlarge" })
+        </div>
+    </div>
+    <div>
+        <div class="span4">Card Verification Code*:</div>
+        <div>
+            @Html.TextBoxFor(model => model.CardVerificationCode, new { @class = "input-small" })
+        </div>
+    </div>
+    <div>
+        <div class="span4">Start Date:</div>
+        <div>
+            <div class="pull-left">
+                @Html.DropDownListFor(model => model.StartMonth, months)
+            </div>
+            <div class="pull-left">
+                @Html.DropDownListFor(model => model.StartYear, startYears)
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="span4">End Date*:</div>
+        <div>
+            <div class="pull-left">
+                @Html.DropDownListFor(model => model.EndMonth, months)
+            </div>
+            <div class="pull-left">
+                @Html.DropDownListFor(model => model.EndYear, expiryYears)
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="span4">Name On Card*:</div>
+        <div>
+            @Html.TextBoxFor(model => model.NameOnCard, new { @class = "input-xlarge" })
+        </div>
+    </div>
+    <div>
+        <div class="span4">Card Issue Number*:</div>
+        <div>
+
+            @Html.TextBoxFor(model => model.CardIssueNumber, new { @class = "input-medium" })
+            Maestro/Solo only
+        </div>
+    </div>
+    <input class="btn btn-info" type="submit" id="continue" name="continue" value="Place order" />
+}

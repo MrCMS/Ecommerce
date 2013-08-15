@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
             return response.Success
                        ? Redirect(response.Url)
-                       : RedirectTo<Cart>();
+                       : _documentService.RedirectTo<Cart>();
         }
 
         public ActionResult Return(string token)
@@ -38,16 +38,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             var response = _payPalExpressService.ProcessReturn(token);
 
             return response.Success
-                       ? RedirectTo<SetDeliveryDetails>()
-                       : RedirectTo<Cart>();
-        }
-
-        private ActionResult RedirectTo<T>() where T : Webpage, IUniquePage
-        {
-            var page = _documentService.GetUniquePage<T>();
-            return Redirect(page != null
-                                ? string.Format("/{0}", page.LiveUrlSegment)
-                                : "/");
+                       ? _documentService.RedirectTo<SetDeliveryDetails>()
+                       : _documentService.RedirectTo<Cart>();
         }
     }
 }

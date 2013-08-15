@@ -1,0 +1,34 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Models.RedirectDetails
+<html>
+<head>
+    <title>3D Secure Verification</title>
+</head>
+<body onload="OnLoadEvent();">
+    <form name="mainform" action="@Model.ACSUrl" method="POST">
+        <noscript>
+            <br>
+            <br>
+            <div style="text-align: center;" >
+                <h1>Processing your 3D Secure Transaction</h1>
+                <h2>
+                    JavaScript is currently disabled or is not supported
+                    by your browser.<br></h2>
+                <h3>Please click Submit to continue
+                    the processing of your 3D Secure
+                    transaction.</h3>
+                <input type="submit" value="Submit">
+            </div>
+        </noscript>
+        <input type="hidden" name="PaReq" value="@Model.PaReq">
+        <input type="hidden" name="TermUrl" value="@Model.TermUrl">
+        <input type="hidden" name="MD" value="@Model.MD">
+    </form>
+    <script type="text/javascript">
+<!--
+    function OnLoadEvent() {
+        document.mainform.submit();
+    }
+    //-->
+    </script>
+</body>
+</html>

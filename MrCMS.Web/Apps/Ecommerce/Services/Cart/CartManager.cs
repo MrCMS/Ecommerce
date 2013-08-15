@@ -26,6 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public const string CurrentCountryIdKey = "current.country-id";
         public const string CurrentPayPalExpressToken = "current.paypal-express-token";
         public const string CurrentPayPalExpressPayerId = "current.paypal-express-payer-id";
+        public const string Current3DSecureRedirectDetails = "current.3d-secure-details";
 
         private readonly CartModel _cart;
         private readonly ISession _session;
