@@ -1,4 +1,5 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Entities.Shipping
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model IList<MrCMS.Web.Apps.Ecommerce.Entities.Geographic.Country>
 @{
     ViewBag.Title = "Shipping Calculations";
@@ -8,27 +9,27 @@
     <fieldset>
         <legend>Shipping Calculations
         </legend>
-@if (!Model.Any())
-{
-    <p>
-        Please add at least one country and shipping method in order to add shipping calculations.
-    </p>
-}
-else
-{
-    foreach (var country in Model)
-    {
-        <div class="pull-left">
-            <h4>@country.Name</h4>
-        </div>
-        <div class="pull-right">
-            @Html.ActionLink("Add", "Add", "ShippingCalculation", new {id = country.Id}, new {@class = "btn btn-primary btn-mini", data_toggle = "fb-modal"})
-        </div>
-        <br />
-        <br />
-        <div class="clearfix"></div>
-        foreach (var shippingMethod in country.GetShippingMethods())
+        @if (!Model.Any())
         {
+            <p>
+                Please add at least one country and shipping method in order to add shipping calculations.
+            </p>
+        }
+        else
+        {
+            foreach (var country in Model)
+            {
+            <div class="pull-left">
+                <h4>@country.Name</h4>
+            </div>
+            <div class="pull-right">
+                @Html.ActionLink("Add", "Add", "ShippingCalculation", new { id = country.Id }, new { @class = "btn btn-primary btn-mini", data_toggle = "fb-modal" })
+            </div>
+            <br />
+            <br />
+            <div class="clearfix"></div>
+                foreach (var shippingMethod in country.GetShippingMethods())
+                {
             <strong>@shippingMethod.Name</strong>
 
             <table class="table table-condensed table-striped">
@@ -42,13 +43,27 @@ else
                 <tbody>
                     @foreach (ShippingCalculation shippingCalculation in shippingMethod.ShippingCalculations.Where(x => x.Country.Id == country.Id).OrderBy(calculation => calculation.ShippingCriteria).ThenBy(calculation => calculation.LowerBound))
                     {
-                        Html.RenderPartial("CalculationRow", shippingCalculation);
+                        <tr>
+                            <td>
+                                @shippingCalculation.Description
+                            </td>
+                            <td>
+                                @shippingCalculation.Amount.ToCurrencyFormat()
+                            </td>
+                            <td>
+                                <div class="btn-group pull-right">
+                                    @Html.ActionLink("Edit", "Edit", "ShippingCalculation", new { id = shippingCalculation.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Delete", "Delete", "ShippingCalculation", new { id = shippingCalculation.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                                </div>
+                            </td>
+                        </tr>
+
                     }
                 </tbody>
             </table>
             <div class="clearfix"></div>
+                }
+            }
         }
-    }
-}
     </fieldset>
 </form>

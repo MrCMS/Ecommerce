@@ -62,6 +62,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                                           "/Admin/Apps/Ecommerce/ShippingCalculation"),
                                                         new ChildMenuItem("Payment Settings",
                                                                           "/Admin/Apps/Ecommerce/PaymentSettings"),
+                                                        new ChildMenuItem("Paypoint",
+                                                                          "/Admin/Apps/Ecommerce/PaypointSettings"),
                                                         new ChildMenuItem("PayPal Express Checkout",
                                                                           "/Admin/Apps/Ecommerce/PayPalExpressCheckoutSettings"),
                                                     }
