@@ -149,5 +149,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             order.PaymentStatus = PaymentStatus.Voided;
             _session.Transact(session => session.Update(order));
         }
+
+        public void SetLastOrderUserIdByOrderEmail(string email)
+        {
+            var orders=_session.QueryOver<Order>()
+                        .Where(x=>x.OrderEmail.IsInsensitiveLike(email,MatchMode.Exact) && x.IsDeleted==false)
+                        .OrderBy(x => x.CreatedOn)
+                        .Desc.List();
+
+            if (!orders.Any()) return;
+
+            var order = orders.First();
+            order.User = CurrentRequestData.CurrentUser;
+            _session.Transact(session => session.Update(order));
+        }
     }
 }

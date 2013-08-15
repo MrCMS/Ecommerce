@@ -3,11 +3,15 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("Add", "TaxRate", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Add Tax Rate</h3>
-    </div>
-    <div class="modal-body">
-        @Html.Hidden("source",ViewBag.Source as string)
+    <fieldset>
+        <legend>
+            Add Tax Rate
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Add Tax Rate" />
+            </span>
+        </legend>
+
+        @Html.Hidden("source", ViewBag.Source as string)
 
         @Html.LabelFor(x => x.Name)
         @Html.TextBoxFor(x => x.Name)
@@ -15,8 +19,6 @@
         @Html.TextBoxFor(x => x.Code)
         @Html.LabelFor(x => x.Percentage)
         @Html.TextBoxFor(x => x.Percentage)
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Add Tax Rate" />
-    </div>
+
+    </fieldset>
 }

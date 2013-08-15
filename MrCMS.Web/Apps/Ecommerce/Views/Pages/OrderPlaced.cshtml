@@ -4,11 +4,35 @@
 <h4>Woahh! That was fast!
 </h4>
 <p>
-    Your order (ID:@ViewBag.orderID) was successfully processed.
+    Your order (ID:@ViewBag.OrderID) was successfully processed.
 </p>
 <p>
     Thank you for shopping with Mr CMS Ecommerce!
 </p>
-<br />
+
+<hr/>
+
+<h4>
+Would you like us to remember your details for next time?
+</h4>
+<p>
+Simply enter a password :
+</p>
+
+@using (Html.BeginForm("RegistrationWithoutDetails", "UserAccount", null, FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.Hidden("Email", ViewBag.OrderEmail as string)
+    <div class="row-fluid">
+        <input type="text" name="Password" class="span6" />
+    </div>
+    <br/>
+    <div class="row-fluid">
+        <input type="submit" class="btn btn-primary" value="Continue" />
+    </div>
+}
+         
+
+<hr/>
+
 <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-info" >Return to shop
 </a>

@@ -54,6 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Product Variant - GetPriceBreaksForProductVariant", "Apps/Ecommerce/ProductVariant/GetPriceBreaksForProductVariant", new { controller = "ProductVariant", action = "GetPriceBreaksForProductVariant" });
             context.MapRoute("Cart - Details", "Apps/Ecommerce/CartDetails", new { controller = "Cart", action = "Details" });
             context.MapRoute("Cart - Update Basket", "Apps/Ecommerce/UpdateBasket", new { controller = "Cart", action = "UpdateBasket" });
+            context.MapRoute("Cart - Empty Basket", "Apps/Ecommerce/EmptyBasket", new { controller = "Cart", action = "EmptyBasket" });
             context.MapRoute("Cart - Add to Cart", "Apps/Ecommerce/AddToCart", new { controller = "Cart", action = "AddToCart" });
             context.MapRoute("Cart - Edit Cart Item", "Apps/Ecommerce/EditCartItem", new { controller = "Cart", action = "EditCartItem" });
             context.MapRoute("Cart - Delete Cart Item", "Apps/Ecommerce/DeleteCartItem", new { controller = "Cart", action = "DeleteCartItem" });
@@ -131,6 +132,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                              new[] { typeof(PaymentDetailsController).Namespace });
 
             context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders", new { controller = "UserAccount", action = "UserAccountOrders" });
+            context.MapRoute("User Account Register Without Details", "Apps/Ecommerce/UserAccount/RegistrationWithoutDetails", new { controller = "UserAccount", action = "RegistrationWithoutDetails" });
 
             context.MapRoute("PayPal Express Checkout - SetExpressCheckout",
                              "Apps/Ecommerce/PayPalExpress/SetExpressCheckout",

@@ -3,14 +3,15 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("Delete", "ShippingMethod", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Delete Shipping Method</h3>
-    </div>
-    <div class="modal-body">
-        Are you sure you want to delete the shipping method @Model.Name ? Deleting this item can not be undone.
-        <br />
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Delete Shipping Method" />
-    </div>
+    <fieldset>
+        <legend>
+            Delete Shipping Method
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Delete Shipping Method" />
+            </span>
+        </legend>
+        <p>
+            Are you sure you want to delete the shipping method @Model.Name ? Deleting this item can not be undone.
+        </p>
+    </fieldset>
 }

@@ -2,10 +2,14 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 @using (Html.BeginForm("ManageOptions", "Product", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Manage Product Attribute Options</h3>
-    </div>
-    <div class="modal-body">
+    <fieldset>
+        <legend>
+            Manage Product Attribute Options
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Save & Close" />
+            </span>
+        </legend>
+
         @Html.HiddenFor(model => model.ProductId)
         <div class="row-fluid">
             <div class="span6">
@@ -18,18 +22,15 @@
             <div class="span6">
                 @Html.LabelFor(model => model.Option2)
                 @Html.EditorFor(model => model.Option2)
-                 @Html.HiddenFor(model => model.Option2Id)
+                @Html.HiddenFor(model => model.Option2Id)
             </div>
         </div>
         <div class="row-fluid">
             <div class="span6">
                 @Html.LabelFor(model => model.Option3)
                 @Html.EditorFor(model => model.Option3)
-                 @Html.HiddenFor(model => model.Option3Id)
+                @Html.HiddenFor(model => model.Option3Id)
             </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Save & Close" />
-    </div>
+    </fieldset>
 }

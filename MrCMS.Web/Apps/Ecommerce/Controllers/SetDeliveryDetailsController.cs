@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
@@ -30,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 return Redirect(UniquePageHelper.GetUrl<Cart>());
             if (string.IsNullOrWhiteSpace(_cart.OrderEmail))
                 return Redirect(UniquePageHelper.GetUrl<EnterOrderEmail>());
-            ViewData["shipping-calculations"] = _orderShippingService.GetShippingOptions(_cart);
+            ViewData["shipping-calculations"] = _orderShippingService.GetCheapestShippingOptions(_cart);
             ViewData["cart"] = _cart;
             return View(page);
         }

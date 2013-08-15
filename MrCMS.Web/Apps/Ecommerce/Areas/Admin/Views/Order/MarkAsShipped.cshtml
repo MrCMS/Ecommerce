@@ -3,16 +3,18 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("MarkAsShipped", "Order", FormMethod.Post))
 {
-    @Html.HiddenFor(x => x.Id)
-    @Html.Hidden("index",(bool)ViewBag.Index)
-    <div class="modal-header">
-        <h3>Set Order as Shipped</h3>
-    </div>
-    <div class="modal-body">
-        Are you sure you would like to set order as shipped?
-        <br />
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Set Order as Shipped" />
-    </div>
+    <fieldset>
+        <legend>Set Order as Shipped
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Set Order as Shipped" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+        @Html.Hidden("index", (bool) ViewBag.Index)
+        
+        <p>
+            Are you sure you would like to set order as shipped?
+        </p>
+    </fieldset>
 }

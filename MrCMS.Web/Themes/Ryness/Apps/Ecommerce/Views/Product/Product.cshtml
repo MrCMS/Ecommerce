@@ -3,6 +3,7 @@
 @using System.Linq
 @using MrCMS.Web.Apps.Ecommerce.Entities.Products
 @using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
 @{
     var selectedVariant = ViewData["selected-variant"] as ProductVariant ?? Model.VariantsByPrice.First();
     var hasSpecifications = Model.SpecificationValues.Any();
@@ -53,29 +54,40 @@
                 }
                 @{Html.RenderPartial("ProductPricebreaks", Model);}
                 <!-- product add to cart start -->
-                @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                @if (selectedVariant.TrackingPolicy == TrackingPolicy.Track && selectedVariant.StockRemaining <= 0)
                 {
-                    @Html.Hidden("Id", selectedVariant.Id)
-                    <div class="row-fluid border-each margin-top-bottom-10 add-to-cart" id="product-addtobasket">
-                        <div class="span12 padding-10">
-                            <div class="row-fluid">
-                                <div class="span2">
-                                    <span class="hidden-tablet">Quantity</span>
-                                    <span class="hidden-desktop hidden-phone">Qty</span>
-                                </div>
-                                <div class="span2">
-                                    <div class="row-fluid">
-                                        <input type="text" class="span12" value="1" id="quantity" name="quantity" />
-                                    </div>
-                                </div>
-                                <div class="span8">
-                                    <div class="row-fluid">
-                                        <button class="generic-button red-gradient span12" type="submit">Add to basket</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="row-fluid border-each margin-top-bottom-10 add-to-cart">
+                        <p>
+                            Sorry, this item is out of stock.
+                        </p>
                     </div>
+                }
+                else
+                {
+                    using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                     {
+                         @Html.Hidden("Id", selectedVariant.Id)
+                         <div class="row-fluid border-each margin-top-bottom-10 add-to-cart" id="product-addtobasket">
+                             <div class="span12 padding-10">
+                                 <div class="row-fluid">
+                                     <div class="span2">
+                                         <span class="hidden-tablet">Quantity</span>
+                                         <span class="hidden-desktop hidden-phone">Qty</span>
+                                     </div>
+                                     <div class="span2">
+                                         <div class="row-fluid">
+                                             <input type="text" class="span12" value="1" id="quantity" name="quantity" />
+                                         </div>
+                                     </div>
+                                     <div class="span8">
+                                         <div class="row-fluid">
+                                             <button class="generic-button red-gradient span12" type="submit">Add to basket</button>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+                     }
                 }
                 <!-- product add to cart end -->
                 @RenderZone("Below Add to cart")

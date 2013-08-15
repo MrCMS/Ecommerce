@@ -35,9 +35,9 @@
                 Yes
             </label>
         </div>
-        <div class="span10 hidden" id="password-box">
+        <div class="span10" id="password-box" style="display: none">
             <div class="row-fluid">
-                @Html.PasswordFor(model => model.Password)
+                @Html.PasswordFor(model => model.Password, new { placeholder="Enter your password here"})
             </div>
         </div>
     </div>
@@ -45,4 +45,4 @@
         <input class="btn red-gradient span4" type="submit" id="continue" name="continue" value="Continue" />
     </div>
 }
-@{ Html.IncludeScript("~/Themes/Ecommerce/Content/Scripts/custom/enter-order-email.js"); }
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/enter-order-email.js"); }
