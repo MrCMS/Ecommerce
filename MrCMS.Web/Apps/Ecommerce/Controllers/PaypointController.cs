@@ -13,15 +13,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     public class PaypointController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly IPaypointPaymentService _paypointPaymentService;
-        private readonly ICartSessionManager _cartSessionManager;
         private readonly IDocumentService _documentService;
         private readonly CartModel _cartModel;
         private readonly IOrderService _orderService;
 
-        public PaypointController(IPaypointPaymentService paypointPaymentService, ICartSessionManager cartSessionManager, IDocumentService documentService, CartModel cartModel, IOrderService orderService)
+        public PaypointController(IPaypointPaymentService paypointPaymentService, IDocumentService documentService, CartModel cartModel, IOrderService orderService)
         {
             _paypointPaymentService = paypointPaymentService;
-            _cartSessionManager = cartSessionManager;
             _documentService = documentService;
             _cartModel = cartModel;
             _orderService = orderService;
@@ -35,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public ActionResult Response3DSecure(FormCollection formCollection)
         {
             var response = _paypointPaymentService.Handle3DSecureResponse(formCollection);
-            
+
             if (response.Requires3DSecure)
             {
                 TempData["redirect-details"] = response.RedirectDetails;
