@@ -6,43 +6,43 @@
          <a href="@Url.Action("Add","OrderNote",new { orderID = Model.Id })" class="btn btn-primary" data-toggle="fb-modal">Add Order Note</a>
            <br />   <br />
          @if (Model.OrderNotes.Count == 0)
-        {
-            @:No lines.
-        }
-        else
-        {
-    <table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Note
-            </th>
-            <th>Show to Client?
-            </th>
-            <th>Actions
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.OrderNotes)
-        {
-            <tr>
-                <td>
-                    @item.Note
-                </td>
-                <td>
-                    @item.ShowToClient
-                </td>
-                <td>
-                    <div class="btn-group">
-                        @Html.ActionLink("Edit", "Edit", "OrderNote" , new { id = item.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                        @Html.ActionLink("Delete", "Delete", "OrderNote" , new { id = item.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-    </table>
-            }
+         {
+             @:No lines.
+         }
+         else
+         {
+             <table class="table table-bordered table-striped">
+                 <thead>
+                     <tr>
+                         <th>Note
+                         </th>
+                         <th>Show to Client?
+                         </th>
+                         <th>Actions
+                         </th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     @foreach (var item in Model.OrderNotes)
+                     {
+                         <tr>
+                             <td>
+                                 @item.Note
+                             </td>
+                             <td>
+                                 @item.ShowToClient
+                             </td>
+                             <td>
+                                 <div class="btn-group">
+                                     @Html.ActionLink("Edit", "Edit", "OrderNote", new {id = item.Id}, new {@class = "btn btn-mini", data_toggle = "fb-modal"})
+                                     @Html.ActionLink("Delete", "Delete", "OrderNote", new {id = item.Id}, new {@class = "btn btn-danger btn-mini", data_toggle = "fb-modal"})
+                                 </div>
+                             </td>
+                         </tr>
+                     }
+                 </tbody>
+             </table>
+         }
            </div>
         </div>
 </div>

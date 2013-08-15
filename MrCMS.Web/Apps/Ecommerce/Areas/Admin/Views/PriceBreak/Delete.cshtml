@@ -3,15 +3,17 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("Delete", "PriceBreak", FormMethod.Post))
 {
-     @Html.HiddenFor(x => x.Id)
-    <div class="modal-header">
-        <h3>Delete Price Break</h3>
-    </div>
-    <div class="modal-body">
-        Are you sure you want to delete this price break? Deleting it can not be undone.
-        <br />
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Delete Price Break" />
-    </div>
+    <fieldset>
+        <legend>
+            Delete Price Break
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Delete Price Break" />
+            </span>
+        </legend>
+        @Html.HiddenFor(x => x.Id)
+        
+        <p>
+            Are you sure you want to delete this price break? Deleting it can not be undone.
+        </p>
+    </fieldset>
 }

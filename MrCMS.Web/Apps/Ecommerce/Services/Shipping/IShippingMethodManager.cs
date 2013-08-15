@@ -24,6 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
     public interface IOrderShippingService
     {
         List<SelectListItem> GetShippingOptions(CartModel cart);
+        List<SelectListItem> GetCheapestShippingOptions(CartModel cart);
         ShippingMethod GetDefaultShippingMethod(CartModel cart);
         IEnumerable<ShippingCalculation> GetCheapestShippingCalculationsForEveryCountry(CartModel cart);
     }
@@ -64,9 +65,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             return shippingCalculations;
         }
 
+        private IEnumerable<ShippingCalculation> GetCheapestShippingCalculationsForEveryCountryAndMethod(CartModel cart)
+        {
+            var calculations =
+                GetShippingCalculations(cart)
+                    .GroupBy(x => x.Country)
+                    .SelectMany(s=>s.GroupBy(sc=>sc.ShippingMethod).Select(sc2=>sc2.OrderBy(sc3=>sc3.GetPrice(cart)).First()))
+                    .ToList();
+            return calculations;
+        }
+
         public IEnumerable<ShippingCalculation> GetCheapestShippingCalculationsForEveryCountry(CartModel cart)
         {
             return GetShippingCalculations(cart).GroupBy(x => x.Country).Select(s => s.OrderBy(calculation => calculation.GetPrice(cart)).First()).ToList();
+        }
+
+        public List<SelectListItem> GetCheapestShippingOptions(CartModel cart)
+        {
+            var shippingCalculations = GetCheapestShippingCalculationsForEveryCountryAndMethod(cart);
+            return shippingCalculations.BuildSelectItemList(
+                calculation =>
+                string.Format("{0} - {1}, {2}", calculation.Country.Name, calculation.ShippingMethod.Name,
+                              calculation.GetPrice(cart).Value.ToCurrencyFormat()),
+                calculation => calculation.Id.ToString(),
+                calculation =>
+                cart.ShippingMethod != null && calculation.Country == cart.Country &&
+                calculation.ShippingMethod == cart.ShippingMethod,
+                emptyItemText: null);
         }
 
         public ShippingMethod GetDefaultShippingMethod(CartModel cart)

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
-using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -42,7 +40,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private void SetupViewData()
         {
             ViewData["cart"] = _cart;
-            ViewData["shipping-calculations"] = _orderShippingService.GetShippingOptions(_cart);
+            ViewData["shipping-calculations"] = _orderShippingService.GetCheapestShippingOptions(_cart);
         }
 
         [HttpGet]
@@ -117,6 +115,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public JsonResult UpdateBasket([IoCModelBinder(typeof(UpdateBasketModelBinder))] List<CartUpdateValue> quantities)
         {
             _cartManager.UpdateQuantities(quantities);
+            return Json(true);
+        }
+
+        [HttpPost]
+        public JsonResult EmptyBasket()
+        {
+            _cartManager.EmptyBasket();
             return Json(true);
         }
     }

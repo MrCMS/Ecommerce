@@ -3,19 +3,20 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("Add", "Discount", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Add Discount</h3>
-    </div>
-    <div class="modal-body">
+    <fieldset>
+        <legend>Add Discount
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Add Discount" />
+            </span>
+        </legend>
+
         @Html.LabelFor(x => x.Name)
         @Html.TextBoxFor(x => x.Name)
-        @Html.ValidationMessageFor(x=>x.Name)
+        @Html.ValidationMessageFor(x => x.Name)
         <br/>
         @Html.LabelFor(x => x.Code)
         @Html.TextBoxFor(x => x.Code)
-         @Html.ValidationMessageFor(x=>x.Code)
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Add Discount" />
-    </div>
+        @Html.ValidationMessageFor(x => x.Code)
+
+    </fieldset>
 }

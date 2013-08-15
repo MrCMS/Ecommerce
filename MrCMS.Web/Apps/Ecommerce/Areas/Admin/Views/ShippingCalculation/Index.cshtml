@@ -1,5 +1,4 @@
-﻿@using MrCMS.Web.Apps.Ecommerce.Entities.Shipping
-@using MrCMS.Web.Apps.Ecommerce.Helpers
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model IList<MrCMS.Web.Apps.Ecommerce.Entities.Geographic.Country>
 @{
     ViewBag.Title = "Shipping Calculations";
@@ -41,7 +40,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (ShippingCalculation shippingCalculation in shippingMethod.ShippingCalculations.Where(x => x.Country.Id == country.Id).OrderBy(calculation => calculation.ShippingCriteria).ThenBy(calculation => calculation.LowerBound))
+                    @foreach (var shippingCalculation in shippingMethod.ShippingCalculations.Where(x => x.Country.Id == country.Id).OrderBy(calculation => calculation.ShippingCriteria).ThenBy(calculation => calculation.LowerBound))
                     {
                         <tr>
                             <td>

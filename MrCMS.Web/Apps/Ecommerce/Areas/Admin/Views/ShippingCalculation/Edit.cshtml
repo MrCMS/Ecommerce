@@ -2,32 +2,35 @@
 
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 
-@using (Html.BeginForm("Edit", "ShippingCalculation", FormMethod.Post, new { id = "edit-shipping-calculation" }))
+@using (Html.BeginForm("Edit", "ShippingCalculation", FormMethod.Post, new {id = "edit-shipping-calculation"}))
 {
-    <div class="modal-header">
-        <h3>Edit Tax Rate</h3>
-    </div>
-    <div class="modal-body">
-    @Html.HiddenFor(x => x.Id)
-         @Html.HiddenFor(x => x.Country.Id)
-           <div class="row-fluid">
-            <div class="span6">
-              @Html.LabelFor(x => x.ShippingMethod)
-        @Html.DropDownListFor(x => x.ShippingMethod.Id, ViewData["shipping-methods"] as IEnumerable<SelectListItem>)
-         @Html.ValidationMessageFor(x=>x.ShippingMethod)
-        @Html.LabelFor(x => x.ShippingCriteria)
-        @Html.DropDownListFor(x => x.ShippingCriteria, ViewData["criterias"] as IEnumerable<SelectListItem>)
-        @Html.ValidationMessageFor(x=>x.ShippingCriteria)
+    <fieldset>
+        <legend>
+            Edit Shipping Calculation
+            <span class="btn-group  display-inline  pull-right">
+                <button class="btn btn-primary" id="save-add" data-action="save" data-form-id="edit-shipping-calculation">
+                    Save & Close</button>
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.Country.Id)
+        <div class="row-fluid">
+            <div class="span12">
+                @Html.LabelFor(x => x.ShippingMethod)
+                @Html.DropDownListFor(x => x.ShippingMethod.Id, ViewData["shipping-methods"] as IEnumerable<SelectListItem>, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.ShippingMethod)
+                @Html.LabelFor(x => x.ShippingCriteria)
+                @Html.DropDownListFor(x => x.ShippingCriteria, ViewData["criterias"] as IEnumerable<SelectListItem>, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.ShippingCriteria)
+                @Html.LabelFor(x => x.LowerBound)
+                @Html.TextBoxFor(x => x.LowerBound, new {@class = "input-xlarge"})
+                @Html.LabelFor(x => x.UpperBound)
+                @Html.TextBoxFor(x => x.UpperBound, new {placeholder = "leave blank if is no upper bound", @class = "input-xlarge"}) 
+                @Html.LabelFor(x => x.BaseAmount)
+                @Html.TextBoxFor(x => x.BaseAmount, new {@class = "input-xlarge"})
+                @Html.ValidationMessageFor(x => x.BaseAmount)
             </div>
-             <div class="span6">
-        @Html.LabelFor(x => x.LowerBound)
-        @Html.TextBoxFor(x => x.LowerBound)
-        @Html.LabelFor(x => x.UpperBound)
-        @Html.TextBoxFor(x => x.UpperBound, new {placeholder="leave blank if is no upper bound"}) 
-        @Html.LabelFor(x => x.BaseAmount)
-        @Html.TextBoxFor(x => x.BaseAmount)
-        @Html.ValidationMessageFor(x=>x.BaseAmount)
-        </div>
         </div>
         @if (!String.IsNullOrWhiteSpace(ViewBag.Message))
         {
@@ -37,16 +40,10 @@
             </p>
             <br/>
         }
-    </div>
-    <div class="modal-footer">
-    <div class="row-fluid">
-        <div class="span9">
-            @Html.ValidationMessageFor(x=>x.LowerBound)
+        <div class="row-fluid">
+            <div class="span12">
+                @Html.ValidationMessageFor(x => x.LowerBound)
+            </div>
         </div>
-        <div class="span3">
-            <button class="btn btn-primary" id="save-add" data-action="save" data-form-id="edit-shipping-calculation">
-                Save & Close</button>
-        </div>
-    </div>
-        </div>
+    </fieldset>
 }

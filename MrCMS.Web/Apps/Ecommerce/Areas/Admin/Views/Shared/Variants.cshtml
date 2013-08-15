@@ -1,5 +1,4 @@
-﻿@using MrCMS.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
 <div class="tab-pane" id="variants">
     <div class="btn-group">
         <a href="@Url.Action("Add", "ProductVariant", new { id = Model.Id })" class="btn btn-success" data-toggle="fb-modal">Add Variant</a>
@@ -30,7 +29,7 @@
                     {
                         <td>
                             @{
-                        var productAttributeValue = variant.AttributeValues.FirstOrDefault(value => value.ProductAttributeOption.Name == option.Name);
+                                var productAttributeValue = variant.AttributeValues.FirstOrDefault(value => value.ProductAttributeOption.Name == option.Name);
                             }
                             @if (productAttributeValue != null)
                             {
@@ -44,8 +43,8 @@
                     </td>
                     <td>
                         <div class="btn-group">
-                            @Html.ActionLink("Edit", "Edit", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                            @Html.ActionLink("Delete", "Delete", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                            @Html.ActionLink("Edit", "Edit", "ProductVariant", new {id = variant.Id}, new {@class = "btn btn-mini", data_toggle = "fb-modal"})
+                            @Html.ActionLink("Delete", "Delete", "ProductVariant", new {id = variant.Id}, new {@class = "btn btn-mini btn-danger", data_toggle = "fb-modal"})
                         </div>
                     </td>
                 </tr>

@@ -3,20 +3,21 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("Add", "OrderNote", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Add Order Note</h3>
-    </div>
-    <div class="modal-body">
+    <fieldset>
+        <legend>Add Order Note
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Add Order Note" />
+            </span>
+        </legend>
+
         @Html.HiddenFor(x => x.Order.Id)
         @Html.HiddenFor(x => x.User.Id)
         @Html.LabelFor(x => x.ShowToClient)
         @Html.CheckBoxFor(x => x.ShowToClient)
         <br />
-         <br />
+        <br />
         @Html.LabelFor(x => x.Note)
-        @Html.TextAreaFor(x => x.Note, new { style="width:500px;height:200px" })
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Add Order Note" />
-    </div>
+        @Html.TextAreaFor(x => x.Note, new {@class = "span12", style="height:250px"})
+
+    </fieldset>
 }

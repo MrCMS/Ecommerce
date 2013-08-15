@@ -4,76 +4,69 @@
         <div class="row-fluid">
        <div class="span12">
             @if (Model.OrderLines.Count == 0)
-        {
-            @:No lines.
-        }
-        else
-        {
-    <table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Product
-            </th>
-            <th>SKU
-            </th>
-            <th>Quantity
-            </th>
-             <th>Unit Price
-            </th>
-             <th>Subtotal
-            </th>
-             <th>Tax
-            </th>
-             <th>Tax Rate
-            </th>
-             <th>Discount
-            </th>
-             <th>Weight
-            </th>
-        @*    <th>Actions
-            </th>*@
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.OrderLines)
-        {
-            <tr>
-                <td>
-                @(String.IsNullOrWhiteSpace(item.ProductVariant.Name)?item.ProductVariant.Product.Name:item.ProductVariant.Name)
-                </td>
-                 <td>
-                @item.ProductVariant.SKU
-                </td>
-                <td>
-                    @item.Quantity.ToString("n2")
-                </td>
-                <td>
-                    @item.UnitPrice.ToString("n2")
-                </td>
-                <td>
-                    @item.Subtotal.ToString("n2")
-                </td>
-                <td>
-                    @item.Tax.ToString("n2")
-                </td>
-                 <td>
-                    @item.TaxRate.ToString("n2")
-                </td>
-                 <td>
-                    @item.Discount.ToString("n2")
-                </td>
-                 <td>
-                    @item.Weight.ToString("n2")
-                </td>
-         @*       <td>
-                    <div class="btn-group">
-                        @Html.ActionLink("Edit", "Edit", "OrderLine" , new { id = item.Id }, new { @class = "btn btn-mini" })
-                    </div>
-                </td>*@
-            </tr>
-        }
-    </tbody>
-    </table>
+            {
+                @:No lines.
+            }
+            else
+            {
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Product
+                            </th>
+                            <th>SKU
+                            </th>
+                            <th>Quantity
+                            </th>
+                            <th>Unit Price
+                            </th>
+                            <th>Subtotal
+                            </th>
+                            <th>Tax
+                            </th>
+                            <th>Tax Rate
+                            </th>
+                            <th>Discount
+                            </th>
+                            <th>Weight
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrderLines)
+                        {
+                            <tr>
+                                <td>
+                                    @(String.IsNullOrWhiteSpace(item.ProductVariant.Name) ? item.ProductVariant.Product.Name : item.ProductVariant.Name)
+                                </td>
+                                <td>
+                                    @item.ProductVariant.SKU
+                                </td>
+                                <td>
+                                    @item.Quantity.ToString("n2")
+                                </td>
+                                <td>
+                                    @item.UnitPrice.ToString("n2")
+                                </td>
+                                <td>
+                                    @item.Subtotal.ToString("n2")
+                                </td>
+                                <td>
+                                    @item.Tax.ToString("n2")
+                                </td>
+                                <td>
+                                    @item.TaxRate.ToString("n2")
+                                </td>
+                                <td>
+                                    @item.Discount.ToString("n2")
+                                </td>
+                                <td>
+                                    @item.Weight.ToString("n2")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             }
            </div>
         </div>

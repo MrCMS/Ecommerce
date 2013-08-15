@@ -1,16 +1,16 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Settings.GoogleBaseSettings
 
 <div class="tab-pane" id="settings">   
-@using (Html.BeginForm("GoogleBaseSettings", "ImportExport", FormMethod.Post, new {id="Settings"}))
+@using (Html.BeginForm("GoogleBaseSettings", "ImportExport", FormMethod.Post, new {id = "Settings"}))
 {
     @Html.HiddenFor(settings => settings.Site.Id)
     @Html.LabelFor(x => x.GoogleBaseTaxonomyFeedUrl)
-    @Html.TextBoxFor(x => x.GoogleBaseTaxonomyFeedUrl,new {@class="input-xxlarge"})
+    @Html.TextBoxFor(x => x.GoogleBaseTaxonomyFeedUrl, new {@class = "input-xxlarge"})
     @Html.LabelFor(x => x.DefaultCategory)
-    @Html.DropDownListFor(x => x.DefaultCategory, ViewData["google-base-categories"] as IEnumerable<SelectListItem>,new {@class="input-xxlarge"})
+    @Html.DropDownListFor(x => x.DefaultCategory, ViewData["google-base-categories"] as IEnumerable<SelectListItem>, new {@class = "input-xxlarge"})
     @Html.LabelFor(x => x.DefaultCondition)
-    @Html.DropDownListFor(x => x.DefaultCondition, ViewData["product-conditions"] as IEnumerable<SelectListItem>,new {@class="input-medium"})
+    @Html.DropDownListFor(x => x.DefaultCondition, ViewData["product-conditions"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
     <br />
-     <button type="submit" class="btn btn-primary btn-mini">Save Settings</button>
+    <button type="submit" class="btn btn-primary btn-mini">Save Settings</button>
 }
 </div>

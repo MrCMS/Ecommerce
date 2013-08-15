@@ -4,14 +4,15 @@
 }          
 @using (Html.BeginForm("Delete", "Testimonial", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Delete Testimonial</h3>
-    </div>
-    <div class="modal-body">
-        Are you sure you want to delete the testimonial @Model.Name ? Deleting this testimonial can <strong>not</strong> be undone.
-        <br/>
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Delete" />
-    </div>
+    <fieldset>
+        <legend>
+            Delete Testimonial
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Delete" />
+            </span>
+        </legend>
+        <p>
+            Are you sure you want to delete the testimonial @Model.Name ? Deleting this testimonial can <strong>not</strong> be undone.
+        </p>
+    </fieldset>
 }

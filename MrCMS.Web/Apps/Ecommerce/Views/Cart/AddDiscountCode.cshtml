@@ -6,15 +6,17 @@
 @{ Layout = "~/Apps/Ecommerce/Views/Shared/_EcommercePopup.cshtml";}	 
 @using (Html.BeginForm("AddDiscountCode", "Cart", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Add Discount Code</h3>
-    </div>
-    <div class="modal-body">
+    <fieldset>
+        <legend>
+            Add Discount Code
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Add Discount Code" />
+            </span>
+        </legend>
+
         @Html.LabelFor(x => x.DiscountCode)
         @Html.TextBoxFor(x => x.DiscountCode)
         @Html.ValidationMessageFor(x => x.DiscountCode)
-    </div>
-    <div class="modal-footer">
-        <input type="submit" class="btn-primary btn" value="Add Discount Code" />
-    </div>
+
+    </fieldset>
 }

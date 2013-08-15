@@ -9,14 +9,14 @@
             </div>
             <div class="padding-20">
                 <p>
-                    Your order ID : <span class="green">@ViewBag.orderID</span>
+                    Your order ID : <span class="green">@ViewBag.OrderID</span>
                 </p>
                 <p>
                     Complete order details have been emailed to lee.skinner@thought.co.uk
                 </p>
                 <div class="complete-text">
                     your order is complete
-                    <img src="/Themes/Ryness/Content/Images/checkout/large-tick.png" />
+                    <img src="/Themes/Ryness/Content/Images/checkout/large-tick.png" alt="tick"/>
                 </div>
             </div>
         </div>
@@ -29,12 +29,17 @@
                 <p>
                     Simply enter a password :
                 </p>
-                <div class="row-fluid">
-                    <input type="text" class="span6" />
-                </div>
-                <div class="row-fluid">
-                    <input type="submit" class="btn red-gradient span4" value="Continue" />
-                </div>
+                @using (Html.BeginForm("RegistrationWithoutDetails", "UserAccount", null, FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    @Html.Hidden("Email",ViewBag.OrderEmail as string)
+                    <div class="row-fluid">
+                        <input type="text" name="Password" class="span6" />
+                    </div>
+                    <br/>
+                    <div class="row-fluid">
+                        <input type="submit" class="btn red-gradient span4" value="Continue" />
+                    </div>
+                }
             </div>
         </div>
 

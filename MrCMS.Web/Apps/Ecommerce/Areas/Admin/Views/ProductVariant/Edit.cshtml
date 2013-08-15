@@ -4,20 +4,24 @@
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 @using (Html.BeginForm("Edit", "ProductVariant", FormMethod.Post))
 {
-    <div class="modal-header">
-        <h3>Edit Product Variant</h3>
-    </div>
-    <div class="modal-body">
+    <fieldset>
+        <legend>
+            Edit Product Variant
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Save Changes" />
+            </span>
+        </legend>
+
         <div class="row-fluid">
             @Html.HiddenFor(variant => variant.Id)
             @Html.HiddenFor(variant => variant.Product.Id)
             @Html.LabelFor(variant => variant.Name)
-            @Html.TextBoxFor(variant => variant.Name, new { @class = "span12" })
+            @Html.TextBoxFor(variant => variant.Name, new {@class = "span12"})
         </div>
         <div class="row-fluid">
-            @for (int index = 0; index < Model.Product.AttributeOptions.Count; index++)
+            @for (var index = 0; index < Model.Product.AttributeOptions.Count; index++)
             {
-                int sc = 12;
+                var sc = 12;
                 switch (Model.Product.AttributeOptions.Count)
                 {
                     case 3:
@@ -29,67 +33,58 @@
                 }
 
                 var option = Model.Product.AttributeOptions[index];
-            
+
                 <div class="span-@sc">
-                    @Html.LabelFor(variant => variant.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).SingleOrDefault().Value, option.Name)
-                    @Html.TextBox("AttributeValues[" + index + "].Value", Model.AttributeValues.Any() ? Model.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).SingleOrDefault().Value : String.Empty, new { @class = "span12" })
-                    @Html.Hidden("AttributeValues[" + index + "].Id", Model.AttributeValues.Where(x => x.ProductAttributeOption.Id == option.Id).SingleOrDefault().Id)
+                    @Html.LabelFor(variant => variant.AttributeValues.SingleOrDefault(x => x.ProductAttributeOption.Id == option.Id).Value, option.Name)
+                    @Html.TextBox("AttributeValues[" + index + "].Value", Model.AttributeValues.Any() ? Model.AttributeValues.SingleOrDefault(x => x.ProductAttributeOption.Id == option.Id).Value : String.Empty, new {@class = "span12"})
+                    @Html.Hidden("AttributeValues[" + index + "].Id", Model.AttributeValues.SingleOrDefault(x => x.ProductAttributeOption.Id == option.Id).Id)
                 </div>
             }
         </div>
         <div class="row-fluid">
             <div class="span6">
                 @Html.LabelFor(variant => variant.SKU)
-                @Html.TextBoxFor(variant => variant.SKU, new { @class = "span12" })
+                @Html.TextBoxFor(variant => variant.SKU, new {@class = "span12"})
             </div>
             <div class="span6">
                 @Html.LabelFor(variant => variant.Barcode)
-                @Html.TextBoxFor(variant => variant.Barcode, new { @class = "span12" })
+                @Html.TextBoxFor(variant => variant.Barcode, new {@class = "span12"})
             </div>
         </div>
         <div class="row-fluid">
             <div class="span6">
                 @Html.LabelFor(variant => variant.BasePrice)
-                @Html.TextBoxFor(variant => variant.BasePrice, new { @class = "span12" })
+                @Html.TextBoxFor(variant => variant.BasePrice, new {@class = "span12"})
             </div>
             <div class="span6">
                 @Html.LabelFor(variant => variant.PreviousPrice)
-                @Html.TextBoxFor(variant => variant.PreviousPrice, new { @class = "span12" })
+                @Html.TextBoxFor(variant => variant.PreviousPrice, new {@class = "span12"})
             </div>
         </div>
         <div class="row-fluid">
             <div class="span6">
                 @Html.LabelFor(variant => variant.StockRemaining)
-                @Html.TextBoxFor(variant => variant.StockRemaining, new { @class = "span12" })
+                @Html.TextBoxFor(variant => variant.StockRemaining, new {@class = "span12"})
             </div>
             <div class="span6">
                 @Html.LabelFor(product => product.TrackingPolicy)
-                @Html.DropDownListFor(product => product.TrackingPolicy, ViewData["tracking-policy"] as IEnumerable<SelectListItem>, new { @class = "span12" })
+                @Html.DropDownListFor(product => product.TrackingPolicy, ViewData["tracking-policy"] as IEnumerable<SelectListItem>, new {@class = "span12"})
             </div>
         </div>
         <div class="row-fluid">
             <div class="span6">
                 @Html.LabelFor(variant => variant.Weight)
-                @Html.TextBoxFor(variant => variant.Weight, new { @class = "span12" })
+                @Html.TextBoxFor(variant => variant.Weight, new {@class = "span12"})
             </div>
             <div class="span6">
                 @if (SiteSettings<TaxSettings>().TaxesEnabled)
                 {
                     @Html.LabelFor(product => product.TaxRate.Id, "Tax Rate")
-                    @Html.DropDownListFor(product => product.TaxRate.Id, ViewData["tax-rate-options"] as IEnumerable<SelectListItem>, new { @class = "span12" })
+                    @Html.DropDownListFor(product => product.TaxRate.Id, ViewData["tax-rate-options"] as IEnumerable<SelectListItem>, new {@class = "span12"})
                 }
             </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <div class="pull-left">
-            @Html.ValidationMessageFor(variant => variant.BasePrice)
-            @Html.ValidationMessageFor(variant => variant.SKU)
-        </div>
-        <div class="pull-right">
-            <input type="submit" class="btn-primary btn" value="Save Changes" />
-        </div>
-    </div>
+    </fieldset>
 }
 
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/product-variant.js"); }

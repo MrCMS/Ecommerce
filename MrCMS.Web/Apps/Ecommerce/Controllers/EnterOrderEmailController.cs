@@ -1,13 +1,11 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Core.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Helpers;
-using System;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
@@ -31,13 +29,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public ActionResult Show(EnterOrderEmail page)
         {
-            if (!_cart.Items.Any())
-                return Redirect(UniquePageHelper.GetUrl<Cart>());
-            _cart.OrderEmail = _cart.OrderEmail ?? (CurrentRequestData.CurrentUser != null
-                                                        ? CurrentRequestData.CurrentUser.Email
-                                                        : null);
-            ViewData["cart"] = _cart;
-            return View(page);
+            if (CurrentRequestData.CurrentUser == null)
+            {
+                if (!_cart.Items.Any())
+                    return Redirect(UniquePageHelper.GetUrl<Cart>());
+                _cart.OrderEmail = _cart.OrderEmail ?? (CurrentRequestData.CurrentUser != null
+                                                            ? CurrentRequestData.CurrentUser.Email
+                                                            : null);
+                ViewData["cart"] = _cart;
+                return View(page);
+            }
+            _cartManager.SetOrderEmail(CurrentRequestData.CurrentUser.Email);
+            return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
         }
 
         [HttpPost]
