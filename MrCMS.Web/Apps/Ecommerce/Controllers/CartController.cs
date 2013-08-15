@@ -40,7 +40,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private void SetupViewData()
         {
             ViewData["cart"] = _cart;
-            ViewData["shipping-calculations"] = _orderShippingService.GetShippingOptions(_cart);
+            ViewData["shipping-calculations"] = _orderShippingService.GetCheapestShippingOptions(_cart);
         }
 
         [HttpGet]
