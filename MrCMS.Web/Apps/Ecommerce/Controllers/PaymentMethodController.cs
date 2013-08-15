@@ -79,7 +79,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
             if (response.PaymentSucceeded)
             {
-                var order = _orderService.PlaceOrder(_cartModel, o => { });
+                var order = _orderService.PlaceOrder(_cartModel, o =>
+                                                                     {
+                                                                         o.PaymentStatus = PaymentStatus.Paid;
+                                                                         o.AuthorisationToken = response.PaypointPaymentDetails.AuthCode;
+                                                                     });
                 _documentService.RedirectTo<OrderPlaced>(new { id = order.Guid });
             }
 
