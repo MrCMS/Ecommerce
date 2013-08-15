@@ -321,6 +321,7 @@
     <Compile Include="Apps\Ecommerce\Models\PaymentStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaypointPaymentDetails.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaypointPaymentDetailsModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\Process3DSecureDetailsResponse.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProcessDetailsResponse.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductAvailability.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductCondition.cs" />

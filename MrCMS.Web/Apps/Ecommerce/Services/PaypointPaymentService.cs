@@ -62,5 +62,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             return Enumerable.Range(DateTime.Now.Year, 11).BuildSelectItemList(i => i.ToString().Substring(2, 2), emptyItemText: "Year");
         }
 
+        public ProcessDetailsResponse Handle3DSecureResponse(FormCollection formCollection)
+        {
+            return _paypointRequestService.Handle3DSecureResponse(formCollection);
+        }
     }
 }
