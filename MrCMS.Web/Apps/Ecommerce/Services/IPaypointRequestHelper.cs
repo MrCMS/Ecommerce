@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
@@ -11,6 +12,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         string GetAddress(Address address, string email);
         string GetOptions(PaypointPaymentDetailsModel model);
         string GetDate(int? month, int? year);
-        IDictionary<string, string> ParseEnrolmentResponse(string response);
+        NameValueCollection ParseEnrolmentResponse(string response);
     }
 }

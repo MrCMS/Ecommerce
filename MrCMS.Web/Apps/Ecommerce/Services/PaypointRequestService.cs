@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Web.Mvc;
 using MrCMS.PaypointService.API;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -51,7 +53,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                        : GetSuccessResponse(response);
         }
 
-        private static ProcessDetailsResponse GetSuccessResponse(IDictionary<string, string> response)
+        private static ProcessDetailsResponse GetSuccessResponse(NameValueCollection response)
         {
             return new ProcessDetailsResponse
                        {
@@ -102,7 +104,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                                      : GetFailureResponse(response)));
         }
 
-        private static ProcessDetailsResponse GetRedirectResponse(string threeDSecureUrl, IDictionary<string, string> response)
+        public ProcessDetailsResponse Handle3DSecureResponse(FormCollection formCollection)
+        {
+            var statusCode = formCollection["mpi_status_code"];
+
+            if (string.IsNullOrWhiteSpace(statusCode))
+            {
+                return new ProcessDetailsResponse
+                           {
+                               FailureDetails = new FailureDetails
+                                                    {
+                                                        ErrorCode = formCollection["code"],
+                                                        Details = GetErrors(formCollection["code"]),
+                                                        Message = formCollection["message"]
+                                                    }
+                           };
+            }
+            return statusCode == "229"
+                       ? GetFailureResponse(formCollection)
+                       : GetSuccessResponse(formCollection);
+        }
+
+        private static ProcessDetailsResponse GetRedirectResponse(string threeDSecureUrl, NameValueCollection response)
         {
             return new ProcessDetailsResponse
                        {
@@ -116,7 +139,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                        };
         }
 
-        private static ProcessDetailsResponse GetFailureResponse(IDictionary<string, string> response)
+        private static ProcessDetailsResponse GetFailureResponse(NameValueCollection response)
         {
             return new ProcessDetailsResponse
                        {

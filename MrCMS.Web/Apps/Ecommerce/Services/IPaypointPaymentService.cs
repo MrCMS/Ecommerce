@@ -11,5 +11,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         IEnumerable<SelectListItem> Months();
         IEnumerable<SelectListItem> StartYears();
         IEnumerable<SelectListItem> ExpiryYears();
+        ProcessDetailsResponse Handle3DSecureResponse(FormCollection formCollection);
     }
 }

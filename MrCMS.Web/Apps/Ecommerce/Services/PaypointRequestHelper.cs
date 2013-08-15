@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
@@ -38,11 +39,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                                  year == null ? "00" : yearString.Substring(yearString.Length - 2, 2));
         }
 
-        public IDictionary<string, string> ParseEnrolmentResponse(string response)
+        public NameValueCollection ParseEnrolmentResponse(string response)
         {
             response = response.Trim('?');
             var parameterList = response.Split('&');
-            return parameterList.ToDictionary(s => s.Split('=')[0], s => s.Split('=')[1]);
+            var enrolmentResponse = parameterList.ToDictionary(s => s.Split('=')[0], s => s.Split('=')[1]);
+
+            var nameValueCollection = new NameValueCollection();
+            foreach (var key in enrolmentResponse.Keys)
+                nameValueCollection.Add(key, enrolmentResponse[key]);
+
+            return nameValueCollection;
         }
 
         public string GetAddress(Address address, string email)

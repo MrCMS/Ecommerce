@@ -32,33 +32,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return PartialView(model);
         }
 
-        [HttpPost]
-        public ActionResult PostDetails(PaypointPaymentDetailsModel model)
+        public ActionResult Response3DSecure(FormCollection formCollection)
         {
-            var response = _paypointPaymentService.ProcessDetails(model, Url.Action("Response3DSecure", "Paypoint"));
+            var response = _paypointPaymentService.Handle3DSecureResponse(formCollection);
+            
             if (response.Requires3DSecure)
             {
                 TempData["redirect-details"] = response.RedirectDetails;
                 return RedirectToAction("Redirect3DSecure");
             }
-            else if (response.PaymentSucceeded)
+
+            if (response.PaymentSucceeded)
             {
-                var order = _orderService.PlaceOrder(_cartModel, o => { });
+                var order = _orderService.PlaceOrder(_cartModel, o =>
+                {
+                    o.PaymentStatus = PaymentStatus.Paid;
+                    o.AuthorisationToken = response.PaypointPaymentDetails.AuthCode;
+                });
                 _documentService.RedirectTo<OrderPlaced>(new { id = order.Guid });
             }
-            else
-            {
-                TempData["error-details"] = response.FailureDetails;
-                return _documentService.RedirectTo<PaymentDetails>();
-            }
 
-
-            throw new NotImplementedException();
-        }
-
-        public ActionResult Response3DSecure(FormCollection formCollection)
-        {
-            throw new NotImplementedException();
+            TempData["error-details"] = response.FailureDetails;
+            return _documentService.RedirectTo<PaymentDetails>();
         }
 
         public ActionResult Redirect3DSecure()
