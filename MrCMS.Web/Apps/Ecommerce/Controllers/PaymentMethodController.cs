@@ -70,7 +70,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [ActionName("Paypoint")]
         public ActionResult Paypoint_POST(PaypointPaymentDetailsModel model)
         {
-            var response = _paypointPaymentService.ProcessDetails(model, Url.Action("Response3DSecure", "Paypoint"));
+            var response = _paypointPaymentService.ProcessDetails(model,
+                                                                  Url.Action("Response3DSecure", "Paypoint", null,
+                                                                             Request.Url.Scheme));
             if (response.Requires3DSecure)
             {
                 TempData["redirect-details"] = response.RedirectDetails;
