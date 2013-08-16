@@ -73,7 +73,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                                              item.GetDiscountAmount(cartModel.Discount, cartModel.DiscountCode),
                                                                                      });
                                                         }
-                                                        if(postCreationActions!=null)
+                                                        if (postCreationActions != null)
                                                             postCreationActions(order);
                                                         session.SaveOrUpdate(order);
                                                         return order;
@@ -152,8 +152,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public void SetLastOrderUserIdByOrderEmail(string email)
         {
-            var orders=_session.QueryOver<Order>()
-                        .Where(x=>x.OrderEmail.IsInsensitiveLike(email,MatchMode.Exact) && x.IsDeleted==false)
+            var orders = _session.QueryOver<Order>()
+                        .Where(x => x.OrderEmail.IsInsensitiveLike(email, MatchMode.Exact) && x.IsDeleted == false)
                         .OrderBy(x => x.CreatedOn)
                         .Desc.List();
 
@@ -162,6 +162,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             var order = orders.First();
             order.User = CurrentRequestData.CurrentUser;
             _session.Transact(session => session.Update(order));
+        }
+
+        public Order GetByGuid(Guid id)
+        {
+            return _session.QueryOver<Order>().Where(order => order.Guid == id).Take(1).Cacheable().SingleOrDefault();
         }
     }
 }
