@@ -45,7 +45,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         }
         public virtual decimal UnitPrice
         {
-            get { return Item.Price; }
+            get { return Item.GetUnitPrice(Quantity); }
         }
         public virtual decimal UnitPricePreTax
         {
