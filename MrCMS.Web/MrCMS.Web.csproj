@@ -2262,6 +2262,7 @@
     <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\RecentlyViewedItems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
@@ -2386,7 +2387,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>27465</DevelopmentServerPort>
+          <DevelopmentServerPort>51754</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:8888</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
