@@ -39,20 +39,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         [Required]
         [DisplayName("Price")]
-        [DisplayFormat(DataFormatString = "{0:n0}")]
         public virtual decimal BasePrice { get; set; }
 
         [DisplayName("Previous Price")]
-        [DisplayFormat(DataFormatString = "{0:n0}")]
         public virtual decimal? PreviousPrice { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:n0}")]
         public virtual decimal? PreviousPriceIncludingTax
         {
             get { return TaxAwareProductPrice.GetPriceIncludingTax(PreviousPrice, TaxRate); }
         }
 
-        [DisplayFormat(DataFormatString = "{0:n0}")]
         public virtual decimal? PreviousPriceExcludingTax
         {
             get { return TaxAwareProductPrice.GetPriceExcludingTax(PreviousPrice, TaxRate); }
@@ -85,16 +81,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             get { return TaxAwareProductPrice.GetPriceIncludingTax(BasePrice, TaxRate); }
         }
 
+        private PriceBreak GetPriceBreak(int quantity)
+        {
+            return PriceBreaks != null
+                       ? PriceBreaks.OrderBy(x => x.Price).FirstOrDefault(x => x.Quantity <= quantity)
+                       : null;
+        }
+
         public virtual decimal GetPrice(int quantity)
         {
-            if (PriceBreaks.Any())
-            {
-                List<PriceBreak> priceBreaks = PriceBreaks.Where(x => quantity >= x.Quantity).OrderBy(x => x.Price).ToList();
-                if (priceBreaks.Any())
-                    return priceBreaks.First().PriceIncludingTax * quantity;
-            }
+            var priceBreak = GetPriceBreak(quantity);
+            return priceBreak != null
+                       ? priceBreak.PriceIncludingTax*quantity
+                       : Price*quantity;
+        }
 
-            return Price * quantity;
+        public virtual decimal GetUnitPrice(int quantity)
+        {
+            var priceBreak = GetPriceBreak(quantity);
+            return priceBreak != null
+                       ? priceBreak.PriceIncludingTax
+                       : Price;
         }
 
         public virtual decimal GetSaving(int quantity)
@@ -195,6 +202,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         }
 
         public virtual GoogleBaseProduct GoogleBaseProduct { get; set; }
-
     }
 }
