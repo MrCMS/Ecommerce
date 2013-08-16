@@ -20,5 +20,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         IPagedList<Order> GetOrdersByUser(User user, int pageNum, int pageSize = 10);
         IList<Order> GetOrdersByUser(User user);
         void SetLastOrderUserIdByOrderEmail(string email);
+        Order GetByGuid(Guid id);
     }
 }
