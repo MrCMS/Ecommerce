@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Security.Policy;
+using System.Web;
 using System.Web.Mvc;
 using MrCMS.PaypointService.API;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.Paypoint;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services
 {
@@ -106,7 +109,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 
         public ProcessDetailsResponse Handle3DSecureResponse(FormCollection formCollection)
         {
-            var statusCode = formCollection["mpi_status_code"];
+            var md = formCollection["MD"];
+            var paRes = formCollection["PaRes"];
+
+            var response = _secvpn.threeDSecureAuthorisationRequest(new threeDSecureAuthorisationRequestRequest(_paypointSettings.AccountName, _paypointSettings.VPNPassword, _cartModel.CartGuid.ToString(), md, paRes, ""));
+
+            var nameValueCollection = _paypointHelper.ParseEnrolmentResponse(response.threeDSecureAuthorisationRequestReturn);
+
+            var statusCode = nameValueCollection["mpi_status_code"];
 
             if (string.IsNullOrWhiteSpace(statusCode))
             {
@@ -114,15 +124,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                            {
                                FailureDetails = new FailureDetails
                                                     {
-                                                        ErrorCode = formCollection["code"],
-                                                        Details = GetErrors(formCollection["code"]),
-                                                        Message = formCollection["message"]
+                                                        ErrorCode = nameValueCollection["code"],
+                                                        Details = GetErrors(nameValueCollection["code"]),
+                                                        Message = nameValueCollection["message"]
                                                     }
                            };
             }
             return statusCode == "229"
-                       ? GetFailureResponse(formCollection)
-                       : GetSuccessResponse(formCollection);
+                       ? GetFailureResponse(nameValueCollection)
+                       : GetSuccessResponse(nameValueCollection);
         }
 
         private static ProcessDetailsResponse GetRedirectResponse(string threeDSecureUrl, NameValueCollection response)
@@ -131,7 +141,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                        {
                            RedirectDetails = new RedirectDetails
                                                  {
-                                                     ACSUrl = response["acs_url"],
+                                                     ACSUrl = HttpUtility.UrlDecode(response["acs_url"]),
                                                      MD = response["MD"],
                                                      PaReq = response["PaReq"],
                                                      TermUrl = threeDSecureUrl
@@ -141,6 +151,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 
         private static ProcessDetailsResponse GetFailureResponse(NameValueCollection response)
         {
+            CurrentRequestData.ErrorSignal.Raise(new ThreeDSecureException(response));
             return new ProcessDetailsResponse
                        {
                            FailureDetails = new FailureDetails
