@@ -63,7 +63,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             ViewData["start-years"] = _paypointPaymentService.StartYears();
             ViewData["expiry-years"] = _paypointPaymentService.ExpiryYears();
             ViewData["card-types"] = _paypointPaymentService.GetCardTypes();
-            return PartialView();
+            return PartialView(TempData["paypoint-model"]);
         }
 
         [HttpPost]
@@ -86,10 +86,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                                                                          o.PaymentStatus = PaymentStatus.Paid;
                                                                          o.AuthorisationToken = response.PaypointPaymentDetails.AuthCode;
                                                                      });
-                _documentService.RedirectTo<OrderPlaced>(new { id = order.Guid });
+                return _documentService.RedirectTo<OrderPlaced>(new { id = order.Guid });
             }
 
             TempData["error-details"] = response.FailureDetails;
+            TempData["paypoint-model"] = model;
             return _documentService.RedirectTo<PaymentDetails>();
         }
     }

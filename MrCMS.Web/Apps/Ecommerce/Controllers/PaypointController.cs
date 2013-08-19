@@ -1,10 +1,8 @@
-using System;
 using System.Web.Mvc;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
-using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Website.Controllers;
 
@@ -47,7 +45,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                     o.PaymentStatus = PaymentStatus.Paid;
                     o.AuthorisationToken = response.PaypointPaymentDetails.AuthCode;
                 });
-                _documentService.RedirectTo<OrderPlaced>(new { id = order.Guid });
+                return _documentService.RedirectTo<OrderPlaced>(new {id = order.Guid});
             }
 
             TempData["error-details"] = response.FailureDetails;

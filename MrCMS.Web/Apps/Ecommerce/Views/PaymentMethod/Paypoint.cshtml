@@ -1,9 +1,11 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Models.PaypointPaymentDetailsModel  
+﻿@using MrCMS.Web.Apps.Ecommerce.Models
+@model MrCMS.Web.Apps.Ecommerce.Models.PaypointPaymentDetailsModel  
 @{
     var months = ViewData["months"] as IEnumerable<SelectListItem>;
     var startYears = ViewData["start-years"] as IEnumerable<SelectListItem>;
     var expiryYears = ViewData["expiry-years"] as IEnumerable<SelectListItem>;
     var cardTypes = ViewData["card-types"] as IEnumerable<SelectListItem>;
+    var failureDetails = TempData["error-details"] as FailureDetails;
 }
 @using (Html.BeginForm("Paypoint", "PaymentMethod", FormMethod.Post))
 {
@@ -63,4 +65,15 @@
         </div>
     </div>
     <input class="btn btn-info" type="submit" id="continue" name="continue" value="Place order" />
+}
+@if (failureDetails != null)
+{
+    <ul>
+        @foreach (var error in failureDetails.Details)
+        {
+            <li>
+                @error
+            </li>
+        }
+    </ul>
 }

@@ -532,6 +532,7 @@
     <Compile Include="Apps\Ecommerce\Services\Shipping\ShippingStatusService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\ITaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\TaxRateManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ThreeDSecureException.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />

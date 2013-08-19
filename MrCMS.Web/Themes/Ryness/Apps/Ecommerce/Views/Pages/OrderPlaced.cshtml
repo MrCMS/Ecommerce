@@ -1,5 +1,9 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.OrderPlaced
 @using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Entities.Orders
+@{
+    var order = ViewData["order"] as Order;
+}
 
 <div class="row-fluid margin-bottom-20">
     <div class="span8">
@@ -9,10 +13,10 @@
             </div>
             <div class="padding-20">
                 <p>
-                    Your order ID : <span class="green">@ViewBag.OrderID</span>
+                    Your order ID : <span class="green">@order.Id</span>
                 </p>
                 <p>
-                    Complete order details have been emailed to lee.skinner@thought.co.uk
+                    Complete order details have been emailed to @order.OrderEmail
                 </p>
                 <div class="complete-text">
                     your order is complete
@@ -31,7 +35,7 @@
                 </p>
                 @using (Html.BeginForm("RegistrationWithoutDetails", "UserAccount", null, FormMethod.Post, new { @class = "form-horizontal" }))
                 {
-                    @Html.Hidden("Email",ViewBag.OrderEmail as string)
+                    @Html.Hidden("Email", order.OrderEmail)
                     <div class="row-fluid">
                         <input type="text" name="Password" class="span6" />
                     </div>

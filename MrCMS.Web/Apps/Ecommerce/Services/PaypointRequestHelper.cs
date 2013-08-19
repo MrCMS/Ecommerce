@@ -43,7 +43,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         {
             response = response.Trim('?');
             var parameterList = response.Split('&');
-            var enrolmentResponse = parameterList.ToDictionary(s => s.Split('=')[0], s => s.Split('=')[1]);
+            var enrolmentResponse = parameterList.ToDictionary(s => s.Split('=')[0],
+                                                               s => s.Substring(s.Split('=')[0].Length + 1));
 
             var nameValueCollection = new NameValueCollection();
             foreach (var key in enrolmentResponse.Keys)

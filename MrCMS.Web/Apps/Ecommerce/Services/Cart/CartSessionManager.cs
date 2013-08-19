@@ -27,5 +27,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             if (_session != null)
                 _session[key] = item;
         }
+
+        public void RemoveValue(string key)
+        {
+            if (_session != null)
+                _session.Remove(key);
+        }
     }
 }

@@ -26,7 +26,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public const string CurrentCountryIdKey = "current.country-id";
         public const string CurrentPayPalExpressToken = "current.paypal-express-token";
         public const string CurrentPayPalExpressPayerId = "current.paypal-express-payer-id";
-        public const string Current3DSecureRedirectDetails = "current.3d-secure-details";
+        public IEnumerable<string> CartKeys
+        {
+            get
+            {
+                yield return CurrentCartGuid;
+                yield return CurrentShippingAddressKey;
+                yield return CurrentBillingAddressSameAsShippingAddressKey;
+                yield return CurrentBillingAddressKey;
+                yield return CurrentShippingMethodIdKey;
+                yield return CurrentOrderEmailKey;
+                yield return CurrentDiscountCodeKey;
+                yield return CurrentPaymentMethodKey;
+                yield return CurrentCountryIdKey;
+                yield return CurrentPayPalExpressToken;
+                yield return CurrentPayPalExpressPayerId;
+            }
+        }
 
         private readonly CartModel _cart;
         private readonly ISession _session;
@@ -39,10 +55,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _cartSessionManager = cartSessionManager;
         }
 
-
         public void AddToCart(ProductVariant item, int quantity)
         {
-
             var existingItem = _cart.Items.FirstOrDefault(cartItem => cartItem.Item.SKU == item.SKU);
             if (existingItem != null)
                 existingItem.Quantity += quantity;
@@ -92,6 +106,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public void EmptyBasket()
         {
             _cart.Items.ForEach(Delete);
+            CartKeys.ForEach(s => _cartSessionManager.RemoveValue(s));
         }
 
         public void SetShippingAddress(Address address)
@@ -131,7 +146,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             if (shippingCalculation.ShippingMethod != null)
                 _cartSessionManager.SetSessionValue(CurrentShippingMethodIdKey, shippingCalculation.ShippingMethod.Id);
             if (shippingCalculation.Country != null)
-            _cartSessionManager.SetSessionValue(CurrentCountryIdKey, shippingCalculation.Country.Id);
+                _cartSessionManager.SetSessionValue(CurrentCountryIdKey, shippingCalculation.Country.Id);
         }
 
         public void SetPayPalExpressInfo(string token, string payerId)

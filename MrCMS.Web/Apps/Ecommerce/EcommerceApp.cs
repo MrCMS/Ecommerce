@@ -20,7 +20,6 @@ using NHibernate;
 using Ninject;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Settings;
-using ProductController = MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers.ProductController;
 using Ninject.Web.Common;
 
 namespace MrCMS.Web.Apps.Ecommerce
@@ -154,8 +153,18 @@ namespace MrCMS.Web.Apps.Ecommerce
 
             context.MapRoute("Checkout - PayPal Return Handler",
                              "Apps/Ecommerce/PayPalExpressCheckout/ReturnHandler",
-                             new {controller = "PayPalExpressCheckout", action = "Return"},
-                             new[] {typeof (PayPalExpressCheckoutController).Namespace});
+                             new { controller = "PayPalExpressCheckout", action = "Return" },
+                             new[] { typeof(PayPalExpressCheckoutController).Namespace });
+
+            context.MapRoute("Checkout - Paypoint 3D Secure Redirect",
+                             "Apps/Ecommerce/Paypoint/3DSecureRedirect",
+                             new { controller = "Paypoint", action = "Redirect3DSecure" },
+                             new[] { typeof(PaypointController).Namespace });
+
+            context.MapRoute("Checkout - Paypoint 3D Secure Response Handler",
+                             "Apps/Ecommerce/Paypoint/3DSecureReturnHandler",
+                             new { controller = "Paypoint", action = "Response3DSecure" },
+                             new[] { typeof(PaypointController).Namespace });
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
