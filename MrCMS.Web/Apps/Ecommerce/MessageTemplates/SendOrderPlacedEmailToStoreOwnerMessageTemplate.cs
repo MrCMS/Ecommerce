@@ -17,11 +17,11 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
         public override MessageTemplate GetInitialTemplate(ISession session)
         {
             var fromName = CurrentRequestData.CurrentSite.Name;
-            var fromAddress = MrCMSApplication.Get<MailSettings>().SystemEmailAddress;
+            //var fromAddress = MrCMSApplication.Get<MailSettings>().SystemEmailAddress;
 
             return new SendOrderShippedEmailToCustomerMessageTemplate
             {
-                FromAddress = fromAddress,
+                //FromAddress = fromAddress,
                 FromName = fromName,
                 ToAddress = "{OrderEmail}",
                 ToName = "{UserName}",
