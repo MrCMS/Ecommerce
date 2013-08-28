@@ -337,7 +337,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var britishCurrency = new MrCMS.Web.Apps.Ecommerce.Entities.Currencies.Currency
                 {
                     Name = "British Pound",
-                    Code = "GDP",
+                    Code = "GBP",
                     Format = "£0.00"
                 };
             currencyService.Add(britishCurrency);
