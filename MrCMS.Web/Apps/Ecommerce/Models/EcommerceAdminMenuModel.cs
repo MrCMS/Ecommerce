@@ -54,8 +54,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                         new ChildMenuItem("Geographic Data",
                                                                           "/Admin/Apps/Ecommerce/Country"),
                                                         new ChildMenuItem("Taxes", "/Admin/Apps/Ecommerce/TaxRate"),
-                                                        new ChildMenuItem("Notification Template Settings",
-                                                                          "/Admin/Apps/Ecommerce/NotificationTemplateSettings/Edit"),
                                                         new ChildMenuItem("Shipping Methods",
                                                                           "/Admin/Apps/Ecommerce/ShippingMethod"),
                                                         new ChildMenuItem("Shipping Calculations",

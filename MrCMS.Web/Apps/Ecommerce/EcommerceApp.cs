@@ -11,6 +11,7 @@ using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Core.Widgets;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
+using MrCMS.Web.Apps.Ecommerce.DbConfiguration;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -26,9 +27,11 @@ namespace MrCMS.Web.Apps.Ecommerce
 {
     public class EcommerceApp : MrCMSApp
     {
+        public const string EcommerceAppName = "Ecommerce";
+
         public override string AppName
         {
-            get { return "Ecommerce"; }
+            get { return EcommerceAppName; }
         }
 
         protected override void RegisterServices(IKernel kernel)
@@ -347,6 +350,11 @@ namespace MrCMS.Web.Apps.Ecommerce
         private string GetFooterLinksText()
         {
             return @"<ul><li><a href=""#"">About &bull;</a></li><li><a href=""#"">Contact Us &bull;</a></li><li><a href=""#"">Privacy Policy &amp; Cookie Info &bull;</a></li><li><a href=""#"">Mr CMS</a></li></ul>";
+        }
+
+        public override IEnumerable<System.Type> Conventions
+        {
+            get { yield return typeof(TableNameConvention); }
         }
     }
 }
