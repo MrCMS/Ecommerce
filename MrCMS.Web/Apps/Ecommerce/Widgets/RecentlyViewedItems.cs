@@ -13,9 +13,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
 
         public override object GetModel(NHibernate.ISession session)
         {
-            var noOfItemsForDisplay = NoOfItemsForDisplay > 0 ? NoOfItemsForDisplay : 5;
             var items = MrCMSApplication.Get<ITrackingService>().GetRecentlyViewedItems();
-            if (items.Any() && items.Count >= noOfItemsForDisplay)
+            if (items.Any())
                 items.Take(NoOfItemsForDisplay > 0 ? NoOfItemsForDisplay : 5);
             return items;
         }
