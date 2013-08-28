@@ -48,18 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             var spec = SpecificationValues.FirstOrDefault(value => value.ProductSpecificationAttributeOption.ProductSpecificationAttribute.Name == name);
             return spec == null ? null : spec.Value;
         }
-
-        public override void AdminViewData(ViewDataDictionary viewData, ISession session)
-        {
-            base.AdminViewData(viewData, session);
-            viewData["brands"] = session.QueryOver<Brand>()
-                                        .OrderBy(brand => brand.Name).Asc
-                                        .Cacheable()
-                                        .List()
-                                        .BuildSelectItemList(brand => brand.Name, brand => brand.Id.ToString(),
-                                                             brand => brand == Brand, "Please select...");
-        }
-
+        
         public virtual IList<Category> Categories { get; set; }
 
         protected override void CustomInitialization(IDocumentService service, ISession session)
