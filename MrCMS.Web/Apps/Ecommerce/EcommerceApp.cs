@@ -247,7 +247,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             };
             var searchLayoutAreas = new List<LayoutArea>
                                      {
-                                         new LayoutArea {AreaName = "Before filtrs", Layout = searchLayout},
+                                         new LayoutArea {AreaName = "Before filters", Layout = searchLayout},
                                          new LayoutArea {AreaName = "After filters", Layout = searchLayout}
                                      };
 
