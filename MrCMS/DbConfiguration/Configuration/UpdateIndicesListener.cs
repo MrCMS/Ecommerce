@@ -16,7 +16,7 @@ namespace MrCMS.DbConfiguration.Configuration
         public void OnPostUpdate(PostUpdateEvent @event)
         {
             var siteEntity = @event.Entity as SiteEntity;
-            if (ShouldBeUpdated(siteEntity)) TaskExecutor.ExecuteLater(Create(typeof (UpdateIndicesTask<>), siteEntity));
+            if (ShouldBeUpdated(siteEntity)) TaskExecutor.ExecuteLater(Create(typeof(UpdateIndicesTask<>), siteEntity));
         }
 
         private static bool ShouldBeUpdated(SiteEntity siteEntity)

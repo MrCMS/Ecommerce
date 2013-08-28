@@ -226,7 +226,7 @@ namespace MrCMS.Services
             for (var i = 0; i < webpage.FormPostings.Count; i++)
             {
                 var posting = webpage.FormPostings[i];
-                items.Add(i,new List<string>());
+                items.Add(i, new List<string>());
                 foreach (var value in GetHeadersForExport(webpage).SelectMany(header => posting.FormValues.Where(x => x.Key == header)))
                 {
                     if (!value.IsFile)
@@ -235,7 +235,7 @@ namespace MrCMS.Services
                         items[i].Add("http://" + CurrentRequestData.CurrentSite.BaseUrl + value.Value);
                 }
             }
-            return items.OrderByDescending(x=>x.Value.Count).ToDictionary(pair=>pair.Key,pair=>pair.Value);
+            return items.OrderByDescending(x => x.Value.Count).ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 
         private void SendFormMessages(Webpage webpage, FormPosting formPosting)
