@@ -79,7 +79,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         }
         public List<SelectListItem> GetOptions()
         {
-            return GetAll().BuildSelectItemList(item => item.Name, item => item.Id.ToString(), null, String.Empty);
+            return GetAll().BuildSelectItemList(item => item.Name, item => item.Id.ToString(), null, new SelectListItem()
+            {
+                Text = "Please select...",
+                Value = "0"
+            });
         }
 
         public List<SelectListItem> GetAvailableBrands(ProductSearchQuery query)
