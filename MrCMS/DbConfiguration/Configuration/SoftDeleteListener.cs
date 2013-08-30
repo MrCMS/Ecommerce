@@ -9,15 +9,15 @@ namespace MrCMS.DbConfiguration.Configuration
     {
         protected override void DeleteEntity(NHibernate.Event.IEventSource session, object entity, NHibernate.Engine.EntityEntry entityEntry, bool isCascadeDeleteEnabled, NHibernate.Persister.Entity.IEntityPersister persister, Iesi.Collections.ISet transientEntities)
         {
-            var systemEntity = entity as SystemEntity;
-            if (systemEntity != null)
+            if (entity is SystemEntity)
             {
-                systemEntity.IsDeleted = true;
+                var e = (SystemEntity)entity;
+                e.IsDeleted = true;
 
-                CascadeBeforeDelete(session, persister, systemEntity, entityEntry, transientEntities);
-                CascadeAfterDelete(session, persister, systemEntity, transientEntities);
+                CascadeBeforeDelete(session, persister, entity, entityEntry, transientEntities);
+                CascadeAfterDelete(session, persister, entity, transientEntities);
 
-                var siteEntity = systemEntity as SiteEntity;
+                var siteEntity = e as SiteEntity;
                 if (siteEntity != null)
                     TaskExecutor.ExecuteLater(UpdateIndicesListener.Create(typeof(DeleteIndicesTask<>), siteEntity));
             }

@@ -201,7 +201,7 @@ Supports Thumbs: true
 	display:inline-block;
 	width:22px;
 	height:22px;
-	background:url(../Images/bullets.png) no-repeat;
+	background:url(/Themes/Ryness/Content/Images/bullets.png) no-repeat;
 	border:0;
 	margin: 0 2px;
 	background-position:0 -20px;
@@ -216,7 +216,7 @@ Supports Thumbs: true
 	display:block;
 	width:24px;
 	height:24px;
-	background:url(../Images/arrows.jpg) no-repeat;
+	background:url(/Themes/Ryness/Content/Images/arrows.jpg) no-repeat;
 	text-indent:-9999px;
 	border:0;
 	opacity: 0;
