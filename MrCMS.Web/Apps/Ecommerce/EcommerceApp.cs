@@ -45,6 +45,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 yield return typeof(DiscountApplication);
             }
         }
+
         protected override void RegisterApp(MrCMSAppRegistrationContext context)
         {
             context.MapAreaRoute("Admin controllers", "Admin", "Admin/Apps/Ecommerce/{controller}/{action}/{id}",
