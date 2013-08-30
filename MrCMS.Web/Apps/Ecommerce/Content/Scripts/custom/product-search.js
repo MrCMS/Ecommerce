@@ -63,7 +63,7 @@
             && data.PageSize == pageSizeDefault
             && data.PriceFrom == null
             && data.PriceTo == null
-            && data.SearchTerm == ''
+            && (data.SearchTerm == '' || data.SearchTerm == undefined)
             && data.BrandId == brandDefault
             && data.Page <= 1)
             return "";
@@ -124,12 +124,13 @@
     function initializeSlider() {
         $("#slider-range").slider({
             range: true,
-            min: 0,
             max: $('#MaxPrice').val(),
             step: 5,
             values: [parseFloat($('#PriceFrom').val()), parseFloat($('#PriceTo').val())],
             slide: function (event, ui) {
-                $("#amount").text("£" + ui.values[0].toFixed(2) + " - £" + ui.values[1].toFixed(2));
+                var from = parseFloat(ui.values[0]);
+                var to = parseFloat(ui.values[1]);
+                $("#amount").text("£" + from.toFixed(2) + " - £" + to.toFixed(2));
             },
             change: function (event, ui) {
                 var data = getData(1);
