@@ -56,37 +56,37 @@ input[type="radio"], input[type="checkbox"] {margin:0;}
 .navbar-inverse .nav > li ul li {display:block;float:none;line-height:18px;background:#ffffff;margin-top:1px;width:auto;text-align:left;}
 .navbar-inverse .nav > li ul li:hover
 {
-    background:#D30000;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #D30000), color-stop(100%, #B20301));
-    background-image: -webkit-linear-gradient(top, #D30000, #B20301);
-    background-image: -moz-linear-gradient(top, #D30000, #B20301);
-    background-image: -ms-linear-gradient(top, #D30000, #B20301);
-    background-image: -o-linear-gradient(top, #D30000, #B20301);
-    background-image: linear-gradient(top, #D30000, #B20301);
+background:#D30000;
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #D30000), color-stop(100%, #B20301));
+background-image: -webkit-linear-gradient(top, #D30000, #B20301);
+background-image: -moz-linear-gradient(top, #D30000, #B20301);
+background-image: -ms-linear-gradient(top, #D30000, #B20301);
+background-image: -o-linear-gradient(top, #D30000, #B20301);
+background-image: linear-gradient(top, #D30000, #B20301);
 }
-.navbar-inverse .nav > li ul li a {line-height:18px;padding:10px 30px 10px 10px;display:block;color:#000000;font-weight:bold;background:url(/Themes/Ryness/Content/Images/list-style.png) no-repeat 195px center;}
+.navbar-inverse .nav > li ul li a {line-height:18px;padding:10px 30px 10px 10px;display:block;color:#000000;font-weight:bold;background:url(../images/list-style.png) no-repeat 195px center;}
 .navbar-inverse .nav > li ul li a:hover, .navbar-inverse .nav > li ul li a.active {
-    text-decoration:none;
-    color:#ffffff;
-    background:url(/Themes/Ryness/Content/Images/list-hover.png) no-repeat 195px center;
+text-decoration:none;
+color:#ffffff;
+background:url(../images/list-hover.png) no-repeat 195px center;
 }
 .navbar-inverse .nav > li:hover > ul {display: block;}
 .navbar-inverse .nav > li ul li ul {margin:0;padding:0;position:absolute;top:-1px;left:220px;z-index:999999;display: none;width:220px;border-left:1px solid #dddddd;border-bottom:1px solid #dddddd;border-right:1px solid #dddddd;background:#dddddd;list-style-type:none;height:auto;border-top:1px solid #dddddd;}
 .navbar-inverse .nav > li ul li ul li {display:block;float:none;line-height:18px;background:#ffffff;margin-top:1px;width:auto;text-align:left;}
 .navbar-inverse .nav > li ul li ul li:hover {
-    background:#D30000;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #D30000), color-stop(100%, #B20301));
-    background-image: -webkit-linear-gradient(top, #D30000, #B20301);
-    background-image: -moz-linear-gradient(top, #D30000, #B20301);
-    background-image: -ms-linear-gradient(top, #D30000, #B20301);
-    background-image: -o-linear-gradient(top, #D30000, #B20301);
-    background-image: linear-gradient(top, #D30000, #B20301);
+background:#D30000;
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #D30000), color-stop(100%, #B20301));
+background-image: -webkit-linear-gradient(top, #D30000, #B20301);
+background-image: -moz-linear-gradient(top, #D30000, #B20301);
+background-image: -ms-linear-gradient(top, #D30000, #B20301);
+background-image: -o-linear-gradient(top, #D30000, #B20301);
+background-image: linear-gradient(top, #D30000, #B20301);
 }
 .navbar-inverse .nav > li ul li ul li a {padding:10px;display:block;color:#000000;font-weight:bold;}
 .navbar-inverse .nav > li ul li ul li a:hover {
-    text-decoration:none;
-    color:#ffffff;
-    background:url(/Themes/Ryness/Content/Images/list-hover.png) no-repeat 195px center;
+text-decoration:none;
+color:#ffffff;
+background:url(../images/list-hover.png) no-repeat 195px center;
 }
 .navbar-inverse .nav > li ul li:hover > ul {display: block;}
 /*dropdown menu css end*/
