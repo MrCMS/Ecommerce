@@ -1,0 +1,47 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Amazon.Helpers
+@using MrCMS.Web.Apps.Amazon.Models
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model AmazonDashboardModel
+
+<div data-paging-type="async">
+    @if (Model != null && !Model.Logs.Any())
+    {
+        @:No Logs
+    }
+    else
+    {
+        foreach (var item in Model.Logs)
+        {
+            var alerttype = "info";
+            switch (item.Status)
+            {
+                case AmazonLogStatus.Error:
+                    {
+                        alerttype = "error";
+                    }
+                    break;
+                case AmazonLogStatus.Stage:
+                    {
+                        alerttype = "info";
+                    }
+                    break;
+                case AmazonLogStatus.Completion:
+                    {
+                        alerttype = "success";
+                    }
+                    break;
+            }
+            <div class="alert dashboard-box-log @alerttype">
+                     <small class="pull-right">@item.CreatedOn.ToString("dd/MM/yyyy HH:mm")</small>
+                <strong>@item.Type.GetDescription()</strong>
+                <br/>
+                @item.Message.ToShortString(50)
+             </div>
+        }
+
+        @Html.Pager(Model.Logs, "DashboardLogs", i => new {page = i})
+    }
+</div>
+
+ @{ Html.IncludeScript("~/Apps/EBay/Areas/Admin/Content/Scripts/custom/async-paging.js"); }
