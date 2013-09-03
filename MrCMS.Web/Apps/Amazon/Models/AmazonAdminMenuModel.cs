@@ -20,7 +20,7 @@ namespace MrCMS.Web.Apps.Amazon.Models
                             "Admin",
                             new List<IMenuItem>
                             {
-                                new ChildMenuItem("Dashboard", "/Admin/Apps/eBay/Amazon/Dashboard"),
+                                new ChildMenuItem("Dashboard", "/Admin/Apps/Amazon/Api/Dashboard"),
                                 new ChildMenuItem("Listings", "/Admin/Apps/Amazon/Listing"),
                                 new ChildMenuItem("Orders", "/Admin/Apps/Amazon/Orders"),
                             }

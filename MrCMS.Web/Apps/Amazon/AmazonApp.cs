@@ -1,7 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using MrCMS.Apps;
 using MrCMS.Entities.Multisite;
 using MrCMS.Installation;
+using MrCMS.Web.Apps.Amazon.DbConfiguration;
 using MrCMS.Web.Areas.Admin.Controllers;
 using NHibernate;
 using Ninject;
@@ -10,9 +12,11 @@ namespace MrCMS.Web.Apps.Amazon
 {
     public class AmazonApp : MrCMSApp
     {
+        public const string AmazonAppName = "Amazon";
+
         public override string AppName
         {
-            get { return "Amazon"; }
+            get { return AmazonAppName; }
         }
 
         protected override void RegisterServices(IKernel kernel)
@@ -30,6 +34,11 @@ namespace MrCMS.Web.Apps.Amazon
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
         {
             
+        }
+
+        public override IEnumerable<System.Type> Conventions
+        {
+            get { yield return typeof(AmazonTableNameConvention); }
         }
     }
 }
