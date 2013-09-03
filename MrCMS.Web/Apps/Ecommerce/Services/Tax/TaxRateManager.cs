@@ -53,7 +53,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
 
         public void SetAllDefaultToFalse()
         {
-            _session.CreateSQLQuery("UPDATE TaxRate SET IsDefault=0").ExecuteUpdate();
+            var taxes = GetAll();
+            foreach (var taxRate in taxes)
+            {
+                taxRate.IsDefault = false;
+                Update(taxRate);
+            }
         }
     }
 }
