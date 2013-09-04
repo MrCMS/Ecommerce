@@ -6,14 +6,14 @@ canvas{
 }
 .dashboard-box {
     margin-bottom: 10px;
-    min-height: 140px;
+    min-height: 120px;
     position: relative;
     overflow: hidden;
-    border-left: 1px solid #E5E5E5;
-    border-right: 1px solid #E5E5E5;
-    border-top: 1px solid #E5E5E5;
-    border-bottom: 1px solid #E5E5E5;
-    background-color: #F1F1F1;
+    border-radius: 1px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 1px 0px 1px #E4E6EB;
+    color: #000000;
+    opacity: 1;
 }
 .dashboard-box .info {
     float: left;
@@ -21,7 +21,7 @@ canvas{
     margin: 0 0 5px 0;
 }
 .dashboard-box .info .stats {
-    font-size: 36px;
+    font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
     padding-top: 25px;
@@ -29,7 +29,7 @@ canvas{
 }
 
 .dashboard-box .info .stats-description {
-    font-size: 16px;
+    font-size: 11px;
     font-weight: normal;
     text-align: left;
     padding: 10px 0 0 0;
@@ -46,11 +46,10 @@ canvas{
     right: 0;
     bottom: 0;
     clear: both;
-    color: #FFFFFF;
     display: block;
     font-size: 11px;
     font-weight: bold;
-    padding: 5px 10px 5px 20px;
+    padding: 5px 5px 5px 10px;
 }
 .dashboard-box .more-info span {
     opacity: initial;

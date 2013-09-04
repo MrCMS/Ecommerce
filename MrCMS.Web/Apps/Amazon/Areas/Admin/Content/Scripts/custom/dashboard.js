@@ -1,5 +1,11 @@
 ﻿$(document).ready(function () {
+    
+    //CSS
+    $("body").css("background-color", "#F2F2F2");
+    $(".left-nav").css("display", "none");
+    $(".container-mrcms").css("padding-left", "0");
 
+    //CHARTS
     var ctx = $("#myChart").get(0).getContext("2d");
     var container = $("#myChart").parent();
     
