@@ -70,8 +70,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public void Delete(CartItem item)
         {
-            _cart.Items.Remove(item);
             _session.Transact(session => session.Delete(item));
+            _cart.Items.Remove(item);
         }
 
         public void UpdateQuantity(CartItem item, int quantity)
@@ -105,7 +105,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public void EmptyBasket()
         {
-            _cart.Items.ForEach(Delete);
+            foreach (var item in _cart.Items)
+            {
+                _session.Transact(session => session.Delete(item));
+            }
+            _cart.Items.Clear();
             CartKeys.ForEach(s => _cartSessionManager.RemoveValue(s));
         }
 
