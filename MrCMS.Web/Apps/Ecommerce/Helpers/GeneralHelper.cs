@@ -33,6 +33,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
                  return false;
              }
         }
+        public static T GetValue<T>(string value) where T : struct
+        {
+            try
+            {
+                if (value.HasValue())
+                {
+                    var convertedValue = Convert.ChangeType(value, typeof(T));
+                    return (T)convertedValue;
+                }
+                return default(T);
+            }
+            catch (Exception)
+            {
+                return default(T);
+            }
+        }
         public static bool IsValidDateTime(this string value)
         {
             try

@@ -48,7 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 productVariant.Barcode = item.Barcode;
                 productVariant.BasePrice = item.Price;
                 productVariant.PreviousPrice = item.PreviousPrice;
-                productVariant.StockRemaining = item.Stock;
+                productVariant.StockRemaining = item.Stock.HasValue ? item.Stock.Value : 0;
                 productVariant.Weight = item.Weight.HasValue ? item.Weight.Value : 0;
                 productVariant.TrackingPolicy = item.TrackingPolicy;
                 productVariant.TaxRate = (item.TaxRate.HasValue && item.TaxRate.Value!=0)?_taxRateManager.Get(item.TaxRate.Value):_taxRateManager.GetDefaultRate();

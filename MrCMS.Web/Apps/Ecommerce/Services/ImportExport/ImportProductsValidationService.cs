@@ -219,27 +219,32 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 12)))
                                         parseErrors[handle].Add("Price value is not a valid decimal number.");
                                     else if (worksheet.GetValue<string>(rowId, 12).HasValue())
-                                        productVariant.Price = worksheet.GetValue<decimal>(rowId, 12);
+                                        productVariant.Price = GeneralHelper.GetValue<decimal>(worksheet.GetValue<string>(rowId, 12));
                                     else
                                         parseErrors[handle].Add("Price is required.");
+
                                     if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 13)))
                                         parseErrors[handle].Add("Previous Price value is not a valid decimal number.");
                                     else
-                                        productVariant.PreviousPrice = worksheet.GetValue<decimal>(rowId, 13);
+                                        productVariant.PreviousPrice = GeneralHelper.GetValue<decimal>(worksheet.GetValue<string>(rowId, 13));
+
                                     if (!GeneralHelper.IsValidInput<int>(worksheet.GetValue<string>(rowId, 14)))
                                         parseErrors[handle].Add("Tax Rate Id value is not a valid number.");
                                     else
-                                        productVariant.TaxRate = worksheet.GetValue<int>(rowId, 14);
+                                        productVariant.TaxRate = GeneralHelper.GetValue<int>(worksheet.GetValue<string>(rowId, 14));
+
                                     if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 15)))
                                         parseErrors[handle].Add("Weight value is not a valid decimal number.");
                                     else
-                                        productVariant.Weight = worksheet.GetValue<decimal>(rowId, 15);
+                                        productVariant.Weight = GeneralHelper.GetValue<decimal>(worksheet.GetValue<string>(rowId, 15));
+
                                     if (!GeneralHelper.IsValidInput<int>(worksheet.GetValue<string>(rowId, 16)))
                                         parseErrors[handle].Add("Stock value is not a valid decimal number.");
                                     else
                                         productVariant.Stock = worksheet.HasValue(rowId, 16)
-                                                                   ? worksheet.GetValue<int>(rowId, 16)
-                                                                   : (int?) null;
+                                                                   ? GeneralHelper.GetValue<int>(worksheet.GetValue<string>(rowId, 16))
+                                                                   : (int?)null;
+
                                     if (!worksheet.GetValue<string>(rowId, 17).HasValue() ||
                                         (worksheet.GetValue<string>(rowId, 17) != "Track" &&
                                          worksheet.GetValue<string>(rowId, 17) != "DontTrack"))
