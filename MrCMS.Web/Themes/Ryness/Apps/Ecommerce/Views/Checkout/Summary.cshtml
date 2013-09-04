@@ -18,7 +18,7 @@
                 <td>Delivery</td>
                 <td class="padding-left-right-5">:</td>
                 <td>
-                    @if (Model.ShippingTotal.HasValue && Model.ShippingTotal.Value > 0)
+                    @if (Model.ShippingTotal.HasValue)
                     {
                         @Model.ShippingTotal.Value.ToCurrencyFormat()
                     }
