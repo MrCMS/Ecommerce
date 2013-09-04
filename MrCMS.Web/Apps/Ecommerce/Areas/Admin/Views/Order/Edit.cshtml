@@ -9,6 +9,7 @@
                 <legend>Order - #@Model.Id
                     
                     <span class="pull-right">
+                        <a href="/Admin/Apps/Ecommerce/Order" class="btn">Back</a>
                         @if (!Model.IsCancelled)
                         {
                             @Html.ActionLink("Cancel Order", "Cancel", "Order", new {id = Model.Id}, new {@class = "btn btn-danger", data_toggle = "fb-modal"})
@@ -16,7 +17,7 @@
                         else
                         {
                             <span>
-                                <strong>CANCELLED</strong>
+                                <strong class="red">CANCELLED</strong>
                             </span>
                         }
                     </span>
