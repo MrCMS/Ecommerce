@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using FakeItEasy;
 using FluentAssertions;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
@@ -80,6 +81,16 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             _importExportManager.ExportProductsToGoogleBase();
 
             A.CallTo(() => _productVariantService.GetAllVariants(string.Empty,0,1)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void ImportExportManager_ExportOrderToPdf_ShouldReturnByteArray()
+        {
+            var order = new Order();
+
+            var result = _importExportManager.ExportOrderToPdf(order);
+
+            result.Should().BeOfType<byte[]>();
         }
 
         private static Stream GetDefaultStream()

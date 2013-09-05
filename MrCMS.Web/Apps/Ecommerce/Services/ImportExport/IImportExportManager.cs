@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
@@ -7,6 +8,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     {
         byte[] ExportProductsToExcel();
         Dictionary<string, List<string>> ImportProductsFromExcel(Stream file);
+
         byte[] ExportProductsToGoogleBase();
+
+        byte[] ExportOrderToPdf(Order order);
     }
 }
