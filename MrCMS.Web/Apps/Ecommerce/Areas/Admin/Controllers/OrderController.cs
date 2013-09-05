@@ -156,5 +156,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 TempData["import-status"] = "Please choose non-empty CSV (.csv) file before uploading.";
             return RedirectToAction("BulkShippingUpdate");
         }
+
+        [HttpGet]
+        public ActionResult SetTrackingNumber(Order order)
+        {
+            return View(order);
+        }
+
+        [HttpPost]
+        [ActionName("SetTrackingNumber")]
+        public ActionResult SetTrackingNumber_POST(Order order)
+        {
+            _orderService.Save(order);
+            return RedirectToAction("Edit", "Order", new {id = order.Id});
+        }
     }
 }
