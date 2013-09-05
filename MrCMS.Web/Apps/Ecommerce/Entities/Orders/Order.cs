@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using MrCMS.Entities;
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
@@ -88,5 +89,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 
         [DisplayName("Is Cancelled")]
         public virtual bool IsCancelled { get; set; }
+        
+        [DisplayName("Tracking Number")]
+        [StringLength(250)]
+        public virtual string TrackingNumber { get; set; }
+
     }
 }
