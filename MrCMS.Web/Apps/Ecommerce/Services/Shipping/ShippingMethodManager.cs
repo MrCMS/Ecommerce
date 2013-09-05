@@ -4,6 +4,7 @@ using MrCMS.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using NHibernate;
 using MrCMS.Helpers;
+using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 {
@@ -24,6 +25,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         public ShippingMethod Get(int id)
         {
             return _session.QueryOver<ShippingMethod>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
+        }
+
+        public ShippingMethod GetByName(string name)
+        {
+            return _session.QueryOver<ShippingMethod>().Where(x => x.Name.IsInsensitiveLike(name, MatchMode.Exact)).Cacheable().SingleOrDefault();
         }
 
         public List<SelectListItem> GetOptions()

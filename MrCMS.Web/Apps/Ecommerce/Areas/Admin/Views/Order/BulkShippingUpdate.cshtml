@@ -1,0 +1,60 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Bulk Shipping Update";
+}
+
+<fieldset>
+    <legend>Bulk Shipping Update
+         <span class="btn-group  display-inline  pull-right">
+           
+        </span>
+    </legend>
+        <div class="row-fluid">
+                 @using (Html.BeginForm("BulkShippingUpdate", "Order", FormMethod.Post, new {enctype = "multipart/form-data"}))
+                 {
+                     <label>Choose Import File</label>
+                     <input type="file" name="document" id="document" />
+                     <div class="clearfix"></div>
+                     <br />
+                     if (ViewBag.Messages != null)
+                     {
+                         foreach (var item in (Dictionary<string, List<string>>) ViewBag.Messages)
+                         {
+                             switch (item.Key)
+                             {
+                                 case "success":
+                                     <div class="alert alert-success">
+                                         @item.Value.First()
+                                     </div>
+                                     break;
+                                 case "no-supplied-id":
+                                     <div class="alert alert-error">
+                                         Row with Order Id missing! Please check CSV document.
+                                     </div>
+                                     break;
+                                 default:
+                                     <span>
+                                         Row with Order <strong>#@item.Key</strong> has the following errors:
+                                     </span>
+                                     <ul>
+                                         @foreach (var error in item.Value)
+                                         {
+                                             <li>
+                                                 @error
+                                             </li>
+                                         }
+                                     </ul>
+                                     break;
+                             }
+                         }
+                     }
+                     if (ViewBag.ImportStatus != null)
+                     {
+                         <div class="alert alert-error">@ViewBag.ImportStatus</div>
+                         <div class="clearfix"></div>
+                     }
+
+                     <input type="submit" class="btn btn-primary" value="Start Bulk Shipping Update"/>
+                 }
+        </div>
+</fieldset>

@@ -2,9 +2,9 @@
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
-using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {

@@ -42,6 +42,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                                           "/Admin/Apps/Ecommerce/Stock/LowStockReport"),
                                                         new ChildMenuItem("Bulk Stock Update",
                                                                           "/Admin/Apps/Ecommerce/Stock/BulkStockUpdate"),
+                                                        new ChildMenuItem("Bulk Shipping Update",
+                                                                          "/Admin/Apps/Ecommerce/Order/BulkShippingUpdate"),
                                                     }
                                             },
                                             {
