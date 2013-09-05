@@ -1,4 +1,5 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+@using System.Drawing
 @using MrCMS.Helpers
 @using System.Linq
 @using MrCMS.Web.Apps.Ecommerce.Entities.Products
@@ -37,6 +38,16 @@
 
                         @{Html.RenderPartial("SocialLinks");}
                         @RenderZone("Below Product Price")
+                        
+                        @{
+                            if (Model.Brand != null)
+                            {
+                                if (!string.IsNullOrEmpty(Model.Brand.Logo))
+                                {
+                                    RenderImage(Model.Brand.Logo, new Size {Width = 100, Height = 50});
+                                }
+                            }
+                        }
                     </div>
                 </div>
             </div>

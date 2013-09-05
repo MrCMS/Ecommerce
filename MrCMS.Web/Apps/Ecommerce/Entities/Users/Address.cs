@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
@@ -58,6 +59,34 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Users
                            Title = Title,
                            UserGuid = UserGuid
                        };
+        }
+
+        public virtual string Description
+        {
+            get { return string.Join(", ", AddressParts); }
+        }
+
+        private IEnumerable<string> AddressParts
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(Name))
+                    yield return Name;
+                if (!string.IsNullOrWhiteSpace(Company))
+                    yield return Company;
+                if (!string.IsNullOrWhiteSpace(Address1))
+                    yield return Address1;
+                if (!string.IsNullOrWhiteSpace(Address2))
+                    yield return Address2;
+                if (!string.IsNullOrWhiteSpace(City))
+                    yield return City;
+                if (!string.IsNullOrWhiteSpace(StateProvince))
+                    yield return StateProvince;
+                if (Country != null)
+                    yield return Country.Name;
+                if (!string.IsNullOrWhiteSpace(PostalCode))
+                    yield return PostalCode;
+            }
         }
     }
 }
