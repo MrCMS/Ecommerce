@@ -1,95 +1,135 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
+@{
+    var orderShipping = Model.ShippingTotal.GetValueOrDefault() - Model.ShippingTax.GetValueOrDefault();
+}
 <div class="tab-pane active" id="order-details">
     <div class="row-fluid">
+        <div class="span12">
+            <table class="table table-condensed table-striped">
+                <tr>
+                    <td>Customer</td>
+                    <td>
+                        @Html.Raw((Model.User != null ? "<a href='/Admin/User/Edit/@Model.User.Id'>" : ""))
+                        @Model.OrderEmail
+                        @Html.Raw((Model.User != null ? "</a>" : ""))
+                    </td>
+                </tr>
+                <tr>
+                    <td>Order GUID</td>
+                    <td>@Model.Guid</td>
+                </tr>
+                <tr>
+                    <td>Order Subtotal (ex TAX)</td>
+                    <td>@Model.Subtotal.ToCurrencyFormat()</td>
+                </tr>
+                <tr>
+                    <td>Order Shipping (ex TAX)</td>
+                    <td>@orderShipping.ToCurrencyFormat()</td>
+                </tr>
+
+                <tr>
+                    <td>Order Tax</td>
+                    <td>@Model.Tax.ToCurrencyFormat()</td>
+                </tr>
+                <tr>
+                    <td>Order Total</td>
+                    <td>@Model.Total.ToCurrencyFormat()</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    @{
+        if (Model.OrderRefunds.Count > 0)
+        {
+        <div class="row-fluid">
+            <div class="span12">
+                @if (Model.OrderRefunds.Count > 0)
+                {
+                    <p>Refunds:</p>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Amount
+                                </th>
+                                <th>Note
+                                </th>
+                                <th>Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderRefunds)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.Amount.ToCurrencyFormat()
+                                    </td>
+                                    <td>
+                                        @item.Note
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            @Html.ActionLink("Delete", "Delete", "OrderRefund", new { id = item.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+        }
+    }
+    <hr class="small-margin" />
+    <div class="row-fluid">
         <div class="span6">
-            <p>
-                Customer: @Model.OrderEmail
-            </p>
-            <p>
-                Order GUID: @Model.Guid
-            </p>
-            <p>
-                Order Subtotal (ex TAX): @Model.Subtotal.ToCurrencyFormat()
-            </p>
-            <p>
-                Order Shipping (ex TAX): @((Model.ShippingTotal.GetValueOrDefault() - Model.ShippingTax.GetValueOrDefault()).ToCurrencyFormat())
-            </p>
-            <p>
-                Order Tax: &pound;@Model.Tax.ToCurrencyFormat()
-            </p>
-            <p>
-                Order Total: &pound;@Model.Total.ToCurrencyFormat()
-            </p>
+            <h4>Payment</h4>
+
+            <table class="table table-condensed">
+                <tr>
+                    <td>Method</td>
+                    <td>@Html.DisplayFor(x => x.PaymentMethod)</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>@Html.DisplayFor(x => x.PaymentStatus)</td>
+                </tr>
+            </table>
+            @if (Model.PaymentStatus == PaymentStatus.Pending)
+            {
+                @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                <span></span>
+                @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+            }
+            @if (Model.PaymentStatus == PaymentStatus.Paid)
+            {
+                <a href="@Url.Action("Add", "OrderRefund", new { orderID = Model.Id, index = false })" class="btn btn-mini" data-toggle="fb-modal">Add Refund</a>
+            }
+
         </div>
         <div class="span6">
-            @if (Model.OrderRefunds.Count > 0)
+            <h4>Shipping</h4>
+
+            <table class="table table-condensed">
+                <tr>
+                    <td>Method</td>
+                    <td>@Html.DisplayFor(x => x.ShippingMethod.Name)</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>@Html.DisplayFor(x => x.ShippingStatus)</td>
+                </tr>
+            </table>
+            @if (Model.ShippingStatus != ShippingStatus.Shipped)
             {
-                <p>Refunds:</p>
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Amount
-                            </th>
-                            <th>Note
-                            </th>
-                            <th>Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.OrderRefunds)
-                        {
-                            <tr>
-                                <td>
-                                    @item.Amount.ToCurrencyFormat()
-                                </td>
-                                <td>
-                                    @item.Note
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        @Html.ActionLink("Delete", "Delete", "OrderRefund", new { id = item.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
             }
         </div>
     </div>
-
-    <br />
-    @Html.LabelFor(x => x.PaymentMethod, new { @class = "pull-left" }): &nbsp;
-    @Html.DisplayFor(x => x.PaymentMethod)
-    <div class="clearfix"></div>
-    @Html.LabelFor(x => x.PaymentStatus, new { @class = "pull-left" }): &nbsp;
-    @Html.DisplayFor(x => x.PaymentStatus)
-    @if (Model.PaymentStatus == PaymentStatus.Pending)
-    {
-        @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-        <span></span>
-        @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-    }
-    @if (Model.PaymentStatus == PaymentStatus.Paid)
-    {
-        <a href="@Url.Action("Add", "OrderRefund", new { orderID = Model.Id, index = false })" class="btn btn-mini" data-toggle="fb-modal">Add Order Refund</a>
-    }
-    <div class="clearfix"></div>
-    <br />
-    @Html.LabelFor(x => x.ShippingMethod, new { @class = "pull-left" }): &nbsp;
-    @Html.DisplayFor(x => x.ShippingMethod.Name)
-    <div class="clearfix"></div>
-    @Html.LabelFor(x => x.ShippingStatus, new { @class = "pull-left" }): &nbsp;
-    @Html.DisplayFor(x => x.ShippingStatus)
-    @if (Model.ShippingStatus != ShippingStatus.Shipped)
-    {
-        @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-    }
-    <div class="clearfix"></div>
-    <br />
+    <hr class="small-margin" />
     <div class="row-fluid">
         <div class="span6">
             <h4>Shipping Address

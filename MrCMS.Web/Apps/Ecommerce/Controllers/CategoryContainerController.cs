@@ -16,7 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public ViewResult Show(CategoryContainer page)
         {
-            ViewBag.Categories = _categoryService.GetAll().Where(x => x.Parent != null && x.Parent.Parent == null && x.Products.Any()).ToList();
+            ViewBag.Categories = _categoryService.GetAll().Where(x => x.Parent != null && x.Parent.Parent == null).ToList();
             return View(page);
         }
     }
