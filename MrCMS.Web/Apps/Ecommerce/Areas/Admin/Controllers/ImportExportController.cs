@@ -1,6 +1,7 @@
 using System.Web.Mvc;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.GoogleBase;
@@ -145,6 +146,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 return PartialView(googleBaseProduct);
             }
             return RedirectToAction("GoogleBase");
+        }
+        #endregion
+
+        #region Orders
+
+        [HttpGet]
+        public ActionResult ExportOrderToPdf(Order order)
+        {
+            try
+            {
+                var file = _importExportManager.ExportOrderToPdf(order);
+                return File(file, "application/pdf", "MrCMS-Order-" + order.Id + "-["+CurrentRequestData.Now.ToString("dd-MM-yyyy hh-mm")+"].pdf");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Edit", "Order", new { id = order.Id });
+            }
         }
         #endregion
     }

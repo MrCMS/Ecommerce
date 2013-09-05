@@ -44,6 +44,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
             }
         }
 
+        public virtual decimal DiscountAmount { get; set; }
         public virtual Discount Discount { get; set; }
         [DisplayName("Discount Code")]
         public virtual string DiscountCode { get; set; }
