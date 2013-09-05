@@ -512,7 +512,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             };
         }
 
-        static void SetDocumentStyles(ref Document document)
+        private void SetDocumentStyles(ref Document document)
         {
             var style = document.Styles["Normal"];
             style.Font.Name = "Tahoma";
@@ -523,7 +523,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             style.Font.Size = 9;
         }
 
-        static void SetDocument(ref Document document, Order order)
+        private void SetDocument(ref Document document, Order order)
         {
             var tableColor = new Color(0, 0, 0, 0);
             var section = document.AddSection();
@@ -550,7 +550,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             SetTableSummary(order, ref table);
         }
 
-        private static void SetHeader(ref Section section)
+        private void SetHeader(ref Section section)
         {
             var frame1 = section.Headers.Primary.AddTextFrame();
             frame1.RelativeVertical = RelativeVertical.Page;
@@ -570,7 +570,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             p.AddDateField("dd/MM/yyyy");
         }
 
-        private static void SetFooter(ref Section section)
+        private void SetFooter(ref Section section)
         {
             var p = section.Footers.Primary.AddParagraph();
             p.Format.Alignment = ParagraphAlignment.Left;
@@ -578,7 +578,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             p.AddText(CurrentRequestData.CurrentSite.BaseUrl);
         }
 
-        private static void SetInfo(Order order, ref Section section)
+        private void SetInfo(Order order, ref Section section)
         {
             var frame1 = section.AddTextFrame();
             frame1.RelativeVertical = RelativeVertical.Page;
@@ -663,7 +663,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             p.AddText("Shipping method: " + order.ShippingMethod.Name);
         }
 
-        private static Table SetTableStyle(ref Section section, Color tableColor)
+        private Table SetTableStyle(ref Section section, Color tableColor)
         {
             var frame = section.AddTextFrame();
             frame.MarginTop = new Unit(6, UnitType.Centimeter);
@@ -686,7 +686,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             return table;
         }
 
-        private static void SetTableHeader(ref Table table, Color tableColor)
+        private void SetTableHeader(ref Table table, Color tableColor)
         {
             var columns = new Dictionary<string, Dictionary<string, ParagraphAlignment>>()
                 {
@@ -746,7 +746,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             table.SetEdge(0, 0, 5, 1, Edge.Box, BorderStyle.Single, 0.75, Color.Empty);
         }
 
-        private static void SetTableData(Order order, ref Table table)
+        private void SetTableData(Order order, ref Table table)
         {
             for (var i = 0; i < order.OrderLines.Count; i++)
             {
@@ -765,7 +765,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             }
         }
 
-        private static void SetTableSummary(Order order, ref Table table)
+        private void SetTableSummary(Order order, ref Table table)
         {
             var summaryData = new Dictionary<string, string>()
                 {
@@ -793,7 +793,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             table.SetEdge(4, table.Rows.Count - 3, 1, 3, Edge.Box, BorderStyle.Single, 0.75);
         }
 
-        private static byte[] GetDocumentToByteArray(ref Document pdf)
+        private byte[] GetDocumentToByteArray(ref Document pdf)
         {
             var renderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Automatic) { Document = pdf };
             renderer.RenderDocument();
