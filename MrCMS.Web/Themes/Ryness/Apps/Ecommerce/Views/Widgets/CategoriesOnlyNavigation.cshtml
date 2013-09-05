@@ -5,11 +5,16 @@
     var activePages = currentPage.ActivePages.Select(webpage => "/" + webpage.LiveUrlSegment).ToList();
 }
 <ul class="nav">
+    <li class="@(currentPage.Name == "Home" ? "active" : "")">
+        <a href="/" class="home">
+            <img src="/Themes/Ryness/Content/Images/home.png" />
+        </a>
+    </li>
     @foreach (var page in Model)
     {
         if (page.Children.Any())
         {
-            <li>
+            <li class="@(activePages.Any(s => s == page.Url.ToString()) ? "active" : "")">
                 <a href="@page.Url">@page.Text</a>
                 <ul>
                     @foreach (var record in page.Children)
