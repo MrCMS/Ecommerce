@@ -64,7 +64,7 @@ input[type="radio"], input[type="checkbox"] {margin:0;}
     background-image: -o-linear-gradient(top, #D30000, #B20301);
     background-image: linear-gradient(top, #D30000, #B20301);
 }
-.navbar-inverse .nav > li ul li a {line-height:18px;padding:10px 30px 10px 10px;display:block;color:#000000;font-weight:bold;background:url(../images/list-style.png) no-repeat 195px center;}
+.navbar-inverse .nav > li ul li a {line-height:18px;padding:10px 30px 10px 10px;display:block;color:#000000;font-weight:bold;background:url(/Themes/Ryness/Content/Images/list-style.png) no-repeat 195px center;}
 .navbar-inverse .nav > li ul li a:hover, .navbar-inverse .nav > li ul li a.active {
     text-decoration:none;
     color:#ffffff;
@@ -86,7 +86,7 @@ input[type="radio"], input[type="checkbox"] {margin:0;}
 .navbar-inverse .nav > li ul li ul li a:hover {
     text-decoration:none;
     color:#ffffff;
-    background:url(../images/list-hover.png) no-repeat 195px center;
+    background:url(/Themes/Ryness/Content/Images/list-hover.png) no-repeat 195px center;
 }
 .navbar-inverse .nav > li ul li:hover > ul {display: block;}
 /*dropdown menu css end*/
