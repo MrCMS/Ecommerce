@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         public Dictionary<string, List<string>> BulkShippingUpdate(Stream file)
         {
             Dictionary<string, List<string>> parseErrors;
-            var items = GetProductVariantsFromFile(file, out parseErrors);
+            var items = GetOrdersFromFile(file, out parseErrors);
             if (parseErrors.Any())
                 return parseErrors;
             var businessLogicErrors = _bulkShippingUpdateValidationService.ValidateBusinessLogic(items);
@@ -39,7 +39,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             return new Dictionary<string, List<string>>() { { "success", new List<string>() 
             { noOfUpdatedItems > 0 ? noOfUpdatedItems.ToString() + (noOfUpdatedItems > 1? " items were":" item was") +" successfully updated." : "No items were updated." } } };
         }
-        private List<BulkShippingUpdateDataTransferObject> GetProductVariantsFromFile(Stream file, out Dictionary<string, List<string>> parseErrors)
+
+        private List<BulkShippingUpdateDataTransferObject> GetOrdersFromFile(Stream file, out Dictionary<string, List<string>> parseErrors)
         {
             parseErrors = new Dictionary<string, List<string>>();
             return _bulkShippingUpdateValidationService.ValidateAndBulkShippingUpdateOrders(file, ref parseErrors);
