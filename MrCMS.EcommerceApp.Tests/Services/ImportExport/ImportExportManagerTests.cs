@@ -1,28 +1,50 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using FakeItEasy;
 using FluentAssertions;
+using MrCMS.Entities.Multisite;
+using MrCMS.Entities.People;
+using MrCMS.Helpers;
+using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.Entities.Currencies;
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
+using NHibernate;
+using Ninject.MockingKernel;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
-    public class ImportExportManagerTests : InMemoryDatabaseTest
+    public class ImportExportManagerTests
     {
         private readonly IImportProductsValidationService _importProductsValidationService;
         private readonly IImportProductsService _importProductsService;
         private readonly IProductVariantService _productVariantService;
         private readonly ImportExportManager _importExportManager;
         private readonly IOrderShippingService _orderShippingService;
+        private readonly ISession _session;
+        private MockingKernel _mockingKernel;
 
         public ImportExportManagerTests()
         {
+            _mockingKernel = new MockingKernel();
+            MrCMSApplication.OverrideKernel(_mockingKernel);
+            CurrentRequestData.CurrentUser = new User() { FirstName = "Test", LastName = "User" };
+            CurrentRequestData.CurrentSite = new Site() { Name = "Test", BaseUrl = "www.example.com"};
+            CurrentRequestData.SiteSettings = new SiteSettings() { TimeZone = "GMT Standard Time", UICulture = "en-GB" };
+
             _importProductsValidationService = A.Fake<IImportProductsValidationService>();
             _importProductsService = A.Fake<IImportProductsService>();
             _productVariantService = A.Fake<IProductVariantService>();
             _orderShippingService = A.Fake<IOrderShippingService>();
+            _session = A.Fake<ISession>();
 
             _importExportManager = new ImportExportManager(_importProductsValidationService, _importProductsService, _productVariantService, _orderShippingService);
         }
@@ -81,16 +103,6 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             _importExportManager.ExportProductsToGoogleBase();
 
             A.CallTo(() => _productVariantService.GetAllVariants(string.Empty,0,1)).MustHaveHappened();
-        }
-
-        [Fact]
-        public void ImportExportManager_ExportOrderToPdf_ShouldReturnByteArray()
-        {
-            var order = new Order();
-
-            var result = _importExportManager.ExportOrderToPdf(order);
-
-            result.Should().BeOfType<byte[]>();
         }
 
         private static Stream GetDefaultStream()
