@@ -23,13 +23,15 @@
                             <span>Exclusive Price</span>
                             @selectedVariant.Price.ToCurrencyFormat()
 
-                            @if (selectedVariant.PreviousPrice.HasValue)
+                            @if (selectedVariant.PreviousPrice.HasValue && selectedVariant.PreviousPrice > selectedVariant.Price)
                             {
                                 <span>
                                     @Model.PreviousPriceText <span>@selectedVariant.PreviousPrice.Value.ToCurrencyFormat()</span>
                                 </span>
                             }
                         </div>
+                        
+                        <p>SKU: @selectedVariant.SKU</p>
 
                         @Editable(Model, product => product.Abstract, true)
 
