@@ -616,6 +616,14 @@
     <Compile Include="Apps\Ecommerce\Services\IPaypointRequestService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\BulkShippingUpdateService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\BulkShippingUpdateValidationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\DTOs\BulkShippingUpdateDataTransferObject.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\IBulkShippingUpdateService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\IBulkShippingUpdateValidationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\IBulkStockShippingValidationRule.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\OrderExists.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\OrderNotShipped.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\EmptyBasket.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderCancelled.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderFullyRefunded.cs" />
@@ -634,11 +642,13 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderRefundService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderEventService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderRefundService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\OrderShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Payments\IPaymentStatusService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Payments\PaymentStatusService.cs" />
     <Compile Include="Apps\Ecommerce\Services\PaypointPaymentService.cs" />
@@ -2121,6 +2131,7 @@
     <Content Include="Apps\Ryness\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ryness\Views\Web.config" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\SetTrackingNumber.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\BulkShippingUpdate.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
