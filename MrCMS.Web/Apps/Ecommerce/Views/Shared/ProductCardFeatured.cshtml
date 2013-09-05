@@ -12,7 +12,7 @@
     <h1 class="product-price">
         @Html.DisplayFor(product => product.DisplayPrice)
     </h1>
-    @if (Model.DisplayPreviousPrice.HasValue)
+    @if (Model.DisplayPreviousPrice.HasValue && Model.DisplayPreviousPrice > Model.DisplayPrice)
     {
         <span>previous price @Html.DisplayFor(product => product.DisplayPreviousPrice)
         </span>

@@ -13,7 +13,7 @@
         <div class="span6">
             @Html.HiddenFor(x => x.ProductVariant.Id)
             @Html.HiddenFor(x => x.Id)
-            <h4>&nbsp;@Model.ProductVariant.Name</h4>
+            <h4>&nbsp;@(!string.IsNullOrWhiteSpace(Model.ProductVariant.Name) ? Model.ProductVariant.Name : Model.ProductVariant.Product.Name)</h4>
             <br />
             @Html.LabelFor(x => x.OverrideCategory)
             @Html.DropDownListFor(x => x.OverrideCategory, GeneralHelper.SelectDefaultValue(googleBaseCategories, Model.Category), new {@class = "span12"})
