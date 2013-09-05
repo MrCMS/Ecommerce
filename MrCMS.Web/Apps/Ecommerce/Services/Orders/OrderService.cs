@@ -35,6 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                             BillingAddress = cartModel.BillingAddress.Clone(_session),
                                                                             ShippingMethod = cartModel.ShippingMethod,
                                                                             Subtotal = cartModel.Subtotal,
+                                                                            DiscountAmount = cartModel.DiscountAmount,
                                                                             Discount = cartModel.Discount,
                                                                             DiscountCode = cartModel.DiscountCode,
                                                                             Tax = cartModel.Tax,
