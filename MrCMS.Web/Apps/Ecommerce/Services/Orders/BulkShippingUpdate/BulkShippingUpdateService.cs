@@ -38,6 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate
                 {
                     item.ShippingMethod = shippingMethod;
                     _orderService.Save(item);
+                    _orderService.MarkAsShipped(item);
                 }
                 noOfUpdatedItems++;
                 return item;
