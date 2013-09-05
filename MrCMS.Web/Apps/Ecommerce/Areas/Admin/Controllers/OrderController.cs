@@ -132,5 +132,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _orderService.MarkAsVoided(order);
             return !index ? RedirectToAction("Edit", "Order", new { id = order.Id }) : RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public ActionResult SetTrackingNumber(Order order)
+        {
+            return View(order);
+        }
+
+        [HttpPost]
+        [ActionName("SetTrackingNumber")]
+        public ActionResult SetTrackingNumber_POST(Order order)
+        {
+            _orderService.Save(order);
+            return RedirectToAction("Edit", "Order", new {id = order.Id});
+        }
     }
 }
