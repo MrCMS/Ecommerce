@@ -14,7 +14,7 @@
                 Order Subtotal (ex TAX): @Model.Subtotal.ToCurrencyFormat()
             </p>
             <p>
-                Order Shipping (ex TAX): @(Model.ShippingTotal.GetValueOrDefault() - Model.ShippingTax.GetValueOrDefault()).ToCurrencyFormat()
+                Order Shipping (ex TAX): @((Model.ShippingTotal.GetValueOrDefault() - Model.ShippingTax.GetValueOrDefault()).ToCurrencyFormat())
             </p>
             <p>
                 Order Tax: &pound;@Model.Tax.ToCurrencyFormat()
