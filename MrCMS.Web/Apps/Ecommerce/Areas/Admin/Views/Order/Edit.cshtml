@@ -4,43 +4,30 @@
 }
 
 <div class="row-fluid">
-        <div class="span12">
-            <fieldset>
-                <legend>Order - #@Model.Id
-                    
-                    <span class="pull-right">
-                        <a href="/Admin/Apps/Ecommerce/Order" class="btn">Back</a>
-                        @if (!Model.IsCancelled)
-                        {
-                            @Html.ActionLink("Cancel Order", "Cancel", "Order", new {id = Model.Id}, new {@class = "btn btn-danger", data_toggle = "fb-modal"})
-                        }
-                        else
-                        {
-                            <span>
-                                <strong class="red">CANCELLED</strong>
-                            </span>
-                        }
-                         <a href="@Url.Action("ExportOrderToPdf", "ImportExport", new {id = Model.Id})" class="btn btn-success">Invoice (PDF)</a>
-                    </span>
-                   
-                </legend>
-              </fieldset>
-          </div>
- </div>
-<div class="row-fluid">
-        <div class="span12">
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#order-details" data-toggle="tab">Order details</a></li>
-            <li><a href="#order-lines" data-toggle="tab">Order lines</a></li>
-            <li><a href="#order-notes" data-toggle="tab">Order notes</a></li>
-                </ul>
-        </div>
+    <div class="span12">
+        <fieldset>
+            <legend>Order - #@Model.Id
+
+                <span class="pull-right btn-group">
+                    <a href="/Admin/Apps/Ecommerce/Order" class="btn">Back</a>
+                    @if (!Model.IsCancelled)
+                    {
+                        @Html.ActionLink("Cancel Order", "Cancel", "Order", new { id = Model.Id }, new { @class = "btn btn-danger", data_toggle = "fb-modal" })
+                    }
+                    else
+                    {
+                        <span>
+                            <strong class="red">CANCELLED</strong>
+                        </span>
+                    }
+                    <a href="@Url.Action("ExportOrderToPdf", "ImportExport", new { id = Model.Id })" class="btn btn-success">Invoice (PDF)</a>
+                </span>
+
+            </legend>
+        </fieldset>
+    </div>
 </div>
 
-<div class="row-fluid">
-            <div class="tab-content">
-            @{Html.RenderPartial("OrderDetails", Model); }
-            @{Html.RenderPartial("OrderLines", Model);}
-            @{Html.RenderPartial("OrderNotes", Model);}
-        </div>
-</div>
+@{Html.RenderPartial("OrderDetails", Model); }
+@{Html.RenderPartial("OrderLines", Model);}
+@{Html.RenderPartial("OrderNotes", Model);}

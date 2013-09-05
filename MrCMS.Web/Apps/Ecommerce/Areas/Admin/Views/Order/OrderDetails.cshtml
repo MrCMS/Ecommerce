@@ -4,161 +4,168 @@
 @{
     var orderShipping = Model.ShippingTotal.GetValueOrDefault() - Model.ShippingTax.GetValueOrDefault();
 }
-<div class="tab-pane active" id="order-details">
+<div class="row-fluid">
+    <div class="span12">
+        <table class="table table-condensed table-striped">
+            <tr>
+                <td>Customer</td>
+                <td>
+                    @Html.Raw((Model.User != null ? "<a href='/Admin/User/Edit/@Model.User.Id'>" : ""))
+                    @Model.OrderEmail
+                    @Html.Raw((Model.User != null ? "</a>" : ""))
+                </td>
+            </tr>
+            <tr>
+                <td>Order GUID</td>
+                <td>@Model.Guid</td>
+            </tr>
+            <tr>
+                <td>Order Subtotal (ex TAX)</td>
+                <td>@Model.Subtotal.ToCurrencyFormat()</td>
+            </tr>
+            <tr>
+                <td>Order Shipping (ex TAX)</td>
+                <td>@orderShipping.ToCurrencyFormat()</td>
+            </tr>
+
+            <tr>
+                <td>Order Tax</td>
+                <td>@Model.Tax.ToCurrencyFormat()</td>
+            </tr>
+            <tr>
+                <td>Order Total</td>
+                <td>@Model.Total.ToCurrencyFormat()</td>
+            </tr>
+        </table>
+    </div>
+</div>
+@{
+    if (Model.OrderRefunds.Count > 0)
+    {
     <div class="row-fluid">
         <div class="span12">
-            <table class="table table-condensed table-striped">
-                <tr>
-                    <td>Customer</td>
-                    <td>
-                        @Html.Raw((Model.User != null ? "<a href='/Admin/User/Edit/@Model.User.Id'>" : ""))
-                        @Model.OrderEmail
-                        @Html.Raw((Model.User != null ? "</a>" : ""))
-                    </td>
-                </tr>
-                <tr>
-                    <td>Order GUID</td>
-                    <td>@Model.Guid</td>
-                </tr>
-                <tr>
-                    <td>Order Subtotal (ex TAX)</td>
-                    <td>@Model.Subtotal.ToCurrencyFormat()</td>
-                </tr>
-                <tr>
-                    <td>Order Shipping (ex TAX)</td>
-                    <td>@orderShipping.ToCurrencyFormat()</td>
-                </tr>
-
-                <tr>
-                    <td>Order Tax</td>
-                    <td>@Model.Tax.ToCurrencyFormat()</td>
-                </tr>
-                <tr>
-                    <td>Order Total</td>
-                    <td>@Model.Total.ToCurrencyFormat()</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    @{
-        if (Model.OrderRefunds.Count > 0)
-        {
-        <div class="row-fluid">
-            <div class="span12">
-                @if (Model.OrderRefunds.Count > 0)
-                {
-                    <p>Refunds:</p>
-                    <table class="table table-bordered table-striped">
-                        <thead>
+            @if (Model.OrderRefunds.Count > 0)
+            {
+                <p>Refunds:</p>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Amount
+                            </th>
+                            <th>Note
+                            </th>
+                            <th>Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrderRefunds)
+                        {
                             <tr>
-                                <th>Amount
-                                </th>
-                                <th>Note
-                                </th>
-                                <th>Actions
-                                </th>
+                                <td>
+                                    @item.Amount.ToCurrencyFormat()
+                                </td>
+                                <td>
+                                    @item.Note
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        @Html.ActionLink("Delete", "Delete", "OrderRefund", new { id = item.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
+                                    </div>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.OrderRefunds)
-                            {
-                                <tr>
-                                    <td>
-                                        @item.Amount.ToCurrencyFormat()
-                                    </td>
-                                    <td>
-                                        @item.Note
-                                    </td>
-                                    <td>
-                                        <div class="btn-group">
-                                            @Html.ActionLink("Delete", "Delete", "OrderRefund", new { id = item.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                }
-            </div>
+                        }
+                    </tbody>
+                </table>
+            }
         </div>
-        }
+    </div>
     }
-    <hr class="small-margin" />
-    <div class="row-fluid">
-        <div class="span6">
-            <h4>Payment</h4>
+}
+<hr class="small-margin" />
+<div class="row-fluid">
+    <div class="span6">
+        <h4>Payment</h4>
 
-            <table class="table table-condensed">
-                <tr>
-                    <td>Method</td>
-                    <td>@Html.DisplayFor(x => x.PaymentMethod)</td>
-                </tr>
-                <tr>
-                    <td>Status</td>
-                    <td>@Html.DisplayFor(x => x.PaymentStatus)</td>
-                </tr>
-            </table>
-            @if (Model.PaymentStatus == PaymentStatus.Pending)
-            {
-                @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                <span></span>
-                @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-            }
-            @if (Model.PaymentStatus == PaymentStatus.Paid)
-            {
-                <a href="@Url.Action("Add", "OrderRefund", new { orderID = Model.Id, index = false })" class="btn btn-mini" data-toggle="fb-modal">Add Refund</a>
-            }
+        <table class="table table-condensed">
+            <tr>
+                <td>Method</td>
+                <td>@Html.DisplayFor(x => x.PaymentMethod)</td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>@Html.DisplayFor(x => x.PaymentStatus)</td>
+            </tr>
+        </table>
+        @if (Model.PaymentStatus == PaymentStatus.Pending)
+        {
+            @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+            <span></span>
+            @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+        }
+        @if (Model.PaymentStatus == PaymentStatus.Paid)
+        {
+            <a href="@Url.Action("Add", "OrderRefund", new { orderID = Model.Id, index = false })" class="btn btn-mini" data-toggle="fb-modal">Add Refund</a>
+        }
 
-        </div>
-        <div class="span6">
-            <h4>Shipping</h4>
-
-            <table class="table table-condensed">
-                <tr>
-                    <td>Method</td>
-                    <td>@Html.DisplayFor(x => x.ShippingMethod.Name)</td>
-                </tr>
-                <tr>
-                    <td>Status</td>
-                    <td>@Html.DisplayFor(x => x.ShippingStatus)</td>
-                </tr>
-            </table>
-            @if (Model.ShippingStatus != ShippingStatus.Shipped)
-            {
-                @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-            }
-        </div>
     </div>
-    <hr class="small-margin" />
-    <div class="row-fluid">
-        <div class="span6">
-            <h4>Shipping Address
+    <div class="span6">
+        <h4>Shipping</h4>
+
+        <table class="table table-condensed">
+            <tr>
+                <td>Method</td>
+                <td>@Html.DisplayFor(x => x.ShippingMethod.Name)</td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>@Html.DisplayFor(x => x.ShippingStatus)</td>
+            </tr>
+            @{
+                if (!string.IsNullOrEmpty(Model.TrackingNumber))
+                {
+                <tr>
+                    <td>Tracking Number</td>
+                    <td>@Html.DisplayFor(x => x.TrackingNumber)</td>
+                </tr>
+                }
+            }
+        </table>
+        @if (Model.ShippingStatus != ShippingStatus.Shipped)
+        {
+            @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+        }
+        @Html.ActionLink("Set tracking number", "SetTrackingNumber", "Order", new { id = Model.Id}, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+    </div>
+</div>
+<hr class="small-margin" />
+<div class="row-fluid">
+    <div class="span6">
+        <h4>Shipping Address
                 @Html.ActionLink("Edit", "Edit", "Address", new { addressType = 1, orderID = Model.Id, addressID = Model.ShippingAddress != null ? Model.ShippingAddress.Id : 0 }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-            </h4>
-            <div class="pull-left">
-                @if (Model.ShippingAddress != null)
-                {
-                    @Model.ShippingAddress.Address1<div class="clearfix"></div>
-                    @Model.ShippingAddress.Address2<div class="clearfix"></div>
-                    @Model.ShippingAddress.City<div class="clearfix"></div>
-                    @Model.ShippingAddress.PostalCode
-                }
-            </div>
-        </div>
-        <div class="span6">
-            <h4>Billing Address
-                @Html.ActionLink("Edit", "Edit", "Address", new { addressType = 2, orderID = Model.Id, addressID = Model.BillingAddress != null ? Model.BillingAddress.Id : 0 }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-            </h4>
-            <div class="pull-left">
-                @if (Model.BillingAddress != null)
-                {
-                    @Model.BillingAddress.Address1<div class="clearfix"></div>
-                    @Model.BillingAddress.Address2<div class="clearfix"></div>
-                    @Model.BillingAddress.City<div class="clearfix"></div>
-                    @Model.BillingAddress.PostalCode
-                }
-            </div>
+        </h4>
+        <div class="pull-left">
+            @if (Model.ShippingAddress != null)
+            {
+                @Model.ShippingAddress.Address1<div class="clearfix"></div>
+                @Model.ShippingAddress.Address2<div class="clearfix"></div>
+                @Model.ShippingAddress.City<div class="clearfix"></div>
+                @Model.ShippingAddress.PostalCode
+            }
         </div>
     </div>
-
+    <div class="span6">
+        <h4>Billing Address
+                @Html.ActionLink("Edit", "Edit", "Address", new { addressType = 2, orderID = Model.Id, addressID = Model.BillingAddress != null ? Model.BillingAddress.Id : 0 }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+        </h4>
+        <div class="pull-left">
+            @if (Model.BillingAddress != null)
+            {
+                @Model.BillingAddress.Address1<div class="clearfix"></div>
+                @Model.BillingAddress.Address2<div class="clearfix"></div>
+                @Model.BillingAddress.City<div class="clearfix"></div>
+                @Model.BillingAddress.PostalCode
+            }
+        </div>
+    </div>
 </div>
