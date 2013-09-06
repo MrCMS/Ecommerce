@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
             _productSearchService = productSearchService;
         }
 
-        public CategoryPagedList Search(string queryTerm = null, int page = 1)
+        public CategoryPagedList Search(string queryTerm = null, int page = 1, int pageSize=10)
         {
             IPagedList<Category> pagedList;
             if (!string.IsNullOrWhiteSpace(queryTerm))
@@ -39,11 +39,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
                     _session.Paged(
                         QueryOver.Of<Category>()
                                  .Where(category => category.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)), page,
-                        10);
+                        pageSize);
             }
             else
             {
-                pagedList = _session.Paged(QueryOver.Of<Category>(), page, 10);
+                pagedList = _session.Paged(QueryOver.Of<Category>(), page, pageSize);
             }
 
             var categoryContainer = _documentService.GetUniquePage<CategoryContainer>();

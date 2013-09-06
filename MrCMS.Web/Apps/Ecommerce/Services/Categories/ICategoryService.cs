@@ -10,7 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
 {
     public interface ICategoryService
     {
-        CategoryPagedList Search(string query = null, int page = 1);
+        CategoryPagedList Search(string query = null, int page = 1,int pageSize=10);
         IEnumerable<AutoCompleteResult> Search(string query, List<int> ids);
         IPagedList<Category> GetCategories(Product product, string query, int page);
         IList<Category> GetAll();

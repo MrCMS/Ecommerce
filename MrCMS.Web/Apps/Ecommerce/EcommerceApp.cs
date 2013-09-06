@@ -153,6 +153,11 @@ namespace MrCMS.Web.Apps.Ecommerce
                              "Apps/Ecommerce/Paypoint/3DSecureReturnHandler",
                              new { controller = "Paypoint", action = "Response3DSecure" },
                              new[] { typeof(PaypointController).Namespace });
+
+            context.MapRoute("Category Container - Categories",
+                             "Apps/Ecommerce/CategoryContainer/Categories",
+                             new { controller = "CategoryContainer", action = "Categories" },
+                             new[] { typeof(CategoryContainer).Namespace });
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)

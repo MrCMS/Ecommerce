@@ -2133,6 +2133,7 @@
     <Content Include="Apps\Ryness\Views\Web.config" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\SetTrackingNumber.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\BulkShippingUpdate.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\CategoryContainer\Categories.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

@@ -2,7 +2,7 @@
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
-using System.Linq;
+
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class CategoryContainerController : MrCMSAppUIController<EcommerceApp>
@@ -16,8 +16,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public ViewResult Show(CategoryContainer page)
         {
-            ViewBag.Categories = _categoryService.GetAll().Where(x => x.Parent != null && x.Parent.Parent == null).ToList();
             return View(page);
+        }
+
+        [HttpGet]
+        public PartialViewResult Categories(int page = 1)
+        {
+            return PartialView(_categoryService.Search(string.Empty,page));
         }
     }
 }
