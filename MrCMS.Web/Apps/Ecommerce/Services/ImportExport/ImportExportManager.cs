@@ -108,8 +108,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 var wsItems = excelFile.Workbook.Worksheets.Add("Items");
 
-                wsItems.Cells["A1:AE1"].Style.Font.Bold = true;
-                wsItems.Cells["A:AE"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                wsItems.Cells["A1:AF1"].Style.Font.Bold = true;
+                wsItems.Cells["A:AF"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 wsItems.Cells["A1"].Value = "Url (Must not be changed!)";
                 wsItems.Cells["B1"].Value = "Product Name";
                 wsItems.Cells["C1"].Value = "Description";
@@ -255,7 +255,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 wsItems.Cells["A:B"].AutoFitColumns();
                 wsItems.Cells["D:D"].AutoFitColumns();
                 wsItems.Cells["F:F"].AutoFitColumns();
-                wsItems.Cells["I:AE"].AutoFitColumns();
+                wsItems.Cells["I:AF"].AutoFitColumns();
 
                 return excelFile.GetAsByteArray();
             }
