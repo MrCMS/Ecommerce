@@ -68,7 +68,7 @@ input[type="radio"], input[type="checkbox"] {margin:0;}
 .navbar-inverse .nav > li ul li a:hover, .navbar-inverse .nav > li ul li a.active {
     text-decoration:none;
     color:#ffffff;
-    background:url(/Themes/Ryness/Content/Images/list-hover.png) no-repeat 195px center;
+    background:url(../images/list-hover.png) no-repeat 195px center;
 }
 .navbar-inverse .nav > li:hover > ul {display: block;}
 .navbar-inverse .nav > li ul li ul {margin:0;padding:0;position:absolute;top:-1px;left:220px;z-index:999999;display: none;width:220px;border-left:1px solid #dddddd;border-bottom:1px solid #dddddd;border-right:1px solid #dddddd;background:#dddddd;list-style-type:none;height:auto;border-top:1px solid #dddddd;}

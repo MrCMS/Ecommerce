@@ -13,7 +13,7 @@
             <h1 class="product-price">
                 @Html.DisplayFor(product => product.DisplayPrice)
             </h1>
-            @if (Model.DisplayPreviousPrice.HasValue)
+            @if (Model.ShowPreviousPrice)
             {
                 <span>@Model.PreviousPriceText <span style="text-decoration: line-through">@Model.DisplayPreviousPrice </span></span>
             }   

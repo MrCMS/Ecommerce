@@ -193,6 +193,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                             SKU = "123",
                             PreviousPrice = 2,
                             Barcode = "456",
+                            ManufacturerPartNumber = "MPN",
                             AttributeValues = new List<ProductAttributeValue>()
                                 {
                                     new ProductAttributeValue()
@@ -234,15 +235,16 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             wsProducts.Cells["Q1"].Value = "Tracking Policy";
             wsProducts.Cells["R1"].Value = "SKU";
             wsProducts.Cells["S1"].Value = "Barcode";
-            wsProducts.Cells["T1"].Value = "Option 1 Name";
-            wsProducts.Cells["U1"].Value = "Option 1 Value";
-            wsProducts.Cells["V1"].Value = "Option 2 Name";
-            wsProducts.Cells["W1"].Value = "Option 2 Value";
-            wsProducts.Cells["X1"].Value = "Option 3 Name";
-            wsProducts.Cells["Y1"].Value = "Option 3 Value";
-            wsProducts.Cells["Z1"].Value = "Image 1";
-            wsProducts.Cells["AA1"].Value = "Image 2";
-            wsProducts.Cells["AB1"].Value = "Image 3";
+            wsProducts.Cells["T1"].Value = "Manufacturer Part Number";
+            wsProducts.Cells["U1"].Value = "Option 1 Name";
+            wsProducts.Cells["V1"].Value = "Option 1 Value";
+            wsProducts.Cells["W1"].Value = "Option 2 Name";
+            wsProducts.Cells["X1"].Value = "Option 2 Value";
+            wsProducts.Cells["Y1"].Value = "Option 3 Name";
+            wsProducts.Cells["Z1"].Value = "Option 3 Value";
+            wsProducts.Cells["AA1"].Value = "Image 1";
+            wsProducts.Cells["AB1"].Value = "Image 2";
+            wsProducts.Cells["AC1"].Value = "Image 3";
 
             for (var i = 0; i < productVariants.Count; i++)
             {
@@ -280,6 +282,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                 wsProducts.Cells["Q" + rowId].Value = productVariants[i].TrackingPolicy;
                 wsProducts.Cells["R" + rowId].Value = productVariants[i].SKU;
                 wsProducts.Cells["S" + rowId].Value = productVariants[i].Barcode;
+                wsProducts.Cells["T" + rowId].Value = productVariants[i].ManufacturerPartNumber;
 
                 for (var v = 0;
                      v < productVariants[i].AttributeValues.OrderBy(x => x.ProductAttributeOption.DisplayOrder).Count();
@@ -287,33 +290,33 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                 {
                     if (v == 0)
                     {
-                        wsProducts.Cells["T" + rowId].Value =
+                        wsProducts.Cells["U" + rowId].Value =
                             productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                        wsProducts.Cells["U" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                        wsProducts.Cells["V" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                     }
                     if (v == 1)
                     {
-                        wsProducts.Cells["V" + rowId].Value =
+                        wsProducts.Cells["W" + rowId].Value =
                             productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                        wsProducts.Cells["W" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                        wsProducts.Cells["X" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                     }
                     if (v == 2)
                     {
-                        wsProducts.Cells["X" + rowId].Value =
+                        wsProducts.Cells["Y" + rowId].Value =
                             productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                        wsProducts.Cells["Y" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                        wsProducts.Cells["Z" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                     }
                 }
 
                 if (!productVariants[i].Product.Images.Any()) continue;
-                wsProducts.Cells["Z" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl +
+                wsProducts.Cells["AA" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl +
                                                       productVariants[i].Product.Images.First().FileUrl + "?update=no";
                 if (productVariants[i].Product.Images.Count() > 1)
-                    wsProducts.Cells["AA" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl +
+                    wsProducts.Cells["AB" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl +
                                                            productVariants[i].Product.Images.ToList()[1].FileUrl +
                                                            "?update=no";
                 if (productVariants[i].Product.Images.Count() > 2)
-                    wsProducts.Cells["AB" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl +
+                    wsProducts.Cells["AC" + rowId].Value = "http://" + CurrentRequestData.CurrentSite.BaseUrl +
                                                            productVariants[i].Product.Images.ToList()[2].FileUrl +
                                                            "?update=no";
             }

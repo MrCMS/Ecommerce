@@ -77,13 +77,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                             var totalRows = worksheet.Dimension.End.Row;
                             for (var rowId = 2; rowId <= totalRows; rowId++)
                             {
+                                if (!worksheet.GetValue<string>(rowId, 1).HasValue() ||
+                                    !worksheet.GetValue<string>(rowId, 2).HasValue() ||
+                                    !worksheet.GetValue<string>(rowId, 3).HasValue()) continue;
+
                                 var product = new ProductImportDataTransferObject();
 
                                 //Prepare handle name for storing and grouping errors
-                                string url = worksheet.GetValue<string>(rowId, 1), name = worksheet.GetValue<string>(rowId, 2);
+                                string url = worksheet.GetValue<string>(rowId, 1),
+                                       name = worksheet.GetValue<string>(rowId, 2);
                                 var handle = url.HasValue() ? url : SeoHelper.TidyUrl(name);
 
-                                
+
                                 if (!productsToImport.Any(x => x.Name == name || x.UrlSegment == url))
                                 {
                                     if (parseErrors.All(x => x.Key != handle))
@@ -95,7 +100,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     //skip duplicate url
                                     if (productsToImport.Any(x => x.UrlSegment == product.UrlSegment))
                                         continue;
-                                    
+
                                     if (worksheet.GetValue<string>(rowId, 2).HasValue())
                                         product.Name = worksheet.GetValue<string>(rowId, 2);
                                     else
@@ -106,12 +111,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     product.SEOKeywords = worksheet.GetValue<string>(rowId, 6);
                                     product.Abstract = worksheet.GetValue<string>(rowId, 7);
                                     product.Brand = worksheet.GetValue<string>(rowId, 8);
-                                    if (worksheet.GetValue<string>(rowId, 31).HasValue())
+                                    if (worksheet.GetValue<string>(rowId, 32).HasValue())
                                     {
-                                        if (!worksheet.GetValue<string>(rowId, 31).IsValidDateTime())
+                                        if (!worksheet.GetValue<string>(rowId, 32).IsValidDateTime())
                                             parseErrors[handle].Add("Publish Date is not a valid date.");
                                         else
-                                            product.PublishDate = worksheet.GetValue<DateTime>(rowId, 31);
+                                            product.PublishDate = worksheet.GetValue<DateTime>(rowId, 32);
                                     }
 
                                     //Categories
@@ -125,12 +130,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                             {
                                                 if (!String.IsNullOrWhiteSpace(item))
                                                 {
-                                                    if(!product.Categories.Any(x=>x==item))
+                                                    if (!product.Categories.Any(x => x == item))
                                                         product.Categories.Add(item);
                                                     else
                                                     {
                                                         parseErrors[handle].Add(
-                                                        "Product Categories field value contains duplicate values.");
+                                                            "Product Categories field value contains duplicate values.");
                                                         break;
                                                     }
                                                 }
@@ -160,8 +165,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                                     if (!String.IsNullOrWhiteSpace(item))
                                                     {
                                                         string[] specificationValue = item.Split(':');
-                                                        if (!String.IsNullOrWhiteSpace(specificationValue[0]) && !String.IsNullOrWhiteSpace(specificationValue[1]) && !product.Specifications.ContainsKey(specificationValue[0]))
-                                                            product.Specifications.Add(specificationValue[0], specificationValue[1]);
+                                                        if (!String.IsNullOrWhiteSpace(specificationValue[0]) &&
+                                                            !String.IsNullOrWhiteSpace(specificationValue[1]) &&
+                                                            !product.Specifications.ContainsKey(
+                                                                specificationValue[0]))
+                                                            product.Specifications.Add(specificationValue[0],
+                                                                                       specificationValue[1]);
                                                     }
                                                 }
                                             }
@@ -174,12 +183,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     }
 
                                     //Images
-                                    if (worksheet.GetValue<string>(rowId, 26).HasValue())
-                                        product.Images.Add(worksheet.GetValue<string>(rowId, 26));
                                     if (worksheet.GetValue<string>(rowId, 27).HasValue())
                                         product.Images.Add(worksheet.GetValue<string>(rowId, 27));
                                     if (worksheet.GetValue<string>(rowId, 28).HasValue())
                                         product.Images.Add(worksheet.GetValue<string>(rowId, 28));
+                                    if (worksheet.GetValue<string>(rowId, 29).HasValue())
+                                        product.Images.Add(worksheet.GetValue<string>(rowId, 29));
 
                                     //Url History
                                     try
@@ -206,44 +215,57 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     productsToImport.Add(product);
                                 }
                                 else
-                                    product = productsToImport.SingleOrDefault(x => x.Name == name && x.UrlSegment == url);
+                                    product =
+                                        productsToImport.SingleOrDefault(x => x.Name == name && x.UrlSegment == url);
 
                                 //Variants
                                 if (product != null)
                                 {
                                     var productVariant = new ProductVariantImportDataTransferObject
-                                    {
-                                        Name = worksheet.GetValue<string>(rowId, 11)
-                                    };
+                                        {
+                                            Name = worksheet.GetValue<string>(rowId, 11)
+                                        };
 
                                     if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 12)))
                                         parseErrors[handle].Add("Price value is not a valid decimal number.");
                                     else if (worksheet.GetValue<string>(rowId, 12).HasValue())
-                                        productVariant.Price = worksheet.GetValue<decimal>(rowId, 12);
+                                        productVariant.Price =
+                                            GeneralHelper.GetValue<decimal>(worksheet.GetValue<string>(rowId, 12));
                                     else
                                         parseErrors[handle].Add("Price is required.");
+
                                     if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 13)))
-                                        parseErrors[handle].Add("Previous Price value is not a valid decimal number.");
+                                        parseErrors[handle].Add(
+                                            "Previous Price value is not a valid decimal number.");
                                     else
-                                        productVariant.PreviousPrice = worksheet.GetValue<decimal>(rowId, 13);
+                                        productVariant.PreviousPrice =
+                                            GeneralHelper.GetValue<decimal>(worksheet.GetValue<string>(rowId, 13));
+
                                     if (!GeneralHelper.IsValidInput<int>(worksheet.GetValue<string>(rowId, 14)))
                                         parseErrors[handle].Add("Tax Rate Id value is not a valid number.");
                                     else
-                                        productVariant.TaxRate = worksheet.GetValue<int>(rowId, 14);
+                                        productVariant.TaxRate =
+                                            GeneralHelper.GetValue<int>(worksheet.GetValue<string>(rowId, 14));
+
                                     if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 15)))
                                         parseErrors[handle].Add("Weight value is not a valid decimal number.");
                                     else
-                                        productVariant.Weight = worksheet.GetValue<decimal>(rowId, 15);
+                                        productVariant.Weight =
+                                            GeneralHelper.GetValue<decimal>(worksheet.GetValue<string>(rowId, 15));
+
                                     if (!GeneralHelper.IsValidInput<int>(worksheet.GetValue<string>(rowId, 16)))
                                         parseErrors[handle].Add("Stock value is not a valid decimal number.");
                                     else
                                         productVariant.Stock = worksheet.HasValue(rowId, 16)
-                                                                   ? worksheet.GetValue<int>(rowId, 16)
+                                                                   ? GeneralHelper.GetValue<int>(
+                                                                       worksheet.GetValue<string>(rowId, 16))
                                                                    : (int?) null;
+
                                     if (!worksheet.GetValue<string>(rowId, 17).HasValue() ||
                                         (worksheet.GetValue<string>(rowId, 17) != "Track" &&
                                          worksheet.GetValue<string>(rowId, 17) != "DontTrack"))
-                                        parseErrors[handle].Add("Tracking Policy must have either 'Track' or 'DontTrack' value.");
+                                        parseErrors[handle].Add(
+                                            "Tracking Policy must have either 'Track' or 'DontTrack' value.");
                                     else
                                     {
                                         if (worksheet.GetValue<string>(rowId, 17) == "Track")
@@ -257,37 +279,43 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                         parseErrors[handle].Add("SKU is required.");
                                     productVariant.Barcode = worksheet.GetValue<string>(rowId, 19);
 
+                                    productVariant.ManufacturerPartNumber = worksheet.GetValue<string>(rowId, 20);
+
                                     //Options
-                                    if (worksheet.GetValue<string>(rowId, 20).HasValue() &&
-                                        worksheet.GetValue<string>(rowId, 21).HasValue())
-                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 20),
-                                                                   worksheet.GetValue<string>(rowId, 21));
-                                    if (worksheet.GetValue<string>(rowId, 22).HasValue() &&
-                                        worksheet.GetValue<string>(rowId, 23).HasValue())
-                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 22),
-                                                                   worksheet.GetValue<string>(rowId, 23));
-                                    if (worksheet.GetValue<string>(rowId, 24).HasValue() &&
-                                        worksheet.GetValue<string>(rowId, 25).HasValue())
-                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 24),
-                                                                   worksheet.GetValue<string>(rowId, 25));
+                                    if (worksheet.GetValue<string>(rowId, 21).HasValue() &&
+                                        worksheet.GetValue<string>(rowId, 22).HasValue())
+                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 21),
+                                                                   worksheet.GetValue<string>(rowId, 22));
+                                    if (worksheet.GetValue<string>(rowId, 23).HasValue() &&
+                                        worksheet.GetValue<string>(rowId, 24).HasValue())
+                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 23),
+                                                                   worksheet.GetValue<string>(rowId, 24));
+                                    if (worksheet.GetValue<string>(rowId, 25).HasValue() &&
+                                        worksheet.GetValue<string>(rowId, 26).HasValue())
+                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 25),
+                                                                   worksheet.GetValue<string>(rowId, 26));
 
                                     //Price Breaks
-                                    if (!String.IsNullOrWhiteSpace(worksheet.GetValue<string>(rowId, 29)))
+                                    if (!String.IsNullOrWhiteSpace(worksheet.GetValue<string>(rowId, 30)))
                                     {
                                         try
                                         {
-                                            var value = worksheet.GetValue<string>(rowId, 29);
+                                            var value = worksheet.GetValue<string>(rowId, 30);
                                             if (!String.IsNullOrWhiteSpace(value))
                                             {
-                                                if (!worksheet.GetValue<string>(rowId, 29).Contains(":"))
-                                                    parseErrors[handle].Add("Product Variant Price Breaks field value contains illegal characters / not in correct format. Quantity and Price (Item) must be split with :, and items must be split by ;");
+                                                if (!worksheet.GetValue<string>(rowId, 30).Contains(":"))
+                                                    parseErrors[handle].Add(
+                                                        "Product Variant Price Breaks field value contains illegal characters / not in correct format. Quantity and Price (Item) must be split with :, and items must be split by ;");
                                                 var priceBreaks = value.Split(';');
                                                 foreach (var item in priceBreaks)
                                                 {
                                                     if (!String.IsNullOrWhiteSpace(item))
                                                     {
                                                         string[] priceBreak = item.Split(':');
-                                                        if (!String.IsNullOrWhiteSpace(priceBreak[0]) && !String.IsNullOrWhiteSpace(priceBreak[1]) && !productVariant.PriceBreaks.ContainsKey(Int32.Parse(priceBreak[0])))
+                                                        if (!String.IsNullOrWhiteSpace(priceBreak[0]) &&
+                                                            !String.IsNullOrWhiteSpace(priceBreak[1]) &&
+                                                            !productVariant.PriceBreaks.ContainsKey(
+                                                                Int32.Parse(priceBreak[0])))
                                                         {
                                                             var quantity = Int32.Parse(priceBreak[0]);
                                                             var price = Decimal.Parse(priceBreak[1]);
@@ -299,11 +327,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                         }
                                         catch (ArgumentException)
                                         {
-                                            parseErrors[handle].Add("Product Variant Price Breaks field contains duplicate price breaks.");
+                                            parseErrors[handle].Add(
+                                                "Product Variant Price Breaks field contains duplicate price breaks.");
                                         }
                                         catch (Exception)
                                         {
-                                            parseErrors[handle].Add("Product Variant Price Breaks field value contains illegal characters / not in correct format. Quantity and Price (Item) must be split with :, and items must be split by ;");
+                                            parseErrors[handle].Add(
+                                                "Product Variant Price Breaks field value contains illegal characters / not in correct format. Quantity and Price (Item) must be split with :, and items must be split by ;");
                                         }
                                     }
 

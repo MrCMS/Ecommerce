@@ -98,3 +98,11 @@ ul.nav { margin-bottom: 10px;}
 #footer-popup { position: fixed;bottom: 0;width: 100%;background: white;padding-top: 0;padding-bottom: 10px;}
 
 #footer-popup hr { margin-top: 1px;}
+
+.row-fluid [class*="span"].no-margin-left {
+    margin-left: 0 !important;
+}
+.select2-full {
+    position: fixed !important;
+
+}

@@ -2,15 +2,10 @@
 using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
-using MrCMS.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Services.GoogleBase;
-using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 
 namespace MrCMS.EcommerceApp.Tests.Services
 {
@@ -24,7 +19,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         {
             _productVariantService = A.Fake<IProductVariantService>();
             _googleBaseSettings = A.Fake<GoogleBaseSettings>();
-            _googleBaseService = new GoogleBaseService(Session, _productVariantService,_googleBaseSettings);
+            _googleBaseService = new GoogleBaseService(Session);
         }
 
         [Fact]

@@ -19,6 +19,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private readonly IPaymentStatusService _paymentStatusService;
         private readonly IShippingMethodManager _shippingMethodManager;
         private readonly IOrderSearchService _orderSearchService;
+        private readonly IOrderShippingService _orderShippingService;
 
         public OrderControllerTests()
         {
@@ -27,7 +28,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _paymentStatusService = A.Fake<IPaymentStatusService>();
             _shippingMethodManager = A.Fake<IShippingMethodManager>();
             _orderSearchService = A.Fake<IOrderSearchService>();
-            _orderController = new OrderController(_orderService, _shippingStatusService, _paymentStatusService, _shippingMethodManager, _orderSearchService);
+            _orderShippingService = A.Fake<IOrderShippingService>();
+            _orderController = new OrderController(_orderService, _shippingStatusService, _paymentStatusService,
+                _shippingMethodManager, _orderSearchService, _orderShippingService);
         }
 
         //[Fact]

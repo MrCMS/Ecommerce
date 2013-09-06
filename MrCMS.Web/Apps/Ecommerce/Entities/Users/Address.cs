@@ -97,7 +97,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Users
 
         public virtual string ToJSON()
         {
-            return JsonConvert.SerializeObject((IAddress)this);
+            return JsonConvert.SerializeObject(new AddressComparison(this));
         }
     }
 }

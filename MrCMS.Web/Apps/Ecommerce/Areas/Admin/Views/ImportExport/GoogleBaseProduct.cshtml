@@ -1,7 +1,6 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase.GoogleBaseProduct
 @{
-    var googleBaseCategories = ViewData["google-base-categories"] as IEnumerable<SelectListItem>;
     var gender = ViewData["genders"] as IEnumerable<SelectListItem>;
     var ageGroup = ViewData["age-groups"] as IEnumerable<SelectListItem>;
     var productConditions = ViewData["product-conditions"] as IEnumerable<SelectListItem>;
@@ -13,13 +12,15 @@
         <div class="span6">
             @Html.HiddenFor(x => x.ProductVariant.Id)
             @Html.HiddenFor(x => x.Id)
-            <h4>&nbsp;@Model.ProductVariant.Name</h4>
+            <h4>&nbsp;@(!string.IsNullOrWhiteSpace(Model.ProductVariant.Name) ? Model.ProductVariant.Name : Model.ProductVariant.Product.Name)</h4>
             <br />
-            @Html.LabelFor(x => x.OverrideCategory)
-            @Html.DropDownListFor(x => x.OverrideCategory, GeneralHelper.SelectDefaultValue(googleBaseCategories, Model.Category), new {@class = "span12"})
+            <div style="width:100%; overflow: hidden">
+                @Html.LabelFor(x => x.OverrideCategory)
+                @Html.HiddenFor(x => x.OverrideCategory,new {@class="select2 select2-full", style="width:100%"})
+            </div>
             <br />
             <br />
-            <button type="button" class="btn update-google-base-product" data-google-base-product-id="@Model.Id">
+            <button type="button" class="btn update-google-base-product" data-google-base-product-id="@Model.Id" data-google-base-product-variant-id="@Model.ProductVariant.Id">
                 Update
             </button>
         </div>

@@ -35,6 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                             BillingAddress = cartModel.BillingAddress.Clone(_session),
                                                                             ShippingMethod = cartModel.ShippingMethod,
                                                                             Subtotal = cartModel.Subtotal,
+                                                                            DiscountAmount = cartModel.DiscountAmount,
                                                                             Discount = cartModel.Discount,
                                                                             DiscountCode = cartModel.DiscountCode,
                                                                             Tax = cartModel.Tax,
@@ -150,16 +151,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             _session.Transact(session => session.Update(order));
         }
 
-        public void SetLastOrderUserIdByOrderEmail(string email)
+        public void SetLastOrderUserIdByOrderId(int orderId)
         {
-            var orders = _session.QueryOver<Order>()
-                        .Where(x => x.OrderEmail.IsInsensitiveLike(email, MatchMode.Exact) && x.IsDeleted == false)
-                        .OrderBy(x => x.CreatedOn)
-                        .Desc.List();
+            var order = _session.Get<Order>(orderId);
 
-            if (!orders.Any()) return;
+            if (order == null) return;
 
-            var order = orders.First();
             order.User = CurrentRequestData.CurrentUser;
             _session.Transact(session => session.Update(order));
         }

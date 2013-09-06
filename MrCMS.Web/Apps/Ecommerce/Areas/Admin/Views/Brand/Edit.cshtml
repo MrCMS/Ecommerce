@@ -14,5 +14,8 @@
         @Html.LabelFor(x => x.Name)
         @Html.TextBoxFor(x => x.Name)
         @Html.ValidationMessageFor(x => x.Name)
+        
+        @Html.LabelFor(webpage => webpage.Logo)
+        @Html.TextBoxFor(webpage => webpage.Logo, new { @class = "media-selector" })
     </fieldset>
 }

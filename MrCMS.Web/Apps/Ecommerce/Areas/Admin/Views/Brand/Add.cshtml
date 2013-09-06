@@ -1,19 +1,21 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.Brand
-
-@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 @using (Html.BeginForm("Add", "Brand", FormMethod.Post))
 {
-      <fieldset>
-          <legend>Add Brand
+    <fieldset>
+        <legend>Add Brand
                <span class="btn-group  display-inline  pull-right">
-                 <input type="submit" class="btn-primary btn" value="Add Brand" />
-            </span>
+                   <input type="submit" class="btn-primary btn" value="Add Brand" />
+               </span>
         </legend>
-        @Html.Hidden("productId",ViewBag.ProductId as string)
+        @Html.Hidden("productId", ViewBag.ProductId as string)
 
         @Html.LabelFor(x => x.Name)
         @Html.TextBoxFor(x => x.Name)
         @Html.ValidationMessageFor(x => x.Name)
 
-     </fieldset>
+        @Html.LabelFor(webpage => webpage.Logo)
+        @Html.TextBoxFor(webpage => webpage.Logo, new { @class = "media-selector" })
+
+    </fieldset>
 }

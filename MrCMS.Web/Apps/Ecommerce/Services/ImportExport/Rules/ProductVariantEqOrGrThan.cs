@@ -28,6 +28,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.Rules
                         "{0} value must be greather than or equal to {1}.",
                         DisplayName,Min);
             }
+            else
+            {
+                yield return
+                      string.Format(
+                       "{0} value must be greather than or equal to {1}.",
+                       DisplayName, Min);
+            }
         }
     }
 }

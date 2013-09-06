@@ -3,12 +3,15 @@ using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
 using System.Collections.Generic;
 using System.Linq;
+using NHibernate.SqlCommand;
+
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public class ProductVariantService : IProductVariantService
@@ -37,11 +40,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (string.IsNullOrWhiteSpace(queryTerm) && categoryId == 0)
                 return _session.Paged(QueryOver.Of<ProductVariant>().Cacheable(), page, MrCMSApplication.Get<EcommerceSettings>().PageSizeAdmin);
 
-            var items = GetAll().Where(item => (queryTerm == null || item.Name.Contains(queryTerm))).OrderBy(x => x.Product.Id).ToList();
-            if (categoryId > 0)
-                items = items.Where(x => categoryId == 0 || x.Product.Categories.Any(c => c.Id == categoryId)).ToList();
-
-            return new PagedList<ProductVariant>(items, page, MrCMSApplication.Get<EcommerceSettings>().PageSizeAdmin);
+            Category categoryAlias = null;
+            Product productAlias = null;
+            ProductVariant productVariantAlias = null;
+            return _session.QueryOver(() => productVariantAlias)
+                                .JoinAlias(() => productVariantAlias.Product, () => productAlias, JoinType.InnerJoin)
+                                .JoinAlias(() => productAlias.Categories, () => categoryAlias, JoinType.LeftOuterJoin)
+                                .Where(
+                                    () => productVariantAlias.Name.IsInsensitiveLike(queryTerm,MatchMode.Anywhere)
+                                    && categoryAlias.Id==categoryId)
+                                .Paged(page, MrCMSApplication.Get<EcommerceSettings>().PageSizeAdmin);
         }
         public ProductVariant GetProductVariantBySKU(string sku)
         {
