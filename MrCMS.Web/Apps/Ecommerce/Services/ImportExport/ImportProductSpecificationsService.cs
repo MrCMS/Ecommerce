@@ -49,12 +49,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
         public void ImportVariantSpecifications(ProductVariantImportDataTransferObject item, Product product, ProductVariant productVariant)
         {
+            productVariant.AttributeValues.Clear();
             foreach (var opt in item.Options)
             {
-                var option = _productOptionManager.GetAttributeOptionByName(opt.Key) ??  new ProductAttributeOption {Name = opt.Key};
-                if (!productVariant.Product.AttributeOptions.Any(x => x.Id == option.Id))
+                if (_productOptionManager.GetAttributeOptionByName(opt.Key)==null)
+                    _productOptionManager.AddAttributeOption(new ProductAttributeOption { Name = opt.Key });
+                var option = _productOptionManager.GetAttributeOptionByName(opt.Key);
+                if (!product.AttributeOptions.Any(x => x.Id == option.Id))
+                {
                     product.AttributeOptions.Add(option);
-                if (!productVariant.AttributeValues.Any(x => x.ProductAttributeOption.Id == option.Id))
+                }
+
+                if (productVariant.AttributeValues.All(x => x.ProductAttributeOption.Id != option.Id))
                 {
                     productVariant.AttributeValues.Add(new ProductAttributeValue
                     {

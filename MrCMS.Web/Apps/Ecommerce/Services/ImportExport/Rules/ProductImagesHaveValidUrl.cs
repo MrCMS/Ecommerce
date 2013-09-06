@@ -14,8 +14,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.Rules
                 foreach (var item in product.Images)
                 {
                     Uri testUri;
-                    bool result = Uri.TryCreate(item, UriKind.Absolute, out testUri) &&
-                        testUri.Scheme == Uri.UriSchemeHttp;
+                    var result = Uri.TryCreate(item, UriKind.Absolute, out testUri) &&
+                        (testUri.Scheme == Uri.UriSchemeHttps || testUri.Scheme == Uri.UriSchemeHttp);
                     if (!result)
                         errors.Add(string.Format(
                            "{0} is not valid Url.",
