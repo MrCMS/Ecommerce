@@ -8,7 +8,7 @@ using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
-    public class ImportExportManagerTests
+    public class ImportExportManagerTests : InMemoryDatabaseTest
     {
         private readonly IImportProductsValidationService _importProductsValidationService;
         private readonly IImportProductsService _importProductsService;
