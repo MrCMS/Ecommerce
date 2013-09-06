@@ -129,18 +129,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 wsItems.Cells["Q1"].Value = "Tracking Policy";
                 wsItems.Cells["R1"].Value = "SKU";
                 wsItems.Cells["S1"].Value = "Barcode";
-                wsItems.Cells["T1"].Value = "Option 1 Name";
-                wsItems.Cells["U1"].Value = "Option 1 Value";
-                wsItems.Cells["V1"].Value = "Option 2 Name";
-                wsItems.Cells["W1"].Value = "Option 2 Value";
-                wsItems.Cells["X1"].Value = "Option 3 Name";
-                wsItems.Cells["Y1"].Value = "Option 3 Value";
-                wsItems.Cells["Z1"].Value = "Image 1";
-                wsItems.Cells["AA1"].Value = "Image 2";
-                wsItems.Cells["AB1"].Value = "Image 3";
-                wsItems.Cells["AC1"].Value = "Price Breaks";
-                wsItems.Cells["AD1"].Value = "Url History";
-                wsItems.Cells["AE1"].Value = "Publish Date";
+                wsItems.Cells["T1"].Value = "Manufacturer Part Number";
+                wsItems.Cells["U1"].Value = "Option 1 Name";
+                wsItems.Cells["V1"].Value = "Option 1 Value";
+                wsItems.Cells["W1"].Value = "Option 2 Name";
+                wsItems.Cells["X1"].Value = "Option 2 Value";
+                wsItems.Cells["Y1"].Value = "Option 3 Name";
+                wsItems.Cells["Z1"].Value = "Option 3 Value";
+                wsItems.Cells["AA1"].Value = "Image 1";
+                wsItems.Cells["AB1"].Value = "Image 2";
+                wsItems.Cells["AC1"].Value = "Image 3";
+                wsItems.Cells["AD1"].Value = "Price Breaks";
+                wsItems.Cells["AE1"].Value = "Url History";
+                wsItems.Cells["AF1"].Value = "Publish Date";
 
                 var productVariants = _productVariantService.GetAll();
 
@@ -186,6 +187,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     wsItems.Cells["Q" + rowId].Value = productVariants[i].TrackingPolicy;
                     wsItems.Cells["R" + rowId].Value = productVariants[i].SKU;
                     wsItems.Cells["S" + rowId].Value = productVariants[i].Barcode;
+                    wsItems.Cells["T" + rowId].Value = productVariants[i].ManufacturerPartNumber;
 
                     for (var v = 0;
                          v <
@@ -194,21 +196,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     {
                         if (v == 0)
                         {
-                            wsItems.Cells["T" + rowId].Value =
+                            wsItems.Cells["U" + rowId].Value =
                                 productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsItems.Cells["U" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                            wsItems.Cells["V" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
                         if (v == 1)
                         {
-                            wsItems.Cells["V" + rowId].Value =
+                            wsItems.Cells["W" + rowId].Value =
                                 productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsItems.Cells["W" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                            wsItems.Cells["X" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
                         if (v == 2)
                         {
-                            wsItems.Cells["X" + rowId].Value =
+                            wsItems.Cells["Y" + rowId].Value =
                                 productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsItems.Cells["Y" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                            wsItems.Cells["Z" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
                     }
 
@@ -216,38 +218,38 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     {
                         foreach (var item in productVariants[i].PriceBreaks)
                         {
-                            wsItems.Cells["AC" + rowId].Value += item.Quantity + ":" + item.Price.ToString("#.##") + ";";
+                            wsItems.Cells["AD" + rowId].Value += item.Quantity + ":" + item.Price.ToString("#.##") + ";";
                         }
-                        wsItems.Cells["AC" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        wsItems.Cells["AD" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     }
                     if (productVariants[i].Product.Urls.Count > 0)
                     {
                         foreach (var item in productVariants[i].Product.Urls)
                         {
-                            wsItems.Cells["AD" + rowId].Value += item.UrlSegment + ",";
+                            wsItems.Cells["AE" + rowId].Value += item.UrlSegment + ",";
                         }
-                        wsItems.Cells["AD" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        wsItems.Cells["AE" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     }
 
                     if (productVariants[i].Product.Published)
-                        wsItems.Cells["AE" + rowId].Value = productVariants[i].Product.PublishOn;
-                    wsItems.Cells["AE" + rowId].Style.Numberformat.Format = "YYYY-MM-DD hh:mm:ss";
+                        wsItems.Cells["AF" + rowId].Value = productVariants[i].Product.PublishOn;
+                    wsItems.Cells["AF" + rowId].Style.Numberformat.Format = "YYYY-MM-DD hh:mm:ss";
 
                     //Images
                     if (!productVariants[i].Product.Images.Any()) continue;
 
-                    wsItems.Cells["Z" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.First().FileUrl);
-                    wsItems.Cells["Z" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    wsItems.Cells["AA" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.First().FileUrl);
+                    wsItems.Cells["AA" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
 
                     if (productVariants[i].Product.Images.Count() > 1)
                     {
-                        wsItems.Cells["AA" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.ToList()[1].FileUrl);
-                        wsItems.Cells["AA" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        wsItems.Cells["AB" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.ToList()[1].FileUrl);
+                        wsItems.Cells["AB" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     }
                     if (productVariants[i].Product.Images.Count() > 2)
                     {
-                        wsItems.Cells["AB" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.ToList()[2].FileUrl);
-                        wsItems.Cells["AB" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        wsItems.Cells["AC" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.ToList()[2].FileUrl);
+                        wsItems.Cells["AC" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     }
                 }
                 wsItems.Cells["A:B"].AutoFitColumns();

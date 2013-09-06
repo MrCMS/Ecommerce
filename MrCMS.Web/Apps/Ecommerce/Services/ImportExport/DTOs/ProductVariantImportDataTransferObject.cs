@@ -21,5 +21,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs
         public string Barcode { get; set; }
         public Dictionary<string, string> Options { get; set; }
         public Dictionary<int, decimal> PriceBreaks { get; set; }
+        public string ManufacturerPartNumber { get; set; }
     }
 }
