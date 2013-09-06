@@ -11,4 +11,14 @@
               });
           });
     });
+    $(document).on('change', "select#existing-addresses", function () {
+        var address = $.parseJSON($(this).val());
+        if (address != null) {
+            for (var key in address) {
+                if ($('#delivery-address-container #' + key).length) {
+                    $('#delivery-address-container #' + key).val(address[key]);
+                }
+            }
+        }
+    });
 });
