@@ -1,6 +1,7 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.OrderPlaced
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Entities.Orders
+@using MrCMS.Website
 @{
     var order = ViewData["order"] as Order;
 }
@@ -20,32 +21,40 @@
                 </p>
                 <div class="complete-text">
                     your order is complete
-                    <img src="/Themes/Ryness/Content/Images/checkout/large-tick.png" alt="tick"/>
+                    <img src="/Themes/Ryness/Content/Images/checkout/large-tick.png" alt="tick" />
                 </div>
             </div>
         </div>
 
-        <div class="border-grey margin-bottom-20">
-            <div class="sub-header grey-background">
-                Would you like us to remember your details for next time?
+        @{
+            if (CurrentRequestData.CurrentUser == null)
+            {
+            <div class="border-grey margin-bottom-20">
+                <div class="sub-header grey-background">
+                    Would you like us to remember your details for next time?
+                </div>
+                <div class="padding-20">
+                    <p>
+                        Simply enter a password :
+                    </p>
+                    @using (Html.BeginForm("RegistrationWithoutDetails", "UserAccount", null, FormMethod.Post, new { @class = "form-horizontal" }))
+                    {
+                        @Html.Hidden("Email", order.OrderEmail)
+                        @Html.Hidden("OrderId", order.Id)
+                        <div class="row-fluid">
+                            <input type="password" name="Password" id="password" class="span6" required />
+                        </div>
+                        <br />
+                        <div class="row-fluid">
+                            <input type="submit" class="btn red-gradient span4" value="Continue" />
+                        </div>
+                    }
+                </div>
             </div>
-            <div class="padding-20">
-                <p>
-                    Simply enter a password :
-                </p>
-                @using (Html.BeginForm("RegistrationWithoutDetails", "UserAccount", null, FormMethod.Post, new { @class = "form-horizontal" }))
-                {
-                    @Html.Hidden("Email", order.OrderEmail)
-                    <div class="row-fluid">
-                        <input type="text" name="Password" class="span6" />
-                    </div>
-                    <br/>
-                    <div class="row-fluid">
-                        <input type="submit" class="btn red-gradient span4" value="Continue" />
-                    </div>
-                }
-            </div>
-        </div>
+            }
+        }
+
+
 
         <div class="border-grey padding-20 tablet-continue">
             <div class="row-fluid">

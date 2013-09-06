@@ -84,21 +84,21 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#" title="#" class="@(activePages.Contains("SetDeliveryDetails", StringComparer.OrdinalIgnoreCase) ? "active" : "")">
+                                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.SetDeliveryDetails>())" title="#" class="@(activePages.Contains("SetDeliveryDetails", StringComparer.OrdinalIgnoreCase) ? "active" : "")">
                                     <span class="back"></span>
                                     Delivery
                                     <span></span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" title="#" class="@(activePages.Contains("PaymentDetails", StringComparer.OrdinalIgnoreCase) ? "active" : "")">
+                                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.PaymentDetails>())" title="#" class="@(activePages.Contains("PaymentDetails", StringComparer.OrdinalIgnoreCase) ? "active" : "")">
                                     <span class="back"></span>
                                     Payment
                                     <span></span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" title="#" class="@(activePages.Contains("OrderPlaced", StringComparer.OrdinalIgnoreCase) ? "active" : "")">
+                                <a href="" title="#" class="@(activePages.Contains("OrderPlaced", StringComparer.OrdinalIgnoreCase) ? "active" : "")">
                                     <span class="back"></span>
                                     Receipt
                                 </a>

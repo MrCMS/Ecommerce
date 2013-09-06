@@ -1,4 +1,5 @@
 ﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Models.UserAccountOrdersModel
 
 <div data-paging-type="async">
@@ -38,7 +39,7 @@ else
                         @item.ShippingStatus
                     </td>
                     <td>
-                        &pound;@item.Total.ToString("#.##")
+                        @item.Total.ToCurrencyFormat()
                     </td>
                     <td>
                         @item.CreatedOn
