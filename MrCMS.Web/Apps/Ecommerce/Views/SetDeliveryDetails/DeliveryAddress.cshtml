@@ -1,11 +1,18 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Users.Address
+@{
+    var otherAddresses = ViewData["other-addresses"] as List<SelectListItem>;
+}
 <div id="delivery-address-container">
     @if (Model != null)
     {
         using (Html.BeginForm("SetAddress", "SetDeliveryDetails", FormMethod.Post, new { id = "deliveryDetails" }))
         {
         <h4>Who shall we deliver to?</h4>
-            
+
+            if (otherAddresses.Any())
+            {
+        @Html.DropDownList("existing-addresses", otherAddresses)
+            }
         <div class="row-fluid">
             <div class="span4">
                 @Html.LabelFor(address => address.FirstName)

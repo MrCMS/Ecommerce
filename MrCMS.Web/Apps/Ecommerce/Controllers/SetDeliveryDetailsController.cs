@@ -43,6 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             {
                 shippingAddress = _cart.ShippingAddress ?? new Address { Country = country };
             }
+            ViewData["other-addresses"] = _orderShippingService.ExistingAddressOptions(_cart, shippingAddress);
             return PartialView(shippingAddress);
         }
 

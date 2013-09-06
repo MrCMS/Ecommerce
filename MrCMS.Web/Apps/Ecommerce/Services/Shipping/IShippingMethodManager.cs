@@ -3,9 +3,12 @@ using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Models;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Website;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
@@ -27,15 +30,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         List<SelectListItem> GetCheapestShippingOptions(CartModel cart);
         ShippingMethod GetDefaultShippingMethod(CartModel cart);
         IEnumerable<ShippingCalculation> GetCheapestShippingCalculationsForEveryCountry(CartModel cart);
+        List<SelectListItem> ExistingAddressOptions(CartModel cartModel, Address address);
     }
 
     public class OrderShippingService : IOrderShippingService
     {
         private readonly ISession _session;
+        private readonly IUserService _userService;
 
-        public OrderShippingService(ISession session)
+        public OrderShippingService(ISession session, IUserService userService)
         {
             _session = session;
+            _userService = userService;
         }
 
         public List<SelectListItem> GetShippingOptions(CartModel cart)
@@ -78,6 +84,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         public IEnumerable<ShippingCalculation> GetCheapestShippingCalculationsForEveryCountry(CartModel cart)
         {
             return GetShippingCalculations(cart).GroupBy(x => x.Country).Select(s => s.OrderBy(calculation => calculation.GetPrice(cart)).First()).ToList();
+        }
+
+        public List<SelectListItem> ExistingAddressOptions(CartModel cartModel, Address address)
+        {
+            var addresses = new List<Address>();
+            addresses.Add(cartModel.ShippingAddress);
+            addresses.Add(cartModel.BillingAddress);
+
+            var currentUser = CurrentRequestData.CurrentUser;
+            if (currentUser != null)
+                addresses.AddRange(_userService.GetAll<Address>(currentUser));
+
+            addresses = addresses.Distinct().Where(a => !AddressComparison.Comparer.Equals(a, address)).ToList();
+
+            return addresses.Any()
+                       ? addresses.BuildSelectItemList(a => a.GetDescription(), a => a.ToJSON(),
+                                                       emptyItemText: "Select an address...")
+                       : new List<SelectListItem>();
+
         }
 
         public List<SelectListItem> GetCheapestShippingOptions(CartModel cart)
