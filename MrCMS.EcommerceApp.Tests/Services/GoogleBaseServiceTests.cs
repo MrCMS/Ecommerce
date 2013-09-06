@@ -19,7 +19,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         {
             _productVariantService = A.Fake<IProductVariantService>();
             _googleBaseSettings = A.Fake<GoogleBaseSettings>();
-            _googleBaseService = new GoogleBaseService(Session, _productVariantService,_googleBaseSettings);
+            _googleBaseService = new GoogleBaseService(Session);
         }
 
         [Fact]
