@@ -106,12 +106,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     product.SEOKeywords = worksheet.GetValue<string>(rowId, 6);
                                     product.Abstract = worksheet.GetValue<string>(rowId, 7);
                                     product.Brand = worksheet.GetValue<string>(rowId, 8);
-                                    if (worksheet.GetValue<string>(rowId, 31).HasValue())
+                                    if (worksheet.GetValue<string>(rowId, 32).HasValue())
                                     {
-                                        if (!worksheet.GetValue<string>(rowId, 31).IsValidDateTime())
+                                        if (!worksheet.GetValue<string>(rowId, 32).IsValidDateTime())
                                             parseErrors[handle].Add("Publish Date is not a valid date.");
                                         else
-                                            product.PublishDate = worksheet.GetValue<DateTime>(rowId, 31);
+                                            product.PublishDate = worksheet.GetValue<DateTime>(rowId, 32);
                                     }
 
                                     //Categories
@@ -174,12 +174,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     }
 
                                     //Images
-                                    if (worksheet.GetValue<string>(rowId, 26).HasValue())
-                                        product.Images.Add(worksheet.GetValue<string>(rowId, 26));
                                     if (worksheet.GetValue<string>(rowId, 27).HasValue())
                                         product.Images.Add(worksheet.GetValue<string>(rowId, 27));
                                     if (worksheet.GetValue<string>(rowId, 28).HasValue())
                                         product.Images.Add(worksheet.GetValue<string>(rowId, 28));
+                                    if (worksheet.GetValue<string>(rowId, 29).HasValue())
+                                        product.Images.Add(worksheet.GetValue<string>(rowId, 29));
 
                                     //Url History
                                     try
@@ -262,29 +262,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                         parseErrors[handle].Add("SKU is required.");
                                     productVariant.Barcode = worksheet.GetValue<string>(rowId, 19);
 
+                                    productVariant.ManufacturerPartNumber = worksheet.GetValue<string>(rowId, 20);
+
                                     //Options
-                                    if (worksheet.GetValue<string>(rowId, 20).HasValue() &&
-                                        worksheet.GetValue<string>(rowId, 21).HasValue())
-                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 20),
-                                                                   worksheet.GetValue<string>(rowId, 21));
-                                    if (worksheet.GetValue<string>(rowId, 22).HasValue() &&
-                                        worksheet.GetValue<string>(rowId, 23).HasValue())
-                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 22),
-                                                                   worksheet.GetValue<string>(rowId, 23));
-                                    if (worksheet.GetValue<string>(rowId, 24).HasValue() &&
-                                        worksheet.GetValue<string>(rowId, 25).HasValue())
-                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 24),
-                                                                   worksheet.GetValue<string>(rowId, 25));
+                                    if (worksheet.GetValue<string>(rowId, 21).HasValue() &&
+                                        worksheet.GetValue<string>(rowId, 22).HasValue())
+                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 21),
+                                                                   worksheet.GetValue<string>(rowId, 22));
+                                    if (worksheet.GetValue<string>(rowId, 23).HasValue() &&
+                                        worksheet.GetValue<string>(rowId, 24).HasValue())
+                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 23),
+                                                                   worksheet.GetValue<string>(rowId, 24));
+                                    if (worksheet.GetValue<string>(rowId, 25).HasValue() &&
+                                        worksheet.GetValue<string>(rowId, 26).HasValue())
+                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 25),
+                                                                   worksheet.GetValue<string>(rowId, 26));
 
                                     //Price Breaks
-                                    if (!String.IsNullOrWhiteSpace(worksheet.GetValue<string>(rowId, 29)))
+                                    if (!String.IsNullOrWhiteSpace(worksheet.GetValue<string>(rowId, 30)))
                                     {
                                         try
                                         {
-                                            var value = worksheet.GetValue<string>(rowId, 29);
+                                            var value = worksheet.GetValue<string>(rowId, 30);
                                             if (!String.IsNullOrWhiteSpace(value))
                                             {
-                                                if (!worksheet.GetValue<string>(rowId, 29).Contains(":"))
+                                                if (!worksheet.GetValue<string>(rowId, 30).Contains(":"))
                                                     parseErrors[handle].Add("Product Variant Price Breaks field value contains illegal characters / not in correct format. Quantity and Price (Item) must be split with :, and items must be split by ;");
                                                 var priceBreaks = value.Split(';');
                                                 foreach (var item in priceBreaks)
