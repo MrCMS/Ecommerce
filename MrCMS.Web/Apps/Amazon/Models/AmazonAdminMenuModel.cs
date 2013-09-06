@@ -20,7 +20,7 @@ namespace MrCMS.Web.Apps.Amazon.Models
                             "Admin",
                             new List<IMenuItem>
                             {
-                                new ChildMenuItem("Dashboard", "/Admin/Apps/Amazon/Api/Dashboard"),
+                                new ChildMenuItem("Dashboard", "/Admin/Apps/Amazon/App/Dashboard"),
                                 new ChildMenuItem("Listings", "/Admin/Apps/Amazon/Listing"),
                                 new ChildMenuItem("Orders", "/Admin/Apps/Amazon/Orders"),
                             }
@@ -29,7 +29,8 @@ namespace MrCMS.Web.Apps.Amazon.Models
                             "Settings",
                             new List<IMenuItem>
                             {
-                                new ChildMenuItem("Api", "/Admin/Apps/Amazon/Settings/Api")
+                                new ChildMenuItem("App", "/Admin/Apps/Amazon/App/Settings"),
+                                new ChildMenuItem("Seller", "/Admin/Apps/Amazon/Seller/Settings")
                             }
                         },
                         {
