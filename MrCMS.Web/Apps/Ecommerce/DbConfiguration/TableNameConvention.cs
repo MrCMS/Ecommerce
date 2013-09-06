@@ -18,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
         public void Apply(IClassInstance instance)
         {
             var entityType = instance.EntityType;
-            if (IsQLearnerType(entityType))
+            if (IsEcommerceType(entityType))
             {
                 instance.Table(GetTableName(instance.TableName));
             }
@@ -27,13 +27,13 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
         public void Apply(IManyToManyCollectionInstance instance)
         {
             var entityType = instance.EntityType;
-            if (IsQLearnerType(entityType))
+            if (IsEcommerceType(entityType))
             {
                 instance.Table(GetTableName(instance.TableName));
             }
         }
 
-        private static bool IsQLearnerType(Type entityType)
+        private static bool IsEcommerceType(Type entityType)
         {
             return MrCMSApp.AllAppTypes.ContainsKey(entityType) &&
                    MrCMSApp.AllAppTypes[entityType] == EcommerceApp.EcommerceAppName &&
