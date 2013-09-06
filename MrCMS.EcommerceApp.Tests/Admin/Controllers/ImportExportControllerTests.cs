@@ -115,7 +115,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             _importExportController.GoogleBase(model);
 
-            A.CallTo(() => _googleBaseService.GetGoogleCategories()).MustHaveHappened();
             A.CallTo(() => _optionService.GetEnumOptions<ProductCondition>()).MustHaveHappened();
             A.CallTo(() => _optionService.GetCategoryOptions()).MustHaveHappened();
             A.CallTo(() => _optionService.GetEnumOptions<Gender>()).MustHaveHappened();

@@ -36,7 +36,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             categoryController.Index("test", 1);
 
-            A.CallTo(() => _categoryService.Search("test", 1)).MustHaveHappened();
+            A.CallTo(() => _categoryService.Search("test", 1,10)).MustHaveHappened();
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var categoryController = GetCategoryController();
             var categoryPagedList = new CategoryPagedList(new StaticPagedList<Category>(new Category[0], 1, 1, 0), 1);
-            A.CallTo(() => _categoryService.Search("test", 1)).Returns(categoryPagedList);
+            A.CallTo(() => _categoryService.Search("test", 1,10)).Returns(categoryPagedList);
 
             var index = categoryController.Index("test", 1);
 

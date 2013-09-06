@@ -34,7 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _session = session;
             _importProductVariantPriceBreaksService = importPriceBreaksService;
 
-            _allVariants = _session.QueryOver<ProductVariant>().Fetch(x => x.PriceBreaks).Eager.List();
+            _allVariants = _session.QueryOver<ProductVariant>().Fetch(x => x.PriceBreaks).Eager.List().Distinct().ToList();
         }
 
         public IEnumerable<ProductVariant> ImportVariants(ProductImportDataTransferObject dataTransferObject, Product product)
