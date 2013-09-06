@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using MrCMS.Models;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Entities.Users;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 {
@@ -16,5 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         void Delete(ShippingMethod ShippingMethod);
         void UpdateDisplayOrder(IList<SortItem> options);
     }
+
+      
 
 }

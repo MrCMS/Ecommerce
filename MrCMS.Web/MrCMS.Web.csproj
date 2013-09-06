@@ -464,6 +464,7 @@
     <Compile Include="Apps\Ecommerce\Metadata\SetDeliveryDetailsMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\UserAccountMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddPriceBreakModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\AddressComparison.cs" />
     <Compile Include="Apps\Ecommerce\Models\AgeGroup.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartUpdateValue.cs" />
@@ -477,7 +478,9 @@
     <Compile Include="Apps\Ecommerce\Models\FailureDetails.cs" />
     <Compile Include="Apps\Ecommerce\Models\Gender.cs" />
     <Compile Include="Apps\Ecommerce\Models\GoogleBaseModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\IAddress.cs" />
     <Compile Include="Apps\Ecommerce\Models\IShippingCalculationRequest.cs" />
+    <Compile Include="Apps\Ecommerce\Models\KeyEqualityComparer.cs" />
     <Compile Include="Apps\Ecommerce\Models\MakeMultivariantModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\OrderSearchModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaymentDetailsModel.cs" />
@@ -494,6 +497,7 @@
     <Compile Include="Apps\Ecommerce\Models\RedirectDetails.cs" />
     <Compile Include="Apps\Ecommerce\Models\RegisterModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ShippingStatus.cs" />
+    <Compile Include="Apps\Ecommerce\Models\StrictKeyEqualityComparer.cs" />
     <Compile Include="Apps\Ecommerce\Models\TaxAwareProductPrice.cs" />
     <Compile Include="Apps\Ecommerce\Models\TaxAwareShippingRate.cs" />
     <Compile Include="Apps\Ecommerce\Models\TrackingPolicy.cs" />
