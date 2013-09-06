@@ -335,7 +335,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                                     Values =
                                                                         productAttributeValues.Where(
                                                                             value =>
-                                                                            value.ProductAttributeOption == option)
+                                                                            value.ProductAttributeOption == option).OrderBy(x => x.DisplayOrder)
                                                                                               .Distinct()
                                                                                               .Select(
                                                                                                   value =>
@@ -368,7 +368,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                                                       value =>
                                                                                       value
                                                                                           .ProductSpecificationAttribute ==
-                                                                                      attribute)
+                                                                                      attribute).OrderBy(x=>x.DisplayOrder)
                                                                                   .Distinct()
                                                                                   .Select(
                                                                                       value =>
