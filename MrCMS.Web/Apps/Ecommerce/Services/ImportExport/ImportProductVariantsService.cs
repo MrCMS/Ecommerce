@@ -46,6 +46,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 productVariant.Name = item.Name;
                 productVariant.SKU = item.SKU;
                 productVariant.Barcode = item.Barcode;
+                productVariant.ManufacturerPartNumber = item.ManufacturerPartNumber;
                 productVariant.BasePrice = item.Price;
                 productVariant.PreviousPrice = item.PreviousPrice;
                 productVariant.StockRemaining = item.Stock.HasValue ? item.Stock.Value : 0;

@@ -33,6 +33,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
             get { return "Show"; }
         }
 
+        public override bool AutoBlacklist { get { return true; } }
+
         public override string DefaultLayoutName
         {
             get

@@ -576,6 +576,7 @@
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductUrlHistoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductVariantPriceBreaksService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductVariantsService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantMaxMPNLengthIs255.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\IProductImportValidationRule.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\IProductVariantImportValidationRule.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductCategoriesExist.cs" />
@@ -2341,6 +2342,7 @@
     <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\CategoriesOnlyNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
