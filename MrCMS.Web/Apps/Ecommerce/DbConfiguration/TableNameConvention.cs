@@ -13,7 +13,7 @@ using MrCMS.Entities.Widget;
 
 namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
 {
-    public class TableNameConvention : IClassConvention
+    public class TableNameConvention : IClassConvention, IHasManyToManyConvention
     {
         public void Apply(IClassInstance instance)
         {
