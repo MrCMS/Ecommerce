@@ -27,11 +27,11 @@ namespace MrCMS.EcommerceApp.Tests.Metadata
         }
 
         [Fact]
-        public void CategoryContainerMetaData_ShowChildrenInAdminNav_ShouldBeFalse()
+        public void CategoryContainerMetaData_ShowChildrenInAdminNav_ShouldBeTrue()
         {
             var metadata = GetMetadata();
 
-            metadata.ShowChildrenInAdminNav.Should().BeFalse();
+            metadata.ShowChildrenInAdminNav.Should().BeTrue();
         }
         
         private static CategoryContainerMetadata GetMetadata()
