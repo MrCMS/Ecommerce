@@ -1,0 +1,154 @@
+﻿
+canvas{
+        width: 100% !important;
+        max-width: 800px;
+        height: auto !important;
+}
+.dashboard-box {
+    margin-bottom: 10px;
+    min-height: 120px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 1px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 1px 0px 1px #E4E6EB;
+    color: #000000;
+    opacity: 1;
+}
+.dashboard-box .info {
+    float: left;
+    padding: 0 0 0 20px;
+    margin: 0 0 5px 0;
+}
+.dashboard-box .info .stats {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding-top: 25px;
+    text-align: left;
+}
+
+.dashboard-box .info .stats-description {
+    font-size: 11px;
+    font-weight: normal;
+    text-align: left;
+    padding: 10px 0 0 0;
+}
+.dashboard-box .info .stats-description small {
+     font-size: 11px;
+}
+.dashboard-box .graphics {
+    min-width: 80%;
+    padding: 10px 20px 0 20px;
+}
+.dashboard-box .more-info {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    clear: both;
+    display: block;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 5px 5px 5px 10px;
+}
+.dashboard-box .more-info span {
+    opacity: initial;
+}
+.dashboard-box .more-info:hover {
+    background-color: #000000;
+    background-color: rgba(0, 0, 0, 1);
+    text-decoration: none;
+    transition: all 0.5s ease-in-out 0s;
+}
+
+
+.dashboard-box-log {
+    margin: 0 0 5px 0;
+    padding: 5px 10px 5px 10px;
+    border-radius: 0;
+}
+.dashboard-box-log.error {
+    border-left: 3px solid #ff0000;
+    border-right: 1px solid #E5E5E5;
+    border-top: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+    background-color: #F6F6F6;
+    color: #5A5A5A;
+}
+.dashboard-box-log.success {
+    border-left: 3px solid #2ECC71;
+    border-right: 1px solid #E5E5E5;
+    border-top: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+    background-color: #F6F6F6;
+    color: #5A5A5A;
+}
+.dashboard-box-log.info {
+    border-left: 3px solid #3498db;
+    border-right: 1px solid #E5E5E5;
+    border-top: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+    background-color: #F6F6F6;
+    color: #5A5A5A;
+}
+
+
+
+
+.emerald {
+    background-color: #2ecc71;
+    color: #ffffff;
+    text-shadow: none;
+    border: none;
+}
+.alizarin {
+    background-color: #e74c3c;
+    color: #ffffff;
+    text-shadow: none;
+    border: none;
+}
+.carrot {
+    background-color: #e67e22;
+    color: #ffffff;
+    text-shadow: none;
+    border: none;
+}
+.midnight-blue {
+    background-color: #2c3e50;
+    color: #ffffff;
+    text-shadow: none;
+    border: none;
+}
+.asphalt {
+    background-color: #34495e;
+    color: #ffffff;
+    text-shadow: none;
+    border: none;
+}
+.silver {
+    background-color: #bdc3c7;
+    color: #ffffff;
+    text-shadow: none;
+    border: none;
+}
+.oranger {
+    background-color: #f39c12;
+    color: #ffffff;
+    text-shadow: none;
+    border: none;
+}
+.wisteria {
+    background-color: #8e44ad;
+    color: #ffffff;
+    text-shadow: none;
+    border: none;
+}
+.peter-river {
+    background-color: #3498db;
+    color: #ffffff;
+    text-shadow: none;
+    border: none;
+}
+.dashboard-box .info.orders {
+   color: #3498db;
+}
