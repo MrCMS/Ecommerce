@@ -52,7 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             {
                 return Redirect(UniquePageHelper.GetUrl<ProductSearch>());
             }
-
+            
             if (model != null && ModelState.IsValid)
             {
                 var user = new User
@@ -67,7 +67,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 _authorisationService.SetAuthCookie(model.Email, false);
                 CurrentRequestData.CurrentUser = user;
 
-                _orderService.SetLastOrderUserIdByOrderEmail(model.Email);
+                _orderService.SetLastOrderUserIdByOrderId(model.OrderId);
 
                 return Redirect(UniquePageHelper.GetUrl<UserAccountPage>());
             }

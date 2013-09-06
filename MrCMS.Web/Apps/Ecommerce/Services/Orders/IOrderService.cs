@@ -19,7 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         void MarkAsVoided(Order order);
         IPagedList<Order> GetOrdersByUser(User user, int pageNum, int pageSize = 10);
         IList<Order> GetOrdersByUser(User user);
-        void SetLastOrderUserIdByOrderEmail(string email);
+        void SetLastOrderUserIdByOrderId(int  orderId);
         Order GetByGuid(Guid id);
     }
 }

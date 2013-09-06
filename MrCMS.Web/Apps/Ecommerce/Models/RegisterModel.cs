@@ -1,10 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
     public class RegisterWithoutDetailsModel
     {
+        public int OrderId { get; set; }
+
         [Required(ErrorMessage = "Email is required")]
         [StringLength(128, MinimumLength = 5)]
         [Remote("CheckEmailIsNotRegistered", "Registration", ErrorMessage = "This email is already registered.")]
@@ -12,7 +15,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Password is required")]
-        [StringLength(100, ErrorMessage = "Minimum length for password is {2} characters.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
