@@ -202,7 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Apps\Amazon\AmazonApp.cs" />
-    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\ApiController.cs" />
+    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\AppController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\LogController.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonTableNameConvention.cs" />
     <Compile Include="Apps\Amazon\Entities\Listings\AmazonListing.cs" />
@@ -215,7 +215,9 @@
     <Compile Include="Apps\Amazon\Models\AmazonLogType.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonListingItemStatus.cs" />
     <Compile Include="Apps\Amazon\Services\Logs\AmazonLogService.cs" />
-    <Compile Include="Apps\Amazon\Services\Logs\IAmazonService.cs" />
+    <Compile Include="Apps\Amazon\Services\Logs\IAmazonLogService.cs" />
+    <Compile Include="Apps\Amazon\Settings\AmazonAppSettings.cs" />
+    <Compile Include="Apps\Amazon\Settings\AmazonSellerSettings.cs" />
     <Compile Include="Apps\Articles\Areas\Admin\Controllers\ArticleController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -2160,8 +2162,9 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\Log\DeleteAllLogs.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Log\Index.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Log\Details.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Api\Dashboard.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Api\DashboardLogs.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Dashboard.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\DashboardLogs.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Settings.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2374,7 +2377,6 @@
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\CategoriesOnlyNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Apps\Amazon\Settings\" />
     <Folder Include="Apps\Articles\Controllers\" />
     <Folder Include="Apps\Core\Areas\Admin\Controllers\" />
     <Folder Include="Apps\Core\Entities\" />
