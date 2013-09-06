@@ -4,7 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using MrCMS.Entities;
 using MrCMS.Helpers;
+using MrCMS.Paging;
+using NHibernate;
+using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Helpers
 {
@@ -73,6 +77,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
                     list.SingleOrDefault(x => x.Value == value).Selected = true;
             }
             return list;
+        }
+
+        public static IPagedList<T> Paged<T>(this IEnumerable<T> items, int pageNumber, int pageSize)
+             where T : class
+        {
+            IEnumerable<T> values = items
+                            .Skip((pageNumber - 1) * pageSize)
+                            .Take(pageSize)
+                            .ToList<T>();
+
+            var rowCount = items.Count();
+
+            return new StaticPagedList<T>(values, pageNumber, pageSize, rowCount);
         }
     }
 }

@@ -7,7 +7,7 @@
     @Html.LabelFor(x => x.GoogleBaseTaxonomyFeedUrl)
     @Html.TextBoxFor(x => x.GoogleBaseTaxonomyFeedUrl, new {@class = "input-xxlarge"})
     @Html.LabelFor(x => x.DefaultCategory)
-    @Html.DropDownListFor(x => x.DefaultCategory, ViewData["google-base-categories"] as IEnumerable<SelectListItem>, new {@class = "input-xxlarge"})
+    @Html.HiddenFor(x => x.DefaultCategory,new {@class="bigdrop input-xxlarge"})
     @Html.LabelFor(x => x.DefaultCondition)
     @Html.DropDownListFor(x => x.DefaultCondition, ViewData["product-conditions"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
     <br />

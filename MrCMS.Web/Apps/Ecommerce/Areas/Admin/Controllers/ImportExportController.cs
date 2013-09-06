@@ -1,3 +1,4 @@
+using System.Web.Helpers;
 using System.Web.Mvc;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
@@ -82,11 +83,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         #endregion
 
         #region Google Base
+
+        [HttpGet]
+        public JsonResult GetGoogleCategories(string term, int page=1)
+        {
+            var results = _googleBaseService.Search(term, page);
+
+            return Json(new { Total = results.TotalItemCount, Items = results});
+        }
+
         [HttpGet]
         public ViewResult GoogleBase(GoogleBaseModel model)
         {
             ViewData["settings"] = _googleBaseSettings;
-            ViewData["google-base-categories"] = _googleBaseService.GetGoogleCategories();
             ViewData["categories"] = _optionService.GetCategoryOptions();
             ViewData["product-conditions"] = _optionService.GetEnumOptions<ProductCondition>();
             ViewData["genders"] = _optionService.GetEnumOptions<Gender>();
@@ -139,7 +148,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             if (googleBaseProduct != null)
             {
-                ViewData["google-base-categories"] = _googleBaseService.GetGoogleCategories();
                 ViewData["product-conditions"] = _optionService.GetEnumOptions<ProductCondition>();
                 ViewData["genders"] = _optionService.GetEnumOptions<Gender>();
                 ViewData["age-groups"] = _optionService.GetEnumOptions<AgeGroup>();

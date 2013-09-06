@@ -24,7 +24,7 @@
         <div class="clearfix"></div>
         foreach (var item in Model.Items)
         {
-            <div class="google-base-product-@item.Id">
+            <div id="google-base-product-variant-@item.Id">
             @Html.Partial("GoogleBaseProduct", item.GoogleBaseProduct ?? new GoogleBaseProduct{ProductVariant = item})
             </div>
         }
@@ -32,5 +32,10 @@
         
     @Html.Pager(Model.Items, "GoogleBase", i => new {page = i})
 </div>
+
+@{
+    Html.IncludeCss("~/Areas/Admin/Content/Scripts/select2-3.4.1/select2.css");
+    Html.IncludeScript("~/Areas/Admin/Content/Scripts/select2-3.4.1/select2.min.js");
+}
 
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/google-base.js");}
