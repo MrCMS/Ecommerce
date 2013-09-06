@@ -10,32 +10,36 @@
                 Billing address
             </div>
             <div class="padding-20">
-                <div class="row-fluid">
-                    <div class="span3">
-                        @using (Html.BeginForm("BillingAddressSameAsShippingAddress", "PaymentDetails", FormMethod.Post))
-                        {
-                            <label class="checkbox">
-                                @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress)
-                                Use delivery address : 
-                            </label>
-                        }
+                @if (cart.BillingAddressSameAsShippingAddress)
+                {
+                    <div class="row-fluid">
+                        <div class="span3">
+                            @using (Html.BeginForm("BillingAddressSameAsShippingAddress", "PaymentDetails", FormMethod.Post))
+                            {
+                                <label class="checkbox">
+                                    @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress)
+                                    Use delivery address : 
+                                </label>
+                            }
+                        </div>
+                        <div class="span9">
+                            @cart.ShippingAddress.Description
+                        </div>
                     </div>
-                    <div class="span9">
-                    </div>
-                </div>
+                }
                 <div class="row-fluid">
                     @if (settingBillingAddress)
                     {
                         Html.RenderAction("SetBillingAddress", "PaymentDetails");
                     }
-                    else if (!cart.BillingAddressSameAsShippingAddress)
+                    else if (!cart.BillingAddressSameAsShippingAddress && cart.BillingAddress != null)
                     {
                         <p>
-                            @cart.BillingAddress.Address1, @cart.BillingAddress.Address2, @cart.BillingAddress.City
+                            @cart.BillingAddress.Description
                         </p>
-                        using (Html.BeginForm("SetBillingAddress", "PaymentDetails", FormMethod.Post))
+                        using (Html.BeginForm("UpdateBillingAddress", "PaymentDetails", FormMethod.Post))
                         {
-                            <input class="btn btn-primary" value="Change" type="submit" />
+                            <input class="btn btn-mini" value="Edit billing address" type="submit" />
                         }
                     }
                 </div>

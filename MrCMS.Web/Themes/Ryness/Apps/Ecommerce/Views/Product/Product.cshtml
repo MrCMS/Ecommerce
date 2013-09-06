@@ -1,4 +1,5 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+@using System.Drawing
 @using MrCMS.Helpers
 @using System.Linq
 @using MrCMS.Web.Apps.Ecommerce.Entities.Products
@@ -23,18 +24,30 @@
                             <span>Exclusive Price</span>
                             @selectedVariant.Price.ToCurrencyFormat()
 
-                            @if (selectedVariant.PreviousPrice.HasValue)
+                            @if (selectedVariant.ShowPreviousPrice)
                             {
                                 <span>
                                     @Model.PreviousPriceText <span>@selectedVariant.PreviousPrice.Value.ToCurrencyFormat()</span>
                                 </span>
                             }
                         </div>
+                        
+                        <p>SKU: @selectedVariant.SKU</p>
 
                         @Editable(Model, product => product.Abstract, true)
 
                         @{Html.RenderPartial("SocialLinks");}
                         @RenderZone("Below Product Price")
+                        
+                        @{
+                            if (Model.Brand != null)
+                            {
+                                if (!string.IsNullOrEmpty(Model.Brand.Logo))
+                                {
+                                    @RenderImage(Model.Brand.Logo, new Size {Width = 100, Height = 50});
+                                }
+                            }
+                        }
                     </div>
                 </div>
             </div>
@@ -107,9 +120,7 @@
                     <div class="accordion" id="accordion2">
                         <div class="accordion-group">
                             <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">Delivery Details
-                                    <img src="/Themes/Ryness/Content/Images/van.jpg" alt="Van" />
-                                </a>
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">Delivery Details&nbsp;<img src="/Themes/Ryness/Content/Images/van.jpg" alt="Van" /></a>
                             </div>
                             <div id="collapseOne" class="accordion-body collapse">
                                 <div class="accordion-inner">
@@ -121,9 +132,7 @@
                         </div>
                         <div class="accordion-group">
                             <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">Returns Information
-                                    <img src="/Themes/Ryness/Content/Images/parcel.jpg" alt="Parcel" />
-                                </a>
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">Returns Information&nbsp;<img src="/Themes/Ryness/Content/Images/parcel.jpg" alt="Parcel" /></a>
                             </div>
                             <div id="collapseTwo" class="accordion-body collapse">
                                 <div class="accordion-inner">

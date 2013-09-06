@@ -18,11 +18,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
             get { yield return typeof(Category); }
         }
 
-        public override bool ShowChildrenInAdminNav
-        {
-            get { return false; }
-        }
-
         public override string WebGetController
         {
             get { return "CategoryContainer"; }

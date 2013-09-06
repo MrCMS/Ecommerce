@@ -1,0 +1,16 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("SetTrackingNumber", "Order", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Set tracking number
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Save" />
+            </span>
+        </legend>
+
+        @Html.LabelFor(x=>x.TrackingNumber)
+        @Html.TextBoxFor(x=>x.TrackingNumber)
+    </fieldset>
+}

@@ -34,7 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _session = session;
             _importProductVariantPriceBreaksService = importPriceBreaksService;
 
-            _allVariants = _session.QueryOver<ProductVariant>().Fetch(x => x.PriceBreaks).Eager.List();
+            _allVariants = _session.QueryOver<ProductVariant>().Fetch(x => x.PriceBreaks).Eager.List().Distinct().ToList();
         }
 
         public IEnumerable<ProductVariant> ImportVariants(ProductImportDataTransferObject dataTransferObject, Product product)
@@ -46,9 +46,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 productVariant.Name = item.Name;
                 productVariant.SKU = item.SKU;
                 productVariant.Barcode = item.Barcode;
+                productVariant.ManufacturerPartNumber = item.ManufacturerPartNumber;
                 productVariant.BasePrice = item.Price;
                 productVariant.PreviousPrice = item.PreviousPrice;
-                productVariant.StockRemaining = item.Stock;
+                productVariant.StockRemaining = item.Stock.HasValue ? item.Stock.Value : 0;
                 productVariant.Weight = item.Weight.HasValue ? item.Weight.Value : 0;
                 productVariant.TrackingPolicy = item.TrackingPolicy;
                 productVariant.TaxRate = (item.TaxRate.HasValue && item.TaxRate.Value!=0)?_taxRateManager.Get(item.TaxRate.Value):_taxRateManager.GetDefaultRate();

@@ -7,8 +7,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
-using MrCMS.Web.Apps.Ecommerce.Services.Discounts;
-using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
 using NHibernate;
@@ -19,14 +18,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly CartModel _cart;
         private readonly ICartManager _cartManager;
-        private readonly IDiscountManager _discountManager;
         private readonly IOrderShippingService _orderShippingService;
 
-        public CartController(ICartManager cartManager, IDiscountManager discountManager,
+        public CartController(ICartManager cartManager,
                               IOrderShippingService orderShippingService, CartModel cart)
         {
             _cartManager = cartManager;
-            _discountManager = discountManager;
             _orderShippingService = orderShippingService;
             _cart = cart;
         }

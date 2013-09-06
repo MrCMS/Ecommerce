@@ -1,6 +1,8 @@
+using System.Web.Helpers;
 using System.Web.Mvc;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.GoogleBase;
@@ -81,11 +83,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         #endregion
 
         #region Google Base
+
+        [HttpGet]
+        public JsonResult GetGoogleCategories(string term, int page=1)
+        {
+            var results = _googleBaseService.Search(term, page);
+
+            return Json(new { Total = results.TotalItemCount, Items = results});
+        }
+
         [HttpGet]
         public ViewResult GoogleBase(GoogleBaseModel model)
         {
             ViewData["settings"] = _googleBaseSettings;
-            ViewData["google-base-categories"] = _googleBaseService.GetGoogleCategories();
             ViewData["categories"] = _optionService.GetCategoryOptions();
             ViewData["product-conditions"] = _optionService.GetEnumOptions<ProductCondition>();
             ViewData["genders"] = _optionService.GetEnumOptions<Gender>();
@@ -138,13 +148,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             if (googleBaseProduct != null)
             {
-                ViewData["google-base-categories"] = _googleBaseService.GetGoogleCategories();
                 ViewData["product-conditions"] = _optionService.GetEnumOptions<ProductCondition>();
                 ViewData["genders"] = _optionService.GetEnumOptions<Gender>();
                 ViewData["age-groups"] = _optionService.GetEnumOptions<AgeGroup>();
                 return PartialView(googleBaseProduct);
             }
             return RedirectToAction("GoogleBase");
+        }
+        #endregion
+
+        #region Orders
+
+        [HttpGet]
+        public ActionResult ExportOrderToPdf(Order order)
+        {
+            try
+            {
+                var file = _importExportManager.ExportOrderToPdf(order);
+                return File(file, "application/pdf", "MrCMS-Order-" + order.Id + "-["+CurrentRequestData.Now.ToString("dd-MM-yyyy hh-mm")+"].pdf");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Edit", "Order", new { id = order.Id });
+            }
         }
         #endregion
     }

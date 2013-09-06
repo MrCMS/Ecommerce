@@ -110,6 +110,15 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="MigraDoc.DocumentObjectModel">
+      <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.DocumentObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="MigraDoc.Rendering">
+      <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.Rendering.dll</HintPath>
+    </Reference>
+    <Reference Include="MigraDoc.RtfRendering">
+      <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.RtfRendering.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.6.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MySql.Data.6.6.4\lib\net40\MySql.Data.dll</HintPath>
@@ -143,6 +152,14 @@
     </Reference>
     <Reference Include="PayPalMerchantSDK">
       <HintPath>..\packages\PayPalMerchantSDK.2.6.106\lib\PayPalMerchantSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\PdfSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\PdfSharp.Charting.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.SQLite, Version=1.0.82.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
@@ -563,6 +580,7 @@
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductUrlHistoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductVariantPriceBreaksService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ImportProductVariantsService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantMaxMPNLengthIs255.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\IProductImportValidationRule.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\IProductVariantImportValidationRule.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductCategoriesExist.cs" />
@@ -603,6 +621,14 @@
     <Compile Include="Apps\Ecommerce\Services\IPaypointRequestService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\BulkShippingUpdateService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\BulkShippingUpdateValidationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\DTOs\BulkShippingUpdateDataTransferObject.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\IBulkShippingUpdateService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\IBulkShippingUpdateValidationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\IBulkStockShippingValidationRule.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\OrderExists.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\OrderNotShipped.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\EmptyBasket.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderCancelled.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderFullyRefunded.cs" />
@@ -621,11 +647,13 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderRefundService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderEventService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderRefundService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\OrderShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Payments\IPaymentStatusService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Payments\PaymentStatusService.cs" />
     <Compile Include="Apps\Ecommerce\Services\PaypointPaymentService.cs" />
@@ -2107,6 +2135,9 @@
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\TopSellers.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ryness\Views\Web.config" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\SetTrackingNumber.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\BulkShippingUpdate.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\CategoryContainer\Categories.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2316,6 +2347,7 @@
     <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\CategoriesOnlyNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />

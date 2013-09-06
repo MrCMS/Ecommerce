@@ -13,19 +13,37 @@ using MrCMS.Entities.Widget;
 
 namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
 {
-    public class TableNameConvention : IClassConvention
+    public class TableNameConvention : IClassConvention, IHasManyToManyConvention
     {
         public void Apply(IClassInstance instance)
         {
             var entityType = instance.EntityType;
-            if (MrCMSApp.AllAppTypes.ContainsKey(entityType) && MrCMSApp.AllAppTypes[entityType] == EcommerceApp.EcommerceAppName)
+            if (IsEcommerceType(entityType))
             {
-                if (!entityType.IsSubclassOf(typeof(Document)) && !entityType.IsSubclassOf(typeof(MessageTemplate)) &&
-                    !entityType.IsSubclassOf(typeof(UserProfileData)) && !entityType.IsSubclassOf(typeof(Widget)))
-                {
-                    instance.Table(string.Format("Ecommerce_{0}", instance.TableName.Replace("`", "")));
-                }
+                instance.Table(GetTableName(instance.TableName));
             }
+        }
+
+        public void Apply(IManyToManyCollectionInstance instance)
+        {
+            var entityType = instance.EntityType;
+            if (IsEcommerceType(entityType))
+            {
+                instance.Table(GetTableName(instance.TableName));
+            }
+        }
+
+        private static bool IsEcommerceType(Type entityType)
+        {
+            return MrCMSApp.AllAppTypes.ContainsKey(entityType) &&
+                   MrCMSApp.AllAppTypes[entityType] == EcommerceApp.EcommerceAppName &&
+                   (!entityType.IsSubclassOf(typeof(Document)) && !entityType.IsSubclassOf(typeof(MessageTemplate)) &&
+                    !entityType.IsSubclassOf(typeof(UserProfileData)) && !entityType.IsSubclassOf(typeof(Widget)));
+        }
+
+        private static string GetTableName(string tableName)
+        {
+            return string.Format("Ecommerce_{0}", tableName.Replace("`", ""));
         }
 
     }

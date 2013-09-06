@@ -48,10 +48,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 return
                 _session.QueryOver<Brand>()
                         .OrderBy(entry => entry.Name).Asc;
-            else
-                return
-                  _session.QueryOver<Brand>().Where(x => x.Name.IsInsensitiveLike(search, MatchMode.Anywhere))
-                          .OrderBy(entry => entry.Name).Asc;
+            return
+                _session.QueryOver<Brand>().Where(x => x.Name.IsInsensitiveLike(search, MatchMode.Anywhere))
+                        .OrderBy(entry => entry.Name).Asc;
         }
 
         public void Add(Brand brand)
@@ -79,7 +78,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         }
         public List<SelectListItem> GetOptions()
         {
-            return GetAll().BuildSelectItemList(item => item.Name, item => item.Id.ToString(), null, new SelectListItem()
+            return GetAll().OrderBy(x=>x.Name).BuildSelectItemList(item => item.Name, item => item.Id.ToString(), null, new SelectListItem()
             {
                 Text = "Please select...",
                 Value = "0"

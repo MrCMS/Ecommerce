@@ -168,6 +168,9 @@
     <Compile Include="Services\BulkStockUpdate\BulkStockUpdateValidationServiceTests.cs" />
     <Compile Include="Services\CartManagerTests.cs" />
     <Compile Include="Services\CategoryServiceTests.cs" />
+    <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateServiceTests.cs" />
+    <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateValidationServiceTests.cs" />
+    <Compile Include="Services\OrderShippingServiceTests.cs" />
     <Compile Include="Services\OrderRefundServiceTests.cs" />
     <Compile Include="Services\OrderServiceTests.cs" />
     <Compile Include="Services\InventoryServiceTests.cs" />

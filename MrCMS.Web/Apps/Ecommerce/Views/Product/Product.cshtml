@@ -21,7 +21,7 @@
                 <div class="product-price">
                     @selectedVariant.Price.ToCurrencyFormat()
                 </div>
-                @if (selectedVariant.PreviousPrice.HasValue)
+                @if (selectedVariant.ShowPreviousPrice)
                 {
                     <span>
                         @Model.PreviousPriceText <span style="text-decoration: line-through">@selectedVariant.PreviousPrice.Value.ToCurrencyFormat()</span>

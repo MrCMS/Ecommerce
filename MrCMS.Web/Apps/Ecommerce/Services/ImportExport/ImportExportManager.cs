@@ -2,20 +2,26 @@
 using System.IO;
 using System.Text;
 using System.Xml;
+using MigraDoc.DocumentObjectModel;
+using MigraDoc.DocumentObjectModel.Shapes;
+using MigraDoc.DocumentObjectModel.Tables;
+using MigraDoc.Rendering;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Website;
+using PdfSharp.Pdf;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
@@ -37,6 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _orderShippingService = orderShippingService;
         }
 
+        #region Products
         /// <summary>
         /// Import Products From Excel
         /// </summary>
@@ -101,8 +108,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 var wsItems = excelFile.Workbook.Worksheets.Add("Items");
 
-                wsItems.Cells["A1:AE1"].Style.Font.Bold = true;
-                wsItems.Cells["A:AE"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                wsItems.Cells["A1:AF1"].Style.Font.Bold = true;
+                wsItems.Cells["A:AF"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 wsItems.Cells["A1"].Value = "Url (Must not be changed!)";
                 wsItems.Cells["B1"].Value = "Product Name";
                 wsItems.Cells["C1"].Value = "Description";
@@ -122,18 +129,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 wsItems.Cells["Q1"].Value = "Tracking Policy";
                 wsItems.Cells["R1"].Value = "SKU";
                 wsItems.Cells["S1"].Value = "Barcode";
-                wsItems.Cells["T1"].Value = "Option 1 Name";
-                wsItems.Cells["U1"].Value = "Option 1 Value";
-                wsItems.Cells["V1"].Value = "Option 2 Name";
-                wsItems.Cells["W1"].Value = "Option 2 Value";
-                wsItems.Cells["X1"].Value = "Option 3 Name";
-                wsItems.Cells["Y1"].Value = "Option 3 Value";
-                wsItems.Cells["Z1"].Value = "Image 1";
-                wsItems.Cells["AA1"].Value = "Image 2";
-                wsItems.Cells["AB1"].Value = "Image 3";
-                wsItems.Cells["AC1"].Value = "Price Breaks";
-                wsItems.Cells["AD1"].Value = "Url History";
-                wsItems.Cells["AE1"].Value = "Publish Date";
+                wsItems.Cells["T1"].Value = "Manufacturer Part Number";
+                wsItems.Cells["U1"].Value = "Option 1 Name";
+                wsItems.Cells["V1"].Value = "Option 1 Value";
+                wsItems.Cells["W1"].Value = "Option 2 Name";
+                wsItems.Cells["X1"].Value = "Option 2 Value";
+                wsItems.Cells["Y1"].Value = "Option 3 Name";
+                wsItems.Cells["Z1"].Value = "Option 3 Value";
+                wsItems.Cells["AA1"].Value = "Image 1";
+                wsItems.Cells["AB1"].Value = "Image 2";
+                wsItems.Cells["AC1"].Value = "Image 3";
+                wsItems.Cells["AD1"].Value = "Price Breaks";
+                wsItems.Cells["AE1"].Value = "Url History";
+                wsItems.Cells["AF1"].Value = "Publish Date";
 
                 var productVariants = _productVariantService.GetAll();
 
@@ -179,6 +187,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     wsItems.Cells["Q" + rowId].Value = productVariants[i].TrackingPolicy;
                     wsItems.Cells["R" + rowId].Value = productVariants[i].SKU;
                     wsItems.Cells["S" + rowId].Value = productVariants[i].Barcode;
+                    wsItems.Cells["T" + rowId].Value = productVariants[i].ManufacturerPartNumber;
 
                     for (var v = 0;
                          v <
@@ -187,21 +196,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     {
                         if (v == 0)
                         {
-                            wsItems.Cells["T" + rowId].Value =
+                            wsItems.Cells["U" + rowId].Value =
                                 productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsItems.Cells["U" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                            wsItems.Cells["V" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
                         if (v == 1)
                         {
-                            wsItems.Cells["V" + rowId].Value =
+                            wsItems.Cells["W" + rowId].Value =
                                 productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsItems.Cells["W" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                            wsItems.Cells["X" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
                         if (v == 2)
                         {
-                            wsItems.Cells["X" + rowId].Value =
+                            wsItems.Cells["Y" + rowId].Value =
                                 productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsItems.Cells["Y" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                            wsItems.Cells["Z" + rowId].Value = productVariants[i].AttributeValues[v].Value;
                         }
                     }
 
@@ -209,44 +218,44 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     {
                         foreach (var item in productVariants[i].PriceBreaks)
                         {
-                            wsItems.Cells["AC" + rowId].Value += item.Quantity + ":" + item.Price.ToString("#.##") + ";";
+                            wsItems.Cells["AD" + rowId].Value += item.Quantity + ":" + item.Price.ToString("#.##") + ";";
                         }
-                        wsItems.Cells["AC" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        wsItems.Cells["AD" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     }
                     if (productVariants[i].Product.Urls.Count > 0)
                     {
                         foreach (var item in productVariants[i].Product.Urls)
                         {
-                            wsItems.Cells["AD" + rowId].Value += item.UrlSegment + ",";
+                            wsItems.Cells["AE" + rowId].Value += item.UrlSegment + ",";
                         }
-                        wsItems.Cells["AD" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        wsItems.Cells["AE" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     }
 
                     if (productVariants[i].Product.Published)
-                        wsItems.Cells["AE" + rowId].Value = productVariants[i].Product.PublishOn;
-                    wsItems.Cells["AE" + rowId].Style.Numberformat.Format = "YYYY-MM-DD hh:mm:ss";
+                        wsItems.Cells["AF" + rowId].Value = productVariants[i].Product.PublishOn;
+                    wsItems.Cells["AF" + rowId].Style.Numberformat.Format = "YYYY-MM-DD hh:mm:ss";
 
                     //Images
                     if (!productVariants[i].Product.Images.Any()) continue;
 
-                    wsItems.Cells["Z" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.First().FileUrl);
-                    wsItems.Cells["Z" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    wsItems.Cells["AA" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.First().FileUrl);
+                    wsItems.Cells["AA" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
 
                     if (productVariants[i].Product.Images.Count() > 1)
                     {
-                        wsItems.Cells["AA" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.ToList()[1].FileUrl);
-                        wsItems.Cells["AA" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        wsItems.Cells["AB" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.ToList()[1].FileUrl);
+                        wsItems.Cells["AB" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     }
                     if (productVariants[i].Product.Images.Count() > 2)
                     {
-                        wsItems.Cells["AB" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.ToList()[2].FileUrl);
-                        wsItems.Cells["AB" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        wsItems.Cells["AC" + rowId].Value = GenerateImageUrlForExport(productVariants[i].Product.Images.ToList()[2].FileUrl);
+                        wsItems.Cells["AC" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                     }
                 }
                 wsItems.Cells["A:B"].AutoFitColumns();
                 wsItems.Cells["D:D"].AutoFitColumns();
                 wsItems.Cells["F:F"].AutoFitColumns();
-                wsItems.Cells["I:AE"].AutoFitColumns();
+                wsItems.Cells["I:AF"].AutoFitColumns();
 
                 return excelFile.GetAsByteArray();
             }
@@ -260,6 +269,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                    ? (siteUrl + imageUrl + "?update=no")
                                    : imageUrl + "?update=no";
         }
+
+        #endregion
+
+        #region Google Base
 
         /// <summary>
         /// Export Products To Google Base
@@ -471,5 +484,326 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 xml.WriteEndElement();
             }
         }
+
+        #endregion
+
+        #region Orders
+
+        public byte[] ExportOrderToPdf(Order order)
+        {
+            var pdf = SetDocumentInfo(order);
+
+            SetDocumentStyles(ref pdf);
+
+            SetDocument(ref pdf, order);
+
+            return GetDocumentToByteArray(ref pdf);
+        }
+
+        private static Document SetDocumentInfo(Order order)
+        {
+            return new Document
+            {
+                Info =
+                {
+                    Title = CurrentRequestData.CurrentSite.Name + " Order: " + order.Guid,
+                    Subject = CurrentRequestData.CurrentSite.Name + " Order: " + order.Guid,
+                    Keywords = "MrCMS, Order",
+                    Author = CurrentRequestData.CurrentUser.Name
+                }
+            };
+        }
+
+        private void SetDocumentStyles(ref Document document)
+        {
+            var style = document.Styles["Normal"];
+            style.Font.Name = "Tahoma";
+            style.Font.Size = 10;
+
+            style = document.Styles.AddStyle("Table", "Normal");
+            style.Font.Name = "Tahoma";
+            style.Font.Size = 9;
+        }
+
+        private void SetDocument(ref Document document, Order order)
+        {
+            var tableColor = new Color(0, 0, 0, 0);
+            var section = document.AddSection();
+            
+            //HEADER
+            SetHeader(ref section);
+
+            //FOOTER
+            SetFooter(ref section);
+
+            //INFO
+            SetInfo(order, ref section);
+
+            //TABLE STYLE
+            var table = SetTableStyle(ref section, tableColor);
+
+            //HEADERS
+            SetTableHeader(ref table, tableColor);
+
+            //ITEMS
+            SetTableData(order, ref table);
+
+            //SUMMARY
+            SetTableSummary(order, ref table);
+        }
+
+        private void SetHeader(ref Section section)
+        {
+            var frame1 = section.Headers.Primary.AddTextFrame();
+            frame1.RelativeVertical = RelativeVertical.Page;
+            frame1.Left = ShapePosition.Left;
+            frame1.MarginTop = new Unit(1, UnitType.Centimeter);
+            frame1.Width = new Unit(10, UnitType.Centimeter);
+
+            var frame2 = section.Headers.Primary.AddTextFrame();
+            frame2.RelativeVertical = RelativeVertical.Page;
+            frame2.Left = ShapePosition.Right;
+            frame2.MarginTop = new Unit(1, UnitType.Centimeter);
+            frame2.Width = new Unit(2, UnitType.Centimeter);
+
+            var p = frame1.AddParagraph();
+            p.AddFormattedText(CurrentRequestData.CurrentSite.Name, TextFormat.Bold);
+            p = frame2.AddParagraph();
+            p.AddDateField("dd/MM/yyyy");
+        }
+
+        private void SetFooter(ref Section section)
+        {
+            var p = section.Footers.Primary.AddParagraph();
+            p.Format.Alignment = ParagraphAlignment.Left;
+            p.Format.Font.Size = 8;
+            p.AddText(CurrentRequestData.CurrentSite.BaseUrl);
+        }
+
+        private void SetInfo(Order order, ref Section section)
+        {
+            var frame1 = section.AddTextFrame();
+            frame1.RelativeVertical = RelativeVertical.Page;
+            frame1.Left = ShapePosition.Left;
+            frame1.Top = new Unit(1.85, UnitType.Centimeter);
+            frame1.Width = new Unit(10, UnitType.Centimeter);
+            var p = frame1.AddParagraph();
+            p.Format.Font.Size = 16;
+            p.AddFormattedText("Order #" + order.Id, TextFormat.Bold);
+
+            //LEFT
+            frame1 = section.AddTextFrame();
+            frame1.RelativeVertical = RelativeVertical.Page;
+            frame1.Left = ShapePosition.Left;
+            frame1.Top = new Unit(3, UnitType.Centimeter);
+            frame1.Width = new Unit(10, UnitType.Centimeter);
+
+            //RIGHT
+            var frame2 = section.AddTextFrame();
+            frame2.RelativeVertical = RelativeVertical.Page;
+            frame2.Left = ShapePosition.Right;
+            frame2.Top = new Unit(3, UnitType.Centimeter);
+            frame2.Width = new Unit(8, UnitType.Centimeter);
+
+            //BILLING AND SHIPPING
+            p = frame1.AddParagraph();
+            p.AddFormattedText("Bill to:", TextFormat.Bold);
+            p = frame2.AddParagraph();
+            p.AddFormattedText("Ship to:", TextFormat.Bold);
+            p = frame1.AddParagraph();
+            p.AddText(order.BillingAddress.Name);
+            p = frame2.AddParagraph();
+            p.AddText(order.ShippingAddress.Name);
+            p = frame1.AddParagraph();
+            p.AddText(order.BillingAddress.PhoneNumber);
+            p = frame2.AddParagraph();
+            p.AddText(order.ShippingAddress.PhoneNumber);
+            p = frame1.AddParagraph();
+            p.AddText(order.BillingAddress.Address1);
+            p = frame2.AddParagraph();
+            p.AddText(order.ShippingAddress.Address1);
+            if (!String.IsNullOrWhiteSpace(order.BillingAddress.Address2))
+            {
+                p = frame1.AddParagraph();
+                p.AddText(order.BillingAddress.Address2);
+            }
+            if (!String.IsNullOrWhiteSpace(order.ShippingAddress.Address2))
+            {
+                p = frame2.AddParagraph();
+                p.AddText(order.ShippingAddress.Address2);
+            }
+            p = frame1.AddParagraph();
+            p.AddText(order.BillingAddress.City);
+            p = frame2.AddParagraph();
+            p.AddText(order.ShippingAddress.City);
+            if (!String.IsNullOrWhiteSpace(order.BillingAddress.StateProvince))
+            {
+                p = frame1.AddParagraph();
+                p.AddText(order.BillingAddress.StateProvince);
+            }
+            if (!String.IsNullOrWhiteSpace(order.ShippingAddress.StateProvince))
+            {
+                p = frame2.AddParagraph();
+                p.AddText(order.ShippingAddress.StateProvince);
+            }
+            p = frame1.AddParagraph();
+            p.AddText(order.BillingAddress.Country.Name);
+            p = frame2.AddParagraph();
+            p.AddText(order.ShippingAddress.Country.Name);
+            p = frame1.AddParagraph();
+            p.AddText(order.BillingAddress.PostalCode);
+            p = frame2.AddParagraph();
+            p.AddText(order.ShippingAddress.PostalCode);
+
+            frame1.AddParagraph("").AddLineBreak();
+            frame2.AddParagraph("").AddLineBreak();
+
+            //PAYMENT AND SHIPPING METHODS
+            p = frame1.AddParagraph();
+            p.AddText("Payment method: " + order.PaymentMethod);
+            p = frame2.AddParagraph();
+            p.AddText("Shipping method: " + order.ShippingMethod.Name);
+        }
+
+        private Table SetTableStyle(ref Section section, Color tableColor)
+        {
+            var frame = section.AddTextFrame();
+            frame.MarginTop = new Unit(6, UnitType.Centimeter);
+            frame.Width = new Unit(16, UnitType.Centimeter);
+
+            //TABLE LABEL
+            var p = frame.AddParagraph();
+            p.AddFormattedText("Purchased goods:", TextFormat.Bold);
+
+            frame.AddParagraph("").AddLineBreak();
+
+            //TABLE
+            var table = frame.AddTable();
+            table.Style = "Table";
+            table.Borders.Color = tableColor;
+            table.Borders.Width = 0.25;
+            table.Borders.Left.Width = 0.5;
+            table.Borders.Right.Width = 0.5;
+            table.Rows.LeftIndent = 0;
+            return table;
+        }
+
+        private void SetTableHeader(ref Table table, Color tableColor)
+        {
+            var columns = new Dictionary<string, Dictionary<string, ParagraphAlignment>>()
+                {
+                    {
+                        "#", new Dictionary<string, ParagraphAlignment>()
+                            {
+                                {"1cm", ParagraphAlignment.Center}
+                            }
+                    },
+                    {
+                        "Title", new Dictionary<string, ParagraphAlignment>()
+                            {
+                                {"6cm", ParagraphAlignment.Left}
+                            }
+                    },
+                    {
+                        "Unit Price", new Dictionary<string, ParagraphAlignment>()
+                            {
+                                {"3cm", ParagraphAlignment.Right}
+                            }
+                    },
+                    {
+                        "Qty", new Dictionary<string, ParagraphAlignment>()
+                            {
+                                {"3cm", ParagraphAlignment.Center}
+                            }
+                    },
+                    {
+                        "Total", new Dictionary<string, ParagraphAlignment>()
+                            {
+                                {"3cm", ParagraphAlignment.Right}
+                            }
+                    },
+                };
+
+            foreach (var item in columns)
+            {
+                var column = table.AddColumn(item.Value.First().Key);
+                column.Format.Alignment = item.Value.First().Value;
+            }
+
+            var row = table.AddRow();
+            row.HeadingFormat = true;
+            row.Format.Alignment = ParagraphAlignment.Center;
+            row.Format.Font.Bold = true;
+            row.Shading.Color = tableColor;
+            row.TopPadding = 2;
+            row.BottomPadding = 2;
+            var rowId = 0;
+            foreach (var item in columns)
+            {
+                row.Cells[rowId].AddParagraph(item.Key);
+                row.Cells[rowId].Format.Alignment = ParagraphAlignment.Center;
+                rowId++;
+            }
+
+            table.SetEdge(0, 0, 5, 1, Edge.Box, BorderStyle.Single, 0.75, Color.Empty);
+        }
+
+        private void SetTableData(Order order, ref Table table)
+        {
+            for (var i = 0; i < order.OrderLines.Count; i++)
+            {
+                var orderLine = order.OrderLines[i];
+                var row = table.AddRow();
+                row.TopPadding = 2;
+                row.BottomPadding = 2;
+
+                row.Cells[0].AddParagraph((i + 1).ToString());
+                row.Cells[1].AddParagraph(orderLine.ProductVariant.DisplayName);
+                row.Cells[2].AddParagraph(orderLine.UnitPrice.ToCurrencyFormat());
+                row.Cells[3].AddParagraph(orderLine.Quantity.ToString());
+                row.Cells[4].AddParagraph(orderLine.Price.ToCurrencyFormat());
+
+                table.SetEdge(0, table.Rows.Count - 2, 5, 2, Edge.Box, BorderStyle.Single, 0.75);
+            }
+        }
+
+        private void SetTableSummary(Order order, ref Table table)
+        {
+            var summaryData = new Dictionary<string, string>()
+                {
+                    {"Sub-total", order.Subtotal.ToCurrencyFormat()},
+                    {"Shipping", order.ShippingTotal.ToCurrencyFormat()},
+                    {"Tax", order.Tax.ToCurrencyFormat()},
+                    {"Discount", order.DiscountAmount.ToCurrencyFormat()},
+                    {"Total", order.Total.ToCurrencyFormat()},
+                };
+
+            foreach (var item in summaryData)
+            {
+                var row = table.AddRow();
+                row.TopPadding = 2;
+                row.BottomPadding = 2;
+                row.Cells[0].Borders.Visible = false;
+                row.Cells[0].AddParagraph(item.Key + ":");
+                row.Cells[0].Format.Alignment = ParagraphAlignment.Right;
+                row.Cells[0].MergeRight = 3;
+                if (item.Key == "Total")
+                    row.Cells[4].Format.Font.Bold = true;
+                row.Cells[4].AddParagraph(item.Value);
+            }
+
+            table.SetEdge(4, table.Rows.Count - 3, 1, 3, Edge.Box, BorderStyle.Single, 0.75);
+        }
+
+        private byte[] GetDocumentToByteArray(ref Document pdf)
+        {
+            var renderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Automatic) { Document = pdf };
+            renderer.RenderDocument();
+            var stream = new MemoryStream();
+            renderer.PdfDocument.Save(stream);
+            return stream.ToArray();
+        }
+
+        #endregion
     }
 }

@@ -18,7 +18,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IPaypointPaymentService _paypointPaymentService;
         private readonly IDocumentService _documentService;
 
-        public PaymentMethodController(CartModel cartModel, IOrderService orderService, IPayPalExpressService payPalExpressService, IPaypointPaymentService paypointPaymentService, IDocumentService documentService)
+        public PaymentMethodController(CartModel cartModel, IOrderService orderService,
+            IPayPalExpressService payPalExpressService, IPaypointPaymentService paypointPaymentService,
+            IDocumentService documentService)
         {
             _cartModel = cartModel;
             _orderService = orderService;

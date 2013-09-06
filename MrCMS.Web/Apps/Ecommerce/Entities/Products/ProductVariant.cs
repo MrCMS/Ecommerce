@@ -166,6 +166,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         [DisplayName("Tax Rate")]
         public virtual TaxRate TaxRate { get; set; }
+        
+        
+        [DisplayName("Manufacturer Part Number")]
+        [StringLength(250)]
+        public virtual string ManufacturerPartNumber { get; set; }
 
         public virtual decimal TaxRatePercentage
         {
@@ -181,7 +186,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual string DisplayName
         {
-            get { return Name ?? Product.Name; }
+            get { return !string.IsNullOrWhiteSpace(Name) ? Name : Product.Name; }
         }
         public virtual string SelectOptionName
         {
@@ -199,6 +204,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
                 return title;
             }
+        }
+
+        public virtual bool ShowPreviousPrice
+        {
+            get { return PreviousPrice.HasValue & PreviousPrice > Price; }
         }
 
         public virtual GoogleBaseProduct GoogleBaseProduct { get; set; }

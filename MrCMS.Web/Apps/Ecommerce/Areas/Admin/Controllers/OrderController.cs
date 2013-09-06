@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Web.Mvc;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -18,16 +19,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IPaymentStatusService _paymentStatusService;
         private readonly IShippingMethodManager _shippingMethodManager;
         private readonly IOrderSearchService _orderSearchService;
+        private readonly IOrderShippingService _orderShippingService;
 
         public OrderController(IOrderService orderService, IShippingStatusService shippingStatusService,
             IPaymentStatusService paymentStatusService, IShippingMethodManager shippingMethodManager,
-            IOrderSearchService orderSearchService)
+            IOrderSearchService orderSearchService, IOrderShippingService orderShippingService)
         {
             _orderService = orderService;
             _shippingStatusService = shippingStatusService;
             _paymentStatusService = paymentStatusService;
             _shippingMethodManager = shippingMethodManager;
             _orderSearchService = orderSearchService;
+            _orderShippingService = orderShippingService;
         }
 
         [HttpGet]
@@ -131,6 +134,41 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _orderService.MarkAsVoided(order);
             return !index ? RedirectToAction("Edit", "Order", new { id = order.Id }) : RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ViewResult BulkShippingUpdate()
+        {
+            if (TempData.ContainsKey("messages"))
+                ViewBag.Messages = TempData["messages"];
+            if (TempData.ContainsKey("import-status"))
+                ViewBag.ImportStatus = TempData["import-status"];
+            return View();
+        }
+
+        [HttpPost]
+        [ActionName("BulkShippingUpdate")]
+        public RedirectToRouteResult BulkShippingUpdate_POST(HttpPostedFileBase document)
+        {
+            if (document != null && document.ContentLength > 0 && (document.ContentType == "text/CSV" || document.ContentType == "text/csv"))
+                TempData["messages"] = _orderShippingService.BulkShippingUpdate(document.InputStream);
+            else
+                TempData["import-status"] = "Please choose non-empty CSV (.csv) file before uploading.";
+            return RedirectToAction("BulkShippingUpdate");
+        }
+
+        [HttpGet]
+        public ActionResult SetTrackingNumber(Order order)
+        {
+            return View(order);
+        }
+
+        [HttpPost]
+        [ActionName("SetTrackingNumber")]
+        public ActionResult SetTrackingNumber_POST(Order order)
+        {
+            _orderService.Save(order);
+            return RedirectToAction("Edit", "Order", new {id = order.Id});
         }
     }
 }

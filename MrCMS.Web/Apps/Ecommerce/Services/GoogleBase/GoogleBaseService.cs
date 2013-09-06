@@ -1,26 +1,21 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
+using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using NHibernate;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
 {
     public class GoogleBaseService : IGoogleBaseService
     {
         private readonly ISession _session;
-        private readonly IProductVariantService _productVariantService;
-        private readonly GoogleBaseSettings _googleBaseSettings;
 
-        public GoogleBaseService(ISession session,
-            IProductVariantService productVariantService,
-            GoogleBaseSettings googleBaseSettings)
+        public GoogleBaseService(ISession session)
         {
             _session = session;
-            _productVariantService = productVariantService;
-            _googleBaseSettings = googleBaseSettings;
         }
 
         public GoogleBaseProduct GetGoogleBaseProduct(int id)
@@ -35,14 +30,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             _session.Transact(session => session.SaveOrUpdate(item));
         }
 
-
         public List<SelectListItem> GetGoogleCategories()
         {
-            if (!string.IsNullOrWhiteSpace(_googleBaseSettings.GoogleBaseTaxonomyFeedUrl))
-            {
-                GoogleBaseTaxonomyData.GetTaxonomyData(_googleBaseSettings.GoogleBaseTaxonomyFeedUrl).BuildSelectItemList(item => item, item => item, emptyItem: null); ;
-            }
-            return GoogleBaseTaxonomyData.Rows.BuildSelectItemList(item => item, item => item, emptyItem: null);
+            return GoogleBaseTaxonomyData.GetCategories().BuildSelectItemList(item => item.Name, item => item.Name, emptyItem: null); ;
+        }
+
+        public IPagedList<GoogleBaseCategory> Search(string queryTerm = null, int page = 1)
+        {
+            var categories = GoogleBaseTaxonomyData.GetCategories();
+
+            return !string.IsNullOrWhiteSpace(queryTerm) ? categories.Where(x => x.Name.ToLower().Contains(queryTerm.ToLower())).Paged(page, 10) : categories.Paged(page, 10);
         }
     }
 }

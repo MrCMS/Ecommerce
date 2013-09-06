@@ -1,0 +1,39 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Models.CategoryPagedList
+@using MrCMS.Helpers
+
+<div class="container" data-paging-type="async">
+    @if (Model != null && Model.Any())
+    {
+        <h1>Categories</h1>
+
+        foreach (var items in Model.Chunk(4))
+        {
+            <div class="row-fluid grid-items margin-bottom-20">
+                @foreach (var item in items)
+                {
+                    <div class="span3">
+                        <div class="category-picture text-align-center margin-top-10 padding-top-bottom-10">
+                            @if (item.FeatureImage != null)
+                            {
+                                <a href="/@item.LiveUrlSegment" title="@item.Name">
+                                    @RenderImage(item.FeatureImage)
+                                </a>
+                            }
+                        </div>
+                        <div class="category-name">
+                            <h3><a href="/@item.LiveUrlSegment">@item.Name</a></h3> 
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                }
+            </div>
+        }
+        
+        @Html.Pager(Model, "Categories", i => new { page = i })
+    }
+    else
+    {
+        <span>No categories.</span>
+    }
+</div>
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/async-paging.js"); }
