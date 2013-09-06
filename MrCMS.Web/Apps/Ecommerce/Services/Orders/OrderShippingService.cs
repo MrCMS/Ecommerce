@@ -3,11 +3,14 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate.DTOs;
+using MrCMS.Website;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
@@ -17,13 +20,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         private readonly ISession _session;
         private readonly IBulkShippingUpdateValidationService _bulkShippingUpdateValidationService;
         private readonly IBulkShippingUpdateService _bulkShippingUpdateService;
+        private readonly IUserService _userService;
 
-        public OrderShippingService(ISession session,IBulkShippingUpdateValidationService bulkShippingUpdateValidationService,
-                                   IBulkShippingUpdateService bulkShippingUpdateService)
+        public OrderShippingService(ISession session,
+                                    IBulkShippingUpdateValidationService bulkShippingUpdateValidationService,
+                                    IBulkShippingUpdateService bulkShippingUpdateService, IUserService userService)
         {
             _session = session;
             _bulkShippingUpdateValidationService = bulkShippingUpdateValidationService;
             _bulkShippingUpdateService = bulkShippingUpdateService;
+            _userService = userService;
         }
 
         public Dictionary<string, List<string>> BulkShippingUpdate(Stream file)
@@ -36,11 +42,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             if (businessLogicErrors.Any())
                 return businessLogicErrors;
             var noOfUpdatedItems = _bulkShippingUpdateService.BulkShippingUpdateFromDTOs(items);
-            return new Dictionary<string, List<string>>() { { "success", new List<string>() 
-            { noOfUpdatedItems > 0 ? noOfUpdatedItems.ToString() + (noOfUpdatedItems > 1? " items were":" item was") +" successfully updated." : "No items were updated." } } };
+            return new Dictionary<string, List<string>>()
+                       {
+                           {
+                               "success", new List<string>()
+                                              {
+                                                  noOfUpdatedItems > 0
+                                                      ? noOfUpdatedItems.ToString() +
+                                                        (noOfUpdatedItems > 1 ? " items were" : " item was") +
+                                                        " successfully updated."
+                                                      : "No items were updated."
+                                              }
+                           }
+                       };
         }
 
-        private List<BulkShippingUpdateDataTransferObject> GetOrdersFromFile(Stream file, out Dictionary<string, List<string>> parseErrors)
+        private List<BulkShippingUpdateDataTransferObject> GetOrdersFromFile(Stream file,
+                                                                             out Dictionary<string, List<string>>
+                                                                                 parseErrors)
         {
             parseErrors = new Dictionary<string, List<string>>();
             return _bulkShippingUpdateValidationService.ValidateAndBulkShippingUpdateOrders(file, ref parseErrors);
@@ -67,9 +86,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                         .Fetch(calculation => calculation.ShippingMethod)
                         .Eager.Cacheable()
                         .List().Where(x => x.CanBeUsed(cart))
-                                       .OrderBy(x => x.Country.DisplayOrder)
-                                       .ThenBy(x => x.ShippingMethod.DisplayOrder)
-                                       .Where(calculation => calculation.GetPrice(cart).HasValue);
+                        .OrderBy(x => x.Country.DisplayOrder)
+                        .ThenBy(x => x.ShippingMethod.DisplayOrder)
+                        .Where(calculation => calculation.GetPrice(cart).HasValue);
             return shippingCalculations;
         }
 
@@ -78,14 +97,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             var calculations =
                 GetShippingCalculations(cart)
                     .GroupBy(x => x.Country)
-                    .SelectMany(s => s.GroupBy(sc => sc.ShippingMethod).Select(sc2 => sc2.OrderBy(sc3 => sc3.GetPrice(cart)).First()))
+                    .SelectMany(
+                        s =>
+                        s.GroupBy(sc => sc.ShippingMethod).Select(sc2 => sc2.OrderBy(sc3 => sc3.GetPrice(cart)).First()))
                     .ToList();
             return calculations;
         }
 
         public IEnumerable<ShippingCalculation> GetCheapestShippingCalculationsForEveryCountry(CartModel cart)
         {
-            return GetShippingCalculations(cart).GroupBy(x => x.Country).Select(s => s.OrderBy(calculation => calculation.GetPrice(cart)).First()).ToList();
+            return
+                GetShippingCalculations(cart)
+                    .GroupBy(x => x.Country)
+                    .Select(s => s.OrderBy(calculation => calculation.GetPrice(cart)).First())
+                    .ToList();
         }
 
         public List<SelectListItem> GetCheapestShippingOptions(CartModel cart)
@@ -106,6 +131,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             var firstOrDefault = GetShippingCalculations(cart).FirstOrDefault();
             return firstOrDefault != null ? firstOrDefault.ShippingMethod : null;
+        }
+
+        public List<SelectListItem> ExistingAddressOptions(CartModel cartModel, Address address)
+        {
+            var addresses = new List<Address>();
+            if (cartModel.ShippingAddress != null) addresses.Add(cartModel.ShippingAddress);
+            if (cartModel.BillingAddress != null) addresses.Add(cartModel.BillingAddress);
+
+            var currentUser = CurrentRequestData.CurrentUser;
+            if (currentUser != null)
+                addresses.AddRange(_userService.GetAll<Address>(currentUser));
+
+            addresses = addresses.Distinct().Where(a => address == null || !AddressComparison.Comparer.Equals(a, address)).ToList();
+
+            return addresses.Any()
+                       ? addresses.BuildSelectItemList(a => a.GetDescription(), a => a.ToJSON(),
+                                                       emptyItemText: "Select an address...")
+                       : new List<SelectListItem>();
         }
     }
 }
