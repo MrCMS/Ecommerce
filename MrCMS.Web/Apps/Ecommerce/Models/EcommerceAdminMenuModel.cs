@@ -37,7 +37,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                         new ChildMenuItem("Import/Export Products",
                                                                           "/Admin/Apps/Ecommerce/ImportExport/Products"),
                                                         new ChildMenuItem("Google Base Integration",
-                                                                          "/Admin/Apps/Ecommerce/ImportExport/GoogleBase"),
+                                                                          "/Admin/Apps/Ecommerce/GoogleBase/Dashboard"),
                                                         new ChildMenuItem("Low Stock Report",
                                                                           "/Admin/Apps/Ecommerce/Stock/LowStockReport"),
                                                         new ChildMenuItem("Bulk Stock Update",

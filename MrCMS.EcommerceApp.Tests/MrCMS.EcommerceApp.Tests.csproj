@@ -119,6 +119,7 @@
   <ItemGroup>
     <Compile Include="Admin\Controllers\CategoryControllerTests.cs" />
     <Compile Include="Admin\Controllers\BrandControllerTests.cs" />
+    <Compile Include="Admin\Controllers\GoogleBaseControllerTests.cs" />
     <Compile Include="Admin\Controllers\StockControllerTests.cs" />
     <Compile Include="Admin\Controllers\ImportExportControllerTests.cs" />
     <Compile Include="Admin\Controllers\EcommerceSettingsControllerTests.cs" />
@@ -174,7 +175,7 @@
     <Compile Include="Services\OrderRefundServiceTests.cs" />
     <Compile Include="Services\OrderServiceTests.cs" />
     <Compile Include="Services\InventoryServiceTests.cs" />
-    <Compile Include="Services\GoogleBaseServiceTests.cs" />
+    <Compile Include="Services\GoogleBaseManagerTests.cs" />
     <Compile Include="Services\OptionServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductVariantPriceBreakServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductUrlHistoryServiceTests.cs" />

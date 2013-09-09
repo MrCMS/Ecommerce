@@ -4,7 +4,7 @@
 
 <div class="tab-pane active" id="search">
     <br />   
-    @using (Html.BeginForm("GoogleBase", "ImportExport", FormMethod.Get, new {id = "Filter"}))
+    @using (Html.BeginForm("Dashboard", "GoogleBase", FormMethod.Get, new { id = "Filter" }))
     {
         @Html.DropDownListFor(x => x.Category, ViewData["categories"] as IEnumerable<SelectListItem>, new {@class = "input-xlarge"})
         <br/>
@@ -30,7 +30,7 @@
         }
     }
         
-    @Html.Pager(Model.Items, "GoogleBase", i => new {page = i})
+    @Html.Pager(Model.Items, "Dashboard", i => new {page = i})
 </div>
 
 @{

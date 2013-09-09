@@ -58,30 +58,6 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             A.CallTo(() => _productVariantService.GetAll()).MustHaveHappened();
         }
 
-        [Fact]
-        public void ImportExportManager_ExportProductsToGoogleBase_ShouldNotBeNull()
-        {
-            var result = _importExportManager.ExportProductsToGoogleBase();
-
-            result.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void ImportExportManager_ExportProductsToGoogleBase_ShouldReturnByteArray()
-        {
-            var result = _importExportManager.ExportProductsToGoogleBase();
-
-            result.Should().BeOfType<byte[]>();
-        }
-
-        [Fact]
-        public void ImportExportManager_ExportProductsToGoogleBase_ShouldCallGetAllVariantsOfProductVariantService()
-        {
-            _importExportManager.ExportProductsToGoogleBase();
-
-            A.CallTo(() => _productVariantService.GetAllVariants(string.Empty,0,1)).MustHaveHappened();
-        }
-
         private static Stream GetDefaultStream()
         {
             return new MemoryStream(0);
