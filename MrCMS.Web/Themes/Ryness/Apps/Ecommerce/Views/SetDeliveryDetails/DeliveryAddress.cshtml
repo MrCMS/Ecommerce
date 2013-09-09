@@ -12,20 +12,20 @@
                 Who shall we deliver to?
             </div>
             <div class="padding-top-bottom-20">
-                
-            @if (otherAddresses.Any())
-            {
-            <div class="row-fluid">
-                    <div class="span4 align-right line-height-30">
-                        Existing Address :
-                    </div>
-                    <div class="span8">
-                        <div class="row-fluid">
-        @Html.DropDownList("existing-addresses", otherAddresses)
+
+                @if (otherAddresses.Any())
+                {
+                    <div class="row-fluid">
+                        <div class="span4 align-right line-height-30">
+                            Existing Address :
+                        </div>
+                        <div class="span8">
+                            <div class="row-fluid">
+                                @Html.DropDownList("existing-addresses", otherAddresses)
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
                 <div class="row-fluid">
                     <div class="span4 align-right line-height-30">
                         First Name <span class="red">*</span> :
@@ -48,7 +48,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row-fluid">
                     <div class="span4 align-right line-height-30">
                         Company (optional)

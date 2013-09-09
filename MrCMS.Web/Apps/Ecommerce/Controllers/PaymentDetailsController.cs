@@ -3,6 +3,7 @@ using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 
@@ -11,11 +12,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     public class PaymentDetailsController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly CartModel _cart;
+        private readonly IOrderShippingService _orderShippingService;
         private readonly ICartManager _cartManager;
 
-        public PaymentDetailsController(CartModel cart, ICartManager cartManager)
+        public PaymentDetailsController(CartModel cart, IOrderShippingService orderShippingService, ICartManager cartManager)
         {
             _cart = cart;
+            _orderShippingService = orderShippingService;
             _cartManager = cartManager;
         }
 
@@ -46,6 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [ChildActionOnly]
         public PartialViewResult SetBillingAddress()
         {
+            ViewData["other-addresses"] = _orderShippingService.ExistingAddressOptions(_cart, _cart.BillingAddress);
             return PartialView(_cart.BillingAddress);
         }
 
