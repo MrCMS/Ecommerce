@@ -24,10 +24,14 @@
             </span>
         </legend>
         
+        @Html.HiddenFor(x => x.Site.Id)
+
         <div class="row-fluid">
-        <div class="span12">
-           TODO
-        </div>
+            <div class="span12">
+                @Html.LabelFor(x => x.AWSAccessKeyId)
+                @Html.TextBoxFor(x => x.AWSAccessKeyId, new {@class = "span12", disabled="disabled", placeholder="PayPal Email Address will be loaded automatically..."})
+                @Html.ValidationMessageFor(x => x.AWSAccessKeyId)
+            </div>
         </div>
 
     </fieldset>
