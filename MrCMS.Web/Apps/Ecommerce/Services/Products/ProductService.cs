@@ -7,6 +7,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Website;
 using NHibernate;
 using MrCMS.Helpers;
 using System.Collections.Generic;
@@ -198,6 +199,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     session.Update(product);
                 }
             );
+        }
+
+        public IList<Product> GetNewIn(int numberOfItems = 10)
+        {
+            return _session.QueryOver<Product>().Where(x=>x.PublishOn <= CurrentRequestData.Now && !x.IsDeleted).OrderBy(x=>x.CreatedOn).Desc.Take(numberOfItems).Cacheable().List();
         }
     }
 }
