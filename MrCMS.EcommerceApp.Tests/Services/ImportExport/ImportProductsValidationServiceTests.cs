@@ -31,7 +31,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         {
             _documentService = A.Fake<IDocumentService>();
             _fileService = A.Fake<IFileService>();
-            A.Fake<IImportExportManager>();
+            A.Fake<IImportProductsManager>();
             _importProductsValidationService= new ImportProductsValidationService(_documentService);
         }
 
