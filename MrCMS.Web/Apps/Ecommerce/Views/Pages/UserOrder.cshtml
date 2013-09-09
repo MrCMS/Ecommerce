@@ -18,9 +18,10 @@
             <div class="pull-right btn-group">
                 <a href="@(UniquePageHelper.GetUrl<UserAccountPage>())" class="btn " >Return to account</a>
 
-                <a href="@(UniquePageHelper.GetUrl<UserAccountPage>())" class="btn btn-primary" >Download PDF</a>
+                <a href="/Apps/Ecommerce/OrderPdf/ExportOrderToPdf/@order.Id" class="btn btn-primary" >Download PDF</a>
             </div>
-            <table class="table table-condensed table-striped margin-top-13">
+            <br class="clearfix"/>
+            <table class="table table-condensed table-striped">
                 <tr>
                     <td>Order GUID</td>
                     <td>@order.Guid</td>
@@ -101,7 +102,7 @@
             <table class="table table-condensed">
                 <tr>
                     <td>Method</td>
-                    <td>@order.ShippingMethod.Name)</td>
+                    <td>@order.ShippingMethod.Name</td>
                 </tr>
                 <tr>
                     <td>Status</td>

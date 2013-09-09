@@ -382,6 +382,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\EnterOrderEmailController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GoogleAnalyticsController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\OrderPdfController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\OrderPlacedController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PaymentDetailsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PaymentMethodController.cs" />

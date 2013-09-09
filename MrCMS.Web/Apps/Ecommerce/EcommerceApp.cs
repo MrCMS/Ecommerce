@@ -51,9 +51,7 @@ namespace MrCMS.Web.Apps.Ecommerce
 
         protected override void RegisterApp(MrCMSAppRegistrationContext context)
         {
-            context.MapAreaRoute("Admin controllers", "Admin", "Admin/Apps/Ecommerce/{controller}/{action}/{id}",
-                                 new { controller = "Home", action = "Index", id = UrlParameter.Optional },
-                                 new[] { typeof(ProductController).Namespace });
+            context.MapAreaRoute("Admin controllers", "Admin", "Admin/Apps/Ecommerce/{controller}/{action}/{id}",new { controller = "Home", action = "Index", id = UrlParameter.Optional }, new[] { typeof(ProductController).Namespace });
             context.MapRoute("Product Variant - GetPriceBreaksForProductVariant", "Apps/Ecommerce/ProductVariant/GetPriceBreaksForProductVariant", new { controller = "ProductVariant", action = "GetPriceBreaksForProductVariant" });
             context.MapRoute("Cart - Details", "Apps/Ecommerce/CartDetails", new { controller = "Cart", action = "Details" });
             context.MapRoute("Cart - Update Basket", "Apps/Ecommerce/UpdateBasket", new { controller = "Cart", action = "UpdateBasket" });
@@ -62,102 +60,40 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Cart - Edit Cart Item", "Apps/Ecommerce/EditCartItem", new { controller = "Cart", action = "EditCartItem" });
             context.MapRoute("Cart - Delete Cart Item", "Apps/Ecommerce/DeleteCartItem", new { controller = "Cart", action = "DeleteCartItem" });
             context.MapRoute("Cart - Apply Discount Code", "Apps/Ecommerce/ApplyDiscountCode", new { controller = "Cart", action = "ApplyDiscountCode" });
-
-            context.MapRoute("Set Delivery Details - Get Delivery Address",
-                             "Apps/Ecommerce/SetDeliveryDetails/DeliveryAddress",
-                             new { controller = "SetDeliveryDetails", action = "DeliveryAddress" },
+            context.MapRoute("Set Delivery Details - Get Delivery Address", "Apps/Ecommerce/SetDeliveryDetails/DeliveryAddress", new { controller = "SetDeliveryDetails", action = "DeliveryAddress" },
                              new[] { typeof(SetDeliveryDetailsController).Namespace });
-
-            context.MapRoute("Set Delivery Details - Set Shipping Method",
-                              "Apps/Ecommerce/SetDeliveryDetails/SetShipping",
-                              new { controller = "SetDeliveryDetails", action = "SetShipping" },
+            context.MapRoute("Set Delivery Details - Set Shipping Method", "Apps/Ecommerce/SetDeliveryDetails/SetShipping", new { controller = "SetDeliveryDetails", action = "SetShipping" },
                               new[] { typeof(SetDeliveryDetailsController).Namespace });
-
-            context.MapRoute("Set Delivery Details - Set Shipping Address",
-                              "Apps/Ecommerce/SetDeliveryDetails/SetAddress",
-                              new { controller = "SetDeliveryDetails", action = "SetAddress" },
+            context.MapRoute("Set Delivery Details - Set Shipping Address", "Apps/Ecommerce/SetDeliveryDetails/SetAddress", new { controller = "SetDeliveryDetails", action = "SetAddress" },
                               new[] { typeof(SetDeliveryDetailsController).Namespace });
-
-            context.MapRoute("Enter Order Email - Set Order Email",
-                             "Apps/Ecommerce/SetOrderEmail",
-                             new { controller = "EnterOrderEmail", action = "SetOrderEmail" },
+            context.MapRoute("Enter Order Email - Set Order Email", "Apps/Ecommerce/SetOrderEmail", new { controller = "EnterOrderEmail", action = "SetOrderEmail" },
                              new[] { typeof(EnterOrderEmailController).Namespace });
-
-            context.MapRoute("Enter Order Email - Set Order Email And Login",
-                                        "Apps/Ecommerce/SetOrderEmailAndLogin",
-                                        new { controller = "EnterOrderEmail", action = "SetOrderEmailAndLogin" },
+            context.MapRoute("Enter Order Email - Set Order Email And Login", "Apps/Ecommerce/SetOrderEmailAndLogin", new { controller = "EnterOrderEmail", action = "SetOrderEmailAndLogin" },
                                         new[] { typeof(EnterOrderEmailController).Namespace });
-
-            context.MapRoute("Checkout - Price Summary",
-                             "Apps/Ecommerce/Checkout/Summary",
-                             new { controller = "Checkout", action = "Summary" },
+            context.MapRoute("Checkout - Price Summary", "Apps/Ecommerce/Checkout/Summary", new { controller = "Checkout", action = "Summary" },
                              new[] { typeof(CheckoutController).Namespace });
-
-            context.MapRoute("Confirm Order - Cash On Delivery",
-                             "Apps/Ecommerce/Confirm/CashOnDelivery",
-                             new { controller = "PaymentMethod", action = "CashOnDelivery" },
+            context.MapRoute("Confirm Order - Cash On Delivery", "Apps/Ecommerce/Confirm/CashOnDelivery", new { controller = "PaymentMethod", action = "CashOnDelivery" },
                              new[] { typeof(PaymentMethodController).Namespace });
-
-            context.MapRoute("Confirm Order - PayPal Express Checkout",
-                             "Apps/Ecommerce/Confirm/PayPalExpressCheckout",
-                             new { controller = "PaymentMethod", action = "PayPalExpressCheckout" },
+            context.MapRoute("Confirm Order - PayPal Express Checkout", "Apps/Ecommerce/Confirm/PayPalExpressCheckout", new { controller = "PaymentMethod", action = "PayPalExpressCheckout" },
                              new[] { typeof(PaymentMethodController).Namespace });
-
-            context.MapRoute("Confirm Order - Paypoint",
-                             "Apps/Ecommerce/Confirm/Paypoint",
-                             new { controller = "PaymentMethod", action = "Paypoint" },
+            context.MapRoute("Confirm Order - Paypoint", "Apps/Ecommerce/Confirm/Paypoint", new { controller = "PaymentMethod", action = "Paypoint" },
                              new[] { typeof(PaymentMethodController).Namespace });
-
-            context.MapRoute("Checkout - Billing Address same as Shipping Address",
-                             "Apps/Ecommerce/PaymentDetails/BillingAddressSameAsShippingAddress",
-                             new { controller = "PaymentDetails", action = "BillingAddressSameAsShippingAddress" },
+            context.MapRoute("Checkout - Billing Address same as Shipping Address", "Apps/Ecommerce/PaymentDetails/BillingAddressSameAsShippingAddress", new { controller = "PaymentDetails", action = "BillingAddressSameAsShippingAddress" },
                              new[] { typeof(PaymentDetailsController).Namespace });
-
-            context.MapRoute("Checkout - Update Billing Address",
-                             "Apps/Ecommerce/PaymentDetails/UpdateBillingAddress",
-                             new { controller = "PaymentDetails", action = "UpdateBillingAddress" },
+            context.MapRoute("Checkout - Update Billing Address", "Apps/Ecommerce/PaymentDetails/UpdateBillingAddress", new { controller = "PaymentDetails", action = "UpdateBillingAddress" },
                              new[] { typeof(PaymentDetailsController).Namespace });
-
-            context.MapRoute("Checkout - Save Billing Address",
-                             "Apps/Ecommerce/PaymentDetails/SaveBillingAddress",
-                             new { controller = "PaymentDetails", action = "SaveBillingAddress" },
-                             new[] { typeof(PaymentDetailsController).Namespace });
-
+            context.MapRoute("Checkout - Save Billing Address", "Apps/Ecommerce/PaymentDetails/SaveBillingAddress", new { controller = "PaymentDetails", action = "SaveBillingAddress" },new[] { typeof(PaymentDetailsController).Namespace });
             context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders", new { controller = "UserAccount", action = "UserAccountOrders" });
             context.MapRoute("User Account Register Without Details", "Apps/Ecommerce/UserAccount/RegistrationWithoutDetails", new { controller = "UserAccount", action = "RegistrationWithoutDetails" });
-
-            context.MapRoute("PayPal Express Checkout - SetExpressCheckout",
-                             "Apps/Ecommerce/PayPalExpress/SetExpressCheckout",
-                             new { controller = "PayPalExpressCheckout", action = "SetExpressCheckout" },
+            context.MapRoute("User Account - download Order PDF", "Apps/Ecommerce/OrderPdf/ExportOrderToPdf/{id}", new { controller = "OrderPdf", action = "ExportOrderToPdf" }, new[] { typeof(OrderPdfController).Namespace });
+            context.MapRoute("PayPal Express Checkout - SetExpressCheckout", "Apps/Ecommerce/PayPalExpress/SetExpressCheckout", new { controller = "PayPalExpressCheckout", action = "SetExpressCheckout" },
                              new[] { typeof(PayPalExpressCheckoutController).Namespace });
-            context.MapRoute("Product Search - Query",
-                             "search/query",
-                             new { controller = "ProductSearch", action = "Query" },
-                             new[] { typeof(ProductSearchController).Namespace });
-            context.MapRoute("Product Search - Results",
-                             "search/results",
-                             new { controller = "ProductSearch", action = "Results" },
-                             new[] { typeof(ProductSearchController).Namespace });
-
-            context.MapRoute("Checkout - PayPal Return Handler",
-                             "Apps/Ecommerce/PayPalExpressCheckout/ReturnHandler",
-                             new { controller = "PayPalExpressCheckout", action = "Return" },
-                             new[] { typeof(PayPalExpressCheckoutController).Namespace });
-
-            context.MapRoute("Checkout - Paypoint 3D Secure Redirect",
-                             "Apps/Ecommerce/Paypoint/3DSecureRedirect",
-                             new { controller = "Paypoint", action = "Redirect3DSecure" },
-                             new[] { typeof(PaypointController).Namespace });
-
-            context.MapRoute("Checkout - Paypoint 3D Secure Response Handler",
-                             "Apps/Ecommerce/Paypoint/3DSecureReturnHandler",
-                             new { controller = "Paypoint", action = "Response3DSecure" },
-                             new[] { typeof(PaypointController).Namespace });
-
-            context.MapRoute("Category Container - Categories",
-                             "Apps/Ecommerce/CategoryContainer/Categories",
-                             new { controller = "CategoryContainer", action = "Categories" },
-                             new[] { typeof(CategoryContainer).Namespace });
+            context.MapRoute("Product Search - Query", "search/query", new { controller = "ProductSearch", action = "Query" },new[] { typeof(ProductSearchController).Namespace });
+            context.MapRoute("Product Search - Results", "search/results", new { controller = "ProductSearch", action = "Results" }, new[] { typeof(ProductSearchController).Namespace });
+            context.MapRoute("Checkout - PayPal Return Handler", "Apps/Ecommerce/PayPalExpressCheckout/ReturnHandler", new { controller = "PayPalExpressCheckout", action = "Return" },new[] { typeof(PayPalExpressCheckoutController).Namespace });
+            context.MapRoute("Checkout - Paypoint 3D Secure Redirect", "Apps/Ecommerce/Paypoint/3DSecureRedirect", new { controller = "Paypoint", action = "Redirect3DSecure" },new[] { typeof(PaypointController).Namespace });
+            context.MapRoute("Checkout - Paypoint 3D Secure Response Handler","Apps/Ecommerce/Paypoint/3DSecureReturnHandler",new { controller = "Paypoint", action = "Response3DSecure" },new[] { typeof(PaypointController).Namespace });
+            context.MapRoute("Category Container - Categories", "Apps/Ecommerce/CategoryContainer/Categories", new { controller = "CategoryContainer", action = "Categories" },new[] { typeof(CategoryContainer).Namespace });
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
@@ -341,7 +277,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 Layout = checkoutLayout
             };
             documentService.AddDocument(orderPlaced);
-            
+
             //add currency
             var britishCurrency = new MrCMS.Web.Apps.Ecommerce.Entities.Currencies.Currency
                 {
