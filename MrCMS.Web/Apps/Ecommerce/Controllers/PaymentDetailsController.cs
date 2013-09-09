@@ -31,6 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (_cart.Empty)
                 return Redirect(UniquePageHelper.GetUrl<Cart>());
             ViewData["cart"] = _cart;
+
             ViewData["setting-billing-address"] = TempData["setting-billing-address"];
             return View(page);
         }
@@ -39,11 +40,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public RedirectResult BillingAddressSameAsShippingAddress(bool sameAsShipping)
         {
             _cartManager.SetBillingAddressSameAsShippingAddress(sameAsShipping);
-            if (sameAsShipping)
+            
+            SetSettingBillingAddress(sameAsShipping);
+            return Redirect(UniquePageHelper.GetUrl<PaymentDetails>());
+        }
+
+        private void SetSettingBillingAddress(bool sameAsShipping)
+        {
+            if (sameAsShipping && _cart.BillingAddress != null)
                 _cartManager.SetBillingAddress(null);
             else
                 TempData["setting-billing-address"] = true;
-            return Redirect(UniquePageHelper.GetUrl<PaymentDetails>());
         }
 
         [ChildActionOnly]
@@ -51,6 +58,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         {
             ViewData["other-addresses"] = _orderShippingService.ExistingAddressOptions(_cart, _cart.BillingAddress);
             return PartialView(_cart.BillingAddress);
+        }
+
+        [ChildActionOnly]
+        public PartialViewResult BillingAddress()
+        {
+            SetSettingBillingAddress(_cart.BillingAddressSameAsShippingAddress);
+            ViewData["setting-billing-address"] = TempData["setting-billing-address"];
+            return PartialView(_cart);
         }
 
         [HttpPost]
