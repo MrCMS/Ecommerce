@@ -48,7 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                 .JoinAlias(() => productAlias.Categories, () => categoryAlias, JoinType.LeftOuterJoin)
                                 .Where(
                                     () => productVariantAlias.Name.IsInsensitiveLike(queryTerm,MatchMode.Anywhere)
-                                    && categoryAlias.Id==categoryId)
+                                    && (categoryId==0 || categoryAlias.Id==categoryId))
                                 .Paged(page, MrCMSApplication.Get<EcommerceSettings>().PageSizeAdmin);
         }
         public ProductVariant GetProductVariantBySKU(string sku)
