@@ -171,6 +171,7 @@
     <Compile Include="Services\CategoryServiceTests.cs" />
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateServiceTests.cs" />
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateValidationServiceTests.cs" />
+    <Compile Include="Services\ImportExport\ExportProductsManagerTests.cs" />
     <Compile Include="Services\OrderShippingServiceTests.cs" />
     <Compile Include="Services\OrderRefundServiceTests.cs" />
     <Compile Include="Services\OrderServiceTests.cs" />
@@ -183,7 +184,7 @@
     <Compile Include="Services\ImportExport\ImportProductSpecificationsServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductsValidationServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductsServiceTests.cs" />
-    <Compile Include="Services\ImportExport\ImportExportManagerTests.cs" />
+    <Compile Include="Services\ImportExport\ImportProductsManagerTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductVariantsServiceTests.cs" />
     <Compile Include="Services\ProductServiceTests.cs" />
     <Compile Include="Services\CountryServiceTests.cs" />

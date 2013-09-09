@@ -5,6 +5,7 @@ using FakeItEasy;
 using MrCMS.EcommerceApp.Tests.Stubs;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using Xunit;
 using FluentAssertions;
 
@@ -12,14 +13,18 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
     public class ImportExportControllerTests : InMemoryDatabaseTest
     {
-        private readonly IImportExportManager _importExportManager;
+        private readonly IImportProductsManager _importExportManager;
+        private readonly IExportProductsManager _exportProductsManager;
+        private readonly IExportOrdersService _exportOrdersService;
         private readonly ImportExportController _importExportController;
 
         public ImportExportControllerTests()
         {
-            _importExportManager = A.Fake<IImportExportManager>();
+            _exportProductsManager = A.Fake<IExportProductsManager>();
+            _exportOrdersService = A.Fake<IExportOrdersService>();
+            _importExportManager = A.Fake<IImportProductsManager>();
 
-            _importExportController = new ImportExportController(_importExportManager);
+            _importExportController = new ImportExportController(_importExportManager, _exportOrdersService, _exportProductsManager);
         }
 
         [Fact]

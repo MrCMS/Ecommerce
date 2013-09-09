@@ -22,7 +22,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private readonly IImportProductImagesService _importProductImagesService;
         private readonly IImportProductUrlHistoryService _importUrlHistoryService;
         private readonly ISession _session;
-        private readonly IProductVariantService _productVariantService;
         private List<Document> _allDocuments;
         private IList<Brand> _allBrands;
         private ProductSearch _uniquePage;
@@ -31,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
         public ImportProductsService(IDocumentService documentService, IBrandService brandService,
              IImportProductSpecificationsService importSpecificationsService, IImportProductVariantsService importProductVariantsService,
-            IImportProductImagesService importProductImagesService, IImportProductUrlHistoryService importUrlHistoryService, ISession session, IProductVariantService productVariantService)
+            IImportProductImagesService importProductImagesService, IImportProductUrlHistoryService importUrlHistoryService, ISession session)
         {
             _documentService = documentService;
             _brandService = brandService;
@@ -40,7 +39,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _importProductImagesService = importProductImagesService;
             _importUrlHistoryService = importUrlHistoryService;
             _session = session;
-            _productVariantService = productVariantService;
 
             _allDocuments=new List<Document>();
             _allBrands=new List<Brand>();
