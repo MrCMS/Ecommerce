@@ -9,8 +9,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         byte[] ExportProductsToExcel();
         Dictionary<string, List<string>> ImportProductsFromExcel(Stream file);
 
-        byte[] ExportProductsToGoogleBase();
-
         byte[] ExportOrderToPdf(Order order);
     }
 }
