@@ -1,6 +1,7 @@
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using System.Web;
@@ -11,14 +12,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class ImportExportController : MrCMSAppAdminController<EcommerceApp>
     {
         #region Props
-        private readonly IImportExportManager _importExportManager;
+        private readonly IExportProductsManager _exportProductsManager;
+        private readonly IImportProductsManager _importExportManager;
+        private readonly IExportOrdersService _exportOrdersService;
         #endregion
 
         #region Ctor
-        public ImportExportController(IImportExportManager importExportManager)
+        public ImportExportController(IImportProductsManager importExportManager, 
+            IExportOrdersService exportOrdersService, IExportProductsManager exportProductsManager)
         {
             _importExportManager = importExportManager;
+            _exportOrdersService = exportOrdersService;
+            _exportProductsManager = exportProductsManager;
         }
+
         #endregion
 
         #region Products
@@ -32,7 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             try
             {
-                var file = _importExportManager.ExportProductsToExcel();
+                var file = _exportProductsManager.ExportProductsToExcel();
                 ViewBag.ExportStatus = "Products successfully exported.";
                 return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MrCMS-Products-" + DateTime.UtcNow + ".xlsx");
             }
@@ -65,7 +72,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             try
             {
-                var file = _importExportManager.ExportOrderToPdf(order);
+                var file = _exportOrdersService.ExportOrderToPdf(order);
                 return File(file, "application/pdf", "MrCMS-Order-" + order.Id + "-["+CurrentRequestData.Now.ToString("dd-MM-yyyy hh-mm")+"].pdf");
             }
             catch (Exception)

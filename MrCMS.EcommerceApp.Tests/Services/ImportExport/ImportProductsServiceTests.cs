@@ -36,7 +36,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                                                                _importSpecificationsService,
                                                                _importProductVariantsService,
                                                                _importProductImagesService,
-                                                               _importProductUrlHistoryService,Session, A.Fake<ProductVariantService>());
+                                                               _importProductUrlHistoryService,Session);
         }
 
         [Fact(Skip = "To be refactored")]
