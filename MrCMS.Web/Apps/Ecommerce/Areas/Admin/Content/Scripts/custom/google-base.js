@@ -10,11 +10,11 @@
     
     $(document).on('click', 'button.update-google-base-product', function () {
         var productVariantId = $(this).data('google-base-product-variant-id');
-        $.post('/Admin/Apps/Ecommerce/ImportExport/UpdateGoogleBaseProduct',
+        $.post('/Admin/Apps/Ecommerce/GoogleBase/UpdateGoogleBaseProduct',
                 $(this).parents('form').serialize(),
             function (response) {
                 if (response !== false) {
-                    $.get('/Admin/Apps/Ecommerce/ImportExport/GoogleBaseProduct/' + response, function (result) {
+                    $.get('/Admin/Apps/Ecommerce/GoogleBase/GoogleBaseProduct/' + response, function (result) {
                         $('#google-base-product-variant-' + productVariantId).replaceWith(result);
                         setGoogleBaseCategoriesSelect();
                     });
@@ -31,7 +31,7 @@
             minimumInputLength: 1,
             id: function(item) { return item.Name; },
             ajax: {
-                url: "/Admin/Apps/Ecommerce/ImportExport/GetGoogleCategories",
+                url: "/Admin/Apps/Ecommerce/GoogleBase/GetGoogleCategories",
                 dataType: 'json',
                 data: function(term, page) {
                     return {
