@@ -9,13 +9,11 @@
         if (otherAddresses != null && otherAddresses.Any())
         {
         <div class="row-fluid">
-            <div class="span4 align-right line-height-30">
+            <div class="span4">
                 Existing Address :
             </div>
             <div class="span8">
-                <div class="row-fluid">
-                    @Html.DropDownList("existing-addresses", otherAddresses)
-                </div>
+                @Html.DropDownList("existing-addresses", otherAddresses)
             </div>
         </div>
         }
