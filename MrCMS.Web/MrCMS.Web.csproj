@@ -106,6 +106,9 @@
     <Reference Include="Lucene.Net.Contrib.SpellChecker">
       <HintPath>..\packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.SpellChecker.dll</HintPath>
     </Reference>
+    <Reference Include="MarketplaceWebService">
+      <HintPath>..\libraries\MarketplaceWebService.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -198,6 +201,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Apps\Amazon\AmazonApp.cs" />
+    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\AppController.cs" />
+    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\LogController.cs" />
+    <Compile Include="Apps\Amazon\DbConfiguration\AmazonTableNameConvention.cs" />
+    <Compile Include="Apps\Amazon\Entities\Listings\AmazonListing.cs" />
+    <Compile Include="Apps\Amazon\Entities\Listings\AmazonListingItem.cs" />
+    <Compile Include="Apps\Amazon\Entities\Logs\AmazonLog.cs" />
+    <Compile Include="Apps\Amazon\Helpers\AmazonApiHelper.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonAdminMenuModel.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonDashboardModel.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonLogStatus.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonLogType.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonListingItemStatus.cs" />
+    <Compile Include="Apps\Amazon\Services\Logs\AmazonLogService.cs" />
+    <Compile Include="Apps\Amazon\Services\Logs\IAmazonLogService.cs" />
+    <Compile Include="Apps\Amazon\Settings\AmazonAppSettings.cs" />
+    <Compile Include="Apps\Amazon\Settings\AmazonSellerSettings.cs" />
     <Compile Include="Apps\Articles\Areas\Admin\Controllers\ArticleController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -761,6 +781,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\async-paging.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\dashboard.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Styles\dashboard.css" />
     <Content Include="Apps\Articles\Areas\Admin\Content\Scripts\articles.js" />
     <Content Include="Apps\Articles\Areas\Admin\Views\Article\ForUser.cshtml" />
     <Content Include="Apps\Articles\Areas\Admin\Views\AuthorInfo\Add.cshtml" />
@@ -1249,6 +1272,7 @@
     <Content Include="Areas\Admin\Content\Images\no-image.jpg" />
     <Content Include="Areas\Admin\Content\Images\no-media-selected.jpg" />
     <Content Include="Areas\Admin\Content\Images\pencil.png" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\charts\Chart.min.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\admin.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\add-page-widget.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\add-webpage.js" />
@@ -2138,6 +2162,13 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\SetTrackingNumber.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\BulkShippingUpdate.cshtml" />
     <Content Include="Apps\Ecommerce\Views\CategoryContainer\Categories.cshtml" />
+    <Content Include="Apps\Amazon\Views\Web.config" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Log\DeleteAllLogs.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Log\Index.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Log\Details.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Dashboard.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\DashboardLogs.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Settings.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
