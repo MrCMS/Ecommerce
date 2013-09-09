@@ -23,7 +23,7 @@
                             }
                         </div>
                         <div class="span9">
-                            @cart.ShippingAddress.Description
+                            @cart.ShippingAddress.GetDescription()
                         </div>
                     </div>
                 }
@@ -35,7 +35,7 @@
                     else if (!cart.BillingAddressSameAsShippingAddress && cart.BillingAddress != null)
                     {
                         <p>
-                            @cart.BillingAddress.Description
+                            @cart.BillingAddress.GetDescription()
                         </p>
                         using (Html.BeginForm("UpdateBillingAddress", "PaymentDetails", FormMethod.Post))
                         {
