@@ -11,12 +11,6 @@ namespace MrCMS.Web.Apps.Amazon.Settings
         [DisplayName("Marketplace Id")]
         public string MarketplaceId { get; set; }
 
-        [DisplayName("Application Language")]
-        public string AppLanguage { get; set; }
-
-        [DisplayName("Application Path")]
-        public string AppPath { get; set; }
-
         public override bool RenderInSettings
         {
             get { return false; }

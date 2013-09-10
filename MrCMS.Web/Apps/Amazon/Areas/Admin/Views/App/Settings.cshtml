@@ -27,11 +27,52 @@
         @Html.HiddenFor(x => x.Site.Id)
 
         <div class="row-fluid">
-            <div class="span12">
-                @Html.LabelFor(x => x.AWSAccessKeyId)
-                @Html.TextBoxFor(x => x.AWSAccessKeyId, new {@class = "span12", disabled="disabled", placeholder="PayPal Email Address will be loaded automatically..."})
-                @Html.ValidationMessageFor(x => x.AWSAccessKeyId)
+            <div class="span6">
+                @Html.LabelFor(x => x.AppName)
+                @Html.TextBoxFor(x => x.AppName, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AppName)
+
+                @Html.LabelFor(x => x.AppVersion)
+                @Html.TextBoxFor(x => x.AppVersion, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AppVersion)
+
+                @Html.LabelFor(x => x.AppLanguage)
+                @Html.TextBoxFor(x => x.AppLanguage, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AppLanguage)
+
+                @Html.LabelFor(x => x.AppPath)
+                @Html.TextBoxFor(x => x.AppPath, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AppPath)
+               
+                @Html.LabelFor(x => x.SignatureVersion)
+                @Html.TextBoxFor(x => x.SignatureVersion, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.SignatureVersion)
+
+                @Html.LabelFor(x => x.SignatureMethod)
+                @Html.TextBoxFor(x => x.SignatureMethod, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.SignatureMethod)
             </div>
+            <div class="span6">
+                @Html.LabelFor(x => x.ApiVersion)
+                @Html.TextBoxFor(x => x.ApiVersion, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.ApiVersion)
+
+                @Html.LabelFor(x => x.ApiEndpoint)
+                @Html.TextBoxFor(x => x.ApiEndpoint, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.ApiEndpoint)
+
+                @Html.LabelFor(x => x.DeveloperAccountId)
+                @Html.TextBoxFor(x => x.DeveloperAccountId, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.DeveloperAccountId)
+
+                @Html.LabelFor(x => x.AWSAccessKeyId)
+                @Html.TextBoxFor(x => x.AWSAccessKeyId, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AWSAccessKeyId)
+
+                @Html.LabelFor(x => x.SecretKey)
+                @Html.TextAreaFor(x => x.SecretKey, new {@class = "span12", style="height:95px"})
+                @Html.ValidationMessageFor(x => x.SecretKey)
+            </div>       
         </div>
 
     </fieldset>

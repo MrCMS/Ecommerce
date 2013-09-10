@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Linq;
+using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Helpers
 {
     public static class AmazonApiHelper
     {
+        #region Progress Bar
+
+        #endregion
+
         #region Misc
         public static T GetEnumByValue<T>(this string value) where T : struct
         {
@@ -37,6 +42,5 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
                                    : imageUrl;
         }
         #endregion
-
     }
 }
