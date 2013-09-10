@@ -37,15 +37,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics
             var itemIds = new List<int>();
             try
             {
-                var items = value.Split(',');
-                for (var i = items.Length - 1; i >= 0; i--)
+                if (!String.IsNullOrWhiteSpace(value))
                 {
-                    if (String.IsNullOrWhiteSpace(items[i])) continue;
+                    var items = value.Split(',');
+                    for (var i = items.Length - 1; i >= 0; i--)
+                    {
+                        if (String.IsNullOrWhiteSpace(items[i])) continue;
 
-                    var productId = 0;
-                    Int32.TryParse(items[i], out productId);
-                    if (productId != 0)
-                        itemIds.Add(productId);
+                        var productId = 0;
+                        Int32.TryParse(items[i], out productId);
+                        if (productId != 0)
+                            itemIds.Add(productId);
+                    }
                 }
             }
             catch (Exception ex)
