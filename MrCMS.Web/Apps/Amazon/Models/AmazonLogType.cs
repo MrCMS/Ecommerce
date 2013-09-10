@@ -8,15 +8,9 @@ namespace MrCMS.Web.Apps.Amazon.Models
         Listings,
         [Description("Orders")]
         Orders,
-        [Description("Categories")]
-        Categories,
-        [Description("Api Settings")]
-        ApiSettings,
-        [Description("Store Settings")]
-        StoreSettings,
+        [Description("App Settings")]
+        AppSettings,
         [Description("Seller Settings")]
-        SellerSettings,
-        [Description("Sync Settings")]
-        SyncSettings
+        SellerSettings
     }
 }

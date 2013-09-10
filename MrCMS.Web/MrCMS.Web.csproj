@@ -203,19 +203,26 @@
   <ItemGroup>
     <Compile Include="Apps\Amazon\AmazonApp.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\AppController.cs" />
+    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\SellerController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\LogController.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonTableNameConvention.cs" />
     <Compile Include="Apps\Amazon\Entities\Listings\AmazonListing.cs" />
     <Compile Include="Apps\Amazon\Entities\Listings\AmazonListingItem.cs" />
     <Compile Include="Apps\Amazon\Entities\Logs\AmazonLog.cs" />
+    <Compile Include="Apps\Amazon\Entities\Orders\AmazonOrder.cs" />
+    <Compile Include="Apps\Amazon\Entities\Payment\AmazonPayment.cs" />
     <Compile Include="Apps\Amazon\Helpers\AmazonApiHelper.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonAdminMenuModel.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonDashboardModel.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonLogStatus.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonLogType.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonListingItemStatus.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonApiSection.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonProgressModel.cs" />
     <Compile Include="Apps\Amazon\Services\Logs\AmazonLogService.cs" />
     <Compile Include="Apps\Amazon\Services\Logs\IAmazonLogService.cs" />
+    <Compile Include="Apps\Amazon\Services\Misc\AmazonSessionManager.cs" />
+    <Compile Include="Apps\Amazon\Services\Misc\IAmazonSessionManager.cs" />
     <Compile Include="Apps\Amazon\Settings\AmazonAppSettings.cs" />
     <Compile Include="Apps\Amazon\Settings\AmazonSellerSettings.cs" />
     <Compile Include="Apps\Articles\Areas\Admin\Controllers\ArticleController.cs">
@@ -783,6 +790,7 @@
   <ItemGroup>
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\dashboard.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\sync.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Styles\dashboard.css" />
     <Content Include="Apps\Articles\Areas\Admin\Content\Scripts\articles.js" />
     <Content Include="Apps\Articles\Areas\Admin\Views\Article\ForUser.cshtml" />
@@ -2164,11 +2172,12 @@
     <Content Include="Apps\Ecommerce\Views\CategoryContainer\Categories.cshtml" />
     <Content Include="Apps\Amazon\Views\Web.config" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Log\DeleteAllLogs.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Log\Index.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Log\Details.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\App\Dashboard.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\App\DashboardLogs.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\App\Settings.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Seller\Settings.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Log\Index.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2495,7 +2504,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>41657</DevelopmentServerPort>
+          <DevelopmentServerPort>4073</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:8888</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
