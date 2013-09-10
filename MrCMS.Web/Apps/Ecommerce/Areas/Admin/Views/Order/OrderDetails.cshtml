@@ -147,7 +147,7 @@
         <div class="pull-left">
             @if (Model.ShippingAddress != null)
             {
-                @Model.ShippingAddress.Description
+                @Model.ShippingAddress.GetDescription()
             }
         </div>
     </div>
@@ -158,7 +158,7 @@
         <div class="pull-left">
             @if (Model.BillingAddress != null)
             {
-                @Model.BillingAddress.Description
+                @Model.BillingAddress.GetDescription()
             }
         </div>
     </div>
