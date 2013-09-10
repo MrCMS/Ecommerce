@@ -380,8 +380,10 @@
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\NewInProductsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\EnterOrderEmailController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GoogleAnalyticsController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\OrderPdfController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\OrderPlacedController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PaymentDetailsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PaymentMethodController.cs" />
@@ -457,6 +459,8 @@
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryContainerMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\NewInProducts.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\UserOrderMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\EnterOrderEmailMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\OrderPlacedMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\PaymentDetailsMetadata.cs" />
@@ -506,6 +510,8 @@
     <Compile Include="Apps\Ecommerce\Pages\Cart.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Category.cs" />
     <Compile Include="Apps\Ecommerce\Pages\CategoryContainer.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\NewInProducts.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\UserOrder.cs" />
     <Compile Include="Apps\Ecommerce\Pages\EnterOrderEmail.cs" />
     <Compile Include="Apps\Ecommerce\Pages\OrderPlaced.cs" />
     <Compile Include="Apps\Ecommerce\Pages\PaymentDetails.cs" />
@@ -697,6 +703,7 @@
     <Compile Include="Apps\Ecommerce\Widgets\RecentlyViewedItems.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\RelatedProducts.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\SearchBox.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\UserOrdersList.cs" />
     <Compile Include="Apps\Galleries\GalleriesApp.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -2143,6 +2150,8 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\SetTrackingNumber.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\BulkShippingUpdate.cshtml" />
     <Content Include="Apps\Ecommerce\Views\CategoryContainer\Categories.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Pages\UserOrder.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Pages\NewInProducts.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2294,7 +2303,7 @@
     <Content Include="Themes\Ryness\Apps\Core\Views\Shared\PasswordReset.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
-    <Content Include="Themes\Ryness\Apps\Core\Views\Shared\UserAccountOrders.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\UserOrdersList.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Web.config" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Widgets\UserLinks.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Cart\CartItem.cshtml" />

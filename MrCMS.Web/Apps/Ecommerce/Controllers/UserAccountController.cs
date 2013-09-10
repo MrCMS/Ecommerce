@@ -45,6 +45,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return Redirect(UniquePageHelper.GetUrl<LoginPage>());
         }
 
+        public ActionResult UserAccountOrder(UserOrder page, Guid id)
+        {
+            var user = CurrentRequestData.CurrentUser;
+            if (user != null)
+            {
+                var order = _orderService.GetByGuid(id);
+
+                if (order.User.Id != user.Id)
+                {
+                    return Redirect(UniquePageHelper.GetUrl<LoginPage>());
+                }
+                ViewData["Order"] = order;
+                return View(page);
+            }
+            return Redirect(UniquePageHelper.GetUrl<LoginPage>());
+        }
+
         [HttpPost]
         public ActionResult RegistrationWithoutDetails(RegisterWithoutDetailsModel model)
         {

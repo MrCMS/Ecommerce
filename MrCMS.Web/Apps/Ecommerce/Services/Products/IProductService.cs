@@ -18,6 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         Product GetByName(string name);
         Product GetByUrl(string url);
         IList<Product> GetAll();
+        IList<Product> GetNewIn(int numberOfItems = 10);
         void SetCategoryOrder(Product product, List<SortItem> items);
     }
 }
