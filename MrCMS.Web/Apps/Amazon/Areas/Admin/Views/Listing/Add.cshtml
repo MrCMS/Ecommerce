@@ -1,0 +1,30 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.EBay.Models.EBayListingModel
+@{
+    ViewBag.Title = "Add eBay Listing";
+}
+
+@using (Html.BeginForm("Add", "Listing", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Choose Product for New Listing
+            <span class="btn-group  display-inline  pull-right">
+                @Html.ActionLink("Cancel", "Index", "Listing", null , new {@class = "btn btn-danger"})
+            </span>
+        </legend>
+
+        @Html.TextBoxFor(x => x.Name, new {@class = "input-xlarge search-query search-products", placeholder = "Enter product name..."})
+        <button type="button" class="btn btn-success" id="search-products">Filter</button>
+
+        <hr/>
+
+        <div class="row-fluid">
+            <div class="span12">
+                @{ Html.RenderPartial("Products", Model); }
+            </div>
+        </div>
+ 
+    </fieldset>
+}
+
+@{ Html.IncludeScript("~/Apps/EBay/Areas/Admin/Content/Scripts/custom/listings.js"); }

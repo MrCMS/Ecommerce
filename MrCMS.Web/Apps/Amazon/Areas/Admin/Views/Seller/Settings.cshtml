@@ -1,5 +1,6 @@
 ﻿@using System.Web.Mvc
 @using System.Web.Mvc.Html
+@using MrCMS.Web.Apps.Amazon.Models
 @model MrCMS.Web.Apps.Amazon.Settings.AmazonSellerSettings
 @{
     ViewBag.Title = "Amazon Seller Settings";
@@ -19,8 +20,8 @@
     <fieldset>
         <legend>Amazon Seller Settings
             <span class="btn-group  display-inline  pull-right">
-                <button class="btn btn-primary">
-                    Save</button>
+                <button class="btn btn-primary">Save</button>
+                @Html.ActionLink("Logs", "Index", "Logs", new {type=AmazonLogType.SellerSettings}, new { @class = "btn btn-success"})
             </span>
         </legend>
         

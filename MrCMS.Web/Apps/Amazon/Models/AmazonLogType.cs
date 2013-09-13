@@ -4,6 +4,8 @@ namespace MrCMS.Web.Apps.Amazon.Models
 {
     public enum AmazonLogType
     {
+        [Description("Api")]
+        Api,
         [Description("Listings")]
         Listings,
         [Description("Orders")]
@@ -11,6 +13,6 @@ namespace MrCMS.Web.Apps.Amazon.Models
         [Description("App Settings")]
         AppSettings,
         [Description("Seller Settings")]
-        SellerSettings
+        SellerSettings,
     }
 }

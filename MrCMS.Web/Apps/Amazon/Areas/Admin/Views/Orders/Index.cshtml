@@ -1,0 +1,21 @@
+﻿@using System.Web.Mvc.Html
+@using MrCMS.Web.Apps.Amazon.Models
+@model AmazonOrderSearchModel
+@{
+    ViewBag.Title = "Amazon Orders";
+}
+
+<fieldset>
+    <legend>Amazon Orders 
+        <span class="btn-group  display-inline  pull-right">
+            @Html.ActionLink("Sync", "Sync", "Orders", null, new { @class = "btn btn-primary"})
+            @Html.ActionLink("Logs", "Index", "Logs", new {type=AmazonLogType.Orders}, new { @class = "btn btn-success"})
+        </span>
+    </legend>
+</fieldset>
+
+<div class="row-fluid">
+    <div class="span12">
+        @{Html.RenderPartial("Orders", Model); }
+    </div>
+</div>

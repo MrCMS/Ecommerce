@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Linq;
-using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Helpers
 {
     public static class AmazonApiHelper
     {
-        #region Progress Bar
-
-        #endregion
-
         #region Misc
         public static T GetEnumByValue<T>(this string value) where T : struct
         {
             return Enum.GetValues(typeof(T)).Cast<T>().SingleOrDefault(x => x.ToString() == value);
+        }
+        public static T GetEnumByValue<T>(this Enum value) where T : struct
+        {
+            return Enum.GetValues(typeof(T)).Cast<T>().SingleOrDefault(x => x.ToString() == value.ToString());
         }
         public static string ToShortString(this string value, int numOfCharacters)
         {

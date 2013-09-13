@@ -1,17 +1,13 @@
-﻿using System;
-using MrCMS.Settings;
-using MrCMS.Web.Apps.Amazon;
+﻿using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
 using MrCMS.Web.Apps.Amazon.Settings;
-using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
 {
-    [SessionState(System.Web.SessionState.SessionStateBehavior.ReadOnly)]
     public class AppController : MrCMSAppAdminController<AmazonApp>
     {
         private readonly IConfigurationProvider _configurationProvider;
@@ -42,34 +38,6 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             return PartialView(model);
         }
 
-        public JsonResult SyncCategories()
-        {
-            try
-            {
-                _amazonLogService.Sync();
-
-                return Json(_amazonLogService.GetProgressBarStatus(),
-                            JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                CurrentRequestData.ErrorSignal.Raise(ex);
-
-                _amazonLogService.UpdateProgressBarStatus("Error", 0, 100);
-
-                return Json(false);
-            }
-        }
-
-        [HttpPost]
-        public JsonResult SyncCategoriesStatus()
-        {
-            return Json(_amazonLogService.GetProgressBarStatus());
-        }
-
-
-
-
         [HttpGet]
         public ActionResult Settings()
         {
@@ -80,8 +48,31 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         [ActionName("Settings")]
         public RedirectToRouteResult Settings_POST(AmazonAppSettings amazonAppSettings)
         {
+            _amazonLogService.Add(AmazonLogType.AppSettings, AmazonLogStatus.Update);
             _configurationProvider.SaveSettings(amazonAppSettings);
             return RedirectToAction("Settings");
+        }
+
+        [HttpGet]
+        public JsonResult ProgressBarStatus(AmazonSyncModel model)
+        {
+            var progress = AmazonProgressBarHelper.GetStatus(model.TaskId);
+            return Json(progress, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult ProgressBarMessages(AmazonSyncModel model)
+        {
+            if (model!=null && model.TaskId.HasValue)
+            {
+                var progress = AmazonProgressBarHelper.GetProgressBar(model.TaskId);
+                return PartialView(new AmazonSyncModel()
+                {
+                    TaskId = model.TaskId,
+                    Messages = progress.GetMessages(model.Page)
+                });
+            }
+            return PartialView(null);
         }
     }
 }

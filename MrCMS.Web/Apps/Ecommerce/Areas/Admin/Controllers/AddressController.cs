@@ -1,10 +1,6 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
-using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Website;
-using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
-using MrCMS.Web.Apps.Ecommerce.Services.Payments;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Services.Users;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
@@ -32,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             ViewData["addressType"] = addressType;
             if (addressID != 0)
             {
-                Address address = _addressService.Get(addressID);
+                var address = _addressService.Get(addressID);
                 if(address.Country!=null)
                     ViewData["countryID"] = address.Country.Id;
                 return PartialView(address);
@@ -48,7 +44,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             if (countryID != 0)
                 item.Country = _countryService.Get(countryID);
             _addressService.Save(item);
-            Order order=_orderService.Get(orderID);
+            var order=_orderService.Get(orderID);
             if (addressType == 1)
                 order.ShippingAddress = item;
             else

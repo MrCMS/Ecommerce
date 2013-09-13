@@ -1,5 +1,5 @@
-﻿@using System.Web.Mvc
-@using System.Web.Mvc.Html
+﻿@using System.Web.Mvc.Html
+@using MrCMS.Web.Apps.Amazon.Models
 @model MrCMS.Web.Apps.Amazon.Settings.AmazonAppSettings
 @{
     ViewBag.Title = "Amazon App Settings";
@@ -19,14 +19,39 @@
     <fieldset>
         <legend>Amazon App Settings
             <span class="btn-group  display-inline  pull-right">
-                <button class="btn btn-primary">
-                    Save</button>
+                <button class="btn btn-primary">Save</button>
+                @Html.ActionLink("Logs", "Index", "Logs", new {type=AmazonLogType.AppSettings}, new { @class = "btn btn-success"})
             </span>
         </legend>
         
         @Html.HiddenFor(x => x.Site.Id)
 
         <div class="row-fluid">
+            <div class="span6">
+                @Html.LabelFor(x => x.AWSAccessKeyId)
+                @Html.TextBoxFor(x => x.AWSAccessKeyId, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AWSAccessKeyId)
+
+                @Html.LabelFor(x => x.SecretKey)
+                @Html.TextAreaFor(x => x.SecretKey, new {@class = "span12", style="height:95px"})
+                @Html.ValidationMessageFor(x => x.SecretKey)
+                
+                @Html.LabelFor(x => x.DeveloperAccountId)
+                @Html.TextBoxFor(x => x.DeveloperAccountId, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.DeveloperAccountId)
+
+                @Html.LabelFor(x => x.ApiEndpoint)
+                @Html.TextBoxFor(x => x.ApiEndpoint, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.ApiEndpoint)
+                
+                @Html.LabelFor(x => x.FeedsApiVersion)
+                @Html.TextBoxFor(x => x.FeedsApiVersion, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.FeedsApiVersion)
+
+                @Html.LabelFor(x => x.OrdersApiVersion)
+                @Html.TextBoxFor(x => x.OrdersApiVersion, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.OrdersApiVersion)
+            </div>       
             <div class="span6">
                 @Html.LabelFor(x => x.AppName)
                 @Html.TextBoxFor(x => x.AppName, new {@class = "span12"})
@@ -51,28 +76,12 @@
                 @Html.LabelFor(x => x.SignatureMethod)
                 @Html.TextBoxFor(x => x.SignatureMethod, new {@class = "span12"})
                 @Html.ValidationMessageFor(x => x.SignatureMethod)
+                
+                @Html.LabelFor(x => x.AmazonOrderDetailsUrl)
+                @Html.TextBoxFor(x => x.AmazonOrderDetailsUrl, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AmazonOrderDetailsUrl)
             </div>
-            <div class="span6">
-                @Html.LabelFor(x => x.ApiVersion)
-                @Html.TextBoxFor(x => x.ApiVersion, new {@class = "span12"})
-                @Html.ValidationMessageFor(x => x.ApiVersion)
-
-                @Html.LabelFor(x => x.ApiEndpoint)
-                @Html.TextBoxFor(x => x.ApiEndpoint, new {@class = "span12"})
-                @Html.ValidationMessageFor(x => x.ApiEndpoint)
-
-                @Html.LabelFor(x => x.DeveloperAccountId)
-                @Html.TextBoxFor(x => x.DeveloperAccountId, new {@class = "span12"})
-                @Html.ValidationMessageFor(x => x.DeveloperAccountId)
-
-                @Html.LabelFor(x => x.AWSAccessKeyId)
-                @Html.TextBoxFor(x => x.AWSAccessKeyId, new {@class = "span12"})
-                @Html.ValidationMessageFor(x => x.AWSAccessKeyId)
-
-                @Html.LabelFor(x => x.SecretKey)
-                @Html.TextAreaFor(x => x.SecretKey, new {@class = "span12", style="height:95px"})
-                @Html.ValidationMessageFor(x => x.SecretKey)
-            </div>       
+            
         </div>
 
     </fieldset>
