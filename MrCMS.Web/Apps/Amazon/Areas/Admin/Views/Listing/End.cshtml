@@ -1,0 +1,23 @@
+﻿@model MrCMS.Web.Apps.EBay.Entities.Listings.EBayListing
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("End", "Listing", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            End eBay Listing
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="End Listing" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+        @Html.Hidden("Location",TempData["Location"])
+        <p>
+            Are you sure you want to end listing <strong>@Model.Product.Name</strong> on eBay ? 
+        </p>
+        <div class="alert alert-danger">
+            By clicking on 'End Listing', all items related to this listing will be ended on eBay.
+        </div>
+    </fieldset>
+}

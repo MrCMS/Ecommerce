@@ -1,0 +1,123 @@
+﻿@using System.Web.Mvc.Html
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Amazon.Entities.Logs.AmazonLog
+@{
+    ViewBag.Title = "View Amazon Log #" + Model.Id;
+}
+
+
+    <fieldset>
+        <legend>Amazon Log #@Model.Id
+            <span class="btn-group  display-inline  pull-right">
+                @Html.ActionLink("Back to Logs", "Index","Logs", null, new { @class = "btn btn-primary" })
+            </span>
+        </legend>
+    </fieldset>
+
+<div class="row-fluid">
+    <table class="table table-striped table-condensed">
+        <tbody>
+            <tr>
+                <td class="span2">Type
+                </td>
+                <td class="span10">
+                    @Model.LogType.GetDescription()
+                </td>
+            </tr>
+            <tr>
+                <td class="span2">Status
+                </td>
+                <td class="span10">
+                    @Model.LogStatus.GetDescription()
+                </td>
+            </tr>
+            <tr>
+                <td>Created on
+                </td>
+                <td>
+                    @Model.CreatedOn
+                </td>
+            </tr>
+            @if(Model.ApiSection.HasValue)
+            {
+                <tr>
+                    <td>Api Section
+                    </td>
+                    <td>
+                        @Model.ApiSection.Value
+                    </td>
+                </tr>
+            }
+            @if(!String.IsNullOrWhiteSpace(Model.ApiOperation))
+            {
+                <tr>
+                    <td>Api Operation
+                    </td>
+                    <td>
+                        @Model.ApiOperation
+                    </td>
+                </tr>
+            }
+            @if(Model.AmazonListing!=null)
+            {
+                <tr>
+                    <td>Amazon Listing
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details","Listing", new {id=Model.AmazonListing.Id})
+                    </td>
+                </tr>
+            }
+            @if(Model.AmazonOrder!=null)
+            {
+                <tr>
+                    <td>Amazon Order
+                    </td>
+                    <td>
+                        @Html.ActionLink("Details", "Details","Orders", new {id=Model.AmazonOrder.Id})
+                    </td>
+                </tr>
+            }
+            @if(!String.IsNullOrWhiteSpace(Model.ErrorCode))
+            {
+                <tr>
+                    <td>Error Code
+                    </td>
+                    <td>
+                        @Model.ErrorCode
+                    </td>
+                </tr>
+            }
+            @if(!String.IsNullOrWhiteSpace(Model.ErrorType))
+            {
+                <tr>
+                    <td>Error Type
+                    </td>
+                    <td>
+                        @Model.ErrorType
+                    </td>
+                </tr>
+            }
+            @if(!String.IsNullOrWhiteSpace(Model.Message))
+            {
+                <tr>
+                    <td>Message
+                    </td>
+                    <td>
+                        @Model.Message
+                    </td>
+                </tr>
+            }
+            @if(!String.IsNullOrWhiteSpace(Model.Detail))
+            {
+                <tr>
+                    <td>Detail
+                    </td>
+                    <td>
+                        @Model.Detail
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

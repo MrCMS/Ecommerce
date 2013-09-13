@@ -1,0 +1,48 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.EBay.Models.EBayListingModel
+@{
+    ViewBag.Title = "Add eBay Listing";
+}
+
+ @using (Html.BeginForm("AddListingItems", "Listing", new {id = ""}, FormMethod.Post, new {id = "add-listing-form"}))
+ {
+     <fieldset>
+   
+         <legend>
+             Choose eBay Category for product: @Model.ChosenProduct.Name 
+            @if (Model.ChosenProduct.Variants.Count > 1)
+            {
+                <span>(with @Model.ChosenProduct.Variants.Count variants)</span>
+            }
+             <span class="btn-group  display-inline  pull-right">
+                 <button type="submit" class="btn btn-primary">Save & View</button>
+             </span>
+         </legend>
+         
+         <div class="row-fluid">
+             <div class="span6">
+                @Html.HiddenFor(x => x.ChosenProduct.Id)
+                @Html.HiddenFor(x => x.ChosenCategory.Id)
+                @Html.Hidden("MultipleVariations", true)
+                @Html.TextBoxFor(x => x.Name, new {@class = "input-xlarge search-query search-categories", placeholder = "Enter category name or Id..."})
+                 <button type="button" class="btn btn-success" id="search-categories">Filter</button>
+             </div>
+              <div class="span6">
+                  <div id="category">
+                </div>
+             </div>
+         </div>
+
+         <hr/>
+
+         <div class="row-fluid">
+             <div class="span12">
+                 @{ Html.RenderPartial("Categories", Model); }
+             </div>
+         </div>
+
+        
+     </fieldset>
+}
+
+@{ Html.IncludeScript("~/Apps/EBay/Areas/Admin/Content/Scripts/custom/listings.js"); }

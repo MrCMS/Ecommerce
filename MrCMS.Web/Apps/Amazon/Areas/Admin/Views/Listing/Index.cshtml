@@ -1,0 +1,26 @@
+﻿@using System.Web.Mvc.Html
+@using MrCMS.Helpers
+@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Amazon.Entities.Listings.AmazonListing>
+@{
+    ViewBag.Title = "Amazon Listings";
+}
+
+<fieldset>
+    <legend>Amazon Listings 
+        <span class="btn-group  display-inline  pull-right">
+            @Html.ActionLink("Add New Listing", "Add", "Listing", null, new { @class = "btn btn-primary"})
+        </span>
+    </legend>
+</fieldset>
+
+@Html.TextBox("ListingTitle",String.Empty, new {@class = "input-xlarge search-query search-listings", placeholder = "Enter listing title..."})
+<button class="btn btn-success" id="search-listings" type="button">Filter</button>
+
+<hr/>
+
+<div class="row-fluid">
+    <div class="span12">
+        @{Html.RenderPartial("Listings", Model); }
+    </div>
+</div>
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/listings.js"); }

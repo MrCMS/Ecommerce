@@ -1,0 +1,95 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Amazon.Entities.Orders.AmazonOrder
+
+<div class="row-fluid">
+    <div class="span12">
+        <table class="table table-condensed table-striped">
+            <tr>
+                <td>Marketplace Id</td>
+                <td>@Model.MarketplaceId</td>
+            </tr>
+            <tr>
+                <td>Buyer Name</td>
+                <td>
+                    @Model.BuyerName
+                </td>
+            </tr>
+            <tr>
+                <td>Buyer Email</td>
+                <td>
+                    @Model.BuyerEmail
+                </td>
+            </tr>
+            <tr>
+                <td>Order Status</td>
+                <td>@Model.Status.GetDescription()</td>
+            </tr>
+            <tr>
+                <td>Order Type</td>
+                <td>@Model.OrderType</td>
+            </tr>
+            <tr>
+                <td>Order Total</td>
+                <td>@Model.OrderTotalAmount.ToCurrencyFormat()</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<hr class="small-margin" />
+<div class="row-fluid">
+    <div class="span6">
+        <h4>Payment</h4>
+
+        <table class="table table-condensed">
+            <tr>
+                <td>Method</td>
+                <td>@Html.DisplayFor(x => x.PaymentMethod)</td>
+            </tr>
+            <tr>
+                <td>Purchase Date</td>
+                <td>@Html.DisplayFor(x => x.PurchaseDate)</td>
+            </tr>
+        </table>
+
+    </div>
+    <div class="span6">
+        <h4>Shipping</h4>
+
+        <table class="table table-condensed">
+            <tr>
+                <td>Status</td>
+                <td>@Html.DisplayFor(x => x.Status)</td>
+            </tr>
+            <tr>
+                <td>Shipping Service Level</td>
+                <td>@Html.DisplayFor(x => x.ShipServiceLevel)</td>
+            </tr>
+            <tr>
+                <td>Fulfillment Channel</td>
+                <td>@Html.DisplayFor(x => x.FulfillmentChannel)</td>
+            </tr>
+            <tr>
+                <td>Number Of Items Shipped</td>
+                <td>@Html.DisplayFor(x => x.NumberOfItemsShipped)</td>
+            </tr>
+            <tr>
+                <td>Number Of Items Unshipped</td>
+                <td>@Html.DisplayFor(x => x.NumberOfItemsUnshipped)</td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+<hr />
+<div class="row-fluid">
+    <div class="span6">
+        <h4>Shipping Address</h4>
+        <div class="pull-left">
+            @if (Model.ShippingAddress != null)
+            {
+                @Model.ShippingAddress.GetDescription()
+            }
+        </div>
+    </div>
+</div>

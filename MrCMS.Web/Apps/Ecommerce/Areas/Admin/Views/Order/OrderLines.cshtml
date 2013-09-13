@@ -37,10 +37,22 @@
                     {
                         <tr>
                             <td>
-                                @(String.IsNullOrWhiteSpace(item.ProductVariant.Name) ? item.ProductVariant.Product.Name : item.ProductVariant.Name)
+                                @if (item.ProductVariant != null)
+                                {
+                                    @item.ProductVariant.DisplayName
+                                }
+                                else
+                                {
+                                    <i>
+                                        @(!String.IsNullOrWhiteSpace(Model.SalesChannel)?Model.SalesChannel:"Remote") Product
+                                    </i>
+                                }
                             </td>
                             <td>
-                                @item.ProductVariant.SKU
+                                @if (item.ProductVariant != null)
+                                {
+                                    @item.ProductVariant.SKU
+                                }
                             </td>
                             <td>
                                 @item.Quantity.ToString("n2")

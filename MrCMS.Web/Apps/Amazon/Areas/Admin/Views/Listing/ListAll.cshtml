@@ -1,0 +1,23 @@
+﻿@model MrCMS.Web.Apps.EBay.Entities.Listings.EBayListing
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("ListAll", "Listing", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            List All Items
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="List" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+        @Html.Hidden("Location",TempData["Location"])
+        <p>
+            Are you sure you want to list all items related to <strong>@Model.Product.Name'</strong> listing on eBay ? 
+        </p>
+        <div class="alert alert-info">
+            By clicking on 'List', all items related to this listing will be listed (or relisted if they were already listed) on EBay.
+        </div>
+    </fieldset>
+}

@@ -8,8 +8,8 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Logs
 {
     public class AmazonLog : SiteEntity
     {
-        public virtual AmazonLogType Type { get; set; }
-        public virtual AmazonLogStatus Status { get; set; }
+        public virtual AmazonLogType LogType { get; set; }
+        public virtual AmazonLogStatus LogStatus { get; set; }
 
         public virtual AmazonApiSection? ApiSection { get; set; }
         public virtual string ApiOperation { get; set; }
@@ -17,8 +17,11 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Logs
         public virtual AmazonOrder AmazonOrder { get; set; }
         public virtual AmazonListing AmazonListing { get; set; }
 
-        public virtual Guid Guid { get; set; }
+        public virtual string ErrorCode { get; set; }
+        public virtual string ErrorType { get; set; }
         public virtual string Message { get; set; }
-        public virtual string Details { get; set; }
+        public virtual string Detail { get; set; }
+
+        public virtual Guid Guid { get; set; }
     }
 }

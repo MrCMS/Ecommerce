@@ -1,4 +1,5 @@
 ﻿using MrCMS.Settings;
+using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Website.Controllers;
@@ -31,6 +32,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         [ActionName("Settings")]
         public RedirectToRouteResult Settings_POST(AmazonSellerSettings amazonSellerSettings)
         {
+            _amazonLogService.Add(AmazonLogType.SellerSettings, AmazonLogStatus.Update);
             _configurationProvider.SaveSettings(amazonSellerSettings);
             return RedirectToAction("Settings");
         }

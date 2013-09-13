@@ -37,7 +37,7 @@ namespace MrCMS.Web.Apps.Amazon.Models
                             "Auditing",
                             new List<IMenuItem>
                             {
-                                new ChildMenuItem("Logs", "/Admin/Apps/Amazon/Log"),
+                                new ChildMenuItem("Logs", "/Admin/Apps/Amazon/Logs"),
                             }
                         }
                     });
