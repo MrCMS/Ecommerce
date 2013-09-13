@@ -1,0 +1,22 @@
+﻿@model MrCMS.Web.Apps.EBay.Entities.Listings.EBayListing
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Delete", "Listing", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Delete eBay Listing
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Delete Listing" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+        <p>
+            Are you sure you want to delete this eBay listing ? 
+        </p>
+        <div class="alert alert-danger">
+            Deleting this item will end listing on eBay and delete it from system which can not be undone.
+        </div>
+    </fieldset>
+}
