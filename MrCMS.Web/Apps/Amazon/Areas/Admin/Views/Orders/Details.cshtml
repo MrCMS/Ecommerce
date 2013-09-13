@@ -1,0 +1,21 @@
+﻿@model MrCMS.Web.Apps.Amazon.Entities.Orders.AmazonOrder
+@{
+    ViewBag.Title = "Amazon Order Details";
+}
+
+<div class="row-fluid">
+    <div class="span12">
+        <fieldset>
+            <legend>Amazon Order #@Model.AmazonOrderId
+
+                <span class="pull-right btn-group">
+                    <a href="/Admin/Apps/Ecommerce/Order" class="btn">Back</a>
+                </span>
+
+            </legend>
+        </fieldset>
+    </div>
+</div>
+
+@{Html.RenderPartial("OrderDetails", Model); }
+@{Html.RenderPartial("OrderItems", Model);}

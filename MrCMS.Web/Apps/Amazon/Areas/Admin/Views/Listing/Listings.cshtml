@@ -1,0 +1,54 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.EBay.Entities.Listings.EBayListing>
+
+<div data-paging-type="async" id="listings">
+    
+    @if (Model.Count == 0)
+    {
+        @:No listings found.
+    }
+    else
+    {
+        <table class="table table-striped table-condensed" style="overflow: scroll">
+            <thead>
+                <tr>
+                    <th>
+                        Listing Title
+                    </th>
+                    <th>
+                        No of. listing items
+                    </th>
+                    <th>Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.Product.Name
+                        </td>
+                        <td>
+                            @item.Items.Count
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "Listing", new {id = item.Id}, new { @class="btn btn-mini"})
+                           
+                            @(item.IsListed ? 
+                                  Html.ActionLink("End", "End", "Listing", new {id = item.Id}, new {@class = "btn btn-mini btn-warning", data_toggle = "fb-modal"}) : 
+                                  Html.ActionLink("List", "ListAll","Listing",  new {id = item.Id}, new {@class = "btn btn-mini btn-primary", data_toggle = "fb-modal"}))
+                            
+                            @Html.ActionLink("Sync", "Sync", "Listing", new {id = item.Id}, new { @class="btn btn-mini btn-success", data_toggle = "fb-modal"})
+                            @Html.ActionLink("Delete", "Delete", "Listing", new {id = item.Id}, new { @class="btn btn-mini btn-danger", data_toggle = "fb-modal"})
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @Html.Pager(Model, "Listings", i => new { page = i })
+
+</div>
+@{ Html.IncludeScript("~/Apps/EBay/Areas/Admin/Content/Scripts/custom/async-paging.js"); }

@@ -1,0 +1,255 @@
+﻿@using System.Web.Mvc.Html
+@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Amazon.Models.AmazonDashboardModel
+@{
+    ViewBag.Title = "Amazon App Dashboard";
+}
+
+<h4>Amazon App Dashboard</h4>
+
+@Html.Hidden("taskId",Guid.NewGuid())
+<div id="pb-status" style="display:none" class="alert alert-info">
+    <ul></ul>
+</div>
+             <div id="pb" style="display:none">
+                 <div class="progress progress-info progress-striped">
+                     <div class="bar" style="width: 0%;"></div>
+                 </div>
+             </div>
+<button type="button" class="btn btn-danger" id="pb-start-task">
+    Sync Categories</button>
+
+
+<div class="row-fluid">
+    <div class="span4">
+        <div class="row-fluid">
+            <div class="span4">
+         
+                <div class="dashboard-box">
+                    <div class="info">
+                        <div class="stats">
+                            OK
+                        </div>
+                        <div class="stats-description">                           
+                            <span>SELLER SETTINGS</span>
+                        </div>
+                    </div>
+                    <a href="#" class="more-info">
+                        SELLER SETTINGS
+                    </a>                 
+                </div>
+
+            </div>
+
+            <div class="span4">
+                
+                
+                <div class="dashboard-box">
+                    <div class="info">
+                        <div class="stats">
+                            OK
+                        </div>
+                        <div class="stats-description">                           
+                            <span>API SETTINGS</span>
+                        </div>
+                    </div>
+                    <a href="#" class="more-info">
+                        API SETTINGS
+                    </a>                 
+                </div>
+                
+
+            </div>
+            
+            <div class="span4">
+         
+                <div class="dashboard-box">
+                    <div class="info">
+                        <div class="stats">
+                            100
+                        </div>
+                        <div class="stats-description">                           
+                            <span>API CALLS</span>
+                        </div>
+                    </div>
+                    <a href="#" class="more-info">
+                        ANALYTICS
+                    </a>                 
+                </div>
+
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+        
+                <div class="dashboard-box">
+                    <div class="graphics">
+                        <canvas id="myChart"></canvas>     
+                    </div>
+                    <div class="info orders">
+                        <div class="stats">
+                            25 / 455 / 2343
+                        </div>
+                        <div class="stats-description">                           
+                            Orders in last 7 / 30 / 90 days
+                        </div>
+                    </div>
+                    <a href="#" class="more-info alizarin">
+                        VIEW ALL ORDERS <i class="m-icon-swapright m-icon-white"></i>
+                    </a> 
+                </div>
+            </div> 
+        </div>
+     </div>
+    <div class="span4">
+          <div class="row-fluid">
+            <div class="span4">
+         
+                <div class="dashboard-box">
+                    <div class="info">
+                        <div class="stats">
+                            OK
+                        </div>
+                        <div class="stats-description">                           
+                            <span>SELLER SETTINGS</span>
+                        </div>
+                    </div>
+                    <a href="#" class="more-info">
+                        SELLER SETTINGS
+                    </a>                 
+                </div>
+
+            </div>
+
+            <div class="span4">
+                
+                
+                <div class="dashboard-box">
+                    <div class="info">
+                        <div class="stats">
+                            OK
+                        </div>
+                        <div class="stats-description">                           
+                            <span>API SETTINGS</span>
+                        </div>
+                    </div>
+                    <a href="#" class="more-info">
+                        API SETTINGS
+                    </a>                 
+                </div>
+                
+
+            </div>
+    
+            <div class="span4">
+         
+                        <div class="dashboard-box">
+                            <div class="info">
+                                <div class="stats">
+                                    100
+                                </div>
+                                <div class="stats-description">                           
+                                    <span>API CALLS</span>
+                                </div>
+                            </div>
+                            <a href="#" class="more-info">
+                                ANALYTICS
+                            </a>                 
+                        </div>
+
+                    </div>
+         </div>
+                <div class="row-fluid">
+    <div class="span12">
+        
+                <div class="dashboard-box">
+                    <div class="graphics">
+                            
+                    </div>
+                    <div class="info orders">
+                        <div class="stats">
+                            25 / 455 / 2343
+                        </div>
+                        <div class="stats-description">                           
+                            Orders in last 7 / 30 / 90 days
+                        </div>
+                    </div>
+                    <a href="#" class="more-info alizarin">
+                        VIEW ALL ORDERS <i class="m-icon-swapright m-icon-white"></i>
+                    </a> 
+                </div>
+    </div> 
+     </div>
+    </div>
+    <div class="span4">
+        <div class="row-fluid">
+            <div class="span4">
+         
+                <div class="dashboard-box">
+                    <div class="info">
+                        <div class="stats">
+                            OK
+                        </div>
+                        <div class="stats-description">                           
+                            <span>SELLER SETTINGS</span>
+                        </div>
+                    </div>
+                    <a href="#" class="more-info">
+                        SELLER SETTINGS
+                    </a>                 
+                </div>
+
+            </div>
+
+            <div class="span4">
+                
+                
+                <div class="dashboard-box">
+                    <div class="info">
+                        <div class="stats">
+                            OK
+                        </div>
+                        <div class="stats-description">                           
+                            <span>API SETTINGS</span>
+                        </div>
+                    </div>
+                    <a href="#" class="more-info">
+                        API SETTINGS
+                    </a>                 
+                </div>
+                
+
+            </div>
+    
+            <div class="span4">
+         
+                <div class="dashboard-box">
+                    <div class="info">
+                        <div class="stats">
+                            100
+                        </div>
+                        <div class="stats-description">                           
+                            <span>API CALLS</span>
+                        </div>
+                    </div>
+                    <a href="#" class="more-info">
+                        ANALYTICS
+                    </a>                 
+                </div>
+
+            </div>
+        </div>
+           <div class="row-fluid">
+            <div class="span12">
+                @*@{Html.RenderAction("DashboardLogs", "App");}*@
+            </div>
+        </div>  
+    </div>
+</div>
+
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/charts/Chart.min.js"); }
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/dashboard.js"); }
+@{ Html.IncludeCss("~/Apps/Amazon/Areas/Admin/Content/Styles/dashboard.css"); }
+
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/progress-bar.js");}
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/app.js");}

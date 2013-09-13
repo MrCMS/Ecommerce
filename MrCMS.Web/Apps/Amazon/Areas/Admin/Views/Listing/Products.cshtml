@@ -1,0 +1,50 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.EBay.Models.EBayListingModel
+
+<div data-paging-type="async" id="product-search">
+    @if (Model.Products.Count == 0)
+    {
+        <br/>
+        <p>
+            No products found.
+        </p>
+    }
+    else
+    {
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        No. of Variants
+                    </th>
+                    <th>
+                        
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Products)
+                {
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.Variants.Count
+                        </td>
+                        <td>
+                            @Html.ActionLink("Choose", "AddListingItems", "Listing", new {id=item.Id}, new { @class = "btn btn-mini btn-success"})
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+        
+    @Html.Pager(Model.Products, "Products", i => new {page = i})
+</div>
+
+@{ Html.IncludeScript("~/Apps/EBay/Areas/Admin/Content/Scripts/custom/async-paging.js"); }
