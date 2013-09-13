@@ -9,7 +9,7 @@
             <legend>Amazon Order #@Model.AmazonOrderId
 
                 <span class="pull-right btn-group">
-                    <a href="/Admin/Apps/Ecommerce/Order" class="btn">Back</a>
+                    @Html.ActionLink("Back to Orders", "Index","Orders", null,new {@class = "btn btn-primary"})
                 </span>
 
             </legend>

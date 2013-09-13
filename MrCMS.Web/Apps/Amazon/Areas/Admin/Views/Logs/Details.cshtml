@@ -64,7 +64,7 @@
                     <td>Amazon Listing
                     </td>
                     <td>
-                        @Html.ActionLink("Details", "Details","Listing", new {id=Model.AmazonListing.Id})
+                        @Html.ActionLink("Details", "Details","Listing", new {id=Model.AmazonListing.Id},null)
                     </td>
                 </tr>
             }
@@ -74,7 +74,7 @@
                     <td>Amazon Order
                     </td>
                     <td>
-                        @Html.ActionLink("Details", "Details","Orders", new {id=Model.AmazonOrder.Id})
+                        @Html.ActionLink("Details", "Details", "Orders", new {id = Model.AmazonOrder.Id},null)
                     </td>
                 </tr>
             }

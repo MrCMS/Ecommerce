@@ -82,7 +82,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     ShippingPriceAmount = Decimal.Parse(rawOrderItem.ShippingPrice.Amount),
                     ShippingPriceCurrency = rawOrderItem.ShippingPrice.CurrencyCode,
                     ShippingTaxAmount = Decimal.Parse(rawOrderItem.ShippingTax.Amount),
-                    ShippingTaxCurrency = rawOrderItem.ShippingTax.CurrencyCode,
+                    ShippingTaxCurrency = rawOrderItem.ShippingTax.CurrencyCode
                 };
         }
         public AmazonOrder GetAmazonOrder(MarketplaceWebServiceOrders.Model.Order rawOrder)
@@ -199,6 +199,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                         Tax = amazonOrderItem.ItemTaxAmount,
                         Discount = amazonOrderItem.PromotionDiscountAmount,
                         Quantity = Decimal.ToInt32(amazonOrderItem.QuantityOrdered),
+                        SKU = amazonOrderItem.ASIN
                     });
             }
         }
