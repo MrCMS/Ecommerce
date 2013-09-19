@@ -60,23 +60,28 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     ASIN = rawOrderItem.ASIN,
                     AmazonOrder = amazonOrder,
                     AmazonOrderItemId = rawOrderItem.OrderItemId,
-                    Condition = rawOrderItem.ConditionId.GetEnumByValue<AmazonListingItemCondition>(),
+                    Title = rawOrderItem.Title,
+                    SellerSKU = rawOrderItem.SellerSKU,
+                    Condition = rawOrderItem.ConditionId.GetEnumByValue<AmazonListingCondition>(),
                     ConditionSubtype =
-                        rawOrderItem.ConditionSubtypeId.GetEnumByValue<AmazonListingItemCondition>(),
+                        rawOrderItem.ConditionSubtypeId.GetEnumByValue<AmazonListingCondition>(),
+
                     GiftWrapPriceAmount = Decimal.Parse(rawOrderItem.GiftWrapPrice.Amount),
                     GiftWrapPriceCurrency = rawOrderItem.GiftWrapPrice.CurrencyCode,
                     GiftWrapTaxAmount = Decimal.Parse(rawOrderItem.GiftWrapTax.Amount),
                     GiftWrapTaxCurrency = rawOrderItem.GiftWrapTax.CurrencyCode,
+
                     ItemPriceAmount = Decimal.Parse(rawOrderItem.ItemPrice.Amount),
                     ItemPriceCurrency = rawOrderItem.ItemPrice.CurrencyCode,
                     ItemTaxAmount = Decimal.Parse(rawOrderItem.ItemTax.Amount),
                     ItemTaxCurrency = rawOrderItem.ItemTax.CurrencyCode,
+
                     PromotionDiscountAmount = Decimal.Parse(rawOrderItem.PromotionDiscount.Amount),
                     PromotionDiscountCurrency = rawOrderItem.PromotionDiscount.CurrencyCode,
+
                     QuantityOrdered = rawOrderItem.QuantityOrdered,
                     QuantityShipped = rawOrderItem.QuantityShipped,
-                    Title = rawOrderItem.Title,
-                    SellerSKU = rawOrderItem.SellerSKU,
+
                     ShippingDiscountAmount = Decimal.Parse(rawOrderItem.ShippingDiscount.Amount),
                     ShippingDiscountCurrency = rawOrderItem.ShippingDiscount.CurrencyCode,
                     ShippingPriceAmount = Decimal.Parse(rawOrderItem.ShippingPrice.Amount),
@@ -146,9 +151,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             var order = amazonOrder.Order ?? new Order();
             if (order.Id == 0)
             {
-                var address = GetOrderAddress(rawOrder);
-
-                order = GetOrderDetails(rawOrder, address);
+                order = GetOrderDetails(amazonOrder);
 
                 GetOrderLines(amazonOrder, ref order);
             }
@@ -157,33 +160,23 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
             return order;
         }
-        private static Order GetOrderDetails(MarketplaceWebServiceOrders.Model.Order rawOrder, Address address)
+        private static Order GetOrderDetails(AmazonOrder amazonOrder)
         {
             return new Order()
                 {
-                    ShippingAddress = address,
-                    BillingAddress = address,
-                    PaymentMethod = rawOrder.PaymentMethod.GetDescription(),
-                    PaidDate = rawOrder.PurchaseDate,
-                    Total = Decimal.Parse(rawOrder.OrderTotal.Amount),
-                    OrderEmail = rawOrder.BuyerEmail,
+                    ShippingAddress = amazonOrder.ShippingAddress,
+                    BillingAddress = amazonOrder.ShippingAddress,
+                    PaymentMethod = amazonOrder.PaymentMethod.GetDescription(),
+                    PaidDate = amazonOrder.PurchaseDate,
+                    Total = amazonOrder.OrderTotalAmount,
+                    Tax = amazonOrder.Tax,
+                    Subtotal = amazonOrder.ItemAmount,
+                    DiscountAmount = amazonOrder.ItemDiscountAmount,
+                    ShippingTax = amazonOrder.ShippingTax,
+                    ShippingTotal = amazonOrder.ShippingTotal,
+                    OrderEmail = amazonOrder.BuyerEmail,
                     IsCancelled = false,
                     SalesChannel = "Amazon"
-                };
-        }
-        private Address GetOrderAddress(MarketplaceWebServiceOrders.Model.Order rawOrder)
-        {
-            return new Address()
-                {
-                    Address1 = rawOrder.ShippingAddress.AddressLine1,
-                    Address2 = rawOrder.ShippingAddress.AddressLine2,
-                    FirstName = rawOrder.ShippingAddress.Name.Split(' ').First(),
-                    LastName = rawOrder.ShippingAddress.Name.Split(' ')[1],
-                    PhoneNumber = rawOrder.ShippingAddress.Phone,
-                    PostalCode = rawOrder.ShippingAddress.PostalCode,
-                    StateProvince = rawOrder.ShippingAddress.StateOrRegion,
-                    City = rawOrder.ShippingAddress.City,
-                    Country = _countryService.GetCountryByCode(rawOrder.ShippingAddress.CountryCode),
                 };
         }
         private static void GetOrderLines(AmazonOrder amazonOrder, ref Order order)
@@ -199,7 +192,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                         Tax = amazonOrderItem.ItemTaxAmount,
                         Discount = amazonOrderItem.PromotionDiscountAmount,
                         Quantity = Decimal.ToInt32(amazonOrderItem.QuantityOrdered),
-                        SKU = amazonOrderItem.ASIN
+                        SKU = amazonOrderItem.SellerSKU
                     });
             }
         }

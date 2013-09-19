@@ -2,7 +2,7 @@
 
 namespace MrCMS.Web.Apps.Amazon.Models
 {
-    public enum AmazonListingItemCondition
+    public enum AmazonListingCondition
     {
         [Description("New")]
         New,

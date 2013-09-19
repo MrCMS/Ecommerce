@@ -1,16 +1,10 @@
 ﻿using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
-using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using Xunit;
-using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
-using MrCMS.Web.Apps.Ecommerce.Services.Payments;
-using MrCMS.EcommerceApp.Tests.Services;
-using MrCMS.Entities.People;
-using MrCMS.Website;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {

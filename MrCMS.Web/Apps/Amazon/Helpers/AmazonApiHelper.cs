@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Web.Hosting;
+using System.Xml;
+using System.Xml.Serialization;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Helpers
 {
     public static class AmazonApiHelper
     {
-        #region Misc
         public static T GetEnumByValue<T>(this string value) where T : struct
         {
             return Enum.GetValues(typeof(T)).Cast<T>().SingleOrDefault(x => x.ToString() == value);
@@ -40,6 +44,24 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
                                    ? (siteUrl + imageUrl)
                                    : imageUrl;
         }
-        #endregion
+        public static string Serialize<T>(T item)
+        {
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = XmlWriter.Create(stream))
+                {
+                    new XmlSerializer(typeof(T)).Serialize(writer, item);
+                    return Encoding.UTF8.GetString(stream.ToArray());
+                }
+            }
+        }
+        public static string GetAmazonApiFolderPath(string relativeFilePath)
+        {
+            if (!relativeFilePath.StartsWith("/content/upload/") && !relativeFilePath.StartsWith("/" + "/content/upload/"))
+                relativeFilePath = Path.Combine("/content/upload/", relativeFilePath);
+            var baseDirectory = HostingEnvironment.ApplicationPhysicalPath.Substring(0, HostingEnvironment.ApplicationPhysicalPath.Length - 1);
+            var path = Path.Combine(baseDirectory, relativeFilePath.Substring(1));
+            return path;
+        }
     }
 }

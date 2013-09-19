@@ -5,6 +5,8 @@
         $("#pb").show();
         updateProgressBar();
         $.post(taskUrl, {
+            id: id,
+            description: description,
             taskId: taskId,
             from: from,
             to: to
@@ -19,9 +21,7 @@
                 type: "GET",
                 cache: false,
                 data: {
-                    taskId: taskId,
-                    from:from,
-                    to:to
+                    taskId: taskId
                 },
                 dataType: "json",
                 success: function (data) {
@@ -51,9 +51,7 @@
     function refreshMessages() {
         $("#pb-status").show();
         $.get("/Admin/Apps/Amazon/App/ProgressBarMessages", {
-            taskId: taskId,
-            from: from,
-            to: to
+            taskId: taskId
         }, function (data) {
             $('#progress-bar-messages').replaceWith(data);
         });

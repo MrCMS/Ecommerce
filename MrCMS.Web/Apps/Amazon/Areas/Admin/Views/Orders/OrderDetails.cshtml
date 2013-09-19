@@ -38,22 +38,7 @@
 
 <hr class="small-margin" />
 <div class="row-fluid">
-    <div class="span6">
-        <h4>Payment</h4>
-
-        <table class="table table-condensed">
-            <tr>
-                <td>Method</td>
-                <td>@Html.DisplayFor(x => x.PaymentMethod)</td>
-            </tr>
-            <tr>
-                <td>Purchase Date</td>
-                <td>@Html.DisplayFor(x => x.PurchaseDate)</td>
-            </tr>
-        </table>
-
-    </div>
-    <div class="span6">
+        <div class="span6">
         <h4>Shipping</h4>
 
         <table class="table table-condensed">
@@ -76,6 +61,21 @@
             <tr>
                 <td>Number Of Items Unshipped</td>
                 <td>@Html.DisplayFor(x => x.NumberOfItemsUnshipped)</td>
+            </tr>
+        </table>
+
+    </div>
+    <div class="span6">
+        <h4>Payment</h4>
+
+        <table class="table table-condensed">
+            <tr>
+                <td>Method</td>
+                <td>@Html.DisplayFor(x => x.PaymentMethod)</td>
+            </tr>
+            <tr>
+                <td>Purchase Date</td>
+                <td>@Html.DisplayFor(x => x.PurchaseDate)</td>
             </tr>
         </table>
 

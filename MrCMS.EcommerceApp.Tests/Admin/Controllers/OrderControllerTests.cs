@@ -1,13 +1,12 @@
 ﻿using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
-using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
-using MrCMS.Web.Apps.Ecommerce.Services.Payments;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
@@ -15,8 +14,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly OrderController _orderController;
-        private readonly IShippingStatusService _shippingStatusService;
-        private readonly IPaymentStatusService _paymentStatusService;
+        private readonly IOptionService _optionService;
         private readonly IShippingMethodManager _shippingMethodManager;
         private readonly IOrderSearchService _orderSearchService;
         private readonly IOrderShippingService _orderShippingService;
@@ -24,13 +22,12 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         public OrderControllerTests()
         {
             _orderService = A.Fake<IOrderService>();
-            _shippingStatusService = A.Fake<IShippingStatusService>();
-            _paymentStatusService = A.Fake<IPaymentStatusService>();
+            _optionService = A.Fake<IOptionService>();
             _shippingMethodManager = A.Fake<IShippingMethodManager>();
             _orderSearchService = A.Fake<IOrderSearchService>();
             _orderShippingService = A.Fake<IOrderShippingService>();
-            _orderController = new OrderController(_orderService, _shippingStatusService, _paymentStatusService,
-                _shippingMethodManager, _orderSearchService, _orderShippingService);
+            _orderController = new OrderController(_orderService,
+                _shippingMethodManager, _orderSearchService, _orderShippingService, _optionService);
         }
 
         //[Fact]

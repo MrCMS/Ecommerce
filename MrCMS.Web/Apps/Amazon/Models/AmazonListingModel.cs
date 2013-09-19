@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using MrCMS.Paging;
-using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Amazon.Entities.Listings;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 
 namespace MrCMS.Web.Apps.Amazon.Models
 {
@@ -9,31 +10,28 @@ namespace MrCMS.Web.Apps.Amazon.Models
     {
         public AmazonListingModel()
         {
+            Listing = new AmazonListing();
+
             Name = String.Empty;
             Page = 1;
             PageSize = 10;
 
-            Products = new PagedList<Product>(new List<Product>(), Page, PageSize);
-
-            //Categories = new PagedList<AmazonCategory>(new List<AmazonCategory>(), Page, PageSize);
-            MultipleVariations = true;
+            CategoryId = 0;
+            ProductVariants = new PagedList<ProductVariant>(new List<ProductVariant>(), Page, PageSize);
         }
 
         //Listing
-        public Product ChosenProduct { get; set; }
-        //public AmazonCategory ChosenCategory { get; set; }
+        public AmazonListing Listing { get; set; }
+        public ProductVariant ChosenProductVariant { get; set; }
 
         //Search & Paging
         public string Name { get; set; }
         public int Page { get; set; }
         public int PageSize { get; set; }
 
-        //Products
-        public IPagedList<Product> Products { get; set; }
-
-        //Categories
-        //public IPagedList<AmazonCategory> Categories { get; set; }
-        public bool MultipleVariations { get; set; }
+        //Product Variants
+        public int CategoryId { get; set; }
+        public IPagedList<ProductVariant> ProductVariants { get; set; }
     }
 
 }

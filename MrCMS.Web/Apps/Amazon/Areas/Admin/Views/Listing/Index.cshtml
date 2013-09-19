@@ -1,14 +1,25 @@
 ﻿@using System.Web.Mvc.Html
 @using MrCMS.Helpers
+@using MrCMS.Web.Apps.Amazon.Models
 @model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Amazon.Entities.Listings.AmazonListing>
 @{
     ViewBag.Title = "Amazon Listings";
+    var amazonManageInventoryUrl = ViewData["AmazonManageInventoryUrl"] as string;
 }
 
 <fieldset>
     <legend>Amazon Listings 
-        <span class="btn-group  display-inline  pull-right">
-            @Html.ActionLink("Add New Listing", "Add", "Listing", null, new { @class = "btn btn-primary"})
+        @if (!String.IsNullOrWhiteSpace(amazonManageInventoryUrl))
+         {
+            <span class="btn-group  display-inline  pull-right margin-left-10">
+            <a href='@amazonManageInventoryUrl' target="_blank" class="btn btn-danger">
+                Manage Inventory on Amazon
+            </a>
+            </span>
+         }
+         <span class="btn-group  display-inline  pull-right">
+            @Html.ActionLink("Add New Listing", "ChooseProductVariant", "Listing", null, new { @class = "btn btn-primary"})
+            @Html.ActionLink("Logs", "Index", "Logs", new {type=AmazonLogType.Listings}, new { @class = "btn btn-success"})
         </span>
     </legend>
 </fieldset>
