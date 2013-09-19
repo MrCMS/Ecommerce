@@ -3,12 +3,21 @@
 @model AmazonOrderSearchModel
 @{
     ViewBag.Title = "Amazon Orders";
+    var amazonManageOrdersUrl = ViewData["AmazonManageOrdersUrl"] as string;
 }
 
 <fieldset>
     <legend>Amazon Orders 
+         @if (!String.IsNullOrWhiteSpace(amazonManageOrdersUrl))
+         {
+             <span class="btn-group  display-inline pull-right margin-left-10">
+                 <a href='@amazonManageOrdersUrl' target="_blank" class="btn btn-danger">
+                     Manage Orders on Amazon
+                 </a>
+             </span>
+         }
         <span class="btn-group  display-inline  pull-right">
-            @Html.ActionLink("Sync", "Sync", "Orders", null, new { @class = "btn btn-primary"})
+            @Html.ActionLink("Sync", "SyncMany", "Orders", null, new { @class = "btn btn-primary"})
             @Html.ActionLink("Logs", "Index", "Logs", new {type=AmazonLogType.Orders}, new { @class = "btn btn-success"})
         </span>
     </legend>

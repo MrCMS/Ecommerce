@@ -1,6 +1,10 @@
-﻿using MrCMS.Web.Apps.Amazon.Entities.Listings;
+﻿using System;
+using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Models;
-using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Amazon.Services.Listings;
+using MrCMS.Web.Apps.Amazon.Services.Listings.Sync;
+using MrCMS.Web.Apps.Amazon.Settings;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Website.Controllers;
@@ -10,224 +14,108 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
 {
     public class ListingController : MrCMSAppAdminController<AmazonApp>
     {
+        private readonly IProductVariantService _productVariantService;
+        private readonly ISyncAmazonListingsService _syncAmazonListingsService;
+        private readonly IAmazonListingService _amazonListingService;
         private readonly IOptionService _optionService;
-        private readonly IProductService _productService;
+        private readonly AmazonAppSettings _amazonAppSettings;
 
-        public ListingController(IOptionService optionService,
-            IProductService productService)
+        public ListingController(
+            IProductVariantService productVariantService, 
+            ISyncAmazonListingsService syncAmazonListingsService, 
+            IAmazonListingService amazonListingService, 
+            IOptionService optionService, 
+            AmazonAppSettings amazonAppSettings)
         {
+            _productVariantService = productVariantService;
+            _syncAmazonListingsService = syncAmazonListingsService;
+            _amazonListingService = amazonListingService;
             _optionService = optionService;
-            _productService = productService;
+            _amazonAppSettings = amazonAppSettings;
         }
 
         [HttpGet]
-        public ViewResult Index(int page = 1)
+        public ViewResult Index(string searchTerm,int page = 1)
         {
-            //var model = _eBayListingManager.GetEntriesPaged(page);
-            return View();
+            ViewData["AmazonManageInventoryUrl"] = _amazonAppSettings.AmazonManageInventoryUrl;
+            var results = _amazonListingService.Search(searchTerm,page);
+            return View(results);
         }
 
-        //[HttpGet]
-        //public ActionResult Listings(string listingTitle, int page = 1)
-        //{
-        //    var listings = _eBayListingManager.SearchListings(listingTitle, page);
-        //    return PartialView(listings);
-        //}
+        [HttpGet]
+        public PartialViewResult Listings(string searchTerm, int page = 1)
+        {
+            var results = _amazonListingService.Search(searchTerm, page);
+            return PartialView(results);
+        }
 
-        //[HttpGet]
-        //public ViewResult Add()
-        //{
-        //    ViewData["categories"] = _optionService.GetCategoryOptions();
-        //    var model = new AmazonListingModel() { Products = _productService.Search(string.Empty, 1) };
-        //    return View(model);
-        //}
+        [HttpGet]
+        public ViewResult ChooseProductVariant()
+        {
+            ViewData["categories"] = _optionService.GetCategoryOptions();
+            var model = new AmazonListingModel() { ProductVariants = _productVariantService.GetAllVariants(String.Empty) };
+            return View(model);
+        }
 
-        //[HttpGet]
-        //public ActionResult AddListingItems(Product product)
-        //{
-        //    if (product != null)
-        //    {
-        //        var model = new AmazonListingModel()
-        //        {
-        //            ChosenProduct = product,
-        //            //Categories = _eBayCategoryService.Search(string.Empty)
-        //        };
-        //        return View(model);
-        //    }
-        //    return RedirectToAction("Index");
-        //}
+        [HttpGet]
+        public ActionResult ProductVariants(AmazonListingModel model)
+        {
+            ViewData["categories"] = _optionService.GetCategoryOptions();
+            var newModel = new AmazonListingModel() { ProductVariants = _productVariantService.GetAllVariants(model.Name, model.CategoryId, model.Page) };
+            return PartialView(newModel);
+        }
 
-        //[HttpPost]
-        //[ActionName("AddListingItems")]
-        //public ActionResult AddListingItems_POST(AmazonListingModel model)
-        //{
-        //    if (model != null && model.ChosenProduct != null)
-        //    {
-        //        if (model.ChosenCategory != null)
-        //        {
-        //            var listing = _eBayListingManager.AddItemsToListing(model.ChosenProduct, model.ChosenCategory, model.MultipleVariations);
+        [HttpGet]
+        public ActionResult Add(ProductVariant productVariant)
+        {
+            if (productVariant != null && productVariant.Id > 0)
+            {
+                var amazonListing = _amazonListingService.GetByProductVariantId(productVariant.Id);
+                if (amazonListing == null)
+                {
+                    amazonListing = _amazonListingService.InitAmazonListingFromProductVariant(productVariant);
+                    return View(amazonListing);
+                }
+                return RedirectToAction("Details", new {id = amazonListing.Id});
+            }
+            return RedirectToAction("Index");
+        }
 
-        //            return RedirectToAction("Edit", new { id = listing.Id });
-        //        }
-        //        return RedirectToAction("AddListingItems", new { id = model.ChosenProduct.Id });
-        //    }
-        //    return RedirectToAction("Index");
-        //}
+        [HttpPost]
+        [ActionName("Add")]
+        public ActionResult Add_POST(AmazonListing listing)
+        {
+            if (listing != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    listing.Status = AmazonListingStatus.NotOnAmazon;
+                    _amazonListingService.Save(listing);
 
-        //[HttpPost]
-        //public JsonResult CheckIfCategoryAllowsVariations(AmazonCategory category)
-        //{
-        //    if (category != null)
-        //    {
-        //        var variationsEnabled = _eBayApiService.CheckIfCategorySupportsVariations(category);
+                    return RedirectToAction("SyncOne", new { id = listing.Id });
+                }
+                return View(listing);
+            }
+            return RedirectToAction("Index");
+        }
 
-        //        return Json(variationsEnabled);
-        //    }
-        //    return Json(false);
-        //}
+        [HttpGet]
+        public ActionResult SyncOne(AmazonListing listing)
+        {
+            if (listing != null)
+                return View(new AmazonSyncModel() { Id = listing.Id, Title = listing.Title });
+            return RedirectToAction("Index");
+        }
 
-        //[HttpGet]
-        //public ActionResult Products(AmazonListingModel model)
-        //{
-        //    var newModel = new AmazonListingModel() { Products = _productService.Search(model.Name, model.Page) };
-        //    return PartialView(newModel);
-        //}
-
-        //[HttpGet]
-        //public ActionResult Categories(AmazonListingModel model)
-        //{
-        //    var newModel = new AmazonListingModel() { Categories = _eBayCategoryService.Search(model.Name, model.Page, model.PageSize) };
-        //    return PartialView(newModel);
-        //}
-
-        //[HttpGet]
-        //public ActionResult End(AmazonListing listing, string location)
-        //{
-        //    TempData["Location"] = location;
-        //    return View(listing);
-        //}
-
-        //[HttpPost]
-        //[ActionName("End")]
-        //public ActionResult End_POST(AmazonListing listing, string location)
-        //{
-        //    if (listing != null)
-        //    {
-        //        _eBaySyncListingsService.EndListings(listing);
-        //        return string.IsNullOrWhiteSpace(location) ? RedirectToAction("Index") : RedirectToAction("Edit", new { id = listing.Id });
-        //    }
-        //    return RedirectToAction("Index");
-        //}
-
-        //[HttpGet]
-        //public ActionResult Delete(AmazonListing listing, string location)
-        //{
-        //    TempData["Location"] = location;
-        //    return View(listing);
-        //}
-
-        //[HttpPost]
-        //[ActionName("Delete")]
-        //public ActionResult Delete_POST(AmazonListing listing, string location)
-        //{
-        //    if (listing != null)
-        //    {
-        //        _eBaySyncListingsService.EndListings(listing);
-        //        _eBayListingManager.DeleteListing(listing);
-        //        return string.IsNullOrWhiteSpace(location) ? RedirectToAction("Index") : RedirectToAction("Edit", new { id = listing.Id });
-        //    }
-        //    return RedirectToAction("Index");
-        //}
-
-        //[HttpGet]
-        //public ActionResult ListAll(AmazonListing listing, string location)
-        //{
-        //    TempData["Location"] = location;
-        //    return View(listing);
-        //}
-
-        //[HttpPost]
-        //[ActionName("ListAll")]
-        //public ActionResult ListAll_POST(AmazonListing listing, string location)
-        //{
-        //    if (listing != null)
-        //    {
-        //        _eBaySyncListingsService.ListItems(listing);
-        //        return string.IsNullOrWhiteSpace(location) ? RedirectToAction("Index") : RedirectToAction("Edit", new { id = listing.Id });
-        //    }
-        //    return RedirectToAction("Index");
-        //}
-
-        //[HttpGet]
-        //public ActionResult Sync(AmazonListing listing, string location)
-        //{
-        //    TempData["Location"] = location;
-        //    return View(listing);
-        //}
-
-        //[HttpPost]
-        //[ActionName("Sync")]
-        //public ActionResult Sync_POST(AmazonListing listing, string location)
-        //{
-        //    if (listing != null)
-        //    {
-        //        _eBaySyncListingsService.SyncListing(listing);
-        //        return string.IsNullOrWhiteSpace(location) ? RedirectToAction("Index") : RedirectToAction("Edit", new { id = listing.Id });
-        //    }
-        //    return RedirectToAction("Index");
-        //}
-
-        //[HttpGet]
-        //public ActionResult Edit(AmazonListing listing)
-        //{
-        //    if (listing != null)
-        //    {
-        //        return View(listing);
-        //    }
-        //    return RedirectToAction("Index");
-        //}
-
-        //[HttpGet]
-        //public ActionResult ListingItems(AmazonListing listing, int page = 1)
-        //{
-        //    if (listing != null)
-        //    {
-        //        return PartialView(new PagedList<AmazonListingItem>(listing.Items, page, 10));
-        //    }
-        //    return RedirectToAction("Index");
-        //}
-
-        //[HttpPost]
-        //public ActionResult ListListingItem(AmazonListingItem listingItem)
-        //{
-        //    if (listingItem != null)
-        //    {
-        //        _eBaySyncListingsService.ListItem(listingItem);
-        //        return RedirectToAction("Edit", new { id = listingItem.AmazonListing.Id });
-        //    }
-        //    return RedirectToAction("Index");
-        //}
-
-        //[HttpPost]
-        //public ActionResult EndListingItem(AmazonListingItem listingItem)
-        //{
-        //    if (listingItem != null)
-        //    {
-        //        _eBaySyncListingsService.EndListing(listingItem);
-        //        return RedirectToAction("Edit", new { id = listingItem.AmazonListing.Id });
-        //    }
-        //    return RedirectToAction("Index");
-        //}
-
-        //[HttpPost]
-        //public ActionResult RelistListingItem(AmazonListingItem listingItem)
-        //{
-        //    if (listingItem != null)
-        //    {
-        //        _eBaySyncListingsService.RelistItem(listingItem);
-        //        return RedirectToAction("Edit", new { id = listingItem.AmazonListing.Id });
-        //    }
-        //    return RedirectToAction("Index");
-        //}
+        [HttpPost]
+        public JsonResult Sync(AmazonSyncModel model)
+        {
+            if (model != null)
+            {
+                _syncAmazonListingsService.ExportAmazonListing(model);
+                return Json(true);
+            }
+            return Json(false);
+        }
     }
 }

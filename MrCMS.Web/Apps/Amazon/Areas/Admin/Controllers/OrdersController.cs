@@ -34,6 +34,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Index(AmazonOrderSearchModel model)
         {
+            ViewData["AmazonManageOrdersUrl"] = _amazonAppSettings.AmazonManageOrdersUrl;
             return View(PrepareModel(model));
         }
 
@@ -70,13 +71,21 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Sync()
+        public ActionResult SyncMany()
         {
             return View(new AmazonSyncModel());
         }
 
+        [HttpGet]
+        public ActionResult SyncOne(AmazonOrder amazonOrder)
+        {
+            if (amazonOrder != null)
+                return View(new AmazonSyncModel() { Id = amazonOrder.Id, Description = amazonOrder.AmazonOrderId});
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
-        public JsonResult SyncOrders(AmazonSyncModel model)
+        public JsonResult Sync(AmazonSyncModel model)
         {
             if (model != null)
             {

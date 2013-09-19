@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
 <hr />
            <h4>Order Items</h4>
 <div class="row-fluid">
@@ -24,8 +25,6 @@
                         </th>
                         <th>Tax
                         </th>
-                        <th>Tax Rate
-                        </th>
                         <th>Discount
                         </th>
                         <th>Weight
@@ -37,19 +36,14 @@
                     {
                         <tr>
                             <td>
-                                @if (item.ProductVariant != null)
-                                {
-                                    @item.ProductVariant.DisplayName
-                                }
-                                else
-                                {
-                                    <i>
-                                        @(!String.IsNullOrWhiteSpace(Model.SalesChannel)?Model.SalesChannel:"Remote") (@item.SKU)
-                                    </i>
-                                }
+                                @item.Name
                             </td>
                             <td>
-                                @if (item.ProductVariant != null)
+                                @if(!String.IsNullOrWhiteSpace(item.SKU))
+                                {
+                                     @item.SKU
+                                }
+                                else if (item.ProductVariant != null)
                                 {
                                     @item.ProductVariant.SKU
                                 }
@@ -58,19 +52,16 @@
                                 @item.Quantity.ToString("n2")
                             </td>
                             <td>
-                                @item.UnitPrice.ToString("n2")
+                                @item.UnitPrice.ToCurrencyFormat()
                             </td>
                             <td>
-                                @item.Subtotal.ToString("n2")
+                                @item.Subtotal.ToCurrencyFormat()
                             </td>
                             <td>
-                                @item.Tax.ToString("n2")
+                                @item.Tax.ToCurrencyFormat()
                             </td>
                             <td>
-                                @item.TaxRate.ToString("n2")
-                            </td>
-                            <td>
-                                @item.Discount.ToString("n2")
+                                @item.Discount.ToCurrencyFormat()
                             </td>
                             <td>
                                 @item.Weight.ToString("n2")

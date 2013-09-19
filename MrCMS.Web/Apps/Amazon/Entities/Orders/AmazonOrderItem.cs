@@ -11,8 +11,8 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Orders
         public virtual string SellerSKU { get; set; }
         public virtual string Title { get; set; }
         public virtual string ASIN { get; set; }
-        public virtual AmazonListingItemCondition Condition { get; set; }
-        public virtual AmazonListingItemCondition ConditionSubtype { get; set; }
+        public virtual AmazonListingCondition Condition { get; set; }
+        public virtual AmazonListingCondition ConditionSubtype { get; set; }
 
         public virtual string ItemPriceCurrency { get; set; }
         public virtual decimal ItemPriceAmount { get; set; }

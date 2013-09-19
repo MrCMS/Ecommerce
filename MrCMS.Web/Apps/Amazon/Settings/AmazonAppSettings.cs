@@ -44,9 +44,20 @@ namespace MrCMS.Web.Apps.Amazon.Settings
         [DisplayName("Amazon Order Details Url")]
         public string AmazonOrderDetailsUrl { get; set; }
 
-        public string GetOrdersApiEndpoint
+        [DisplayName("Amazon Manage Orders Url")]
+        public string AmazonManageOrdersUrl { get; set; }
+
+        [DisplayName("Amazon Manager Inventory Url")]
+        public string AmazonManageInventoryUrl { get; set; }
+
+        public string OrdersApiEndpoint
         {
             get { return ApiEndpoint + "Orders/" + OrdersApiVersion; }
+        }
+
+        public string FeedsApiEndpoint
+        {
+            get { return ApiEndpoint + "doc/" + FeedsApiVersion; }
         }
 
         public override bool RenderInSettings

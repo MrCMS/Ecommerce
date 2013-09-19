@@ -21,67 +21,32 @@
     }
 
     //ADD
-    $('.search-products').keypress(function(e) {
+    $('.search-product-variants').keypress(function(e) {
         if (e.which == 13) {
             e.preventDefault();
-            searchProducts();
+            searchProductVariants();
         }
     });
 
-    $(document).on('click', '#search-products', function() {
-        searchProducts();
+    $(document).on('click', '#search-product-variants', function() {
+        searchProductVariants();
     });
 
-    function searchProducts() {
-        $.get('/Admin/Apps/Amazon/Listing/Products', {
-            name: $("#Name").val()
+    function searchProductVariants() {
+        $.get('/Admin/Apps/Amazon/Listing/ProductVariants', {
+            name: $("#Name").val(),
+            categoryId: $("#CategoryId").val()
         }, function (result) {
-            $('#product-search').replaceWith(result);
+            $('#product-variants-search').replaceWith(result);
         });
     }
     
-    //ADD LISTING ITEMS
-    $('.search-categories').keypress(function (e) {
-        if (e.which == 13) {
-            e.preventDefault();
-            searchCategories();
-        }
-    });
-    
-    $(document).on('click', '#search-categories', function () {
-        searchCategories();
-    });
-    
-    function searchCategories() {
-        $.get('/Admin/Apps/Amazon/Listing/Categories', {
-            name: $("#Name").val()
-        }, function (result) {
-            $('#categories').replaceWith(result);
-        });
-    }
-    
-    $(document).on('click', '.choose-category', function () {
-        var button = $(this),
-            categoryId = button.data('category-id'),
-            categoryPath = button.data('category-path');
-        
-        $('#ChosenCategory_Id').val(categoryId);
-        $('#category').html("Your current choice: "+categoryPath);
-        
-        $.post('/Admin/Apps/Amazon/Listing/CheckIfCategoryAllowsVariations/',
-            { id: categoryId },
-            function (response) {
-                if (response === false) {
-                    var dialogResponse = confirm("Chosen category does not support listings with multiple variations.\n\n'Cancel' if you want to go back " +
-                        "and choose another category for this product.\n\n'OK' to publish each product variant as separate Amazon listing item.");
-                    if (dialogResponse === true) {
-                        $('#MultipleVariations').val(false);
-                        $('form#add-listing-form').submit();
-                    }
-                } 
-                $('#MultipleVariations').val(true);
-            });
-        
-        return false;
-    });
 });
+
+//SYNC
+var id = $("#Id").val();
+var description = $("#Description").val();
+var taskId = $("#TaskId").val();
+var taskUrl = "/Admin/Apps/Amazon/Listing/Sync";
+var from = "";
+var to = "";

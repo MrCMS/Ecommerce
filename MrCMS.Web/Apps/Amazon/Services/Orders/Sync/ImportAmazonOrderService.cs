@@ -65,8 +65,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Stage, AmazonApiSection.Orders, null, null, null, "Getting Orders From Amazon");
             AmazonProgressBarHelper.Update(model.TaskId.Value, "Import", "Getting Orders From Amazon", 100, 0);
 
-            var rawOrders = _amazonApiService.ListOrders(model);
-            
+            var rawOrders = model.Id == 0 ? _amazonApiService.ListOrders(model) : _amazonApiService.GetOrder(model);
+
             if (rawOrders != null)
             {
                 foreach (var rawOrder in rawOrders)
@@ -78,7 +78,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                         _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Stage, AmazonApiSection.Orders, null,
                                               "Getting Items From Amazon for Order #" + rawOrder.AmazonOrderId);
 
-                        var rawOrderItems = _amazonApiService.ListOrderItems(model, rawOrder.AmazonOrderId);
+                        var rawOrderItems = _amazonApiService.ListOrderItems(rawOrder.AmazonOrderId);
 
                         orders.Add(_validateAmazonOrderService.SetAmazonOrderItems(rawOrder, rawOrderItems, amazonOrder));
                     }

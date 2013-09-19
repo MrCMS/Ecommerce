@@ -56,30 +56,48 @@
                 @Html.LabelFor(x => x.AppName)
                 @Html.TextBoxFor(x => x.AppName, new {@class = "span12"})
                 @Html.ValidationMessageFor(x => x.AppName)
-
-                @Html.LabelFor(x => x.AppVersion)
+                
+                   <div class="row-fluid">
+                    <div class="span6">
+                            @Html.LabelFor(x => x.AppVersion)
                 @Html.TextBoxFor(x => x.AppVersion, new {@class = "span12"})
                 @Html.ValidationMessageFor(x => x.AppVersion)
-
-                @Html.LabelFor(x => x.AppLanguage)
+                    </div>
+                    <div class="span6">
+                      @Html.LabelFor(x => x.AppLanguage)
                 @Html.TextBoxFor(x => x.AppLanguage, new {@class = "span12"})
                 @Html.ValidationMessageFor(x => x.AppLanguage)
+                    </div>
+                </div>
 
                 @Html.LabelFor(x => x.AppPath)
                 @Html.TextBoxFor(x => x.AppPath, new {@class = "span12"})
                 @Html.ValidationMessageFor(x => x.AppPath)
-               
-                @Html.LabelFor(x => x.SignatureVersion)
+                
+                <div class="row-fluid">
+                    <div class="span6">
+                           @Html.LabelFor(x => x.SignatureVersion)
                 @Html.TextBoxFor(x => x.SignatureVersion, new {@class = "span12"})
                 @Html.ValidationMessageFor(x => x.SignatureVersion)
-
-                @Html.LabelFor(x => x.SignatureMethod)
+                    </div>
+                    <div class="span6">
+                      @Html.LabelFor(x => x.SignatureMethod)
                 @Html.TextBoxFor(x => x.SignatureMethod, new {@class = "span12"})
                 @Html.ValidationMessageFor(x => x.SignatureMethod)
-                
+                    </div>
+                </div>
+
                 @Html.LabelFor(x => x.AmazonOrderDetailsUrl)
                 @Html.TextBoxFor(x => x.AmazonOrderDetailsUrl, new {@class = "span12"})
                 @Html.ValidationMessageFor(x => x.AmazonOrderDetailsUrl)
+                
+                @Html.LabelFor(x => x.AmazonManageOrdersUrl)
+                @Html.TextBoxFor(x => x.AmazonManageOrdersUrl, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AmazonManageOrdersUrl)
+                
+                @Html.LabelFor(x => x.AmazonManageInventoryUrl)
+                @Html.TextBoxFor(x => x.AmazonManageInventoryUrl, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AmazonManageInventoryUrl)
             </div>
             
         </div>

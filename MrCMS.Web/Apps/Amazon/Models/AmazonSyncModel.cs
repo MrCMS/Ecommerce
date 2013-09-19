@@ -13,6 +13,8 @@ namespace MrCMS.Web.Apps.Amazon.Models
             To = CurrentRequestData.Now;
             Page = 1;
             Messages = new PagedList<AmazonProgressMessageModel>(new List<AmazonProgressMessageModel>(), Page, 10);
+            Id = 0;
+            Description = String.Empty;
         }
 
         public Guid? TaskId { get; set; }
@@ -20,5 +22,9 @@ namespace MrCMS.Web.Apps.Amazon.Models
         public DateTime? To { get; set; }
         public IPagedList<AmazonProgressMessageModel> Messages { get; set; }
         public int Page { get; set; }
+
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
     }
 }

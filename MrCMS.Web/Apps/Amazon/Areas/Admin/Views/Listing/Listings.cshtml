@@ -1,9 +1,10 @@
 ﻿@using MrCMS.Helpers
-@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.EBay.Entities.Listings.EBayListing>
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Amazon.Entities.Listings.AmazonListing>
 
 <div data-paging-type="async" id="listings">
     
-    @if (Model.Count == 0)
+    @if (!Model.Any())
     {
         @:No listings found.
     }
@@ -13,10 +14,16 @@
             <thead>
                 <tr>
                     <th>
-                        Listing Title
+                        SKU
+                    </th>
+                     <th>
+                        ASIN
                     </th>
                     <th>
-                        No of. listing items
+                        Title
+                    </th>
+                    <th>
+                        Status
                     </th>
                     <th>Actions
                     </th>
@@ -27,20 +34,19 @@
                 {
                     <tr>
                         <td>
-                            @item.Product.Name
+                            @item.SellerSKU
+                        </td>
+                         <td>
+                            @item.ASIN
                         </td>
                         <td>
-                            @item.Items.Count
+                            @item.Title
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "Edit", "Listing", new {id = item.Id}, new { @class="btn btn-mini"})
-                           
-                            @(item.IsListed ? 
-                                  Html.ActionLink("End", "End", "Listing", new {id = item.Id}, new {@class = "btn btn-mini btn-warning", data_toggle = "fb-modal"}) : 
-                                  Html.ActionLink("List", "ListAll","Listing",  new {id = item.Id}, new {@class = "btn btn-mini btn-primary", data_toggle = "fb-modal"}))
-                            
-                            @Html.ActionLink("Sync", "Sync", "Listing", new {id = item.Id}, new { @class="btn btn-mini btn-success", data_toggle = "fb-modal"})
-                            @Html.ActionLink("Delete", "Delete", "Listing", new {id = item.Id}, new { @class="btn btn-mini btn-danger", data_toggle = "fb-modal"})
+                            @item.Status.GetDescription()
+                        </td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", "Listing", new {id = item.Id}, new { @class="btn btn-mini"})
                         </td>
                     </tr>
                 }
@@ -51,4 +57,4 @@
     @Html.Pager(Model, "Listings", i => new { page = i })
 
 </div>
-@{ Html.IncludeScript("~/Apps/EBay/Areas/Admin/Content/Scripts/custom/async-paging.js"); }
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/async-paging.js"); }
