@@ -1,6 +1,6 @@
 ﻿@using MrCMS.Website
 @model List<MrCMS.Web.Apps.Core.Models.NavigationRecord>
-<ul>
+<ul class="hidden-phone">
     @foreach (var page in Model)
     {
         var setClass = "";
@@ -24,3 +24,9 @@
     <li>//</li>
     <li><a href="/stores" class="ico-stores">Stores</a></li>
 </ul>
+@foreach (var page in Model)
+{
+    <div class="visible-phone mobile-menu">
+        <a href="@page.Url" title="@page.Text">@page.Text</a>
+    </div>
+}
