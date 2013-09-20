@@ -33,8 +33,10 @@
                         </div>
                         
                         <p>SKU: @selectedVariant.SKU</p>
-
-                        @Editable(Model, product => product.Abstract, true)
+                        
+                        <div class="margin-bottom-10">
+                            @Editable(Model, product => product.Abstract, true)
+                        </div>
 
                         @{Html.RenderPartial("SocialLinks");}
                         @RenderZone("Below Product Price")
