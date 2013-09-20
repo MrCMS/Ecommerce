@@ -7,13 +7,19 @@ using MarketplaceWebService.Model;
 using MarketplaceWebServiceFeedsClasses;
 using MarketplaceWebServiceOrders;
 using MarketplaceWebServiceOrders.Model;
+using MarketplaceWebServiceProducts;
+using MarketplaceWebServiceProducts.Model;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Analytics;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
 using MrCMS.Web.Apps.Amazon.Settings;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Website;
+using GetServiceStatusRequest = MarketplaceWebServiceOrders.Model.GetServiceStatusRequest;
+using Product = MarketplaceWebServiceFeedsClasses.Product;
+using ServiceStatusEnum = MarketplaceWebServiceOrders.Model.ServiceStatusEnum;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Api
 {
@@ -37,11 +43,54 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
 
         #region Api
 
+        public AmazonServiceStatus GetServiceStatus(AmazonApiSection apiSection)
+        {
+            try
+            {
+                _amazonAnalyticsService.TrackNewApiCall(apiSection, "GetServiceStatus");
+                switch (apiSection)
+                {
+                    case AmazonApiSection.Orders:
+                        var ordersApiService = GetOrdersApiService();
+                        var ordersApiRequest = new GetServiceStatusRequest { SellerId = _amazonSellerSettings.SellerId };
+                        var ordersApiResult = ordersApiService.GetServiceStatus(ordersApiRequest);
+                        if (ordersApiResult != null && ordersApiResult.GetServiceStatusResult != null)
+                            return ordersApiResult.GetServiceStatusResult.Status.GetEnumByValue<AmazonServiceStatus>();
+                        break;
+                    case AmazonApiSection.Products:
+                        var productsApiService = GetProductsApiService();
+                        var productsApiRequest = new MarketplaceWebServiceProducts.Model.GetServiceStatusRequest { SellerId = _amazonSellerSettings.SellerId };
+                        var productsApiResult = productsApiService.GetServiceStatus(productsApiRequest);
+                        if (productsApiResult != null && productsApiResult.GetServiceStatusResult != null)
+                            return productsApiResult.GetServiceStatusResult.Status.GetEnumByValue<AmazonServiceStatus>();
+                        break;
+                    default:
+                        return AmazonServiceStatus.RED;
+                }
+            }
+            catch (MarketplaceWebServiceOrdersException ex)
+            {
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null, apiSection, "GetServiceStatus");
+            }
+            catch (Exception ex)
+            {
+                CurrentRequestData.ErrorSignal.Raise(ex);
+            }
+            return AmazonServiceStatus.RED;
+        }
+
         private MarketplaceWebServiceClient GetFeedsApiService()
         {
             var config = new MarketplaceWebServiceConfig() { ServiceURL = _amazonAppSettings.ApiEndpoint };
             return new MarketplaceWebServiceClient(MrCMSApplication.Get<AmazonAppSettings>().AWSAccessKeyId,
                                                     MrCMSApplication.Get<AmazonAppSettings>().SecretKey, "MrCMS", MrCMSApplication.AssemblyVersion,
+                                                    config);
+        }
+        private MarketplaceWebServiceProductsClient GetProductsApiService()
+        {
+            var config = new MarketplaceWebServiceProductsConfig() { ServiceURL = _amazonAppSettings.ProductsApiEndpoint };
+            return new MarketplaceWebServiceProductsClient("MrCMS", MrCMSApplication.AssemblyVersion,MrCMSApplication.Get<AmazonAppSettings>().AWSAccessKeyId,
+                                                    MrCMSApplication.Get<AmazonAppSettings>().SecretKey,
                                                     config);
         }
         private MarketplaceWebServiceOrdersClient GetOrdersApiService()
@@ -50,52 +99,21 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
             return new MarketplaceWebServiceOrdersClient("MrCMS", MrCMSApplication.AssemblyVersion, _amazonAppSettings.AWSAccessKeyId,
                                                          _amazonAppSettings.SecretKey, config);
         }
-        public ServiceStatusEnum GetServiceStatus(AmazonApiSection apiSection)
-        {
-            try
-            {
-                _amazonAnalyticsService.TrackNewApiCall(apiSection, "GetServiceStatus");
-                switch (apiSection)
-                {
-                    case AmazonApiSection.Orders:
-                        var service = GetOrdersApiService();
-                        var request = new GetServiceStatusRequest {SellerId = _amazonSellerSettings.SellerId};
-                        var result = service.GetServiceStatus(request);
-                        if (result != null && result.GetServiceStatusResult != null)
-                            return result.GetServiceStatusResult.Status;
-                        break;
-                    default:
-                        return ServiceStatusEnum.RED;
-                }
-            }
-            catch (MarketplaceWebServiceOrdersException ex)
-            {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null, apiSection, "GetServiceStatus");
-                return ServiceStatusEnum.RED;
-            }
-            catch (Exception ex)
-            {
-                CurrentRequestData.ErrorSignal.Raise(ex);
-                return ServiceStatusEnum.RED;
-            }
-            return ServiceStatusEnum.RED;
-        }
 
         #endregion
 
-        #region Listings
+        #region Feeds
+
         public FeedSubmissionInfo GetFeedSubmissionList(string submissionId)
         {
             try
             {
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Feeds, "GetFeedSubmissionList");
                 var service = GetFeedsApiService();
-                var request = new GetFeedSubmissionListRequest()
-                {
-                    Merchant = _amazonSellerSettings.SellerId,   
-                    FeedSubmissionIdList = new IdList() { Id = new List<string>(){submissionId}}
-                };
+                var request = GetFeedSubmissionListRequest(submissionId);
+
                 var result = service.GetFeedSubmissionList(request);
+
                 if (result != null && result.IsSetGetFeedSubmissionListResult()
                     && result.GetFeedSubmissionListResult != null)
                     return result.GetFeedSubmissionListResult.FeedSubmissionInfo.First();
@@ -110,23 +128,26 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
             }
             return null;
         }
+        private GetFeedSubmissionListRequest GetFeedSubmissionListRequest(string submissionId)
+        {
+            var request = new GetFeedSubmissionListRequest()
+                {
+                    Merchant = _amazonSellerSettings.SellerId,
+                    FeedSubmissionIdList = new IdList() {Id = new List<string>() {submissionId}}
+                };
+            return request;
+        }
+
         public FeedSubmissionInfo SubmitFeed(AmazonFeedType feedType, FileStream feedContent)
         {
             try
             {
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Feeds, "SubmitFeed");
                 var service = GetFeedsApiService();
-                var request = new SubmitFeedRequest()
-                {
-                    Merchant = _amazonSellerSettings.SellerId,
-                    ContentType = new ContentType(MediaType.XML),
-                    FeedContent = feedContent,
-                    FeedType = feedType.ToString(),
-                    MarketplaceIdList = new IdList { Id = new List<string>(new[] { _amazonSellerSettings.MarketplaceId }) }
-                };
-                request.ContentMD5 = MarketplaceWebServiceClient.CalculateContentMD5(request.FeedContent);
+                var request = GetSubmitFeedRequest(feedType, feedContent);
 
                 var result = service.SubmitFeed(request);
+
                 if (result != null && result.SubmitFeedResult != null && result.IsSetSubmitFeedResult() && result.SubmitFeedResult.FeedSubmissionInfo != null)
                     return result.SubmitFeedResult.FeedSubmissionInfo;
             }
@@ -139,6 +160,19 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
                 CurrentRequestData.ErrorSignal.Raise(ex);
             }
             return null;
+        }
+        private SubmitFeedRequest GetSubmitFeedRequest(AmazonFeedType feedType, FileStream feedContent)
+        {
+            var request = new SubmitFeedRequest()
+                {
+                    Merchant = _amazonSellerSettings.SellerId,
+                    ContentType = new ContentType(MediaType.XML),
+                    FeedContent = feedContent,
+                    FeedType = feedType.ToString(),
+                    MarketplaceIdList = new IdList {Id = new List<string>(new[] {_amazonSellerSettings.MarketplaceId})}
+                };
+            request.ContentMD5 = MarketplaceWebServiceClient.CalculateContentMD5(request.FeedContent);
+            return request;
         }
         public FileStream GetProductFeedContent(AmazonListing listing)
         {
@@ -156,7 +190,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
         {
             return GetFeed(GetProductImageFeed(listing), AmazonEnvelopeMessageType.ProductImage);
         }
-        private FileStream GetFeed(object feed, AmazonEnvelopeMessageType messageType)
+        private FileStream GetFeed(object feed, AmazonEnvelopeMessageType amazonEnvelopeMessageType)
         {
             var amazonEnvelope = new AmazonEnvelope
                 {
@@ -165,16 +199,11 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
                             DocumentVersion = "1.0",
                             MerchantIdentifier = _amazonSellerSettings.SellerId
                         },
-                    MessageType = messageType,
-                    Message = new AmazonEnvelopeMessageCollection()
-                        {
-                            new AmazonEnvelopeMessage {MessageID = "1", Item = feed}
-                        }
+                    MessageType = amazonEnvelopeMessageType,
+                    Message = new AmazonEnvelopeMessageCollection() { new AmazonEnvelopeMessage { MessageID = "1", Item = feed } }
                 };
-            var xmlString = AmazonApiHelper.Serialize(amazonEnvelope);
-            var fileLocation = AmazonApiHelper.GetAmazonApiFolderPath(string.Format("{0}/{1}/{2}",CurrentRequestData.CurrentSite.Id, "amazon",string.Format("Amazon{0}Feed",messageType) +"-"+CurrentRequestData.Now.ToString("yyyy-MM-dd hh-mm-ss") + ".xml"));
-            File.WriteAllText(fileLocation, xmlString);
-            return File.Open(fileLocation, FileMode.Open, FileAccess.Read);
+
+            return AmazonAppHelper.GetStreamFromAmazonEnvelope(amazonEnvelope, amazonEnvelopeMessageType);
         }
         private Product GetProductFeed(AmazonListing listing)
         {
@@ -244,6 +273,49 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
                         "https://www.ryness.co.uk/images/thumbs/0005659_300.jpeg"
                 };
         }
+
+        #endregion
+
+        #region Products
+
+        public MarketplaceWebServiceProducts.Model.Product GetMatchingProductForId(string sku)
+        {
+            try
+            {
+                _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Feeds, "GetFeedSubmissionList");
+                var service = GetProductsApiService();
+                var request = GetMatchingProductForIdRequest(sku);
+
+                var result = service.GetMatchingProductForId(request);
+
+                if (result != null && result.IsSetGetMatchingProductForIdResult()
+                    && result.GetMatchingProductForIdResult != null && result.GetMatchingProductForIdResult.Any()
+                    && result.GetMatchingProductForIdResult.First().status=="Success"
+                    && result.GetMatchingProductForIdResult.First().Products.Product.Any())
+                    return result.GetMatchingProductForIdResult.First().Products.Product.First();
+            }
+            catch (MarketplaceWebServiceException ex)
+            {
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null, AmazonApiSection.Feeds, "GetFeedSubmissionList");
+            }
+            catch (Exception ex)
+            {
+                CurrentRequestData.ErrorSignal.Raise(ex);
+            }
+            return null;
+        }
+        private GetMatchingProductForIdRequest GetMatchingProductForIdRequest(string sku)
+        {
+            var request = new GetMatchingProductForIdRequest()
+            {
+                IdType = "SellerSKU",
+                IdList = new IdListType().WithId(sku),
+                MarketplaceId = _amazonSellerSettings.MarketplaceId,
+                SellerId = _amazonSellerSettings.SellerId
+            };
+            return request;
+        }
+
         #endregion
 
         #region Orders
@@ -254,12 +326,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
             {
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "GetOrder");
                 var service = GetOrdersApiService();
-                var request = new GetOrderRequest()
-                {
-                    SellerId = _amazonSellerSettings.SellerId,
-                    AmazonOrderId = new OrderIdList().WithId(model.Description)
-                };
+                var request = GetOrderRequest(model);
+
                 var result = service.GetOrder(request);
+
                 if (result != null && result.GetOrderResult != null && result.IsSetGetOrderResult() && result.GetOrderResult.Orders.Order != null)
                     return result.GetOrderResult.Orders.Order;
             }
@@ -273,24 +343,26 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
             }
             return null;
         }
+        private GetOrderRequest GetOrderRequest(AmazonSyncModel model)
+        {
+            var request = new GetOrderRequest()
+                {
+                    SellerId = _amazonSellerSettings.SellerId,
+                    AmazonOrderId = new OrderIdList().WithId(model.Description)
+                };
+            return request;
+        }
+
         public IEnumerable<Order> ListOrders(AmazonSyncModel model)
         {
             try
             {
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "ListOrders");
                 var service = GetOrdersApiService();
-                var marketPlace = new MarketplaceIdList();
-                var request = new ListOrdersRequest
-                {
-                    SellerId = _amazonSellerSettings.SellerId,
-                    MarketplaceId = marketPlace.WithId(_amazonSellerSettings.MarketplaceId),
-                };
-                if (model.From.HasValue)
-                    request.CreatedAfter = model.From.Value;
-                if (model.To.HasValue)
-                    request.CreatedBefore = model.To.Value;
+                var request = GetListOrdersRequest(model);
 
                 var result = service.ListOrders(request);
+
                 if (result != null && result.ListOrdersResult != null && result.IsSetListOrdersResult() && result.ListOrdersResult.Orders.Order != null)
                     return result.ListOrdersResult.Orders.Order;
             }
@@ -304,18 +376,31 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
             }
             return null;
         }
+        private ListOrdersRequest GetListOrdersRequest(AmazonSyncModel model)
+        {
+            var marketPlace = new MarketplaceIdList();
+            var request = new ListOrdersRequest
+                {
+                    SellerId = _amazonSellerSettings.SellerId,
+                    MarketplaceId = marketPlace.WithId(_amazonSellerSettings.MarketplaceId),
+                };
+            if (model.From.HasValue)
+                request.CreatedAfter = model.From.Value;
+            if (model.To.HasValue)
+                request.CreatedBefore = model.To.Value;
+            return request;
+        }
+
         public IEnumerable<OrderItem> ListOrderItems(string amazonOrderId)
         {
             try
             {
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "ListOrderItems");
                 var service = GetOrdersApiService();
-                var request = new ListOrderItemsRequest
-                {
-                    SellerId = _amazonSellerSettings.SellerId,
-                    AmazonOrderId = amazonOrderId
-                };
+                var request = GetListOrderItemsRequest(amazonOrderId);
+
                 var result = service.ListOrderItems(request);
+
                 if (result != null && result.ListOrderItemsResult != null && result.IsSetListOrderItemsResult() 
                     && result.ListOrderItemsResult.OrderItems != null)
                     return result.ListOrderItemsResult.OrderItems.OrderItem;
@@ -329,6 +414,15 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
                 CurrentRequestData.ErrorSignal.Raise(ex);
             }
             return null;
+        }
+        private ListOrderItemsRequest GetListOrderItemsRequest(string amazonOrderId)
+        {
+            var request = new ListOrderItemsRequest
+                {
+                    SellerId = _amazonSellerSettings.SellerId,
+                    AmazonOrderId = amazonOrderId
+                };
+            return request;
         }
 
         #endregion

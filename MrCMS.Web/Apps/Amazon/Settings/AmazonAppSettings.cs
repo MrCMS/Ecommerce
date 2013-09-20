@@ -26,12 +26,15 @@ namespace MrCMS.Web.Apps.Amazon.Settings
         [DisplayName("Api Endpoint")]
         public string ApiEndpoint { get; set; }
 
+        [DisplayName("Feeds Api Version")]
+        public string FeedsApiVersion { get; set; }
+
+        [DisplayName("Products Api Version")]
+        public string ProductsApiVersion { get; set; }
+
         [DisplayName("Orders Api Version")]
         public string OrdersApiVersion { get; set; }
 
-        [DisplayName("Feeds Api Version")]
-        public string FeedsApiVersion { get; set; }
-     
         [DisplayName("Developer Account ID")]
         public string DeveloperAccountId { get; set; }
 
@@ -50,14 +53,19 @@ namespace MrCMS.Web.Apps.Amazon.Settings
         [DisplayName("Amazon Manager Inventory Url")]
         public string AmazonManageInventoryUrl { get; set; }
 
-        public string OrdersApiEndpoint
-        {
-            get { return ApiEndpoint + "Orders/" + OrdersApiVersion; }
-        }
-
         public string FeedsApiEndpoint
         {
             get { return ApiEndpoint + "doc/" + FeedsApiVersion; }
+        }
+
+        public string ProductsApiEndpoint
+        {
+            get { return ApiEndpoint + "Products/" + ProductsApiVersion; }
+        }
+
+        public string OrdersApiEndpoint
+        {
+            get { return ApiEndpoint + "Orders/" + OrdersApiVersion; }
         }
 
         public override bool RenderInSettings

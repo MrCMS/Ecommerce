@@ -14,13 +14,21 @@
         foreach (var item in Model.Logs)
         {
             var alerttype = "info";
-            switch (item.Status)
+            switch (item.LogStatus)
             {
                 case AmazonLogStatus.Error:
                     {
                         alerttype = "error";
                     }
                     break;
+                case AmazonLogStatus.Delete:
+                    {
+                        alerttype = "warning";
+                    }
+                    break;
+                case AmazonLogStatus.Initiation:
+                case AmazonLogStatus.Insert:
+                case AmazonLogStatus.Update:
                 case AmazonLogStatus.Stage:
                     {
                         alerttype = "info";
@@ -34,7 +42,7 @@
             }
             <div class="alert dashboard-box-log @alerttype">
                      <small class="pull-right">@item.CreatedOn.ToString("dd/MM/yyyy HH:mm")</small>
-                <strong>@item.Type.GetDescription()</strong>
+                <strong>@item.LogType.GetDescription()</strong>
                 <br/>
                 @item.Message.ToShortString(50)
              </div>

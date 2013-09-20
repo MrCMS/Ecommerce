@@ -43,9 +43,9 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Listings(string searchTerm, int page = 1)
+        public PartialViewResult Listings(string listingTitle, int page = 1)
         {
-            var results = _amazonListingService.Search(searchTerm, page);
+            var results = _amazonListingService.Search(listingTitle, page);
             return PartialView(results);
         }
 
@@ -103,7 +103,10 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         public ActionResult SyncOne(AmazonListing listing)
         {
             if (listing != null)
-                return View(new AmazonSyncModel() { Id = listing.Id, Title = listing.Title });
+            {
+                ViewData["AmazonManageInventoryUrl"] = _amazonAppSettings.AmazonManageInventoryUrl;
+                return View(new AmazonSyncModel() {Id = listing.Id, Title = listing.Title});
+            }
             return RedirectToAction("Index");
         }
 
@@ -116,6 +119,14 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
                 return Json(true);
             }
             return Json(false);
+        }
+
+        [HttpGet]
+        public ActionResult Details(AmazonListing amazonListing)
+        {
+            if (amazonListing != null)
+                return View(amazonListing);
+            return RedirectToAction("Index");
         }
     }
 }

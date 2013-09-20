@@ -34,7 +34,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             if (orders.Any())
             {
                 _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Stage, AmazonApiSection.Orders, null,null,null, "Importing Amazon Orders");
-                AmazonProgressBarHelper.Update(model.TaskId.Value, "Import", "Importing Amazon Orders", orders.Count, 0);
+                AmazonProgressBarHelper.Update(model.Task, "Import", "Importing Amazon Orders", orders.Count, 0);
 
                 var cnt = 0;
                 foreach (var order in orders)
@@ -42,18 +42,18 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     _amazonLogService.Add(AmazonLogType.Orders,
                                           order.Id > 0 ? AmazonLogStatus.Update : AmazonLogStatus.Insert,
                                           AmazonApiSection.Orders, order,null,null,"Importing Amazon Order #"+order.AmazonOrderId +" and mapping to MrCMS order");
-                    AmazonProgressBarHelper.Update(model.TaskId.Value, "Import", "Importing Amazon Order #" + order.AmazonOrderId, orders.Count, cnt+1);
+                    AmazonProgressBarHelper.Update(model.Task, "Import", "Importing Amazon Order #" + order.AmazonOrderId, orders.Count, cnt+1);
 
                     _orderService.Save(order.Order);
                     _amazonOrderService.Save(order);
                 }
 
-                AmazonProgressBarHelper.Update(model.TaskId.Value, "Import", "Successfully imported Amazon Orders",
+                AmazonProgressBarHelper.Update(model.Task, "Import", "Successfully imported Amazon Orders",
                                                orders.Count, 0);
             }
             else
             {
-                AmazonProgressBarHelper.Update(model.TaskId.Value, "Import", "No orders for import",
+                AmazonProgressBarHelper.Update(model.Task, "Import", "No orders for import",
                                                null, null);
             }
         }
@@ -63,7 +63,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             var orders = new List<AmazonOrder>();
 
             _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Stage, AmazonApiSection.Orders, null, null, null, "Getting Orders From Amazon");
-            AmazonProgressBarHelper.Update(model.TaskId.Value, "Import", "Getting Orders From Amazon", 100, 0);
+            AmazonProgressBarHelper.Update(model.Task, "Import", "Getting Orders From Amazon", 100, 0);
 
             var rawOrders = model.Id == 0 ? _amazonApiService.ListOrders(model) : _amazonApiService.GetOrder(model);
 
@@ -86,7 +86,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     {
                         _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Stage, AmazonApiSection.Orders,null,
                                               "Amazon Order #" + rawOrder.AmazonOrderId+" uses different currency than current MrCMS Site.");
-                        AmazonProgressBarHelper.Update(model.TaskId.Value, "Import", "Skiping import of Amazon Order #" + rawOrder.AmazonOrderId + " which uses different currency than current MrCMS Site.",
+                        AmazonProgressBarHelper.Update(model.Task, "Import", "Skiping import of Amazon Order #" + rawOrder.AmazonOrderId + " which uses different currency than current MrCMS Site.",
                                                orders.Count, 0);
                     }
                 }

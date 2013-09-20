@@ -6,10 +6,10 @@
     $(".container-mrcms").css("padding-left", "0");
 
     //CHARTS
-    var ctx = $("#myChart").get(0).getContext("2d");
-    var container = $("#myChart").parent();
-    
-    $(window).resize(generateChart);
+    var ordersChart = $("#orders").get(0).getContext("2d");
+    var ordersChartContainer = $("#orders").parent();
+    var productsChart = $("#products").get(0).getContext("2d");
+    var productsChartContainer = $("#products").parent();
     
     var options = {
         scaleLineColor: "rgba(0,0,0,.1)",
@@ -36,7 +36,7 @@
         onAnimationComplete: null
     };
 
-    var data = {
+    var ordersData = {
         labels: ["1", "2", "3", "4", "5", "6", "7"],
         datasets: [
             {
@@ -48,11 +48,37 @@
             }
         ]
     };
-
-    function generateChart() {
-        var nc = $("#myChart").attr('width', $(container).width());
-        new Chart(ctx).Line(data, options);
+    
+    var productsData = {
+        labels: ["1", "2", "3", "4", "5", "6", "7"],
+        datasets: [
+            {
+                fillColor: "rgba(39, 174, 96,0.5)",
+                strokeColor: "rgba(39, 174, 96,1.0)",
+                pointColor: "rgba(39, 174, 96,1.0)",
+                pointStrokeColor: "rgba(39, 174, 96,1.0)",
+                data: [65, 59, 90, 81, 56, 55, 40]
+            }
+        ]
     };
 
-    generateChart();
+    function generateOrdersChart() {
+        var nc = $("#orders").attr('width', $(ordersChartContainer).width());
+        new Chart(ordersChart).Line(ordersData, options);
+    };
+    
+    function generateProductsChart() {
+        var nc = $("#products").attr('width', $(productsChartContainer).width());
+        new Chart(productsChart).Line(productsData, options);
+    };
+    
+    $(window).resize(updateCharts);
+
+    function updateCharts() {
+        generateOrdersChart();
+        generateProductsChart();
+    };
+
+    generateOrdersChart();
+    generateProductsChart();
 });

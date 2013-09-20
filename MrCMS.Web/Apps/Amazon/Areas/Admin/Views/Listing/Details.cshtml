@@ -1,0 +1,83 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Amazon.Entities.Listings.AmazonListing
+@{
+    ViewBag.Title = "Amazon Listing Details";
+}
+
+<div class="row-fluid">
+    <div class="span12">
+        <fieldset>
+            <legend>@Model.Title
+
+                <span class="pull-right btn-group">
+                    @Html.ActionLink("Sync", "SyncOne", "Listing", new {id=Model.Id}, new { @class = "btn btn-primary"})
+                    @Html.ActionLink("Back to Listings", "Index","Listing", null,new {@class = "btn"})
+                </span>
+
+            </legend>
+        </fieldset>
+        
+        <table class="table table-condensed table-striped">
+             <tr>
+                <td>Status</td>
+                 <td><strong>@Model.Status.GetDescription()</strong></td>
+            </tr>
+            <tr>
+                <td>Product</td>
+                <td>@Html.ActionLink(Model.ProductVariant.DisplayName, "Edit", "Webpage", new {id=Model.ProductVariant.Product.Id},null)</td>
+            </tr>
+            <tr>
+                <td>Submission Id</td>
+                <td>@Model.AmazonSubmissionId</td>
+            </tr>
+            <tr>
+                <td>ASIN</td>
+                <td>@Model.ASIN</td>
+            </tr>
+            <tr>
+                <td>Seller SKU</td>
+                <td>
+                    @Model.SellerSKU
+                </td>
+            </tr>
+            <tr>
+                <td>@Model.StandardProductIDType.GetDescription()</td>
+                <td>
+                    @Model.StandardProductId
+                </td>
+            </tr>
+            <tr>
+                <td>Price / Currency</td>
+                <td>@Model.Price.ToString("n2") @Model.Currency</td>
+            </tr>
+            <tr>
+                <td>Quantity</td>
+                <td>@Model.Quantity</td>
+            </tr>
+            <tr>
+                <td>Condition</td>
+                <td>@Model.Condition.GetDescription()</td>
+            </tr>
+            <tr>
+                <td>Condition Note</td>
+                <td>@Model.ConditionNote</td>
+            </tr>
+            <tr>
+                <td>Brand</td>
+                <td>@Model.Brand</td>
+            </tr>
+            <tr>
+                <td>Manafacturer</td>
+                <td>@Model.Manafacturer</td>
+            </tr>
+            <tr>
+                <td>Manafacturer Part Number</td>
+                <td>@Model.MfrPartNumber</td>
+            </tr>
+            <tr>
+                <td>Release Date</td>
+                <td>@(Model.ReleaseDate.HasValue?Model.ReleaseDate.Value.ToString("dd/MM/yyyy"):"Not specified")</td>
+            </tr>
+        </table>
+    </div>
+</div>

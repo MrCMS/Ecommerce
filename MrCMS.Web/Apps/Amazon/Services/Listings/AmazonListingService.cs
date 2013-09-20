@@ -52,6 +52,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings
                 return _session.QueryOver<AmazonListing>()
                                     .Where(x => 
                                         x.AmazonListingId.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)
+                                        || x.SellerSKU.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)
+                                        || x.ASIN.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)
+                                        || x.Title.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)
                                         ).Paged(page, pageSize);
             }
 

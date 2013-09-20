@@ -46,7 +46,10 @@
                             @item.Status.GetDescription()
                         </td>
                         <td>
+                             <div class="btn-group">
                             @Html.ActionLink("Details", "Details", "Listing", new {id = item.Id}, new { @class="btn btn-mini"})
+                            @Html.ActionLink("Sync", "SyncOne", "Listing", new {id = item.Id}, new { @class="btn btn-mini btn-success"})
+                            </div>
                         </td>
                     </tr>
                 }

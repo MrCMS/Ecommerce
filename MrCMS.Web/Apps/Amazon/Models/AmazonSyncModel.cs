@@ -17,6 +17,7 @@ namespace MrCMS.Web.Apps.Amazon.Models
             Description = String.Empty;
         }
 
+        public Guid Task { get { return TaskId.HasValue ? TaskId.Value : Guid.NewGuid(); }}
         public Guid? TaskId { get; set; }
         public DateTime? From { get; set; }
         public DateTime? To { get; set; }

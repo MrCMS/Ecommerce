@@ -224,7 +224,7 @@
     <Compile Include="Apps\Amazon\Entities\Logs\AmazonLog.cs" />
     <Compile Include="Apps\Amazon\Entities\Orders\AmazonOrder.cs" />
     <Compile Include="Apps\Amazon\Entities\Orders\AmazonOrderItem.cs" />
-    <Compile Include="Apps\Amazon\Helpers\AmazonApiHelper.cs" />
+    <Compile Include="Apps\Amazon\Helpers\AmazonAppHelper.cs" />
     <Compile Include="Apps\Amazon\Helpers\AmazonProgressBarHelper.cs" />
     <Compile Include="Apps\Amazon\Indexing\AmazonOrderSearchIndex.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonAdminMenuModel.cs" />
@@ -2242,7 +2242,6 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Index.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Listings.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\ProductVariants.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Test.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Index.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Orders.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\SyncMany.cshtml" />
@@ -2258,6 +2257,7 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\SyncOne.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Listing.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\SyncOne.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Details.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
