@@ -9,7 +9,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
 {
     public interface IAmazonApiService
     {
-        ServiceStatusEnum GetServiceStatus(AmazonApiSection apiSection);
+        AmazonServiceStatus GetServiceStatus(AmazonApiSection apiSection);
 
         FeedSubmissionInfo GetFeedSubmissionList(string submissionId);
         FeedSubmissionInfo SubmitFeed(AmazonFeedType feedType, FileStream feedContent);
@@ -17,6 +17,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
         FileStream GetProductPriceFeedContent(AmazonListing listing);
         FileStream GetProductInventoryFeedContent(AmazonListing listing);
         FileStream GetProductImageFeedContent(AmazonListing listing);
+
+        MarketplaceWebServiceProducts.Model.Product GetMatchingProductForId(string sku);
 
         IEnumerable<Order> ListOrders(AmazonSyncModel model);
         IEnumerable<Order> GetOrder(AmazonSyncModel model);

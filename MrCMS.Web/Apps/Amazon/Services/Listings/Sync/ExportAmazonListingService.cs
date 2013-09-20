@@ -47,18 +47,20 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             {
                 try
                 {
-                    AmazonProgressBarHelper.Update(model.TaskId.Value, "Push", "Checking if product data was processed...", 100,
+                    AmazonProgressBarHelper.Update(model.Task, "Push", "Checking if product data was processed...", 100,
                                                    75);
                     if (_amazonApiService.GetFeedSubmissionList(submissionIds.First()).FeedProcessingStatus ==
                         "_DONE_")
                     {
+                        UpdateAmazonListing(item, ref submissionIds);
+
                         SubmitProductImageFeed(model, feedContent, ref submissionIds);
 
                         uploadSuccess = true;
                     }
                     else
                     {
-                        AmazonProgressBarHelper.Update(model.TaskId.Value, "Push",
+                        AmazonProgressBarHelper.Update(model.Task, "Push",
                                                        "Nothing yet, we will wait 2min and try again...", 100, 75);
                         Thread.Sleep(120000);
                     }
@@ -68,12 +70,33 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
                     retryCount++;
                     if (retryCount == 3) break;
 
-                    AmazonProgressBarHelper.Update(model.TaskId.Value, "Push",
+                    AmazonProgressBarHelper.Update(model.Task, "Push",
                                                    "Amazon Api is busy, we will need to wait additional 2min and try again", 100,
                                                    75);
                     Thread.Sleep(120000);
                 }
             }
+        }
+
+        private void UpdateAmazonListing(AmazonListing item, ref List<string> submissionIds)
+        {
+            item.AmazonSubmissionId = submissionIds.First();
+            var amazonProduct = _amazonApiService.GetMatchingProductForId(item.SellerSKU);
+            if (amazonProduct != null && amazonProduct.Identifiers.MarketplaceASIN != null)
+            {
+                if (String.IsNullOrWhiteSpace(item.ASIN))
+                {
+                    item.Status = AmazonListingStatus.Active;
+                    item.ASIN = amazonProduct.Identifiers.MarketplaceASIN.ASIN;
+                }
+            }
+            else
+            {
+                item.Status = String.IsNullOrWhiteSpace(item.ASIN)
+                                  ? AmazonListingStatus.NotOnAmazon
+                                  : AmazonListingStatus.Inactive;
+            }
+            _amazonListingService.Save(item);
         }
 
         private List<string> SubmitMainFeeds(AmazonSyncModel model, FileStream productFeedContent, FileStream productPriceFeedContent,
@@ -107,40 +130,40 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
 
         private void SubmitProductImageFeed(AmazonSyncModel model, FileStream feedContent, ref List<string> submissionIds)
         {
-            AmazonProgressBarHelper.Update(model.TaskId.Value, "Push", "Pushing product image data", 100, 75);
+            AmazonProgressBarHelper.Update(model.Task, "Push", "Pushing product image data", 100, 75);
 
             var feedResponse = _amazonApiService.SubmitFeed(AmazonFeedType._POST_PRODUCT_IMAGE_DATA_, feedContent);
             var submissionId = feedResponse.FeedSubmissionId;
             submissionIds.Add(submissionId);
 
-            AmazonProgressBarHelper.Update(model.TaskId.Value, "Push", "Product image data pushed", 100, 100);
+            AmazonProgressBarHelper.Update(model.Task, "Push", "Product image data pushed", 100, 100);
         }
 
         private void SubmitProductFeed(AmazonSyncModel model, FileStream feedContent, ref List<string> submissionIds)
         {
-            AmazonProgressBarHelper.Update(model.TaskId.Value, "Push", "Pushing product data", 100, 0);
+            AmazonProgressBarHelper.Update(model.Task, "Push", "Pushing product data", 100, 0);
             var feedResponse = _amazonApiService.SubmitFeed(AmazonFeedType._POST_PRODUCT_DATA_, feedContent);
             var submissionId = feedResponse.FeedSubmissionId;
             submissionIds.Add(submissionId);
-            AmazonProgressBarHelper.Update(model.TaskId.Value, "Push", "Product data pushed", 100, 25);
+            AmazonProgressBarHelper.Update(model.Task, "Push", "Product data pushed", 100, 25);
         }
 
         private void SubmitProductPriceFeed(AmazonSyncModel model, FileStream feedContent, ref List<string> submissionIds)
         {
-            AmazonProgressBarHelper.Update(model.TaskId.Value, "Push", "Pushing product pricing data", 100, 25);
+            AmazonProgressBarHelper.Update(model.Task, "Push", "Pushing product pricing data", 100, 25);
             var feedResponse = _amazonApiService.SubmitFeed(AmazonFeedType._POST_PRODUCT_PRICING_DATA_, feedContent);
             var submissionId = feedResponse.FeedSubmissionId;
             submissionIds.Add(submissionId);
-            AmazonProgressBarHelper.Update(model.TaskId.Value, "Push", "Product pricing data pushed", 100, 50);
+            AmazonProgressBarHelper.Update(model.Task, "Push", "Product pricing data pushed", 100, 50);
         }
 
         private void SubmitProductInventoryFeed(AmazonSyncModel model, FileStream feedContent, ref List<string> submissionIds)
         {
-            AmazonProgressBarHelper.Update(model.TaskId.Value, "Push", "Pushing product inventory data", 100, 50);
+            AmazonProgressBarHelper.Update(model.Task, "Push", "Pushing product inventory data", 100, 50);
             var feedResponse = _amazonApiService.SubmitFeed(AmazonFeedType._POST_INVENTORY_AVAILABILITY_DATA_, feedContent);
             var submissionId = feedResponse.FeedSubmissionId;
             submissionIds.Add(submissionId);
-            AmazonProgressBarHelper.Update(model.TaskId.Value, "Push", "Product inventory data pushed", 100, 75);
+            AmazonProgressBarHelper.Update(model.Task, "Push", "Product inventory data pushed", 100, 75);
         }
     }
 }

@@ -1,16 +1,18 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Serialization;
+using MarketplaceWebServiceFeedsClasses;
+using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Website;
+using StringCollection = System.Collections.Specialized.StringCollection;
 
 namespace MrCMS.Web.Apps.Amazon.Helpers
 {
-    public static class AmazonApiHelper
+    public static class AmazonAppHelper
     {
         public static T GetEnumByValue<T>(this string value) where T : struct
         {
@@ -44,7 +46,16 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
                                    ? (siteUrl + imageUrl)
                                    : imageUrl;
         }
-        public static string Serialize<T>(T item)
+
+        public static FileStream GetStreamFromAmazonEnvelope(AmazonEnvelope amazonEnvelope, AmazonEnvelopeMessageType amazonEnvelopeMessageType)
+        {
+            var xml = Serialize(amazonEnvelope);
+            var fileLocation = GetAmazonApiFolderPath(amazonEnvelopeMessageType);
+            File.WriteAllText(fileLocation, xml);
+            return File.Open(fileLocation, FileMode.Open, FileAccess.Read);
+        }
+
+        private static string Serialize<T>(T item)
         {
             using (var stream = new MemoryStream())
             {
@@ -55,13 +66,29 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
                 }
             }
         }
-        public static string GetAmazonApiFolderPath(string relativeFilePath)
+
+        private static string GetAmazonApiFolderPath(AmazonEnvelopeMessageType amazonEnvelopeMessageType)
         {
-            if (!relativeFilePath.StartsWith("/content/upload/") && !relativeFilePath.StartsWith("/" + "/content/upload/"))
-                relativeFilePath = Path.Combine("/content/upload/", relativeFilePath);
+            var fileLocation=string.Format("{0}/{1}/{2}",
+                          CurrentRequestData.CurrentSite.Id, "amazon",
+                          string.Format("Amazon{0}Feed", amazonEnvelopeMessageType)
+                          + "-" + CurrentRequestData.Now.ToString("yyyy-MM-dd hh-mm-ss") + ".xml");
+
+            var relativeFilePath = Path.Combine("/content/upload/", fileLocation);
             var baseDirectory = HostingEnvironment.ApplicationPhysicalPath.Substring(0, HostingEnvironment.ApplicationPhysicalPath.Length - 1);
             var path = Path.Combine(baseDirectory, relativeFilePath.Substring(1));
+
             return path;
+        }
+
+        public static bool GetAmazonAppSettingsStatus(AmazonAppSettings settings)
+        {
+            return settings.GetType().GetProperties().Where(info => info.CanWrite && info.Name != "Site").All(property => !String.IsNullOrWhiteSpace(Convert.ToString(property.GetValue(settings, null))));
+        }
+
+        public static bool GetAmazonSellerSettingsStatus(AmazonSellerSettings settings)
+        {
+            return settings.GetType().GetProperties().Where(info => info.CanWrite && info.Name != "Site").All(property => !String.IsNullOrWhiteSpace(Convert.ToString(property.GetValue(settings, null))));
         }
     }
 }

@@ -4,12 +4,13 @@
 @model AmazonSyncModel
 @{
     ViewBag.Title = "Sync Amazon Listing";
+    var amazonManageInventoryUrl = ViewData["AmazonManageInventoryUrl"] as string;
 }
     <fieldset>
         <legend>
-            Sync Amazon Listing #@Model.Title
+            Sync Amazon Listing
             <span class="btn-group  display-inline  pull-right">
-                @Html.ActionLink("Go to Listing", "Details", "Listing", new {id=Model.Id}, new { @class = "btn btn-primary"})
+                @Html.ActionLink("Back to Listing", "Details", "Orders", new {id=Model.Id}, new { @class = "btn btn-primary"})
                 @Html.ActionLink("Listings", "Index", "Listing", null, new { @class = "btn"})
                 @Html.ActionLink("Logs", "Index", "Logs", new {type=AmazonLogType.Listings}, new { @class = "btn"})
             </span>
@@ -27,6 +28,31 @@
 
         <div class="row-fluid">
             <div class="span6">
+                Listing: <strong>@Model.Title</strong>
+                <br/>
+                <br/>
+                <div>
+                    <strong>IMPORTANT :</strong>
+                    <p>
+                        Since Amazon Api allows 3rd-party apps only to send a small set of requests per time,
+                        sending product data can take up to 5min., and also about 10min. to process requests on Amazon
+                        side. That procedure is complex and can break in every possible phase. We
+                        @Html.ActionLink("log", "Index", "Logs", new {type=AmazonLogType.Listings},null)
+                        every step of the process and for safety precautions, please visit Amazon's
+                        @if (!String.IsNullOrWhiteSpace(amazonManageInventoryUrl))
+                        {
+                                <a href='@amazonManageInventoryUrl' target="_blank">
+                                    Manage Inventory page
+                                </a>
+                        }
+                        else
+                        {
+                            <span>Manage Inventory page</span>
+                        }
+                        when procedure ends to check if product variant was synced correctly.
+                    </p>
+                </div>
+                <br/>
                 <button type="button" class="btn btn-success" id="pb-start-task">
                     Sync Now</button>
             </div>

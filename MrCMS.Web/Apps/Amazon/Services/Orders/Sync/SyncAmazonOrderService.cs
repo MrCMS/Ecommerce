@@ -22,27 +22,27 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
         public void SyncOrders(AmazonSyncModel model)
         {
-            AmazonProgressBarHelper.CleanProgressBars(model.TaskId.Value);
+            AmazonProgressBarHelper.CleanProgressBars(model.Task);
 
             _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, AmazonApiSection.Orders, null, "Checking Amazon Api Service Availability");
-            AmazonProgressBarHelper.Update(model.TaskId.Value, "Api", "Checking Amazon Api Service Availability", 100, 0);
+            AmazonProgressBarHelper.Update(model.Task, "Api", "Checking Amazon Api Service Availability", 100, 0);
 
             var serviceStatus = _amazonApiService.GetServiceStatus(AmazonApiSection.Orders);
-            if (serviceStatus.ToString() == AmazonServiceStatus.GREEN.ToString() ||
-                serviceStatus.ToString() == AmazonServiceStatus.GREEN_I.ToString())
+            if (serviceStatus == AmazonServiceStatus.GREEN ||
+                serviceStatus == AmazonServiceStatus.GREEN_I)
             {
-                AmazonProgressBarHelper.Update(model.TaskId.Value, "Api", AmazonServiceStatus.GREEN.GetDescription(),null, null);
-                AmazonProgressBarHelper.Update(model.TaskId.Value, "Started", "Starting Orders Sync", null, null);
+                AmazonProgressBarHelper.Update(model.Task, "Api", AmazonServiceStatus.GREEN.GetDescription(),null, null);
+                AmazonProgressBarHelper.Update(model.Task, "Started", "Starting Orders Sync", null, null);
 
                 var orders = _importAmazonOrderService.GetOrdersFromAmazon(model);
 
                 _importAmazonOrderService.ImportOrders(model, orders);
 
-                AmazonProgressBarHelper.Update(model.TaskId.Value, "Completed", "Completed", 100, 100);
+                AmazonProgressBarHelper.Update(model.Task, "Completed", "Completed", 100, 100);
             }
             else
             {
-                AmazonProgressBarHelper.Update(model.TaskId.Value, "Error", AmazonServiceStatus.RED.GetDescription(),100, 0);
+                AmazonProgressBarHelper.Update(model.Task, "Error", AmazonServiceStatus.RED.GetDescription(),100, 0);
             }
 
         }
