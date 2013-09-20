@@ -493,8 +493,8 @@ box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);}
     h3 {margin:0;}
     .product-picture li {line-height:16px;}
     .product-price {margin-bottom:5px;font-size:18px;}
-    .grid-items .span3 {border-bottom:1px solid #dddddd;clear: both;}
-    .grid-items .span2 {border-bottom:1px solid #dddddd;}
+    .grid-items .span3 {clear: both;}
+    .grid-items .span2 { clear: both;}
     #mobilefilter {display:none;}
     .block .btn-navbar {
         color: #fff;
@@ -530,11 +530,11 @@ box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);}
     .list-items {margin:5px 0;}
     .list-items .more-info {margin-bottom: 5px;}
     .list-items .more-info .big-red-gradient {line-height:24px;}
-    .grid-items .category-picture {width:60%;float:left;border-top:none;padding:5px 0;margin:0;}
+    .grid-items .category-picture {width:30%;float:left;border-top:none;padding:5px 0;margin:0;}
     .grid-items .category-picture a img {height:97px;}
     .grid-items .product-picture a {padding-top:10px;}
     .grid-items .product-picture a img {height:97px;}
-    .grid-items .category-name {width:40%;float:left;padding:30px 0;}
+    .grid-items .category-name {width:70%;float:left;padding:30px 0;}
     .add-to-cart .row-fluid .span2 {width:20%;float:left;line-height:30px;}
     .add-to-cart .row-fluid .span8 {width:55%;float:right;}
     .pika-thumbs li {float: left; list-style-type: none;margin: 5px 5px 5px 0; border: 1px solid #eeeeee; cursor: pointer;}
