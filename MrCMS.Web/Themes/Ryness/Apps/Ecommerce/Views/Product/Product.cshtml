@@ -69,8 +69,8 @@
                 <!-- product add to cart start -->
                 @if (selectedVariant.TrackingPolicy == TrackingPolicy.Track && selectedVariant.StockRemaining <= 0)
                 {
-                    <div class="row-fluid border-each margin-top-bottom-10 add-to-cart">
-                        <p>
+                    <div class="row-fluid margin-top-bottom-10 out-of-stock">
+                        <p class="text-align-center red">
                             Sorry, this item is out of stock.
                         </p>
                     </div>

@@ -7,7 +7,7 @@
 <ul class="nav">
     <li class="@(currentPage.Name == "Home" ? "active" : "")">
         <a href="/" class="home">
-            <img src="/Themes/Ryness/Content/Images/home.png" />
+            <img src="/Themes/Ryness/Content/Images/home.png" alt="Home"/>
         </a>
     </li>
     @foreach (var page in Model)
@@ -16,7 +16,7 @@
         {
             <li class="@(activePages.Any(s => s == page.Url.ToString()) ? "active" : "")">
                 <a href="@page.Url">@page.Text</a>
-                <ul>
+                <ul class="hidden-phone hidden-tablet">
                     @foreach (var record in page.Children)
                     {
                         if (record.Children.Any())

@@ -1895,6 +1895,9 @@
     <Content Include="Themes\Ryness\Content\Images\mapmarker.png" />
     <Content Include="Themes\Ryness\Content\Images\menu-active.jpg" />
     <Content Include="Themes\Ryness\Content\Images\menu-bg.jpg" />
+    <Content Include="Themes\Ryness\Content\Images\mobile-bg.jpg" />
+    <Content Include="Themes\Ryness\Content\Images\mobile-cart.png" />
+    <Content Include="Themes\Ryness\Content\Images\mobile-seperator.jpg" />
     <Content Include="Themes\Ryness\Content\Images\open-bracket.jpg" />
     <Content Include="Themes\Ryness\Content\Images\parcel.jpg" />
     <Content Include="Themes\Ryness\Content\Images\payment.jpg" />
