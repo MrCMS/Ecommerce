@@ -15,11 +15,9 @@ using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Analytics;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
 using MrCMS.Web.Apps.Amazon.Settings;
-using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Website;
 using GetServiceStatusRequest = MarketplaceWebServiceOrders.Model.GetServiceStatusRequest;
 using Product = MarketplaceWebServiceFeedsClasses.Product;
-using ServiceStatusEnum = MarketplaceWebServiceOrders.Model.ServiceStatusEnum;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Api
 {
@@ -27,7 +25,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
     {
         private readonly AmazonAppSettings _amazonAppSettings;
         private readonly AmazonSellerSettings _amazonSellerSettings;
-
         private readonly IAmazonAnalyticsService _amazonAnalyticsService;
         private readonly IAmazonLogService _amazonLogService;
 
