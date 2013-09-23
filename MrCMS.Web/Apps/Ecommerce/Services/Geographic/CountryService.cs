@@ -35,8 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Geographic
             {
                 return false;
             }
-            else
-                return _session.QueryOver<Country>().Where(x => x.Name.IsInsensitiveLike(name, MatchMode.Exact)).RowCount() > 0;
+            return _session.QueryOver<Country>().Where(x => x.Name.IsInsensitiveLike(name, MatchMode.Exact)).RowCount() > 0;
         }
 
         public List<SelectListItem> GetCountriesToAdd()

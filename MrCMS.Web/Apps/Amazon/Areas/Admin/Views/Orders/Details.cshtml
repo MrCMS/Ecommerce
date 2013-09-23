@@ -1,0 +1,22 @@
+﻿@model MrCMS.Web.Apps.Amazon.Entities.Orders.AmazonOrder
+@{
+    ViewBag.Title = "Amazon Order Details";
+}
+
+<div class="row-fluid">
+    <div class="span12">
+        <fieldset>
+            <legend>Amazon Order #@Model.AmazonOrderId
+
+                <span class="pull-right btn-group">
+                    @Html.ActionLink("Sync", "SyncOne", "Orders", new {id=Model.Id}, new { @class = "btn btn-primary"})
+                    @Html.ActionLink("Back to Orders", "Index","Orders", null,new {@class = "btn"})
+                </span>
+
+            </legend>
+        </fieldset>
+    </div>
+</div>
+
+@{Html.RenderPartial("OrderDetails", Model); }
+@{Html.RenderPartial("OrderItems", Model);}
