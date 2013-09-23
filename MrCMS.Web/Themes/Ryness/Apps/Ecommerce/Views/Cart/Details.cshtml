@@ -9,7 +9,7 @@
         <div class="span2">
             <a class="btn span12 line-height-27" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">Continue Shopping</a>
         </div>
-        <div class="span8">
+        <div class="span8 hidden-phone">
 @*            @if (Model.Items.Any())
             {
                 <div class="line-height-30">
@@ -17,7 +17,7 @@
                 </div>
             }*@
         </div>
-        <div class="span2 text-align-center">
+        <div class="span2 text-align-center hidden-phone">
             @if (Model.CanEnterPaymentFlow)
             {
                 <a class="generic-button big-red-gradient span12" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Checkout</a>
