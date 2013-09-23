@@ -2365,6 +2365,7 @@
     <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\CategoriesOnlyNavigation.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Widgets\LinkedImage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
