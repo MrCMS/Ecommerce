@@ -4,6 +4,7 @@ using MarketplaceWebServiceFeedsClasses;
 using MrCMS.Apps;
 using MrCMS.Entities.Multisite;
 using MrCMS.Installation;
+using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.DbConfiguration;
 using MrCMS.Web.Apps.Amazon.Settings;
@@ -60,6 +61,10 @@ namespace MrCMS.Web.Apps.Amazon
             amazonSellerSettings.BarcodeIsOfType = StandardProductIDType.EAN;
 
             configurationProvider.SaveSettings(amazonSellerSettings);
+
+            var folderLocation = string.Format("{0}/{1}/", CurrentRequestData.CurrentSite.Id,"amazon");
+            var fileSystem = new FileSystem();
+            fileSystem.CreateDirectory(folderLocation);
         }
 
         public override IEnumerable<System.Type> Conventions
