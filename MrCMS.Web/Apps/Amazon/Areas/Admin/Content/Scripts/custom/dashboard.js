@@ -11,10 +11,10 @@
     var productsChart = $("#products").get(0).getContext("2d");
     var productsChartContainer = $("#products").parent();
     
-    var options = {
+    var options1 = {
         scaleLineColor: "rgba(0,0,0,.1)",
         scaleLineWidth: 0,
-        scaleShowLabels: false,
+        scaleShowLabels: true,
         scaleLabel: "<%=value%>",
         scaleFontFamily: "'Arial'",
         scaleFontSize: 11,
@@ -35,6 +35,31 @@
         animationEasing: "easeOutQuart",
         onAnimationComplete: null
     };
+    
+    var options2 = {
+        scaleLineColor: "rgba(0,0,0,.1)",
+        scaleLineWidth: 0,
+        scaleShowLabels: true,
+        scaleLabel: "<%=value%>",
+        scaleFontFamily: "'Arial'",
+        scaleFontSize: 11,
+        scaleFontStyle: "normal",
+        scaleFontColor: "rgba(39, 174, 96,1.0)",
+        scaleShowGridLines: true,
+        scaleGridLineColor: "rgba(0,0,0,.05)",
+        scaleGridLineWidth: 0.1,
+        bezierCurve: true,
+        pointDot: true,
+        pointDotRadius: 3,
+        pointDotStrokeWidth: 0.1,
+        datasetStroke: true,
+        datasetStrokeWidth: 2,
+        datasetFill: false,
+        animation: true,
+        animationSteps: 60,
+        animationEasing: "easeOutQuart",
+        onAnimationComplete: null
+    };
 
     var ordersData = {
         labels: ["1", "2", "3", "4", "5", "6", "7"],
@@ -44,7 +69,7 @@
                 strokeColor: "rgba(52, 152, 219,1.0)",
                 pointColor: "rgba(52, 152, 219,1.0)",
                 pointStrokeColor: "rgba(52, 152, 219,1.0)",
-                data: [65, 59, 90, 81, 56, 55, 40]
+                data: [1, 2, 3, 4, 5, 6, 7]
             }
         ]
     };
@@ -57,19 +82,33 @@
                 strokeColor: "rgba(39, 174, 96,1.0)",
                 pointColor: "rgba(39, 174, 96,1.0)",
                 pointStrokeColor: "rgba(39, 174, 96,1.0)",
-                data: [65, 59, 90, 81, 56, 55, 40]
+                data: [1, 2, 3, 4, 5, 6, 7]
             }
         ]
     };
 
     function generateOrdersChart() {
-        var nc = $("#orders").attr('width', $(ordersChartContainer).width());
-        new Chart(ordersChart).Line(ordersData, options);
+        $.post('/Admin/Apps/Amazon/App/Revenue', {
+            from: $("#FilterFrom").val(),
+            to: $("#FilterUntil").val()
+        }, function (result) {
+            ordersData.labels = result.Labels;
+            ordersData.datasets[0].data = result.Data;
+            var nc = $("#orders").attr('width', $(ordersChartContainer).width());
+            new Chart(ordersChart).Line(ordersData, options1);
+        });
     };
     
     function generateProductsChart() {
-        var nc = $("#products").attr('width', $(productsChartContainer).width());
-        new Chart(productsChart).Line(productsData, options);
+        $.post('/Admin/Apps/Amazon/App/ProductsSold', {
+            from: $("#FilterFrom").val(),
+            to: $("#FilterUntil").val()
+        }, function (result) {
+            productsData.labels = result.Labels;
+            productsData.datasets[0].data = result.Data;
+            var nc = $("#products").attr('width', $(productsChartContainer).width());
+            new Chart(productsChart).Line(productsData, options2);
+        });
     };
     
     $(window).resize(updateCharts);

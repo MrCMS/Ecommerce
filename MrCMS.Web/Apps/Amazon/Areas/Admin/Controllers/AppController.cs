@@ -15,52 +15,30 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         private readonly IConfigurationProvider _configurationProvider;
         private readonly IAmazonLogService _amazonLogService;
         private readonly AmazonAppSettings _amazonAppSettings;
-        private readonly AmazonSellerSettings _amazonSellerSettings;
         private readonly IAmazonAnalyticsService _amazonAnalyticsService;
 
         public AppController(IConfigurationProvider configurationProvider,
             IAmazonLogService amazonLogService, 
             AmazonAppSettings amazonAppSettings, 
-            IAmazonAnalyticsService amazonAnalyticsService, 
-            AmazonSellerSettings amazonSellerSettings)
+            IAmazonAnalyticsService amazonAnalyticsService)
         {
             _configurationProvider = configurationProvider;
             _amazonLogService = amazonLogService;
             _amazonAppSettings = amazonAppSettings;
             _amazonAnalyticsService = amazonAnalyticsService;
-            _amazonSellerSettings = amazonSellerSettings;
         }
 
         [HttpGet]
         public ViewResult Dashboard(DateTime? filterFrom, DateTime? filterUntil)
         {
-            return View(InitDashboard(filterFrom, filterUntil));
+            return View(_amazonAnalyticsService.GetAmazonDashboardModel(filterFrom, filterUntil));
         }
 
         [HttpPost]
         [ActionName("Dashboard")]
         public ViewResult Dashboard_POST(DateTime? filterFrom, DateTime? filterUntil)
         {
-            return View(InitDashboard(filterFrom, filterUntil));
-        }
-
-        private AmazonDashboardModel InitDashboard(DateTime? from,DateTime? to)
-        {
-            var model = new AmazonDashboardModel();
-            if (from.HasValue)
-                model.FilterFrom = from.Value;
-            if (to.HasValue)
-                model.FilterUntil = to.Value;
-            model.NoOfActiveListings = _amazonAnalyticsService.GetNumberOfActiveListings();
-            model.NoOfApiCalls = _amazonAnalyticsService.GetNumberOfApiCalls(model.FilterFrom, model.FilterUntil);
-            model.NoOfOrders = _amazonAnalyticsService.GetNumberOfOrders(model.FilterFrom, model.FilterUntil);
-            model.NoOfUnshippedOrders = _amazonAnalyticsService.GetNumberUnshippedOrders(model.FilterFrom, model.FilterUntil);
-            model.AverageOrderAmount = _amazonAnalyticsService.GetAverageOrderAmount(model.FilterFrom,model.FilterUntil);
-            model.NoOfOrderedProducts = _amazonAnalyticsService.GetNumberOfOrderedProducts(model.FilterFrom, model.FilterUntil);
-            model.NoOfShippedProducts = _amazonAnalyticsService.GetNumberOfShippedProducts(model.FilterFrom, model.FilterUntil);
-            model.AppSettingsStatus = AmazonAppHelper.GetAmazonAppSettingsStatus(_amazonAppSettings);
-            model.SellerSettingsStatus = AmazonAppHelper.GetAmazonSellerSettingsStatus(_amazonSellerSettings);
-            return model;
+            return View(_amazonAnalyticsService.GetAmazonDashboardModel(filterFrom, filterUntil));
         }
 
         public ActionResult DashboardLogs(int page = 1)
@@ -70,6 +48,26 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
                 Logs = _amazonLogService.GetEntriesPaged(page,null,null,5)
             };
             return PartialView(model);
+        }
+
+        [HttpPost]
+        public JsonResult Revenue(DateTime? from, DateTime? to)
+        {
+            if (from.HasValue && to.HasValue)
+            {
+                return Json(_amazonAnalyticsService.GetRevenue(from.Value,to.Value));
+            }
+            return Json(false);
+        }
+
+        [HttpPost]
+        public JsonResult ProductsSold(DateTime? from, DateTime? to)
+        {
+            if (from.HasValue && to.HasValue)
+            {
+                return Json(_amazonAnalyticsService.GetProductsSold(from.Value, to.Value));
+            }
+            return Json(false);
         }
 
         [HttpGet]

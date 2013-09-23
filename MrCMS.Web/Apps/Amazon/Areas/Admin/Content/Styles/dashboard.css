@@ -130,6 +130,10 @@ canvas{
     text-shadow: none;
     border: none;
 }
+.alizarin a {
+    color: #ffffff;
+    text-decoration: underline;
+}
 .carrot {
     background-color: #e67e22;
     color: #ffffff !important;
