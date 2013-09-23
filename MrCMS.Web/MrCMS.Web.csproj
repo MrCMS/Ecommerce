@@ -106,6 +106,19 @@
     <Reference Include="Lucene.Net.Contrib.SpellChecker">
       <HintPath>..\packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.SpellChecker.dll</HintPath>
     </Reference>
+    <Reference Include="MarketplaceWebService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\libraries\MarketplaceWebService.dll</HintPath>
+    </Reference>
+    <Reference Include="MarketplaceWebServiceFeedsClasses">
+      <HintPath>..\libraries\MarketplaceWebServiceFeedsClasses.dll</HintPath>
+    </Reference>
+    <Reference Include="MarketplaceWebServiceOrders">
+      <HintPath>..\libraries\MarketplaceWebServiceOrders.dll</HintPath>
+    </Reference>
+    <Reference Include="MarketplaceWebServiceProducts">
+      <HintPath>..\libraries\MarketplaceWebServiceProducts.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -198,6 +211,65 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Apps\Amazon\AmazonApp.cs" />
+    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\AppController.cs" />
+    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\OrdersController.cs" />
+    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\ListingController.cs" />
+    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\SellerController.cs" />
+    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\LogsController.cs" />
+    <Compile Include="Apps\Amazon\DbConfiguration\AmazonTableNameConvention.cs" />
+    <Compile Include="Apps\Amazon\DbConfiguration\AmazonLogEntryOverride.cs" />
+    <Compile Include="Apps\Amazon\Entities\Analytics\AmazonApiUsage.cs" />
+    <Compile Include="Apps\Amazon\Entities\Listings\AmazonListing.cs" />
+    <Compile Include="Apps\Amazon\Entities\Logs\AmazonLog.cs" />
+    <Compile Include="Apps\Amazon\Entities\Orders\AmazonOrder.cs" />
+    <Compile Include="Apps\Amazon\Entities\Orders\AmazonOrderItem.cs" />
+    <Compile Include="Apps\Amazon\Helpers\AmazonAppHelper.cs" />
+    <Compile Include="Apps\Amazon\Helpers\AmazonProgressBarHelper.cs" />
+    <Compile Include="Apps\Amazon\Indexing\AmazonOrderSearchIndex.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonAdminMenuModel.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonDashboardModel.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonLogStatus.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonLogType.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonListingStatus.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonApiSection.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonProgressModel.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonListingModel.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonSyncModel.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonProgressMessageModel.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonOrderStatus.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonPaymentMethod.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonFulfillmentChannel.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonListingCondition.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonServiceStatus.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonOrderSearchModel.cs" />
+    <Compile Include="Apps\Amazon\Services\Analytics\AmazonAnalyticsService.cs" />
+    <Compile Include="Apps\Amazon\Services\Analytics\AmazonApiUsageService.cs" />
+    <Compile Include="Apps\Amazon\Services\Analytics\IAmazonApiUsageService.cs" />
+    <Compile Include="Apps\Amazon\Services\Analytics\IAmazonAnalyticsService.cs" />
+    <Compile Include="Apps\Amazon\Services\Api\AmazonApiService.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonFeedType.cs" />
+    <Compile Include="Apps\Amazon\Services\Api\IAmazonApiService.cs" />
+    <Compile Include="Apps\Amazon\Services\Listings\AmazonListingService.cs" />
+    <Compile Include="Apps\Amazon\Services\Listings\IAmazonListingService.cs" />
+    <Compile Include="Apps\Amazon\Services\Listings\Sync\IExportAmazonListingService.cs" />
+    <Compile Include="Apps\Amazon\Services\Listings\Sync\ExportAmazonListingService.cs" />
+    <Compile Include="Apps\Amazon\Services\Listings\Sync\ISyncAmazonListingService.cs" />
+    <Compile Include="Apps\Amazon\Services\Listings\Sync\SyncAmazonListingService.cs" />
+    <Compile Include="Apps\Amazon\Services\Logs\AmazonLogService.cs" />
+    <Compile Include="Apps\Amazon\Services\Logs\IAmazonLogService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderSearchService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSearchService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\IValidateAmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\ValidateAmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\ImportAmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\IImportAmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\SyncAmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\ISyncAmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Settings\AmazonAppSettings.cs" />
+    <Compile Include="Apps\Amazon\Settings\AmazonSellerSettings.cs" />
     <Compile Include="Apps\Articles\Areas\Admin\Controllers\ArticleController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -665,8 +737,6 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderShippingService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Payments\IPaymentStatusService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Payments\PaymentStatusService.cs" />
     <Compile Include="Apps\Ecommerce\Services\PaypointPaymentService.cs" />
     <Compile Include="Apps\Ecommerce\Services\PaypointRequestHelper.cs" />
     <Compile Include="Apps\Ecommerce\Services\PaypointRequestService.cs" />
@@ -682,10 +752,8 @@
     <Compile Include="Apps\Ecommerce\Services\Products\ProductVariantService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingCalculationManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingMethodManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingStatusService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\ShippingCalculationManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\ShippingMethodManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Shipping\ShippingStatusService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\ITaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\TaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\ThreeDSecureException.cs" />
@@ -773,6 +841,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\async-paging.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\progress-bar.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\listings.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\progress-bar-paged.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\dashboard.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\orders.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Styles\progress-bar.css" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Styles\dashboard.css" />
     <Content Include="Apps\Articles\Areas\Admin\Content\Scripts\articles.js" />
     <Content Include="Apps\Articles\Areas\Admin\Views\Article\ForUser.cshtml" />
     <Content Include="Apps\Articles\Areas\Admin\Views\AuthorInfo\Add.cshtml" />
@@ -1261,6 +1337,7 @@
     <Content Include="Areas\Admin\Content\Images\no-image.jpg" />
     <Content Include="Areas\Admin\Content\Images\no-media-selected.jpg" />
     <Content Include="Areas\Admin\Content\Images\pencil.png" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\charts\Chart.min.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\admin.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\add-page-widget.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\add-webpage.js" />
@@ -2153,8 +2230,37 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\SetTrackingNumber.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\BulkShippingUpdate.cshtml" />
     <Content Include="Apps\Ecommerce\Views\CategoryContainer\Categories.cshtml" />
+    <Content Include="Apps\Amazon\Views\Web.config" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\DeleteAllLogs.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\UserOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\NewInProducts.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Details.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Dashboard.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\DashboardLogs.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Settings.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Seller\Settings.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Index.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\ChooseProductVariant.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Add.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Index.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Listings.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\ProductVariants.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Index.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Orders.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\SyncMany.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\_ViewStart.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Shared\ProgressBarMessages.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\FilterOrders.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Details.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\OrderItems.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\OrderDetails.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\SyncOne.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Listing.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\SyncOne.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Details.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2482,7 +2588,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>41657</DevelopmentServerPort>
+          <DevelopmentServerPort>3403</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:8888</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

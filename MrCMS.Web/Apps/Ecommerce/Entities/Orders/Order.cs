@@ -94,5 +94,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         [StringLength(250)]
         public virtual string TrackingNumber { get; set; }
 
+        [DisplayName("Sales Channel")]
+        public virtual string SalesChannel { get; set; }
     }
 }

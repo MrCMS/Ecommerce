@@ -1,0 +1,123 @@
+﻿@using System.Web.Mvc.Html
+@using MrCMS.Web.Apps.Amazon.Models
+@model MrCMS.Web.Apps.Amazon.Settings.AmazonAppSettings
+@{
+    ViewBag.Title = "Amazon App Settings";
+}
+
+@using (Html.BeginForm("Settings", "App", new {id = ""}, FormMethod.Post, new {id = "edit-settings"}))
+{
+    <fieldset>
+        <legend>Amazon App Settings
+            <span class="btn-group  display-inline  pull-right">
+                <button class="btn btn-primary">Save</button>
+                @Html.ActionLink("Logs", "Index", "Logs", new {type = AmazonLogType.AppSettings}, new {@class = "btn btn-success"})
+            </span>
+        </legend>
+        
+        @Html.HiddenFor(x => x.Site.Id)
+
+        <div class="row-fluid">
+            <div class="span6">
+                @Html.LabelFor(x => x.AWSAccessKeyId)
+                @Html.TextBoxFor(x => x.AWSAccessKeyId, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AWSAccessKeyId)
+
+                @Html.LabelFor(x => x.SecretKey)
+                @Html.TextBoxFor(x => x.SecretKey, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.SecretKey)
+                
+                @Html.LabelFor(x => x.DeveloperAccountId)
+                @Html.TextBoxFor(x => x.DeveloperAccountId, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.DeveloperAccountId)
+
+                <div class="row-fluid">
+                    <div class="span4">
+                        @Html.LabelFor(x => x.FeedsApiVersion)
+                        @Html.TextBoxFor(x => x.FeedsApiVersion, new {@class = "span12"})
+                        @Html.ValidationMessageFor(x => x.FeedsApiVersion)
+                    </div>
+                    <div class="span4">
+                        @Html.LabelFor(x => x.OrdersApiVersion)
+                        @Html.TextBoxFor(x => x.OrdersApiVersion, new {@class = "span12"})
+                        @Html.ValidationMessageFor(x => x.OrdersApiVersion)
+                    </div>
+                    <div class="span4">
+                        @Html.LabelFor(x => x.ProductsApiVersion)
+                        @Html.TextBoxFor(x => x.ProductsApiVersion, new {@class = "span12"})
+                        @Html.ValidationMessageFor(x => x.ProductsApiVersion)
+                    </div>
+                </div>
+
+                
+            </div>       
+            <div class="span6">
+
+                @Html.LabelFor(x => x.AppName)
+                @Html.TextBoxFor(x => x.AppName, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AppName)
+                
+                <div class="row-fluid">
+                    <div class="span4">
+                    @Html.LabelFor(x => x.AppPath)
+                    @Html.TextBoxFor(x => x.AppPath, new {@class = "span12"})
+                    @Html.ValidationMessageFor(x => x.AppPath)
+                          </div>
+                    <div class="span4">
+                        @Html.LabelFor(x => x.AppVersion)
+                        @Html.TextBoxFor(x => x.AppVersion, new {@class = "span12"})
+                        @Html.ValidationMessageFor(x => x.AppVersion)
+                    </div>
+                    <div class="span4">
+                        @Html.LabelFor(x => x.AppLanguage)
+                        @Html.TextBoxFor(x => x.AppLanguage, new {@class = "span12"})
+                        @Html.ValidationMessageFor(x => x.AppLanguage)
+                    </div>
+                </div>
+
+                <div class="row-fluid">
+                    <div class="span6">
+                        @Html.LabelFor(x => x.SignatureVersion)
+                        @Html.TextBoxFor(x => x.SignatureVersion, new {@class = "span12"})
+                        @Html.ValidationMessageFor(x => x.SignatureVersion)
+                    </div>
+                    <div class="span6">
+                        @Html.LabelFor(x => x.SignatureMethod)
+                        @Html.TextBoxFor(x => x.SignatureMethod, new {@class = "span12"})
+                        @Html.ValidationMessageFor(x => x.SignatureMethod)
+                    </div>
+                </div>
+                
+                @Html.LabelFor(x => x.ApiEndpoint)
+                @Html.TextBoxFor(x => x.ApiEndpoint, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.ApiEndpoint)
+
+            </div>
+            
+        </div>
+        
+        <div class="row-fluid">
+            <div class="span12">
+                @Html.LabelFor(x => x.AmazonOrderDetailsUrl)
+                @Html.TextBoxFor(x => x.AmazonOrderDetailsUrl, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AmazonOrderDetailsUrl)
+            </div>
+        </div>
+        
+        <div class="row-fluid">
+            <div class="span12">
+                @Html.LabelFor(x => x.AmazonManageOrdersUrl)
+                @Html.TextBoxFor(x => x.AmazonManageOrdersUrl, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AmazonManageOrdersUrl)
+            </div>
+        </div>
+        
+        <div class="row-fluid">
+             <div class="span12">
+                 @Html.LabelFor(x => x.AmazonManageInventoryUrl)
+                @Html.TextBoxFor(x => x.AmazonManageInventoryUrl, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AmazonManageInventoryUrl)
+             </div>
+        </div>
+    </fieldset>
+}

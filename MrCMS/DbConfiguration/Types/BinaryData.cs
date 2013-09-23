@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using NHibernate;
@@ -29,7 +30,7 @@ namespace MrCMS.DbConfiguration.Types
 
         public override void NullSafeSet(IDbCommand cmd, object value, int index)
         {
-            ((IDbDataParameter)cmd.Parameters[index]).Size = int.MaxValue;
+            ((IDbDataParameter) cmd.Parameters[index]).Size = int.MaxValue;
 
             using (var memoryStream = new MemoryStream())
             {
