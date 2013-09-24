@@ -1,6 +1,5 @@
 ﻿using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
-using FluentNHibernate.Mapping;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
@@ -11,10 +10,10 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
         {
             mapping.Map(product => product.Abstract).Length(500);
             mapping.HasManyToMany(product => product.Categories)
-                   .Table("ProductCategories")
+                   .Table("Ecommerce_ProductCategories")
                    .AsList(part => part.Column("DisplayOrder"))
                    .Not.Inverse();
-            mapping.HasManyToMany(product => product.AttributeOptions).Table("ProductAttributes").Not.Inverse();
+            mapping.HasManyToMany(product => product.AttributeOptions).Table("Ecommerce_ProductAttributes").Not.Inverse();
         }
     }
 }
