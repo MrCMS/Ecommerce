@@ -49,6 +49,8 @@
                              <div class="btn-group">
                             @Html.ActionLink("Details", "Details", "Listing", new {id = item.Id}, new { @class="btn btn-mini"})
                             @Html.ActionLink("Sync", "SyncOne", "Listing", new {id = item.Id}, new { @class="btn btn-mini btn-success"})
+                            @Html.ActionLink("Close Listing", "CloseOne", "Listing", new {id = item.Id}, new { @class="btn btn-mini btn-warning"})
+                            @Html.ActionLink("Delete", "Delete", "Listing", new {id = item.Id}, new { @class="btn btn-mini btn-danger", data_toggle = "fb-modal"})
                             </div>
                         </td>
                     </tr>

@@ -93,6 +93,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Logs
             AmazonOrder amazonOrder, AmazonListing amazonListing, string apiOperation = "",
             string message = "", string details = "")
         {
+            var i = 0;
             var log = new AmazonLog()
             {
                 LogType = type,

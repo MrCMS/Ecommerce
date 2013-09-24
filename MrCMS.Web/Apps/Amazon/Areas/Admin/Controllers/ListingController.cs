@@ -128,5 +128,46 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
                 return View(amazonListing);
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public ActionResult CloseOne(AmazonListing listing)
+        {
+            if (listing != null)
+            {
+                ViewData["AmazonManageInventoryUrl"] = _amazonAppSettings.AmazonManageInventoryUrl;
+                return View(new AmazonSyncModel() { Id = listing.Id, Title = listing.Title });
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public JsonResult Close(AmazonSyncModel model)
+        {
+            if (model != null)
+            {
+                //todo
+                return Json(true);
+            }
+            return Json(false);
+        }
+
+        [HttpGet]
+        public ActionResult Delete(AmazonListing amazonListing)
+        {
+            if (amazonListing != null)
+                return View(amazonListing);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public RedirectToRouteResult Delete_POST(AmazonListing amazonListing)
+        {
+            //todo delete on amazon
+
+            _amazonListingService.Delete(amazonListing);
+
+            return RedirectToAction("Index");
+        }
     }
 }

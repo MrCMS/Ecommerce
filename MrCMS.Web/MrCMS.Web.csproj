@@ -842,6 +842,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\async-paging.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-listings.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\progress-bar.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\listings.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\progress-bar-paged.js" />
@@ -2261,6 +2262,8 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Listing.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\SyncOne.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Details.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Delete.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\CloseOne.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
