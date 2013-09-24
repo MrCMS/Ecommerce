@@ -327,7 +327,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             {
                 if (model.Option1Id != 0)
                 {
-                    ProductAttributeOption option = _productOptionManager.GetAttributeOption(model.Option1Id);
+                    var option = _productOptionManager.GetAttributeOption(model.Option1Id);
                     foreach (var item in option.Values.Where(x => x.ProductAttributeOption.Id == option.Id && x.ProductVariant.Product.Id == product.Id).ToList())
                     {
                         option.Values.Remove(item);

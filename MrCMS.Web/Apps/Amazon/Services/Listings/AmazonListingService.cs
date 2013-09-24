@@ -4,6 +4,9 @@ using MarketplaceWebServiceFeedsClasses;
 using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
+using MrCMS.Web.Apps.Amazon.Models;
+using MrCMS.Web.Apps.Amazon.Services.Logs;
+using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using NHibernate;
@@ -15,11 +18,16 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings
     {
         private readonly ISession _session;
         private readonly EcommerceSettings _ecommerceSettings;
+        private readonly IAmazonLogService _amazonLogService;
+        private readonly AmazonSellerSettings _amazonSellerSettings;
 
-        public AmazonListingService(ISession session, EcommerceSettings ecommerceSettings)
+        public AmazonListingService(ISession session, EcommerceSettings ecommerceSettings,
+            IAmazonLogService amazonLogService, AmazonSellerSettings amazonSellerSettings)
         {
             _session = session;
             _ecommerceSettings = ecommerceSettings;
+            _amazonLogService = amazonLogService;
+            _amazonSellerSettings = amazonSellerSettings;
         }
 
         public AmazonListing Get(int id)
@@ -68,6 +76,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings
 
         public void Delete(AmazonListing item)
         {
+            _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Delete, null, null, item);
+
             _session.Transact(session => session.Delete(item));
         }
 
@@ -90,7 +100,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings
                 Price = productVariant.Price,
                 SellerSKU = productVariant.SKU,
                 Title = productVariant.DisplayName,
-                StandardProductIDType = StandardProductIDType.EAN
+                StandardProductIDType = _amazonSellerSettings.BarcodeIsOfType,
+                StandardProductId = productVariant.Barcode
             };
         }
 
