@@ -9,7 +9,7 @@
      <fieldset>
          <legend>Enter Product Variant SKUs which will be used to create Amazon Listings
              <span class="btn-group  display-inline  pull-right">
-                 @Html.ActionLink("Cancel", "Index", "Listing", null, new {@class = "btn btn-danger"})
+                 @Html.ActionLink("Cancel", "Edit", "ListingGroup", new {id = Model.AmazonListingGroup.Id}, new {@class = "btn btn-danger"})
              </span>
          </legend>
 

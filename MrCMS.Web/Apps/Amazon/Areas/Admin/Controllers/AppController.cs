@@ -82,7 +82,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         {
             _amazonLogService.Add(AmazonLogType.AppSettings, AmazonLogStatus.Update);
             _configurationProvider.SaveSettings(amazonAppSettings);
-            return RedirectToAction("Settings");
+            return RedirectToAction("Dashboard");
         }
 
         [HttpGet]
