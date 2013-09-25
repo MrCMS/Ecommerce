@@ -34,7 +34,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         {
             _amazonLogService.Add(AmazonLogType.SellerSettings, AmazonLogStatus.Update);
             _configurationProvider.SaveSettings(amazonSellerSettings);
-            return RedirectToAction("Settings");
+            return RedirectToAction("Dashboard","App");
         }
     }
 }

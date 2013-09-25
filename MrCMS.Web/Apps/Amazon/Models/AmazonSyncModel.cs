@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MrCMS.Paging;
+using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Models
@@ -28,5 +29,8 @@ namespace MrCMS.Web.Apps.Amazon.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+
+        public AmazonListingGroup AmazonListingGroup { get; set; }
+        public AmazonListing AmazonListing { get; set; }
     }
 }

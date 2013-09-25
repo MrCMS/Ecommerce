@@ -65,6 +65,8 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             return PartialView(newModel);
         }
 
+
+
         [HttpGet]
         public ActionResult AddOne(string productVariantSku, int amazonListingGroupId)
         {
@@ -101,30 +103,6 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [ActionName("SyncOne")]
-        public ActionResult SyncOne_GET(AmazonListing listing)
-        {
-            if (listing != null)
-            {
-                ViewData["AmazonManageInventoryUrl"] = _amazonAppSettings.AmazonManageInventoryUrl;
-                return View(new AmazonSyncModel() { Id = listing.Id, Title = listing.Title });
-            }
-            return RedirectToAction("Index", "ListingGroup");
-        }
-
-        [HttpPost]
-        public JsonResult SyncOne(AmazonSyncModel model)
-        {
-            if (model != null)
-            {
-                _syncAmazonListingsService.SyncAmazonListing(model);
-                return Json(true);
-            }
-            return Json(false);
-        }
-
-
-        [HttpGet]
         public ActionResult AddMany(AmazonListingGroup amazonListingGroup)
         {
             return View(new AmazonListingModel() { AmazonListingGroup = amazonListingGroup });
@@ -142,6 +120,30 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             return RedirectToAction("Index", "ListingGroup");
         }
 
+
+        [HttpGet]
+        [ActionName("SyncOne")]
+        public ActionResult SyncOne_GET(AmazonListing listing)
+        {
+            if (listing != null)
+            {
+                ViewData["AmazonManageInventoryUrl"] = _amazonAppSettings.AmazonManageInventoryUrl;
+                return View(new AmazonSyncModel() { Id = listing.Id, Title = listing.Title,AmazonListingGroup = listing.AmazonListingGroup});
+            }
+            return RedirectToAction("Index", "ListingGroup");
+        }
+
+        [HttpPost]
+        public JsonResult SyncOne(AmazonSyncModel model)
+        {
+            if (model != null)
+            {
+                _syncAmazonListingsService.SyncAmazonListing(model);
+                return Json(true);
+            }
+            return Json(false);
+        }
+
         [HttpGet]
         [ActionName("SyncMany")]
         public ActionResult SyncMany_GET(AmazonListingGroup amazonListingGroup)
@@ -149,7 +151,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             if (amazonListingGroup != null)
             {
                 ViewData["AmazonManageInventoryUrl"] = _amazonAppSettings.AmazonManageInventoryUrl;
-                return View(new AmazonSyncModel() {Id=amazonListingGroup.Id,Title = amazonListingGroup.Name});
+                return View(new AmazonSyncModel() {Id=amazonListingGroup.Id,Title = amazonListingGroup.Name,AmazonListingGroup = amazonListingGroup});
             }
             return RedirectToAction("Index", "ListingGroup");
         }
@@ -165,13 +167,15 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             return Json(false);
         }
 
+
+
         [HttpGet]
         public ActionResult CloseOne(AmazonListing listing)
         {
             if (listing != null)
             {
                 ViewData["AmazonManageInventoryUrl"] = _amazonAppSettings.AmazonManageInventoryUrl;
-                return View(new AmazonSyncModel() { Id = listing.Id, Title = listing.Title, Description = listing.ASIN });
+                return View(new AmazonSyncModel() { Id = listing.Id, Title = listing.Title, Description = listing.ASIN, AmazonListingGroup = listing.AmazonListingGroup});
             }
             return RedirectToAction("Index", "ListingGroup");
         }
@@ -194,7 +198,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             if (amazonListingGroup != null)
             {
                 ViewData["AmazonManageInventoryUrl"] = _amazonAppSettings.AmazonManageInventoryUrl;
-                return View(new AmazonSyncModel() { Id = amazonListingGroup.Id, Title = amazonListingGroup.Name });
+                return View(new AmazonSyncModel() { Id = amazonListingGroup.Id, Title = amazonListingGroup.Name,AmazonListingGroup = amazonListingGroup});
             }
             return RedirectToAction("Index", "ListingGroup");
         }
@@ -210,6 +214,8 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             }
             return Json(false);
         }
+
+
 
         [HttpGet]
         public ActionResult Delete(AmazonListing amazonListing)
