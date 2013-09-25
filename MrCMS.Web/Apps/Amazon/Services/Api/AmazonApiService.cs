@@ -105,6 +105,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
         {
             try
             {
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, AmazonApiSection.Feeds, null, null, "GetFeedSubmissionList", "Getting Result for Amazon Submission #"+ submissionId);
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Feeds, "GetFeedSubmissionList");
                 var service = GetFeedsApiService();
                 var request = GetFeedSubmissionListRequest(submissionId);
@@ -139,11 +140,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
         {
             try
             {
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage,AmazonApiSection.Feeds,null,null,"SubmitFeed","Submitting "+feedType+" Feed to Amazon");
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Feeds, "SubmitFeed");
                 var service = GetFeedsApiService();
                 var request = GetSubmitFeedRequest(feedType, feedContent);
 
                 var result = service.SubmitFeed(request);
+
+                feedContent.Close();
 
                 if (result != null && result.SubmitFeedResult != null && result.IsSetSubmitFeedResult() && result.SubmitFeedResult.FeedSubmissionInfo != null)
                     return result.SubmitFeedResult.FeedSubmissionInfo;
@@ -171,37 +175,111 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
             request.ContentMD5 = MarketplaceWebServiceClient.CalculateContentMD5(request.FeedContent);
             return request;
         }
-        public FileStream GetProductFeedContent(AmazonListing listing)
+
+        public FileStream GetSingleDeleteProductFeedContent(AmazonListing listing)
         {
-            return GetFeed(GetProductFeed(listing), AmazonEnvelopeMessageType.Product);
+            var product = new Product {SKU = listing.SellerSKU};
+            return GetSingleFeed(product, AmazonEnvelopeMessageType.Product, AmazonEnvelopeMessageOperationType.Delete);
         }
-        public FileStream GetProductPriceFeedContent(AmazonListing listing)
+        public FileStream GetSingleProductFeedContent(AmazonListing listing)
         {
-            return GetFeed(GetProductPriceFeed(listing), AmazonEnvelopeMessageType.Price);
+            return GetSingleFeed(GetProductFeed(listing), AmazonEnvelopeMessageType.Product,AmazonEnvelopeMessageOperationType.Update);
         }
-        public FileStream GetProductInventoryFeedContent(AmazonListing listing)
+        public FileStream GetSingleProductPriceFeedContent(AmazonListing listing)
         {
-            return GetFeed(GetProductInventoryFeed(listing), AmazonEnvelopeMessageType.Inventory);
+            return GetSingleFeed(GetProductPriceFeed(listing), AmazonEnvelopeMessageType.Price, AmazonEnvelopeMessageOperationType.Update);
         }
-        public FileStream GetProductImageFeedContent(AmazonListing listing)
+        public FileStream GetSingleProductInventoryFeedContent(AmazonListing listing)
         {
-            return GetFeed(GetProductImageFeed(listing), AmazonEnvelopeMessageType.ProductImage);
+            return GetSingleFeed(GetProductInventoryFeed(listing), AmazonEnvelopeMessageType.Inventory, AmazonEnvelopeMessageOperationType.Update);
         }
-        private FileStream GetFeed(object feed, AmazonEnvelopeMessageType amazonEnvelopeMessageType)
+        public FileStream GetSingleProductImageFeedContent(AmazonListing listing)
         {
+            return GetSingleFeed(GetProductImageFeed(listing), AmazonEnvelopeMessageType.ProductImage, AmazonEnvelopeMessageOperationType.Update);
+        }
+
+        public FileStream GetDeleteProductFeedsContent(AmazonListingGroup amazonListingGroup)
+        {
+            var feeds = amazonListingGroup.Items.Where(x=>x.Status==AmazonListingStatus.Active).Select(x=>new Product{SKU = x.SellerSKU }).ToList();
+            return GetFeed(feeds, AmazonEnvelopeMessageType.Product, AmazonEnvelopeMessageOperationType.Delete);
+        }
+        public FileStream GetProductFeedsContent(AmazonListingGroup amazonListingGroup)
+        {
+            var feeds = amazonListingGroup.Items.Select(GetProductFeed).ToList();
+            return GetFeed(feeds, AmazonEnvelopeMessageType.Product, AmazonEnvelopeMessageOperationType.Update);
+        }
+        public FileStream GetProductPriceFeedsContent(AmazonListingGroup amazonListingGroup)
+        {
+            var feeds = amazonListingGroup.Items.Select(GetProductPriceFeed).ToList();
+            return GetFeed(feeds, AmazonEnvelopeMessageType.Price, AmazonEnvelopeMessageOperationType.Update);
+        }
+        public FileStream GetProductInventoryFeedsContent(AmazonListingGroup amazonListingGroup)
+        {
+            var feeds = amazonListingGroup.Items.Select(GetProductInventoryFeed).ToList();
+            return GetFeed(feeds, AmazonEnvelopeMessageType.Inventory, AmazonEnvelopeMessageOperationType.Update);
+        }
+        public FileStream GetProductImageFeedsContent(AmazonListingGroup amazonListingGroup)
+        {
+            var feeds = amazonListingGroup.Items.Select(GetProductImageFeed).ToList();
+            return GetFeed(feeds, AmazonEnvelopeMessageType.ProductImage, AmazonEnvelopeMessageOperationType.Update);
+        }
+
+        private FileStream GetSingleFeed(object feed, AmazonEnvelopeMessageType amazonEnvelopeMessageType, AmazonEnvelopeMessageOperationType amazonEnvelopeMessageOperationType)
+        {
+            if (feed != null)
+            {
+                var amazonEnvelope = new AmazonEnvelope
+                    {
+                        Header = new Header
+                            {
+                                DocumentVersion = "1.0",
+                                MerchantIdentifier = _amazonSellerSettings.SellerId
+                            },
+                        MessageType = amazonEnvelopeMessageType,
+                        Message =
+                            new AmazonEnvelopeMessageCollection()
+                                {
+                                    new AmazonEnvelopeMessage
+                                        {
+                                            MessageID = "1",
+                                            Item = feed,
+                                            OperationType = amazonEnvelopeMessageOperationType
+                                        }
+                                }
+                    };
+
+                return AmazonAppHelper.GetStreamFromAmazonEnvelope(amazonEnvelope, amazonEnvelopeMessageType);
+            }
+            return null;
+        }
+        private FileStream GetFeed(IEnumerable<object> feeds, AmazonEnvelopeMessageType amazonEnvelopeMessageType, AmazonEnvelopeMessageOperationType amazonEnvelopeMessageOperationType)
+        {
+            var messages = new AmazonEnvelopeMessageCollection();
+            var msgCounter = 1;
+            foreach (var feed in feeds)
+            {
+                messages.Add(new AmazonEnvelopeMessage
+                    {
+                        MessageID = msgCounter.ToString(), 
+                        OperationType = amazonEnvelopeMessageOperationType,
+                        Item = feed
+                    });
+                msgCounter++;
+            }
             var amazonEnvelope = new AmazonEnvelope
+            {
+                Header = new Header
                 {
-                    Header = new Header
-                        {
-                            DocumentVersion = "1.0",
-                            MerchantIdentifier = _amazonSellerSettings.SellerId
-                        },
-                    MessageType = amazonEnvelopeMessageType,
-                    Message = new AmazonEnvelopeMessageCollection() { new AmazonEnvelopeMessage { MessageID = "1", Item = feed } }
-                };
+                    DocumentVersion = "1.0",
+                    MerchantIdentifier = _amazonSellerSettings.SellerId
+                },
+                MessageType = amazonEnvelopeMessageType,
+                Message = messages
+            };
 
             return AmazonAppHelper.GetStreamFromAmazonEnvelope(amazonEnvelope, amazonEnvelopeMessageType);
         }
+
         private Product GetProductFeed(AmazonListing listing)
         {
             var product=new Product
@@ -248,27 +326,20 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
         }
         private ProductImage GetProductImageFeed(AmazonListing listing)
         {
-            var productImages = new List<ProductImage>();
-            //if (listing.ProductVariant!=null && listing.ProductVariant.Product.Images.Any())
-            //{
-            //    var image = listing.ProductVariant.Product.Images.First();
-            //    if(image.FileExtension.Contains(".jpeg"))
-            //    {
-            //        productImages.Add(new ProductImage()
-            //        {
-            //            SKU = listing.SellerSKU,
-            //            ImageType = ProductImageImageType.Main,
-            //            ImageLocation = AmazonApiHelper.GenerateImageUrl(image.FileUrl)
-            //        });
-            //    }
-            //}
-            return new ProductImage()
+            if (listing.ProductVariant != null && listing.ProductVariant.Product.Images.Any())
+            {
+                var image = listing.ProductVariant.Product.Images.First();
+                if (image.FileExtension.Contains(".jpeg"))
                 {
-                    SKU = listing.SellerSKU,
-                    ImageType = ProductImageImageType.Main,
-                    ImageLocation =
-                        "https://www.ryness.co.uk/images/thumbs/0005659_300.jpeg"
-                };
+                    return new ProductImage()
+                    {
+                        SKU = listing.SellerSKU,
+                        ImageType = ProductImageImageType.Main,
+                        ImageLocation = AmazonAppHelper.GenerateImageUrl(image.FileUrl)
+                    };
+                }
+            }
+            return null;
         }
 
         #endregion
@@ -279,6 +350,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
         {
             try
             {
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, AmazonApiSection.Products, null, null, "GetMatchingProductForId", "Get Matching Product For SKU #" + sku);
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Feeds, "GetFeedSubmissionList");
                 var service = GetProductsApiService();
                 var request = GetMatchingProductForIdRequest(sku);
@@ -321,6 +393,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
         {
             try
             {
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, AmazonApiSection.Orders, null, null, "GetOrder", "Getting Amazon Orders");
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "GetOrder");
                 var service = GetOrdersApiService();
                 var request = GetOrderRequest(model);
@@ -354,6 +427,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
         {
             try
             {
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, AmazonApiSection.Orders, null, null, "ListOrders", "Listing Amazon Orders");
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "ListOrders");
                 var service = GetOrdersApiService();
                 var request = GetListOrdersRequest(model);
@@ -392,6 +466,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
         {
             try
             {
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, AmazonApiSection.Orders, null, null, "ListOrderItems", "Listing Items for Amazon Order #"+amazonOrderId);
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "ListOrderItems");
                 var service = GetOrdersApiService();
                 var request = GetListOrderItemsRequest(amazonOrderId);

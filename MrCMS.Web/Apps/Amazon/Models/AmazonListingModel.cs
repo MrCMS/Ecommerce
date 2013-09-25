@@ -21,8 +21,10 @@ namespace MrCMS.Web.Apps.Amazon.Models
         }
 
         //Listing
+        public AmazonListingGroup AmazonListingGroup { get; set; }
         public AmazonListing Listing { get; set; }
         public ProductVariant ChosenProductVariant { get; set; }
+        public string ChosenProductVariants { get; set; }
 
         //Search & Paging
         public string Name { get; set; }

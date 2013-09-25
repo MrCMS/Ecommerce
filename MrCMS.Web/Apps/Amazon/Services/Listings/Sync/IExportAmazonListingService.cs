@@ -5,6 +5,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
 {
     public interface IExportAmazonListingService
     {
-        void SubmitProductFeeds(AmazonSyncModel model, AmazonListing item);
+        void SubmitProductFeeds(AmazonSyncModel model, AmazonListingGroup item);
+        void SubmitSingleProductFeed(AmazonSyncModel model, AmazonListing item);
     }
 }

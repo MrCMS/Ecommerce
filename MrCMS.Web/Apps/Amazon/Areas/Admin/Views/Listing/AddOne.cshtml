@@ -4,10 +4,9 @@
     ViewBag.Title = "Add Amazon Listing";
 }
 
- @using (Html.BeginForm("Add", "Listing", new {id=""},FormMethod.Post, new {id = "add-listing-form"}))
+ @using (Html.BeginForm("AddOne", "Listing", new {id=""},FormMethod.Post, new {id = "add-listing-form"}))
  {
      <fieldset>
-   
          <legend>
              @Model.ProductVariant.DisplayName
              <span class="btn-group  display-inline  pull-right">
@@ -15,6 +14,8 @@
              </span>
          </legend>
          
+         @Html.HiddenFor(x=>x.AmazonListingGroup.Id)
+
          @{Html.RenderPartial("Listing",Model);}
 
      </fieldset>

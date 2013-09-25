@@ -4,6 +4,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
 {
     public interface ISyncAmazonListingsService
     {
-        void ExportAmazonListing(AmazonSyncModel model);
+        void SyncAmazonListing(AmazonSyncModel model);
+        void SyncAmazonListings(AmazonSyncModel model);
+
+        void CloseAmazonListing(AmazonSyncModel model);
+        void CloseAmazonListings(AmazonSyncModel model);
     }
 }

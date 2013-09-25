@@ -39,6 +39,11 @@
                         alerttype = "success";
                     }
                     break;
+                default:
+                    {
+                        alerttype = "info";
+                    }
+                    break;
             }
             <div class="alert dashboard-box-log @alerttype">
                      <small class="pull-right">@item.CreatedOn.ToString("dd/MM/yyyy HH:mm")</small>

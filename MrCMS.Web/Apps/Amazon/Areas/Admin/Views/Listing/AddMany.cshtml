@@ -1,0 +1,31 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Amazon.Models.AmazonListingModel
+@{
+    ViewBag.Title = "Choose Product Variants for new Amazon Listings";
+}
+
+ @using (Html.BeginForm("AddMany", "Listing", new {id = ""}, FormMethod.Post, new {id = "add-listing-form"}))
+ {
+     <fieldset>
+         <legend>Enter Product Variant SKUs which will be used to create Amazon Listings
+             <span class="btn-group  display-inline  pull-right">
+                 @Html.ActionLink("Cancel", "Index", "Listing", null, new {@class = "btn btn-danger"})
+             </span>
+         </legend>
+
+         <div class="row-fluid">
+             <div class="span12">
+                 @Html.HiddenFor(x=>x.AmazonListingGroup.Id)
+                 @Html.TextAreaFor(x => x.ChosenProductVariants, new {@class = "span12"})
+             </div>
+         </div>
+         <br/>
+         <div class="row-fluid">
+             <div class="span12">
+                 <button type="submit" class="btn btn-primary">Save & Publish on Amazon</button>
+             </div>
+         </div>
+     </fieldset>
+ }
+
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/listings.js"); }

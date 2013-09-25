@@ -8,6 +8,8 @@ namespace MrCMS.Web.Apps.Amazon.Models
         Api,
         [Description("Listings")]
         Listings,
+        [Description("Listing Groups")]
+        ListingGroups,
         [Description("Orders")]
         Orders,
         [Description("App Settings")]

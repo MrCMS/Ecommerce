@@ -4,7 +4,6 @@ using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Listings;
 using MrCMS.Web.Apps.Amazon.Services.Listings.Sync;
 using MrCMS.Web.Apps.Amazon.Settings;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Website.Controllers;
@@ -19,41 +18,42 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         private readonly IAmazonListingService _amazonListingService;
         private readonly IOptionService _optionService;
         private readonly AmazonAppSettings _amazonAppSettings;
+        private readonly IAmazonListingGroupService _amazonListingGroupService;
 
         public ListingController(
             IProductVariantService productVariantService, 
             ISyncAmazonListingsService syncAmazonListingsService, 
             IAmazonListingService amazonListingService, 
             IOptionService optionService, 
-            AmazonAppSettings amazonAppSettings)
+            AmazonAppSettings amazonAppSettings, 
+            IAmazonListingGroupService amazonListingGroupService)
         {
             _productVariantService = productVariantService;
             _syncAmazonListingsService = syncAmazonListingsService;
             _amazonListingService = amazonListingService;
             _optionService = optionService;
             _amazonAppSettings = amazonAppSettings;
+            _amazonListingGroupService = amazonListingGroupService;
         }
 
+
         [HttpGet]
-        public ViewResult Index(string searchTerm,int page = 1)
+        public ActionResult Details(AmazonListing amazonListing)
         {
-            ViewData["AmazonManageInventoryUrl"] = _amazonAppSettings.AmazonManageInventoryUrl;
-            var results = _amazonListingService.Search(searchTerm,page);
-            return View(results);
+            if (amazonListing != null)
+                return View(amazonListing);
+            return RedirectToAction("Index", "ListingGroup");
         }
 
         [HttpGet]
-        public PartialViewResult Listings(string listingTitle, int page = 1)
-        {
-            var results = _amazonListingService.Search(listingTitle, page);
-            return PartialView(results);
-        }
-
-        [HttpGet]
-        public ViewResult ChooseProductVariant()
+        public ViewResult ChooseProductVariant(AmazonListingGroup amazonListingGroup)
         {
             ViewData["categories"] = _optionService.GetCategoryOptions();
-            var model = new AmazonListingModel() { ProductVariants = _productVariantService.GetAllVariants(String.Empty) };
+            var model = new AmazonListingModel()
+                {
+                    ProductVariants = _productVariantService.GetAllVariants(String.Empty),
+                    AmazonListingGroup = amazonListingGroup
+                };
             return View(model);
         }
 
@@ -66,24 +66,25 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Add(ProductVariant productVariant)
+        public ActionResult AddOne(string productVariantSku, int amazonListingGroupId)
         {
-            if (productVariant != null && productVariant.Id > 0)
+            if (!String.IsNullOrWhiteSpace(productVariantSku) && amazonListingGroupId > 0)
             {
-                var amazonListing = _amazonListingService.GetByProductVariantId(productVariant.Id);
+                var amazonListing = _amazonListingService.GetByProductVariantSKU(productVariantSku);
                 if (amazonListing == null)
                 {
-                    amazonListing = _amazonListingService.InitAmazonListingFromProductVariant(productVariant);
+                    amazonListing = _amazonListingGroupService.InitAmazonListingFromProductVariant(productVariantSku, amazonListingGroupId);
                     return View(amazonListing);
                 }
+
                 return RedirectToAction("Details", new {id = amazonListing.Id});
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "ListingGroup");
         }
 
         [HttpPost]
-        [ActionName("Add")]
-        public ActionResult Add_POST(AmazonListing listing)
+        [ActionName("AddOne")]
+        public ActionResult AddOne_POST(AmazonListing listing)
         {
             if (listing != null)
             {
@@ -96,37 +97,72 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
                 }
                 return View(listing);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "ListingGroup");
         }
 
         [HttpGet]
-        public ActionResult SyncOne(AmazonListing listing)
+        [ActionName("SyncOne")]
+        public ActionResult SyncOne_GET(AmazonListing listing)
         {
             if (listing != null)
             {
                 ViewData["AmazonManageInventoryUrl"] = _amazonAppSettings.AmazonManageInventoryUrl;
-                return View(new AmazonSyncModel() {Id = listing.Id, Title = listing.Title});
+                return View(new AmazonSyncModel() { Id = listing.Id, Title = listing.Title });
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "ListingGroup");
         }
 
         [HttpPost]
-        public JsonResult Sync(AmazonSyncModel model)
+        public JsonResult SyncOne(AmazonSyncModel model)
         {
             if (model != null)
             {
-                _syncAmazonListingsService.ExportAmazonListing(model);
+                _syncAmazonListingsService.SyncAmazonListing(model);
                 return Json(true);
             }
             return Json(false);
         }
 
+
         [HttpGet]
-        public ActionResult Details(AmazonListing amazonListing)
+        public ActionResult AddMany(AmazonListingGroup amazonListingGroup)
         {
-            if (amazonListing != null)
-                return View(amazonListing);
-            return RedirectToAction("Index");
+            return View(new AmazonListingModel() { AmazonListingGroup = amazonListingGroup });
+        }
+
+        [HttpPost]
+        [ActionName("AddMany")]
+        public ActionResult AddMany_POST(AmazonListingModel model)
+        {
+            if (model != null && model.AmazonListingGroup!=null && !String.IsNullOrWhiteSpace(model.ChosenProductVariants))
+            {
+                _amazonListingGroupService.InitAmazonListingsFromProductVariants(model.AmazonListingGroup, model.ChosenProductVariants);
+                return RedirectToAction("SyncMany", new { id = model.AmazonListingGroup.Id });
+            }
+            return RedirectToAction("Index", "ListingGroup");
+        }
+
+        [HttpGet]
+        [ActionName("SyncMany")]
+        public ActionResult SyncMany_GET(AmazonListingGroup amazonListingGroup)
+        {
+            if (amazonListingGroup != null)
+            {
+                ViewData["AmazonManageInventoryUrl"] = _amazonAppSettings.AmazonManageInventoryUrl;
+                return View(new AmazonSyncModel() {Id=amazonListingGroup.Id,Title = amazonListingGroup.Name});
+            }
+            return RedirectToAction("Index", "ListingGroup");
+        }
+
+        [HttpPost]
+        public JsonResult SyncMany(AmazonSyncModel model)
+        {
+            if (model != null)
+            {
+                _syncAmazonListingsService.SyncAmazonListings(model);
+                return Json(true);
+            }
+            return Json(false);
         }
 
         [HttpGet]
@@ -135,17 +171,41 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             if (listing != null)
             {
                 ViewData["AmazonManageInventoryUrl"] = _amazonAppSettings.AmazonManageInventoryUrl;
-                return View(new AmazonSyncModel() { Id = listing.Id, Title = listing.Title });
+                return View(new AmazonSyncModel() { Id = listing.Id, Title = listing.Title, Description = listing.ASIN });
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "ListingGroup");
         }
 
         [HttpPost]
-        public JsonResult Close(AmazonSyncModel model)
+        [ActionName("CloseOne")]
+        public JsonResult CloseOne_POST(AmazonSyncModel model)
         {
             if (model != null)
             {
-                //todo
+                _syncAmazonListingsService.CloseAmazonListing(model);
+                return Json(true);
+            }
+            return Json(false);
+        }
+
+        [HttpGet]
+        public ActionResult CloseMany(AmazonListingGroup amazonListingGroup)
+        {
+            if (amazonListingGroup != null)
+            {
+                ViewData["AmazonManageInventoryUrl"] = _amazonAppSettings.AmazonManageInventoryUrl;
+                return View(new AmazonSyncModel() { Id = amazonListingGroup.Id, Title = amazonListingGroup.Name });
+            }
+            return RedirectToAction("Index", "ListingGroup");
+        }
+
+        [HttpPost]
+        [ActionName("CloseMany")]
+        public JsonResult CloseMany_POST(AmazonSyncModel model)
+        {
+            if (model != null)
+            {
+                _syncAmazonListingsService.CloseAmazonListings(model);
                 return Json(true);
             }
             return Json(false);
@@ -156,18 +216,15 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         {
             if (amazonListing != null)
                 return View(amazonListing);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","ListingGroup");
         }
 
         [HttpPost]
         [ActionName("Delete")]
         public RedirectToRouteResult Delete_POST(AmazonListing amazonListing)
         {
-            //todo delete on amazon
-
             _amazonListingService.Delete(amazonListing);
-
-            return RedirectToAction("Index");
+           return RedirectToAction("Edit","ListingGroup",new {id=amazonListing.AmazonListingGroup.Id});
         }
     }
 }

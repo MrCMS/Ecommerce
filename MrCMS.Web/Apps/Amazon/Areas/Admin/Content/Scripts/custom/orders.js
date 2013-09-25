@@ -4,3 +4,8 @@ var taskId = $("#TaskId").val();
 var taskUrl = "/Admin/Apps/Amazon/Orders/Sync";
 var from = $("#From").val();
 var to = $("#To").val();
+
+function updateValues() {
+    from = $("#From").val();
+    to = $("#To").val();
+}

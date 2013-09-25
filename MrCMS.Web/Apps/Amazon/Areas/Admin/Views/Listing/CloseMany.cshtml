@@ -3,12 +3,12 @@
 @using MrCMS.Web.Apps.Amazon.Models
 @model AmazonSyncModel
 @{
-    ViewBag.Title = "Close Amazon Listing";
+    ViewBag.Title = "Close Amazon Listings";
     var amazonManageInventoryUrl = ViewData["AmazonManageInventoryUrl"] as string;
 }
     <fieldset>
         <legend>
-            Close Amazon Listing
+            Close Amazon Listings
             <span class="btn-group  display-inline  pull-right">
                 @Html.ActionLink("Listing Details", "Details", "Listing", new {id=Model.Id}, new { @class = "btn btn-primary"})
                 @Html.ActionLink("Listing Group", "Edit", "ListingGroup",  new {id=Model.Id}, new { @class = "btn"})
@@ -28,7 +28,7 @@
 
         <div class="row-fluid">
             <div class="span6">
-                Listing: <strong>@Model.Title</strong>
+                Listing Group: <strong>@Model.Title</strong>
                 <br/>
                 <br/>
                 <div>
@@ -49,13 +49,13 @@
                         {
                             <span>Manage Inventory page</span>
                         }
-                        when procedure ends to check if product variant was synced correctly.
+                        when procedure ends to check if product variants were synced correctly.
                     </p>
                 </div>
                  <br/>
                 <div class="alert alert-danger">
                     <strong>Are you sure?</strong><br/>
-                    You will permanently remove Amazon product and their associated SKUs from your Amazon inventory.
+                    You will permanently remove Amazon products and their associated SKUs from your Amazon inventory.
                     Also, if you have selected products with variations, those variations will also be permanently removed.
                     Please note: After you delete an SKU from your Amazon inventory, you cannot add an identical SKU and associated product 
                     information until 24 hours have passed.
@@ -74,6 +74,6 @@
     </fieldset>
 
 @{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/progress-bar-paged.js");}
-@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/close-one-listing.js");}
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/close-many-listing.js");}
 
 @{ Html.IncludeCss("~/Apps/Amazon/Areas/Admin/Content/Styles/progress-bar.css"); }

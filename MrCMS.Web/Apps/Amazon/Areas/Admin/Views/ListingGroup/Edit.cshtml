@@ -1,0 +1,41 @@
+﻿@model MrCMS.Web.Apps.Amazon.Entities.Listings.AmazonListingGroup
+@{
+    ViewBag.Title = "Edit Amazon Listing Group";
+}
+
+<fieldset>
+    <legend>
+        @using (Html.BeginForm("Edit", "ListingGroup", FormMethod.Post, new { @class = "margin0" }))
+        {
+            <div class="pull-left">
+                @Html.HiddenFor(x=>x.Id)
+                @Html.TextBoxFor(x => x.Name, new { @class = "margin0" })
+                <button type="submit" class="btn">Save</button>
+            </div>
+        }
+        <span class="btn-group  display-inline  pull-right margin-left-10">
+            @Html.ActionLink("Back to Listing Groups", "Index", "ListingGroup", null, new { @class = "btn" })
+        </span>
+        <span class="btn-group  display-inline  pull-right">
+             @if (Model.IsListed)
+             {
+                 @Html.ActionLink("Sync", "SyncMany", "Listing", new {id = Model.Id, location = "edit"}, new {@class = "btn btn-success"})
+                 @Html.ActionLink("Close", "CloseMany", "Listing", new {id = Model.Id, location = "edit"}, new {@class = "btn btn-warning"})
+             }
+             else
+             {
+                 @Html.ActionLink("Delete", "Delete", "ListingGroup", new {id = Model.Id}, new {@class = "btn btn-danger", data_toggle = "fb-modal"})
+             }
+        </span>
+        <span class="btn-group  display-inline  pull-right">
+            @Html.ActionLink("Add Single", "ChooseProductVariant", "Listing", new { id = Model.Id }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Bulk Add", "AddMany", "Listing", new { id = Model.Id }, new { @class = "btn btn-primary"})
+        </span>
+    </legend>
+</fieldset>
+
+<div class="row-fluid">
+    <div class="span12">
+        @{Html.RenderAction("Listings",Model.Id);}
+    </div>
+</div>
