@@ -13,10 +13,18 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
 
         FeedSubmissionInfo GetFeedSubmissionList(string submissionId);
         FeedSubmissionInfo SubmitFeed(AmazonFeedType feedType, FileStream feedContent);
-        FileStream GetProductFeedContent(AmazonListing listing);
-        FileStream GetProductPriceFeedContent(AmazonListing listing);
-        FileStream GetProductInventoryFeedContent(AmazonListing listing);
-        FileStream GetProductImageFeedContent(AmazonListing listing);
+
+        FileStream GetSingleDeleteProductFeedContent(AmazonListing amazonListing);
+        FileStream GetSingleProductFeedContent(AmazonListing amazonListing);
+        FileStream GetSingleProductPriceFeedContent(AmazonListing amazonListing);
+        FileStream GetSingleProductInventoryFeedContent(AmazonListing amazonListing);
+        FileStream GetSingleProductImageFeedContent(AmazonListing amazonListing);
+
+        FileStream GetDeleteProductFeedsContent(AmazonListingGroup amazonListingGroup);
+        FileStream GetProductFeedsContent(AmazonListingGroup amazonListingGroup);
+        FileStream GetProductPriceFeedsContent(AmazonListingGroup amazonListingGroup);
+        FileStream GetProductInventoryFeedsContent(AmazonListingGroup amazonListingGroup);
+        FileStream GetProductImageFeedsContent(AmazonListingGroup amazonListingGroup);
 
         MarketplaceWebServiceProducts.Model.Product GetMatchingProductForId(string sku);
 

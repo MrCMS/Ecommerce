@@ -4,11 +4,10 @@
     ViewBag.Title = "Choose Product Variant for new Amazon Listing";
 }
 
-
 <fieldset>
     <legend>Choose Product Variant for new Amazon Listing
         <span class="btn-group  display-inline  pull-right">
-            @Html.ActionLink("Cancel", "Index", "Listing", null , new {@class = "btn btn-danger"})
+            @Html.ActionLink("Cancel", "Index", "Listing", null, new {@class = "btn btn-danger"})
         </span>
     </legend>
     @Html.DropDownListFor(x => x.CategoryId, ViewData["categories"] as IEnumerable<SelectListItem>, new {@class = "input-xlarge"})

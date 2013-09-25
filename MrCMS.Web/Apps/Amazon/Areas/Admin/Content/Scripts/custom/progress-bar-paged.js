@@ -3,6 +3,7 @@
     $(document).on('click', '#pb-start-task', function () {
         $("#pb-start-task").hide();
         $("#pb").show();
+        updateValues();
         updateProgressBar();
         $.post(taskUrl, {
             id: id,

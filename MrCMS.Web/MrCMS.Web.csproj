@@ -213,6 +213,7 @@
   <ItemGroup>
     <Compile Include="Apps\Amazon\AmazonApp.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\AppController.cs" />
+    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\ListingGroupController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\OrdersController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\ListingController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\SellerController.cs" />
@@ -221,6 +222,7 @@
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonLogEntryOverride.cs" />
     <Compile Include="Apps\Amazon\Entities\Analytics\AmazonApiUsage.cs" />
     <Compile Include="Apps\Amazon\Entities\Listings\AmazonListing.cs" />
+    <Compile Include="Apps\Amazon\Entities\Listings\AmazonListingGroup.cs" />
     <Compile Include="Apps\Amazon\Entities\Logs\AmazonLog.cs" />
     <Compile Include="Apps\Amazon\Entities\Orders\AmazonOrder.cs" />
     <Compile Include="Apps\Amazon\Entities\Orders\AmazonOrderItem.cs" />
@@ -251,7 +253,11 @@
     <Compile Include="Apps\Amazon\Models\AmazonFeedType.cs" />
     <Compile Include="Apps\Amazon\Services\Api\IAmazonApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Listings\AmazonListingService.cs" />
+    <Compile Include="Apps\Amazon\Services\Listings\AmazonListingGroupService.cs" />
+    <Compile Include="Apps\Amazon\Services\Listings\IAmazonListingGroupService.cs" />
     <Compile Include="Apps\Amazon\Services\Listings\IAmazonListingService.cs" />
+    <Compile Include="Apps\Amazon\Services\Listings\Sync\CloseAmazonListingService.cs" />
+    <Compile Include="Apps\Amazon\Services\Listings\Sync\ICloseAmazonListingService.cs" />
     <Compile Include="Apps\Amazon\Services\Listings\Sync\IExportAmazonListingService.cs" />
     <Compile Include="Apps\Amazon\Services\Listings\Sync\ExportAmazonListingService.cs" />
     <Compile Include="Apps\Amazon\Services\Listings\Sync\ISyncAmazonListingService.cs" />
@@ -842,7 +848,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\async-paging.js" />
-    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-listings.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-one-listing.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-many-listing.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\listing-groups.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\sync-many-listing.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\sync-one-listing.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\progress-bar.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\listings.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\progress-bar-paged.js" />
@@ -2239,12 +2249,11 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\App\Dashboard.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\App\DashboardLogs.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\App\Settings.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Seller\Settings.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Seller\Seller.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Index.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\ChooseProductVariant.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Add.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Index.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Listings.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\AddOne.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Listings.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\ProductVariants.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Index.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Orders.cshtml" />
@@ -2264,6 +2273,14 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Details.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Delete.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\CloseOne.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\AddMany.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\SyncMany.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Index.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\ListingGroups.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Edit.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Delete.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Add.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\CloseMany.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

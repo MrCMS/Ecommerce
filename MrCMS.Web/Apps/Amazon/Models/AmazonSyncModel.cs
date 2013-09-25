@@ -13,6 +13,7 @@ namespace MrCMS.Web.Apps.Amazon.Models
             To = CurrentRequestData.Now;
             Page = 1;
             Messages = new PagedList<AmazonProgressMessageModel>(new List<AmazonProgressMessageModel>(), Page, 10);
+
             Id = 0;
             Description = String.Empty;
         }

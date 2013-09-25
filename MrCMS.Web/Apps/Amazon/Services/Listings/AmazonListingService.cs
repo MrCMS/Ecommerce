@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using MarketplaceWebServiceFeedsClasses;
-using MrCMS.Helpers;
+﻿using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
-using MrCMS.Web.Apps.Amazon.Settings;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using NHibernate;
 using NHibernate.Criterion;
 
@@ -17,17 +11,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings
     public class AmazonListingService : IAmazonListingService
     {
         private readonly ISession _session;
-        private readonly EcommerceSettings _ecommerceSettings;
         private readonly IAmazonLogService _amazonLogService;
-        private readonly AmazonSellerSettings _amazonSellerSettings;
 
-        public AmazonListingService(ISession session, EcommerceSettings ecommerceSettings,
-            IAmazonLogService amazonLogService, AmazonSellerSettings amazonSellerSettings)
+        public AmazonListingService(ISession session,
+            IAmazonLogService amazonLogService)
         {
             _session = session;
-            _ecommerceSettings = ecommerceSettings;
             _amazonLogService = amazonLogService;
-            _amazonSellerSettings = amazonSellerSettings;
         }
 
         public AmazonListing Get(int id)
@@ -36,21 +26,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings
                             .Where(item => item.Id == id).SingleOrDefault();
         }
 
-        public AmazonListing GetByAmazonListingId(string id)
+        public AmazonListing GetByProductVariantSKU(string sku)
         {
             return _session.QueryOver<AmazonListing>()
-                            .Where(item => item.AmazonListingId.IsInsensitiveLike(id,MatchMode.Exact)).SingleOrDefault();
-        }
-
-        public AmazonListing GetByProductVariantId(int id)
-        {
-            return _session.QueryOver<AmazonListing>()
-                            .Where(item => item.ProductVariant.Id==id).SingleOrDefault();
-        }
-
-        public IEnumerable<AmazonListing> GetAll()
-        {
-            return _session.QueryOver<AmazonListing>().Cacheable().List();
+                            .Where(item => item.SellerSKU.IsInsensitiveLike(sku,MatchMode.Exact)).SingleOrDefault();
         }
 
         public IPagedList<AmazonListing> Search(string queryTerm = null, int page = 1, int pageSize = 10)
@@ -80,30 +59,5 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings
 
             _session.Transact(session => session.Delete(item));
         }
-
-        public AmazonListing InitAmazonListingFromProductVariant(ProductVariant productVariant)
-        {
-            return new AmazonListing()
-            {
-                ProductVariant = productVariant,
-                Brand =
-                    productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty,
-                Condition = ConditionType.New,
-                Currency = _ecommerceSettings.Currency.Code,
-                Manafacturer =
-                    productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty,
-                MfrPartNumber = productVariant.ManufacturerPartNumber,
-                Quantity =
-                    productVariant.StockRemaining.HasValue
-                        ? Decimal.ToInt32(productVariant.StockRemaining.Value)
-                        : 1,
-                Price = productVariant.Price,
-                SellerSKU = productVariant.SKU,
-                Title = productVariant.DisplayName,
-                StandardProductIDType = _amazonSellerSettings.BarcodeIsOfType,
-                StandardProductId = productVariant.Barcode
-            };
-        }
-
     }
 }

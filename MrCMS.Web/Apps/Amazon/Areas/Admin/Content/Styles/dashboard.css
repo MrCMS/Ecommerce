@@ -114,7 +114,17 @@ canvas{
     border-radius: 0;
     padding: 5px 10px 5px 10px;
 }
-
+.dashboard-box-log.warning {
+    border-left: 3px solid #f39c12;
+    border-right: 1px solid #E5E5E5;
+    border-top: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+    background-color: #ffffff;
+    color: #5A5A5A;
+    margin: 0 0 5px 0;
+    border-radius: 0;
+    padding: 5px 10px 5px 10px;
+}
 
 
 

@@ -10,6 +10,7 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Listings
 {
     public class AmazonListing: SiteEntity
     {
+        public virtual AmazonListingGroup AmazonListingGroup { get; set; }
         public virtual ProductVariant ProductVariant { get; set; }
 
         public virtual string AmazonListingId { get; set; }
