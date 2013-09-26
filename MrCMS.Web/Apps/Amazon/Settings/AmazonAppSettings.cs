@@ -44,6 +44,9 @@ namespace MrCMS.Web.Apps.Amazon.Settings
         [DisplayName("Secret Key")]
         public string SecretKey { get; set; }
 
+        [DisplayName("Amazon Product Details Url")]
+        public string AmazonProductDetailsUrl { get; set; }
+
         [DisplayName("Amazon Order Details Url")]
         public string AmazonOrderDetailsUrl { get; set; }
 

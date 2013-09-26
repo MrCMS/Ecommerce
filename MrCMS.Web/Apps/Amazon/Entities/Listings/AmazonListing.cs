@@ -13,8 +13,6 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Listings
         public virtual AmazonListingGroup AmazonListingGroup { get; set; }
         public virtual ProductVariant ProductVariant { get; set; }
 
-        public virtual string AmazonListingId { get; set; }
-        public virtual string AmazonSubmissionId { get; set; }
         public virtual string ASIN { get; set; }
 
         public virtual AmazonListingStatus Status { get; set; }

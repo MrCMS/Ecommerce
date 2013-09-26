@@ -146,21 +146,22 @@ namespace MrCMS.Web.Apps.Amazon.Services.Logs
 
         public IPagedList<AmazonLog> GetEntriesPaged(int pageNum, AmazonLogType? type = null, AmazonLogStatus? status = null, int pageSize = 10)
         {
-            var query = BaseQuery();
-            if (type.HasValue)
-                query = query.Where(log => log.LogType == type);
+            if(type.HasValue)
+                return _session.QueryOver<AmazonLog>()
+                           .Where(entry => entry.Site == CurrentRequestData.CurrentSite
+                               && (type == null || entry.LogType == type.Value))
+                           .OrderBy(entry => entry.Id)
+                           .Desc.Paged(pageNum, pageSize);
             if (status.HasValue)
-                query = query.Where(log => log.LogStatus == status);
-            return query.Paged(pageNum, pageSize);
-        }
-
-        private IQueryOver<AmazonLog, AmazonLog> BaseQuery()
-        {
-            return
-                _session.QueryOver<AmazonLog>()
-                        .Where(entry => entry.Site == CurrentRequestData.CurrentSite)
-                        .OrderBy(entry => entry.Id)
-                        .Desc;
+                return _session.QueryOver<AmazonLog>()
+                           .Where(entry => entry.Site == CurrentRequestData.CurrentSite
+                               && (status == null || entry.LogStatus == status.Value))
+                           .OrderBy(entry => entry.Id)
+                           .Desc.Paged(pageNum, pageSize);
+            return _session.QueryOver<AmazonLog>()
+                           .Where(entry => entry.Site == CurrentRequestData.CurrentSite)
+                           .OrderBy(entry => entry.Id)
+                           .Desc.Paged(pageNum, pageSize);
         }
 
         public void DeleteAllLogs()

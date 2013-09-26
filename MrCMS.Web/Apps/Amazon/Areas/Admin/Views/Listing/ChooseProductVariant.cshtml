@@ -10,7 +10,7 @@
             @Html.ActionLink("Cancel", "Edit", "ListingGroup", new {id = Model.AmazonListingGroup.Id}, new {@class = "btn btn-danger"})
         </span>
     </legend>
-    @Html.DropDownListFor(x => x.CategoryId, ViewData["categories"] as IEnumerable<SelectListItem>, new {@class = "input-xlarge"})
+    @Html.DropDownListFor(x => x.CategoryId, Model.Categories, new {@class = "input-xlarge"})
     <br/>
     @Html.TextBoxFor(x => x.Name, new {@class = "input-xlarge search-query search-product-variants", placeholder = "Enter product variant name or SKU..."})
     <button type="button" class="btn btn-success" id="search-product-variants">Filter</button>

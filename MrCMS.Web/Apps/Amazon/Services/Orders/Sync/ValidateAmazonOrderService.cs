@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using MarketplaceWebServiceOrders.Model;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
@@ -9,7 +8,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using Address = MrCMS.Web.Apps.Ecommerce.Entities.Users.Address;
 using Order = MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order;
 
@@ -17,30 +15,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 {
     public class ValidateAmazonOrderService : IValidateAmazonOrderService
     {
-        private readonly IAmazonOrderService _amazonOrderService;
         private readonly ICountryService _countryService;
-        private readonly EcommerceSettings _ecommerceSettings;
 
-        public ValidateAmazonOrderService(IAmazonOrderService amazonOrderService,
-            ICountryService countryService, EcommerceSettings ecommerceSettings)
+        public ValidateAmazonOrderService(ICountryService countryService)
         {
-            _amazonOrderService = amazonOrderService;
             _countryService = countryService;
-            _ecommerceSettings = ecommerceSettings;
         }
 
-        public AmazonOrder SetAmazonOrderItems(MarketplaceWebServiceOrders.Model.Order rawOrder, 
-            IEnumerable<OrderItem> rawOrderItems, AmazonOrder amazonOrder)
-        {
-            foreach (var rawOrderItem in rawOrderItems)
-                SetAmazonOrderItem(ref amazonOrder, rawOrderItem);
-
-            amazonOrder.Order = GetOrder(rawOrder, amazonOrder);
-
-            return amazonOrder;
-        }
-
-        private void SetAmazonOrderItem(ref AmazonOrder amazonOrder, OrderItem rawOrderItem)
+        public void SetAmazonOrderItem(ref AmazonOrder amazonOrder, OrderItem rawOrderItem)
         {
             var orderItem = amazonOrder.Items.SingleOrDefault(x => x.AmazonOrderItemId == rawOrderItem.OrderItemId);
 
@@ -53,7 +35,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 amazonOrder.Items.Add(orderItem);
             }
         }
-        private static AmazonOrderItem GetAmazonOrderItem(AmazonOrder amazonOrder, OrderItem rawOrderItem)
+        private AmazonOrderItem GetAmazonOrderItem(AmazonOrder amazonOrder, OrderItem rawOrderItem)
         {
             return new AmazonOrderItem()
                 {
@@ -90,27 +72,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     ShippingTaxCurrency = rawOrderItem.ShippingTax.CurrencyCode
                 };
         }
-        public AmazonOrder GetAmazonOrder(MarketplaceWebServiceOrders.Model.Order rawOrder)
-        {
-            if (rawOrder.OrderTotal.CurrencyCode == _ecommerceSettings.Currency.Code)
-            {
-                var order = _amazonOrderService.GetByAmazonOrderId(rawOrder.AmazonOrderId) ?? new AmazonOrder();
 
-                if (order.Id == 0)
-                {
-                    var shippingAddress = GetAmazonOrderAddress(rawOrder);
-
-                    GetAmazonOrderDetails(rawOrder, ref order, shippingAddress);
-                }
-
-                order.NumberOfItemsShipped = rawOrder.NumberOfItemsShipped;
-                order.Status = rawOrder.OrderStatus.GetEnumByValue<AmazonOrderStatus>();
-
-                return order;
-            }
-            return null;
-        }
-        private static void GetAmazonOrderDetails(MarketplaceWebServiceOrders.Model.Order rawOrder, ref AmazonOrder order, Address shippingAddress)
+        public void GetAmazonOrderDetails(MarketplaceWebServiceOrders.Model.Order rawOrder, ref AmazonOrder order, Address shippingAddress)
         {
             order.AmazonOrderId = rawOrder.AmazonOrderId;
             order.BuyerEmail = rawOrder.BuyerEmail;
@@ -130,7 +93,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             order.FulfillmentChannel = rawOrder.FulfillmentChannel.GetEnumByValue<AmazonFulfillmentChannel>();
             order.LastUpdatedDate = rawOrder.LastUpdateDate;
         }
-        private Address GetAmazonOrderAddress(MarketplaceWebServiceOrders.Model.Order rawOrder)
+        public Address GetAmazonOrderAddress(MarketplaceWebServiceOrders.Model.Order rawOrder)
         {
             return new Address()
                 {
@@ -146,7 +109,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 };
         }
 
-        private Order GetOrder(MarketplaceWebServiceOrders.Model.Order rawOrder, AmazonOrder amazonOrder)
+        public Order GetOrder(MarketplaceWebServiceOrders.Model.Order rawOrder, AmazonOrder amazonOrder)
         {
             var order = amazonOrder.Order ?? new Order();
             if (order.Id == 0)
@@ -160,7 +123,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
             return order;
         }
-        private static Order GetOrderDetails(AmazonOrder amazonOrder)
+        private Order GetOrderDetails(AmazonOrder amazonOrder)
         {
             return new Order()
                 {
@@ -179,7 +142,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     SalesChannel = "Amazon"
                 };
         }
-        private static void GetOrderLines(AmazonOrder amazonOrder, ref Order order)
+        private void GetOrderLines(AmazonOrder amazonOrder, ref Order order)
         {
             foreach (var amazonOrderItem in amazonOrder.Items)
             {

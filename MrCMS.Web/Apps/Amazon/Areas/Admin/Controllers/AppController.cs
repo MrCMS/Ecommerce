@@ -97,7 +97,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         {
             if (model!=null && model.TaskId.HasValue)
             {
-                var progress = AmazonProgressBarHelper.GetProgressBar(model.TaskId);
+                var progress = AmazonProgressBarHelper.Get(model.TaskId);
                 return PartialView(new AmazonSyncModel()
                 {
                     TaskId = model.TaskId,

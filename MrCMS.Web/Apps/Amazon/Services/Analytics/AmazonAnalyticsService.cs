@@ -67,7 +67,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
             return SetChartModel(from, to, orders);
         }
 
-        private static object SetChartModel(DateTime @from, DateTime to, List<KeyValuePair<DateTime, decimal>> items)
+        private static object SetChartModel(DateTime @from, DateTime to, IList<KeyValuePair<DateTime, decimal>> items)
         {
             var data = new List<decimal>();
             var labels = new List<string>();
