@@ -14,13 +14,13 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
 {
     public class OrdersController : MrCMSAppAdminController<AmazonApp>
     {
-        private readonly ISyncAmazonOrderService _syncAmazonOrderService;
+        private readonly IAmazonOrderSyncManager _syncAmazonOrderService;
         private readonly IAmazonOrderService _amazonOrderService;
         private readonly AmazonAppSettings _amazonAppSettings;
         private readonly IOptionService _optionService;
         private readonly IAmazonOrderSearchService _amazonOrderSearchService;
 
-        public OrdersController(ISyncAmazonOrderService syncAmazonOrderService, 
+        public OrdersController(IAmazonOrderSyncManager syncAmazonOrderService, 
             IAmazonOrderService amazonOrderService, AmazonAppSettings amazonAppSettings, 
             IOptionService optionService, IAmazonOrderSearchService amazonOrderSearchService)
         {

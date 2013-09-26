@@ -59,10 +59,10 @@
                 
                 <div class="row-fluid">
                     <div class="span4">
-                    @Html.LabelFor(x => x.AppPath)
-                    @Html.TextBoxFor(x => x.AppPath, new {@class = "span12"})
-                    @Html.ValidationMessageFor(x => x.AppPath)
-                          </div>
+                        @Html.LabelFor(x => x.AppPath)
+                        @Html.TextBoxFor(x => x.AppPath, new {@class = "span12"})
+                        @Html.ValidationMessageFor(x => x.AppPath)
+                    </div>
                     <div class="span4">
                         @Html.LabelFor(x => x.AppVersion)
                         @Html.TextBoxFor(x => x.AppVersion, new {@class = "span12"})
@@ -94,6 +94,14 @@
 
             </div>
             
+        </div>
+        
+         <div class="row-fluid">
+            <div class="span12">
+                @Html.LabelFor(x => x.AmazonProductDetailsUrl)
+                @Html.TextBoxFor(x => x.AmazonProductDetailsUrl, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.AmazonProductDetailsUrl)
+            </div>
         </div>
         
         <div class="row-fluid">

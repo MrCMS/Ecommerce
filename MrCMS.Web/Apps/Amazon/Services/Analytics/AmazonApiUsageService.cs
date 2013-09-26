@@ -27,7 +27,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
                        .Where(x => x.Day == CurrentRequestData.Now.Date
                            && x.ApiSection == apiSection
                            && x.ApiOperation == apiOperation
-                           && x.Site == CurrentRequestData.CurrentSite)
+                           && x.Site == CurrentRequestData.CurrentSite).Cacheable()
                        .SingleOrDefault();
         }
     }

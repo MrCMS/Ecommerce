@@ -49,7 +49,23 @@
                      <small class="pull-right">@item.CreatedOn.ToString("dd/MM/yyyy HH:mm")</small>
                 <strong>@item.LogType.GetDescription()</strong>
                 <br/>
-                @item.Message.ToShortString(50)
+                @if (!String.IsNullOrWhiteSpace(item.Message))
+                {
+                    @item.Message.ToShortString(50)
+                }
+                else
+                {
+                    @item.LogStatus.GetDescription() 
+                }
+                <span>&nbsp;</span>
+                @if (item.AmazonListing != null)
+                {
+                     @Html.ActionLink("More Details", "Details", "Listing", new {id=item.AmazonListing.Id},null)
+                }
+                else if (item.AmazonOrder != null)
+                {
+                    @Html.ActionLink("More Details", "Details", "Orders", new {id = item.AmazonOrder.Id}, null)
+                }
              </div>
         }
 

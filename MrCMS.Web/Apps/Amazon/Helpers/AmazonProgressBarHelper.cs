@@ -10,7 +10,7 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
     {
         private static readonly IDictionary<Guid, AmazonProgressModel> ProgressBars = new Dictionary<Guid, AmazonProgressModel>();
 
-        public static AmazonProgressModel GetProgressBar(Guid? id)
+        public static AmazonProgressModel Get(Guid? id)
         {
             var currentProgress = new AmazonProgressModel();
             if (id.HasValue)
@@ -18,13 +18,13 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
             return currentProgress;
         }
 
-        private static void SetProgressBar(Guid id, AmazonProgressModel progressModel)
+        private static void Set(Guid id, AmazonProgressModel progressModel)
         {
             if (ProgressBars.Keys.Contains(id))
                 ProgressBars[id] = progressModel;
         }
 
-        public static void CleanProgressBars(Guid id)
+        public static void Clean(Guid id)
         {
             if (ProgressBars.Keys.Contains(id))
                 ProgressBars.Remove(id);
@@ -43,7 +43,7 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
             if(!ProgressBars.Keys.Contains(id))
                 ProgressBars.Add(id, new AmazonProgressModel(){TaskId = id});
 
-            var progressModel = GetProgressBar(id);
+            var progressModel = Get(id);
 
             if (!String.IsNullOrWhiteSpace(message) || !String.IsNullOrWhiteSpace(status))
                 progressModel.Messages.Add(new AmazonProgressMessageModel()
@@ -57,7 +57,7 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
             if (processedRecords.HasValue)
                 progressModel.ProcessedActions = processedRecords.Value;
 
-            SetProgressBar(id, progressModel);
+            Set(id, progressModel);
         }
 
         public static object GetStatus(Guid? id)

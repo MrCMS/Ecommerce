@@ -8,15 +8,15 @@ namespace MrCMS.Web.Apps.Amazon.Models
         Initiation,
         [Description("Stage")]
         Stage,
-        [Description("Completion")]
+        [Description("Operation successfully completed")]
         Completion,
-        [Description("Error")]
+        [Description("Error happened.")]
         Error,
-        [Description("Insert")]
+        [Description("New item inserted")]
         Insert,
-        [Description("Update")]
+        [Description("Item successfully updated")]
         Update,
-        [Description("Delete")]
+        [Description("Item deleted")]
         Delete
     }
 }

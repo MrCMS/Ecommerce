@@ -3,6 +3,10 @@
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Amazon.Entities.Listings.AmazonListing>
 
+@{
+    var amazonProductDetailsUrl=ViewData["AmazonProductDetailsUrl"] as string;
+}
+
 <div data-paging-type="async" id="listings">
     
     @if (!Model.Any())
@@ -37,8 +41,17 @@
                         <td>
                             @item.SellerSKU
                         </td>
-                         <td>
-                            @item.ASIN
+                        <td>
+                            @if (!String.IsNullOrWhiteSpace(amazonProductDetailsUrl))
+                            {
+                                <a href='@(amazonProductDetailsUrl + item.ASIN)' target="_blank">
+                                    @item.ASIN
+                                </a>
+                            }
+                            else
+                            {
+                                @item.ASIN
+                            }
                         </td>
                         <td>
                             @item.Title
@@ -49,16 +62,9 @@
                         <td>
                              <div class="btn-group">
                             @Html.ActionLink("Details", "Details", "Listing", new {id = item.Id}, new { @class="btn btn-mini"})
-                            @if (item.Status == AmazonListingStatus.Active)
-                            {
-                                @Html.ActionLink("Sync", "SyncOne", "Listing", new {id = item.Id}, new {@class = "btn btn-mini btn-success"})
-                                @Html.ActionLink("Close", "CloseOne", "Listing", new {id = item.Id}, new {@class = "btn btn-mini btn-warning"})
-                            }
-                            else
-                            {
-                                @Html.ActionLink("Delete", "Delete", "Listing", new {id = item.Id}, new {@class = "btn btn-mini btn-danger", data_toggle = "fb-modal"})
-                            }
-                            </div>
+                            @Html.ActionLink("Sync", "SyncOne", "Listing", new {id = item.Id}, new {@class = "btn btn-mini btn-success"})
+                            @(item.Status == AmazonListingStatus.Active ? Html.ActionLink("Close", "CloseOne", "Listing", new {id = item.Id}, new {@class = "btn btn-mini btn-warning"}) : Html.ActionLink("Delete", "Delete", "Listing", new {id = item.Id}, new {@class = "btn btn-mini btn-danger", data_toggle = "fb-modal"}))
+                             </div>
                         </td>
                     </tr>
                 }

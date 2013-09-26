@@ -5,6 +5,7 @@
          
 <div class="row-fluid">
     <div class="span6">
+        @Html.HiddenFor(x => x.Id)
         @Html.HiddenFor(x => x.ProductVariant.Id)
         @Html.LabelFor(x => x.Title)
         @Html.TextBoxFor(x => x.Title, new {@class="span12"})

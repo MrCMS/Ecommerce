@@ -2,7 +2,7 @@
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 {
-    public interface ISyncAmazonOrderService
+    public interface IAmazonOrderSyncManager
     {
         void SyncOrders(AmazonSyncModel model);
     }

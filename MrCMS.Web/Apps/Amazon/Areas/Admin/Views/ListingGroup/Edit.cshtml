@@ -17,15 +17,8 @@
             @Html.ActionLink("Back to Listing Groups", "Index", "ListingGroup", null, new { @class = "btn" })
         </span>
         <span class="btn-group  display-inline  pull-right">
-             @if (Model.IsListed)
-             {
-                 @Html.ActionLink("Sync", "SyncMany", "Listing", new {id = Model.Id, location = "edit"}, new {@class = "btn btn-success"})
-                 @Html.ActionLink("Close", "CloseMany", "Listing", new {id = Model.Id, location = "edit"}, new {@class = "btn btn-warning"})
-             }
-             else
-             {
-                 @Html.ActionLink("Delete", "Delete", "ListingGroup", new {id = Model.Id}, new {@class = "btn btn-danger", data_toggle = "fb-modal"})
-             }
+            @Html.ActionLink("Sync", "SyncMany", "Listing", new {id = Model.Id}, new {@class = "btn btn-success"})
+            @(Model.IsListed ? Html.ActionLink("Close", "CloseMany", "Listing", new {id = Model.Id}, new {@class = "btn btn-warning"}) : Html.ActionLink("Delete", "Delete", "ListingGroup", new {id = Model.Id}, new {@class = "btn btn-danger", data_toggle = "fb-modal"}))
         </span>
         <span class="btn-group  display-inline  pull-right">
             @Html.ActionLink("Add Single", "ChooseProductVariant", "Listing", new { id = Model.Id }, new { @class = "btn btn-primary" })

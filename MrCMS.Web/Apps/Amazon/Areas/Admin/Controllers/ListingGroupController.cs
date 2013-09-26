@@ -62,6 +62,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Edit(AmazonListingGroup amazonListingGroup)
         {
+            ViewData["AmazonProductDetailsUrl"] = _amazonAppSettings.AmazonProductDetailsUrl;
             if (amazonListingGroup != null)
                 return View(amazonListingGroup);
             return RedirectToAction("Index");
@@ -71,6 +72,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         [ActionName("Edit")]
         public ActionResult Edit_POST(AmazonListingGroup amazonListingGroup)
         {
+            ViewData["AmazonProductDetailsUrl"] = _amazonAppSettings.AmazonProductDetailsUrl;
             if (ModelState.IsValid)
             {
                 _amazonListingGroupService.Save(amazonListingGroup);
