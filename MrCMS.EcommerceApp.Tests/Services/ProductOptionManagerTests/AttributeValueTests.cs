@@ -26,7 +26,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
 
             _productOptionManager.SetAttributeValue(variant, "Test", "Value");
 
-            Session.QueryOver<ProductAttributeValue>().RowCount().Should().Be(0);
+            Session.QueryOver<ProductOptionValue>().RowCount().Should().Be(0);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
 
             _productOptionManager.SetAttributeValue(variant, "Test", "Value");
 
-            Session.QueryOver<ProductAttributeValue>().RowCount().Should().Be(1);
+            Session.QueryOver<ProductOptionValue>().RowCount().Should().Be(1);
         }
 
         [Fact]
@@ -49,25 +49,25 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
 
             _productOptionManager.SetAttributeValue(variant, "Test", "Updated Value");
 
-            Session.QueryOver<ProductAttributeValue>().RowCount().Should().Be(1);
-            Session.QueryOver<ProductAttributeValue>().List().First().Value.Should().Be("Updated Value");
+            Session.QueryOver<ProductOptionValue>().RowCount().Should().Be(1);
+            Session.QueryOver<ProductOptionValue>().List().First().Value.Should().Be("Updated Value");
         }
 
-        private ProductAttributeValue CreateValue(ProductVariant product, ProductAttributeOption option, string value)
+        private ProductOptionValue CreateValue(ProductVariant product, ProductOption option, string value)
         {
-            var specValue = new ProductAttributeValue
+            var specValue = new ProductOptionValue
             {
                 ProductVariant = product,
-                ProductAttributeOption = option,
+                ProductOption = option,
                 Value = value
             };
             Session.Transact(session => session.Save(specValue));
             return specValue;
         }
 
-        private ProductAttributeOption CreateOption(string name)
+        private ProductOption CreateOption(string name)
         {
-            var option = new ProductAttributeOption { Name = name };
+            var option = new ProductOption { Name = name };
             Session.Transact(session => session.Save(option));
             return option;
         }

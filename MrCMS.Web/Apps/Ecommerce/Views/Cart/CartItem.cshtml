@@ -13,11 +13,11 @@
         </div>
     </div>
     <div class="span3 cell">
-        @foreach (var option in Model.Item.AttributeValues)
+        @foreach (var option in Model.Item.OptionValues)
         {
             <p class="pull-left">
                 <strong>
-                    @option.ProductAttributeOption.Name
+                    @option.ProductOption.Name
                 </strong>
                 <span>:</span>
                 @option.Value

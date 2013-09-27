@@ -1,10 +1,11 @@
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
-<table class="table table-condensed table-striped">
+<table class="table table-condensed table-striped" id="product-pricing-info">
     <thead>
         <tr>
               <th>Name
                  </th>
-            @foreach (var option in Model.AttributeOptions.OrderBy(x => x.DisplayOrder))
+            @foreach (var option in Model.Options)
             {
                 <th>@option.Name
                 </th>
@@ -35,9 +36,9 @@
                         <span>@Model.Name</span>
                     }
                 </td>
-                @foreach (var option in Model.AttributeOptions.OrderBy(x => x.DisplayOrder))
+                @foreach (var option in Model.Options)
                 {
-                    var productAttributeValue = variant.AttributeValues.FirstOrDefault(value => value.ProductAttributeOption.Name == option.Name);
+                    var productAttributeValue = variant.OptionValues.FirstOrDefault(value => value.ProductOption.Name == option.Name);
                     <td>
                         @(productAttributeValue != null ? productAttributeValue.Value : string.Empty)
                     </td>
@@ -46,7 +47,7 @@
                     @variant.SKU
                 </td>
                 <td>
-                    @variant.BasePrice @Html.ActionLink("Add price break", "Add", "PriceBreak", new { id = variant.Id, type = "ProductVariant" }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                    @variant.BasePrice.ToCurrencyFormat() @Html.ActionLink("Add price break", "Add", "PriceBreak", new { id = variant.Id, type = "ProductVariant" }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
                     @if (variant.PriceBreaks.Any())
                     {
                         <h5>Price Breaks</h5>
@@ -60,7 +61,7 @@
                             {
                                 <tr>
                                     <td>@priceBreak.Quantity</td>
-                                    <td>@string.Format("{0:n0}",priceBreak.Price)</td>
+                                    <td>@priceBreak.Price.ToCurrencyFormat()</td>
                                     <td>@Html.ActionLink("Delete", "Delete", "PriceBreak", new { id = priceBreak.Id }, new { @class = "btn btn-danger btn-mini pull-right", data_toggle = "fb-modal" })</td>
                                 </tr>
                             }

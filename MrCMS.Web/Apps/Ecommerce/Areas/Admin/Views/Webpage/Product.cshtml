@@ -2,7 +2,7 @@
 <div class="row-fluid">
     <div class="span3">
         <div id="brands">
-            @{Html.RenderAction("Brands", "Product", new { id = Model.Id, brandId= Model.Brand!=null?Model.Brand.Id.ToString():String.Empty });}
+            @{Html.RenderAction("Brands", "Product", new { id = Model.Id, brandId = Model.Brand != null ? Model.Brand.Id.ToString() : String.Empty });}
         </div>
     </div>
     <div class="span9">

@@ -24,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             Variants = new List<ProductVariant>();
             SpecificationValues = new List<ProductSpecificationValue>();
             Categories = new List<Category>();
-            AttributeOptions = new List<ProductAttributeOption>();
+            Options = new List<ProductOption>();
         }
 
         public virtual MediaCategory Gallery { get; set; }
@@ -101,7 +101,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             }
         }
 
-        public virtual IList<ProductAttributeOption> AttributeOptions { get; set; }
+        public virtual IList<ProductOption> Options { get; set; }
 
         public virtual Brand Brand { get; set; }
 

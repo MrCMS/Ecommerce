@@ -67,14 +67,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                        : new List<Product>();
         }
 
-        private IList<ProductAttributeValue> GetAttributeValues(MakeMultivariantModel model, ProductVariant productVariant)
+        private IList<ProductOptionValue> GetAttributeValues(OptionManagementModel model, ProductVariant productVariant)
         {
-            var values = new List<ProductAttributeValue>();
+            var values = new List<ProductOptionValue>();
             if (!string.IsNullOrWhiteSpace(model.Option1))
-                values.Add(new ProductAttributeValue
+                values.Add(new ProductOptionValue
                                {
-                                   ProductAttributeOption =
-                                       _session.QueryOver<ProductAttributeOption>()
+                                   ProductOption =
+                                       _session.QueryOver<ProductOption>()
                                                .Where(
                                                    option =>
                                                    option.Name.IsInsensitiveLike(model.Option1, MatchMode.Exact))
@@ -83,10 +83,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                    ProductVariant = productVariant
                                });
             if (!string.IsNullOrWhiteSpace(model.Option2))
-                values.Add(new ProductAttributeValue
+                values.Add(new ProductOptionValue
                                {
-                                   ProductAttributeOption =
-                                       _session.QueryOver<ProductAttributeOption>()
+                                   ProductOption =
+                                       _session.QueryOver<ProductOption>()
                                                .Where(
                                                    option =>
                                                    option.Name.IsInsensitiveLike(model.Option2, MatchMode.Exact))
@@ -95,10 +95,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                    ProductVariant = productVariant
                                });
             if (!string.IsNullOrWhiteSpace(model.Option3))
-                values.Add(new ProductAttributeValue
+                values.Add(new ProductOptionValue
                                {
-                                   ProductAttributeOption =
-                                       _session.QueryOver<ProductAttributeOption>()
+                                   ProductOption =
+                                       _session.QueryOver<ProductOption>()
                                                .Where(
                                                    option =>
                                                    option.Name.IsInsensitiveLike(model.Option3, MatchMode.Exact))
@@ -112,20 +112,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         private void AddAttributeOption(string optionName, Product product)
         {
             var productAttributeOption =
-                _session.QueryOver<ProductAttributeOption>()
+                _session.QueryOver<ProductOption>()
                         .Where(option => option.Name.IsInsensitiveLike(optionName, MatchMode.Exact))
                         .Take(1)
                         .SingleOrDefault();
             if (productAttributeOption == null)
             {
-                _session.Transact(session => session.Save(new ProductAttributeOption() { Name = optionName }));
+                _session.Transact(session => session.Save(new ProductOption() { Name = optionName }));
                 productAttributeOption =
-                _session.QueryOver<ProductAttributeOption>()
+                _session.QueryOver<ProductOption>()
                         .Where(option => option.Name.IsInsensitiveLike(optionName, MatchMode.Exact))
                         .Take(1)
                         .SingleOrDefault();
             }
-            product.AttributeOptions.Add(productAttributeOption);
+            product.Options.Add(productAttributeOption);
         }
 
         public void AddCategory(Product product, int categoryId)

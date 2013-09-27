@@ -8,7 +8,7 @@
             <tr>
                 <th>SKU
                 </th>
-                @foreach (var option in Model.AttributeOptions)
+                @foreach (var option in Model.Options)
                 {
                     <th>@option.Name
                     </th>
@@ -25,11 +25,11 @@
                     <td>
                         @variant.SKU
                     </td>
-                    @foreach (var option in Model.AttributeOptions)
+                    @foreach (var option in Model.Options)
                     {
                         <td>
                             @{
-                                var productAttributeValue = variant.AttributeValues.FirstOrDefault(value => value.ProductAttributeOption.Name == option.Name);
+                                var productAttributeValue = variant.OptionValues.FirstOrDefault(value => value.ProductOption.Name == option.Name);
                             }
                             @if (productAttributeValue != null)
                             {

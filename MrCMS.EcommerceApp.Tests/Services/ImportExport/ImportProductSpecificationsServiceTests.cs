@@ -41,12 +41,12 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             var product = new Product() { Name = "Test Product" };
             var productVariant = new ProductVariant() { Name = "Test Product Variant", Product = product };
 
-            var option = new ProductAttributeOption() { Id = 1, Name = "Storage" };
+            var option = new ProductOption() { Id = 1, Name = "Storage" };
             A.CallTo(() => _productOptionManager.GetAttributeOptionByName("Storage")).Returns(option);
 
             _importSpecificationsService.ImportVariantSpecifications(productVariantDTO, product, productVariant);
 
-            product.AttributeOptions.Should().HaveCount(1);
+            product.Options.Should().HaveCount(1);
         }
 
         [Fact(Skip = "Refactoring")]

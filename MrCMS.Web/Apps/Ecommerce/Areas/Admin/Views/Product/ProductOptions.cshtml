@@ -1,0 +1,32 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+<div id="product-option-list">
+    @if (Model.Options.Any())
+    {
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>Name
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var option in Model.Options)
+                {
+                    <tr>
+                        <td>
+                            @option.Name
+                        </td>
+                        <td>
+                            <button class="btn btn-mini btn-danger" data-id="@option.Id" data-product-id="@Model.Id" data-action="remove-option">Remove</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>There are currently no options for this product</p>
+    }
+</div>
