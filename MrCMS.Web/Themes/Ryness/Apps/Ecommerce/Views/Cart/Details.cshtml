@@ -2,7 +2,7 @@
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
-<div id="details" class="container">
+<div id="details" class="container padding-top-bottom-10">
     <h1>Shopping basket summary</h1>
     <hr/>
     <div class="row-fluid cart-header-buttons">
@@ -126,6 +126,7 @@
     <!-- TODO: styling of this paypal-->
     <div class="row-fluid">
         <div class="pull-right">
+            <p class="text-align-right">Or Checkout with...</p>
             @if (Model.CanUsePayPalExpress)
             {
                 using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
