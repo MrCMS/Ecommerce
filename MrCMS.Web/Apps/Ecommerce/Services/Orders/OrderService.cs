@@ -53,7 +53,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
                                                         foreach (var item in cartModel.Items)
                                                         {
-                                                            var options = string.Join(", ", item.Item.AttributeValues.Select(value => value.FormattedValue));
+                                                            var options = string.Join(", ", item.Item.OptionValues.Select(value => value.FormattedValue));
 
                                                             order.OrderLines.Add(new OrderLine
                                                                                      {

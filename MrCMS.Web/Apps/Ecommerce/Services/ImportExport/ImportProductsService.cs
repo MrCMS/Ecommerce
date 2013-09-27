@@ -133,7 +133,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 }
             }
 
-            product.AttributeOptions.Clear();
+            product.Options.Clear();
 
             ////Url History
             _importUrlHistoryService.ImportUrlHistory(dataTransferObject, product);

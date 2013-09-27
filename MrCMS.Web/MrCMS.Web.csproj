@@ -363,6 +363,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\PayPalExpressCheckoutSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\PaypointSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\PriceBreakController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductOptionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductSpecificationAttributeController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductSpecificationAttributeOptionController.cs" />
@@ -428,8 +429,8 @@
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderRefund.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\Brand.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\PriceBreak.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\Products\ProductAttributeOption.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\Products\ProductAttributeValue.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Products\ProductOption.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Products\ProductOptionValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationAttributeOption.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationValue.cs" />
@@ -486,7 +487,7 @@
     <Compile Include="Apps\Ecommerce\Models\IAddress.cs" />
     <Compile Include="Apps\Ecommerce\Models\IShippingCalculationRequest.cs" />
     <Compile Include="Apps\Ecommerce\Models\KeyEqualityComparer.cs" />
-    <Compile Include="Apps\Ecommerce\Models\MakeMultivariantModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\OptionManagementModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\OrderSearchModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaymentDetailsModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaymentStatus.cs" />
@@ -628,6 +629,7 @@
     <Compile Include="Apps\Ecommerce\Services\IPaypointPaymentService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IPaypointRequestHelper.cs" />
     <Compile Include="Apps\Ecommerce\Services\IPaypointRequestService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IProductOptionManagementService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\BulkShippingUpdateService.cs" />
@@ -842,6 +844,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-products.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\google-base.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\manage-options.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-variant.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\products.js" />
@@ -2155,6 +2158,9 @@
     <Content Include="Apps\Ecommerce\Views\CategoryContainer\Categories.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\UserOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\NewInProducts.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductOption\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddProductOption.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ProductOptions.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

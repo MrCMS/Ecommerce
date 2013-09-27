@@ -13,7 +13,9 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
                    .Table("Ecommerce_ProductCategories")
                    .AsList(part => part.Column("DisplayOrder"))
                    .Not.Inverse();
-            mapping.HasManyToMany(product => product.AttributeOptions).Table("Ecommerce_ProductAttributes").Not.Inverse();
+            mapping.HasManyToMany(product => product.Options).Table("Ecommerce_ProductOptions")
+                   .AsList(part => part.Column("DisplayOrder"))
+                   .Not.Inverse();
         }
     }
 }

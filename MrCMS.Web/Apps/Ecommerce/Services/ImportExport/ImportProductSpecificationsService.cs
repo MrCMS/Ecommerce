@@ -49,22 +49,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
         public void ImportVariantSpecifications(ProductVariantImportDataTransferObject item, Product product, ProductVariant productVariant)
         {
-            productVariant.AttributeValues.Clear();
+            productVariant.OptionValues.Clear();
             foreach (var opt in item.Options)
             {
                 if (_productOptionManager.GetAttributeOptionByName(opt.Key)==null)
-                    _productOptionManager.AddAttributeOption(new ProductAttributeOption { Name = opt.Key });
+                    _productOptionManager.AddAttributeOption(new ProductOption { Name = opt.Key });
                 var option = _productOptionManager.GetAttributeOptionByName(opt.Key);
-                if (!product.AttributeOptions.Any(x => x.Id == option.Id))
+                if (!product.Options.Any(x => x.Id == option.Id))
                 {
-                    product.AttributeOptions.Add(option);
+                    product.Options.Add(option);
                 }
 
-                if (productVariant.AttributeValues.All(x => x.ProductAttributeOption.Id != option.Id))
+                if (productVariant.OptionValues.All(x => x.ProductOption.Id != option.Id))
                 {
-                    productVariant.AttributeValues.Add(new ProductAttributeValue
+                    productVariant.OptionValues.Add(new ProductOptionValue
                     {
-                        ProductAttributeOption = option,
+                        ProductOption = option,
                         ProductVariant = productVariant,
                         Value = opt.Value
                     });
@@ -72,10 +72,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 else
                 {
                     var productAttributeValue =
-                        productVariant.AttributeValues.SingleOrDefault(x => x.ProductAttributeOption.Id == option.Id);
+                        productVariant.OptionValues.SingleOrDefault(x => x.ProductOption.Id == option.Id);
                     if (productAttributeValue != null)
                     {
-                       productVariant.AttributeValues.SingleOrDefault(x => x.ProductAttributeOption.Id == option.Id).Value = opt.Value;
+                       productVariant.OptionValues.SingleOrDefault(x => x.ProductOption.Id == option.Id).Value = opt.Value;
                     }
                 }
             }
