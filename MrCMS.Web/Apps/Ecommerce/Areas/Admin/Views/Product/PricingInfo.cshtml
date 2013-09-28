@@ -71,10 +71,10 @@
                     }
                 </td>
                 <td>
-                    @variant.StockRemaining
+                    @(variant.StockRemaining.HasValue ? variant.StockRemaining.ToString() : "0")
                 </td>
                 <td>
-                    @string.Format("{0:n0}",variant.Weight)
+                    @variant.Weight.ToString("0.0000")
                 </td>
                 <td>
                     <div class="btn-group">
