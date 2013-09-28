@@ -8,6 +8,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using NHibernate;
 using NHibernate.Criterion;
 using MrCMS.Entities.Multisite;
@@ -20,19 +21,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         private readonly ISession _session;
         private readonly IDocumentService _documentService;
         private readonly IProductSearchService _productSearchService;
+        private readonly EcommerceSettings _ecommerceSettings;
         private readonly Site _currentSite;
 
-        public CategoryService(ISession session, Site currentSite, IDocumentService documentService, IProductSearchService productSearchService)
+        public CategoryService(ISession session, Site currentSite, IDocumentService documentService, IProductSearchService productSearchService, EcommerceSettings ecommerceSettings)
         {
             _session = session;
             _currentSite = currentSite;
             _documentService = documentService;
             _productSearchService = productSearchService;
+            _ecommerceSettings = ecommerceSettings;
         }
 
         public CategoryPagedList Search(string queryTerm = null, int page = 1, int pageSize=10)
         {
             IPagedList<Category> pagedList;
+
+            pageSize = _ecommerceSettings.PageSizeAdmin > 0 ? _ecommerceSettings.PageSizeAdmin : pageSize;
             if (!string.IsNullOrWhiteSpace(queryTerm))
             {
                 pagedList =
