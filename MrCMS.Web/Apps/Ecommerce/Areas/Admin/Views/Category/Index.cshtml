@@ -10,43 +10,53 @@
     <form>
         <fieldset>
             <legend>Categories
-            <span class="btn-group  display-inline  pull-right">
-                <a href="@Url.Action("Add", "Webpage", new { id = Model.CategoryContainerId })" class="btn btn-success">Add Root Category</a>
-            </span>
+                <span class="btn-group  display-inline  pull-right">
+                    <a href="@Url.Action("Add", "Webpage", new { id = Model.CategoryContainerId })" class="btn btn-success">Add Root Category</a>
+                </span>
             </legend>
-            <table class="table table-condensed table-striped">
-                <thead>
-                    <tr>
-                        <th>Name
-                        </th>
-                        <th>Published
-                        </th>
-                        <th>Actions
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var category in Model)
-                    {
+            @{
+    if (Model.Any())
+    {
+                    
+                <table class="table table-condensed table-striped">
+                    <thead>
                         <tr>
-                            <td>
-                                @category.NestedName
-                            </td>
-                            <td>
-                                @category.Published
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    <a href="@Url.Action("Add", "Webpage", new { id = category.Id })" class="btn btn-mini btn-success">Add Child Category</a>
-                                    <a href="@Url.Action("Edit", "Webpage", new { id = category.Id })" class="btn btn-mini">Edit</a>
-                                    <a href="@Url.Action("Delete", "Webpage", new { id = category.Id })" class="btn btn-mini btn-danger" data-toggle="fb-modal">Delete</a>
-                                </div>
-                            </td>
+                            <th>Name
+                            </th>
+                            <th>Published
+                            </th>
+                            <th>Actions
+                            </th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-            @Html.Pager(Model, "Index", p => new { p }, PagedListRenderOptions.PageNumbersOnly)
+                    </thead>
+                    <tbody>
+                        @foreach (var category in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @category.NestedName
+                                </td>
+                                <td>
+                                    @category.Published
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="@Url.Action("Add", "Webpage", new { id = category.Id })" class="btn btn-mini btn-success">Add Child Category</a>
+                                        <a href="@Url.Action("Edit", "Webpage", new { id = category.Id })" class="btn btn-mini">Edit</a>
+                                        <a href="@Url.Action("Delete", "Webpage", new { id = category.Id })" class="btn btn-mini btn-danger" data-toggle="fb-modal">Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @Html.Pager(Model, "Index", p => new { p }, PagedListRenderOptions.PageNumbersOnly)
+    }
+    else
+    {
+        @:No categories added.
+    }
+            } 
 
         </fieldset>
     </form>

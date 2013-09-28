@@ -6,7 +6,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
     public class EcommerceAdminMenuModel : IAdminMenuItem
     {
         private IDictionary<string, List<IMenuItem>> _children;
-        public string Text { get { return "Ecommerce"; } }
+        public string Text { get { return "e-Catalog"; } }
         public string Url { get; private set; }
         public bool CanShow { get { return true; } }
         public IDictionary<string, List<IMenuItem>> Children
@@ -24,12 +24,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                         new ChildMenuItem("Products", "/Admin/Apps/Ecommerce/Product"),
                                                         new ChildMenuItem("Categories", "/Admin/Apps/Ecommerce/Category"),
                                                         new ChildMenuItem("Brands", "/Admin/Apps/Ecommerce/Brand"),
-                                                        new ChildMenuItem("Product Specification Attributes",
+                                                        new ChildMenuItem("Product Specifications",
                                                                           "/Admin/Apps/Ecommerce/ProductSpecificationAttribute"),
                                                         new ChildMenuItem("Discounts", "/Admin/Apps/Ecommerce/Discount"),
                                                         
                                                     }
                                             },
+                                        });
+            }
+        }
+        public int DisplayOrder { get { return 50; } }
+    }
+
+    public class EcommerceToolsMenuModel : IAdminMenuItem
+    {
+        private IDictionary<string, List<IMenuItem>> _children;
+        public string Text { get { return "e-Tools"; } }
+        public string Url { get; private set; }
+        public bool CanShow { get { return true; } }
+        public IDictionary<string, List<IMenuItem>> Children
+        {
+            get
+            {
+                return _children ??
+                       (_children = new Dictionary<string, List<IMenuItem>>
+                                        {
                                             {
                                                 "Tools",
                                                 new List<IMenuItem>
@@ -45,9 +64,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                         new ChildMenuItem("Bulk Shipping Update",
                                                                           "/Admin/Apps/Ecommerce/Order/BulkShippingUpdate"),
                                                     }
-                                            },
+                                            }
+                                        });
+            }
+        }
+        public int DisplayOrder { get { return 51; } }
+    }
+
+
+    public class EcommerceSettingsMenuModel : IAdminMenuItem
+    {
+        private IDictionary<string, List<IMenuItem>> _children;
+        public string Text { get { return "e-Settings"; } }
+        public string Url { get; private set; }
+        public bool CanShow { get { return true; } }
+        public IDictionary<string, List<IMenuItem>> Children
+        {
+            get
+            {
+                return _children ??
+                       (_children = new Dictionary<string, List<IMenuItem>>
+                                        {
                                             {
-                                                "Settings",
+                                                "General settings",
                                                 new List<IMenuItem>
                                                     {
                                                          new ChildMenuItem("Global Settings",
@@ -60,6 +99,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                                           "/Admin/Apps/Ecommerce/ShippingMethod"),
                                                         new ChildMenuItem("Shipping Calculations",
                                                                           "/Admin/Apps/Ecommerce/ShippingCalculation"),
+                                                    }
+                                            },
+                                            {
+                                                "Payment settings",
+                                                new List<IMenuItem>
+                                                    {
                                                         new ChildMenuItem("Payment Settings",
                                                                           "/Admin/Apps/Ecommerce/PaymentSettings"),
                                                         new ChildMenuItem("Paypoint",
@@ -71,6 +116,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                         });
             }
         }
-        public int DisplayOrder { get { return 50; } }
+        public int DisplayOrder { get { return 52; } }
     }
 }
