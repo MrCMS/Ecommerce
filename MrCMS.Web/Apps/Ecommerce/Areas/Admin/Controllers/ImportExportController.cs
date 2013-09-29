@@ -55,6 +55,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             if (document != null && document.ContentLength > 0 && document.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             {
+                Server.ScriptTimeout = 8000;
                 ViewBag.Messages = _importExportManager.ImportProductsFromExcel(document.InputStream);
             }
             else
