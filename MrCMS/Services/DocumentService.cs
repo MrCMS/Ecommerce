@@ -142,13 +142,20 @@ namespace MrCMS.Services
 
         public IEnumerable<T> GetDocumentsByParent<T>(T parent) where T : Document
         {
+            IEnumerable<T> list;
             if (parent != null)
             {
-                var list = parent.Children.OfType<T>();
                 var documentTypeDefinition = parent.GetMetadata();
-                return documentTypeDefinition != null ? Sort(documentTypeDefinition, list) : list;
+                list = parent.Children.OfType<T>();
+                if (documentTypeDefinition != null)
+                    list = Sort(documentTypeDefinition, list);
             }
-            return _session.QueryOver<T>().Where(arg => arg.Parent == null).Cacheable().List();
+            else
+            {
+                list = _session.QueryOver<T>().Where(arg => arg.Parent == null).Cacheable().List();
+            }
+            list = list.Where(arg => arg.Site == _currentSite);
+            return list;
         }
 
         public IEnumerable<T> GetAdminDocumentsByParent<T>(T parent) where T : Document
@@ -556,7 +563,9 @@ namespace MrCMS.Services
                             document =>
                             document.Site == _currentSite && document.PublishOn != null &&
                             document.PublishOn <= CurrentRequestData.Now && document.Parent == null)
+                        .OrderBy(webpage => webpage.DisplayOrder).Asc
                         .Take(1)
+                        .Cacheable()
                         .SingleOrDefault();
         }
 
