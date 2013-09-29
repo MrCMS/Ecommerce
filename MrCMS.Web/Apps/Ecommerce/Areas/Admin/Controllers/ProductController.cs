@@ -155,7 +155,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             {
                 var option = _productOptionManager.GetSpecificationAttribute(Option);
                 if (!_productOptionManager.ListSpecificationAttributeOptions(Option).Any(x => x.Name == Value))
-                    _productOptionManager.AddSpecificationAttributeOption(new ProductSpecificationAttributeOption() { Site = CurrentSite, Name = Value, ProductSpecificationAttribute = option });
+                    _productOptionManager.AddSpecificationAttributeOption(new ProductSpecificationAttributeOption() { Name = Value, ProductSpecificationAttribute = option });
                 _productOptionManager.SetSpecificationValue(_productService.Get(ProductId), option, Value);
                 return Json(true);
             }
