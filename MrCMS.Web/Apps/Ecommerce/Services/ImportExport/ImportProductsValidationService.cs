@@ -193,7 +193,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     //Url History
                                     try
                                     {
-                                        var value = worksheet.GetValue<string>(rowId, 30);
+                                        var value = worksheet.GetValue<string>(rowId, 31);
                                         if (!String.IsNullOrWhiteSpace(value))
                                         {
                                             var urlHistory = value.Split(',');
