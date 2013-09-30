@@ -13,5 +13,11 @@
             }
         }
     });
+    $(document).on('change', 'input[name="PaymentMethod"]', function () {
+        var checked = $('input[name="PaymentMethod"]:checked').val();
+        $.get('/Apps/Ecommerce/Confirm/' + checked, function (response) {
+            $('#payment-confirmation').html(response);
+        });
+    });
 })
 

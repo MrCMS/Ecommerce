@@ -63,6 +63,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                                PayPalExpressToken = GetPayPalExpressToken(),
                            };
 
+            cartItems.ForEach(item => item.SetDiscountInfo(cart.Discount, cart.DiscountCode));
             cart.ShippingMethod = GetShippingMethod(cart);
             return cart;
         }
@@ -112,6 +113,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             if (shippingAddress != null)
             {
                 shippingAddress.Country = GetCountry();
+                shippingAddress.User = CurrentRequestData.CurrentUser;
             }
             return shippingAddress;
         }
@@ -127,6 +129,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             if (billingAddress != null)
             {
                 billingAddress.Country = GetCountry();
+                billingAddress.User = CurrentRequestData.CurrentUser;
             }
             return billingAddress;
         }
