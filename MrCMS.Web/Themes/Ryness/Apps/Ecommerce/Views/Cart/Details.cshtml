@@ -80,7 +80,7 @@
                         <div class="cart-subtotal">Subtotal before Delivery : @Model.Subtotal.ToCurrencyFormat()</div>
                         if (Model.HasDiscount)
                         {
-                            <div class="cart-discount">Discount (@Model.DiscountCode) : @((-Model.DiscountAmount).ToCurrencyFormat())</div>
+                            <div class="cart-discount">Discount (@Model.DiscountCode) : @((-Model.OrderTotalDiscount).ToCurrencyFormat())</div>
                         }
                         if (MrCMS.Website.MrCMSApplication.Get<TaxSettings>().TaxesEnabled)
                         {

@@ -52,16 +52,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get
             {
-                var discountAmount = Discount == null
-                                         ? decimal.Zero
-                                         : Discount.GetDiscount(this);
+                var discountAmount = OrderTotalDiscount;
 
-                if (Discount != null && Items.Any())
-                    discountAmount += Items.Sum(item => item.GetDiscountAmount(Discount, DiscountCode));
+                discountAmount += ItemDiscount;
 
                 return discountAmount > TotalPreDiscount
                            ? TotalPreDiscount
                            : discountAmount;
+            }
+        }
+
+        public decimal OrderTotalDiscount
+        {
+            get
+            {
+                return Discount == null
+                           ? decimal.Zero
+                           : Discount.GetDiscount(this);
+            }
+        }
+
+        public decimal ItemDiscount
+        {
+            get
+            {
+                return Discount != null && Items.Any()
+                           ? Items.Sum(item => item.DiscountAmount)
+                           : decimal.Zero;
             }
         }
 
@@ -72,7 +89,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public virtual decimal TotalPreShipping
         {
-            get { return TotalPreDiscount - DiscountAmount; }
+            get { return TotalPreDiscount - OrderTotalDiscount; }
         }
 
         public decimal Tax
@@ -136,7 +153,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public bool HasDiscount
         {
-            get { return Discount != null && DiscountAmount != decimal.Zero; }
+            get { return Discount != null && OrderTotalDiscount != decimal.Zero; }
         }
 
         public decimal ItemQuantity

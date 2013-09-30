@@ -9,22 +9,11 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
 {
     public class CartItemTests
     {
-        private ProductVariant _productVariant;
+        private readonly ProductVariant _productVariant;
 
         public CartItemTests()
         {
             _productVariant = A.Fake<ProductVariant>();
-        }
-
-        [Fact]
-        public void CartItem_PricePreTax_ShouldBeTheResultOfGetPricePreTax()
-        {
-            A.CallTo(() => _productVariant.GetPricePreTax(2)).Returns(20);
-            var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
-
-            var pricePreTax = cartItem.PricePreTax;
-
-            pricePreTax.Should().Be(20);
         }
 
 
@@ -40,6 +29,30 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         }
 
         [Fact]
+        public void CartItem_Tax_ShouldBeThePriceLessTheTaxRate()
+        {
+            A.CallTo(() => _productVariant.GetPrice(2)).Returns(24);
+            A.CallTo(() => _productVariant.TaxRatePercentage).Returns(20);
+            var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
+
+            var tax = cartItem.Tax;
+
+            tax.Should().Be(4);
+        }
+
+        [Fact]
+        public void CartItem_PricePreTax_ShouldBeTheResultOfGetPricePreTax()
+        {
+            A.CallTo(() => _productVariant.GetPrice(2)).Returns(24);
+            A.CallTo(() => _productVariant.TaxRatePercentage).Returns(20);
+            var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
+
+            var pricePreTax = cartItem.PricePreTax;
+
+            pricePreTax.Should().Be(20);
+        }
+
+        [Fact]
         public void CartItem_Saving_ShouldBeTheResultOfGetSaving()
         {
             A.CallTo(() => _productVariant.GetSaving(2)).Returns(20);
@@ -48,17 +61,6 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
             var saving = cartItem.Saving;
 
             saving.Should().Be(20);
-        }
-
-        [Fact]
-        public void CartItem_Tax_ShouldBeTheResultOfGetTax()
-        {
-            A.CallTo(() => _productVariant.GetTax(2)).Returns(20);
-            var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
-
-            var tax = cartItem.Tax;
-
-            tax.Should().Be(20);
         }
 
         [Fact]
@@ -120,8 +122,9 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         public void CartItem_GetDiscountAmount_IfNullDiscountIsPassedShouldBeZero()
         {
             var cartItem = new CartItem { Item = _productVariant, Quantity = 3 };
+            cartItem.SetDiscountInfo(null, null);
 
-            var discountAmount = cartItem.GetDiscountAmount(null, null);
+            var discountAmount = cartItem.DiscountAmount;
 
             discountAmount.Should().Be(0);
         }
@@ -132,8 +135,9 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
             var discount = A.Fake<Discount>();
             var cartItem = new CartItem { Item = _productVariant, Quantity = 3 };
             A.CallTo(() => discount.GetDiscount(cartItem, "test")).Returns(10m);
+            cartItem.SetDiscountInfo(discount, "test");
 
-            var discountAmount = cartItem.GetDiscountAmount(discount, "test");
+            var discountAmount = cartItem.DiscountAmount;
 
             discountAmount.Should().Be(10);
         }

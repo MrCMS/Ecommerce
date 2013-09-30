@@ -75,9 +75,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                     line =>
                     string.Format("prod={0},item_amount={1:0.00}x{2}", line.Name, line.UnitPrice, line.Quantity))
                          .ToList();
-            if (cartModel.DiscountAmount > 0)
+            if (cartModel.OrderTotalDiscount > 0)
             {
-                lineData.Add(string.Format("prod=DISCOUNT,item_amount={0:N2}", cartModel.DiscountAmount));
+                lineData.Add(string.Format("prod=DISCOUNT,item_amount={0:N2}", cartModel.OrderTotalDiscount));
             }
             return string.Join(";", lineData);
         }
