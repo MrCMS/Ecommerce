@@ -52,8 +52,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         [DisplayName("Site Currency")]
         public int CurrencyId { get; set; }
 
-        public Currency Currency { get { return MrCMSApplication.Get<ISession>().Get<Currency>(CurrencyId); } }
+        public Currency Currency
+        {
+            get
+            {
+                var session = MrCMSApplication.Get<ISession>();
+                return CurrencyId > 0 ? session.Get<Currency>(CurrencyId) : session.QueryOver<Currency>().Take(1).SingleOrDefault();
+            }
+        }
 
-        
+
     }
 }
