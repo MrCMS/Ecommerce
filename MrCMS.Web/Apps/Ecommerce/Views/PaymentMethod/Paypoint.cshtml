@@ -7,64 +7,81 @@
     var cardTypes = ViewData["card-types"] as IEnumerable<SelectListItem>;
     var failureDetails = TempData["error-details"] as FailureDetails;
 }
-@using (Html.BeginForm("Paypoint", "PaymentMethod", FormMethod.Post))
+@using (Html.BeginForm("Paypoint", "PaymentMethod", FormMethod.Post, new { @class = "form-horizontal" }))
 {
-    <div>
-        <div class="span4">Card Type*:</div>
-        <div>
-            @Html.DropDownListFor(model => model.CardType, cardTypes)
+    <div class="border-grey margin-bottom-20" id="select-method">
+        <div class="sub-header grey-background">
+            Card Details
         </div>
-    </div>
-    <div class="clearfix"></div>
-    <div>
-        <div class="span4">Card Number*:</div>
-        <div>
-            @Html.TextBoxFor(model => model.CardNumber, new { @class = "input-xlarge" })
-        </div>
-    </div>
-    <div>
-        <div class="span4">Card Verification Code*:</div>
-        <div>
-            @Html.TextBoxFor(model => model.CardVerificationCode, new { @class = "input-small" })
-        </div>
-    </div>
-    <div>
-        <div class="span4">Start Date:</div>
-        <div>
-            <div class="pull-left">
-                @Html.DropDownListFor(model => model.StartMonth, months)
-            </div>
-            <div class="pull-left">
-                @Html.DropDownListFor(model => model.StartYear, startYears)
-            </div>
-        </div>
-    </div>
-    <div>
-        <div class="span4">End Date*:</div>
-        <div>
-            <div class="pull-left">
-                @Html.DropDownListFor(model => model.EndMonth, months)
-            </div>
-            <div class="pull-left">
-                @Html.DropDownListFor(model => model.EndYear, expiryYears)
-            </div>
-        </div>
-    </div>
-    <div>
-        <div class="span4">Name On Card*:</div>
-        <div>
-            @Html.TextBoxFor(model => model.NameOnCard, new { @class = "input-xlarge" })
-        </div>
-    </div>
-    <div>
-        <div class="span4">Card Issue Number*:</div>
-        <div>
+        <div class="padding-20">
 
-            @Html.TextBoxFor(model => model.CardIssueNumber, new { @class = "input-medium" })
-            Maestro/Solo only
+            <div class="control-group">
+                <label class="control-label" for="CardType">Card Type*</label>
+                <div class="controls">
+                    @Html.DropDownListFor(model => model.CardType, cardTypes)
+                    @Html.ValidationMessageFor(model => model.CardType)
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="CardNumber">Card Number*</label>
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.CardNumber, new { @class = "input-xlarge" })
+                    @Html.ValidationMessageFor(model => model.CardNumber)
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="NameOnCard">Name On Card*</label>
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.NameOnCard, new { @class = "input-xlarge" })
+                    @Html.ValidationMessageFor(model => model.NameOnCard)
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="CardVerificationCode">Card Verification (CV2)*</label>
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.CardVerificationCode, new { @class = "input-small" })
+                    @Html.ValidationMessageFor(model => model.CardVerificationCode)
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">Valid From</div>
+                <div class="controls">
+                    <div class="pull-left">
+                        @Html.DropDownListFor(model => model.StartMonth, months)
+                    </div>
+                    <div class="pull-left">
+                        @Html.DropDownListFor(model => model.StartYear, startYears)
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">Expires On*</div>
+                <div class="controls">
+                    <div class="pull-left">
+                        @Html.DropDownListFor(model => model.EndMonth, months)
+                        @Html.ValidationMessageFor(model => model.EndMonth)
+                    </div>
+                    <div class="pull-left">
+                        @Html.DropDownListFor(model => model.EndYear, expiryYears)
+                        @Html.ValidationMessageFor(model => model.EndYear)
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="NameOnCard">Issue Number (Maestro/Solo only)</label>
+                <div class="controls">
+                    @Html.TextBoxFor(model => model.CardIssueNumber, new { @class = "input-medium" })
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <label>
+                    </label>
+                    <input class="btn btn-info" type="submit" id="continue" name="continue" value="Place order" />
+                </div>
+            </div>
         </div>
     </div>
-    <input class="btn btn-info" type="submit" id="continue" name="continue" value="Place order" />
 }
 @if (failureDetails != null)
 {
@@ -77,3 +94,7 @@
         }
     </ul>
 }
+<style>
+    .input-validation-error { border: 1px solid red!important;}
+    .field-validation-error span { color: red;}
+</style>
