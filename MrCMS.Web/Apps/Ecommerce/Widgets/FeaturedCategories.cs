@@ -14,7 +14,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
         public override object GetModel(NHibernate.ISession session)
         {
             var model = new FeaturedCategoriesViewModel { Title = Name, Categories = new List<Category>() };
+            if (string.IsNullOrEmpty(ListOfFeaturedCategories))
+            {
+                return null;
+            }
             var rawValues = ListOfFeaturedCategories.Split(',');
+            
             foreach (var items in rawValues.Select(value => value.Split('/')))
             {
                 int id;

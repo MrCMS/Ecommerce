@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.FeaturedCategoriesViewModel
+﻿@using System.Drawing
+@model MrCMS.Web.Apps.Ecommerce.Widgets.FeaturedCategoriesViewModel
 @if (Model != null)
 {
     <div class="container">
@@ -17,7 +18,7 @@
                                     <a href="/@item.LiveUrlSegment" title="@item.Name">
                                         @if (item.FeatureImage != null)
                                         {
-                                            @RenderImage(item.FeatureImage)
+                                            @RenderImage(item.FeatureImage, new Size {Height = 200, Width = 270})
                                         }
                                     </a>
                                 </div>
