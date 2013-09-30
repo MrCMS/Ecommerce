@@ -1,4 +1,5 @@
-﻿$(function() {
+﻿$(function () {
+    $.ajaxSetup({ cache: false });
     $(document).on('click', "#empty-basket", function() {
         var response = confirm("Are you sure you want to empty your basket? You can not undo this action.");
         if (response === true) {
