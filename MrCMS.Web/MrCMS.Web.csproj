@@ -1820,6 +1820,7 @@
     <Content Include="Themes\Ryness\Content\Scripts\jquery.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.nivo.slider.pack.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.pikachoose.min.js" />
+    <Content Include="Themes\Ryness\Content\Scripts\jquery.placeholder.js" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap-responsive.css" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap-responsive.min.css" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap.css" />
@@ -2279,6 +2280,9 @@
     <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Articles\Views\Web.config" />
+    <Content Include="Themes\Ryness\Apps\Articles\Views\Pages\Article.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Articles\Views\Pages\ArticleList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
