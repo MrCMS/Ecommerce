@@ -21,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                            new PaymentDetailsType
                                {
                                    OrderTotal = cart.Total.GetAmountType(),
-                                   ItemTotal = cart.Subtotal.GetAmountType(),
+                                   ItemTotal = (cart.Subtotal - cart.OrderTotalDiscount).GetAmountType(),
                                    TaxTotal = cart.Tax.GetAmountType(),
                                    ShippingTotal = cart.ShippingTotal.GetAmountType(),
                                    PaymentDetailsItem = GetPaymentDetailsItems(cart),
@@ -32,14 +32,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         private List<PaymentDetailsItemType> GetPaymentDetailsItems(CartModel cart)
         {
-            return cart.Items.Select(item => new PaymentDetailsItemType
-                                                 {
-                                                     Name = item.Name,
-                                                     Amount = item.UnitPricePreTax.GetAmountType(),
-                                                     ItemCategory = ItemCategoryType.PHYSICAL,
-                                                     Quantity = item.Quantity,
-                                                     Tax = item.Tax.GetAmountType(),
-                                                 }).ToList();
+            var paymentDetailsItemTypes = cart.Items.Select(item => new PaymentDetailsItemType
+                                                                        {
+                                                                            Name = item.Name,
+                                                                            Amount =
+                                                                                item.UnitPricePreTax.GetAmountType(),
+                                                                            ItemCategory = ItemCategoryType.PHYSICAL,
+                                                                            Quantity = item.Quantity,
+                                                                            Tax = item.Tax.GetAmountType(),
+                                                                        }).ToList();
+            if (cart.OrderTotalDiscount > 0)
+                paymentDetailsItemTypes.Add(new PaymentDetailsItemType
+                                                {
+                                                    Name = "Discount - " + cart.DiscountCode,
+                                                    Amount = (-cart.OrderTotalDiscount).GetAmountType(),
+                                                    ItemCategory = ItemCategoryType.PHYSICAL,
+                                                    Quantity = 1,
+                                                    Tax = 0m.GetAmountType()
+                                                });
+            return paymentDetailsItemTypes;
         }
 
         public string GetBuyerEmail(CartModel cart)

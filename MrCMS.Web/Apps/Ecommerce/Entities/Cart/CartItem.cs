@@ -7,13 +7,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 {
     public class CartItem : SiteEntity
     {
+        private Discount _discount;
+        private string _discountCode;
         public virtual ProductVariant Item { get; set; }
         public virtual Guid UserGuid { get; set; }
         public virtual int Quantity { get; set; }
 
         public virtual decimal Price
         {
-            get { return Item.GetPrice(Quantity); }
+            get { return Item.GetPrice(Quantity) - DiscountAmount; }
         }
         public virtual decimal Saving
         {
@@ -21,7 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         }
         public virtual decimal Tax
         {
-            get { return Item.GetTax(Quantity); }
+            get { return Math.Round(Price * (TaxRatePercentage / (TaxRatePercentage + 100)), 2); }
         }
         public virtual bool CurrentlyAvailable
         {
@@ -29,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         }
         public virtual decimal PricePreTax
         {
-            get { return Item.GetPricePreTax(Quantity); }
+            get { return Price - Tax; }
         }
         public virtual decimal TaxRatePercentage
         {
@@ -51,11 +53,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         {
             get { return Item.GetUnitPricePreTax(Quantity); }
         }
-        public virtual decimal GetDiscountAmount(Discount discount, string discountCode)
+        public virtual decimal DiscountAmount
         {
-            return discount != null
-                       ? discount.GetDiscount(this, discountCode)
-                       : decimal.Zero;
+            get
+            {
+                return _discount != null
+                           ? _discount.GetDiscount(this, _discountCode)
+                           : decimal.Zero;
+            }
+        }
+        public virtual void SetDiscountInfo(Discount discount, string discountCode)
+        {
+            _discount = discount;
+            _discountCode = discountCode;
         }
     }
 }

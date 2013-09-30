@@ -63,6 +63,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                                PayPalExpressToken = GetPayPalExpressToken(),
                            };
 
+            cartItems.ForEach(item => item.SetDiscountInfo(cart.Discount, cart.DiscountCode));
             cart.ShippingMethod = GetShippingMethod(cart);
             return cart;
         }
