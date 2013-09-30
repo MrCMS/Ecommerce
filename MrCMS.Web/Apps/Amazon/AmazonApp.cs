@@ -44,12 +44,6 @@ namespace MrCMS.Web.Apps.Amazon
             amazonAppSettings.FeedsApiVersion = "2009-01-01";
             amazonAppSettings.OrdersApiVersion = "2011-01-01";
             amazonAppSettings.ProductsApiVersion = "2011-10-01";
-            amazonAppSettings.SignatureVersion = "2";
-            amazonAppSettings.SignatureMethod = "HmacSHA256";
-            amazonAppSettings.AppName = "MrCMS";
-            amazonAppSettings.AppPath = "/";
-            amazonAppSettings.AppVersion = MrCMSApplication.AssemblyVersion;
-            amazonAppSettings.AppLanguage = "C#";
             amazonAppSettings.ApiEndpoint = "https://mws.amazonservices.com/";
             amazonAppSettings.AmazonOrderDetailsUrl = "https://sellercentral.amazon.com/gp/orders-v2/details/?orderID=";
             amazonAppSettings.AmazonManageOrdersUrl = "https://sellercentral.amazon.com/gp/orders-v2/list";

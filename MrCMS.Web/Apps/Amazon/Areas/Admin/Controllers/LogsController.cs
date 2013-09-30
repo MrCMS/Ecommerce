@@ -45,7 +45,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         public ActionResult DeleteAllLogs_POST()
         {
             _amazonLogService.DeleteAllLogs();
-
+            _amazonLogService.Add(AmazonLogType.Logs, AmazonLogStatus.Delete, null, null, null, null, null, null, null, null);
             return RedirectToAction("Index");
         }
     }

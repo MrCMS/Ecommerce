@@ -60,7 +60,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
                 catch (Exception ex)
                 {
                     _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Error, ex, null,
-                                          AmazonApiSection.Feeds, null, null,"Closing Amazon Listings");
+                                          AmazonApiSection.Feeds, null, null,null,null,"Closing Amazon Listings");
                     retryCounter++;
                     if (retryCounter == 3) break;
 

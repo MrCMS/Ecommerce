@@ -16,5 +16,7 @@ namespace MrCMS.Web.Apps.Amazon.Models
         AppSettings,
         [Description("Seller Settings")]
         SellerSettings,
+        [Description("Logs")]
+        Logs,
     }
 }

@@ -67,36 +67,24 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
             return SetChartModel(from, to, orders);
         }
 
-        private static object SetChartModel(DateTime @from, DateTime to, IList<KeyValuePair<DateTime, decimal>> items)
+        private static object SetChartModel(DateTime from, DateTime to, IList<KeyValuePair<DateTime, decimal>> items)
         {
             var data = new List<decimal>();
             var labels = new List<string>();
-            var ts = to - @from;
-            if (ts.Days <= 7)
-            {
-                foreach (var order in items)
-                {
-                    labels.Add(order.Key.ToString("dd/MM"));
-                    data.Add(order.Value);
-                }
-            }
-            else
-            {
-                var factor = (ts.Days/7);
-                var current = 0;
-                for (var i = 0; i < 7; i++)
-                {
-                    if (items.Count < i + 1) continue;
+            var ts = to - from;
+            var factor = (ts.Days/7)+1;
+            var oldDate = DateTime.Parse(from.Date.ToString());
+            var currentDate = oldDate;
 
-                    var oldDate = items[i].Key;
-                    var currentDate = items[i].Key.AddDays(current);
-                    labels.Add(currentDate.ToString("dd/MM"));
-                    data.Add(i == 0
-                                 ? items.Where(x => x.Key.Date == currentDate.Date).Sum(x => x.Value)
-                                 : items.Where(x => oldDate.Date <= x.Key && x.Key <= currentDate.Date)
-                                        .Sum(x => x.Value));
-                    current += factor;
-                }
+            for (var i = 0; i < 7; i++)
+            {
+                oldDate = currentDate;
+                currentDate = oldDate.AddDays(ts.Days <= 7 ? 1 : factor);
+                labels.Add(oldDate.ToString("dd/MM"));
+                data.Add(i == 0
+                             ? items.Where(x => x.Key.Date == currentDate.Date).Sum(x => x.Value)
+                             : items.Where(x => oldDate.Date <= x.Key && x.Key <= currentDate.Date)
+                                    .Sum(x => x.Value));
             }
 
             return new

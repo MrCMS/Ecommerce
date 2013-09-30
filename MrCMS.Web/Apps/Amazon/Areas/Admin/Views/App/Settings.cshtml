@@ -27,10 +27,13 @@
                 @Html.TextBoxFor(x => x.SecretKey, new {@class = "span12"})
                 @Html.ValidationMessageFor(x => x.SecretKey)
                 
-                @Html.LabelFor(x => x.DeveloperAccountId)
-                @Html.TextBoxFor(x => x.DeveloperAccountId, new {@class = "span12"})
-                @Html.ValidationMessageFor(x => x.DeveloperAccountId)
-
+            </div>       
+            <div class="span6">
+                
+                @Html.LabelFor(x => x.ApiEndpoint)
+                @Html.TextBoxFor(x => x.ApiEndpoint, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.ApiEndpoint)
+                
                 <div class="row-fluid">
                     <div class="span4">
                         @Html.LabelFor(x => x.FeedsApiVersion)
@@ -49,48 +52,6 @@
                     </div>
                 </div>
 
-                
-            </div>       
-            <div class="span6">
-
-                @Html.LabelFor(x => x.AppName)
-                @Html.TextBoxFor(x => x.AppName, new {@class = "span12"})
-                @Html.ValidationMessageFor(x => x.AppName)
-                
-                <div class="row-fluid">
-                    <div class="span4">
-                        @Html.LabelFor(x => x.AppPath)
-                        @Html.TextBoxFor(x => x.AppPath, new {@class = "span12"})
-                        @Html.ValidationMessageFor(x => x.AppPath)
-                    </div>
-                    <div class="span4">
-                        @Html.LabelFor(x => x.AppVersion)
-                        @Html.TextBoxFor(x => x.AppVersion, new {@class = "span12"})
-                        @Html.ValidationMessageFor(x => x.AppVersion)
-                    </div>
-                    <div class="span4">
-                        @Html.LabelFor(x => x.AppLanguage)
-                        @Html.TextBoxFor(x => x.AppLanguage, new {@class = "span12"})
-                        @Html.ValidationMessageFor(x => x.AppLanguage)
-                    </div>
-                </div>
-
-                <div class="row-fluid">
-                    <div class="span6">
-                        @Html.LabelFor(x => x.SignatureVersion)
-                        @Html.TextBoxFor(x => x.SignatureVersion, new {@class = "span12"})
-                        @Html.ValidationMessageFor(x => x.SignatureVersion)
-                    </div>
-                    <div class="span6">
-                        @Html.LabelFor(x => x.SignatureMethod)
-                        @Html.TextBoxFor(x => x.SignatureMethod, new {@class = "span12"})
-                        @Html.ValidationMessageFor(x => x.SignatureMethod)
-                    </div>
-                </div>
-                
-                @Html.LabelFor(x => x.ApiEndpoint)
-                @Html.TextBoxFor(x => x.ApiEndpoint, new {@class = "span12"})
-                @Html.ValidationMessageFor(x => x.ApiEndpoint)
 
             </div>
             

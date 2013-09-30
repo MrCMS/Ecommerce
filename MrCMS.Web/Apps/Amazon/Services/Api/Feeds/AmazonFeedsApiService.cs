@@ -22,11 +22,11 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
         private readonly AmazonSellerSettings _amazonSellerSettings;
         private readonly IAmazonAnalyticsService _amazonAnalyticsService;
         private readonly IAmazonLogService _amazonLogService;
-        private readonly IAmazonGenerateFeedContentService _amazonGenerateFeedContentService;
+        private readonly IAmazonGenerateFeedService _amazonGenerateFeedContentService;
 
         public AmazonFeedsApiService(AmazonSellerSettings amazonSellerSettings, 
             IAmazonAnalyticsService amazonAnalyticsService, IAmazonLogService amazonLogService, 
-            IAmazonGenerateFeedContentService amazonGenerateFeedContentService, IAmazonApiService amazonApiService)
+            IAmazonGenerateFeedService amazonGenerateFeedContentService, IAmazonApiService amazonApiService)
         {
             _amazonSellerSettings = amazonSellerSettings;
             _amazonAnalyticsService = amazonAnalyticsService;
@@ -39,8 +39,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
         {
             try
             {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, AmazonApiSection.Feeds, 
-                    null, null, "GetFeedSubmissionList", "Getting result for Amazon Submission #"+ submissionId);
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, null,null,AmazonApiSection.Feeds, 
+                    "GetFeedSubmissionList", null, null,null, "Getting result for Amazon Submission #"+ submissionId);
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Feeds, "GetFeedSubmissionList");
                 var service = _amazonApiService.GetFeedsApiService();
                 var request = GetFeedSubmissionListRequest(submissionId);
@@ -53,7 +53,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             }
             catch (MarketplaceWebServiceException ex)
             {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null, AmazonApiSection.Feeds, "GetFeedSubmissionList");
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null, AmazonApiSection.Feeds, "GetFeedSubmissionList",null,null,null);
             }
             catch (Exception ex)
             {
@@ -74,8 +74,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
         {
             try
             {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage,AmazonApiSection.Feeds,
-                    null,null,"SubmitFeed","Submitting "+feedType+" Feed to Amazon");
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage,null,null,AmazonApiSection.Feeds,
+                    "SubmitFeed",null,null,null,"Submitting "+feedType+" Feed to Amazon");
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Feeds, "SubmitFeed");
                 var service = _amazonApiService.GetFeedsApiService();
                 var request = GetSubmitFeedRequest(feedType, feedContent);
@@ -90,7 +90,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             }
             catch (MarketplaceWebServiceException ex)
             {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null, AmazonApiSection.Feeds, "SubmitFeed");
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null, AmazonApiSection.Feeds, "SubmitFeed",null,null,null);
             }
             catch (Exception ex)
             {
@@ -122,21 +122,20 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             var feeds = new List<FileStream>
                 {
                     _amazonGenerateFeedContentService.GetSingleFeed(
-                        _amazonGenerateFeedContentService.GetProductFeed(listing),
+                        _amazonGenerateFeedContentService.GetProduct(listing),
                         AmazonEnvelopeMessageType.Product, AmazonEnvelopeMessageOperationType.Update),
                     _amazonGenerateFeedContentService.GetSingleFeed(
-                        _amazonGenerateFeedContentService.GetProductPriceFeed(listing),
+                        _amazonGenerateFeedContentService.GetProductPrice(listing),
                         AmazonEnvelopeMessageType.Price, AmazonEnvelopeMessageOperationType.Update),
                     _amazonGenerateFeedContentService.GetSingleFeed(
-                        _amazonGenerateFeedContentService.GetProductInventoryFeed(listing),
+                        _amazonGenerateFeedContentService.GetProductInventory(listing),
                         AmazonEnvelopeMessageType.Inventory, AmazonEnvelopeMessageOperationType.Update)
                 };
             return feeds;
         }
-
         public FileStream GetSingleProductImageFeed(AmazonListing listing)
         {
-            return _amazonGenerateFeedContentService.GetSingleFeed(_amazonGenerateFeedContentService.GetProductImageFeed(listing), AmazonEnvelopeMessageType.ProductImage, AmazonEnvelopeMessageOperationType.Update);
+            return _amazonGenerateFeedContentService.GetSingleFeed(_amazonGenerateFeedContentService.GetProductImage(listing), AmazonEnvelopeMessageType.ProductImage, AmazonEnvelopeMessageOperationType.Update);
         }
 
         public FileStream GetProductsDeleteFeeds(AmazonListingGroup amazonListingGroup)
@@ -148,13 +147,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
         {
             var feedCollection = new List<FileStream>();
 
-            var products = amazonListingGroup.Items.Select(_amazonGenerateFeedContentService.GetProductFeed).ToList();
+            var products = amazonListingGroup.Items.Select(_amazonGenerateFeedContentService.GetProduct).ToList();
             feedCollection.Add(_amazonGenerateFeedContentService.GetFeed(products, AmazonEnvelopeMessageType.Product, AmazonEnvelopeMessageOperationType.Update));
 
-            var prices = amazonListingGroup.Items.Select(_amazonGenerateFeedContentService.GetProductPriceFeed).ToList();
+            var prices = amazonListingGroup.Items.Select(_amazonGenerateFeedContentService.GetProductPrice).ToList();
             feedCollection.Add(_amazonGenerateFeedContentService.GetFeed(prices, AmazonEnvelopeMessageType.Price, AmazonEnvelopeMessageOperationType.Update));
 
-            var inventories = amazonListingGroup.Items.Select(_amazonGenerateFeedContentService.GetProductInventoryFeed).ToList();
+            var inventories = amazonListingGroup.Items.Select(_amazonGenerateFeedContentService.GetProductInventory).ToList();
             feedCollection.Add(_amazonGenerateFeedContentService.GetFeed(inventories, AmazonEnvelopeMessageType.Inventory, AmazonEnvelopeMessageOperationType.Update));
 
             return feedCollection;
@@ -162,19 +161,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
         public FileStream GetProductsImageFeeds(AmazonListingGroup amazonListingGroup)
         {
             var feeds = amazonListingGroup.Items.Where(x => x.Status == AmazonListingStatus.NotOnAmazon
-                || x.Status == AmazonListingStatus.Inactive).Select(_amazonGenerateFeedContentService.GetProductImageFeed).ToList();
+                || x.Status == AmazonListingStatus.Inactive).Select(_amazonGenerateFeedContentService.GetProductImage).ToList();
             return _amazonGenerateFeedContentService.GetFeed(feeds, AmazonEnvelopeMessageType.ProductImage, AmazonEnvelopeMessageOperationType.Update);
-        }
-
-        public FileStream GetOrderAcknowledgmentFeed(AmazonOrder order,OrderAcknowledgementStatusCode orderAcknowledgementStatusCode)
-        {
-            return _amazonGenerateFeedContentService.GetSingleFeed(_amazonGenerateFeedContentService.GetOrderAcknowledgmentFeed(order, orderAcknowledgementStatusCode,order.CancelReason), 
-                AmazonEnvelopeMessageType.OrderAcknowledgement, null);
         }
 
         public FileStream GetOrderFulfillmentFeed(AmazonOrder order)
         {
-            return _amazonGenerateFeedContentService.GetSingleFeed(_amazonGenerateFeedContentService.GetOrderFulfillmentFeed(order),
+            return _amazonGenerateFeedContentService.GetSingleFeed(_amazonGenerateFeedContentService.GetOrderFulfillment(order),
                 AmazonEnvelopeMessageType.OrderFulfillment, null);
         }
     }

@@ -4,9 +4,9 @@ namespace MrCMS.Web.Apps.Amazon.Models
 {
     public enum AmazonFulfillmentChannel
     {
-        [Description("Amazon Fulfillment")]
+        [Description("Amazon Fulfillment Network")]
         AFN,
-        [Description("Merchant Fulfillment")]
+        [Description("Merchant Fulfillment Network")]
         MFN
     }
 }

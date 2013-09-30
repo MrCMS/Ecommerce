@@ -29,12 +29,12 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         {
             AmazonProgressBarHelper.Clean(model.Task);
 
-            _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, AmazonApiSection.Orders, null, "Checking Amazon Api Service Availability");
+            _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage,null,null, AmazonApiSection.Orders,null,null,null,
+                null, "Checking Amazon Api Service Availability");
             AmazonProgressBarHelper.Update(model.Task, "Api", "Checking Amazon Api Service Availability", 100, 0);
 
             var serviceStatus = _amazonOrdersApiService.GetServiceStatus(AmazonApiSection.Orders);
-            if (serviceStatus == AmazonServiceStatus.GREEN ||
-                serviceStatus == AmazonServiceStatus.GREEN_I)
+            if (serviceStatus == AmazonServiceStatus.GREEN || serviceStatus == AmazonServiceStatus.GREEN_I)
             {
                 AmazonProgressBarHelper.Update(model.Task, "Api", AmazonServiceStatus.GREEN.GetDescription(),null, null);
                 AmazonProgressBarHelper.Update(model.Task, "Started", "Starting Orders Sync", null, null);
@@ -60,12 +60,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
             if (order != null)
             {
-                    AmazonProgressBarHelper.Update(model.Task, "Api", AmazonServiceStatus.GREEN.GetDescription(), null,
-                                                   null);
-                    AmazonProgressBarHelper.Update(model.Task, "Started", "Preparing request to mark Amazon Order as Shipped",
-                                                   null, null);
+                    AmazonProgressBarHelper.Update(model.Task, "Started", "Preparing request to mark Amazon Order as Shipped",null, null);
 
-                    _shipAmazonOrderService.SubmitSingleProductFeed(model, order);
+                    _shipAmazonOrderService.MarkAsShipped(model, order);
 
                     AmazonProgressBarHelper.Update(model.Task, "Completed", "Completed", 100, 100);
             }

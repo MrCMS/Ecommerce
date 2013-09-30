@@ -251,14 +251,14 @@
     <Compile Include="Apps\Amazon\Services\Analytics\IAmazonAnalyticsService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\AmazonApiService.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonFeedType.cs" />
-    <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonGenerateFeedContentService.cs" />
+    <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonGenerateFeedService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Orders\AmazonOrdersApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonFeedsApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Products\AmazonProductsApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Products\IAmazonProductsApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\IAmazonFeedsApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Orders\IAmazonOrdersApiService.cs" />
-    <Compile Include="Apps\Amazon\Services\Api\Feeds\IAmazonGenerateFeedContentService.cs" />
+    <Compile Include="Apps\Amazon\Services\Api\Feeds\IAmazonGenerateFeedService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\IAmazonApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\IAmazonRequestService.cs" />
     <Compile Include="Apps\Amazon\Services\Listings\AmazonListingService.cs" />

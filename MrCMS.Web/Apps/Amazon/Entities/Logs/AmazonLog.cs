@@ -1,5 +1,6 @@
 ﻿using System;
 using MrCMS.Entities;
+using MrCMS.Entities.People;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
@@ -16,6 +17,7 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Logs
 
         public virtual AmazonOrder AmazonOrder { get; set; }
         public virtual AmazonListing AmazonListing { get; set; }
+        public virtual AmazonListingGroup AmazonListingGroup { get; set; }
 
         public virtual string ErrorCode { get; set; }
         public virtual string ErrorType { get; set; }
@@ -23,5 +25,6 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Logs
         public virtual string Detail { get; set; }
 
         public virtual Guid Guid { get; set; }
+        public virtual User User { get; set; }
     }
 }

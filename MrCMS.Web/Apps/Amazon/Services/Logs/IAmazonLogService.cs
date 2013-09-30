@@ -11,23 +11,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Logs
     {
         AmazonLog Add(AmazonLogType type, AmazonLogStatus status, Exception elmahError,
                       MarketplaceWebService.Model.Error amazonError,
-                      AmazonApiSection? apiSection, AmazonOrder amazonOrder, AmazonListing amazonListing,
-                      string apiOperation = "",
-                      string message = "", string details = "");
-
-        AmazonLog Add(AmazonLogType type, AmazonLogStatus status, AmazonApiSection? apiSection, AmazonOrder amazonOrder,
-                      AmazonListing amazonListing, string apiOperation = "",
-                      string message = "", string details = "");
-
-        AmazonLog Add(AmazonLogType type, AmazonLogStatus status, Exception elmahError,
-                      MarketplaceWebService.Model.Error amazonError,
-                      AmazonApiSection? apiSection, string apiOperation = "",
-                      string message = "", string details = "");
-
-        AmazonLog Add(AmazonLogType type, AmazonLogStatus status, AmazonApiSection? apiSection, string apiOperation = "",
-                      string message = "", string details = "");
-
-        AmazonLog Add(AmazonLogType type, AmazonLogStatus status,
+                      AmazonApiSection? apiSection, string apiOperation, AmazonOrder amazonOrder,
+                      AmazonListing amazonListing, AmazonListingGroup amazonListingGroup,
                       string message = "", string details = "");
 
         IPagedList<AmazonLog> GetEntriesPaged(int pageNum, AmazonLogType? type = null,

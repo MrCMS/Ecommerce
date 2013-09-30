@@ -11,11 +11,11 @@ using Product = MarketplaceWebServiceFeedsClasses.Product;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
 {
-    public class AmazonGenerateFeedContentService : IAmazonGenerateFeedContentService
+    public class AmazonGenerateFeedService : IAmazonGenerateFeedService
     {
         private readonly AmazonSellerSettings _amazonSellerSettings;
 
-        public AmazonGenerateFeedContentService(AmazonSellerSettings amazonSellerSettings)
+        public AmazonGenerateFeedService(AmazonSellerSettings amazonSellerSettings)
         {
             _amazonSellerSettings = amazonSellerSettings;
         }
@@ -47,7 +47,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             }
             return null;
         }
-
         public FileStream GetFeed(IEnumerable<object> feeds, AmazonEnvelopeMessageType amazonEnvelopeMessageType,
             AmazonEnvelopeMessageOperationType amazonEnvelopeMessageOperationType)
         {
@@ -81,7 +80,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             return null;
         }
 
-        public Product GetProductFeed(AmazonListing listing)
+        public Product GetProduct(AmazonListing listing)
         {
             var product=new Product
             {
@@ -104,8 +103,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 product.ReleaseDate = listing.ReleaseDate.Value;
             return product;
         }
-
-        public Price GetProductPriceFeed(AmazonListing listing)
+        public Price GetProductPrice(AmazonListing listing)
         {
             return new Price
             {
@@ -117,8 +115,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                     }
             };
         }
-
-        public Inventory GetProductInventoryFeed(AmazonListing listing)
+        public Inventory GetProductInventory(AmazonListing listing)
         {
             var inventory=new Inventory
             {
@@ -139,8 +136,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             }
             return inventory;
         }
-
-        public ProductImage GetProductImageFeed(AmazonListing listing)
+        public ProductImage GetProductImage(AmazonListing listing)
         {
             if (listing.ProductVariant != null && listing.ProductVariant.Product.Images.Any())
             {
@@ -158,26 +154,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             return null;
         }
 
-        public OrderAcknowledgement GetOrderAcknowledgmentFeed(AmazonOrder amazonOrder, OrderAcknowledgementStatusCode orderAcknowledgementStatusCode, 
-            OrderAcknowledgementItemCancelReason? orderAcknowledgementItemCancelReason)
-        {
-            var product = new OrderAcknowledgement
-            {
-                AmazonOrderID = amazonOrder.AmazonOrderId,
-                StatusCode = orderAcknowledgementStatusCode,
-                Item=new OrderAcknowledgementItemCollection()
-            };
-            foreach (var amazonOrderItem in amazonOrder.Items)
-            {
-                var item = new OrderAcknowledgementItem() {AmazonOrderItemCode = amazonOrderItem.AmazonOrderItemId,CancelReasonSpecified = true};
-                if (orderAcknowledgementItemCancelReason.HasValue)
-                    item.CancelReason = orderAcknowledgementItemCancelReason.Value;
-                product.Item.Add(item);
-            }
-            return product;
-        }
-
-        public OrderFulfillment GetOrderFulfillmentFeed(AmazonOrder amazonOrder)
+        public OrderFulfillment GetOrderFulfillment(AmazonOrder amazonOrder)
         {
             var orderFulfillment = new OrderFulfillment()
             {

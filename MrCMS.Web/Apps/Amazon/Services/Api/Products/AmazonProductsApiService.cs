@@ -33,6 +33,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Products
         {
             try
             {
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage,null,null, AmazonApiSection.Products,
+                    "GetServiceStatus", null,null,null, "Getting Products Api Service Status");
                 _amazonAnalyticsService.TrackNewApiCall(apiSection, "GetServiceStatus");
 
                 var productsApiService = _amazonApiService.GetProductsApiService();
@@ -48,7 +50,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Products
             }
             catch (MarketplaceWebServiceOrdersException ex)
             {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null, apiSection, "GetServiceStatus");
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null, apiSection, "GetServiceStatus",null,null,null);
             }
             catch (Exception ex)
             {
@@ -61,8 +63,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Products
         {
             try
             {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, AmazonApiSection.Products, 
-                    null, null, "GetMatchingProductForId", "Get matching Amazon Product For SKU:" + sku);
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, null,null,AmazonApiSection.Products, 
+                    "GetMatchingProductForId", null,null,null,"Getting Amazon Product details with SKU:" + sku);
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Feeds, "GetFeedSubmissionList");
                 var service = _amazonApiService.GetProductsApiService();
                 var request = GetMatchingProductForIdRequest(sku);
@@ -78,7 +80,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Products
             catch (MarketplaceWebServiceException ex)
             {
                 _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error,
-                    ex, null, AmazonApiSection.Feeds, "GetFeedSubmissionList", "Error happened during operation of getting matching Amazon Product For SKU:" + sku);
+                    ex, null, AmazonApiSection.Feeds, "GetFeedSubmissionList", null,null,null,
+                    "Error happened during operation of getting Amazon Product details with SKU:" + sku);
             }
             catch (Exception ex)
             {

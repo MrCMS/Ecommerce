@@ -16,7 +16,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
         void CheckIfRequestWasProcessed(AmazonSyncModel model, AmazonListing amazonListing, List<string> submissionIds);
 
         string SubmitOrderFulfillmentFeed(AmazonSyncModel model, FileStream feedContent);
-        void CheckIfOrderFulfillmentRequestWasProcessed(AmazonSyncModel model, AmazonOrder amazonOrder,
+        void CheckIfOrderFulfillmentFeedWasProcessed(AmazonSyncModel model, AmazonOrder amazonOrder,
                                                             string submissionId);
     }
 }

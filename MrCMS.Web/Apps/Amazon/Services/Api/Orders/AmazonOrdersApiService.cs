@@ -43,7 +43,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
             }
             catch (MarketplaceWebServiceOrdersException ex)
             {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null, apiSection, "GetServiceStatus");
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null, apiSection, "GetServiceStatus",null,null,null);
             }
             catch (Exception ex)
             {
@@ -56,8 +56,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
         {
             try
             {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, AmazonApiSection.Orders, null, null, "GetOrder", "Getting Amazon Orders");
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage,null,null, AmazonApiSection.Orders, "GetOrder", 
+                    null,null,null,"Getting Amazon Order #" + model.Description);
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "GetOrder");
+
                 var service = _amazonApiService.GetOrdersApiService();
                 var request = GetOrderRequest(model);
 
@@ -69,7 +71,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
             catch (MarketplaceWebServiceOrdersException ex)
             {
                 _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, 
-                    null, AmazonApiSection.Orders, "GetOrder","Error happened during operation of getting Amazon Orders");
+                    null, AmazonApiSection.Orders,"GetOrder",null,null,null,"Error happened during operation of getting Amazon Orders");
             }
             catch (Exception ex)
             {
@@ -90,7 +92,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
         {
             try
             {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, AmazonApiSection.Orders, null, null, "ListOrders", "Listing Amazon Orders");
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, null, null, AmazonApiSection.Orders, 
+                    "ListOrders", null, null,null, "Listing Amazon Orders");
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "ListOrders");
                 var service = _amazonApiService.GetOrdersApiService();
                 var request = GetListOrdersRequest(model);
@@ -102,8 +105,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
             }
             catch (MarketplaceWebServiceOrdersException ex)
             {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, 
-                    null, AmazonApiSection.Orders, "ListOrders","Error happend during operation of listing Amazon Orders");
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex,null, AmazonApiSection.Orders, 
+                    "ListOrders",null,null,null,"Error happend during operation of listing Amazon Orders");
             }
             catch (Exception ex)
             {
@@ -130,8 +133,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
         {
             try
             {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, AmazonApiSection.Orders, null, 
-                    null, "ListOrderItems", "Listing items for Amazon Order #"+amazonOrderId);
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, null,null,AmazonApiSection.Orders, "ListOrderItems", 
+                    null, null,null, "Listing items for Amazon Order #"+amazonOrderId);
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "ListOrderItems");
                 var service = _amazonApiService.GetOrdersApiService();
                 var request = GetListOrderItemsRequest(amazonOrderId);
@@ -145,7 +148,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
             catch (MarketplaceWebServiceOrdersException ex)
             {
                 _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null, 
-                    AmazonApiSection.Orders, "ListOrderItems","Error happend during operation of listing items for Amazon Order #"+amazonOrderId);
+                    AmazonApiSection.Orders, "ListOrderItems",null,null,null,
+                    "Error happend during operation of listing items for Amazon Order #"+amazonOrderId);
             }
             catch (Exception ex)
             {
