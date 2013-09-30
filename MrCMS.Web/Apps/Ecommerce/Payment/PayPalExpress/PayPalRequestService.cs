@@ -62,7 +62,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
             {
                 OrderTotal = cart.Total.GetAmountType(),
                 ShippingTotal = cart.ShippingTotal.GetAmountType(),
-                ItemTotal = cart.Subtotal.GetAmountType(),
+                ItemTotal = cart.TotalPreDiscount.GetAmountType(),
                 Custom = cart.CartGuid.ToString(),
                 ButtonSource = "mrcms-ecommerce",
                 InvoiceID = cart.CartGuid.ToString()
