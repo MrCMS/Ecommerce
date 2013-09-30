@@ -2078,6 +2078,9 @@
     <Content Include="Apps\Core\Views\Widgets\TextWidget.cshtml" />
     <Content Include="Apps\Core\Views\Widgets\UserLinks.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\FeaturedProductsVertical.cshtml" />
+    <Content Include="Apps\Ryness\Views\Pages\BuyingGuide.cshtml" />
+    <Content Include="Apps\Ryness\Views\Pages\Store.cshtml" />
+    <Content Include="Apps\Ryness\Views\Pages\StoreList.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
