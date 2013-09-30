@@ -123,12 +123,12 @@
         
 
     }
-    <!-- TODO: styling of this paypal-->
+    
     <div class="row-fluid">
         <div class="pull-right">
-            <p class="text-align-right">Or Checkout with...</p>
             @if (Model.CanUsePayPalExpress)
             {
+                <p class="text-align-right">Or Checkout with...</p>
                 using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
                 {
                     <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />

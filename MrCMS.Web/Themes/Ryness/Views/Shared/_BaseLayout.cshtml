@@ -18,9 +18,10 @@
     }
     @Html.RenderCss()
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><script src="/Apps/Core/Content/Scripts/respond.min.js"></script><![endif]-->
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><script src="/Apps/Core/Content/Scripts/respond.min.js"></script><![endif]-->
 
-    @{ Html.RenderAction("GetEcommerceTrackingCode", "GoogleAnalytics", new {page = this.Page}); }
+    @{ Html.RenderAction("GetEcommerceTrackingCode", "GoogleAnalytics", new { page = this.Page }); }
     @Html.Raw(Model.CustomHeaderScripts)
 </head>
 <body>
@@ -34,11 +35,13 @@
         Html.IncludeScript("~/Themes/Ryness/Content/Scripts/jquery.pikachoose.min.js");
         Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.min.js");
         Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.unobtrusive.min.js");
-        //Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/bootstrap.dropdown.js");
         Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/ecommerce.js");
         Html.IncludeScript("~/Themes/Ryness/Content/Scripts/custom.js");
     }
     @Html.RenderScripts()
+    
+        <!--[if lt IE 10]>
+        <script src="/Themes/Ryness/Content/Scripts/jquery.placeholder.js"></script><![endif]-->
 
     @if (CurrentRequestData.CurrentUserIsAdmin && SiteSettings<SiteSettings>().EnableInlineEditing)
     {

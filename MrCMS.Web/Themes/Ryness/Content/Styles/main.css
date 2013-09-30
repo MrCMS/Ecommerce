@@ -36,6 +36,7 @@ hr { border-top: 1px solid #eaeaea;border-bottom: 1px solid #ffffff;}
 .margin-top-bottom-10 {margin:10px 0;}
 .margin-bottom-20 {margin-bottom:20px;}
 .margin-top-bottom-20 {margin:20px 0;}
+.margin-top-20 { margin-top: 20px;}
 .margin-top-25 {margin-top:25px;}
 .dashed-border-bottom {border-bottom:1px dashed #e8e8e8;}
 .border-top {border-top:1px solid #e8e8e8;}
@@ -152,7 +153,7 @@ footer {background:url(/Themes/Ryness/Content/Images/footer-bg.gif) repeat;}
 .grid-items .span2:nth-child(6n+1) { margin-left: 0;clear: both;}
 .category-picture {border-top:1px solid #eeeeee;}
 .category-name {border-top:1px solid #eeeeee;text-align:center;}
-.breadcrumb {background:#f3f1ed;border-top:1px solid #E5E5E5;border-bottom:1px solid #E5E5E5;}
+.breadcrumb {background:#f3f1ed;border-top:1px solid #E5E5E5;border-bottom:1px solid #E5E5E5;margin: 0;}
 .breadcrumb ul {margin:0;padding:0;}
 .breadcrumb ul li {margin:0;padding:0;list-style-type:none;float:left;}
 .breadcrumb ul li a {color:#C5251E;padding-right:20px;background:url(/Themes/Ryness/Content/Images/list-bg.png) no-repeat right center;margin-right:10px;font-weight:900;}
@@ -163,7 +164,7 @@ footer {background:url(/Themes/Ryness/Content/Images/footer-bg.gif) repeat;}
 .block-list ul li {margin:0;padding:5px 0;list-style-type:none;border-bottom:1px dashed #E8E8E8;}
 .block-list ul li:last-child {border-bottom:none;}
 .block-list ul li a {display:block;background:url(/Themes/Ryness/Content/Images/list-style.png) no-repeat left center;padding-left:15px;color:#444444;}
-.block-container {border-left: 1px solid #E5E5E5;border-right: 1px solid #E5E5E5;border-bottom:1px solid #E5E5E5;}
+.block-container {border-left: 1px solid #E5E5E5;border-right: 1px solid #E5E5E5;border-bottom:1px solid #E5E5E5;background: #FFFFFF;}
 .block-container div:last-child {border-bottom:none;}
 .block-container span {display:block;padding:5px 0;}
 .block-container .video-list {padding:10px 0;margin:0 10px;border-bottom:1px solid #e8e8e8;font-size:17px;line-height:30px;}
@@ -390,7 +391,7 @@ box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);}
 
 .ui-slider .ui-slider-range {
     background: #C5251E !important;
-
+    filter: none;
 }
 .cart-header { background: #f3f1ed;border: 1px solid #ddd;line-height: 44px;}
 .cart-item{border-left: 1px solid #ddd;border-bottom: 1px solid #ddd;border-right: 1px solid #ddd;}
