@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MarketplaceWebServiceOrders.Model;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
@@ -69,7 +70,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
             if (rawOrders != null)
             {
-                foreach (var rawOrder in rawOrders)
+                foreach (var rawOrder in rawOrders.Where(x => x.OrderStatus != OrderStatusEnum.Pending))
                 {
                     var amazonOrder = _validateAmazonOrderService.GetAmazonOrder(rawOrder);
 

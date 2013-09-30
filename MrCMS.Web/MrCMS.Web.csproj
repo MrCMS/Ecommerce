@@ -279,6 +279,8 @@
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderSearchService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSearchService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\IShipAmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\ShipAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IValidateAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\ValidateAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IImportAmazonOrderService.cs" />
@@ -864,6 +866,7 @@
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-one-listing.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-many-listing.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\mark-order-shipped.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\listing-groups.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\sync-many-listing.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\sync-one-listing.js" />
@@ -2294,6 +2297,7 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Delete.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Add.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\CloseMany.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\ShipOne.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

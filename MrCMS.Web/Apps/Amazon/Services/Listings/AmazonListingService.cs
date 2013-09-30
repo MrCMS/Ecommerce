@@ -75,7 +75,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings
 
             if (amazonProduct != null && amazonProduct.Identifiers.MarketplaceASIN != null)
             {
-                if (!String.IsNullOrWhiteSpace(item.ASIN))
+                if (String.IsNullOrWhiteSpace(item.ASIN))
                 {
                     item.Status = AmazonListingStatus.Active;
                     item.ASIN = amazonProduct.Identifiers.MarketplaceASIN.ASIN;

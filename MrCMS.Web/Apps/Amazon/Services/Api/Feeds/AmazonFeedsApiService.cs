@@ -6,6 +6,7 @@ using MarketplaceWebService;
 using MarketplaceWebService.Model;
 using MarketplaceWebServiceFeedsClasses;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
+using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Analytics;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
@@ -132,6 +133,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 };
             return feeds;
         }
+
         public FileStream GetSingleProductImageFeed(AmazonListing listing)
         {
             return _amazonGenerateFeedContentService.GetSingleFeed(_amazonGenerateFeedContentService.GetProductImageFeed(listing), AmazonEnvelopeMessageType.ProductImage, AmazonEnvelopeMessageOperationType.Update);
@@ -162,6 +164,18 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             var feeds = amazonListingGroup.Items.Where(x => x.Status == AmazonListingStatus.NotOnAmazon
                 || x.Status == AmazonListingStatus.Inactive).Select(_amazonGenerateFeedContentService.GetProductImageFeed).ToList();
             return _amazonGenerateFeedContentService.GetFeed(feeds, AmazonEnvelopeMessageType.ProductImage, AmazonEnvelopeMessageOperationType.Update);
+        }
+
+        public FileStream GetOrderAcknowledgmentFeed(AmazonOrder order,OrderAcknowledgementStatusCode orderAcknowledgementStatusCode)
+        {
+            return _amazonGenerateFeedContentService.GetSingleFeed(_amazonGenerateFeedContentService.GetOrderAcknowledgmentFeed(order, orderAcknowledgementStatusCode,order.CancelReason), 
+                AmazonEnvelopeMessageType.OrderAcknowledgement, null);
+        }
+
+        public FileStream GetOrderFulfillmentFeed(AmazonOrder order)
+        {
+            return _amazonGenerateFeedContentService.GetSingleFeed(_amazonGenerateFeedContentService.GetOrderFulfillmentFeed(order),
+                AmazonEnvelopeMessageType.OrderFulfillment, null);
         }
     }
 }

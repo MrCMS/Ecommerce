@@ -82,8 +82,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             order.PaymentMethod = rawOrder.PaymentMethod.GetEnumByValue<AmazonPaymentMethod>();
             order.SalesChannel = rawOrder.SalesChannel;
             order.OrderType = rawOrder.OrderType;
-            order.OrderTotalAmount = Decimal.Parse(rawOrder.OrderTotal.Amount);
-            order.OrderCurrency = rawOrder.OrderTotal.CurrencyCode;
+            order.OrderTotalAmount = rawOrder.OrderTotal!=null?Decimal.Parse(rawOrder.OrderTotal.Amount):0;
+            order.OrderCurrency = rawOrder.OrderTotal!=null?rawOrder.OrderTotal.CurrencyCode:String.Empty;
             order.MarketplaceId = rawOrder.MarketplaceId;
             order.ShipServiceLevel = rawOrder.ShipServiceLevel;
             order.ShipmentServiceLevelCategory = rawOrder.ShipmentServiceLevelCategory;
@@ -95,23 +95,28 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         }
         public Address GetAmazonOrderAddress(MarketplaceWebServiceOrders.Model.Order rawOrder)
         {
-            return new Address()
-                {
-                    Address1 = rawOrder.ShippingAddress.AddressLine1,
-                    Address2 = rawOrder.ShippingAddress.AddressLine2,
-                    FirstName = rawOrder.ShippingAddress.Name.Split(' ').First(),
-                    LastName = rawOrder.ShippingAddress.Name.Split(' ')[1],
-                    PhoneNumber = rawOrder.ShippingAddress.Phone,
-                    PostalCode = rawOrder.ShippingAddress.PostalCode,
-                    StateProvince = rawOrder.ShippingAddress.StateOrRegion,
-                    City = rawOrder.ShippingAddress.City,
-                    Country = _countryService.GetCountryByCode(rawOrder.ShippingAddress.CountryCode),
-                };
+            if (rawOrder.ShippingAddress != null)
+            {
+                return new Address()
+                    {
+                        Address1 = rawOrder.ShippingAddress.AddressLine1,
+                        Address2 = rawOrder.ShippingAddress.AddressLine2,
+                        FirstName = rawOrder.ShippingAddress.Name.Split(' ').First(),
+                        LastName = rawOrder.ShippingAddress.Name.Split(' ')[1],
+                        PhoneNumber = rawOrder.ShippingAddress.Phone,
+                        PostalCode = rawOrder.ShippingAddress.PostalCode,
+                        StateProvince = rawOrder.ShippingAddress.StateOrRegion,
+                        City = rawOrder.ShippingAddress.City,
+                        Country = _countryService.GetCountryByCode(rawOrder.ShippingAddress.CountryCode),
+                    };
+            }
+            return null;
         }
 
         public Order GetOrder(MarketplaceWebServiceOrders.Model.Order rawOrder, AmazonOrder amazonOrder)
         {
             var order = amazonOrder.Order ?? new Order();
+
             if (order.Id == 0)
             {
                 order = GetOrderDetails(amazonOrder);

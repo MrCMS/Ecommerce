@@ -37,6 +37,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult Listings(AmazonListingGroup amazonListingGroup,int page = 1)
         {
+            ViewData["AmazonProductDetailsUrl"] = _amazonAppSettings.AmazonProductDetailsUrl;
             var results = new PagedList<AmazonListing>(amazonListingGroup.Items, page, 10);
             return PartialView(results);
         }
@@ -62,7 +63,6 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Edit(AmazonListingGroup amazonListingGroup)
         {
-            ViewData["AmazonProductDetailsUrl"] = _amazonAppSettings.AmazonProductDetailsUrl;
             if (amazonListingGroup != null)
                 return View(amazonListingGroup);
             return RedirectToAction("Index");

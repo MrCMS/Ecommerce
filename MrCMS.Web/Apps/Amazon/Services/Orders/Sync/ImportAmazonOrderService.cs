@@ -34,23 +34,22 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
         public AmazonOrder GetAmazonOrder(Order rawOrder)
         {
-            if (rawOrder.OrderTotal.CurrencyCode == _ecommerceSettings.Currency.Code)
+            if (rawOrder.OrderTotal!=null && rawOrder.OrderTotal.CurrencyCode != _ecommerceSettings.Currency.Code) return null;
+
+            var order = _amazonOrderService.GetByAmazonOrderId(rawOrder.AmazonOrderId) ?? new AmazonOrder();
+
+            if (order.Id == 0)
             {
-                var order = _amazonOrderService.GetByAmazonOrderId(rawOrder.AmazonOrderId) ?? new AmazonOrder();
+                var shippingAddress = _validateAmazonOrderService.GetAmazonOrderAddress(rawOrder);
 
-                if (order.Id == 0)
-                {
-                    var shippingAddress = _validateAmazonOrderService.GetAmazonOrderAddress(rawOrder);
-
-                    _validateAmazonOrderService.GetAmazonOrderDetails(rawOrder, ref order, shippingAddress);
-                }
-
-                order.NumberOfItemsShipped = rawOrder.NumberOfItemsShipped;
-                order.Status = rawOrder.OrderStatus.GetEnumByValue<AmazonOrderStatus>();
-
-                return order;
+                _validateAmazonOrderService.GetAmazonOrderDetails(rawOrder, ref order, shippingAddress);
             }
-            return null;
+
+            order.NumberOfItemsShipped = rawOrder.NumberOfItemsShipped;
+            order.Status = rawOrder.OrderStatus.GetEnumByValue<AmazonOrderStatus>();
+
+            return order;
+
         }
     }
 }
