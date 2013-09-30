@@ -7,6 +7,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using NHibernate;
 using MrCMS.Helpers;
@@ -24,16 +25,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     {
         private readonly ISession _session;
         private readonly IDocumentService _documentService;
+        private readonly EcommerceSettings _ecommerceSettings;
 
-        public ProductService(ISession session, IDocumentService documentService)
+        public ProductService(ISession session, IDocumentService documentService, EcommerceSettings ecommerceSettings)
         {
             _session = session;
             _documentService = documentService;
+            _ecommerceSettings = ecommerceSettings;
         }
 
         public ProductPagedList Search(string queryTerm = null, int page = 1)
         {
             IPagedList<Product> pagedList;
+            var pageSize = _ecommerceSettings.PageSizeAdmin > 0 ? _ecommerceSettings.PageSizeAdmin : 10;
             if (!string.IsNullOrWhiteSpace(queryTerm))
             {
                 Product productAlias = null;
@@ -45,11 +49,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                         productVariantAlias.SKU == queryTerm ||
                                         productAlias.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere) ||
                                         productVariantAlias.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere))
-                                    .Paged(page, 10);
+                                    .Paged(page, pageSize);
             }
             else
             {
-                pagedList = _session.Paged(QueryOver.Of<Product>(), page, 10);
+                pagedList = _session.Paged(QueryOver.Of<Product>(), page, pageSize);
             }
 
             var productContainer = _documentService.GetUniquePage<ProductSearch>();
@@ -66,68 +70,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                  .List()
                        : new List<Product>();
         }
-
-        private IList<ProductAttributeValue> GetAttributeValues(MakeMultivariantModel model, ProductVariant productVariant)
-        {
-            var values = new List<ProductAttributeValue>();
-            if (!string.IsNullOrWhiteSpace(model.Option1))
-                values.Add(new ProductAttributeValue
-                               {
-                                   ProductAttributeOption =
-                                       _session.QueryOver<ProductAttributeOption>()
-                                               .Where(
-                                                   option =>
-                                                   option.Name.IsInsensitiveLike(model.Option1, MatchMode.Exact))
-                                               .SingleOrDefault(),
-                                   Value = model.Option1Value,
-                                   ProductVariant = productVariant
-                               });
-            if (!string.IsNullOrWhiteSpace(model.Option2))
-                values.Add(new ProductAttributeValue
-                               {
-                                   ProductAttributeOption =
-                                       _session.QueryOver<ProductAttributeOption>()
-                                               .Where(
-                                                   option =>
-                                                   option.Name.IsInsensitiveLike(model.Option2, MatchMode.Exact))
-                                               .SingleOrDefault(),
-                                   Value = model.Option2Value,
-                                   ProductVariant = productVariant
-                               });
-            if (!string.IsNullOrWhiteSpace(model.Option3))
-                values.Add(new ProductAttributeValue
-                               {
-                                   ProductAttributeOption =
-                                       _session.QueryOver<ProductAttributeOption>()
-                                               .Where(
-                                                   option =>
-                                                   option.Name.IsInsensitiveLike(model.Option3, MatchMode.Exact))
-                                               .SingleOrDefault(),
-                                   Value = model.Option3Value,
-                                   ProductVariant = productVariant
-                               });
-            return values;
-        }
-
-        private void AddAttributeOption(string optionName, Product product)
-        {
-            var productAttributeOption =
-                _session.QueryOver<ProductAttributeOption>()
-                        .Where(option => option.Name.IsInsensitiveLike(optionName, MatchMode.Exact))
-                        .Take(1)
-                        .SingleOrDefault();
-            if (productAttributeOption == null)
-            {
-                _session.Transact(session => session.Save(new ProductAttributeOption() { Name = optionName }));
-                productAttributeOption =
-                _session.QueryOver<ProductAttributeOption>()
-                        .Where(option => option.Name.IsInsensitiveLike(optionName, MatchMode.Exact))
-                        .Take(1)
-                        .SingleOrDefault();
-            }
-            product.AttributeOptions.Add(productAttributeOption);
-        }
-
+        
         public void AddCategory(Product product, int categoryId)
         {
             var category = _documentService.GetDocument<Category>(categoryId);

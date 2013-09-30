@@ -33,9 +33,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 PartialView(new ProductVariant
                                 {
                                     Product = product,
-                                    AttributeValues =
-                                        Enumerable.Range(0, product.AttributeOptions.Count)
-                                                  .Select(i => new ProductAttributeValue()).ToList()
+                                    OptionValues =
+                                        Enumerable.Range(0, product.Options.Count)
+                                                  .Select(i => new ProductOptionValue()).ToList()
                                 });
         }
 

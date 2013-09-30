@@ -1,8 +1,8 @@
 ﻿$(document).ready(function () {
-    $('#searchParam').keypress(function(key) {
+    $('#searchParam').keypress(function (key) {
         var searchParam = $(this).val();
-        if (e.which == 13 && searchParam!="") {
-                $('form').submit();
+        if (e.which == 13 && searchParam != "") {
+            $('form').submit();
         }
     });
     $(document).on('click', 'button#close', function () {
@@ -16,9 +16,11 @@
                         alert("Please try again with different name.");
                     }
                     else {
-                        parent.$.get('/Admin/Apps/Ecommerce/Product/Brands', { Id:productId, brandId: response }, function (brands) {
-                            parent.$('#brands').replaceWith(brands);
-                            parent.$.fancybox.close();
+                        parent.$.post('/Admin/Webpage/Edit/' + productId, { "Brand.Id": response }, function (resp) {
+                            parent.$.get('/Admin/Apps/Ecommerce/Product/Brands', { Id: productId }, function (brands) {
+                                parent.$('#brands').replaceWith(brands);
+                                parent.$.fancybox.close();
+                            });
                         });
                     }
                 });

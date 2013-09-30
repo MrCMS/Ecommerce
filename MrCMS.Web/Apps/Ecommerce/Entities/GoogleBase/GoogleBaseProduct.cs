@@ -42,9 +42,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase
         {
             get
             {
-                if (ProductVariant.AttributeValues != null && ProductVariant.AttributeValues.Any())
+                if (ProductVariant.OptionValues != null && ProductVariant.OptionValues.Any())
                 {
-                    var optionValue = ProductVariant.AttributeValues.SingleOrDefault(x => x.ProductAttributeOption.Name == "Material");
+                    var optionValue = ProductVariant.OptionValues.SingleOrDefault(x => x.ProductOption.Name == "Material");
                     if (optionValue != null)
                         return optionValue.Value;
                 }
@@ -55,9 +55,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase
         {
             get
             {
-                if (ProductVariant.AttributeValues != null && ProductVariant.AttributeValues.Any())
+                if (ProductVariant.OptionValues != null && ProductVariant.OptionValues.Any())
                 {
-                    var optionValue = ProductVariant.AttributeValues.SingleOrDefault(x => x.ProductAttributeOption.Name == "Pattern");
+                    var optionValue = ProductVariant.OptionValues.SingleOrDefault(x => x.ProductOption.Name == "Pattern");
                     if (optionValue != null)
                         return optionValue.Value;
                 }
@@ -68,9 +68,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase
         {
             get
             {
-                if (ProductVariant.AttributeValues != null && ProductVariant.AttributeValues.Any())
+                if (ProductVariant.OptionValues != null && ProductVariant.OptionValues.Any())
                 {
-                    var optionValue = ProductVariant.AttributeValues.SingleOrDefault(x => x.ProductAttributeOption.Name == "Color" || x.ProductAttributeOption.Name == "Colour");
+                    var optionValue = ProductVariant.OptionValues.SingleOrDefault(x => x.ProductOption.Name == "Color" || x.ProductOption.Name == "Colour");
                     if (optionValue != null)
                         return optionValue.Value;
                 }
@@ -81,9 +81,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase
         {
             get
             {
-                if (ProductVariant.AttributeValues != null && ProductVariant.AttributeValues.Any())
+                if (ProductVariant.OptionValues != null && ProductVariant.OptionValues.Any())
                 {
-                    var optionValue = ProductVariant.AttributeValues.SingleOrDefault(x => x.ProductAttributeOption.Name == "Size");
+                    var optionValue = ProductVariant.OptionValues.SingleOrDefault(x => x.ProductOption.Name == "Size");
                     if (optionValue != null)
                         return optionValue.Value;
                 }

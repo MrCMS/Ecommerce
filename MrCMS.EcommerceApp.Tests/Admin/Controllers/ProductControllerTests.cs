@@ -8,6 +8,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
@@ -17,14 +18,15 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
     public class ProductControllerTests
     {
-        private IProductService _productService;
-        private IDocumentService _documentService;
-        private ProductSearch _productSearch;
-        private ProductController _productController;
-        private ICategoryService _categoryService;
-        private IProductOptionManager _productOptionManager;
+        private readonly IProductService _productService;
+        private readonly IDocumentService _documentService;
+        private readonly ProductSearch _productSearch;
+        private readonly ProductController _productController;
+        private readonly ICategoryService _categoryService;
+        private readonly IProductOptionManager _productOptionManager;
         private readonly IFileService _fileService;
-        private IBrandService _brandService;
+        private readonly IBrandService _brandService;
+        private readonly IProductOptionManagementService _productOptionManagementService;
 
         public ProductControllerTests()
         {
@@ -36,8 +38,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _productOptionManager = A.Fake<IProductOptionManager>();
             _fileService = A.Fake<IFileService>();
             _brandService = A.Fake<IBrandService>();
+            _productOptionManagementService = A.Fake<IProductOptionManagementService>();
             _productController = new ProductController(_productService, _documentService, _categoryService, _productOptionManager,
-                _fileService, _brandService);
+                _fileService, _brandService, _productOptionManagementService);
         }
 
         [Fact]

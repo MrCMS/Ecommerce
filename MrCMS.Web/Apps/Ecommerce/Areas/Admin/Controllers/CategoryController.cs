@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website.Controllers;
 using System;
 using System.Linq;

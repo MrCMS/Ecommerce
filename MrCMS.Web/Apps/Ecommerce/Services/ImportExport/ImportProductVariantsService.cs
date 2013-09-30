@@ -58,10 +58,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 product.Variants.Add(productVariant);
 
 
-                for (var i = productVariant.AttributeValues.Count - 1; i >= 0; i--)
+                for (var i = productVariant.OptionValues.Count - 1; i >= 0; i--)
                 {
-                    var value = productVariant.AttributeValues[i];
-                    productVariant.AttributeValues.Remove(value);
+                    var value = productVariant.OptionValues[i];
+                    productVariant.OptionValues.Remove(value);
                     _productOptionManager.DeleteProductAttributeValue(value);
                 }
 

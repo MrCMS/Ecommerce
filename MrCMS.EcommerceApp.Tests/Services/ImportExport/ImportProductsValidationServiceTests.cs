@@ -26,13 +26,13 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         private IDocumentService _documentService;
         private ImportProductsValidationService _importProductsValidationService;
         private IFileService _fileService;
-       
+
         public ImportProductsValidationServiceTests()
         {
             _documentService = A.Fake<IDocumentService>();
             _fileService = A.Fake<IFileService>();
             A.Fake<IImportProductsManager>();
-            _importProductsValidationService= new ImportProductsValidationService(_documentService);
+            _importProductsValidationService = new ImportProductsValidationService(_documentService);
         }
 
         [Fact]
@@ -161,7 +161,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                     MetaDescription = "Test SEO Description",
                     MetaKeywords = "Test, Thought",
                     MetaTitle = "Test SEO Title",
-                    Categories = new List<Category>(){new Category(){Id=1,Name = "Tablets"}},
+                    Categories = new List<Category>() { new Category() { Id = 1, Name = "Tablets" } },
                     SpecificationValues = new List<ProductSpecificationValue>()
                         {
                             new ProductSpecificationValue()
@@ -194,13 +194,13 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                             PreviousPrice = 2,
                             Barcode = "456",
                             ManufacturerPartNumber = "MPN",
-                            AttributeValues = new List<ProductAttributeValue>()
+                            OptionValues = new List<ProductOptionValue>()
                                 {
-                                    new ProductAttributeValue()
+                                    new ProductOptionValue()
                                         {
                                             Id = 1,
                                             Value = "16GB",
-                                            ProductAttributeOption = new ProductAttributeOption()
+                                            ProductOption = new ProductOption()
                                                 {
                                                     Id=1,
                                                     Name = "Storage"
@@ -212,7 +212,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 
             var file = new FileInfo("test.xslx");
             var spreadsheet = new ExcelPackage(file);
-            
+
             spreadsheet.Workbook.Worksheets.Add("Info");
             var wsProducts = spreadsheet.Workbook.Worksheets.Add("Items");
 
@@ -284,27 +284,25 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                 wsProducts.Cells["S" + rowId].Value = productVariants[i].Barcode;
                 wsProducts.Cells["T" + rowId].Value = productVariants[i].ManufacturerPartNumber;
 
-                for (var v = 0;
-                     v < productVariants[i].AttributeValues.OrderBy(x => x.ProductAttributeOption.DisplayOrder).Count();
-                     v++)
+                for (var v = 0; v < productVariants[i].OptionValues.Count(); v++)
                 {
                     if (v == 0)
                     {
                         wsProducts.Cells["U" + rowId].Value =
-                            productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                        wsProducts.Cells["V" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                            productVariants[i].OptionValues[v].ProductOption.Name;
+                        wsProducts.Cells["V" + rowId].Value = productVariants[i].OptionValues[v].Value;
                     }
                     if (v == 1)
                     {
                         wsProducts.Cells["W" + rowId].Value =
-                            productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                        wsProducts.Cells["X" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                            productVariants[i].OptionValues[v].ProductOption.Name;
+                        wsProducts.Cells["X" + rowId].Value = productVariants[i].OptionValues[v].Value;
                     }
                     if (v == 2)
                     {
                         wsProducts.Cells["Y" + rowId].Value =
-                            productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                        wsProducts.Cells["Z" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                            productVariants[i].OptionValues[v].ProductOption.Name;
+                        wsProducts.Cells["Z" + rowId].Value = productVariants[i].OptionValues[v].Value;
                     }
                 }
 
@@ -328,7 +326,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         {
             var gallery = new MediaCategory()
                 {
-                    Id=1,
+                    Id = 1,
                     Name = "Product Gallery"
                 };
             var mediaFile = new MediaFile

@@ -37,7 +37,7 @@ namespace MrCMS.Web.Apps.Ecommerce
         protected override void RegisterServices(IKernel kernel)
         {
             kernel.Rebind<CartModel>().ToMethod(context => context.Kernel.Get<ICartBuilder>().BuildCart()).InRequestScope();
-            kernel.Bind<SECVPN>().To<SECVPNClient>().InRequestScope();
+            kernel.Bind<SECVPN>().To<MrCMS.PaypointService.API.SECVPNClient>().InRequestScope();
         }
 
         public override IEnumerable<Type> BaseTypes

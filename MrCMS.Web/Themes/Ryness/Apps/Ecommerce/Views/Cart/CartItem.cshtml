@@ -21,11 +21,11 @@
 
     <div class="span2 padding-top-bottom-10">
         <input type="text" class="input-mini" name="@Html.Raw("quantity-" + Model.Id)" value="@Model.Quantity" data-cart-id="@Model.Id"/>
-        @foreach (var option in Model.Item.AttributeValues)
+        @foreach (var option in Model.Item.OptionValues)
         {
             <p>
                 <strong>
-                    @option.ProductAttributeOption.Name
+                    @option.ProductOption.Name
                 </strong>
                 <span>:</span>
                 @option.Value

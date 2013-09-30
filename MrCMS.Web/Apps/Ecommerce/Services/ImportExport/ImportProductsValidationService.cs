@@ -43,7 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     var productVariantErrors = productVariantRules.SelectMany(rule => rule.GetErrors(variant)).ToList();
                     if (productVariantErrors.Any())
                     {
-                        if (!errors.Any(x => x.Key == product.UrlSegment))
+                        if (errors.All(x => x.Key != product.UrlSegment))
                             errors.Add(product.UrlSegment, productVariantErrors);
                         else
                             errors[product.UrlSegment].AddRange(productVariantErrors);
@@ -77,8 +77,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                             var totalRows = worksheet.Dimension.End.Row;
                             for (var rowId = 2; rowId <= totalRows; rowId++)
                             {
-                                if (!worksheet.GetValue<string>(rowId, 1).HasValue() ||
-                                    !worksheet.GetValue<string>(rowId, 2).HasValue() ||
+                                if (!worksheet.GetValue<string>(rowId, 1).HasValue() &&
+                                    !worksheet.GetValue<string>(rowId, 2).HasValue() &&
                                     !worksheet.GetValue<string>(rowId, 3).HasValue()) continue;
 
                                 var product = new ProductImportDataTransferObject();
@@ -193,7 +193,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     //Url History
                                     try
                                     {
-                                        var value = worksheet.GetValue<string>(rowId, 30);
+                                        var value = worksheet.GetValue<string>(rowId, 31);
                                         if (!String.IsNullOrWhiteSpace(value))
                                         {
                                             var urlHistory = value.Split(',');
@@ -268,10 +268,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                             "Tracking Policy must have either 'Track' or 'DontTrack' value.");
                                     else
                                     {
-                                        if (worksheet.GetValue<string>(rowId, 17) == "Track")
-                                            productVariant.TrackingPolicy = TrackingPolicy.Track;
-                                        else
-                                            productVariant.TrackingPolicy = TrackingPolicy.DontTrack;
+                                        productVariant.TrackingPolicy = worksheet.GetValue<string>(rowId, 17) == "Track" ? TrackingPolicy.Track : TrackingPolicy.DontTrack;
                                     }
                                     if (worksheet.GetValue<string>(rowId, 18).HasValue())
                                         productVariant.SKU = worksheet.GetValue<string>(rowId, 18);

@@ -125,26 +125,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                     for (var v = 0;
                          v <
-                         productVariants[i].AttributeValues.OrderBy(x => x.ProductAttributeOption.DisplayOrder).Count();
+                         productVariants[i].OptionValues.Count();
                          v++)
                     {
                         if (v == 0)
                         {
                             wsItems.Cells["U" + rowId].Value =
-                                productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsItems.Cells["V" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                                productVariants[i].OptionValues[v].ProductOption.Name;
+                            wsItems.Cells["V" + rowId].Value = productVariants[i].OptionValues[v].Value;
                         }
                         if (v == 1)
                         {
                             wsItems.Cells["W" + rowId].Value =
-                                productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsItems.Cells["X" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                                productVariants[i].OptionValues[v].ProductOption.Name;
+                            wsItems.Cells["X" + rowId].Value = productVariants[i].OptionValues[v].Value;
                         }
                         if (v == 2)
                         {
                             wsItems.Cells["Y" + rowId].Value =
-                                productVariants[i].AttributeValues[v].ProductAttributeOption.Name;
-                            wsItems.Cells["Z" + rowId].Value = productVariants[i].AttributeValues[v].Value;
+                                productVariants[i].OptionValues[v].ProductOption.Name;
+                            wsItems.Cells["Z" + rowId].Value = productVariants[i].OptionValues[v].Value;
                         }
                     }
 

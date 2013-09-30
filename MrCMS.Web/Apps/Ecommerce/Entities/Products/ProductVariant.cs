@@ -20,7 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
     {
         public ProductVariant()
         {
-            AttributeValues = new List<ProductAttributeValue>();
+            OptionValues = new List<ProductOptionValue>();
             PriceBreaks = new List<PriceBreak>();
         }
         [DisplayName("Price Pre Tax")]
@@ -155,8 +155,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual Product Product { get; set; }
 
-        public virtual IList<ProductAttributeValue> AttributeValues { get; set; }
-        public virtual IEnumerable<ProductAttributeValue> AttributeValuesOrdered { get { return AttributeValues.OrderBy(value => value.DisplayOrder); } }
+        public virtual IList<ProductOptionValue> OptionValues { get; set; }
+        public virtual IEnumerable<ProductOptionValue> AttributeValuesOrdered { get { return OptionValues.OrderBy(value => value.DisplayOrder); } }
         public virtual IList<PriceBreak> PriceBreaks { get; set; }
 
         [StringLength(200)]
@@ -195,7 +195,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                 var title = string.Empty;
                 if (!string.IsNullOrWhiteSpace(Name)) title = Name + " - ";
 
-                if (AttributeValues.Any())
+                if (OptionValues.Any())
                 {
                     title += string.Join(", ", AttributeValuesOrdered.Select(value => value.Value));
                 }

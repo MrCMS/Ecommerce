@@ -1,36 +1,26 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Models.MakeMultivariantModel
-@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
-@using (Html.BeginForm("ManageOptions", "Product", FormMethod.Post))
-{
-    <fieldset>
-        <legend>
-            Manage Product Attribute Options
-            <span class="btn-group  display-inline  pull-right">
-                <input type="submit" class="btn-primary btn" value="Save & Close" />
-            </span>
-        </legend>
-
-        @Html.HiddenFor(model => model.ProductId)
-        <div class="row-fluid">
-            <div class="span6">
-                @Html.LabelFor(model => model.Option1)
-                @Html.EditorFor(model => model.Option1)
-                @Html.HiddenFor(model => model.Option1Id)
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span6">
-                @Html.LabelFor(model => model.Option2)
-                @Html.EditorFor(model => model.Option2)
-                @Html.HiddenFor(model => model.Option2Id)
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span6">
-                @Html.LabelFor(model => model.Option3)
-                @Html.EditorFor(model => model.Option3)
-                @Html.HiddenFor(model => model.Option3Id)
-            </div>
-        </div>
-    </fieldset>
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
 }
+<fieldset>
+    <legend>Manage Product Options
+    </legend>
+    @Html.Hidden("product-id", Model.Id)
+
+    <div class="row-fluid">
+        <div class="span6">
+            @{ Html.RenderAction("AddProductOption", "Product", new { id = Model.Id });}
+
+            <div id="new-product-option" style="display: none;">
+                @{ Html.RenderAction("Add", "ProductOption");}
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            @{ Html.RenderAction("ProductOptions", "Product", new { id = Model.Id });}
+        </div>
+    </div>
+</fieldset>
+@{Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/manage-options.js");}

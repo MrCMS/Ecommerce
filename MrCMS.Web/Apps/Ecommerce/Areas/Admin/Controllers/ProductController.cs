@@ -2,9 +2,11 @@ using System.Web.Mvc;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using System.Linq;
@@ -12,6 +14,7 @@ using System.Collections.Generic;
 using MrCMS.Models;
 using System.Web;
 using System;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -23,9 +26,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IProductOptionManager _productOptionManager;
         private readonly IFileService _fileService;
         private readonly IBrandService _brandService;
+        private readonly IProductOptionManagementService _productOptionManagementService;
 
         public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService,
-            IProductOptionManager productOptionManager, IFileService fileService, IBrandService brandService)
+            IProductOptionManager productOptionManager, IFileService fileService, IBrandService brandService,
+            IProductOptionManagementService productOptionManagementService)
         {
             _productService = productService;
             _documentService = documentService;
@@ -33,6 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _productOptionManager = productOptionManager;
             _fileService = fileService;
             _brandService = brandService;
+            _productOptionManagementService = productOptionManagementService;
         }
 
         /// <summary>
@@ -149,7 +155,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             {
                 var option = _productOptionManager.GetSpecificationAttribute(Option);
                 if (!_productOptionManager.ListSpecificationAttributeOptions(Option).Any(x => x.Name == Value))
-                    _productOptionManager.AddSpecificationAttributeOption(new ProductSpecificationAttributeOption() { Site = CurrentSite, Name = Value, ProductSpecificationAttribute = option });
+                    _productOptionManager.AddSpecificationAttributeOption(new ProductSpecificationAttributeOption() { Name = Value, ProductSpecificationAttribute = option });
                 _productOptionManager.SetSpecificationValue(_productService.Get(ProductId), option, Value);
                 return Json(true);
             }
@@ -263,9 +269,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             if (product != null)
             {
-                var sortItems = product.AttributeOptions.OrderBy(x => x.DisplayOrder)
-                            .Select(
-                                arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Name })
+                var sortItems = product.Options
+                            .Select((option, i) =>
+                                 new SortItem { Order = i, Id = option.Id, Name = option.Name })
                             .ToList();
                 ViewBag.Product = product;
                 return View(sortItems);
@@ -276,102 +282,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult SortOptions(List<SortItem> items, Product product)
         {
-            if (product != null)
-            {
-                if (items != null && items.Count > 0)
-                {
-                    _productOptionManager.UpdateAttributeOptionDisplayOrder(items);
-                }
-            }
+
+            _productOptionManager.UpdateAttributeOptionDisplayOrder(product, items);
             return RedirectToAction("Edit", "Webpage", new { id = product.Id });
         }
 
         [HttpGet]
         public PartialViewResult ManageOptions(Product product)
         {
-            var model = new MakeMultivariantModel { ProductId = product.Id };
-            if (product.AttributeOptions.Any())
-            {
-                try
-                {
-                    model.Option1Id = product.AttributeOptions[0].Id;
-                    model.Option1 = product.AttributeOptions[0].Name;
-                    if (product.AttributeOptions[1] != null)
-                    {
-                        model.Option2Id = product.AttributeOptions[1].Id;
-                        model.Option2 = product.AttributeOptions[1].Name;
-                    }
-                    if (product.AttributeOptions[2] != null)
-                    {
-                        model.Option3Id = product.AttributeOptions[2].Id;
-                        model.Option3 = product.AttributeOptions[2].Name;
-                    }
-                }
-                catch (Exception)
-                {
-                    return PartialView(model);
-                }
-            }
-            return PartialView(model);
-        }
-
-        [HttpPost]
-        public RedirectToRouteResult ManageOptions(MakeMultivariantModel model)
-        {
-            var product = _documentService.GetDocument<Product>(model.ProductId);
-            if (!string.IsNullOrWhiteSpace(model.Option1))
-            {
-                _productOptionManager.UpdateAttributeOption(model.Option1, model.Option1Id, product);
-            }
-            else
-            {
-                if (model.Option1Id != 0)
-                {
-                    ProductAttributeOption option = _productOptionManager.GetAttributeOption(model.Option1Id);
-                    foreach (var item in option.Values.Where(x => x.ProductAttributeOption.Id == option.Id && x.ProductVariant.Product.Id == product.Id).ToList())
-                    {
-                        option.Values.Remove(item);
-                    }
-                    product.AttributeOptions.Remove(option);
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(model.Option2))
-            {
-                _productOptionManager.UpdateAttributeOption(model.Option2, model.Option2Id, product);
-            }
-            else
-            {
-                if (model.Option2Id != 0)
-                {
-                    ProductAttributeOption option = _productOptionManager.GetAttributeOption(model.Option2Id);
-                    foreach (var item in option.Values.Where(x => x.ProductAttributeOption.Id == option.Id && x.ProductVariant.Product.Id == product.Id).ToList())
-                    {
-                        option.Values.Remove(item);
-                    }
-                    _productOptionManager.UpdateAttributeOption(option);
-                    product.AttributeOptions.Remove(option);
-                }
-            }
-            if (!string.IsNullOrWhiteSpace(model.Option3))
-            {
-                _productOptionManager.UpdateAttributeOption(model.Option3, model.Option3Id, product);
-            }
-            else
-            {
-                if (model.Option3Id != 0)
-                {
-                    ProductAttributeOption option = _productOptionManager.GetAttributeOption(model.Option3Id);
-                    foreach (var item in option.Values.Where(x => x.ProductAttributeOption.Id == option.Id && x.ProductVariant.Product.Id == product.Id).ToList())
-                    {
-                        option.Values.Remove(item);
-                    }
-                    product.AttributeOptions.Remove(option);
-                }
-            }
-            _documentService.SaveDocument(product);
-
-            return RedirectToAction("Edit", "Webpage", new { id = model.ProductId });
+            return PartialView(product);
         }
 
         [HttpGet]
@@ -384,19 +303,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Brands(Product product, int brandId=0)
+        public PartialViewResult Brands(Product product)
         {
-            var options = _brandService.GetOptions();
-            if (brandId > 0)
-            {
-                var brand = _brandService.GetById(brandId);
-                if (brand != null)
-                {
-                    product.Brand = brand;
-                    _documentService.SaveDocument(product);
-                }
-            }
-            ViewData["brands"] = options;
+            ViewData["brands"] = _brandService.GetOptions();
             return PartialView(product);
         }
 
@@ -409,14 +318,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("AddBrand")]
-        public JsonResult AddBrand_POST(string name)
+        public JsonResult AddBrand_POST(Brand brand)
         {
-            if (!String.IsNullOrWhiteSpace(name) && !_brandService.AnyExistingBrandsWithName(name, 0))
-            {
-                _brandService.Add(new Brand() { Name = name, Site = CurrentSite });
-                return Json(_brandService.GetBrandByName(name).Id);
-            }
-            return Json(false);
+            _brandService.Add(brand);
+            return Json(true);
         }
 
         [HttpGet]
@@ -442,6 +347,49 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _productService.SetCategoryOrder(product, items);
             return RedirectToAction("Edit", "Webpage", new { id = product.Id });
+        }
+
+        [HttpGet]
+        public PartialViewResult AddProductOption(Product product)
+        {
+            ViewData["options"] = _productOptionManagementService.GetProductAttributeOptions(product);
+            return PartialView(product);
+        }
+
+        [HttpPost]
+        public JsonResult AddProductOption(Product product, [IoCModelBinder(typeof(ProductOptionModelBinder))] ProductOption productOption)
+        {
+            _productOptionManagementService.AddOption(product, productOption);
+            return Json(true);
+        }
+
+        [HttpPost]
+        public JsonResult RemoveProductOption(Product product, [IoCModelBinder(typeof(ProductOptionModelBinder))] ProductOption productOption)
+        {
+            _productOptionManagementService.RemoveOption(product, productOption);
+            return Json(true);
+        }
+
+        public PartialViewResult ProductOptions(Product product)
+        {
+            return PartialView(product);
+        }
+    }
+
+    public class ProductOptionModelBinder : MrCMSDefaultModelBinder
+    {
+        public ProductOptionModelBinder(ISession session)
+            : base(() => session)
+        {
+
+        }
+
+        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+        {
+            int id;
+            return int.TryParse(GetValueFromContext(controllerContext, "productOptionId"), out id)
+                       ? Session.Get<ProductOption>(id)
+                       : null;
         }
     }
 }

@@ -156,29 +156,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             }));
         }
 
-        public IList<ProductAttributeOption> GetAllAttributeOptions()
+        public IList<ProductOption> GetAllAttributeOptions()
         {
-            return _session.QueryOver<ProductAttributeOption>().Cacheable().List();
+            return _session.QueryOver<ProductOption>().Cacheable().List();
         }
-        public ProductAttributeOption GetAttributeOption(int id)
+        public IList<ProductOption> ListAttributeOptions()
         {
-            return _session.QueryOver<ProductAttributeOption>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
+            return _session.QueryOver<ProductOption>().Cacheable().List();
         }
-        public ProductAttributeOption GetAttributeOptionByName(string name)
+        public ProductOption GetAttributeOption(int id)
         {
-            return _session.QueryOver<ProductAttributeOption>()
+            return _session.QueryOver<ProductOption>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
+        }
+        public ProductOption GetAttributeOptionByName(string name)
+        {
+            return _session.QueryOver<ProductOption>()
                            .Where(
                                option =>
                                option.Name.IsInsensitiveLike(name, MatchMode.Exact)).SingleOrDefault();
         }
-        public void AddAttributeOption(ProductAttributeOption productAttributeOption)
+        public void AddAttributeOption(ProductOption productOption)
         {
-            if (string.IsNullOrWhiteSpace(productAttributeOption.Name))
+            if (string.IsNullOrWhiteSpace(productOption.Name))
                 return;
-            if (!AnyExistingAttributeOptionsWithName(productAttributeOption))
-                _session.Transact(session => session.Save(productAttributeOption));
+            if (!AnyExistingAttributeOptionsWithName(productOption))
+                _session.Transact(session => session.Save(productOption));
         }
-        public void UpdateAttributeOption(ProductAttributeOption option)
+        public void UpdateAttributeOption(ProductOption option)
         {
             if (option == null || string.IsNullOrWhiteSpace(option.Name))
                 return;
@@ -188,91 +192,96 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         }
         public void UpdateAttributeOption(string name, int id, Product product)
         {
-            ProductAttributeOption option1 = GetAttributeOption(id);
-            ProductAttributeOption option2 = GetAttributeOptionByName(name);
+            ProductOption optionById = GetAttributeOption(id);
+            ProductOption optionByName = GetAttributeOptionByName(name);
 
-            if (id != 0 && option1 != null && option2 != null)
-                return;
-            else if (id != 0 && option1 != null && option2 == null)
+
+            //if (id != 0 && option1 != null && option2 != null)
+            //    return;
+            //else if (id != 0 && option1 != null && option2 == null)
+            //{
+            //    option1.Name = name;
+            //    _session.Transact(session => session.Update(option1));
+            //}
+            //else if (option2 != null)
+            //{
+            //    if (option2.Products.All(x => x.Id != product.Id))
+            //    {
+            //        option2.Products.Add(product);
+            //    }
+            //    _session.Transact(session => session.Update(option2));
+            //    for (int i = 0; i < product.Variants.Count; i++)
+            //    {
+            //        if (product.Variants[i].OptionValues.All(x => x.ProductOption.Id != option2.Id))
+            //        {
+            //            product.Variants[i].OptionValues.Add(new ProductOptionValue
+            //                {
+            //                    ProductVariant = product.Variants[i],
+            //                    ProductOption = option2,
+            //                    Value = String.Empty
+            //                });
+            //            _session.Transact(session => session.Update(product.Variants[i]));
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    ProductOption option = new ProductOption();
+            //    option.Name = name;
+            //    option.Products.Add(product);
+            //    option.DisplayOrder = 0;
+            //    _session.Transact(session => session.Save(option));
+
+            //    for (int i = 0; i < product.Variants.Count; i++)
+            //    {
+            //        product.Variants[i].OptionValues.Add(new ProductOptionValue
+            //            {
+            //                ProductVariant = product.Variants[i],
+            //                ProductOption = option,
+            //                Value = String.Empty
+            //            });
+            //        _session.Transact(session => session.Update(product.Variants[i]));
+            //    }
+            //}
+
+            //_session.Evict(typeof(ProductOptionValue));
+            //_session.Evict(typeof(ProductOption));
+            //_session.Evict(typeof(ProductVariant));
+            //_session.Evict(typeof(Product));
+        }
+        public void UpdateAttributeOptionDisplayOrder(Product product, IList<SortItem> options)
+        {
+            if (product != null && options != null && options.Count > 0)
             {
-                option1.Name = name;
-                _session.Transact(session => session.Update(option1));
-            }
-            else
-            {
-                if (option2 != null)
-                {
-                    if (option2.Products.Where(x => x.Id == product.Id).Count() == 0)
+                _session.Transact(session =>
                     {
-                        option2.Products.Add(product);
-                    }
-                    _session.Transact(session => session.Update(option2));
-                    for (int i = 0; i < product.Variants.Count; i++)
-                    {
-                        if (product.Variants[i].AttributeValues.Where(x => x.ProductAttributeOption.Id == option2.Id).Count() == 0)
-                        {
-                            product.Variants[i].AttributeValues.Add(new ProductAttributeValue
+                        options.ForEach(item =>
                             {
-                                ProductVariant = product.Variants[i],
-                                ProductAttributeOption = option2,
-                                Value = String.Empty
+                                var option = session.Get<ProductOption>(item.Id);
+                                
+                                if (option == null)
+                                    return;
+                                
+                                product.Options.Remove(option);
+                                product.Options.Insert(item.Order, option);
                             });
-                            _session.Transact(session => session.Update(product.Variants[i]));
-                        }
-                    }
-                }
-                else
-                {
-                    ProductAttributeOption option = new ProductAttributeOption();
-                    option.Name = name;
-                    option.Products.Add(product);
-                    option.DisplayOrder = 0;
-                    _session.Transact(session => session.Save(option));
-
-                    for (int i = 0; i < product.Variants.Count; i++)
-                    {
-                        product.Variants[i].AttributeValues.Add(new ProductAttributeValue
-                           {
-                               ProductVariant = product.Variants[i],
-                               ProductAttributeOption = option,
-                               Value = String.Empty
-                           });
-                        _session.Transact(session => session.Update(product.Variants[i]));
-                    }
-                }
+                        session.Update(product);
+                    });
             }
-
-            _session.Evict(typeof(ProductAttributeValue));
-            _session.Evict(typeof(ProductAttributeOption));
-            _session.Evict(typeof(ProductVariant));
-            _session.Evict(typeof(Product));
         }
-        public void UpdateAttributeOptionDisplayOrder(IList<SortItem> options)
-        {
-            _session.Transact(session => options.ForEach(item =>
-            {
-                var formItem = session.Get<ProductAttributeOption>(item.Id);
-                formItem.DisplayOrder = item.Order;
-                session.Update(formItem);
-            }));
-        }
-        public IList<ProductAttributeOption> ListAttributeOptions()
-        {
-            return _session.QueryOver<ProductAttributeOption>().Cacheable().List();
-        }
-        public void DeleteAttributeOption(ProductAttributeOption option)
+        public void DeleteAttributeOption(ProductOption option)
         {
             _session.Transact(session => session.Delete(option));
         }
         public void SetAttributeValue(ProductVariant productVariant, string attributeName, string value)
         {
-            var specificationOption = _session.QueryOver<ProductAttributeOption>().Where(option => option.Name == attributeName).Take(1).SingleOrDefault();
+            var specificationOption = _session.QueryOver<ProductOption>().Where(option => option.Name == attributeName).Take(1).SingleOrDefault();
             if (specificationOption == null)
                 return;
             var values =
-                _session.QueryOver<ProductAttributeValue>()
+                _session.QueryOver<ProductOptionValue>()
                         .Where(
-                            specificationValue => specificationValue.ProductAttributeOption == specificationOption &&
+                            specificationValue => specificationValue.ProductOption == specificationOption &&
                                                   specificationValue.ProductVariant == productVariant)
                         .Cacheable()
                         .List();
@@ -284,21 +293,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             }
             else
             {
-                _session.Transact(session => session.Save(new ProductAttributeValue
+                _session.Transact(session => session.Save(new ProductOptionValue
                 {
                     ProductVariant = productVariant,
-                    ProductAttributeOption = specificationOption,
+                    ProductOption = specificationOption,
                     Value = value
                 }));
             }
         }
-        public void DeleteProductAttributeValue(ProductAttributeValue value)
+        public void DeleteProductAttributeValue(ProductOptionValue value)
         {
             _session.Transact(session => session.Delete(value));
         }
-        public bool AnyExistingAttributeOptionsWithName(ProductAttributeOption option)
+        public bool AnyExistingAttributeOptionsWithName(ProductOption option)
         {
-            return _session.QueryOver<ProductAttributeOption>()
+            return _session.QueryOver<ProductOption>()
                            .Where(
                                specificationOption =>
                                specificationOption.Name.IsInsensitiveLike(option.Name, MatchMode.Exact))
@@ -306,7 +315,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         }
         public bool AnyExistingAttributeOptionsWithName(string name, int id)
         {
-            return _session.QueryOver<ProductAttributeOption>()
+            return _session.QueryOver<ProductOption>()
                            .Where(
                                option =>
                                option.Name.IsInsensitiveLike(name, MatchMode.Exact) && option.Id == id)
@@ -314,7 +323,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         }
         public bool AnyExistingAttributeOptionsWithName(string name)
         {
-            return _session.QueryOver<ProductAttributeOption>()
+            return _session.QueryOver<ProductOption>()
                            .Where(
                                option =>
                                option.Name.IsInsensitiveLike(name, MatchMode.Exact))
@@ -324,9 +333,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public List<ProductOptionModel> GetSearchAttributeOptions(ProductSearchQuery query)
         {
             var values = _productSearchService.GetOptions(query);
-            var productAttributeValues = _session.QueryOver<ProductAttributeValue>().Fetch(value => value.ProductAttributeOption).Eager.Where(value => value.Id.IsIn(values)).Cacheable().List();
+            var productAttributeValues = _session.QueryOver<ProductOptionValue>().Fetch(value => value.ProductOption).Eager.Where(value => value.Id.IsIn(values)).Cacheable().List();
 
-            var productAttributeOptions = productAttributeValues.Select(value => value.ProductAttributeOption).Distinct().ToList();
+            var productAttributeOptions = productAttributeValues.Select(value => value.ProductOption).Distinct().ToList();
 
             return productAttributeOptions.Select(option => new ProductOptionModel
                                                                 {
@@ -335,7 +344,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                                     Values =
                                                                         productAttributeValues.Where(
                                                                             value =>
-                                                                            value.ProductAttributeOption == option).OrderBy(x => x.DisplayOrder)
+                                                                            value.ProductOption == option).OrderBy(x => x.DisplayOrder)
                                                                                               .Distinct()
                                                                                               .Select(
                                                                                                   value =>
@@ -368,7 +377,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                                                       value =>
                                                                                       value
                                                                                           .ProductSpecificationAttribute ==
-                                                                                      attribute).OrderBy(x=>x.DisplayOrder)
+                                                                                      attribute).OrderBy(x => x.DisplayOrder)
                                                                                   .Distinct()
                                                                                   .Select(
                                                                                       value =>
