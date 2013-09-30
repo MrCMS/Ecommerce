@@ -1,10 +1,8 @@
 ﻿using System;
-using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Analytics;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
-using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Website.Controllers;
 using System.Web.Mvc;
 
@@ -12,19 +10,13 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
 {
     public class AppController : MrCMSAppAdminController<AmazonApp>
     {
-        private readonly IConfigurationProvider _configurationProvider;
         private readonly IAmazonLogService _amazonLogService;
-        private readonly AmazonAppSettings _amazonAppSettings;
         private readonly IAmazonAnalyticsService _amazonAnalyticsService;
 
-        public AppController(IConfigurationProvider configurationProvider,
-            IAmazonLogService amazonLogService, 
-            AmazonAppSettings amazonAppSettings, 
+        public AppController(IAmazonLogService amazonLogService, 
             IAmazonAnalyticsService amazonAnalyticsService)
         {
-            _configurationProvider = configurationProvider;
             _amazonLogService = amazonLogService;
-            _amazonAppSettings = amazonAppSettings;
             _amazonAnalyticsService = amazonAnalyticsService;
         }
 
@@ -41,7 +33,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             return View(_amazonAnalyticsService.GetAmazonDashboardModel(filterFrom, filterUntil));
         }
 
-        public ActionResult DashboardLogs(int page = 1)
+        public PartialViewResult DashboardLogs(int page = 1)
         {
             var model = new AmazonDashboardModel()
             {
@@ -71,21 +63,6 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Settings()
-        {
-            return View(_amazonAppSettings);
-        }
-
-        [HttpPost]
-        [ActionName("Settings")]
-        public ActionResult Settings_POST(AmazonAppSettings amazonAppSettings)
-        {
-            _amazonLogService.Add(AmazonLogType.AppSettings, AmazonLogStatus.Update,null,null,null,null,null,null,null);
-            _configurationProvider.SaveSettings(amazonAppSettings);
-            return View(amazonAppSettings);
-        }
-
-        [HttpGet]
         public JsonResult ProgressBarStatus(AmazonSyncModel model)
         {
             var progress = AmazonProgressBarHelper.GetStatus(model.TaskId);
@@ -104,7 +81,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
                     Messages = progress.GetMessages(model.Page)
                 });
             }
-            return PartialView(null);
+            return RedirectToAction("Dashboard","App");
         }
     }
 }

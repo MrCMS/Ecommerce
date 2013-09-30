@@ -13,6 +13,8 @@ canvas{
         max-width: 800px;
         height: auto !important;
 }
+
+
 .dashboard-box {
     margin-bottom: 10px;
     min-height: 80px;
@@ -35,7 +37,6 @@ canvas{
     margin-bottom: 10px;
     padding-top: 20px;
 }
-
 .dashboard-box .info .stats-description {
     font-size: 12px;
     font-weight: normal;
@@ -72,8 +73,6 @@ canvas{
     text-decoration: none;
     transition: all 0.5s ease-in-out 0s;
 }
-
-
 .dashboard-box-log {
     margin: 0 0 5px 0;
     padding: 5px 10px 5px 10px;
@@ -125,8 +124,6 @@ canvas{
     border-radius: 0;
     padding: 5px 10px 5px 10px;
 }
-
-
 
 .emerald {
     background-color: #2ecc71;

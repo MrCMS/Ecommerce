@@ -211,11 +211,11 @@
   <ItemGroup>
     <Compile Include="Apps\Amazon\AmazonApp.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\AppController.cs" />
+    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\ListingController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\ListingGroupController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\LogsController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\OrdersController.cs" />
-    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\SellerController.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonLogEntryOverride.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonTableNameConvention.cs" />
     <Compile Include="Apps\Amazon\Entities\Analytics\AmazonApiUsage.cs" />
@@ -2175,7 +2175,7 @@
     <Content Include="Apps\Core\Views\Widgets\UserLinks.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\App\Dashboard.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\App\DashboardLogs.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Settings.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\App.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Add.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Delete.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Edit.cshtml" />
@@ -2205,11 +2205,10 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\ShipOne.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\SyncMany.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\SyncOne.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Seller\Settings.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Seller.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Shared\ProgressBarMessages.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Apps\Amazon\Views\Web.config" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

@@ -11,6 +11,7 @@ using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Analytics;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
 using MrCMS.Web.Apps.Amazon.Settings;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Website;
 using Product = MarketplaceWebServiceFeedsClasses.Product;
 
@@ -75,7 +76,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             try
             {
                 _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage,null,null,AmazonApiSection.Feeds,
-                    "SubmitFeed",null,null,null,"Submitting "+feedType+" Feed to Amazon");
+                    "SubmitFeed",null,null,null,"Submitting "+feedType.GetDescription()+" to Amazon");
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Feeds, "SubmitFeed");
                 var service = _amazonApiService.GetFeedsApiService();
                 var request = GetSubmitFeedRequest(feedType, feedContent);

@@ -4,13 +4,13 @@ namespace MrCMS.Web.Apps.Amazon.Models
 {
     public enum AmazonLogStatus
     {
-        [Description("Initiation")]
+        [Description("Initiating operation")]
         Initiation,
         [Description("Stage")]
         Stage,
         [Description("Operation successfully completed")]
         Completion,
-        [Description("Error happened.")]
+        [Description("Error happened")]
         Error,
         [Description("New item inserted")]
         Insert,

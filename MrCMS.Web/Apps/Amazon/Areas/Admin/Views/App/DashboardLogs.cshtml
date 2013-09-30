@@ -9,11 +9,11 @@
     {
         @:No Logs
     }
-    else
+    else if (Model != null && Model.Logs.Any())
     {
         foreach (var item in Model.Logs)
         {
-            var alerttype = "info";
+            string alerttype;
             switch (item.LogStatus)
             {
                 case AmazonLogStatus.Error:
@@ -51,10 +51,10 @@
                 @switch (item.LogType)
                 {
                     case AmazonLogType.SellerSettings:
-                        <strong>@Html.ActionLink(@item.LogType.GetDescription(), "Settings", "Seller",null, null)</strong>
+                        <strong>@Html.ActionLink(@item.LogType.GetDescription(), "Seller", "Settings", null, null)</strong>
                         break;
                     case AmazonLogType.AppSettings:
-                        <strong>@Html.ActionLink(@item.LogType.GetDescription(), "Settings", "App", null, null)</strong>
+                        <strong>@Html.ActionLink(@item.LogType.GetDescription(), "App", "Settings", null, null)</strong>
                         break;
                     default:
                         <strong>@item.LogType.GetDescription()</strong>
@@ -74,12 +74,17 @@
                 {
                     @Html.ActionLink("Order", "Details", "Orders", new {id = item.AmazonOrder.Id}, null)
                 }
+                else if (item.AmazonListingGroup != null)
+                {
+                    @Html.ActionLink("Listing Group", "Edit", "ListingGroup", new {id = item.AmazonListingGroup.Id}, null)
+                }
                 
             </div>
         }
 
         @Html.Pager(Model.Logs, "DashboardLogs", i => new {page = i})
     }
+
 </div>
 
  @{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/async-paging.js"); }

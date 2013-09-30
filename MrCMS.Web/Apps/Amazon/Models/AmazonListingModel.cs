@@ -4,7 +4,6 @@ using System.Web.Mvc;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Amazon.Models
 {
@@ -26,7 +25,6 @@ namespace MrCMS.Web.Apps.Amazon.Models
         //Listing
         public AmazonListingGroup AmazonListingGroup { get; set; }
         public AmazonListing Listing { get; set; }
-        public ProductVariant ChosenProductVariant { get; set; }
         public string ChosenProductVariants { get; set; }
 
         //Search & Paging

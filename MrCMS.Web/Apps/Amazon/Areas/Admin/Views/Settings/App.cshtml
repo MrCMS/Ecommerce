@@ -5,7 +5,7 @@
     ViewBag.Title = "Amazon App Settings";
 }
 
-@using (Html.BeginForm("Settings", "App", new {id = ""}, FormMethod.Post, new {id = "edit-settings"}))
+@using (Html.BeginForm("App", "Settings", new {id = ""}, FormMethod.Post, new {id = "edit-settings"}))
 {
     <fieldset>
         <legend>Amazon App Settings

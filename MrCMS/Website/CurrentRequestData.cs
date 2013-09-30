@@ -73,7 +73,10 @@ namespace MrCMS.Website
 
         public static DateTime Now
         {
-            get { return TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo); }
+            get
+            {
+                return TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo);
+            }
         }
 
         public static HttpContextBase CurrentContext

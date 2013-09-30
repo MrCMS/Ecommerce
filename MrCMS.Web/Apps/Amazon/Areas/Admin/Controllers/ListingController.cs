@@ -39,12 +39,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult ChooseProductVariant(AmazonListingGroup amazonListingGroup)
         {
-            return View(GetAmazonListingModel(amazonListingGroup));
-        }
-
-        private AmazonListingModel GetAmazonListingModel(AmazonListingGroup amazonListingGroup)
-        {
-            return _amazonListingService.GetAmazonListingModel(amazonListingGroup);
+            return View(_amazonListingService.GetAmazonListingModel(amazonListingGroup));
         }
 
         [HttpGet]
@@ -61,7 +56,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
                 var amazonListing = _amazonListingService.GetByProductVariantSku(productVariantSku);
                 if (amazonListing == null)
                 {
-                    amazonListing = _prepareForSyncAmazonListingService.InitAmazonListingFromProductVariant(amazonListing, 
+                    amazonListing = _prepareForSyncAmazonListingService.InitAmazonListingFromProductVariant(null, 
                         productVariantSku, amazonListingGroupId);
                     return View(amazonListing);
                 }
@@ -88,7 +83,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult AddMany(AmazonListingGroup amazonListingGroup)
+        public ViewResult AddMany(AmazonListingGroup amazonListingGroup)
         {
             return View(new AmazonListingModel() { AmazonListingGroup = amazonListingGroup });
         }

@@ -98,7 +98,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
         {
             var model = new AmazonDashboardModel();
             if (from.HasValue)
-                model.FilterFrom = @from.Value;
+                model.FilterFrom = from.Value;
             if (to.HasValue)
                 model.FilterUntil = to.Value;
             model.NoOfActiveListings = GetNumberOfActiveListings();

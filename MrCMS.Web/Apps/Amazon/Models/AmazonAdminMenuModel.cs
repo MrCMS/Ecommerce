@@ -6,7 +6,7 @@ namespace MrCMS.Web.Apps.Amazon.Models
     public class AmazonAdminMenuModel : IAdminMenuItem
     {
         private IDictionary<string, List<IMenuItem>> _children;
-        public string Text { get { return "Amazon"; } }
+        public string Text { get { return "e-Amazon"; } }
         public string Url { get; private set; }
         public bool CanShow { get { return true; } }
         public IDictionary<string, List<IMenuItem>> Children
@@ -29,8 +29,8 @@ namespace MrCMS.Web.Apps.Amazon.Models
                             "Settings",
                             new List<IMenuItem>
                             {
-                                new ChildMenuItem("App", "/Admin/Apps/Amazon/App/Settings"),
-                                new ChildMenuItem("Seller", "/Admin/Apps/Amazon/Seller/Settings")
+                                new ChildMenuItem("App", "/Admin/Apps/Amazon/Settings/App"),
+                                new ChildMenuItem("Seller", "/Admin/Apps/Amazon/Settings/Seller")
                             }
                         },
                         {
@@ -45,7 +45,7 @@ namespace MrCMS.Web.Apps.Amazon.Models
         }
         public int DisplayOrder
         {
-            get { return 51; }
+            get { return 53; }
         }
     }
 }

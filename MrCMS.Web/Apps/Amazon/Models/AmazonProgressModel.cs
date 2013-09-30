@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using MrCMS.Paging;
-using MrCMS.Website;
 using System.Linq;
 namespace MrCMS.Web.Apps.Amazon.Models
 {
@@ -12,7 +11,7 @@ namespace MrCMS.Web.Apps.Amazon.Models
             Messages = new List<AmazonProgressMessageModel>();
             TotalActions = 100;
             ProcessedActions = 0;
-            StartTime = CurrentRequestData.Now;
+            StartTime = DateTime.UtcNow;
             TaskId = Guid.NewGuid();
         }
 

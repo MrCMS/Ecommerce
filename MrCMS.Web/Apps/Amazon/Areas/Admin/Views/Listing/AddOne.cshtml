@@ -4,7 +4,7 @@
     ViewBag.Title = "Add Amazon Listing";
 }
 
- @using (Html.BeginForm("AddOne", "Listing", new {id=""},FormMethod.Post, new {id = "add-listing-form"}))
+ @using (Html.BeginForm("AddOne", "Listing", new {id = ""}, FormMethod.Post, new {id = "add-listing-form"}))
  {
      <fieldset>
          <legend>
@@ -14,11 +14,11 @@
              </span>
          </legend>
          
-         @Html.HiddenFor(x=>x.AmazonListingGroup.Id)
+         @Html.HiddenFor(x => x.AmazonListingGroup.Id)
 
-         @{Html.RenderPartial("Listing",Model);}
+         @{ Html.RenderPartial("Listing", Model); }
 
      </fieldset>
-}
+ }
 
 @{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/listings.js"); }
