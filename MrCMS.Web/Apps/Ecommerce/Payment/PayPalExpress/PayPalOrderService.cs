@@ -21,11 +21,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                            new PaymentDetailsType
                                {
                                    OrderTotal = cart.Total.GetAmountType(),
-                                   ItemTotal =cart.Subtotal.GetAmountType(),
+                                   ItemTotal = cart.Subtotal.GetAmountType(),
                                    TaxTotal = cart.Tax.GetAmountType(),
                                    ShippingTotal = cart.ShippingTotal.GetAmountType(),
                                    PaymentDetailsItem = GetPaymentDetailsItems(cart),
-                                   PaymentAction = _payPalExpressCheckoutSettings.PaymentAction
+                                   PaymentAction = _payPalExpressCheckoutSettings.PaymentAction,
                                }
                        };
         }
@@ -35,7 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
             return cart.Items.Select(item => new PaymentDetailsItemType
                                                  {
                                                      Name = item.Name,
-                                                     Amount = item.UnitPrice.GetAmountType(),
+                                                     Amount = item.UnitPricePreTax.GetAmountType(),
                                                      ItemCategory = ItemCategoryType.PHYSICAL,
                                                      Quantity = item.Quantity,
                                                      Tax = item.Tax.GetAmountType(),
