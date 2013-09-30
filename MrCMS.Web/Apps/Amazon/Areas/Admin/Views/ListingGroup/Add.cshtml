@@ -1,0 +1,16 @@
+﻿@model MrCMS.Web.Apps.Amazon.Entities.Listings.AmazonListingGroup
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
+@using (Html.BeginForm("Add", "ListingGroup", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Add Listing Group
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Add Listing Group" />
+            </span>
+        </legend>
+        @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name,new {@class="span12"})
+        @Html.ValidationMessageFor(x => x.Name)
+
+    </fieldset>
+}

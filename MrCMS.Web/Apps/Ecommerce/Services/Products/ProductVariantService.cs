@@ -47,7 +47,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                 .JoinAlias(() => productVariantAlias.Product, () => productAlias, JoinType.InnerJoin)
                                 .JoinAlias(() => productAlias.Categories, () => categoryAlias, JoinType.LeftOuterJoin)
                                 .Where(
-                                    () => productVariantAlias.Name.IsInsensitiveLike(queryTerm,MatchMode.Anywhere)
+                                    () => (productVariantAlias.Name.IsInsensitiveLike(queryTerm,MatchMode.Anywhere)
+                                        || productVariantAlias.SKU.IsInsensitiveLike(queryTerm,MatchMode.Anywhere))
                                     && (categoryId==0 || categoryAlias.Id==categoryId))
                                 .Paged(page, MrCMSApplication.Get<EcommerceSettings>().PageSizeAdmin);
         }
