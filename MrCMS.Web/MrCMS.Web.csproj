@@ -1332,6 +1332,7 @@
     <Content Include="Areas\Admin\Content\Styles\jquery.fileupload-ui.css" />
     <Content Include="Areas\Admin\Content\Styles\jquery.treeview.css" />
     <Content Include="Docs\UpgradeNotes.txt" />
+    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Areas\Admin\Content\Scripts\jquery-ui-timepicker-addon.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.contextMenu.js" />
