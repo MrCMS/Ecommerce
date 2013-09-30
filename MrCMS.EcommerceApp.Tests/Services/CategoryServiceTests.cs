@@ -8,21 +8,25 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services
 {
-    public class CategoryServiceTests :InMemoryDatabaseTest
+    public class CategoryServiceTests : InMemoryDatabaseTest
     {
         private readonly IDocumentService _documentService;
         private readonly IProductSearchService _productSearchService;
         private readonly CategoryService _categoryService;
+        private readonly EcommerceSettings _ecommerceSettings;
 
         public CategoryServiceTests()
         {
             _documentService = A.Fake<IDocumentService>();
             _productSearchService = A.Fake<IProductSearchService>();
-            _categoryService = new CategoryService(Session, CurrentSite, _documentService, _productSearchService);
+            _ecommerceSettings = new EcommerceSettings();
+            _categoryService = new CategoryService(Session, CurrentSite, _documentService, _productSearchService,
+                                                   _ecommerceSettings);
         }
 
         [Fact]

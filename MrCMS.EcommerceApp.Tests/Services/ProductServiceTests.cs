@@ -3,27 +3,33 @@ using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using Xunit;
 using MrCMS.Helpers;
-using NHibernate.Mapping;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 
 namespace MrCMS.EcommerceApp.Tests.Services
 {
     public class ProductServiceTests : InMemoryDatabaseTest
     {
-        private IDocumentService _documentService;
+        private readonly IDocumentService _documentService;
+        private readonly EcommerceSettings _ecommerceSettings;
+        private readonly ProductService _productService;
+
+        public ProductServiceTests()
+        {
+            _documentService = A.Fake<IDocumentService>();
+            _ecommerceSettings = new EcommerceSettings();
+            _productService = new ProductService(Session, _documentService, _ecommerceSettings);
+        }
 
         [Fact]
         public void ProductService_Search_WithNoSearchTermAndPageReturnsTheFirstPageOfAllProducts()
         {
-            var productService = GetProductService();
             var products = Enumerable.Range(1, 20).Select(i => new Product { Name = "Product " + i }).ToList();
             Session.Transact(session => products.ForEach(product => session.Save(product)));
 
-            var pagedList = productService.Search();
+            var pagedList = _productService.Search();
 
             pagedList.Should().HaveCount(10);
             pagedList.ShouldBeEquivalentTo(products.Take(10));
@@ -32,11 +38,10 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ProductService_Search_WithNoSearchTermAndPageSetReturnsThatPage()
         {
-            var productService = GetProductService();
             var products = Enumerable.Range(1, 20).Select(i => new Product { Name = "Product " + i }).ToList();
             Session.Transact(session => products.ForEach(product => session.Save(product)));
 
-            var pagedList = productService.Search(page: 2);
+            var pagedList = _productService.Search(page: 2);
 
             pagedList.Should().HaveCount(10);
             pagedList.ShouldBeEquivalentTo(products.Skip(10).Take(10));
@@ -45,13 +50,12 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ProductService_Search_WithSearchTermFiltersByThatValue()
         {
-            var productService = GetProductService();
             var products1 = Enumerable.Range(1, 5).Select(i => new Product { Name = "Product " + i }).ToList();
             var products2 = Enumerable.Range(1, 5).Select(i => new Product { Name = "Other " + i }).ToList();
             Session.Transact(session => products1.ForEach(product => session.Save(product)));
             Session.Transact(session => products2.ForEach(product => session.Save(product)));
 
-            var pagedList = productService.Search("Other");
+            var pagedList = _productService.Search("Other");
 
             pagedList.Should().HaveCount(5);
             pagedList.ShouldBeEquivalentTo(products2);
@@ -60,13 +64,12 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ProductService_Search_WithSearchTermAndPageFiltersByThatValueAndPages()
         {
-            var productService = GetProductService();
             var products1 = Enumerable.Range(1, 20).Select(i => new Product { Name = "Product " + i }).ToList();
             var products2 = Enumerable.Range(1, 20).Select(i => new Product { Name = "Other " + i }).ToList();
             Session.Transact(session => products1.ForEach(product => session.Save(product)));
             Session.Transact(session => products2.ForEach(product => session.Save(product)));
 
-            var pagedList = productService.Search("Other", 2);
+            var pagedList = _productService.Search("Other", 2);
 
             pagedList.Should().HaveCount(10);
             pagedList.ShouldBeEquivalentTo(products2.Skip(10).Take(10));
@@ -74,10 +77,9 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ProductService_Search_ReturnsTheIdOfTheProductContainerIfItExists()
         {
-            var productService = GetProductService();
-            A.CallTo(() => _documentService.GetUniquePage<ProductSearch>()).Returns(new ProductSearch {Id = 1});
+            A.CallTo(() => _documentService.GetUniquePage<ProductSearch>()).Returns(new ProductSearch { Id = 1 });
 
-            var pagedList = productService.Search();
+            var pagedList = _productService.Search();
 
             pagedList.ProductContainerId.Should().Be(1);
         }
@@ -85,18 +87,11 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ProductService_Search_ReturnsNullContainerIdIfItDoesNotExist()
         {
-            var productService = GetProductService();
             A.CallTo(() => _documentService.GetUniquePage<ProductSearch>()).Returns(null);
 
-            var pagedList = productService.Search();
+            var pagedList = _productService.Search();
 
             pagedList.ProductContainerId.Should().Be(null);
-        }
-
-        ProductService GetProductService()
-        {
-            _documentService = A.Fake<IDocumentService>();
-            return new ProductService(Session, _documentService);
         }
     }
 }
