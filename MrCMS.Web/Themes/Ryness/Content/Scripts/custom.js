@@ -1,6 +1,7 @@
 ﻿$(window).load(function () {
     $('#slider').nivoSlider({ effect: 'fade', pauseTime: 8000, controlNav: false });
     $("#pikame").PikaChoose({ autoPlay: false });
+    $('input, textarea').placeholder();
 });
 
 $(document).ready(function () {

@@ -15,8 +15,8 @@
         @RenderZone("After Filters")
     </div>
     <div class="span9">
-        @{ Html.RenderAction("Results", "ProductSearch", new { query });}
         @Editable(Model, page => page.BodyContent, true)
+        @{ Html.RenderAction("Results", "ProductSearch", new { query });}
     </div>
 </div>
 @{
