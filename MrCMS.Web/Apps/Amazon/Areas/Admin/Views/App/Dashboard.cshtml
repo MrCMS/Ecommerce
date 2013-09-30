@@ -153,7 +153,7 @@
                                 Products Sold
                             </div>
                         </div>
-                        @Html.ActionLink("All Listings", "Index", "Listing", null,new { @class = "more-info nephritis"}) 
+                        @Html.ActionLink("All Listings", "Index", "ListingGroup", null,new { @class = "more-info nephritis"}) 
                     </div>
                 </div> 
             </div>
@@ -184,7 +184,7 @@
                                 @(Model.SellerSettingsStatus?"OK":"Check")
                             </div>
                             <div class="stats-description">
-                                @Html.ActionLink("Seller Settings", "Settings", "Seller", null,new { @class = ""})                                    
+                                @Html.ActionLink("Seller Settings", "Seller", "Settings", null,new { @class = ""})                                    
                             </div>
                         </div>
                                 
@@ -201,7 +201,7 @@
                                 @(Model.AppSettingsStatus?"OK":"Check")
                             </div>
                             <div class="stats-description">
-                                @Html.ActionLink("App Settings", "Settings", "App", null,new { @class = ""})                                     
+                                @Html.ActionLink("App Settings", "App", "Settings", null,new { @class = ""})                                     
                             </div>
                         </div>
                      

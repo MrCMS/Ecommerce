@@ -45,6 +45,7 @@ namespace MrCMS.Web.Apps.Amazon
             amazonAppSettings.OrdersApiVersion = "2011-01-01";
             amazonAppSettings.ProductsApiVersion = "2011-10-01";
             amazonAppSettings.ApiEndpoint = "https://mws.amazonservices.com/";
+            amazonAppSettings.AmazonProductDetailsUrl = "http://www.amazon.com/gp/product/";
             amazonAppSettings.AmazonOrderDetailsUrl = "https://sellercentral.amazon.com/gp/orders-v2/details/?orderID=";
             amazonAppSettings.AmazonManageOrdersUrl = "https://sellercentral.amazon.com/gp/orders-v2/list";
             amazonAppSettings.AmazonManageInventoryUrl = "https://sellercentral.amazon.com/myi/search/ProductSummary";

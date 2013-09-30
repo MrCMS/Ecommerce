@@ -33,10 +33,10 @@
                             @item.SKU
                         </td>
                         <td>
-                            @Html.ActionLink(item.DisplayName, "Edit", "Webpage", new {id=item.Product.Id},null)
+                            @Html.ActionLink(item.DisplayName, "Edit", "Webpage", new {id = item.Product.Id}, null)
                         </td>
                         <td>
-                            @Html.ActionLink("Choose", "AddOne", "Listing", new {productVariantSku=item.SKU, amazonListingGroupId=Model.AmazonListingGroup.Id}, new { @class = "btn btn-mini btn-success"})
+                            @Html.ActionLink("Choose", "AddOne", "Listing", new {productVariantSku = item.SKU, amazonListingGroupId = Model.AmazonListingGroup.Id}, new {@class = "btn btn-mini btn-success"})
                         </td>
                     </tr>
                 }

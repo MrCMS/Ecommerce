@@ -17,7 +17,12 @@
                     break;
             }
             <div class="@statusClass">
-                <span data-dismiss="alert" class="close">@item.Created.Value.ToString("h:m:s")</span>
+                <span data-dismiss="alert" class="close">
+                    @if (item.Created.HasValue)
+                    {
+                        @item.Created.Value.ToString("hh:mm:ss")
+                    }
+                </span>
                 @item.Message
             </div>
         }

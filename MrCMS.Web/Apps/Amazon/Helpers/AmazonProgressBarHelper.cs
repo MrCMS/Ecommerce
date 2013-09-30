@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Web.Apps.Amazon.Models;
-using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Helpers
 {
@@ -30,7 +29,7 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
                 ProgressBars.Remove(id);
 
             var progressBars = ProgressBars
-          .Where(progressBar => progressBar.Value.IsComplete || (CurrentRequestData.Now - progressBar.Value.StartTime).Minutes > 60)
+          .Where(progressBar => progressBar.Value.IsComplete || (DateTime.UtcNow - progressBar.Value.StartTime).Minutes > 60)
           .Select(progressBar => progressBar.Key)
           .ToList();
 
@@ -50,7 +49,7 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
                     {
                         Message = message,
                         Stage = status,
-                        Created = CurrentRequestData.Now
+                        Created = DateTime.UtcNow
                     });
             if (totalRecords.HasValue)
                 progressModel.TotalActions = totalRecords.Value;

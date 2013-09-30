@@ -73,7 +73,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult SyncMany()
         {
-            return View(new AmazonSyncModel());
+            return View(new AmazonSyncModel(){From = DateTime.Now,To = DateTime.Now});
         }
 
         [HttpGet]
