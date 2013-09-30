@@ -624,11 +624,16 @@
     <Compile Include="Apps\Ryness\Entities\BuyingGuideInformation.cs" />
     <Compile Include="Apps\Ryness\Entities\Testimonial.cs" />
     <Compile Include="Apps\Ryness\Metadata\BuyingGuideMetadata.cs" />
+    <Compile Include="Apps\Ryness\Metadata\StoreListMetadata.cs" />
+    <Compile Include="Apps\Ryness\Metadata\StoreMetadata.cs" />
     <Compile Include="Apps\Ryness\Models\RynessAdminMenuModel.cs" />
     <Compile Include="Apps\Ryness\Pages\BuyingGuide.cs" />
+    <Compile Include="Apps\Ryness\Pages\Store.cs" />
+    <Compile Include="Apps\Ryness\Pages\StoreList.cs" />
     <Compile Include="Apps\Ryness\RynessApp.cs" />
     <Compile Include="Apps\Ryness\Services\ITestimonialService.cs" />
     <Compile Include="Apps\Ryness\Services\TestimonialService.cs" />
+    <Compile Include="Apps\Ryness\Widgets\FeaturedProductsVertical.cs" />
     <Compile Include="Apps\Ryness\Widgets\NewsletterSignup.cs" />
     <Compile Include="Apps\Ryness\Widgets\RynessNavigation.cs" />
     <Compile Include="Apps\Ryness\Widgets\Slider.cs" />
@@ -2072,6 +2077,7 @@
     <Content Include="Apps\Core\Views\Widgets\PlainTextWidget.cshtml" />
     <Content Include="Apps\Core\Views\Widgets\TextWidget.cshtml" />
     <Content Include="Apps\Core\Views\Widgets\UserLinks.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\FeaturedProductsVertical.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2284,6 +2290,8 @@
     <Content Include="Themes\Ryness\Apps\Articles\Views\Web.config" />
     <Content Include="Themes\Ryness\Apps\Articles\Views\Pages\Article.cshtml" />
     <Content Include="Themes\Ryness\Apps\Articles\Views\Pages\ArticleList.cshtml" />
+    <Content Include="Themes\Ryness\Views\Shared\_StoreLayout.cshtml" />
+    <Content Include="Themes\Ryness\Views\Widgets\FeaturedProductsVertical.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />

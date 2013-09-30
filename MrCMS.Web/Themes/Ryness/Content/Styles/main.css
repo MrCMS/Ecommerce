@@ -187,7 +187,7 @@ footer {background:url(/Themes/Ryness/Content/Images/footer-bg.gif) repeat;}
 .spec-title {border-top:1px solid #e8e8e8;padding:10px 0;font-weight:bold;margin-top:10px;font-size:15px;line-height:24px;}
 .spec-details {border-top:1px solid #e8e8e8;border-left:1px solid #e8e8e8;border-right:1px solid #e8e8e8;}
 .spec-details .row-fluid {padding:10px;word-wrap: break-word;-ms-word-wrap: break-word;}
-.textpage {background:#F3F1ED;}
+/*.textpage {background:#F3F1ED;}*/
 .bulbs-container {border-right:1px solid #aaaaaa;border-left:1px solid #aaaaaa;border-bottom:1px solid #aaaaaa;padding:20px;}
 .bulbs-container .side-list {border-bottom:1px solid #e8e8e8;padding-bottom:10px;}
 .bulbs-container .side-list:last-child {border-bottom:none;padding-bottom:0;}
