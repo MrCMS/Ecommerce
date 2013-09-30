@@ -1,0 +1,35 @@
+﻿@using System.Web.Mvc.Html
+@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Amazon.Models
+@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Amazon.Entities.Listings.AmazonListingGroup>
+@{
+    ViewBag.Title = "Amazon Listing Groups";
+    var amazonManageInventoryUrl = ViewData["AmazonManageInventoryUrl"] as string;
+}
+
+<fieldset>
+    <legend>Amazon Listing Groups 
+        @if (!String.IsNullOrWhiteSpace(amazonManageInventoryUrl))
+         {
+            <span class="btn-group  display-inline  pull-right margin-left-10">
+            <a href='@amazonManageInventoryUrl' target="_blank" class="btn btn-danger">
+                Manage Inventory on Amazon
+            </a>
+            </span>
+         }
+        <span class="btn-group  display-inline  pull-right">
+            @Html.ActionLink("Add", "Add", "ListingGroup", null, new { @class = "btn btn-primary", data_toggle = "fb-modal"})
+            @Html.ActionLink("Logs", "Index", "Logs", new {type=AmazonLogType.ListingGroups}, new { @class = "btn btn-success"})
+        </span>
+    </legend>
+</fieldset>
+
+@Html.TextBox("ListingGroupName",String.Empty, new {@class = "input-xlarge search-query search-listing-groups", placeholder = "Enter listing group..."})
+<button class="btn btn-success" id="search-listings" type="button">Filter</button>
+<br/><br/>
+<div class="row-fluid">
+    <div class="span12">
+        @{Html.RenderPartial("ListingGroups", Model); }
+    </div>
+</div>
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/listing-groups.js"); }
