@@ -21,25 +21,28 @@ namespace MrCMS.Web.Apps.Amazon.Services.Logs
 
         private AmazonLog Save(AmazonLog log)
         {
+            if (CurrentRequestData.CurrentUser != null)
+                log.User = CurrentRequestData.CurrentUser;
             _session.Transact(session => session.SaveOrUpdate(log));
             return log;
         }
 
         public AmazonLog Add(AmazonLogType type, AmazonLogStatus status,Exception elmahError, MarketplaceWebService.Model.Error amazonError,
-            AmazonApiSection? apiSection, AmazonOrder amazonOrder, AmazonListing amazonListing,string apiOperation = "", 
+            AmazonApiSection? apiSection,string apiOperation, AmazonOrder amazonOrder, AmazonListing amazonListing,AmazonListingGroup amazonListingGroup, 
             string message = "", string details = "")
         {
             var log = new AmazonLog()
                 {
                     LogType = type,
                     LogStatus = status,
-                    ApiSection = apiSection,
-                    ApiOperation = !String.IsNullOrWhiteSpace(apiOperation)?apiOperation:null,
                     AmazonOrder = amazonOrder,
+                    ApiSection = apiSection,
+                    ApiOperation = !String.IsNullOrWhiteSpace(apiOperation) ? apiOperation : null,
                     AmazonListing = amazonListing,
-                    Guid = Guid.NewGuid(),
+                    AmazonListingGroup = amazonListingGroup,
                     Message = !String.IsNullOrWhiteSpace(message) ? message : null,
                     Detail = !String.IsNullOrWhiteSpace(details) ? details : null,
+                    Guid = Guid.NewGuid(),
                     Site = CurrentRequestData.CurrentSite
                 };
             if (elmahError != null)
@@ -54,92 +57,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Logs
                 log.Message = amazonError.Message;
                 log.Detail = amazonError.Detail.ToString();
             }
-
-            return Save(log);
-        }
-
-        public AmazonLog Add(AmazonLogType type, AmazonLogStatus status, Exception elmahError, MarketplaceWebService.Model.Error amazonError,
-            AmazonApiSection? apiSection, string apiOperation = "",
-            string message = "", string details = "")
-        {
-            var log = new AmazonLog()
-            {
-                LogType = type,
-                LogStatus = status,
-                ApiSection = apiSection,
-                ApiOperation = !String.IsNullOrWhiteSpace(apiOperation) ? apiOperation : null,
-                Guid = Guid.NewGuid(),
-                Message = !String.IsNullOrWhiteSpace(message) ? message : null,
-                Detail = !String.IsNullOrWhiteSpace(details) ? details : null,
-                Site = CurrentRequestData.CurrentSite
-            };
-            if (elmahError != null)
-            {
-                log.Message = elmahError.Message;
-                log.Detail = elmahError.StackTrace;
-            }
-            if (amazonError != null)
-            {
-                log.ErrorCode = amazonError.Code;
-                log.ErrorType = amazonError.Type;
-                log.Message = amazonError.Message;
-                log.Detail = amazonError.Detail.ToString();
-            }
-
-            return Save(log);
-        }
-
-        public AmazonLog Add(AmazonLogType type, AmazonLogStatus status, AmazonApiSection? apiSection, 
-            AmazonOrder amazonOrder, AmazonListing amazonListing, string apiOperation = "",
-            string message = "", string details = "")
-        {
-            var log = new AmazonLog()
-            {
-                LogType = type,
-                LogStatus = status,
-                ApiSection = apiSection,
-                ApiOperation = !String.IsNullOrWhiteSpace(apiOperation) ? apiOperation : null,
-                AmazonOrder = amazonOrder,
-                AmazonListing = amazonListing,
-                Guid = Guid.NewGuid(),
-                Message = !String.IsNullOrWhiteSpace(message) ? message : null,
-                Detail = !String.IsNullOrWhiteSpace(details) ? details : null,
-                Site = CurrentRequestData.CurrentSite
-            };
-
-            return Save(log);
-        }
-
-        public AmazonLog Add(AmazonLogType type, AmazonLogStatus status, AmazonApiSection? apiSection, string apiOperation = "",
-            string message = "", string details = "")
-        {
-            var log = new AmazonLog()
-            {
-                LogType = type,
-                LogStatus = status,
-                ApiSection = apiSection,
-                ApiOperation = !String.IsNullOrWhiteSpace(apiOperation) ? apiOperation : null,
-                Guid = Guid.NewGuid(),
-                Message = !String.IsNullOrWhiteSpace(message) ? message : null,
-                Detail = !String.IsNullOrWhiteSpace(details) ? details : null,
-                Site = CurrentRequestData.CurrentSite
-            };
-
-            return Save(log);
-        }
-
-        public AmazonLog Add(AmazonLogType type, AmazonLogStatus status, 
-           string message = "", string details = "")
-        {
-            var log = new AmazonLog()
-            {
-                LogType = type,
-                LogStatus = status,
-                Guid = Guid.NewGuid(),
-                Message = !String.IsNullOrWhiteSpace(message) ? message : null,
-                Detail = !String.IsNullOrWhiteSpace(details) ? details : null,
-                Site = CurrentRequestData.CurrentSite
-            };
 
             return Save(log);
         }

@@ -14,9 +14,9 @@ namespace MrCMS.Web.Apps.Amazon.Models
         Error,
         [Description("New item inserted")]
         Insert,
-        [Description("Item successfully updated")]
+        [Description("Item(s) successfully updated")]
         Update,
-        [Description("Item deleted")]
+        [Description("Item(s) deleted")]
         Delete
     }
 }

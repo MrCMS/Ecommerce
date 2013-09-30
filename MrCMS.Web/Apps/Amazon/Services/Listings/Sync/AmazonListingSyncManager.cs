@@ -34,8 +34,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             var amazonListing = _amazonListingService.Get(model.Id);
             if (amazonListing != null)
             {
-                _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Stage, AmazonApiSection.Feeds, null, null,
-                                      null, "Preparing listing for Amazon");
+                _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Stage, null, null, AmazonApiSection.Feeds, null, null, amazonListing, null,
+                                      "Preparing listing for Amazon");
                 AmazonProgressBarHelper.Update(model.Task, "Push", "Preparing listing for Amazon", 100, 0);
 
                 _exportAmazonListingService.SubmitSingleProductFeed(model, amazonListing);
@@ -58,8 +58,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             var amazonListingGroup = _amazonListingGroupService.Get(model.Id);
             if (amazonListingGroup != null)
             {
-                _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Stage, AmazonApiSection.Feeds, null, null,
-                                      null, "Preparing listings for Amazon");
+                _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Stage, null,null,AmazonApiSection.Feeds, null, null,null,
+                                      amazonListingGroup, "Preparing listings for Amazon");
                 AmazonProgressBarHelper.Update(model.Task, "Push", "Preparing listings for Amazon", 100, 0);
 
                 _exportAmazonListingService.SubmitProductFeeds(model,amazonListingGroup);
@@ -82,7 +82,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             var amazonListing = _amazonListingService.Get(model.Id);
             if (amazonListing != null)
             {
-                _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Stage, AmazonApiSection.Feeds, null, null,
+                _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Stage, null,null,AmazonApiSection.Feeds, null, null,amazonListing,
                                       null, "Preparing request to close Amazon Listing");
                 AmazonProgressBarHelper.Update(model.Task, "Push", "Preparing request to close Amazon Listing", 100, 0);
 
@@ -107,8 +107,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             var amazonListingGroup = _amazonListingGroupService.Get(model.Id);
             if (amazonListingGroup != null)
             {
-                _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Stage, AmazonApiSection.Feeds, null, null,
-                                      null, "Preparing requests to close Amazon Listings");
+                _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Stage, null,null,AmazonApiSection.Feeds, null, null,null,
+                                      amazonListingGroup, "Preparing requests to close Amazon Listings");
                 AmazonProgressBarHelper.Update(model.Task, "Push", "Preparing requests to close Amazon Listings", 100, 0);
 
                 _closeAmazonListingService.CloseAmazonListings(model, amazonListingGroup);

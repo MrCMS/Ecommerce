@@ -32,6 +32,8 @@ else
             <tr>
                 <th>Date
                 </th>
+                 <th>User
+                </th>
                  <th>Type
                 </th>
                 <th>Status
@@ -47,7 +49,10 @@ else
             {
                 <tr>
                     <td>
-                        @entry.CreatedOn.ToString("dd/MM/yyyy HH:mm")
+                        @entry.CreatedOn.ToString("dd/MM/yyyy HH:mm:ss")
+                    </td>
+                     <td>
+                        @(entry.User!=null?entry.User.Name:"System")
                     </td>
                     <td>
                         @entry.LogType.GetDescription()
@@ -56,7 +61,7 @@ else
                         @entry.LogStatus.GetDescription()
                     </td>
                     <td>
-                        @entry.Message.ToShortString(50)
+                        @entry.Message.ToShortString(40)
                     </td>
                
                     <td>

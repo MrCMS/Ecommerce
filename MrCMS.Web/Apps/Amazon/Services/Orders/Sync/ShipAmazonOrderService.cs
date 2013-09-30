@@ -16,13 +16,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             _amazonRequestService = amazonRequestService;
         }
 
-        public void SubmitSingleProductFeed(AmazonSyncModel syncModel, AmazonOrder amazonOrder)
+        public void MarkAsShipped(AmazonSyncModel syncModel, AmazonOrder amazonOrder)
         {
             var feed = _amazonFeedsApiService.GetOrderFulfillmentFeed(amazonOrder);
 
             var submissionId = _amazonRequestService.SubmitOrderFulfillmentFeed(syncModel, feed);
 
-            _amazonRequestService.CheckIfOrderFulfillmentRequestWasProcessed(syncModel, amazonOrder, submissionId);
+            _amazonRequestService.CheckIfOrderFulfillmentFeedWasProcessed(syncModel, amazonOrder, submissionId);
         }
     }
 }

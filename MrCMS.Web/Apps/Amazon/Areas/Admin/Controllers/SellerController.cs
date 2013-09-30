@@ -30,11 +30,11 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Settings")]
-        public RedirectToRouteResult Settings_POST(AmazonSellerSettings amazonSellerSettings)
+        public ActionResult Settings_POST(AmazonSellerSettings amazonSellerSettings)
         {
-            _amazonLogService.Add(AmazonLogType.SellerSettings, AmazonLogStatus.Update);
+            _amazonLogService.Add(AmazonLogType.SellerSettings, AmazonLogStatus.Update,null,null, null,null,null,null,null,null);
             _configurationProvider.SaveSettings(amazonSellerSettings);
-            return RedirectToAction("Dashboard","App");
+            return View(amazonSellerSettings);
         }
     }
 }

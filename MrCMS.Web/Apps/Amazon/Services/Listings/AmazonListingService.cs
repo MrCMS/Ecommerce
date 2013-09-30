@@ -45,15 +45,15 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings
 
         public void Save(AmazonListing item)
         {
-            _amazonLogService.Add(AmazonLogType.Listings, item.Id > 0 ? AmazonLogStatus.Update : AmazonLogStatus.Insert,
-                                  null, null, item, null);
-
+            var id = item.Id;
             _session.Transact(session => session.SaveOrUpdate(item));
+            _amazonLogService.Add(AmazonLogType.Listings, id > 0 ? AmazonLogStatus.Update : AmazonLogStatus.Insert,
+                                  null, null, null, null, null, item, null);
         }
 
         public void Delete(AmazonListing item)
         {
-            _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Delete, null, null, item, null);
+            _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Delete, null, null, null, null, null, item, null);
 
             _session.Transact(session => session.Delete(item));
         }

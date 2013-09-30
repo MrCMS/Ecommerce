@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using MarketplaceWebService.Model;
-using MarketplaceWebServiceFeedsClasses;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
@@ -21,8 +20,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
         List<FileStream> GetProductsMainFeeds(AmazonListingGroup amazonListingGroup);
         FileStream GetProductsImageFeeds(AmazonListingGroup amazonListingGroup);
 
-        FileStream GetOrderAcknowledgmentFeed(AmazonOrder order,
-                                              OrderAcknowledgementStatusCode orderAcknowledgementStatusCode);
         FileStream GetOrderFulfillmentFeed(AmazonOrder order);
     }
 }

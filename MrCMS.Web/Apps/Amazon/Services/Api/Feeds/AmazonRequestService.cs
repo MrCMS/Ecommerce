@@ -11,6 +11,7 @@ using MrCMS.Web.Apps.Amazon.Services.Api.Products;
 using MrCMS.Web.Apps.Amazon.Services.Listings;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
 using MrCMS.Web.Apps.Amazon.Services.Orders;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Website;
@@ -71,77 +72,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 }
             }
             return submissionIds;
-        }
-        public string SubmitCloseRequest(AmazonSyncModel model, FileStream productFeedContent)
-        {
-            var submissionId = String.Empty;
-            var uploadSuccess = false;
-            var retryCount = 0;
-            while (!uploadSuccess)
-            {
-                try
-                {
-                    AmazonProgressBarHelper.Update(model.Task, "Push", "Pushing request to Amazon", 100, 0);
-                    var feedResponse = _amazonFeedsApiService.SubmitFeed(AmazonFeedType._POST_PRODUCT_DATA_, productFeedContent);
-                    submissionId = feedResponse.FeedSubmissionId;
-                    AmazonProgressBarHelper.Update(model.Task, "Push", "Request pushed to Amazon", 100, 75);
-
-                    uploadSuccess = true;
-                }
-                catch (Exception ex)
-                {
-                    _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Error, ex, null,
-                                          AmazonApiSection.Feeds, null, null, null, "Error during push of product delete request to Amazon");
-
-                    retryCount++;
-                    if (retryCount == 3) break;
-
-                    Thread.Sleep(120000);
-                }
-            }
-            return submissionId;
-        }
-
-        public void CheckIfDeleteRequestWasProcessed(AmazonSyncModel model, AmazonListing amazonListing, string submissionId)
-        {
-            var uploadSuccess = false;
-            var retryCount = 0;
-
-            while (!uploadSuccess)
-            {
-                try
-                {
-                    AmazonProgressBarHelper.Update(model.Task, "Push", "Checking if request was processed...", 100, 75);
-                    if (_amazonFeedsApiService.GetFeedSubmissionList(submissionId).FeedProcessingStatus == "_DONE_")
-                    {
-                        AmazonProgressBarHelper.Update(model.Task, "Push", "Request was processed", 100, 75);
-                        AmazonProgressBarHelper.Update(model.Task, "Push",
-                                                       "Updating local status of Amazon Listing with SKU:" + amazonListing.SellerSKU,
-                                                       100, 85);
-                        _amazonListingService.UpdateAmazonListingStatus(amazonListing);
-
-                        uploadSuccess = true;
-                    }
-                    else
-                    {
-                        AmazonProgressBarHelper.Update(model.Task, "Push",
-                                                       "Nothing yet, we will wait 2 min. more and try again...", 100, 75);
-                        Thread.Sleep(120000);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Error, ex, null,
-                                          AmazonApiSection.Feeds, null, amazonListing);
-                    retryCount++;
-                    if (retryCount == 3) break;
-
-                    AmazonProgressBarHelper.Update(model.Task, "Push",
-                                                   "Amazon Api is busy, we will need to wait additional 2 min. and try again",
-                                                   100, 75);
-                    Thread.Sleep(120000);
-                }
-            }
         }
         public void CheckIfRequestsWhereProcessed(AmazonSyncModel model, AmazonListingGroup item, List<string> submissionIds)
         {
@@ -236,6 +166,77 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             }
         }
 
+        public string SubmitCloseRequest(AmazonSyncModel model, FileStream productFeedContent)
+        {
+            var submissionId = String.Empty;
+            var uploadSuccess = false;
+            var retryCount = 0;
+            while (!uploadSuccess)
+            {
+                try
+                {
+                    AmazonProgressBarHelper.Update(model.Task, "Push", "Pushing request to Amazon", 100, 0);
+                    var feedResponse = _amazonFeedsApiService.SubmitFeed(AmazonFeedType._POST_PRODUCT_DATA_, productFeedContent);
+                    submissionId = feedResponse.FeedSubmissionId;
+                    AmazonProgressBarHelper.Update(model.Task, "Push", "Request pushed to Amazon", 100, 75);
+
+                    uploadSuccess = true;
+                }
+                catch (Exception ex)
+                {
+                    _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Error, ex, null,
+                                          AmazonApiSection.Feeds, null, null, null,null, "Error during push of product delete request to Amazon");
+
+                    retryCount++;
+                    if (retryCount == 3) break;
+
+                    Thread.Sleep(120000);
+                }
+            }
+            return submissionId;
+        }
+        public void CheckIfDeleteRequestWasProcessed(AmazonSyncModel model, AmazonListing amazonListing, string submissionId)
+        {
+            var uploadSuccess = false;
+            var retryCount = 0;
+
+            while (!uploadSuccess)
+            {
+                try
+                {
+                    AmazonProgressBarHelper.Update(model.Task, "Push", "Checking if request was processed...", 100, 75);
+                    if (_amazonFeedsApiService.GetFeedSubmissionList(submissionId).FeedProcessingStatus == "_DONE_")
+                    {
+                        AmazonProgressBarHelper.Update(model.Task, "Push", "Request was processed", 100, 75);
+                        AmazonProgressBarHelper.Update(model.Task, "Push",
+                                                       "Updating local status of Amazon Listing with SKU:" + amazonListing.SellerSKU,
+                                                       100, 85);
+                        _amazonListingService.UpdateAmazonListingStatus(amazonListing);
+
+                        uploadSuccess = true;
+                    }
+                    else
+                    {
+                        AmazonProgressBarHelper.Update(model.Task, "Push",
+                                                       "Nothing yet, we will wait 2 min. more and try again...", 100, 75);
+                        Thread.Sleep(120000);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Error, ex, null,
+                                          AmazonApiSection.Feeds, null,null, amazonListing,null);
+                    retryCount++;
+                    if (retryCount == 3) break;
+
+                    AmazonProgressBarHelper.Update(model.Task, "Push",
+                                                   "Amazon Api is busy, we will need to wait additional 2 min. and try again",
+                                                   100, 75);
+                    Thread.Sleep(120000);
+                }
+            }
+        }
+
         private void SubmitProductFeed(AmazonSyncModel model, FileStream feedContent, ref List<string> submissionIds)
         {
             if (feedContent == null) return;
@@ -286,7 +287,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             AmazonProgressBarHelper.Update(model.Task, "Push", "Order request pushed", 100, 100);
             return feedResponse.FeedSubmissionId;
         }
-        public void CheckIfOrderFulfillmentRequestWasProcessed(AmazonSyncModel model, AmazonOrder amazonOrder, string submissionId)
+        public void CheckIfOrderFulfillmentFeedWasProcessed(AmazonSyncModel model, AmazonOrder amazonOrder, string submissionId)
         {
             var uploadSuccess = false;
             var retryCount = 0;
@@ -301,15 +302,18 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                         AmazonProgressBarHelper.Update(model.Task, "Push", "Request was processed", 100, 75);
                         AmazonProgressBarHelper.Update(model.Task, "Push", "Updating local status of Amazon Order #" + amazonOrder.AmazonOrderId, 100, 75);
 
-                        amazonOrder.Status = AmazonOrderStatus.Shipped;
-                        _amazonOrderService.Save(amazonOrder);
+                        _amazonOrderService.MarkAsShipped(amazonOrder);
 
                         AmazonProgressBarHelper.Update(model.Task, "Push", "Local Amazon Order data successfully updated", 100, 85);
 
                         if (amazonOrder.Order.ShippingStatus == ShippingStatus.Unshipped)
                         {
                             AmazonProgressBarHelper.Update(model.Task, "Push", "Updating status of MrCMS Order #" + amazonOrder.Order.Id, 100, 85);
+
+                            amazonOrder.Order.PaymentMethod=AmazonPaymentMethod.Other.GetDescription();
+                            amazonOrder.Order.PaymentStatus=PaymentStatus.Paid;
                             _orderService.MarkAsShipped(amazonOrder.Order);
+
                             AmazonProgressBarHelper.Update(model.Task, "Push", "Status of MrCMS Order #" + amazonOrder.Order.Id + " successfully updated", 100, 100);
                         }
 

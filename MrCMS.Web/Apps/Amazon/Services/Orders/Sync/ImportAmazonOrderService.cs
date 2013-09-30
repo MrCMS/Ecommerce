@@ -41,7 +41,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             if (order.Id == 0)
             {
                 var shippingAddress = _validateAmazonOrderService.GetAmazonOrderAddress(rawOrder);
-
                 _validateAmazonOrderService.GetAmazonOrderDetails(rawOrder, ref order, shippingAddress);
             }
 
@@ -49,7 +48,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             order.Status = rawOrder.OrderStatus.GetEnumByValue<AmazonOrderStatus>();
 
             return order;
-
         }
     }
 }
