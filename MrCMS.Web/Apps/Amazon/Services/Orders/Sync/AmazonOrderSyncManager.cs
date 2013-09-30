@@ -11,13 +11,18 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         private readonly IImportOrdersFromAmazonService _importAmazonOrderService;
         private readonly IAmazonOrdersApiService _amazonOrdersApiService;
         private readonly IAmazonLogService _amazonLogService;
+        private readonly IAmazonOrderService _amazonOrderService;
+        private readonly IShipAmazonOrderService _shipAmazonOrderService;
 
         public AmazonOrderSyncManager(IImportOrdersFromAmazonService importAmazonOrderService,
-            IAmazonLogService amazonLogService, IAmazonOrdersApiService amazonOrdersApiService)
+            IAmazonLogService amazonLogService, IAmazonOrdersApiService amazonOrdersApiService, 
+            IAmazonOrderService amazonOrderService, IShipAmazonOrderService cancelAmazonOrderService)
         {
             _importAmazonOrderService = importAmazonOrderService;
             _amazonLogService = amazonLogService;
             _amazonOrdersApiService = amazonOrdersApiService;
+            _amazonOrderService = amazonOrderService;
+            _shipAmazonOrderService = cancelAmazonOrderService;
         }
 
         public void SyncOrders(AmazonSyncModel model)
@@ -45,6 +50,29 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 AmazonProgressBarHelper.Update(model.Task, "Error", AmazonServiceStatus.RED.GetDescription(),100, 0);
             }
 
+        }
+
+        public void ShipOrder(AmazonSyncModel model)
+        {
+            AmazonProgressBarHelper.Clean(model.Task);
+
+            var order = _amazonOrderService.Get(model.Id);
+
+            if (order != null)
+            {
+                    AmazonProgressBarHelper.Update(model.Task, "Api", AmazonServiceStatus.GREEN.GetDescription(), null,
+                                                   null);
+                    AmazonProgressBarHelper.Update(model.Task, "Started", "Preparing request to mark Amazon Order as Shipped",
+                                                   null, null);
+
+                    _shipAmazonOrderService.SubmitSingleProductFeed(model, order);
+
+                    AmazonProgressBarHelper.Update(model.Task, "Completed", "Completed", 100, 100);
+            }
+            else
+            {
+                AmazonProgressBarHelper.Update(model.Task, "Error", "No order specified", 100, 100);
+            }
         }
     }
 }

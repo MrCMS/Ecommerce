@@ -1,5 +1,6 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
 @model MrCMS.Web.Apps.Amazon.Models.AmazonOrderSearchModel
 
 @{
@@ -75,6 +76,10 @@
                        <div class="btn-group">
                                 @Html.ActionLink("Details", "Details", "Orders", new {id = item.Id}, new {@class = "btn btn-mini"})
                                 @Html.ActionLink("Sync", "SyncOne", "Orders", new {id = item.Id}, new { @class="btn btn-mini btn-success"})
+                                @if (Model.ShippingStatus == ShippingStatus.Unshipped)
+                                {
+                                    @Html.ActionLink("Mark as Shipped", "ShipOne", "Orders", new {id = item.Id}, new {@class = "btn btn-mini btn-danger"})
+                                }
                             </div>
                         </td>
                     </tr>

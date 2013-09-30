@@ -10,9 +10,12 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Listings
         public AmazonListingGroup()
         {
             Items=new List<AmazonListing>();
+            FulfillmentChannel=AmazonFulfillmentChannel.MFN;
         }
 
         public virtual string Name { get; set; }
+
+        public virtual AmazonFulfillmentChannel? FulfillmentChannel { get; set; }
 
         public virtual IList<AmazonListing> Items { get; set; }
 

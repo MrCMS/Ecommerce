@@ -3,8 +3,10 @@ using System.IO;
 using System.Linq;
 using MarketplaceWebServiceFeedsClasses;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
+using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Settings;
+using MrCMS.Website;
 using Product = MarketplaceWebServiceFeedsClasses.Product;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
@@ -19,10 +21,17 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
         }
 
         public FileStream GetSingleFeed(object feed, AmazonEnvelopeMessageType amazonEnvelopeMessageType,
-       AmazonEnvelopeMessageOperationType amazonEnvelopeMessageOperationType)
+       AmazonEnvelopeMessageOperationType? amazonEnvelopeMessageOperationType)
         {
             if (feed != null)
             {
+                var message = new AmazonEnvelopeMessage
+                    {
+                        MessageID = "1",
+                        Item = feed
+                    };
+                if (amazonEnvelopeMessageOperationType != null)
+                    message.OperationType = amazonEnvelopeMessageOperationType.Value;
                 var amazonEnvelope = new AmazonEnvelope
                 {
                     Header = new Header
@@ -31,16 +40,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                         MerchantIdentifier = _amazonSellerSettings.SellerId
                     },
                     MessageType = amazonEnvelopeMessageType,
-                    Message =
-                        new AmazonEnvelopeMessageCollection()
-                                {
-                                    new AmazonEnvelopeMessage
-                                        {
-                                            MessageID = "1",
-                                            Item = feed,
-                                            OperationType = amazonEnvelopeMessageOperationType
-                                        }
-                                }
+                    Message = new AmazonEnvelopeMessageCollection(){message}
                 };
 
                 return AmazonAppHelper.GetStreamFromAmazonEnvelope(amazonEnvelope, amazonEnvelopeMessageType);
@@ -120,11 +120,24 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
 
         public Inventory GetProductInventoryFeed(AmazonListing listing)
         {
-            return new Inventory
+            var inventory=new Inventory
             {
                 SKU = listing.SellerSKU,
-                Item = listing.Quantity.ToString()
+                SwitchFulfillmentTo = listing.FulfillmentChannel.HasValue ? 
+                listing.FulfillmentChannel.Value.GetEnumByValue<InventorySwitchFulfillmentTo>()
+                :InventorySwitchFulfillmentTo.MFN
             };
+            if (inventory.SwitchFulfillmentTo == InventorySwitchFulfillmentTo.AFN)
+            {
+                inventory.FulfillmentCenterID = _amazonSellerSettings.DefaultFulfillmentCenter;
+                inventory.Item = InventoryLookup.FulfillmentNetwork;
+            }
+            else
+            {
+                inventory.FulfillmentCenterID = "DEFAULT";
+                inventory.Item = listing.Quantity.ToString();
+            }
+            return inventory;
         }
 
         public ProductImage GetProductImageFeed(AmazonListing listing)
@@ -143,6 +156,52 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 }
             }
             return null;
+        }
+
+        public OrderAcknowledgement GetOrderAcknowledgmentFeed(AmazonOrder amazonOrder, OrderAcknowledgementStatusCode orderAcknowledgementStatusCode, 
+            OrderAcknowledgementItemCancelReason? orderAcknowledgementItemCancelReason)
+        {
+            var product = new OrderAcknowledgement
+            {
+                AmazonOrderID = amazonOrder.AmazonOrderId,
+                StatusCode = orderAcknowledgementStatusCode,
+                Item=new OrderAcknowledgementItemCollection()
+            };
+            foreach (var amazonOrderItem in amazonOrder.Items)
+            {
+                var item = new OrderAcknowledgementItem() {AmazonOrderItemCode = amazonOrderItem.AmazonOrderItemId,CancelReasonSpecified = true};
+                if (orderAcknowledgementItemCancelReason.HasValue)
+                    item.CancelReason = orderAcknowledgementItemCancelReason.Value;
+                product.Item.Add(item);
+            }
+            return product;
+        }
+
+        public OrderFulfillment GetOrderFulfillmentFeed(AmazonOrder amazonOrder)
+        {
+            var orderFulfillment = new OrderFulfillment()
+            {
+                Item=amazonOrder.AmazonOrderId,
+                ItemElementName = ItemChoiceType2.AmazonOrderID,
+                FulfillmentDate = amazonOrder.Order.ShippingDate??CurrentRequestData.Now.AddHours(-8),
+                FulfillmentData = new OrderFulfillmentFulfillmentData()
+                    {
+                        Item="Other",
+                        ShippingMethod = "Standard"
+                    },
+               Item1 = new OrderFulfillmentItemCollection()
+            };
+            foreach (var amazonOrderItem in amazonOrder.Items)
+            {
+                var item = new OrderFulfillmentItem()
+                    {
+                        Item = amazonOrderItem.AmazonOrderItemId,
+                        ItemElementName = ItemChoiceType3.AmazonOrderItemCode,
+                        Quantity = decimal.ToInt32(amazonOrderItem.QuantityOrdered).ToString()
+                    };
+                orderFulfillment.Item1.Add(item);
+            }
+            return orderFulfillment;
         }
     }
 }

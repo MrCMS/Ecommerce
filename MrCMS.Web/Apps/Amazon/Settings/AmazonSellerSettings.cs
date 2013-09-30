@@ -15,6 +15,9 @@ namespace MrCMS.Web.Apps.Amazon.Settings
         [DisplayName("When creating Amazon listing's Standard Product Id, use Product Variant Barcode value as:")]
         public StandardProductIDType BarcodeIsOfType { get; set; }
 
+        [DisplayName("Default Fulfillment Center")]
+        public string DefaultFulfillmentCenter { get; set; }
+
         public override bool RenderInSettings
         {
             get { return false; }

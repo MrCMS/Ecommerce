@@ -43,5 +43,8 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Listings
         public virtual string Manafacturer { get; set; }
         [DisplayName("Manafacturer Part Number")]
         public virtual string MfrPartNumber { get; set; }
+
+         [DisplayName("Fulfillment Channel")]
+        public virtual AmazonFulfillmentChannel? FulfillmentChannel { get; set; }
     }
 }

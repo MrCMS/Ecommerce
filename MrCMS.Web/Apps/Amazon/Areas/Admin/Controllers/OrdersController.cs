@@ -94,5 +94,25 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             }
             return Json(false);
         }
+
+        [HttpGet]
+        [ActionName("ShipOne")]
+        public ActionResult ShipOne_GET(AmazonOrder amazonOrder)
+        {
+            if (amazonOrder != null)
+                return View(new AmazonSyncModel() { Id = amazonOrder.Id, Description = amazonOrder.AmazonOrderId });
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public JsonResult ShipOne(AmazonSyncModel model)
+        {
+            if (model != null)
+            {
+                _syncAmazonOrderService.ShipOrder(model);
+                return Json(true);
+            }
+            return Json(false);
+        }
     }
 }

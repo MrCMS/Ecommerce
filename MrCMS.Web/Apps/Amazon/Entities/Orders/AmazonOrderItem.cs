@@ -1,4 +1,5 @@
-﻿using MrCMS.Entities;
+﻿using MarketplaceWebServiceFeedsClasses;
+using MrCMS.Entities;
 using MrCMS.Web.Apps.Amazon.Models;
 
 namespace MrCMS.Web.Apps.Amazon.Entities.Orders
@@ -40,5 +41,7 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Orders
 
         public virtual string ShippingDiscountCurrency { get; set; }
         public virtual decimal ShippingDiscountAmount { get; set; }
+
+        public virtual OrderAcknowledgementItemCancelReason? CancelReason { get; set; }
     }
 }
