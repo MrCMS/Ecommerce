@@ -143,7 +143,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             if (currentUser != null)
                 addresses.AddRange(_userService.GetAll<Address>(currentUser));
 
-            addresses = addresses.Distinct().Where(a => address == null || !AddressComparison.Comparer.Equals(a, address)).ToList();
+            addresses = addresses.Distinct(AddressComparison.Comparer).Where(a => address == null || !AddressComparison.Comparer.Equals(a, address)).ToList();
 
             return addresses.Any()
                        ? addresses.BuildSelectItemList(a => a.GetDescription(), a => a.ToJSON(),

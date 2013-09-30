@@ -62,7 +62,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Users
                            PostalCode = PostalCode,
                            StateProvince = StateProvince,
                            Title = Title,
-                           UserGuid = UserGuid
+                           UserGuid = UserGuid,
+                           User = User
                        };
         }
 
@@ -89,7 +90,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Users
                 yield return City;
             if (!string.IsNullOrWhiteSpace(StateProvince))
                 yield return StateProvince;
-            if (Country!= null)
+            if (Country != null)
                 yield return Country.Name;
             if (!string.IsNullOrWhiteSpace(PostalCode))
                 yield return PostalCode;
