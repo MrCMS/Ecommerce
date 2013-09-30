@@ -1,0 +1,15 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ryness.Widgets.FeaturedProductsVertical
+           
+<br />
+@Html.LabelFor(widget => widget.ListOfFeaturedProducts)
+@Html.TextBoxFor(widget => widget.ListOfFeaturedProducts)
+
+<div class="clearfix"></div>
+<input autocomplete="off" class="search-query span6" id="searchparam" name="searchparam" placeholder="Search and add products to be featured within widget" type="text" />
+ <br /><br /><div class="clearfix"></div> 
+<div id="products" class="row-fluid span6">
+            <table class="table table-striped table-condensed pull-left" style="margin-bottom: 0;margin-left:-30px">
+        </table>
+</div>
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/featured-products.js"); }
