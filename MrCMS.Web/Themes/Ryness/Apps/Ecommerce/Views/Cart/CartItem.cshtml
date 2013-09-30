@@ -7,7 +7,7 @@
             @if (Model.Item.Product.Images.Any())
             {
                 <a href="/@Model.Item.Product.LiveUrlSegment" title="@Model.Item.DisplayName">
-                    <img src="@(Model.Item.Product.Images.First().FileUrl)" class="img-rounded span12" alt="@Model.Item.DisplayName" />
+                    @RenderImage(Model.Item.Product.Images.First().FileUrl, new Size{Width = 50, Height = 50},null, null, new{@class="img-rounded span12"})
                 </a>
             }
         </div>
