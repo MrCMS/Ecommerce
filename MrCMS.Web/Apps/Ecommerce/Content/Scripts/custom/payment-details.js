@@ -17,6 +17,7 @@
         var checked = $('input[name="PaymentMethod"]:checked').val();
         $.get('/Apps/Ecommerce/Confirm/' + checked, function (response) {
             $('#payment-confirmation').html(response);
+            $.validator.unobtrusive.parse('form');
         });
     });
 })
