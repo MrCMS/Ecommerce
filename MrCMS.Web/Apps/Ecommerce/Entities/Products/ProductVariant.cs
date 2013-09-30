@@ -104,6 +104,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                        : Price;
         }
 
+        public virtual decimal GetUnitPricePreTax(int quantity)
+        {
+            var priceBreak = GetPriceBreak(quantity);
+            return priceBreak != null
+                       ? priceBreak.PriceExcludingTax
+                       : PricePreTax;
+        }
+
         public virtual decimal GetSaving(int quantity)
         {
             return PreviousPriceIncludingTax.GetValueOrDefault() != 0
