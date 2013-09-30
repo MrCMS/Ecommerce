@@ -36,7 +36,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 
             var yearString = year.ToString();
             return string.Format("{0}{1}", month == null ? "00" : month.ToString().PadLeft(2, '0'),
-                                 year == null ? "00" : yearString.Substring(yearString.Length - 2, 2));
+                                 year == null ? "00" : yearString.PadLeft(2,'0'));
         }
 
         public NameValueCollection ParseEnrolmentResponse(string response)
