@@ -1,18 +1,21 @@
 ﻿@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Articles.Pages.Article
-<div class="container margin-bottom-20">
-    <div class="content">
-        <div class="row-fluid">
-            <div class="span12">
-                <h1 class="margin-top-0">@Editable(Model, p => p.Name, false)</h1>
-                @Model.CreatedOn.Day @Model.CreatedOn.ToString("MMMMM") @Model.CreatedOn.Year
-                <br />
-                @if (!String.IsNullOrEmpty(Model.FeatureImage))
-                {
-                    <a href="/@Model.LiveUrlSegment" class="margin-top-0">
-                        <img src="@Model.FeatureImage" align="left"/></a>
-                }
-                @Editable(Model, page => page.BodyContent, true)
+<div class="textpage padding-top-bottom-20">
+    <div class="container">
+        <div class="content">
+            <div class="row-fluid">
+                <div class="span12">
+                    <h1 class="margin-top-0">@Editable(Model, p => p.Name, false)</h1>
+                    <hr />
+                    @Model.CreatedOn.Day @Model.CreatedOn.ToString("MMMMM") @Model.CreatedOn.Year
+                    <br />
+                    @if (!String.IsNullOrEmpty(Model.FeatureImage))
+                    {
+                        <a href="/@Model.LiveUrlSegment" class="margin-top-0">
+                            <img src="@Model.FeatureImage" alt=""/></a>
+                    }
+                    @Editable(Model, page => page.BodyContent, true)
+                </div>
             </div>
         </div>
     </div>
