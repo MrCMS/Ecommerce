@@ -48,7 +48,7 @@ input[type="radio"], input[type="checkbox"] {margin:0;}
 .out-of-stock { border: #C5251E 1px solid;padding-top: 10px;}
 .hideproductimage { display: none;}
 
-.navbar-inverse .navbar-inner {background:inherit;border:none;box-shadow:none;padding-left:0;padding-right:0;padding:2px 0 1px 0;min-height: 37px;filter:none;}
+.navbar-inverse .navbar-inner {background:inherit;border:none;box-shadow:none;padding-left:0;padding-right:0;padding:2px 0 1px 0;min-height: 37px;filter:none;background-color: transparent;}
 .navbar-inverse .brand, .navbar-inverse .nav {border-left:1px solid #d6d6d6;margin-right:0;}
 .navbar-inverse .brand, .navbar-inverse .nav > li {background:url(/Themes/Ryness/Content/Images/sep.jpg) no-repeat right center;padding:0 2px 0 0;position:relative;}
 .navbar-inverse .brand, .navbar-inverse .nav > li > a {color: #444444;text-shadow: none;padding:8px 22px 9px 22px;}
