@@ -123,10 +123,10 @@
         
 
     }
+    
     <!-- TODO: styling of this paypal-->
     <div class="row-fluid">
         <div class="pull-right">
-            <p class="text-align-right">Or Checkout with...</p>
             @if (Model.CanUsePayPalExpress)
             {
                 using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
