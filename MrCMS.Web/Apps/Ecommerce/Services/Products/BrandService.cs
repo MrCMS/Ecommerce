@@ -30,8 +30,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         }
         public Brand GetById(int id)
         {
-            return _session.QueryOver<Brand>().Where(x =>x.Id==id).SingleOrDefault();
+            return _session.QueryOver<Brand>().Where(x => x.Id == id).SingleOrDefault();
         }
+
         public IList<Brand> GetAll()
         {
             return _session.QueryOver<Brand>().Cacheable().List();
@@ -78,11 +79,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         }
         public List<SelectListItem> GetOptions()
         {
-            return GetAll().OrderBy(x=>x.Name).BuildSelectItemList(item => item.Name, item => item.Id.ToString(), null, new SelectListItem()
-            {
-                Text = "Please select...",
-                Value = "0"
-            });
+            return GetAll()
+                .OrderBy(x => x.Name)
+                .BuildSelectItemList(item => item.Name, item => item.Id.ToString(), null, new SelectListItem
+                    {
+                        Text = "Please select...",
+                        Value = "0"
+                    });
         }
 
         public List<SelectListItem> GetAvailableBrands(ProductSearchQuery query)

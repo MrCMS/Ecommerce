@@ -23,8 +23,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                                       IRelatedItemIndexDefinition<ProductSpecificationAttribute, Product>,
                                       IRelatedItemIndexDefinition<ProductSpecificationAttributeOption, Product>,
                                       IRelatedItemIndexDefinition<ProductSpecificationValue, Product>,
-                                      IRelatedItemIndexDefinition<ProductAttributeOption, Product>,
-                                      IRelatedItemIndexDefinition<ProductAttributeValue, Product>,
+                                      IRelatedItemIndexDefinition<ProductOption, Product>,
+                                      IRelatedItemIndexDefinition<ProductOptionValue, Product>,
                                       IRelatedItemIndexDefinition<Category, Product>
     {
         public Document Convert(Product entity)
@@ -223,7 +223,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
             new StringFieldDefinition<Product>("options",
                                                product =>
                                                product.Variants.SelectMany(
-                                                   variant => variant.AttributeValues.Select(value => value.Id))
+                                                   variant => variant.OptionValues.Select(value => value.Id))
                                                       .Select(i => i.ToString()),
                                                Field.Store.YES, Field.Index.NOT_ANALYZED);
 
@@ -295,12 +295,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
             return obj.Values.Select(productSpecificationValue => productSpecificationValue.Product);
         }
 
-        public IEnumerable<Product> GetEntitiesToUpdate(ProductAttributeOption obj)
+        public IEnumerable<Product> GetEntitiesToUpdate(ProductOption obj)
         {
             return obj.Products;
         }
 
-        public IEnumerable<Product> GetEntitiesToUpdate(ProductAttributeValue obj)
+        public IEnumerable<Product> GetEntitiesToUpdate(ProductOptionValue obj)
         {
             if (obj.ProductVariant != null)
                 yield return obj.ProductVariant.Product;

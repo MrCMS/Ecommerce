@@ -1,0 +1,13 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductOption
+@using (Html.BeginForm("Add", "ProductOption", new { id = "" }, FormMethod.Post, new { id = "add-new-option-form", style = "margin:0px;" }))
+{
+    <div class="row-fluid">
+        <div class="span6">
+            @Html.TextBoxFor(option => option.Name)
+        </div>
+        <div class="span6">
+            <input type="submit" class="btn btn-primary btn-mini" value="Add new" id="add-new-product-option" />
+        </div>
+    </div>
+}
+

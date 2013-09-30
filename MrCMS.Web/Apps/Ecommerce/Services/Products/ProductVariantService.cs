@@ -115,7 +115,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             {
                 productVariant.Product.Variants.Add(productVariant);
 
-                foreach (ProductAttributeValue t in productVariant.AttributeValues)
+                foreach (ProductOptionValue t in productVariant.OptionValues)
                 {
                     t.ProductVariant = productVariant;
                 }

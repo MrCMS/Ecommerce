@@ -9,7 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
     {
         public void Override(AutoMapping<ProductVariant> mapping)
         {
-            mapping.HasMany(variant => variant.AttributeValues).KeyColumn("ProductVariantId").Cascade.All();
+            mapping.HasMany(variant => variant.OptionValues).KeyColumn("ProductVariantId").Cascade.All();
             mapping.HasOne(variant => variant.GoogleBaseProduct)
                    .PropertyRef(product => product.ProductVariant)
                    .Cascade.All();
@@ -35,19 +35,20 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
         }
     }
 
-    public class ProductAttributeOptionOverride : IAutoMappingOverride<ProductAttributeOption>
+    public class ProductOptionOverride : IAutoMappingOverride<ProductOption>
     {
-        public void Override(AutoMapping<ProductAttributeOption> mapping)
+        public void Override(AutoMapping<ProductOption> mapping)
         {
-            mapping.Map(x => x.Name).Index("IX_ProductAttributeOption_Name");
+            mapping.Map(x => x.Name).Index("IX_ProductOption_Name");
+            mapping.HasManyToMany(option => option.Products).Table("Ecommerce_ProductOptions").Inverse();
         }
     }
 
-    public class ProductAttributeValueOverride : IAutoMappingOverride<ProductAttributeValue>
+    public class ProductAttributeValueOverride : IAutoMappingOverride<ProductOptionValue>
     {
-        public void Override(AutoMapping<ProductAttributeValue> mapping)
+        public void Override(AutoMapping<ProductOptionValue> mapping)
         {
-            mapping.Map(x => x.Value).Index("IX_ProductAttributeValue_Value");
+            mapping.Map(x => x.Value).Index("IX_ProductOptionValue_Value");
         }
     }
     

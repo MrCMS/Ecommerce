@@ -23,74 +23,74 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
         [Fact]
         public void ProductOptionManager_AddAttributeOption_ShouldSaveOption()
         {
-            _productOptionManager.AddAttributeOption(new ProductAttributeOption { Name = "Test" });
+            _productOptionManager.AddAttributeOption(new ProductOption { Name = "Test" });
 
-            Session.QueryOver<ProductAttributeOption>().RowCount().Should().Be(1);
+            Session.QueryOver<ProductOption>().RowCount().Should().Be(1);
         }
 
         [Fact]
         public void ProductOptionManager_AddAttributeOption_DoesNotAllowAddingAnotherOptionWithSameName()
         {
-            Session.Transact(session => session.Save(new ProductAttributeOption { Name = "Test" }));
+            Session.Transact(session => session.Save(new ProductOption { Name = "Test" }));
 
-            _productOptionManager.AddAttributeOption(new ProductAttributeOption { Name = "Test" });
+            _productOptionManager.AddAttributeOption(new ProductOption { Name = "Test" });
 
-            Session.QueryOver<ProductAttributeOption>().RowCount().Should().Be(1);
+            Session.QueryOver<ProductOption>().RowCount().Should().Be(1);
         }
 
         [Fact]
         public void ProductOptionManager_AddAttributeOption_DoesNotAllowAddingAnOptionWithNoName()
         {
-            _productOptionManager.AddAttributeOption(new ProductAttributeOption { Name = "" });
+            _productOptionManager.AddAttributeOption(new ProductOption { Name = "" });
 
-            Session.QueryOver<ProductAttributeOption>().RowCount().Should().Be(0);
+            Session.QueryOver<ProductOption>().RowCount().Should().Be(0);
         }
 
         [Fact]
         public void ProductOptionManager_UpdateAttributeOption_AllowsNameToBeUpdated()
         {
-            var option = new ProductAttributeOption { Name = "Test" };
+            var option = new ProductOption { Name = "Test" };
             Session.Transact(session => session.Save(option));
             option.Name = "Updated";
 
             _productOptionManager.UpdateAttributeOption(option);
 
             Session.Evict(option);
-            Session.Get<ProductAttributeOption>(1).Name.Should().Be("Updated");
+            Session.Get<ProductOption>(1).Name.Should().Be("Updated");
         }
 
         [Fact]
         public void ProductOptionManager_UpdateAttributeOption_DoesNotAllowNameToBeSameAsAnExistingOption()
         {
-            var option = new ProductAttributeOption { Name = "Test" };
+            var option = new ProductOption { Name = "Test" };
             Session.Transact(session => session.Save(option));
-            var option2 = new ProductAttributeOption { Name = "Test 2" };
+            var option2 = new ProductOption { Name = "Test 2" };
             Session.Transact(session => session.Save(option2));
             option.Name = "Test 2";
 
             _productOptionManager.UpdateAttributeOption(option);
 
             Session.Evict(option);
-            Session.Get<ProductAttributeOption>(1).Name.Should().Be("Test");
+            Session.Get<ProductOption>(1).Name.Should().Be("Test");
         }
 
         [Fact]
         public void ProductOptionManager_UpdateAttributeOption_DoesNotAllowNameToBeAnEmptyString()
         {
-            var option = new ProductAttributeOption { Name = "Test" };
+            var option = new ProductOption { Name = "Test" };
             Session.Transact(session => session.Save(option));
             option.Name = "";
 
             _productOptionManager.UpdateAttributeOption(option);
 
             Session.Evict(option);
-            Session.Get<ProductAttributeOption>(1).Name.Should().Be("Test");
+            Session.Get<ProductOption>(1).Name.Should().Be("Test");
         }
 
         [Fact]
         public void ProductOptionManager_ListAttributeOptions_ReturnsAllAttributeOptions()
         {
-            var options = Enumerable.Range(1, 10).Select(i => new ProductAttributeOption()).ToList();
+            var options = Enumerable.Range(1, 10).Select(i => new ProductOption()).ToList();
             Session.Transact(session => options.ForEach(option => session.Save(option)));
 
             var listAttributeOptions = _productOptionManager.ListAttributeOptions();
@@ -101,12 +101,12 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
         [Fact]
         public void ProductOptionManager_DeleteAttributeOption_DeletesOption()
         {
-            var option = new ProductAttributeOption { Name = "Test" };
+            var option = new ProductOption { Name = "Test" };
             Session.Transact(session => session.Save(option));
 
             _productOptionManager.DeleteAttributeOption(option);
 
-            Session.QueryOver<ProductAttributeOption>().RowCount().Should().Be(0);
+            Session.QueryOver<ProductOption>().RowCount().Should().Be(0);
         }
     }
 }
