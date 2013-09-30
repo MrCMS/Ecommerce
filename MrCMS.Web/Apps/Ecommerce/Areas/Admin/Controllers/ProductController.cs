@@ -321,7 +321,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public JsonResult AddBrand_POST(Brand brand)
         {
             _brandService.Add(brand);
-            return Json(true);
+            return Json(brand.Id);
         }
 
         [HttpGet]
