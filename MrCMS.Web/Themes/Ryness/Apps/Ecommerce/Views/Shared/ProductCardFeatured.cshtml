@@ -1,4 +1,5 @@
 ﻿@using System.Drawing
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product 
 <div class="span3">
     <div class="product-picture text-align-center margin-top-10 padding-top-bottom-10">
@@ -17,10 +18,10 @@
             @Editable(Model, product => product.Abstract)
         </div>
         <div class="product-price">
-            @Html.DisplayFor(product => product.DisplayPrice)
-            @if (Model.DisplayPreviousPrice.HasValue)
+            @Model.DisplayPrice.ToCurrencyFormat()
+            @if (Model.ShowPreviousPrice && Model.DisplayPreviousPrice.HasValue)
             {
-                <span>@Model.PreviousPriceText : @Html.DisplayFor(product => product.DisplayPreviousPrice)</span>
+                <span>@Model.PreviousPriceText : @Model.DisplayPreviousPrice.ToCurrencyFormat()</span>
             }
 
         </div>
