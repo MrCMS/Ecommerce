@@ -23,14 +23,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             OptionValues = new List<ProductOptionValue>();
             PriceBreaks = new List<PriceBreak>();
         }
-        [DisplayName("Price Pre Tax")]
-        public virtual decimal PricePreTax
-        {
-            get
-            {
-                return TaxAwareProductPrice.GetPriceExcludingTax(BasePrice, TaxRate);
-            }
-        }
 
         public virtual decimal Weight { get; set; }
         [StringLength(400)]
@@ -81,6 +73,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             get { return TaxAwareProductPrice.GetPriceIncludingTax(BasePrice, TaxRate); }
         }
 
+        [DisplayName("Price Pre Tax")]
+        public virtual decimal PricePreTax
+        {
+            get { return TaxAwareProductPrice.GetPriceExcludingTax(BasePrice, TaxRate); }
+        }
+
         private PriceBreak GetPriceBreak(int quantity)
         {
             return PriceBreaks != null
@@ -92,8 +90,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             var priceBreak = GetPriceBreak(quantity);
             return priceBreak != null
-                       ? priceBreak.PriceIncludingTax*quantity
-                       : Price*quantity;
+                       ? priceBreak.PriceIncludingTax * quantity
+                       : Price * quantity;
         }
 
         public virtual decimal GetUnitPrice(int quantity)
@@ -118,17 +116,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                        ? ((PreviousPriceIncludingTax * quantity) - GetPrice(quantity)).Value
                        : (Price * quantity) - GetPrice(quantity);
         }
-
-        public virtual decimal GetTax(int quantity)
-        {
-            return Math.Round(GetPrice(quantity) - GetPricePreTax(quantity), 2, MidpointRounding.AwayFromZero);
-        }
-
-        public virtual decimal GetPricePreTax(int quantity)
-        {
-            return Math.Round(GetPrice(quantity) / ((TaxRatePercentage + 100) / 100), 2, MidpointRounding.AwayFromZero);
-        }
-
 
         [Required]
         [Remote("IsUniqueSKU", "ProductVariant", AdditionalFields = "Id")]
@@ -174,8 +161,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         [DisplayName("Tax Rate")]
         public virtual TaxRate TaxRate { get; set; }
-        
-        
+
+
         [DisplayName("Manufacturer Part Number")]
         [StringLength(250)]
         public virtual string ManufacturerPartNumber { get; set; }

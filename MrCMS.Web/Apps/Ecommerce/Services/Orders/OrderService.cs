@@ -35,7 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                             BillingAddress = cartModel.BillingAddress.Clone(_session),
                                                                             ShippingMethod = cartModel.ShippingMethod,
                                                                             Subtotal = cartModel.Subtotal,
-                                                                            DiscountAmount = cartModel.DiscountAmount,
+                                                                            DiscountAmount = cartModel.OrderTotalDiscount,
                                                                             Discount = cartModel.Discount,
                                                                             DiscountCode = cartModel.DiscountCode,
                                                                             Tax = cartModel.Tax,
@@ -70,8 +70,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                                          SKU = item.Item.SKU,
                                                                                          Name = !string.IsNullOrEmpty(item.Item.Name) ? item.Item.Name : item.Item.Product.Name,
                                                                                          Options = options,
-                                                                                         Discount =
-                                                                                             item.GetDiscountAmount(cartModel.Discount, cartModel.DiscountCode),
+                                                                                         Discount = item.DiscountAmount,
                                                                                      });
                                                         }
                                                         if (postCreationActions != null)
