@@ -49,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         }
         public virtual decimal UnitPricePreTax
         {
-            get { return Item.PricePreTax; }
+            get { return Item.GetUnitPricePreTax(Quantity); }
         }
         public virtual decimal GetDiscountAmount(Discount discount, string discountCode)
         {
