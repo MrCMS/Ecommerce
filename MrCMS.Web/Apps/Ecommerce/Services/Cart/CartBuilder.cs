@@ -113,6 +113,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             if (shippingAddress != null)
             {
                 shippingAddress.Country = GetCountry();
+                shippingAddress.User = CurrentRequestData.CurrentUser;
             }
             return shippingAddress;
         }
@@ -128,6 +129,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             if (billingAddress != null)
             {
                 billingAddress.Country = GetCountry();
+                billingAddress.User = CurrentRequestData.CurrentUser;
             }
             return billingAddress;
         }
