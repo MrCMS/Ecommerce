@@ -1,10 +1,11 @@
-﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+﻿@using System.Drawing
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product 
 <div class="span2">
     <div class="product-picture text-align-center margin-top-10 padding-top-bottom-10">
         @if (Model.Images.Any())
         {
-            <a href="/@Model.LiveUrlSegment" title="@Model.Name">@RenderImage(Model.Images.First().FileUrl)</a>
+            <a href="/@Model.LiveUrlSegment" title="@Model.Name">@RenderImage(Model.Images.First().FileUrl, new Size{Width = 170,Height = 170})</a>
         }
     </div>
     <div class="product-brief">
