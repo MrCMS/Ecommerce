@@ -28,7 +28,7 @@ namespace MrCMS.Web.Apps.Ryness.Metadata
 
         public override string DefaultLayoutName
         {
-            get { return "Store Layout"; }
+            get { return "Content Page Layout"; }
         }
 
         public override string IconClass
