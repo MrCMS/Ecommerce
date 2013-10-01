@@ -191,11 +191,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                                            .Select(
                                                arg =>
                                                new SortItem
-                                                   {
-                                                       Order = arg.DisplayOrder,
-                                                       Id = arg.Id,
-                                                       Name = arg.ProductSpecificationAttributeOption.ProductSpecificationAttribute.Name
-                                                   })
+                                               {
+                                                   Order = arg.DisplayOrder,
+                                                   Id = arg.Id,
+                                                   Name = arg.ProductSpecificationAttributeOption.ProductSpecificationAttribute.Name
+                                               })
                                            .ToList();
                     ViewBag.Product = product;
                     return View(sortItems);
@@ -332,11 +332,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 .Select(
                     arg =>
                     new SortItem
-                        {
-                            Order = categories.IndexOf(arg),
-                            Id = arg.Id,
-                            Name = arg.Name
-                        })
+                    {
+                        Order = categories.IndexOf(arg),
+                        Id = arg.Id,
+                        Name = arg.Name
+                    })
                 .ToList();
             ViewBag.Product = product;
             return View(sortItems);
