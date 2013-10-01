@@ -121,7 +121,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [Remote("IsUniqueSKU", "ProductVariant", AdditionalFields = "Id")]
         public virtual string SKU { get; set; }
 
-        public virtual decimal Tax { get { return Price - PricePreTax; } }
+        public virtual decimal Tax { get { return TaxAwareProductPrice.GetTax(BasePrice, TaxRate).GetValueOrDefault(); } }
 
         public virtual bool CanBuy(int quantity)
         {
