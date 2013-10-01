@@ -8,6 +8,7 @@ using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Analytics;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
@@ -23,16 +24,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _googleAnalyticsService = googleAnalyticsService;
         }
 
-        public PartialViewResult GetEcommerceTrackingCode(Webpage page)
+        public PartialViewResult GetEcommerceTrackingCode()
         {
+            var page = CurrentRequestData.CurrentPage;
             var trackingScript = _seoSettings.TrackingScripts;
             
             if (page is OrderPlaced)
             {
-                var order = ViewData["Order"] as Order;
+                var order = TempData["Order"] as Order;
                 if (order != null)
                 {
-                    _googleAnalyticsService.GetAnalayticsCode(order, trackingScript);
+                    trackingScript = _googleAnalyticsService.GetAnalayticsCode(order, trackingScript);
                 }
             }
             return PartialView("AnalyticsCode", trackingScript);
