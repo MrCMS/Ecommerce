@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services
 {
     [Serializable]
-    public class ThreeDSecureException : Exception
+    public sealed class ThreeDSecureException : Exception
     {
         public ThreeDSecureException()
         {
@@ -14,9 +15,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         public ThreeDSecureException(NameValueCollection error)
             : base("3D Secure error")
         {
-            RequestData = string.Join("&", error.AllKeys.Select(s => string.Format("{0}={1}", s, error[(string) s])));
+            Data["Request Data"] = string.Join("&", error.AllKeys.Select(s => string.Format("{0}={1}", s, error[s])));
         }
 
-        public string RequestData { get; set; }
+        private ThreeDSecureException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
     }
 }

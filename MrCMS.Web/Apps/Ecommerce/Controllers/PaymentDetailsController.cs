@@ -81,5 +81,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _cartManager.SetBillingAddress(address);
             return Redirect(UniquePageHelper.GetUrl<PaymentDetails>());
         }
+
+        [HttpPost]
+        public JsonResult SetPaymentMethod(string paymentMethod)
+        {
+            _cartManager.SetPaymentMethod(paymentMethod);
+            return Json(true);
+        }
     }
 }
