@@ -1,12 +1,8 @@
 ﻿@model MrCMS.Web.Apps.Core.Pages.RegisterPage
 
-<div class="container">
+<div class="container padding-top-bottom-20">
     <h1>@Editable(Model, page => page.Name) </h1>
     <hr/>
-@*    @if (!string.IsNullOrEmpty(Model.FeatureImage))
-    {
-        @RenderImage(Model.FeatureImage, null, null, new { @class = "pull-right" })
-    }*@
     @Editable(Model, page => page.BodyContent, true)
     @{Html.RenderAction("RegistrationDetails", "Registration");}
 </div>

@@ -10,37 +10,41 @@
     var orderShipping = order.ShippingTotal.GetValueOrDefault() - order.ShippingTax.GetValueOrDefault();
 
 }
-
-<div class="container">
-    
+<div class="container padding-top-bottom-20">
     <div class="row-fluid">
         <div class="span12">
-            <div class="pull-right btn-group">
-                <a href="@(UniquePageHelper.GetUrl<UserAccountPage>())" class="btn " >Return to account</a>
-
-                <a href="/Apps/Ecommerce/OrderPdf/ExportOrderToPdf/@order.Id" class="btn btn-primary" >Download PDF</a>
+            <div class="row-fluid">
+                <div class="span6">
+                    <h1>View Order @order.Id</h1>
+                </div>
+                <div class="span6">
+                    <div class="pull-right btn-group">
+                        <a href="@(UniquePageHelper.GetUrl<UserAccountPage>())" class="btn">Return to account</a>
+                        <a href="/Apps/Ecommerce/OrderPdf/ExportOrderToPdf/@order.Id" class="btn btn-primary">Download PDF</a>
+                    </div>
+                </div>
             </div>
-            <br class="clearfix"/>
+            <br class="clearfix" />
             <table class="table table-condensed table-striped">
                 <tr>
-                    <td>Order GUID</td>
+                    <td class="bold-font">Order GUID</td>
                     <td>@order.Guid</td>
                 </tr>
                 <tr>
-                    <td>Order Subtotal (ex TAX)</td>
+                    <td class="bold-font">Order Subtotal (ex TAX)</td>
                     <td>@order.Subtotal.ToCurrencyFormat()</td>
                 </tr>
                 <tr>
-                    <td>Order Shipping (ex TAX)</td>
+                    <td class="bold-font">Order Shipping (ex TAX)</td>
                     <td>@orderShipping.ToCurrencyFormat()</td>
                 </tr>
 
                 <tr>
-                    <td>Order Tax</td>
+                    <td class="bold-font">Order Tax</td>
                     <td>@order.Tax.ToCurrencyFormat()</td>
                 </tr>
                 <tr>
-                    <td>Order Total</td>
+                    <td class="bold-font">Order Total</td>
                     <td>@order.Total.ToCurrencyFormat()</td>
                 </tr>
             </table>
@@ -87,11 +91,11 @@
 
             <table class="table table-condensed">
                 <tr>
-                    <td>Method</td>
+                    <td class="bold-font">Method</td>
                     <td>@order.PaymentMethod</td>
                 </tr>
                 <tr>
-                    <td>Status</td>
+                    <td class="bold-font">Status</td>
                     <td>@order.PaymentStatus</td>
                 </tr>
             </table>
@@ -101,11 +105,11 @@
 
             <table class="table table-condensed">
                 <tr>
-                    <td>Method</td>
+                    <td class="bold-font">Method</td>
                     <td>@order.ShippingMethod.Name</td>
                 </tr>
                 <tr>
-                    <td>Status</td>
+                    <td class="bold-font">Status</td>
                     <td>@order.ShippingStatus</td>
                 </tr>
                 @{
@@ -123,8 +127,7 @@
     <hr />
     <div class="row-fluid">
         <div class="span6">
-            <h4>Shipping Address
-            </h4>
+            <h4>Shipping Address</h4>
             <div class="pull-left">
                 @if (order.ShippingAddress != null)
                 {
@@ -133,8 +136,7 @@
             </div>
         </div>
         <div class="span6">
-            <h4>Billing Address
-            </h4>
+            <h4>Billing Address</h4>
             <div class="pull-left">
                 @if (order.BillingAddress != null)
                 {
@@ -216,6 +218,4 @@
             }
         </div>
     </div>
-
-
 </div>
