@@ -8,11 +8,12 @@
                 <div class="span12">
                     <h1 class="margin-top-0">@Editable(Model, p => p.Name, false)</h1>
                     <hr />
-                    @if (Model.PublishOn.HasValue)
-                    {
-            <text>@Model.PublishOn.Value.Day @Model.PublishOn.Value.ToString("MMMMM") @Model.PublishOn.Value.Year.ToString(CultureInfo.InvariantCulture)</text>
-                    }
-                    
+                    <div>
+                        @if (Model.PublishOn.HasValue)
+                        {
+                            <text>@Model.PublishOn.Value.Day @Model.PublishOn.Value.ToString("MMMMM") @Model.PublishOn.Value.Year.ToString(CultureInfo.InvariantCulture)</text>
+                        }
+                    </div>
                     <br />
                     @if (!String.IsNullOrEmpty(Model.FeatureImage))
                     {

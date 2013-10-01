@@ -11,47 +11,49 @@
     @if (Model.Results != null && !Model.Results.Any())
     {
         @:No orders.
-        }
+    }
     else
     {
         using (Html.BeginForm("Index", "Order", FormMethod.Get))
         {
-        <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(x => x.Email)
-                @Html.TextBoxFor(x => x.Email, new { @class = "input-large" })
+            <div class="row-fluid">
+                <div class="span4">
+                    @Html.LabelFor(x => x.Email)
+                    @Html.TextBoxFor(x => x.Email, new {@class = "input-large"})
 
-                @Html.LabelFor(x => x.LastName)
-                @Html.TextBoxFor(x => x.LastName, new { @class = "input-medium" })
+                    @Html.LabelFor(x => x.LastName)
+                    @Html.TextBoxFor(x => x.LastName, new {@class = "input-medium"})
 
 
-                @Html.LabelFor(x => x.OrderId)
-                @Html.TextBoxFor(x => x.OrderId, new { @class = "input-small" })
+                    @Html.LabelFor(x => x.OrderId)
+                    @Html.TextBoxFor(x => x.OrderId, new {@class = "input-small"})
+                </div>
+                <div class="span4">
+                    @Html.LabelFor(x => x.DateFrom)
+                    @Html.TextBoxFor(x => x.DateFrom, new {@class = "input-medium date-time-picker"})
+
+                    @Html.LabelFor(x => x.DateTo)
+                    @Html.TextBoxFor(x => x.DateTo, new {@class = "input-medium date-time-picker"})
+                </div>
+                <div class="span4">
+                    @Html.LabelFor(x => x.PaymentStatus)
+                    @Html.DropDownList("PaymentStatus", ViewData["PaymentStatuses"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
+
+                    @Html.LabelFor(x => x.ShippingStatus)
+                    @Html.DropDownList("ShippingStatus", ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
+                </div>
             </div>
-            <div class="span4">
-                @Html.LabelFor(x => x.DateFrom)
-                @Html.TextBoxFor(x => x.DateFrom, new { @class = "input-medium date-time-picker" })
 
-                @Html.LabelFor(x => x.DateTo)
-                @Html.TextBoxFor(x => x.DateTo, new { @class = "input-medium date-time-picker" })
-            </div>
-            <div class="span4">
-                @Html.LabelFor(x => x.PaymentStatus)
-                @Html.DropDownList("PaymentStatus", ViewData["PaymentStatuses"] as IEnumerable<SelectListItem>, new { @class = "input-medium" })
 
-                @Html.LabelFor(x => x.ShippingStatus)
-                @Html.DropDownList("ShippingStatus", ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new { @class = "input-medium" })
-            </div>
-        </div>
-                 
-       
-        <button type="submit" class="btn btn-primary btn-mini">Filter</button>
+            <button type="submit" class="btn btn-primary btn-mini">Filter</button>
 
         }
         <hr />
         <table class="table table-condensed table-striped">
             <thead>
                 <tr>
+                    <th>Sales Channel
+                    </th>
                     <th>Order Id
                     </th>
                     <th>Email
@@ -72,6 +74,9 @@
                 {
                     <tr>
                         <td>
+                            @(!String.IsNullOrWhiteSpace(item.SalesChannel)?item.SalesChannel:"MrCMS")
+                        </td>
+                        <td>
                             @item.Id
                         </td>
                         <td>
@@ -84,9 +89,9 @@
                             <div class="pull-left">
                                 @if (item.PaymentStatus == PaymentStatus.Pending)
                                 {
-                                    @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new {id = item.Id, index = true}, new {@class = "btn btn-mini", data_toggle = "fb-modal"})
                                     <span></span>
-                                    @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Void", "MarkAsVoided", "Order", new {id = item.Id, index = true}, new {@class = "btn btn-mini", data_toggle = "fb-modal"})
                                 }
                             </div>
                         </td>
@@ -97,7 +102,7 @@
                             <div class="pull-left">
                                 @if (item.ShippingStatus != ShippingStatus.Shipped)
                                 {
-                                    @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new {id = item.Id, index = true}, new {@class = "btn btn-mini", data_toggle = "fb-modal"})
                                 }
                             </div>
                         </td>
@@ -108,14 +113,14 @@
                         </td>
                         <td>
                             <div class="btn-group">
-                                @Html.ActionLink("Details", "Edit", "Order", new { id = item.Id }, new { @class = "btn btn-mini" })
+                                @Html.ActionLink("Details", "Edit", "Order", new {id = item.Id}, new {@class = "btn btn-mini"})
                             </div>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
-        @Html.Pager(Model.Results, "Index", i => new { page = i })
+        @Html.Pager(Model.Results, "Index", i => new {page = i})
     }
 
 </fieldset>

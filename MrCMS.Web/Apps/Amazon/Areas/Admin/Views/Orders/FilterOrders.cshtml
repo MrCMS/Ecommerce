@@ -1,0 +1,30 @@
+﻿@model MrCMS.Web.Apps.Amazon.Models.AmazonOrderSearchModel
+
+@using (Html.BeginForm("Index", "Orders", FormMethod.Get))
+{
+    <div class="row-fluid">
+        <div class="span6">
+            @Html.LabelFor(x => x.Email)
+            @Html.TextBoxFor(x => x.Email, new {@class = "span12"})
+
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new {@class = "span12"})
+        </div>
+        <div class="span3">
+            @Html.LabelFor(x => x.DateFrom)
+            @Html.TextBoxFor(x => x.DateFrom, new {@class = "span12 date-time-picker"})
+
+            @Html.LabelFor(x => x.DateTo)
+            @Html.TextBoxFor(x => x.DateTo, new {@class = "span12 date-time-picker"})
+        </div>
+        <div class="span3">
+            @Html.LabelFor(x => x.AmazonOrderId)
+            @Html.TextBoxFor(x => x.AmazonOrderId, new {@class = "span12"})
+            
+            @Html.LabelFor(x => x.ShippingStatus)
+            @Html.DropDownList("ShippingStatus", ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new {@class = "span12"})
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-mini">Filter</button>
+}

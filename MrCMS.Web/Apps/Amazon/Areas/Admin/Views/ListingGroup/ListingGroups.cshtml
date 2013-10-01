@@ -1,0 +1,77 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Amazon.Entities.Listings.AmazonListingGroup>
+
+<div data-paging-type="async" id="listing-groups">
+    
+    @if (!Model.Any())
+    {
+        @:No listing groups found.
+    }
+    else
+    {
+        <table class="table table-striped table-condensed" style="overflow: scroll">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                     <th>
+                        Total
+                    </th>
+                    <th>
+                        Active
+                    </th>
+                    <th>
+                        Inactive
+                    </th>
+                     <th>
+                        Never Listed
+                    </th>
+                    <th>Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            @item.NoOfItems
+                        </td>
+                        <td>
+                            @item.NoOfActiveItems
+                        </td>
+                        <td>
+                            @item.NoOfInactiveItems
+                        </td>
+                         <td>
+                            @item.NoOfIdleItems
+                        </td>
+                        <td>
+                             <div class="btn-group">
+                                 @Html.ActionLink("Edit", "Edit", "ListingGroup", new { id = item.Id }, new { @class = "btn btn-mini" })
+
+                                 @if (item.IsListed)
+                                 {
+                                     @Html.ActionLink("Sync", "SyncMany", "Listing", new {id = item.Id, location = "edit"}, new {@class = "btn btn-mini btn-success"})
+                                     @Html.ActionLink("Close", "CloseMany", "Listing", new { id = item.Id, location = "edit" }, new { @class = "btn btn-mini btn-warning" })
+                                 }
+                                 else
+                                 {
+                                     @Html.ActionLink("Delete", "Delete", "ListingGroup", new { id = item.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                                 }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @Html.Pager(Model, "ListingGroups", i => new { page = i })
+
+</div>
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/async-paging.js"); }
