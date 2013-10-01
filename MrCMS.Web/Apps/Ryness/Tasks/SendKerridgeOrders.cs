@@ -27,13 +27,13 @@ namespace MrCMS.Web.Apps.Ryness.Tasks
                 if (sent)
                 {
                     kerridgeLog.Sent = true;
-                    kerridgeLog.Message = "Sent on:" + DateTime.Now;
+                    kerridgeLog.Message = "Sent on: " + DateTime.Now;
                     _kerridgeService.Update(kerridgeLog);
                 }
                 else
                 {
                     kerridgeLog.Sent = false;
-                    kerridgeLog.Message = "Could not send to Kerridge. Please see log for details. Will retry. " + DateTime.Now;
+                    kerridgeLog.Message = "Could not send to Kerridge. Please see log for details. Will retry. Time:" + DateTime.Now;
                     _kerridgeService.Update(kerridgeLog);
                 }
 

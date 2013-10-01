@@ -1,0 +1,52 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ryness.Models.KerridgeLogPagedList
+@{
+    ViewBag.Title = "Kerridge Logs";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@if (Model.Any())
+{
+    <form>
+        <fieldset>
+            <legend>Kerridge Log
+                <span class="btn-group display-inline pull-right">
+                </span>
+            </legend>
+        
+            <table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>Order Id</th>
+                        <th>Sent?</th>
+                        <th>Message</th>
+                        <th>Created On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var log in Model)
+                    {
+                        <tr>
+                            <td>
+                                @log.Order.Id
+                            </td>
+                            <td>
+                                @(log.Sent ? "Yes" : "No")
+                            </td>
+                            <td>
+                                @log.Message
+                            </td>
+                            <td>
+                                @log.CreatedOn
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @Html.Pager(Model, "Index", p => new { p }, PagedListRenderOptions.PageNumbersOnly)
+        </fieldset>
+    </form>
+}
+else
+{
+    @:No logs available.
+}
