@@ -1,0 +1,34 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Amazon.Models.AmazonSyncModel
+
+<div data-paging-type="async" id="progress-bar-messages">
+    @if (Model != null && Model.Messages.Any())
+    {
+        foreach (var item in Model.Messages)
+        {
+            var statusClass = "alert alert-info";
+            switch (item.Stage)
+            {
+                case "Error":
+                    statusClass = "alert alert-error";
+                    break;
+                case "Completed":
+                    statusClass = "alert alert-success";
+                    break;
+            }
+            <div class="@statusClass">
+                <span data-dismiss="alert" class="close">
+                    @if (item.Created.HasValue)
+                    {
+                        @item.Created.Value.ToString("hh:mm:ss")
+                    }
+                </span>
+                @item.Message
+            </div>
+        }
+
+        @Html.Pager(Model.Messages, "ProgressBarMessages", i => new {page = i, id = Model.TaskId})
+
+    }
+</div>
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/async-paging.js"); }

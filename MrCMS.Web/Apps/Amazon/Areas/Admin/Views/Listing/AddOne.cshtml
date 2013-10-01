@@ -1,0 +1,24 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Amazon.Entities.Listings.AmazonListing
+@{
+    ViewBag.Title = "Add Amazon Listing";
+}
+
+ @using (Html.BeginForm("AddOne", "Listing", new {id = ""}, FormMethod.Post, new {id = "add-listing-form"}))
+ {
+     <fieldset>
+         <legend>
+             @Model.ProductVariant.DisplayName
+             <span class="btn-group  display-inline  pull-right">
+                 <button type="submit" class="btn btn-primary">Save & Publish on Amazon</button>
+             </span>
+         </legend>
+         
+         @Html.HiddenFor(x => x.AmazonListingGroup.Id)
+
+         @{ Html.RenderPartial("Listing", Model); }
+
+     </fieldset>
+ }
+
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/listings.js"); }

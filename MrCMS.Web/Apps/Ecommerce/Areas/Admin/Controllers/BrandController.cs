@@ -36,10 +36,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _brandService.Add(brand);
-                if(productId==0)
-                    return RedirectToAction("Index");
-                else
-                    return RedirectToAction("Edit", "Webpage", new { id = productId });
+                return productId==0 ? RedirectToAction("Index") : RedirectToAction("Edit", "Webpage", new { id = productId });
             }
             return PartialView(brand);
         }

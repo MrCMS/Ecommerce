@@ -33,19 +33,21 @@
                 <div class="row-fluid">
                     <div class="span12">
                         <h3 class="margin-top-0"><a href="/@page.LiveUrlSegment" class="margin-top-0">@page.Name </a></h3>
-
-                        @if (page.PublishOn.HasValue)
-                        {
-                            <text>@page.PublishOn.Value.Day @page.PublishOn.Value.ToString("MMMMM") @page.PublishOn.Value.Year.ToString(CultureInfo.InvariantCulture)</text>
-                        }
-
+                        <div>
+                            @if (page.PublishOn.HasValue)
+                            {
+                                <text>@page.PublishOn.Value.Day @page.PublishOn.Value.ToString("MMMMM") @page.PublishOn.Value.Year.ToString(CultureInfo.InvariantCulture)</text>
+                            }
+                        </div>
                         @if (!String.IsNullOrEmpty(page.FeatureImage))
                         {
                             <a href="/@page.LiveUrlSegment" class="margin-top-0">
                                 <img src="@page.FeatureImage" alt=""/></a>
                         }
                         @Editable(page, p => p.Abstract)
-                        <a href="/@page.LiveUrlSegment">Read More</a>
+                        <div>
+                            <a href="/@page.LiveUrlSegment">Read More</a>
+                        </div>
                     </div>
                 </div>
                 <hr />
