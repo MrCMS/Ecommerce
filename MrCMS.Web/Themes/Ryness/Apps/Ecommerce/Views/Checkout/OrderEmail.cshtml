@@ -8,4 +8,14 @@
     {
         <a class="btn white-gradient" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Edit</a>
     }
+    
+    @if (Model.CanUsePayPalExpress)
+    {
+        <hr />
+        <p class="text-align-right">Or Checkout with...</p>
+        using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
+        {
+        <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />
+        }
+    }
 </div>
