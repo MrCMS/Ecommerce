@@ -31,25 +31,26 @@
                                 </span>
                             }
                         </div>
-                        
+
                         <p>SKU: @selectedVariant.SKU</p>
-                        
+
                         <div class="margin-bottom-10">
                             @Editable(Model, product => product.Abstract, true)
                         </div>
 
-                        @{Html.RenderPartial("SocialLinks");}
                         @RenderZone("Below Product Price")
-                        
-                        @{
-                            if (Model.Brand != null)
-                            {
-                                if (!string.IsNullOrEmpty(Model.Brand.Logo))
+                        @{Html.RenderPartial("SocialLinks");}
+                        <div class="padding-top-5">
+                            @{
+                                if (Model.Brand != null)
                                 {
-                                    @RenderImage(Model.Brand.Logo, new Size {Width = 100, Height = 50});
+                                    if (!string.IsNullOrEmpty(Model.Brand.Logo))
+                                    {
+                                @RenderImage(Model.Brand.Logo, new Size { Width = 100, Height = 50 });
+                                    }
                                 }
                             }
-                        }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,29 +81,29 @@
                 else
                 {
                     using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
-                     {
-                         @Html.Hidden("Id", selectedVariant.Id)
-                         <div class="row-fluid border-each margin-top-bottom-10 add-to-cart" id="product-addtobasket">
-                             <div class="span12 padding-10">
-                                 <div class="row-fluid">
-                                     <div class="span2">
-                                         <span class="hidden-tablet">Quantity</span>
-                                         <span class="hidden-desktop hidden-phone">Qty</span>
-                                     </div>
-                                     <div class="span2">
-                                         <div class="row-fluid">
-                                             <input type="text" class="span12" value="1" id="quantity" name="quantity" />
-                                         </div>
-                                     </div>
-                                     <div class="span8">
-                                         <div class="row-fluid">
-                                             <button class="generic-button red-gradient span12" type="submit">Add to basket</button>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                     }
+                    {
+                    @Html.Hidden("Id", selectedVariant.Id)
+                    <div class="row-fluid border-each margin-top-bottom-10 add-to-cart" id="product-addtobasket">
+                        <div class="span12 padding-10">
+                            <div class="row-fluid">
+                                <div class="span2">
+                                    <span class="hidden-tablet">Quantity</span>
+                                    <span class="hidden-desktop hidden-phone">Qty</span>
+                                </div>
+                                <div class="span2">
+                                    <div class="row-fluid">
+                                        <input type="text" class="span12" value="1" id="quantity" name="quantity" />
+                                    </div>
+                                </div>
+                                <div class="span8">
+                                    <div class="row-fluid">
+                                        <button class="generic-button red-gradient span12" type="submit">Add to basket</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    }
                 }
                 <!-- product add to cart end -->
                 @RenderZone("Below Add to cart")
