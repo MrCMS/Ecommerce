@@ -1,0 +1,15 @@
+﻿.alert {
+    padding: 5px 5px 5px 5px !important;
+    margin: 0 0 5px 0 !important;
+    font-size: 12px !important;
+}
+
+.alert .close {
+    font-size: 12px !important;
+    position: fixed;
+    top:0 !important;
+    right:0 !important;
+    opacity:1 !important;
+    font-weight:normal !important;
+    color: inherit !important;
+}
