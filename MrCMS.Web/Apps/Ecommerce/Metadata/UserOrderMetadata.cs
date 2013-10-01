@@ -19,9 +19,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
             get { yield return typeof(UserAccountPage); }
         }
 
-        public override bool RequiresParent { get { return true; } }
-        public override bool AutoBlacklist { get { return true; } }
-
         public override string App
         {
             get { return "Ecommerce"; }
