@@ -641,6 +641,7 @@
     <Compile Include="Apps\Ryness\Services\IKerridgeService.cs" />
     <Compile Include="Apps\Ryness\Services\ITestimonialService.cs" />
     <Compile Include="Apps\Ryness\Services\TestimonialService.cs" />
+    <Compile Include="Apps\Ryness\Settings\KerridgeSettings.cs" />
     <Compile Include="Apps\Ryness\Tasks\SendKerridgeOrders.cs" />
     <Compile Include="Apps\Ryness\Widgets\FeaturedProductsVertical.cs" />
     <Compile Include="Apps\Ryness\Widgets\NewsletterSignup.cs" />

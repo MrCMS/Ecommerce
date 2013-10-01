@@ -8,6 +8,7 @@ using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ryness.Entities;
 using MrCMS.Web.Apps.Ryness.Models;
+using MrCMS.Web.Apps.Ryness.Settings;
 using NHibernate;
 using NHibernate.Criterion;
 
@@ -16,10 +17,12 @@ namespace MrCMS.Web.Apps.Ryness.Services
     public class KerridgeService : IKerridgeService
     {
         private readonly ISession _session;
+        private readonly KerridgeSettings _kerridgeSettings;
 
-        public KerridgeService(ISession session)
+        public KerridgeService(ISession session, KerridgeSettings kerridgeSettings)
         {
             _session = session;
+            _kerridgeSettings = kerridgeSettings;
         }
 
         public KerridgeLogPagedList Search(string query = null, int page = 1, int pageSize = 10)
@@ -51,7 +54,8 @@ namespace MrCMS.Web.Apps.Ryness.Services
 
         public IList<KerridgeLog> GetAllUnsent()
         {
-            return _session.QueryOver<KerridgeLog>().Where(x => x.Sent == false).List();
+            //Only do 100 orders at a time for speed
+            return _session.QueryOver<KerridgeLog>().Where(x => x.Sent == false).Take(100).List();
         }
 
         public bool CanSendToKerridge(KerridgeLog log)
@@ -63,77 +67,37 @@ namespace MrCMS.Web.Apps.Ryness.Services
 
         public bool SendToKerridge(KerridgeLog kerridgeLog)
         {
-            //todo check site is live
-            var debug = true;
+            if (!_kerridgeSettings.Enabled)
+                return false;
+
             var o = kerridgeLog.Order;
             if (CanSendToKerridge(kerridgeLog))
             {
-                //*********************************************************w
-                //*Builds up an order and send it to kerridge             *
-                //*                                                       *
-                //*********************************************************
-                object soapclient = null;
                 try
                 {
-                    string strBranch = "";
-
-                    if (String.IsNullOrEmpty(strBranch))
-                        strBranch = "20";
-
-                    string strAccount = "I7002";
-
-                    if (debug == false)
-                        strAccount = "I7002";
-                    else if (debug == true) //test account
-                        strAccount = "I7003";
-
+                    string strBranch = _kerridgeSettings.KerridgeBranch;
+                    string strAccount = _kerridgeSettings.KerridgeAccountNumber;
+                    
                     string strReference = "WEB" + o.Id;
 
-                    string strDaterRquired = System.DateTime.Today.ToShortDateString();
+                    string strDaterRquired = DateTime.Today.ToShortDateString();
                     string newDate = strDaterRquired.Substring(6, 4) + "-" + strDaterRquired.Substring(3, 2) + "-" + strDaterRquired.Substring(0, 2);
 
-                    //*********************************************************
-                    //*Strips da1 & ba1 into 3 lines for Kerridge addresas box      *
-                    //*                                                       *
-                    //*********************************************************
-
-
-                    string da1Line1 = o.ShippingAddress.Company + " " + o.ShippingAddress.Address1;
-                    string da1Line2 = o.ShippingAddress.Address1;
-                    string da1Line3 = o.ShippingAddress.City;
-
-                    //*********************************************************
-
                     string strName = o.ShippingAddress.Name;
-                    string strAddressLine1 = "";
-                    string strAddressLine2 = "";
-                    string strAddressLine3 = "";
-                    string strAddressLine4 = "";
-                    string strAddressLine5 = "";
-                    string strPostCode = "";
+                    string strAddressLine1 = o.ShippingAddress.Company + " " + o.ShippingAddress.Address1;
+                    string strAddressLine2 = o.ShippingAddress.Address1;
+                    string strAddressLine3 = o.ShippingAddress.City;
+                    string strAddressLine4 = o.ShippingAddress.StateProvince; ;
+                    string strAddressLine5 = o.ShippingAddress.Country != null ? o.ShippingAddress.Country.Name : "";
+                    string strPostCode = o.ShippingAddress.PostalCode;
                     string strInstructions = "" + " Tel:" + o.ShippingAddress.PhoneNumber;
-                    string strCarriage = o.ShippingTotal.ToString();
                     string strCarriageCode = "";
 
-                    string sResponse = "";
                     string strLines = "<lines>";
-
                     strDaterRquired = newDate;
-
-                    strAddressLine1 = da1Line1;
-                    strAddressLine2 = da1Line2;
-                    strAddressLine3 = da1Line3;
-                    strAddressLine4 = o.ShippingAddress.StateProvince;
-                    strAddressLine5 = o.ShippingAddress.Country != null ? o.ShippingAddress.Country.Name : "";
-                    strPostCode = o.ShippingAddress.PostalCode;
 
                     var strHeader = "<header>" + "<branch>" + strBranch + "</branch>" + "<account>" + strAccount + "</account>" + "<reference>" + strReference + "</reference>" +
                         "<daterequired>" + strDaterRquired + "</daterequired>" + "<name>" + strName + " " + o.ShippingAddress.PhoneNumber + "</name>" + "<address>" + "<line>" + strAddressLine1 + "</line>" + "<line>" + strAddressLine2 + "</line>" + "<line>" + strAddressLine3 + "</line>" + "<line>" + strAddressLine4 + "</line>" + "<line>" + strAddressLine5 + "</line>" + "<postcode>" + strPostCode + "</postcode>" + "</address>" + "<instructions>" + strInstructions + "</instructions>" + "</header>";
-
-                    string ModelNumber = "";
-                    string QTY = "";
-                    decimal UNIT_PRICE = 0;
-                    //--------- build product string
 
                     IList<OrderLine> orderItems = o.OrderLines;
 
@@ -245,9 +209,6 @@ namespace MrCMS.Web.Apps.Ryness.Services
                                 break;
                         }
 
-
-                    // If shippingcost <> 0 Then
-
                     strLines = strLines + "<line>";
                     strLines = strLines + "<product>" + strCarriageCode + "</product>";
                     strLines = strLines + "<quantity>1</quantity>";
@@ -256,17 +217,8 @@ namespace MrCMS.Web.Apps.Ryness.Services
 
                     strLines += "</lines>";
 
-                    string result = "";
-                    string xmlOrderObject = "";
-                    if (debug == false)
-                    {
-                        xmlOrderObject = "<kmsgsimple id='2' password='websales'>" + strHeader + strLines + "</kmsgsimple>";
-                    }
-                    else if (debug == true)
-                    {
-                        xmlOrderObject = "<kmsgsimple id='EBAY' password='xxx'>" + strHeader + strLines + "</kmsgsimple>";
-                    }
-
+                    string xmlOrderObject = "<kmsgsimple id='" + _kerridgeSettings.Id + "' password='" + _kerridgeSettings.Password + "'>" + strHeader + strLines + "</kmsgsimple>";
+                    
                     return CallKerridge(xmlOrderObject);
                 }
                 catch (Exception ex)
@@ -306,9 +258,7 @@ namespace MrCMS.Web.Apps.Ryness.Services
 
         bool CallKerridge(string xmlString)
         {
-            string url = "http://mail.ryness.co.uk/KERRIDGE_INTEGRATION/KerridgeOrderHandlerV2Ebay.aspx";
-            // url = "http://mail.ryness.co.uk/KERRIDGE_INTEGRATION/KerridgeOrderHandlerV2Ebay.aspx";
-            // url = "http://mail.ryness.co.uk/KERRIDGE_INTEGRATION/KerridgeOrderHandlerV2.aspx";
+            string url = _kerridgeSettings.WebServiceUrl;
 
             url = url + "?xmlstring=" + System.Web.HttpUtility.UrlEncode(xmlString);
             var xmlmessage = "xmlstring=" + System.Web.HttpUtility.HtmlEncode(xmlString);
@@ -331,11 +281,13 @@ namespace MrCMS.Web.Apps.Ryness.Services
             }
             catch (WebException ex)
             {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
                 return false;
 
             }
             catch (Exception ex)
             {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
                 return false;
             }
 
