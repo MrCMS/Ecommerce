@@ -5,7 +5,7 @@ using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
 using MrCMS.Services.ImportExport;
-using MrCMS.Web.Apps.Core.Pages;
+using MrCMS.Tests.Stubs;
 using NHibernate;
 using Xunit;
 using MrCMS.Services.ImportExport.DTOs;
@@ -17,8 +17,8 @@ namespace MrCMS.Tests.Services.ImportExport
         private readonly IDocumentService _documentService;
         private readonly ITagService _tagService;
         private readonly ImportDocumentsService _importDocumentsService;
-         private readonly IUrlHistoryService _urlHistoryService;
-        private ISession _session;
+        private readonly IUrlHistoryService _urlHistoryService;
+        private readonly ISession _session;
 
         public ImportDocumentsServiceTests()
         {
@@ -27,7 +27,7 @@ namespace MrCMS.Tests.Services.ImportExport
             _urlHistoryService = A.Fake<IUrlHistoryService>();
             _session = A.Fake<ISession>();
 
-            _importDocumentsService = new ImportDocumentsService(_documentService,_tagService,_urlHistoryService, _session);
+            _importDocumentsService = new ImportDocumentsService(_documentService, _tagService, _urlHistoryService, _session);
         }
 
         [Fact(Skip = "To be refactored")]
@@ -39,7 +39,7 @@ namespace MrCMS.Tests.Services.ImportExport
                 DocumentType = "TextPage"
             };
 
-            _importDocumentsService.ImportDocumentsFromDTOs(new List<DocumentImportDataTransferObject>(){documentDto});
+            _importDocumentsService.ImportDocumentsFromDTOs(new List<DocumentImportDataTransferObject>() { documentDto });
 
             A.CallTo(() => _documentService.GetAllDocuments<Document>()).MustHaveHappened();
         }
@@ -62,10 +62,10 @@ namespace MrCMS.Tests.Services.ImportExport
                 RequireSSL = false,
                 PublishDate = currentTime,
                 DocumentType = "TextPage",
-                Tags = new List<string>(){"Test"}
+                Tags = new List<string>() { "Test" }
             };
 
-          
+
             var result = _importDocumentsService.ImportDocument(documentDTO);
 
             result.UrlSegment.Should().BeEquivalentTo("test-url");
@@ -105,10 +105,10 @@ namespace MrCMS.Tests.Services.ImportExport
             };
 
 
-            var document = new TextPage { Name = "Test Document", UrlSegment = "test-url" };
+            var document = new StubWebpage { Name = "Test Document", UrlSegment = "test-url" };
             A.CallTo(() => _documentService.GetDocumentByUrl<Webpage>(documentDTO.UrlSegment)).Returns(document);
 
-            var parent = new TextPage { Name = "Test Parent", UrlSegment = "test-parent-url" };
+            var parent = new StubWebpage { Name = "Test Parent", UrlSegment = "test-parent-url" };
             A.CallTo(() => _documentService.GetDocumentByUrl<Webpage>(documentDTO.ParentUrl)).Returns(parent);
 
             var urlHistory = new UrlHistory() { UrlSegment = "test-url-old", Webpage = document };

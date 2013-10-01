@@ -29,6 +29,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             return PriceCreator(value, rate, settings).PriceIncludingTax;
         }
 
+        public static decimal? GetTax(decimal? value, TaxRate rate, TaxSettings settings = null)
+        {
+            return PriceCreator(value, rate, settings).Tax;
+        }
+
         public static Func<decimal?, TaxRate, TaxSettings, TaxAwareProductPrice> PriceCreator =
             (arg1, rate, arg3) => new TaxAwareProductPrice(arg1, rate, arg3);
 
@@ -50,14 +55,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public decimal? PriceExcludingTax
         {
+            get { return !_value.HasValue ? null : PriceIncludingTax - Tax; }
+        }
+
+
+        public decimal? Tax
+        {
             get
             {
                 if (!_taxSettings.TaxesEnabled)
-                    return _value;
-                return !_value.HasValue ? (decimal?)null :
-                Math.Round(_taxSettings.LoadedPricesIncludeTax
-                                          ? _value.Value / ((TaxRatePercentage + 100) / 100)
-                                          : _value.Value, 2, MidpointRounding.AwayFromZero);
+                    return 0m;
+                return !_value.HasValue
+                           ? (decimal?) null
+                           : Math.Round(_taxSettings.LoadedPricesIncludeTax
+                                            ? _value.Value*(TaxRatePercentage/(TaxRatePercentage + 100))
+                                            : _value.Value*(TaxRatePercentage/100), 2,
+                                        MidpointRounding.AwayFromZero);
             }
         }
 
