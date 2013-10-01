@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MarketplaceWebServiceFeedsClasses;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
@@ -89,7 +88,6 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Orders
         }
 
         public virtual AmazonPaymentMethod? PaymentMethod { get; set; }
-        public virtual OrderAcknowledgementItemCancelReason? CancelReason { get; set; }
         
         public virtual IList<AmazonOrderItem> Items { get; set; }
     }

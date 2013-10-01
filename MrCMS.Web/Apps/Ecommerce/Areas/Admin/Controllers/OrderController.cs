@@ -39,7 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             try
             {
                 model.Results = _orderSearchService.SearchOrders(model.Email, model.LastName, model.OrderId,
-                    model.DateFrom.HasValue ? model.DateFrom.Value : DateTime.Now, model.DateTo.HasValue ? model.DateTo.Value : DateTime.Now, 
+                    model.DateFrom.HasValue ? model.DateFrom.Value : CurrentRequestData.Now, model.DateTo.HasValue ? model.DateTo.Value : CurrentRequestData.Now, 
                     model.PaymentStatus, model.ShippingStatus, page);
             }
             catch (Exception)

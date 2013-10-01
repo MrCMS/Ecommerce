@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Amazon.Services.Orders.Sync;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Amazon.Services.Orders;
@@ -52,7 +53,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             try
             {
                 model.Results = _amazonOrderSearchService.Search(model.Email, model.Name, model.AmazonOrderId,
-                    model.DateFrom.HasValue ? model.DateFrom.Value : DateTime.Now, model.DateTo.HasValue ? model.DateTo.Value : DateTime.Now,
+                    model.DateFrom.HasValue ? model.DateFrom.Value : CurrentRequestData.Now, model.DateTo.HasValue ? model.DateTo.Value : CurrentRequestData.Now,
                     model.ShippingStatus, model.Page);
             }
             catch (Exception)
@@ -73,7 +74,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult SyncMany()
         {
-            return View(new AmazonSyncModel(){From = DateTime.Now,To = DateTime.Now});
+            return View(new AmazonSyncModel() { From = CurrentRequestData.Now, To = CurrentRequestData.Now });
         }
 
         [HttpGet]
