@@ -15,6 +15,8 @@
     });
     $(document).on('change', 'input[name="PaymentMethod"]', function () {
         var checked = $('input[name="PaymentMethod"]:checked').val();
+        $.post('/Apps/Ecommerce/PaymentDetails/SetPaymentMethod', { paymentMethod: checked }, function() {
+        });
         $.get('/Apps/Ecommerce/Confirm/' + checked, function (response) {
             $('#payment-confirmation').html(response);
             $.validator.unobtrusive.parse('form');

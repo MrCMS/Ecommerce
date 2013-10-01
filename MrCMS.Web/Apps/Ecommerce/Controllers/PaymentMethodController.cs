@@ -54,24 +54,32 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public RedirectResult PayPalExpressCheckout_POST()
         {
             var response = _payPalExpressService.DoExpressCheckout(_cartModel);
-            var order = _orderService.PlaceOrder(_cartModel, response.UpdateOrder);
-            return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new { id = order.Guid }));
+            if (response.Success)
+            {
+                var order = _orderService.PlaceOrder(_cartModel, response.UpdateOrder);
+                return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new {id = order.Guid}));
+            }
+            else
+                TempData["error-details"] =new FailureDetails{Message = "An error occurred processing your PayPal Express order, please contact the merchant"};
+                return _documentService.RedirectTo<PaymentDetails>();
         }
 
         [HttpGet]
         public PartialViewResult Paypoint()
         {
-            ViewData["months"] = _paypointPaymentService.Months();
+            ViewData["start-months"] = _paypointPaymentService.StartMonths();
             ViewData["start-years"] = _paypointPaymentService.StartYears();
+            ViewData["expiry-months"] = _paypointPaymentService.ExpiryMonths();
             ViewData["expiry-years"] = _paypointPaymentService.ExpiryYears();
             ViewData["card-types"] = _paypointPaymentService.GetCardTypes();
-            return PartialView(TempData["paypoint-model"]);
+            return PartialView(_paypointPaymentService.GetModel());
         }
 
         [HttpPost]
         [ActionName("Paypoint")]
         public ActionResult Paypoint_POST(PaypointPaymentDetailsModel model)
         {
+            _paypointPaymentService.SetModel(model);
             var response = _paypointPaymentService.ProcessDetails(model,
                                                                   Url.Action("Response3DSecure", "Paypoint", null,
                                                                              Request.Url.Scheme));

@@ -9,8 +9,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         ProcessDetailsResponse ProcessDetails(PaypointPaymentDetailsModel model, string threeDSecureUrl);
         IEnumerable<SelectListItem> GetCardTypes();
         IEnumerable<SelectListItem> Months();
+        IEnumerable<SelectListItem> StartMonths();
         IEnumerable<SelectListItem> StartYears();
+        IEnumerable<SelectListItem> ExpiryMonths();
         IEnumerable<SelectListItem> ExpiryYears();
         ProcessDetailsResponse Handle3DSecureResponse(FormCollection formCollection);
+        void SetModel(PaypointPaymentDetailsModel model);
+        PaypointPaymentDetailsModel GetModel();
     }
 }

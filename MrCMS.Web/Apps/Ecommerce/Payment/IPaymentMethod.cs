@@ -14,6 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment
         PaymentType PaymentType { get; }
         bool Enabled { get; }
         bool UseStandardFlow { get; }
+        bool CanUse(CartModel cart);
     }
 
     public abstract class BasePaymentMethod : IPaymentMethod
@@ -27,13 +28,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment
         {
             get { return PaymentType == PaymentType.Redirection || PaymentType == PaymentType.ServiceBased; }
         }
+
+        public abstract bool CanUse(CartModel cart);
     }
 
     public interface IPaymentMethodService
     {
         bool AnyStandardMethodsEnabled();
         bool PayPalExpressCheckoutIsEnabled();
-        List<IPaymentMethod> GetAllAvailableMethods();
+        List<IPaymentMethod> GetAllAvailableMethods(CartModel cart);
     }
 
     public class PaymentMethodService : IPaymentMethodService
@@ -64,9 +67,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment
             return PaymentMethods.OfType<PayPalExpressCheckoutPaymentMethod>().First().Enabled;
         }
 
-        public List<IPaymentMethod> GetAllAvailableMethods()
+        public List<IPaymentMethod> GetAllAvailableMethods(CartModel cart)
         {
-            return PaymentMethods.FindAll(method => method.Enabled);
+            return PaymentMethods.FindAll(method => method.Enabled && method.CanUse(cart));
         }
     }
 
