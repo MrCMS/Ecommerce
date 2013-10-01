@@ -1,0 +1,74 @@
+﻿@using MarketplaceWebServiceFeedsClasses
+@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Amazon.Entities.Listings.AmazonListing
+         
+<div class="row-fluid">
+    <div class="span6">
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.ProductVariant.Id)
+        @Html.LabelFor(x => x.Title)
+        @Html.TextBoxFor(x => x.Title, new {@class="span12"})
+        @Html.ValidationMessageFor(x => x.Title)
+        @Html.LabelFor(x => x.SellerSKU)
+        @Html.TextBoxFor(x => x.SellerSKU, new {@class="span12"})
+        @Html.ValidationMessageFor(x => x.SellerSKU)
+        @Html.LabelFor(x => x.StandardProductIDType)
+        @Html.DropDownList("StandardProductIDType", 
+                           Enum.GetValues(typeof(StandardProductIDType)).OfType<StandardProductIDType>().BuildSelectItemList(type => type.GetDescription(), type => type.GetDescription(), null, String.Empty),
+                           new {@class="span12"})     
+        @Html.LabelFor(x => x.StandardProductId)
+        @Html.TextBoxFor(x => x.StandardProductId, new {@class="span12"})
+        @Html.ValidationMessageFor(x => x.StandardProductId)
+        <div class="row-fluid">
+            <div class="span4">
+                @Html.LabelFor(x => x.Quantity)
+                @Html.TextBoxFor(x => x.Quantity, new {@class="span12"})
+                @Html.ValidationMessageFor(x => x.Quantity)
+            </div>
+            <div class="span4">
+                @Html.LabelFor(x => x.Price)
+                @Html.TextBoxFor(x => x.Price, new {@class="span12"})
+                @Html.ValidationMessageFor(x => x.Price)
+            </div>
+            <div class="span4">
+                @Html.LabelFor(x => x.Currency)
+                @Html.TextBoxFor(x => x.Currency, new {@class="span12"})
+                @Html.ValidationMessageFor(x => x.Currency)
+            </div>
+        </div>
+    </div>
+    <div class="span6">
+        @Html.LabelFor(x => x.Brand)
+        @Html.TextBoxFor(x => x.Brand, new {@class="span12"})
+        @Html.ValidationMessageFor(x => x.Brand)
+         <div class="row-fluid">
+            <div class="span6">
+                @Html.LabelFor(x => x.Manafacturer)
+                @Html.TextBoxFor(x => x.Manafacturer, new {@class="span12"})
+                @Html.ValidationMessageFor(x => x.Manafacturer)
+            </div>
+            <div class="span6">
+               @Html.LabelFor(x => x.MfrPartNumber)
+                @Html.TextBoxFor(x => x.MfrPartNumber, new {@class="span12"})
+                @Html.ValidationMessageFor(x => x.MfrPartNumber)
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span6">
+                   @Html.LabelFor(x => x.Condition)
+        @Html.DropDownList("Condition", 
+                           Enum.GetValues(typeof(ConditionType)).OfType<ConditionType>().BuildSelectItemList(type => type.GetDescription(), type => type.GetDescription(), null, String.Empty),
+                           new {@class="span12"})   
+            </div>
+            <div class="span6">
+                @Html.LabelFor(x => x.ReleaseDate)
+        @Html.EditorFor(x => x.ReleaseDate)
+        @Html.ValidationMessageFor(x => x.ReleaseDate)
+            </div>
+        </div>
+               @Html.LabelFor(x => x.ConditionNote)
+        @Html.TextAreaFor(x => x.ConditionNote, new {@class="span12", style="height:95px"})
+        @Html.ValidationMessageFor(x => x.ConditionNote)   
+    </div>
+</div> 

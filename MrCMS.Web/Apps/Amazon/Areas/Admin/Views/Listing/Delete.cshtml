@@ -1,0 +1,23 @@
+﻿@model MrCMS.Web.Apps.Amazon.Entities.Listings.AmazonListing
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Delete", "Listing", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Delete Amazon Listing
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Delete Listing" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+        <p>
+            Are you sure you want to delete Amazon listing ? 
+        </p>
+        <div class="alert alert-danger">
+            By clicking on "Delete Listing", only local Amazon listing data will be deleted. In case you want to delete
+            listing data on Amazon use "Close Listing" operation.
+        </div>
+    </fieldset>
+}
