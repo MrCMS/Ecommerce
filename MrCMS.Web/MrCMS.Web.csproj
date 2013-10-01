@@ -459,6 +459,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\CartSessionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartBuilder.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\ICartSessionKeyList.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartSessionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\CategoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\ICategoryService.cs" />
@@ -2417,7 +2418,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1834</DevelopmentServerPort>
+          <DevelopmentServerPort>33219</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:8888</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

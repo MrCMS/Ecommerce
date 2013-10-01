@@ -61,17 +61,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpGet]
         public PartialViewResult Paypoint()
         {
-            ViewData["months"] = _paypointPaymentService.Months();
+            ViewData["start-months"] = _paypointPaymentService.StartMonths();
             ViewData["start-years"] = _paypointPaymentService.StartYears();
+            ViewData["expiry-months"] = _paypointPaymentService.ExpiryMonths();
             ViewData["expiry-years"] = _paypointPaymentService.ExpiryYears();
             ViewData["card-types"] = _paypointPaymentService.GetCardTypes();
-            return PartialView(TempData["paypoint-model"]);
+            return PartialView(_paypointPaymentService.GetModel());
         }
 
         [HttpPost]
         [ActionName("Paypoint")]
         public ActionResult Paypoint_POST(PaypointPaymentDetailsModel model)
         {
+            _paypointPaymentService.SetModel(model);
             var response = _paypointPaymentService.ProcessDetails(model,
                                                                   Url.Action("Response3DSecure", "Paypoint", null,
                                                                              Request.Url.Scheme));

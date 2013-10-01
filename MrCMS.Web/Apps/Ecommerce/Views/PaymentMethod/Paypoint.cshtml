@@ -1,8 +1,9 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Models
 @model MrCMS.Web.Apps.Ecommerce.Models.PaypointPaymentDetailsModel  
 @{
-    var months = ViewData["months"] as IEnumerable<SelectListItem>;
+    var startMonths = ViewData["start-months"] as IEnumerable<SelectListItem>;
     var startYears = ViewData["start-years"] as IEnumerable<SelectListItem>;
+    var expiryMonths = ViewData["expiry-months"] as IEnumerable<SelectListItem>;
     var expiryYears = ViewData["expiry-years"] as IEnumerable<SelectListItem>;
     var cardTypes = ViewData["card-types"] as IEnumerable<SelectListItem>;
     var failureDetails = TempData["error-details"] as FailureDetails;
@@ -47,7 +48,7 @@
                 <div class="control-label">Valid From</div>
                 <div class="controls">
                     <div class="pull-left">
-                        @Html.DropDownListFor(model => model.StartMonth, months)
+                        @Html.DropDownListFor(model => model.StartMonth, startMonths)
                     </div>
                     <div class="pull-left">
                         @Html.DropDownListFor(model => model.StartYear, startYears)
@@ -58,7 +59,7 @@
                 <div class="control-label">Expires On*</div>
                 <div class="controls">
                     <div class="pull-left">
-                        @Html.DropDownListFor(model => model.EndMonth, months)
+                        @Html.DropDownListFor(model => model.EndMonth, expiryMonths)
                         @Html.ValidationMessageFor(model => model.EndMonth)
                     </div>
                     <div class="pull-left">

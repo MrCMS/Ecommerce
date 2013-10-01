@@ -36,7 +36,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             //var address = GetShippingAddress() ?? new Address();
             //if (GetCountry() != null)
             //    address.Country = GetCountry();
-            var availablePaymentMethods = _paymentMethodService.GetAllAvailableMethods();
 
             //remove deleted product items from cart
             var cartItems = GetItems();
@@ -57,11 +56,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                                Discount = GetDiscount(),
                                AnyStandardPaymentMethodsAvailable = _paymentMethodService.AnyStandardMethodsEnabled(),
                                PayPalExpressAvailable = _paymentMethodService.PayPalExpressCheckoutIsEnabled(),
-                               AvailablePaymentMethods = availablePaymentMethods,
-                               PaymentMethod = GetPaymentMethod() ?? (availablePaymentMethods.Count() == 1 ? availablePaymentMethods.First().SystemName : null),
                                PayPalExpressPayerId = GetPayPalExpressPayerId(),
                                PayPalExpressToken = GetPayPalExpressToken(),
                            };
+            var availablePaymentMethods = _paymentMethodService.GetAllAvailableMethods(cart);
+            cart.AvailablePaymentMethods = availablePaymentMethods;
+            cart.PaymentMethod = GetPaymentMethod() ?? (availablePaymentMethods.Count() == 1 ? availablePaymentMethods.First().SystemName : null);
 
             cartItems.ForEach(item => item.SetDiscountInfo(cart.Discount, cart.DiscountCode));
             cart.ShippingMethod = GetShippingMethod(cart);

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.Paypoint
@@ -24,6 +25,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Paypoint
         public override bool Enabled
         {
             get { return MrCMSApplication.Get<PaypointSettings>().Enabled; }
+        }
+
+        public override bool CanUse(CartModel cart)
+        {
+            return !cart.IsPayPalTransaction;
         }
     }
 

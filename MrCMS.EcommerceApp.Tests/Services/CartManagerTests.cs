@@ -1,4 +1,5 @@
-﻿using FakeItEasy;
+﻿using System.Collections.Generic;
+using FakeItEasy;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -11,17 +12,19 @@ namespace MrCMS.EcommerceApp.Tests.Services
 {
     public class CartManagerTests : InMemoryDatabaseTest
     {
-        private CartModel _cartModel;
-        private ProductVariant _productVariant = new ProductVariant();
-        private CartManager _cartManager;
-        private ICartSessionManager _cartSessionManager;
+        private readonly CartModel _cartModel;
+        private readonly ProductVariant _productVariant = new ProductVariant();
+        private readonly CartManager _cartManager;
+        private readonly ICartSessionManager _cartSessionManager;
+        private readonly IEnumerable<ICartSessionKeyList> _cartSessionKeyLists;
 
         public CartManagerTests()
         {
             _cartModel = new CartModel();
             Session.Transact(session => session.SaveOrUpdate(_productVariant));
             _cartSessionManager = A.Fake<ICartSessionManager>();
-            _cartManager = new CartManager(_cartModel, Session, _cartSessionManager);
+            _cartSessionKeyLists = A.Fake<IEnumerable<ICartSessionKeyList>>();
+            _cartManager = new CartManager(_cartModel, Session, _cartSessionManager, _cartSessionKeyLists);
         }
         [Fact]
         public void CartManager_AddToCart_AddsAnItemToTheCart()

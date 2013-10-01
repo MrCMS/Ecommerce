@@ -163,5 +163,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public string PayPalExpressToken { get; set; }
         public string PayPalExpressPayerId { get; set; }
+
+        public bool IsPayPalTransaction
+        {
+            get { return !string.IsNullOrWhiteSpace(PayPalExpressToken) && !string.IsNullOrWhiteSpace(PayPalExpressPayerId); }
+        }
     }
 }
