@@ -2303,6 +2303,7 @@
     <Content Include="Themes\Ryness\Apps\Articles\Views\Pages\ArticleList.cshtml" />
     <Content Include="Themes\Ryness\Views\Shared\_StoreLayout.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\FeaturedProductsVertical.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Pages\TextPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />

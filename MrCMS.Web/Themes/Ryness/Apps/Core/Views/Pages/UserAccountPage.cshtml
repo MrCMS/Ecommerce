@@ -1,7 +1,7 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Core.Models
 @model MrCMS.Web.Apps.Core.Pages.UserAccountPage
-<div class="container">
+<div class="container padding-top-20">
     <h1>@Editable(Model, page => page.Name) </h1>
     <hr/>
     @Editable(Model, page => page.BodyContent, true)
