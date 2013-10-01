@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using MrCMS.Entities;
@@ -17,6 +18,7 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Listings
         [Required]
         public virtual string Name { get; set; }
 
+        [DisplayName("Fulfillment Channel")]
         public virtual AmazonFulfillmentChannel? FulfillmentChannel { get; set; }
 
         public virtual IList<AmazonListing> Items { get; set; }
