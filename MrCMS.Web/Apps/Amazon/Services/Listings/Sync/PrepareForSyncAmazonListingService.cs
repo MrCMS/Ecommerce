@@ -3,6 +3,7 @@ using MarketplaceWebServiceFeedsClasses;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Settings;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
@@ -46,7 +47,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             amazonListing.ProductVariant = productVariant;
             amazonListing.Brand = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.Condition = ConditionType.New;
-            amazonListing.Currency = _ecommerceSettings.Currency.Code;
+            amazonListing.Currency = (_ecommerceSettings.Currency!=null && !String.IsNullOrWhiteSpace(_ecommerceSettings.Currency.Code))?_ecommerceSettings.Currency.Code:CurrencyCode.GBP.GetDescription();
             amazonListing.Manafacturer = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.MfrPartNumber = productVariant.ManufacturerPartNumber;
             amazonListing.Quantity = productVariant.StockRemaining.HasValue
@@ -98,7 +99,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             amazonListing.ProductVariant = productVariant;
             amazonListing.Brand = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.Condition = ConditionType.New;
-            amazonListing.Currency = _ecommerceSettings.Currency.Code;
+            amazonListing.Currency = (_ecommerceSettings.Currency != null && !String.IsNullOrWhiteSpace(_ecommerceSettings.Currency.Code)) ? _ecommerceSettings.Currency.Code : CurrencyCode.GBP.GetDescription();
             amazonListing.Manafacturer = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.MfrPartNumber = productVariant.ManufacturerPartNumber;
             amazonListing.Quantity = productVariant.StockRemaining.HasValue
