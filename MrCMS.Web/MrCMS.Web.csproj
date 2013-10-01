@@ -844,6 +844,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\specification-attributes.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\stock.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\tax-rates.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\ecommerce-admin.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-responsive.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-responsive.min.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap.css" />

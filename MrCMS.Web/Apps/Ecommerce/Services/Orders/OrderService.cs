@@ -49,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                             PaymentMethod = cartModel.PaymentMethod,
                                                                             ShippingStatus = ShippingStatus.Pending,
                                                                             ShippingTaxPercentage = cartModel.ShippingTaxPercentage,
-                                                                            SalesChannel = "MrCMS"
+                                                                            SalesChannel = "Mr CMS"
                                                                         };
 
                                                         foreach (var item in cartModel.Items)

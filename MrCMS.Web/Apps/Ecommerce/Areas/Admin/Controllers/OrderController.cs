@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
@@ -16,18 +17,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IOptionService _optionService;
+        private readonly EcommerceSettings _ecommerceSettings;
         private readonly IShippingMethodManager _shippingMethodManager;
         private readonly IOrderSearchService _orderSearchService;
         private readonly IOrderShippingService _orderShippingService;
 
         public OrderController(IOrderService orderService,  IShippingMethodManager shippingMethodManager,
-            IOrderSearchService orderSearchService, IOrderShippingService orderShippingService, IOptionService optionService)
+            IOrderSearchService orderSearchService, IOrderShippingService orderShippingService, IOptionService optionService, EcommerceSettings ecommerceSettings)
         {
             _orderService = orderService;
             _shippingMethodManager = shippingMethodManager;
             _orderSearchService = orderSearchService;
             _orderShippingService = orderShippingService;
             _optionService = optionService;
+            _ecommerceSettings = ecommerceSettings;
         }
 
         [HttpGet]
@@ -35,12 +38,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             ViewData["ShippingStatuses"] = _optionService.GetEnumOptions<ShippingStatus>();
             ViewData["PaymentStatuses"] = _optionService.GetEnumOptions<PaymentStatus>();
-            model.Results = new PagedList<Order>(null, 1, 10);
+            model.Results = new PagedList<Order>(null, 1, _ecommerceSettings.PageSizeAdmin);
             try
             {
                 model.Results = _orderSearchService.SearchOrders(model.Email, model.LastName, model.OrderId,
                     model.DateFrom.HasValue ? model.DateFrom.Value : CurrentRequestData.Now, model.DateTo.HasValue ? model.DateTo.Value : CurrentRequestData.Now, 
-                    model.PaymentStatus, model.ShippingStatus, page);
+                    model.PaymentStatus, model.ShippingStatus, page, _ecommerceSettings.PageSizeAdmin);
             }
             catch (Exception)
             {
