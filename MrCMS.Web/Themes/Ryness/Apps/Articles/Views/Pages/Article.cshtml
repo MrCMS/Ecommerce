@@ -1,4 +1,5 @@
-﻿@using MrCMS.Helpers
+﻿@using System.Globalization
+@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Articles.Pages.Article
 <div class="textpage padding-top-bottom-20">
     <div class="container">
@@ -7,7 +8,11 @@
                 <div class="span12">
                     <h1 class="margin-top-0">@Editable(Model, p => p.Name, false)</h1>
                     <hr />
-                    @Model.CreatedOn.Day @Model.CreatedOn.ToString("MMMMM") @Model.CreatedOn.Year
+                    @if (Model.PublishOn.HasValue)
+                    {
+            <text>@Model.PublishOn.Value.Day @Model.PublishOn.Value.ToString("MMMMM") @Model.PublishOn.Value.Year.ToString(CultureInfo.InvariantCulture)</text>
+                    }
+                    
                     <br />
                     @if (!String.IsNullOrEmpty(Model.FeatureImage))
                     {

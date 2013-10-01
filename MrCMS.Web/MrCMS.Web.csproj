@@ -2090,6 +2090,9 @@
     <Content Include="Apps\Ryness\Views\Pages\Store.cshtml" />
     <Content Include="Apps\Ryness\Views\Pages\StoreList.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Kerridge\Index.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\BuyingGuide.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\Store.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\StoreList.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2304,6 +2307,7 @@
     <Content Include="Themes\Ryness\Apps\Articles\Views\Pages\ArticleList.cshtml" />
     <Content Include="Themes\Ryness\Views\Shared\_StoreLayout.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\FeaturedProductsVertical.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Pages\TextPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
