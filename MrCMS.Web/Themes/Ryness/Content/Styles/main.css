@@ -1,5 +1,6 @@
 html, body {background: #ffffff; font-family:arial, verdana, helvetica, sans-serif;color:#000000;font-size: 13px;}
 h1 {font-size: 21px;line-height: 28px;font-weight: normal;padding:0;margin: 0;color: #000000;}
+h2 { font-size: 18px;line-height: 21px;color: #000;font-weight: 900;padding: 0;}
 h3 {font-size:15px;font-weight:900;margin:10px 0;line-height:18px;}
 a { color: #C5251E;text-decoration: none;}
 a:hover { color: #000000;text-decoration: underline;}
