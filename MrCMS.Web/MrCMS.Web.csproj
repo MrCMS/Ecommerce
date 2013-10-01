@@ -2081,6 +2081,9 @@
     <Content Include="Apps\Ryness\Views\Pages\BuyingGuide.cshtml" />
     <Content Include="Apps\Ryness\Views\Pages\Store.cshtml" />
     <Content Include="Apps\Ryness\Views\Pages\StoreList.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\BuyingGuide.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\Store.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\StoreList.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

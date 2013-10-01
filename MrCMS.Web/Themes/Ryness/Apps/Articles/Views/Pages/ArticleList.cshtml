@@ -1,4 +1,5 @@
-﻿@using MrCMS.Entities.Documents
+﻿@using System.Globalization
+@using MrCMS.Entities.Documents
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Articles.Pages
 @using MrCMS.Website
@@ -32,7 +33,11 @@
                 <div class="row-fluid">
                     <div class="span12">
                         <h3 class="margin-top-0"><a href="/@page.LiveUrlSegment" class="margin-top-0">@page.Name </a></h3>
-                        @page.CreatedOn.Day @page.CreatedOn.ToString("MMMMM") @page.CreatedOn.Year
+
+                        @if (page.PublishOn.HasValue)
+                        {
+                            <text>@page.PublishOn.Value.Day @page.PublishOn.Value.ToString("MMMMM") @page.PublishOn.Value.Year.ToString(CultureInfo.InvariantCulture)</text>
+                        }
 
                         @if (!String.IsNullOrEmpty(page.FeatureImage))
                         {
