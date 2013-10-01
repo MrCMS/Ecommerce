@@ -4,9 +4,12 @@ using System.IO;
 using System.Net;
 using System.Web;
 using MrCMS.Helpers;
+using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ryness.Entities;
+using MrCMS.Web.Apps.Ryness.Models;
 using NHibernate;
+using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ryness.Services
 {
@@ -17,6 +20,13 @@ namespace MrCMS.Web.Apps.Ryness.Services
         public KerridgeService(ISession session)
         {
             _session = session;
+        }
+
+        public KerridgeLogPagedList Search(string query = null, int page = 1, int pageSize = 10)
+        {
+            IPagedList<KerridgeLog> pagedList = _session.Paged(QueryOver.Of<KerridgeLog>().OrderBy(x=>x.Id).Desc, page, pageSize);
+
+            return new KerridgeLogPagedList(pagedList);
         }
 
         public IList<KerridgeLog> GetAll()
