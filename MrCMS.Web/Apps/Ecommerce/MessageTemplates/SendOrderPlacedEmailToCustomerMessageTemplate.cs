@@ -26,7 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
                 Bcc = String.Empty,
                 Cc = String.Empty,
                 Subject = String.Format("{0} - Order Placed", fromName),
-                Body = "Your order (ID:{Id}) was successfully shipped.",
+                Body = "Your order (ID:{Id}) has been placed.",
                 IsHtml = false
             };
         }
