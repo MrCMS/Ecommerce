@@ -27,7 +27,7 @@
             },
             StockRemaining: {
                 number: true,
-                min: 0
+                min: -1000
             },
             PreviousPrice: {
                 number: true,
