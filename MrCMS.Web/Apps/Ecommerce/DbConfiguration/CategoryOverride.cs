@@ -8,7 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
     {
         public void Override(AutoMapping<Category> mapping)
         {
-            mapping.HasManyToMany(category => category.Products).Table("ProductCategories").Inverse();
+            mapping.HasManyToMany(category => category.Products).Table("Ecommerce_ProductCategories").Inverse();
         }
     }
 }
