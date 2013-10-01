@@ -1,0 +1,23 @@
+﻿@model MrCMS.Web.Apps.Amazon.Entities.Listings.AmazonListingGroup
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Delete", "ListingGroup", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Delete Amazon Listing Group
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Delete Listing Group" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+        <p>
+            Are you sure you want to delete this Amazon Listing Group? 
+        </p>
+        <div class="alert alert-danger">
+            This operation can not be undone. By clicking on "Delete Listing Group", only local Amazon listing (group) data will be deleted. 
+            In case you want to delete listing data on Amazon use "Close" operation on group Edit page.
+        </div>
+    </fieldset>
+}
