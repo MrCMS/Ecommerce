@@ -1,0 +1,29 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Amazon.Models.AmazonListingModel
+@{
+    ViewBag.Title = "Choose Product Variant for new Amazon Listing";
+}
+
+<fieldset>
+    <legend>Choose Product Variant for new Amazon Listing
+        <span class="btn-group  display-inline  pull-right">
+            @Html.ActionLink("Cancel", "Edit", "ListingGroup", new {id = Model.AmazonListingGroup.Id}, new {@class = "btn btn-danger"})
+        </span>
+    </legend>
+    @Html.DropDownListFor(x => x.CategoryId, Model.Categories, new {@class = "input-xlarge"})
+    <br/>
+    @Html.TextBoxFor(x => x.Name, new {@class = "input-xlarge search-query search-product-variants", placeholder = "Enter product variant name or SKU..."})
+    <button type="button" class="btn btn-success" id="search-product-variants">Filter</button>
+
+    <hr/>
+
+    <div class="row-fluid">
+        <div class="span12">
+            @{ Html.RenderPartial("ProductVariants", Model); }
+        </div>
+    </div>
+ 
+</fieldset>
+
+
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/listings.js"); }

@@ -16,7 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
         {
             var cookie = new HttpCookie(name, value);
             if (expirationDays.HasValue)
-                cookie.Expires = DateTime.Now.AddDays(expirationDays.Value);
+                cookie.Expires = CurrentRequestData.Now.AddDays(expirationDays.Value);
             CurrentRequestData.CurrentContext.Response.Cookies.Add(cookie);
         }
 
@@ -39,7 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
 
             if (cookie == null) return;
 
-            cookie.Expires = DateTime.Now.AddDays(-2);
+            cookie.Expires = CurrentRequestData.Now.AddDays(-2);
             CurrentRequestData.CurrentContext.Response.Cookies.Add(cookie);
         }
 
