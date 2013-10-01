@@ -54,8 +54,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public RedirectResult PayPalExpressCheckout_POST()
         {
             var response = _payPalExpressService.DoExpressCheckout(_cartModel);
-            var order = _orderService.PlaceOrder(_cartModel, response.UpdateOrder);
-            return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new { id = order.Guid }));
+            if (response.Success)
+            {
+                var order = _orderService.PlaceOrder(_cartModel, response.UpdateOrder);
+                return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new {id = order.Guid}));
+            }
+            else
+                TempData["error-details"] =new FailureDetails{Message = "An error occurred processing your PayPal Express order, please contact the merchant"};
+                return _documentService.RedirectTo<PaymentDetails>();
         }
 
         [HttpGet]

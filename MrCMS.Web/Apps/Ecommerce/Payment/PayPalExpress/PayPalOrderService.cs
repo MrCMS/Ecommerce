@@ -25,7 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                                    TaxTotal = cart.Tax.GetAmountType(),
                                    ShippingTotal = cart.ShippingTotal.GetAmountType(),
                                    PaymentDetailsItem = GetPaymentDetailsItems(cart),
-                                   PaymentAction = _payPalExpressCheckoutSettings.PaymentAction,
+                                   PaymentAction = _payPalExpressCheckoutSettings.PaymentAction
                                }
                        };
         }
