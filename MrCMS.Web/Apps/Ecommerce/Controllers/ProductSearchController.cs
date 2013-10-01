@@ -80,13 +80,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                             {
                                 Specifications =
                                     (controllerContext.HttpContext.Request["Specifications"] ??
-                                     string.Empty).Split(new[] { ',' },
+                                     string.Empty).Split(new[] { '|' },
                                                          StringSplitOptions.RemoveEmptyEntries)
                                                   .Select(s => Convert.ToInt32(s))
                                                   .ToList(),
                                 Options =
                                     (controllerContext.HttpContext.Request["Options"] ?? string.Empty)
-                                    .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                                    .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
                                     .Select(s => Convert.ToInt32(s))
                                     .ToList(),
                                 PageSize = !string.IsNullOrWhiteSpace(controllerContext.HttpContext.Request["PageSize"])

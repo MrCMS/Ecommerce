@@ -26,33 +26,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public const string CurrentCountryIdKey = "current.country-id";
         public const string CurrentPayPalExpressToken = "current.paypal-express-token";
         public const string CurrentPayPalExpressPayerId = "current.paypal-express-payer-id";
-        public IEnumerable<string> CartKeys
-        {
-            get
-            {
-                yield return CurrentCartGuid;
-                yield return CurrentShippingAddressKey;
-                yield return CurrentBillingAddressSameAsShippingAddressKey;
-                yield return CurrentBillingAddressKey;
-                yield return CurrentShippingMethodIdKey;
-                yield return CurrentOrderEmailKey;
-                yield return CurrentDiscountCodeKey;
-                yield return CurrentPaymentMethodKey;
-                yield return CurrentCountryIdKey;
-                yield return CurrentPayPalExpressToken;
-                yield return CurrentPayPalExpressPayerId;
-            }
-        }
 
         private readonly CartModel _cart;
         private readonly ISession _session;
         private readonly ICartSessionManager _cartSessionManager;
+        private readonly IEnumerable<ICartSessionKeyList> _sessionKeyLists;
 
-        public CartManager(CartModel cart, ISession session, ICartSessionManager cartSessionManager)
+        public CartManager(CartModel cart, ISession session, ICartSessionManager cartSessionManager, IEnumerable<ICartSessionKeyList> sessionKeyLists)
         {
             _cart = cart;
             _session = session;
             _cartSessionManager = cartSessionManager;
+            _sessionKeyLists = sessionKeyLists;
         }
 
         public void AddToCart(ProductVariant item, int quantity)
@@ -157,6 +142,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             _cartSessionManager.SetSessionValue(CurrentPayPalExpressToken, token);
             _cartSessionManager.SetSessionValue(CurrentPayPalExpressPayerId, payerId);
+        }
+        public IEnumerable<string> CartKeys
+        {
+            get
+            {
+                yield return CurrentCartGuid;
+                yield return CurrentShippingAddressKey;
+                yield return CurrentBillingAddressSameAsShippingAddressKey;
+                yield return CurrentBillingAddressKey;
+                yield return CurrentShippingMethodIdKey;
+                yield return CurrentOrderEmailKey;
+                yield return CurrentDiscountCodeKey;
+                yield return CurrentPaymentMethodKey;
+                yield return CurrentCountryIdKey;
+                yield return CurrentPayPalExpressToken;
+                yield return CurrentPayPalExpressPayerId;
+                foreach (var key in _sessionKeyLists.SelectMany(keyList => keyList.Keys))
+                {
+                    yield return key;
+                }
+            }
         }
     }
 }

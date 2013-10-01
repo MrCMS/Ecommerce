@@ -23,8 +23,18 @@
     });
 
     function getData(page) {
-        var specifications = $('#product-query-container select[name="Specifications"]').map(function (index, element) { return $(element).val(); }).toArray();
-        var options = $('#product-query-container select[name="Options"]').map(function (index, element) { return $(element).val(); }).toArray();
+        var specifications = $('#product-query-container select[name="Specifications"]').map(function(index, element) {
+            var val = $(element).val();
+            if (val == '' || val == undefined)
+                return null;
+            return val;
+        }).toArray();
+        var options = $('#product-query-container select[name="Options"]').map(function(index, element) {
+            var val = $(element).val();
+            if (val == '' || val == undefined)
+                return null;
+            return val;
+        }).toArray();
         var sortBy = $('#SortBy').val();
         var pageSize = $('#PageSize').val();
         var categoryId = $('#CategoryId').val();
@@ -32,8 +42,8 @@
         var searchTerm = $('#searchTerm').val();
 
         return {
-            Specifications: specifications.join(','),
-            Options: options.join(','),
+            Specifications: specifications.join('|'),
+            Options: options.join('|'),
             SortBy: sortBy,
             PageSize: pageSize,
             CategoryId: categoryId,

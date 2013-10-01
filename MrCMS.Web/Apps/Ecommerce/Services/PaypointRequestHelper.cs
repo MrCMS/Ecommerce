@@ -24,9 +24,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 
         public string GetOptions(PaypointPaymentDetailsModel model)
         {
-            return string.Format("test_status={0},card_type={1},cv2={2},mail_customer=false",
-                                 _paypointSettings.IsLive ? "live" : "true",
-                                 model.CardType, model.CardVerificationCode);
+            var options = string.Format("test_status={0},card_type={1},cv2={2},mail_customer=false",
+                                        _paypointSettings.IsLive ? "live" : "true", model.CardType,
+                                        model.CardVerificationCode);
+            if (!_paypointSettings.IsLive)
+                options += ",dups=false";
+            return options;
         }
 
         public string GetDate(int? month, int? year)

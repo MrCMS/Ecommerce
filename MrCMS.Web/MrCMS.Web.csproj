@@ -459,6 +459,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\CartSessionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartBuilder.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\ICartSessionKeyList.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartSessionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\CategoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\ICategoryService.cs" />
@@ -620,9 +621,12 @@
     <Compile Include="Apps\Galleries\Pages\Gallery.cs" />
     <Compile Include="Apps\Galleries\Pages\GalleryList.cs" />
     <Compile Include="Apps\Ryness\Areas\Admin\Controllers\TestimonialController.cs" />
+    <Compile Include="Apps\Ryness\Dbconfiguration\KerridgeOverride.cs" />
     <Compile Include="Apps\Ryness\Dbconfiguration\TestimonialOverride.cs" />
     <Compile Include="Apps\Ryness\Entities\BuyingGuideInformation.cs" />
+    <Compile Include="Apps\Ryness\Entities\KerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Entities\Testimonial.cs" />
+    <Compile Include="Apps\Ryness\Events\OnOrderPlacedKerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Metadata\BuyingGuideMetadata.cs" />
     <Compile Include="Apps\Ryness\Metadata\StoreListMetadata.cs" />
     <Compile Include="Apps\Ryness\Metadata\StoreMetadata.cs" />
@@ -631,8 +635,11 @@
     <Compile Include="Apps\Ryness\Pages\Store.cs" />
     <Compile Include="Apps\Ryness\Pages\StoreList.cs" />
     <Compile Include="Apps\Ryness\RynessApp.cs" />
+    <Compile Include="Apps\Ryness\Services\KerridgeService.cs" />
+    <Compile Include="Apps\Ryness\Services\IKerridgeService.cs" />
     <Compile Include="Apps\Ryness\Services\ITestimonialService.cs" />
     <Compile Include="Apps\Ryness\Services\TestimonialService.cs" />
+    <Compile Include="Apps\Ryness\Tasks\SendKerridgeOrders.cs" />
     <Compile Include="Apps\Ryness\Widgets\FeaturedProductsVertical.cs" />
     <Compile Include="Apps\Ryness\Widgets\NewsletterSignup.cs" />
     <Compile Include="Apps\Ryness\Widgets\RynessNavigation.cs" />
@@ -1722,8 +1729,6 @@
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\category.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\forgotten-password.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\password-reset.js" />
-    <Content Include="Themes\Ecommerce\Content\Scripts\custom\payment-details.js" />
-    <Content Include="Themes\Ecommerce\Content\Scripts\custom\product-search.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\product.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\shipping-methods.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-account.js" />
@@ -2420,7 +2425,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1834</DevelopmentServerPort>
+          <DevelopmentServerPort>33219</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:8888</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

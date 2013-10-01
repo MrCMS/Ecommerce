@@ -5,19 +5,23 @@ using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.Paypoint;
+using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services
 {
-    public class PaypointPaymentService : IPaypointPaymentService
+    public class PaypointPaymentService : IPaypointPaymentService, ICartSessionKeyList
     {
         private readonly PaypointSettings _paypointSettings;
         private readonly IPaypointRequestService _paypointRequestService;
+        private readonly ICartSessionManager _cartSessionManager;
+        private const string PaypointPaymentModelKey = "current.paypoint-model";
 
-        public PaypointPaymentService(PaypointSettings paypointSettings, IPaypointRequestService paypointRequestService)
+        public PaypointPaymentService(PaypointSettings paypointSettings, IPaypointRequestService paypointRequestService, ICartSessionManager cartSessionManager)
         {
             _paypointSettings = paypointSettings;
             _paypointRequestService = paypointRequestService;
+            _cartSessionManager = cartSessionManager;
         }
 
         public ProcessDetailsResponse ProcessDetails(PaypointPaymentDetailsModel model, string threeDSecureUrl)
@@ -52,9 +56,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             return Enumerable.Range(1, 12).BuildSelectItemList(i => i.ToString("00"), emptyItemText: "Month");
         }
 
+        public IEnumerable<SelectListItem> StartMonths()
+        {
+            return Enumerable.Range(1, 12).BuildSelectItemList(i => i.ToString().PadLeft(2, '0'), i => i.ToString(), emptyItemText: "Month");
+        }
+
         public IEnumerable<SelectListItem> StartYears()
         {
             return Enumerable.Range(DateTime.Now.Year - 10, 11).BuildSelectItemList(i => i.ToString().Substring(2, 2), emptyItemText: "Year");
+        }
+
+        public IEnumerable<SelectListItem> ExpiryMonths()
+        {
+            return Enumerable.Range(1, 12).BuildSelectItemList(i => i.ToString().PadLeft(2, '0'), i => i.ToString(), emptyItemText: "Month");
         }
 
         public IEnumerable<SelectListItem> ExpiryYears()
@@ -66,5 +80,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         {
             return _paypointRequestService.Handle3DSecureResponse(formCollection);
         }
+
+        public void SetModel(PaypointPaymentDetailsModel model)
+        {
+            _cartSessionManager.SetSessionValue(PaypointPaymentModelKey, model);
+        }
+
+        public PaypointPaymentDetailsModel GetModel()
+        {
+            return _cartSessionManager.GetSessionValue<PaypointPaymentDetailsModel>(PaypointPaymentModelKey);
+        }
+
+        public IEnumerable<string> Keys { get { yield return PaypointPaymentModelKey; } }
     }
 }
