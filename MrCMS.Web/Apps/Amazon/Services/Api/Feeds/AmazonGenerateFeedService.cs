@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Settings;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using Product = MarketplaceWebServiceFeedsClasses.Product;
 
@@ -14,10 +15,12 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
     public class AmazonGenerateFeedService : IAmazonGenerateFeedService
     {
         private readonly AmazonSellerSettings _amazonSellerSettings;
+        private readonly EcommerceSettings _ecommerceSettings;
 
-        public AmazonGenerateFeedService(AmazonSellerSettings amazonSellerSettings)
+        public AmazonGenerateFeedService(AmazonSellerSettings amazonSellerSettings, EcommerceSettings ecommerceSettings)
         {
             _amazonSellerSettings = amazonSellerSettings;
+            _ecommerceSettings = ecommerceSettings;
         }
 
         public FileStream GetSingleFeed(object feed, AmazonEnvelopeMessageType amazonEnvelopeMessageType,
@@ -110,7 +113,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 SKU = listing.SellerSKU,
                 StandardPrice = new OverrideCurrencyAmount()
                     {
-                        Currency = BaseCurrencyCodeWithDefault.USD,
+                        Currency = _ecommerceSettings.Currency!=null?_ecommerceSettings.Currency.Code.GetEnumByValue<BaseCurrencyCodeWithDefault>():BaseCurrencyCodeWithDefault.GBP,
                         Value = listing.Price
                     }
             };
@@ -138,7 +141,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
         }
         public ProductImage GetProductImage(AmazonListing listing)
         {
-            if (listing.ProductVariant != null && listing.ProductVariant.Product.Images.Any())
+            if (listing.ProductVariant != null && listing.ProductVariant.Product!=null && listing.ProductVariant.Product.Images.Any())
             {
                 var image = listing.ProductVariant.Product.Images.First();
                 if (image.FileExtension.Contains(".jpeg"))

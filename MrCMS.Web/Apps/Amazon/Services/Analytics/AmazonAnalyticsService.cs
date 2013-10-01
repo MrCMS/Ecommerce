@@ -47,7 +47,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
             _amazonApiUsageService.Save(amazonApiUsage);
         }
 
-        public object GetRevenue(DateTime from, DateTime to)
+        public AmazonChartModel GetRevenue(DateTime from, DateTime to)
         {
             var orders = _session.QueryOver<AmazonOrder>()
                                  .Where(item => item.PurchaseDate >= from && item.PurchaseDate <= to).Cacheable().List()
@@ -57,7 +57,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
             return SetChartModel(from, to, orders);
         }
 
-        public object GetProductsSold(DateTime from, DateTime to)
+        public AmazonChartModel GetProductsSold(DateTime from, DateTime to)
         {
             var orders = _session.QueryOver<AmazonOrder>()
                                  .Where(item => item.PurchaseDate >= from && item.PurchaseDate <= to).Cacheable().List()
@@ -67,7 +67,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
             return SetChartModel(from, to, orders);
         }
 
-        private static object SetChartModel(DateTime from, DateTime to, IList<KeyValuePair<DateTime, decimal>> items)
+        private static AmazonChartModel SetChartModel(DateTime from, DateTime to, IList<KeyValuePair<DateTime, decimal>> items)
         {
             var data = new List<decimal>();
             var labels = new List<string>();
@@ -87,7 +87,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
                                     .Sum(x => x.Value));
             }
 
-            return new
+            return new AmazonChartModel
                 {
                     Labels = labels,
                     Data = data
@@ -113,26 +113,26 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
             return model;
         }
 
-        private int GetNumberOfOrders(DateTime from, DateTime to)
+        public int GetNumberOfOrders(DateTime from, DateTime to)
         {
             return _session.QueryOver<AmazonOrder>()
                            .Where(item => item.PurchaseDate >= from && item.PurchaseDate <= to).Cacheable().RowCount();
         }
 
-        private double GetAverageOrderAmount(DateTime from, DateTime to)
+        public double GetAverageOrderAmount(DateTime from, DateTime to)
         {
             return _session.CreateCriteria(typeof(AmazonOrder))
                 .Add(Restrictions.Between("PurchaseDate", from, to))
                 .SetProjection(Projections.Avg("OrderTotalAmount")).SetCacheable(true).UniqueResult<double>();
         }
 
-        private int GetNumberUnshippedOrders(DateTime from, DateTime to)
+        public int GetNumberUnshippedOrders(DateTime from, DateTime to)
         {
             return _session.QueryOver<AmazonOrder>().Where(item => item.PurchaseDate >= from && item.PurchaseDate <= to &&
                                (item.Status==null || item.Status.Value==AmazonOrderStatus.Unshipped)).Cacheable().RowCount();
         }
 
-        private decimal GetNumberOfOrderedProducts(DateTime from, DateTime to)
+        public decimal GetNumberOfOrderedProducts(DateTime from, DateTime to)
         {
             AmazonOrder amazonOrderAlias = null;
             AmazonOrderItem amazonOrderItemAlias = null;
@@ -142,7 +142,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
                               .Cacheable().List().Sum(x => x.QuantityOrdered);
         }
 
-        private decimal GetNumberOfShippedProducts(DateTime from, DateTime to)
+        public decimal GetNumberOfShippedProducts(DateTime from, DateTime to)
         {
             AmazonOrder amazonOrderAlias = null;
             AmazonOrderItem amazonOrderItemAlias = null;
@@ -152,13 +152,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
                               .Cacheable().List().Sum(x => x.QuantityShipped);
         }
 
-        private int GetNumberOfActiveListings()
+        public int GetNumberOfActiveListings()
         {
             return _session.QueryOver<AmazonListing>()
                            .Where(item => item.Status==AmazonListingStatus.Active).Cacheable().RowCount();
         }
 
-        private int GetNumberOfApiCalls(DateTime from, DateTime to)
+        public int GetNumberOfApiCalls(DateTime from, DateTime to)
         {
             return _session.CreateCriteria(typeof(AmazonApiUsage))
                 .Add(Restrictions.Between("Day",from,to))

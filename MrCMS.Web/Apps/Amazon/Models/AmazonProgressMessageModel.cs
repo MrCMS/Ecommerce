@@ -1,4 +1,5 @@
 ﻿using System;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Models
 {
@@ -8,7 +9,7 @@ namespace MrCMS.Web.Apps.Amazon.Models
         {
             Stage = "Start";
             Message = String.Empty;
-            Created = DateTime.UtcNow;
+            Created = CurrentRequestData.Now;
         }
 
         public string Stage { get; set; }

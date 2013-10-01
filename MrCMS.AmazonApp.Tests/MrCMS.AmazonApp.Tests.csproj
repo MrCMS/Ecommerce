@@ -105,7 +105,16 @@
     <Compile Include="Admin\Controllers\ListingGroupControllerTests.cs" />
     <Compile Include="Admin\Controllers\ListingControllerTests.cs" />
     <Compile Include="AmazonAppTests.cs" />
+    <Compile Include="Entities\Orders\AmazonOrderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Analytics\AmazonApiUsageServiceTests.cs" />
+    <Compile Include="Services\Analytics\AmazonAnalyticsServiceTests.cs" />
+    <Compile Include="Services\Listings\AmazonListingGroupServiceTests.cs" />
+    <Compile Include="Services\Api\Feeds\AmazonGenerateFeedServiceTests.cs" />
+    <Compile Include="Services\Listings\AmazonListingServiceTests.cs" />
+    <Compile Include="Services\Listings\Sync\AmazonListingSyncManagerTests.cs" />
+    <Compile Include="Services\Listings\Sync\PrepareForSyncAmazonListingServiceTests.cs" />
+    <Compile Include="Services\Logs\AmazonLogServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -128,7 +137,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\" />
+    <Folder Include="Services\Orders\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="x64\SQLite.Interop.dll">

@@ -1,6 +1,7 @@
 ﻿using System;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Amazon.Entities.Logs;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Models
 {
@@ -8,8 +9,8 @@ namespace MrCMS.Web.Apps.Amazon.Models
     {
         public AmazonDashboardModel()
         {
-            FilterUntil = DateTime.UtcNow.Date;
-            FilterFrom = DateTime.UtcNow.Date.AddDays(-7);
+            FilterUntil = CurrentRequestData.Now.Date;
+            FilterFrom = CurrentRequestData.Now.Date.AddDays(-7);
         }
 
         public IPagedList<AmazonLog> Logs { get; set; }

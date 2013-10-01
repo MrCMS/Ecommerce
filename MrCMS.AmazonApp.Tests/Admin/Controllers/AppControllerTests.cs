@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
+using MrCMS.EcommerceApp.Tests;
 using MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Analytics;
@@ -10,7 +11,7 @@ using System;
 
 namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 {
-    public class AppControllerTests
+    public class AppControllerTests : InMemoryDatabaseTest
     {
         private readonly IAmazonLogService _amazonLogService;
         private readonly IAmazonAnalyticsService _amazonAnalyticsService;

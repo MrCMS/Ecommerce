@@ -244,6 +244,7 @@
     <Compile Include="Apps\Amazon\Models\AmazonProgressModel.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonServiceStatus.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonSyncModel.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonChartModel.cs" />
     <Compile Include="Apps\Amazon\Services\Analytics\AmazonAnalyticsService.cs" />
     <Compile Include="Apps\Amazon\Services\Analytics\AmazonApiUsageService.cs" />
     <Compile Include="Apps\Amazon\Services\Analytics\IAmazonAnalyticsService.cs" />
