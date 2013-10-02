@@ -4,7 +4,6 @@ using System.Linq;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 
 namespace MrCMS.Web.Apps.Amazon.Entities.Orders
 {

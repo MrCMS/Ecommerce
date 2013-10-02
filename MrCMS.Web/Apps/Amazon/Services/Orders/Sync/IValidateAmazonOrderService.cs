@@ -2,7 +2,7 @@
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using Order = MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order;
-using Address = MrCMS.Web.Apps.Ecommerce.Entities.Users.Address;
+
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 {
     public interface IValidateAmazonOrderService
