@@ -8,6 +8,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using Order = MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
@@ -15,10 +16,12 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     public class ValidateAmazonOrderService : IValidateAmazonOrderService
     {
         private readonly ICountryService _countryService;
+        private readonly EcommerceSettings _ecommerceSettings;
 
-        public ValidateAmazonOrderService(ICountryService countryService)
+        public ValidateAmazonOrderService(ICountryService countryService, EcommerceSettings ecommerceSettings)
         {
             _countryService = countryService;
+            _ecommerceSettings = ecommerceSettings;
         }
 
         public void SetAmazonOrderItem(ref AmazonOrder amazonOrder, OrderItem rawOrderItem)
@@ -36,54 +39,53 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         {
             return new AmazonOrderItem()
                 {
-                    ASIN = rawOrderItem.ASIN,
+                    ASIN = !String.IsNullOrWhiteSpace(rawOrderItem.ASIN)?rawOrderItem.ASIN:String.Empty,
                     AmazonOrder = amazonOrder,
-                    AmazonOrderItemId = rawOrderItem.OrderItemId,
-                    Title = rawOrderItem.Title,
-                    SellerSKU = rawOrderItem.SellerSKU,
-                    Condition = rawOrderItem.ConditionId.GetEnumByValue<AmazonListingCondition>(),
-                    ConditionSubtype =
-                        rawOrderItem.ConditionSubtypeId.GetEnumByValue<AmazonListingCondition>(),
+                    AmazonOrderItemId = !String.IsNullOrWhiteSpace(rawOrderItem.OrderItemId) ? rawOrderItem.OrderItemId : String.Empty,
+                    Title = !String.IsNullOrWhiteSpace(rawOrderItem.Title) ? rawOrderItem.Title : String.Empty,
+                    SellerSKU = !String.IsNullOrWhiteSpace(rawOrderItem.SellerSKU) ? rawOrderItem.SellerSKU : String.Empty,
+                    Condition = !String.IsNullOrWhiteSpace(rawOrderItem.ConditionId) ? rawOrderItem.ConditionId.GetEnumByValue<AmazonListingCondition>() : AmazonListingCondition.New,
+                    ConditionSubtype = !String.IsNullOrWhiteSpace(rawOrderItem.ConditionSubtypeId) ? rawOrderItem.ConditionSubtypeId.GetEnumByValue<AmazonListingCondition>() : AmazonListingCondition.New,
 
-                    GiftWrapPriceAmount = Decimal.Parse(rawOrderItem.GiftWrapPrice.Amount),
-                    GiftWrapPriceCurrency = rawOrderItem.GiftWrapPrice.CurrencyCode,
-                    GiftWrapTaxAmount = Decimal.Parse(rawOrderItem.GiftWrapTax.Amount),
-                    GiftWrapTaxCurrency = rawOrderItem.GiftWrapTax.CurrencyCode,
+                    GiftWrapPriceAmount = (rawOrderItem.GiftWrapPrice!=null && rawOrderItem.GiftWrapPrice.Amount!=null)?Decimal.Parse(rawOrderItem.GiftWrapPrice.Amount):0,
+                    GiftWrapPriceCurrency = (rawOrderItem.GiftWrapPrice != null && rawOrderItem.GiftWrapPrice.CurrencyCode != null) ? rawOrderItem.GiftWrapPrice.CurrencyCode : _ecommerceSettings.Currency.Code,
+                    GiftWrapTaxAmount = (rawOrderItem.GiftWrapTax != null && rawOrderItem.GiftWrapTax.Amount != null)?Decimal.Parse(rawOrderItem.GiftWrapTax.Amount):0,
+                    GiftWrapTaxCurrency = (rawOrderItem.GiftWrapTax != null && rawOrderItem.GiftWrapTax.CurrencyCode != null) ? rawOrderItem.GiftWrapTax.CurrencyCode : _ecommerceSettings.Currency.Code,
 
-                    ItemPriceAmount = Decimal.Parse(rawOrderItem.ItemPrice.Amount),
-                    ItemPriceCurrency = rawOrderItem.ItemPrice.CurrencyCode,
-                    ItemTaxAmount = Decimal.Parse(rawOrderItem.ItemTax.Amount),
-                    ItemTaxCurrency = rawOrderItem.ItemTax.CurrencyCode,
+                    ItemPriceAmount = (rawOrderItem.ItemPrice != null && rawOrderItem.ItemPrice.Amount != null) ? Decimal.Parse(rawOrderItem.ItemPrice.Amount) : 0,
+                    ItemPriceCurrency = (rawOrderItem.ItemPrice != null && rawOrderItem.ItemPrice.CurrencyCode != null) ? rawOrderItem.ItemPrice.CurrencyCode : _ecommerceSettings.Currency.Code,
+                    ItemTaxAmount = (rawOrderItem.ItemTax != null && rawOrderItem.ItemTax.Amount != null) ? Decimal.Parse(rawOrderItem.ItemTax.Amount) : 0,
+                    ItemTaxCurrency = (rawOrderItem.ItemTax != null && rawOrderItem.ItemTax.CurrencyCode != null) ? rawOrderItem.ItemTax.CurrencyCode : _ecommerceSettings.Currency.Code,
 
-                    PromotionDiscountAmount = Decimal.Parse(rawOrderItem.PromotionDiscount.Amount),
-                    PromotionDiscountCurrency = rawOrderItem.PromotionDiscount.CurrencyCode,
+                    PromotionDiscountAmount =  (rawOrderItem.PromotionDiscount != null && rawOrderItem.PromotionDiscount.Amount != null) ? Decimal.Parse(rawOrderItem.PromotionDiscount.Amount) : 0,
+                    PromotionDiscountCurrency = (rawOrderItem.PromotionDiscount != null && rawOrderItem.PromotionDiscount.CurrencyCode != null) ? rawOrderItem.PromotionDiscount.CurrencyCode : _ecommerceSettings.Currency.Code,
 
                     QuantityOrdered = rawOrderItem.QuantityOrdered,
                     QuantityShipped = rawOrderItem.QuantityShipped,
 
-                    ShippingDiscountAmount = Decimal.Parse(rawOrderItem.ShippingDiscount.Amount),
-                    ShippingDiscountCurrency = rawOrderItem.ShippingDiscount.CurrencyCode,
-                    ShippingPriceAmount = Decimal.Parse(rawOrderItem.ShippingPrice.Amount),
-                    ShippingPriceCurrency = rawOrderItem.ShippingPrice.CurrencyCode,
-                    ShippingTaxAmount = Decimal.Parse(rawOrderItem.ShippingTax.Amount),
-                    ShippingTaxCurrency = rawOrderItem.ShippingTax.CurrencyCode
+                    ShippingDiscountAmount = (rawOrderItem.ShippingDiscount != null && rawOrderItem.ShippingDiscount.Amount != null) ? Decimal.Parse(rawOrderItem.ShippingDiscount.Amount) : 0,
+                    ShippingDiscountCurrency = (rawOrderItem.ShippingDiscount != null && rawOrderItem.ShippingDiscount.CurrencyCode != null) ? rawOrderItem.ShippingDiscount.CurrencyCode : _ecommerceSettings.Currency.Code,
+                    ShippingPriceAmount = (rawOrderItem.ShippingPrice != null && rawOrderItem.ShippingPrice.Amount != null) ? Decimal.Parse(rawOrderItem.ShippingPrice.Amount) : 0,
+                    ShippingPriceCurrency = (rawOrderItem.ShippingPrice != null && rawOrderItem.ShippingPrice.CurrencyCode != null) ? rawOrderItem.ShippingPrice.CurrencyCode : _ecommerceSettings.Currency.Code,
+                    ShippingTaxAmount = (rawOrderItem.ShippingTax != null && rawOrderItem.ShippingTax.Amount != null) ? Decimal.Parse(rawOrderItem.ShippingTax.Amount) : 0,
+                    ShippingTaxCurrency = (rawOrderItem.ShippingTax != null && rawOrderItem.ShippingTax.CurrencyCode != null) ? rawOrderItem.ShippingTax.CurrencyCode : _ecommerceSettings.Currency.Code,
                 };
         }
 
         public void GetAmazonOrderDetails(MarketplaceWebServiceOrders.Model.Order rawOrder, ref AmazonOrder order, AddressData shippingAddress)
         {
-            order.AmazonOrderId = rawOrder.AmazonOrderId;
-            order.BuyerEmail = rawOrder.BuyerEmail;
-            order.BuyerName = rawOrder.BuyerName;
+            order.AmazonOrderId = !String.IsNullOrWhiteSpace(rawOrder.AmazonOrderId) ? rawOrder.AmazonOrderId : String.Empty;
+            order.BuyerEmail = !String.IsNullOrWhiteSpace(rawOrder.BuyerEmail) ? rawOrder.BuyerEmail : String.Empty;
+            order.BuyerName = !String.IsNullOrWhiteSpace(rawOrder.BuyerName) ? rawOrder.BuyerName : String.Empty;
             order.PurchaseDate = rawOrder.PurchaseDate;
             order.PaymentMethod = rawOrder.PaymentMethod.GetEnumByValue<AmazonPaymentMethod>();
-            order.SalesChannel = rawOrder.SalesChannel;
-            order.OrderType = rawOrder.OrderType;
-            order.OrderTotalAmount = rawOrder.OrderTotal != null ? Decimal.Parse(rawOrder.OrderTotal.Amount) : 0;
-            order.OrderCurrency = rawOrder.OrderTotal != null ? rawOrder.OrderTotal.CurrencyCode : String.Empty;
-            order.MarketplaceId = rawOrder.MarketplaceId;
-            order.ShipServiceLevel = rawOrder.ShipServiceLevel;
-            order.ShipmentServiceLevelCategory = rawOrder.ShipmentServiceLevelCategory;
+            order.SalesChannel = !String.IsNullOrWhiteSpace(rawOrder.SalesChannel) ? rawOrder.SalesChannel : String.Empty;
+            order.OrderType = !String.IsNullOrWhiteSpace(rawOrder.OrderType) ? rawOrder.OrderType : String.Empty;
+            order.OrderTotalAmount = (rawOrder.OrderTotal != null && rawOrder.OrderTotal.Amount!=null) ? Decimal.Parse(rawOrder.OrderTotal.Amount) : 0;
+            order.OrderCurrency = (rawOrder.OrderTotal != null && rawOrder.OrderTotal.Amount != null) ? rawOrder.OrderTotal.CurrencyCode : String.Empty;
+            order.MarketplaceId = !String.IsNullOrWhiteSpace(rawOrder.MarketplaceId) ? rawOrder.MarketplaceId : String.Empty;
+            order.ShipServiceLevel = !String.IsNullOrWhiteSpace(rawOrder.ShipServiceLevel) ? rawOrder.ShipServiceLevel : String.Empty;
+            order.ShipmentServiceLevelCategory = !String.IsNullOrWhiteSpace(rawOrder.ShipmentServiceLevelCategory) ? rawOrder.ShipmentServiceLevelCategory : String.Empty;
             order.ShippingAddress = shippingAddress;
             order.NumberOfItemsUnshipped = rawOrder.NumberOfItemsUnshipped;
             order.NumberOfItemsShipped = rawOrder.NumberOfItemsShipped;
@@ -96,15 +98,15 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             {
                 return new AddressData()
                     {
-                        Address1 = rawOrder.ShippingAddress.AddressLine1,
-                        Address2 = rawOrder.ShippingAddress.AddressLine2,
-                        FirstName = rawOrder.ShippingAddress.Name.Split(' ').First(),
-                        LastName = rawOrder.ShippingAddress.Name.Split(' ')[1],
-                        PhoneNumber = rawOrder.ShippingAddress.Phone,
-                        PostalCode = rawOrder.ShippingAddress.PostalCode,
-                        StateProvince = rawOrder.ShippingAddress.StateOrRegion,
-                        City = rawOrder.ShippingAddress.City,
-                        Country = _countryService.GetCountryByCode(rawOrder.ShippingAddress.CountryCode),
+                        Address1 = (rawOrder.ShippingAddress!=null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.AddressLine1)) ? rawOrder.ShippingAddress.AddressLine1 : String.Empty,
+                        Address2 = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.AddressLine2)) ? rawOrder.ShippingAddress.AddressLine2 : String.Empty,
+                        FirstName = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.Name)) ? rawOrder.ShippingAddress.Name.Split(' ').First() : String.Empty,
+                        LastName = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.Name)) ? rawOrder.ShippingAddress.Name.Split(' ')[1] : String.Empty,
+                        PhoneNumber = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.Phone)) ? rawOrder.ShippingAddress.Phone : String.Empty,
+                        PostalCode = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.PostalCode)) ? rawOrder.ShippingAddress.PostalCode : String.Empty,
+                        StateProvince = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.StateOrRegion)) ? rawOrder.ShippingAddress.StateOrRegion : String.Empty,
+                        City = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.City)) ? rawOrder.ShippingAddress.City : String.Empty,
+                        Country = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.CountryCode)) ? _countryService.GetCountryByCode(rawOrder.ShippingAddress.CountryCode) : null,
                     };
             }
             return null;

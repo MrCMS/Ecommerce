@@ -16,46 +16,50 @@
         });
     });
 
-    function updateProgressBar() {
-            $.ajax({
-                url: "/Admin/Apps/Amazon/App/ProgressBarStatus",
-                type: "GET",
-                cache: false,
-                data: {
-                    taskId: taskId
-                },
-                dataType: "json",
-                success: function (data) {
-                    refreshMessages();
-                    var percentComplete = parseInt(data.PercentComplete);
-                    if (data.Status === "Error") {
-                        $("#pb-start-task").show();
-                        $("#pb").hide();
-                    } else {
-                        if (percentComplete == null || percentComplete == 100) {
-                            $("#pb .progress").removeClass("active");
-                            $("#pb .progress .bar").css("width", "100%");
-                            $("#pb-start-task").show();
-                            $("#pb").hide();
-                            setTimeout(refreshMessages, 1000);
-                        } else {
-                            $("#pb .progress").addClass("active");
-                            $("#pb .progress .bar").css("width", percentComplete + "%");
-                            setTimeout(updateProgressBar, 1000);
-                        }
-                    }
-                }
-            });
-        return false;
-    }
-    
-    function refreshMessages() {
-        $("#pb-status").show();
-        $.get("/Admin/Apps/Amazon/App/ProgressBarMessages", {
-            taskId: taskId
-        }, function (data) {
-            $('#progress-bar-messages').replaceWith(data);
-        });
-    }
-
 });
+
+function updateProgressBar() {
+    $.ajax({
+        url: "/Admin/Apps/Amazon/App/ProgressBarStatus",
+        type: "GET",
+        cache: false,
+        data: {
+            taskId: taskId
+        },
+        dataType: "json",
+        success: function (data) {
+            refreshMessages();
+            var percentComplete = parseInt(data.PercentComplete);
+            if (data.Status === "Error") {
+                $("#pb-start-task").show();
+                $("#pb").hide();
+            } else {
+                if (percentComplete == null || percentComplete == 100) {
+                    $("#pb .progress").removeClass("active");
+                    $("#pb .progress .bar").css("width", "100%");
+                    $("#pb-start-task").show();
+                    $("#pb").hide();
+                    setTimeout(refreshMessages, 3000);
+                } else {
+                    $("#pb .progress").addClass("active");
+                    $("#pb .progress .bar").css("width", percentComplete + "%");
+                    setTimeout(updateProgressBar, 3000);
+                }
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
+        }
+    });
+    return false;
+}
+
+function refreshMessages() {
+    $("#pb-status").show();
+    $.get("/Admin/Apps/Amazon/App/ProgressBarMessages", {
+        taskId: taskId
+    }, function (data) {
+        $('#progress-bar-messages').replaceWith(data);
+    });
+}

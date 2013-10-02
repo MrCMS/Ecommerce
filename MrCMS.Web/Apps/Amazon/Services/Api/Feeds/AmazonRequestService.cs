@@ -27,8 +27,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
         private readonly IAmazonOrderService _amazonOrderService;
         private readonly IOrderService _orderService;
 
-        public AmazonRequestService(IAmazonListingService amazonListingService,
-                                          IAmazonLogService amazonLogService, 
+        public AmazonRequestService(IAmazonListingService amazonListingService,IAmazonLogService amazonLogService, 
             IAmazonFeedsApiService amazonFeedsApiService, 
             IAmazonProductsApiService amazonProductsApiService,
             IAmazonOrderService amazonOrderService, IOrderService orderService)
