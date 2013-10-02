@@ -6,7 +6,7 @@ a { color: #C5251E;text-decoration: none;}
 a:hover { color: #000000;text-decoration: underline;}
 a.active { color: #000000;text-decoration: none;}
 hr { border-top: 1px solid #eaeaea;border-bottom: 1px solid #ffffff;}
-
+#map_canvas {height: 600px;width: 100%;}
 .bold-font { font-weight: 700;}
 .italic-text { font-style: italic;}
 .white-text { color:#ffffff;}
