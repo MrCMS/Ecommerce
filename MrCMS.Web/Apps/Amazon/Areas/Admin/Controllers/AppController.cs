@@ -65,23 +65,19 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult ProgressBarStatus(AmazonSyncModel model)
         {
-            var progress = AmazonProgressBarHelper.GetStatus(model.TaskId);
+            var progress = AmazonProgressBarHelper.GetStatus(model.Task);
             return Json(progress, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
         public ActionResult ProgressBarMessages(AmazonSyncModel model)
         {
-            if (model!=null && model.TaskId.HasValue)
-            {
-                var progress = AmazonProgressBarHelper.Get(model.TaskId);
-                return PartialView(new AmazonSyncModel()
+            var progress = AmazonProgressBarHelper.Get(model.Task);
+            return PartialView(new AmazonSyncModel()
                 {
-                    TaskId = model.TaskId,
+                    TaskId = model.Task,
                     Messages = progress.GetMessages(model.Page)
                 });
-            }
-            return RedirectToAction("Dashboard","App");
         }
     }
 }
