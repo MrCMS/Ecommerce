@@ -33,7 +33,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         }
         public IList<ProductVariant> GetAllVariantsWithLowStock(int treshold)
         {
-            return _session.QueryOver<ProductVariant>().Where(item => item.StockRemaining <= treshold && item.TrackingPolicy == TrackingPolicy.Track).OrderBy(x => x.Product.Id).Asc.Cacheable().List();
+            return _session.QueryOver<ProductVariant>().Where(item => item.StockRemaining <= treshold 
+                && item.TrackingPolicy == TrackingPolicy.Track && item.Product.Published).OrderBy(x => x.Product.Id).Asc.Cacheable().List();
+        }
+        public IList<ProductVariant> GetAllVariantsForStockReport()
+        {
+            return _session.QueryOver<ProductVariant>().OrderBy(x => x.Product.Id).Asc.Cacheable().List();
         }
         public IPagedList<ProductVariant> GetAllVariants(string queryTerm, int categoryId = 0, int page = 1)
         {
