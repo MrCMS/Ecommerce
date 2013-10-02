@@ -37,11 +37,11 @@
                             $("#pb .progress .bar").css("width", "100%");
                             $("#pb-start-task").show();
                             $("#pb").hide();
-                            setTimeout(refreshMessages, 1000);
+                            setTimeout(refreshMessages, 3000);
                         } else {
                             $("#pb .progress").addClass("active");
                             $("#pb .progress .bar").css("width", percentComplete + "%");
-                            setTimeout(updateProgressBar, 1000);
+                            setTimeout(updateProgressBar, 3000);
                         }
                     }
                 }
