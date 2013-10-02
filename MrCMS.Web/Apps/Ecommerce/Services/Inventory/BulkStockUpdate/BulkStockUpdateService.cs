@@ -9,17 +9,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Inventory.BulkStockUpdate
     public class BulkStockUpdateService : IBulkStockUpdateService
     {
         private readonly IProductVariantService _productVariantService;
-        private IList<ProductVariant> _allVariants;
 
         public BulkStockUpdateService(IProductVariantService productVariantService)
         {
             _productVariantService = productVariantService;
-            _allVariants = new List<ProductVariant>();
         }
 
         public int BulkStockUpdateFromDTOs(IEnumerable<BulkStockUpdateDataTransferObject> items)
         {
-            _allVariants = _productVariantService.GetAll();
 
             var noOfUpdatedItems = 0;
             foreach (var dataTransferObject in items)
@@ -32,12 +29,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Inventory.BulkStockUpdate
 
         public ProductVariant BulkStockUpdate(BulkStockUpdateDataTransferObject itemDto, ref int noOfUpdatedItems)
         {
-            if (_allVariants == null)
-                _allVariants = new List<ProductVariant>();
+            var item = _productVariantService.GetProductVariantBySKU(itemDto.SKU);
 
-            var item = _allVariants.SingleOrDefault(x => x.SKU == itemDto.SKU);
-
-            if (item != null && item.StockRemaining.Value!=itemDto.StockRemaining.Value)
+            if (itemDto.StockRemaining != null && (item.StockRemaining != null && (item.StockRemaining.Value!=itemDto.StockRemaining.Value)))
             {
                 item.StockRemaining = itemDto.StockRemaining;
                 _productVariantService.Update(item);

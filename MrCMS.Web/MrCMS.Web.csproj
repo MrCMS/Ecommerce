@@ -218,6 +218,7 @@
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\OrdersController.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonLogEntryOverride.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonTableNameConvention.cs" />
+    <Compile Include="Apps\Amazon\DbConfiguration\AmazonOrderOverride.cs" />
     <Compile Include="Apps\Amazon\Entities\Analytics\AmazonApiUsage.cs" />
     <Compile Include="Apps\Amazon\Entities\Listings\AmazonListing.cs" />
     <Compile Include="Apps\Amazon\Entities\Listings\AmazonListingGroup.cs" />
@@ -1898,6 +1899,7 @@
     <Content Include="Themes\Ryness\Content\Images\mail.jpg" />
     <Content Include="Themes\Ryness\Content\Images\map.jpg" />
     <Content Include="Themes\Ryness\Content\Images\mapmarker.png" />
+    <Content Include="Themes\Ryness\Content\Images\marker.png" />
     <Content Include="Themes\Ryness\Content\Images\menu-active.jpg" />
     <Content Include="Themes\Ryness\Content\Images\menu-bg.jpg" />
     <Content Include="Themes\Ryness\Content\Images\mobile-bg.jpg" />
@@ -1941,6 +1943,8 @@
     <Content Include="Themes\Ryness\Content\Scripts\jquery.nivo.slider.pack.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.pikachoose.min.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.placeholder.js" />
+    <Content Include="Themes\Ryness\Content\Scripts\jquery.ui.map.full.min.js" />
+    <Content Include="Themes\Ryness\Content\Scripts\ryness-map.js" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap-responsive.css" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap-responsive.min.css" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap.css" />

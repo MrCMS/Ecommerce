@@ -82,7 +82,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("BulkStockUpdate")]
         public RedirectToRouteResult BulkStockUpdate_POST(HttpPostedFileBase document)
         {
-            if (document != null && document.ContentLength > 0 && (document.ContentType == "text/CSV" || document.ContentType == "text/csv"))
+            if (document != null && document.ContentLength > 0 && (document.ContentType.ToLower() == "text/csv" || document.ContentType.ToLower().Contains("excel")))
                 TempData["messages"] = _inventoryService.BulkStockUpdate(document.InputStream);
             else
                 TempData["import-status"] = "Please choose non-empty CSV (.csv) file before uploading.";

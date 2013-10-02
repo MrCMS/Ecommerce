@@ -1,4 +1,4 @@
-﻿using System.Web.Mvc;
+using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
