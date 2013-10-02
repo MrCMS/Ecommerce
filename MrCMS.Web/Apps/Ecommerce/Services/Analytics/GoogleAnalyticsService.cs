@@ -14,7 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics
             if (order == null)
                 return trackingScript;
 
-            var trackingScriptContainsEcommerce = trackingScript.Contains("{ecommerce]");
+            var trackingScriptContainsEcommerce = trackingScript.Contains("{ecommerce}");
             if (!trackingScriptContainsEcommerce)
                 return trackingScript;
 

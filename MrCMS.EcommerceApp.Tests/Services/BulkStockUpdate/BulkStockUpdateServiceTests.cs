@@ -7,7 +7,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 
-namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
+namespace MrCMS.EcommerceApp.Tests.Services.BulkStockUpdate
 {
     public class BulkStockUpdateServiceTests : InMemoryDatabaseTest
     {

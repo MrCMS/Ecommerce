@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Web;
 using FakeItEasy;
 using MrCMS.Entities.Messaging;
 using MrCMS.Entities.People;
-using MrCMS.Models;
 using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Tasks;
@@ -15,7 +13,7 @@ using Xunit;
 using FluentAssertions;
 using System.Linq;
 
-namespace MrCMS.Tests.Services
+namespace MrCMS.Web.Tests.Apps.Core.Services
 {
     public class ResetPasswordServiceTests : InMemoryDatabaseTest
     {

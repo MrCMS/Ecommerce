@@ -104,7 +104,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         [Fact]
         public void ProductVariant_Price_WithTaxesDisabledAndRateSetShouldBeTheSameAsPricePreTax()
         {
-            SetTaxSettings(false);
+            SetTaxSettings(taxesEnabled: false);
             var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 20 } };
 
             var price = variant.Price;

@@ -22,6 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (order != null)
             {
                 ViewData["order"] = order;
+                TempData["order"] = order;
                 return View(page);
             }
             return Redirect(UniquePageHelper.GetUrl<ProductSearch>());

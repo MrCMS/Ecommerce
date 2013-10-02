@@ -127,7 +127,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
             ViewData["specification-attributes"] = new SelectList(attributes, "Id", "Name");
             var options = attributes.Any()
-                              ? attributes.First().Options
+                              ? attributes.First().Options.OrderBy(x=>x.DisplayOrder).ToList()
                               : new List<ProductSpecificationAttributeOption>();
             options.Add(new ProductSpecificationAttributeOption() { Id = 0, Name = "Other" });
             ViewData["specification-attributes-options"] = new SelectList(options, "Id", "Name");
