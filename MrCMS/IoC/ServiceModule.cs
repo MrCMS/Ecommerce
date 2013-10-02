@@ -45,6 +45,7 @@ namespace MrCMS.IoC
                                       .Where(t => typeof(SiteSettingsBase).IsAssignableFrom(t) && !typeof(IController).IsAssignableFrom(t) && !Kernel.GetBindings(t).Any())
                                       .BindWith<NinjectSiteSettingsBinder>()
                                       .Configure(onSyntax => onSyntax.InRequestScope()));
+
             Kernel.Bind<HttpRequestBase>().ToMethod(context => CurrentRequestData.CurrentContext.Request);
             Kernel.Bind<HttpSessionStateBase>().ToMethod(context => CurrentRequestData.CurrentContext.Session);
             Kernel.Bind<ObjectCache>().ToMethod(context => MemoryCache.Default);
