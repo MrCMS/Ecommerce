@@ -4,7 +4,6 @@ using System.Linq;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 
 namespace MrCMS.Web.Apps.Amazon.Entities.Orders
 {
@@ -31,7 +30,7 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Orders
         public virtual AmazonFulfillmentChannel? FulfillmentChannel { get; set; }
         public virtual decimal NumberOfItemsShipped { get; set; }
         public virtual decimal NumberOfItemsUnshipped { get; set; }
-        public virtual Address ShippingAddress { get; set; }
+        public virtual AddressData ShippingAddress { get; set; }
         public virtual string ShipmentServiceLevelCategory { get; set; }
 
         public virtual string OrderCurrency { get; set; }
