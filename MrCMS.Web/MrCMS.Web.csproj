@@ -218,6 +218,7 @@
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\OrdersController.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonLogEntryOverride.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonTableNameConvention.cs" />
+    <Compile Include="Apps\Amazon\DbConfiguration\AmazonOrderOverride.cs" />
     <Compile Include="Apps\Amazon\Entities\Analytics\AmazonApiUsage.cs" />
     <Compile Include="Apps\Amazon\Entities\Listings\AmazonListing.cs" />
     <Compile Include="Apps\Amazon\Entities\Listings\AmazonListingGroup.cs" />
