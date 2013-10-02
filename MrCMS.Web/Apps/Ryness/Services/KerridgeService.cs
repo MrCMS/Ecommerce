@@ -225,7 +225,7 @@ namespace MrCMS.Web.Apps.Ryness.Services
                     
                     return CallKerridge(xmlOrderObject);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     var error = new Error(ex);
                     _session.SaveOrUpdate(new Log
