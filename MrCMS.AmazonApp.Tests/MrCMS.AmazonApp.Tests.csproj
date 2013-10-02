@@ -115,6 +115,8 @@
     <Compile Include="Services\Listings\Sync\AmazonListingSyncManagerTests.cs" />
     <Compile Include="Services\Listings\Sync\PrepareForSyncAmazonListingServiceTests.cs" />
     <Compile Include="Services\Logs\AmazonLogServiceTests.cs" />
+    <Compile Include="Services\Orders\AmazonOrderServiceTests.cs" />
+    <Compile Include="Services\Orders\AmazonOrderSearchServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -137,7 +139,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\Orders\" />
+    <Folder Include="Services\Orders\Sync\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="x64\SQLite.Interop.dll">
