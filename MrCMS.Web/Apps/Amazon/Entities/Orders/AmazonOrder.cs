@@ -31,7 +31,7 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Orders
         public virtual AmazonFulfillmentChannel? FulfillmentChannel { get; set; }
         public virtual decimal NumberOfItemsShipped { get; set; }
         public virtual decimal NumberOfItemsUnshipped { get; set; }
-        public virtual Address ShippingAddress { get; set; }
+        public virtual AddressData ShippingAddress { get; set; }
         public virtual string ShipmentServiceLevelCategory { get; set; }
 
         public virtual string OrderCurrency { get; set; }
