@@ -44,11 +44,11 @@ namespace MrCMS.Web.Apps.Amazon
             amazonAppSettings.FeedsApiVersion = "2009-01-01";
             amazonAppSettings.OrdersApiVersion = "2011-01-01";
             amazonAppSettings.ProductsApiVersion = "2011-10-01";
-            amazonAppSettings.ApiEndpoint = "https://mws.amazonservices.com/";
-            amazonAppSettings.AmazonProductDetailsUrl = "http://www.amazon.com/gp/product/";
-            amazonAppSettings.AmazonOrderDetailsUrl = "https://sellercentral.amazon.com/gp/orders-v2/details/?orderID=";
-            amazonAppSettings.AmazonManageOrdersUrl = "https://sellercentral.amazon.com/gp/orders-v2/list";
-            amazonAppSettings.AmazonManageInventoryUrl = "https://sellercentral.amazon.com/myi/search/ProductSummary";
+            amazonAppSettings.ApiEndpoint = "https://mws.amazonservices.co.uk/";
+            amazonAppSettings.AmazonProductDetailsUrl = "http://www.amazon.co.uk/gp/product/";
+            amazonAppSettings.AmazonOrderDetailsUrl = "https://sellercentral.amazon.co.uk/gp/orders-v2/details/?orderID=";
+            amazonAppSettings.AmazonManageOrdersUrl = "https://sellercentral.amazon.co.uk/gp/orders-v2/list";
+            amazonAppSettings.AmazonManageInventoryUrl = "https://sellercentral.amazon.co.uk/myi/search/ProductSummary";
 
             configurationProvider.SaveSettings(amazonAppSettings);
 
