@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using FakeItEasy;
 using MrCMS.Entities.Documents;
@@ -9,10 +10,12 @@ using MrCMS.Services;
 using MrCMS.Services.ImportExport;
 using MrCMS.Services.ImportExport.DTOs;
 using MrCMS.Services.ImportExport.Rules;
-using MrCMS.Tests.Stubs;
+using MrCMS.Web.Apps.Articles.Pages;
+using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Website;
 using Ninject.MockingKernel;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using Xunit;
 using FluentAssertions;
 namespace MrCMS.Tests.Services.ImportExport
@@ -82,7 +85,7 @@ namespace MrCMS.Tests.Services.ImportExport
             items.First().RevealInNavigation.Should().BeTrue();
             items.First().RequireSSL.Should().BeFalse();
             items.First().PublishDate.Should().Be(currentTime);
-            items.First().DocumentType.Should().BeEquivalentTo("StubWebpage");
+            items.First().DocumentType.Should().BeEquivalentTo("Article");
         }
 
         [Fact]
@@ -106,7 +109,7 @@ namespace MrCMS.Tests.Services.ImportExport
         private ExcelPackage GetSpreadsheet()
         {
             var currentTime = DateTime.Parse("2013-07-19 15:18:20");
-            var document = new StubWebpage
+            var document = new Article()
                 {
                     UrlSegment = "test-url",
                     Name = "Test Document",

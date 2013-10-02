@@ -46,7 +46,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.StockReport
         {
             _stockReportService.GenerateStockReport();
 
-            A.CallTo(() => _productVariantService.GetAll()).MustHaveHappened();
+            A.CallTo(() => _productVariantService.GetAllVariantsForStockReport()).MustHaveHappened();
         }
     }
 }
