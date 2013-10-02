@@ -67,7 +67,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                     retryCount++;
                     if (retryCount == 3) break;
 
-                    Thread.Sleep(120000);
                 }
             }
             return submissionIds;
@@ -101,7 +100,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                     {
                         AmazonProgressBarHelper.Update(model.Task, "Push",
                                                        "Nothing yet, we will wait 2 min. more and try again...", 100, 75);
-                        Thread.Sleep(120000);
                     }
                 }
                 catch (Exception ex)
@@ -114,7 +112,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                     AmazonProgressBarHelper.Update(model.Task, "Push",
                                                    "Amazon Api is busy, we will wait additional 2 min. and try again...", 100,
                                                    75);
-                    Thread.Sleep(120000);
                 }
             }
         }
