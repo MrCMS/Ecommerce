@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Website;
 using NHibernate;
@@ -31,8 +32,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                     {
                                                         var order = new Order
                                                                         {
-                                                                            ShippingAddress = cartModel.ShippingAddress.Clone(_session),
-                                                                            BillingAddress = cartModel.BillingAddress.Clone(_session),
+                                                                            ShippingAddress = cartModel.ShippingAddress.ToAddressData(_session),
+                                                                            BillingAddress = cartModel.BillingAddress.ToAddressData(_session),
                                                                             ShippingMethod = cartModel.ShippingMethod,
                                                                             Subtotal = cartModel.Subtotal,
                                                                             DiscountAmount = cartModel.OrderTotalDiscount,
@@ -77,6 +78,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                         if (postCreationActions != null)
                                                             postCreationActions(order);
                                                         session.SaveOrUpdate(order);
+
+                                                        if (CurrentRequestData.CurrentUser != null)
+                                                        {
+                                                            var addresses = _session.QueryOver<Address>().Where(address => address.User == CurrentRequestData.CurrentUser).List();
+                                                            if (!addresses.Contains(cartModel.BillingAddress, AddressComparison.Comparer))
+                                                            {
+                                                                var clone = cartModel.BillingAddress.Clone(session);
+                                                                _session.Save(clone);
+                                                                addresses.Add(clone);
+                                                            }
+                                                            if (!addresses.Contains(cartModel.ShippingAddress, AddressComparison.Comparer))
+                                                                _session.Save(cartModel.ShippingAddress.Clone(session));
+                                                        }
+
                                                         return order;
                                                     });
             _orderEventService.OrderPlaced(placedOrder);

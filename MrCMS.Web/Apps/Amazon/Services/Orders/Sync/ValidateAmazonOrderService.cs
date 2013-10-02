@@ -8,6 +8,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
+using NHibernate;
 using Address = MrCMS.Web.Apps.Ecommerce.Entities.Users.Address;
 using Order = MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order;
 
@@ -16,10 +17,12 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     public class ValidateAmazonOrderService : IValidateAmazonOrderService
     {
         private readonly ICountryService _countryService;
+        private readonly ISession _session;
 
-        public ValidateAmazonOrderService(ICountryService countryService)
+        public ValidateAmazonOrderService(ICountryService countryService, ISession session)
         {
             _countryService = countryService;
+            _session = session;
         }
 
         public void SetAmazonOrderItem(ref AmazonOrder amazonOrder, OrderItem rawOrderItem)
@@ -82,8 +85,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             order.PaymentMethod = rawOrder.PaymentMethod.GetEnumByValue<AmazonPaymentMethod>();
             order.SalesChannel = rawOrder.SalesChannel;
             order.OrderType = rawOrder.OrderType;
-            order.OrderTotalAmount = rawOrder.OrderTotal!=null?Decimal.Parse(rawOrder.OrderTotal.Amount):0;
-            order.OrderCurrency = rawOrder.OrderTotal!=null?rawOrder.OrderTotal.CurrencyCode:String.Empty;
+            order.OrderTotalAmount = rawOrder.OrderTotal != null ? Decimal.Parse(rawOrder.OrderTotal.Amount) : 0;
+            order.OrderCurrency = rawOrder.OrderTotal != null ? rawOrder.OrderTotal.CurrencyCode : String.Empty;
             order.MarketplaceId = rawOrder.MarketplaceId;
             order.ShipServiceLevel = rawOrder.ShipServiceLevel;
             order.ShipmentServiceLevelCategory = rawOrder.ShipmentServiceLevelCategory;
@@ -132,8 +135,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         {
             return new Order()
                 {
-                    ShippingAddress = amazonOrder.ShippingAddress,
-                    BillingAddress = amazonOrder.ShippingAddress,
+                    ShippingAddress = amazonOrder.ShippingAddress.ToAddressData(_session),
+                    BillingAddress = amazonOrder.ShippingAddress.ToAddressData(_session),
                     PaymentMethod = amazonOrder.PaymentMethod.GetDescription(),
                     PaidDate = amazonOrder.PurchaseDate,
                     Total = amazonOrder.OrderTotalAmount,
@@ -155,7 +158,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     {
                         Order = order,
                         UnitPrice = amazonOrderItem.ItemPriceAmount,
-                        Price = amazonOrderItem.ItemPriceAmount*amazonOrderItem.QuantityOrdered,
+                        Price = amazonOrderItem.ItemPriceAmount * amazonOrderItem.QuantityOrdered,
                         Name = amazonOrderItem.Title,
                         Tax = amazonOrderItem.ItemTaxAmount,
                         Discount = amazonOrderItem.PromotionDiscountAmount,
