@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Web;
+using Elmah;
 using MrCMS.Helpers;
+using MrCMS.Logging;
 using MrCMS.Paging;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ryness.Entities;
 using MrCMS.Web.Apps.Ryness.Models;
 using MrCMS.Web.Apps.Ryness.Settings;
+using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
 
@@ -87,7 +91,7 @@ namespace MrCMS.Web.Apps.Ryness.Services
                     string strAddressLine1 = o.ShippingAddress.Company + " " + o.ShippingAddress.Address1;
                     string strAddressLine2 = o.ShippingAddress.Address1;
                     string strAddressLine3 = o.ShippingAddress.City;
-                    string strAddressLine4 = o.ShippingAddress.StateProvince; ;
+                    string strAddressLine4 = o.ShippingAddress.StateProvince; 
                     string strAddressLine5 = o.ShippingAddress.Country != null ? o.ShippingAddress.Country.Name : "";
                     string strPostCode = o.ShippingAddress.PostalCode;
                     string strInstructions = "" + " Tel:" + o.ShippingAddress.PhoneNumber;
@@ -223,6 +227,16 @@ namespace MrCMS.Web.Apps.Ryness.Services
                 }
                 catch (Exception ex)
                 {
+                    var error = new Error(ex);
+                    _session.SaveOrUpdate(new Log
+                    {
+                        Error = error,
+                        Type = LogEntryType.Error,
+                        Site = MrCMSApplication.Get<ICurrentSiteLocator>().GetCurrentSite(),
+                        Message = error.Message,
+                        Detail = error.Detail
+                    });
+
                     return false;
                 }
             }
@@ -281,13 +295,29 @@ namespace MrCMS.Web.Apps.Ryness.Services
             }
             catch (WebException ex)
             {
-                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+                var error = new Error(ex);
+                _session.SaveOrUpdate(new Log
+                {
+                    Error = error,
+                    Type = LogEntryType.Error,
+                    Site = MrCMSApplication.Get<ICurrentSiteLocator>().GetCurrentSite(),
+                    Message = error.Message,
+                    Detail = error.Detail
+                });
                 return false;
 
             }
             catch (Exception ex)
             {
-                Elmah.ErrorSignal.FromCurrentContext().Raise(ex);
+                var error = new Error(ex);
+                _session.SaveOrUpdate(new Log
+                {
+                    Error = error,
+                    Type = LogEntryType.Error,
+                    Site = MrCMSApplication.Get<ICurrentSiteLocator>().GetCurrentSite(),
+                    Message = error.Message,
+                    Detail = error.Detail
+                });
                 return false;
             }
 
