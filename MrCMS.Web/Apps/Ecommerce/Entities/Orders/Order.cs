@@ -4,6 +4,7 @@ using System.Text;
 using MrCMS.Entities;
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System;
@@ -65,8 +66,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         [DisplayName("Shipping Date")]
         public virtual DateTime? ShippingDate { get; set; }
 
-        public virtual Address ShippingAddress { get; set; }
-        public virtual Address BillingAddress { get; set; }
+        public virtual AddressData ShippingAddress { get; set; }
+        public virtual AddressData BillingAddress { get; set; }
 
         [DisplayName("Payment Method")]
         public virtual string PaymentMethod { get; set; }
@@ -90,7 +91,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 
         [DisplayName("Is Cancelled")]
         public virtual bool IsCancelled { get; set; }
-        
+
         [DisplayName("Tracking Number")]
         [StringLength(250)]
         public virtual string TrackingNumber { get; set; }
@@ -138,6 +139,51 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
                 sb.Append("</table>");
                 return sb.ToString();
             }
+        }
+    }
+
+    public class AddressData : IAddress
+    {
+        public virtual string Name
+        {
+            get { return string.Format("{0} {1} {2}", Title, FirstName, LastName); }
+        }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Title { get; set; }
+        public string Company { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string City { get; set; }
+        public string StateProvince { get; set; }
+        public Country Country { get; set; }
+        public string PostalCode { get; set; }
+        public string PhoneNumber { get; set; }
+
+        public string GetDescription(bool removeName = false)
+        {
+            var addressParts = GetAddressParts(removeName);
+            return string.Join(", ", addressParts);
+        }
+
+        private IEnumerable<string> GetAddressParts(bool removeName)
+        {
+            if (!string.IsNullOrWhiteSpace(Name) && !removeName)
+                yield return Name;
+            if (!string.IsNullOrWhiteSpace(Company))
+                yield return Company;
+            if (!string.IsNullOrWhiteSpace(Address1))
+                yield return Address1;
+            if (!string.IsNullOrWhiteSpace(Address2))
+                yield return Address2;
+            if (!string.IsNullOrWhiteSpace(City))
+                yield return City;
+            if (!string.IsNullOrWhiteSpace(StateProvince))
+                yield return StateProvince;
+            if (Country != null)
+                yield return Country.Name;
+            if (!string.IsNullOrWhiteSpace(PostalCode))
+                yield return PostalCode;
         }
     }
 }

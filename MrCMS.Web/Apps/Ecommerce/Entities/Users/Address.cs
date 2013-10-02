@@ -5,6 +5,7 @@ using MrCMS.Entities;
 using MrCMS.Entities.People;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using System.ComponentModel;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using NHibernate;
 using Newtonsoft.Json;
@@ -45,8 +46,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Users
         [Required]
         public virtual string PhoneNumber { get; set; }
 
-        public virtual Guid UserGuid { get; set; }
-
         public virtual Address Clone(ISession session)
         {
             return new Address
@@ -62,7 +61,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Users
                            PostalCode = PostalCode,
                            StateProvince = StateProvince,
                            Title = Title,
-                           UserGuid = UserGuid,
                            User = User
                        };
         }
@@ -99,6 +97,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Users
         public virtual string ToJSON()
         {
             return JsonConvert.SerializeObject(new AddressComparison(this));
+        }
+
+        public virtual AddressData ToAddressData(ISession session)
+        {
+            return new AddressData
+            {
+                Address1 = Address1,
+                Address2 = Address2,
+                City = City,
+                Company = Company,
+                Country = Country == null ? null : session.Get<Country>(Country.Id),
+                FirstName = FirstName,
+                LastName = LastName,
+                PhoneNumber = PhoneNumber,
+                PostalCode = PostalCode,
+                StateProvince = StateProvince,
+                Title = Title
+            };
         }
     }
 }
