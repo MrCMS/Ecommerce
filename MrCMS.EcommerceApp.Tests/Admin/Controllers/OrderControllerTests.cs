@@ -5,6 +5,7 @@ using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
@@ -27,7 +28,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _orderSearchService = A.Fake<IOrderSearchService>();
             _orderShippingService = A.Fake<IOrderShippingService>();
             _orderController = new OrderController(_orderService,
-                _shippingMethodManager, _orderSearchService, _orderShippingService, _optionService);
+                _shippingMethodManager, _orderSearchService, _orderShippingService, _optionService, A.Fake<EcommerceSettings>());
         }
 
         //[Fact]
