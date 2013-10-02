@@ -4,24 +4,37 @@
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 <div id="details" class="container padding-top-bottom-10">
     <h1>Shopping basket summary</h1>
-    <hr/>
+    <hr />
     <div class="row-fluid cart-header-buttons">
         <div class="span2">
             <a class="btn span12 line-height-27" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">Continue Shopping</a>
         </div>
-        <div class="span8 hidden-phone">
-@*            @if (Model.Items.Any())
+        <div class="span6 hidden-phone">
+            @*            @if (Model.Items.Any())
             {
                 <div class="line-height-30">
                     <img src="/Themes/Ryness/Content/Images/print.gif" alt="Print" /> <a href="#">Print shopping basket</a>
                 </div>
             }*@
         </div>
-        <div class="span2 text-align-center hidden-phone">
-            @if (Model.CanEnterPaymentFlow)
-            {
-                <a class="generic-button big-red-gradient span12" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Checkout</a>
-            }
+        <div class="span4 text-align-center hidden-phone">
+            <div class="row-fluid margin-top-0">
+                <div class="span6">
+                    @if (Model.CanUsePayPalExpress)
+                    {
+                        using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
+                        {
+                            <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />
+                        }
+                    }
+                </div>
+                <div class="span6">
+                    @if (Model.CanEnterPaymentFlow)
+                    {
+                        <a class="generic-button big-red-gradient span12" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Checkout</a>
+                    }
+                </div>
+            </div>
         </div>
     </div>
 
@@ -58,14 +71,14 @@
             <div class="span6 cart-code padding-top-bottom-20">
                 <div class="row-fluid" id="cart-discount">
                     <div class="cart-discount-header">Promotion Code</div>
-                    <hr/>
+                    <hr />
                     <p>If you have a promotion code or student card please enter it here.</p>
-                    <br/>
+                    <br />
                     @Html.HiddenFor(x => x.DiscountCode)
                     <div class="title">Promotional Code :</div>
                     <div id="discount-code-box" class="row-fluid">
                         <div class="span8">
-                            <input type="text" id="discount-code" class="span12"/>
+                            <input type="text" id="discount-code" class="span12" />
                         </div>
                         <div class="span4">
                             <button id="apply-discount-code" class="btn span8">Apply Code</button>
@@ -73,21 +86,21 @@
                     </div>
                 </div>
             </div>
-            <div class="span6 cart-summary padding-top-bottom-25" style="padding-right:18px;padding-left:18px;" id="cart-summary">
+            <div class="span6 cart-summary padding-top-bottom-25" style="padding-right: 18px; padding-left: 18px;" id="cart-summary">
                 <div class="text-align-right">
                     @if (Model.Items.Any())
                     {
                         <div class="cart-subtotal">Subtotal before Delivery : @Model.Subtotal.ToCurrencyFormat()</div>
                         if (Model.HasDiscount)
                         {
-                            <div class="cart-discount">Discount (@Model.DiscountCode) : @((-Model.OrderTotalDiscount).ToCurrencyFormat())</div>
+                        <div class="cart-discount">Discount (@Model.DiscountCode) : @((-Model.OrderTotalDiscount).ToCurrencyFormat())</div>
                         }
                         if (MrCMS.Website.MrCMSApplication.Get<TaxSettings>().TaxesEnabled)
                         {
-                            <div class="cart-taxes">VAT : @Model.Tax.ToCurrencyFormat()</div>
+                        <div class="cart-taxes">VAT : @Model.Tax.ToCurrencyFormat()</div>
                         }
                         <div class="cart-shipping-select">
-                            @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new { @class = "span12", @style = "margin-bottom:0;" })                        
+                            @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new { @class = "span12", @style = "margin-bottom:0;" })
                         </div>
                         <div class="cart-shipping">
                             @if (Model.ShippingTotal.HasValue)
@@ -108,34 +121,29 @@
                     <div class="span6">
                         <div class="row-fluid">
                             <button type="button" class="btn span6" id="update-basket">Update Basket</button>
-                            <button type="button" class="btn span6" id="empty-basket">Empty Basket</button>        
-                         </div>                
+                            <button type="button" class="btn span6" id="empty-basket">Empty Basket</button>
                         </div>
+                    </div>
                     <div class="span6 text-align-center">
                         @if (Model.CanEnterPaymentFlow)
                         {
                             <a class="generic-button big-red-gradient span12" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Checkout</a>
                         }
+
+                        @if (Model.CanUsePayPalExpress)
+                        {
+                            <p>or</p>
+                            using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
+                            {
+                                <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />
+                            }
+                        }
                     </div>
                 </div>
             </div>
         </div>
-        
-
     }
-    
-    <div class="row-fluid">
-        <div class="pull-right">
-            @if (Model.CanUsePayPalExpress)
-            {
-                <p class="text-align-right">Or Checkout with...</p>
-                using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
-                {
-                    <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />
-                }
-            }
-        </div>
-    </div>
+
 </div>
 
 @{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/cart.js"); }

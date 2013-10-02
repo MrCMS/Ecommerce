@@ -407,6 +407,7 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\NotificationTemplateSettingsOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderLineOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderNoteOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\OrderOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\PriceBreakOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductVariantOverride.cs" />
@@ -710,6 +711,7 @@
     <Compile Include="Apps\Galleries\Metadata\GalleryMetaData.cs" />
     <Compile Include="Apps\Galleries\Pages\Gallery.cs" />
     <Compile Include="Apps\Galleries\Pages\GalleryList.cs" />
+    <Compile Include="Apps\Ryness\Areas\Admin\Controllers\KerridgeController.cs" />
     <Compile Include="Apps\Ryness\Areas\Admin\Controllers\TestimonialController.cs" />
     <Compile Include="Apps\Ryness\Dbconfiguration\KerridgeOverride.cs" />
     <Compile Include="Apps\Ryness\Dbconfiguration\TestimonialOverride.cs" />
@@ -720,6 +722,7 @@
     <Compile Include="Apps\Ryness\Metadata\BuyingGuideMetadata.cs" />
     <Compile Include="Apps\Ryness\Metadata\StoreListMetadata.cs" />
     <Compile Include="Apps\Ryness\Metadata\StoreMetadata.cs" />
+    <Compile Include="Apps\Ryness\Models\KerridgeLogPagedList.cs" />
     <Compile Include="Apps\Ryness\Models\RynessAdminMenuModel.cs" />
     <Compile Include="Apps\Ryness\Pages\BuyingGuide.cs" />
     <Compile Include="Apps\Ryness\Pages\Store.cs" />
@@ -729,6 +732,7 @@
     <Compile Include="Apps\Ryness\Services\IKerridgeService.cs" />
     <Compile Include="Apps\Ryness\Services\ITestimonialService.cs" />
     <Compile Include="Apps\Ryness\Services\TestimonialService.cs" />
+    <Compile Include="Apps\Ryness\Settings\KerridgeSettings.cs" />
     <Compile Include="Apps\Ryness\Tasks\SendKerridgeOrders.cs" />
     <Compile Include="Apps\Ryness\Widgets\FeaturedProductsVertical.cs" />
     <Compile Include="Apps\Ryness\Widgets\NewsletterSignup.cs" />
@@ -841,6 +845,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\specification-attributes.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\stock.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\tax-rates.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\ecommerce-admin.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-responsive.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-responsive.min.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap.css" />
@@ -2190,6 +2195,7 @@
     <Content Include="Apps\Ryness\Views\Pages\BuyingGuide.cshtml" />
     <Content Include="Apps\Ryness\Views\Pages\Store.cshtml" />
     <Content Include="Apps\Ryness\Views\Pages\StoreList.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Kerridge\Index.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\BuyingGuide.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\Store.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\StoreList.cshtml" />

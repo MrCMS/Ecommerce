@@ -6,72 +6,62 @@
     ViewBag.Title = "Close Amazon Listings";
     var amazonManageInventoryUrl = ViewData["AmazonManageInventoryUrl"] as string;
 }
-    <fieldset>
-        <legend>
-            Close Amazon Listings
+<fieldset>
+    <legend>Close Amazon Listings
             <span class="btn-group  display-inline  pull-right">
-                @Html.ActionLink("Listing Details", "Details", "Listing", new {id=Model.Id}, new { @class = "btn btn-primary"})
-                @Html.ActionLink("Listing Group", "Edit", "ListingGroup",  new {id=Model.Id}, new { @class = "btn"})
-                @Html.ActionLink("Logs", "Index", "Logs", new {type=AmazonLogType.Listings}, new { @class = "btn"})
+                @Html.ActionLink("Listing Details", "Details", "Listing", new { id = Model.Id }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Listing Group", "Edit", "ListingGroup", new { id = Model.Id }, new { @class = "btn" })
+                @Html.ActionLink("Logs", "Index", "Logs", new { type = AmazonLogType.Listings }, new { @class = "btn" })
             </span>
-        </legend>
-        
-        @Html.Hidden("Id",Model.Id)
-        @Html.Hidden("Description",Model.Description)
-        @Html.Hidden("TaskId",Guid.NewGuid())
-        
-        <div id="pb" style="display: none">
-            <div class="progress progress-info progress-striped">
-                <div class="bar" style="width: 0;"></div>
-            </div>
-        </div>
+    </legend>
 
-        <div class="row-fluid">
-            <div class="span6">
-                Listing Group: <strong>@Model.Title</strong>
-                <br/>
-                <br/>
-                <div>
-                    <strong>IMPORTANT :</strong>
-                    <p>
-                        Since Amazon Api allows 3rd-party apps only to send a small set of requests per time,
-                        sending product data can take up to 5min., and also about 10min. to process requests on Amazon
-                        side. That procedure is complex and can break in every possible phase. We
-                        @Html.ActionLink("log", "Index", "Logs", new {type=AmazonLogType.Listings},null)
-                        every step of the process and for safety precautions, please visit Amazon's
-                        @if (!String.IsNullOrWhiteSpace(amazonManageInventoryUrl))
-                        {
-                            <a href='@amazonManageInventoryUrl' target="_blank">
-                                Manage Inventory page
-                            </a>
-                        }
-                        else
-                        {
-                            <span>Manage Inventory page</span>
-                        }
-                        when procedure ends to check if product variants were synced correctly.
-                    </p>
-                </div>
-                 <br/>
-                <div class="alert alert-danger">
-                    <strong>Are you sure?</strong><br/>
-                    You will permanently remove Amazon products and their associated SKUs from your Amazon inventory.
+    @Html.Hidden("Id", Model.Id)
+    @Html.Hidden("Description", Model.Description)
+    @Html.Hidden("TaskId", Guid.NewGuid())
+
+    <div id="pb" style="display: none">
+        <div class="progress progress-info progress-striped">
+            <div class="bar" style="width: 0;"></div>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="span6">
+            Listing Group: <strong>@Model.Title</strong>
+            <br />
+            <br />
+            <div>
+                <strong>IMPORTANT :</strong>
+                <ul>
+                    <li>Please leave this tab open whilst syncing. Feel free to browse the admin/site in another tab</li>
+                    <li>Syncing can take over 10 minutes to complete</li>
+                    <li>More information can be viewed in the @Html.ActionLink("log", "Index", "Logs", new { type = AmazonLogType.Listings }, null)</li>
+                    @if (!string.IsNullOrEmpty(amazonManageInventoryUrl))
+                    {
+                        <li>Check your inventory on <a href='@amazonManageInventoryUrl' target="_blank">Amazon</a> to confirm the listing has worked as expected.</li>
+                    }
+                </ul>
+            </div>
+            <br />
+            <div class="alert alert-danger">
+                <strong>Are you sure?</strong><br />
+                You will permanently remove Amazon products and their associated SKUs from your Amazon inventory.
                     Also, if you have selected products with variations, those variations will also be permanently removed.
                     Please note: After you delete an SKU from your Amazon inventory, you cannot add an identical SKU and associated product 
                     information until 24 hours have passed.
             </div>
-                <br/>
-                <button type="button" class="btn btn-success" id="pb-start-task">
-                    Close Now</button>
-            </div>
-            <div class="span6">
-                <div id="pb-status" style="display: none">
-                    @{Html.RenderAction("ProgressBarMessages","App",new {Model.TaskId}); }
-                </div>
+            <br />
+            <button type="button" class="btn btn-success" id="pb-start-task">
+                Close Now</button>
+        </div>
+        <div class="span6">
+            <div id="pb-status" style="display: none">
+                @{Html.RenderAction("ProgressBarMessages", "App", new { Model.TaskId }); }
             </div>
         </div>
-       
-    </fieldset>
+    </div>
+
+</fieldset>
 
 @{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/progress-bar-paged.js");}
 @{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/close-many-listing.js");}
