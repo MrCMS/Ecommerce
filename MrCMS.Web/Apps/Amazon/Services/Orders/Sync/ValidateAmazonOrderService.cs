@@ -8,8 +8,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
-using NHibernate;
-using Address = MrCMS.Web.Apps.Ecommerce.Entities.Users.Address;
 using Order = MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
@@ -17,23 +15,19 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     public class ValidateAmazonOrderService : IValidateAmazonOrderService
     {
         private readonly ICountryService _countryService;
-        private readonly ISession _session;
 
-        public ValidateAmazonOrderService(ICountryService countryService, ISession session)
+        public ValidateAmazonOrderService(ICountryService countryService)
         {
             _countryService = countryService;
-            _session = session;
         }
 
         public void SetAmazonOrderItem(ref AmazonOrder amazonOrder, OrderItem rawOrderItem)
         {
-            var orderItem = amazonOrder.Items.SingleOrDefault(x => x.AmazonOrderItemId == rawOrderItem.OrderItemId);
-
-            if (orderItem != null)
+            if (amazonOrder.Items.SingleOrDefault(x => x.AmazonOrderItemId == rawOrderItem.OrderItemId) != null)
                 amazonOrder.Items.SingleOrDefault(x => x.AmazonOrderItemId == rawOrderItem.OrderItemId).QuantityShipped = rawOrderItem.QuantityShipped;
             else
             {
-                orderItem = GetAmazonOrderItem(amazonOrder, rawOrderItem);
+                var orderItem = GetAmazonOrderItem(amazonOrder, rawOrderItem);
 
                 amazonOrder.Items.Add(orderItem);
             }
@@ -76,7 +70,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 };
         }
 
-        public void GetAmazonOrderDetails(MarketplaceWebServiceOrders.Model.Order rawOrder, ref AmazonOrder order, Address shippingAddress)
+        public void GetAmazonOrderDetails(MarketplaceWebServiceOrders.Model.Order rawOrder, ref AmazonOrder order, AddressData shippingAddress)
         {
             order.AmazonOrderId = rawOrder.AmazonOrderId;
             order.BuyerEmail = rawOrder.BuyerEmail;
@@ -96,11 +90,11 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             order.FulfillmentChannel = rawOrder.FulfillmentChannel.GetEnumByValue<AmazonFulfillmentChannel>();
             order.LastUpdatedDate = rawOrder.LastUpdateDate;
         }
-        public Address GetAmazonOrderAddress(MarketplaceWebServiceOrders.Model.Order rawOrder)
+        public AddressData GetAmazonOrderAddress(MarketplaceWebServiceOrders.Model.Order rawOrder)
         {
             if (rawOrder.ShippingAddress != null)
             {
-                return new Address()
+                return new AddressData()
                     {
                         Address1 = rawOrder.ShippingAddress.AddressLine1,
                         Address2 = rawOrder.ShippingAddress.AddressLine2,
@@ -135,8 +129,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         {
             return new Order()
                 {
-                    ShippingAddress = amazonOrder.ShippingAddress.ToAddressData(_session),
-                    BillingAddress = amazonOrder.ShippingAddress.ToAddressData(_session),
+                    ShippingAddress = amazonOrder.ShippingAddress,
+                    BillingAddress = amazonOrder.ShippingAddress,
                     PaymentMethod = amazonOrder.PaymentMethod.GetDescription(),
                     PaidDate = amazonOrder.PurchaseDate,
                     Total = amazonOrder.OrderTotalAmount,

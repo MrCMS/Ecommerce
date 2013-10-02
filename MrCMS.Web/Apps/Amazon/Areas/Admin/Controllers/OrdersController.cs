@@ -74,7 +74,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult SyncMany()
         {
-            return View(new AmazonSyncModel() { From = CurrentRequestData.Now, To = CurrentRequestData.Now });
+            return View(new AmazonSyncModel());
         }
 
         [HttpGet]
