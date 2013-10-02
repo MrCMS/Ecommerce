@@ -8,8 +8,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
-using NHibernate;
-using Address = MrCMS.Web.Apps.Ecommerce.Entities.Users.Address;
 using Order = MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
@@ -17,12 +15,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     public class ValidateAmazonOrderService : IValidateAmazonOrderService
     {
         private readonly ICountryService _countryService;
-        private readonly ISession _session;
 
-        public ValidateAmazonOrderService(ICountryService countryService, ISession session)
+        public ValidateAmazonOrderService(ICountryService countryService)
         {
             _countryService = countryService;
-            _session = session;
         }
 
         public void SetAmazonOrderItem(ref AmazonOrder amazonOrder, OrderItem rawOrderItem)
