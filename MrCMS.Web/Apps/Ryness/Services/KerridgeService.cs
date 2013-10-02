@@ -221,7 +221,7 @@ namespace MrCMS.Web.Apps.Ryness.Services
                     
                     return CallKerridge(xmlOrderObject);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
