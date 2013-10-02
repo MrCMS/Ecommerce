@@ -24,5 +24,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void DeletePriceBreak(PriceBreak priceBreak);
         IPagedList<ProductVariant> GetAllVariantsWithLowStock(int treshold, int page = 1);
         IList<ProductVariant> GetAllVariantsWithLowStock(int treshold);
+        IList<ProductVariant> GetAllVariantsForStockReport();
     }
 }

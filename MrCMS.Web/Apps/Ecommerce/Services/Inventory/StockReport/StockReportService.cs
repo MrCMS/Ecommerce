@@ -38,7 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Inventory.StockReport
         }
         public byte[] GenerateStockReport()
         {
-            var items = _productVariantService.GetAll();
+            var items = _productVariantService.GetAllVariantsForStockReport();
 
             using (var ms = new MemoryStream())
             using (var sw = new StreamWriter(ms))
@@ -68,10 +68,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Inventory.StockReport
 
         private void WriteProduct(CsvWriter w, ProductVariant item)
         {
-            w.WriteField(item.Name);
-            w.WriteField(item.SKU);
-            w.WriteField(item.StockRemaining);
-            w.NextRecord();
+            if (item.Product.Published)
+            {
+                w.WriteField(item.Name);
+                w.WriteField(item.SKU);
+                w.WriteField(item.StockRemaining);
+                w.NextRecord();
+            }
         }
     }
 }

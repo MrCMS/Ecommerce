@@ -115,6 +115,48 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
         }
 
         [Fact]
+        public void PrepareForSyncAmazonListingService_UpdateAmazonListing_ShouldCallSave()
+        {
+            var item = new Currency() { Code = "GBP", Id = 1 };
+            Session.Transact(session => session.Save(item));
+
+            var mockingKernel = new MockingKernel();
+            MrCMSApplication.OverrideKernel(mockingKernel);
+            mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
+            mockingKernel.Bind<EcommerceSettings>().ToMethod(context => new EcommerceSettings() { CurrencyId = 1 });
+
+            var product = new Product()
+            {
+                Brand = new Brand() { Name = "B" }
+            };
+            var productVariant = new ProductVariant()
+            {
+                Product = product,
+                SKU = "S1",
+                BasePrice = 1,
+                StockRemaining = 2,
+                Name = "P",
+                ManufacturerPartNumber = "MPN1"
+            };
+            var model = new AmazonListing()
+            {
+                ProductVariant = productVariant,
+                StandardProductId = "1P",
+                StandardProductIDType = StandardProductIDType.EAN,
+                AmazonListingGroup = new AmazonListingGroup()
+                {
+                    FulfillmentChannel = AmazonFulfillmentChannel.MFN
+                }
+            };
+
+            A.CallTo(() => _productVariantService.GetProductVariantBySKU(model.ProductVariant.SKU)).Returns(productVariant);
+
+            var results = _prepareForSyncAmazonListingService.UpdateAmazonListing(model);
+
+            A.CallTo(() => _amazonListingService.Save(model)).MustHaveHappened();
+        }
+
+        [Fact]
         public void PrepareForSyncAmazonListingService_InitAmazonListingFromProductVariant_ShouldReturnAmazonListingType()
         {
             var mockingKernel = new MockingKernel();
@@ -182,6 +224,52 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             results.As<AmazonListing>().StandardProductIDType.Should().Be(_amazonSellerSettings.BarcodeIsOfType);
             results.As<AmazonListing>().StandardProductId.Should().Be(model.StandardProductId);
             results.As<AmazonListing>().FulfillmentChannel.Should().Be(AmazonFulfillmentChannel.MFN);
+        }
+
+        [Fact]
+        public void PrepareForSyncAmazonListingService_InitAmazonListingFromProductVariant_ShouldCallSave()
+        {
+            var item = new Currency() { Code = "GBP", Id = 1 };
+            Session.Transact(session => session.Save(item));
+
+            var mockingKernel = new MockingKernel();
+            MrCMSApplication.OverrideKernel(mockingKernel);
+            mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
+            mockingKernel.Bind<EcommerceSettings>().ToMethod(context => new EcommerceSettings() { CurrencyId = 1 });
+
+            var product = new Product()
+            {
+                Brand = new Brand() { Name = "B" }
+            };
+            var productVariant = new ProductVariant()
+            {
+                Product = product,
+                SKU = "S1",
+                BasePrice = 1,
+                StockRemaining = 2,
+                Name = "P",
+                ManufacturerPartNumber = "MPN1"
+            };
+            var amazonListingGroup = new AmazonListingGroup()
+            {
+                Id = 1,
+                FulfillmentChannel = AmazonFulfillmentChannel.MFN
+            };
+            var model = new AmazonListing()
+            {
+                ProductVariant = productVariant,
+                StandardProductId = "1P",
+                StandardProductIDType = StandardProductIDType.EAN,
+                AmazonListingGroup = amazonListingGroup
+            };
+
+            A.CallTo(() => _amazonListingGroupService.Get(amazonListingGroup.Id)).Returns(amazonListingGroup);
+
+            A.CallTo(() => _productVariantService.GetProductVariantBySKU(model.ProductVariant.SKU)).Returns(productVariant);
+
+            var results = _prepareForSyncAmazonListingService.InitAmazonListingFromProductVariant(model, model.ProductVariant.SKU, amazonListingGroup.Id);
+
+            A.CallTo(() =>  _amazonListingGroupService.Save(amazonListingGroup)).MustHaveHappened();
         }
     }
 }
