@@ -407,6 +407,7 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\NotificationTemplateSettingsOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderLineOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderNoteOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\OrderOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\PriceBreakOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductVariantOverride.cs" />
