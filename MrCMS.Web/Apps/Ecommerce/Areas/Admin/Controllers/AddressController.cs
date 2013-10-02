@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
@@ -39,17 +40,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Edit")]
         [HttpPost]
-        public RedirectToRouteResult Edit_POST(Address item, int orderID, int addressType, int countryID = 0)
+        public RedirectToRouteResult Edit_POST(AddressData item, int orderID, int addressType, int countryID = 0)
         {
-            //if (countryID != 0)
-            //    item.Country = _countryService.Get(countryID);
-            //_addressService.Save(item);
-            //var order = _orderService.Get(orderID);
-            //if (addressType == 1)
-            //    order.ShippingAddress = item;
-            //else
-            //    order.BillingAddress = item;
-            //_orderService.Save(order);
+            if (countryID != 0)
+                item.Country = _countryService.Get(countryID);
+            var order = _orderService.Get(orderID);
+            if (addressType == 1)
+                order.ShippingAddress = item;
+            else
+                order.BillingAddress = item;
+            _orderService.Save(order);
             return RedirectToAction("Edit", "Order", new { id = orderID });
         }
     }
