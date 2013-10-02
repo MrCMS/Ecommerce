@@ -13,10 +13,15 @@
                     @RenderBody()
                 </div>
                 <div class="span8">
+                    <div id="map_canvas"></div>
                     @RenderZone("Right Column")
-                    <img src="/Themes/Ryness/Content/Images/map.jpg" alt="map" title="map"/>
                 </div> 
             </div>
         </div>
     </div>
 </div>
+@{
+    Html.IncludeScript(Url.Content("~/Themes/Ryness/Content/Scripts/jquery.ui.map.full.min.js"));
+    Html.IncludeScript(Url.Content("http://maps.google.com/maps/api/js?sensor=true"));
+    Html.IncludeScript(Url.Content("~/Themes/Ryness/Content/Scripts/ryness-map.js"));
+}
