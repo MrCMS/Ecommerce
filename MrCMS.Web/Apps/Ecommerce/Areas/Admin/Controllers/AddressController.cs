@@ -22,35 +22,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(int addressType = 0, int orderID = 0, int addressID = 0)
+        public ActionResult Edit(Order order)
         {
             ViewData["Countries"] = _countryService.GetOptions();
-            ViewData["addressID"] = addressID;
-            ViewData["addressType"] = addressType;
-            if (addressID != 0)
-            {
-                var address = _addressService.Get(addressID);
-                if (address.Country != null)
-                    ViewData["countryID"] = address.Country.Id;
-                return PartialView(address);
-            }
-
-            return PartialView(new Address());
+            return PartialView(order);
+            
         }
 
         [ActionName("Edit")]
         [HttpPost]
-        public RedirectToRouteResult Edit_POST(AddressData item, int orderID, int addressType, int countryID = 0)
+        public RedirectToRouteResult Edit_POST(Order order)
         {
-            if (countryID != 0)
-                item.Country = _countryService.Get(countryID);
-            var order = _orderService.Get(orderID);
-            if (addressType == 1)
-                order.ShippingAddress = item;
-            else
-                order.BillingAddress = item;
+            
             _orderService.Save(order);
-            return RedirectToAction("Edit", "Order", new { id = orderID });
+            return RedirectToAction("Edit", "Order", new { id = order.Id });
         }
     }
 }
