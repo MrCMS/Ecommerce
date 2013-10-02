@@ -34,7 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public IList<ProductVariant> GetAllVariantsWithLowStock(int treshold)
         {
             return _session.QueryOver<ProductVariant>().Where(item => item.StockRemaining <= treshold 
-                && item.TrackingPolicy == TrackingPolicy.Track && item.Product.Published).OrderBy(x => x.Product.Id).Asc.Cacheable().List();
+                && item.TrackingPolicy == TrackingPolicy.Track).OrderBy(x => x.Product.Id).Asc.Cacheable().List();
         }
         public IList<ProductVariant> GetAllVariantsForStockReport()
         {
