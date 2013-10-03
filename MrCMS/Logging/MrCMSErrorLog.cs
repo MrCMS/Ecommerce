@@ -34,13 +34,13 @@ namespace MrCMS.Logging
             if (_session != null)
             {
                 var log = new Log
-                {
-                    Error = error,
-                    Guid = newGuid,
-                    Message = error.Message,
-                    Detail = error.Detail,
-                    Site = _session.Get<Site>(CurrentRequestData.CurrentSite.Id)
-                };
+                              {
+                                  Error = error,
+                                  Guid = newGuid,
+                                  Message = error.Message,
+                                  Detail = error.Detail,
+                                  Site = _session.Get<Site>(CurrentRequestData.CurrentSite.Id)
+                              };
                 try
                 {
                     _session.Transact(session => session.Save(log));
