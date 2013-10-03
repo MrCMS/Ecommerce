@@ -45,7 +45,7 @@ hr { border-top: 1px solid #eaeaea;border-bottom: 1px solid #ffffff;}
 .border-bottom {border-bottom:1px solid #e8e8e8;}
 .navbar {margin-bottom:0;}
 input[type="radio"], input[type="checkbox"] {margin:0;}
-.red {color:#C5251E;}
+.red {color:#C5251E !important;}
 .out-of-stock { border: #C5251E 1px solid;padding-top: 10px;}
 .hideproductimage { display: none;}
 

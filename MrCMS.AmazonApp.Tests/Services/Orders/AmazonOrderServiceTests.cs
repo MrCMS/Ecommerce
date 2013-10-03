@@ -9,11 +9,13 @@ namespace MrCMS.AmazonApp.Tests.Services.Orders
     {
         private IAmazonLogService _amazonLogService;
         private AmazonOrderService _amazonOrderService;
+        private AmazonOrderEventService _amazonOrderEventService;
 
         public AmazonOrderServiceTests()
         {
             _amazonLogService = A.Fake<IAmazonLogService>();
-            _amazonOrderService = new AmazonOrderService(Session,_amazonLogService);
+            _amazonOrderEventService = A.Fake<AmazonOrderEventService>();
+            _amazonOrderService = new AmazonOrderService(Session, _amazonLogService, _amazonOrderEventService);
         }
 
     }
