@@ -6,14 +6,14 @@ namespace MrCMS.Web.Tests.Stubs
 {
     public class StubDocument : Document
     {
-        public virtual void SetVersions(List<DocumentVersion> versions)
+        public void SetVersions(List<DocumentVersion> versions)
         {
             Versions = versions;
         }
     }
     public class StubWebpage : Webpage	
     {
-        public virtual void SetVersions(List<DocumentVersion> versions)
+        public void SetVersions(List<DocumentVersion> versions)
         {
             Versions = versions;
         }

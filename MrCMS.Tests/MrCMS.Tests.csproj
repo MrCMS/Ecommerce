@@ -145,6 +145,7 @@
     <Compile Include="Services\NavigationServiceTests.cs" />
     <Compile Include="Services\PasswordEncryptionManagerTests.cs" />
     <Compile Include="Services\PasswordManagementServiceTests.cs" />
+    <Compile Include="Services\ResetPasswordServiceTests.cs" />
     <Compile Include="Services\RoleServiceTests.cs" />
     <Compile Include="Services\SearchServiceTests.cs" />
     <Compile Include="Services\SitesServiceTests.cs" />
@@ -181,6 +182,10 @@
     <Compile Include="Website\Routing\MrCMSRouteHandlerTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MrCMS.Web\MrCMS.Web.csproj">
+      <Project>{e64f6811-8373-4310-9cce-3fbca0d87826}</Project>
+      <Name>MrCMS.Web</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MrCMS\MrCMS.csproj">
       <Project>{9D6ECC0F-CDA1-43E2-B88B-BC01299EB9CE}</Project>
       <Name>MrCMS</Name>
