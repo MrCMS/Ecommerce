@@ -21,5 +21,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
         FileStream GetProductsImageFeeds(AmazonListingGroup amazonListingGroup);
 
         FileStream GetOrderFulfillmentFeed(AmazonOrder order);
+        FileStream GetOrderFulfillmentFeed(IEnumerable<AmazonOrder> orders);
     }
 }

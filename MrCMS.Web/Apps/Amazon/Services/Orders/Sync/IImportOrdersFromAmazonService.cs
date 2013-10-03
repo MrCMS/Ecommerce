@@ -7,6 +7,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     public interface IImportOrdersFromAmazonService
     {
         void ImportOrders(AmazonSyncModel model, ICollection<AmazonOrder> orders);
-        List<AmazonOrder> GetOrdersFromAmazon(AmazonSyncModel model);
+        List<AmazonOrder> GetOrdersFromAmazon(AmazonSyncModel model, ref List<AmazonOrder> outOfSyncAmazonOrders);
     }
 }

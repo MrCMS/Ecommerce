@@ -171,5 +171,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             return _amazonGenerateFeedContentService.GetSingleFeed(_amazonGenerateFeedContentService.GetOrderFulfillment(order),
                 AmazonEnvelopeMessageType.OrderFulfillment, null);
         }
+        public FileStream GetOrderFulfillmentFeed(IEnumerable<AmazonOrder> orders)
+        {
+            var feeds = orders.Select(_amazonGenerateFeedContentService.GetOrderFulfillment).ToList();
+            return _amazonGenerateFeedContentService.GetFeed(feeds, AmazonEnvelopeMessageType.OrderFulfillment,null);
+        }
     }
 }

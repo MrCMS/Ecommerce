@@ -40,9 +40,13 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
         }
         public static string GenerateImageUrl(string imageUrl)
         {
+            if (imageUrl.Contains("http://") || imageUrl.Contains("https://"))
+                return imageUrl.Replace("https", "http");
+
+            var baseUrl = "http://" + CurrentRequestData.CurrentSite.BaseUrl;
             if (CurrentRequestData.CurrentSite.BaseUrl.Contains("http://") || CurrentRequestData.CurrentSite.BaseUrl.Contains("https://"))
-                return CurrentRequestData.CurrentSite.BaseUrl + imageUrl;
-            return "http://" + CurrentRequestData.CurrentSite.BaseUrl + imageUrl;
+                baseUrl = CurrentRequestData.CurrentSite.BaseUrl.Replace("https", "http") + imageUrl;
+            return baseUrl + imageUrl;
         }
 
         public static FileStream GetStreamFromAmazonEnvelope(AmazonEnvelope amazonEnvelope, AmazonEnvelopeMessageType amazonEnvelopeMessageType)

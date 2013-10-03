@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Api.Orders;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
@@ -73,7 +74,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             }
         }
 
-        public List<AmazonOrder> GetOrdersFromAmazon(AmazonSyncModel model)
+        public List<AmazonOrder> GetOrdersFromAmazon(AmazonSyncModel model,ref List<AmazonOrder> outOfSyncAmazonOrders)
         {
             var orders = new List<AmazonOrder>();
 
@@ -87,6 +88,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 foreach (var rawOrder in rawOrders.Where(x => x.OrderStatus != OrderStatusEnum.Pending))
                 {
                     var amazonOrder = _validateAmazonOrderService.GetAmazonOrder(rawOrder);
+
+                    if (amazonOrder != null && amazonOrder.Order.ShippingStatus == ShippingStatus.Shipped && rawOrder.OrderStatus == OrderStatusEnum.Unshipped)
+                        outOfSyncAmazonOrders.Add(amazonOrder);
 
                     if (amazonOrder != null)
                     {
