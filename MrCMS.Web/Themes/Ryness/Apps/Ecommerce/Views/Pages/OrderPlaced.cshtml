@@ -32,7 +32,7 @@
         </div>
 
         @{
-            if (CurrentRequestData.CurrentUser == null)
+            if ((bool)ViewData["user-can-register"])
             {
             <div class="border-grey margin-bottom-20">
                 <div class="sub-header grey-background">
