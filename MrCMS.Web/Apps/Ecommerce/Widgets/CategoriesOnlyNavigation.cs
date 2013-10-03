@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Widget;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using System.Collections.Generic;
@@ -41,12 +42,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
             return new NavigationList(navigationRecords.ToList());
         }
 
-        protected virtual List<NavigationRecord> GetChildCategories(Document entity, int nextLevel)
+        protected virtual List<NavigationRecord> GetChildCategories(Webpage entity, int nextLevel)
         {
             var navigation = new List<NavigationRecord>();
-            if (nextLevel <= NoOfMenuLevels && entity.Children.Any())
+            if (nextLevel <= NoOfMenuLevels && entity.PublishedChildren.Any())
             {
-                navigation.AddRange(entity.Children.Select(item => new NavigationRecord
+                navigation.AddRange(entity.PublishedChildren.Select(item => new NavigationRecord
                         {
                             Text = MvcHtmlString.Create(item.Name),
                             Url = MvcHtmlString.Create("/" + item.UrlSegment),
