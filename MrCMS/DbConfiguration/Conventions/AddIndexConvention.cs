@@ -11,6 +11,7 @@ namespace MrCMS.DbConfiguration.Conventions
     {
         public void Apply(IPropertyInstance instance)
         {
+
             if (instance.Name == "DocumentType")
             {
                 instance.Index(string.Format("IX_{0}_{1}", instance.EntityType.Name, instance.Property.Name));
