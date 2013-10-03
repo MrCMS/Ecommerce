@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
 {
+    [SessionState(System.Web.SessionState.SessionStateBehavior.ReadOnly)]
     public class ListingController : MrCMSAppAdminController<AmazonApp>
     {
         private readonly IAmazonListingSyncManager _amazonListingSyncManager;
