@@ -1,4 +1,5 @@
-﻿using MrCMS.Web.Apps.Amazon.Entities.Orders;
+﻿using System.Collections.Generic;
+using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
@@ -6,5 +7,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     public interface IShipAmazonOrderService
     {
         void MarkAsShipped(AmazonSyncModel model, AmazonOrder item);
+        void MarkAsShipped(AmazonSyncModel syncModel, List<AmazonOrder> amazonOrders);
     }
 }

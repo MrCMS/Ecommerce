@@ -57,7 +57,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             amazonListing.SellerSKU = productVariant.SKU;
             amazonListing.Title = productVariant.DisplayName;
             amazonListing.StandardProductIDType = _amazonSellerSettings.BarcodeIsOfType;
-            amazonListing.StandardProductId = productVariant.Barcode;
+            amazonListing.StandardProductId = productVariant.Barcode.Trim();
 
             amazonListing.FulfillmentChannel = amazonListing.AmazonListingGroup.FulfillmentChannel ?? AmazonFulfillmentChannel.MFN;
 
@@ -109,7 +109,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             amazonListing.SellerSKU = productVariant.SKU;
             amazonListing.Title = productVariant.DisplayName;
             amazonListing.StandardProductIDType = _amazonSellerSettings.BarcodeIsOfType;
-            amazonListing.StandardProductId = productVariant.Barcode;
+            amazonListing.StandardProductId = productVariant.Barcode.Trim();
 
             amazonListing.FulfillmentChannel = amazonListing.AmazonListingGroup.FulfillmentChannel ?? AmazonFulfillmentChannel.MFN;
 
