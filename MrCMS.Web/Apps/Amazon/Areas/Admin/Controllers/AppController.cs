@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
 {
+    [SessionState(System.Web.SessionState.SessionStateBehavior.ReadOnly)]
     public class AppController : MrCMSAppAdminController<AmazonApp>
     {
         private readonly IAmazonLogService _amazonLogService;
