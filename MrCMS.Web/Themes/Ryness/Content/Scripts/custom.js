@@ -11,6 +11,11 @@ $(document).ready(function () {
     function init() {
         setImageSize();
     }
+    
+    $.cookieBar({
+        policyButton : true,
+        policyURL : "/privacy-policy-and-cookie-info"
+    });
 
     function setImageSize() {
         var browserWidth = $(window).width();
