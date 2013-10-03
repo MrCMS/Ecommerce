@@ -3,7 +3,6 @@ using MarketplaceWebServiceOrders.Model;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
-using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync

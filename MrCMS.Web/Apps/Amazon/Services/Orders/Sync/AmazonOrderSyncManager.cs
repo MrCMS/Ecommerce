@@ -32,8 +32,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         {
             AmazonProgressBarHelper.Clean(model.Task);
 
-            _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage,null,null, AmazonApiSection.Orders,null,null,null,
-                null, "Checking Amazon Api Service Availability");
+            _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage,null,null, AmazonApiSection.Orders,null,null,null,null, "Checking Amazon Api Service Availability");
             AmazonProgressBarHelper.Update(model.Task, "Api", "Checking Amazon Api Service Availability", 100, 0);
 
             var serviceStatus = _amazonOrdersApiService.GetServiceStatus(AmazonApiSection.Orders);

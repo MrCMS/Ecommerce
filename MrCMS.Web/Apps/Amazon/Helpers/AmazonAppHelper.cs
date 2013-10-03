@@ -6,6 +6,7 @@ using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Serialization;
 using MarketplaceWebServiceFeedsClasses;
+using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Website;
 using StringCollection = System.Collections.Specialized.StringCollection;
