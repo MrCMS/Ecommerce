@@ -15,10 +15,12 @@ namespace MrCMS.DbConfiguration.Conventions
             instance.ForeignKey(string.Format("FK_{0}_{1}",
                 (instance.EntityType != null) ? instance.EntityType.Name : instance.Name, instance.Property.Name));
 
+
             var index = string.Format("IX_{0}_{1}", instance.EntityType.Name, instance.Property.Name);
             if (Indices.Contains(index)) return;
             instance.Index(index);
             Indices.Add(index);
+        
         }
     }
 }

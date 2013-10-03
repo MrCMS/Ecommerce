@@ -188,13 +188,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             switch (SortBy)
             {
                 case ProductSearchSort.NameAToZ:
-                    return new Sort(new[] { SortField.FIELD_SCORE, new SortField("nameSort", SortField.STRING) });
+                    return new Sort(new[] { new SortField("nameSort", SortField.STRING) });
                 case ProductSearchSort.NameZToA:
-                    return new Sort(new[] { SortField.FIELD_SCORE, new SortField("nameSort", SortField.STRING, true) });
+                    return new Sort(new[] {  new SortField("nameSort", SortField.STRING, true) });
                 case ProductSearchSort.PriceLowToHigh:
-                    return new Sort(new[] { SortField.FIELD_SCORE, new SortField("price", SortField.DOUBLE) });
+                    return new Sort(new[] { new SortField("price", SortField.DOUBLE) });
                 case ProductSearchSort.PriceHighToLow:
-                    return new Sort(new[] { SortField.FIELD_SCORE, new SortField("price", SortField.DOUBLE, true) });
+                    return new Sort(new[] { new SortField("price", SortField.DOUBLE, true) });
                 default:
                     return Sort.RELEVANCE;
             }

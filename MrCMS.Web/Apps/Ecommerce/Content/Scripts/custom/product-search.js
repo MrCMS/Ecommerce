@@ -126,9 +126,10 @@
         });
         $.get('/search/results', State.data, function (response) {
             $('#product-results-container').replaceWith(response);
-            if ($(window).width() <= 767) {
-                $(document).scrollTop($("#product-results-container").offset().top);
-            }
+            var top = $("#product-results-container").offset().top;
+            $('html,body').animate({
+                scrollTop: top
+            }, 350);
         });
     });
     function initializeSlider() {
