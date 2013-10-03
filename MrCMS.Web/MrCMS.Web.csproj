@@ -278,8 +278,13 @@
     <Compile Include="Apps\Amazon\Services\Logs\IAmazonLogService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSearchService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Events\IOnAmazonOrderPlaced.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Events\IAmazonOrderEvent.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Events\DoSomethingOnAmazonOrderPlaced.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderSearchService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderEventService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderEventService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\AmazonOrderSyncManager.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IAmazonOrderSyncManager.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IImportAmazonOrderService.cs" />
@@ -2577,7 +2582,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>33219</DevelopmentServerPort>
+          <DevelopmentServerPort>7859</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:8888</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

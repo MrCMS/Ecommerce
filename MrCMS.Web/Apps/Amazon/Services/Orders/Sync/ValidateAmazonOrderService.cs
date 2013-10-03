@@ -96,12 +96,16 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         {
             if (rawOrder.ShippingAddress != null)
             {
+                string firstName;
+                string lastName;
+                GetFirstAndLastName(rawOrder, out firstName, out lastName);
+
                 return new AddressData()
                     {
                         Address1 = (rawOrder.ShippingAddress!=null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.AddressLine1)) ? rawOrder.ShippingAddress.AddressLine1 : String.Empty,
                         Address2 = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.AddressLine2)) ? rawOrder.ShippingAddress.AddressLine2 : String.Empty,
-                        FirstName = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.Name)) ? rawOrder.ShippingAddress.Name.Split(' ').First() : String.Empty,
-                        LastName = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.Name)) ? rawOrder.ShippingAddress.Name.Split(' ')[1] : String.Empty,
+                        FirstName = firstName,
+                        LastName = lastName,
                         PhoneNumber = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.Phone)) ? rawOrder.ShippingAddress.Phone : String.Empty,
                         PostalCode = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.PostalCode)) ? rawOrder.ShippingAddress.PostalCode : String.Empty,
                         StateProvince = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.StateOrRegion)) ? rawOrder.ShippingAddress.StateOrRegion : String.Empty,
@@ -110,6 +114,28 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     };
             }
             return null;
+        }
+
+        private static void GetFirstAndLastName(MarketplaceWebServiceOrders.Model.Order rawOrder, out string firstName, out string lastName)
+        {
+            firstName = String.Empty;
+            lastName = String.Empty;
+            try
+            {
+                if (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.Name))
+                {
+                    var rawName = rawOrder.ShippingAddress.Name.Split(' ');
+                    if (rawName.Any())
+                        firstName = rawName[0];
+                    if (rawName.Count() >= 2)
+                        lastName = rawName[1];
+                }
+            }
+            catch (Exception)
+            {
+                firstName = String.Empty;
+                lastName = String.Empty;
+            }
         }
 
         public Order GetOrder(MarketplaceWebServiceOrders.Model.Order rawOrder, AmazonOrder amazonOrder)
