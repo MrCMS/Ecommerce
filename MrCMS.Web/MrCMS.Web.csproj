@@ -1946,6 +1946,7 @@
     <Content Include="Themes\Ryness\Content\Scripts\bootstrap.min.js" />
     <Content Include="Themes\Ryness\Content\Scripts\checkout\checkout.js" />
     <Content Include="Themes\Ryness\Content\Scripts\custom.js" />
+    <Content Include="Themes\Ryness\Content\Scripts\jquery.cookiebar.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.nivo.slider.pack.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.pikachoose.min.js" />
@@ -1957,6 +1958,7 @@
     <Content Include="Themes\Ryness\Content\Styles\bootstrap.css" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap.min.css" />
     <Content Include="Themes\Ryness\Content\Styles\checkout\main.css" />
+    <Content Include="Themes\Ryness\Content\Styles\jquery.cookiebar.css" />
     <Content Include="Themes\Ryness\Content\Styles\main.css" />
     <Content Include="Themes\Ryness\Content\Styles\menu.css" />
     <Content Include="Themes\Ryness\Content\Styles\nivo-slider.css" />
