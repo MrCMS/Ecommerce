@@ -228,6 +228,7 @@
     <Compile Include="Apps\Amazon\Helpers\AmazonAppHelper.cs" />
     <Compile Include="Apps\Amazon\Helpers\AmazonProgressBarHelper.cs" />
     <Compile Include="Apps\Amazon\Indexing\AmazonOrderSearchIndex.cs" />
+    <Compile Include="Apps\Amazon\MessageTemplates\SendAmazonOrderPlacedEmailToStoreOwnerMessageTemplate.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonAdminMenuModel.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonApiSection.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonDashboardModel.cs" />
@@ -463,8 +464,8 @@
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderFullyRefundedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPartiallyRefundedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToCustomerMessageTemplate.cs" />
-    <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToStoreOwnerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderShippedEmailToCustomerMessageTemplate.cs" />
+    <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToStoreOwnerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\OrderTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryContainerMetadata.cs" />
@@ -725,6 +726,7 @@
     <Compile Include="Apps\Ryness\Entities\BuyingGuideInformation.cs" />
     <Compile Include="Apps\Ryness\Entities\KerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Entities\Testimonial.cs" />
+    <Compile Include="Apps\Ryness\Events\OnAmazonOrderCreated.cs" />
     <Compile Include="Apps\Ryness\Events\OnOrderPlacedKerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Metadata\BuyingGuideMetadata.cs" />
     <Compile Include="Apps\Ryness\Metadata\StoreListMetadata.cs" />

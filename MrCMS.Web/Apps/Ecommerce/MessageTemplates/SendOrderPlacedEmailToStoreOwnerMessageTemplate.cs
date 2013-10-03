@@ -11,22 +11,22 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
 {
-    [FriendlyClassName("Send Order Shipped Email To Customer Message Template")]
-    public class SendOrderShippedEmailToCustomerMessageTemplate : MessageTemplate, IMessageTemplate<Order>
+    [FriendlyClassName("Send Order Placed Email To Store Owner Message Template")]
+    public class SendOrderPlacedEmailToStoreOwnerMessageTemplate : MessageTemplate, IMessageTemplate<Order>
     {
         public override MessageTemplate GetInitialTemplate(ISession session)
         {
             var fromName = CurrentRequestData.CurrentSite.Name;
 
-            return new SendOrderShippedEmailToCustomerMessageTemplate
+            return new SendOrderPlacedEmailToStoreOwnerMessageTemplate
             {
                 FromName = fromName,
                 ToAddress = "{OrderEmail}",
                 ToName = "{UserName}",
                 Bcc = String.Empty,
                 Cc = String.Empty,
-                Subject = String.Format("{0} - Order Shipped", fromName),
-                Body = "Your order was successfully shipped.",
+                Subject = String.Format("{0} - Order Placed", fromName),
+                Body = "Order (ID:{Id}) was successfully placed.",
                 IsHtml = false
             };
         }
