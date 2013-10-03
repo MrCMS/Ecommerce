@@ -5,8 +5,7 @@ namespace MrCMS.Web.Apps.Amazon.Tasks
 {
     public class SyncListings : BackgroundTask
     {
-        public SyncListings(Site site)
-            : base(site)
+        public SyncListings(Site site) : base(site)
         {
             
         }
