@@ -9,5 +9,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
         List<PaymentDetailsType> GetPaymentDetails(CartModel cart);
         string GetBuyerEmail(CartModel cart);
         BasicAmountType GetMaxAmount(CartModel cart);
+        List<PaymentDetailsItemType> GetPaymentDetailsItems(CartModel cart);
     }
 }

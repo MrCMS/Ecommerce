@@ -13,6 +13,7 @@ using MrCMS.Web.Apps.Amazon.Services.Orders;
 
 namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
 {
+    [SessionState(System.Web.SessionState.SessionStateBehavior.ReadOnly)]
     public class OrdersController : MrCMSAppAdminController<AmazonApp>
     {
         private readonly IAmazonOrderSyncManager _syncAmazonOrderService;
