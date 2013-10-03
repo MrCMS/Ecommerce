@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 
@@ -21,8 +22,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             var order = _orderService.GetByGuid(id);
             if (order != null)
             {
-                ViewData["order"] = order;
-                TempData["order"] = order;
+                ViewData["order"] = order; 
+                TempData["order"] = order;//required for Google Analytics
+
                 return View(page);
             }
             return Redirect(UniquePageHelper.GetUrl<ProductSearch>());
