@@ -12,7 +12,10 @@ $(document).ready(function () {
     }
     
     $.cookieBar({
-        policyButton : true,
+        message: "Our site uses cookies.",
+        acceptText : "Continue",
+        policyButton: true,
+        policyText: "Find out more",
         policyURL : "/privacy-policy-and-cookie-info"
     });
 
