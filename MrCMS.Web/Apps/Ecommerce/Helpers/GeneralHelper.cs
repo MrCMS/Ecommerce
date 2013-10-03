@@ -91,5 +91,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
 
             return new StaticPagedList<T>(values, pageNumber, pageSize, rowCount);
         }
+
+        public static List<SelectListItem> GetEnumOptionsWithEmpty<T>() where T : struct
+        {
+            return
+                Enum.GetValues(typeof(T))
+                    .Cast<T>()
+                    .BuildSelectItemList(item => GetDescriptionFromEnum(item as Enum), item => item.ToString(), emptyItemText: "Please select...");
+        }
     }
 }

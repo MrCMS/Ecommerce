@@ -153,8 +153,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 order.OrderLines.Add(new OrderLine()
                     {
                         Order = order,
-                        UnitPrice = amazonOrderItem.ItemPriceAmount,
-                        Price = amazonOrderItem.ItemPriceAmount * amazonOrderItem.QuantityOrdered,
+                        UnitPrice = amazonOrderItem.ItemPriceAmount / amazonOrderItem.QuantityOrdered,
+                        Price = amazonOrderItem.ItemPriceAmount,
                         Name = amazonOrderItem.Title,
                         Tax = amazonOrderItem.ItemTaxAmount,
                         Discount = amazonOrderItem.PromotionDiscountAmount,

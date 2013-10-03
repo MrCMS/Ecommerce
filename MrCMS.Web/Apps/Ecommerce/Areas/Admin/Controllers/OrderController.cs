@@ -2,6 +2,7 @@
 using System.Web;
 using System.Web.Mvc;
 using MrCMS.Paging;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -36,8 +37,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult Index(OrderSearchModel model, int page = 1)
         {
-            ViewData["ShippingStatuses"] = _optionService.GetEnumOptions<ShippingStatus>();
-            ViewData["PaymentStatuses"] = _optionService.GetEnumOptions<PaymentStatus>();
+            ViewData["ShippingStatuses"] = GeneralHelper.GetEnumOptionsWithEmpty<ShippingStatus>();
+            ViewData["PaymentStatuses"] = GeneralHelper.GetEnumOptionsWithEmpty<PaymentStatus>();
             model.Results = new PagedList<Order>(null, 1, _ecommerceSettings.PageSizeAdmin);
             try
             {
