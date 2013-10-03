@@ -124,7 +124,9 @@
             $('#product-query-container').replaceWith(response);
             initializeSlider();
         });
+        $("#loading-message").show();
         $.get('/search/results', State.data, function (response) {
+            $("#loading-message").hide();
             $('#product-results-container').replaceWith(response);
             var top = $("#product-results-container").offset().top;
             $('html,body').animate({
