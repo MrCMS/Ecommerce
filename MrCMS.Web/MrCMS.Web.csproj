@@ -1851,6 +1851,7 @@
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-login.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-registration.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\jquery.history.js" />
+    <Content Include="Themes\Ryness\Content\Images\ajax-loader.gif" />
     <Content Include="Themes\Ryness\Content\Images\account.jpg" />
     <Content Include="Themes\Ryness\Content\Images\arrows.jpg" />
     <Content Include="Themes\Ryness\Content\Images\basket-bg.jpg" />

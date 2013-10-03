@@ -3,31 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
 using MrCMS.Web.Apps.Ryness.Entities;
 using MrCMS.Web.Apps.Ryness.Services;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ryness.Events
 {
     public class OnOrderPlacedKerridgeLog : IOnOrderPlaced 
     {
         private readonly IKerridgeService _kerridgeService;
+        private readonly ISession _session;
 
-        public OnOrderPlacedKerridgeLog(IKerridgeService kerridgeService)
+        public OnOrderPlacedKerridgeLog(IKerridgeService kerridgeService, ISession session)
         {
             _kerridgeService = kerridgeService;
+            _session = session;
         }
 
         public int Order { get { return 100; } }
         public void OnOrderPlaced(Order order)
         {
-            var kerridgeLog = new KerridgeLog
+            if (!order.IsCancelled && !order.IsDeleted && order.PaymentStatus.Equals(PaymentStatus.Paid))
+            {
+                var kerridgeLog = new KerridgeLog
                 {
                     Order = order,
                     Sent = false
                 };
 
-            _kerridgeService.Add(kerridgeLog);
+                _kerridgeService.Add(kerridgeLog);
+            }
+            
         }
     }
 }

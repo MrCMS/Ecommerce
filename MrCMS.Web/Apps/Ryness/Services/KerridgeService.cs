@@ -43,7 +43,8 @@ namespace MrCMS.Web.Apps.Ryness.Services
 
         public void Add(KerridgeLog kerridgeLog)
         {
-            _session.Transact(session => session.Save(kerridgeLog));
+            if (_session.QueryOver<KerridgeLog>().Where(x=>x.Order.Id == kerridgeLog.Order.Id).RowCount() == 0) // check to make sure it hasn't already been added
+                _session.Transact(session => session.Save(kerridgeLog));
         }
 
         public void Update(KerridgeLog kerridgeLog)
@@ -59,7 +60,7 @@ namespace MrCMS.Web.Apps.Ryness.Services
         public IList<KerridgeLog> GetAllUnsent()
         {
             //Only do 100 orders at a time for speed
-            return _session.QueryOver<KerridgeLog>().Where(x => x.Sent == false && !x.Order.IsCancelled).Take(100).List();
+            return _session.QueryOver<KerridgeLog>().Where(x => x.Sent == false).Take(100).List();
         }
 
         public bool CanSendToKerridge(KerridgeLog log)

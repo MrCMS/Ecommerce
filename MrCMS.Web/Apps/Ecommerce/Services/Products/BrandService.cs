@@ -35,7 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public IList<Brand> GetAll()
         {
-            return _session.QueryOver<Brand>().Cacheable().List();
+            return _session.QueryOver<Brand>().OrderBy(x=>x.Name).Asc.Cacheable().List();
         }
 
         public IPagedList<Brand> GetPaged(int pageNum, string search, int pageSize = 10)
