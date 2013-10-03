@@ -84,7 +84,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings
 
             _amazonListingService.Delete(item);
 
-            Session.QueryOver<AmazonListingGroup>().RowCount().Should().Be(0);
+            Session.QueryOver<AmazonListing>().RowCount().Should().Be(0);
         }
 
         [Fact]
