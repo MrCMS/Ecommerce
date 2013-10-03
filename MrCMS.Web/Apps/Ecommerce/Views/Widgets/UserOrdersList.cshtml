@@ -1,5 +1,6 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @model MrCMS.Web.Apps.Ecommerce.Models.UserAccountOrdersModel
 <div class="container">
@@ -22,7 +23,7 @@
                         </th>
                         <th>Amount
                         </th>
-                        <th>Created On
+                        <th>Order Date
                         </th>
                         <th></th>
                     </tr>
@@ -30,15 +31,24 @@
                 <tbody>
                     @foreach (var item in Model.Items)
                     {
-                        <tr>
+                        var status = "warning";
+                        if (item.ShippingStatus.Equals(ShippingStatus.Shipped) && item.PaymentStatus.Equals(PaymentStatus.Paid))
+                        {
+                            status = "success";
+                        } else if (item.IsCancelled)
+                        {
+                            status = "error";
+                        }
+                        
+                        <tr class="@status">
                             <td>
                                 @item.Id
                             </td>
                             <td>
-                                @item.PaymentStatus
+                                @((item.IsCancelled)?"Cancelled":item.PaymentStatus.ToString())
                             </td>
                             <td>
-                                @item.ShippingStatus
+                                @((item.IsCancelled)?"Cancelled":item.ShippingStatus.ToString())
                             </td>
                             <td>
                                 @item.Total.ToCurrencyFormat()
@@ -46,7 +56,9 @@
                             <td>
                                 @item.CreatedOn
                             </td>
-                            <th><a href="@(UniquePageHelper.GetUrl<UserOrder>())?id=@item.Guid">View</a></th>
+                            <td>
+                                <a href="@(UniquePageHelper.GetUrl<UserOrder>())?id=@item.Guid" class="btn btn-mini btn-primary">View Order Details</a>
+                            </td>
                         </tr>
                     }
                 </tbody>

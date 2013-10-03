@@ -52,7 +52,6 @@
         <table class="table table-condensed table-striped">
             <thead>
                 <tr>
-                    <th></th>
                     <th>Sales Channel
                     </th>
                     <th>Order Id
@@ -73,17 +72,16 @@
             <tbody>
                 @foreach (var item in Model.Results)
                 {
-                    var colour = "orange-row";
+                    var status = "warning";
                     if (item.ShippingStatus.Equals(ShippingStatus.Shipped) && item.PaymentStatus.Equals(PaymentStatus.Paid))
                     {
-                        colour = "green-row";
+                        status = "success";
                     }
                     else if (item.IsCancelled)
                     {
-                        colour = "red-row";
+                        status = "error";
                     }
-                    <tr>
-                        <td class="order-status-indicator @colour">&nbsp;</td>
+                    <tr class="@status">
                         <td>
                             @(!String.IsNullOrWhiteSpace(item.SalesChannel) ? item.SalesChannel : "Mr CMS")
                         </td>

@@ -12,7 +12,7 @@
     @if (Model.CanUsePayPalExpress)
     {
         <hr />
-        <p class="text-align-right">Or Checkout with...</p>
+        <p><b>Or Checkout with...</b></p>
         using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
         {
         <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />
