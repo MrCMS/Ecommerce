@@ -41,13 +41,26 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 var cnt = 0;
                 foreach (var order in orders)
                 {
-                    _amazonLogService.Add(AmazonLogType.Orders,
-                                          order.Id > 0 ? AmazonLogStatus.Update : AmazonLogStatus.Insert,
-                                          null, null, AmazonApiSection.Orders, null, order, null, null, "Importing Amazon Order #" + order.AmazonOrderId + " and mapping to MrCMS order");
-                    AmazonProgressBarHelper.Update(model.Task, "Import", "Importing Amazon Order #" + order.AmazonOrderId, orders.Count, cnt+1);
-
+                    if (order.Id == 0)
+                    {
+                        _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Insert,
+                                             null, null, AmazonApiSection.Orders, null, order, null, null,
+                                             "Importing Amazon Order #" + order.AmazonOrderId +
+                                             " and mapping to MrCMS order");
+                        _amazonOrderService.Add(order);
+                    }
+                    else
+                    {
+                        _amazonLogService.Add(AmazonLogType.Orders,AmazonLogStatus.Update,
+                                             null, null, AmazonApiSection.Orders, null, order, null, null,
+                                             "Importing Amazon Order #" + order.AmazonOrderId +
+                                             " and mapping to MrCMS order");
+                        _amazonOrderService.Update(order);
+                    }
                     _orderService.Save(order.Order);
-                    _amazonOrderService.Save(order);
+                    AmazonProgressBarHelper.Update(model.Task, "Import",
+                                                    "Importing Amazon Order #" + order.AmazonOrderId, orders.Count,
+                                                    cnt + 1);
                 }
 
                 AmazonProgressBarHelper.Update(model.Task, "Import", "Successfully imported Amazon Orders",
