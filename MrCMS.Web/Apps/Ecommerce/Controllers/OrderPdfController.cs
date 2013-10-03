@@ -22,6 +22,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public ActionResult ExportOrderToPdf(Order order)
         {
             var currentUser = CurrentRequestData.CurrentUser;
+
+            if (currentUser == null)
+                return Redirect("/");
+
             if (order.User.Id != currentUser.Id)
                 return null;
 
