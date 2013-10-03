@@ -74,7 +74,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             }
         }
 
-        public List<AmazonOrder> GetOrdersFromAmazon(AmazonSyncModel model,ref List<AmazonOrder> outOfSyncAmazonOrders)
+        public List<AmazonOrder> GetOrdersFromAmazon(AmazonSyncModel model, ref List<AmazonOrder> outOfSyncAmazonOrders)
         {
             var orders = new List<AmazonOrder>();
 
@@ -89,7 +89,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 {
                     var amazonOrder = _validateAmazonOrderService.GetAmazonOrder(rawOrder);
 
-                    if (amazonOrder != null && amazonOrder.Order.ShippingStatus == ShippingStatus.Shipped && rawOrder.OrderStatus == OrderStatusEnum.Unshipped)
+                    if (amazonOrder.Order != null && (amazonOrder != null && amazonOrder.Order.ShippingStatus == ShippingStatus.Shipped && rawOrder.OrderStatus == OrderStatusEnum.Unshipped))
                         outOfSyncAmazonOrders.Add(amazonOrder);
 
                     if (amazonOrder != null)
