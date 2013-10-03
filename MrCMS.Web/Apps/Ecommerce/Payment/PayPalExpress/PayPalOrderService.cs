@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                        };
         }
 
-        private List<PaymentDetailsItemType> GetPaymentDetailsItems(CartModel cart)
+        public List<PaymentDetailsItemType> GetPaymentDetailsItems(CartModel cart)
         {
             var paymentDetailsItemTypes = cart.Items.Select(item => new PaymentDetailsItemType
                                                                         {

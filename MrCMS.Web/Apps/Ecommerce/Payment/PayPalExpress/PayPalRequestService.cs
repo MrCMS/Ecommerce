@@ -59,15 +59,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
         {
             // populate payment details
             var paymentDetails = new PaymentDetailsType
-            {
-                OrderTotal = cart.Total.GetAmountType(),
-                ShippingTotal = cart.ShippingTotal.GetAmountType(),
-                ItemTotal = (cart.Subtotal - cart.OrderTotalDiscount).GetAmountType(),
-                TaxTotal = cart.ItemTax.GetAmountType(),
-                Custom = cart.CartGuid.ToString(),
-                ButtonSource = "mrcms-ecommerce",
-                InvoiceID = cart.CartGuid.ToString()
-            };
+                {
+                    OrderTotal = cart.Total.GetAmountType(),
+                    ShippingTotal = cart.ShippingTotal.GetAmountType(),
+                    ItemTotal = (cart.Subtotal - cart.OrderTotalDiscount).GetAmountType(),
+                    TaxTotal = cart.ItemTax.GetAmountType(),
+                    Custom = cart.CartGuid.ToString(),
+                    ButtonSource = "mrcms-ecommerce",
+                    InvoiceID = cart.CartGuid.ToString(),
+                    PaymentDetailsItem = _payPalOrderService.GetPaymentDetailsItems(cart)
+                };
             // build the request
             return new DoExpressCheckoutPaymentReq
             {
