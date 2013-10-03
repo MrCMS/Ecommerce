@@ -1,4 +1,1 @@
-﻿.order-status-indicator { width: 20px;height: auto; display: inline-block;}
-.green-row { background-color: green!important;}
-.orange-row { background-color: orange!important;}
-.red-row { background-color: red!important;}
+﻿tr.error { color: initial;}
