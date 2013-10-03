@@ -47,6 +47,15 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             var retryCount = 0;
             while (!uploadSuccess)
             {
+                retryCount++;
+                if (retryCount == 3)
+                {
+                    AmazonProgressBarHelper.Update(model.Task, "Error",
+                                                  "Request timed out. Please check logs for potential errors and try again later.", 100,
+                                                  100);
+                    break;
+                }
+
                 try
                 {
                     if (feeds.Count >= 1)
@@ -64,9 +73,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 {
                     CurrentRequestData.ErrorSignal.Raise(ex);
 
-                    retryCount++;
-                    if (retryCount == 3) break;
-
                     Thread.Sleep(120000);
                 }
             }
@@ -81,7 +87,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             while (!uploadSuccess)
             {
                 retryCount++;
-                if (retryCount == 3) break;
+                if (retryCount == 3)
+                {
+                    AmazonProgressBarHelper.Update(model.Task, "Error",
+                                                  "Request timed out. Please check logs for potential errors and try again later.", 100,
+                                                  100);
+                    break;
+                }
 
                 try
                 {
@@ -129,7 +141,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             while (!uploadSuccess)
             {
                 retryCount++;
-                if (retryCount == 3) break;
+                if (retryCount == 3)
+                {
+                    AmazonProgressBarHelper.Update(model.Task, "Error",
+                                                  "Request timed out. Please check logs for potential errors and try again later.", 100,
+                                                  100);
+                    break;
+                }
 
                 try
                 {
@@ -175,7 +193,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             while (!uploadSuccess)
             {
                 retryCount++;
-                if (retryCount == 3) break;
+                if (retryCount == 3)
+                {
+                    AmazonProgressBarHelper.Update(model.Task, "Error",
+                                                  "Request timed out. Please check logs for potential errors and try again later.", 100,
+                                                  100);
+                    break;
+                }
 
                 try
                 {
@@ -204,7 +228,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             while (!uploadSuccess)
             {
                 retryCount++;
-                if (retryCount == 3) break;
+                if (retryCount == 3)
+                {
+                    AmazonProgressBarHelper.Update(model.Task, "Error",
+                                                  "Request timed out. Please check logs for potential errors and try again later.", 100,
+                                                  100);
+                    break;
+                }
 
                 try
                 {
@@ -297,7 +327,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             while (!uploadSuccess)
             {
                 retryCount++;
-                if (retryCount == 3) break;
+                if (retryCount == 3)
+                {
+                    AmazonProgressBarHelper.Update(model.Task, "Error",
+                                                  "Request timed out. Please check logs for potential errors and try again later.", 100,
+                                                  100);
+                    break;
+                }
 
                 try
                 {
