@@ -18,13 +18,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Misc
             _session = session;
         }
 
-        public List<SelectListItem> GetEnumOptions<T>() where T:struct
+        public List<SelectListItem> GetEnumOptions<T>() where T : struct
         {
             return
                 Enum.GetValues(typeof(T))
                     .Cast<T>()
-                    .BuildSelectItemList(item => GeneralHelper.GetDescriptionFromEnum(item as Enum),item=>item.ToString(), emptyItem: null);
+                    .BuildSelectItemList(item => GeneralHelper.GetDescriptionFromEnum(item as Enum), item => item.ToString(), emptyItem: null);
         }
+
+        public List<SelectListItem> GetEnumOptionsWithEmpty<T>() where T : struct
+        {
+            return
+                Enum.GetValues(typeof(T))
+                    .Cast<T>()
+                    .BuildSelectItemList(item => GeneralHelper.GetDescriptionFromEnum(item as Enum), item => item.ToString(), emptyItemText:"Please select...");
+        }
+
         public IList<SelectListItem> GetCategoryOptions()
         {
             return _session.QueryOver<Category>().List().BuildSelectItemList(item => item.Name, item => item.Id.ToString(), null, new SelectListItem());
