@@ -2465,6 +2465,7 @@
     <Content Include="Themes\Ryness\Views\Shared\_StoreLayout.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\FeaturedProductsVertical.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Pages\TextPage.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentMethod\Paypoint.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
