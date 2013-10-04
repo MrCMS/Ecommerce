@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Core.Models;
+using MrCMS.Web.Apps.Core.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website.Controllers;
@@ -14,17 +16,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly CartModel _cart;
         private readonly ICartManager _cartManager;
-        private readonly IPasswordManagementService _passwordManagementService;
-        private readonly IAuthorisationService _authorisationService;
+        private readonly ILoginService _loginService;
         private readonly IUserService _userService;
 
-        public EnterOrderEmailController(CartModel cart, ICartManager cartManager, IPasswordManagementService passwordManagementService, IAuthorisationService authorisationService, IUserService userService)
+        public EnterOrderEmailController(CartModel cart, ICartManager cartManager, ILoginService loginService)
         {
             _cart = cart;
             _cartManager = cartManager;
-            _passwordManagementService = passwordManagementService;
-            _authorisationService = authorisationService;
-            _userService = userService;
+            _loginService = loginService;
         }
 
         public ActionResult Show(EnterOrderEmail page)
@@ -55,14 +54,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         {
             if (model.HavePassword)
             {
-                //TODO: replace with ILoginService from 0.3.1 core
-                var user = _userService.GetUserByEmail(model.OrderEmail);
+                var user = _userService.GetUserByEmail(model.OrderEmail.Trim());
                 if (user != null)
                 {
-                    if (_passwordManagementService.ValidateUser(user, model.Password))
+                    var authenticated = _loginService.AuthenticateUser(new LoginModel
+                                                       {
+                                                           Email = model.Email,
+                                                           Password = model.Password
+                                                       });
+                    if (authenticated.Success)
                     {
-                        _authorisationService.SetAuthCookie(user.Email, false);
-                        _cartManager.SetOrderEmail(model.OrderEmail);
                         return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
                     }
                 }
