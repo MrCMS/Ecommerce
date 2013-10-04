@@ -6,6 +6,7 @@
 <html lang="en">
 <head>
     <title>@Model.GetPageTitle()</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="@Model.MetaDescription" />
     <meta name="keywords" content="@Model.MetaKeywords" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,6 +19,7 @@
         Html.IncludeCss("~/Themes/Ryness/Content/Styles/main.css");
     }
     @Html.RenderCss()
+    <!--[if IE 8]><link rel="stylesheet" type="text/css" href="/Themes/Ryness/Content/Styles/ie8.css"><![endif]-->
 
     @{ Html.RenderAction("GetEcommerceTrackingCode", "GoogleAnalytics", new { page = this.Page }); }
     @Html.Raw(Model.CustomHeaderScripts)
