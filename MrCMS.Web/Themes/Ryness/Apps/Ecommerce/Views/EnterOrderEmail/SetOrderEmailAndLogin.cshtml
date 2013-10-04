@@ -35,9 +35,9 @@
                 Yes
             </label>
         </div>
-        <div class="span10" id="password-box" style="display: none">
+        <div class="span4" id="password-box" style="display: none">
             <div class="row-fluid">
-                @Html.PasswordFor(model => model.Password, new { placeholder="Enter your password here"})
+                @Html.PasswordFor(model => model.Password, new { placeholder="Enter your password here", @class="span12"})
             </div>
         </div>
     </div>

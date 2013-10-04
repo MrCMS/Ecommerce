@@ -457,6 +457,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Tax\TaxRate.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Templating\NotificationTemplateSettings.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Users\Address.cs" />
+    <Compile Include="Apps\Ecommerce\Events\CopyCartToUser.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\CookieHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\CurrencyFormattingHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\EnumHelper.cs" />
@@ -638,8 +639,9 @@
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\DTOs\BulkStockUpdateDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkStockUpdateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkStockUpdateValidationService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\IBulkStockUpdateValidationRule.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\ProductVariantSKUExists.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\IBulkStockUpdateValidationRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Apps\Ecommerce\Services\Inventory\IInventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\InventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\IStockReportService.cs" />
@@ -1967,6 +1969,7 @@
     <Content Include="Themes\Ryness\Content\Styles\bootstrap.css" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap.min.css" />
     <Content Include="Themes\Ryness\Content\Styles\checkout\main.css" />
+    <Content Include="Themes\Ryness\Content\Styles\ie8.css" />
     <Content Include="Themes\Ryness\Content\Styles\jquery.cookiebar.css" />
     <Content Include="Themes\Ryness\Content\Styles\main.css" />
     <Content Include="Themes\Ryness\Content\Styles\menu.css" />
