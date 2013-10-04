@@ -450,6 +450,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Tax\TaxRate.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Templating\NotificationTemplateSettings.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Users\Address.cs" />
+    <Compile Include="Apps\Ecommerce\Events\CopyCartToUser.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\CookieHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\CurrencyFormattingHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\EnumHelper.cs" />
