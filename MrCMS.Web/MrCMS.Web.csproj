@@ -632,8 +632,9 @@
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\DTOs\BulkStockUpdateDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkStockUpdateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkStockUpdateValidationService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\IBulkStockUpdateValidationRule.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\ProductVariantSKUExists.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\IBulkStockUpdateValidationRule.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Apps\Ecommerce\Services\Inventory\IInventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\InventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\IStockReportService.cs" />
