@@ -19,11 +19,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly ILoginService _loginService;
         private readonly IUserService _userService;
 
-        public EnterOrderEmailController(CartModel cart, ICartManager cartManager, ILoginService loginService)
+        public EnterOrderEmailController(CartModel cart, ICartManager cartManager, ILoginService loginService, IUserService userService)
         {
             _cart = cart;
             _cartManager = cartManager;
             _loginService = loginService;
+            _userService = userService;
         }
 
         public ActionResult Show(EnterOrderEmail page)
@@ -59,7 +60,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 {
                     var authenticated = _loginService.AuthenticateUser(new LoginModel
                                                        {
-                                                           Email = model.Email,
+                                                           Email = user.Email,
                                                            Password = model.Password
                                                        });
                     if (authenticated.Success)
