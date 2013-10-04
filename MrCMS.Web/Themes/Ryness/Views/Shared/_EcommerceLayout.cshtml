@@ -6,7 +6,7 @@
     Layout = "_BaseLayout.cshtml";
 }
 <header>
-    
+
     <div class="navbar navbar-fixed-top visible-phone">
         <div class="navbar-inner">
             <div class="container">
@@ -18,23 +18,25 @@
                 <div class="nav-collapse collapse">
                     @RenderZone("Navigation")
                 </div>
-                <div class="pull-right" style="position:fixed;top:0;right:0;">
+                <div class="pull-right" style="position: fixed; top: 0; right: 0;">
                     @RenderZone("User Links")
-                    <div class="mobile-menu"><a href="/basket" title="Basket"><img src="/Themes/Ryness/Content/Images/mobile-cart.png" alt="Cart"/></a></div>
+                    <div class="mobile-menu"><a href="/basket" title="Basket">
+                        <img src="/Themes/Ryness/Content/Images/mobile-cart.png" alt="Cart" /></a></div>
                     <div class="clearfix"></div>
-                </div>           
+                </div>
                 @*
                     @RenderZone("Header Right")
                 *@
             </div>
         </div>
     </div>
-   
+
 
     <div class="container visible-phone margin-bottom-20">
         <div class="row-fluid">
             <div class="span12 text-align-center">
-                <a href="/"><img src="/Themes/Ryness/Content/Images/logo.jpg" alt="Ryness Logo" title="Ryness" width="170" height="50"/></a>
+                <a href="/">
+                    <img src="/Themes/Ryness/Content/Images/logo.jpg" alt="Ryness Logo" title="Ryness" width="170" height="50" /></a>
             </div>
         </div>
         <div class="row-fluid">
@@ -42,7 +44,7 @@
                 <div class="s-mobile">
                     <div class="s-left">
                         <div class="row-fluid">
-                            <input type="text" placeholder="eg : Wall Lights" class="span12" id="searchTerm1" name="searchTerm"/>
+                            <input type="text" placeholder="eg : Wall Lights" class="span12" id="searchTerm1" name="searchTerm" />
                         </div>
                     </div>
                     <div class="s-right">
@@ -74,7 +76,7 @@
                         @RenderZone("Header Right")
                         <div class="clearfix"></div>
                     </div>
-                </div>    
+                </div>
             </div>
         </div>
     </div>
@@ -105,47 +107,48 @@
     @RenderBody()
     @RenderZone("After Content")
     <footer>
-        <div class="container">
-            <div class="row-fluid padding-top-bottom-10">
-                <div class="span3">
-                    <div class="sub-header">
-                        Ryness
+        <div class="footer">
+            <div class="container">
+                <div class="row-fluid padding-top-bottom-10">
+                    <div class="span3">
+                        <div class="sub-header">
+                            Ryness
+                        </div>
+                        <div class="block-content">
+                            @RenderZone("Footer")
+                        </div>
                     </div>
-                    <div class="block-content">
-                        @RenderZone("Footer")
+                    <div class="span3">
+                        <div class="sub-header">
+                            Customer service
+                        </div>
+                        <div class="block-content">
+                            @RenderZone("Footer Area 2")
+                        </div>
                     </div>
-                </div>
-                <div class="span3">
-                    <div class="sub-header">
-                        Customer service
+                    <div class="span3">
+                        <div class="sub-header">
+                            Buying guides
+                        </div>
+                        <div class="block-content">
+                            @RenderZone("Footer Area 3")
+                        </div>
                     </div>
-                    <div class="block-content">
-                        @RenderZone("Footer Area 2")
-                    </div>
-                </div>
-                <div class="span3">
-                    <div class="sub-header">
-                        Buying guides
-                    </div>
-                    <div class="block-content">
-                        @RenderZone("Footer Area 3")
-                    </div>
-                </div>
-                <div class="span3">
-                    <div class="row-fluid">
-                        <div class="span12">
-                            <div class="sub-header">
-                                Newsletter
-                            </div>
-                            <div class="block-content">
-                                @RenderZone("Footer Area 4")
+                    <div class="span3">
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <div class="sub-header">
+                                    Newsletter
+                                </div>
+                                <div class="block-content">
+                                    @RenderZone("Footer Area 4")
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </footer>
     <div class="headoffice">
         <div class="container">

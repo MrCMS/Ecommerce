@@ -19,6 +19,7 @@
         Html.IncludeCss("~/Themes/Ryness/Content/Styles/main.css");
     }
     @Html.RenderCss()
+    <!--[if IE 8]><link rel="stylesheet" type="text/css" href="/Themes/Ryness/Content/Styles/ie8.css"><![endif]-->
 
     @{ Html.RenderAction("GetEcommerceTrackingCode", "GoogleAnalytics", new { page = this.Page }); }
     @Html.Raw(Model.CustomHeaderScripts)

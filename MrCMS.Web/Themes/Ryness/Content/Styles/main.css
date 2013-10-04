@@ -135,7 +135,7 @@ input[type="radio"], input[type="checkbox"] {margin:0;}
 .welcome-con h1 {font-size: 32px;line-height: 40px;text-transform: uppercase;font-weight: normal;padding:0;margin: 10px 0;color: #ffffff;}
 .welcome-con p {font-size:15px;line-height:24px;}
 .welcome-con .span12 {padding:0 40px;}
-footer {background:url(/Themes/Ryness/Content/Images/footer-bg.gif) repeat;}
+.footer {background:url(/Themes/Ryness/Content/Images/footer-bg.gif) repeat;}
 .headoffice {background:url(/Themes/Ryness/Content/Images/footer.jpg) repeat;border-top:1px solid #444444;border-bottom:1px solid #444444;}
 .sub-header {font-size:20px;line-height:28px;color:#ffffff;text-transform:uppercase;padding:10px 0;}
 .block-content {color:#aaaaaa;}
