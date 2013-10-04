@@ -7,7 +7,7 @@
     <div class="span8">
         <div class="border-grey margin-bottom-20">
             <div class="sub-header grey-background">
-                Billing address
+                Billing Address
             </div>
             <div class="padding-20">
                 @if (cart.BillingAddressSameAsShippingAddress)
@@ -34,49 +34,49 @@
                     }
                     else if (!cart.BillingAddressSameAsShippingAddress && cart.BillingAddress != null)
                     {
-                        <p>
-                            @cart.BillingAddress.GetDescription()
-                        </p>
+                        <div class="span2 align-right line-height-30">
+                            Address :
+                        </div>
+                        <div class="span10">
+                            <div class="row-fluid">
+                                @cart.BillingAddress.GetDescription()
+                            </div>
+                        </div>
+                        
                         using (Html.BeginForm("UpdateBillingAddress", "PaymentDetails", FormMethod.Post))
                         {
-                            <input class="btn btn-mini" value="Edit billing address" type="submit" />
+                        <div class="span2 align-right line-height-30">
+                        </div>
+                        <div class="span10">
+                            <div class="row-fluid padding-top-5">
+                                <input class="btn white-gradient" value="Edit" type="submit" />
+                            </div>
+                        </div>
                         }
                     }
                 </div>
             </div>
         </div>
-        
-        @if (!settingBillingAddress)
-                {
-                    Html.RenderPartial("SelectMethod", cart);
-                    <div id="payment-confirmation">
-                        @if (!string.IsNullOrWhiteSpace(cart.PaymentMethod))
-                        {
-                            Html.RenderAction(cart.PaymentMethod, "PaymentMethod");
-                        }
-                    </div>
-                }
-                else
-                {
-                    <p>Select after updating billing address...</p>
-                }
-        
-@*        <div class="border-grey margin-bottom-20">
-            
-            <div class="sub-header grey-background">
-                Payment details
-            </div>
-            <div class="padding-20 payment">
-                
-            </div>
-        </div>*@
-        
 
+        @if (!settingBillingAddress)
+        {
+            Html.RenderPartial("SelectMethod", cart);
+            <div id="payment-confirmation">
+                @if (!string.IsNullOrWhiteSpace(cart.PaymentMethod))
+                {
+                    Html.RenderAction(cart.PaymentMethod, "PaymentMethod");
+                }
+            </div>
+        }
+        else
+        {
+            <p>Select after updating billing address...</p>
+        }
         <p class="cardtext">
             You may be taken to your card issuer’s website for card validation. You will be returned to Ryness once the process is complete.
         </p>
     </div>
-    
+
     <div class="span4 border-top-grey">
         @{Html.RenderAction("Summary", "Checkout");}
 
@@ -84,14 +84,5 @@
 
         @{Html.RenderAction("DeliveryDetails", "Checkout");}
     </div>
-
 </div>
-
-        
-        @*<h4>Payment details</h4>
-        
-    </div>
-
-</div>*@
-
 @{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/payment-details.js"); }

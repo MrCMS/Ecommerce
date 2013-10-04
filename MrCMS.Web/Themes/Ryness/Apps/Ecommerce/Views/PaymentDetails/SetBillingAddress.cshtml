@@ -9,102 +9,136 @@
         if (otherAddresses != null && otherAddresses.Any())
         {
         <div class="row-fluid">
-            <div class="span4">
+            <div class="span4 align-right line-height-30">
                 Existing Address :
             </div>
             <div class="span8">
-                @Html.DropDownList("existing-addresses", otherAddresses)
+                <div class="row-fluid">
+                    @Html.DropDownList("existing-addresses", otherAddresses, new { @class = "span8" })
+                </div>
             </div>
         </div>
         }
         <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.FirstName)
+            <div class="span4 align-right line-height-30">
+                First Name <span class="red">*</span> :
             </div>
             <div class="span8">
-                @Html.TextBoxFor(address => address.FirstName)
-                @Html.ValidationMessageFor(address => address.FirstName)
+                <div class="row-fluid">
+                    @Html.TextBoxFor(address => address.FirstName, new { @class = "span8" })
+                    @Html.ValidationMessageFor(address => address.FirstName)
+                </div>
             </div>
         </div>
         <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.LastName)
+            <div class="span4 align-right line-height-30">
+                Last Name <span class="red">*</span> :
             </div>
             <div class="span8">
-                @Html.TextBoxFor(address => address.LastName)
-                @Html.ValidationMessageFor(address => address.LastName)
+                <div class="row-fluid">
+                    @Html.TextBoxFor(address => address.LastName, new { @class = "span8" })
+                    @Html.ValidationMessageFor(address => address.LastName)
+                </div>
             </div>
         </div>
         <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.Company)
+            <div class="span4 align-right line-height-30">
+                Company (optional) :
             </div>
             <div class="span8">
-                @Html.TextBoxFor(address => address.Company)
+                <div class="row-fluid">
+                    @Html.TextBoxFor(address => address.Company, new { @class = "span8" })
+                    @Html.ValidationMessageFor(address => address.Company)
+                </div>
             </div>
         </div>
         <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.PhoneNumber)
+            <div class="span4 align-right line-height-30">
+                Phone Number <span class="red">*</span> :
             </div>
             <div class="span8">
-                @Html.TextBoxFor(address => address.PhoneNumber)
-                @Html.ValidationMessageFor(address => address.PhoneNumber)
+                <div class="row-fluid">
+                    @Html.TextBoxFor(address => address.PhoneNumber, new { @class = "span8" })
+                    @Html.ValidationMessageFor(address => address.PhoneNumber)
+                </div>
+            </div>
+        </div>
+        
+        <div class="row-fluid">
+            <div class="span4 align-right line-height-30">
+                Address 1 <span class="red">*</span> :
+            </div>
+            <div class="span8">
+                <div class="row-fluid">
+                    @Html.TextBoxFor(address => address.Address1, new { @class = "span8" })
+                    @Html.ValidationMessageFor(address => address.Address1)
+                </div>
             </div>
         </div>
         <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.Address1)
+            <div class="span4 align-right line-height-30">
+                Address 2  :
             </div>
             <div class="span8">
-                @Html.TextBoxFor(address => address.Address1)
-                @Html.ValidationMessageFor(address => address.Address1)
+                <div class="row-fluid">
+                    @Html.TextBoxFor(address => address.Address2, new { @class = "span8" })
+                    @Html.ValidationMessageFor(address => address.Address2)
+                </div>
             </div>
         </div>
         <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.Address2)
+            <div class="span4 align-right line-height-30">
+                Town or City <span class="red">*</span> :
             </div>
             <div class="span8">
-                @Html.TextBoxFor(address => address.Address2)
-                @Html.ValidationMessageFor(address => address.Address2)
+                <div class="row-fluid">
+                    @Html.TextBoxFor(address => address.City, new { @class = "span8" })
+                    @Html.ValidationMessageFor(address => address.City)
+                </div>
             </div>
         </div>
         <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.City)
+            <div class="span4 align-right line-height-30">
+                County  :
             </div>
             <div class="span8">
-                @Html.TextBoxFor(address => address.City)
-                @Html.ValidationMessageFor(address => address.City)
+                <div class="row-fluid">
+                    @Html.TextBoxFor(address => address.StateProvince, new { @class = "span8" })
+                    @Html.ValidationMessageFor(address => address.StateProvince)
+                </div>
+            </div>
+        </div>
+        
+        <div class="row-fluid">
+            <div class="span4 align-right line-height-30">
+                Country <span class="red">*</span> :
+            </div>
+            <div class="span8">
+                <div class="row-fluid">
+                    @Html.DisplayFor(address => address.Country.Name)
+                </div>
+            </div>
+        </div>
+        
+        <div class="row-fluid">
+            <div class="span4 align-right line-height-30">
+                Postcode<span class="red">*</span> :
+            </div>
+            <div class="span8">
+                <div class="row-fluid">
+                    @Html.TextBoxFor(address => address.PostalCode, new { @class = "span8" })
+                    @Html.ValidationMessageFor(address => address.PostalCode)
+                </div>
             </div>
         </div>
         <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.StateProvince)
+            <div class="span4 align-right line-height-30">
             </div>
             <div class="span8">
-                @Html.TextBoxFor(address => address.StateProvince)
-                @Html.ValidationMessageFor(address => address.StateProvince)
+                <div class="row-fluid">
+                    <input type="submit" class="btn red-gradient span8" id="continue" name="continue" value="Set billing address" />
+                </div>
             </div>
         </div>
-        <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.Country)
-            </div>
-            <div class="span8">
-                @Html.DisplayFor(address => address.Country.Name)
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.PostalCode)
-            </div>
-            <div class="span8">
-                @Html.TextBoxFor(address => address.PostalCode)
-                @Html.ValidationMessageFor(address => address.PostalCode)
-            </div>
-        </div>
-        <input type="submit" class="btn btn-info" id="continue" name="continue" value="Submit" />
     }
 </div>
