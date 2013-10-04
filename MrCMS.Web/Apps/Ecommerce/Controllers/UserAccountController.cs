@@ -72,11 +72,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             
             if (model != null && ModelState.IsValid)
             {
+                var existingUser = _userService.GetUserByEmail(model.Email);
+                if (existingUser != null)
+                    return Redirect(UniquePageHelper.GetUrl<ProductSearch>());
+
                 var user = new User
                 {
                     FirstName = String.Empty,
                     LastName = String.Empty,
-                    Email = model.Email,
+                    Email = model.Email.Trim(),
                     IsActive = true
                 };
                 _passwordManagementService.SetPassword(user, model.Password, model.Password);

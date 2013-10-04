@@ -12,11 +12,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
     {
         private readonly ISession _session;
         private readonly IAmazonLogService _amazonLogService;
+        private readonly IAmazonOrderEventService _amazonOrderEventService;
 
-        public AmazonOrderService(ISession session, IAmazonLogService amazonLogService)
+        public AmazonOrderService(ISession session, 
+            IAmazonLogService amazonLogService, IAmazonOrderEventService amazonOrderEventService)
         {
             _session = session;
             _amazonLogService = amazonLogService;
+            _amazonOrderEventService = amazonOrderEventService;
         }
 
         public AmazonOrder Get(int id)
@@ -45,17 +48,27 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             return _session.Paged(QueryOver.Of<AmazonOrder>(), page, pageSize);
         }
 
-        public void Save(AmazonOrder item)
+        public void Add(AmazonOrder item)
         {
-            _amazonLogService.Add(AmazonLogType.Orders, item.Id > 0 ? AmazonLogStatus.Update : AmazonLogStatus.Insert,
-                                 null, null, null,null, item, null, null);
+            _session.Transact(session => session.Save(item));
 
-            _session.Transact(session => session.SaveOrUpdate(item));
+            _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Insert,
+                                 null, null, null, null, item, null, null);
+
+            _amazonOrderEventService.AmazonOrderPlaced(item);
+        }
+
+        public void Update(AmazonOrder item)
+        {
+            _session.Transact(session => session.Update(item));
+
+            _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Update,
+                                 null, null, null, null, item, null, null);
         }
 
         public void Delete(AmazonOrder item)
         {
-            _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Delete, null,null,null, null, item, null,null);
+            _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Delete, null, null, null, null, item, null, null);
 
             _session.Transact(session => session.Delete(item));
         }
@@ -67,7 +80,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             {
                 orderItem.QuantityShipped = orderItem.QuantityOrdered;
             }
-            Save(item);
+            Update(item);
         }
     }
 }

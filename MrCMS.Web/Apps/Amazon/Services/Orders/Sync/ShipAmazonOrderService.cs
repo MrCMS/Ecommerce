@@ -1,4 +1,5 @@
-﻿using MrCMS.Web.Apps.Amazon.Entities.Orders;
+﻿using System.Collections.Generic;
+using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Api.Feeds;
 
@@ -23,6 +24,15 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             var submissionId = _amazonOrderRequestService.SubmitOrderFulfillmentFeed(syncModel, feed);
 
             _amazonOrderRequestService.CheckIfOrderFulfillmentFeedWasProcessed(syncModel, amazonOrder, submissionId);
+        }
+
+        public void MarkAsShipped(AmazonSyncModel syncModel, List<AmazonOrder> amazonOrders)
+        {
+            var feed = _amazonFeedsApiService.GetOrderFulfillmentFeed(amazonOrders);
+
+            var submissionId = _amazonOrderRequestService.SubmitOrderFulfillmentFeed(syncModel, feed);
+
+            _amazonOrderRequestService.CheckIfOrderFulfillmentFeedWasProcessed(syncModel, amazonOrders, submissionId);
         }
     }
 }

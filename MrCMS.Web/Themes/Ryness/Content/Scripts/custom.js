@@ -1,7 +1,6 @@
 ﻿$(window).load(function () {
     $('#slider').nivoSlider({ effect: 'fade', pauseTime: 8000, controlNav: false });
     $("#pikame").PikaChoose({ autoPlay: false });
-    $('input, textarea').placeholder();
 });
 
 $(document).ready(function () {
@@ -11,6 +10,15 @@ $(document).ready(function () {
     function init() {
         setImageSize();
     }
+    
+    $.cookieBar({
+        message: "Our site uses cookies.",
+        acceptText : "Continue",
+        policyButton: true,
+        policyText: "Find out more",
+        policyURL : "/privacy-policy-and-cookie-info"
+    });
+
 
     function setImageSize() {
         var browserWidth = $(window).width();

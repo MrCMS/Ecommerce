@@ -21,18 +21,23 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
     public class AmazonRequestService : IAmazonRequestService
     {
         private readonly IAmazonListingService _amazonListingService;
+        private readonly IAmazonFeedsApiService _amazonFeedsApiService;
         private readonly IAmazonProductsApiService _amazonProductsApiService;
         private readonly IAmazonLogService _amazonLogService;
-        private readonly IAmazonFeedsApiService _amazonFeedsApiService;
+        private readonly IAmazonOrderService _amazonOrderService;
+        private readonly IOrderService _orderService;
 
-        public AmazonRequestService(IAmazonListingService amazonListingService, IAmazonLogService amazonLogService,
-            IAmazonFeedsApiService amazonFeedsApiService,
-            IAmazonProductsApiService amazonProductsApiService)
+        public AmazonRequestService(IAmazonListingService amazonListingService,IAmazonLogService amazonLogService, 
+            IAmazonFeedsApiService amazonFeedsApiService, 
+            IAmazonProductsApiService amazonProductsApiService,
+            IAmazonOrderService amazonOrderService, IOrderService orderService)
         {
             _amazonListingService = amazonListingService;
             _amazonLogService = amazonLogService;
             _amazonFeedsApiService = amazonFeedsApiService;
             _amazonProductsApiService = amazonProductsApiService;
+            _amazonOrderService = amazonOrderService;
+            _orderService = orderService;
         }
 
         public List<string> SubmitMainFeeds(AmazonSyncModel model, List<FileStream> feeds)
@@ -42,6 +47,15 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             var retryCount = 0;
             while (!uploadSuccess)
             {
+                retryCount++;
+                if (retryCount == 3)
+                {
+                    AmazonProgressBarHelper.Update(model.Task, "Error",
+                                                  "Request timed out. Please check logs for potential errors and try again later.", 100,
+                                                  100);
+                    break;
+                }
+
                 try
                 {
                     if (feeds.Count >= 1)
@@ -59,9 +73,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 {
                     CurrentRequestData.ErrorSignal.Raise(ex);
 
-                    retryCount++;
-                    if (retryCount == 3) break;
-
+                    Thread.Sleep(120000);
                 }
             }
             return submissionIds;
@@ -74,6 +86,15 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             var feedContent = _amazonFeedsApiService.GetProductsImageFeeds(item);
             while (!uploadSuccess)
             {
+                retryCount++;
+                if (retryCount == 5)
+                {
+                    AmazonProgressBarHelper.Update(model.Task, "Error",
+                                                  "Request timed out. Please check logs for potential errors and try again later.", 100,
+                                                  100);
+                    break;
+                }
+
                 try
                 {
                     AmazonProgressBarHelper.Update(model.Task, "Push", "Checking if request was processed...", 100, 75);
@@ -95,18 +116,19 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                     {
                         AmazonProgressBarHelper.Update(model.Task, "Push",
                                                        "Nothing yet, we will wait 2 min. more and try again...", 100, 75);
+
+                        Thread.Sleep(120000);
                     }
                 }
                 catch (Exception ex)
                 {
                     CurrentRequestData.ErrorSignal.Raise(ex);
 
-                    retryCount++;
-                    if (retryCount == 3) break;
-
                     AmazonProgressBarHelper.Update(model.Task, "Push",
                                                    "Amazon Api is busy, we will wait additional 2 min. and try again...", 100,
                                                    75);
+
+                    Thread.Sleep(120000);
                 }
             }
         }
@@ -118,6 +140,15 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             var feedContent = _amazonFeedsApiService.GetSingleProductImageFeed(amazonListing);
             while (!uploadSuccess)
             {
+                retryCount++;
+                if (retryCount == 3)
+                {
+                    AmazonProgressBarHelper.Update(model.Task, "Error",
+                                                  "Request timed out. Please check logs for potential errors and try again later.", 100,
+                                                  100);
+                    break;
+                }
+
                 try
                 {
                     AmazonProgressBarHelper.Update(model.Task, "Push", "Checking if request was processed...", 100, 75);
@@ -146,9 +177,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 {
                     CurrentRequestData.ErrorSignal.Raise(ex);
 
-                    retryCount++;
-                    if (retryCount == 3) break;
-
                     AmazonProgressBarHelper.Update(model.Task, "Push",
                                                    "Amazon Api is busy, we will wait additional 2 min. and try again...", 100,
                                                    75);
@@ -164,6 +192,15 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             var retryCount = 0;
             while (!uploadSuccess)
             {
+                retryCount++;
+                if (retryCount == 3)
+                {
+                    AmazonProgressBarHelper.Update(model.Task, "Error",
+                                                  "Request timed out. Please check logs for potential errors and try again later.", 100,
+                                                  100);
+                    break;
+                }
+
                 try
                 {
                     AmazonProgressBarHelper.Update(model.Task, "Push", "Pushing request to Amazon", 100, 0);
@@ -176,10 +213,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 catch (Exception ex)
                 {
                     _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Error, ex, null,
-                                          AmazonApiSection.Feeds, null, null, null, null, "Error during push of product delete request to Amazon");
-
-                    retryCount++;
-                    if (retryCount == 3) break;
+                                          AmazonApiSection.Feeds, null, null, null,null, "Error during push of product delete request to Amazon");
 
                     Thread.Sleep(120000);
                 }
@@ -193,6 +227,15 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
 
             while (!uploadSuccess)
             {
+                retryCount++;
+                if (retryCount == 3)
+                {
+                    AmazonProgressBarHelper.Update(model.Task, "Error",
+                                                  "Request timed out. Please check logs for potential errors and try again later.", 100,
+                                                  100);
+                    break;
+                }
+
                 try
                 {
                     AmazonProgressBarHelper.Update(model.Task, "Push", "Checking if request was processed...", 100, 75);
@@ -216,9 +259,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 catch (Exception ex)
                 {
                     _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Error, ex, null,
-                                          AmazonApiSection.Feeds, null, null, amazonListing, null);
-                    retryCount++;
-                    if (retryCount == 3) break;
+                                          AmazonApiSection.Feeds, null,null, amazonListing,null);
 
                     AmazonProgressBarHelper.Update(model.Task, "Push",
                                                    "Amazon Api is busy, we will need to wait additional 2 min. and try again",
@@ -268,5 +309,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             submissionIds.Add(submissionId);
             AmazonProgressBarHelper.Update(model.Task, "Push", "Product image pushed", 100, 100);
         }
+
+       
     }
 }

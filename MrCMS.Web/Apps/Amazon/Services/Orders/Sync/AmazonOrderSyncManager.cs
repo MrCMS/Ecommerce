@@ -1,4 +1,7 @@
-﻿using MrCMS.Web.Apps.Amazon.Helpers;
+﻿using System.Collections.Generic;
+using System.Linq;
+using MrCMS.Web.Apps.Amazon.Entities.Orders;
+using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Api.Orders;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
@@ -29,8 +32,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         {
             AmazonProgressBarHelper.Clean(model.Task);
 
-            _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage,null,null, AmazonApiSection.Orders,null,null,null,
-                null, "Checking Amazon Api Service Availability");
+            _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage,null,null, AmazonApiSection.Orders,null,null,null,null, "Checking Amazon Api Service Availability");
             AmazonProgressBarHelper.Update(model.Task, "Api", "Checking Amazon Api Service Availability", 100, 0);
 
             var serviceStatus = _amazonOrdersApiService.GetServiceStatus(AmazonApiSection.Orders);
@@ -39,9 +41,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 AmazonProgressBarHelper.Update(model.Task, "Api", AmazonServiceStatus.GREEN.GetDescription(),null, null);
                 AmazonProgressBarHelper.Update(model.Task, "Started", "Starting Orders Sync", null, null);
 
-                var orders = _importAmazonOrderService.GetOrdersFromAmazon(model);
+                var outOfSyncAmazonOrders = new List<AmazonOrder>();
+
+                var orders = _importAmazonOrderService.GetOrdersFromAmazon(model, ref outOfSyncAmazonOrders);
 
                 _importAmazonOrderService.ImportOrders(model, orders);
+
+                if(outOfSyncAmazonOrders.Any())
+                    _shipAmazonOrderService.MarkAsShipped(model, outOfSyncAmazonOrders);
 
                 AmazonProgressBarHelper.Update(model.Task, "Completed", "Completed", 100, 100);
             }

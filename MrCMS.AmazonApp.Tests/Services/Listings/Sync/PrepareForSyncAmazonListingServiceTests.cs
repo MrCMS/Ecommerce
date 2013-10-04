@@ -49,7 +49,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
 
             var product = new Product();
-            var productVariant = new ProductVariant() { Product = product, SKU = "S1"};
+            var productVariant = new ProductVariant() { Product = product, SKU = "S1", Barcode = "" };
             var model = new AmazonListing() { ProductVariant = productVariant, AmazonListingGroup = new AmazonListingGroup()
                 {
                     FulfillmentChannel = AmazonFulfillmentChannel.MFN
@@ -84,7 +84,8 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
                     BasePrice = 1,
                     StockRemaining = 2,
                     Name = "P",
-                    ManufacturerPartNumber = "MPN1"
+                    ManufacturerPartNumber = "MPN1",
+                    Barcode = ""
                 };
             var model = new AmazonListing()
             {
@@ -136,7 +137,8 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
                 BasePrice = 1,
                 StockRemaining = 2,
                 Name = "P",
-                ManufacturerPartNumber = "MPN1"
+                ManufacturerPartNumber = "MPN1",
+                Barcode = ""
             };
             var model = new AmazonListing()
             {
@@ -192,7 +194,8 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
                 BasePrice = 1,
                 StockRemaining = 2,
                 Name = "P",
-                ManufacturerPartNumber = "MPN1"
+                ManufacturerPartNumber = "MPN1",
+                Barcode = ""
             };
             var amazonListingGroup = new AmazonListingGroup()
                 {
@@ -248,7 +251,8 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
                 BasePrice = 1,
                 StockRemaining = 2,
                 Name = "P",
-                ManufacturerPartNumber = "MPN1"
+                ManufacturerPartNumber = "MPN1",
+                Barcode = ""
             };
             var amazonListingGroup = new AmazonListingGroup()
             {

@@ -126,8 +126,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             var id = user.Id;
             var email = user.Email;
-            return _session.QueryOver<Order>().Where(x => x.User.Id == id ||
-                x.OrderEmail.IsInsensitiveLike(email, MatchMode.Exact)).OrderBy(x => x.CreatedOn).Desc.Paged(pageNum, pageSize);
+            return _session.QueryOver<Order>().Where(x => x.User.Id == id).OrderBy(x => x.CreatedOn).Desc.Paged(pageNum, pageSize);
         }
 
         public IList<Order> GetOrdersByUser(User user)
