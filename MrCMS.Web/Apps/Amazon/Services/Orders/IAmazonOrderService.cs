@@ -1,4 +1,6 @@
-﻿using MrCMS.Paging;
+﻿using System.Collections.Generic;
+using MarketplaceWebServiceOrders.Model;
+using MrCMS.Paging;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders
@@ -11,6 +13,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
         void Add(AmazonOrder item);
         void Update(AmazonOrder item);
         void Delete(AmazonOrder item);
-        void MarkAsShipped(AmazonOrder item);
+        void SaveOrUpdate(List<AmazonOrder> orders);
+        void MarkAsShipped(AmazonOrder amazonOrder);
     }
 }

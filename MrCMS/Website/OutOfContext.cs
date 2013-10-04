@@ -10,6 +10,7 @@ namespace MrCMS.Website
         private readonly OutOfContextServerUtility _outOfContextServerUtility = new OutOfContextServerUtility();
         private readonly OutOfContextSession _outOfContextSession = new OutOfContextSession();
         private readonly OutOfContextResponse _outOfContextResponse = new OutOfContextResponse();
+        private readonly OutOfContextRequest _outOfContextRequest = new OutOfContextRequest();
 
         public override IDictionary Items { get { return _items; } }
 
@@ -18,5 +19,11 @@ namespace MrCMS.Website
         public override HttpSessionStateBase Session { get { return _outOfContextSession; } }
 
         public override HttpResponseBase Response { get { return _outOfContextResponse; } }
+
+        public override HttpRequestBase Request { get { return _outOfContextRequest; } }
+    }
+
+    public class OutOfContextRequest : HttpRequestBase
+    {
     }
 }

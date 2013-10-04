@@ -141,16 +141,6 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void OrdersController_Sync_ShouldCallSyncAmazonOrders()
-        {
-            var model = new AmazonSyncModel();
-
-            var result = _ordersController.Sync(model);
-
-            A.CallTo(() => _syncAmazonOrderService.SyncOrders(model)).MustHaveHappened();
-        }
-
-        [Fact]
         public void OrdersController_ShipOne_ReturnsViewResult()
         {
             var result = _ordersController.ShipOne_GET(new AmazonOrder(){Id=1,AmazonOrderId = "O1"});
@@ -190,14 +180,5 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
             result.As<JsonResult>().Data.Should().Be(true);
         }
 
-        [Fact]
-        public void OrdersController_ShipOne_ShouldCallShipOrder()
-        {
-            var model = new AmazonSyncModel();
-
-            var result = _ordersController.ShipOne(model);
-
-            A.CallTo(() => _syncAmazonOrderService.ShipOrder(model)).MustHaveHappened();
-        }
     }
 }

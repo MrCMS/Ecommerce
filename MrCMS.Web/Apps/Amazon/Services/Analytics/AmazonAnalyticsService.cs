@@ -129,7 +129,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
         public int GetNumberUnshippedOrders(DateTime from, DateTime to)
         {
             return _session.QueryOver<AmazonOrder>().Where(item => item.PurchaseDate >= from && item.PurchaseDate <= to &&
-                               (item.Status==null || item.Status.Value==AmazonOrderStatus.Unshipped)).Cacheable().RowCount();
+                               item.Status==AmazonOrderStatus.Unshipped).Cacheable().RowCount();
         }
 
         public decimal GetNumberOfOrderedProducts(DateTime from, DateTime to)

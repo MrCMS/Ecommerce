@@ -6,7 +6,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 {
     public interface IShipAmazonOrderService
     {
-        void MarkAsShipped(AmazonSyncModel model, AmazonOrder item);
-        void MarkAsShipped(AmazonSyncModel syncModel, List<AmazonOrder> amazonOrders);
+        List<AmazonOrder> MarkOrdersAsShipped();
     }
 }

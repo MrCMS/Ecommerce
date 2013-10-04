@@ -1,10 +1,12 @@
-﻿using MrCMS.Helpers;
+﻿using System.Collections.Generic;
+using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
 using NHibernate;
 using NHibernate.Criterion;
+using Order = MarketplaceWebServiceOrders.Model.Order;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders
 {
@@ -73,14 +75,15 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             _session.Transact(session => session.Delete(item));
         }
 
-        public void MarkAsShipped(AmazonOrder item)
+        public void SaveOrUpdate(List<AmazonOrder> orders)
         {
-            item.Status = AmazonOrderStatus.Shipped;
-            foreach (var orderItem in item.Items)
-            {
-                orderItem.QuantityShipped = orderItem.QuantityOrdered;
-            }
-            Update(item);
+            _session.Transact(session => orders.ForEach(session.SaveOrUpdate));
+        }
+
+        public void MarkAsShipped(AmazonOrder amazonOrder)
+        {
+            amazonOrder.Status = AmazonOrderStatus.Shipped;
+            _session.Transact(session => session.SaveOrUpdate(amazonOrder));
         }
     }
 }

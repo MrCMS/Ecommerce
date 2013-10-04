@@ -1,18 +1,16 @@
-﻿using MrCMS.Entities.Multisite;
-using MrCMS.Tasks;
+﻿using System;
+using MrCMS.Settings;
+using MrCMS.Web.Apps.Amazon.Services.Listings.Sync;
 
 namespace MrCMS.Web.Apps.Amazon.Tasks
 {
-    public class SyncListings : BackgroundTask
+    public class AmazonSyncSettings : SiteSettingsBase
     {
-        public SyncListings(Site site) : base(site)
+        public override bool RenderInSettings
         {
-            
+            get { return false; }
         }
 
-        public override void Execute()
-        {
-
-        }
+        public DateTime? LastRun { get; set; }
     }
 }

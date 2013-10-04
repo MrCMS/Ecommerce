@@ -18,7 +18,7 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Orders
         public virtual string AmazonOrderId { get; set; }
         public virtual DateTime? PurchaseDate { get; set; }
         public virtual DateTime? LastUpdatedDate { get; set; }
-        public virtual AmazonOrderStatus? Status { get; set; }
+        public virtual AmazonOrderStatus Status { get; set; }
         public virtual string OrderType { get; set; }
         public virtual string MarketplaceId { get; set; }
         public virtual string SalesChannel { get; set; }

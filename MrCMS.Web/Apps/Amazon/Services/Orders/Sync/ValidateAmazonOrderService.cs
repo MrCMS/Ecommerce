@@ -37,8 +37,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         }
         private AmazonOrderItem GetAmazonOrderItem(AmazonOrder amazonOrder, OrderItem rawOrderItem)
         {
-            return new AmazonOrderItem()
-                {
+            return new AmazonOrderItem
+                       {
                     ASIN = !String.IsNullOrWhiteSpace(rawOrderItem.ASIN)?rawOrderItem.ASIN:String.Empty,
                     AmazonOrder = amazonOrder,
                     AmazonOrderItemId = !String.IsNullOrWhiteSpace(rawOrderItem.OrderItemId) ? rawOrderItem.OrderItemId : String.Empty,
@@ -86,12 +86,18 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             order.MarketplaceId = !String.IsNullOrWhiteSpace(rawOrder.MarketplaceId) ? rawOrder.MarketplaceId : String.Empty;
             order.ShipServiceLevel = !String.IsNullOrWhiteSpace(rawOrder.ShipServiceLevel) ? rawOrder.ShipServiceLevel : String.Empty;
             order.ShipmentServiceLevelCategory = !String.IsNullOrWhiteSpace(rawOrder.ShipmentServiceLevelCategory) ? rawOrder.ShipmentServiceLevelCategory : String.Empty;
-            order.ShippingAddress = shippingAddress;
+            SetShippingAddress(order, shippingAddress);
             order.NumberOfItemsUnshipped = rawOrder.NumberOfItemsUnshipped;
             order.NumberOfItemsShipped = rawOrder.NumberOfItemsShipped;
             order.FulfillmentChannel = rawOrder.FulfillmentChannel.GetEnumByValue<AmazonFulfillmentChannel>();
             order.LastUpdatedDate = rawOrder.LastUpdateDate;
         }
+
+        public void SetShippingAddress(AmazonOrder amazonOrder, AddressData address)
+        {
+            amazonOrder.ShippingAddress = address;
+        }
+
         public AddressData GetAmazonOrderAddress(MarketplaceWebServiceOrders.Model.Order rawOrder)
         {
             if (rawOrder.ShippingAddress != null)
@@ -100,18 +106,46 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 string lastName;
                 GetFirstAndLastName(rawOrder, out firstName, out lastName);
 
-                return new AddressData()
-                    {
-                        Address1 = (rawOrder.ShippingAddress!=null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.AddressLine1)) ? rawOrder.ShippingAddress.AddressLine1 : String.Empty,
-                        Address2 = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.AddressLine2)) ? rawOrder.ShippingAddress.AddressLine2 : String.Empty,
-                        FirstName = firstName,
-                        LastName = lastName,
-                        PhoneNumber = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.Phone)) ? rawOrder.ShippingAddress.Phone : String.Empty,
-                        PostalCode = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.PostalCode)) ? rawOrder.ShippingAddress.PostalCode : String.Empty,
-                        StateProvince = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.StateOrRegion)) ? rawOrder.ShippingAddress.StateOrRegion : String.Empty,
-                        City = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.City)) ? rawOrder.ShippingAddress.City : String.Empty,
-                        Country = (rawOrder.ShippingAddress != null && !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.CountryCode)) ? _countryService.GetCountryByCode(rawOrder.ShippingAddress.CountryCode) : null,
-                    };
+                return new AddressData
+                           {
+                               Address1 =
+                                   (rawOrder.ShippingAddress != null &&
+                                    !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.AddressLine1))
+                                       ? rawOrder.ShippingAddress.AddressLine1
+                                       : String.Empty,
+                               Address2 =
+                                   (rawOrder.ShippingAddress != null &&
+                                    !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.AddressLine2))
+                                       ? rawOrder.ShippingAddress.AddressLine2
+                                       : String.Empty,
+                               FirstName = firstName,
+                               LastName = lastName,
+                               PhoneNumber =
+                                   (rawOrder.ShippingAddress != null &&
+                                    !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.Phone))
+                                       ? rawOrder.ShippingAddress.Phone
+                                       : String.Empty,
+                               PostalCode =
+                                   (rawOrder.ShippingAddress != null &&
+                                    !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.PostalCode))
+                                       ? rawOrder.ShippingAddress.PostalCode
+                                       : String.Empty,
+                               StateProvince =
+                                   (rawOrder.ShippingAddress != null &&
+                                    !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.StateOrRegion))
+                                       ? rawOrder.ShippingAddress.StateOrRegion
+                                       : String.Empty,
+                               City =
+                                   (rawOrder.ShippingAddress != null &&
+                                    !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.City))
+                                       ? rawOrder.ShippingAddress.City
+                                       : String.Empty,
+                               Country =
+                                   (rawOrder.ShippingAddress != null &&
+                                    !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.CountryCode))
+                                       ? _countryService.GetCountryByCode(rawOrder.ShippingAddress.CountryCode)
+                                       : null,
+                           };
             }
             return null;
         }
@@ -137,7 +171,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             }
         }
 
-        public Order GetOrder(MarketplaceWebServiceOrders.Model.Order rawOrder, AmazonOrder amazonOrder)
+        public Order GetOrder(AmazonOrder amazonOrder)
         {
             var order = amazonOrder.Order ?? new Order();
 
@@ -148,28 +182,29 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 GetOrderLines(amazonOrder, ref order);
             }
 
-            order.ShippingStatus = rawOrder.OrderStatus.GetEnumByValue<ShippingStatus>();
+            order.ShippingStatus = amazonOrder.Status.GetEnumByValue<ShippingStatus>();
 
             return order;
         }
         private Order GetOrderDetails(AmazonOrder amazonOrder)
         {
-            return new Order()
-                {
-                    ShippingAddress = amazonOrder.ShippingAddress,
-                    BillingAddress = amazonOrder.ShippingAddress,
-                    PaymentMethod = amazonOrder.PaymentMethod.GetDescription(),
-                    PaidDate = amazonOrder.PurchaseDate,
-                    Total = amazonOrder.OrderTotalAmount,
-                    Tax = amazonOrder.Tax,
-                    Subtotal = amazonOrder.ItemAmount,
-                    DiscountAmount = amazonOrder.ItemDiscountAmount,
-                    ShippingTax = amazonOrder.ShippingTax,
-                    ShippingTotal = amazonOrder.ShippingTotal,
-                    OrderEmail = amazonOrder.BuyerEmail,
-                    IsCancelled = false,
-                    SalesChannel = "Amazon"
-                };
+            return new Order
+                       {
+                           ShippingAddress = amazonOrder.ShippingAddress,
+                           BillingAddress = amazonOrder.ShippingAddress,
+                           PaymentMethod = amazonOrder.PaymentMethod.GetDescription(),
+                           PaidDate = amazonOrder.PurchaseDate,
+                           Total = amazonOrder.OrderTotalAmount,
+                           Tax = amazonOrder.Tax,
+                           Subtotal = amazonOrder.ItemAmount,
+                           DiscountAmount = amazonOrder.ItemDiscountAmount,
+                           ShippingTax = amazonOrder.ShippingTax,
+                           ShippingTotal = amazonOrder.ShippingTotal,
+                           OrderEmail = amazonOrder.BuyerEmail,
+                           IsCancelled = false,
+                           SalesChannel = "Amazon",
+                           PaymentStatus = PaymentStatus.Paid
+                       };
         }
         private void GetOrderLines(AmazonOrder amazonOrder, ref Order order)
         {

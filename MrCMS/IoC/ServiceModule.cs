@@ -13,6 +13,7 @@ using MrCMS.Settings;
 using MrCMS.Website;
 using Ninject.Extensions.Conventions;
 using Ninject.Modules;
+using Ninject.Syntax;
 using Ninject.Web.Common;
 using Ninject;
 
@@ -40,25 +41,25 @@ namespace MrCMS.IoC
             Kernel.Bind(syntax => syntax.From(TypeHelper.GetAllMrCMSAssemblies()).SelectAllClasses()
                                       .Where(t => !typeof(SiteSettingsBase).IsAssignableFrom(t) && !typeof(IController).IsAssignableFrom(t) && !Kernel.GetBindings(t).Any())
                                       .BindWith<NinjectServiceToInterfaceBinder>()
-                                      .Configure(onSyntax => onSyntax.InRequestScope()));
+                                      .Configure(onSyntax => onSyntax.InMrCMSContextScope()));
             Kernel.Bind(syntax => syntax.From(TypeHelper.GetAllMrCMSAssemblies()).SelectAllClasses()
                                       .Where(t => typeof(SiteSettingsBase).IsAssignableFrom(t) && !typeof(IController).IsAssignableFrom(t) && !Kernel.GetBindings(t).Any())
                                       .BindWith<NinjectSiteSettingsBinder>()
-                                      .Configure(onSyntax => onSyntax.InRequestScope()));
+                                      .Configure(onSyntax => onSyntax.InMrCMSContextScope()));
 
             Kernel.Bind<HttpRequestBase>().ToMethod(context => CurrentRequestData.CurrentContext.Request);
             Kernel.Bind<HttpSessionStateBase>().ToMethod(context => CurrentRequestData.CurrentContext.Session);
             Kernel.Bind<ObjectCache>().ToMethod(context => MemoryCache.Default);
             Kernel.Bind<Cache>().ToMethod(context => CurrentRequestData.CurrentContext.Cache);
-            Kernel.Bind(typeof(ISearcher<,>)).To(typeof(FSDirectorySearcher<,>)).InRequestScope();
-            Kernel.Bind(typeof(ITokenProvider<>)).To(typeof(PropertyTokenProvider<>)).InRequestScope();
-            Kernel.Bind(typeof(IMessageParser<,>)).To(typeof(MessageParser<,>)).InRequestScope();
+            Kernel.Bind(typeof(ISearcher<,>)).To(typeof(FSDirectorySearcher<,>)).InMrCMSContextScope();
+            Kernel.Bind(typeof(ITokenProvider<>)).To(typeof(PropertyTokenProvider<>)).InMrCMSContextScope();
+            Kernel.Bind(typeof(IMessageParser<,>)).To(typeof(MessageParser<,>)).InMrCMSContextScope();
             Kernel.Rebind<Site>()
                   .ToMethod(context => CurrentRequestData.CurrentSite)
-                  .InRequestScope();
+                  .InMrCMSContextScope();
             Kernel.Bind<IEnumerable<IHashAlgorithm>>()
                   .ToMethod(context => context.Kernel.GetAll<IHashAlgorithm>())
-                  .InRequestScope();
+                  .InMrCMSContextScope();
 
             // Allowing IFileSystem implementation to be set in the site settings
             Kernel.Rebind<IFileSystem>().ToMethod(context =>
@@ -72,7 +73,15 @@ namespace MrCMS.IoC
                                                                      IFileSystem;
                                                           }
                                                           return context.Kernel.Get<FileSystem>();
-                                                      }).InRequestScope();
+                                                      }).InMrCMSContextScope();
+        }
+    }
+
+    public static class ScopeHelper
+    {
+        public static IBindingNamedWithOrOnSyntax<T> InMrCMSContextScope<T>(this IBindingInSyntax<T> syntax)
+        {
+            return syntax.InScope(context => context.Kernel.Get<HttpContextBase>());
         }
     }
 }
