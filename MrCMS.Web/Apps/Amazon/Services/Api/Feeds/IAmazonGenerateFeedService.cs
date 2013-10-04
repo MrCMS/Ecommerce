@@ -11,7 +11,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
         FileStream GetSingleFeed(object feed, AmazonEnvelopeMessageType amazonEnvelopeMessageType,
                                  AmazonEnvelopeMessageOperationType? amazonEnvelopeMessageOperationType);
         FileStream GetFeed(IEnumerable<object> feeds, AmazonEnvelopeMessageType amazonEnvelopeMessageType,
-                           AmazonEnvelopeMessageOperationType amazonEnvelopeMessageOperationType);
+                           AmazonEnvelopeMessageOperationType? amazonEnvelopeMessageOperationType);
 
         Product GetProduct(AmazonListing listing);
         Price GetProductPrice(AmazonListing listing);

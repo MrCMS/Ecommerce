@@ -26,26 +26,36 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             _amazonListingService = amazonListingService;
         }
 
-        public void CloseAmazonListings(AmazonSyncModel syncModel, AmazonListingGroup amazonListingGroup)
+        public void CloseAmazonListings(AmazonSyncModel model, AmazonListingGroup amazonListingGroup)
         {
             var feedContent = _amazonFeedsApiService.GetProductsDeleteFeeds(amazonListingGroup);
 
-            var submissionId = _amazonRequestService.SubmitCloseRequest(syncModel, feedContent);
+            var submissionId = _amazonRequestService.SubmitCloseRequest(model, feedContent);
 
             var isUploaded = false;
             var retryCounter = 0;
 
             while (!isUploaded)
             {
+                retryCounter++;
+                retryCounter++;
+                if (retryCounter == 3)
+                {
+                    AmazonProgressBarHelper.Update(model.Task, "Error",
+                                                  "Request timed out. Please check logs for potential errors and try again later.", 100,
+                                                  100);
+                    break;
+                }
+
                 try
                 {
-                    AmazonProgressBarHelper.Update(syncModel.Task, "Push", "Checking if request was processed...", 100, 75);
+                    AmazonProgressBarHelper.Update(model.Task, "Push", "Checking if request was processed...", 100, 75);
                     if (_amazonFeedsApiService.GetFeedSubmissionList(submissionId).FeedProcessingStatus == "_DONE_")
                     {
-                        AmazonProgressBarHelper.Update(syncModel.Task, "Push", "Request was processed", 100, 90);
+                        AmazonProgressBarHelper.Update(model.Task, "Push", "Request was processed", 100, 90);
                         foreach (var amazonListing in amazonListingGroup.Items)
                         {
-                            AmazonProgressBarHelper.Update(syncModel.Task, "Push", "Updating local status of Amazon Listing #"+amazonListing.SellerSKU, 100, 90);
+                            AmazonProgressBarHelper.Update(model.Task, "Push", "Updating local status of Amazon Listing #"+amazonListing.SellerSKU, 100, 90);
                             _amazonListingService.UpdateAmazonListingStatus(amazonListing);
                         }
 
@@ -53,7 +63,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
                     }
                     else
                     {
-                        AmazonProgressBarHelper.Update(syncModel.Task, "Push", "Nothing yet, we will wait 2 min. more and try again...", 100, 75);
+                        AmazonProgressBarHelper.Update(model.Task, "Push", "Nothing yet, we will wait 2 min. more and try again...", 100, 75);
                         Thread.Sleep(120000);
                     }
                 }
@@ -61,10 +71,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
                 {
                     _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Error, ex, null,
                                           AmazonApiSection.Feeds, null, null,null,null,"Closing Amazon Listings");
-                    retryCounter++;
-                    if (retryCounter == 3) break;
 
-                    AmazonProgressBarHelper.Update(syncModel.Task, "Push", "Amazon Api is busy, we will need to wait additional 2 min. and try again", 100, 75);
+                    AmazonProgressBarHelper.Update(model.Task, "Push", "Amazon Api is busy, we will need to wait additional 2 min. and try again", 100, 75);
                     Thread.Sleep(120000);
                 }
             }

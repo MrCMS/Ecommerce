@@ -228,6 +228,7 @@
     <Compile Include="Apps\Amazon\Helpers\AmazonAppHelper.cs" />
     <Compile Include="Apps\Amazon\Helpers\AmazonProgressBarHelper.cs" />
     <Compile Include="Apps\Amazon\Indexing\AmazonOrderSearchIndex.cs" />
+    <Compile Include="Apps\Amazon\MessageTemplates\SendAmazonOrderPlacedEmailToStoreOwnerMessageTemplate.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonAdminMenuModel.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonApiSection.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonDashboardModel.cs" />
@@ -278,8 +279,13 @@
     <Compile Include="Apps\Amazon\Services\Logs\IAmazonLogService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSearchService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Events\IOnAmazonOrderPlaced.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Events\IAmazonOrderEvent.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Events\DoSomethingOnAmazonOrderPlaced.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderSearchService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderEventService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderEventService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\AmazonOrderSyncManager.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IAmazonOrderSyncManager.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IImportAmazonOrderService.cs" />
@@ -458,8 +464,8 @@
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderFullyRefundedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPartiallyRefundedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToCustomerMessageTemplate.cs" />
-    <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToStoreOwnerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderShippedEmailToCustomerMessageTemplate.cs" />
+    <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToStoreOwnerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\OrderTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryContainerMetadata.cs" />
@@ -720,6 +726,7 @@
     <Compile Include="Apps\Ryness\Entities\BuyingGuideInformation.cs" />
     <Compile Include="Apps\Ryness\Entities\KerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Entities\Testimonial.cs" />
+    <Compile Include="Apps\Ryness\Events\OnAmazonOrderCreated.cs" />
     <Compile Include="Apps\Ryness\Events\OnOrderPlacedKerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Metadata\BuyingGuideMetadata.cs" />
     <Compile Include="Apps\Ryness\Metadata\StoreListMetadata.cs" />
@@ -1846,6 +1853,7 @@
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-login.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-registration.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\jquery.history.js" />
+    <Content Include="Themes\Ryness\Content\Images\ajax-loader.gif" />
     <Content Include="Themes\Ryness\Content\Images\account.jpg" />
     <Content Include="Themes\Ryness\Content\Images\arrows.jpg" />
     <Content Include="Themes\Ryness\Content\Images\basket-bg.jpg" />
@@ -1940,6 +1948,7 @@
     <Content Include="Themes\Ryness\Content\Scripts\bootstrap.min.js" />
     <Content Include="Themes\Ryness\Content\Scripts\checkout\checkout.js" />
     <Content Include="Themes\Ryness\Content\Scripts\custom.js" />
+    <Content Include="Themes\Ryness\Content\Scripts\jquery.cookiebar.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.nivo.slider.pack.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.pikachoose.min.js" />
@@ -1951,6 +1960,7 @@
     <Content Include="Themes\Ryness\Content\Styles\bootstrap.css" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap.min.css" />
     <Content Include="Themes\Ryness\Content\Styles\checkout\main.css" />
+    <Content Include="Themes\Ryness\Content\Styles\jquery.cookiebar.css" />
     <Content Include="Themes\Ryness\Content\Styles\main.css" />
     <Content Include="Themes\Ryness\Content\Styles\menu.css" />
     <Content Include="Themes\Ryness\Content\Styles\nivo-slider.css" />
@@ -2455,6 +2465,7 @@
     <Content Include="Themes\Ryness\Views\Shared\_StoreLayout.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\FeaturedProductsVertical.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Pages\TextPage.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentMethod\Paypoint.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
@@ -2577,7 +2588,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>33219</DevelopmentServerPort>
+          <DevelopmentServerPort>7859</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:8888</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

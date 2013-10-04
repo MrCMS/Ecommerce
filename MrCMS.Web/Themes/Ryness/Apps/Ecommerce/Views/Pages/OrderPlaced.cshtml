@@ -1,5 +1,6 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.OrderPlaced
 @using MrCMS.Helpers
+@using MrCMS.Web.Apps.Core.Pages
 @using MrCMS.Web.Apps.Ecommerce.Entities.Orders
 @using MrCMS.Website
 @{
@@ -18,6 +19,10 @@
                 </p>
                 <p>
                     Complete order details have been emailed to @order.OrderEmail
+                    @if (CurrentRequestData.CurrentUser != null)
+                    {
+                        <text>and current order status can be viewed in </text><a href="@(UniquePageHelper.GetUrl<UserAccountPage>())">your account</a>
+                    }
                 </p>
                 <div class="complete-text">
                     your order is complete
@@ -27,7 +32,7 @@
         </div>
 
         @{
-            if (CurrentRequestData.CurrentUser == null)
+            if ((bool)ViewData["user-can-register"])
             {
             <div class="border-grey margin-bottom-20">
                 <div class="sub-header grey-background">

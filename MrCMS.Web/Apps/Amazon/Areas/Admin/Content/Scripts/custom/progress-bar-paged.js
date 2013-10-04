@@ -19,8 +19,6 @@
 });
 
 function updateProgressBar() {
-    console.log(this);
-    console.log("updateProgressBar");
     $.ajax({
         url: "/Admin/Apps/Amazon/App/ProgressBarStatus",
         type: "GET",
@@ -58,8 +56,6 @@ function updateProgressBar() {
 }
 
 function refreshMessages() {
-    console.log(this);
-    console.log("refreshMessages");
     $("#pb-status").show();
     $.get("/Admin/Apps/Amazon/App/ProgressBarMessages", {
         taskId: taskId

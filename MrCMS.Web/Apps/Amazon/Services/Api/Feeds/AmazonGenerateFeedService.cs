@@ -51,7 +51,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             return null;
         }
         public FileStream GetFeed(IEnumerable<object> feeds, AmazonEnvelopeMessageType amazonEnvelopeMessageType,
-            AmazonEnvelopeMessageOperationType amazonEnvelopeMessageOperationType)
+            AmazonEnvelopeMessageOperationType? amazonEnvelopeMessageOperationType)
         {
             if (feeds != null && feeds.Any())
             {
@@ -59,12 +59,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 var msgCounter = 1;
                 foreach (var feed in feeds)
                 {
-                    messages.Add(new AmazonEnvelopeMessage
+                    var message = new AmazonEnvelopeMessage
                     {
-                        MessageID = msgCounter.ToString(),
-                        OperationType = amazonEnvelopeMessageOperationType,
+                        MessageID = "1",
                         Item = feed
-                    });
+                    };
+                    if (amazonEnvelopeMessageOperationType != null)
+                        message.OperationType = amazonEnvelopeMessageOperationType.Value;
+                    messages.Add(message);
                     msgCounter++;
                 }
                 var amazonEnvelope = new AmazonEnvelope

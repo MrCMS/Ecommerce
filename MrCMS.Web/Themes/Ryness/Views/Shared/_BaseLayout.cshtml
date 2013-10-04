@@ -6,6 +6,7 @@
 <html lang="en">
 <head>
     <title>@Model.GetPageTitle()</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="@Model.MetaDescription" />
     <meta name="keywords" content="@Model.MetaKeywords" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,12 +15,10 @@
         Html.IncludeCss("~/Apps/Ecommerce/Content/bootstrap/css/bootstrap-responsive.css");
         Html.IncludeCss("~/Apps/Ecommerce/Content/Styles/jquery-ui-bootstrap/jquery-ui-1.9.2.custom.css");
         Html.IncludeCss("~/Themes/Ryness/Content/Styles/nivo-slider.css");
+        Html.IncludeCss("~/Themes/Ryness/Content/Styles/jquery.cookiebar.css");
         Html.IncludeCss("~/Themes/Ryness/Content/Styles/main.css");
     }
     @Html.RenderCss()
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><script src="/Apps/Core/Content/Scripts/respond.min.js"></script><![endif]-->
 
     @{ Html.RenderAction("GetEcommerceTrackingCode", "GoogleAnalytics", new { page = this.Page }); }
     @Html.Raw(Model.CustomHeaderScripts)
@@ -36,12 +35,13 @@
         Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.min.js");
         Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.unobtrusive.min.js");
         Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/ecommerce.js");
+        Html.IncludeScript("~/Themes/Ryness/Content/Scripts/jquery.cookiebar.js");
         Html.IncludeScript("~/Themes/Ryness/Content/Scripts/custom.js");
     }
     @Html.RenderScripts()
-    
-        <!--[if lt IE 10]>
-        <script src="/Themes/Ryness/Content/Scripts/jquery.placeholder.js"></script><![endif]-->
+
+    <!--[if lt IE 10]><script src="/Themes/Ryness/Content/Scripts/jquery.placeholder.js"></script> <script>$('input, textarea').placeholder();</script><![endif]-->
+    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><script src="/Apps/Core/Content/Scripts/respond.min.js"></script><![endif]-->
 
     @if (CurrentRequestData.CurrentUserIsAdmin && SiteSettings<SiteSettings>().EnableInlineEditing)
     {

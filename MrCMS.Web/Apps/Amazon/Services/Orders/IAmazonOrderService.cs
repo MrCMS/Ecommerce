@@ -8,7 +8,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
         AmazonOrder Get(int id);
         AmazonOrder GetByAmazonOrderId(string id);
         IPagedList<AmazonOrder> Search(string queryTerm = null, int page = 1, int pageSize = 10);
-        void Save(AmazonOrder item);
+        void Add(AmazonOrder item);
+        void Update(AmazonOrder item);
         void Delete(AmazonOrder item);
         void MarkAsShipped(AmazonOrder item);
     }
