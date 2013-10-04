@@ -9,7 +9,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     {
         void SetAmazonOrderItem(ref AmazonOrder amazonOrder, OrderItem rawOrderItem);
         void GetAmazonOrderDetails(MarketplaceWebServiceOrders.Model.Order rawOrder, ref AmazonOrder order, AddressData shippingAddress);
+        void SetShippingAddress(AmazonOrder amazonOrder, AddressData address);
         AddressData GetAmazonOrderAddress(MarketplaceWebServiceOrders.Model.Order rawOrder);
-        Order GetOrder(MarketplaceWebServiceOrders.Model.Order rawOrder, AmazonOrder amazonOrder);
+        Order GetOrder(AmazonOrder amazonOrder);
     }
 }

@@ -6,7 +6,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 {
     public interface IImportAmazonOrderService
     {
-        AmazonOrder SetAmazonOrderItems(Order rawOrder,IEnumerable<OrderItem> rawOrderItems, AmazonOrder amazonOrder);
-        AmazonOrder GetAmazonOrder(Order rawOrder);
+        AmazonOrder SetAmazonOrderItems(IEnumerable<OrderItem> rawOrderItems, AmazonOrder amazonOrder);
+        bool IsCurrencyValid(Order order);
     }
 }

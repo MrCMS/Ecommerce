@@ -22,8 +22,8 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         private readonly IOptionService _optionService;
         private readonly IAmazonOrderSearchService _amazonOrderSearchService;
 
-        public OrdersController(IAmazonOrderSyncManager syncAmazonOrderService, 
-            IAmazonOrderService amazonOrderService, AmazonAppSettings amazonAppSettings, 
+        public OrdersController(IAmazonOrderSyncManager syncAmazonOrderService,
+            IAmazonOrderService amazonOrderService, AmazonAppSettings amazonAppSettings,
             IOptionService optionService, IAmazonOrderSearchService amazonOrderSearchService)
         {
             _syncAmazonOrderService = syncAmazonOrderService;
@@ -67,7 +67,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult Details(AmazonOrder amazonOrder)
         {
-            if(amazonOrder!=null)
+            if (amazonOrder != null)
                 return View(amazonOrder);
             return RedirectToAction("Index");
         }
@@ -82,7 +82,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         public ActionResult SyncOne(AmazonOrder amazonOrder)
         {
             if (amazonOrder != null)
-                return View(new AmazonSyncModel() { Id = amazonOrder.Id, Description = amazonOrder.AmazonOrderId});
+                return View(new AmazonSyncModel() { Id = amazonOrder.Id, Description = amazonOrder.AmazonOrderId });
             return RedirectToAction("Index");
         }
 
@@ -91,10 +91,25 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         {
             if (model != null)
             {
-                _syncAmazonOrderService.SyncOrders(model);
+                //_syncAmazonOrderService.SyncOrders(model);
                 return Json(true);
             }
             return Json(false);
+        }
+
+        [HttpGet]
+        [ActionName("GetNewOrders")]
+        public ViewResult GetNewOrders_GET(GetUpdatedOrdersRequest request)
+        {
+            ViewData["result"] = TempData["result"];
+            return View(request);
+        }
+
+        [HttpPost]
+        public RedirectToRouteResult GetNewOrders(GetUpdatedOrdersRequest request)
+        {
+            TempData["result"] = _syncAmazonOrderService.GetUpdatedInfoFromAmazon(request);
+            return RedirectToAction("GetNewOrders");
         }
 
         [HttpGet]
@@ -111,7 +126,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         {
             if (model != null)
             {
-                _syncAmazonOrderService.ShipOrder(model);
+                //_syncAmazonOrderService.ShipOrder(model);
                 return Json(true);
             }
             return Json(false);
