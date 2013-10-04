@@ -27,24 +27,24 @@ namespace MrCMS.Web.Apps.Amazon.Services.Logs
             return log;
         }
 
-        public AmazonLog Add(AmazonLogType type, AmazonLogStatus status,Exception elmahError, MarketplaceWebService.Model.Error amazonError,
-            AmazonApiSection? apiSection,string apiOperation, AmazonOrder amazonOrder, AmazonListing amazonListing,AmazonListingGroup amazonListingGroup, 
+        public AmazonLog Add(AmazonLogType type, AmazonLogStatus status, Exception elmahError, MarketplaceWebService.Model.Error amazonError,
+            AmazonApiSection? apiSection, string apiOperation, AmazonOrder amazonOrder, AmazonListing amazonListing, AmazonListingGroup amazonListingGroup,
             string message = "", string details = "")
         {
-            var log = new AmazonLog()
-                {
-                    LogType = type,
-                    LogStatus = status,
-                    AmazonOrder = amazonOrder,
-                    ApiSection = apiSection,
-                    ApiOperation = !String.IsNullOrWhiteSpace(apiOperation) ? apiOperation : null,
-                    AmazonListing = amazonListing,
-                    AmazonListingGroup = amazonListingGroup,
-                    Message = !String.IsNullOrWhiteSpace(message) ? message : null,
-                    Detail = !String.IsNullOrWhiteSpace(details) ? details : null,
-                    Guid = Guid.NewGuid(),
-                    Site = CurrentRequestData.CurrentSite
-                };
+            var log = new AmazonLog
+                          {
+                              LogType = type,
+                              LogStatus = status,
+                              AmazonOrder = amazonOrder,
+                              ApiSection = apiSection,
+                              ApiOperation = !String.IsNullOrWhiteSpace(apiOperation) ? apiOperation : null,
+                              AmazonListing = amazonListing,
+                              AmazonListingGroup = amazonListingGroup,
+                              Message = !String.IsNullOrWhiteSpace(message) ? message : null,
+                              Detail = !String.IsNullOrWhiteSpace(details) ? details : null,
+                              Guid = Guid.NewGuid(),
+                              Site = CurrentRequestData.CurrentSite
+                          };
             if (elmahError != null)
             {
                 log.Message = elmahError.Message;
@@ -63,7 +63,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Logs
 
         public IPagedList<AmazonLog> GetEntriesPaged(int pageNum, AmazonLogType? type = null, AmazonLogStatus? status = null, int pageSize = 10)
         {
-            if(type.HasValue)
+            if (type.HasValue)
                 return _session.QueryOver<AmazonLog>()
                            .Where(entry => entry.Site == CurrentRequestData.CurrentSite
                                && (type == null || entry.LogType == type.Value))

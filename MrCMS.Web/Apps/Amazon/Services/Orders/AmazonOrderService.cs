@@ -21,8 +21,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
 
         public AmazonOrder Get(int id)
         {
-            return _session.QueryOver<AmazonOrder>()
-                            .Where(item => item.Id == id).SingleOrDefault();
+            return _session.Get<AmazonOrder>(id);
         }
 
         public AmazonOrder GetByAmazonOrderId(string id)

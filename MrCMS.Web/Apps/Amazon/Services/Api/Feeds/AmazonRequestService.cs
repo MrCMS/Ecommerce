@@ -21,23 +21,18 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
     public class AmazonRequestService : IAmazonRequestService
     {
         private readonly IAmazonListingService _amazonListingService;
-        private readonly IAmazonFeedsApiService _amazonFeedsApiService;
         private readonly IAmazonProductsApiService _amazonProductsApiService;
         private readonly IAmazonLogService _amazonLogService;
-        private readonly IAmazonOrderService _amazonOrderService;
-        private readonly IOrderService _orderService;
+        private readonly IAmazonFeedsApiService _amazonFeedsApiService;
 
-        public AmazonRequestService(IAmazonListingService amazonListingService,IAmazonLogService amazonLogService, 
-            IAmazonFeedsApiService amazonFeedsApiService, 
-            IAmazonProductsApiService amazonProductsApiService,
-            IAmazonOrderService amazonOrderService, IOrderService orderService)
+        public AmazonRequestService(IAmazonListingService amazonListingService, IAmazonLogService amazonLogService,
+            IAmazonFeedsApiService amazonFeedsApiService,
+            IAmazonProductsApiService amazonProductsApiService)
         {
             _amazonListingService = amazonListingService;
             _amazonLogService = amazonLogService;
             _amazonFeedsApiService = amazonFeedsApiService;
             _amazonProductsApiService = amazonProductsApiService;
-            _amazonOrderService = amazonOrderService;
-            _orderService = orderService;
         }
 
         public List<string> SubmitMainFeeds(AmazonSyncModel model, List<FileStream> feeds)
@@ -181,7 +176,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 catch (Exception ex)
                 {
                     _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Error, ex, null,
-                                          AmazonApiSection.Feeds, null, null, null,null, "Error during push of product delete request to Amazon");
+                                          AmazonApiSection.Feeds, null, null, null, null, "Error during push of product delete request to Amazon");
 
                     retryCount++;
                     if (retryCount == 3) break;
@@ -221,7 +216,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 catch (Exception ex)
                 {
                     _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Error, ex, null,
-                                          AmazonApiSection.Feeds, null,null, amazonListing,null);
+                                          AmazonApiSection.Feeds, null, null, amazonListing, null);
                     retryCount++;
                     if (retryCount == 3) break;
 
@@ -272,69 +267,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             var submissionId = feedResponse.FeedSubmissionId;
             submissionIds.Add(submissionId);
             AmazonProgressBarHelper.Update(model.Task, "Push", "Product image pushed", 100, 100);
-        }
-
-        public string SubmitOrderFulfillmentFeed(AmazonSyncModel model, FileStream feedContent)
-        {
-            if (feedContent == null) return null;
-
-            AmazonProgressBarHelper.Update(model.Task, "Push", "Pushing order request", 100, 85);
-            var feedResponse = _amazonFeedsApiService.SubmitFeed(AmazonFeedType._POST_ORDER_FULFILLMENT_DATA_, feedContent);
-            AmazonProgressBarHelper.Update(model.Task, "Push", "Order request pushed", 100, 100);
-            return feedResponse.FeedSubmissionId;
-        }
-        public void CheckIfOrderFulfillmentFeedWasProcessed(AmazonSyncModel model, AmazonOrder amazonOrder, string submissionId)
-        {
-            var uploadSuccess = false;
-            var retryCount = 0;
-
-            while (!uploadSuccess)
-            {
-                try
-                {
-                    AmazonProgressBarHelper.Update(model.Task, "Push", "Checking if request was processed...", 100, 75);
-                    if (_amazonFeedsApiService.GetFeedSubmissionList(submissionId).FeedProcessingStatus == "_DONE_")
-                    {
-                        AmazonProgressBarHelper.Update(model.Task, "Push", "Request was processed", 100, 75);
-                        AmazonProgressBarHelper.Update(model.Task, "Push", "Updating local status of Amazon Order #" + amazonOrder.AmazonOrderId, 100, 75);
-
-                        _amazonOrderService.MarkAsShipped(amazonOrder);
-
-                        AmazonProgressBarHelper.Update(model.Task, "Push", "Local Amazon Order data successfully updated", 100, 85);
-
-                        if (amazonOrder.Order.ShippingStatus == ShippingStatus.Unshipped)
-                        {
-                            AmazonProgressBarHelper.Update(model.Task, "Push", "Updating status of MrCMS Order #" + amazonOrder.Order.Id, 100, 85);
-
-                            amazonOrder.Order.PaymentMethod=AmazonPaymentMethod.Other.GetDescription();
-                            amazonOrder.Order.PaymentStatus=PaymentStatus.Paid;
-                            _orderService.MarkAsShipped(amazonOrder.Order);
-
-                            AmazonProgressBarHelper.Update(model.Task, "Push", "Status of MrCMS Order #" + amazonOrder.Order.Id + " successfully updated", 100, 100);
-                        }
-
-                        uploadSuccess = true;
-                    }
-                    else
-                    {
-                        AmazonProgressBarHelper.Update(model.Task, "Push",
-                                                       "Nothing yet, we will wait 2 min. more and try again...", 100, 75);
-                        Thread.Sleep(120000);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    CurrentRequestData.ErrorSignal.Raise(ex);
-
-                    retryCount++;
-                    if (retryCount == 3) break;
-
-                    AmazonProgressBarHelper.Update(model.Task, "Push",
-                                                   "Amazon Api is busy, we will wait additional 2 min. and try again...", 100,
-                                                   75);
-                    Thread.Sleep(120000);
-                }
-            }
         }
     }
 }
