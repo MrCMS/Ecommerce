@@ -63,7 +63,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             return _session.QueryOver<ProductVariant>()
                            .Where(
                                variant =>
-                               variant.SKU == trim).Cacheable().SingleOrDefault();
+                               variant.SKU == trim).Take(1).Cacheable().SingleOrDefault();
         }
 
         public ProductVariant Get(int id)
