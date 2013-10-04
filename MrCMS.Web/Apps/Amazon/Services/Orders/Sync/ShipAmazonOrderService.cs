@@ -7,22 +7,22 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     public class ShipAmazonOrderService : IShipAmazonOrderService
     {
         private readonly IAmazonFeedsApiService _amazonFeedsApiService;
-        private readonly IAmazonRequestService _amazonRequestService;
+        private readonly IAmazonOrderRequestService _amazonOrderRequestService;
 
         public ShipAmazonOrderService(IAmazonFeedsApiService amazonFeedsApiService, 
-            IAmazonRequestService amazonRequestService)
+            IAmazonOrderRequestService amazonOrderRequestService)
         {
             _amazonFeedsApiService = amazonFeedsApiService;
-            _amazonRequestService = amazonRequestService;
+            _amazonOrderRequestService = amazonOrderRequestService;
         }
 
         public void MarkAsShipped(AmazonSyncModel syncModel, AmazonOrder amazonOrder)
         {
             var feed = _amazonFeedsApiService.GetOrderFulfillmentFeed(amazonOrder);
 
-            var submissionId = _amazonRequestService.SubmitOrderFulfillmentFeed(syncModel, feed);
+            var submissionId = _amazonOrderRequestService.SubmitOrderFulfillmentFeed(syncModel, feed);
 
-            _amazonRequestService.CheckIfOrderFulfillmentFeedWasProcessed(syncModel, amazonOrder, submissionId);
+            _amazonOrderRequestService.CheckIfOrderFulfillmentFeedWasProcessed(syncModel, amazonOrder, submissionId);
         }
     }
 }
