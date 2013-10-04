@@ -1,4 +1,4 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Models.CategoryPagedList
+﻿@model IList<MrCMS.Web.Apps.Ecommerce.Pages.Category>
 @using MrCMS.Helpers
 
 <div class="container" data-paging-type="async">
@@ -29,11 +29,9 @@
             </div>
         }
         
-        @Html.Pager(Model, "Categories", i => new { page = i })
     }
     else
     {
         <span>No categories.</span>
     }
 </div>
-@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/async-paging.js"); }

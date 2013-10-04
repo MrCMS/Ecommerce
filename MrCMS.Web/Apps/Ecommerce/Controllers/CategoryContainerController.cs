@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpGet]
         public PartialViewResult Categories(int page = 1)
         {
-            return PartialView(_categoryService.Search(string.Empty,page));
+            return PartialView(_categoryService.GetRootCategories());
         }
     }
 }
