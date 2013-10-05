@@ -91,7 +91,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         {
             if (model != null)
             {
-                //_syncAmazonOrderService.SyncOrders(model);
+                //_syncAmazonOrderService.SyncAmazonOrders(model);
                 return Json(true);
             }
             return Json(false);
