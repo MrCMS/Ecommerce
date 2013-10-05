@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Web;
 using System.Web.Mvc;
 using MrCMS.Paging;
@@ -151,7 +152,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("BulkShippingUpdate")]
         public RedirectToRouteResult BulkShippingUpdate_POST(HttpPostedFileBase document)
         {
-            if (document != null && document.ContentLength > 0 && (document.ContentType == "text/CSV" || document.ContentType == "text/csv"))
+            if (document != null && document.ContentLength > 0 && (document.ContentType.ToLower() == "text/csv" || document.ContentType.ToLower().Contains("excel")))
                 TempData["messages"] = _orderShippingService.BulkShippingUpdate(document.InputStream);
             else
                 TempData["import-status"] = "Please choose non-empty CSV (.csv) file before uploading.";

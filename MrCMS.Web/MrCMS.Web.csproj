@@ -657,6 +657,7 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\DTOs\BulkShippingUpdateDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\IBulkShippingUpdateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\IBulkShippingUpdateValidationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\ShippingMethodExists.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\IBulkStockShippingValidationRule.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\OrderExists.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\OrderNotShipped.cs" />
