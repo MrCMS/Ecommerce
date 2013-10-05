@@ -9,7 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Paypoint
     {
         public override string Name
         {
-            get { return "Paypoint"; }
+            get { return "Pay by card"; }
         }
 
         public override string SystemName
