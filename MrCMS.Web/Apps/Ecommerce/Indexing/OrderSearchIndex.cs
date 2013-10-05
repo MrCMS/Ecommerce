@@ -85,22 +85,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
 
         private static readonly FieldDefinition<Entities.Orders.Order> _email =
             new StringFieldDefinition<Entities.Orders.Order>("email", item => item.OrderEmail, Field.Store.YES,
-                                         Field.Index.NOT_ANALYZED);
+                                         Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Entities.Orders.Order> _lastName =
            new StringFieldDefinition<Entities.Orders.Order>("lastName", item => item.User != null ? item.User.LastName : String.Empty, Field.Store.YES,
-                                        Field.Index.NOT_ANALYZED);
+                                        Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Entities.Orders.Order> _amount =
-            new DecimalFieldDefinition<Entities.Orders.Order>("amount", item => item.Total, Field.Store.YES,
+            new DecimalFieldDefinition<Entities.Orders.Order>("amount", item => item.Total, Field.Store.NO,
                                          Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Entities.Orders.Order> _paymentStatus =
-            new StringFieldDefinition<Entities.Orders.Order>("paymentStatus", item => item.PaymentStatus.ToString(), Field.Store.YES,
+            new StringFieldDefinition<Entities.Orders.Order>("paymentStatus", item => item.PaymentStatus.ToString(), Field.Store.NO,
                                          Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Entities.Orders.Order> _shippingStatus =
-            new StringFieldDefinition<Entities.Orders.Order>("shippingStatus", item => item.ShippingStatus.ToString(), Field.Store.YES,
+            new StringFieldDefinition<Entities.Orders.Order>("shippingStatus", item => item.ShippingStatus.ToString(), Field.Store.NO,
                                          Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Entities.Orders.Order> _createdOn =

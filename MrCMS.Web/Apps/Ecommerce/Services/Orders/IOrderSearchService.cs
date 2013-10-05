@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Linq;
+using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
+using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
+using MrCMS.Indexing.Management;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Indexing;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -10,25 +14,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 {
     public interface IOrderSearchService
     {
-        IPagedList<Entities.Orders.Order> SearchOrders(string email, string lastname, string orderid, DateTime datefrom, DateTime dateto,
-            PaymentStatus paymentStatus = PaymentStatus.Pending, ShippingStatus shippingStatus = ShippingStatus.Pending, int page = 1, int pageSize = 10);
+        IPagedList<Entities.Orders.Order> SearchOrders(string searchText, string orderid, DateTime datefrom, DateTime dateto,
+            PaymentStatus? paymentStatus, ShippingStatus? shippingStatus, int page = 1, int pageSize = 10);
     }
 
     public class OrderSearchQuery
     {
-        public string Email { get; set; }
-        public string LastName { get; set; }
+        public string SearchText { get; set; }
         public string OrderId { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }
-        public PaymentStatus PaymentStatus { get; set; }
-        public ShippingStatus ShippingStatus { get; set; }
+        public PaymentStatus? PaymentStatus { get; set; }
+        public ShippingStatus? ShippingStatus { get; set; }
 
-        public OrderSearchQuery(string email, string lastname, string orderid, DateTime datefrom, DateTime dateto,
-            PaymentStatus paymentStatus = PaymentStatus.Pending, ShippingStatus shippingStatus = ShippingStatus.Pending)
+        public OrderSearchQuery(string searchText, string orderid, DateTime datefrom, DateTime dateto,
+            PaymentStatus? paymentStatus, ShippingStatus? shippingStatus)
         {
-            Email = email;
-            LastName = lastname;
+            SearchText = searchText;
             OrderId = orderid;
             DateFrom = datefrom;
             DateTo = dateto;
@@ -38,23 +40,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public Query GetQuery()
         {
-            if (String.IsNullOrWhiteSpace(Email) && 
-                String.IsNullOrWhiteSpace(LastName) && 
+            if (String.IsNullOrWhiteSpace(SearchText) && 
                 String.IsNullOrWhiteSpace(OrderId) &&
-                PaymentStatus == PaymentStatus.Pending &&
-                ShippingStatus == ShippingStatus.Pending)
+                PaymentStatus == null &&
+                ShippingStatus == null)
                 return new MatchAllDocsQuery();
 
             var booleanQuery = new BooleanQuery();
-            if (!String.IsNullOrWhiteSpace(Email))
-                booleanQuery.Add(GetEmailQuery(), Occur.MUST);
-            if (!String.IsNullOrWhiteSpace(LastName))
-                booleanQuery.Add(GetLastNameQuery(), Occur.MUST);
+            if (!String.IsNullOrWhiteSpace(SearchText))
+            {
+                var fuzzySearchTerm = MakeFuzzy(SearchText);
+                var q = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30, FieldDefinition.GetFieldNames(OrderSearchIndex.Email, OrderSearchIndex.LastName), new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30));
+                var query = q.Parse(fuzzySearchTerm);
+                booleanQuery.Add(query, Occur.SHOULD);
+            }
             if (!String.IsNullOrWhiteSpace(OrderId))
                 booleanQuery.Add(GetOrderIdQuery(), Occur.MUST);
-            booleanQuery.Add(GetPaymentStatusQuery(), Occur.MUST);
-            booleanQuery.Add(GetShippingStatusQuery(), Occur.MUST);
+            if (PaymentStatus != null)
+                booleanQuery.Add(GetPaymentStatusQuery(), Occur.MUST);
+            if (ShippingStatus != null)
+                booleanQuery.Add(GetShippingStatusQuery(), Occur.MUST);
             return booleanQuery;
+        }
+
+        private string MakeFuzzy(string keywords)
+        {
+            var split = keywords.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            return string.Join(" ", split.Select(s => s + "~"));
         }
 
         private Query GetShippingStatusQuery()
@@ -78,22 +90,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             return new BooleanQuery
                 {
                     {new TermQuery(new Term(OrderSearchIndex.Id.FieldName, OrderId)), Occur.MUST}
-                };
-        }
-
-        private Query GetLastNameQuery()
-        {
-            return new BooleanQuery
-                {
-                    {new TermQuery(new Term(OrderSearchIndex.LastName.FieldName, LastName)), Occur.MUST}
-                };
-        }
-
-        private Query GetEmailQuery()
-        {
-            return new BooleanQuery
-                { 
-                    {new TermQuery(new Term(OrderSearchIndex.Email.FieldName,Email)), Occur.MUST}
                 };
         }
 

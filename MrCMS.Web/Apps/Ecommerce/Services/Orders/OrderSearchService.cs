@@ -17,10 +17,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             _orderSearcher = orderSearcher;
         }
-        public IPagedList<Order> SearchOrders(string email, string lastname, string orderid, DateTime datefrom, DateTime dateto,
-            PaymentStatus paymentStatus = PaymentStatus.Pending, ShippingStatus shippingStatus = ShippingStatus.Pending, int page = 1, int pageSize = 10)
+        public IPagedList<Order> SearchOrders(string searchText, string orderid, DateTime datefrom, DateTime dateto,
+            PaymentStatus? paymentStatus, ShippingStatus? shippingStatus, int page = 1, int pageSize = 10)
         {
-            var searchQuery = new OrderSearchQuery(email, lastname, orderid, datefrom, dateto, paymentStatus, shippingStatus);
+            var searchQuery = new OrderSearchQuery(searchText, orderid, datefrom, dateto, paymentStatus, shippingStatus);
             return _orderSearcher.Search(searchQuery.GetQuery(), page, pageSize, datefrom != dateto ? searchQuery.GetFilter(): null,
                 new Sort(new SortField("id", SortField.INT, true)));
         }
