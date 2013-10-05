@@ -9,6 +9,7 @@ using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
 using Order = MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
@@ -203,7 +204,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                            OrderEmail = amazonOrder.BuyerEmail,
                            IsCancelled = false,
                            SalesChannel = "Amazon",
-                           PaymentStatus = PaymentStatus.Paid
+                           PaymentStatus = PaymentStatus.Paid,
+                           CreatedOn = amazonOrder.PurchaseDate.HasValue ? (DateTime)amazonOrder.PurchaseDate : CurrentRequestData.Now
                        };
         }
         private void GetOrderLines(AmazonOrder amazonOrder, ref Order order)
