@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Amazon.Services.Orders.Sync;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using System.Web.Mvc;
@@ -21,16 +22,18 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         private readonly AmazonAppSettings _amazonAppSettings;
         private readonly IOptionService _optionService;
         private readonly IAmazonOrderSearchService _amazonOrderSearchService;
+        private readonly EcommerceSettings _ecommerceSettings;
 
         public OrdersController(IAmazonOrderSyncManager syncAmazonOrderService,
             IAmazonOrderService amazonOrderService, AmazonAppSettings amazonAppSettings,
-            IOptionService optionService, IAmazonOrderSearchService amazonOrderSearchService)
+            IOptionService optionService, IAmazonOrderSearchService amazonOrderSearchService, EcommerceSettings ecommerceSettings)
         {
             _syncAmazonOrderService = syncAmazonOrderService;
             _amazonOrderService = amazonOrderService;
             _amazonAppSettings = amazonAppSettings;
             _optionService = optionService;
             _amazonOrderSearchService = amazonOrderSearchService;
+            _ecommerceSettings = ecommerceSettings;
         }
 
         [HttpGet]
@@ -50,12 +53,12 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         {
             ViewData["AmazonOrderDetailsUrl"] = _amazonAppSettings.AmazonOrderDetailsUrl;
             ViewData["ShippingStatuses"] = _optionService.GetEnumOptions<ShippingStatus>();
-            model.Results = new PagedList<AmazonOrder>(null, 1, 10);
+            model.Results = new PagedList<AmazonOrder>(null, 1, _ecommerceSettings.PageSizeAdmin);
             try
             {
                 model.Results = _amazonOrderSearchService.Search(model.Email, model.Name, model.AmazonOrderId,
                     model.DateFrom.HasValue ? model.DateFrom.Value : CurrentRequestData.Now, model.DateTo.HasValue ? model.DateTo.Value : CurrentRequestData.Now,
-                    model.ShippingStatus, model.Page);
+                    model.ShippingStatus, model.Page, _ecommerceSettings.PageSizeAdmin);
             }
             catch (Exception)
             {
