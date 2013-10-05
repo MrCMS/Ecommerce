@@ -100,11 +100,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 
             return response["valid"] != "true"
                        ? GetFailureResponse(response)
-                       : (response["mpi_status_code"] == "212" || response["mpi_status_code"] == "207"
-                              ? GetSuccessResponse(response)
-                              : (response["mpi_status_code"] == "200"
-                                     ? GetRedirectResponse(threeDSecureUrl, response)
-                                     : GetFailureResponse(response)));
+                       : (response["mpi_status_code"] == "200"
+                              ? GetRedirectResponse(threeDSecureUrl, response)
+                              : GetSuccessResponse(response));
         }
 
         public ProcessDetailsResponse Handle3DSecureResponse(FormCollection formCollection)

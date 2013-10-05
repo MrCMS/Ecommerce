@@ -8,17 +8,16 @@
 
 <fieldset>
     <legend>Amazon Orders 
-         @if (!String.IsNullOrWhiteSpace(amazonManageOrdersUrl))
-         {
-             <span class="btn-group  display-inline pull-right margin-left-10">
-                 <a href='@amazonManageOrdersUrl' target="_blank" class="btn btn-danger">
-                     Manage Orders on Amazon
-                 </a>
-             </span>
-         }
+         
         <span class="btn-group  display-inline  pull-right">
-            @Html.ActionLink("Sync", "SyncMany", "Orders", null, new { @class = "btn btn-primary"})
-            @Html.ActionLink("Logs", "Index", "Logs", new {type=AmazonLogType.Orders}, new { @class = "btn btn-success"})
+            @*            @Html.ActionLink("Manual Sync", "SyncMany", "Orders", null, new { @class = "btn btn-primary"})*@
+            @Html.ActionLink("Logs", "Index", "Logs", new { type = AmazonLogType.Orders }, new { @class = "btn" })
+
+            @if (!String.IsNullOrWhiteSpace(amazonManageOrdersUrl))
+            {
+                <a href='@amazonManageOrdersUrl' target="_blank" class="btn">Manage Orders on Amazon
+                </a>
+            }
         </span>
     </legend>
 </fieldset>
