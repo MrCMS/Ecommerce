@@ -1,4 +1,5 @@
 ﻿using System;
+using Lucene.Net.Search;
 using MrCMS.Indexing.Querying;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
@@ -19,7 +20,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             ShippingStatus shippingStatus = ShippingStatus.Pending, int page = 1, int pageSize = 10)
         {
             var searchQuery = new AmazonOrderSearchQuery(email, lastname, orderid, datefrom, dateto, shippingStatus);
-            return _orderSearcher.Search(searchQuery.GetQuery(), page, pageSize, datefrom != dateto ? searchQuery.GetFilter() : null);
+            return _orderSearcher.Search(searchQuery.GetQuery(), page, pageSize, datefrom != dateto ? searchQuery.GetFilter() : null, new Sort(new SortField("id", SortField.INT, true)));
         }
     }
 }
