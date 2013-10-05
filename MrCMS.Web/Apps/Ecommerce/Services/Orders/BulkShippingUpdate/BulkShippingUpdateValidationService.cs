@@ -52,6 +52,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate
                         if (file.GetField<string>(1).HasValue())
                             pv.ShippingMethod = file.GetField<string>(1);
 
+                        if (file.GetField<string>(2).HasValue())
+                            pv.TrackingNumber = file.GetField<string>(2).Trim();
+
                         items.Add(pv);
                     }
                 }
