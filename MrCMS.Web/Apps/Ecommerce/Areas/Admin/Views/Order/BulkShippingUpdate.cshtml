@@ -11,7 +11,7 @@
         </span>
     </legend>
     <div class="row-fluid">
-        @Html.InfoBlock("Note: ", "File should be .CSV format. The first column should be OrderId. The second column should be shipping method name. The shipping method name should exist within shipping methods.")
+        @Html.InfoBlock("Note: ", "File should be .CSV format. The first column should be OrderId. The second column should be ShippingMethod. The shipping method name should exist within shipping methods.")
         @using (Html.BeginForm("BulkShippingUpdate", "Order", FormMethod.Post, new {enctype = "multipart/form-data"}))
         {
             <label>Choose Import File</label>
