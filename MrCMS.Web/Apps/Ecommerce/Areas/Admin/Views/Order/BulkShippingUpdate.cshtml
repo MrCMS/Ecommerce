@@ -11,7 +11,17 @@
         </span>
     </legend>
     <div class="row-fluid">
-        @Html.InfoBlock("Note: ", "File should be .CSV format. The first column should be OrderId. The second column should be ShippingMethod. The shipping method name should exist within shipping methods.")
+        <ul>
+            <li>Upload a CSV file with 3 fields
+                <ol>
+                    <li>First field should be OrderId (required)</li>
+                    <li>Second field should be ShippingMethodName (required)</li>
+                    <li>Third field should be tracking number (optional)</li>
+                </ol>
+            </li>
+            <li>Already shipped orders cannot be re-shipped</li>
+            <li>The shipping method name must exist as one of your shipping methods</li>
+        </ul>
         @using (Html.BeginForm("BulkShippingUpdate", "Order", FormMethod.Post, new {enctype = "multipart/form-data"}))
         {
             <label>Choose Import File</label>

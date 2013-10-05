@@ -37,10 +37,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate
                 if (shippingMethod != null)
                 {
                     item.ShippingMethod = shippingMethod;
-                    _orderService.Save(item);
+                    item.TrackingNumber = itemDto.TrackingNumber;
                     _orderService.MarkAsShipped(item);
+                    noOfUpdatedItems++;
                 }
-                noOfUpdatedItems++;
                 return item;
             }
             return new Order();

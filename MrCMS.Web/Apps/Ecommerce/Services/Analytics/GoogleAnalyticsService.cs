@@ -33,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics
 
             trackingCodeSb.Append(TrackTrans);
 
-            return trackingScript.Replace("{ecommerce}", trackingCodeSb.ToString());
+            return trackingScript.Replace("//{ecommerce}", trackingCodeSb.ToString());
         }
     }
 }
