@@ -5,10 +5,10 @@ using MrCMS.Tasks;
 
 namespace MrCMS.Web.Apps.Amazon.Tasks
 {
-    public class SyncOrders : BackgroundTask
+    public class SyncAmazonOrders : BackgroundTask
     {
 
-        public SyncOrders(Site site)
+        public SyncAmazonOrders(Site site)
             : base(site)
         {
         }
