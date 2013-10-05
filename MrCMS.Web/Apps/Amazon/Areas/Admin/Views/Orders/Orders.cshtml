@@ -2,42 +2,34 @@
 @using MrCMS.Web.Apps.Amazon.Models
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @model AmazonOrderSearchModel
-
 @{
-    var amazonOrderDetailsUrl=ViewData["AmazonOrderDetailsUrl"] as string;
+    var amazonOrderDetailsUrl = ViewData["AmazonOrderDetailsUrl"] as string;
 }
 
 <div data-paging-type="async" id="orders">
-    
+
     @{Html.RenderPartial("FilterOrders", Model); }
 
     <hr />
 
-    @if (Model!=null && Model.Results.Any())
+    @if (Model != null && Model.Results.Any())
     {
         <table class="table table-striped table-condensed" style="overflow: scroll">
             <thead>
                 <tr>
-                    <th>
-                        MrCMS Order
+                    <th>MrCMS Order
                     </th>
-                      <th>
-                        Amazon Order #
+                    <th>Amazon Order #
                     </th>
-                    <th>
-                        Buyer Name
+                    <th>Buyer Name
                     </th>
-                    <th>
-                        Order Status
+                    <th>Order Status
                     </th>
-                    <th>
-                        Amount
+                    <th>Amount
                     </th>
-                     <th>
-                        Purchase Date
+                    <th>Purchase Date
                     </th>
-                    <th>
-                        Actions
+                    <th>Actions
                     </th>
                 </tr>
             </thead>
@@ -46,7 +38,7 @@
                 {
                     <tr>
                         <td>
-                          @Html.ActionLink("Details", "Edit", "Order", new {id=item.Order.Id},null)
+                            @Html.ActionLink("Details", "Edit", "Order", new { id = item.Order.Id }, null)
                         </td>
                         <td>
                             @if (!String.IsNullOrWhiteSpace(amazonOrderDetailsUrl))
@@ -67,19 +59,14 @@
                             @item.Status.GetDescription()
                         </td>
                         <td>
-                             @item.OrderTotalAmount.ToCurrencyFormat()
+                            @item.OrderTotalAmount.ToCurrencyFormat()
                         </td>
-                         <td>
-                            @(item.PurchaseDate.HasValue?item.PurchaseDate.Value.ToString("dd/MM/yyyy HH:mm"):String.Empty)
+                        <td>
+                            @(item.PurchaseDate.HasValue ? item.PurchaseDate.Value.ToString("dd/MM/yyyy HH:mm") : String.Empty)
                         </td>
-                          <td>
-                       <div class="btn-group">
-                                @Html.ActionLink("Details", "Details", "Orders", new {id = item.Id}, new {@class = "btn btn-mini"})
-                                @Html.ActionLink("Sync", "SyncOne", "Orders", new {id = item.Id}, new { @class="btn btn-mini btn-success"})
-                                @if(item.Status == AmazonOrderStatus.Unshipped)
-                                {
-                                    @Html.ActionLink("Mark as Shipped", "ShipOne", "Orders", new {id = item.Id}, new {@class = "btn btn-mini btn-danger"})
-                                }
+                        <td>
+                            <div class="btn-group">
+                                @Html.ActionLink("Details", "Details", "Orders", new { id = item.Id }, new { @class = "btn btn-mini" })
                             </div>
                         </td>
                     </tr>

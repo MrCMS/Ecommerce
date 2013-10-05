@@ -35,7 +35,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                                       .Where(amazonOrder => amazonOrder != null)
                                       .ToList();
                 _amazonOrderService.SaveOrUpdate(ordersUpdated);
-                List<AmazonOrder> ordersShipped = new List<AmazonOrder>();
+                var ordersShipped = new List<AmazonOrder>();
                 //ordersShipped = _shipAmazonOrderService.MarkOrdersAsShipped();
                 return new GetUpdatedOrdersResult { OrdersUpdated = ordersUpdated, OrdersShipped = ordersShipped };
             }
