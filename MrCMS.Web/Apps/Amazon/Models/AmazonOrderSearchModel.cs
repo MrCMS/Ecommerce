@@ -13,8 +13,7 @@ namespace MrCMS.Web.Apps.Amazon.Models
             Page = 1;
         }
 
-        public string Email { get; set; }
-        public string Name { get; set; }
+        public string SearchText { get; set; }
         [DisplayName("Amazon Order #")]
         public string AmazonOrderId { get; set; }
         [DisplayName("From")]
@@ -22,7 +21,7 @@ namespace MrCMS.Web.Apps.Amazon.Models
         [DisplayName("To")]
         public DateTime? DateTo { get; set; }
         [DisplayName("Shipping Status")]
-        public ShippingStatus ShippingStatus { get; set; }
+        public ShippingStatus? ShippingStatus { get; set; }
         public IPagedList<AmazonOrder> Results { get; set; }
         public int Page { get; set; }
     }

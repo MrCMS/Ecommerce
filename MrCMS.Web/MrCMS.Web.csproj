@@ -2250,7 +2250,6 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Details.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Index.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Details.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\FilterOrders.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Index.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\OrderDetails.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\OrderItems.cshtml" />
