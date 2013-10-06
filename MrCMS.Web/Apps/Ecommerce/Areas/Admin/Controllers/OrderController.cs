@@ -21,12 +21,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IOrderService _orderService;
         private readonly IOptionService _optionService;
         private readonly EcommerceSettings _ecommerceSettings;
+        private readonly IExportOrdersService _exportOrdersService;
         private readonly IShippingMethodManager _shippingMethodManager;
         private readonly IOrderSearchService _orderSearchService;
         private readonly IOrderShippingService _orderShippingService;
 
         public OrderController(IOrderService orderService,  IShippingMethodManager shippingMethodManager,
-            IOrderSearchService orderSearchService, IOrderShippingService orderShippingService, IOptionService optionService, EcommerceSettings ecommerceSettings)
+            IOrderSearchService orderSearchService, IOrderShippingService orderShippingService, IOptionService optionService, EcommerceSettings ecommerceSettings,IExportOrdersService exportOrdersService)
         {
             _orderService = orderService;
             _shippingMethodManager = shippingMethodManager;
@@ -34,6 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _orderShippingService = orderShippingService;
             _optionService = optionService;
             _ecommerceSettings = ecommerceSettings;
+            _exportOrdersService = exportOrdersService;
         }
 
         [HttpGet]
@@ -192,6 +194,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _orderService.Delete(order);
             return RedirectToAction("Index", "Order");
+        }
+
+        [HttpGet]
+        public ActionResult ExportOrderToPdf(Order order)
+        {
+            try
+            {
+                var file = _exportOrdersService.ExportOrderToPdf(order);
+                return File(file, "application/pdf", "Order-" + order.Id + "-[" + CurrentRequestData.Now.ToString("dd-MM-yyyy hh-mm") + "].pdf");
+            }
+            catch (Exception ex)
+            {
+                CurrentRequestData.ErrorSignal.Raise(ex);
+                return RedirectToAction("Edit", "Order", new { id = order.Id });
+            }
         }
     }
 }

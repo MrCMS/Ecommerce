@@ -18,11 +18,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         #endregion
 
         #region Ctor
-        public ImportExportController(IImportProductsManager importExportManager, 
-            IExportOrdersService exportOrdersService, IExportProductsManager exportProductsManager)
+        public ImportExportController(IImportProductsManager importExportManager, IExportProductsManager exportProductsManager)
         {
             _importExportManager = importExportManager;
-            _exportOrdersService = exportOrdersService;
             _exportProductsManager = exportProductsManager;
         }
 
@@ -63,23 +61,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 ViewBag.ImportStatus = "Please choose non-empty Excel (.xslx) file before uploading.";
             }
             return View("Products");
-        }
-        #endregion
-
-        #region Orders
-
-        [HttpGet]
-        public ActionResult ExportOrderToPdf(Order order)
-        {
-            try
-            {
-                var file = _exportOrdersService.ExportOrderToPdf(order);
-                return File(file, "application/pdf", "MrCMS-Order-" + order.Id + "-["+CurrentRequestData.Now.ToString("dd-MM-yyyy hh-mm")+"].pdf");
-            }
-            catch (Exception)
-            {
-                return RedirectToAction("Edit", "Order", new { id = order.Id });
-            }
         }
         #endregion
     }
