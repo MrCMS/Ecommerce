@@ -21,5 +21,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         IList<Order> GetOrdersByUser(User user);
         void SetLastOrderUserIdByOrderId(int  orderId);
         Order GetByGuid(Guid id);
+        void Delete(Order order);
     }
 }

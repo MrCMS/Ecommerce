@@ -13,8 +13,12 @@
         @Html.HiddenFor(x => x.Id)
         @Html.Hidden("index", (bool) ViewBag.Index)
         
-        <p>
-            Are you sure you would like to set order as shipped?
-        </p>
+        
+        @Html.LabelFor(x=>x.ShippingMethod)
+        @Html.DropDownListFor(x => x.ShippingMethod.Id, ViewData["ShippingMethods"] as IEnumerable<SelectListItem>, new { })
+        
+        @Html.LabelFor(x=>x.TrackingNumber, "Tracking number (optional)")
+        @Html.TextBoxFor(x=>x.TrackingNumber)
+
     </fieldset>
 }
