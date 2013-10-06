@@ -2,6 +2,7 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
+using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -95,6 +96,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult MarkAsShipped(Order order, bool index = false)
         {
             ViewBag.Index = index;
+            var selectedShippingMethod = order.ShippingMethod != null ? order.ShippingMethod.Id : 0;
+
+            ViewData["ShippingMethods"] = _shippingMethodManager.GetAll().BuildSelectItemList(
+                method => method.Name,
+                method => method.Id.ToString(),
+                method => method.Id.ToString() == selectedShippingMethod.ToString(),
+                emptyItem: null);
+
             return PartialView(order);
         }
 
@@ -169,6 +178,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _orderService.Save(order);
             return RedirectToAction("Edit", "Order", new {id = order.Id});
+        }
+
+        [HttpGet]
+        public ActionResult Delete(Order order)
+        {
+            return View(order);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public ActionResult Delete_POST(Order order)
+        {
+            _orderService.Delete(order);
+            return RedirectToAction("Index", "Order");
         }
     }
 }
