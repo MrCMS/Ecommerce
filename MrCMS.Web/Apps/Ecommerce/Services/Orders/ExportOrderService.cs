@@ -188,7 +188,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             p = frame1.AddParagraph();
             p.AddText("Payment method: " + order.PaymentMethod);
             p = frame2.AddParagraph();
-            p.AddText("Shipping method: " + order.ShippingMethod.Name);
+            p.AddText("Shipping method: " + (order.ShippingMethod != null ? order.ShippingMethod.Name : "Not set"));
         }
 
         private Table SetTableStyle(ref Section section, Color tableColor)
@@ -284,7 +284,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 row.BottomPadding = 2;
 
                 row.Cells[0].AddParagraph((i + 1).ToString());
-                row.Cells[1].AddParagraph(orderLine.ProductVariant.DisplayName);
+                row.Cells[1].AddParagraph(orderLine.Name);
                 row.Cells[2].AddParagraph(orderLine.UnitPrice.ToCurrencyFormat());
                 row.Cells[3].AddParagraph(orderLine.Quantity.ToString());
                 row.Cells[4].AddParagraph(orderLine.Price.ToCurrencyFormat());
