@@ -36,7 +36,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
             var feed = _amazonFeedsApiService.GetOrderFulfillmentFeed(shippedOrders);
             var submissionId = _amazonOrderRequestService.SubmitOrderFulfillmentFeed(feed);
-            _amazonOrderRequestService.CheckIfOrderFulfillmentFeedWasProcessed(shippedOrders, submissionId);
+            //_amazonOrderRequestService.CheckIfOrderFulfillmentFeedWasProcessed(shippedOrders, submissionId); ToDO: is this needed?
             return shippedOrders;
         }
     }

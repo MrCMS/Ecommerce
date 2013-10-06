@@ -28,7 +28,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         {
             try
             {
-                return _paypointSettings.ThreeDSecureEnabled && !CurrentRequestData.CurrentUserIsAdmin
+                var disable3Dsecure = _paypointSettings.Admin3DSecureDisable && CurrentRequestData.CurrentUserIsAdmin;
+                return _paypointSettings.ThreeDSecureEnabled && !disable3Dsecure
                            ? _paypointRequestService.Process3DSecureTransaction(model, threeDSecureUrl)
                            : _paypointRequestService.ProcessStandardTransaction(model);
             }
