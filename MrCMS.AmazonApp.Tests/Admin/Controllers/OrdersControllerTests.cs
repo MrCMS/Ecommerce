@@ -11,6 +11,7 @@ using MrCMS.Web.Apps.Amazon.Services.Orders.Sync;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using Xunit;
 
 namespace MrCMS.AmazonApp.Tests.Admin.Controllers
@@ -22,6 +23,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         private readonly AmazonAppSettings _amazonAppSettings;
         private readonly IOptionService _optionService;
         private readonly IAmazonOrderSearchService _amazonOrderSearchService;
+        private readonly EcommerceSettings _ecommerceSettings;
         private readonly OrdersController _ordersController;
 
         public OrdersControllerTests()
@@ -31,7 +33,8 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
             _amazonAppSettings = A.Fake<AmazonAppSettings>();
             _optionService = A.Fake<IOptionService>();
             _amazonOrderSearchService = A.Fake<IAmazonOrderSearchService>();
-            _ordersController = new OrdersController(_syncAmazonOrderService,_amazonOrderService,_amazonAppSettings,_optionService,_amazonOrderSearchService);
+            _ecommerceSettings = new EcommerceSettings();
+            _ordersController = new OrdersController(_syncAmazonOrderService,_amazonOrderService,_amazonAppSettings,_optionService,_amazonOrderSearchService,_ecommerceSettings);
         }
 
         [Fact]
@@ -45,34 +48,36 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         [Fact]
         public void OrdersController_Index_ShouldCallSearch()
         {
+            var dateTime = DateTime.Now;
             var model = new AmazonOrderSearchModel()
                 {
-                    DateFrom = DateTime.Now,
-                    DateTo = DateTime.Now,
+                    DateFrom = dateTime,
+                    DateTo = dateTime,
                     ShippingStatus = ShippingStatus.Pending
                 };
 
             var result = _ordersController.Index(model);
 
             A.CallTo(() => _amazonOrderSearchService.Search(model.Email, model.Name, model.AmazonOrderId,
-                    model.DateFrom.HasValue ? model.DateFrom.Value : DateTime.Now, model.DateTo.HasValue ? model.DateTo.Value : DateTime.Now,
+                    model.DateFrom.HasValue ? model.DateFrom.Value : dateTime, model.DateTo.HasValue ? model.DateTo.Value : dateTime,
                     model.ShippingStatus, model.Page,10)).MustHaveHappened();
         }
 
         [Fact]
         public void OrdersController_Orders_ShouldCallSearch()
         {
+            var dateTime = DateTime.Now;
             var model = new AmazonOrderSearchModel()
             {
-                DateFrom = DateTime.Now,
-                DateTo = DateTime.Now,
+                DateFrom = dateTime,
+                DateTo = dateTime,
                 ShippingStatus = ShippingStatus.Pending
             };
 
             var result = _ordersController.Orders(model);
 
             A.CallTo(() => _amazonOrderSearchService.Search(model.Email, model.Name, model.AmazonOrderId,
-                    model.DateFrom.HasValue ? model.DateFrom.Value : DateTime.Now, model.DateTo.HasValue ? model.DateTo.Value : DateTime.Now,
+                    model.DateFrom.HasValue ? model.DateFrom.Value : dateTime, model.DateTo.HasValue ? model.DateTo.Value : dateTime,
                     model.ShippingStatus, model.Page, 10)).MustHaveHappened();
         }
 

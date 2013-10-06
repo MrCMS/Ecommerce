@@ -43,9 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             model.Results = new PagedList<Order>(null, 1, _ecommerceSettings.PageSizeAdmin);
             try
             {
-                model.Results = _orderSearchService.SearchOrders(model.SearchText, model.OrderId,
-                    model.DateFrom.HasValue ? model.DateFrom.Value : CurrentRequestData.Now, model.DateTo.HasValue ? model.DateTo.Value : CurrentRequestData.Now, 
-                    model.PaymentStatus, model.ShippingStatus, page, _ecommerceSettings.PageSizeAdmin);
+                model.Results = _orderSearchService.SearchOrders(model, page, _ecommerceSettings.PageSizeAdmin);
             }
             catch (Exception)
             {
