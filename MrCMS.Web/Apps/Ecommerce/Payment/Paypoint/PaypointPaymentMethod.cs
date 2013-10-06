@@ -44,9 +44,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Paypoint
 
         [DisplayName("3D Secure enabled")]
         public bool ThreeDSecureEnabled { get; set; }
+        [DisplayName("Disable 3D secure for Administrators")]
+        public bool Admin3DSecureDisable { get; set; }
         [DisplayName("Is live")]
         public bool IsLive { get; set; }
-
         [DisplayName("Account name")]
         public string AccountName { get; set; }
         [DisplayName("VPN password")]
