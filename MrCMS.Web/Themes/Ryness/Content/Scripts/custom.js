@@ -12,8 +12,8 @@ $(document).ready(function () {
     }
     
     $.cookieBar({
-        message: "Our site uses cookies.",
-        acceptText : "Continue",
+        message: "Ryness use cookies to improve your shopping experience.",
+        acceptText : "Dismiss",
         policyButton: true,
         policyText: "Find out more",
         policyURL : "/privacy-policy-and-cookie-info"

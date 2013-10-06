@@ -119,7 +119,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public string DiscountCode { get; set; }
 
         [Required]
-        [DataType(DataType.EmailAddress, ErrorMessage = "Invalid Email Address")]
         public string OrderEmail { get; set; }
 
         public Address ShippingAddress { get; set; }
