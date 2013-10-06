@@ -15,16 +15,14 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
     {
         private readonly IImportProductsManager _importExportManager;
         private readonly IExportProductsManager _exportProductsManager;
-        private readonly IExportOrdersService _exportOrdersService;
         private readonly ImportExportController _importExportController;
 
         public ImportExportControllerTests()
         {
             _exportProductsManager = A.Fake<IExportProductsManager>();
-            _exportOrdersService = A.Fake<IExportOrdersService>();
             _importExportManager = A.Fake<IImportProductsManager>();
 
-            _importExportController = new ImportExportController(_importExportManager, _exportOrdersService, _exportProductsManager);
+            _importExportController = new ImportExportController(_importExportManager, _exportProductsManager);
         }
 
         [Fact]
