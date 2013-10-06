@@ -89,11 +89,11 @@ namespace MrCMS.Web.Apps.Amazon.Indexing
 
         private static readonly FieldDefinition<AmazonOrder> _email =
             new StringFieldDefinition<AmazonOrder>("email", item => item.BuyerEmail, Field.Store.YES,
-                                         Field.Index.NOT_ANALYZED);
+                                         Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<AmazonOrder> _name =
            new StringFieldDefinition<AmazonOrder>("name", item => item.BuyerName, Field.Store.YES,
-                                        Field.Index.NOT_ANALYZED);
+                                        Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<AmazonOrder> _amount =
             new DecimalFieldDefinition<AmazonOrder>("amount", item => item.OrderTotalAmount, Field.Store.YES,

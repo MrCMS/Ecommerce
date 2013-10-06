@@ -4,6 +4,7 @@ using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Orders.Sync;
 using MrCMS.Web.Apps.Amazon.Settings;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -52,13 +53,11 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         private AmazonOrderSearchModel PrepareModel(AmazonOrderSearchModel model)
         {
             ViewData["AmazonOrderDetailsUrl"] = _amazonAppSettings.AmazonOrderDetailsUrl;
-            ViewData["ShippingStatuses"] = _optionService.GetEnumOptions<ShippingStatus>();
+            ViewData["ShippingStatuses"] = GeneralHelper.GetEnumOptionsWithEmpty<ShippingStatus>();
             model.Results = new PagedList<AmazonOrder>(null, 1, _ecommerceSettings.PageSizeAdmin);
             try
             {
-                model.Results = _amazonOrderSearchService.Search(model.Email, model.Name, model.AmazonOrderId,
-                    model.DateFrom.HasValue ? model.DateFrom.Value : CurrentRequestData.Now, model.DateTo.HasValue ? model.DateTo.Value : CurrentRequestData.Now,
-                    model.ShippingStatus, model.Page, _ecommerceSettings.PageSizeAdmin);
+                model.Results = _amazonOrderSearchService.Search(model, model.Page, _ecommerceSettings.PageSizeAdmin);
             }
             catch (Exception)
             {

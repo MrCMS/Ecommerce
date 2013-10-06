@@ -7,11 +7,7 @@
 }
 
 <div data-paging-type="async" id="orders">
-
-    @{Html.RenderPartial("FilterOrders", Model); }
-
-    <hr />
-
+    
     @if (Model != null && Model.Results.Any())
     {
         <table class="table table-striped table-condensed" style="overflow: scroll">
@@ -36,7 +32,13 @@
             <tbody>
                 @foreach (var item in Model.Results)
                 {
-                    <tr>
+                    var status = "warning";
+                    if (item.Status.GetDescription().Equals("Shipped"))
+                    {
+                        status = "success";
+                    }
+                    
+                    <tr class="@status">
                         <td>
                             @Html.ActionLink("Details", "Edit", "Order", new { id = item.Order.Id }, null)
                         </td>
