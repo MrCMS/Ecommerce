@@ -21,9 +21,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.Events
         public int Order { get { return 1; } }
         public void OnOrderShipped(Order order)
         {
-            var queuedMessage = _messageParser.GetMessage(order);
-            if (queuedMessage != null)
-                _session.Transact(session => session.Save(queuedMessage));
+            if (order.SalesChannel == null || order.SalesChannel == "Mr CMS")
+            {
+                var queuedMessage = _messageParser.GetMessage(order);
+                if (queuedMessage != null)
+                    _session.Transact(session => session.Save(queuedMessage));
+            }
         }
     }
 }
