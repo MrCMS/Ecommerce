@@ -9,7 +9,7 @@
         <a class="btn white-gradient" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Edit</a>
     }
 </div>
-@if (Model.CanUsePayPalExpress)
+@if (Model.CanUsePayPalExpress && string.IsNullOrEmpty(Model.PayPalExpressToken) )
 {
     <div class="padding-20 grey-background margin-bottom-10">
         <p><b>Or Checkout with...</b></p>
