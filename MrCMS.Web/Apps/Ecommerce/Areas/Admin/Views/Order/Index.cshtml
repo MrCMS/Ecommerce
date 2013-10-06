@@ -25,25 +25,25 @@
             <div class="row-fluid">
                 <div class="span4">
                     @Html.LabelFor(x => x.SearchText, "Email or Lastname")
-                    @Html.TextBoxFor(x => x.SearchText, new {@class = "input-xlarge"})
+                    @Html.TextBoxFor(x => x.SearchText, new {@class = "span12"})
                     
                     @Html.LabelFor(x => x.OrderId)
-                    @Html.TextBoxFor(x => x.OrderId, new {@class = "input-small"})
+                    @Html.TextBoxFor(x => x.OrderId, new {@class = "span12"})
                 </div>
                 <div class="span4">
                     @Html.LabelFor(x => x.DateFrom)
-                    @Html.TextBoxFor(x => x.DateFrom, new {@class = "input-medium date-time-picker"})
+                    @Html.TextBoxFor(x => x.DateFrom, new {@class = "span12 date-time-picker"})
                     
                     @Html.LabelFor(x => x.PaymentStatus)
-                    @Html.DropDownListFor(x=>x.PaymentStatus, ViewData["PaymentStatuses"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
+                    @Html.DropDownListFor(x=>x.PaymentStatus, ViewData["PaymentStatuses"] as IEnumerable<SelectListItem>, new {@class = "span12"})
                 </div>
                 <div class="span4">
                     
                     @Html.LabelFor(x => x.DateTo)
-                    @Html.TextBoxFor(x => x.DateTo, new {@class = "input-medium date-time-picker"})
+                    @Html.TextBoxFor(x => x.DateTo, new {@class = "span12 date-time-picker"})
                    
                     @Html.LabelFor(x => x.ShippingStatus)
-                    @Html.DropDownListFor(x=>x.ShippingStatus, ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
+                    @Html.DropDownListFor(x=>x.ShippingStatus, ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new {@class = "span12"})
                 </div>
             </div>
             <hr />
