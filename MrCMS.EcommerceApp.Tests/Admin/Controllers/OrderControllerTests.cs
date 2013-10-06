@@ -30,7 +30,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _orderShippingService = A.Fake<IOrderShippingService>();
             _ecommerceSettings = new EcommerceSettings();
             _orderController = new OrderController(_orderService,
-                _shippingMethodManager, _orderSearchService, _orderShippingService, _optionService, _ecommerceSettings);
+                _shippingMethodManager, _orderSearchService, _orderShippingService, _optionService, _ecommerceSettings, A.Fake<IExportOrdersService>());
         }
 
         //[Fact]

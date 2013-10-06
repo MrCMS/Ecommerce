@@ -58,9 +58,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 
             var result = _ordersController.Index(model);
 
-            A.CallTo(() => _amazonOrderSearchService.Search(model.Email, model.Name, model.AmazonOrderId,
-                    model.DateFrom.HasValue ? model.DateFrom.Value : dateTime, model.DateTo.HasValue ? model.DateTo.Value : dateTime,
-                    model.ShippingStatus, model.Page,10)).MustHaveHappened();
+            A.CallTo(() => _amazonOrderSearchService.Search(model, model.Page, 10)).MustHaveHappened();
         }
 
         [Fact]
@@ -76,9 +74,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 
             var result = _ordersController.Orders(model);
 
-            A.CallTo(() => _amazonOrderSearchService.Search(model.Email, model.Name, model.AmazonOrderId,
-                    model.DateFrom.HasValue ? model.DateFrom.Value : dateTime, model.DateTo.HasValue ? model.DateTo.Value : dateTime,
-                    model.ShippingStatus, model.Page, 10)).MustHaveHappened();
+            A.CallTo(() => _amazonOrderSearchService.Search(model, model.Page, 10)).MustHaveHappened();
         }
 
         [Fact]

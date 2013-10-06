@@ -18,7 +18,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         {
             _session = A.Fake<ISession>();
             _orderEventService = A.Fake<IOrderEventService>();
-            _orderService = new OrderService(_session, _orderEventService);
+            _orderService = new OrderService(_session, _orderEventService, A.Fake<IOrderNoteService>());
         }
 
         //TODO PlaceOrder
