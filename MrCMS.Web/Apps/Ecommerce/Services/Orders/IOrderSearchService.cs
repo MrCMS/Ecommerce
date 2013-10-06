@@ -7,6 +7,7 @@ using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using MrCMS.Indexing.Management;
 using MrCMS.Paging;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Indexing;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
@@ -14,36 +15,32 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 {
     public interface IOrderSearchService
     {
-        IPagedList<Entities.Orders.Order> SearchOrders(string searchText, string orderid, DateTime datefrom, DateTime dateto,
-            PaymentStatus? paymentStatus, ShippingStatus? shippingStatus, int page = 1, int pageSize = 10);
+        IPagedList<Order> SearchOrders(OrderSearchModel model, int page = 1, int pageSize = 10);
     }
 
     public class OrderSearchQuery
     {
         public string SearchText { get; set; }
         public string OrderId { get; set; }
-        public DateTime DateFrom { get; set; }
-        public DateTime DateTo { get; set; }
+        public DateTime? DateFrom { get; set; }
+        public DateTime? DateTo { get; set; }
         public PaymentStatus? PaymentStatus { get; set; }
         public ShippingStatus? ShippingStatus { get; set; }
 
-        public OrderSearchQuery(string searchText, string orderid, DateTime datefrom, DateTime dateto,
-            PaymentStatus? paymentStatus, ShippingStatus? shippingStatus)
+        public OrderSearchQuery(OrderSearchModel orderSearchModel)
         {
-            SearchText = searchText;
-            OrderId = orderid;
-            DateFrom = datefrom;
-            DateTo = dateto;
-            PaymentStatus = paymentStatus;
-            ShippingStatus = shippingStatus;
+            SearchText = orderSearchModel.SearchText;
+            OrderId = orderSearchModel.OrderId;
+            DateFrom = orderSearchModel.DateFrom;
+            DateTo = orderSearchModel.DateTo;
+            PaymentStatus = orderSearchModel.PaymentStatus;
+            ShippingStatus = orderSearchModel.ShippingStatus;
         }
 
         public Query GetQuery()
         {
-            if (String.IsNullOrWhiteSpace(SearchText) && 
-                String.IsNullOrWhiteSpace(OrderId) &&
-                PaymentStatus == null &&
-                ShippingStatus == null)
+            if (String.IsNullOrWhiteSpace(SearchText) && String.IsNullOrWhiteSpace(OrderId) && PaymentStatus == null &&
+                ShippingStatus == null && !DateFrom.HasValue && !DateTo.HasValue)
                 return new MatchAllDocsQuery();
 
             var booleanQuery = new BooleanQuery();
@@ -54,6 +51,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 var query = q.Parse(fuzzySearchTerm);
                 booleanQuery.Add(query, Occur.SHOULD);
             }
+            if (DateFrom.HasValue || DateTo.HasValue)
+                booleanQuery.Add(GetDateQuery(), Occur.MUST);
             if (!String.IsNullOrWhiteSpace(OrderId))
                 booleanQuery.Add(GetOrderIdQuery(), Occur.MUST);
             if (PaymentStatus != null)
@@ -61,6 +60,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             if (ShippingStatus != null)
                 booleanQuery.Add(GetShippingStatusQuery(), Occur.MUST);
             return booleanQuery;
+        }
+
+        private Query GetDateQuery()
+        {
+            return new TermRangeQuery(OrderSearchIndex.CreatedOn.FieldName,
+                                      DateFrom.HasValue
+                                          ? DateTools.DateToString(DateFrom.Value, DateTools.Resolution.SECOND)
+                                          : null,
+                                      DateTo.HasValue
+                                          ? DateTools.DateToString(DateTo.Value, DateTools.Resolution.SECOND)
+                                          : null, DateFrom.HasValue, DateTo.HasValue);
         }
 
         private string MakeFuzzy(string keywords)
@@ -95,10 +105,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public Filter GetFilter()
         {
-            var dateFrom = DateTools.DateToString(DateFrom, DateTools.Resolution.SECOND);
-            var dateTo = DateTools.DateToString(DateTo, DateTools.Resolution.SECOND);
-            return FieldCacheRangeFilter.NewStringRange(OrderSearchIndex.CreatedOn.FieldName, dateFrom,
-                                                              dateTo, false, true);
+            return null;
         }
     }
 }

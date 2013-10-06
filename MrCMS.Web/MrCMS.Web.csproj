@@ -230,6 +230,7 @@
     <Compile Include="Apps\Amazon\Helpers\AmazonProgressBarHelper.cs" />
     <Compile Include="Apps\Amazon\Indexing\AmazonOrderSearchIndex.cs" />
     <Compile Include="Apps\Amazon\MessageTemplates\SendAmazonOrderPlacedEmailToStoreOwnerMessageTemplate.cs" />
+    <Compile Include="Apps\Amazon\ModelBinders\CultureAwareDateBinder.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonAdminMenuModel.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonApiSection.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonDashboardModel.cs" />

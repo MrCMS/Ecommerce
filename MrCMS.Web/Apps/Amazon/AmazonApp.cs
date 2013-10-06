@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using MarketplaceWebService;
 using MarketplaceWebServiceFeedsClasses;
@@ -11,6 +12,7 @@ using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Controllers;
 using MrCMS.Web.Apps.Amazon.DbConfiguration;
+using MrCMS.Web.Apps.Amazon.ModelBinders;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Areas.Admin.Controllers;
 using MrCMS.Website;
@@ -62,6 +64,10 @@ namespace MrCMS.Web.Apps.Amazon
             context.MapRoute("Sync Amazon Orders", "sync-amazon-orders",
                                  new { controller = "AmazonSync", action = "Sync", id = UrlParameter.Optional },
                                  new[] { typeof(AmazonSyncController).Namespace });
+
+            System.Web.Mvc.ModelBinders.Binders.Add(typeof(DateTime), new CultureAwareDateBinder());
+            System.Web.Mvc.ModelBinders.Binders.Add(typeof(DateTime?), new NullableCultureAwareDateBinder());
+        
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
