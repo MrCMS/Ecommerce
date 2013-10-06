@@ -186,30 +186,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                         new Dictionary<string, string>
                             {
                                 {"A", "Transaction authorised by bank. auth_code available as bank reference"},
-                                {"N", "Transaction not authorised. Failure message text available to merchant"},
-                                {"C", "Communication problem. Trying again later may well work"},
+                                {"N", "Transaction not authorised."},
+                                {"C", "There was a communication problem. Please try payment again"},
                                 {
                                     "F",
-                                    "The PayPoint.net system has detected a fraud condition and rejected the transaction. The message field will contain more details."
+                                    "Could not process payment. Please quote E1000."
                                 },
-                                {"P:A", "Pre-bank checks. Amount not supplied or invalid"},
-                                {"P:X", "Pre-bank checks. Not all mandatory parameters supplied"},
-                                {"P:P", "Pre-bank checks. Same payment presented twice"},
-                                {"P:S", "Pre-bank checks. Start date invalid"},
-                                {"P:E", "Pre-bank checks. Expiry date invalid"},
-                                {"P:I", "Pre-bank checks. Issue number invalid"},
-                                {"P:C", "Pre-bank checks. Card number fails LUHN check (the card number is wrong)"},
-                                {"P:T", "Pre-bank checks. Card type invalid - i.e. does not match card number prefix"},
-                                {"P:N", "Pre-bank checks. Customer name not supplied"},
-                                {"P:M", "Pre-bank checks. Merchant does not exist or not registered yet"},
-                                {"P:B", "Pre-bank checks. Merchant account for card type does not exist"},
-                                {"P:D", "Pre-bank checks. Merchant account for this currency does not exist"},
-                                {"P:V", "Pre-bank checks. CV2 security code mandatory and not supplied / invalid"},
+                                {"P:A", "Amount not supplied or invalid"},
+                                {"P:X", "Not all mandatory parameters supplied"},
+                                {"P:P", "Same payment presented twice"},
+                                {"P:S", "Start date invalid"},
+                                {"P:E", "Expiry date invalid"},
+                                {"P:I", "Issue number invalid"},
+                                {"P:C", "Card number invalid"},
+                                {"P:T", "Card type invalid - i.e. does not match card number prefix"},
+                                {"P:N", "Customer name not supplied"},
+                                {"P:M", "Merchant does not exist or not registered yet"},
+                                {"P:B", "Merchant account for card type does not exist"},
+                                {"P:D", "Merchant account for this currency does not exist"},
+                                {"P:V", "CV2 security code mandatory and not supplied / invalid"},
                                 {
                                     "P:R",
-                                    "Pre-bank checks. Transaction timed out awaiting a virtual circuit. Merchant may not have enough virtual circuits for the volume of business."
+                                    "Transaction timed out. Please try again"
                                 },
-                                {"P:#", "Pre-bank checks. No MD5 hash / token key set up against account"}
+                                {"P:#", "No MD5 hash / token key set up against account"}
                             });
 
             }
