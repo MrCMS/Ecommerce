@@ -11,7 +11,7 @@ using NHibernate;
 
 namespace MrCMS.Web.Apps.Ryness.Events
 {
-    public class OnOrderPlacedKerridgeLog : IOnOrderPlaced 
+    public class OnOrderPlacedKerridgeLog : IOnOrderPlaced
     {
         private readonly IKerridgeService _kerridgeService;
         private readonly ISession _session;
@@ -25,17 +25,13 @@ namespace MrCMS.Web.Apps.Ryness.Events
         public int Order { get { return 100; } }
         public void OnOrderPlaced(Order order)
         {
-            if (!order.IsCancelled && !order.IsDeleted && order.PaymentStatus.Equals(PaymentStatus.Paid))
-            {
-                var kerridgeLog = new KerridgeLog
-                {
-                    Order = order,
-                    Sent = false
-                };
+            var kerridgeLog = new KerridgeLog
+                   {
+                       Order = order,
+                       Sent = false
+                   };
 
-                _kerridgeService.Add(kerridgeLog);
-            }
-            
+            _kerridgeService.Add(kerridgeLog);
         }
     }
 }

@@ -259,7 +259,7 @@ namespace MrCMS.Web.Apps.Ryness.Services
                     Type = LogEntryType.Error,
                     Site = kerridgeLog.Site,
                     Message = error.Message,
-                    Detail = error.Detail
+                    Detail = error.Detail 
                 });
 
                 return false;
@@ -327,7 +327,7 @@ namespace MrCMS.Web.Apps.Ryness.Services
                     Type = LogEntryType.Error,
                     Site = kerridgeLog.Site,
                     Message = error.Message,
-                    Detail = error.Detail
+                    Detail = error.Detail + xmlmessage
                 });
                 return false;
 
@@ -341,7 +341,7 @@ namespace MrCMS.Web.Apps.Ryness.Services
                     Type = LogEntryType.Error,
                     Site = kerridgeLog.Site,
                     Message = error.Message,
-                    Detail = error.Detail
+                    Detail = error.Detail + xmlmessage
                 });
                 return false;
             }

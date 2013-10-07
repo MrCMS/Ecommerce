@@ -5,11 +5,11 @@ using FakeItEasy;
 using FluentAssertions;
 using MrCMS.EcommerceApp.Tests;
 using MrCMS.Helpers;
-using MrCMS.Web.Apps.Amazon.Entities.Analytics;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Analytics;
+using MrCMS.Web.Apps.Amazon.Services.Logs;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Website;
 using Xunit;
@@ -18,7 +18,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Analytics
 {
     public class AmazonAnalyticsServiceTests : InMemoryDatabaseTest
     {
-        private readonly IAmazonApiUsageService _amazonApiUsageService;
+        private readonly IAmazonApiLogService _amazonApiUsageService;
         private readonly AmazonAppSettings _amazonAppSettings;
         private readonly AmazonSellerSettings _amazonSellerSettings;
         private readonly IAmazonAnalyticsService _amazonAnalyticsService;
@@ -27,29 +27,9 @@ namespace MrCMS.AmazonApp.Tests.Services.Analytics
         {
             _amazonAppSettings = A.Fake<AmazonAppSettings>();
             _amazonSellerSettings = A.Fake<AmazonSellerSettings>();
-            _amazonApiUsageService = A.Fake<IAmazonApiUsageService>();
+            _amazonApiUsageService = A.Fake<IAmazonApiLogService>();
             _amazonAnalyticsService = new AmazonAnalyticsService(_amazonApiUsageService, Session, _amazonAppSettings,
                                                                  _amazonSellerSettings);
-        }
-
-        [Fact]
-        public void AmazonAnalyticsService_TrackNewApiCall_ShouldSaveEntry()
-        {
-            var item = new AmazonApiUsage()
-                {
-                    NoOfCalls = 1,
-                    Day = CurrentRequestData.Now.Date,
-                    ApiSection = AmazonApiSection.Feeds,
-                    ApiOperation = "SubmitFeed",
-                    Site = CurrentRequestData.CurrentSite
-                };
-            Session.Transact(session => session.Save(item));
-
-            A.CallTo(() => _amazonApiUsageService.GetForToday(AmazonApiSection.Feeds, "SubmitFeed")).Returns(null);
-
-            _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Feeds, "SubmitFeed");
-
-            Session.QueryOver<AmazonApiUsage>().RowCount().Should().Be(1);
         }
 
         [Fact]
@@ -223,30 +203,12 @@ namespace MrCMS.AmazonApp.Tests.Services.Analytics
         public void AmazonAnalyticsService_GetNumberOfActiveListings_ShouldReturnPersistedEntriesActive()
         {
             var items = Enumerable.Range(0, 10).Select(i => new AmazonListing()
-            {
-                Status = AmazonListingStatus.Active
-            }).ToList();
+                {
+                    Status = AmazonListingStatus.Active
+                }).ToList();
             Session.Transact(session => items.ForEach(item => session.Save(item)));
 
             var results = _amazonAnalyticsService.GetNumberOfActiveListings();
-
-            results.Should().Be(10);
-        }
-
-        [Fact]
-        public void AmazonAnalyticsService_GetNumberOfApiCalls_ShouldReturnPersistedEntriesCount()
-        {
-            var items = Enumerable.Range(0, 10).Select(i => new AmazonApiUsage()
-            {
-                NoOfCalls = 1,
-                Day = CurrentRequestData.Now.Date.AddDays(1),
-                CreatedOn = CurrentRequestData.Now.Date.AddDays(1),
-                Site = CurrentRequestData.CurrentSite
-            }).ToList();
-            Session.Transact(session => items.ForEach(item => session.Save(item)));
-
-            var results = _amazonAnalyticsService.GetNumberOfApiCalls(CurrentRequestData.Now.Date.AddDays(-20),
-                                                             CurrentRequestData.Now.Date.AddDays(20));
 
             results.Should().Be(10);
         }

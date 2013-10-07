@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
+using MrCMS.Web.Apps.Amazon.Services.Logs;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Website;
 using NHibernate;
@@ -16,11 +17,11 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
     public class AmazonAnalyticsService : IAmazonAnalyticsService
     {
         private readonly ISession _session;
-        private readonly IAmazonApiUsageService _amazonApiUsageService;
+        private readonly IAmazonApiLogService _amazonApiUsageService;
         private readonly AmazonAppSettings _amazonAppSettings;
         private readonly AmazonSellerSettings _amazonSellerSettings;
 
-        public AmazonAnalyticsService(IAmazonApiUsageService amazonApiUsageService, 
+        public AmazonAnalyticsService(IAmazonApiLogService amazonApiUsageService, 
             ISession session, 
             AmazonAppSettings amazonAppSettings,
             AmazonSellerSettings amazonSellerSettings)
@@ -31,20 +32,16 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
             _amazonSellerSettings = amazonSellerSettings;
         }
 
-        public void TrackNewApiCall(AmazonApiSection? apiSection, string apiOperation)
+        public AmazonApiLog TrackNewApiCall(AmazonApiSection? apiSection, string apiOperation)
         {
-            var amazonApiUsage = _amazonApiUsageService.GetForToday(apiSection, apiOperation) ?? new AmazonApiUsage()
+            var amazonApiUsage = new AmazonApiLog()
                 {
-                    NoOfCalls = 0,
-                    Day = CurrentRequestData.Now.Date,
                     ApiSection = apiSection,
                     ApiOperation = apiOperation,
                     Site = CurrentRequestData.CurrentSite
                 };
                
-            amazonApiUsage.NoOfCalls += 1;
-
-            _amazonApiUsageService.Save(amazonApiUsage);
+            return _amazonApiUsageService.Save(amazonApiUsage);
         }
 
         public AmazonChartModel GetRevenue(DateTime from, DateTime to)
@@ -160,9 +157,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
 
         public int GetNumberOfApiCalls(DateTime from, DateTime to)
         {
-            return _session.CreateCriteria(typeof(AmazonApiUsage))
-                .Add(Restrictions.Between("Day",from,to))
-                .SetProjection(Projections.Sum("NoOfCalls")).SetCacheable(true).UniqueResult<int>();
+            return _session.CreateCriteria(typeof(AmazonApiLog))
+                .Add(Restrictions.Between("CreatedOn",from,to))
+                .SetProjection(Projections.Count("Id")).SetCacheable(true).UniqueResult<int>();
         }
     }
 }

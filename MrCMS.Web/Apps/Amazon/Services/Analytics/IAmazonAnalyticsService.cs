@@ -1,11 +1,12 @@
 ﻿using System;
+using MrCMS.Web.Apps.Amazon.Entities.Analytics;
 using MrCMS.Web.Apps.Amazon.Models;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Analytics
 {
     public interface IAmazonAnalyticsService
     {
-        void TrackNewApiCall(AmazonApiSection? apiSection, string apiOperation);
+        AmazonApiLog TrackNewApiCall(AmazonApiSection? apiSection, string apiOperation);
         AmazonDashboardModel GetAmazonDashboardModel(DateTime? from, DateTime? to);
         AmazonChartModel GetRevenue(DateTime from, DateTime to);
         AmazonChartModel GetProductsSold(DateTime from, DateTime to);
