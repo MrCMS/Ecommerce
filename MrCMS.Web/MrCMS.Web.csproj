@@ -283,7 +283,6 @@
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Events\IOnAmazonOrderPlaced.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Events\IAmazonOrderEvent.cs" />
-    <Compile Include="Apps\Amazon\Services\Orders\Events\DoSomethingOnAmazonOrderPlaced.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderSearchService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderEventService.cs" />
