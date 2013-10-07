@@ -65,7 +65,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         [Fact]
         public void AppController_DashboardLogs_ReturnsPartialViewResult()
         {
-            var result = _appController.DashboardLogs(1);
+            var result = _appController.Logs(1);
 
             result.Should().BeOfType<PartialViewResult>();
         }
@@ -73,7 +73,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         [Fact]
         public void AppController_DashboardLogs_ShouldCallGetEntriesPaged()
         {
-            var result = _appController.DashboardLogs(1);
+            var result = _appController.Logs(1);
 
             A.CallTo(() => _amazonLogService.GetEntriesPaged(1,null,null,5)).MustHaveHappened();
         }
