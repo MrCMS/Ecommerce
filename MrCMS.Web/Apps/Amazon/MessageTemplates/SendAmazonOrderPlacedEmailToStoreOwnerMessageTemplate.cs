@@ -4,13 +4,15 @@ using MrCMS.Entities.Messaging;
 using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
+using MrCMS.Web.Apps.Amazon.Services.Orders;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Website;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Amazon.MessageTemplates
 {
     [FriendlyClassName("Send Amazon Order Placed Email To Store Owner Message Template")]
-    public class SendAmazonOrderPlacedEmailToStoreOwnerMessageTemplate : MessageTemplate, IMessageTemplate<AmazonOrder>
+    public class SendAmazonOrderPlacedEmailToStoreOwnerMessageTemplate : MessageTemplate, IMessageTemplate<Order>
     {
         public override MessageTemplate GetInitialTemplate(ISession session)
         {
@@ -31,7 +33,50 @@ namespace MrCMS.Web.Apps.Amazon.MessageTemplates
 
         public override List<string> GetTokens(IMessageTemplateParser messageTemplateParser)
         {
-            return messageTemplateParser.GetAllTokens<AmazonOrder>();
+            return messageTemplateParser.GetAllTokens<Order>();
+        }
+    }
+
+    public class AmazonOrderTokenProvider : ITokenProvider<Order>
+    {
+        private readonly IAmazonOrderService _amazonOrderService;
+
+        public AmazonOrderTokenProvider(IAmazonOrderService amazonOrderService)
+        {
+            _amazonOrderService = amazonOrderService;
+        }
+
+        public IDictionary<string, Func<Order, string>> Tokens
+        {
+            get
+            {
+                return new Dictionary<string, Func<Order, string>>
+                    {
+                        {
+                            "AmazonOrderId", order =>
+                                {
+                                    AmazonOrder byOrderId = _amazonOrderService.GetByOrderId(order.Id);
+                                    return byOrderId != null ? byOrderId.AmazonOrderId : string.Empty;
+                                }
+
+                        },
+                        {
+                            "FulfillmentChannel", order =>
+                                {
+                                    AmazonOrder byOrderId = _amazonOrderService.GetByOrderId(order.Id);
+                                    if (byOrderId != null)
+                                    {
+                                        var fullFilmentChannel = byOrderId.FulfillmentChannel.HasValue
+                                                                     ? byOrderId.FulfillmentChannel.Value.ToString()
+                                                                     : string.Empty;
+                                        return !string.IsNullOrEmpty(fullFilmentChannel)
+                                                   ? fullFilmentChannel
+                                                   : string.Empty;
+                                    }
+                                    return string.Empty;
+                                }}
+                    };
+            }
         }
     }
 }
