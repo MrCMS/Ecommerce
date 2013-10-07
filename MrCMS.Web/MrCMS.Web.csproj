@@ -1964,6 +1964,7 @@
     <Content Include="Themes\Ryness\Content\Scripts\jquery.pikachoose.min.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.placeholder.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.ui.map.full.min.js" />
+    <Content Include="Themes\Ryness\Content\Scripts\postcode-anywhere.js" />
     <Content Include="Themes\Ryness\Content\Scripts\ryness-map.js" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap-responsive.css" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap-responsive.min.css" />
