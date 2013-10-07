@@ -17,17 +17,17 @@ using NHibernate;
 
 namespace MrCMS.Web.Apps.Ryness.Events
 {
-    public class OnAmazonOrderCreated : IOnAmazonOrderPlaced
+    public class CreateKerridgeLog : IOnAmazonOrderPlaced
     {
         private readonly IKerridgeService _kerridgeService;
 
-        public OnAmazonOrderCreated(IKerridgeService kerridgeService)
+        public CreateKerridgeLog(IKerridgeService kerridgeService)
         {
             _kerridgeService = kerridgeService;
         }
 
         public int Order { get { return 101; } }
-        public void IOnAmazonOrderPlaced(AmazonOrder order)
+        public void OnAmazonOrderPlaced(AmazonOrder order)
         {
             var orderMrCms = order.Order;
 
@@ -55,7 +55,7 @@ namespace MrCMS.Web.Apps.Ryness.Events
         }
 
         public int Order { get { return 102; } }
-        public void IOnAmazonOrderPlaced(AmazonOrder order)
+        public void OnAmazonOrderPlaced(AmazonOrder order)
         {
             var queuedMessage = _messageParser.GetMessage(order);
             if (queuedMessage != null)

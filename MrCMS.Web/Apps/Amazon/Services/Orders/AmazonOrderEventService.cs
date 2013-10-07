@@ -19,7 +19,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
         {
             var items = GetAll<IOnAmazonOrderPlaced>();
             if (items.Any())
-                items.ForEach(placed => placed.IOnAmazonOrderPlaced(order));
+                items.ForEach(placed => placed.OnAmazonOrderPlaced(order));
         }
 
         private IOrderedEnumerable<T> GetAll<T>() where T : IAmazonOrderEvent

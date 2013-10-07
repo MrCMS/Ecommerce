@@ -283,7 +283,6 @@
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Events\IOnAmazonOrderPlaced.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Events\IAmazonOrderEvent.cs" />
-    <Compile Include="Apps\Amazon\Services\Orders\Events\DoSomethingOnAmazonOrderPlaced.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderSearchService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderEventService.cs" />
@@ -737,7 +736,7 @@
     <Compile Include="Apps\Ryness\Entities\BuyingGuideInformation.cs" />
     <Compile Include="Apps\Ryness\Entities\KerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Entities\Testimonial.cs" />
-    <Compile Include="Apps\Ryness\Events\OnAmazonOrderCreated.cs" />
+    <Compile Include="Apps\Ryness\Events\CreateKerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Events\OnOrderPlacedKerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Metadata\BuyingGuideMetadata.cs" />
     <Compile Include="Apps\Ryness\Metadata\StoreListMetadata.cs" />
