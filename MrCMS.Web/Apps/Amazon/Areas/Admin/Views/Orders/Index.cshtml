@@ -20,7 +20,7 @@
                 <a href='@amazonManageOrdersUrl' target="_blank" class="btn">Manage Orders on Amazon
                 </a>
             }
-
+             @Html.ActionLink("Sync", "SyncMany", "Orders", null,new { @class = "btn btn-success" })
             <button type="submit" class="btn btn-primary">Search</button>
         </span>
         </legend>

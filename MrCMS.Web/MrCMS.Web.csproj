@@ -810,6 +810,7 @@
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-many-listing.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-one-listing.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\orders.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\dashboard.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\listing-groups.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\listings.js" />
@@ -2268,6 +2269,7 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\App\DashboardContent.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\SpendXMore.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\SpendXMore.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\SyncMany.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

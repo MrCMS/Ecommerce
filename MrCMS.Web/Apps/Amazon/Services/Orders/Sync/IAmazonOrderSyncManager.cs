@@ -7,6 +7,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     public interface IAmazonOrderSyncManager
     {
         GetUpdatedOrdersResult GetUpdatedInfoFromAmazon(GetUpdatedOrdersRequest updatedOrdersRequest);
+        GetUpdatedOrdersResult GetUpdatedInfoFromAmazonAdHoc(List<string> amazonOrderIds);
     }
     public class GetUpdatedOrdersRequest
     {
@@ -17,6 +18,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     public class GetUpdatedOrdersResult
     {
         public string ErrorMessage { get; set; }
+
         public bool Success { get { return string.IsNullOrWhiteSpace(ErrorMessage); } }
 
         public List<AmazonOrder> OrdersUpdated { get; set; }

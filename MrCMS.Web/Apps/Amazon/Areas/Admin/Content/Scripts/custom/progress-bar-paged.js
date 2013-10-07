@@ -3,14 +3,11 @@
     $(document).on('click', '#pb-start-task', function () {
         $("#pb-start-task").hide();
         $("#pb").show();
-        updateValues();
         updateProgressBar();
         $.post(taskUrl, {
             id: id,
             description: description,
-            taskId: taskId,
-            from: from,
-            to: to
+            taskId: taskId
         }, function (data) {
             return false;
         });
@@ -64,3 +61,7 @@ function refreshMessages() {
     });
     return false;
 }
+
+var id = $("#Id").val();
+var description = $("#Description").val();
+var taskId = $("#TaskId").val();

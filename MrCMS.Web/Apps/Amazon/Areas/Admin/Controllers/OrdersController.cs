@@ -16,21 +16,20 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
     [SessionState(System.Web.SessionState.SessionStateBehavior.ReadOnly)]
     public class OrdersController : MrCMSAppAdminController<AmazonApp>
     {
-        private readonly IAmazonOrderSyncManager _syncAmazonOrderService;
+        private readonly IAmazonOrderSyncService _amazonOrderSyncService;
         private readonly IAmazonOrderService _amazonOrderService;
         private readonly AmazonAppSettings _amazonAppSettings;
         private readonly IAmazonOrderSearchService _amazonOrderSearchService;
         private readonly EcommerceSettings _ecommerceSettings;
 
-        public OrdersController(IAmazonOrderSyncManager syncAmazonOrderService,
-            IAmazonOrderService amazonOrderService, AmazonAppSettings amazonAppSettings, 
-            IAmazonOrderSearchService amazonOrderSearchService, EcommerceSettings ecommerceSettings)
+        public OrdersController(IAmazonOrderService amazonOrderService, AmazonAppSettings amazonAppSettings, 
+            IAmazonOrderSearchService amazonOrderSearchService, EcommerceSettings ecommerceSettings, IAmazonOrderSyncService amazonOrderSyncService)
         {
-            _syncAmazonOrderService = syncAmazonOrderService;
             _amazonOrderService = amazonOrderService;
             _amazonAppSettings = amazonAppSettings;
             _amazonOrderSearchService = amazonOrderSearchService;
             _ecommerceSettings = ecommerceSettings;
+            _amazonOrderSyncService = amazonOrderSyncService;
         }
 
         [HttpGet]
@@ -68,6 +67,20 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             if (amazonOrder != null)
                 return View(amazonOrder);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult SyncMany()
+        {
+            return View(new AmazonSyncModel());
+        }
+
+        [HttpPost]
+        public JsonResult Sync(string description)
+        {
+            return Json(!String.IsNullOrWhiteSpace(description) ? 
+                _amazonOrderSyncService.SyncSpecificOrders(description) : 
+                new GetUpdatedOrdersResult() { ErrorMessage = "Please provide at least one valid Amazon Order Id." });
         }
     }
 }

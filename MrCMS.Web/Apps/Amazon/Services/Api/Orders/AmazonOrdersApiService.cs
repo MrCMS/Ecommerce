@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MarketplaceWebServiceOrders;
 using MarketplaceWebServiceOrders.Model;
 using MrCMS.Web.Apps.Amazon.Helpers;
@@ -55,44 +56,88 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
             return serviceStatus == AmazonServiceStatus.GREEN || serviceStatus == AmazonServiceStatus.GREEN_I;
         }
 
-        public IEnumerable<Order> ListOrders(AmazonSyncModel model)
+        public List<Order> ListSpecificOrders(List<string> orderIds)
         {
-            try
+            var request = new GetOrderRequest
+            {
+                SellerId = _amazonSellerSettings.SellerId,
+                AmazonOrderId = new OrderIdList().WithId(orderIds.Select(x=>x).ToArray())
+            };
+
+            return GetOrder(request);
+        }
+        private List<Order> GetOrder(GetOrderRequest request)
+        {
+            _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, null, null, AmazonApiSection.Orders,
+                    "GetOrder", null, null, null, "Listing Specific Amazon Orders (Ids:" + request.AmazonOrderId.Id.Select(x => x) + ")");
+            _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "GetOrder");
+            var result = _marketplaceWebServiceOrders.GetOrder(request);
+            var orders = new List<Order>();
+            if (result == null || !result.IsSetGetOrderResult())
+                return orders;
+            if (result.GetOrderResult.IsSetOrders() && result.GetOrderResult.Orders.IsSetOrder())
+                orders.AddRange(result.GetOrderResult.Orders.Order);
+
+            return orders;
+        }
+
+        public List<Order> ListCreatedOrders(GetUpdatedOrdersRequest updatedOrdersRequest)
+        {
+            var request = new ListOrdersRequest
+            {
+                SellerId = _amazonSellerSettings.SellerId,
+                MarketplaceId = new MarketplaceIdList().WithId(_amazonSellerSettings.MarketplaceId),
+                CreatedAfter = updatedOrdersRequest.LastUpdatedAfter,
+                CreatedBefore = updatedOrdersRequest.LastUpdatedBefore,
+            };
+
+            return ListOrders(request);
+        }
+        public IEnumerable<Order> ListUpdatedOrders(GetUpdatedOrdersRequest newOrdersRequest)
+        {
+            var request = new ListOrdersRequest
+            {
+                SellerId = _amazonSellerSettings.SellerId,
+                MarketplaceId = new MarketplaceIdList().WithId(_amazonSellerSettings.MarketplaceId),
+                LastUpdatedAfter = newOrdersRequest.LastUpdatedAfter,
+                LastUpdatedBefore = newOrdersRequest.LastUpdatedBefore,
+            };
+
+            return ListOrders(request);
+        }
+        private List<Order> ListOrders(ListOrdersRequest request)
+        {
+            _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, null, null, AmazonApiSection.Orders,
+                   "ListOrders", null, null, null, "Listing Amazon Orders");
+            _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "ListOrders");
+            var result = _marketplaceWebServiceOrders.ListOrders(request);
+            var orders = new List<Order>();
+            if (result == null || !result.IsSetListOrdersResult())
+                return orders;
+            if (result.ListOrdersResult.IsSetOrders() && result.ListOrdersResult.Orders.IsSetOrder())
+                orders.AddRange(result.ListOrdersResult.Orders.Order);
+
+            var nextToken = result.ListOrdersResult.NextToken;
+            while (!string.IsNullOrWhiteSpace(nextToken))
             {
                 _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, null, null, AmazonApiSection.Orders,
-                    "ListOrders", null, null, null, "Listing Amazon Orders");
-                _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "ListOrders");
-                var request = GetListOrdersRequest(model);
-
-                var result = _marketplaceWebServiceOrders.ListOrders(request);
-
-                if (result != null && result.ListOrdersResult != null && result.IsSetListOrdersResult() && result.ListOrdersResult.Orders.Order != null)
-                    return result.ListOrdersResult.Orders.Order;
-            }
-            catch (MarketplaceWebServiceOrdersException ex)
-            {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null, AmazonApiSection.Orders,
-                    "ListOrders", null, null, null, "Error happend during operation of listing Amazon Orders");
-            }
-            catch (Exception ex)
-            {
-                CurrentRequestData.ErrorSignal.Raise(ex);
-            }
-            return null;
-        }
-        private ListOrdersRequest GetListOrdersRequest(AmazonSyncModel model)
-        {
-            var marketplace = new MarketplaceIdList();
-            var request = new ListOrdersRequest
+                   "ListOrdersByNextToken", null, null, null, "Listing Amazon Orders (Next Token)");
+                _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "ListOrdersByNextToken");
+                var response = _marketplaceWebServiceOrders.ListOrdersByNextToken(new ListOrdersByNextTokenRequest
+                                                                                      {
+                                                                                          SellerId = _amazonSellerSettings.SellerId,
+                                                                                          NextToken = result.ListOrdersResult.NextToken
+                                                                                      });
+                if (response != null && response.IsSetListOrdersByNextTokenResult())
                 {
-                    SellerId = _amazonSellerSettings.SellerId,
-                    MarketplaceId = marketplace.WithId(_amazonSellerSettings.MarketplaceId),
-                };
-            if (model.From.HasValue)
-                request.CreatedAfter = model.From.Value;
-            if (model.To.HasValue)
-                request.CreatedBefore = model.To.Value;
-            return request;
+                    if (response.ListOrdersByNextTokenResult.IsSetOrders() && response.ListOrdersByNextTokenResult.Orders.IsSetOrder())
+                        orders.AddRange(response.ListOrdersByNextTokenResult.Orders.Order);
+                    nextToken = response.ListOrdersByNextTokenResult.NextToken;
+                }
+                else nextToken = null;
+            }
+
+            return orders;
         }
 
         public IEnumerable<OrderItem> ListOrderItems(string amazonOrderId)
@@ -129,65 +174,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
                 SellerId = _amazonSellerSettings.SellerId,
                 AmazonOrderId = amazonOrderId
             };
-        }
-
-        public List<Order> ListCreatedOrders(GetUpdatedOrdersRequest updatedOrdersRequest)
-        {
-            var request = new ListOrdersRequest
-            {
-                SellerId = _amazonSellerSettings.SellerId,
-                MarketplaceId = new MarketplaceIdList().WithId(_amazonSellerSettings.MarketplaceId),
-                CreatedAfter = updatedOrdersRequest.LastUpdatedAfter,
-                CreatedBefore = updatedOrdersRequest.LastUpdatedBefore,
-            };
-
-            return GetOrders(request);
-        }
-        public List<Order> ListUpdatedOrders(GetUpdatedOrdersRequest newOrdersRequest)
-        {
-            var request = new ListOrdersRequest
-            {
-                SellerId = _amazonSellerSettings.SellerId,
-                MarketplaceId = new MarketplaceIdList().WithId(_amazonSellerSettings.MarketplaceId),
-                LastUpdatedAfter = newOrdersRequest.LastUpdatedAfter,
-                LastUpdatedBefore = newOrdersRequest.LastUpdatedBefore,
-            };
-
-            return GetOrders(request);
-        }
-        private List<Order> GetOrders(ListOrdersRequest request)
-        {
-            _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, null, null, AmazonApiSection.Orders,
-                   "ListOrders", null, null, null, "Listing Amazon Orders");
-            _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "ListOrders");
-            var result = _marketplaceWebServiceOrders.ListOrders(request);
-            var orders = new List<Order>();
-            if (result == null || !result.IsSetListOrdersResult())
-                return orders;
-            if (result.ListOrdersResult.IsSetOrders() && result.ListOrdersResult.Orders.IsSetOrder())
-                orders.AddRange(result.ListOrdersResult.Orders.Order);
-
-            var nextToken = result.ListOrdersResult.NextToken;
-            while (!string.IsNullOrWhiteSpace(nextToken))
-            {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, null, null, AmazonApiSection.Orders,
-                   "ListOrdersByNextToken", null, null, null, "Listing Amazon Orders (Next Token)");
-                _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "ListOrdersByNextToken");
-                var response = _marketplaceWebServiceOrders.ListOrdersByNextToken(new ListOrdersByNextTokenRequest
-                                                                                      {
-                                                                                          SellerId = _amazonSellerSettings.SellerId,
-                                                                                          NextToken = result.ListOrdersResult.NextToken
-                                                                                      });
-                if (response != null && response.IsSetListOrdersByNextTokenResult())
-                {
-                    if (response.ListOrdersByNextTokenResult.IsSetOrders() && response.ListOrdersByNextTokenResult.Orders.IsSetOrder())
-                        orders.AddRange(response.ListOrdersByNextTokenResult.Orders.Order);
-                    nextToken = response.ListOrdersByNextTokenResult.NextToken;
-                }
-                else nextToken = null;
-            }
-
-            return orders;
         }
     }
 }
