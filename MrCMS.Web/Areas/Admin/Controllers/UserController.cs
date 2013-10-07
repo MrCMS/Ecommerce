@@ -24,9 +24,9 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         }
 
         [MrCMSACLRule(typeof(UserACL), UserACL.View)]
-        public ActionResult Index(int page = 1)
+        public ActionResult Index(int page = 1, string searchtext ="")
         {
-            return View(_userService.GetAllUsersPaged(page));
+            return View(_userService.GetAllUsersPaged(page, searchtext));
         }
 
         [HttpGet]

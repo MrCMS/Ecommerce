@@ -88,7 +88,7 @@ namespace MrCMS.Tests.Services
                 i =>
                 Session.Transact(session => session.SaveOrUpdate(new User { FirstName = "Test " + i, LastName = "User" })));
 
-            var users = _userService.GetAllUsersPaged(1);
+            var users = _userService.GetAllUsersPaged(1, "");
 
             users.Count.Should().Be(10);
             users.PageCount.Should().Be(2);
