@@ -45,7 +45,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
 
             userController.Index();
 
-            A.CallTo(() => _userService.GetAllUsersPaged(1)).MustHaveHappened();
+            A.CallTo(() => _userService.GetAllUsersPaged(1, "")).MustHaveHappened();
         }
 
         [Fact]
@@ -53,7 +53,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Controllers
         {
             UserController userController = GetUserController();
             var users = new StaticPagedList<User>(new List<User>(), 1, 1, 0);
-            A.CallTo(() => _userService.GetAllUsersPaged(1)).Returns(users);
+            A.CallTo(() => _userService.GetAllUsersPaged(1, "")).Returns(users);
 
             ActionResult actionResult = userController.Index();
 

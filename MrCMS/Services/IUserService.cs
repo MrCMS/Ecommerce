@@ -14,7 +14,7 @@ namespace MrCMS.Services
         void SaveUser(User user);
         User GetUser(int id);
         IList<User> GetAllUsers();
-        IPagedList<User> GetAllUsersPaged(int page);
+        IPagedList<User> GetAllUsersPaged(int page, string searchtext);
         User GetUserByEmail(string email);
         User GetUserByResetGuid(Guid resetGuid);
         User GetCurrentUser(HttpContextBase context);

@@ -43,8 +43,12 @@ namespace MrCMS.Services
             return _session.QueryOver<User>().Cacheable().List();
         }
 
-        public IPagedList<User> GetAllUsersPaged(int page)
+        public IPagedList<User> GetAllUsersPaged(int page, string searchtext)
         {
+            if (!string.IsNullOrEmpty(searchtext))
+            {
+                return _session.QueryOver<User>().Where(x => x.Email.IsInsensitiveLike(searchtext, MatchMode.Anywhere) || x.FirstName.IsInsensitiveLike(searchtext, MatchMode.Anywhere) || x.LastName.IsInsensitiveLike(searchtext, MatchMode.Anywhere)).Paged(page, 10);
+            }
             return _session.QueryOver<User>().Paged(page, 10);
         }
 
