@@ -27,12 +27,12 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             if (_amazonOrdersApiService.IsLive(AmazonApiSection.Orders))
             {
                 var orders = _amazonOrdersApiService.ListUpdatedOrders(updatedOrdersRequest);
-                var ordersUpdated = orders.Select(_updateAmazonOrder.UpdateOrder)
+                var ordersUpdated = orders.Select(order => _updateAmazonOrder.UpdateOrder(order))
                                       .Where(amazonOrder => amazonOrder != null)
                                       .ToList();
+
                 _amazonOrderService.SaveOrUpdate(ordersUpdated);
-                var ordersShipped = new List<AmazonOrder>();
-                //ordersShipped = _shipAmazonOrderService.MarkOrdersAsShipped();
+                List<AmazonOrder> ordersShipped = _shipAmazonOrderService.MarkOrdersAsShipped();
                 return new GetUpdatedOrdersResult { OrdersUpdated = ordersUpdated, OrdersShipped = ordersShipped };
             }
             return new GetUpdatedOrdersResult { ErrorMessage = "The service is not currently live" };

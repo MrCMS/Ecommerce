@@ -4,6 +4,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Events
 {
     public interface IOnAmazonOrderPlaced : IAmazonOrderEvent
     {
-        void IOnAmazonOrderPlaced(AmazonOrder order);
+        void OnAmazonOrderPlaced(AmazonOrder order);
     }
 }

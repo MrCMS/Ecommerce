@@ -13,12 +13,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         private readonly ISession _session;
         private readonly IAmazonOrderRequestService _amazonOrderRequestService;
         private readonly IAmazonFeedsApiService _amazonFeedsApiService;
+        private readonly IAmazonOrderService _amazonOrderService;
 
-        public ShipAmazonOrderService(ISession session, IAmazonOrderRequestService amazonOrderRequestService, IAmazonFeedsApiService amazonFeedsApiService)
+        public ShipAmazonOrderService(ISession session, IAmazonOrderRequestService amazonOrderRequestService, IAmazonFeedsApiService amazonFeedsApiService, IAmazonOrderService amazonOrderService)
         {
             _session = session;
             _amazonOrderRequestService = amazonOrderRequestService;
             _amazonFeedsApiService = amazonFeedsApiService;
+            _amazonOrderService = amazonOrderService;
         }
 
         public List<AmazonOrder> MarkOrdersAsShipped()
@@ -36,6 +38,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
             var feed = _amazonFeedsApiService.GetOrderFulfillmentFeed(shippedOrders);
             _amazonOrderRequestService.SubmitOrderFulfillmentFeed(feed);
+            foreach (var amazonOrder in shippedOrders)
+                _amazonOrderService.MarkAsShipped(amazonOrder);
+
+            //_amazonOrderRequestService.CheckIfOrderFulfillmentFeedWasProcessed(shippedOrders, submissionId); //ToDO: is this needed?
             return shippedOrders;
         }
     }
