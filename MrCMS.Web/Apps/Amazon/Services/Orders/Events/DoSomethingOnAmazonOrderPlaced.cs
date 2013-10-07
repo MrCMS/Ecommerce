@@ -13,7 +13,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Events
         }
 
         public int Order { get { return 1; } }
-        public void IOnAmazonOrderPlaced(AmazonOrder order)
+        public void OnAmazonOrderPlaced(AmazonOrder order)
         {
             //TODO
         }
