@@ -25,6 +25,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         private readonly IAmazonOrderSearchService _amazonOrderSearchService;
         private readonly EcommerceSettings _ecommerceSettings;
         private readonly OrdersController _ordersController;
+        private IAmazonOrderSyncService _amazonOrderSyncService;
 
         public OrdersControllerTests()
         {
@@ -34,7 +35,8 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
             _optionService = A.Fake<IOptionService>();
             _amazonOrderSearchService = A.Fake<IAmazonOrderSearchService>();
             _ecommerceSettings = new EcommerceSettings();
-            _ordersController = new OrdersController(_amazonOrderService,_amazonAppSettings,_amazonOrderSearchService,_ecommerceSettings);
+            _amazonOrderSyncService = A.Fake<IAmazonOrderSyncService>();
+            _ordersController = new OrdersController(_amazonOrderService,_amazonAppSettings,_amazonOrderSearchService,_ecommerceSettings,_amazonOrderSyncService);
         }
 
         [Fact]
