@@ -1960,6 +1960,7 @@
     <Content Include="Themes\Ryness\Content\Scripts\bootstrap.min.js" />
     <Content Include="Themes\Ryness\Content\Scripts\checkout\checkout.js" />
     <Content Include="Themes\Ryness\Content\Scripts\custom.js" />
+    <Content Include="Themes\Ryness\Content\Scripts\google-maps-api.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.cookiebar.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.nivo.slider.pack.js" />
