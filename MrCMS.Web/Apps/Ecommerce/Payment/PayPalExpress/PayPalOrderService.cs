@@ -39,7 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                                                                                 item.UnitPricePreTax.GetAmountType(),
                                                                             ItemCategory = ItemCategoryType.PHYSICAL,
                                                                             Quantity = item.Quantity,
-                                                                            Tax = item.Tax.GetAmountType(),
+                                                                            Tax = item.UnitTax.GetAmountType(),
                                                                         }).ToList();
             if (cart.OrderTotalDiscount > 0)
                 paymentDetailsItemTypes.Add(new PaymentDetailsItemType

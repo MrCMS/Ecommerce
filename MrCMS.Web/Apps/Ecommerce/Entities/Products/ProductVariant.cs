@@ -88,10 +88,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual decimal GetPrice(int quantity)
         {
-            var priceBreak = GetPriceBreak(quantity);
-            return priceBreak != null
-                       ? priceBreak.PriceIncludingTax * quantity
-                       : Price * quantity;
+            return GetUnitPrice(quantity) * quantity;
+        }
+
+        public virtual decimal GetTax(int quantity)
+        {
+            return GetUnitTax(quantity) * quantity;
         }
 
         public virtual decimal GetUnitPrice(int quantity)
@@ -102,12 +104,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                        : Price;
         }
 
-        public virtual decimal GetUnitPricePreTax(int quantity)
+        public virtual decimal GetUnitTax(int quantity)
         {
             var priceBreak = GetPriceBreak(quantity);
             return priceBreak != null
-                       ? priceBreak.PriceExcludingTax
-                       : PricePreTax;
+                       ? priceBreak.Tax
+                       : Tax;
+        }
+
+        public virtual decimal GetUnitPricePreTax(int quantity)
+        {
+            return GetUnitPrice(quantity) - GetUnitTax(quantity);
         }
 
         public virtual decimal GetSaving(int quantity)
@@ -121,7 +128,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [Remote("IsUniqueSKU", "ProductVariant", AdditionalFields = "Id")]
         public virtual string SKU { get; set; }
 
-        public virtual decimal Tax { get { return TaxAwareProductPrice.GetTax(BasePrice, TaxRate).GetValueOrDefault(); } }
+        public virtual decimal Tax { get { return TaxAwareProductPrice.GetTax(BasePrice, TaxRate); } }
 
         public virtual bool CanBuy(int quantity)
         {
