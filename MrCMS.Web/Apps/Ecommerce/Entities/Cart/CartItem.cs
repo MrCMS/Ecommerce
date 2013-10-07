@@ -23,7 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         }
         public virtual decimal Tax
         {
-            get { return Math.Round(Price * (TaxRatePercentage / (TaxRatePercentage + 100)), 2); }
+            get { return Math.Round(Price*(TaxRatePercentage/(TaxRatePercentage + 100)), 2, MidpointRounding.AwayFromZero); }
         }
         public virtual bool CurrentlyAvailable
         {
