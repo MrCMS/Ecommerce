@@ -15,7 +15,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
         private readonly IAmazonLogService _amazonLogService;
         private readonly IAmazonOrderEventService _amazonOrderEventService;
 
-        public AmazonOrderService(ISession session, 
+        public AmazonOrderService(ISession session,
             IAmazonLogService amazonLogService, IAmazonOrderEventService amazonOrderEventService)
         {
             _session = session;
@@ -28,10 +28,15 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             return _session.Get<AmazonOrder>(id);
         }
 
+        public AmazonOrder GetByOrderId(int id)
+        {
+            return _session.QueryOver<AmazonOrder>().Where(item => item.Order.Id == id).SingleOrDefault();
+        }
+
         public AmazonOrder GetByAmazonOrderId(string id)
         {
             return _session.QueryOver<AmazonOrder>()
-                            .Where(item => item.AmazonOrderId.IsInsensitiveLike(id,MatchMode.Exact)).SingleOrDefault();
+                            .Where(item => item.AmazonOrderId.IsInsensitiveLike(id, MatchMode.Exact)).SingleOrDefault();
         }
 
         public IPagedList<AmazonOrder> Search(string queryTerm = null, int page = 1, int pageSize = 10)
@@ -39,8 +44,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             if (!string.IsNullOrWhiteSpace(queryTerm))
             {
                 return _session.QueryOver<AmazonOrder>()
-                                    .Where(x => 
-                                        x.BuyerEmail.IsInsensitiveLike(queryTerm, MatchMode.Anywhere) 
+                                    .Where(x =>
+                                        x.BuyerEmail.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)
                                         || x.BuyerName.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)
                                         || x.AmazonOrderId.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)
                                         ).Paged(page, pageSize);
@@ -65,6 +70,11 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
 
             _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Update,
                                  null, null, null, null, item, null, null);
+        }
+
+        public void SaveOrUpdate(AmazonOrder amazonOrder)
+        {
+            _session.Transact(session => session.SaveOrUpdate(amazonOrder));
         }
 
         public void Delete(AmazonOrder item)

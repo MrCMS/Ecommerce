@@ -430,6 +430,7 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\ShippingMethodOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\TableNameConvention.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceApp.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\BackInStockNotification\BackInStockNotification.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Cart\CartItem.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Currencies\Currency.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\FixedAmountFromOrder.cs" />
@@ -1964,6 +1965,7 @@
     <Content Include="Themes\Ryness\Content\Scripts\jquery.pikachoose.min.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.placeholder.js" />
     <Content Include="Themes\Ryness\Content\Scripts\jquery.ui.map.full.min.js" />
+    <Content Include="Themes\Ryness\Content\Scripts\postcode-anywhere.js" />
     <Content Include="Themes\Ryness\Content\Scripts\ryness-map.js" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap-responsive.css" />
     <Content Include="Themes\Ryness\Content\Styles\bootstrap-responsive.min.css" />

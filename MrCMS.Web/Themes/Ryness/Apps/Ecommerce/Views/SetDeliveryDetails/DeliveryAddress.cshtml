@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Users.Address
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.Users.Address
 @{
     var otherAddresses = ViewData["other-addresses"] as List<SelectListItem>;
 }
@@ -82,6 +83,30 @@
             <div class="padding-top-bottom-20">
                 <div class="row-fluid">
                     <div class="span4 align-right line-height-30">
+                        Postcode <span class="red">*</span> :
+                    </div>
+                    <div class="span8">
+                        <div class="row-fluid">
+                            <div class="span4">
+                                @Html.TextBoxFor(address => address.PostalCode, new { @class = "span12" })
+                                @Html.ValidationMessageFor(address => address.PostalCode)
+                            </div>
+                            <div class="span4">
+                                <button type="button" class="btn span12" id="postcode-lookup" onclick="PostcodeAnywhere_Interactive_Find_v1_10Begin('AP56-BB29-JR12-RJ77', $('#PostalCode').val(), '', '', '')">Find my address</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row-fluid" id="postcode-lookup-container" style="display:none;">
+                    <div class="span4 align-right line-height-30"></div>
+                    <div class="span8">
+                        <select id="return" class="span8" onchange="PostcodeAnywhere_Interactive_RetrieveById_v1_10Begin('AP56-BB29-JR12-RJ77', getElementById('return').value, '', '')"></select>
+                    </div>
+                </div>
+
+                <div class="row-fluid">
+                    <div class="span4 align-right line-height-30">
                         Address 1 <span class="red">*</span> :
                     </div>
                     <div class="span8">
@@ -124,24 +149,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="row-fluid">
+                <div class="row-fluid margin-bottom-10">
                     <div class="span4 align-right line-height-30">
                         Country <span class="red">*</span> :
                     </div>
                     <div class="span8">
-                        <div class="row-fluid">
+                        <div class="row-fluid line-height-30">
                             @Html.DisplayFor(address => address.Country.Name)
-                        </div>
-                    </div>
-                </div>
-                <div class="row-fluid">
-                    <div class="span4 align-right line-height-30">
-                        Postcode <span class="red">*</span> :
-                    </div>
-                    <div class="span8">
-                        <div class="row-fluid">
-                            @Html.TextBoxFor(address => address.PostalCode, new { @class = "span8" })
-                            @Html.ValidationMessageFor(address => address.PostalCode)
                         </div>
                     </div>
                 </div>
@@ -159,3 +173,4 @@
         }
     }
 </div>
+@{Html.IncludeScript("/Themes/Ryness/Content/Scripts/postcode-anywhere.js"); }
