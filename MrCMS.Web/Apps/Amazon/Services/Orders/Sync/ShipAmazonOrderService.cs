@@ -41,7 +41,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             foreach (var amazonOrder in shippedOrders)
                 _amazonOrderService.MarkAsShipped(amazonOrder);
 
-            //_amazonOrderRequestService.CheckIfOrderFulfillmentFeedWasProcessed(shippedOrders, submissionId); //ToDO: is this needed?
             return shippedOrders;
         }
     }
