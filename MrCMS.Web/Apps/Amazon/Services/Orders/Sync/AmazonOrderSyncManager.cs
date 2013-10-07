@@ -32,7 +32,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 var ordersUpdated = orders.Select(order => _updateAmazonOrder.UpdateOrder(order))
                                       .Where(amazonOrder => amazonOrder != null)
                                       .ToList();
-                List<AmazonOrder> ordersShipped = _shipAmazonOrderService.MarkOrdersAsShipped();
+                var ordersShipped = _shipAmazonOrderService.MarkOrdersAsShipped();
                 return new GetUpdatedOrdersResult { OrdersUpdated = ordersUpdated, OrdersShipped = ordersShipped };
             }
             return new GetUpdatedOrdersResult { ErrorMessage = "The service is not currently live" };
