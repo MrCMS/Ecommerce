@@ -1,7 +1,6 @@
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
-using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using System.Web;
@@ -14,7 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         #region Props
         private readonly IExportProductsManager _exportProductsManager;
         private readonly IImportProductsManager _importExportManager;
-        private readonly IExportOrdersService _exportOrdersService;
+
         #endregion
 
         #region Ctor

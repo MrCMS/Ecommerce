@@ -17,8 +17,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
             if (cartBuilder == null) return model;
 
             var cartModel = cartBuilder.BuildCart();
-            if (cartModel.Subtotal > 0 && cartModel.Subtotal < Amount)
-                model.SpendAmountMore = Amount - cartModel.Subtotal;
+            if (cartModel != null)
+            {
+                if (cartModel.Subtotal > 0 && cartModel.Subtotal < Amount)
+                    model.SpendAmountMore = Amount - (cartModel.Subtotal + cartModel.ItemTax);
+            }
 
             return model;
         }
