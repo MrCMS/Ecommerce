@@ -14,6 +14,8 @@
     <br/>
     @Html.TextBoxFor(x => x.Name, new {@class = "input-xlarge search-query search-product-variants", placeholder = "Enter product variant name or SKU..."})
     <button type="button" class="btn btn-success" id="search-product-variants">Filter</button>
+    
+    @Html.HiddenFor(x=>x.AmazonListingGroup.Id)
 
     <hr/>
 

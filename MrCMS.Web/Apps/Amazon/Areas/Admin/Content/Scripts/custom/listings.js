@@ -35,7 +35,8 @@
     function searchProductVariants() {
         $.get('/Admin/Apps/Amazon/Listing/ProductVariants', {
             name: $("#Name").val(),
-            categoryId: $("#CategoryId").val()
+            categoryId: $("#CategoryId").val(),
+            "AmazonListingGroup.Id": $("#AmazonListingGroup_Id").val()
         }, function (result) {
             $('#product-variants-search').replaceWith(result);
         });

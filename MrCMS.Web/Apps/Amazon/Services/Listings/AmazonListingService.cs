@@ -101,7 +101,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings
         {
             return new AmazonListingModel()
             {
-                ProductVariants = _productVariantService.GetAllVariants(String.Empty),
+                AmazonListingGroup = oldModel.AmazonListingGroup,
+                ProductVariants = _productVariantService.GetAllVariants(oldModel.Name, oldModel.CategoryId, oldModel.Page),
                 CategoryId = oldModel.CategoryId,
                 Categories = _optionService.GetCategoryOptions(),
                 Page = oldModel.Page
