@@ -249,10 +249,11 @@
     <Compile Include="Apps\Amazon\Models\AmazonServiceStatus.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonSyncModel.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonChartModel.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonApiLogResultStatus.cs" />
     <Compile Include="Apps\Amazon\Services\Analytics\AmazonAnalyticsService.cs" />
-    <Compile Include="Apps\Amazon\Services\Analytics\AmazonApiUsageService.cs" />
+    <Compile Include="Apps\Amazon\Services\Logs\AmazonApiLogService.cs" />
     <Compile Include="Apps\Amazon\Services\Analytics\IAmazonAnalyticsService.cs" />
-    <Compile Include="Apps\Amazon\Services\Analytics\IAmazonApiUsageService.cs" />
+    <Compile Include="Apps\Amazon\Services\Logs\IAmazonApiLogService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\AmazonApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonFeedsApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonGenerateFeedService.cs" />

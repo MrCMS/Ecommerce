@@ -9,7 +9,7 @@
 <fieldset>
     <legend>Close Amazon Listings
             <span class="btn-group  display-inline  pull-right">
-                @Html.ActionLink("Listing Details", "Details", "Listing", new { id = Model.Id }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Listing Details", "Details", "Listing", new { id = Model.Id }, new { @class = "btn" })
                 @Html.ActionLink("Listing Group", "Edit", "ListingGroup", new { id = Model.Id }, new { @class = "btn" })
                 @Html.ActionLink("Logs", "Index", "Logs", new { type = AmazonLogType.Listings }, new { @class = "btn" })
             </span>
