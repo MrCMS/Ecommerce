@@ -2259,7 +2259,6 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\Shared\ProgressBarMessages.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\GetNewOrders.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Delete.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\App\Revenue.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\App\ProductsSold.cshtml" />

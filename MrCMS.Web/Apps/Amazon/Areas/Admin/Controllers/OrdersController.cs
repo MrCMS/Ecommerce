@@ -69,20 +69,5 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
                 return View(amazonOrder);
             return RedirectToAction("Index");
         }
-
-        [HttpGet]
-        [ActionName("GetNewOrders")]
-        public ViewResult GetNewOrders_GET(GetUpdatedOrdersRequest request)
-        {
-            ViewData["result"] = TempData["result"];
-            return View(request);
-        }
-
-        [HttpPost]
-        public RedirectToRouteResult GetNewOrders(GetUpdatedOrdersRequest request)
-        {
-            TempData["result"] = _syncAmazonOrderService.GetUpdatedInfoFromAmazon(request);
-            return RedirectToAction("GetNewOrders");
-        }
     }
 }
