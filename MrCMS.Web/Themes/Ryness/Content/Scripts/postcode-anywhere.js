@@ -1,9 +1,8 @@
 ﻿function PostcodeAnywhere_Interactive_Find_v1_10Begin(Key, SearchTerm, PreferredLanguage, Filter, UserName) {
 
     if (SearchTerm == "Enter postcode" || jQuery.trim(SearchTerm) == "") {
-        var errorMessage = $('#ShippingAddress_txtErrorMessage').val();
-
-        alert(errorMessage);
+        //var errorMessage = $('#ShippingAddress_txtErrorMessage').val();
+        alert("Sorry, we cannot find your address - please enter it manually or try again.");
     }
     else {
         var scriptTag = document.getElementById("PCA6d35cfc188f1451f9cfdf1b5d751a716");
@@ -42,19 +41,18 @@ function PostcodeAnywhere_Interactive_Find_v1_10End(response) {
     if (response.length == 1 && typeof (response[0].Error) != 'undefined') {
         //Show the error message
         var returnErrorMessage = response[0].Description;
-        var customErrorMessage = $('#ShippingAddress_txtOutofCredit').val();
+        //var customErrorMessage = $('#ShippingAddress_txtOutofCredit').val();
 
         if (returnErrorMessage == "Account out of credit")
-            alert(customErrorMessage);
+            alert("Sorry there has been an error, please enter your address manually.");
         else
             alert(returnErrorMessage);
     }
     else {
         //Check if there were any items found
         if (response.length == 0) {
-            var errorMessage = $('#ShippingAddress_txtErrorMessage').val();
-
-            alert(errorMessage);
+            //var errorMessage = $('#ShippingAddress_txtErrorMessage').val();
+            alert("Sorry, we cannot find your address - please enter it manually or try again.");
         }
         else {
 
@@ -109,9 +107,9 @@ function PostcodeAnywhere_Interactive_RetrieveById_v1_10End(response) {
     else {
         //Check if there were any items found
         if (response.length == 0) {
-            var errorMessage = $('#ShippingAddress_txtErrorMessage').val();
+            //var errorMessage = $('#ShippingAddress_txtErrorMessage').val();
 
-            alert(errorMessage);
+            alert("Sorry, we cannot find your address - please enter it manually or try again.");
         }
         else {
             /* Here to add result*/
