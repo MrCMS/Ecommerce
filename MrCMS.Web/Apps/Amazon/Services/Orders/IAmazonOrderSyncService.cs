@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
 
             DateTime @from;
             var now = CurrentRequestData.Now;
-            DateTime to = now.AddMinutes(-30);
+            var to = now.AddMinutes(-30);
             if (lastRun.HasValue)
             {
                 if (lastRun > to)

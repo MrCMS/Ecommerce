@@ -6,7 +6,6 @@ using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
 using NHibernate;
 using NHibernate.Criterion;
-using Order = MarketplaceWebServiceOrders.Model.Order;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders
 {

@@ -10,7 +10,6 @@ using MrCMS.Paging;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Indexing;
 using MrCMS.Web.Apps.Amazon.Models;
-using MrCMS.Web.Apps.Ecommerce.Indexing;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders

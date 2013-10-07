@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MrCMS.Web.Apps.Amazon.Entities.Logs;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Api.Orders;
@@ -12,17 +11,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         private readonly IAmazonOrdersApiService _amazonOrdersApiService;
         private readonly IAmazonOrderService _amazonOrderService;
         private readonly IUpdateAmazonOrder _updateAmazonOrder;
-        private readonly IShipAmazonOrderService _shipAmazonOrderService;
 
         public AmazonOrderSyncManager(IAmazonOrdersApiService amazonOrdersApiService,
                                       IAmazonOrderService amazonOrderService,
-                                      IUpdateAmazonOrder updateAmazonOrder,
-                                      IShipAmazonOrderService shipAmazonOrderService)
+                                      IUpdateAmazonOrder updateAmazonOrder)
         {
             _amazonOrdersApiService = amazonOrdersApiService;
             _amazonOrderService = amazonOrderService;
             _updateAmazonOrder = updateAmazonOrder;
-            _shipAmazonOrderService = shipAmazonOrderService;
         }
 
 

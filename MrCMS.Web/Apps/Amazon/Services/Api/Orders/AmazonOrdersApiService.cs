@@ -33,7 +33,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
         {
             try
             {
-
                 var ordersApiRequest = new GetServiceStatusRequest { SellerId = _amazonSellerSettings.SellerId };
                 var ordersApiResult = _marketplaceWebServiceOrders.GetServiceStatus(ordersApiRequest);
                 if (ordersApiResult != null && ordersApiResult.GetServiceStatusResult != null)
@@ -50,21 +49,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
             }
             return AmazonServiceStatus.RED;
         }
-
         public bool IsLive(AmazonApiSection apiSection)
         {
             var serviceStatus = GetServiceStatus(apiSection);
             return serviceStatus == AmazonServiceStatus.GREEN || serviceStatus == AmazonServiceStatus.GREEN_I;
-        }
-
-
-        private GetOrderRequest GetOrderRequest(AmazonSyncModel model)
-        {
-            return new GetOrderRequest()
-                {
-                    SellerId = _amazonSellerSettings.SellerId,
-                    AmazonOrderId = new OrderIdList().WithId(model.Description)
-                };
         }
 
         public IEnumerable<Order> ListOrders(AmazonSyncModel model)
@@ -134,6 +122,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
             }
             return null;
         }
+        private ListOrderItemsRequest GetListOrderItemsRequest(string amazonOrderId)
+        {
+            return new ListOrderItemsRequest
+            {
+                SellerId = _amazonSellerSettings.SellerId,
+                AmazonOrderId = amazonOrderId
+            };
+        }
 
         public List<Order> ListCreatedOrders(GetUpdatedOrdersRequest updatedOrdersRequest)
         {
@@ -147,7 +143,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
 
             return GetOrders(request);
         }
-
         public List<Order> ListUpdatedOrders(GetUpdatedOrdersRequest newOrdersRequest)
         {
             var request = new ListOrdersRequest
@@ -160,7 +155,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
 
             return GetOrders(request);
         }
-
         private List<Order> GetOrders(ListOrdersRequest request)
         {
             var result = _marketplaceWebServiceOrders.ListOrders(request);
@@ -188,15 +182,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
             }
 
             return orders;
-        }
-
-        private ListOrderItemsRequest GetListOrderItemsRequest(string amazonOrderId)
-        {
-            return new ListOrderItemsRequest
-                {
-                    SellerId = _amazonSellerSettings.SellerId,
-                    AmazonOrderId = amazonOrderId
-                };
         }
     }
 }

@@ -34,7 +34,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             return View(_amazonAnalyticsService.GetAmazonDashboardModel(filterFrom, filterUntil));
         }
 
-        public PartialViewResult DashboardLogs(int page = 1)
+        public PartialViewResult Logs(int page = 1)
         {
             var model = new AmazonDashboardModel()
             {

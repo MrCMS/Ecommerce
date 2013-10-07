@@ -3,7 +3,9 @@
 @using MrCMS.Web.Apps.Amazon.Models
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @model AmazonDashboardModel
-
+           
+<div class="row-fluid">
+<div class="span12">
 <div data-paging-type="async">
     @if (Model != null && !Model.Logs.Any())
     {
@@ -82,9 +84,10 @@
             </div>
         }
 
-        @Html.Pager(Model.Logs, "DashboardLogs", i => new {page = i})
+        @Html.Pager(Model.Logs, "Logs", i => new {page = i})
     }
 
 </div>
-
+</div>
+</div>  
  @{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/async-paging.js"); }

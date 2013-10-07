@@ -6,9 +6,7 @@ using MrCMS.Web.Apps.Amazon.Services.Orders.Sync;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 using MrCMS.Web.Apps.Ecommerce.Settings;
-using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Amazon.Services.Orders;
@@ -21,18 +19,16 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         private readonly IAmazonOrderSyncManager _syncAmazonOrderService;
         private readonly IAmazonOrderService _amazonOrderService;
         private readonly AmazonAppSettings _amazonAppSettings;
-        private readonly IOptionService _optionService;
         private readonly IAmazonOrderSearchService _amazonOrderSearchService;
         private readonly EcommerceSettings _ecommerceSettings;
 
         public OrdersController(IAmazonOrderSyncManager syncAmazonOrderService,
-            IAmazonOrderService amazonOrderService, AmazonAppSettings amazonAppSettings,
-            IOptionService optionService, IAmazonOrderSearchService amazonOrderSearchService, EcommerceSettings ecommerceSettings)
+            IAmazonOrderService amazonOrderService, AmazonAppSettings amazonAppSettings, 
+            IAmazonOrderSearchService amazonOrderSearchService, EcommerceSettings ecommerceSettings)
         {
             _syncAmazonOrderService = syncAmazonOrderService;
             _amazonOrderService = amazonOrderService;
             _amazonAppSettings = amazonAppSettings;
-            _optionService = optionService;
             _amazonOrderSearchService = amazonOrderSearchService;
             _ecommerceSettings = ecommerceSettings;
         }
@@ -75,31 +71,6 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult SyncMany()
-        {
-            return View(new AmazonSyncModel());
-        }
-
-        [HttpGet]
-        public ActionResult SyncOne(AmazonOrder amazonOrder)
-        {
-            if (amazonOrder != null)
-                return View(new AmazonSyncModel() { Id = amazonOrder.Id, Description = amazonOrder.AmazonOrderId });
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public JsonResult Sync(AmazonSyncModel model)
-        {
-            if (model != null)
-            {
-                //_syncAmazonOrderService.SyncAmazonOrders(model);
-                return Json(true);
-            }
-            return Json(false);
-        }
-
-        [HttpGet]
         [ActionName("GetNewOrders")]
         public ViewResult GetNewOrders_GET(GetUpdatedOrdersRequest request)
         {
@@ -112,26 +83,6 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         {
             TempData["result"] = _syncAmazonOrderService.GetUpdatedInfoFromAmazon(request);
             return RedirectToAction("GetNewOrders");
-        }
-
-        [HttpGet]
-        [ActionName("ShipOne")]
-        public ActionResult ShipOne_GET(AmazonOrder amazonOrder)
-        {
-            if (amazonOrder != null)
-                return View(new AmazonSyncModel { Id = amazonOrder.Id, Description = amazonOrder.AmazonOrderId });
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public JsonResult ShipOne(AmazonSyncModel model)
-        {
-            if (model != null)
-            {
-                //_syncAmazonOrderService.ShipOrder(model);
-                return Json(true);
-            }
-            return Json(false);
         }
     }
 }
