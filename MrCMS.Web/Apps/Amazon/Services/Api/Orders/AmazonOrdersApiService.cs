@@ -157,6 +157,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
         }
         private List<Order> GetOrders(ListOrdersRequest request)
         {
+            _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, null, null, AmazonApiSection.Orders,
+                   "ListOrders", null, null, null, "Listing Amazon Orders");
+            _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "ListOrders");
             var result = _marketplaceWebServiceOrders.ListOrders(request);
             var orders = new List<Order>();
             if (result == null || !result.IsSetListOrdersResult())
@@ -167,6 +170,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
             var nextToken = result.ListOrdersResult.NextToken;
             while (!string.IsNullOrWhiteSpace(nextToken))
             {
+                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, null, null, AmazonApiSection.Orders,
+                   "ListOrdersByNextToken", null, null, null, "Listing Amazon Orders (Next Token)");
+                _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "ListOrdersByNextToken");
                 var response = _marketplaceWebServiceOrders.ListOrdersByNextToken(new ListOrdersByNextTokenRequest
                                                                                       {
                                                                                           SellerId = _amazonSellerSettings.SellerId,
