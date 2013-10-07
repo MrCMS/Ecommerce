@@ -60,6 +60,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             foreach (var update in _amazonUpdates.OrderBy(updates => updates.Order))
                 update.Update(amazonOrder, order);
 
+            _amazonOrderService.SaveOrUpdate(amazonOrder);
+
             if (newOrder)
                 foreach (var orderPlaced in _onAmazonOrderPlaceds)
                     orderPlaced.OnAmazonOrderPlaced(amazonOrder);
