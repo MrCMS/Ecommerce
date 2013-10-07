@@ -23,7 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         }
         public virtual decimal Tax
         {
-            get { return Math.Round(Price*(TaxRatePercentage/(TaxRatePercentage + 100)), 2, MidpointRounding.AwayFromZero); }
+            get { return Item.GetTax(Quantity); }
         }
         public virtual bool CurrentlyAvailable
         {
@@ -53,6 +53,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         {
             get { return Item.GetUnitPricePreTax(Quantity); }
         }
+        public virtual decimal UnitTax
+        {
+            get { return Item.GetUnitTax(Quantity); }
+        }
         public virtual decimal DiscountAmount
         {
             get
@@ -62,6 +66,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
                            : decimal.Zero;
             }
         }
+
+
         public virtual void SetDiscountInfo(Discount discount, string discountCode)
         {
             _discount = discount;
