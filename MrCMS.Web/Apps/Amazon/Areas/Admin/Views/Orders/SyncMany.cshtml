@@ -1,0 +1,46 @@
+﻿@using System.Web.Mvc.Html
+@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Amazon.Models
+@model AmazonSyncModel
+@{
+    ViewBag.Title = "Sync Amazon Orders";
+}
+    <fieldset>
+        <legend>
+            Sync Orders from Amazon to MrCMS
+            <span class="btn-group  display-inline  pull-right">
+                @Html.ActionLink("Back to Orders", "Index", "Orders", null, new { @class = "btn btn-primary"})
+                @Html.ActionLink("Logs", "Index", "Logs", new {type=AmazonLogType.Orders}, new { @class = "btn btn-success"})
+            </span>
+        </legend>
+
+        <div class="row-fluid">
+            <div class="span6">
+                <p>
+                    Enter up to 10 Amazon Order Ids to be synced (divided by ,):
+                </p>
+                @Html.TextAreaFor(x => x.Description, new {@class = "span12",placeholder="e.g:ID1,ID2"})
+                @Html.ValidationMessageFor(x => x.Description)
+                <br />
+                <br />
+                <div>
+                    <strong>IMPORTANT :</strong>
+                    <ul>
+                        <li>Please leave this tab open whilst syncing. Feel free to browse the admin/site in another tab</li>
+                        <li>Syncing can take over 10 minutes to complete</li>
+                        <li>More information can be viewed in the @Html.ActionLink("log", "Index", "Logs", new { type = AmazonLogType.Orders }, null)</li>
+                    </ul>
+                </div>
+                <br />
+
+                <button type="button" class="btn btn-success" id="pb-start-task">
+                    Sync Now</button>
+            </div>
+             <div class="span6" id="results">
+
+            </div>
+        </div>
+       
+    </fieldset>
+
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/orders.js");}

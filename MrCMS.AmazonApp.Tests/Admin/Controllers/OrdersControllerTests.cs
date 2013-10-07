@@ -34,7 +34,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
             _optionService = A.Fake<IOptionService>();
             _amazonOrderSearchService = A.Fake<IAmazonOrderSearchService>();
             _ecommerceSettings = new EcommerceSettings();
-            _ordersController = new OrdersController(_syncAmazonOrderService,_amazonOrderService,_amazonAppSettings,_amazonOrderSearchService,_ecommerceSettings);
+            _ordersController = new OrdersController(_amazonOrderService,_amazonAppSettings,_amazonOrderSearchService,_ecommerceSettings);
         }
 
         [Fact]

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Services.Orders.Sync;
 using MrCMS.Web.Apps.Amazon.Tasks;
@@ -9,6 +11,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
     public interface IAmazonOrderSyncService
     {
         void Sync();
+        GetUpdatedOrdersResult SyncSpecificOrders(string rawOrderIds);
     }
 
     public class AmazonOrderSyncService : IAmazonOrderSyncService
@@ -46,6 +49,28 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             amazonSyncSettings.LastRun = to;
             _configurationProvider.SaveSettings(amazonSyncSettings);
             _amazonOrderSyncManager.GetUpdatedInfoFromAmazon(updatedOrdersRequest);
+        }
+
+        public GetUpdatedOrdersResult SyncSpecificOrders(string rawOrderIds)
+        {
+            var orderIds=GetOrderIds(rawOrderIds);
+            return orderIds.Any() ? _amazonOrderSyncManager.GetUpdatedInfoFromAmazonAdHoc(orderIds) : 
+                new GetUpdatedOrdersResult() { ErrorMessage = "Please provide at least one valid Amazon Order Id." };
+        }
+
+        private static List<string> GetOrderIds(string rawOrderIds)
+        {
+            var orderIds = new List<string>();
+            try
+            {
+                var ids = rawOrderIds.Trim().Split(',');
+                orderIds.AddRange(ids.Where(id => !String.IsNullOrWhiteSpace(id)));
+            }
+            catch (Exception ex)
+            {
+                CurrentRequestData.ErrorSignal.Raise(ex);
+            }
+            return orderIds;
         }
     }
 }
