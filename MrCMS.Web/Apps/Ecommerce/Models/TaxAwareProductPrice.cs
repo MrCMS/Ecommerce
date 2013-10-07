@@ -29,6 +29,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             return PriceCreator(value, rate, settings).PriceIncludingTax;
         }
 
+        public static decimal GetTax(decimal value, TaxRate rate, TaxSettings settings = null)
+        {
+            return PriceCreator(value, rate, settings).Tax.GetValueOrDefault();
+        }
         public static decimal? GetTax(decimal? value, TaxRate rate, TaxSettings settings = null)
         {
             return PriceCreator(value, rate, settings).Tax;

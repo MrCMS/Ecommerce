@@ -17,6 +17,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get { return TaxAwareProductPrice.GetPriceIncludingTax(Price, TaxRate); }
         }
+        public virtual decimal Tax
+        {
+            get { return TaxAwareProductPrice.GetTax(Price, TaxRate); }
+        }
 
         protected virtual TaxRate TaxRate
         {
