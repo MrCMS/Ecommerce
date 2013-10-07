@@ -33,7 +33,6 @@
         scriptTag.id = "PCA6d35cfc188f1451f9cfdf1b5d751a716";
         headTag.appendChild(scriptTag);
     }
-
 }
 
 function PostcodeAnywhere_Interactive_Find_v1_10End(response) {
@@ -132,7 +131,7 @@ function PostcodeAnywhere_Interactive_RetrieveById_v1_10End(response) {
             $('#City').val(city);
             $('#PostalCode').val(zipPostalCode);
             $('#Company').val(companyName);
-            $('#County').val(countyName);
+            $('#StateProvince').val(countyName);
         }
     }
 }
