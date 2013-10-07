@@ -89,7 +89,7 @@ namespace MrCMS.Web.Apps.Ryness.Services
 
                         string strName = o.ShippingAddress.Name;
                         string strAddressLine1 = o.ShippingAddress.Company + " " + o.ShippingAddress.Address1;
-                        string strAddressLine2 = o.ShippingAddress.Address1;
+                        string strAddressLine2 = o.ShippingAddress.Address2;
                         string strAddressLine3 = o.ShippingAddress.City;
                         string strAddressLine4 = o.ShippingAddress.StateProvince;
                         string strAddressLine5 = o.ShippingAddress.Country != null ? o.ShippingAddress.Country.Name : "";

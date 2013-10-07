@@ -174,7 +174,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                Item1 = new OrderFulfillmentItemCollection()
             };
             if (amazonOrder.Order.ShippingDate.HasValue && amazonOrder.Order.ShippingDate > DateTime.UtcNow)
-                orderFulfillment.FulfillmentDate = amazonOrder.Order.ShippingDate.Value;
+                orderFulfillment.FulfillmentDate = amazonOrder.Order.ShippingDate.Value.ToUniversalTime();
             else
                 orderFulfillment.FulfillmentDate = DateTime.UtcNow;
             foreach (var amazonOrderItem in amazonOrder.Items)
