@@ -166,7 +166,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             };
             _orderNoteService.Save(orderNote);
 
-            order.ShippingDate = CurrentRequestData.Now;
+            order.ShippingDate = DateTime.UtcNow;
             order.ShippingStatus = ShippingStatus.Shipped;
             _session.Transact(session => session.Update(order));
             _orderEventService.OrderShipped(order);
@@ -183,7 +183,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             };
             _orderNoteService.Save(orderNote);
 
-            order.PaidDate = CurrentRequestData.Now;
+            order.PaidDate = DateTime.UtcNow;
             order.PaymentStatus = PaymentStatus.Paid;
             _session.Transact(session => session.Update(order));
         }
