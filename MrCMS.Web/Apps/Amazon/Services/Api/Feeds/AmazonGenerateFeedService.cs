@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MarketplaceWebServiceFeedsClasses;
@@ -165,7 +166,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             {
                 Item=amazonOrder.AmazonOrderId,
                 ItemElementName = ItemChoiceType2.AmazonOrderID,
-                FulfillmentDate = amazonOrder.Order.ShippingDate??CurrentRequestData.Now.AddHours(-8),
                 FulfillmentData = new OrderFulfillmentFulfillmentData()
                     {
                         Item="Other",
@@ -173,6 +173,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                     },
                Item1 = new OrderFulfillmentItemCollection()
             };
+            if (amazonOrder.Order.ShippingDate.HasValue && amazonOrder.Order.ShippingDate > DateTime.UtcNow)
+                orderFulfillment.FulfillmentDate = amazonOrder.Order.ShippingDate.Value;
+            else
+                orderFulfillment.FulfillmentDate = DateTime.UtcNow;
             foreach (var amazonOrderItem in amazonOrder.Items)
             {
                 var item = new OrderFulfillmentItem()
