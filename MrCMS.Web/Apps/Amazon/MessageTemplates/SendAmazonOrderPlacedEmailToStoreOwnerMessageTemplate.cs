@@ -4,10 +4,8 @@ using MrCMS.Entities.Messaging;
 using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
-using MrCMS.Web.Apps.Ecommerce.MessageTemplates;
 using MrCMS.Website;
 using NHibernate;
-using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Amazon.MessageTemplates
 {

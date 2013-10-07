@@ -13,7 +13,6 @@
         <legend>Amazon Orders 
          
         <span class="btn-group  display-inline  pull-right">
-            @*            @Html.ActionLink("Manual Sync", "SyncMany", "Orders", null, new { @class = "btn btn-primary"})*@
             @Html.ActionLink("Logs", "Index", "Logs", new { type = AmazonLogType.Orders }, new { @class = "btn" })
 
             @if (!String.IsNullOrWhiteSpace(amazonManageOrdersUrl))

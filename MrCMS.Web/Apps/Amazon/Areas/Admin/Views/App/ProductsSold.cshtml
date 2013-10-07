@@ -1,0 +1,22 @@
+﻿@using System.Web.Mvc.Html
+@model MrCMS.Web.Apps.Amazon.Models.AmazonDashboardModel
+
+<div class="row-fluid">
+                <div class="span12">
+        
+                    <div class="dashboard-box">
+                        <div class="graphics">
+                            <canvas id="products"></canvas>     
+                        </div>
+                        <div class="info orders">
+                            <div class="stats">
+                          
+                            </div>
+                            <div class="stats-description">                           
+                                Products Sold
+                            </div>
+                        </div>
+                        @Html.ActionLink("All Listings", "Index", "ListingGroup", null,new { @class = "more-info nephritis"}) 
+                    </div>
+                </div> 
+            </div>

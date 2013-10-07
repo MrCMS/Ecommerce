@@ -10,10 +10,8 @@ using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Api.Products;
 using MrCMS.Web.Apps.Amazon.Services.Listings;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
-using MrCMS.Web.Apps.Amazon.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
@@ -24,20 +22,15 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
         private readonly IAmazonFeedsApiService _amazonFeedsApiService;
         private readonly IAmazonProductsApiService _amazonProductsApiService;
         private readonly IAmazonLogService _amazonLogService;
-        private readonly IAmazonOrderService _amazonOrderService;
-        private readonly IOrderService _orderService;
 
         public AmazonRequestService(IAmazonListingService amazonListingService,IAmazonLogService amazonLogService, 
             IAmazonFeedsApiService amazonFeedsApiService, 
-            IAmazonProductsApiService amazonProductsApiService,
-            IAmazonOrderService amazonOrderService, IOrderService orderService)
+            IAmazonProductsApiService amazonProductsApiService)
         {
             _amazonListingService = amazonListingService;
             _amazonLogService = amazonLogService;
             _amazonFeedsApiService = amazonFeedsApiService;
             _amazonProductsApiService = amazonProductsApiService;
-            _amazonOrderService = amazonOrderService;
-            _orderService = orderService;
         }
 
         public List<string> SubmitMainFeeds(AmazonSyncModel model, List<FileStream> feeds)
@@ -309,7 +302,5 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             submissionIds.Add(submissionId);
             AmazonProgressBarHelper.Update(model.Task, "Push", "Product image pushed", 100, 100);
         }
-
-       
     }
 }
