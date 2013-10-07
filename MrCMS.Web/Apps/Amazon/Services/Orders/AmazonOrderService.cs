@@ -72,6 +72,11 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
                                  null, null, null, null, item, null, null);
         }
 
+        public void SaveOrUpdate(AmazonOrder amazonOrder)
+        {
+            _session.Transact(session => session.SaveOrUpdate(amazonOrder));
+        }
+
         public void Delete(AmazonOrder item)
         {
             _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Delete, null, null, null, null, item, null, null);
