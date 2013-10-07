@@ -61,7 +61,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 {
                     var message = new AmazonEnvelopeMessage
                     {
-                        MessageID = "1",
+                        MessageID = msgCounter.ToString(),
                         Item = feed
                     };
                     if (amazonEnvelopeMessageOperationType != null)
