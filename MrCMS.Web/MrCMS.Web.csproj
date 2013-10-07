@@ -429,6 +429,7 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\ShippingMethodOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\TableNameConvention.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceApp.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\BackInStockNotification\BackInStockNotification.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Cart\CartItem.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Currencies\Currency.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\FixedAmountFromOrder.cs" />
