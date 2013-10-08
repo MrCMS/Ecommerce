@@ -21,6 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase
             {
                 return string.IsNullOrWhiteSpace(OverrideCategory) ? MrCMSApplication.Get<GoogleBaseSettings>().DefaultCategory : OverrideCategory;
             }
+            set { OverrideCategory = value; }
         }
         [DisplayName("Product Condition")]
         public virtual ProductCondition? OverrideCondition { get; set; }
@@ -30,6 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase
             {
                 return OverrideCondition.HasValue ? OverrideCondition.Value : MrCMSApplication.Get<GoogleBaseSettings>().DefaultCondition;
             }
+            set { OverrideCondition = value; }
         }
 
         //Clothing & Accessories
