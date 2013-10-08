@@ -8,19 +8,28 @@
 }
 
 <fieldset>
-    <legend>Amazon Listing Groups 
-        @if (!String.IsNullOrWhiteSpace(amazonManageInventoryUrl))
-         {
-            <span class="btn-group  display-inline  pull-right margin-left-10">
-            <a href='@amazonManageInventoryUrl' target="_blank" class="btn btn-danger">
-                Manage Inventory on Amazon
-            </a>
-            </span>
-         }
-        <span class="btn-group  display-inline  pull-right">
-            @Html.ActionLink("Add", "Add", "ListingGroup", null, new { @class = "btn btn-primary", data_toggle = "fb-modal"})
-            @Html.ActionLink("Logs", "Index", "Logs", new {type=AmazonLogType.ListingGroups}, new { @class = "btn btn-success"})
-        </span>
+    <legend>
+        <div class="row-fluid">
+                <div class="span6">
+                     Amazon Listing Groups
+                </div>
+                <div class="span6">
+                    <span class="btn-group  display-inline  pull-right margin-left-10">
+                        @Html.ActionLink("Add", "Add", "ListingGroup", null, new { @class = "btn btn-info", data_toggle = "fb-modal"})
+                    </span>
+                    <span class="btn-group  display-inline  pull-right">
+                        @if (!String.IsNullOrWhiteSpace(amazonManageInventoryUrl))
+                        {
+                                <a href='@amazonManageInventoryUrl' target="_blank" class="btn">
+                                    Manage Inventory on Amazon
+                                </a>
+                        }
+                    </span>
+                    <span class="btn-group  display-inline  pull-right">
+                        @Html.ActionLink("Logs", "Index", "Logs", new {type=AmazonLogType.ListingGroups}, new { @class = "btn"})
+                    </span>
+                </div>
+            </div>
     </legend>
 </fieldset>
 

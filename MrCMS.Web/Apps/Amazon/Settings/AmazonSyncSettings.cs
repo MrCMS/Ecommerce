@@ -1,8 +1,7 @@
 ﻿using System;
 using MrCMS.Settings;
-using MrCMS.Web.Apps.Amazon.Services.Listings.Sync;
 
-namespace MrCMS.Web.Apps.Amazon.Tasks
+namespace MrCMS.Web.Apps.Amazon.Settings
 {
     public class AmazonSyncSettings : SiteSettingsBase
     {

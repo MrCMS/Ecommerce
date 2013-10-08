@@ -7,7 +7,6 @@ namespace MrCMS.Web.Apps.Amazon.Tasks
 {
     public class SyncAmazonOrders : BackgroundTask
     {
-
         public SyncAmazonOrders(Site site)
             : base(site)
         {
