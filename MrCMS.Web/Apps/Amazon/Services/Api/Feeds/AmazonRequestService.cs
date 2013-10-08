@@ -4,14 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
-using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Api.Products;
 using MrCMS.Web.Apps.Amazon.Services.Listings;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
-using MrCMS.Web.Apps.Ecommerce.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
