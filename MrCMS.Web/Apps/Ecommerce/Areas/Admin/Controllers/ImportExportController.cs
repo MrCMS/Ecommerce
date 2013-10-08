@@ -1,5 +1,4 @@
 using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
@@ -40,8 +39,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 ViewBag.ExportStatus = "Products successfully exported.";
                 return File(file, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "MrCMS-Products-" + DateTime.UtcNow + ".xlsx");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                CurrentRequestData.ErrorSignal.Raise(ex);
                 ViewBag.ExportStatus = "Products exporting has failed. Please try again and contact system administration if error continues to appear.";
                 return View("Products");
             }
