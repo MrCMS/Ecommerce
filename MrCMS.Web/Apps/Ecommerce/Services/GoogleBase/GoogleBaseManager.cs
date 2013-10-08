@@ -171,9 +171,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             //ID
             xml.WriteElementString("g", "id", ns, pv.Id.ToString(new CultureInfo("en-GB", false).NumberFormat));
 
-            //GTIN - SKU
-            if (!String.IsNullOrWhiteSpace(pv.SKU))
-                xml.WriteElementString("g", "gtin", ns, pv.SKU);
+            //GTIN
+            if (!String.IsNullOrWhiteSpace(pv.Barcode))
+                xml.WriteElementString("g", "gtin", ns, pv.Barcode);
+
+            //MPN
+            if (!String.IsNullOrWhiteSpace(pv.ManufacturerPartNumber))
+                xml.WriteElementString("g", "mpn", ns, pv.ManufacturerPartNumber);
 
             if (pv.GoogleBaseProduct != null)
             {
