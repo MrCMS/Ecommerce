@@ -13,7 +13,6 @@
             <div class="row-fluid">
                 <div class="span12">
                     <span class="btn-group  display-inline  pull-right margin-left-10">
-                         <button type="submit" class="btn btn-primary">Save</button>
                         @Html.ActionLink("Back to Listing Groups", "Index", "ListingGroup", null, new { @class = "btn" })
                     </span>
                     <span class="btn-group  display-inline  pull-left">
@@ -21,8 +20,13 @@
                         @Html.ActionLink("Bulk Add", "AddMany", "Listing", new { id = Model.Id }, new { @class = "btn btn-info" })
                     </span>
                     <span class="btn-group  display-inline  pull-left">
-                        @Html.ActionLink("Sync", "SyncMany", "Listing", new { id = Model.Id }, new { @class = "btn btn-success" })
+                         @Html.ActionLink("Sync", "SyncMany", "Listing", new { id = Model.Id }, new { @class = "btn btn-success" })
+                    </span>
+                    <span class="btn-group  display-inline  pull-left">
                         @(Model.IsListed ? Html.ActionLink("Close", "CloseMany", "Listing", new { id = Model.Id }, new { @class = "btn btn-warning" }) : Html.ActionLink("Delete", "Delete", "ListingGroup", new { id = Model.Id }, new { @class = "btn btn-danger", data_toggle = "fb-modal" }))
+                    </span>
+                    <span class="btn-group  display-inline  pull-left margin-left-10">
+                         <button type="submit" class="btn btn-primary">Save</button>
                     </span>
                 </div>
             </div>
