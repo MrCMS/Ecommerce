@@ -68,15 +68,15 @@
 
                 &nbsp;
 
-                @if (item.AmazonListing != null)
+                @if (item.LogStatus!=AmazonLogStatus.Delete && item.AmazonListing != null)
                 {
                     @Html.ActionLink("Listing", "Details", "Listing", new {id = item.AmazonListing.Id}, null)
                 }
-                else if (item.AmazonOrder != null)
+                else if (item.LogStatus != AmazonLogStatus.Delete && item.AmazonOrder != null)
                 {
                     @Html.ActionLink("Order", "Details", "Orders", new {id = item.AmazonOrder.Id}, null)
                 }
-                else if (item.AmazonListingGroup != null)
+                else if (item.LogStatus != AmazonLogStatus.Delete && item.AmazonListingGroup != null)
                 {
                     @Html.ActionLink("Listing Group", "Edit", "ListingGroup", new {id = item.AmazonListingGroup.Id}, null)
                 }
