@@ -47,7 +47,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                     Message = new AmazonEnvelopeMessageCollection(){message}
                 };
 
-                return AmazonAppHelper.GetStreamFromAmazonEnvelope(amazonEnvelope, amazonEnvelopeMessageType);
+                return AmazonAppHelper.GetStream(amazonEnvelope, amazonEnvelopeMessageType);
             }
             return null;
         }
@@ -81,7 +81,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                     Message = messages
                 };
 
-                return AmazonAppHelper.GetStreamFromAmazonEnvelope(amazonEnvelope, amazonEnvelopeMessageType);
+                return AmazonAppHelper.GetStream(amazonEnvelope, amazonEnvelopeMessageType);
             }
             return null;
         }
@@ -153,7 +153,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                     {
                         SKU = listing.SellerSKU,
                         ImageType = ProductImageImageType.Main,
-                        ImageLocation = AmazonAppHelper.GenerateImageUrl(image.FileUrl)
+                        ImageLocation = AmazonAppHelper.GetValidImageUrl(image.FileUrl)
                     };
                 }
             }
