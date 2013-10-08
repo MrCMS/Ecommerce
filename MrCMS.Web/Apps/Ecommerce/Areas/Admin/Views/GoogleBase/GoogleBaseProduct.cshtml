@@ -15,8 +15,8 @@
             <h4>&nbsp;@(!string.IsNullOrWhiteSpace(Model.ProductVariant.Name) ? Model.ProductVariant.Name : Model.ProductVariant.Product.Name)</h4>
             <br />
             <div style="width:100%; overflow: hidden">
-                @Html.LabelFor(x => x.OverrideCategory)
-                @Html.HiddenFor(x => x.OverrideCategory,new {@class="select2 select2-full", style="width:100%"})
+                @Html.LabelFor(x => x.Category)
+                @Html.HiddenFor(x => x.Category,new {@class="select2 select2-full", style="width:100%"})
             </div>
             <br />
             <br />
@@ -26,7 +26,7 @@
         </div>
         <div class="span3">
             @Html.LabelFor(x => x.Condition)
-            @Html.DropDownListFor(x => x.OverrideCondition, GeneralHelper.SelectDefaultValue(productConditions, Model.Condition.ToString()), new {@class = "span12"})
+            @Html.DropDownListFor(x => x.Condition, GeneralHelper.SelectDefaultValue(productConditions, Model.Condition.ToString()), new {@class = "span12"})
             @Html.LabelFor(x => x.Gender)
             @Html.DropDownListFor(x => x.Gender, GeneralHelper.SelectDefaultValue(gender, Model.Gender.ToString()), new {@class = "span12"})
             @Html.LabelFor(x => x.AgeGroup)
