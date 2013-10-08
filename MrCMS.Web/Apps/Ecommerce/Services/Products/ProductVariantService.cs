@@ -57,6 +57,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                     && (categoryId==0 || categoryAlias.Id==categoryId))
                                 .Paged(page, MrCMSApplication.Get<EcommerceSettings>().PageSizeAdmin);
         }
+        public IList<ProductVariant> GetAllVariantsForGoogleBase()
+        {
+            return _session.QueryOver<ProductVariant>().JoinQueryOver(x => x.Product, JoinType.LeftOuterJoin).Where(variant => variant.PublishOn != null).Cacheable().List();
+        }
         public ProductVariant GetProductVariantBySKU(string sku)
         {
             var trim = sku.Trim();

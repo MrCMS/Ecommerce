@@ -52,7 +52,7 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
         public static FileStream GetStreamFromAmazonEnvelope(AmazonEnvelope amazonEnvelope, AmazonEnvelopeMessageType amazonEnvelopeMessageType)
         {
             var xml = Serialize(amazonEnvelope);
-            var fileLocation = GetAmazonApiFolderPath(amazonEnvelopeMessageType);
+            var fileLocation = GetAmazonApiFeedPath(amazonEnvelopeMessageType);
             File.WriteAllText(fileLocation, xml);
             return File.Open(fileLocation, FileMode.Open, FileAccess.Read);
         }
@@ -69,16 +69,22 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
             }
         }
 
-        private static string GetAmazonApiFolderPath(AmazonEnvelopeMessageType amazonEnvelopeMessageType)
+        private static string GetAmazonApiFeedPath(AmazonEnvelopeMessageType amazonEnvelopeMessageType)
         {
-            var fileLocation=string.Format("{0}/{1}/{2}",
-                          CurrentRequestData.CurrentSite.Id, "amazon",
-                          string.Format("Amazon{0}Feed", amazonEnvelopeMessageType)
-                          + "-" + CurrentRequestData.Now.ToString("yyyy-MM-dd hh-mm-ss") + ".xml");
+            return string.Format("{0}/Amazon{1}Feed-{2}.xml", GetAmazonApiDirPath(), amazonEnvelopeMessageType,
+                                 CurrentRequestData.Now.ToString("yyyy-MM-dd hh-mm-ss"));
+        }
 
-            var relativeFilePath = Path.Combine("/content/upload/", fileLocation);
+        public static string GetAmazonApiDirPath()
+        {
+            var relativeFilePath = Path.Combine("/content/upload/", string.Format("{0}/{1}", CurrentRequestData.CurrentSite.Id, "amazon"));
             var baseDirectory = HostingEnvironment.ApplicationPhysicalPath.Substring(0, HostingEnvironment.ApplicationPhysicalPath.Length - 1);
             var path = Path.Combine(baseDirectory, relativeFilePath.Substring(1));
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
 
             return path;
         }
