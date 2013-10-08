@@ -194,11 +194,15 @@ namespace MrCMS.Website.Routing
         {
             var url = context.Request.Url;
             var scheme = url.Scheme;
-            if (CurrentRequestData.CurrentUserIsAdmin && scheme == "http" && _siteSettings.SSLAdmin && _siteSettings.SiteIsLive && !context.Request.IsLocal)
+            if (CurrentRequestData.CurrentUserIsAdmin && _siteSettings.SSLAdmin && _siteSettings.SiteIsLive && !context.Request.IsLocal)
             {
-                var redirectUrl = url.ToString().Replace(scheme + "://", "https://");
-                context.Response.Redirect(redirectUrl);
-                return true;
+                if (scheme == "http")
+                {
+                    var redirectUrl = url.ToString().Replace(scheme + "://", "https://");
+                    context.Response.Redirect(redirectUrl);
+                    return true;
+                }
+                return false;
             }
             if (Webpage.RequiresSSL && scheme != "https" && _siteSettings.SiteIsLive)
             {
