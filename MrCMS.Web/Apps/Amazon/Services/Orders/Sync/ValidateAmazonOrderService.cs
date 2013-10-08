@@ -162,8 +162,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 var rawName = rawOrder.ShippingAddress.Name.Split(' ');
                 if (rawName.Any())
                     firstName = rawName[0];
-                if (rawName.Count() >= 2)
-                    lastName = rawName[1];
+
+                if (rawName.Count() < 2) return;
+
+                for (var i = 1; i < rawName.Count(); i++)
+                {
+                    lastName += rawName[i] + " ";
+                }
             }
             catch (Exception)
             {
