@@ -1,9 +1,6 @@
-﻿using System;
-using System.IO;
-using MarketplaceWebService;
+﻿using MarketplaceWebService;
 using MarketplaceWebServiceOrders;
 using MarketplaceWebServiceProducts;
-using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Website;
 
@@ -38,38 +35,5 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
             return new MarketplaceWebServiceOrdersClient("MrCMS", MrCMSApplication.AssemblyVersion, _amazonAppSettings.AWSAccessKeyId,
                                                          _amazonAppSettings.SecretKey, config);
         }
-
-        public bool DeleteAmazonFilesOlderThan(TimeSpan timespan)
-        {
-            var amazonApiDir = AmazonAppHelper.GetAmazonApiDirPath();
-
-            if (string.IsNullOrWhiteSpace(amazonApiDir)) return false;
-
-            var files = Directory.GetFiles(amazonApiDir, "*.xml");
-
-            foreach (var file in files)
-            {
-                try
-                {
-                    var fileInfo = new FileInfo(file);
-
-                    if (fileInfo.CreationTimeUtc > DateTime.UtcNow.Add(timespan)) continue;
-
-                    fileInfo.Delete();
-                }
-                catch (FileNotFoundException ex)
-                {
-                    CurrentRequestData.ErrorSignal.Raise(ex);
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    CurrentRequestData.ErrorSignal.Raise(ex);
-                    return false;
-                }
-            }
-            return true;
-        }
-
     }
 }
