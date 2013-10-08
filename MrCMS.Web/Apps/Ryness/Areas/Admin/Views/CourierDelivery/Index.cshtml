@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Courier Delivery";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@model MrCMS.Web.Apps.Ryness.Models.CourierDeliverySearchModel
+@using (Html.BeginForm("Index", "CourierDelivery", FormMethod.Get))
+{
+    <fieldset>
+        <legend>Courier Delivery
+            <span class="btn-group display-inline pull-right">
+                <button type="submit" class="btn btn-primary" title="Search">Search</button>
+            </span>
+        </legend>
+    </fieldset>
+    
+    <div class="row-fluid">
+        <div class="span3">
+            @Html.LabelFor(model => model.DateFrom)
+            @Html.TextBoxFor(model => model.DateFrom, new { @class = "span12 date-time-picker" })
+        </div>
+        <div class="span3">
+            @Html.LabelFor(model => model.DateTo)
+            @Html.TextBoxFor(model => model.DateTo, new { @class = "span12 date-time-picker" })
+        </div>
+    </div>
+
+    <hr />
+    
+    if (Model.Results != null && Model.Results.Any())
+    {
+    <table class="table table-condensed table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>County</th>
+                <th>Postcode</th>
+                <th>Telephone</th>
+                <th>Email</th>
+                <th></th>
+                <th>Order Id</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Results)
+            {
+                <tr>
+                    <td>@item.ShippingAddress.Name</td>
+                    <td>@item.ShippingAddress.Address1</td>
+                    <td>@item.ShippingAddress.City</td>
+                    <td>@item.ShippingAddress.StateProvince</td>
+                    <td>@item.ShippingAddress.PostalCode</td>
+                    <td>@item.ShippingAddress.PhoneNumber</td>
+                    <td>@item.OrderEmail</td>
+                    <td>1</td>
+                    <td>@item.Id</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+    else
+    {
+        @:No results
+    }
+}
