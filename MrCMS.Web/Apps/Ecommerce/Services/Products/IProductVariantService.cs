@@ -10,6 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     {
         IList<ProductVariant> GetAll();
         IPagedList<ProductVariant> GetAllVariants(string queryTerm, int categoryId = 0, int page = 1);
+        IList<ProductVariant> GetAllVariantsForGoogleBase();
         ProductVariant GetProductVariantBySKU(string sku);
         void Add(ProductVariant productVariant);
         void Update(ProductVariant productVariant);
