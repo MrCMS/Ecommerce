@@ -45,6 +45,7 @@
         <tbody>
             @foreach (var item in Model.Results)
             {
+                var itemID = "WEB" + item.Id.ToString();
                 <tr>
                     <td>@item.ShippingAddress.Name</td>
                     <td>@item.ShippingAddress.Address1</td>
@@ -54,7 +55,7 @@
                     <td>@item.ShippingAddress.PhoneNumber</td>
                     <td>@item.OrderEmail</td>
                     <td>1</td>
-                    <td>@item.Id</td>
+                    <td>@itemID</td>
                 </tr>
             }
         </tbody>
