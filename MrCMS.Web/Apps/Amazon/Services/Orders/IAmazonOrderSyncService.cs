@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Services.Orders.Sync;
-using MrCMS.Web.Apps.Amazon.Tasks;
+using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders

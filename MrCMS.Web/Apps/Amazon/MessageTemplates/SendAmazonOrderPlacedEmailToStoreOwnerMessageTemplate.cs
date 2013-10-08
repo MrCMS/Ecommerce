@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using MrCMS.Entities.Messaging;
 using MrCMS.Helpers;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Website;
@@ -55,7 +54,7 @@ namespace MrCMS.Web.Apps.Amazon.MessageTemplates
                         {
                             "AmazonOrderId", order =>
                                 {
-                                    AmazonOrder byOrderId = _amazonOrderService.GetByOrderId(order.Id);
+                                    var byOrderId = _amazonOrderService.GetByOrderId(order.Id);
                                     return byOrderId != null ? byOrderId.AmazonOrderId : string.Empty;
                                 }
 
@@ -63,7 +62,7 @@ namespace MrCMS.Web.Apps.Amazon.MessageTemplates
                         {
                             "FulfillmentChannel", order =>
                                 {
-                                    AmazonOrder byOrderId = _amazonOrderService.GetByOrderId(order.Id);
+                                    var byOrderId = _amazonOrderService.GetByOrderId(order.Id);
                                     if (byOrderId != null)
                                     {
                                         var fullFilmentChannel = byOrderId.FulfillmentChannel.HasValue
