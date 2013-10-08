@@ -99,22 +99,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             xml.WriteStartElement("item");
 
             //TITLE
-            var title = pv.Name;
+            var title = String.Empty;
+            if (!String.IsNullOrWhiteSpace(pv.DisplayName))
+                title = pv.DisplayName;
             if (title.Length > 70)
                 title = title.Substring(0, 70);
             xml.WriteElementString("title", title);
 
             //LINK
-            xml.WriteElementString("link", string.Format("http://{0}/{1}?variant={2}", CurrentRequestData.CurrentSite.BaseUrl, pv.Product.UrlSegment, pv.Id));
+            if (pv.Product!=null && !String.IsNullOrWhiteSpace(pv.DisplayName))
+                xml.WriteElementString("link", string.Format("http://{0}/{1}?variant={2}",CurrentRequestData.CurrentSite.BaseUrl, pv.Product.UrlSegment, pv.Id));
 
             //DESCRIPTION
             xml.WriteStartElement("description");
-            var description = pv.Product.BodyContent;
-            if (String.IsNullOrEmpty(description))
+            var description = String.Empty;
+            if (pv.Product!=null && !String.IsNullOrWhiteSpace(pv.DisplayName))
+                description = pv.Product.BodyContent;
+            if (pv.Product != null && String.IsNullOrEmpty(description))
                 description = pv.Product.Abstract;
-            if (String.IsNullOrEmpty(description))
+            if (pv.Product != null && String.IsNullOrEmpty(description))
                 description = pv.Name;
-            if (String.IsNullOrEmpty(description))
+            if (pv.Product != null && String.IsNullOrEmpty(description))
                 description = pv.Product.Name;
             xml.WriteCData(description);
             xml.WriteEndElement();
@@ -143,16 +148,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             }
 
             //PRODUCT CATEGORY
-            if (pv.Product.Categories.Any())
+            if (pv.Product != null && pv.Product.Categories.Any() && !String.IsNullOrWhiteSpace(pv.Product.Categories.First().Name))
                 xml.WriteElementString("g", "product_type", ns, pv.Product.Categories.First().Name);
 
             //IMAGES
-            if (pv.Product.Images.Any())
+            if (pv.Product != null && pv.Product.Images.Any() && !String.IsNullOrWhiteSpace(pv.Product.Images.First().FileUrl))
             {
                 xml.WriteElementString("g", "image_link", ns,
                                        "http://" + CurrentRequestData.CurrentSite.BaseUrl + pv.Product.Images.First().FileUrl);
             }
-            if (pv.Product.Images.Count() > 1)
+            if (pv.Product != null && pv.Product.Images.Count() > 1 && !String.IsNullOrWhiteSpace(pv.Product.Images.ToList()[1].FileUrl))
             {
                 xml.WriteElementString("g", "additional_image_link", ns,
                                        "http://" + CurrentRequestData.CurrentSite.BaseUrl +
@@ -160,14 +165,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             }
 
             //BRAND
-            if (pv.Product.Brand != null)
+            if (pv.Product != null && pv.Product.Brand != null && !String.IsNullOrWhiteSpace(pv.Product.Brand.Name))
                 xml.WriteElementString("g", "brand", ns, pv.Product.Brand.Name);
 
             //ID
             xml.WriteElementString("g", "id", ns, pv.Id.ToString(new CultureInfo("en-GB", false).NumberFormat));
 
             //GTIN - SKU
-            xml.WriteElementString("g", "gtin", ns, pv.SKU);
+            if (!String.IsNullOrWhiteSpace(pv.SKU))
+                xml.WriteElementString("g", "gtin", ns, pv.SKU);
 
             if (pv.GoogleBaseProduct != null)
             {
@@ -179,8 +185,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             }
 
             //ITEM GROUP ID
-            xml.WriteElementString("g", "item_group_id", ns,
-                                   pv.Product.Id.ToString(new CultureInfo("en-GB", false).NumberFormat));
+            if (pv.Product != null)
+                xml.WriteElementString("g", "item_group_id", ns,pv.Product.Id.ToString(new CultureInfo("en-GB", false).NumberFormat));
 
             if (pv.GoogleBaseProduct != null)
             {
@@ -253,9 +259,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             foreach (var shippingCalculation in shippingCalculations)
             {
                 xml.WriteStartElement("g", "shipping", ns);
-                xml.WriteElementString("g", "country", ns, shippingCalculation.Country.Name);
-                xml.WriteElementString("g", "service", ns, shippingCalculation.ShippingMethod.Name);
-                xml.WriteElementString("g", "price", ns,shippingCalculation.GetPrice(cart).Value.ToString(new CultureInfo("en-GB", false).NumberFormat));
+                if (shippingCalculation.Country != null && !String.IsNullOrWhiteSpace(shippingCalculation.Country.Name))
+                    xml.WriteElementString("g", "country", ns, shippingCalculation.Country.Name);
+                if (shippingCalculation.ShippingMethod != null && !String.IsNullOrWhiteSpace(shippingCalculation.ShippingMethod.Name))
+                    xml.WriteElementString("g", "service", ns, shippingCalculation.ShippingMethod.Name);
+                var price = shippingCalculation.GetPrice(cart);
+                xml.WriteElementString("g", "price", ns,
+                                       price != null
+                                           ? price.Value.ToString(new CultureInfo("en-GB", false).NumberFormat)
+                                           : 0.ToString(new CultureInfo("en-GB", false).NumberFormat));
                 xml.WriteEndElement();
             }
         }
