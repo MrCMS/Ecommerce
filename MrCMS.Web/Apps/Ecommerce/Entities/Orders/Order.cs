@@ -129,7 +129,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
                 foreach (var item in OrderLines)
                 {
                     sb.Append("<tr>");
-                    sb.Append("<td>" + item.Name + "</td>");
+                    sb.Append("<td>" + item.Name + " (" + item.SKU + ")" + "</td>");
                     sb.Append("<td>" + item.Quantity + "</td>");
                     sb.Append("<td>" + item.UnitPrice + "</td>");
                     sb.Append("<td>" + item.Subtotal + "</td>");
