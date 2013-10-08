@@ -32,6 +32,12 @@ namespace MrCMS.Web.Apps.Ryness.Areas.Admin.Controllers
                 {
                 }
             }
+            else
+            {
+                model.DateFrom = DateTime.Today;
+                model.DateTo = DateTime.Today.AddDays(1);
+                model.Results = _courierDeliveryService.GetCourierDeliveryOrderByDates((DateTime)model.DateFrom, (DateTime)model.DateTo);
+            }
             return View("Index", model);
         }
     }

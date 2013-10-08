@@ -26,7 +26,7 @@ namespace MrCMS.Web.Apps.Ryness.Services
                 _session.QueryOver<Order>()
                         .Where(
                             order =>
-                            order.CreatedOn >= dateFrom && order.CreatedOn <= dateTo && order.ShippingStatus == ShippingStatus.Shipped && order.ShippingMethod.Id == 2)
+                            order.ShippingDate >= dateFrom && order.ShippingDate <= dateTo && order.ShippingStatus == ShippingStatus.Shipped && order.ShippingMethod.Id == 2)
                         .OrderBy(order => order.CreatedOn)
                         .Desc.Cacheable()
                         .List();
