@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Web.Mvc;
 using System.Xml;
 using MrCMS.Helpers;
 using MrCMS.Paging;
@@ -69,7 +70,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             xml.WriteElementString("link", "http://"+CurrentRequestData.CurrentSite.BaseUrl);
             xml.WriteElementString("description", " Products from " + CurrentRequestData.CurrentSite.Name+" online store");
 
-            var productVariants = _productVariantService.GetAllVariantsForGoogleBase();
+            var productVariants = _productVariantService.GetAllVariants(String.Empty);
 
             foreach (var pv in productVariants)
             {
