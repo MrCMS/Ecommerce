@@ -96,7 +96,7 @@ namespace MrCMS.Web.Apps.Amazon
             fileSystem.CreateDirectory(folderLocation);
         }
 
-        public override IEnumerable<System.Type> Conventions
+        public override IEnumerable<Type> Conventions
         {
             get { yield return typeof(AmazonTableNameConvention); }
         }
