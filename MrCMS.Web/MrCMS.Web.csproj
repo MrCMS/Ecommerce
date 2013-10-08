@@ -257,10 +257,9 @@
     <Compile Include="Apps\Amazon\Services\Api\AmazonApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonFeedsApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonGenerateFeedService.cs" />
-    <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonRequestService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\IAmazonFeedsApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\IAmazonGenerateFeedService.cs" />
-    <Compile Include="Apps\Amazon\Services\Api\Feeds\IAmazonRequestService.cs" />
+    <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonRequestService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\IAmazonApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Orders\AmazonOrdersApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Orders\IAmazonOrdersApiService.cs" />
@@ -288,7 +287,7 @@
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderEventService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderEventService.cs" />
-    <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderSyncService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSyncService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\AmazonOrderSyncManager.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\GetOrderItems.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IAmazonOrderSyncManager.cs" />

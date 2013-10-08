@@ -13,15 +13,26 @@ using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
 {
-    public class AmazonRequestService : IAmazonRequestService
+    public interface IAmazonListingRequestService
+    {
+        List<string> SubmitMainFeeds(AmazonSyncModel model, List<FileStream> feeds);
+        string SubmitCloseRequest(AmazonSyncModel model, FileStream productFeedContent);
+
+        void CheckIfDeleteRequestWasProcessed(AmazonSyncModel model, AmazonListing amazonListing, string submissionId);
+        void CheckIfRequestsWereProcessed(AmazonSyncModel model, AmazonListingGroup item, List<string> submissionIds);
+        void CheckIfRequestWasProcessed(AmazonSyncModel model, AmazonListing amazonListing, List<string> submissionIds);
+
+    }
+
+    public class AmazonRequestService : IAmazonListingRequestService
     {
         private readonly IAmazonListingService _amazonListingService;
         private readonly IAmazonFeedsApiService _amazonFeedsApiService;
         private readonly IAmazonProductsApiService _amazonProductsApiService;
         private readonly IAmazonLogService _amazonLogService;
 
-        public AmazonRequestService(IAmazonListingService amazonListingService,IAmazonLogService amazonLogService, 
-            IAmazonFeedsApiService amazonFeedsApiService, 
+        public AmazonRequestService(IAmazonListingService amazonListingService, IAmazonLogService amazonLogService,
+            IAmazonFeedsApiService amazonFeedsApiService,
             IAmazonProductsApiService amazonProductsApiService)
         {
             _amazonListingService = amazonListingService;
@@ -68,7 +79,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             }
             return submissionIds;
         }
-        public void CheckIfRequestsWhereProcessed(AmazonSyncModel model, AmazonListingGroup item, List<string> submissionIds)
+        public void CheckIfRequestsWereProcessed(AmazonSyncModel model, AmazonListingGroup item, List<string> submissionIds)
         {
             var uploadSuccess = false;
             var retryCount = 0;
@@ -203,7 +214,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 catch (Exception ex)
                 {
                     _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Error, ex, null,
-                                          AmazonApiSection.Feeds, null, null, null,null, "Error during push of product delete request to Amazon");
+                                          AmazonApiSection.Feeds, null, null, null, null, "Error during push of product delete request to Amazon");
 
                     Thread.Sleep(120000);
                 }
@@ -249,7 +260,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 catch (Exception ex)
                 {
                     _amazonLogService.Add(AmazonLogType.Listings, AmazonLogStatus.Error, ex, null,
-                                          AmazonApiSection.Feeds, null,null, amazonListing,null);
+                                          AmazonApiSection.Feeds, null, null, amazonListing, null);
 
                     AmazonProgressBarHelper.Update(model.Task, "Push",
                                                    "Amazon Api is busy, we will need to wait additional 2 min. and try again",
@@ -298,6 +309,29 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             var submissionId = feedResponse.FeedSubmissionId;
             submissionIds.Add(submissionId);
             AmazonProgressBarHelper.Update(model.Task, "Push", "Product image pushed", 100, 100);
+        }
+    }
+
+    public interface IAmazonOrderRequestService
+    {
+        string SubmitOrderFulfillmentFeed(FileStream feedContent);
+    }
+
+    public class AmazonOrderRequestService : IAmazonOrderRequestService
+    {
+        private readonly IAmazonFeedsApiService _amazonFeedsApiService;
+
+        public AmazonOrderRequestService(IAmazonFeedsApiService amazonFeedsApiService)
+        {
+            _amazonFeedsApiService = amazonFeedsApiService;
+        }
+
+        public string SubmitOrderFulfillmentFeed(FileStream feedContent)
+        {
+            if (feedContent == null) return null;
+
+            var feedResponse = _amazonFeedsApiService.SubmitFeed(AmazonFeedType._POST_ORDER_FULFILLMENT_DATA_, feedContent);
+            return feedResponse.FeedSubmissionId;
         }
     }
 }

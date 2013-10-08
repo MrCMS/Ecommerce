@@ -6,10 +6,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
 {
     public class SyncAmazonListingService : ISyncAmazonListingService
     {
-        private readonly IAmazonRequestService _amazonRequestService;
+        private readonly IAmazonListingRequestService _amazonRequestService;
         private readonly IAmazonFeedsApiService _amazonFeedsApiService;
 
-        public SyncAmazonListingService(IAmazonRequestService amazonRequestService, IAmazonFeedsApiService amazonFeedsApiService)
+        public SyncAmazonListingService(IAmazonListingRequestService amazonRequestService, IAmazonFeedsApiService amazonFeedsApiService)
         {
             _amazonRequestService = amazonRequestService;
             _amazonFeedsApiService = amazonFeedsApiService;
@@ -21,7 +21,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
 
             var submissionIds = _amazonRequestService.SubmitMainFeeds(model, feeds);
 
-            _amazonRequestService.CheckIfRequestsWhereProcessed(model, item, submissionIds);
+            _amazonRequestService.CheckIfRequestsWereProcessed(model, item, submissionIds);
         }
         
         public void SubmitSingleProductFeed(AmazonSyncModel model, AmazonListing item)

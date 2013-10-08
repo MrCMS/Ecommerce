@@ -8,7 +8,6 @@ using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Settings;
-using MrCMS.Website;
 using Product = MarketplaceWebServiceFeedsClasses.Product;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
