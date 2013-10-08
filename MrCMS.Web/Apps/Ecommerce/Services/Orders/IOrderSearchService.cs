@@ -47,7 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             if (!String.IsNullOrWhiteSpace(SearchText))
             {
                 var fuzzySearchTerm = MakeFuzzy(SearchText);
-                var q = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30, FieldDefinition.GetFieldNames(OrderSearchIndex.Email, OrderSearchIndex.LastName), new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30));
+                var q = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30, FieldDefinition.GetFieldNames(OrderSearchIndex.Email, OrderSearchIndex.LastName, OrderSearchIndex.SalesChannel), new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30));
                 var query = q.Parse(fuzzySearchTerm);
                 booleanQuery.Add(query, Occur.SHOULD);
             }
