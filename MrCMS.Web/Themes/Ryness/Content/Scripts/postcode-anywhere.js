@@ -91,7 +91,7 @@ function PostcodeAnywhere_Interactive_RetrieveById_v1_10Begin(Key, Id, Preferred
         }
     }
     scriptTag = document.createElement("script");
-    scriptTag.src = strUrl
+    scriptTag.src = strUrl;
     scriptTag.type = "text/javascript";
     scriptTag.id = "PCAa73f9bc2b60d4e4cbd595512478a3291";
     headTag.appendChild(scriptTag);

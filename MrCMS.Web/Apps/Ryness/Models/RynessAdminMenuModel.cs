@@ -21,7 +21,8 @@ namespace MrCMS.Web.Apps.Ryness.Models
                             new List<IMenuItem>
                                 {
                                     new ChildMenuItem("Testimonials", "/Admin/Apps/Ryness/Testimonial"),
-                                    new ChildMenuItem("Kerridge Log", "/Admin/Apps/Ryness/Kerridge")
+                                    new ChildMenuItem("Kerridge Log", "/Admin/Apps/Ryness/Kerridge"),
+                                    new ChildMenuItem("Courier Delivery", "/Admin/Apps/Ryness/CourierDelivery")
                                 }
                         }
                     });

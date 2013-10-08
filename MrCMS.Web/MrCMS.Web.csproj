@@ -732,6 +732,7 @@
     <Compile Include="Apps\Galleries\Metadata\GalleryMetaData.cs" />
     <Compile Include="Apps\Galleries\Pages\Gallery.cs" />
     <Compile Include="Apps\Galleries\Pages\GalleryList.cs" />
+    <Compile Include="Apps\Ryness\Areas\Admin\Controllers\CourierDeliveryController.cs" />
     <Compile Include="Apps\Ryness\Areas\Admin\Controllers\KerridgeController.cs" />
     <Compile Include="Apps\Ryness\Areas\Admin\Controllers\TestimonialController.cs" />
     <Compile Include="Apps\Ryness\Dbconfiguration\KerridgeOverride.cs" />
@@ -744,12 +745,14 @@
     <Compile Include="Apps\Ryness\Metadata\BuyingGuideMetadata.cs" />
     <Compile Include="Apps\Ryness\Metadata\StoreListMetadata.cs" />
     <Compile Include="Apps\Ryness\Metadata\StoreMetadata.cs" />
+    <Compile Include="Apps\Ryness\Models\CourierDeliverySearchModel.cs" />
     <Compile Include="Apps\Ryness\Models\KerridgeLogPagedList.cs" />
     <Compile Include="Apps\Ryness\Models\RynessAdminMenuModel.cs" />
     <Compile Include="Apps\Ryness\Pages\BuyingGuide.cs" />
     <Compile Include="Apps\Ryness\Pages\Store.cs" />
     <Compile Include="Apps\Ryness\Pages\StoreList.cs" />
     <Compile Include="Apps\Ryness\RynessApp.cs" />
+    <Compile Include="Apps\Ryness\Services\ICourierDeliveryService.cs" />
     <Compile Include="Apps\Ryness\Services\KerridgeService.cs" />
     <Compile Include="Apps\Ryness\Services\IKerridgeService.cs" />
     <Compile Include="Apps\Ryness\Services\ITestimonialService.cs" />
@@ -2271,6 +2274,7 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\SpendXMore.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\SpendXMore.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\SyncMany.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\CourierDelivery\Index.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
