@@ -12,6 +12,7 @@ using System.Linq;
 using MrCMS.Indexing.Utils;
 using MrCMS.Helpers;
 using NHibernate.Criterion;
+using Order = MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order;
 using Version = Lucene.Net.Util.Version;
 namespace MrCMS.Web.Apps.Ecommerce.Indexing
 {
@@ -65,6 +66,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                 yield return Id;
                 yield return Email;
                 yield return LastName;
+                yield return SalesChannel;
                 yield return Amount;
                 yield return PaymentStatus;
                 yield return ShippingStatus;
@@ -74,6 +76,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
         public static FieldDefinition<Entities.Orders.Order> Id { get { return _id; } }
         public static FieldDefinition<Entities.Orders.Order> Email { get { return _email; } }
         public static FieldDefinition<Entities.Orders.Order> LastName { get { return _lastName; } }
+        public static FieldDefinition<Entities.Orders.Order> SalesChannel { get { return _salesChannel; } }
         public static FieldDefinition<Entities.Orders.Order> Amount { get { return _amount; } }
         public static FieldDefinition<Entities.Orders.Order> PaymentStatus { get { return _paymentStatus; } }
         public static FieldDefinition<Entities.Orders.Order> ShippingStatus { get { return _shippingStatus; } }
@@ -83,12 +86,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
             new StringFieldDefinition<Entities.Orders.Order>("id", item => item.Id.ToString(), Field.Store.YES,
                                          Field.Index.NOT_ANALYZED);
 
+        private static readonly FieldDefinition<Entities.Orders.Order> _salesChannel =
+            new StringFieldDefinition<Entities.Orders.Order>("saleschannel", item => item.SalesChannel, Field.Store.NO,
+                                         Field.Index.ANALYZED);
+
         private static readonly FieldDefinition<Entities.Orders.Order> _email =
             new StringFieldDefinition<Entities.Orders.Order>("email", item => item.OrderEmail, Field.Store.YES,
                                          Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Entities.Orders.Order> _lastName =
-           new StringFieldDefinition<Entities.Orders.Order>("lastName", item => item.User != null ? item.User.LastName : String.Empty, Field.Store.YES,
+           new StringFieldDefinition<Entities.Orders.Order>("lastName", item => item.ShippingAddress != null ? item.ShippingAddress.Name : String.Empty, Field.Store.YES,
                                         Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Entities.Orders.Order> _amount =
@@ -109,6 +116,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                                          DateTools.DateToString(item.CreatedOn,
                                                                 DateTools.Resolution.SECOND), Field.Store.NO,
                                          Field.Index.NOT_ANALYZED);
-
     }
 }
