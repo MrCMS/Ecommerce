@@ -20,7 +20,7 @@ namespace MrCMS.Web.Apps.Amazon.Tasks
         {
             try
             {
-                _amazonApiService.DeleteAmazonFilesOlderThan(new TimeSpan(30,0,0,0));
+                _amazonApiService.DeleteAmazonFilesOlderThan(new TimeSpan(-30,0,0,0));
             }
             catch (Exception ex)
             {
