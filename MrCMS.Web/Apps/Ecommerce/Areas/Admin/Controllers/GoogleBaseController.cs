@@ -68,8 +68,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 ViewBag.ExportStatus = "Products successfully exported.";
                 return File(file, "application/rss+xml", "MrCMS-GoogleBase-Products.xml");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                CurrentRequestData.ErrorSignal.Raise(ex);
                 const string msg = "Google Base exporting has failed. Please try again and contact system administration if error continues to appear.";
                 return RedirectToAction("Dashboard", new { status = msg });
             }
