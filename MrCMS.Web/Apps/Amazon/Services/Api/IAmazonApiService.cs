@@ -10,6 +10,5 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
         MarketplaceWebServiceClient GetFeedsApiService();
         MarketplaceWebServiceProductsClient GetProductsApiService();
         MarketplaceWebServiceOrdersClient GetOrdersApiService();
-        bool DeleteAmazonFilesOlderThan(TimeSpan timespan);
     }
 }
