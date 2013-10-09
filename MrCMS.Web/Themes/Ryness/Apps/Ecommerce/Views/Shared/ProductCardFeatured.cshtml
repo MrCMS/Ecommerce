@@ -9,7 +9,7 @@
             {
             <img src="/Themes/Ryness/Content/Images/top-offer.png" alt="offer" title="offer" class="offer" />
             }
-            <a href="/@Model.LiveUrlSegment" title="@Model.Name">@RenderImage(Model.Images.First().FileUrl, new Size{ Height=150, Width = 150})</a>
+            <a href="/@Model.LiveUrlSegment" title="@Model.Name">@RenderImage(Model.Images.First().FileUrl, new Size{ Height=150, Width = 150}, alt:Model.Name)</a>
         }
     </div>
     <div class="product-brief">

@@ -5,7 +5,7 @@
 {
     <div class="span3 text-align-center">
         <a href="/@Model.LiveUrlSegment">
-            @RenderImage(Model.DisplayImageUrl, new Size{Height = 150, Width = 150})
+            @RenderImage(Model.DisplayImageUrl, new Size{Height = 150, Width = 150}, alt:Model.Name)
         </a>
     </div>
     <div class="span6">
