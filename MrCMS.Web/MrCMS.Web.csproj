@@ -664,7 +664,6 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\ShippingMethodExists.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\IBulkStockShippingValidationRule.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\OrderExists.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\OrderNotShipped.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\EmptyBasket.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderCancelled.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderFullyRefunded.cs" />

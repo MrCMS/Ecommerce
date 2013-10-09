@@ -15,7 +15,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate.Rules
         public IEnumerable<string> GetErrors(BulkShippingUpdateDataTransferObject item)
         {
             if (_orderService.Get(item.OrderId) == null)
-                yield return string.Format("Order not present within the system.");
+                yield return string.Format("Order {0} not present within the system.", item.OrderId);
         }
     }
 }
