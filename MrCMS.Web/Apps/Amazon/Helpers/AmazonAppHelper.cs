@@ -45,7 +45,7 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
 
             var baseUrl = "http://" + CurrentRequestData.CurrentSite.BaseUrl;
             if (CurrentRequestData.CurrentSite.BaseUrl.Contains("http://") || CurrentRequestData.CurrentSite.BaseUrl.Contains("https://"))
-                baseUrl = CurrentRequestData.CurrentSite.BaseUrl.Replace("https", "http") + imageUrl;
+                baseUrl = CurrentRequestData.CurrentSite.BaseUrl.Replace("https", "http");
             return baseUrl + imageUrl;
         }
 
