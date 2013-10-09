@@ -54,7 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
         /// <returns></returns>
         public byte[] ExportProductsToGoogleBase()
         {
-            var ns = "http://base.google.com/ns/1.0";
+            const string ns = "http://base.google.com/ns/1.0";
             var ms = new MemoryStream();
             var xml = new XmlTextWriter(ms, Encoding.UTF8);
 
@@ -66,7 +66,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
 
             //GENERAL FEED INFO
             xml.WriteElementString("title", CurrentRequestData.CurrentSite.Name);
-            xml.WriteElementString("link", "http://"+CurrentRequestData.CurrentSite.BaseUrl);
+            xml.WriteElementString("link", CurrentRequestData.CurrentSite.BaseUrl);
             xml.WriteElementString("description", " Products from " + CurrentRequestData.CurrentSite.Name+" online store");
 
             var productVariants = _productVariantService.GetAllVariantsForGoogleBase();
@@ -107,7 +107,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
 
             //LINK
             if (pv.Product!=null && !String.IsNullOrWhiteSpace(pv.DisplayName))
-                xml.WriteElementString("link", string.Format("http://{0}/{1}?variant={2}",CurrentRequestData.CurrentSite.BaseUrl, pv.Product.UrlSegment, pv.Id));
+                xml.WriteElementString("link", GeneralHelper.GetValidProductVariantUrl(pv));
 
             //DESCRIPTION
             xml.WriteStartElement("description");
@@ -117,15 +117,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             if (pv.Product != null && String.IsNullOrEmpty(description))
                 description = pv.Product.Abstract;
             if (pv.Product != null && String.IsNullOrEmpty(description))
-                description = pv.Name;
-            if (pv.Product != null && String.IsNullOrEmpty(description))
-                description = pv.Product.Name;
+                description = pv.DisplayName;
+            var descriptionBytes = Encoding.Default.GetBytes(description);
+            description = Encoding.UTF8.GetString(descriptionBytes);
             xml.WriteCData(description);
             xml.WriteEndElement();
 
             //CONDITION
-            if (pv.GoogleBaseProduct != null)
-                xml.WriteElementString("g", "condition", ns, pv.GoogleBaseProduct.Condition.ToString());
+            xml.WriteElementString("g", "condition", ns,
+                                   pv.GoogleBaseProduct != null
+                                       ? pv.GoogleBaseProduct.Condition.ToString()
+                                       : ProductCondition.New.ToString());
 
             //PRICE
             xml.WriteElementString("g", "price", ns, pv.Price.ToCurrencyFormat());
@@ -138,29 +140,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
 
             //GOOGLE PRODUCT CATEGORY
             if (pv.GoogleBaseProduct != null)
-            {
-                if (pv.GoogleBaseProduct != null &&
-                    !String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.OverrideCategory))
-                    xml.WriteElementString("g", "google_product_category", ns, pv.GoogleBaseProduct.OverrideCategory);
-                else
-                    xml.WriteElementString("g", "google_product_category", ns, pv.GoogleBaseProduct.Category);
-            }
+                xml.WriteElementString("g", "google_product_category", ns, pv.GoogleBaseProduct.Category);
 
             //PRODUCT CATEGORY
             if (pv.Product != null && pv.Product.Categories.Any() && !String.IsNullOrWhiteSpace(pv.Product.Categories.First().Name))
                 xml.WriteElementString("g", "product_type", ns, pv.Product.Categories.First().Name);
+            else
+                if (pv.GoogleBaseProduct != null)
+                    xml.WriteElementString("g", "product_type", ns, pv.GoogleBaseProduct.Category);
 
             //IMAGES
             if (pv.Product != null && pv.Product.Images.Any() && !String.IsNullOrWhiteSpace(pv.Product.Images.First().FileUrl))
             {
-                xml.WriteElementString("g", "image_link", ns,
-                                       "http://" + CurrentRequestData.CurrentSite.BaseUrl + pv.Product.Images.First().FileUrl);
+                xml.WriteElementString("g", "image_link", ns, GeneralHelper.GetValidImageUrl(pv.Product.Images.First().FileUrl));
             }
             if (pv.Product != null && pv.Product.Images.Count() > 1 && !String.IsNullOrWhiteSpace(pv.Product.Images.ToList()[1].FileUrl))
             {
-                xml.WriteElementString("g", "additional_image_link", ns,
-                                       "http://" + CurrentRequestData.CurrentSite.BaseUrl +
-                                       pv.Product.Images.ToList()[1].FileUrl);
+                xml.WriteElementString("g", "additional_image_link", ns,GeneralHelper.GetValidImageUrl(pv.Product.Images.ToList()[1].FileUrl));
             }
 
             //BRAND
@@ -219,12 +215,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
                                                  "{0} {1}", pv.Weight.ToString(new CultureInfo("en-GB", false).NumberFormat),
                                                  "kg"));
 
-            //UNIT PRICING MEASURE
-            xml.WriteElementString("g", "unit_pricing_measure", ns,
-                                   string.Format(CultureInfo.InvariantCulture, "{0}{1}",
-                                                 pv.Weight.ToString(new CultureInfo("en-GB", false).NumberFormat),
-                                                 "kg"));
-
             //ADWORDS
             if (pv.GoogleBaseProduct != null)
             {
@@ -262,8 +252,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             foreach (var shippingCalculation in shippingCalculations)
             {
                 xml.WriteStartElement("g", "shipping", ns);
-                if (shippingCalculation.Country != null && !String.IsNullOrWhiteSpace(shippingCalculation.Country.Name))
-                    xml.WriteElementString("g", "country", ns, shippingCalculation.Country.Name);
+                if (shippingCalculation.Country != null && !String.IsNullOrWhiteSpace(shippingCalculation.Country.ISOTwoLetterCode))
+                    xml.WriteElementString("g", "country", ns, shippingCalculation.Country.ISOTwoLetterCode);
                 if (shippingCalculation.ShippingMethod != null && !String.IsNullOrWhiteSpace(shippingCalculation.ShippingMethod.Name))
                     xml.WriteElementString("g", "service", ns, shippingCalculation.ShippingMethod.Name);
                 var price = shippingCalculation.GetPrice(cart);

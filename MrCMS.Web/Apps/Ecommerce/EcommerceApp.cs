@@ -10,6 +10,7 @@ using MrCMS.PaypointService.API;
 using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Core.Widgets;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
@@ -22,6 +23,7 @@ using Ninject;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using Ninject.Web.Common;
+using ProductController = MrCMS.Web.Apps.Ecommerce.Controllers.ProductController;
 
 namespace MrCMS.Web.Apps.Ecommerce
 {
@@ -37,7 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce
         protected override void RegisterServices(IKernel kernel)
         {
             kernel.Rebind<CartModel>().ToMethod(context => context.Kernel.Get<ICartBuilder>().BuildCart()).InRequestScope();
-            kernel.Bind<SECVPN>().To<MrCMS.PaypointService.API.SECVPNClient>().InRequestScope();
+            kernel.Bind<SECVPN>().To<SECVPNClient>().InRequestScope();
         }
 
         public override IEnumerable<Type> BaseTypes
@@ -95,6 +97,8 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Checkout - Paypoint 3D Secure Redirect", "Apps/Ecommerce/Paypoint/3DSecureRedirect", new { controller = "Paypoint", action = "Redirect3DSecure" }, new[] { typeof(PaypointController).Namespace });
             context.MapRoute("Checkout - Paypoint 3D Secure Response Handler", "Apps/Ecommerce/Paypoint/3DSecureReturnHandler", new { controller = "Paypoint", action = "Response3DSecure" }, new[] { typeof(PaypointController).Namespace });
             context.MapRoute("Category Container - Categories", "Apps/Ecommerce/CategoryContainer/Categories", new { controller = "CategoryContainer", action = "Categories" }, new[] { typeof(CategoryContainer).Namespace });
+
+            context.MapRoute("Export Google Base Feed", "export/google-base-feed", new { controller = "GoogleBaseFeed", action = "ExportProductsToGoogleBaseInResponse" }, new[] { typeof(GoogleBaseFeedController).Namespace });
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)

@@ -7,6 +7,8 @@ using System.Web.Mvc;
 using MrCMS.Entities;
 using MrCMS.Helpers;
 using MrCMS.Paging;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
 
@@ -98,6 +100,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
                 Enum.GetValues(typeof(T))
                     .Cast<T>()
                     .BuildSelectItemList(item => GetDescriptionFromEnum(item as Enum), item => item.ToString(), emptyItemText: "Please select...");
+        }
+
+        public static string GetValidImageUrl(string imageUrl)
+        {
+            if (imageUrl.Contains("http://") || imageUrl.Contains("https://"))
+                return imageUrl.Replace("https", "http");
+
+            var baseUrl = "http://" + CurrentRequestData.CurrentSite.BaseUrl;
+            if (CurrentRequestData.CurrentSite.BaseUrl.Contains("http://") || CurrentRequestData.CurrentSite.BaseUrl.Contains("https://"))
+                baseUrl = CurrentRequestData.CurrentSite.BaseUrl.Replace("https", "http");
+            return baseUrl + imageUrl;
+        }
+
+        public static string GetValidProductVariantUrl(ProductVariant productVariant)
+        {
+            var url = productVariant.Product.UrlSegment;
+            if (url.Contains("http://") || url.Contains("https://"))
+                return url.Replace("https", "http");
+
+            var baseUrl = "http://" + CurrentRequestData.CurrentSite.BaseUrl;
+            if (CurrentRequestData.CurrentSite.BaseUrl.Contains("http://") || CurrentRequestData.CurrentSite.BaseUrl.Contains("https://"))
+                baseUrl = CurrentRequestData.CurrentSite.BaseUrl;
+            return string.Format("{0}/{1}?variant={2}", baseUrl, url, productVariant.Id);
         }
     }
 }
