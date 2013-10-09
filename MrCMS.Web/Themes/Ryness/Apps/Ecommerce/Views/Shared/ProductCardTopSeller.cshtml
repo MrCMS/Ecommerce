@@ -5,7 +5,7 @@
     <div class="product-picture text-align-center margin-top-10 padding-top-bottom-10">
         @if (Model.Images.Any())
         {
-            <a href="/@Model.LiveUrlSegment" title="@Model.Name">@RenderImage(Model.Images.First().FileUrl, new Size{Width = 170,Height = 170})</a>
+            <a href="/@Model.LiveUrlSegment" title="@Model.Name">@RenderImage(Model.Images.First().FileUrl, new Size{Width = 170,Height = 170}, alt:Model.Name)</a>
         }
     </div>
     <div class="product-brief">

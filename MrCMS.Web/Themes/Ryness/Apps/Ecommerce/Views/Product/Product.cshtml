@@ -46,7 +46,7 @@
                                 {
                                     if (!string.IsNullOrEmpty(Model.Brand.Logo))
                                     {
-                                @RenderImage(Model.Brand.Logo, new Size { Width = 100, Height = 50 });
+                                @RenderImage(Model.Brand.Logo, new Size { Width = 100, Height = 50 }, alt:Model.Brand.Name);
                                     }
                                 }
                             }
