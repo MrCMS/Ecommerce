@@ -7,7 +7,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     public interface IAmazonOrderSyncManager
     {
         GetUpdatedOrdersResult GetUpdatedInfoFromAmazon(GetUpdatedOrdersRequest updatedOrdersRequest);
-        GetUpdatedOrdersResult GetUpdatedInfoFromAmazonAdHoc(List<string> amazonOrderIds);
+        GetUpdatedOrdersResult GetUpdatedInfoFromAmazonAdHoc(IEnumerable<string> amazonOrderIds);
     }
     public class GetUpdatedOrdersRequest
     {

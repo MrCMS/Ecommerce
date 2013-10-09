@@ -105,8 +105,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
             model.AverageOrderAmount = GetAverageOrderAmount(model.FilterFrom, model.FilterUntil);
             model.NoOfOrderedProducts = GetNumberOfOrderedProducts(model.FilterFrom, model.FilterUntil);
             model.NoOfShippedProducts = GetNumberOfShippedProducts(model.FilterFrom, model.FilterUntil);
-            model.AppSettingsStatus = AmazonAppHelper.GetAmazonAppSettingsStatus(_amazonAppSettings);
-            model.SellerSettingsStatus = AmazonAppHelper.GetAmazonSellerSettingsStatus(_amazonSellerSettings);
+            model.AppSettingsStatus = AmazonAppHelper.CheckAppSettingsStatus(_amazonAppSettings);
+            model.SellerSettingsStatus = AmazonAppHelper.CheckSellerSettingsStatus(_amazonSellerSettings);
             return model;
         }
 
