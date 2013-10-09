@@ -10,7 +10,6 @@ using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Analytics;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
-using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Website;
 using Product = MarketplaceWebServiceFeedsClasses.Product;
@@ -20,16 +19,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
     public class AmazonFeedsApiService : IAmazonFeedsApiService
     {
         private readonly IAmazonApiService _amazonApiService;
-        private readonly AmazonSellerSettings _amazonSellerSettings;
         private readonly IAmazonAnalyticsService _amazonAnalyticsService;
         private readonly IAmazonLogService _amazonLogService;
         private readonly IAmazonGenerateFeedService _amazonGenerateFeedContentService;
 
-        public AmazonFeedsApiService(AmazonSellerSettings amazonSellerSettings, 
-            IAmazonAnalyticsService amazonAnalyticsService, IAmazonLogService amazonLogService, 
+        public AmazonFeedsApiService(IAmazonAnalyticsService amazonAnalyticsService, IAmazonLogService amazonLogService, 
             IAmazonGenerateFeedService amazonGenerateFeedContentService, IAmazonApiService amazonApiService)
         {
-            _amazonSellerSettings = amazonSellerSettings;
             _amazonAnalyticsService = amazonAnalyticsService;
             _amazonLogService = amazonLogService;
             _amazonGenerateFeedContentService = amazonGenerateFeedContentService;
@@ -44,7 +40,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                     "GetFeedSubmissionList", null, null,null, "Getting result for Amazon Submission #"+ submissionId);
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Feeds, "GetFeedSubmissionList");
                 var service = _amazonApiService.GetFeedsApiService();
-                var request = GetFeedSubmissionListRequest(submissionId);
+                var request = _amazonApiService.GetFeedSubmissionListRequest(submissionId);
 
                 var result = service.GetFeedSubmissionList(request);
 
@@ -62,14 +58,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
             }
             return null;
         }
-        private GetFeedSubmissionListRequest GetFeedSubmissionListRequest(string submissionId)
-        {
-            return new GetFeedSubmissionListRequest()
-                {
-                    Merchant = _amazonSellerSettings.SellerId,
-                    FeedSubmissionIdList = new IdList() {Id = new List<string>() {submissionId}}
-                };
-        }
 
         public FeedSubmissionInfo SubmitFeed(AmazonFeedType feedType, FileStream feedContent)
         {
@@ -79,7 +67,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                     "SubmitFeed",null,null,null,"Submitting "+feedType.GetDescription()+" to Amazon");
                 _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Feeds, "SubmitFeed");
                 var service = _amazonApiService.GetFeedsApiService();
-                var request = GetSubmitFeedRequest(feedType, feedContent);
+                var request = _amazonApiService.GetSubmitFeedRequest(feedType, feedContent);
 
                 var result = service.SubmitFeed(request);
 
@@ -98,19 +86,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                 CurrentRequestData.ErrorSignal.Raise(ex);
             }
             return null;
-        }
-        private SubmitFeedRequest GetSubmitFeedRequest(AmazonFeedType feedType, FileStream feedContent)
-        {
-            var request = new SubmitFeedRequest()
-                {
-                    Merchant = _amazonSellerSettings.SellerId,
-                    ContentType = new ContentType(MediaType.XML),
-                    FeedContent = feedContent,
-                    FeedType = feedType.ToString(),
-                    MarketplaceIdList = new IdList {Id = new List<string>(new[] {_amazonSellerSettings.MarketplaceId})}
-                };
-            request.ContentMD5 = MarketplaceWebServiceClient.CalculateContentMD5(request.FeedContent);
-            return request;
         }
 
         public FileStream GetSingleProductDeleteFeed(AmazonListing listing)

@@ -15,7 +15,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         private readonly IAmazonFeedsApiService _amazonFeedsApiService;
         private readonly IAmazonOrderService _amazonOrderService;
 
-        public ShipAmazonOrderService(ISession session, IAmazonOrderRequestService amazonOrderRequestService, IAmazonFeedsApiService amazonFeedsApiService, IAmazonOrderService amazonOrderService)
+        public ShipAmazonOrderService(ISession session, IAmazonOrderRequestService amazonOrderRequestService, 
+            IAmazonFeedsApiService amazonFeedsApiService, IAmazonOrderService amazonOrderService)
         {
             _session = session;
             _amazonOrderRequestService = amazonOrderRequestService;
