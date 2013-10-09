@@ -20,6 +20,10 @@
                 <td>@Model.Guid</td>
             </tr>
             <tr>
+                <td>Created On</td>
+                <td>@Model.CreatedOn</td>
+            </tr>
+            <tr>
                 <td>Order Subtotal (ex TAX)</td>
                 <td>@Model.Subtotal.ToCurrencyFormat()</td>
             </tr>
@@ -121,6 +125,13 @@
                 <td>Status</td>
                 <td>@Html.DisplayFor(x => x.ShippingStatus)</td>
             </tr>
+            @if (Model.ShippingDate.HasValue)
+            {
+                <tr>
+                    <td>Shipped On</td>
+                    <td>@Html.DisplayFor(x => x.ShippingDate)</td>
+                </tr>
+            }
             @{
                 if (!string.IsNullOrEmpty(Model.TrackingNumber))
                 {
@@ -135,7 +146,7 @@
         {
             @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
         }
-        @Html.ActionLink("Set tracking number", "SetTrackingNumber", "Order", new { id = Model.Id}, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+        @Html.ActionLink("Set tracking number", "SetTrackingNumber", "Order", new { id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
     </div>
 </div>
 <hr />

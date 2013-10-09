@@ -741,7 +741,8 @@
     <Compile Include="Apps\Ryness\Entities\BuyingGuideInformation.cs" />
     <Compile Include="Apps\Ryness\Entities\KerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Entities\Testimonial.cs" />
-    <Compile Include="Apps\Ryness\Events\CreateKerridgeLog.cs" />
+    <Compile Include="Apps\Ryness\Events\AmazonCreateKerridgeLog.cs" />
+    <Compile Include="Apps\Ryness\Events\SendAmazonOrderShippedEmailToStoreOwner.cs" />
     <Compile Include="Apps\Ryness\Events\OnOrderPlacedKerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Metadata\BuyingGuideMetadata.cs" />
     <Compile Include="Apps\Ryness\Metadata\StoreListMetadata.cs" />
