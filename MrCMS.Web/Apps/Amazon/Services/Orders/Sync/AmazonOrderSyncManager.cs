@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Web.Apps.Amazon.Models;
+using MrCMS.Web.Apps.Amazon.Services.Api;
 using MrCMS.Web.Apps.Amazon.Services.Api.Orders;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
@@ -10,19 +11,21 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         private readonly IAmazonOrdersApiService _amazonOrdersApiService;
         private readonly IUpdateAmazonOrder _updateAmazonOrder;
         private readonly IShipAmazonOrderService _shipAmazonOrderService;
+        private readonly IAmazonApiService _amazonApiService;
 
         public AmazonOrderSyncManager(IAmazonOrdersApiService amazonOrdersApiService,
-                                      IUpdateAmazonOrder updateAmazonOrder, IShipAmazonOrderService shipAmazonOrderService)
+                                      IUpdateAmazonOrder updateAmazonOrder, IShipAmazonOrderService shipAmazonOrderService, IAmazonApiService amazonApiService)
         {
             _amazonOrdersApiService = amazonOrdersApiService;
             _updateAmazonOrder = updateAmazonOrder;
             _shipAmazonOrderService = shipAmazonOrderService;
+            _amazonApiService = amazonApiService;
         }
 
 
         public GetUpdatedOrdersResult GetUpdatedInfoFromAmazon(GetUpdatedOrdersRequest updatedOrdersRequest)
         {
-            if (_amazonOrdersApiService.IsLive(AmazonApiSection.Orders))
+            if (_amazonApiService.IsLive(AmazonApiSection.Orders))
             {
                 var orders = _amazonOrdersApiService.ListUpdatedOrders(updatedOrdersRequest);
                 var ordersUpdated = orders.Select(order => _updateAmazonOrder.UpdateOrder(order))
@@ -34,9 +37,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             return new GetUpdatedOrdersResult { ErrorMessage = "The service is not currently live" };
         }
 
-        public GetUpdatedOrdersResult GetUpdatedInfoFromAmazonAdHoc(List<string> amazonOrderIds)
+        public GetUpdatedOrdersResult GetUpdatedInfoFromAmazonAdHoc(IEnumerable<string> amazonOrderIds)
         {
-            if (_amazonOrdersApiService.IsLive(AmazonApiSection.Orders))
+            if (_amazonApiService.IsLive(AmazonApiSection.Orders))
             {
                 var orders = _amazonOrdersApiService.ListSpecificOrders(amazonOrderIds);
                 if (orders.Any())

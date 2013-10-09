@@ -8,7 +8,6 @@ using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Settings;
-using MrCMS.Website;
 using Product = MarketplaceWebServiceFeedsClasses.Product;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
@@ -47,7 +46,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                     Message = new AmazonEnvelopeMessageCollection(){message}
                 };
 
-                return AmazonAppHelper.GetStreamFromAmazonEnvelope(amazonEnvelope, amazonEnvelopeMessageType);
+                return AmazonAppHelper.GetStream(amazonEnvelope, amazonEnvelopeMessageType);
             }
             return null;
         }
@@ -81,7 +80,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                     Message = messages
                 };
 
-                return AmazonAppHelper.GetStreamFromAmazonEnvelope(amazonEnvelope, amazonEnvelopeMessageType);
+                return AmazonAppHelper.GetStream(amazonEnvelope, amazonEnvelopeMessageType);
             }
             return null;
         }
@@ -153,7 +152,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                     {
                         SKU = listing.SellerSKU,
                         ImageType = ProductImageImageType.Main,
-                        ImageLocation = AmazonAppHelper.GenerateImageUrl(image.FileUrl)
+                        ImageLocation = AmazonAppHelper.GetValidImageUrl(image.FileUrl)
                     };
                 }
             }
