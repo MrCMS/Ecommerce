@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using MrCMS.Web.Apps.Amazon.Entities.Orders;
+using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
@@ -26,11 +28,10 @@ namespace MrCMS.Web.Apps.Ryness.Events
         public void OnOrderPlaced(Order order)
         {
             var kerridgeLog = new KerridgeLog
-                   {
-                       Order = order,
-                       Sent = false
-                   };
-
+                {
+                    Order = order,
+                    Sent = false
+                };
             _kerridgeService.Add(kerridgeLog);
         }
     }
