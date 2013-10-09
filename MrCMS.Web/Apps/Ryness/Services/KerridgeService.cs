@@ -85,7 +85,7 @@ namespace MrCMS.Web.Apps.Ryness.Services
                         string strReference = "WEB" + o.Id;
 
                         DateTime dateTime = CurrentRequestData.Now;
-                        string date = dateTime.Year + "-" + dateTime.Month + "-" + dateTime.Day;
+                        string date = dateTime.Year + "-" + dateTime.Month.ToString().PadLeft(2, '0') +"-" + dateTime.Day.ToString().PadLeft(2, '0');
 
                         string strName = o.ShippingAddress.Name;
                         string strAddressLine1 = o.ShippingAddress.Company + " " + o.ShippingAddress.Address1;
