@@ -22,12 +22,12 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
             {
                 FromName = fromName,
                 ToAddress = "{OrderEmail}",
-                ToName = "{UserName}",
+                ToName = "{CustomerName}",
                 Bcc = String.Empty,
                 Cc = String.Empty,
                 Subject = String.Format("{0} - Order Placed", fromName),
-                Body = "Your order (ID:{Id}) has been placed.",
-                IsHtml = false
+                Body = "<p>Dear {CustomerName},</p> <p>Your order {Id} was successfully placed. </p> Items ordered: <p>{ShoppingCartHtml}</p> <p>Shipping Address: <br />{ShippingAddressFormattedHtml}</p><p>Thank you for your custom.</p>",
+                IsHtml = true
             };
         }
 

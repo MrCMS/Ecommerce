@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
             {
                 FromName = fromName,
                 ToAddress = "{OrderEmail}",
-                ToName = "{UserName}",
+                ToName = "{CustomerName}",
                 Bcc = String.Empty,
                 Cc = String.Empty,
                 Subject = String.Format("{0} - Order Partially Refunded", fromName),
