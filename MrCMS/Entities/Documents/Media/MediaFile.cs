@@ -12,6 +12,11 @@ namespace MrCMS.Entities.Documents.Media
 {
     public class MediaFile : SiteEntity
     {
+        public MediaFile()
+        {
+            ResizedImages = new List<ResizedImage>();
+        }
+
         public virtual string FileExtension { get; set; }
         public virtual string ContentType { get; set; }
         public virtual MediaCategory MediaCategory { get; set; }

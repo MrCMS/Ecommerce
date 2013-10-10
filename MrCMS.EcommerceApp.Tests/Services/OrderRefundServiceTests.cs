@@ -22,7 +22,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
             var order = new Order(){Total = 100};
             var orderRefund = new OrderRefund(){Amount = 10, Order = order};
 
-            _orderRefundService.Add(orderRefund,order);
+            _orderRefundService.Add(orderRefund);
 
             A.CallTo(() => _orderEventService.OrderPartiallyRefunded(order,orderRefund)).MustHaveHappened();
         }
@@ -33,7 +33,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
             var order = new Order() { Total = 100 };
             var orderRefund = new OrderRefund() { Amount = 100, Order = order };
 
-            _orderRefundService.Add(orderRefund, order);
+            _orderRefundService.Add(orderRefund);
 
             A.CallTo(() => _orderEventService.OrderFullyRefunded(order, orderRefund)).MustHaveHappened();
         }
