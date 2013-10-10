@@ -28,5 +28,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             _session.Transact(session => session.Delete(item));
         }
+
+        public void AddOrderNoteAudit(string note, Order order)
+        {
+            _session.Transact(session => session.SaveOrUpdate(new OrderNote
+                {
+                    Note = note,
+                    ShowToClient = false,
+                    Order = order
+                }));
+        }
     }
 }
