@@ -21,13 +21,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             return _session.QueryOver<OrderRefund>().Cacheable().List();
         }
 
-        public void Add(OrderRefund orderRefund, Order order)
+        public void Add(OrderRefund orderRefund)
         {
-            _session.Transact(session => session.Save(order));
-            if(orderRefund.Amount==order.Total)
-                _orderEventService.OrderFullyRefunded(order,orderRefund);
+            orderRefund.Order.OrderRefunds.Add(orderRefund);//cache
+            _session.Transact(session => session.Save(orderRefund));
+
+            if (orderRefund.Amount == orderRefund.Order.Total)
+                _orderEventService.OrderFullyRefunded(orderRefund.Order, orderRefund);
             else
-                _orderEventService.OrderPartiallyRefunded(order, orderRefund);
+                _orderEventService.OrderPartiallyRefunded(orderRefund.Order, orderRefund);
         }
 
         public void Delete(OrderRefund item)

@@ -38,8 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 }
                 if (ModelState.IsValid)
                 {
-                    orderRefund.Order.OrderRefunds.Add(orderRefund);
-                    _orderRefundService.Add(orderRefund, orderRefund.Order);
+                    _orderRefundService.Add(orderRefund);
                     return RedirectToAction("Edit", "Order", new { id = orderRefund.Order.Id });
                 }
                 return View(orderRefund);
