@@ -40,6 +40,17 @@
                 <td>Order Total</td>
                 <td>@Model.Total.ToCurrencyFormat()</td>
             </tr>
+            @if (Model.TotalRefunds > 0)
+            {
+                <tr>
+                    <td>Order Refunds</td>
+                    <td>@Model.TotalRefunds.ToCurrencyFormat()</td>
+                </tr>
+                <tr>
+                    <td>Order Total After refunds</td>
+                    <td>@Model.TotalAfterRefunds.ToCurrencyFormat()</td>
+                </tr>
+            }
         </table>
     </div>
 </div>
@@ -50,8 +61,8 @@
         <div class="span12">
             @if (Model.OrderRefunds.Count > 0)
             {
-                <p>Refunds:</p>
-                <table class="table table-bordered table-striped">
+                <h4>Refunds</h4>
+                <table class="table table-condensed table-striped">
                     <thead>
                         <tr>
                             <th>Amount

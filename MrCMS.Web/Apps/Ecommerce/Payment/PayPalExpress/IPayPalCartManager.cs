@@ -104,7 +104,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                 var order = _orderService.GetByGuid(orderNumberGuid);
                 if (order != null)
                 {
-
                     //order note
                     _orderNoteService.Save(new OrderNote
                     {
@@ -125,8 +124,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                             _orderRefundService.Add(new OrderRefund
                                                         {
                                                             Order = order,
-                                                            Amount = order.TotalAfterRefunds
-                                                        }, order);
+                                                            Amount = -total
+                                                        });
                             break;
                         case PaymentStatus.Voided:
                             _orderService.MarkAsVoided(order);
@@ -134,6 +133,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                         default:
                             break;
                     }
+
+                    
+
                 }
                 else
                 {

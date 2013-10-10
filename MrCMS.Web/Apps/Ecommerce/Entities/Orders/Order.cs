@@ -39,7 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
             }
         }
 
-        protected virtual decimal TotalRefunds
+        public virtual decimal TotalRefunds
         {
             get
             {
