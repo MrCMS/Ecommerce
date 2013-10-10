@@ -27,12 +27,15 @@ namespace MrCMS.Web.Apps.Ryness.Events
         public int Order { get { return 100; } }
         public void OnOrderPlaced(Order order)
         {
-            var kerridgeLog = new KerridgeLog
-                {
-                    Order = order,
-                    Sent = false
-                };
-            _kerridgeService.Add(kerridgeLog);
+            if (order.PaymentStatus.Equals(PaymentStatus.Paid))
+            {
+                var kerridgeLog = new KerridgeLog
+                    {
+                        Order = order,
+                        Sent = false
+                    };
+                _kerridgeService.Add(kerridgeLog);
+            }
         }
     }
 }

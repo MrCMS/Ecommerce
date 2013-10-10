@@ -9,5 +9,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         void OrderShipped(Order order);
         void OrderFullyRefunded(Order order, OrderRefund refund);
         void OrderPartiallyRefunded(Order order, OrderRefund refund);
+        void OrderPaid(Order order);
     }
 }
