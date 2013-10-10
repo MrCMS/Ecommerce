@@ -91,6 +91,8 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("User Account - download Order PDF", "Apps/Ecommerce/OrderPdf/ExportOrderToPdf/{id}", new { controller = "OrderPdf", action = "ExportOrderToPdf" }, new[] { typeof(OrderPdfController).Namespace });
             context.MapRoute("PayPal Express Checkout - SetExpressCheckout", "Apps/Ecommerce/PayPalExpress/SetExpressCheckout", new { controller = "PayPalExpressCheckout", action = "SetExpressCheckout" },
                              new[] { typeof(PayPalExpressCheckoutController).Namespace });
+            context.MapRoute("PayPal Express Checkout - IPN", "Apps/Ecommerce/PayPalExpress/IPN", new { controller = "PayPalExpressCheckout", action = "IPN" },
+                             new[] { typeof(PayPalExpressCheckoutController).Namespace });
             context.MapRoute("Product Search - Query", "search/query", new { controller = "ProductSearch", action = "Query" }, new[] { typeof(ProductSearchController).Namespace });
             context.MapRoute("Product Search - Results", "search/results", new { controller = "ProductSearch", action = "Results" }, new[] { typeof(ProductSearchController).Namespace });
             context.MapRoute("Checkout - PayPal Return Handler", "Apps/Ecommerce/PayPalExpressCheckout/ReturnHandler", new { controller = "PayPalExpressCheckout", action = "Return" }, new[] { typeof(PayPalExpressCheckoutController).Namespace });
