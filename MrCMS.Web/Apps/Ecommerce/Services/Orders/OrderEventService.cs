@@ -50,6 +50,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 items.ForEach(placed => placed.OnOrderPartiallyRefunded(order, refund));
         }
 
+        public void OrderPaid(Order order)
+        {
+            var items = GetAll<IOnOrderPaid>();
+            if (items.Any())
+                items.ForEach(placed => placed.OnOrderPaid(order));
+        }
+
         private IOrderedEnumerable<T> GetAll<T>() where T : IOrderEvent
         {
             return _kernel.GetAll<T>().OrderBy(placed => placed.Order);

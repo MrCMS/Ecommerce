@@ -179,6 +179,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             order.PaidDate = CurrentRequestData.Now;
             order.PaymentStatus = PaymentStatus.Paid;
             _session.Transact(session => session.Update(order));
+            _orderEventService.OrderPaid(order);
         }
 
         public void MarkAsVoided(Order order)

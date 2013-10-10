@@ -681,6 +681,7 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\UpdateStock.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\ExportOrderService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IExportOrdersService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IOnOrderPaid.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderEventService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderRefundService.cs" />
@@ -743,6 +744,7 @@
     <Compile Include="Apps\Ryness\Entities\KerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Entities\Testimonial.cs" />
     <Compile Include="Apps\Ryness\Events\AmazonCreateKerridgeLog.cs" />
+    <Compile Include="Apps\Ryness\Events\Copy of OnOrderPlacedKerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Events\SendAmazonOrderShippedEmailToStoreOwner.cs" />
     <Compile Include="Apps\Ryness\Events\OnOrderPlacedKerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Metadata\BuyingGuideMetadata.cs" />
