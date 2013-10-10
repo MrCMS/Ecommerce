@@ -98,48 +98,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 
         [DisplayName("Sales Channel")]
         public virtual string SalesChannel { get; set; }
-
-
-        //Following fields are use for the HTML email sent to users
-
-        public virtual string BillingAddressFormatted
-        {
-            get { return BillingAddress.GetDescription(); }
-        }
-
-        public virtual string ShippingAddressFormatted
-        {
-            get { return ShippingAddress.GetDescription(); }
-        }
-
-        public virtual string ShoppingCartHtml
-        {
-            get
-            {
-                var sb = new StringBuilder();
-
-                sb.Append("<table cellpadding=2 cellspacing=2 border=0 style='border: 1px solid grey;'>");
-                sb.Append("<tr>");
-                sb.Append("<td>Product</td>");
-                sb.Append("<td>Quantity</td>");
-                sb.Append("<td>Item Price</td>");
-                sb.Append("<td>Total</td>");
-                sb.Append("</tr>");
-
-                foreach (var item in OrderLines)
-                {
-                    sb.Append("<tr>");
-                    sb.Append("<td>" + item.Name + " (" + item.SKU + ")" + "</td>");
-                    sb.Append("<td>" + item.Quantity + "</td>");
-                    sb.Append("<td>" + item.UnitPrice + "</td>");
-                    sb.Append("<td>" + item.Subtotal + "</td>");
-                    sb.Append("</tr>");
-                }
-
-                sb.Append("</table>");
-                return sb.ToString();
-            }
-        }
     }
 
     public class AddressData : IAddress
