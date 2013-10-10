@@ -553,6 +553,7 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalSecurityService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalUrlService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalCartManager.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressCheckoutPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressCheckoutSettings.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressService.cs" />
