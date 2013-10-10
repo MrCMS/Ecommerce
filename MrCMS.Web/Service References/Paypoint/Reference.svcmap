@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c952d94c-e85c-4dcd-91b4-efa209b9f222" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="37f31c97-8a99-4f7b-93a8-e81f66a53e19" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <EnableDataBinding>true</EnableDataBinding>
@@ -18,10 +18,10 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="https://www.secpay.com/java-bin/services/SECCardService?wsdl" Protocol="http" SourceId="1" />
+    <MetadataSource Address="https://www.secpay.com/java-bin/services/SECCardService?wsdl " Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="SECCardService.wsdl" MetadataType="Wsdl" ID="c4f25ac0-049e-446e-a751-a06a622a3b22" SourceId="1" SourceUrl="https://www.secpay.com/java-bin/services/SECCardService?wsdl" />
+    <MetadataFile FileName="SECCardService.wsdl" MetadataType="Wsdl" ID="2449b564-4cc8-4a9f-b576-d6a5a96bf521" SourceId="1" SourceUrl="https://www.secpay.com/java-bin/services/SECCardService?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
