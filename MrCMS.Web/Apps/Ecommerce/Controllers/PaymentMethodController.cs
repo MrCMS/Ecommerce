@@ -95,6 +95,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                                                                      {
                                                                          o.PaymentStatus = PaymentStatus.Paid;
                                                                          o.AuthorisationToken = response.PaypointPaymentDetails.AuthCode;
+                                                                         o.ShippingStatus = ShippingStatus.Unshipped;
                                                                      });
                 return _documentService.RedirectTo<OrderPlaced>(new { id = order.Guid });
             }

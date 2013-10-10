@@ -79,6 +79,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                         }
                                                         if (postCreationActions != null)
                                                             postCreationActions(order);
+                                                        
                                                         session.SaveOrUpdate(order);
 
                                                         User currentUser = CurrentRequestData.CurrentUser;
@@ -150,14 +151,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public void Cancel(Order order)
         {
-            var orderNote = new OrderNote
+            _orderNoteService.Save( new OrderNote
             {
                 Note =
                     "Order marked as cancelled by " + CurrentRequestData.CurrentUser.Name + ".",
                 ShowToClient = false,
                 Order = order
-            };
-            _orderNoteService.Save(orderNote);
+            });
 
             order.IsCancelled = true;
             _session.Transact(session => session.Update(order));
@@ -166,14 +166,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public void MarkAsShipped(Order order)
         {
-            var orderNote = new OrderNote
+            _orderNoteService.Save(new OrderNote
             {
                 Note =
                     "Order marked as shipped by " + CurrentRequestData.CurrentUser.Name + ".",
                 ShowToClient = false,
                 Order = order
-            };
-            _orderNoteService.Save(orderNote);
+            });
 
             order.ShippingDate = CurrentRequestData.Now;
             order.ShippingStatus = ShippingStatus.Shipped;
@@ -183,14 +182,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public void MarkAsPaid(Order order)
         {
-            var orderNote = new OrderNote
-            {
+            _orderNoteService.Save( new OrderNote{
                 Note =
                     "Order marked as paid by " + CurrentRequestData.CurrentUser.Name + ".",
                 ShowToClient = false,
                 Order = order
-            };
-            _orderNoteService.Save(orderNote);
+            });
 
             order.PaidDate = CurrentRequestData.Now;
             order.PaymentStatus = PaymentStatus.Paid;
