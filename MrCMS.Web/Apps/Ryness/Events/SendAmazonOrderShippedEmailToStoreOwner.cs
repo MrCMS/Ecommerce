@@ -1,14 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using MrCMS.Helpers;
+﻿using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.MessageTemplates;
 using MrCMS.Web.Apps.Amazon.Services.Orders.Events;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Web.Apps.Ecommerce.MessageTemplates;
-using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ryness.Events

@@ -10,16 +10,19 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     {
         private readonly IAmazonOrdersApiService _amazonOrdersApiService;
         private readonly IUpdateAmazonOrder _updateAmazonOrder;
+        private readonly IScheduleAmazonOrderSync _scheduleAmazonOrderSync;
         private readonly IShipAmazonOrderService _shipAmazonOrderService;
         private readonly IAmazonApiService _amazonApiService;
 
         public AmazonOrderSyncManager(IAmazonOrdersApiService amazonOrdersApiService,
-                                      IUpdateAmazonOrder updateAmazonOrder, IShipAmazonOrderService shipAmazonOrderService, IAmazonApiService amazonApiService)
+            IShipAmazonOrderService shipAmazonOrderService, IAmazonApiService amazonApiService, 
+            IUpdateAmazonOrder updateAmazonOrder, IScheduleAmazonOrderSync scheduleAmazonOrderSync)
         {
             _amazonOrdersApiService = amazonOrdersApiService;
-            _updateAmazonOrder = updateAmazonOrder;
             _shipAmazonOrderService = shipAmazonOrderService;
             _amazonApiService = amazonApiService;
+            _updateAmazonOrder = updateAmazonOrder;
+            _scheduleAmazonOrderSync = scheduleAmazonOrderSync;
         }
 
 
@@ -28,11 +31,11 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             if (_amazonApiService.IsLive(AmazonApiSection.Orders))
             {
                 var orders = _amazonOrdersApiService.ListUpdatedOrders(updatedOrdersRequest);
-                var ordersUpdated = orders.Select(order => _updateAmazonOrder.UpdateOrder(order))
+                orders.Select(order => _scheduleAmazonOrderSync.ScheduleSync(order))
                                       .Where(amazonOrder => amazonOrder != null)
                                       .ToList();
                 var ordersShipped = _shipAmazonOrderService.MarkOrdersAsShipped();
-                return new GetUpdatedOrdersResult { OrdersUpdated = ordersUpdated, OrdersShipped = ordersShipped };
+                return new GetUpdatedOrdersResult { OrdersShipped = ordersShipped };
             }
             return new GetUpdatedOrdersResult { ErrorMessage = "The service is not currently live" };
         }
