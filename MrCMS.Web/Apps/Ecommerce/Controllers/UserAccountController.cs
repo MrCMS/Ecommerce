@@ -75,6 +75,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 var existingUser = _userService.GetUserByEmail(model.Email);
                 if (existingUser != null)
                     return Redirect(UniquePageHelper.GetUrl<ProductSearch>());
+                
 
                 var user = new User
                 {
@@ -83,12 +84,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                     Email = model.Email.Trim(),
                     IsActive = true
                 };
+
                 _passwordManagementService.SetPassword(user, model.Password, model.Password);
                 _userService.AddUser(user);
                 _authorisationService.SetAuthCookie(model.Email, false);
                 CurrentRequestData.CurrentUser = user;
 
-                _orderService.SetLastOrderUserIdByOrderId(model.OrderId);
+                var order = _orderService.SetLastOrderUserIdByOrderId(model.OrderId);
+                if (order.BillingAddress != null)
+                {
+                    user.FirstName = order.BillingAddress.FirstName;
+                    user.LastName = order.BillingAddress.LastName;
+                    _userService.SaveUser(user);
+                }
 
                 return Redirect(UniquePageHelper.GetUrl<UserAccountPage>());
             }

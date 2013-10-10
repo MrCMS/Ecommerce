@@ -81,9 +81,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                             postCreationActions(order);
                                                         session.SaveOrUpdate(order);
 
-                                                        if (CurrentRequestData.CurrentUser != null)
+                                                        User currentUser = CurrentRequestData.CurrentUser;
+                                                        if (currentUser != null)
                                                         {
-                                                            var addresses = _session.QueryOver<Address>().Where(address => address.User == CurrentRequestData.CurrentUser).List();
+                                                            var addresses = _session.QueryOver<Address>().Where(address => address.User == currentUser).List();
                                                             if (!addresses.Contains(cartModel.BillingAddress, AddressComparison.Comparer))
                                                             {
                                                                 var clone = cartModel.BillingAddress.Clone(session);
@@ -92,6 +93,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                             }
                                                             if (!addresses.Contains(cartModel.ShippingAddress, AddressComparison.Comparer))
                                                                 _session.Save(cartModel.ShippingAddress.Clone(session));
+
+                                                            if (string.IsNullOrEmpty(currentUser.FirstName) &&
+                                                                string.IsNullOrEmpty(currentUser.LastName) && cartModel.BillingAddress != null)
+                                                            {
+                                                                currentUser.FirstName = cartModel.BillingAddress.FirstName;
+                                                                currentUser.LastName = cartModel.BillingAddress.LastName;
+                                                                _session.Save(currentUser);
+                                                            }
                                                         }
 
                                                         return order;
@@ -204,14 +213,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             _session.Transact(session => session.Update(order));
         }
 
-        public void SetLastOrderUserIdByOrderId(int orderId)
+        public Order SetLastOrderUserIdByOrderId(int orderId)
         {
             var order = _session.Get<Order>(orderId);
 
-            if (order == null) return;
+            if (order == null) return null;
 
             order.User = CurrentRequestData.CurrentUser;
             _session.Transact(session => session.Update(order));
+            return order;
         }
 
         public Order GetByGuid(Guid id)
