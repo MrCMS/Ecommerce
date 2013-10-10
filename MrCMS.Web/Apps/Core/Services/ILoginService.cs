@@ -38,12 +38,12 @@ namespace MrCMS.Web.Apps.Core.Services
                     CurrentRequestData.CurrentUser = user;
                     _userEventService.OnUserLoggedIn(user, guid);
                     return user.IsAdmin
-                               ? new LoginResult {Success = true, RedirectUrl = loginModel.ReturnUrl ?? "~/admin"}
-                               : new LoginResult {Success = true, RedirectUrl = loginModel.ReturnUrl ?? "~/"};
+                               ? new LoginResult { Success = true, RedirectUrl = loginModel.ReturnUrl ?? "~/admin" }
+                               : new LoginResult { Success = true, RedirectUrl = loginModel.ReturnUrl ?? "~/" };
                 }
                 message = "Incorrect email or password.";
             }
-            return new LoginResult {Success = false, Message = message};
+            return new LoginResult { Success = false, Message = message };
         }
     }
 }

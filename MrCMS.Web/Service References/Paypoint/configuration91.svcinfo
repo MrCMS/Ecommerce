@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="IwANAf3H+lpf6lEGfDbXhRkTurk=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="4BAsddlB7SzOUnPf28/4VLayjLI=">
   <bindingConfigurations>
-    <bindingConfiguration bindingType="basicHttpBinding" name="SECCardServiceSoapBinding2">
+    <bindingConfiguration bindingType="basicHttpBinding" name="SECCardServiceSoapBinding4">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>SECCardServiceSoapBinding2</serializedValue>
+          <serializedValue>SECCardServiceSoapBinding4</serializedValue>
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -110,10 +110,10 @@
         </property>
       </properties>
     </bindingConfiguration>
-    <bindingConfiguration bindingType="basicHttpBinding" name="SECCardServiceSoapBinding3">
+    <bindingConfiguration bindingType="basicHttpBinding" name="SECCardServiceSoapBinding5">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>SECCardServiceSoapBinding3</serializedValue>
+          <serializedValue>SECCardServiceSoapBinding5</serializedValue>
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -221,7 +221,7 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="SECCardService1" contract="Paypoint.SECVPN" bindingType="basicHttpBinding" address="https://www.secpay.com/java-bin/services/SECCardService" bindingConfiguration="SECCardServiceSoapBinding2">
+    <endpoint name="SECCardService1" contract="Paypoint.SECVPN" bindingType="basicHttpBinding" address="https://www.secpay.com/java-bin/services/SECCardService" bindingConfiguration="SECCardServiceSoapBinding4">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>https://www.secpay.com/java-bin/services/SECCardService</serializedValue>
@@ -233,7 +233,7 @@
           <serializedValue>basicHttpBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>SECCardServiceSoapBinding2</serializedValue>
+          <serializedValue>SECCardServiceSoapBinding4</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>Paypoint.SECVPN</serializedValue>

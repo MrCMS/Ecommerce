@@ -4,7 +4,9 @@ using System.Web;
 using MrCMS.Entities;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
+using MrCMS.Models;
 using MrCMS.Paging;
+using MrCMS.Settings;
 using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
@@ -14,10 +16,12 @@ namespace MrCMS.Services
     public class UserService : IUserService
     {
         private readonly ISession _session;
+        private readonly SiteSettings _siteSettings;
 
-        public UserService(ISession session)
+        public UserService(ISession session, SiteSettings siteSettings)
         {
             _session = session;
+            _siteSettings = siteSettings;
         }
 
         public void AddUser(User user)
@@ -43,13 +47,24 @@ namespace MrCMS.Services
             return _session.QueryOver<User>().Cacheable().List();
         }
 
-        public IPagedList<User> GetAllUsersPaged(int page, string searchtext)
+        public IPagedList<User> GetUsersPaged(UserSearchQuery searchQuery)
         {
-            if (!string.IsNullOrEmpty(searchtext))
-            {
-                return _session.QueryOver<User>().Where(x => x.Email.IsInsensitiveLike(searchtext, MatchMode.Anywhere) || x.FirstName.IsInsensitiveLike(searchtext, MatchMode.Anywhere) || x.LastName.IsInsensitiveLike(searchtext, MatchMode.Anywhere)).Paged(page, 10);
-            }
-            return _session.QueryOver<User>().Paged(page, 10);
+            var query = _session.QueryOver<User>();
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.Query))
+                query =
+                    query.Where(
+                        user =>
+                        user.Email.IsInsensitiveLike(searchQuery.Query, MatchMode.Anywhere) ||
+                        user.LastName.IsInsensitiveLike(searchQuery.Query, MatchMode.Anywhere) ||
+                        user.FirstName.IsInsensitiveLike(searchQuery.Query, MatchMode.Anywhere));
+
+            return query.Paged(searchQuery.Page, _siteSettings.DefaultPageSize);
+        }
+
+        public IPagedList<User> GetAllUsersPaged(int page)
+        {
+            return _session.QueryOver<User>().Paged(page, _siteSettings.DefaultPageSize);
         }
 
         public User GetUserByEmail(string email)
@@ -123,10 +138,9 @@ namespace MrCMS.Services
             return _session.QueryOver<T>().Where(arg => arg.User == user).Cacheable().List();
         }
 
-        public IPagedList<T> GetPaged<T>(User user, QueryOver<T> query = null, int page = 1, int pageSize = 10) where T : SystemEntity, IBelongToUser
+        public IPagedList<T> GetPaged<T>(User user, QueryOver<T> query = null, int page = 1) where T : SystemEntity, IBelongToUser
         {
-            return _session.Paged(query ?? QueryOver.Of<T>(), page, pageSize);
-
+            return _session.Paged(query ?? QueryOver.Of<T>(), page, _siteSettings.DefaultPageSize);
         }
     }
 }
