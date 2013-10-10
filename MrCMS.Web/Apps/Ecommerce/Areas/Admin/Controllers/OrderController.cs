@@ -2,8 +2,10 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
+using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Paging;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
@@ -22,12 +24,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IOptionService _optionService;
         private readonly EcommerceSettings _ecommerceSettings;
         private readonly IExportOrdersService _exportOrdersService;
+        private readonly IUserService _userService;
         private readonly IShippingMethodManager _shippingMethodManager;
         private readonly IOrderSearchService _orderSearchService;
         private readonly IOrderShippingService _orderShippingService;
 
         public OrderController(IOrderService orderService,  IShippingMethodManager shippingMethodManager,
-            IOrderSearchService orderSearchService, IOrderShippingService orderShippingService, IOptionService optionService, EcommerceSettings ecommerceSettings,IExportOrdersService exportOrdersService)
+            IOrderSearchService orderSearchService, IOrderShippingService orderShippingService,
+            IOptionService optionService, EcommerceSettings ecommerceSettings, IExportOrdersService exportOrdersService, IUserService userService)
         {
             _orderService = orderService;
             _shippingMethodManager = shippingMethodManager;
@@ -36,6 +40,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _optionService = optionService;
             _ecommerceSettings = ecommerceSettings;
             _exportOrdersService = exportOrdersService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -209,6 +214,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                 CurrentRequestData.ErrorSignal.Raise(ex);
                 return RedirectToAction("Edit", "Order", new { id = order.Id });
             }
+        }
+
+        [ChildActionOnly]
+        public PartialViewResult ForUser(User user)
+        {
+            var orders = _userService.GetAll<Order>(user);
+            return PartialView(orders);
         }
     }
 }

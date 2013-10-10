@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 using MrCMS.Entities;
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
@@ -9,12 +8,11 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System;
 using MrCMS.Entities.People;
-using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using System.ComponentModel;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 {
-    public class Order : SiteEntity
+    public class Order : SiteEntity, IBelongToUser
     {
         public Order()
         {
