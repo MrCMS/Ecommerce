@@ -49,8 +49,8 @@ namespace MrCMS.Web.Apps.Amazon.Tasks
         private void ExecuteTask()
         {
             _timer.Enabled = false;
-            //try
-            //{
+            try
+            {
                 var ordersForUpdate = MrCMSApplication.Get<AmazonOrderSyncDataService>().GetAllByOperationType(SyncAmazonOrderOperation.Update);
                 foreach (var amazonOrderSyncData in ordersForUpdate)
                 {
@@ -61,11 +61,11 @@ namespace MrCMS.Web.Apps.Amazon.Tasks
                 {
                     Update(amazonOrderSyncData);
                 }
-            //}
-            //catch (Exception ex)
-            //{
-            //    CurrentRequestData.ErrorSignal.Raise(ex);
-            //}
+            }
+            catch (Exception ex)
+            {
+                CurrentRequestData.ErrorSignal.Raise(ex);
+            }
             _timer.Enabled = true;
         }
         private static AmazonOrder Update(AmazonOrderSyncData data)
