@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MarketplaceWebServiceOrders;
 using MarketplaceWebServiceOrders.Model;
+using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Analytics;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
@@ -42,7 +43,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
         private List<Order> GetOrder(GetOrderRequest request)
         {
             _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, null, null, AmazonApiSection.Orders,
-                    "GetOrder", null, null, null, "Listing Specific Amazon Orders (Ids:" + request.AmazonOrderId.Id.Select(x => x) + ")");
+                    "GetOrder", null, null, null, "Listing Specific Amazon Orders ("+request.AmazonOrderId.Id.ToTokenizedString(", ") + ")");
             _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "GetOrder");
             var result = _marketplaceWebServiceOrders.GetOrder(request);
             var orders = new List<Order>();

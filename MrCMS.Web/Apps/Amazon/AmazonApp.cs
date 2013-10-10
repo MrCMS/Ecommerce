@@ -14,6 +14,7 @@ using MrCMS.Web.Apps.Amazon.Controllers;
 using MrCMS.Web.Apps.Amazon.DbConfiguration;
 using MrCMS.Web.Apps.Amazon.ModelBinders;
 using MrCMS.Web.Apps.Amazon.Settings;
+using MrCMS.Web.Apps.Amazon.Tasks;
 using MrCMS.Web.Areas.Admin.Controllers;
 using MrCMS.Website;
 using NHibernate;
@@ -54,6 +55,9 @@ namespace MrCMS.Web.Apps.Amazon
                 var config = new MarketplaceWebServiceConfig { ServiceURL = amazonAppSettings.ProductsApiEndpoint };
                 return new MarketplaceWebServiceClient (amazonAppSettings.AWSAccessKeyId, amazonAppSettings.SecretKey, "MrCMS", MrCMSApplication.AssemblyVersion, config);
             }).InRequestScope();
+
+            //START SINGLETON - INTERVAL IN SECONDS - DEFAULT: 300 (5min.)
+            ExecuteSyncOfAmazonOrders.Instance.Start(300);
         }
 
         protected override void RegisterApp(MrCMSAppRegistrationContext context)

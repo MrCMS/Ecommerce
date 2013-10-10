@@ -47,7 +47,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
         }
         private MarketplaceWebServiceOrdersClient GetOrdersApiService()
         {
-            var config = new MarketplaceWebServiceOrdersConfig() { ServiceURL = _amazonAppSettings.ProductsApiEndpoint };
+            var config = new MarketplaceWebServiceOrdersConfig() { ServiceURL = _amazonAppSettings.OrdersApiEndpoint };
             return new MarketplaceWebServiceOrdersClient("MrCMS", MrCMSApplication.AssemblyVersion, MrCMSApplication.Get<AmazonAppSettings>().AWSAccessKeyId,
                                                     MrCMSApplication.Get<AmazonAppSettings>().SecretKey,
                                                     config);
@@ -63,7 +63,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api
                 switch (apiSection)
                 {
                     case AmazonApiSection.Orders:
-                        var ordersApiRequest = new GetServiceStatusRequest {SellerId = _amazonSellerSettings.SellerId};
+                        var ordersApiRequest = new GetServiceStatusRequest { SellerId = _amazonSellerSettings.SellerId };
                         var ordersApiResult = GetOrdersApiService().GetServiceStatus(ordersApiRequest);
                         if (ordersApiResult != null && ordersApiResult.GetServiceStatusResult != null)
                             return ordersApiResult.GetServiceStatusResult.Status.GetEnumByValue<AmazonServiceStatus>();

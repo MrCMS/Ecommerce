@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ using System.Xml.Serialization;
 using MarketplaceWebServiceFeedsClasses;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Website;
+using Newtonsoft.Json;
 
 namespace MrCMS.Web.Apps.Amazon.Helpers
 {
@@ -34,6 +36,41 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
             return String.Empty;
         }
 
+        public static string ToTokenizedString(this StringCollection collection, string token)
+        {
+            return collection.Count > 1 ?
+                collection.Aggregate(String.Empty, (current, item) => current + (item + token)) :
+                collection.Aggregate(String.Empty, (current, item) => current + item);
+        }
+
+        public static string ToTokenizedString(this List<string> collection, string token)
+        {
+            return collection.Count > 1 ?
+                collection.Aggregate(String.Empty, (current, item) => current + (item + token)) :
+                collection.Aggregate(String.Empty, (current, item) => current + item);
+        }
+
+        public static string SerializeFromXml<T>(T item)
+        {
+            using (var stream = new MemoryStream())
+            {
+                using (var writer = XmlWriter.Create(stream))
+                {
+                    new XmlSerializer(typeof(T)).Serialize(writer, item);
+                    return Encoding.UTF8.GetString(stream.ToArray());
+                }
+            }
+        }
+
+        public static string SerializeToJson<T>(T item)
+        {
+            return JsonConvert.SerializeObject(item);
+        }
+        public static T DeserializeFromJson<T>(string value) where T:class
+        {
+            return JsonConvert.DeserializeObject<T>(value);
+        }
+
         #endregion
 
         #region Feeds and Files
@@ -51,28 +88,18 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
 
         public static FileStream GetStream(AmazonEnvelope amazonEnvelope, AmazonEnvelopeMessageType amazonEnvelopeMessageType)
         {
-            var xml = Serialize(amazonEnvelope);
+            var xml = SerializeFromXml(amazonEnvelope);
             var fileLocation = GetFeedPath(amazonEnvelopeMessageType);
             File.WriteAllText(fileLocation, xml);
             return File.Open(fileLocation, FileMode.Open, FileAccess.Read);
         }
 
-        private static string Serialize<T>(T item)
-        {
-            using (var stream = new MemoryStream())
-            {
-                using (var writer = XmlWriter.Create(stream))
-                {
-                    new XmlSerializer(typeof(T)).Serialize(writer, item);
-                    return Encoding.UTF8.GetString(stream.ToArray());
-                }
-            }
-        }
         private static string GetFeedPath(AmazonEnvelopeMessageType amazonEnvelopeMessageType)
         {
             return string.Format("{0}/Amazon{1}Feed-{2}.xml", GetDirPath(), amazonEnvelopeMessageType,
                                  CurrentRequestData.Now.ToString("yyyy-MM-dd hh-mm-ss"));
         }
+
         private static string GetDirPath()
         {
             var relativeFilePath = Path.Combine("/content/upload/", string.Format("{0}/{1}", CurrentRequestData.CurrentSite.Id, "amazon"));

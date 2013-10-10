@@ -4,6 +4,8 @@ using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Orders.Events;
+using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 {
@@ -11,11 +13,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     {
         private readonly IValidateAmazonOrderService _validateAmazonOrderService;
         private readonly IEnumerable<IOnAmazonOrderPlaced> _onAmazonOrderPlaceds;
+        private readonly IOrderService _orderService;
 
-        public UpdateAmazonInfo(IValidateAmazonOrderService validateAmazonOrderService, IEnumerable<IOnAmazonOrderPlaced> onAmazonOrderPlaceds)
+        public UpdateAmazonInfo(IValidateAmazonOrderService validateAmazonOrderService, 
+            IEnumerable<IOnAmazonOrderPlaced> onAmazonOrderPlaceds, IOrderService orderService)
         {
             _validateAmazonOrderService = validateAmazonOrderService;
             _onAmazonOrderPlaceds = onAmazonOrderPlaceds;
+            _orderService = orderService;
         }
 
         public void Update(AmazonOrder amazonOrder, Order order)
@@ -29,6 +34,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
             amazonOrder.NumberOfItemsShipped = order.NumberOfItemsShipped;
             amazonOrder.Status = order.OrderStatus.GetEnumByValue<AmazonOrderStatus>();
+            if (amazonOrder.Status == AmazonOrderStatus.Shipped && amazonOrder.Order!=null && amazonOrder.Order.ShippingStatus == ShippingStatus.Unshipped)
+            {
+                _orderService.MarkAsShipped(amazonOrder.Order);
+            }
         }
 
         public int Order { get { return -10; } }
