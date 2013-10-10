@@ -8,5 +8,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         IList<OrderNote> GetAll();
         void Save(OrderNote item);
         void Delete(OrderNote item);
+        void AddOrderNoteAudit(string note, Order order);
     }
 }

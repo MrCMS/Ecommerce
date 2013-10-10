@@ -151,13 +151,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public void Cancel(Order order)
         {
-            _orderNoteService.Save( new OrderNote
-            {
-                Note =
-                    "Order marked as cancelled by " + CurrentRequestData.CurrentUser.Name + ".",
-                ShowToClient = false,
-                Order = order
-            });
+            _orderNoteService.AddOrderNoteAudit(string.Format("Order marked as cancelled by {0}.",
+                                                                       CurrentRequestData.CurrentUser.Name), order);
 
             order.IsCancelled = true;
             _session.Transact(session => session.Update(order));
@@ -166,13 +161,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public void MarkAsShipped(Order order)
         {
-            _orderNoteService.Save(new OrderNote
-            {
-                Note =
-                    "Order marked as shipped by " + CurrentRequestData.CurrentUser.Name + ".",
-                ShowToClient = false,
-                Order = order
-            });
+            _orderNoteService.AddOrderNoteAudit(string.Format("Order marked as shipped by {0}.",
+                                                                       CurrentRequestData.CurrentUser.Name), order);
 
             order.ShippingDate = CurrentRequestData.Now;
             order.ShippingStatus = ShippingStatus.Shipped;
@@ -182,12 +172,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public void MarkAsPaid(Order order)
         {
-            _orderNoteService.Save( new OrderNote{
-                Note =
-                    "Order marked as paid by " + CurrentRequestData.CurrentUser.Name + ".",
-                ShowToClient = false,
-                Order = order
-            });
+            _orderNoteService.AddOrderNoteAudit(string.Format("Order marked as paid by {0}.",
+                                                                       CurrentRequestData.CurrentUser.Name), order);
 
             order.PaidDate = CurrentRequestData.Now;
             order.PaymentStatus = PaymentStatus.Paid;
@@ -196,16 +182,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public void MarkAsVoided(Order order)
         {
-
-            var orderNote = new OrderNote
-            {
-                Note =
-                    "Order payment marked as void by " + CurrentRequestData.CurrentUser.Name + ".",
-                ShowToClient = false,
-                Order = order
-            };
-            _orderNoteService.Save(orderNote);
-
+            _orderNoteService.AddOrderNoteAudit(string.Format("Order payment marked as void by {0}.",
+                                                                       CurrentRequestData.CurrentUser.Name), order);
+            
             order.PaymentStatus = PaymentStatus.Voided;
             _session.Transact(session => session.Update(order));
         }
@@ -228,15 +207,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public void Delete(Order order)
         {
-            var orderNote = new OrderNote
-            {
-                Note =
-                    "Order marked as deleted by " + CurrentRequestData.CurrentUser.Name + ".",
-                ShowToClient = false,
-                Order = order
-            };
-            _orderNoteService.Save(orderNote);
-
+            _orderNoteService.AddOrderNoteAudit(string.Format("Order marked as deleted by {0}.",
+                                                                       CurrentRequestData.CurrentUser.Name), order);
             _session.Delete(order);
         }
     }
