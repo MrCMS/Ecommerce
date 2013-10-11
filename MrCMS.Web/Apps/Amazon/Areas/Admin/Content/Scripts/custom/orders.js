@@ -4,24 +4,46 @@ $(document).ready(function () {
 
     $(document).on('click', '#pb-start-task', function () {
         $("#results").html("");
-        var description = $("#Description").val();
         $("#pb-start-task").hide();
-        $.post(taskUrl, {
-            description: description
-        }, function (data) {
-            $("#pb-start-task").show();
-            if (data.ErrorMessage != "") {
-                $("#Description").val("");
-                alert(data.ErrorMessage);
-            } else {
-                $("#results").append("<strong>Updated/Imported Orders:</strong><br/>");
-                $("#results").append("<ul>");
-                data.OrdersUpdated.each(function (index, value) {
-                    $("#results").append("<li>" + value.AmazonOrderId + "</li>");
-                });
-                $("#results").append("</ul>");
-            }
-        });
+        sync();
     });
 
 });
+
+function sync() {
+    var description = $("#Description").val();
+    $.ajax({
+        url: taskUrl,
+        type: "POST",
+        cache: false,
+        data: {
+            description: description
+        },
+        dataType: "json",
+        success: function (data) {
+            $("#pb-start-task").show();
+            if (data.ErrorMessage != "") {
+                $("#Description").val("");
+                $("#results").append(data.ErrorMessage);
+            } else {
+                updateResults(data);
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
+        }
+    });
+    return false;
+}
+
+function updateResults(data) {
+    if (data.OrdersUpdated.length > 0) {
+        $("#results").append("<strong>Updated/Imported Orders:</strong><br/><ul></ul>");
+        $.each(data.OrdersUpdated, function (index, value) {
+            $("#results ul").append("<li>" + value + "</li>");
+        });
+    } else {
+        $("#results").append("<strong>No orders were updated.</strong>");
+    }
+}

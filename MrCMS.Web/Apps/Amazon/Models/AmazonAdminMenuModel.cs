@@ -22,7 +22,14 @@ namespace MrCMS.Web.Apps.Amazon.Models
                             {
                                 new ChildMenuItem("Dashboard", "/Admin/Apps/Amazon/App/Dashboard"),
                                 new ChildMenuItem("Listings", "/Admin/Apps/Amazon/ListingGroup"),
-                                new ChildMenuItem("Orders", "/Admin/Apps/Amazon/Orders"),
+                                new ChildMenuItem("Orders", "/Admin/Apps/Amazon/Orders")
+                            }
+                        },
+                        {
+                            "Sync",
+                            new List<IMenuItem>
+                            {
+                                new ChildMenuItem("Orders", "/Admin/Apps/Amazon/Orders/SyncMany")
                             }
                         },
                         {
@@ -37,7 +44,7 @@ namespace MrCMS.Web.Apps.Amazon.Models
                             "Auditing",
                             new List<IMenuItem>
                             {
-                                new ChildMenuItem("Logs", "/Admin/Apps/Amazon/Logs"),
+                                new ChildMenuItem("Logs", "/Admin/Apps/Amazon/Logs")
                             }
                         }
                     });
