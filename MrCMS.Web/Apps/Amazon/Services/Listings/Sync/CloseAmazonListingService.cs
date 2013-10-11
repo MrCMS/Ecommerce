@@ -10,14 +10,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
 {
     public class CloseAmazonListingService : ICloseAmazonListingService
     {
-        private readonly IAmazonRequestService _amazonRequestService;
+        private readonly IAmazonListingRequestService _amazonRequestService;
         private readonly IAmazonFeedsApiService _amazonFeedsApiService;
         private readonly IAmazonLogService _amazonLogService;
         private readonly IAmazonListingService _amazonListingService;
 
         public CloseAmazonListingService(IAmazonFeedsApiService amazonFeedsApiService,
                                           IAmazonLogService amazonLogService, 
-            IAmazonRequestService amazonRequestService, 
+            IAmazonListingRequestService amazonRequestService, 
             IAmazonListingService amazonListingService)
         {
             _amazonFeedsApiService = amazonFeedsApiService;

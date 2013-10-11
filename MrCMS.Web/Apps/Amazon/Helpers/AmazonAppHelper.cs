@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,12 +9,14 @@ using System.Xml.Serialization;
 using MarketplaceWebServiceFeedsClasses;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Website;
-using StringCollection = System.Collections.Specialized.StringCollection;
+using Newtonsoft.Json;
 
 namespace MrCMS.Web.Apps.Amazon.Helpers
 {
     public static class AmazonAppHelper
     {
+        #region Misc
+
         public static T GetEnumByValue<T>(this string value) where T : struct
         {
             return Enum.GetValues(typeof(T)).Cast<T>().SingleOrDefault(x => x.ToString() == value);
@@ -32,32 +35,22 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
             }
             return String.Empty;
         }
+
         public static string ToTokenizedString(this StringCollection collection, string token)
         {
             return collection.Count > 1 ?
-                collection.Cast<string>().Aggregate(String.Empty, (current, item) => current + (item + token)) :
-                collection.Cast<string>().Aggregate(String.Empty, (current, item) => current + item);
+                collection.Aggregate(String.Empty, (current, item) => current + (item + token)) :
+                collection.Aggregate(String.Empty, (current, item) => current + item);
         }
-        public static string GenerateImageUrl(string imageUrl)
+
+        public static string ToTokenizedString(this List<string> collection, string token)
         {
-            if (imageUrl.Contains("http://") || imageUrl.Contains("https://"))
-                return imageUrl.Replace("https", "http");
-
-            var baseUrl = "http://" + CurrentRequestData.CurrentSite.BaseUrl;
-            if (CurrentRequestData.CurrentSite.BaseUrl.Contains("http://") || CurrentRequestData.CurrentSite.BaseUrl.Contains("https://"))
-                baseUrl = CurrentRequestData.CurrentSite.BaseUrl.Replace("https", "http");
-            return baseUrl + imageUrl;
+            return collection.Count > 1 ?
+                collection.Aggregate(String.Empty, (current, item) => current + (item + token)) :
+                collection.Aggregate(String.Empty, (current, item) => current + item);
         }
 
-        public static FileStream GetStreamFromAmazonEnvelope(AmazonEnvelope amazonEnvelope, AmazonEnvelopeMessageType amazonEnvelopeMessageType)
-        {
-            var xml = Serialize(amazonEnvelope);
-            var fileLocation = GetAmazonApiFeedPath(amazonEnvelopeMessageType);
-            File.WriteAllText(fileLocation, xml);
-            return File.Open(fileLocation, FileMode.Open, FileAccess.Read);
-        }
-
-        private static string Serialize<T>(T item)
+        public static string SerializeFromXml<T>(T item)
         {
             using (var stream = new MemoryStream())
             {
@@ -69,13 +62,45 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
             }
         }
 
-        private static string GetAmazonApiFeedPath(AmazonEnvelopeMessageType amazonEnvelopeMessageType)
+        public static string SerializeToJson<T>(T item)
         {
-            return string.Format("{0}/Amazon{1}Feed-{2}.xml", GetAmazonApiDirPath(), amazonEnvelopeMessageType,
+            return JsonConvert.SerializeObject(item);
+        }
+        public static T DeserializeFromJson<T>(string value) where T:class
+        {
+            return JsonConvert.DeserializeObject<T>(value);
+        }
+
+        #endregion
+
+        #region Feeds and Files
+
+        public static string GetValidImageUrl(string imageUrl)
+        {
+            if (imageUrl.Contains("http://") || imageUrl.Contains("https://"))
+                return imageUrl.Replace("https", "http");
+
+            var baseUrl = "http://" + CurrentRequestData.CurrentSite.BaseUrl;
+            if (CurrentRequestData.CurrentSite.BaseUrl.Contains("http://") || CurrentRequestData.CurrentSite.BaseUrl.Contains("https://"))
+                baseUrl = CurrentRequestData.CurrentSite.BaseUrl.Replace("https", "http");
+            return baseUrl + imageUrl;
+        }
+
+        public static FileStream GetStream(AmazonEnvelope amazonEnvelope, AmazonEnvelopeMessageType amazonEnvelopeMessageType)
+        {
+            var xml = SerializeFromXml(amazonEnvelope);
+            var fileLocation = GetFeedPath(amazonEnvelopeMessageType);
+            File.WriteAllText(fileLocation, xml);
+            return File.Open(fileLocation, FileMode.Open, FileAccess.Read);
+        }
+
+        private static string GetFeedPath(AmazonEnvelopeMessageType amazonEnvelopeMessageType)
+        {
+            return string.Format("{0}/Amazon{1}Feed-{2}.xml", GetDirPath(), amazonEnvelopeMessageType,
                                  CurrentRequestData.Now.ToString("yyyy-MM-dd hh-mm-ss"));
         }
 
-        public static string GetAmazonApiDirPath()
+        private static string GetDirPath()
         {
             var relativeFilePath = Path.Combine("/content/upload/", string.Format("{0}/{1}", CurrentRequestData.CurrentSite.Id, "amazon"));
             var baseDirectory = HostingEnvironment.ApplicationPhysicalPath.Substring(0, HostingEnvironment.ApplicationPhysicalPath.Length - 1);
@@ -89,14 +114,48 @@ namespace MrCMS.Web.Apps.Amazon.Helpers
             return path;
         }
 
-        public static bool GetAmazonAppSettingsStatus(AmazonAppSettings settings)
+        public static void DeleteAmazonFilesOlderThan(TimeSpan timespan)
+        {
+            var amazonApiDir = GetDirPath();
+
+            DeleteFilesOlderThan(timespan, amazonApiDir, "*.xml");
+        }
+        private static bool DeleteFilesOlderThan(TimeSpan timespan, string dir, string extension)
+        {
+            var files = Directory.GetFiles(dir, extension);
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var fileInfo = new FileInfo(file);
+
+                    if (fileInfo.CreationTimeUtc > DateTime.UtcNow.Add(timespan)) continue;
+
+                    fileInfo.Delete();
+                }
+                catch (Exception ex)
+                {
+                    CurrentRequestData.ErrorSignal.Raise(ex);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        #endregion
+
+        #region Settings
+
+        public static bool CheckAppSettingsStatus(AmazonAppSettings settings)
+        {
+            return settings.GetType().GetProperties().Where(info => info.CanWrite && info.Name != "Site").All(property => !String.IsNullOrWhiteSpace(Convert.ToString(property.GetValue(settings, null))));
+        }
+        public static bool CheckSellerSettingsStatus(AmazonSellerSettings settings)
         {
             return settings.GetType().GetProperties().Where(info => info.CanWrite && info.Name != "Site").All(property => !String.IsNullOrWhiteSpace(Convert.ToString(property.GetValue(settings, null))));
         }
 
-        public static bool GetAmazonSellerSettingsStatus(AmazonSellerSettings settings)
-        {
-            return settings.GetType().GetProperties().Where(info => info.CanWrite && info.Name != "Site").All(property => !String.IsNullOrWhiteSpace(Convert.ToString(property.GetValue(settings, null))));
-        }
+        #endregion
     }
 }
