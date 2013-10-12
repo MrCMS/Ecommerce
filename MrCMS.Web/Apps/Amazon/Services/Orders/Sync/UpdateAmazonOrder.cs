@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using MarketplaceWebServiceOrders.Model;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
+using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
 using System.Linq;
@@ -8,6 +9,11 @@ using MrCMS.Web.Apps.Amazon.Services.Orders.Events;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 {
+    public interface IUpdateAmazonOrder
+    {
+        AmazonOrder UpdateOrder(Order order);
+        AmazonOrder UpdateOrder(AmazonOrderSyncData amazonOrderSyncData);
+    }
     public class UpdateAmazonOrder : IUpdateAmazonOrder
     {
         private readonly IEnumerable<IPerformAmazonUpdates> _amazonUpdates;
@@ -65,6 +71,27 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             if (newOrder)
                 foreach (var orderPlaced in _onAmazonOrderPlaceds)
                     orderPlaced.OnAmazonOrderPlaced(amazonOrder);
+
+            return amazonOrder;
+        }
+
+        public AmazonOrder UpdateOrder(AmazonOrderSyncData amazonOrderSyncData)
+        {
+            var amazonOrder = amazonOrderSyncData.AmazonOrder ?? new AmazonOrder();
+            var order = AmazonAppHelper.DeserializeFromJson<Order>(amazonOrderSyncData.Data);
+
+            foreach (var update in _amazonUpdates.OrderBy(updates => updates.Order))
+                update.Update(amazonOrder, order);
+
+            if (amazonOrder.Id > 0)
+                amazonOrder = _amazonOrderService.Get(amazonOrder.Id);
+            _amazonOrderService.SaveOrUpdate(amazonOrder);
+
+            if (amazonOrderSyncData.Operation == SyncAmazonOrderOperation.Add)
+            {
+                foreach (var orderPlaced in _onAmazonOrderPlaceds)
+                    orderPlaced.OnAmazonOrderPlaced(amazonOrder);
+            }
 
             return amazonOrder;
         }

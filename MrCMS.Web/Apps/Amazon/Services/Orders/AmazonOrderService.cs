@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;

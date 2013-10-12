@@ -15,6 +15,7 @@ using MrCMS.Web.Apps.Ryness.Settings;
 using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
+using MrCMS.Entities.Multisite;
 
 namespace MrCMS.Web.Apps.Ryness.Services
 {
@@ -44,7 +45,13 @@ namespace MrCMS.Web.Apps.Ryness.Services
         public void Add(KerridgeLog kerridgeLog)
         {
             if (_session.QueryOver<KerridgeLog>().Where(x=>x.Order.Id == kerridgeLog.Order.Id).RowCount() == 0) // check to make sure it hasn't already been added
-                _session.Transact(session => session.Save(kerridgeLog));
+                _session.Transact(session =>
+                    {
+                        kerridgeLog.Order = session.Get<Ecommerce.Entities.Orders.Order>(kerridgeLog.Order.Id);
+                        kerridgeLog.Site = session.Get<Site>(kerridgeLog.Order.Site.Id);
+                        session.Save(kerridgeLog);
+                    }
+                    );
         }
 
         public void Update(KerridgeLog kerridgeLog)

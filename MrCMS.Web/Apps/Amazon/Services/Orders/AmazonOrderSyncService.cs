@@ -40,7 +40,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
                 @from = lastRun.Value;
             }
             else
-                @from = now.AddMinutes(-32);
+                @from = now.AddMonths(-1);
             var updatedOrdersRequest = new GetUpdatedOrdersRequest
             {
                 LastUpdatedAfter = @from,
