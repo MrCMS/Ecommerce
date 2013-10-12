@@ -10,6 +10,7 @@ using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Multisite;
 using MrCMS.Entities.People;
+using MrCMS.Events;
 using MrCMS.Helpers;
 using MrCMS.Installation;
 using MrCMS.Services;
@@ -63,21 +64,24 @@ namespace MrCMS.Web.Apps.Core
 
             CurrentRequestData.SiteSettings = siteSettings;
 
-            var documentService = new DocumentService(session, siteSettings, site);
+            var documentService = new DocumentService(session,
+                                                      new DocumentEventService(new List<IOnDocumentDeleted>(), new List<IOnDocumentUnpublished>(), new List<IOnDocumentAdded>()),
+                                                      siteSettings, site);
             var layoutAreaService = new LayoutAreaService(session);
             var widgetService = new WidgetService(session);
             var fileSystem = new FileSystem();
             var imageProcessor = new ImageProcessor(session, fileSystem, mediaSettings);
-            var fileService = new FileService(session, fileSystem, imageProcessor, mediaSettings, site);
+            var fileService = new FileService(session, fileSystem, imageProcessor, mediaSettings, site, siteSettings);
             var user = new User
             {
                 Email = model.AdminEmail,
                 IsActive = true
             };
 
-            var hashAlgorithms = new List<IHashAlgorithm> {new SHA512HashAlgorithm()};
+            var hashAlgorithms = new List<IHashAlgorithm> { new SHA512HashAlgorithm() };
             var hashAlgorithmProvider = new HashAlgorithmProvider(hashAlgorithms);
-            var passwordEncryptionManager = new PasswordEncryptionManager(hashAlgorithmProvider, new UserService(session));
+            var passwordEncryptionManager = new PasswordEncryptionManager(hashAlgorithmProvider,
+                                                                          new UserService(session, siteSettings));
             var passwordManagementService = new PasswordManagementService(passwordEncryptionManager);
 
             passwordManagementService.ValidatePassword(model.AdminPassword, model.ConfirmPassword);

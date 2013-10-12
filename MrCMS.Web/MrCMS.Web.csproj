@@ -65,10 +65,6 @@
     <Reference Include="HibernatingRhinos.Profiler.Appender">
       <HintPath>..\packages\NHibernateProfiler.2.0.2186.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -135,9 +131,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MySql.Data.6.6.4\lib\net40\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -211,15 +206,15 @@
   <ItemGroup>
     <Compile Include="Apps\Amazon\AmazonApp.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\AppController.cs" />
-    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\ListingController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\ListingGroupController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\LogsController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\OrdersController.cs" />
+    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Apps\Amazon\Controllers\AmazonSyncController.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonLogEntryOverride.cs" />
-    <Compile Include="Apps\Amazon\DbConfiguration\AmazonTableNameConvention.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonOrderOverride.cs" />
+    <Compile Include="Apps\Amazon\DbConfiguration\AmazonTableNameConvention.cs" />
     <Compile Include="Apps\Amazon\Entities\Analytics\AmazonApiUsage.cs" />
     <Compile Include="Apps\Amazon\Entities\Listings\AmazonListing.cs" />
     <Compile Include="Apps\Amazon\Entities\Listings\AmazonListingGroup.cs" />
@@ -232,7 +227,9 @@
     <Compile Include="Apps\Amazon\MessageTemplates\SendAmazonOrderPlacedEmailToStoreOwnerMessageTemplate.cs" />
     <Compile Include="Apps\Amazon\ModelBinders\CultureAwareDateBinder.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonAdminMenuModel.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonApiLogResultStatus.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonApiSection.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonChartModel.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonDashboardModel.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonFeedType.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonFulfillmentChannel.cs" />
@@ -248,12 +245,8 @@
     <Compile Include="Apps\Amazon\Models\AmazonProgressModel.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonServiceStatus.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonSyncModel.cs" />
-    <Compile Include="Apps\Amazon\Models\AmazonChartModel.cs" />
-    <Compile Include="Apps\Amazon\Models\AmazonApiLogResultStatus.cs" />
     <Compile Include="Apps\Amazon\Services\Analytics\AmazonAnalyticsService.cs" />
-    <Compile Include="Apps\Amazon\Services\Logs\AmazonApiLogService.cs" />
     <Compile Include="Apps\Amazon\Services\Analytics\IAmazonAnalyticsService.cs" />
-    <Compile Include="Apps\Amazon\Services\Logs\IAmazonApiLogService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\AmazonApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonFeedsApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonGenerateFeedService.cs" />
@@ -278,16 +271,18 @@
     <Compile Include="Apps\Amazon\Services\Listings\Sync\ISyncAmazonListingService.cs" />
     <Compile Include="Apps\Amazon\Services\Listings\Sync\PrepareForSyncAmazonListingService.cs" />
     <Compile Include="Apps\Amazon\Services\Listings\Sync\SyncAmazonListingService.cs" />
+    <Compile Include="Apps\Amazon\Services\Logs\AmazonApiLogService.cs" />
     <Compile Include="Apps\Amazon\Services\Logs\AmazonLogService.cs" />
+    <Compile Include="Apps\Amazon\Services\Logs\IAmazonApiLogService.cs" />
     <Compile Include="Apps\Amazon\Services\Logs\IAmazonLogService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderEventService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSearchService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderService.cs" />
-    <Compile Include="Apps\Amazon\Services\Orders\Events\IOnAmazonOrderPlaced.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Events\IAmazonOrderEvent.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Events\IOnAmazonOrderPlaced.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderEventService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderSearchService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderService.cs" />
-    <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderEventService.cs" />
-    <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderEventService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderSyncService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\AmazonOrderSyncManager.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\GetOrderItems.cs" />
@@ -399,9 +394,9 @@
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
-    <Compile Include="Apps\Ecommerce\Controllers\GoogleBaseFeedController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\EnterOrderEmailController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GoogleAnalyticsController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\GoogleBaseFeedController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\NewInProductsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\OrderPdfController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\OrderPlacedController.cs" />
@@ -476,8 +471,8 @@
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderFullyRefundedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPartiallyRefundedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToCustomerMessageTemplate.cs" />
-    <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderShippedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToStoreOwnerMessageTemplate.cs" />
+    <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderShippedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\OrderTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryContainerMetadata.cs" />
@@ -644,9 +639,7 @@
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\DTOs\BulkStockUpdateDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkStockUpdateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkStockUpdateValidationService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\IBulkStockUpdateValidationRule.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\IBulkStockUpdateValidationRule.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\IInventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\InventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\IStockReportService.cs" />
@@ -662,9 +655,9 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\DTOs\BulkShippingUpdateDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\IBulkShippingUpdateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\IBulkShippingUpdateValidationService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\ShippingMethodExists.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\IBulkStockShippingValidationRule.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\OrderExists.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\ShippingMethodExists.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\EmptyBasket.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderCancelled.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderFullyRefunded.cs" />
@@ -722,13 +715,13 @@
     <Compile Include="Apps\Ecommerce\Widgets\BreadCrumb.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CartWidget.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CategoriesOnlyNavigation.cs" />
-    <Compile Include="Apps\Ecommerce\Widgets\SpendXMore.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\EcommerceNavigation.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedCategories.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedProducts.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\RecentlyViewedItems.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\RelatedProducts.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\SearchBox.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\SpendXMore.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\UserOrdersList.cs" />
     <Compile Include="Apps\Galleries\GalleriesApp.cs" />
     <Compile Include="Apps\Galleries\Metadata\GalleryListMetaData.cs" />
@@ -745,8 +738,8 @@
     <Compile Include="Apps\Ryness\Entities\Testimonial.cs" />
     <Compile Include="Apps\Ryness\Events\AmazonCreateKerridgeLog.cs" />
     <Compile Include="Apps\Ryness\Events\Copy of OnOrderPlacedKerridgeLog.cs" />
-    <Compile Include="Apps\Ryness\Events\SendAmazonOrderShippedEmailToStoreOwner.cs" />
     <Compile Include="Apps\Ryness\Events\OnOrderPlacedKerridgeLog.cs" />
+    <Compile Include="Apps\Ryness\Events\SendAmazonOrderShippedEmailToStoreOwner.cs" />
     <Compile Include="Apps\Ryness\Metadata\BuyingGuideMetadata.cs" />
     <Compile Include="Apps\Ryness\Metadata\StoreListMetadata.cs" />
     <Compile Include="Apps\Ryness\Metadata\StoreMetadata.cs" />
@@ -758,9 +751,9 @@
     <Compile Include="Apps\Ryness\Pages\StoreList.cs" />
     <Compile Include="Apps\Ryness\RynessApp.cs" />
     <Compile Include="Apps\Ryness\Services\ICourierDeliveryService.cs" />
-    <Compile Include="Apps\Ryness\Services\KerridgeService.cs" />
     <Compile Include="Apps\Ryness\Services\IKerridgeService.cs" />
     <Compile Include="Apps\Ryness\Services\ITestimonialService.cs" />
+    <Compile Include="Apps\Ryness\Services\KerridgeService.cs" />
     <Compile Include="Apps\Ryness\Services\TestimonialService.cs" />
     <Compile Include="Apps\Ryness\Settings\KerridgeSettings.cs" />
     <Compile Include="Apps\Ryness\Tasks\SendKerridgeOrders.cs" />
@@ -818,10 +811,10 @@
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-many-listing.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-one-listing.js" />
-    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\orders.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\dashboard.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\listing-groups.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\listings.js" />
+    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\orders.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\progress-bar-paged.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\sync-many-listing.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\sync-one-listing.js" />
@@ -845,6 +838,14 @@
     <Content Include="Apps\Articles\Views\Web.config" />
     <Content Include="Apps\Articles\Views\Widgets\ArticleCategories.cshtml" />
     <Content Include="Apps\Articles\Views\Widgets\LatestXArticles.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\SearchPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\TextPage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\LinkedImage.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\PlainTextWidget.cshtml" />
+    <Content Include="Apps\Core\Areas\Admin\Views\Widget\TextWidget.cshtml" />
     <Content Include="Apps\Core\Content\Bootstrap\css\bootstrap-responsive.css" />
     <Content Include="Apps\Core\Content\Bootstrap\css\bootstrap-responsive.min.css" />
     <Content Include="Apps\Core\Content\Bootstrap\css\bootstrap.css" />
@@ -860,6 +861,28 @@
     <Content Include="Apps\Core\Content\Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Apps\Core\Content\Scripts\respond.min.js" />
     <Content Include="Apps\Core\Content\Styles\style.css" />
+    <Content Include="Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\LoginPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\RegisterPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\ResetPasswordPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\SearchPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\TextPage.cshtml" />
+    <Content Include="Apps\Core\Views\Pages\UserAccountPage.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\ChangePassword.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\LoginBox.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\PasswordReset.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\RegisterForm.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
+    <Content Include="Apps\Core\Views\Shared\_BaseLayout.cshtml" />
+    <Content Include="Apps\Core\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Apps\Core\Views\Widgets\LinkedImage.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\Navigation.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\PlainTextWidget.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\TextWidget.cshtml" />
+    <Content Include="Apps\Core\Views\Widgets\UserLinks.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-discount.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-product.js" />
@@ -1482,7 +1505,6 @@
     <Content Include="Areas\Admin\Content\Styles\jquery.fileupload-ui.css" />
     <Content Include="Areas\Admin\Content\Styles\jquery.treeview.css" />
     <Content Include="Docs\UpgradeNotes.txt" />
-    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Areas\Admin\Content\Scripts\jquery-ui-timepicker-addon.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.contextMenu.js" />
@@ -1873,8 +1895,8 @@
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-login.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-registration.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\jquery.history.js" />
-    <Content Include="Themes\Ryness\Content\Images\ajax-loader.gif" />
     <Content Include="Themes\Ryness\Content\Images\account.jpg" />
+    <Content Include="Themes\Ryness\Content\Images\ajax-loader.gif" />
     <Content Include="Themes\Ryness\Content\Images\arrows.jpg" />
     <Content Include="Themes\Ryness\Content\Images\basket-bg.jpg" />
     <Content Include="Themes\Ryness\Content\Images\basket.jpg" />
@@ -2001,6 +2023,45 @@
     <Content Include="Areas\Admin\Content\Editors\ckeditor\CHANGES.md" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\LICENSE.md" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\README.md" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\AppStats.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Dashboard.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\DashboardContent.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Logs.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\ProductsSold.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\ProductsSoldStats.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Revenue.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\RevenueStats.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Add.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Delete.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Edit.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Index.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\ListingGroups.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Listings.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\AddMany.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\AddOne.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\ChooseProductVariant.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\CloseMany.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\CloseOne.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Delete.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Details.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Listing.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\ProductVariants.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\SyncMany.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\SyncOne.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\DeleteAllLogs.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Details.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Index.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Details.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Index.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\OrderDetails.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\OrderItems.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Orders.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\SyncMany.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\App.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Seller.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Shared\ProgressBarMessages.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Address\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\Delete.cshtml" />
@@ -2036,6 +2097,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderRefund\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\BulkShippingUpdate.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Cancel.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsPaid.cshtml" />
@@ -2120,6 +2182,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\FeaturedCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\FeaturedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\RecentlyViewedItems.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\SpendXMore.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\AddDiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\Cart.cshtml" />
@@ -2186,14 +2249,21 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\RecentlyViewedItems.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\RelatedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\SearchBox.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\SpendXMore.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\UserOrdersList.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\_ChildCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\CourierDelivery\Index.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Kerridge\Index.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Add.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Delete.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Edit.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Testimonial\Index.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\BuyingGuide.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\Store.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\StoreList.cshtml" />
+    <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\FeaturedProductsVertical.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\NewsletterSignup.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\RynessNavigation.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\Slider.cshtml" />
@@ -2201,84 +2271,12 @@
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\TopBanner.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\TopSellers.cshtml" />
     <Content Include="Apps\Ryness\Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Apps\Ryness\Views\Web.config" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Web.config" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\SearchPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Webpage\TextPage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\LinkedImage.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\PlainTextWidget.cshtml" />
-    <Content Include="Apps\Core\Areas\Admin\Views\Widget\TextWidget.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\LoginPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\RegisterPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\ResetPasswordPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\SearchPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\TextPage.cshtml" />
-    <Content Include="Apps\Core\Views\Pages\UserAccountPage.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\ChangePassword.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\LoginBox.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\PasswordReset.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\RegisterForm.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
-    <Content Include="Apps\Core\Views\Shared\_BaseLayout.cshtml" />
-    <Content Include="Apps\Core\Views\Web.config" />
-    <Content Include="Apps\Core\Views\Widgets\LinkedImage.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\Navigation.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\PlainTextWidget.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\TextWidget.cshtml" />
-    <Content Include="Apps\Core\Views\Widgets\UserLinks.cshtml" />
-    <Content Include="Apps\Ryness\Areas\Admin\Views\Widget\FeaturedProductsVertical.cshtml" />
     <Content Include="Apps\Ryness\Views\Pages\BuyingGuide.cshtml" />
     <Content Include="Apps\Ryness\Views\Pages\Store.cshtml" />
     <Content Include="Apps\Ryness\Views\Pages\StoreList.cshtml" />
-    <Content Include="Apps\Ryness\Areas\Admin\Views\Kerridge\Index.cshtml" />
-    <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\BuyingGuide.cshtml" />
-    <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\Store.cshtml" />
-    <Content Include="Apps\Ryness\Areas\Admin\Views\Webpage\StoreList.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Dashboard.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Logs.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\App.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Add.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Delete.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Edit.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Index.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\ListingGroups.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Listings.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\AddMany.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\AddOne.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\ChooseProductVariant.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\CloseMany.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\CloseOne.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Delete.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Details.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Listing.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\ProductVariants.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\SyncMany.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\SyncOne.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\DeleteAllLogs.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Details.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Index.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Details.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Index.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\OrderDetails.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\OrderItems.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Orders.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Seller.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Shared\ProgressBarMessages.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Web.config" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Delete.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Revenue.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\ProductsSold.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\RevenueStats.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\ProductsSoldStats.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\AppStats.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\DashboardContent.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Widgets\SpendXMore.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\SpendXMore.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\SyncMany.cshtml" />
-    <Content Include="Apps\Ryness\Areas\Admin\Views\CourierDelivery\Index.cshtml" />
+    <Content Include="Apps\Ryness\Views\Web.config" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\User\Order.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\ForUser.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2395,7 +2393,9 @@
     <Content Include="Areas\Admin\Views\Sites\CopyOptions.cshtml" />
     <Content Include="Areas\Admin\Views\MessageTemplate\Tokens.cshtml" />
     <Content Include="Areas\Admin\Views\Form\ClearFormData.cshtml" />
-    <None Include="Properties\PublishProfiles\demo.mrcms.com.pubxml" />
+    <Content Include="Areas\Admin\Views\User\Filter.cshtml" />
+    <Content Include="Areas\Admin\Views\Log\Filter.cshtml" />
+    <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Service References\Paypoint\SECCardService.wsdl" />
     <None Include="Themes\Default\Views\Web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
@@ -2419,10 +2419,14 @@
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config" />
     <Content Include="Themes\Ecommerce\Views\Web.config" />
+    <Content Include="Themes\Ryness\Apps\Articles\Views\Pages\Article.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Articles\Views\Pages\ArticleList.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Articles\Views\Web.config" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Pages\LoginPage.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Pages\RegisterPage.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Pages\ResetPasswordPage.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Core\Views\Pages\TextPage.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Pages\UserAccountPage.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Shared\ChangePassword.cshtml" />
     <Content Include="Themes\Ryness\Apps\Core\Views\Shared\LoginBox.cshtml" />
@@ -2448,6 +2452,7 @@
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentDetails\SetBillingAddress.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentMethod\CashOnDelivery.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentMethod\PayPalExpressCheckout.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentMethod\Paypoint.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\ProductSearch\Query.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\ProductSearch\Results.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\ProductSearch\SearchBrands.cshtml" />
@@ -2481,20 +2486,15 @@
     <Content Include="Themes\Ryness\Views\Shared\_HomeLayout.cshtml" />
     <Content Include="Themes\Ryness\Views\Shared\_ProductLayout.cshtml" />
     <Content Include="Themes\Ryness\Views\Shared\_SearchLayout.cshtml" />
+    <Content Include="Themes\Ryness\Views\Shared\_StoreLayout.cshtml" />
     <Content Include="Themes\Ryness\Views\Web.config" />
+    <Content Include="Themes\Ryness\Views\Widgets\FeaturedProductsVertical.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\NewsletterSignup.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\RynessNavigation.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\Slider.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
-    <Content Include="Themes\Ryness\Apps\Articles\Views\Web.config" />
-    <Content Include="Themes\Ryness\Apps\Articles\Views\Pages\Article.cshtml" />
-    <Content Include="Themes\Ryness\Apps\Articles\Views\Pages\ArticleList.cshtml" />
-    <Content Include="Themes\Ryness\Views\Shared\_StoreLayout.cshtml" />
-    <Content Include="Themes\Ryness\Views\Widgets\FeaturedProductsVertical.cshtml" />
-    <Content Include="Themes\Ryness\Apps\Core\Views\Pages\TextPage.cshtml" />
-    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentMethod\Paypoint.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
@@ -2615,11 +2615,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>7859</DevelopmentServerPort>
+          <DevelopmentServerPort>1834</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8888</IISUrl>
+          <IISUrl>http://localhost:8889</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

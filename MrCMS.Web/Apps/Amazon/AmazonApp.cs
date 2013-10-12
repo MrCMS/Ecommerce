@@ -64,10 +64,7 @@ namespace MrCMS.Web.Apps.Amazon
             context.MapRoute("Sync Amazon Orders", "sync-amazon-orders",
                                  new { controller = "AmazonSync", action = "Sync", id = UrlParameter.Optional },
                                  new[] { typeof(AmazonSyncController).Namespace });
-
-            System.Web.Mvc.ModelBinders.Binders.Add(typeof(DateTime), new CultureAwareDateBinder());
-            System.Web.Mvc.ModelBinders.Binders.Add(typeof(DateTime?), new NullableCultureAwareDateBinder());
-        
+            
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)

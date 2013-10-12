@@ -34,18 +34,13 @@ namespace MrCMS.Tasks
                         Session.QueryOver<QueuedMessage>().Where(
                             message => message.SentOn == null && message.Tries < MAX_TRIES).List())
                 {
-                    if (CanSend(queuedMessage, smtpClient))
+                    if (_siteSettings.SiteIsLive)
                         SendMailMessage(queuedMessage, smtpClient);
                     else
                         MarkAsSent(queuedMessage);
                     Session.SaveOrUpdate(queuedMessage);
                 }
             }
-        }
-
-        private bool CanSend(QueuedMessage queuedMessage, SmtpClient smtpClient)
-        {
-            return !string.IsNullOrEmpty(queuedMessage.ToAddress) && smtpClient.Credentials != null && !string.IsNullOrWhiteSpace(smtpClient.Host) && _siteSettings.SiteIsLive;
         }
 
         private void SendMailMessage(QueuedMessage queuedMessage, SmtpClient smtpClient)

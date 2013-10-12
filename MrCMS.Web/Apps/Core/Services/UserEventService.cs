@@ -26,7 +26,7 @@ namespace MrCMS.Web.Apps.Core.Services
             _onUserLoggedIns.ForEach(@in => @in.UserLoggedIn(user, previousSession));
         }
     }
-
+        
     public interface IOnUserLoggedIn
     {
         void UserLoggedIn(User user, Guid previousSession);

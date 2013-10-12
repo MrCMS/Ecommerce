@@ -10,7 +10,7 @@
             <tr>
                 <td>Customer</td>
                 <td>
-                    @Html.Raw((Model.User != null ? "<a href='/Admin/User/Edit/@Model.User.Id'>" : ""))
+                    @Html.Raw((Model.User != null ? string.Format("<a href='/Admin/User/Edit/{0}'>", @Model.User.Id) : ""))
                     @Model.OrderEmail
                     @Html.Raw((Model.User != null ? "</a>" : ""))
                 </td>

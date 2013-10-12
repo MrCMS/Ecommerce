@@ -18,6 +18,7 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Currencies;
+using MrCMS.Website;
 using NHibernate;
 using Ninject;
 using MrCMS.Web.Apps.Core.Pages;
@@ -108,22 +109,23 @@ namespace MrCMS.Web.Apps.Ecommerce
             var configurationProvider = new ConfigurationProvider(new SettingService(session), site);
             var siteSettings = configurationProvider.GetSiteSettings<SiteSettings>();
             var ecommerceSettings = configurationProvider.GetSiteSettings<EcommerceSettings>();
-            var documentService = new DocumentService(session, siteSettings, site);
+            var eventService = MrCMSApplication.Get<IDocumentEventService>();
+            var documentService = new DocumentService(session, eventService, siteSettings, site);
             var currencyService = new CurrencyService(session);
 
             var widgetService = new WidgetService(session);
             var productSearch = new ProductSearch
-                                    {
-                                        Name = "Products",
-                                        UrlSegment = "products",
-                                        RevealInNavigation = true
-                                    };
+            {
+                Name = "Products",
+                UrlSegment = "products",
+                RevealInNavigation = true
+            };
             var categoryContainer = new CategoryContainer
-                                        {
-                                            Name = "Categories",
-                                            UrlSegment = "categories",
-                                            RevealInNavigation = true
-                                        };
+            {
+                Name = "Categories",
+                UrlSegment = "categories",
+                RevealInNavigation = true
+            };
             documentService.AddDocument(productSearch);
             documentService.PublishNow(productSearch);
             documentService.AddDocument(categoryContainer);
@@ -139,12 +141,12 @@ namespace MrCMS.Web.Apps.Ecommerce
             documentService.AddDocument(baseLayout);
             //ecommerce main layout
             var eCommerceLayout = new Layout
-                             {
-                                 Name = "Ecommerce Layout",
-                                 UrlSegment = "~/Apps/Ecommerce/Views/Shared/_EcommerceLayout.cshtml",
-                                 LayoutAreas = new List<LayoutArea>(),
-                                 Parent = baseLayout
-                             };
+            {
+                Name = "Ecommerce Layout",
+                UrlSegment = "~/Apps/Ecommerce/Views/Shared/_EcommerceLayout.cshtml",
+                LayoutAreas = new List<LayoutArea>(),
+                Parent = baseLayout
+            };
             var ecommerceLayoutArea = new List<LayoutArea>
                                      {
                                          new LayoutArea {AreaName = "Header left", Layout = eCommerceLayout},
@@ -206,11 +208,11 @@ namespace MrCMS.Web.Apps.Ecommerce
 
             //widget setup footer links
             var footerLinksWidget = new TextWidget
-                {
-                    LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Footer"),
-                    Name = "Footer links",
-                    Text = GetFooterLinksText()
-                };
+            {
+                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Footer"),
+                Name = "Footer links",
+                Text = GetFooterLinksText()
+            };
             widgetService.AddWidget(footerLinksWidget);
 
 
@@ -287,11 +289,11 @@ namespace MrCMS.Web.Apps.Ecommerce
 
             //add currency
             var britishCurrency = new MrCMS.Web.Apps.Ecommerce.Entities.Currencies.Currency
-                {
-                    Name = "British Pound",
-                    Code = "GBP",
-                    Format = "£0.00"
-                };
+            {
+                Name = "British Pound",
+                Code = "GBP",
+                Format = "£0.00"
+            };
             currencyService.Add(britishCurrency);
 
         }
