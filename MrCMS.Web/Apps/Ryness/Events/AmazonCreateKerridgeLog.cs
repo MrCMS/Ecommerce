@@ -24,11 +24,12 @@ namespace MrCMS.Web.Apps.Ryness.Events
 
             if (orderMrCms.PaymentStatus.Equals(PaymentStatus.Paid) && !orderMrCms.IsCancelled && order.PurchaseDate > new DateTime(2013, 10, 7, 6, 0, 0) && order.FulfillmentChannel.Equals(AmazonFulfillmentChannel.MFN))
             {
-                _kerridgeService.Add(new KerridgeLog
-                    {
-                        Order = orderMrCms,
-                        Sent = false
-                    });
+                var kerridgeLog = new KerridgeLog
+                {
+                    Order = orderMrCms,
+                    Sent = false
+                };
+                _kerridgeService.Add(kerridgeLog);
             }
         }
     }

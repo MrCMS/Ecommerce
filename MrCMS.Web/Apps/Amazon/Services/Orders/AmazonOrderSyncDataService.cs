@@ -1,0 +1,73 @@
+﻿using System.Collections.Generic;
+using MrCMS.Entities.Multisite;
+using MrCMS.Helpers;
+using MrCMS.Web.Apps.Amazon.Entities.Orders;
+using MrCMS.Web.Apps.Amazon.Models;
+using NHibernate;
+using NHibernate.Criterion;
+
+namespace MrCMS.Web.Apps.Amazon.Services.Orders
+{
+    public class AmazonOrderSyncDataService : IAmazonOrderSyncDataService
+    {
+        private readonly ISession _session;
+
+        public AmazonOrderSyncDataService(ISession session)
+        {
+            _session = session;
+        }
+
+        public AmazonOrderSyncData Get(int id)
+        {
+            return _session.QueryOver<AmazonOrderSyncData>()
+                            .Where(item => item.Id == id).SingleOrDefault();
+        }
+
+
+        public AmazonOrderSyncData GetByAmazonOrderId(string sku)
+        {
+            return _session.QueryOver<AmazonOrderSyncData>()
+                            .Where(item => item.OrderId.IsInsensitiveLike(sku, MatchMode.Exact)).SingleOrDefault();
+        }
+
+        public IList<AmazonOrderSyncData> GetAllByOperationType(SyncAmazonOrderOperation operation,int pagesize = 25)
+        {
+            return _session.QueryOver<AmazonOrderSyncData>()
+                            .Where(item => item.Operation==operation && item.Status==SyncAmazonOrderStatus.Pending)
+                            .OrderBy(x=>x.CreatedOn).Asc.Take(pagesize).Cacheable().List();
+        }
+
+        public AmazonOrderSyncData Add(AmazonOrderSyncData item)
+        {
+            _session.Transact(session =>
+                {
+                    if (item.AmazonOrder != null)
+                    {
+                        item.AmazonOrder = session.Get<AmazonOrder>(item.AmazonOrder.Id);
+                        item.Site = session.Get<Site>(item.AmazonOrder.Site.Id);
+                    }
+                    session.Save(item);
+                });
+            return item;
+        }
+
+        public AmazonOrderSyncData Update(AmazonOrderSyncData item)
+        {
+            _session.Transact(session =>
+            {
+                if (item.AmazonOrder != null)
+                {
+                    item.AmazonOrder = session.Get<AmazonOrder>(item.AmazonOrder.Id);
+                    item.Site = session.Get<Site>(item.AmazonOrder.Site.Id);
+                }
+                session.Update(item);
+            });
+            return item;
+        }
+
+        public void Delete(AmazonOrderSyncData item)
+        {
+            _session.Transact(session => session.Delete(item));
+        }
+    }
+}
