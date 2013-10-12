@@ -1,0 +1,110 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
+@model IList<MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order>
+<fieldset>
+    <legend>Orders
+        <a href="/Admin/Apps/Ecommerce/Order" class="btn">View all orders</a>
+    </legend>
+    @if (!Model.Any())
+    {
+        @:No orders.
+        }
+    else
+    {
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>Sales Channel
+                    </th>
+                    <th>Order Id
+                    </th>
+                    <th>Email
+                    </th>
+                    <th>Payment Status
+                    </th>
+                    <th>Shipping Status
+                    </th>
+                    <th>Amount
+                    </th>
+                    <th>Created On
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var status = "warning";
+                    if (item.ShippingStatus.Equals(ShippingStatus.Shipped) && item.PaymentStatus.Equals(PaymentStatus.Paid))
+                    {
+                        status = "success";
+                    }
+                    else if (item.IsCancelled)
+                    {
+                        status = "error";
+                    }
+                    <tr class="@status">
+                        <td>
+                            @(!String.IsNullOrWhiteSpace(item.SalesChannel) ? item.SalesChannel : "Mr CMS")
+                        </td>
+                        <td>
+                            @item.Id
+                        </td>
+                        <td style="word-break: break-all">
+                            @item.OrderEmail
+                        </td>
+                        <td>
+                            @if (!item.IsCancelled)
+                            {
+                                <div class="pull-left">
+                                    @item.PaymentStatus &nbsp;
+                                </div>
+                                <div class="pull-left">
+                                    @if (item.PaymentStatus == PaymentStatus.Pending)
+                                    {
+                                        @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                        <span></span>
+                                        @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                @:Cancelled
+                                }
+                        </td>
+                        <td>
+                            @if (!item.IsCancelled)
+                            {
+                                <div class="pull-left">
+                                    @item.ShippingStatus &nbsp;
+                                </div>
+                                <div class="pull-left">
+                                    @if (item.ShippingStatus != ShippingStatus.Shipped)
+                                    {
+                                        @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                @:Cancelled
+                                }
+                        </td>
+                        <td>@item.Total.ToCurrencyFormat()
+                        </td>
+                        <td>
+                            @item.CreatedOn
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                @Html.ActionLink("Details", "Edit", "Order", new { id = item.Id }, new { @class = "btn btn-mini" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+</fieldset>
