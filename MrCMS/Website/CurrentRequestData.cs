@@ -51,7 +51,7 @@ namespace MrCMS.Website
 
         public static Webpage HomePage
         {
-            get { return (Webpage) CurrentContext.Items["current.homepage"]; }
+            get { return (Webpage)CurrentContext.Items["current.homepage"]; }
             set { CurrentContext.Items["current.homepage"] = value; }
         }
 
@@ -116,10 +116,28 @@ namespace MrCMS.Website
             get
             {
                 if (CurrentUser != null) return CurrentUser.Guid;
-                var o = CurrentContext.Session["current.usersessionGuid"];
-                return (Guid)(o != null ? (Guid)o : (CurrentContext.Session["current.usersessionGuid"] = Guid.NewGuid()));
+                var o = CurrentContext.Request.Cookies["current.usersessionGuid"] != null ? CurrentContext.Request.Cookies["current.usersessionGuid"].Value : null;
+                if (o == null)
+                {
+                    o = Guid.NewGuid().ToString();
+                    var userGuidCookie = new HttpCookie("current.usersessionGuid")
+                                             {
+                                                 Value = o,
+                                                 Expires = DateTime.Now.AddMonths(3)
+                                             };
+                    CurrentContext.Response.Cookies.Add(userGuidCookie);
+                }
+                return Guid.Parse(o);
             }
-            set { CurrentContext.Session["current.usersessionGuid"] = value; }
+            set
+            {
+                var userGuidCookie = new HttpCookie("current.usersessionGuid")
+                                         {
+                                             Value = value.ToString(),
+                                             Expires = DateTime.Now.AddMonths(3)
+                                         };
+                CurrentContext.Response.Cookies.Add(userGuidCookie);
+            }
         }
     }
 }
