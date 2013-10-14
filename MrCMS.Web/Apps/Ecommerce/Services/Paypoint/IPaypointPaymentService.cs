@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
-namespace MrCMS.Web.Apps.Ecommerce.Services
+namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
 {
     public interface IPaypointPaymentService
     {

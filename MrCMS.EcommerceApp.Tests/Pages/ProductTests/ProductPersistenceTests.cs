@@ -18,50 +18,50 @@ namespace MrCMS.EcommerceApp.Tests.Pages.ProductTests
             Session.Transact(session => session.Save(product));
         }
 
-        [Fact]
-        public void Product_Save_CanSaveAProductViaDocumentService()
-        {
-            var product = new Product();
-            var product2 = new Product();
-            var documentService = new DocumentService(Session, new SiteSettings(),CurrentSite);
+        //[Fact]
+        //public void Product_Save_CanSaveAProductViaDocumentService()
+        //{
+        //    var product = new Product();
+        //    var product2 = new Product();
+        //    var documentService = new DocumentService(Session, new SiteSettings(),CurrentSite);
 
-            documentService.SaveDocument(product);
-            documentService.SaveDocument(product2);
-        }
+        //    documentService.SaveDocument(product);
+        //    documentService.SaveDocument(product2);
+        //}
 
-        [Fact]
-        public void Product_Save_CanAddAProductViaDocumentService()
-        {
-            var product = new Product();
-            var product2 = new Product();
-            var documentService = new DocumentService(Session, new SiteSettings(),CurrentSite);
+        //[Fact]
+        //public void Product_Save_CanAddAProductViaDocumentService()
+        //{
+        //    var product = new Product();
+        //    var product2 = new Product();
+        //    var documentService = new DocumentService(Session, new SiteSettings(),CurrentSite);
 
-            documentService.AddDocument(product);
-            documentService.AddDocument(product2);
-        }
+        //    documentService.AddDocument(product);
+        //    documentService.AddDocument(product2);
+        //}
 
-        [Fact]
-        public void Product_Save_CanSaveAProductAttachedToProductSearchViaDocumentService()
-        {
-            var productSearch = new ProductSearch();
-            Session.Transact(session => session.Save(productSearch));
-            var product = new Product { Parent = productSearch };
-            var documentService = new DocumentService(Session, new SiteSettings(),CurrentSite);
+        //[Fact]
+        //public void Product_Save_CanSaveAProductAttachedToProductSearchViaDocumentService()
+        //{
+        //    var productSearch = new ProductSearch();
+        //    Session.Transact(session => session.Save(productSearch));
+        //    var product = new Product { Parent = productSearch };
+        //    var documentService = new DocumentService(Session, new SiteSettings(),CurrentSite);
 
-            documentService.SaveDocument(product);
-        }
+        //    documentService.SaveDocument(product);
+        //}
 
-        [Fact]
-        public void Product_Save_CanAddAProductAttachedToProductSearchViaDocumentService()
-        {
-            var productSearch = new ProductSearch();
-            Session.Transact(session => session.Save(productSearch));
-            var product = new Product { Parent = productSearch };
-            var product2 = new Product { Parent = productSearch };
-            var documentService = new DocumentService(Session, new SiteSettings(),CurrentSite);
+        //[Fact]
+        //public void Product_Save_CanAddAProductAttachedToProductSearchViaDocumentService()
+        //{
+        //    var productSearch = new ProductSearch();
+        //    Session.Transact(session => session.Save(productSearch));
+        //    var product = new Product { Parent = productSearch };
+        //    var product2 = new Product { Parent = productSearch };
+        //    var documentService = new DocumentService(Session, new SiteSettings(),CurrentSite);
 
-            documentService.AddDocument(product);
-            documentService.AddDocument(product2);
-        }
+        //    documentService.AddDocument(product);
+        //    documentService.AddDocument(product2);
+        //}
     }
 }

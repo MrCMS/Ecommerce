@@ -4,6 +4,7 @@ using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
 using MrCMS.Website;
 using NHibernate;
 using MrCMS.Paging;
@@ -52,7 +53,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                             PaymentMethod = cartModel.PaymentMethod,
                                                                             ShippingStatus = ShippingStatus.Pending,
                                                                             ShippingTaxPercentage = cartModel.ShippingTaxPercentage,
-                                                                            SalesChannel = "Mr CMS",
+                                                                            SalesChannel = SalesChannel.MrCMS,
                                                                             Guid = cartModel.CartGuid
                                                                         };
 

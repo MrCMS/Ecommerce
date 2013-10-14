@@ -2,6 +2,7 @@
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.MessageTemplates;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.Events
@@ -21,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.Events
         public int Order { get { return 1; } }
         public void OnOrderShipped(Order order)
         {
-            if (order.SalesChannel == "Mr CMS" || string.IsNullOrWhiteSpace(order.SalesChannel)) //only send if sold on website. Amazon and thirdparties do not allow email sending
+            if (order.SalesChannel == SalesChannel.MrCMS) //only send if sold on website. Amazon and thirdparties do not allow email sending
             {
                 var queuedMessage = _messageParser.GetMessage(order);
                 if (queuedMessage != null)

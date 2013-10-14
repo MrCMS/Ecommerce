@@ -1,7 +1,6 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
 
-namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
+namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.Events
 {
     public interface IOnOrderPaid : IOrderEvent
     {

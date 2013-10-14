@@ -1,0 +1,33 @@
+﻿legend {
+    border: none !important;
+    margin: 0 0 10px 0 !important;
+}
+input[type="text"] {
+    margin: 0 0 0 0 !important;
+}
+form {
+    margin: 0 0 0 0 !important;
+}
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+span.emerald {
+    background-color: #2ecc71;
+    color: #ffffff!important;
+    text-shadow: none;
+    border: none;
+}
+span.alizarin {
+    background-color: #e74c3c;
+    color: #ffffff !important;
+    text-shadow: none;
+    border: none;
+}
+span.peter-river {
+    background-color: #3498db;
+    color: #ffffff !important;
+    text-shadow: none;
+    border: none;
+}

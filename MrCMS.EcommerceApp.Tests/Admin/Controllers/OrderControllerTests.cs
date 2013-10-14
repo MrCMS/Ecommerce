@@ -1,6 +1,7 @@
 using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
@@ -30,7 +31,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _orderShippingService = A.Fake<IOrderShippingService>();
             _ecommerceSettings = new EcommerceSettings();
             _orderController = new OrderController(_orderService,
-                _shippingMethodManager, _orderSearchService, _orderShippingService, _optionService, _ecommerceSettings, A.Fake<IExportOrdersService>());
+                _shippingMethodManager, _orderSearchService, _orderShippingService, _optionService, _ecommerceSettings, A.Fake<IExportOrdersService>(), A.Fake<IUserService>());
         }
 
         //[Fact]

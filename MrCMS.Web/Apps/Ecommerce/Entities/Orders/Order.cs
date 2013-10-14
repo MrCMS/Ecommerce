@@ -95,7 +95,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual string TrackingNumber { get; set; }
 
         [DisplayName("Sales Channel")]
-        public virtual string SalesChannel { get; set; }
+        public virtual SalesChannel SalesChannel { get; set; }
     }
 
     public class AddressData : IAddress
