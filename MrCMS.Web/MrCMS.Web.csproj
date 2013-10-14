@@ -570,7 +570,9 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalUrlService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\SetExpressCheckoutResponse.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Paypoint\PaypointPaymentMethod.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Analytics\OrderAnalyticsService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\RevenueService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupRevenueService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\OrderAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\GoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\IGoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\ITrackingService.cs" />
@@ -821,6 +823,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\base-chart.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-shipping-type.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-payment-type.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-day.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\reports.css" />
     <Content Include="Apps\Ecommerce\Content\Scripts\charts\Chart.min.js" />
@@ -2294,6 +2298,8 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\User\Order.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\ForUser.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\SalesByDay.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\SalesByPaymentType.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\SalesByShippingType.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

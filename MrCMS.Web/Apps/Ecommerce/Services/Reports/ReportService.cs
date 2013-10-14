@@ -1,5 +1,5 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Services.Analytics;
+using MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
 {
@@ -16,28 +16,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
 
         public ChartModel SalesByDay(ChartModel model)
         {
-            var data = _orderAnalyticsService.GetRevenueGroupedBySalesChannel(model.From,model.To);
+            var data = _orderAnalyticsService.GetRevenueGroupedByDate(model.From,model.To);
             _chartService.SetLineChartData(ref model,data);
-            _chartService.SetLineChartLabels(ref model);
-            return model;
-        }
-
-        public ChartModel SalesByDayStructure(ChartModel model)
-        {
-            var data = _orderAnalyticsService.GetRevenueStructureGroupedBySalesChannel(model.From, model.To);
-            _chartService.SetPieChartLabelsAndData(ref model, data);
             _chartService.SetLineChartLabels(ref model);
             return model;
         }
 
         public ChartModel SalesByPaymentType(ChartModel model)
         {
-            return null;
+            var data = _orderAnalyticsService.GetRevenueGrouped("PaymentMethod",model.From, model.To);
+            _chartService.SetBarChartLabelsAndData(ref model, data);
+            return model;
         }
 
         public ChartModel SalesByShippingType(ChartModel model)
         {
-            return null;
+            var data = _orderAnalyticsService.GetRevenueGrouped("ShippingMethod", model.From, model.To);
+            _chartService.SetBarChartLabelsAndData(ref model, data);
+            return model;
         }
     }
 }

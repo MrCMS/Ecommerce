@@ -8,34 +8,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
 {
     public interface IChartService
     {
-        void SetLineChartLabels(ref ChartModel model);
-        void SetLineChartData(ref ChartModel model, IList<KeyValuePair<DateTime, decimal>> items);
+        void SetBarChartLabelsAndData(ref ChartModel model, IEnumerable<IList<KeyValuePair<string, decimal>>> items);
         void SetLineChartData(ref ChartModel model, IEnumerable<IList<KeyValuePair<DateTime, decimal>>> items);
+        void SetLineChartLabels(ref ChartModel model);
         void SetPieChartLabelsAndData(ref ChartModel model, IEnumerable<KeyValuePair<string, decimal>> items);
     }
 
     public class ChartService : IChartService
     {
-        public void SetLineChartData(ref ChartModel model, IList<KeyValuePair<DateTime, decimal>> items)
+        public void SetBarChartLabelsAndData(ref ChartModel model, IEnumerable<IList<KeyValuePair<string, decimal>>> items)
         {
-            var data = new List<decimal>();
-            var ts = model.To - model.From;
-            var oldDate = DateTime.Parse(model.From.Date.ToString());
-            var currentDate = oldDate;
+            model.ChartLabels = new List<string>();
+            model.MultiChartData = new Dictionary<string, List<decimal>>();
 
-            for (var i = 0; i < ts.Days; i++)
+            foreach (var label in items.SelectMany(item => item.Select(x => x.Key).Distinct()))
             {
-                oldDate = currentDate;
-                currentDate = oldDate.AddDays(1);
-                data.Add(i == 0
-                             ? items.Where(x => x.Key.Date == currentDate.Date).Sum(x => x.Value)
-                             : items.Where(x => oldDate.Date <= x.Key && x.Key < currentDate.Date)
-                                    .Sum(x => x.Value));
+                if(model.ChartLabels.All(x => x != label))
+                    model.ChartLabels.Add(label);
             }
 
-            model.LineChartData.Add(model.LineChartData.Count.ToString(), new List<decimal>());
+            foreach (var item in items)
+            {
+                var data= model.ChartLabels.Select(label => item.Any(x => x.Key == label) ? item.SingleOrDefault(x => x.Key == label).Value : 0).ToList();
+                model.MultiChartData.Add(model.MultiChartData.Count.ToString(), data);
+            }
         }
-
         public void SetLineChartData(ref ChartModel model, IEnumerable<IList<KeyValuePair<DateTime, decimal>>> items)
         {
             foreach (var item in items)
@@ -67,13 +64,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
                     }
                 }
 
-                model.LineChartData.Add(model.LineChartData.Count.ToString(), data);
+                model.MultiChartData.Add(model.MultiChartData.Count.ToString(), data);
             }
         }
 
         public void SetLineChartLabels(ref ChartModel model)
         {
-            model.LineChartLabels = new List<string>();
+            model.ChartLabels = new List<string>();
             var ts = model.To - model.From;
             var oldDate = DateTime.Parse(model.From.Date.ToString());
             var currentDate = oldDate;
@@ -84,7 +81,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
                 {
                     oldDate = currentDate;
                     currentDate = oldDate.AddDays(1);
-                    model.LineChartLabels.Add(oldDate.ToString("dd/MM"));
+                    model.ChartLabels.Add(oldDate.ToString("dd/MM"));
                 }
             }
             else
@@ -93,7 +90,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
                 {
                     oldDate = currentDate;
                     currentDate = oldDate.AddMonths(1);
-                    model.LineChartLabels.Add(oldDate.Month.GetMonth());
+                    model.ChartLabels.Add(oldDate.Month.GetMonth());
                 }
             }
         }
