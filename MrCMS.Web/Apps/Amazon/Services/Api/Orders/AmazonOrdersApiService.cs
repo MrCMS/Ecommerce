@@ -10,7 +10,6 @@ using MrCMS.Web.Apps.Amazon.Services.Logs;
 using MrCMS.Web.Apps.Amazon.Services.Orders.Sync;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Website;
-using GetServiceStatusRequest = MarketplaceWebServiceOrders.Model.GetServiceStatusRequest;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
 {
@@ -22,7 +21,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
         private readonly MarketplaceWebServiceOrders.MarketplaceWebServiceOrders _marketplaceWebServiceOrders;
 
         public AmazonOrdersApiService(AmazonSellerSettings amazonSellerSettings,
-            IAmazonAnalyticsService amazonAnalyticsService, IAmazonLogService amazonLogService, MarketplaceWebServiceOrders.MarketplaceWebServiceOrders marketplaceWebServiceOrders)
+            IAmazonAnalyticsService amazonAnalyticsService, IAmazonLogService amazonLogService, 
+            MarketplaceWebServiceOrders.MarketplaceWebServiceOrders marketplaceWebServiceOrders)
         {
             _amazonSellerSettings = amazonSellerSettings;
             _amazonAnalyticsService = amazonAnalyticsService;
@@ -30,33 +30,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
             _marketplaceWebServiceOrders = marketplaceWebServiceOrders;
         }
 
-        private AmazonServiceStatus GetServiceStatus(AmazonApiSection apiSection)
-        {
-            try
-            {
-                var ordersApiRequest = new GetServiceStatusRequest { SellerId = _amazonSellerSettings.SellerId };
-                var ordersApiResult = _marketplaceWebServiceOrders.GetServiceStatus(ordersApiRequest);
-                if (ordersApiResult != null && ordersApiResult.GetServiceStatusResult != null)
-                    return ordersApiResult.GetServiceStatusResult.Status.GetEnumByValue<AmazonServiceStatus>();
-
-            }
-            catch (MarketplaceWebServiceOrdersException ex)
-            {
-                _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null, apiSection, "GetServiceStatus", null, null, null);
-            }
-            catch (Exception ex)
-            {
-                CurrentRequestData.ErrorSignal.Raise(ex);
-            }
-            return AmazonServiceStatus.RED;
-        }
-        public bool IsLive(AmazonApiSection apiSection)
-        {
-            var serviceStatus = GetServiceStatus(apiSection);
-            return serviceStatus == AmazonServiceStatus.GREEN || serviceStatus == AmazonServiceStatus.GREEN_I;
-        }
-
-        public List<Order> ListSpecificOrders(List<string> orderIds)
+        public List<Order> ListSpecificOrders(IEnumerable<string> orderIds)
         {
             var request = new GetOrderRequest
             {
@@ -69,7 +43,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
         private List<Order> GetOrder(GetOrderRequest request)
         {
             _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, null, null, AmazonApiSection.Orders,
-                    "GetOrder", null, null, null, "Listing Specific Amazon Orders (Ids:" + request.AmazonOrderId.Id.Select(x => x) + ")");
+                    "GetOrder", null, null, null, "Listing Specific Amazon Orders ("+request.AmazonOrderId.Id.ToTokenizedString(", ") + ")");
             _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "GetOrder");
             var result = _marketplaceWebServiceOrders.GetOrder(request);
             var orders = new List<Order>();

@@ -25,25 +25,25 @@
             <div class="row-fluid">
                 <div class="span4">
                     @Html.LabelFor(x => x.SearchText, "Email or Lastname")
-                    @Html.TextBoxFor(x => x.SearchText, new {@class = "span12"})
-                    
+                    @Html.TextBoxFor(x => x.SearchText, new { @class = "span12" })
+
                     @Html.LabelFor(x => x.OrderId)
-                    @Html.TextBoxFor(x => x.OrderId, new {@class = "span12"})
+                    @Html.TextBoxFor(x => x.OrderId, new { @class = "span12" })
                 </div>
                 <div class="span4">
                     @Html.LabelFor(x => x.DateFrom)
-                    @Html.TextBoxFor(x => x.DateFrom, new {@class = "span12 date-time-picker"})
-                    
+                    @Html.TextBoxFor(x => x.DateFrom, new { @class = "span12 date-time-picker" })
+
                     @Html.LabelFor(x => x.PaymentStatus)
-                    @Html.DropDownListFor(x=>x.PaymentStatus, ViewData["PaymentStatuses"] as IEnumerable<SelectListItem>, new {@class = "span12"})
+                    @Html.DropDownListFor(x => x.PaymentStatus, ViewData["PaymentStatuses"] as IEnumerable<SelectListItem>, new { @class = "span12" })
                 </div>
                 <div class="span4">
-                    
+
                     @Html.LabelFor(x => x.DateTo)
-                    @Html.TextBoxFor(x => x.DateTo, new {@class = "span12 date-time-picker"})
-                   
+                    @Html.TextBoxFor(x => x.DateTo, new { @class = "span12 date-time-picker" })
+
                     @Html.LabelFor(x => x.ShippingStatus)
-                    @Html.DropDownListFor(x=>x.ShippingStatus, ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new {@class = "span12"})
+                    @Html.DropDownListFor(x => x.ShippingStatus, ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new { @class = "span12" })
                 </div>
             </div>
             <hr />
@@ -56,9 +56,9 @@
                         </th>
                         <th>Email
                         </th>
-                        <th>Payment Status
+                        <th>Payment Info
                         </th>
-                        <th>Shipping Status
+                        <th>Shipping Info
                         </th>
                         <th>Amount
                         </th>
@@ -92,17 +92,17 @@
                             <td>
                                 @if (!item.IsCancelled)
                                 {
-                                    <div class="pull-left">
-                                        @item.PaymentStatus &nbsp;
-                                    </div>
-                                    <div class="pull-left">
-                                        @if (item.PaymentStatus == PaymentStatus.Pending)
+                                    @item.PaymentStatus 
+                                        
+                                        if (item.PaymentStatus == PaymentStatus.Pending)
                                         {
-                                            @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new {id = item.Id, index = true}, new {@class = "btn btn-mini", data_toggle = "fb-modal"})
                                             <span></span>
-                                            @Html.ActionLink("Void", "MarkAsVoided", "Order", new {id = item.Id, index = true}, new {@class = "btn btn-mini", data_toggle = "fb-modal"})
+                                            @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                            <span></span>
+                                            @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
                                         }
-                                    </div>
+                                    <br />
+                                    @item.PaymentMethod
                                 }
                                 else
                                 {
@@ -112,15 +112,17 @@
                             <td>
                                 @if (!item.IsCancelled)
                                 {
-                                    <div class="pull-left">
-                                        @item.ShippingStatus &nbsp;
-                                    </div>
-                                    <div class="pull-left">
-                                        @if (item.ShippingStatus != ShippingStatus.Shipped)
-                                        {
-                                            @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new {id = item.Id, index = true}, new {@class = "btn btn-mini", data_toggle = "fb-modal"})
-                                        }
-                                    </div>
+                                    @item.ShippingStatus
+                                    <span></span>
+                                    if (item.ShippingStatus != ShippingStatus.Shipped)
+                                    {
+                                    @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                    }
+                                    <br />
+                                    if (item.ShippingMethod != null)
+                                    {
+                                        @item.ShippingMethod.Name
+                                    }
                                 }
                                 else
                                 {
@@ -134,14 +136,14 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    @Html.ActionLink("Details", "Edit", "Order", new {id = item.Id}, new {@class = "btn btn-mini"})
+                                    @Html.ActionLink("Details", "Edit", "Order", new { id = item.Id }, new { @class = "btn btn-mini" })
                                 </div>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-            @Html.Pager(Model.Results, "Index", i => new {page = i})
+            @Html.Pager(Model.Results, "Index", i => new { page = i })
         }
 
     </fieldset>

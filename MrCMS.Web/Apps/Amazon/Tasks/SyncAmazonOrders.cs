@@ -16,7 +16,7 @@ namespace MrCMS.Web.Apps.Amazon.Tasks
         {
             var webClient = new WebClient();
 
-            webClient.DownloadData(new Uri(new Uri("http://" + Site.BaseUrl), "sync-amazon-orders"));
+            webClient.DownloadData(new Uri(new Uri(Site.BaseUrl), "sync-amazon-orders"));
         }
     }
 }

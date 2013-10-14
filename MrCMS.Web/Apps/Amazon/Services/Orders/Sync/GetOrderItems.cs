@@ -18,11 +18,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
         public void Update(AmazonOrder amazonOrder, Order order)
         {
-            if (!amazonOrder.Items.Any())
-            {
-                var orderItems = _amazonOrdersApiService.ListOrderItems(amazonOrder.AmazonOrderId);
-                _importAmazonOrderService.SetAmazonOrderItems(orderItems, amazonOrder);
-            }
+            if (amazonOrder.Items.Any()) return;
+
+            var orderItems = _amazonOrdersApiService.ListOrderItems(amazonOrder.AmazonOrderId);
+            _importAmazonOrderService.SetAmazonOrderItems(orderItems, amazonOrder);
         }
 
         public int Order { get { return -5; } }
