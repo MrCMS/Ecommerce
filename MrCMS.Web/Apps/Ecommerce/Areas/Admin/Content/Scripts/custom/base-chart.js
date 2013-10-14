@@ -17,7 +17,7 @@ var lineChartOptions = {
     pointDot: true,
     pointDotRadius: 1,
     pointDotStrokeWidth: 0.2,
-    datasetStroke: false,
+    datasetStroke: true,
     datasetStrokeWidth: 1,
     datasetFill: true,
     animation: true,

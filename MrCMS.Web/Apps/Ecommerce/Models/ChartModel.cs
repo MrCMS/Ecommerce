@@ -8,8 +8,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
     {
         public ChartModel()
         {
-            SalesChannel = SalesChannel.MrCMS;
-
             From = CurrentRequestData.Now.AddMonths(-1);
             To = CurrentRequestData.Now;
 
@@ -17,8 +15,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             MultiChartData = new Dictionary<string, List<decimal>>();
             SingleChartData = new Dictionary<string, decimal>();
         }
-
-        public SalesChannel SalesChannel { get; set; }
 
         public DateTime From { get; set; }
         public DateTime To { get; set; }

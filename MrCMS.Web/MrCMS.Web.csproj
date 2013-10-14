@@ -928,6 +928,7 @@
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.min.js" />
     <Content Include="Apps\Ecommerce\Content\Images\mrcms-logo.png" />
     <Content Include="Apps\Ecommerce\Content\Scripts\bootstrap.dropdown.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\charts\Chart.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\cart.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\category.js" />
