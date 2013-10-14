@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
 using NHibernate;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 

@@ -10,7 +10,7 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.Paypoint;
 using MrCMS.Website;
 
-namespace MrCMS.Web.Apps.Ecommerce.Services
+namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
 {
     public class PaypointRequestService : IPaypointRequestService
     {

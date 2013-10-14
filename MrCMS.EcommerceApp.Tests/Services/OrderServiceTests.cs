@@ -1,6 +1,7 @@
 ﻿using FakeItEasy;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
 using NHibernate;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;

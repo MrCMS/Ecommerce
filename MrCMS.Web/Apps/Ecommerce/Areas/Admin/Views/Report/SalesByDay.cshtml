@@ -1,0 +1,45 @@
+﻿@using System.Web.Mvc.Html
+@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.ChartModel
+@{
+    ViewBag.Title = "Sales by day";
+}
+
+<fieldset>
+    <legend>
+        <div class="row-fluid">
+                <div class="span12">
+                    Sales by day
+                <span class="pull-right">
+                    @using (Html.BeginForm("SalesByDay", "Report", new {id = ""}, FormMethod.Get))
+                    {
+                        @Html.EditorFor(x => x.From)
+                        @Html.EditorFor(x => x.To)
+                        <button type="submit" class="btn">Filter</button>
+                    }
+                </span>
+                </div>
+            </div>
+    </legend>
+
+    <div class="row-fluid">
+        <div class="span12">
+            <canvas id="line-chart"></canvas>
+        </div>
+    </div>
+    <br/>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="pull-right">
+            <span class="label peter-river">Mr CMS</span>
+            <span class="label emerald">Amazon</span>
+                <span class="label alizarin">eBay</span>
+                </div>
+        </div>  
+    </div>
+</fieldset>
+
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/charts/Chart.min.js"); }
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/base-chart.js"); }
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/sales-by-day.js"); }
+@{ Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/reports.css"); }

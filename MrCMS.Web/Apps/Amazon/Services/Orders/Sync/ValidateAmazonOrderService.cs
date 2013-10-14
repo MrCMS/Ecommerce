@@ -266,7 +266,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                            ShippingTotal = amazonOrder.ShippingTotal,
                            OrderEmail = amazonOrder.BuyerEmail,
                            IsCancelled = false,
-                           SalesChannel = "Amazon",
+                           SalesChannel = SalesChannel.Amazon,
                            PaymentStatus = PaymentStatus.Paid,
                            CreatedOn = amazonOrder.PurchaseDate.HasValue ? (DateTime)amazonOrder.PurchaseDate : CurrentRequestData.Now
                        };

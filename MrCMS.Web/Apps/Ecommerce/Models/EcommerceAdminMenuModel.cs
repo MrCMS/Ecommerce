@@ -71,6 +71,36 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public int DisplayOrder { get { return 51; } }
     }
 
+    public class EcommerceReportsMenuModel : IAdminMenuItem
+    {
+        private IDictionary<string, List<IMenuItem>> _children;
+        public string Text { get { return "e-Reports"; } }
+        public string Url { get; private set; }
+        public bool CanShow { get { return true; } }
+        public IDictionary<string, List<IMenuItem>> Children
+        {
+            get
+            {
+                return _children ??
+                       (_children = new Dictionary<string, List<IMenuItem>>
+                                        {
+                                            {
+                                                "Sales",
+                                                new List<IMenuItem>
+                                                    {
+                                                        new ChildMenuItem("Sales by day",
+                                                                          "/Admin/Apps/Ecommerce/Report/SalesByDay"),
+                                                        new ChildMenuItem("Sales by payment type",
+                                                                          "/Admin/Apps/Ecommerce/Report/SalesByPaymentType"),
+                                                        new ChildMenuItem("Sales by shipping type",
+                                                                          "/Admin/Apps/Ecommerce/Report/SalesByShippingType")
+                                                    }
+                                            }
+                                        });
+            }
+        }
+        public int DisplayOrder { get { return 52; } }
+    }
 
     public class EcommerceSettingsMenuModel : IAdminMenuItem
     {
@@ -116,6 +146,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                         });
             }
         }
-        public int DisplayOrder { get { return 52; } }
+        public int DisplayOrder { get { return 54; } }
     }
 }

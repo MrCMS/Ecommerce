@@ -1,5 +1,5 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Web.Apps.Ecommerce.Services.Orders;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
 using MrCMS.Web.Apps.Ryness.Entities;
 using MrCMS.Web.Apps.Ryness.Services;
 
