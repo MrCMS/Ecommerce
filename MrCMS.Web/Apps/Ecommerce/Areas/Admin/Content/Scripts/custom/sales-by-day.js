@@ -3,13 +3,13 @@
     $(window).resize(updateCharts);
     
     function updateCharts() {
-        generateLineChart();
+        generateChart();
     };
 
-    generateLineChart();
+    generateChart();
 });
 
-var lineChartData = {
+var chartData = {
     labels: [],
     datasets: [
         {
@@ -36,20 +36,32 @@ var lineChartData = {
     ]
 };
 
-var lineDataUrl = "/Admin/Apps/Ecommerce/Report/SalesByDay";
-var lineChart = $("#line-chart").get(0).getContext("2d");
-var lineChartContainer = $("#line-chart").parent();
+var dataUrl = "/Admin/Apps/Ecommerce/Report/SalesByDay";
+var chart = $("#line-chart").get(0).getContext("2d");
+var chartContainer = $("#line-chart").parent();
 
-function generateLineChart() {
-    $.post(lineDataUrl, {
+function generateChart() {
+    $.post(dataUrl, {
         from: $("#From").val(),
         to: $("#To").val()
     }, function (result) {
-        lineChartData.labels = result.ChartLabels;
+        chartData.labels = result.ChartLabels;
         $.each(result.MultiChartData, function (index, value) {
-            lineChartData.datasets[index].data = value;
+            chartData.datasets[index].data = value;
         });
-        var nc = $("#line-chart").attr('width', $(lineChartContainer).width());
-        new Chart(lineChart).Line(lineChartData, lineChartOptions);
+        if (chartData.datasets[1].data.length > 0)
+            $("#amazon").show();
+        else {
+            chartData.datasets.splice(1, 1);
+            $("#amazon").hide();
+        }
+        if (chartData.datasets[2].data.length > 0)
+            $("#ebay").show();
+        else {
+            chartData.datasets.splice(2, 1);
+            $("#ebay").hide();
+        }
+        var nc = $("#line-chart").attr('width', $(chartContainer).width());
+        new Chart(chart).Line(chartData, lineChartOptions);
     });
 };
