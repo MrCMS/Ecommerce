@@ -38,7 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
         {
             var item = baseData.ToList().SingleOrDefault(x => x.Key == salesChannel);
             if (item!=null)
-                results.Add(item.GroupBy(c => c.PaymentMethod)
+                results.Add(item.Where(x => !String.IsNullOrWhiteSpace(x.PaymentMethod)).GroupBy(c => c.PaymentMethod)
                                     .Select(k => new {k.Key, Sum = k.Sum(t => t.Total)})
                                     .ToDictionary(t => t.Key, t => t.Sum)
                                     .ToList());
