@@ -71,7 +71,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public ActionResult SyncMany()
+        public ViewResult SyncMany()
         {
             return View(new AmazonSyncModel());
         }

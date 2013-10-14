@@ -44,7 +44,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         {
             _googleBaseManager.ExportProductsToGoogleBase();
 
-            A.CallTo(() => _productVariantService.GetAllVariants(string.Empty, 0, 1)).MustHaveHappened();
+            A.CallTo(() => _productVariantService.GetAllVariantsForGoogleBase()).MustHaveHappened();
         }
 
         [Fact]
