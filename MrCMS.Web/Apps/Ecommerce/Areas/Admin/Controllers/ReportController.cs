@@ -27,10 +27,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return Json(_reportService.SalesByDay(model));
         }
 
-        [HttpPost]
-        public JsonResult SalesByDayStructure(ChartModel model)
+        [HttpGet]
+        public ViewResult SalesByPaymentType(ChartModel model)
         {
-            return Json(_reportService.SalesByDayStructure(model));
+            return View(model);
+        }
+
+        [HttpPost]
+        [ActionName("SalesByPaymentType")]
+        public JsonResult SalesByPaymentType_POST(ChartModel model)
+        {
+            return Json(_reportService.SalesByPaymentType(model));
+        }
+
+        [HttpGet]
+        public ViewResult SalesByShippingType(ChartModel model)
+        {
+            return View(model);
+        }
+
+        [HttpPost]
+        [ActionName("SalesByShippingType")]
+        public JsonResult SalesByShippingType_POST(ChartModel model)
+        {
+            return Json(_reportService.SalesByShippingType(model));
         }
     }
 }
