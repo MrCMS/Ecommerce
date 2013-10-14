@@ -32,14 +32,14 @@
         <div class="span12">
             <div class="pull-right">
             <span class="label peter-river">Mr CMS</span>
-            <span class="label emerald">Amazon</span>
-                <span class="label alizarin">eBay</span>
+            <span class="label emerald" id="amazon">Amazon</span>
+            <span class="label alizarin" id="ebay">eBay</span>
                 </div>
         </div>  
     </div>
 </fieldset>
 
-@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/charts/Chart.min.js"); }
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/charts/Chart.js"); }
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/base-chart.js"); }
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/sales-by-day.js"); }
 @{ Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/reports.css"); }
