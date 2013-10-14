@@ -112,10 +112,17 @@ namespace MrCMS.Website
         }
 
         private const string UserSessionId = "current.usersessionGuid";
+        private static Guid? UserGuidOverride
+        {
+            get { return CurrentContext.Items[UserSessionId] as Guid?; }
+            set { CurrentContext.Items[UserSessionId] = value; }
+        }
         public static Guid UserGuid
         {
             get
             {
+                if (UserGuidOverride.HasValue)
+                    return UserGuidOverride.Value;
                 if (CurrentUser != null) return CurrentUser.Guid;
                 var o = CurrentContext.Request.Cookies[UserSessionId] != null ? CurrentContext.Request.Cookies[UserSessionId].Value : null;
                 if (o == null)
@@ -125,7 +132,7 @@ namespace MrCMS.Website
                 }
                 return Guid.Parse(o);
             }
-            set { AddCookieToResponse(UserSessionId, value.ToString(), Now.AddMonths(3)); }
+            set { UserGuidOverride = value; }
         }
         private static void AddCookieToResponse(string key, string value, DateTime expiry)
         {
