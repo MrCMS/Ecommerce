@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
@@ -123,6 +124,58 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
             if (CurrentRequestData.CurrentSite.BaseUrl.Contains("http://") || CurrentRequestData.CurrentSite.BaseUrl.Contains("https://"))
                 baseUrl = CurrentRequestData.CurrentSite.BaseUrl;
             return string.Format("{0}/{1}?variant={2}", baseUrl, url, productVariant.Id);
+        }
+
+        public static string ToTokenizedString(this StringCollection collection, string token)
+        {
+            return collection.Count > 1 ?
+                collection.Cast<string>().Aggregate(String.Empty, (current, item) => current + (item + token)) :
+                collection.Cast<string>().Aggregate(String.Empty, (current, item) => current + item);
+        }
+
+        public static string ToTokenizedString(this List<string> collection, string token)
+        {
+            return collection.Count > 1 ?
+                collection.Cast<string>().Aggregate(String.Empty, (current, item) => current + (item + token)) :
+                collection.Cast<string>().Aggregate(String.Empty, (current, item) => current + item);
+        }
+
+        public static string ToTokenizedString(this List<decimal> collection, string token)
+        {
+            return collection.Count > 1 ?
+                collection.Cast<string>().Aggregate(String.Empty, (current, item) => current + (item + token)) :
+                collection.Cast<string>().Aggregate(String.Empty, (current, item) => current + item);
+        }
+
+        public static string GetMonth(this int value)
+        {
+            switch (value)
+            {
+                case 2:
+                    return "February";
+                case 3:
+                    return "March";
+                case 4:
+                    return "April";
+                case 5:
+                    return "May";
+                case 6:
+                    return "June";
+                case 7:
+                    return "July";
+                case 8:
+                    return "August";
+                case 9:
+                    return "September";
+                case 10:
+                    return "October";
+                case 11:
+                    return "November";
+                case 12:
+                    return "December";
+                default:
+                    return "January";
+            }
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace MrCMS.Web.Apps.Ecommerce.Services
+namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
 {
     [Serializable]
     public sealed class ThreeDSecureException : Exception

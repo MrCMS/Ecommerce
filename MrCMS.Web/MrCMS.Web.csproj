@@ -367,6 +367,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ReportController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CurrencyController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountApplicationController.cs" />
@@ -500,6 +501,8 @@
     <Compile Include="Apps\Ecommerce\Models\CashOnDeliveryConfirmModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategoryPagedList.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategorySearchModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ChartModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\SalesChannel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CountryToAdd.cs" />
     <Compile Include="Apps\Ecommerce\Models\DeliveryStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\EcommerceAdminMenuModel.cs" />
@@ -567,6 +570,7 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalUrlService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\SetExpressCheckoutResponse.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Paypoint\PaypointPaymentMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\OrderAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\GoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\IGoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\ITrackingService.cs" />
@@ -650,10 +654,10 @@
     <Compile Include="Apps\Ecommerce\Services\Inventory\InventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\IStockReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\StockReportService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\IPaypointPaymentService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\IPaypointRequestHelper.cs" />
-    <Compile Include="Apps\Ecommerce\Services\IPaypointRequestService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\IProductOptionManagementService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointPaymentService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointRequestHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointRequestService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\IProductOptionManagementService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\BulkShippingUpdateService.cs" />
@@ -680,22 +684,22 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\UpdateStock.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\ExportOrderService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IExportOrdersService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\IOnOrderPaid.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderEventService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderPaid.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOrderEventService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderRefundService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderShippingService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\OrderEventService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\OrderEventService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderRefundService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderShippingService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\PaypointPaymentService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\PaypointRequestHelper.cs" />
-    <Compile Include="Apps\Ecommerce\Services\PaypointRequestService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointPaymentService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointRequestHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointRequestService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BrandService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IBrandService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductOptionManager.cs" />
@@ -706,13 +710,16 @@
     <Compile Include="Apps\Ecommerce\Services\Products\ProductSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductVariantService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Reports\ChartService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Reports\ReportService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Reports\IReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingCalculationManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingMethodManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\ShippingCalculationManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\ShippingMethodManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\ITaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\TaxRateManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\ThreeDSecureException.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\ThreeDSecureException.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
@@ -813,7 +820,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\charts\Chart.min.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\base-chart.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-day.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\reports.css" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\charts\Chart.min.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-many-listing.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-one-listing.js" />
@@ -2283,6 +2293,7 @@
     <Content Include="Apps\Ryness\Views\Web.config" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\User\Order.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\ForUser.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\SalesByDay.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

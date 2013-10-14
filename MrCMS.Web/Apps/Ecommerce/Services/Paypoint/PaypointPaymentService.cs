@@ -8,7 +8,7 @@ using MrCMS.Web.Apps.Ecommerce.Payment.Paypoint;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website;
 
-namespace MrCMS.Web.Apps.Ecommerce.Services
+namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
 {
     public class PaypointPaymentService : IPaypointPaymentService, ICartSessionKeyList
     {
