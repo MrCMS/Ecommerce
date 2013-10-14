@@ -87,7 +87,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                                          Field.Index.NOT_ANALYZED);
 
         private static readonly FieldDefinition<Entities.Orders.Order> _salesChannel =
-            new StringFieldDefinition<Entities.Orders.Order>("saleschannel", item => item.SalesChannel, Field.Store.NO,
+            new StringFieldDefinition<Entities.Orders.Order>("saleschannel", item => item.SalesChannel.ToString(), Field.Store.NO,
                                          Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Entities.Orders.Order> _email =

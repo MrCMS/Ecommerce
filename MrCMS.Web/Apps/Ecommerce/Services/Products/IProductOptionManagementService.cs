@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using MrCMS.Helpers;
 using System.Linq;
 
-namespace MrCMS.Web.Apps.Ecommerce.Services
+namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public interface IProductOptionManagementService
     {

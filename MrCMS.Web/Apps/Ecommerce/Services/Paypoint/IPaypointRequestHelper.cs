@@ -3,7 +3,7 @@ using System.Collections.Specialized;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
-namespace MrCMS.Web.Apps.Ecommerce.Services
+namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
 {
     public interface IPaypointRequestHelper
     {
