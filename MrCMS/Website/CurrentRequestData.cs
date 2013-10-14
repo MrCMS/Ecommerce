@@ -111,33 +111,30 @@ namespace MrCMS.Website
             set { _databaseIsInstalled = value; }
         }
 
+        private const string UserSessionId = "current.usersessionGuid";
         public static Guid UserGuid
         {
             get
             {
                 if (CurrentUser != null) return CurrentUser.Guid;
-                var o = CurrentContext.Request.Cookies["current.usersessionGuid"] != null ? CurrentContext.Request.Cookies["current.usersessionGuid"].Value : null;
+                var o = CurrentContext.Request.Cookies[UserSessionId] != null ? CurrentContext.Request.Cookies[UserSessionId].Value : null;
                 if (o == null)
                 {
                     o = Guid.NewGuid().ToString();
-                    var userGuidCookie = new HttpCookie("current.usersessionGuid")
-                                             {
-                                                 Value = o,
-                                                 Expires = DateTime.Now.AddMonths(3)
-                                             };
-                    CurrentContext.Response.Cookies.Add(userGuidCookie);
+                    AddCookieToResponse(UserSessionId, o, Now.AddMonths(3));
                 }
                 return Guid.Parse(o);
             }
-            set
+            set { AddCookieToResponse(UserSessionId, value.ToString(), Now.AddMonths(3)); }
+        }
+        private static void AddCookieToResponse(string key, string value, DateTime expiry)
+        {
+            var userGuidCookie = new HttpCookie(key)
             {
-                var userGuidCookie = new HttpCookie("current.usersessionGuid")
-                                         {
-                                             Value = value.ToString(),
-                                             Expires = DateTime.Now.AddMonths(3)
-                                         };
-                CurrentContext.Response.Cookies.Add(userGuidCookie);
-            }
+                Value = value,
+                Expires = expiry
+            };
+            CurrentContext.Response.Cookies.Add(userGuidCookie);
         }
     }
 }
