@@ -29,10 +29,9 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         }
 
         [Fact]
-        public void CartItem_Tax_ShouldBeThePriceLessTheTaxRate()
+        public void CartItem_Tax_ShouldBeResultOfGetTax()
         {
-            A.CallTo(() => _productVariant.GetPrice(2)).Returns(24);
-            A.CallTo(() => _productVariant.TaxRatePercentage).Returns(20);
+            A.CallTo(() => _productVariant.GetTax(2)).Returns(4);
             var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
 
             var tax = cartItem.Tax;
@@ -41,10 +40,10 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         }
 
         [Fact]
-        public void CartItem_PricePreTax_ShouldBeTheResultOfGetPricePreTax()
+        public void CartItem_PricePreTax_ShouldBePriceMinusTax()
         {
             A.CallTo(() => _productVariant.GetPrice(2)).Returns(24);
-            A.CallTo(() => _productVariant.TaxRatePercentage).Returns(20);
+            A.CallTo(() => _productVariant.GetTax(2)).Returns(4);
             var cartItem = new CartItem { Item = _productVariant, Quantity = 2 };
 
             var pricePreTax = cartItem.PricePreTax;

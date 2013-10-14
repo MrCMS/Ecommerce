@@ -55,7 +55,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         public void ImportExportController_ImportProducts_ShouldCallImportProductsFromExcelOfImportExportManager()
         {
             var file = new BasicHttpPostedFileBase();
-
+            _importExportController.ServerMock = A.Fake<HttpServerUtilityBase>();
             A.CallTo(() => _importExportManager.ImportProductsFromExcel(file.InputStream))
              .Returns(new Dictionary<string, List<string>>());
     
