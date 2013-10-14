@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
             foreach (var item in items)
             {
                 var data= model.ChartLabels.Select(label => item.Any(x => x.Key == label) ? item.SingleOrDefault(x => x.Key == label).Value : 0).ToList();
-                model.MultiChartData.Add(model.MultiChartData.Count.ToString(), data);
+                model.MultiChartData.Add(model.MultiChartData.Count.ToString(), data.Any(x => x != 0)?data:new List<decimal>());
             }
         }
         public void SetLineChartData(ref ChartModel model, IEnumerable<IList<KeyValuePair<DateTime, decimal>>> items)
@@ -64,7 +64,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
                     }
                 }
 
-                model.MultiChartData.Add(model.MultiChartData.Count.ToString(), data);
+                model.MultiChartData.Add(model.MultiChartData.Count.ToString(), data.Any(x => x != 0) ? data : new List<decimal>());
             }
         }
 
