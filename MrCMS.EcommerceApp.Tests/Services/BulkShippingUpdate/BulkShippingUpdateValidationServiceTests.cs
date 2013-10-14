@@ -81,12 +81,14 @@ namespace MrCMS.EcommerceApp.Tests.Services.BulkShippingUpdate
             {
                 w.WriteField("Order Id");
                 w.WriteField("Shipping Method");
+                w.WriteField("Tracking Number");
                 w.NextRecord();
 
                 foreach (var item in items)
                 {
                     w.WriteField(item.Id);
                     w.WriteField(item.ShippingMethod.Name);
+                    w.WriteField("Courier");
                     w.NextRecord();
                 }
 
