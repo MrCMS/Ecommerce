@@ -632,7 +632,6 @@
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductMaxSEOKeywordsLengthIs250.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductMaxSEOTitleLengthIs250.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductMaxStringLength.cs" />
-    <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductUrlHistoryIsValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantEqOrGrThan.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantMaxBarcodeLengthIs14.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantMaxMPNLengthIs255.cs" />
