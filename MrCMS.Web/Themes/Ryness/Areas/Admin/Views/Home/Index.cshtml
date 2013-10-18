@@ -1,0 +1,26 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Areas.Admin.Models.Dashboard 
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@Html.HiddenFor(x=>x.SiteName)
+@Html.HiddenFor(x=>x.LoggedInName)
+
+<fieldset>
+    <legend>Dashboard</legend>
+
+    <p>Hello @Model.LoggedInName, you are currently administering web site "@Model.SiteName."</p>
+        
+    <hr />
+    @{ Html.RenderAction("Revenue", "Dashboard"); }
+
+    <hr/>
+
+    @{ Html.RenderAction("UserAndPageStats", "Dashboard"); }
+
+</fieldset>
+
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/charts/Chart.js"); }
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/dashboard.js"); }
+@{ Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/dashboard.css"); }
