@@ -54,5 +54,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
             _chartService.SetLineChartLabels(ref model);
             return model;
         }
+
+        public ChartModel OrdersByShippingType(ChartModel model)
+        {
+            var data = _orderAnalyticsService.GetOrdersGrouped(model.From, model.To);
+            _chartService.SetBarChartLabelsAndData(ref model, data);
+            return model;
+        }
     }
 }
