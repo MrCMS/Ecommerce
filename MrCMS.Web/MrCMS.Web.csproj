@@ -2526,6 +2526,8 @@
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
     <Content Include="Themes\Ecommerce\Areas\Admin\Views\Home\Index.cshtml" />
     <Content Include="Themes\Ecommerce\Areas\Admin\Views\Web.config" />
+    <Content Include="Themes\Ryness\Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Themes\Ryness\Areas\Admin\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
