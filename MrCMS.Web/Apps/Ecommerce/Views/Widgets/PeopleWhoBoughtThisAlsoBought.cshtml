@@ -1,0 +1,16 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.PeopleWhoBoughtThisAlsoBoughtViewModel
+@if (Model != null && Model.Products.Any())
+{
+    <hr />
+    if (!String.IsNullOrEmpty(Model.Title))
+    {
+        <h4>@Model.Title</h4>
+    }
+
+    <div class="row-fluid">
+        @foreach (var item in Model.Products)
+        {
+            Html.RenderPartial("ProductCardFeatured", item);
+        }
+    </div>
+}
