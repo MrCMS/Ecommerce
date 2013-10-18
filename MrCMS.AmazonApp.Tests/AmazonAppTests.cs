@@ -5,7 +5,7 @@ namespace MrCMS.AmazonApp.Tests
 {
     public class AmazonAppTests
     {
-        private Web.Apps.Amazon.AmazonApp _amazonApp;
+        private readonly Web.Apps.Amazon.AmazonApp _amazonApp;
 
         public AmazonAppTests()
         {
@@ -13,7 +13,7 @@ namespace MrCMS.AmazonApp.Tests
         }
 
         [Fact]
-        public void EcommerceApp_AppName_ShouldBeAmazon()
+        public void AmazonApp_AppName_ShouldBeAmazon()
         {
             _amazonApp.AppName.Should().Be("Amazon");
         }
