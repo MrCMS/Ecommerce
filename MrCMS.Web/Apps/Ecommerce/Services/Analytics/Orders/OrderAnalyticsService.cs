@@ -8,6 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
     {
         IEnumerable<IList<KeyValuePair<DateTime, decimal>>> GetRevenueGroupedByDate(DateTime from, DateTime to);
         IEnumerable<IList<KeyValuePair<string, decimal>>> GetRevenueGrouped(string groupBy,DateTime from, DateTime to);
+        IEnumerable<IList<KeyValuePair<DateTime, decimal>>> GetRevenueForTodayGroupedByHour();
     }
 
     public class OrderAnalyticsService : IOrderAnalyticsService
@@ -31,6 +32,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
             }
             return results;
         }
+
         public IEnumerable<IList<KeyValuePair<string, decimal>>> GetRevenueGrouped(string groupBy,DateTime from, DateTime to)
         {
             var results = new List<IList<KeyValuePair<string, decimal>>>();
@@ -47,6 +49,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
                         break;
                 }
                
+            }
+            return results;
+        }
+
+        public IEnumerable<IList<KeyValuePair<DateTime, decimal>>> GetRevenueForTodayGroupedByHour()
+        {
+            var results = new List<IList<KeyValuePair<DateTime, decimal>>>();
+            var baseData = _revenueService.GetBaseDataGroupedBySalesChannel();
+            foreach (var salesChannel in Enum.GetValues(typeof(SalesChannel)).OfType<SalesChannel>())
+            {
+                _groupRevenueService.AddRevenueGroupedByHour(baseData, ref results, salesChannel);
             }
             return results;
         }
