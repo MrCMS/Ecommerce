@@ -8,8 +8,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
     {
         public ChartModel()
         {
-            From = CurrentRequestData.Now.AddMonths(-1);
-            To = CurrentRequestData.Now;
+            From = CurrentRequestData.Now.AddDays(-29);
+            To = CurrentRequestData.Now.AddDays(1);
 
             ChartLabels = new List<string>();
             MultiChartData = new Dictionary<string, List<decimal>>();

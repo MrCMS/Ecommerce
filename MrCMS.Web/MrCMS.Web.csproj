@@ -571,6 +571,7 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalUrlService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\SetExpressCheckoutResponse.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Paypoint\PaypointPaymentMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupOrdersService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\RevenueService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupRevenueService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\OrderAnalyticsService.cs" />
@@ -824,6 +825,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\base-chart.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\orders-by-shipping-type.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\dashboard.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-shipping-type.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-payment-type.js" />
@@ -2306,6 +2308,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\SalesByShippingType.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Dashboard\UserAndPageStats.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Dashboard\Revenue.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\OrdersByShippingType.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
