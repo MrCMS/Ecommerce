@@ -42,7 +42,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
                 var oldDate = DateTime.Parse(model.From.Date.ToString());
                 var currentDate = oldDate;
 
-                if (model.From.Month == model.To.Month || ts.Days < 31)
+                if (ts.Days == 1)
+                {
+                    for (var i = 0; i < 24; i++)
+                    {
+                        data.Add(item.Where(x => x.Key.Hour == i+1).Sum(x => x.Value));
+                    }
+                }
+                else if (model.From.Month == model.To.Month || ts.Days < 31)
                 {
                     for (var i = 0; i < ts.Days; i++)
                     {
@@ -75,7 +82,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
             var oldDate = DateTime.Parse(model.From.Date.ToString());
             var currentDate = oldDate;
 
-            if (model.From.Month == model.To.Month || ts.Days<31)
+            if (ts.Days == 1)
+            {
+                for (var i = 0; i < 24; i++)
+                {
+                    oldDate = currentDate;
+                    currentDate = oldDate.AddHours(1);
+                    model.ChartLabels.Add(oldDate.Hour.ToString());
+                }
+            }
+            else if (model.From.Month == model.To.Month || ts.Days<31)
             {
                 for (var i = 0; i < ts.Days; i++)
                 {

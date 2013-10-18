@@ -1,0 +1,38 @@
+﻿@model MrCMS.Web.Areas.Admin.Models.Dashboard 
+           
+<div class="row-fluid">
+    <div class="span12">
+      <h4>Page stats</h4>
+                <table class="table table-striped table-condensed" style="overflow: scroll">
+                    <tr>
+                        <th>Page type
+                        </th>
+                        <th>Total
+                        </th>
+                        <th>Unpublished
+                        </th>
+                    </tr>
+                    @if (Model.Stats.Any())
+                    {
+                        foreach (var stat in Model.Stats)
+                        {
+                            <tr>
+                                <td>@stat.DocumentType.Substring(stat.DocumentType.LastIndexOf('.') + 1)</td>
+                                <td>@stat.NumberOfPages
+                                </td>
+                                <td>@stat.NumberOfUnPublishedPages
+                                </td>
+                            </tr>
+                        }
+                    }
+                </table>
+    </div> 
+</div>
+<hr/>
+<div class="row-fluid">
+    <div class="span6">
+            Registered users <span class="alizarin">&nbsp;@(Model.ActiveUsers)&nbsp;</span>
+           &nbsp; 
+            None active users <span class="alizarin">&nbsp;@(Model.NoneActiveUsers)&nbsp;</span>
+    </div> 
+</div> 

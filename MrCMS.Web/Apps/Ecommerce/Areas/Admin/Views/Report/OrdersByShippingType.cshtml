@@ -1,0 +1,46 @@
+﻿@using System.Web.Mvc.Html
+@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
+@model ChartModel
+@{
+    ViewBag.Title = "Orders by shipping type";
+}
+
+<fieldset>
+    <legend>
+        <div class="row-fluid">
+                <div class="span12">
+                    Orders by shipping type
+                <span class="pull-right">
+                    @using (Html.BeginForm("OrdersByShippingType", "Report", new {id = ""}, FormMethod.Get))
+                    {
+                        @Html.EditorFor(x => x.From)
+                        @Html.EditorFor(x => x.To)
+                        <button type="submit" class="btn">Filter</button>
+                    }
+                </span>
+                </div>
+            </div>
+    </legend>
+
+    <div class="row-fluid">
+        <div class="span12">
+            <canvas id="chart"></canvas>
+        </div>
+    </div>
+    <br/>
+    <div class="row-fluid">
+        <div class="span12">
+             <div class="pull-right">
+            <span class="label peter-river">Mr CMS</span>
+            <span class="label emerald" id="amazon">Amazon</span>
+            <span class="label alizarin" id="ebay">eBay</span>
+                </div>
+        </div>  
+    </div>
+</fieldset>
+
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/charts/Chart.js"); }
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/base-chart.js"); }
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/orders-by-shipping-type.js"); }
+@{ Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/reports.css"); }
