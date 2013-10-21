@@ -81,7 +81,7 @@
                         }
                         <tr class="@status">
                             <td>
-                                @(!String.IsNullOrWhiteSpace(item.SalesChannel) ? item.SalesChannel : "Mr CMS")
+                                @(item.SalesChannel!=null ? item.SalesChannel.GetDescription() : SalesChannel.MrCMS.GetDescription())
                             </td>
                             <td>
                                 @item.Id
