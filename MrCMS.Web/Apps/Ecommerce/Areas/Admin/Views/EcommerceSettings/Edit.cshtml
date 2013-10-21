@@ -10,25 +10,44 @@
                 <input type="submit" class="btn-primary btn" value="Save Settings" />
             </span>
         </legend>
-        @Html.HiddenFor(settings => settings.Site.Id)
-        @Html.LabelFor(x => x.PageSizeAdmin)
-        @Html.TextBoxFor(x => x.PageSizeAdmin)
-        @Html.ValidationMessageFor(x => x.PageSizeAdmin)
-
-        @Html.LabelFor(x => x.SearchProductsPerPage)
-        @Html.TextBoxFor(x => x.SearchProductsPerPage)
-        @Html.ValidationMessageFor(x => x.SearchProductsPerPage)
         
-        @Html.LabelFor(x => x.PreviousPriceText)
-        @Html.TextBoxFor(x => x.PreviousPriceText)
-        @Html.ValidationMessageFor(x => x.PreviousPriceText)
-        
-        @Html.LabelFor(x => x.DefaultNoProductImage)
-        @Html.TextBoxFor(x => x.DefaultNoProductImage, new {@class = "media-selector"})
-        @Html.ValidationMessageFor(x => x.DefaultNoProductImage)
+        <div class="row-fluid">
+            <div class="span6">
+                @Html.LabelFor(x => x.CurrencyId)
+                @Html.DropDownListFor(x => x.CurrencyId, ViewData["currency-options"] as IEnumerable<SelectListItem>, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.CurrencyId)
 
-        @Html.LabelFor(x => x.CurrencyId)
-        @Html.DropDownListFor(x => x.CurrencyId, ViewData["currency-options"] as IEnumerable<SelectListItem>)
-        @Html.ValidationMessageFor(x => x.CurrencyId)
+                @Html.HiddenFor(settings => settings.Site.Id)
+                @Html.LabelFor(x => x.PageSizeAdmin)
+                @Html.TextBoxFor(x => x.PageSizeAdmin, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.PageSizeAdmin)
+
+                @Html.LabelFor(x => x.SearchProductsPerPage)
+                @Html.TextBoxFor(x => x.SearchProductsPerPage, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.SearchProductsPerPage)
+        
+                @Html.LabelFor(x => x.PreviousPriceText)
+                @Html.TextBoxFor(x => x.PreviousPriceText, new {@class = "span12"})
+                @Html.ValidationMessageFor(x => x.PreviousPriceText)
+                
+                @Html.LabelFor(x => x.ReportFooterText)
+                @Html.TextAreaFor(x => x.ReportFooterText, new {@class = "span12",style="height:90px"})
+                @Html.ValidationMessageFor(x => x.ReportFooterText)        
+                
+               
+            </div>
+            <div class="span6">
+                
+                @Html.LabelFor(x => x.DefaultNoProductImage)
+                @Html.TextBoxFor(x => x.DefaultNoProductImage, new {@class = "media-selector"})
+                @Html.ValidationMessageFor(x => x.DefaultNoProductImage)
+
+                @Html.LabelFor(x => x.ReportLogoImage)
+                @Html.TextBoxFor(x => x.ReportLogoImage, new {@class = "media-selector"})
+                @Html.ValidationMessageFor(x => x.ReportLogoImage)
+                     
+            </div>
+        </div>
+       
     </fieldset>
 }
