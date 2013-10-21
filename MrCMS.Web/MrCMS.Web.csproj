@@ -438,6 +438,7 @@
     <Compile Include="Apps\Ecommerce\Entities\BackInStockNotification\BackInStockNotification.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Cart\CartItem.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Currencies\Currency.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercentFromOrder.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\FixedAmountFromOrder.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderHasXOrMoreItems.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderTotalGreaterThanX.cs" />
@@ -2311,6 +2312,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Dashboard\Revenue.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\OrdersByShippingType.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\PeopleWhoBoughtThisAlsoBought.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\XPercentFromOrder.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
