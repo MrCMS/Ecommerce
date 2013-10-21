@@ -46,21 +46,27 @@ function generateChart() {
         to: $("#To").val()
     }, function (result) {
         chartData.labels = result.ChartLabels;
+        var anyResults = false;
         $.each(result.MultiChartData, function (index, value) {
-            chartData.datasets[index].data = value;
+            if (value.length > 0) {
+                chartData.datasets[index].data = value;
+                anyResults = true;
+            }
         });
         if (chartData.datasets[1].data.length > 0)
             $("#amazon").show();
         else {
-            chartData.datasets.splice(1, 1);
             $("#amazon").hide();
         }
         if (chartData.datasets[2].data.length > 0)
             $("#ebay").show();
         else {
-            chartData.datasets.splice(2, 1);
             $("#ebay").hide();
         }
+        if (anyResults === false) {
+            $("#message").html("No results were found with current filters, please refine and try again.");
+        } else
+            $("#message").html("");
         var nc = $("#chart").attr('width', $(chartContainer).width());
         new Chart(chart).Bar(chartData, lineChartOptions);
     });
