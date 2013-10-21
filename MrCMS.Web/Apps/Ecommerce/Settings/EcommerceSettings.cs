@@ -20,8 +20,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         [DisplayName("Previous Price text")]
         public string PreviousPriceText { get; set; }
 
-        [DisplayName("Default no image")]
+        [DisplayName("Product Image not specified replacement image")]
         public string DefaultNoProductImage { get; set; }
+
+        [DisplayName("Report Logo Image")]
+        public string ReportLogoImage { get; set; }
+
+        [DisplayName("Report Footer Text")]
+        public string ReportFooterText { get; set; }
 
         public IEnumerable<int> ProductPerPageOptions
         {
