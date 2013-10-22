@@ -87,5 +87,34 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
             A.CallTo(() => _amazonLogService.Add(AmazonLogType.SellerSettings, AmazonLogStatus.Update,
                 null, null, null, null, null, null, null, null, string.Empty)).MustHaveHappened();
         }
+
+        [Fact]
+        public void SettingsController_Sync_ReturnsViewResult()
+        {
+            var result = _settingsController.Sync();
+
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public void SettingsController_SyncPOST_ShouldSaveSettings()
+        {
+            var model = new AmazonSyncSettings();
+
+            var result = _settingsController.Sync_POST(model);
+
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public void SettingsController_SyncPOST_ShouldCallAddLog()
+        {
+            var model = new AmazonSyncSettings();
+
+            var result = _settingsController.Sync_POST(model);
+
+            A.CallTo(() => _amazonLogService.Add(AmazonLogType.SyncSettings, AmazonLogStatus.Update,
+                null, null, null, null, null, null, null, null, string.Empty)).MustHaveHappened();
+        }
     }
 }

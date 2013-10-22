@@ -19,10 +19,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     {
         private readonly ICountryService _countryService;
         private readonly EcommerceSettings _ecommerceSettings;
-        private readonly ISetTax _setTax;
+        private readonly ISetTaxes _setTax;
 
         public ValidateAmazonOrderService(ICountryService countryService, 
-            EcommerceSettings ecommerceSettings, ISetTax setTax)
+            EcommerceSettings ecommerceSettings, ISetTaxes setTax)
         {
             _countryService = countryService;
             _ecommerceSettings = ecommerceSettings;
@@ -244,7 +244,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
                 GetOrderLines(amazonOrder, ref order);
 
-                _setTax.SetTaxes(ref order, amazonOrder.Tax);
+                _setTax.SetTax(ref order, amazonOrder.Tax);
             }
 
             order.ShippingStatus = amazonOrder.Status.GetEnumByValue<ShippingStatus>();

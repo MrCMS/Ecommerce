@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
+using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using NHibernate;
 using MrCMS.Helpers;
 using System.Linq;
@@ -11,11 +13,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
     public class TaxRateManager : ITaxRateManager
     {
         private readonly ISession _session;
+        private readonly IProductVariantService _productVariantService;
 
-        public TaxRateManager(ISession session)
+        public TaxRateManager(ISession session, IProductVariantService productVariantService)
         {
             _session = session;
+            _productVariantService = productVariantService;
         }
+
         public TaxRate Get(int id)
         {
             return _session.QueryOver<TaxRate>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
@@ -23,6 +28,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
         public TaxRate GetDefaultRate()
         {
             return _session.QueryOver<TaxRate>().Where(x => x.IsDefault).Cacheable().SingleOrDefault();
+        }
+        public TaxRate GetDefaultRate(OrderLine orderLine)
+        {
+            TaxRate taxRate = null;
+            var pv = _productVariantService.GetProductVariantBySKU(orderLine.SKU);
+            if (pv != null && pv.TaxRate != null)
+                taxRate = pv.TaxRate;
+            return taxRate ?? GetDefaultRate();
         }
         public TaxRate GetByCodeOrName(string value)
         {

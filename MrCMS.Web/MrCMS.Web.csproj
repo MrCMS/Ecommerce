@@ -289,7 +289,8 @@
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSyncService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSyncDataService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\AmazonOrderSyncManager.cs" />
-    <Compile Include="Apps\Amazon\Services\Orders\Sync\SetTax.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\SetTaxDetails.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\SetTaxes.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\ScheduleAmazonOrderSync.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\GetOrderItems.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderSyncDataService.cs" />

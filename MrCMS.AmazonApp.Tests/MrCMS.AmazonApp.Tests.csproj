@@ -117,6 +117,8 @@
     <Compile Include="Services\Logs\AmazonLogServiceTests.cs" />
     <Compile Include="Services\Orders\AmazonOrderServiceTests.cs" />
     <Compile Include="Services\Orders\AmazonOrderSearchServiceTests.cs" />
+    <Compile Include="Services\Orders\Sync\SetTaxDetailsTests.cs" />
+    <Compile Include="Services\Orders\Sync\SetTaxesTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -138,9 +140,7 @@
       <Name>MrCMS</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\Orders\Sync\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
