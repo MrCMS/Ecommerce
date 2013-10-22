@@ -18,6 +18,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         private readonly AmazonAppSettings _amazonAppSettings;
         private readonly AmazonSellerSettings _amazonSellerSettings;
         private readonly SettingsController _settingsController;
+        private readonly AmazonSyncSettings _amazonSyncSettings;
 
         public SettingsControllerTests()
         {
@@ -25,7 +26,8 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
             _amazonLogService = A.Fake<IAmazonLogService>();
             _amazonAppSettings = A.Fake<AmazonAppSettings>();
             _amazonSellerSettings = A.Fake<AmazonSellerSettings>();
-            _settingsController = new SettingsController(_configurationProvider,_amazonLogService,_amazonAppSettings,_amazonSellerSettings);
+             _amazonSyncSettings = A.Fake<AmazonSyncSettings>();
+             _settingsController = new SettingsController(_configurationProvider, _amazonLogService, _amazonAppSettings, _amazonSellerSettings, _amazonSyncSettings);
         }
 
         [Fact]
