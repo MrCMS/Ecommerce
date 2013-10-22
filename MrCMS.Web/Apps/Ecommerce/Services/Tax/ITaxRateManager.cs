@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
@@ -8,6 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
     {
         TaxRate Get(int id);
         TaxRate GetDefaultRate();
+        TaxRate GetDefaultRate(OrderLine orderLine);
         TaxRate GetByCodeOrName(string value);
         IList<TaxRate> GetAll();
         void Add(TaxRate taxRate);
