@@ -13,16 +13,19 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         private readonly IAmazonLogService _amazonLogService;
         private readonly AmazonAppSettings _amazonAppSettings;
         private readonly AmazonSellerSettings _amazonSellerSettings;
+        private readonly AmazonSyncSettings _amazonSyncSettings;
 
         public SettingsController(IConfigurationProvider configurationProvider,
             IAmazonLogService amazonLogService, 
             AmazonAppSettings amazonAppSettings, 
-            AmazonSellerSettings amazonSellerSettings)
+            AmazonSellerSettings amazonSellerSettings, 
+            AmazonSyncSettings amazonSyncSettings)
         {
             _configurationProvider = configurationProvider;
             _amazonLogService = amazonLogService;
             _amazonAppSettings = amazonAppSettings;
             _amazonSellerSettings = amazonSellerSettings;
+            _amazonSyncSettings = amazonSyncSettings;
         }
 
         [HttpGet]
@@ -53,6 +56,29 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             _amazonLogService.Add(AmazonLogType.SellerSettings, AmazonLogStatus.Update, null, null, null, null, null, null, null, null);
             _configurationProvider.SaveSettings(amazonSellerSettings);
             return View(amazonSellerSettings);
+        }
+
+        [HttpGet]
+        public ActionResult Sync()
+        {
+            return View(_amazonSyncSettings);
+        }
+
+        [HttpPost]
+        [ActionName("Sync")]
+        public ActionResult Sync_POST(AmazonSyncSettings amazonSyncSettings)
+        {
+            if (_amazonSyncSettings != null)
+            {
+                _amazonSyncSettings.TryCalculateVat = amazonSyncSettings.TryCalculateVat;
+                _amazonSyncSettings.UseDefaultTaxRateForShippingTax = amazonSyncSettings.UseDefaultTaxRateForShippingTax;
+                _amazonLogService.Add(AmazonLogType.SyncSettings, AmazonLogStatus.Update, null, null, null, null, null,
+                                      null, null, null);
+                _configurationProvider.SaveSettings(_amazonSyncSettings);
+
+                return View(_amazonSyncSettings);
+            }
+            return RedirectToAction("Dashboard", "App");
         }
     }
 }

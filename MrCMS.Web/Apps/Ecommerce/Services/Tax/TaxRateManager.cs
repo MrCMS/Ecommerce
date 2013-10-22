@@ -4,6 +4,8 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using NHibernate;
 using MrCMS.Helpers;
 using System.Linq;
+using NHibernate.Criterion;
+
 namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
 {
     public class TaxRateManager : ITaxRateManager
@@ -20,7 +22,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
         }
         public TaxRate GetDefaultRate()
         {
-            return _session.QueryOver<TaxRate>().Where(x => x.IsDefault==true).Cacheable().SingleOrDefault();
+            return _session.QueryOver<TaxRate>().Where(x => x.IsDefault).Cacheable().SingleOrDefault();
+        }
+        public TaxRate GetByCodeOrName(string value)
+        {
+            return _session.QueryOver<TaxRate>().Where(x => x.Code.IsInsensitiveLike(value, MatchMode.Exact) 
+                || x.Name.IsInsensitiveLike(value, MatchMode.Exact)).Cacheable().SingleOrDefault();
         }
         public IList<TaxRate> GetAll()
         {

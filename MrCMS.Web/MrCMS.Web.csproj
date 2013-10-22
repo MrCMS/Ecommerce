@@ -289,6 +289,7 @@
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSyncService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSyncDataService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\AmazonOrderSyncManager.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\SetTax.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\ScheduleAmazonOrderSync.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\GetOrderItems.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderSyncDataService.cs" />
@@ -2314,6 +2315,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\OrdersByShippingType.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\PeopleWhoBoughtThisAlsoBought.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\XPercentFromOrder.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Sync.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
