@@ -51,14 +51,14 @@ namespace MrCMS.AmazonApp.Tests.Services.Orders.Sync
 
             _setTaxes.SetOrderLinesTaxes(ref order);
 
-            order.Tax.Should().Be(decimal.Parse("0,22"));
-            order.Total.Should().Be(decimal.Parse("2,22"));
+            order.Tax.Should().Be(0.22m);//decimal.Parse("0,22"));
+            order.Total.Should().Be(2.22m);//.Be(decimal.Parse("2,22"));
 
-            order.OrderLines.First().UnitPrice.Should().Be(decimal.Parse("1,1"));
+            order.OrderLines.First().UnitPrice.Should().Be(1.1m); //.Be(decimal.Parse("1,1"));
             order.OrderLines.First().UnitPricePreTax.Should().Be(1);
-            order.OrderLines.First().Price.Should().Be(decimal.Parse("2,2"));
+            order.OrderLines.First().Price.Should().Be(2.2m); //.Be(decimal.Parse("2,2"));
             order.OrderLines.First().PricePreTax.Should().Be(2);
-            order.OrderLines.First().Tax.Should().Be(decimal.Parse("0,22"));
+            order.OrderLines.First().Tax.Should().Be(0.22m);//.Be(decimal.Parse("0,22"));
             order.OrderLines.First().TaxRate.Should().Be(10);
         }
 
