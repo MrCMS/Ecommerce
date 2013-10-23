@@ -48,7 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Inventory.BulkStockUpdate
 
             var item = _allVariants.SingleOrDefault(x => x.SKU == itemDto.SKU);
 
-            if (item != null && item.StockRemaining.Value != itemDto.StockRemaining.Value)
+            if (item != null && item.StockRemaining != itemDto.StockRemaining)
             {
                 item.StockRemaining = itemDto.StockRemaining;
                 _variantsToUpdate.Add(item);
