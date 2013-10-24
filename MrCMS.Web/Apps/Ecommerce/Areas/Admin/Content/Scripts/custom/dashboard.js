@@ -3,12 +3,19 @@
     $(window).resize(updateCharts);
     
     function updateCharts() {
+        
+        $("#amazon").hide();
+        $("#ebay").hide();
+        
         generateRevenueTodayChart();
         generateRevenueThisWeekChart();
     };
 
     generateRevenueTodayChart();
     generateRevenueThisWeekChart();
+    
+    $("#amazon").hide();
+    $("#ebay").hide();
 });
 
 var lineChartOptions = {
@@ -109,26 +116,24 @@ function generateRevenueThisWeekChart() {
 };
 
 function getChartData(chartDiv, chartData, dataUrl, chart, chartContainer) {
-   
+
     $.post(dataUrl, {
-    }, function (result) {
-        chartData.labels = result.ChartLabels;
-        $.each(result.MultiChartData, function (index, value) {
-            chartData.datasets[index].data = value;
+        }, function(result) {
+            chartData.labels = result.ChartLabels;
+            $.each(result.MultiChartData, function(index, value) {
+                chartData.datasets[index].data = value;
+            });
+            if (chartData.datasets[1].data.length > 0 || $("#amazon").is(":visible")) {
+                $("#amazon").show();
+            } else {
+                $("#amazon").hide();
+            }
+            if (chartData.datasets[2].data.length > 0 || $("#ebay").is(":visible")) {
+                $("#ebay").show();
+            } else {
+                $("#ebay").hide();
+            }
+            var nc = $("#" + chartDiv).attr('width', $(chartContainer).width());
+            new Chart(chart).Line(chartData, lineChartOptions);
         });
-        if (chartData.datasets[1].data.length > 0)
-            $("#amazon").show();
-        else if ($("#amazon").is(":hidden")) {
-            chartData.datasets.splice(1, 1);
-            $("#amazon").hide();
-        }
-        if (chartData.datasets[2].data.length > 0)
-            $("#ebay").show();
-        else if ($("#ebay").is(":hidden")) {
-            chartData.datasets.splice(2, 1);
-            $("#ebay").hide();
-        }
-        var nc = $("#"+chartDiv).attr('width', $(chartContainer).width());
-        new Chart(chart).Line(chartData, lineChartOptions);
-    });
 }

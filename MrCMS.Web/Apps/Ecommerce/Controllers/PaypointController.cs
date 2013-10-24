@@ -30,6 +30,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public ActionResult Response3DSecure(FormCollection formCollection)
         {
+            if (!_cartModel.CanPlaceOrder)
+            {
+                TempData["error-details"] = new FailureDetails
+                                                {
+                                                    Message = "We were unable to process your order with the specified cart. Please check your details and try again"
+                                                };
+                {
+                    return _documentService.RedirectTo<PaymentDetails>();
+                }
+            }
+
             var response = _paypointPaymentService.Handle3DSecureResponse(formCollection);
 
             if (response.Requires3DSecure)
