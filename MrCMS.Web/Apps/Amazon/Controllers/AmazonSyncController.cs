@@ -1,5 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using MrCMS.Web.Apps.Amazon.Services.Orders;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Amazon.Controllers
@@ -15,8 +17,19 @@ namespace MrCMS.Web.Apps.Amazon.Controllers
 
         public ActionResult Sync()
         {
-            _amazonOrderSyncService.Sync();
-            return new EmptyResult();
+            var errorMessage = string.Empty;
+            try
+            {
+                _amazonOrderSyncService.Sync();
+            }
+            catch (Exception ex)
+            {
+                errorMessage += ex.Message;
+                errorMessage += Environment.NewLine;
+                errorMessage += ex.StackTrace;
+                CurrentRequestData.ErrorSignal.Raise(ex);
+            }
+            return Content(errorMessage, "text/plain");
         } 
     }
 }
