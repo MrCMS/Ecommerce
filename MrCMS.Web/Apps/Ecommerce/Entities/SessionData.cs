@@ -1,0 +1,12 @@
+﻿using System;
+using MrCMS.Entities;
+
+namespace MrCMS.Web.Apps.Ecommerce.Entities
+{
+    public class SessionData : SiteEntity
+    {
+        public virtual Guid UserGuid { get; set; }
+        public virtual string Key { get; set; }
+        public virtual string Data { get; set; }
+    }
+}

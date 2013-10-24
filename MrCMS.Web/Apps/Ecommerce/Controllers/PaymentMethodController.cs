@@ -39,8 +39,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [ActionName("CashOnDelivery")]
         public RedirectResult CashOnDelivery_POST()
         {
+            RedirectResult redirectResult;
+            if (!CanPlaceOrder(out redirectResult)) return redirectResult;
             var order = _orderService.PlaceOrder(_cartModel, o => { o.PaymentStatus = PaymentStatus.Pending; });
             return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new { id = order.Guid }));
+        }
+
+        private bool CanPlaceOrder(out RedirectResult redirectResult)
+        {
+            redirectResult = null;
+            if (!_cartModel.CanPlaceOrder)
+            {
+                TempData["error-details"] = new FailureDetails
+                                                {
+                                                    Message =
+                                                        "We were unable to process your order with the specified cart. Please check your details and try again"
+                                                };
+                {
+                    redirectResult = _documentService.RedirectTo<PaymentDetails>();
+                    return false;
+                }
+            }
+            return true;
         }
 
         [HttpGet]
@@ -53,15 +73,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [ActionName("PayPalExpressCheckout")]
         public RedirectResult PayPalExpressCheckout_POST()
         {
+            RedirectResult redirectResult;
+            if (!CanPlaceOrder(out redirectResult)) return redirectResult;
+
             var response = _payPalExpressService.DoExpressCheckout(_cartModel);
+
             if (response.Success)
             {
                 var order = _orderService.PlaceOrder(_cartModel, response.UpdateOrder);
-                return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new {id = order.Guid}));
+                return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new { id = order.Guid }));
             }
+
             else
-                TempData["error-details"] =new FailureDetails{Message = "An error occurred processing your PayPal Express order, please contact the merchant"};
-                return _documentService.RedirectTo<PaymentDetails>();
+                TempData["error-details"] = new FailureDetails
+                                                {
+                                                    Message =
+                                                        "An error occurred processing your PayPal Express order, please contact the merchant"
+                                                };
+            return _documentService.RedirectTo<PaymentDetails>();
         }
 
         [HttpGet]
@@ -80,6 +109,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public ActionResult Paypoint_POST(PaypointPaymentDetailsModel model)
         {
             _paypointPaymentService.SetModel(model);
+
+            RedirectResult redirectResult;
+            if (!CanPlaceOrder(out redirectResult)) return redirectResult;
+
             var response = _paypointPaymentService.ProcessDetails(model,
                                                                   Url.Action("Response3DSecure", "Paypoint", null,
                                                                              Request.Url.Scheme));
