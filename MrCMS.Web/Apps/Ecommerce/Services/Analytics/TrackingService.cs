@@ -28,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics
         public List<Product> GetRecentlyViewedItems()
         {
             var value = CookieHelper.GetValue(RecentlyViewedItemsCookieName);
-            var recentlyViewedItems = GetItemIds(value).Select(id => _productService.Get(id)).ToList();
+            var recentlyViewedItems = GetItemIds(value).Select(id => _productService.Get(id)).Where(product => product != null && product.Published).ToList();
             return recentlyViewedItems.Distinct().ToList();
         }
 

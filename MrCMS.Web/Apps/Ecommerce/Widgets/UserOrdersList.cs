@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using MrCMS.Entities.Widget;
-using MrCMS.Helpers;
+﻿using MrCMS.Entities.Widget;
 using MrCMS.Paging;
-using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;

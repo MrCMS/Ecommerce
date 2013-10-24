@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using PdfSharp.Pdf;
 
@@ -15,6 +17,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 {
     public class ExportOrderService : IExportOrdersService
     {
+        private readonly EcommerceSettings _ecommerceSettings;
+
+        public ExportOrderService(EcommerceSettings ecommerceSettings)
+        {
+            _ecommerceSettings = ecommerceSettings;
+        }
+
         public byte[] ExportOrderToPdf(Order order)
         {
             var pdf = SetDocumentInfo(order);
@@ -100,10 +109,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         private void SetFooter(ref Section section)
         {
-            var p = section.Footers.Primary.AddParagraph();
-            p.Format.Alignment = ParagraphAlignment.Left;
-            p.Format.Font.Size = 8;
-            p.AddText(CurrentRequestData.CurrentSite.BaseUrl);
+            if (!String.IsNullOrWhiteSpace(_ecommerceSettings.ReportFooterText))
+            {
+                var p = section.Footers.Primary.AddParagraph();
+                p.Format.Alignment = ParagraphAlignment.Left;
+                p.Format.Font.Size = 8;
+                p.AddText(_ecommerceSettings.ReportFooterText);
+            }
         }
 
         private void SetInfo(Order order, ref Section section)
@@ -111,24 +123,45 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             var frame1 = section.AddTextFrame();
             frame1.RelativeVertical = RelativeVertical.Page;
             frame1.Left = ShapePosition.Left;
-            frame1.Top = new Unit(1.85, UnitType.Centimeter);
+            frame1.Top = new Unit(2, UnitType.Centimeter);
             frame1.Width = new Unit(10, UnitType.Centimeter);
             var p = frame1.AddParagraph();
             p.Format.Font.Size = 16;
             p.AddFormattedText("Order #" + order.Id, TextFormat.Bold);
+            
+            if (!String.IsNullOrWhiteSpace(_ecommerceSettings.ReportLogoImage))
+            {
+                string url;
+                try
+                {
+                    url = CurrentRequestData.CurrentContext.Server.MapPath(_ecommerceSettings.ReportLogoImage);
+                }
+                catch (Exception ex)
+                {
+                    url = string.Empty;
+                    CurrentRequestData.ErrorSignal.Raise(ex);
+                }
+                if (!String.IsNullOrWhiteSpace(url))
+                {
+                    var logo = section.AddImage(url);
+                    logo.RelativeVertical = RelativeVertical.Page;
+                    logo.Left = ShapePosition.Right;
+                    logo.Top = new Unit(1.85, UnitType.Centimeter);
+                }
+            }
 
             //LEFT
             frame1 = section.AddTextFrame();
             frame1.RelativeVertical = RelativeVertical.Page;
             frame1.Left = ShapePosition.Left;
-            frame1.Top = new Unit(3, UnitType.Centimeter);
+            frame1.Top = new Unit(3.5, UnitType.Centimeter);
             frame1.Width = new Unit(10, UnitType.Centimeter);
 
             //RIGHT
             var frame2 = section.AddTextFrame();
             frame2.RelativeVertical = RelativeVertical.Page;
             frame2.Left = ShapePosition.Right;
-            frame2.Top = new Unit(3, UnitType.Centimeter);
+            frame2.Top = new Unit(3.5, UnitType.Centimeter);
             frame2.Width = new Unit(8, UnitType.Centimeter);
 
             //BILLING AND SHIPPING
@@ -158,10 +191,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 p = frame2.AddParagraph();
                 p.AddText(order.ShippingAddress.Address2);
             }
-            p = frame1.AddParagraph();
-            p.AddText(order.BillingAddress.City);
-            p = frame2.AddParagraph();
-            p.AddText(order.ShippingAddress.City);
+            if (!String.IsNullOrWhiteSpace(order.BillingAddress.City))
+            {
+                p = frame1.AddParagraph();
+                p.AddText(order.BillingAddress.City);
+            }
+            if (!String.IsNullOrWhiteSpace(order.ShippingAddress.City))
+            {
+                p = frame2.AddParagraph();
+                p.AddText(order.ShippingAddress.City);
+            }
             if (!String.IsNullOrWhiteSpace(order.BillingAddress.StateProvince))
             {
                 p = frame1.AddParagraph();
@@ -172,14 +211,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 p = frame2.AddParagraph();
                 p.AddText(order.ShippingAddress.StateProvince);
             }
-            p = frame1.AddParagraph();
-            p.AddText(order.BillingAddress.Country.Name);
-            p = frame2.AddParagraph();
-            p.AddText(order.ShippingAddress.Country.Name);
-            p = frame1.AddParagraph();
-            p.AddText(order.BillingAddress.PostalCode);
-            p = frame2.AddParagraph();
-            p.AddText(order.ShippingAddress.PostalCode);
+            if (order.BillingAddress.Country != null)
+            {
+                p = frame1.AddParagraph();
+                p.AddText(order.BillingAddress.Country.Name);
+            }
+            if (order.ShippingAddress.Country != null)
+            {
+                p = frame2.AddParagraph();
+                p.AddText(order.ShippingAddress.Country.Name);
+            }
+            if (!String.IsNullOrWhiteSpace(order.BillingAddress.PostalCode))
+            {
+                p = frame1.AddParagraph();
+                p.AddText(order.BillingAddress.PostalCode);
+            }
+            if (!String.IsNullOrWhiteSpace(order.ShippingAddress.PostalCode))
+            {
+                p = frame2.AddParagraph();
+                p.AddText(order.ShippingAddress.PostalCode);
+            }
 
             frame1.AddParagraph("").AddLineBreak();
             frame2.AddParagraph("").AddLineBreak();
