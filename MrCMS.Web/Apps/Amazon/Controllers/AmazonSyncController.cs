@@ -33,6 +33,7 @@ namespace MrCMS.Web.Apps.Amazon.Controllers
         {
             try
             {
+                _amazonOrderSyncDataService.MarkAllAsPendingIfNotSyncedAfterOneHour();
                 var ordersForUpdate = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Update);
                 foreach (var amazonOrderSyncData in ordersForUpdate)
                 {

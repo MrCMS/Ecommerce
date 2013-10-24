@@ -12,5 +12,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
         AmazonOrderSyncData Add(AmazonOrderSyncData item);
         AmazonOrderSyncData Update(AmazonOrderSyncData item);
         void Delete(AmazonOrderSyncData item);
+        void MarkAllAsPendingIfNotSyncedAfterOneHour();
     }
 }
