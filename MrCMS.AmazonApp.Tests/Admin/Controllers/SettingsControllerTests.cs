@@ -18,6 +18,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         private readonly AmazonAppSettings _amazonAppSettings;
         private readonly AmazonSellerSettings _amazonSellerSettings;
         private readonly SettingsController _settingsController;
+        private readonly AmazonSyncSettings _amazonSyncSettings;
 
         public SettingsControllerTests()
         {
@@ -25,7 +26,8 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
             _amazonLogService = A.Fake<IAmazonLogService>();
             _amazonAppSettings = A.Fake<AmazonAppSettings>();
             _amazonSellerSettings = A.Fake<AmazonSellerSettings>();
-            _settingsController = new SettingsController(_configurationProvider,_amazonLogService,_amazonAppSettings,_amazonSellerSettings);
+             _amazonSyncSettings = A.Fake<AmazonSyncSettings>();
+             _settingsController = new SettingsController(_configurationProvider, _amazonLogService, _amazonAppSettings, _amazonSellerSettings, _amazonSyncSettings);
         }
 
         [Fact]
@@ -83,6 +85,35 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
             var result = _settingsController.Seller_POST(model);
 
             A.CallTo(() => _amazonLogService.Add(AmazonLogType.SellerSettings, AmazonLogStatus.Update,
+                null, null, null, null, null, null, null, null, string.Empty)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void SettingsController_Sync_ReturnsViewResult()
+        {
+            var result = _settingsController.Sync();
+
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public void SettingsController_SyncPOST_ShouldSaveSettings()
+        {
+            var model = new AmazonSyncSettings();
+
+            var result = _settingsController.Sync_POST(model);
+
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public void SettingsController_SyncPOST_ShouldCallAddLog()
+        {
+            var model = new AmazonSyncSettings();
+
+            var result = _settingsController.Sync_POST(model);
+
+            A.CallTo(() => _amazonLogService.Add(AmazonLogType.SyncSettings, AmazonLogStatus.Update,
                 null, null, null, null, null, null, null, null, string.Empty)).MustHaveHappened();
         }
     }

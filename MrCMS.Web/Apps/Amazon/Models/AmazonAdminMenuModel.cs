@@ -37,11 +37,12 @@ namespace MrCMS.Web.Apps.Amazon.Models
                             new List<IMenuItem>
                             {
                                 new ChildMenuItem("App", "/Admin/Apps/Amazon/Settings/App"),
-                                new ChildMenuItem("Seller", "/Admin/Apps/Amazon/Settings/Seller")
+                                new ChildMenuItem("Seller", "/Admin/Apps/Amazon/Settings/Seller"),
+                                new ChildMenuItem("Sync", "/Admin/Apps/Amazon/Settings/Sync")
                             }
                         },
                         {
-                            "Auditing",
+                            "",
                             new List<IMenuItem>
                             {
                                 new ChildMenuItem("Logs", "/Admin/Apps/Amazon/Logs")
