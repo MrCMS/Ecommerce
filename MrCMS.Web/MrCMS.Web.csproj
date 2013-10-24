@@ -22,7 +22,8 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
-    <IISExpressSSLPort>44300</IISExpressSSLPort>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
@@ -432,6 +433,7 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\PriceBreakOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductVariantOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\SessionDataOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ShippingMethodOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\TableNameConvention.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceApp.cs" />
@@ -460,6 +462,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationAttributeOption.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\SessionData.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingMethod.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Tax\TaxRate.cs" />
@@ -602,9 +605,11 @@
     <Compile Include="Apps\Ecommerce\Services\Geographic\ICountryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Geographic\IRegionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Geographic\RegionService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\GetUserGuid.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseTaxonomyData.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\IGoogleBaseManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IGetUserGuid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductImportDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductVariantImportDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ExportProductsManager.cs" />
