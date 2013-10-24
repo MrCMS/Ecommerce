@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Web;
-using System.Web.SessionState;
-using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Entities.People;
 using MrCMS.Settings;
 using MrCMS.Website;
 using Xunit;
-using MrCMS.Helpers;
 
 namespace MrCMS.Tests.Website
 {
@@ -29,11 +24,12 @@ namespace MrCMS.Tests.Website
         }
 
         [Fact]
-        public void CurrentRequestData_UserGuid_ReturnsTheCookieGuidIfTheUserIsNotLoggedIn()
+        public void CurrentRequestData_UserGuid_ReturnsTheSessionGuidIfTheUserIsNotLoggedIn()
         {
             CurrentRequestData.CurrentUser = null;
             var newGuid = Guid.NewGuid();
-            CurrentRequestData.CurrentContext.Response.Cookies.Add(new HttpCookie("current.usersessionGuid", newGuid.ToString()));
+            CurrentRequestData.CurrentContext.Response.Cookies.Add(new HttpCookie("current.usersessionGuid",
+                                                                                  newGuid.ToString()));
 
             var userGuid = CurrentRequestData.UserGuid;
 
