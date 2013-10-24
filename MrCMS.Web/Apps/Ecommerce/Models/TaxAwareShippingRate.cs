@@ -48,24 +48,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             _settings = settings ?? MrCMSApplication.Get<TaxSettings>();
         }
 
+        public bool TaxesEnabled
+        {
+            get { return _settings.TaxesEnabled && _settings.ShippingRateTaxesEnabled; }
+        }
+
         public decimal? PriceExcludingTax
+        {
+            get { return !_value.HasValue ? null : PriceIncludingTax - Tax; }
+        }   
+
+        public decimal? Tax
         {
             get
             {
                 if (!TaxesEnabled)
-                    return _value;
-
+                    return 0m;
                 return !_value.HasValue
-                ? (decimal?)null :
-                Math.Round(_settings.ShippingRateIncludesTax
-                                          ? _value.Value / ((TaxRatePercentage + 100) / 100)
-                                          : _value.Value, 2, MidpointRounding.AwayFromZero);
+                           ? (decimal?)null
+                           : Math.Round(_settings.ShippingRateIncludesTax
+                                            ? _value.Value * (TaxRatePercentage / (TaxRatePercentage + 100))
+                                            : _value.Value * (TaxRatePercentage / 100), 2,
+                                        MidpointRounding.AwayFromZero);
             }
-        }
-
-        public bool TaxesEnabled
-        {
-            get { return _settings.TaxesEnabled && _settings.ShippingRateTaxesEnabled; }
         }
 
         public decimal? PriceIncludingTax

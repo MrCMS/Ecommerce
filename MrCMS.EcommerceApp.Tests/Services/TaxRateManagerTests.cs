@@ -104,7 +104,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
 
             A.CallTo(() => _productVariantService.GetProductVariantBySKU(orderLine.SKU)).Returns(null);
 
-            var result = _taxRateManager.GetDefaultRate(orderLine);
+            var result = _taxRateManager.GetRateForOrderLine(orderLine);
 
             result.Should().NotBeNull();
             result.Should().Be(taxRate);
@@ -124,7 +124,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
 
             A.CallTo(() => _productVariantService.GetProductVariantBySKU(orderLine.SKU)).Returns(pv);
 
-            var result = _taxRateManager.GetDefaultRate(orderLine);
+            var result = _taxRateManager.GetRateForOrderLine(orderLine);
 
             result.Should().NotBeNull();
             result.Should().Be(taxRate2);
@@ -136,7 +136,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
             var pv = new ProductVariant();
             var orderLine = new OrderLine() { ProductVariant = pv, SKU = "123" };
 
-            _taxRateManager.GetDefaultRate(orderLine);
+            _taxRateManager.GetRateForOrderLine(orderLine);
 
             A.CallTo(() => _productVariantService.GetProductVariantBySKU(orderLine.SKU)).MustHaveHappened();
         }

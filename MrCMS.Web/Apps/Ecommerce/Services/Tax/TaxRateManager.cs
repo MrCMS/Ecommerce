@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
         {
             return _session.QueryOver<TaxRate>().Where(x => x.IsDefault).Cacheable().SingleOrDefault();
         }
-        public TaxRate GetDefaultRate(OrderLine orderLine)
+        public TaxRate GetRateForOrderLine(OrderLine orderLine)
         {
             TaxRate taxRate = null;
             var pv = _productVariantService.GetProductVariantBySKU(orderLine.SKU);
