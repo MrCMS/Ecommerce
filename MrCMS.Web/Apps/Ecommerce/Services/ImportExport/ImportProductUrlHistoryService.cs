@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -19,12 +20,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         {
             foreach (var urlHistoryItem in item.UrlHistory)
             {
-                var urlHistory = _urlHistoryService.GetByUrlSegment(urlHistoryItem);
+                var urlHistory = _urlHistoryService.GetByUrlSegment(urlHistoryItem.Trim());
                 if (urlHistory == null)
                 {
                     urlHistory = new UrlHistory()
                         {
-                            UrlSegment = urlHistoryItem, 
+                            UrlSegment = urlHistoryItem.Trim(), 
                             Webpage = product
                         };
                     product.Urls.Add(urlHistory);
