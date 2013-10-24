@@ -173,5 +173,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get { return !string.IsNullOrWhiteSpace(PayPalExpressToken) && !string.IsNullOrWhiteSpace(PayPalExpressPayerId); }
         }
+
+        public bool CanPlaceOrder
+        {
+            get { return ShippingAddress != null && BillingAddress != null && Items.Any(); }
+        }
     }
 }
