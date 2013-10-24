@@ -9,7 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
     {
         TaxRate Get(int id);
         TaxRate GetDefaultRate();
-        TaxRate GetDefaultRate(OrderLine orderLine);
+        TaxRate GetRateForOrderLine(OrderLine orderLine);
         TaxRate GetByCodeOrName(string value);
         IList<TaxRate> GetAll();
         void Add(TaxRate taxRate);

@@ -1,5 +1,6 @@
 ﻿using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 
@@ -30,15 +31,27 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             order.Subtotal = 0;
             foreach (var orderLine in order.OrderLines)
             {
-                var taxRate = _taxRateManager.GetDefaultRate(orderLine);
+                var taxRate = _taxRateManager.GetRateForOrderLine(orderLine);
 
                 if (taxRate == null) continue;
 
-                orderLine.UnitPricePreTax = orderLine.UnitPrice-taxRate.GetTaxForAmount(orderLine.UnitPrice);
-                order.Subtotal += orderLine.UnitPricePreTax*orderLine.Quantity;
-                orderLine.PricePreTax = orderLine.Price - taxRate.GetTaxForAmount(orderLine.Price);
-                orderLine.Tax = taxRate.GetTaxForAmount(orderLine.Price);
+                var taxAwareProductPrice = TaxAwareProductPrice.Create(orderLine.UnitPrice, taxRate,
+                                                                       new TaxSettings
+                                                                           {
+                                                                               TaxesEnabled = true,
+                                                                               LoadedPricesIncludeTax =true
+                                                                           });
+                var tax = taxAwareProductPrice.Tax.GetValueOrDefault();
+                orderLine.UnitPricePreTax = orderLine.UnitPrice - tax;
+                orderLine.PricePreTax = orderLine.UnitPricePreTax*orderLine.Quantity;
+                orderLine.Tax = orderLine.Price - orderLine.PricePreTax;
                 orderLine.TaxRate = taxRate.Percentage;
+
+                //orderLine.UnitPricePreTax = orderLine.UnitPrice-taxRate.GetTaxForAmount(orderLine.UnitPrice);
+                //order.Subtotal += orderLine.UnitPricePreTax*orderLine.Quantity;
+                //orderLine.PricePreTax = orderLine.Price - taxRate.GetTaxForAmount(orderLine.Price);
+                //orderLine.Tax = taxRate.GetTaxForAmount(orderLine.Price);
+                //orderLine.TaxRate = taxRate.Percentage;
 
                 totalTax += orderLine.Tax;
             }
@@ -52,8 +65,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             var taxRate = _taxRateManager.GetDefaultRate();
 
             if (taxRate == null) return;
-
-            order.ShippingTax = taxRate.GetTaxForAmount(order.ShippingTotal.Value);
+            var taxAwareProductPrice = TaxAwareShippingRate.Create(order.ShippingTotal, taxRate,
+                                                                       new TaxSettings
+                                                                       {
+                                                                           TaxesEnabled = true,
+                                                                           ShippingRateIncludesTax = true,
+                                                                           ShippingRateTaxesEnabled = true
+                                                                       });
+            order.ShippingTax = taxAwareProductPrice.Tax;
             order.ShippingTaxPercentage = taxRate.Percentage;
         }
     }
