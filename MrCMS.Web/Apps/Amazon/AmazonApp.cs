@@ -12,7 +12,6 @@ using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Controllers;
 using MrCMS.Web.Apps.Amazon.DbConfiguration;
-using MrCMS.Web.Apps.Amazon.ModelBinders;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Amazon.Tasks;
 using MrCMS.Web.Areas.Admin.Controllers;
@@ -55,9 +54,6 @@ namespace MrCMS.Web.Apps.Amazon
                 var config = new MarketplaceWebServiceConfig { ServiceURL = amazonAppSettings.ProductsApiEndpoint };
                 return new MarketplaceWebServiceClient (amazonAppSettings.AWSAccessKeyId, amazonAppSettings.SecretKey, "MrCMS", MrCMSApplication.AssemblyVersion, config);
             }).InRequestScope();
-
-            //START SINGLETON - INTERVAL IN SECONDS - DEFAULT: 300 (5min.)
-            ExecuteSyncOfAmazonOrders.Instance.Start(300);
         }
 
         protected override void RegisterApp(MrCMSAppRegistrationContext context)
@@ -68,7 +64,9 @@ namespace MrCMS.Web.Apps.Amazon
             context.MapRoute("Sync Amazon Orders", "sync-amazon-orders",
                                  new { controller = "AmazonSync", action = "Sync", id = UrlParameter.Optional },
                                  new[] { typeof(AmazonSyncController).Namespace });
-            
+            context.MapRoute("Sync Amazon Order Items", "sync-amazon-order-items",
+                                 new { controller = "AmazonSync", action = "SyncItems", id = UrlParameter.Optional },
+                                 new[] { typeof(AmazonSyncController).Namespace });
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)

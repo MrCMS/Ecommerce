@@ -309,8 +309,8 @@
     <Compile Include="Apps\Amazon\Settings\AmazonAppSettings.cs" />
     <Compile Include="Apps\Amazon\Settings\AmazonSellerSettings.cs" />
     <Compile Include="Apps\Amazon\Settings\AmazonSyncSettings.cs" />
+    <Compile Include="Apps\Amazon\Tasks\SyncAmazonOrderItems.cs" />
     <Compile Include="Apps\Amazon\Tasks\DeleteAmazonFiles.cs" />
-    <Compile Include="Apps\Amazon\Tasks\ExecuteSyncOfAmazonOrders.cs" />
     <Compile Include="Apps\Amazon\Tasks\SyncAmazonOrders.cs" />
     <Compile Include="Apps\Articles\Areas\Admin\Controllers\ArticleController.cs" />
     <Compile Include="Apps\Articles\Areas\Admin\Controllers\AuthorInfoController.cs" />
