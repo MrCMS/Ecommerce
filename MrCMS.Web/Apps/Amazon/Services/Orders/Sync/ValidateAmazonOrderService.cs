@@ -19,11 +19,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     {
         private readonly ICountryService _countryService;
         private readonly EcommerceSettings _ecommerceSettings;
+        private readonly ISetTaxes _setTax;
 
-        public ValidateAmazonOrderService(ICountryService countryService, EcommerceSettings ecommerceSettings)
+        public ValidateAmazonOrderService(ICountryService countryService, 
+            EcommerceSettings ecommerceSettings, ISetTaxes setTax)
         {
             _countryService = countryService;
             _ecommerceSettings = ecommerceSettings;
+            _setTax = setTax;
         }
 
         public void SetAmazonOrderItem(ref AmazonOrder amazonOrder, OrderItem rawOrderItem)
@@ -37,7 +40,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 amazonOrder.Items.Add(orderItem);
             }
         }
-
         private AmazonOrderItem GetAmazonOrderItem(AmazonOrder amazonOrder, OrderItem rawOrderItem)
         {
             return new AmazonOrderItem
@@ -151,12 +153,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             order.FulfillmentChannel = rawOrder.FulfillmentChannel.GetEnumByValue<AmazonFulfillmentChannel>();
             order.LastUpdatedDate = rawOrder.LastUpdateDate;
         }
-
         public void SetShippingAddress(AmazonOrder amazonOrder, AddressData address)
         {
             amazonOrder.ShippingAddress = address;
         }
-
         public AddressData GetAmazonOrderAddress(MarketplaceWebServiceOrders.Model.Order rawOrder)
         {
             if (rawOrder.ShippingAddress != null)
@@ -208,7 +208,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             }
             return null;
         }
-
         private static void GetFirstAndLastName(MarketplaceWebServiceOrders.Model.Order rawOrder, out string firstName, out string lastName)
         {
             firstName = String.Empty;
@@ -244,6 +243,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 order = GetOrderDetails(amazonOrder);
 
                 GetOrderLines(amazonOrder, ref order);
+
+                _setTax.SetTax(ref order, amazonOrder.Tax);
             }
 
             order.ShippingStatus = amazonOrder.Status.GetEnumByValue<ShippingStatus>();
@@ -259,7 +260,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                            PaymentMethod = amazonOrder.PaymentMethod.GetDescription(),
                            PaidDate = amazonOrder.PurchaseDate,
                            Total = amazonOrder.OrderTotalAmount,
-                           Tax = amazonOrder.Tax,
                            Subtotal = amazonOrder.ItemAmount,
                            DiscountAmount = amazonOrder.ItemDiscountAmount,
                            ShippingTax = amazonOrder.ShippingTax,

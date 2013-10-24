@@ -1,13 +1,5 @@
 ﻿using MrCMS.Entities;
-using System.Collections.Generic;
-using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
-using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
-using System;
-using MrCMS.Entities.People;
-using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Pages;
 using System.ComponentModel;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders

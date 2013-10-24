@@ -13,5 +13,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Tax
         {
             get { return 1 + (Percentage/100m); } 
         }
+
+        public virtual decimal GetTaxForAmount(decimal amount)
+        {
+            return amount*(Percentage/100m);
+        }
     }
 }
