@@ -14,26 +14,32 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics
             if (order == null)
                 return trackingScript;
 
-            var trackingScriptContainsEcommerce = trackingScript.Contains("{ecommerce}");
-            if (!trackingScriptContainsEcommerce)
-                return trackingScript;
-
-            var trackingCodeSb = new StringBuilder();
-            var shippingCity = order.ShippingAddress != null ? order.ShippingAddress.City : "";
-            var shippingCounty = order.ShippingAddress != null ? order.ShippingAddress.StateProvince : "";
-            var shippingCountry = order.ShippingAddress != null ? order.ShippingAddress.Country.Name : "";
-
-            trackingCodeSb.Append(string.Format(AddTrans, order.Id, order.Site.Name, order.Total, order.Tax,
-                                                order.ShippingTotal, shippingCity, shippingCounty, shippingCountry));
-
-            foreach (var orderLine in order.OrderLines)
+            if (!string.IsNullOrWhiteSpace(trackingScript))
             {
-                trackingCodeSb.Append(string.Format(AddItem, order.Id, orderLine.SKU, orderLine.Name, orderLine.Options , orderLine.UnitPrice, orderLine.Quantity));
+                var trackingScriptContainsEcommerce = trackingScript.Contains("{ecommerce}");
+                if (!trackingScriptContainsEcommerce)
+                    return trackingScript;
+
+                var trackingCodeSb = new StringBuilder();
+                var shippingCity = order.ShippingAddress != null ? order.ShippingAddress.City : "";
+                var shippingCounty = order.ShippingAddress != null ? order.ShippingAddress.StateProvince : "";
+                var shippingCountry = order.ShippingAddress != null ? order.ShippingAddress.Country.Name : "";
+
+                trackingCodeSb.Append(string.Format(AddTrans, order.Id, order.Site.Name, order.Total, order.Tax,
+                                                    order.ShippingTotal, shippingCity, shippingCounty, shippingCountry));
+
+                foreach (var orderLine in order.OrderLines)
+                {
+                    trackingCodeSb.Append(string.Format(AddItem, order.Id, orderLine.SKU, orderLine.Name,
+                                                        orderLine.Options, orderLine.UnitPrice, orderLine.Quantity));
+                }
+
+                trackingCodeSb.Append(TrackTrans);
+
+                return trackingScript.Replace("//{ecommerce}", trackingCodeSb.ToString());
             }
 
-            trackingCodeSb.Append(TrackTrans);
-
-            return trackingScript.Replace("//{ecommerce}", trackingCodeSb.ToString());
+            return string.Empty;
         }
     }
 }

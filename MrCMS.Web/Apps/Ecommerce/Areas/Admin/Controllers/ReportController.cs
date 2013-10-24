@@ -52,5 +52,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             return Json(_reportService.SalesByShippingType(model));
         }
+
+        [HttpGet]
+        public ViewResult OrdersByShippingType(ChartModel model)
+        {
+            return View(model);
+        }
+
+        [HttpPost]
+        [ActionName("OrdersByShippingType")]
+        public JsonResult OrdersByShippingType_POST(ChartModel model)
+        {
+            return Json(_reportService.OrdersByShippingType(model));
+        }
     }
 }

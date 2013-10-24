@@ -1,17 +1,18 @@
 ﻿@using System.Web.Mvc.Html
 @using MrCMS.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Models.ChartModel
+@using MrCMS.Web.Apps.Ecommerce.Models
+@model ChartModel
 @{
-    ViewBag.Title = "Sales by day";
+    ViewBag.Title = "Orders by shipping type";
 }
 
 <fieldset>
     <legend>
         <div class="row-fluid">
                 <div class="span12">
-                    Sales by day
+                    Orders by shipping type
                 <span class="pull-right">
-                    @using (Html.BeginForm("SalesByDay", "Report", new {id = ""}, FormMethod.Get))
+                    @using (Html.BeginForm("OrdersByShippingType", "Report", new {id = ""}, FormMethod.Get))
                     {
                         @Html.EditorFor(x => x.From)
                         @Html.EditorFor(x => x.To)
@@ -24,7 +25,7 @@
 
     <div class="row-fluid">
         <div class="span12">
-            <canvas id="line-chart"></canvas>
+            <canvas id="chart"></canvas>
         </div>
     </div>
     <br/>
@@ -44,5 +45,5 @@
 
 @{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/charts/Chart.js"); }
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/base-chart.js"); }
-@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/sales-by-day.js"); }
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/orders-by-shipping-type.js"); }
 @{ Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/reports.css"); }

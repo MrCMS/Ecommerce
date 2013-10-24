@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using MrCMS.Entities;
 using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Website;
-using NHibernate;
-using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Helpers
 {
@@ -176,6 +173,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
                 default:
                     return "January";
             }
+        }
+
+        public static string ToFriendlyCase(this string pascalString)
+        {
+            return Regex.Replace(pascalString, "(?!^)([A-Z])", " $1");
         }
     }
 }

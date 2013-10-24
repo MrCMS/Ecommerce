@@ -93,7 +93,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                         new ChildMenuItem("Sales by payment type",
                                                                           "/Admin/Apps/Ecommerce/Report/SalesByPaymentType"),
                                                         new ChildMenuItem("Sales by shipping type",
-                                                                          "/Admin/Apps/Ecommerce/Report/SalesByShippingType")
+                                                                          "/Admin/Apps/Ecommerce/Report/SalesByShippingType"),
+                                                    }
+                                            },
+                                            {
+                                                "Orders",
+                                                new List<IMenuItem>
+                                                    {
+                                                        new ChildMenuItem("Order by shipping type",
+                                                                          "/Admin/Apps/Ecommerce/Report/OrdersByShippingType"),
                                                     }
                                             }
                                         });

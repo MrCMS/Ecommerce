@@ -36,9 +36,9 @@ var chartData = {
     ]
 };
 
-var dataUrl = "/Admin/Apps/Ecommerce/Report/SalesByDay";
-var chart = $("#line-chart").get(0).getContext("2d");
-var chartContainer = $("#line-chart").parent();
+var dataUrl = "/Admin/Apps/Ecommerce/Report/OrdersByShippingType";
+var chart = $("#chart").get(0).getContext("2d");
+var chartContainer = $("#chart").parent();
 
 function generateChart() {
     $.post(dataUrl, {
@@ -67,7 +67,7 @@ function generateChart() {
             $("#message").html("No results were found with current filters, please refine and try again.");
         } else
             $("#message").html("");
-        var nc = $("#line-chart").attr('width', $(chartContainer).width());
-        new Chart(chart).Line(chartData, lineChartOptions);
+        var nc = $("#chart").attr('width', $(chartContainer).width());
+        new Chart(chart).Bar(chartData, lineChartOptions);
     });
 };
