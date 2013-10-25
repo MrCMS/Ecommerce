@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
+using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
 
@@ -35,6 +37,19 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             return _session.QueryOver<AmazonOrderSyncData>()
                             .Where(item => item.Operation==operation && item.Status==SyncAmazonOrderStatus.Pending)
                             .OrderBy(x=>x.CreatedOn).Asc.Take(pagesize).Cacheable().List();
+        }
+
+        public void MarkAllAsPendingIfNotSyncedAfterOneHour()
+        {
+            var items = _session.QueryOver<AmazonOrderSyncData>()
+                                .Where(item => item.Status == SyncAmazonOrderStatus.InProgress).Cacheable().List();
+
+            foreach (var amazonOrderSyncData in items.Where(x=>(CurrentRequestData.Now-x.CreatedOn).Hours>=1))
+            {
+                amazonOrderSyncData.CreatedOn = CurrentRequestData.Now;
+                amazonOrderSyncData.Status=SyncAmazonOrderStatus.Pending;
+                Update(amazonOrderSyncData);
+            }
         }
 
         public AmazonOrderSyncData Add(AmazonOrderSyncData item)
