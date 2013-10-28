@@ -39,7 +39,7 @@ namespace MrCMS.Web.Apps.Amazon.Controllers
                 {
                     Update(amazonOrderSyncData);
                 }
-                var ordersForAdd = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Add, 100);
+                var ordersForAdd = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Add, 10);
                 foreach (var amazonOrderSyncData in ordersForAdd)
                 {
                     Update(amazonOrderSyncData);
