@@ -28,6 +28,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         public void SetOrderLinesTaxes(ref Order order)
         {
             decimal totalTax = 0;
+            //?
             order.Subtotal = 0;
             foreach (var orderLine in order.OrderLines)
             {
@@ -47,11 +48,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 orderLine.Tax = orderLine.Price - orderLine.PricePreTax;
                 orderLine.TaxRate = taxRate.Percentage;
 
-                //orderLine.UnitPricePreTax = orderLine.UnitPrice-taxRate.GetTaxForAmount(orderLine.UnitPrice);
-                //order.Subtotal += orderLine.UnitPricePreTax*orderLine.Quantity;
-                //orderLine.PricePreTax = orderLine.Price - taxRate.GetTaxForAmount(orderLine.Price);
-                //orderLine.Tax = taxRate.GetTaxForAmount(orderLine.Price);
-                //orderLine.TaxRate = taxRate.Percentage;
+                //if we don't set subtotal here it will be 0??
+                order.Subtotal += orderLine.UnitPricePreTax * orderLine.Quantity;
 
                 totalTax += orderLine.Tax;
             }
@@ -72,7 +70,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                                                                            ShippingRateIncludesTax = true,
                                                                            ShippingRateTaxesEnabled = true
                                                                        });
-            order.ShippingTax = taxAwareProductPrice.Tax;
+            order.ShippingTax = taxAwareProductPrice.Tax.GetValueOrDefault();
             order.ShippingTaxPercentage = taxRate.Percentage;
         }
     }
