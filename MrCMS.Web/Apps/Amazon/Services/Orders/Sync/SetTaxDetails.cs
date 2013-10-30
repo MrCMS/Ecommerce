@@ -3,6 +3,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Web.Apps.Ecommerce.Settings;
+using System.Linq;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 {
@@ -27,9 +28,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
         public void SetOrderLinesTaxes(ref Order order)
         {
-            decimal totalTax = 0;
-            //?
-            order.Subtotal = 0;
             foreach (var orderLine in order.OrderLines)
             {
                 var taxRate = _taxRateManager.GetRateForOrderLine(orderLine);
@@ -48,12 +46,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 orderLine.Tax = orderLine.Price - orderLine.PricePreTax;
                 orderLine.TaxRate = taxRate.Percentage;
 
-                //if we don't set subtotal here it will be 0??
-                order.Subtotal += orderLine.UnitPricePreTax * orderLine.Quantity;
-
-                totalTax += orderLine.Tax;
             }
-            order.Tax = totalTax;
+            order.Subtotal = order.OrderLines.Sum(line => line.UnitPricePreTax*line.Quantity);
+            order.Tax = order.OrderLines.Sum(line => line.Tax);
         }
 
         public void SetShippingTaxes(ref Order order)
