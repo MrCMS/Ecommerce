@@ -45,7 +45,7 @@
                     }
                     <tr class="@status">
                         <td>
-                            @(!String.IsNullOrWhiteSpace(item.SalesChannel) ? item.SalesChannel : "Mr CMS")
+                            @item.SalesChannel.GetDescription()
                         </td>
                         <td>
                             @item.Id
