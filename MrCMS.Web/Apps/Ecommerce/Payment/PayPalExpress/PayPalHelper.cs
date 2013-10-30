@@ -57,7 +57,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                                Address1 = address.Street1,
                                Address2 = address.Street2,
                                City = address.CityName,
-                               Country = GetCountry(address.Country),
                                FirstName = firstName,
                                LastName = lastName,
                                PhoneNumber = address.Phone,
@@ -68,11 +67,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
             return null;
         }
 
-        private static Country GetCountry(CountryCodeType? country)
+        public static Country GetCountry(this AddressType address)
         {
-            return !country.HasValue
-                       ? null
-                       : MrCMSApplication.Get<ICountryService>().GetCountryByCode(country.Value.ToString());
+            return address != null && address.Country.HasValue
+                       ? MrCMSApplication.Get<ICountryService>().GetCountryByCode(address.Country.Value.ToString())
+                       : null;
         }
 
         public static BasicAmountType GetAmountType(this decimal value)
