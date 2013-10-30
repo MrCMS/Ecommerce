@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
 using System.Linq;
 using MrCMS.Web.Apps.Amazon.Services.Orders.Events;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 {
@@ -63,6 +64,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 newOrder = true;
             }
 
+            ProcessOrder(order, amazonOrder, newOrder);
+
+            return amazonOrder;
+        }
+
+        private void ProcessOrder(Order order, AmazonOrder amazonOrder, bool newOrder)
+        {
             foreach (var update in _amazonUpdates.OrderBy(updates => updates.Order))
                 update.Update(amazonOrder, order);
 
@@ -71,27 +79,21 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             if (newOrder)
                 foreach (var orderPlaced in _onAmazonOrderPlaceds)
                     orderPlaced.OnAmazonOrderPlaced(amazonOrder);
-
-            return amazonOrder;
         }
 
         public AmazonOrder UpdateOrder(AmazonOrderSyncData amazonOrderSyncData)
         {
+            if (amazonOrderSyncData.Operation == SyncAmazonOrderOperation.Add)
+            {
+                var byAmazonOrderId = _amazonOrderService.GetByAmazonOrderId(amazonOrderSyncData.OrderId);
+                if (byAmazonOrderId != null)
+                    return byAmazonOrderId;
+            }
+
             var amazonOrder = amazonOrderSyncData.AmazonOrder ?? new AmazonOrder();
             var order = AmazonAppHelper.DeserializeFromJson<Order>(amazonOrderSyncData.Data);
 
-            foreach (var update in _amazonUpdates.OrderBy(updates => updates.Order))
-                update.Update(amazonOrder, order);
-
-            if (amazonOrder.Id > 0)
-                amazonOrder = _amazonOrderService.Get(amazonOrder.Id);
-            _amazonOrderService.SaveOrUpdate(amazonOrder);
-
-            if (amazonOrderSyncData.Operation == SyncAmazonOrderOperation.Add)
-            {
-                foreach (var orderPlaced in _onAmazonOrderPlaceds)
-                    orderPlaced.OnAmazonOrderPlaced(amazonOrder);
-            }
+            ProcessOrder(order, amazonOrder, amazonOrderSyncData.Operation == SyncAmazonOrderOperation.Add);
 
             return amazonOrder;
         }

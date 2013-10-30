@@ -15,7 +15,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         private readonly IEnumerable<IOnAmazonOrderPlaced> _onAmazonOrderPlaceds;
         private readonly IOrderService _orderService;
 
-        public UpdateAmazonInfo(IValidateAmazonOrderService validateAmazonOrderService, 
+        public UpdateAmazonInfo(IValidateAmazonOrderService validateAmazonOrderService,
             IEnumerable<IOnAmazonOrderPlaced> onAmazonOrderPlaceds, IOrderService orderService)
         {
             _validateAmazonOrderService = validateAmazonOrderService;
@@ -34,7 +34,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
             amazonOrder.NumberOfItemsShipped = order.NumberOfItemsShipped;
             amazonOrder.Status = order.OrderStatus.GetEnumByValue<AmazonOrderStatus>();
-            if (amazonOrder.Status == AmazonOrderStatus.Shipped && amazonOrder.Order!=null && amazonOrder.Order.ShippingStatus == ShippingStatus.Unshipped)
+            if (amazonOrder.Status == AmazonOrderStatus.Shipped && amazonOrder.Order != null && amazonOrder.Order.ShippingStatus == ShippingStatus.Unshipped)
             {
                 _orderService.MarkAsShipped(amazonOrder.Order);
             }

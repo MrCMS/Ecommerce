@@ -36,8 +36,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
 
         public AmazonOrder GetByAmazonOrderId(string id)
         {
-            return _session.QueryOver<AmazonOrder>()
-                            .Where(item => item.AmazonOrderId.IsInsensitiveLike(id, MatchMode.Exact)).SingleOrDefault();
+            return _session.QueryOver<AmazonOrder>().Where(item => item.AmazonOrderId == id).SingleOrDefault();
         }
 
         public IPagedList<AmazonOrder> Search(string queryTerm = null, int page = 1, int pageSize = 10)
