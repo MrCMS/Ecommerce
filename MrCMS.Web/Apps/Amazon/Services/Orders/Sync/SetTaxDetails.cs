@@ -67,6 +67,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                                                                        });
             order.ShippingTax = taxAwareProductPrice.Tax.GetValueOrDefault();
             order.ShippingTaxPercentage = taxRate.Percentage;
+            order.Tax += order.ShippingTax.GetValueOrDefault();
         }
     }
 }
