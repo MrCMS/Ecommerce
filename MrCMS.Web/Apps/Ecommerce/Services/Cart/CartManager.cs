@@ -2,6 +2,7 @@
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
@@ -135,7 +136,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             if (shippingCalculation.ShippingMethod != null)
                 _cartSessionManager.SetSessionValue(CurrentShippingMethodIdKey, shippingCalculation.ShippingMethod.Id);
             if (shippingCalculation.Country != null)
-                _cartSessionManager.SetSessionValue(CurrentCountryIdKey, shippingCalculation.Country.Id);
+                SetCountry(shippingCalculation.Country);
+        }
+
+        public void SetCountry(Country country)
+        {
+            if (country != null) _cartSessionManager.SetSessionValue(CurrentCountryIdKey, country.Id);
         }
 
         public void SetPayPalExpressInfo(string token, string payerId)

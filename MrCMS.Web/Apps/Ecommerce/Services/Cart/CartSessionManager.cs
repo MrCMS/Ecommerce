@@ -50,7 +50,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                         .Cacheable()
                         .SingleOrDefault() ?? new SessionData { Key = key, UserGuid = _getUserGuid.UserGuid };
 
-            sessionData.Data = JsonConvert.SerializeObject(item);
+            sessionData.Data = JsonConvert.SerializeObject(item, Formatting.None,
+                                                           new JsonSerializerSettings
+                                                               {
+                                                                   ReferenceLoopHandling =
+                                                                       ReferenceLoopHandling
+                                                                       .Ignore
+                                                               });
             _session.Transact(session => session.SaveOrUpdate(sessionData));
         }
 
