@@ -24,14 +24,17 @@
                 <td>@Model.CreatedOn</td>
             </tr>
             <tr>
-                <td>Order Subtotal (ex TAX)</td>
+                <td>Order Subtotal (ex Tax)</td>
                 <td>@Model.Subtotal.ToCurrencyFormat()</td>
             </tr>
             <tr>
-                <td>Order Shipping (ex TAX)</td>
+                <td>Order Shipping (ex Tax)</td>
                 <td>@orderShipping.ToCurrencyFormat()</td>
             </tr>
-
+            <tr>
+                <td>Order Shipping Total</td>
+                <td>@Model.ShippingTotal.ToCurrencyFormat()</td>
+            </tr>
             <tr>
                 <td>Order Tax</td>
                 <td>@Model.Tax.ToCurrencyFormat()</td>
