@@ -16,6 +16,8 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
             mapping.HasManyToMany(product => product.Options).Table("Ecommerce_ProductOptions")
                    .AsList(part => part.Column("DisplayOrder"))
                    .Not.Inverse();
+
+            mapping.HasMany(product => product.Variants).Cascade.All();
         }
     }
 }
