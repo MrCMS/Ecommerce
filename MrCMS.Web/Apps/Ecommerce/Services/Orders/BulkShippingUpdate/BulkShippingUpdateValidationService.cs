@@ -37,6 +37,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate
                     while (file.Read())
                     {
                         var orderId = file.GetField<int?>(0);
+                        //check for duplicates
+                        if (items.SingleOrDefault(x=>x.OrderId == orderId) != null)
+                            continue;
+
                         if (orderId.HasValue && parseErrors.All(x => x.Key != orderId.ToString()))
                             parseErrors.Add(orderId.ToString(), new List<string>());
                         else
