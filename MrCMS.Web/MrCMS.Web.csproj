@@ -428,6 +428,7 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\FeaturedCategoryWidgetOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\FeaturedProductsWidgetOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\GoogleBaseProductOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\Listeners\BackInStockListener.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\NotificationTemplateSettingsOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderLineOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderNoteOverride.cs" />
@@ -439,7 +440,8 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\ShippingMethodOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\TableNameConvention.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceApp.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\BackInStockNotification\BackInStockNotification.cs" />
+    <Compile Include="Apps\Ecommerce\EcommerceInstallation.cs" />
+    <Compile Include="Apps\Ecommerce\EcommerceRouteConfig.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Cart\CartItem.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Currencies\Currency.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercentFromOrder.cs" />
@@ -456,6 +458,8 @@
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderLine.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderNote.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderRefund.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\BackInStockNotification\BackInStockNotificationRequest.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\BackInStockNotification\BackInStockProductVariant.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\Brand.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\PriceBreak.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductOption.cs" />
@@ -481,6 +485,7 @@
     <Compile Include="Apps\Ecommerce\Helpers\RequestHelper.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchIndex.cs" />
+    <Compile Include="Apps\Ecommerce\MessageTemplates\ProductBackInStockMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderCancelledEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderFullyRefundedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPartiallyRefundedEmailToCustomerMessageTemplate.cs" />
@@ -669,6 +674,8 @@
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointPaymentService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointRequestHelper.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointRequestService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\BackInStockNotificationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\IBackInStockNotificationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductOptionManagementService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
@@ -737,6 +744,7 @@
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\GoogleBaseSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Tasks\BackInStockNotificationTask.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\BreadCrumb.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CartWidget.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CategoriesOnlyNavigation.cs" />
