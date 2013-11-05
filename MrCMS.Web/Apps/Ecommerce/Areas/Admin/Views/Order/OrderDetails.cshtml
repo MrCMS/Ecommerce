@@ -1,16 +1,17 @@
-﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+﻿@using MrCMS.Web.Apps.Ecommerce
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
 @{
     var orderShipping = Model.ShippingTotal.GetValueOrDefault() - Model.ShippingTax.GetValueOrDefault();
-    var noneSystemSalesChannel = Model.SalesChannel != SalesChannel.MrCMS;
+    var nonSystemSalesChannel = Model.SalesChannel != EcommerceApp.DefaultSalesChannel;
 }
 <div class="row-fluid">
-    <div class="@(noneSystemSalesChannel ? "span6" : "span12")">
+    <div class="@(nonSystemSalesChannel ? "span6" : "span12")">
         <table class="table table-condensed table-striped">
             <tr>
                 <td>Sales Channel</td>
-                <td>@Model.SalesChannel.GetDescription()</td>
+                <td>@Model.SalesChannel</td>
             </tr>
             <tr>
                 <td>Customer</td>
@@ -61,9 +62,11 @@
             }
         </table>
     </div>
-    @if (noneSystemSalesChannel)
+    @if (nonSystemSalesChannel)
     {
-        @Html.RenderAction("GetAddtionalOrderInfo", "Order", new { Order = Model, SalesChannel = Model.SalesChannel });
+        <div class="span6">
+            @Html.GetSalesChannelInfo()
+        </div>
     }
 </div>
 @{
