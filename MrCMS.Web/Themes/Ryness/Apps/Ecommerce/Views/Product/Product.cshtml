@@ -7,6 +7,7 @@
 @using MrCMS.Web.Apps.Ecommerce.Models
 @{
     var selectedVariant = ViewData["selected-variant"] as ProductVariant ?? Model.VariantsByPrice.First();
+    var backInStock = ViewData["back-in-stock"] is bool && (bool)ViewData["back-in-stock"];
     var hasSpecifications = Model.SpecificationValues.Any();
 }
 @Html.HiddenFor(x => x.UrlSegment)
@@ -46,7 +47,7 @@
                                 {
                                     if (!string.IsNullOrEmpty(Model.Brand.Logo))
                                     {
-                                @RenderImage(Model.Brand.Logo, new Size { Width = 100, Height = 50 }, alt:Model.Brand.Name);
+                                @RenderImage(Model.Brand.Logo, new Size { Width = 100, Height = 50 }, alt: Model.Brand.Name);
                                     }
                                 }
                             }
@@ -72,11 +73,27 @@
                 <!-- product add to cart start -->
                 @if (selectedVariant.TrackingPolicy == TrackingPolicy.Track && selectedVariant.StockRemaining <= 0)
                 {
+                    if (backInStock)
+                    {
+                    <div class="alert alert-success">
+                        Thank you, you will be notified when this product is back in stock.
+                    </div>
+                    }
+                    else
+                    {
                     <div class="row-fluid margin-top-bottom-10 out-of-stock">
                         <p class="text-align-center red">
                             Sorry, this item is out of stock.
                         </p>
                     </div>
+                        using (Html.BeginForm("BackInStock", "Product", FormMethod.Post))
+                        {
+                    @Html.Hidden("ProductVariant.Id", selectedVariant.Id)
+                    @Html.Label("Email", "Enter your email to be notified when this item is back in stock")
+                    @Html.TextBox("Email", "", new { placeholder = "Email", @class = "span12" })
+                    <input type="submit" class="generic-button big-red-gradient span12" value="Notify me" />
+                        }
+                    }
                 }
                 else
                 {
