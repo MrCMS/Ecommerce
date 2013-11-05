@@ -14,6 +14,7 @@ using MrCMS.Web.Apps.Amazon.Controllers;
 using MrCMS.Web.Apps.Amazon.DbConfiguration;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Amazon.Tasks;
+using MrCMS.Web.Apps.Ecommerce;
 using MrCMS.Web.Areas.Admin.Controllers;
 using MrCMS.Website;
 using NHibernate;
@@ -22,9 +23,12 @@ using Ninject.Web.Common;
 
 namespace MrCMS.Web.Apps.Amazon
 {
-    public class AmazonApp : MrCMSApp
+    public class AmazonApp : MrCMSApp, IEcommerceApp
     {
+        public const string SalesChannel = "Amazon";
         public const string AmazonAppName = "Amazon";
+
+        public IEnumerable<string> SalesChannels { get { yield return SalesChannel; } }
 
         public override string AppName
         {
@@ -52,7 +56,7 @@ namespace MrCMS.Web.Apps.Amazon
             {
                 var amazonAppSettings = context.Kernel.Get<AmazonAppSettings>();
                 var config = new MarketplaceWebServiceConfig { ServiceURL = amazonAppSettings.ProductsApiEndpoint };
-                return new MarketplaceWebServiceClient (amazonAppSettings.AWSAccessKeyId, amazonAppSettings.SecretKey, "MrCMS", MrCMSApplication.AssemblyVersion, config);
+                return new MarketplaceWebServiceClient(amazonAppSettings.AWSAccessKeyId, amazonAppSettings.SecretKey, "MrCMS", MrCMSApplication.AssemblyVersion, config);
             }).InRequestScope();
         }
 

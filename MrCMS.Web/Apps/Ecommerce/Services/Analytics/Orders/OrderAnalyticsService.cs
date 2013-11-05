@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using MrCMS.Web.Apps.Ecommerce.Models;
 using System.Linq;
 namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
 {
@@ -29,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
         {
             var results = new List<IList<KeyValuePair<DateTime, decimal>>>();
             var baseData = _revenueService.GetBaseDataGroupedBySalesChannel(from, to);
-            foreach (var salesChannel in Enum.GetValues(typeof(SalesChannel)).OfType<SalesChannel>())
+            foreach (var salesChannel in EcommerceApp.SalesChannels)
             {
                 _groupRevenueService.AddRevenueGroupedByDateCreated(baseData, ref results, salesChannel);
             }
@@ -40,7 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
         {
             var results = new List<IList<KeyValuePair<string, decimal>>>();
             var baseData = _revenueService.GetBaseDataGroupedBySalesChannel(from, to);
-            foreach (var salesChannel in Enum.GetValues(typeof(SalesChannel)).OfType<SalesChannel>())
+            foreach (var salesChannel in EcommerceApp.SalesChannels)
             {
                 switch (groupBy)
                 {
@@ -60,7 +59,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
         {
             var results = new List<IList<KeyValuePair<DateTime, decimal>>>();
             var baseData = _revenueService.GetBaseDataGroupedBySalesChannel();
-            foreach (var salesChannel in Enum.GetValues(typeof(SalesChannel)).OfType<SalesChannel>())
+            foreach (var salesChannel in EcommerceApp.SalesChannels)
             {
                 _groupRevenueService.AddRevenueGroupedByHour(baseData, ref results, salesChannel);
             }
@@ -71,7 +70,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
         {
             var results = new List<IList<KeyValuePair<string, decimal>>>();
             var baseData = _revenueService.GetBaseDataGroupedBySalesChannel(from, to);
-            foreach (var salesChannel in Enum.GetValues(typeof (SalesChannel)).OfType<SalesChannel>())
+            foreach (var salesChannel in EcommerceApp.SalesChannels)
                 _groupOrdersService.AddOrdersGroupedByShippmentType(baseData, ref results, salesChannel);
             return results;
         }

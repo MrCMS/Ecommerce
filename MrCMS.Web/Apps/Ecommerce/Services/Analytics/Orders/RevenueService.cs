@@ -9,8 +9,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
 {
     public interface IRevenueService
     {
-        IEnumerable<IGrouping<SalesChannel, Order>> GetBaseDataGroupedBySalesChannel(DateTime from, DateTime to);
-        IEnumerable<IGrouping<SalesChannel, Order>> GetBaseDataGroupedBySalesChannel();
+        IEnumerable<IGrouping<string, Order>> GetBaseDataGroupedBySalesChannel(DateTime from, DateTime to);
+        IEnumerable<IGrouping<string, Order>> GetBaseDataGroupedBySalesChannel();
     }
 
     public class RevenueService : IRevenueService
@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
             _session = session;
         }
 
-        public IEnumerable<IGrouping<SalesChannel, Order>> GetBaseDataGroupedBySalesChannel(DateTime from, DateTime to)
+        public IEnumerable<IGrouping<string, Order>> GetBaseDataGroupedBySalesChannel(DateTime from, DateTime to)
         {
             return _session.QueryOver<Order>()
                         .Where(item => item.CreatedOn >= from.Date && item.CreatedOn <= to.Date)
@@ -31,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
                         .GroupBy(x => x.SalesChannel);
         }
 
-        public IEnumerable<IGrouping<SalesChannel, Order>> GetBaseDataGroupedBySalesChannel()
+        public IEnumerable<IGrouping<string, Order>> GetBaseDataGroupedBySalesChannel()
         {
             return _session.QueryOver<Order>()
                         .Where(item => item.CreatedOn >= CurrentRequestData.Now.Date && item.CreatedOn <= CurrentRequestData.Now.Date.AddHours(24))
