@@ -3,10 +3,15 @@
 @model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
 @{
     var orderShipping = Model.ShippingTotal.GetValueOrDefault() - Model.ShippingTax.GetValueOrDefault();
+    var noneSystemSalesChannel = Model.SalesChannel != SalesChannel.MrCMS;
 }
 <div class="row-fluid">
-    <div class="span12">
+    <div class="@(noneSystemSalesChannel ? "span6" : "span12")">
         <table class="table table-condensed table-striped">
+            <tr>
+                <td>Sales Channel</td>
+                <td>@Model.SalesChannel.GetDescription()</td>
+            </tr>
             <tr>
                 <td>Customer</td>
                 <td>
@@ -56,6 +61,10 @@
             }
         </table>
     </div>
+    @if (noneSystemSalesChannel)
+    {
+        @Html.RenderAction("GetAddtionalOrderInfo", "Order", new { Order = Model, SalesChannel = Model.SalesChannel });
+    }
 </div>
 @{
     if (Model.OrderRefunds.Count > 0)
@@ -172,7 +181,9 @@
         <div class="pull-left">
             @if (Model.ShippingAddress != null)
             {
-                @Model.ShippingAddress.GetDescription()
+                @Html.Raw(Model.BillingAddress.GetDescriptionHtml())
+                
+                <p>@Model.ShippingAddress.PhoneNumber</p>
             }
         </div>
     </div>
@@ -183,7 +194,9 @@
         <div class="pull-left">
             @if (Model.BillingAddress != null)
             {
-                @Model.BillingAddress.GetDescription()
+                @Html.Raw(Model.BillingAddress.GetDescriptionHtml())
+
+                <p>@Model.BillingAddress.PhoneNumber</p>
             }
         </div>
     </div>
