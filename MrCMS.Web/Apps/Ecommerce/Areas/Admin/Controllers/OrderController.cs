@@ -222,5 +222,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             var orders = _userService.GetAll<Order>(user);
             return PartialView(orders);
         }
+
+        public ActionResult GetAddtionalOrderInfo(Order order, SalesChannel saleschannel)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
