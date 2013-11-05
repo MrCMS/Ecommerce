@@ -210,6 +210,7 @@
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\ListingController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\ListingGroupController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\LogsController.cs" />
+    <Compile Include="Apps\Amazon\Areas\Admin\Controllers\OrderInfoController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\OrdersController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\SettingsController.cs" />
     <Compile Include="Apps\Amazon\Controllers\AmazonSyncController.cs" />
@@ -2328,6 +2329,8 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\PeopleWhoBoughtThisAlsoBought.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\XPercentFromOrder.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Sync.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Order\Amazon.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\OrderInfo\AmazonInfo.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

@@ -26,6 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         public DateTime? DateTo { get; set; }
         public PaymentStatus? PaymentStatus { get; set; }
         public ShippingStatus? ShippingStatus { get; set; }
+        public string SalesChannel { get; set; }
 
         public OrderSearchQuery(OrderSearchModel orderSearchModel)
         {
@@ -35,12 +36,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             DateTo = orderSearchModel.DateTo;
             PaymentStatus = orderSearchModel.PaymentStatus;
             ShippingStatus = orderSearchModel.ShippingStatus;
+            SalesChannel = orderSearchModel.SalesChannel;
         }
 
         public Query GetQuery()
         {
             if (String.IsNullOrWhiteSpace(SearchText) && String.IsNullOrWhiteSpace(OrderId) && PaymentStatus == null &&
-                ShippingStatus == null && !DateFrom.HasValue && !DateTo.HasValue)
+                ShippingStatus == null && !DateFrom.HasValue && !DateTo.HasValue && string.IsNullOrWhiteSpace(SalesChannel))
                 return new MatchAllDocsQuery();
 
             var booleanQuery = new BooleanQuery();
@@ -59,6 +61,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 booleanQuery.Add(GetPaymentStatusQuery(), Occur.MUST);
             if (ShippingStatus != null)
                 booleanQuery.Add(GetShippingStatusQuery(), Occur.MUST);
+            if (!string.IsNullOrWhiteSpace(SalesChannel))
+                booleanQuery.Add(GetSalesChannelQuery(), Occur.MUST);
             return booleanQuery;
         }
 
@@ -77,6 +81,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             var split = keywords.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             return string.Join(" ", split.Select(s => s + "~"));
+        }
+
+        private Query GetSalesChannelQuery()
+        {
+            return new BooleanQuery
+                {
+                    {new TermQuery(new Term(OrderSearchIndex.SalesChannel.FieldName, SalesChannel)), Occur.MUST}
+                };
         }
 
         private Query GetShippingStatusQuery()

@@ -4,7 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using System.Web.Routing;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Helpers
 {
@@ -29,6 +32,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
             tag.Attributes.Add("for", html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(htmlFieldName));
             tag.SetInnerText(labelText);
             return MvcHtmlString.Create(tag.ToString(TagRenderMode.Normal));
+        }
+
+        public static MvcHtmlString GetSalesChannelInfo(this HtmlHelper<Order> htmlHelper)
+        {
+            var order = htmlHelper.ViewData.Model;
+            if (order == null)
+                return MvcHtmlString.Empty;
+            if (EcommerceApp.SalesChannelApps.ContainsKey(order.SalesChannel))
+                htmlHelper.ViewContext.RouteData.DataTokens["app"] = EcommerceApp.SalesChannelApps[order.SalesChannel];
+
+            ViewEngineResult viewEngineResult =
+                ViewEngines.Engines.FindView(new ControllerContext(htmlHelper.ViewContext.RequestContext, htmlHelper.ViewContext.Controller), order.SalesChannel, "");
+            if (viewEngineResult.View != null)
+            {
+                try
+                {
+                    return htmlHelper.Partial(order.SalesChannel, order);
+                }
+                catch (Exception exception)
+                {
+                    CurrentRequestData.ErrorSignal.Raise(exception);
+                }
+            }
+            return MvcHtmlString.Empty;
         }
     }
 }
