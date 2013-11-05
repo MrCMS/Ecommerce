@@ -125,6 +125,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
             return string.Join(", ", addressParts);
         }
 
+        public string GetDescriptionHtml(bool removeName = false)
+        {
+            var addressParts = GetAddressParts(removeName);
+            return string.Join("<br />", addressParts);
+        }
+
         private IEnumerable<string> GetAddressParts(bool removeName)
         {
             if (!string.IsNullOrWhiteSpace(Name) && !removeName)
