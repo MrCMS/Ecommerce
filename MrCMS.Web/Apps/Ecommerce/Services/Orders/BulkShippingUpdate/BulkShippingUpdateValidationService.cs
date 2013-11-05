@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CsvHelper;
+using CsvHelper.Configuration;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate.Rules;
@@ -28,17 +29,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate
 
         public List<BulkShippingUpdateDataTransferObject> ValidateAndBulkShippingUpdateOrders(Stream rawFile, ref Dictionary<string, List<string>> parseErrors)
         {
-            var items = new List<BulkShippingUpdateDataTransferObject>();
+            var bulkShippingUpdateDataTransferObjects = new List<BulkShippingUpdateDataTransferObject>();
 
             if (rawFile != null)
             {
-                using (var file = new CsvReader(new StreamReader(rawFile)))
+                using (var file = new CsvReader(new StreamReader(rawFile), new CsvConfiguration{HasHeaderRecord = true}))
                 {
                     while (file.Read())
                     {
                         var orderId = file.GetField<int?>(0);
+
+                        //skip blank rows
+                        if (!orderId.HasValue)
+                            continue;
+                        
                         //check for duplicates
-                        if (items.SingleOrDefault(x=>x.OrderId == orderId) != null)
+                        if (bulkShippingUpdateDataTransferObjects.SingleOrDefault(x=>x.OrderId == orderId) != null)
                             continue;
 
                         if (orderId.HasValue && parseErrors.All(x => x.Key != orderId.ToString()))
@@ -59,14 +65,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate
                         if (file.GetField<string>(2).HasValue())
                             pv.TrackingNumber = file.GetField<string>(2).Trim();
 
-                        items.Add(pv);
+                        bulkShippingUpdateDataTransferObjects.Add(pv);
                     }
                 }
             }
 
             parseErrors = parseErrors.Where(x => x.Value.Any()).ToDictionary(pair => pair.Key, pair => pair.Value);
             
-            return items;
+            return bulkShippingUpdateDataTransferObjects;
         }
     }
 }
