@@ -1,4 +1,5 @@
 ﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @model OrderSearchModel
@@ -81,7 +82,7 @@
                         }
                         <tr class="@status">
                             <td>
-                                @(item.SalesChannel!=null ? item.SalesChannel.GetDescription() : SalesChannel.MrCMS.GetDescription())
+                                @(item.SalesChannel ?? EcommerceApp.DefaultSalesChannel)
                             </td>
                             <td>
                                 @item.Id

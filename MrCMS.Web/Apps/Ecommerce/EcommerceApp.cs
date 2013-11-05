@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using MrCMS.Apps;
 using MrCMS.Entities.Multisite;
+using MrCMS.Helpers;
 using MrCMS.Installation;
 using MrCMS.PaypointService.API;
-using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration.Listeners;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
@@ -19,7 +19,9 @@ namespace MrCMS.Web.Apps.Ecommerce
 {
     public class EcommerceApp : MrCMSApp
     {
+        private static Dictionary<string, string> _salesChannelApps;
         public const string EcommerceAppName = "Ecommerce";
+        public const string DefaultSalesChannel = "MrCMS";
 
         public override string AppName
         {
@@ -44,6 +46,21 @@ namespace MrCMS.Web.Apps.Ecommerce
         protected override void RegisterApp(MrCMSAppRegistrationContext context)
         {
             EcommerceRouteConfig.RegisterRoutes(context);
+
+            SetupSalesChannels();
+        }
+
+        private static void SetupSalesChannels()
+        {
+            _salesChannelApps = new Dictionary<string,string>();
+            _salesChannelApps[DefaultSalesChannel] = EcommerceAppName;
+            foreach (var appName in TypeHelper.GetAllConcreteTypesAssignableFrom<IEcommerceApp>())
+            {
+                var ecommerceApp = Activator.CreateInstance(appName) as IEcommerceApp;
+                if (ecommerceApp != null)
+                    foreach (var salesChannel in ecommerceApp.SalesChannels)
+                        _salesChannelApps[salesChannel] = ecommerceApp.AppName;
+            }
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
@@ -56,6 +73,16 @@ namespace MrCMS.Web.Apps.Ecommerce
             get { yield return typeof(TableNameConvention); }
         }
 
+        public static Dictionary<string, string> SalesChannelApps
+        {
+            get { return _salesChannelApps; }
+        }
+
+        public static IEnumerable<string> SalesChannels
+        {
+            get { return _salesChannelApps.Keys; }
+        }
+
         protected override void AppendConfiguration(NHibernate.Cfg.Configuration configuration)
         {
             configuration.AppendListeners(ListenerType.PostCommitUpdate, new IPostUpdateEventListener[]
@@ -63,5 +90,11 @@ namespace MrCMS.Web.Apps.Ecommerce
                                                                                  new BackInStockListener()
                                                                              });
         }
+    }
+
+    public interface IEcommerceApp
+    {
+        IEnumerable<string> SalesChannels { get; }
+        string AppName { get; }
     }
 }
