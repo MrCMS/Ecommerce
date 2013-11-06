@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MrCMS.Entities.Messaging;
+using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Website;
@@ -8,6 +9,7 @@ using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
 {
+    [FriendlyClassName("Product Back In Stock Message Template")]
     public class ProductBackInStockMessageTemplate : MessageTemplate, IMessageTemplate<ProductVariant>
     {
         public override MessageTemplate GetInitialTemplate(ISession session)
