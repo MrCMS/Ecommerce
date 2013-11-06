@@ -84,12 +84,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
 
         public void SetModel(PaypointPaymentDetailsModel model)
         {
-            _cartSessionManager.SetSessionValue(PaypointPaymentModelKey, model);
+            _cartSessionManager.SetSessionValue(PaypointPaymentModelKey, model, true);
         }
 
         public PaypointPaymentDetailsModel GetModel()
         {
-            return _cartSessionManager.GetSessionValue<PaypointPaymentDetailsModel>(PaypointPaymentModelKey);
+            return _cartSessionManager.GetSessionValue<PaypointPaymentDetailsModel>(PaypointPaymentModelKey,
+                                                                                    encrypted: true);
         }
 
         public IEnumerable<string> Keys { get { yield return PaypointPaymentModelKey; } }
