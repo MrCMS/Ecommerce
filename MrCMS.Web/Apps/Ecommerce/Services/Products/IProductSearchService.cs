@@ -16,6 +16,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
+using NHibernate;
 using Version = Lucene.Net.Util.Version;
 using MrCMS.Web.Apps.Ecommerce.Indexing;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -43,7 +44,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             Specifications = new List<int>();
             Page = 1;
             PageSize = 10;
-            SortBy = ProductSearchSort.MostPopular;
         }
 
         public double MaxPrice
@@ -60,7 +60,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public int Page { get; set; }
         public int PageSize { get; set; }
 
-        public ProductSearchSort SortBy { get; set; }
+        public ProductSearchSort? SortBy { get; set; }
 
         public IEnumerable<SelectListItem> PerPageOptions
         {
@@ -85,8 +85,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                              };
                 if (!string.IsNullOrWhiteSpace(SearchTerm))
                     productSearchSorts.Insert(2, ProductSearchSort.Relevance);
-                return productSearchSorts .BuildSelectItemList(sort => sort.GetDescription(), sort => Convert.ToInt32(sort).ToString(),
-                                                sort => sort == SortBy, emptyItem: null);
+                return productSearchSorts.BuildSelectItemList(sort => sort.GetDescription(), sort => Convert.ToInt32(sort).ToString(),
+                                                sort => sort == SortByValue, emptyItem: null);
             }
         }
 
@@ -190,7 +190,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public Sort GetSort()
         {
-            switch (SortBy)
+            switch (SortByValue)
             {
                 case ProductSearchSort.MostPopular:
                     return new Sort(new[] { new SortField(ProductSearchIndex.NumberBought.FieldName, SortField.INT, true) });
@@ -206,6 +206,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     return new Sort(new[] { new SortField("price", SortField.DOUBLE, true) });
                 default:
                     return Sort.RELEVANCE;
+            }
+        }
+
+        private ProductSearchSort SortByValue
+        {
+            get
+            {
+                if (SortBy.HasValue)
+                    return SortBy.Value;
+                if (CategoryId.HasValue)
+                {
+                    var category = MrCMSApplication.Get<ISession>().Get<Category>(CategoryId);
+                    if (category != null && category.DefaultProductSearchSort.HasValue)
+                        return category.DefaultProductSearchSort.Value;
+                }
+                return ProductSearchSort.MostPopular;
             }
         }
 
