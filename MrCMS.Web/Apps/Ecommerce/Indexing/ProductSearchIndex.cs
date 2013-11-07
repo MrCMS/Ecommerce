@@ -6,6 +6,7 @@ using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using MrCMS.Entities.Multisite;
 using MrCMS.Indexing.Management;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website;
@@ -84,12 +85,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                 yield return MetaDescription;
                 yield return UrlSegment;
                 yield return PublishOn;
+                yield return CreatedOn;
                 yield return Price;
                 yield return Specifications;
                 yield return Options;
                 yield return Categories;
                 yield return Brand;
                 yield return SKUs;
+                yield return NumberBought;
             }
         }
 
@@ -138,6 +141,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
             get { return _publishOn; }
         }
 
+        public static FieldDefinition<Product> CreatedOn
+        {
+            get { return _createdOn; }
+        }
+
         public static DecimalFieldDefinition<Product> Price
         {
             get { return _price; }
@@ -166,6 +174,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
         public static FieldDefinition<Product> SKUs
         {
             get { return _skus; }
+        }
+
+        public static FieldDefinition<Product> NumberBought
+        {
+            get { return _numberBought; }
         }
 
         private static readonly FieldDefinition<Product> _id =
@@ -208,6 +221,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                                                    DateTools.Resolution.SECOND), Field.Store.YES,
                                                Field.Index.NOT_ANALYZED);
 
+        private static readonly FieldDefinition<Product> _createdOn =
+            new StringFieldDefinition<Product>("createdOn",
+                                               webpage =>
+                                               DateTools.DateToString(webpage.CreatedOn, DateTools.Resolution.SECOND), Field.Store.YES,
+                                               Field.Index.NOT_ANALYZED);
+
         private static readonly DecimalFieldDefinition<Product> _price =
             new DecimalFieldDefinition<Product>("price", product => GetPrices(product), Field.Store.YES,
                                                 Field.Index.NOT_ANALYZED);
@@ -244,6 +263,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
                                                GetSKUs(product.Variants),
                                                Field.Store.YES, Field.Index.NOT_ANALYZED);
 
+        private static readonly FieldDefinition<Product> _numberBought =
+            new IntegerFieldDefinition<Product>("numberBought",
+                                               product =>
+                                               GetNumberBought(product.Variants),
+                                               Field.Store.YES, Field.Index.NOT_ANALYZED);
+
+        private static int GetNumberBought(IList<ProductVariant> variants)
+        {
+            var orderLines = MrCMSApplication.Get<ISession>().QueryOver<OrderLine>().Where(line => line.ProductVariant.IsIn(variants.ToList())).List();
+            return orderLines.Sum(line => line.Quantity);
+        }
+
         private static IEnumerable<string> GetBrand(Product product)
         {
             if (product.Brand != null)
@@ -270,7 +301,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
 
         private static IEnumerable<string> GetSKUs(IEnumerable<ProductVariant> productVariants)
         {
-            return productVariants.Select(x=>x.SKU);
+            return productVariants.Select(x => x.SKU);
         }
 
         public static IEnumerable<decimal> GetPrices(Product entity)

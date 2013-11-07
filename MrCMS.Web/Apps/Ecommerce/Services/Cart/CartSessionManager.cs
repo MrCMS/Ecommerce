@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             var sessionData =
                 _session.QueryOver<SessionData>()
-                        .Where(data => data.UserGuid == _getUserGuid.UserGuid && data.Site == _site && data.Key == key)
+                        .Where(data => data.UserGuid == _getUserGuid.UserGuid && data.Site.Id == _site.Id && data.Key == key)
                         .Take(1)
                         .Cacheable()
                         .SingleOrDefault();
@@ -52,7 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             var sessionData =
                 _session.QueryOver<SessionData>()
-                        .Where(data => data.UserGuid == _getUserGuid.UserGuid && data.Site == _site && data.Key == key)
+                        .Where(data => data.UserGuid == _getUserGuid.UserGuid && data.Site.Id == _site.Id && data.Key == key)
                         .Take(1)
                         .Cacheable()
                         .SingleOrDefault() ?? new SessionData { Key = key, UserGuid = _getUserGuid.UserGuid };
@@ -69,7 +69,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             var sessionData =
                 _session.QueryOver<SessionData>()
-                        .Where(data => data.UserGuid == _getUserGuid.UserGuid && data.Site == _site && data.Key == key)
+                        .Where(data => data.UserGuid == _getUserGuid.UserGuid && data.Site.Id == _site.Id && data.Key == key)
                         .Take(1)
                         .Cacheable()
                         .SingleOrDefault();
