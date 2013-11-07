@@ -387,8 +387,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             {
                 var gfx = XGraphics.FromPdfPage(renderer.PdfDocument.Pages[0]);
                 var image = FromUri(_ecommerceSettings.ReportLogoImage);
-                gfx.DrawImage(image, 70, 50, image.PixelWidth, image.PixelHeight);
-                gfx.Save();
+                if (image != null)
+                {
+                    gfx.DrawImage(image, 70, 50, image.PixelWidth, image.PixelHeight);
+                    gfx.Save();
+                }
             }
             renderer.PdfDocument.Save(stream);
 
@@ -397,12 +400,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public XImage FromUri(string uri)
         {
-            var webRequest = (HttpWebRequest)WebRequest.Create(uri);
-            webRequest.AllowWriteStreamBuffering = true;
-            var webResponse = webRequest.GetResponse();
-            var image = System.Drawing.Image.FromStream(webResponse.GetResponseStream());
-            var thumbImg = ResizeImage(image, 150, 45);
-            return XImage.FromGdiPlusImage(thumbImg);
+            try
+            {
+                var webRequest = (HttpWebRequest)WebRequest.Create(uri);
+                webRequest.AllowWriteStreamBuffering = true;
+                var webResponse = webRequest.GetResponse();
+                var image = System.Drawing.Image.FromStream(webResponse.GetResponseStream());
+                var thumbImg = ResizeImage(image, 150, 45);
+                return XImage.FromGdiPlusImage(thumbImg);
+            }
+            catch (Exception ex)
+            {
+                CurrentRequestData.ErrorSignal.Raise(ex);
+            }
+            return null;
         }
 
         public System.Drawing.Image ResizeImage(System.Drawing.Image origImg, int width, int maxHeight)
