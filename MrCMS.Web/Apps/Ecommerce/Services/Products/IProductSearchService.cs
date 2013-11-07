@@ -43,11 +43,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             Specifications = new List<int>();
             Page = 1;
             PageSize = 10;
+            SortBy = ProductSearchSort.MostPopular;
         }
 
         public double MaxPrice
         {
-            get { return (double) (_maxPrice = _maxPrice ?? MrCMSApplication.Get<IProductSearchService>().GetMaxPrice(this)); }
+            get { return (double)(_maxPrice = _maxPrice ?? MrCMSApplication.Get<IProductSearchService>().GetMaxPrice(this)); }
         }
 
         public List<int> Options { get; set; }
@@ -78,9 +79,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             get
             {
-                return Enum.GetValues(typeof(ProductSearchSort))
-                           .Cast<ProductSearchSort>()
-                           .BuildSelectItemList(sort => sort.GetDescription(), sort => Convert.ToInt32(sort).ToString(),
+                var productSearchSorts = new List<ProductSearchSort>
+                                             {
+                                                 ProductSearchSort.MostPopular, ProductSearchSort.Latest, ProductSearchSort.NameAToZ, ProductSearchSort.NameZToA, ProductSearchSort.PriceLowToHigh, ProductSearchSort.PriceHighToLow
+                                             };
+                if (!string.IsNullOrWhiteSpace(SearchTerm))
+                    productSearchSorts.Insert(2, ProductSearchSort.Relevance);
+                return productSearchSorts .BuildSelectItemList(sort => sort.GetDescription(), sort => Convert.ToInt32(sort).ToString(),
                                                 sort => sort == SortBy, emptyItem: null);
             }
         }
@@ -113,7 +118,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (!String.IsNullOrWhiteSpace(SearchTerm))
             {
                 var fuzzySearchTerm = MakeFuzzy(SearchTerm);
-                var q = new MultiFieldQueryParser(Version.LUCENE_30, FieldDefinition.GetFieldNames(DocumentIndexDefinition.Name,ProductSearchIndex.SKUs), new StandardAnalyzer(Version.LUCENE_30));
+                var q = new MultiFieldQueryParser(Version.LUCENE_30, FieldDefinition.GetFieldNames(DocumentIndexDefinition.Name, ProductSearchIndex.SKUs), new StandardAnalyzer(Version.LUCENE_30));
                 var query = q.Parse(fuzzySearchTerm);
                 booleanQuery.Add(query, Occur.MUST);
             }
@@ -187,10 +192,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             switch (SortBy)
             {
+                case ProductSearchSort.MostPopular:
+                    return new Sort(new[] { new SortField(ProductSearchIndex.NumberBought.FieldName, SortField.INT, true) });
+                case ProductSearchSort.Latest:
+                    return new Sort(new[] { new SortField(ProductSearchIndex.CreatedOn.FieldName, SortField.STRING, true) });
                 case ProductSearchSort.NameAToZ:
                     return new Sort(new[] { new SortField("nameSort", SortField.STRING) });
                 case ProductSearchSort.NameZToA:
-                    return new Sort(new[] {  new SortField("nameSort", SortField.STRING, true) });
+                    return new Sort(new[] { new SortField("nameSort", SortField.STRING, true) });
                 case ProductSearchSort.PriceLowToHigh:
                     return new Sort(new[] { new SortField("price", SortField.DOUBLE) });
                 case ProductSearchSort.PriceHighToLow:
@@ -219,6 +228,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
     public enum ProductSearchSort
     {
+        [Description("Most Popular")]
+        MostPopular = 6,
+        [Description("Latest")]
+        Latest = 7,
         Relevance = 1,
         [Description("Name A-Z")]
         NameAToZ = 2,
