@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
+using System.Net;
 using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Tables;
@@ -11,6 +11,8 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
+using PdfSharp.Charting;
+using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
@@ -18,6 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
     public class ExportOrderService : IExportOrdersService
     {
         private readonly EcommerceSettings _ecommerceSettings;
+        public string LogoUrl { get; set; }
 
         public ExportOrderService(EcommerceSettings ecommerceSettings)
         {
@@ -122,43 +125,45 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             var frame1 = section.AddTextFrame();
             frame1.RelativeVertical = RelativeVertical.Page;
-            frame1.Left = ShapePosition.Left;
-            frame1.Top = new Unit(2, UnitType.Centimeter);
+            frame1.Left = ShapePosition.Right;
+            frame1.Top = new Unit(1.85, UnitType.Centimeter);
             frame1.Width = new Unit(10, UnitType.Centimeter);
             var p = frame1.AddParagraph();
             p.Format.Font.Size = 16;
+            p.Format.Alignment=ParagraphAlignment.Right;
             p.AddFormattedText("Order #" + order.Id, TextFormat.Bold);
-            
-            if (!String.IsNullOrWhiteSpace(_ecommerceSettings.ReportLogoImage))
+
+            frame1 = section.AddTextFrame();
+            var frame2 = section.AddTextFrame();
+
+            if (!String.IsNullOrWhiteSpace(_ecommerceSettings.ReportLogoImage) && !_ecommerceSettings.ReportLogoImage.Contains("http"))
             {
-                string url;
                 try
                 {
-                    url = CurrentRequestData.CurrentContext.Server.MapPath(_ecommerceSettings.ReportLogoImage);
+                    LogoUrl = CurrentRequestData.CurrentContext.Server.MapPath(_ecommerceSettings.ReportLogoImage);
                 }
                 catch (Exception ex)
                 {
-                    url = string.Empty;
+                    LogoUrl = string.Empty;
                     CurrentRequestData.ErrorSignal.Raise(ex);
                 }
-                if (!String.IsNullOrWhiteSpace(url))
+                if (!String.IsNullOrWhiteSpace(LogoUrl))
                 {
-                    var logo = section.AddImage(url);
+                    var logo = section.AddImage(LogoUrl);
                     logo.RelativeVertical = RelativeVertical.Page;
-                    logo.Left = ShapePosition.Right;
+                    logo.Left = ShapePosition.Left;
                     logo.Top = new Unit(1.85, UnitType.Centimeter);
+                    logo.Height = new Unit(1.5, UnitType.Centimeter);
+                    frame1.MarginTop = new Unit(0.5, UnitType.Centimeter);
+                    frame2.MarginTop = new Unit(0.5, UnitType.Centimeter);
                 }
             }
 
-            //LEFT
-            frame1 = section.AddTextFrame();
             frame1.RelativeVertical = RelativeVertical.Page;
             frame1.Left = ShapePosition.Left;
             frame1.Top = new Unit(3.5, UnitType.Centimeter);
             frame1.Width = new Unit(10, UnitType.Centimeter);
 
-            //RIGHT
-            var frame2 = section.AddTextFrame();
             frame2.RelativeVertical = RelativeVertical.Page;
             frame2.Left = ShapePosition.Right;
             frame2.Top = new Unit(3.5, UnitType.Centimeter);
@@ -377,8 +382,40 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             var renderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Automatic) { Document = pdf };
             renderer.RenderDocument();
             var stream = new MemoryStream();
+
+            if (String.IsNullOrWhiteSpace(LogoUrl) && !String.IsNullOrWhiteSpace(_ecommerceSettings.ReportLogoImage))
+            {
+                var gfx = XGraphics.FromPdfPage(renderer.PdfDocument.Pages[0]);
+                var image = FromUri(_ecommerceSettings.ReportLogoImage);
+                gfx.DrawImage(image, 70, 50, image.PixelWidth, image.PixelHeight);
+                gfx.Save();
+            }
             renderer.PdfDocument.Save(stream);
+
             return stream.ToArray();
+        }
+
+        public XImage FromUri(string uri)
+        {
+            var webRequest = (HttpWebRequest)WebRequest.Create(uri);
+            webRequest.AllowWriteStreamBuffering = true;
+            var webResponse = webRequest.GetResponse();
+            var image = System.Drawing.Image.FromStream(webResponse.GetResponseStream());
+            var thumbImg = ResizeImage(image, 150, 45);
+            return XImage.FromGdiPlusImage(thumbImg);
+        }
+
+        public System.Drawing.Image ResizeImage(System.Drawing.Image origImg, int width, int maxHeight)
+        {
+            var newHeight = origImg.Height*width/origImg.Width;
+            if (newHeight > maxHeight)
+            {
+                width = origImg.Width*maxHeight/origImg.Height;
+                newHeight = maxHeight;
+            }
+            var newImg = origImg.GetThumbnailImage(width, newHeight, null, IntPtr.Zero);
+            origImg.Dispose();
+            return newImg;
         }
     }
 }
