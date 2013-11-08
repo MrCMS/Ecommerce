@@ -1,22 +1,22 @@
 ﻿@model IList<MrCMS.Web.Apps.Ecommerce.Pages.Category>
+@using System.Drawing
 @using MrCMS.Helpers
 
 <div class="container" data-paging-type="async">
     @if (Model != null && Model.Any())
     {
         <h1>Categories</h1>
-
         foreach (var items in Model.Chunk(4))
         {
             <div class="row-fluid grid-items margin-bottom-20">
                 @foreach (var item in items)
                 {
                     <div class="span3">
-                        <div class="category-picture text-align-center margin-top-10 padding-top-bottom-10">
+                        <div class="product-picture text-align-center margin-top-10 padding-top-bottom-10">
                             @if (item.FeatureImage != null)
                             {
                                 <a href="/@item.LiveUrlSegment" title="@item.Name">
-                                    @RenderImage(item.FeatureImage)
+                                    @RenderImage(item.FeatureImage, new Size{Height = 150,Width = 150})
                                 </a>
                             }
                         </div>
