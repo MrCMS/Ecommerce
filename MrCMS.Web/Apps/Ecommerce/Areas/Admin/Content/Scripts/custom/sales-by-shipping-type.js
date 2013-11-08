@@ -1,11 +1,4 @@
-﻿$(document).ready(function () {
-
-    $(window).resize(updateCharts);
-    
-    function updateCharts() {
-        generateChart();
-    };
-
+﻿$(function () {
     generateChart();
 });
 

@@ -1,7 +1,4 @@
-﻿$(".left-nav").css("display", "none");
-$(".container-mrcms").css("padding-left", "0");
-
-var lineChartOptions = {
+﻿var lineChartOptions = {
     scaleLineColor: "rgba(0,0,0,.1)",
     scaleLineWidth: 0,
     scaleShowLabels: true,
