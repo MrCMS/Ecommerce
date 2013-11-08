@@ -1,11 +1,16 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.SearchBox
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model MrCMS.Web.Apps.Ecommerce.Widgets.SearchBox
 <div id="search-box">
-    <div class="row-fluid search-con search-gradient" style="padding:7px 0;">
-        <div class="span9 padding-left-10">
-            @Html.TextBox("searchTerm", Request.QueryString["SearchTerm"], new { @class = "span12 search-text no-margin-left", placeholder = "e.g : Wall Lights" })
-        </div>
-        <div class="span3 padding-right-10">
-            <button class="span12 btn" type="button" id="searchButton" name="searchButton">Search</button>
-        </div>
+    <div class="row-fluid search-con search-gradient" style="padding: 7px 0;">
+        @using (Html.BeginForm(FormMethod.Get, new { action = UniquePageHelper.GetUrl<ProductSearch>() }))
+        {
+            <div class="span9 padding-left-10">
+                @Html.TextBox("searchTerm", Request.QueryString["SearchTerm"], new { @class = "span12 search-text no-margin-left", placeholder = "e.g : Wall Lights" })
+            </div>
+            <div class="span3 padding-right-10">
+                <input class="btn span12" value="Search" type="submit" />
+            </div>
+        }
     </div>
 </div>

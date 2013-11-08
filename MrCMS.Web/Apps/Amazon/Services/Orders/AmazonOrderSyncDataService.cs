@@ -21,22 +21,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
 
         public AmazonOrderSyncData Get(int id)
         {
-            return _session.QueryOver<AmazonOrderSyncData>()
-                            .Where(item => item.Id == id).SingleOrDefault();
+            return _session.Get<AmazonOrderSyncData>(id);
         }
 
-
-        public AmazonOrderSyncData GetByAmazonOrderId(string sku)
+        public IList<AmazonOrderSyncData> GetAllByOperationType(SyncAmazonOrderOperation operation, int pagesize = 25)
         {
             return _session.QueryOver<AmazonOrderSyncData>()
-                            .Where(item => item.OrderId.IsInsensitiveLike(sku, MatchMode.Exact)).SingleOrDefault();
-        }
-
-        public IList<AmazonOrderSyncData> GetAllByOperationType(SyncAmazonOrderOperation operation,int pagesize = 25)
-        {
-            return _session.QueryOver<AmazonOrderSyncData>()
-                            .Where(item => item.Operation==operation && item.Status==SyncAmazonOrderStatus.Pending)
-                            .OrderBy(x=>x.CreatedOn).Asc.Take(pagesize).Cacheable().List();
+                            .Where(item => item.Operation == operation && item.Status == SyncAmazonOrderStatus.Pending)
+                            .OrderBy(x => x.CreatedOn).Asc.Take(pagesize).Cacheable().List();
         }
 
         public void MarkAllAsPendingIfNotSyncedAfterOneHour()
@@ -44,10 +36,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             var items = _session.QueryOver<AmazonOrderSyncData>()
                                 .Where(item => item.Status == SyncAmazonOrderStatus.InProgress).Cacheable().List();
 
-            foreach (var amazonOrderSyncData in items.Where(x=>(CurrentRequestData.Now-x.CreatedOn).Hours>=1))
+            foreach (var amazonOrderSyncData in items.Where(x => (CurrentRequestData.Now - x.CreatedOn).Hours >= 1))
             {
-                amazonOrderSyncData.CreatedOn = CurrentRequestData.Now;
-                amazonOrderSyncData.Status=SyncAmazonOrderStatus.Pending;
+                amazonOrderSyncData.Status = SyncAmazonOrderStatus.Pending;
                 Update(amazonOrderSyncData);
             }
         }
