@@ -1,5 +1,7 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Settings
+@using MrCMS.Web.Apps.Core.Pages
+@using MrCMS.Web.Apps.Ecommerce.Pages
 @using MrCMS.Website
 @model MrCMS.Entities.Documents.Web.Webpage
 @{
@@ -20,8 +22,10 @@
                 </div>
                 <div class="pull-right" style="position: fixed; top: 0; right: 0;">
                     @RenderZone("User Links")
-                    <div class="mobile-menu"><a href="/basket" title="Basket">
-                        <img src="/Themes/Ryness/Content/Images/mobile-cart.png" alt="Cart" /></a></div>
+                    <div class="mobile-menu">
+                        <a href="/basket" title="Basket">
+                            <img src="/Themes/Ryness/Content/Images/mobile-cart.png" alt="Cart" /></a>
+                    </div>
                     <div class="clearfix"></div>
                 </div>
                 @*
@@ -42,16 +46,19 @@
         <div class="row-fluid">
             <div class="span12">
                 <div class="s-mobile">
-                    <div class="s-left">
-                        <div class="row-fluid">
-                            <input type="text" placeholder="eg : Wall Lights" class="span12" id="searchTerm1" name="searchTerm" />
+                    @using (Html.BeginForm(FormMethod.Get, new { action = UniquePageHelper.GetUrl<ProductSearch>() }))
+                    {
+                        <div class="s-left">
+                            <div class="row-fluid">
+                                <input type="text" placeholder="eg : Wall Lights" class="span12" id="searchTerm1" name="searchTerm" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="s-right">
-                        <div class="row-fluid">
-                            <button class="btn span12" id="searchButton1" name="searchButton">Search</button>
+                        <div class="s-right">
+                            <div class="row-fluid">
+                                <input class="btn span12" value="Search" type="submit" />
+                            </div>
                         </div>
-                    </div>
+                    }
                     <div class="clearfix"></div>
                 </div>
             </div>
@@ -163,7 +170,8 @@
         <div class="container">
             <div class="row-fluid">
                 <div class="span12 text-align-center">
-                    <a href="http://www.nextag.co.uk/Ryness~2710945zzzreviewsz1zzzzukz17-htm" target="_blank"><img src="/Themes/Ryness/Content/Images/payment.jpg" alt="Payment methods" title="Payment methods" /></a>
+                    <a href="http://www.nextag.co.uk/Ryness~2710945zzzreviewsz1zzzzukz17-htm" target="_blank">
+                        <img src="/Themes/Ryness/Content/Images/payment.jpg" alt="Payment methods" title="Payment methods" /></a>
                 </div>
             </div>
         </div>

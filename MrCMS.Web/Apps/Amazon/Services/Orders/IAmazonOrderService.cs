@@ -10,7 +10,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
         AmazonOrder GetByOrderId(int id);
         AmazonOrder GetByAmazonOrderId(string id);
         IPagedList<AmazonOrder> Search(string queryTerm = null, int page = 1, int pageSize = 10);
-        void Add(AmazonOrder item);
         void Update(AmazonOrder item);
         void SaveOrUpdate(AmazonOrder amazonOrder);
         void SaveOrUpdate(List<AmazonOrder> orders);

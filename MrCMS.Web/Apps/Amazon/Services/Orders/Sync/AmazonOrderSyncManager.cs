@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MarketplaceWebServiceOrders.Model;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Api;
 using MrCMS.Web.Apps.Amazon.Services.Api.Orders;
+using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 {
@@ -30,7 +32,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         {
             if (_amazonApiService.IsLive(AmazonApiSection.Orders))
             {
-                var orders = _amazonOrdersApiService.ListUpdatedOrders(updatedOrdersRequest);
+                var orders = _amazonOrdersApiService.ListUpdatedOrders(updatedOrdersRequest)
+                                           .Distinct(
+                                               new StrictKeyEqualityComparer<Order, string>(order => order.AmazonOrderId));
                 orders.Select(order => _scheduleAmazonOrderSync.ScheduleSync(order))
                                       .Where(amazonOrder => amazonOrder != null)
                                       .ToList();
