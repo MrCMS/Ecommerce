@@ -1,6 +1,7 @@
 ﻿@using System.Web.Mvc.Html
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Website
 @model ChartModel
 @{
     ViewBag.Title = "Sales by payment type";
@@ -14,6 +15,7 @@
                 <span class="pull-right">
                     @using (Html.BeginForm("SalesByPaymentType", "Report", new {id = ""}, FormMethod.Get))
                     {
+                        @Html.ActionLink("Today", "SalesByPaymentType", "Report", new { From = CurrentRequestData.Now.Date.ToString(CurrentRequestData.CultureInfo), To = CurrentRequestData.Now.Date.AddDays(1).ToString(CurrentRequestData.CultureInfo) }, new { @class = "btn" })
                         @Html.EditorFor(x => x.From)
                         @Html.EditorFor(x => x.To)
                         <button type="submit" class="btn">Filter</button>
