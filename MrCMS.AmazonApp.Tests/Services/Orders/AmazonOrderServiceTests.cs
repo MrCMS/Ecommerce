@@ -61,16 +61,6 @@ namespace MrCMS.AmazonApp.Tests.Services.Orders
         }
 
         [Fact]
-        public void AmazonOrderService_Add_ShouldPersistEntry()
-        {
-            var item = new AmazonOrder();
-
-            _amazonOrderService.Add(item);
-
-            Session.QueryOver<AmazonOrder>().RowCount().Should().Be(1);
-        }
-
-        [Fact]
         public void AmazonOrderService_Update_ShouldUpdateInSession()
         {
             var item = new AmazonOrder();
