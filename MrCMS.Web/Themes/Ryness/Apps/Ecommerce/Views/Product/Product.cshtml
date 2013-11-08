@@ -75,7 +75,7 @@
                 {
                     if (backInStock)
                     {
-                    <div class="alert alert-success">
+                    <div class="alert alert-success margin-top-10">
                         Thank you, you will be notified when this product is back in stock.
                     </div>
                     }
@@ -85,14 +85,17 @@
                         <p class="text-align-center red">
                             Sorry, this item is out of stock.
                         </p>
-                    </div>
-                        using (Html.BeginForm("BackInStock", "Product", FormMethod.Post))
+                        @using (Html.BeginForm("BackInStock", "Product", FormMethod.Post))
                         {
-                    @Html.Hidden("ProductVariant.Id", selectedVariant.Id)
-                    @Html.Label("Email", "Enter your email to be notified when this item is back in stock")
-                    @Html.TextBox("Email", "", new { placeholder = "Email", @class = "span12" })
-                    <input type="submit" class="generic-button big-red-gradient span12" value="Notify me" />
+                            <div class="span6 padding-left-10">
+                                @Html.Hidden("ProductVariant.Id", selectedVariant.Id)
+                                @Html.TextBox("Email", "", new { placeholder = "Email address", @class = "span12" })
+                            </div>
+                        <div class="span6 padding-right-10">
+                            <input type="submit" class="generic-button red-gradient span12" value="Email me when back in stock" />
+                        </div>
                         }
+                    </div>
                     }
                 }
                 else
