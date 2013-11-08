@@ -47,17 +47,17 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                             var amazonOrder = _amazonOrderService.GetByAmazonOrderId(order.AmazonOrderId);
                             if (amazonOrder != null || order.OrderStatus != OrderStatusEnum.Canceled)
                             {
-                                var amazonOrderData = new AmazonOrderSyncData()
-                                    {
-                                        OrderId = order.AmazonOrderId,
-                                        Operation =
-                                            amazonOrder == null
-                                                ? SyncAmazonOrderOperation.Add
-                                                : SyncAmazonOrderOperation.Update,
-                                        Status = SyncAmazonOrderStatus.Pending,
-                                        Data = AmazonAppHelper.SerializeToJson(order),
-                                        Site = CurrentRequestData.CurrentSite
-                                    };
+                                var amazonOrderData = new AmazonOrderSyncData
+                                                          {
+                                                              OrderId = order.AmazonOrderId,
+                                                              Operation =
+                                                                  amazonOrder == null
+                                                                      ? SyncAmazonOrderOperation.Add
+                                                                      : SyncAmazonOrderOperation.Update,
+                                                              Status = SyncAmazonOrderStatus.Pending,
+                                                              Data = AmazonAppHelper.SerializeToJson(order),
+                                                              Site = CurrentRequestData.CurrentSite
+                                                          };
                                 if (amazonOrder != null)
                                     amazonOrderData.AmazonOrder = amazonOrder;
                                 _amazonOrderSyncInfoService.Add(amazonOrderData);

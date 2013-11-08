@@ -54,16 +54,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             return _session.Paged(QueryOver.Of<AmazonOrder>(), page, pageSize);
         }
 
-        public void Add(AmazonOrder item)
-        {
-            _session.Transact(session => session.Save(item));
-
-            _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Insert,
-                                 null, null, null, null, item, null, null);
-
-            _amazonOrderEventService.AmazonOrderPlaced(item);
-        }
-
         public void Update(AmazonOrder item)
         {
             _session.Transact(session => session.Update(item));
