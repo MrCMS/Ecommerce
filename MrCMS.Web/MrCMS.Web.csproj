@@ -323,7 +323,7 @@
     <Compile Include="Apps\Articles\Widgets\ArticleCategories.cs" />
     <Compile Include="Apps\Articles\Widgets\LatestXArticles.cs" />
     <Compile Include="Apps\Core\Controllers\LoginController.cs" />
-    <Compile Include="Apps\Core\Controllers\RegisterController.cs" />
+    <Compile Include="Apps\Core\Controllers\RegistrationController.cs" />
     <Compile Include="Apps\Core\Controllers\SearchPageController.cs" />
     <Compile Include="Apps\Core\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Core\CoreApp.cs" />
