@@ -43,7 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Products
                ))
                .Add(Restrictions.Not(Restrictions.Eq("Id", product.Id)))
                .Add(Restrictions.IsNotNull("PublishOn")).SetCacheable(true)
-               .SetMaxResults(20)
+               .SetMaxResults(4)
               .List<Product>().ToList();
 
             return items;
