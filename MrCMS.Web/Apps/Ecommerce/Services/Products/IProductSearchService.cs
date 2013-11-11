@@ -81,10 +81,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             {
                 var productSearchSorts = new List<ProductSearchSort>
                                              {
-                                                 ProductSearchSort.MostPopular, ProductSearchSort.Latest, ProductSearchSort.NameAToZ, ProductSearchSort.NameZToA, ProductSearchSort.PriceLowToHigh, ProductSearchSort.PriceHighToLow
+                                                 ProductSearchSort.MostPopular,
+                                                 ProductSearchSort.Latest,
+                                                 ProductSearchSort.NameAToZ,
+                                                 ProductSearchSort.NameZToA,
+                                                 ProductSearchSort.PriceLowToHigh,
+                                                 ProductSearchSort.PriceHighToLow
                                              };
                 if (!string.IsNullOrWhiteSpace(SearchTerm))
-                    productSearchSorts.Insert(2, ProductSearchSort.Relevance);
+                    productSearchSorts.Insert(0, ProductSearchSort.Relevance);
                 return productSearchSorts.BuildSelectItemList(sort => sort.GetDescription(), sort => Convert.ToInt32(sort).ToString(),
                                                 sort => sort == SortByValue, emptyItem: null);
             }
@@ -221,6 +226,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     if (category != null && category.DefaultProductSearchSort.HasValue)
                         return category.DefaultProductSearchSort.Value;
                 }
+                if (!string.IsNullOrWhiteSpace(SearchTerm))
+                    return ProductSearchSort.Relevance;
                 return ProductSearchSort.MostPopular;
             }
         }
