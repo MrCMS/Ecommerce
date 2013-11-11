@@ -8,7 +8,7 @@ using MrCMS.Web.Apps.Core.Pages;
 
 namespace MrCMS.Web.Apps.Core.Metadata
 {
-    public class RegisterPageMedatData : DocumentMetadataMap<SearchPage>
+    public class RegisterPageMetaData : DocumentMetadataMap<RegisterPage>
     {
         public override string IconClass
         {
@@ -16,11 +16,7 @@ namespace MrCMS.Web.Apps.Core.Metadata
         }
         public override string WebGetController
         {
-            get { return "SearchPage"; }
-        }
-        public override string WebPostController
-        {
-            get { return "SearchPage"; }
+            get { return "Registration"; }
         }
         public override bool HasBodyContent { get { return false; } }
     }
