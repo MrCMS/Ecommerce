@@ -1,0 +1,31 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model ProductAddedToCart
+@{
+    var productvariant = ViewData["productvariant"];
+}
+<div class="container margin-top-20 margin-bottom-20 productaddedtocart">
+    <div class="row-fluid">
+        <div class="span8">
+            <h1 class="green-tick">1 item was added to your basket</h1>
+        </div>
+        <div class="span4">
+            <div class="row-fluid text-align-center">
+                <a href="@(UniquePageHelper.GetUrl<Cart>())" class="btn btn-white span6">Edit Basket</a>
+                <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())" class="generic-button green-gradient span6" style="line-height: 20px !important;padding:4px 12px;">Proceed to Checkout</a>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row-fluid">
+        @{ Html.RenderAction("ItemDetails", "ProductAddedToCart", new { productvariant});}
+    </div>
+    <hr/>
+</div>
+
+@* 
+
+Frequently bought together with the item you added
+
+What about these (related products)
+*@
