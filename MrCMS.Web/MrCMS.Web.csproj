@@ -164,6 +164,9 @@
     <Reference Include="PdfSharp.Charting">
       <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\PdfSharp.Charting.dll</HintPath>
     </Reference>
+    <Reference Include="SagePayMvc">
+      <HintPath>..\packages\SagePayMvc.3.1.0.0\lib\Net40\SagePayMvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.SQLite, Version=1.0.82.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -416,6 +419,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\ProductController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductSearchController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductVariantController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\SagePayController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SetDeliveryDetailsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
@@ -580,6 +584,9 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalUrlService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\SetExpressCheckoutResponse.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Paypoint\PaypointPaymentMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Paypoint\PaypointSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\SagePay\SagePayPaymentMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\SagePay\SagePaySettings.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupOrdersService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\RevenueService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupRevenueService.cs" />
@@ -730,6 +737,11 @@
     <Compile Include="Apps\Ecommerce\Services\Reports\ChartService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\ReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\IReportService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\ISagePayItemCreator.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\ISagePayService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\MrCMSSagePayUrlResolver.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\SagePayItemCreator.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\SagePayService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingCalculationManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingMethodManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\ShippingCalculationManager.cs" />
@@ -2329,6 +2341,7 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Sync.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Order\Amazon.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\OrderInfo\AmazonInfo.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\PaymentMethod\SagePay.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

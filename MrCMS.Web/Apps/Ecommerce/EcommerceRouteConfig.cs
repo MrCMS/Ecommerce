@@ -36,6 +36,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                              new[] { typeof(PaymentMethodController).Namespace });
             context.MapRoute("Confirm Order - Paypoint", "Apps/Ecommerce/Confirm/Paypoint", new { controller = "PaymentMethod", action = "Paypoint" },
                              new[] { typeof(PaymentMethodController).Namespace });
+            context.MapRoute("Confirm Order - SagePay", "Apps/Ecommerce/Confirm/SagePay", new { controller = "PaymentMethod", action = "SagePay" },
+                             new[] { typeof(PaymentMethodController).Namespace });
             context.MapRoute("Checkout - Billing Address same as Shipping Address", "Apps/Ecommerce/PaymentDetails/BillingAddressSameAsShippingAddress", new { controller = "PaymentDetails", action = "BillingAddressSameAsShippingAddress" },
                              new[] { typeof(PaymentDetailsController).Namespace });
             context.MapRoute("Checkout - Update Billing Address", "Apps/Ecommerce/PaymentDetails/UpdateBillingAddress", new { controller = "PaymentDetails", action = "UpdateBillingAddress" },
