@@ -332,7 +332,7 @@
     <Compile Include="Apps\Core\MessageTemplates\ResetPasswordMessageTemplate.cs" />
     <Compile Include="Apps\Core\Metadata\ForgottenPasswordPageMetaData.cs" />
     <Compile Include="Apps\Core\Metadata\LoginPageMetaData.cs" />
-    <Compile Include="Apps\Core\Metadata\RegisterPageMedatData.cs" />
+    <Compile Include="Apps\Core\Metadata\RegisterPageMetaData.cs" />
     <Compile Include="Apps\Core\Metadata\ResetPasswordPageMetaData.cs" />
     <Compile Include="Apps\Core\Metadata\SearchPageMetaData.cs" />
     <Compile Include="Apps\Core\Metadata\UserAccountMetaData.cs" />
