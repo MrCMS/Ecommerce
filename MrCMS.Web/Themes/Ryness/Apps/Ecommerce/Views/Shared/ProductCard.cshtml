@@ -25,8 +25,21 @@
         </div>
         <div class="more-info">
             <div class="row-fluid text-align-center">
-                <a href="/@Model.LiveUrlSegment" class="generic-button big-red-gradient span9 offset3">More info</a>
+                <a href="/@Model.LiveUrlSegment" class="btn btn-white span9 offset3">More info</a>
             </div>
         </div>
+        @if (!Model.IsMultiVariant && Model.Variants.FirstOrDefault().InStock)
+        {
+            <div class="quick-buy">
+                <div class="row-fluid text-align-center">
+                    @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                    {
+                        @Html.Hidden("Id", Model.Variants.FirstOrDefault().Id)
+                        @Html.Hidden("quantity", 1)
+                        <button class="generic-button big-red-gradient span9 offset3">Buy</button>
+                    }
+                </div>
+            </div>
+        }
     </div>
 }
