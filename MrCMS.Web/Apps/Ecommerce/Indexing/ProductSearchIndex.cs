@@ -261,7 +261,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
             new StringFieldDefinition<Product>("skus",
                                                product =>
                                                GetSKUs(product.Variants),
-                                               Field.Store.YES, Field.Index.NOT_ANALYZED);
+                                               Field.Store.YES, Field.Index.ANALYZED);
 
         private static readonly FieldDefinition<Product> _numberBought =
             new IntegerFieldDefinition<Product>("numberBought",
