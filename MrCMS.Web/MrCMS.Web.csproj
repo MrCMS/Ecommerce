@@ -2337,6 +2337,8 @@
     <Content Include="Apps\Ecommerce\Views\Pages\ProductAddedToCart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\CartDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\ItemDetails.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\RelatedProducts.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\CustomersAlsoBought.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

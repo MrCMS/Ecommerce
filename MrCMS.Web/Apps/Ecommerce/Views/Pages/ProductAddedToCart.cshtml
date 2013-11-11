@@ -3,11 +3,12 @@
 @model ProductAddedToCart
 @{
     var productvariant = ViewData["productvariant"];
+    var quantity = ViewData["quantity"] is int ? (int)ViewData["quantity"] : 1;
 }
 <div class="container margin-top-20 margin-bottom-20 productaddedtocart">
     <div class="row-fluid">
         <div class="span8">
-            <h1 class="green-tick">1 item was added to your basket</h1>
+            <h1 class="green-tick">@quantity item@(quantity != 1 ? "s were" : " was") added to your basket</h1>
         </div>
         <div class="span4">
             <div class="row-fluid text-align-center">
@@ -18,14 +19,9 @@
     </div>
     <hr />
     <div class="row-fluid">
-        @{ Html.RenderAction("ItemDetails", "ProductAddedToCart", new { productvariant});}
+        @{ Html.RenderAction("ItemDetails", "ProductAddedToCart", new { productvariant });}
     </div>
-    <hr/>
+    <hr />
+    @{Html.RenderAction("CustomersAlsoBought", "ProductAddedToCart", new { productvariant });}
+    @{Html.RenderAction("RelatedProducts", "ProductAddedToCart", new { productvariant });}
 </div>
-
-@* 
-
-Frequently bought together with the item you added
-
-What about these (related products)
-*@
