@@ -1,6 +1,5 @@
 ﻿using MrCMS.Entities.Multisite;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using SagePayMvc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
 {
@@ -18,16 +17,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
             var shoppingBasket = new ShoppingBasket(string.Format("{0} Shopping Basket", _site.Name));
 
             foreach (var item in model.Items)
-                shoppingBasket.Add(new BasketItem(item.Quantity, item.Name, item.PricePreTax,
-                                                  1 + (item.TaxRatePercentage / 100m)));
+            {
+                var vatMultiplier = 1 + (item.TaxRatePercentage / 100m);
+                //shoppingBasket.Add(new BasketItem(item.Quantity, item.Name, item.Price / vatMultiplier,
+                //                                  vatMultiplier));
+            }
 
             if (model.HasDiscount)
-                shoppingBasket.Add(new BasketItem(1, "Discount - " + model.DiscountCode, model.DiscountAmount, 1));
+            {
+                //shoppingBasket.Add(new BasketItem(1, "Discount - " + model.DiscountCode, model.DiscountAmount, 1));
+            }
 
             if (model.ShippingTotal.GetValueOrDefault() > 0)
-                shoppingBasket.Add(new BasketItem(1, "Shipping - " + model.ShippingMethod.Name,
-                                                  model.ShippingPreTax.GetValueOrDefault(),
-                                                  1 + (model.ShippingTaxPercentage.GetValueOrDefault() / 100m)));
+            {
+                var multiplier = 1 + (model.ShippingTaxPercentage.GetValueOrDefault() / 100m);
+                //shoppingBasket.Add(new BasketItem(1, "Shipping - " + model.ShippingMethod.Name,
+                //                                  model.ShippingTotal.GetValueOrDefault() / multiplier,
+                //                                  multiplier));
+            }
 
             return shoppingBasket;
         }

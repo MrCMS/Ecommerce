@@ -18,7 +18,6 @@ using NHibernate;
 using NHibernate.Event;
 using Ninject;
 using Ninject.Web.Common;
-using SagePayMvc;
 
 namespace MrCMS.Web.Apps.Ecommerce
 {
@@ -37,25 +36,6 @@ namespace MrCMS.Web.Apps.Ecommerce
         {
             kernel.Rebind<CartModel>().ToMethod(context => context.Kernel.Get<ICartBuilder>().BuildCart()).InRequestScope();
             kernel.Bind<SECVPN>().To<SECVPNClient>().InRequestScope();
-            kernel.Bind<RequestContext>().ToMethod(context => context.Kernel.Get<HttpContextBase>().Request.RequestContext).InRequestScope();
-            kernel.Rebind<IHttpRequestSender>().To<HttpRequestSender>().InRequestScope();
-            kernel.Rebind<Configuration>().ToMethod(context =>
-                                                        {
-                                                            var configuration = context.Kernel.Get<SagePaySettings>().Configuration;
-                                                            Configuration.Configure(configuration);
-                                                            return configuration;
-                                                        });
-            kernel.Rebind<IUrlResolver>().ToMethod(context =>
-                                                       {
-                                                           var mrCMSSagePayUrlResolver =
-                                                               context.Kernel.Get<MrCMSSagePayUrlResolver>();
-                                                           UrlResolver.Initialize(() => mrCMSSagePayUrlResolver);
-                                                           return mrCMSSagePayUrlResolver;
-                                                       }).InSingletonScope();
-            kernel.Rebind<ITransactionRegistrar>().ToMethod(context => new TransactionRegistrar(
-                                                                           context.Kernel.Get<Configuration>(),
-                                                                           context.Kernel.Get<IUrlResolver>(),
-                                                                           context.Kernel.Get<IHttpRequestSender>())).InRequestScope();
         }
 
         public override IEnumerable<Type> BaseTypes

@@ -61,6 +61,10 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Export Google Base Feed", "export/google-base-feed", new { controller = "GoogleBaseFeed", action = "ExportProductsToGoogleBaseInResponse" }, new[] { typeof(GoogleBaseFeedController).Namespace });
 
             context.MapRoute("Products - Back in stock request", "Apps/Ecommerce/Product/BackInStock", new { controller = "Product", action = "BackInStock" }, new[] { typeof(ProductController).Namespace });
+
+            context.MapRoute("Checkout - SagePay Notification Url", "Apps/Ecommerce/SagePay/Notification", new { controller = "SagePay", action = "Notification" }, new[] { typeof(SagePayController).Namespace });
+            context.MapRoute("Checkout - SagePay Success Url", "Apps/Ecommerce/SagePay/Success/{vendorTxCode}", new { controller = "SagePay", action = "Success" }, new[] { typeof(SagePayController).Namespace });
+            context.MapRoute("Checkout - SagePay Failed Url", "Apps/Ecommerce/SagePay/Failed/{vendorTxCode}", new { controller = "SagePay", action = "Failed" }, new[] { typeof(SagePayController).Namespace });
         }
     }
 }
