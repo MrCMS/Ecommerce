@@ -48,7 +48,11 @@ input[type="radio"], input[type="checkbox"] {margin:0;}
 .red {color:#C5251E !important;}
 .out-of-stock { border: #C5251E 1px solid;padding-top: 10px;}
 .hideproductimage { display: none;}
-
+.green-tick { color: #73C01A;background: url('/Apps/Ecommerce/Content/Images/tick.png') no-repeat left center;padding-left: 20px; }
+.btn-white { font-weight: 700;font-size: 12px;}
+.productaddedtocart h2 { margin: 0 0 10px;}
+#product-results-container .list-items { padding: 10px 0;}
+.quick-buy .generic-button { margin-left: 0;}
 .navbar-inverse .navbar-inner {background:inherit;border:none;box-shadow:none;padding-left:0;padding-right:0;padding:2px 0 1px 0;min-height: 37px;filter:none;background-color: transparent;}
 .navbar-inverse .brand, .navbar-inverse .nav {border-left:1px solid #d6d6d6;margin-right:0;}
 .navbar-inverse .brand, .navbar-inverse .nav > li {background:url(/Themes/Ryness/Content/Images/sep.jpg) no-repeat right center;padding:0 2px 0 0;position:relative;}
@@ -148,7 +152,7 @@ input[type="radio"], input[type="checkbox"] {margin:0;}
 .product-picture {position:relative;border-top:1px solid #eeeeee;display:block;}
 .product-picture img.offer {position:absolute;top:0;left:0;z-index:2;}
 .product-abstract {border-top:1px solid #eeeeee;}
-.product-price {color:#C5251E;font-size:24px;font-weight:bold;font-family:Arial Black,Arial,Serif;margin-bottom:20px;}
+.product-price {color:#C5251E;font-size:24px;font-weight:bold;font-family:Arial Black,Arial,Serif;margin-bottom:5px;}
 .product-price span {color:#bfbfbf;font-size:13px;line-height:20px;display:block;font-family:arial, verdana, helvetica, sans-serif;font-weight:normal;}
 .grid-items .span3:nth-child(3n+5) { margin-left: 0;clear: both;}
 .grid-items .span2:nth-child(6n+1) { margin-left: 0;clear: both;}
@@ -177,7 +181,7 @@ input[type="radio"], input[type="checkbox"] {margin:0;}
 .side-list-items .product-price span, .product-des .product-price span , .list-items .product-price span {color:#000000;font-size:13px;line-height:20px;display:block;font-weight:normal;}
 .side-list-items .product-price span span, .product-des .product-price span span, .list-items .product-price span span {text-decoration:line-through;display:inline-block;}
 .side-list-items .product-abstract, .list-items .product-abstract {border-top:none;}
-.list-items .more-info {text-align:right;margin-bottom:15px;}
+.list-items .more-info {text-align:right;margin-bottom:10px;}
 .add-to-cart input[type="text"] {margin-bottom:0;}
 .thumb .span3 {border:1px solid #e8e8e8;}
 .content-title {border-top:1px solid #e8e8e8;border-bottom:1px solid #e8e8e8;padding:10px 0;font-weight:bold;font-size:15px;line-height:24px;}
