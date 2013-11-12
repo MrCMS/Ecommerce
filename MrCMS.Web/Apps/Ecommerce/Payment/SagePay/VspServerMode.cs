@@ -5,7 +5,6 @@
     /// </summary>
     public enum VspServerMode
     {
-        Simulator,
         Test,
         Live
     }

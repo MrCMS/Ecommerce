@@ -15,5 +15,6 @@
         Malformed,
         Error,
         Invalid,
+        Pending
     }
 }

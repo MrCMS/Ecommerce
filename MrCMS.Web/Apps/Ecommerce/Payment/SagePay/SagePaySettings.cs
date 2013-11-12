@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using MrCMS.Settings;
 using System.Linq;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Services.SagePay;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.SagePay
 {
@@ -13,22 +14,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.SagePay
         public static CultureInfo CultureForTransactionEncoding = new CultureInfo("en-gb");
         public const string LiveUrl = "https://live.sagepay.com/gateway/service/vspserver-register.vsp";
         public const string TestUrl = "https://test.sagepay.com/gateway/service/vspserver-register.vsp";
-        public const string SimulatorUrl = "https://test.sagepay.com/simulator/VSPServerGateway.asp?Service=VendorRegisterTx";
 
         public const string LiveRefundUrl = "https://live.sagepay.com/gateway/service/refund.vsp";
         public const string TestRefundUrl = "https://test.sagepay.com/gateway/service/refund.vsp";
-        public const string SimulatorRefundUrl = "https://test.sagepay.com/simulator/vspserverGateway.asp?Service=VendorRefundTx";
 
         public SagePaySettings()
         {
             Enabled = true;
-            Mode = VspServerMode.Simulator;
+            Mode = VspServerMode.Test;
             VendorName = "MrCMS Ecommerce";
+            Protocol = "3.00";
+            PaymentFormProfile = PaymentFormProfile.Low;
         }
         public override bool RenderInSettings
         {
             get { return false; }
         }
+        public string Protocol { get; set; }
         public bool Enabled { get; set; }
 
         public string VendorName { get; set; }
@@ -56,8 +58,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.SagePay
             {
                 switch (Mode)
                 {
-                    case VspServerMode.Simulator:
-                        return SimulatorUrl;
                     case VspServerMode.Test:
                         return TestUrl;
                     case VspServerMode.Live:
@@ -73,8 +73,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.SagePay
             {
                 switch (Mode)
                 {
-                    case VspServerMode.Simulator:
-                        return SimulatorRefundUrl;
                     case VspServerMode.Test:
                         return TestRefundUrl;
                     case VspServerMode.Live:
@@ -86,5 +84,53 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.SagePay
         }
 
         public bool RequiresSSL { get; set; }
+
+        public PaymentFormProfile PaymentFormProfile { get; set; }
+        private const string NormalFormMode = "NORMAL";
+        private const string LowProfileFormMode = "LOW";
+        public string PaymentFormProfileString
+        {
+            get
+            {
+                switch (PaymentFormProfile)
+                {
+                    case PaymentFormProfile.Low:
+                        return LowProfileFormMode;
+                    case PaymentFormProfile.Normal:
+                        return NormalFormMode;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+        }
+
+        public bool AllowGiftAid { get; set; }
+
+        public string AllowGiftAidString
+        {
+            get { return AllowGiftAid ? "1" : "0"; }
+        }
+
+        public ThreeDSecureSettings ThreeDSecureBehaviour { get; set; }
+        public string Apply3DSecure { get { return ((int)ThreeDSecureBehaviour).ToString(); } }
+
+        public AVSCV2Settings AVSCV2Behaviour { get; set; }
+        public string ApplyAVSCV2 { get { return ((int)AVSCV2Behaviour).ToString(); } }
+    }
+
+    public enum AVSCV2Settings
+    {
+        Default = 0,
+        ForceChecks = 1,
+        IgnoreChecks = 2,
+        ForceChecksButDoNotApply = 3,
+    }
+
+    public enum ThreeDSecureSettings
+    {
+        Default = 0,
+        ForceChecks = 1,
+        DoNotPerformChecks = 2,
+        ForceButObtainAuthCode = 3
     }
 }

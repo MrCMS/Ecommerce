@@ -62,9 +62,11 @@ namespace MrCMS.Web.Apps.Ecommerce
 
             context.MapRoute("Products - Back in stock request", "Apps/Ecommerce/Product/BackInStock", new { controller = "Product", action = "BackInStock" }, new[] { typeof(ProductController).Namespace });
 
-            context.MapRoute("Checkout - SagePay Notification Url", "Apps/Ecommerce/SagePay/Notification", new { controller = "SagePay", action = "Notification" }, new[] { typeof(SagePayController).Namespace });
-            context.MapRoute("Checkout - SagePay Success Url", "Apps/Ecommerce/SagePay/Success/{vendorTxCode}", new { controller = "SagePay", action = "Success" }, new[] { typeof(SagePayController).Namespace });
-            context.MapRoute("Checkout - SagePay Failed Url", "Apps/Ecommerce/SagePay/Failed/{vendorTxCode}", new { controller = "SagePay", action = "Failed" }, new[] { typeof(SagePayController).Namespace });
+            context.MapRoute("Checkout - SagePay Notification Url", "Apps/Ecommerce/SagePay/Notification", new { controller = "SagePayNotification", action = "Notification" }, new[] { typeof(SagePayNotificationController).Namespace });
+            context.MapRoute("Checkout - SagePay Success Url", "Apps/Ecommerce/SagePay/Success/{vendorTxCode}", new { controller = "SagePayRedirect", action = "Success" }, new[] { typeof(SagePayRedirectController).Namespace });
+            context.MapRoute("Checkout - SagePay Success POST", "Apps/Ecommerce/SagePay/SuccessRedirect", new { controller = "SagePayRedirect", action = "SuccessPost" }, new[] { typeof(SagePayRedirectController).Namespace });
+            context.MapRoute("Checkout - SagePay Failed Url", "Apps/Ecommerce/SagePay/Failed/{vendorTxCode}", new { controller = "SagePayRedirect", action = "Failed" }, new[] { typeof(SagePayRedirectController).Namespace });
+            context.MapRoute("Checkout - SagePay Failed POST", "Apps/Ecommerce/SagePay/FailedRedirect", new { controller = "SagePayRedirect", action = "FailedPost" }, new[] { typeof(SagePayRedirectController).Namespace });
         }
     }
 }

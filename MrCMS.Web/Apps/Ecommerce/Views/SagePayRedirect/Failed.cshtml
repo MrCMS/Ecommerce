@@ -1,0 +1,31 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model dynamic
+<html>
+<head>
+    <title>Redirecting...</title>
+</head>
+<body onload="OnLoadEvent();">
+    <form name="mainform" action="/Apps/Ecommerce/SagePay/FailedRedirect" method="POST" target="_top">
+        <noscript>
+            <br>
+            <br>
+            <div style="text-align: center;">
+                <h1>Redirecting...</h1>
+                <h2>JavaScript is currently disabled or is not supported
+                    by your browser.<br>
+                </h2>
+                <h3>Please click Submit to continue redirecting.</h3>
+                <input type="submit" value="Submit">
+            </div>
+        </noscript>
+    </form>
+    <script type="text/javascript">
+<!--
+    function OnLoadEvent() {
+        document.mainform.submit();
+    }
+    //-->
+    </script>
+</body>
+</html>
