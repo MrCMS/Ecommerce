@@ -413,6 +413,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\PaymentMethodController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PayPalExpressCheckoutController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PaypointController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\ProductAddedToCartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductSearchController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductVariantController.cs" />
@@ -499,6 +500,7 @@
     <Compile Include="Apps\Ecommerce\Metadata\NewInProducts.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\OrderPlacedMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\PaymentDetailsMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\ProductAddedToCartMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\ProductMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\ProductSearchMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\SetDeliveryDetailsMetadata.cs" />
@@ -552,6 +554,7 @@
     <Compile Include="Apps\Ecommerce\Pages\OrderPlaced.cs" />
     <Compile Include="Apps\Ecommerce\Pages\PaymentDetails.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Product.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\ProductAddedToCart.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ProductSearch.cs" />
     <Compile Include="Apps\Ecommerce\Pages\SetDeliveryDetails.cs" />
     <Compile Include="Apps\Ecommerce\Pages\UserOrder.cs" />
@@ -847,6 +850,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-day.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\dashboard.css" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\reports.css" />
+    <Content Include="Apps\Ecommerce\Content\Images\tick.png" />
     <Content Include="Apps\Ecommerce\Content\Scripts\charts\Chart.min.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-many-listing.js" />
@@ -2329,6 +2333,12 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Sync.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Order\Amazon.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\OrderInfo\AmazonInfo.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductAddedToCart.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Pages\ProductAddedToCart.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\CartDetails.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\ItemDetails.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\RelatedProducts.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\CustomersAlsoBought.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

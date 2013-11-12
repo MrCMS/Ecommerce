@@ -1,0 +1,3 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+<p><strong>Order total:</strong> @Model.Total.ToCurrencyFormat() - @Model.ItemQuantity item@(Model.ItemQuantity!=1?"s":"") in your basket.</p>
