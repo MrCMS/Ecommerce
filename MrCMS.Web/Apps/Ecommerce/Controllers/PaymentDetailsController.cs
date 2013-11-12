@@ -31,6 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (_cart.Empty)
                 return Redirect(UniquePageHelper.GetUrl<Cart>());
             ViewData["cart"] = _cart;
+            ViewData["message"] = TempData["message"];
 
             ViewData["setting-billing-address"] = TempData["setting-billing-address"];
             return View(page);

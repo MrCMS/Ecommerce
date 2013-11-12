@@ -3,6 +3,7 @@ using FakeItEasy;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using Xunit;
 using FluentAssertions;
@@ -17,6 +18,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         private readonly CartManager _cartManager;
         private readonly ICartSessionManager _cartSessionManager;
         private readonly IEnumerable<ICartSessionKeyList> _cartSessionKeyLists;
+        private readonly IGetUserGuid _getUserGuid;
 
         public CartManagerTests()
         {
@@ -24,7 +26,8 @@ namespace MrCMS.EcommerceApp.Tests.Services
             Session.Transact(session => session.SaveOrUpdate(_productVariant));
             _cartSessionManager = A.Fake<ICartSessionManager>();
             _cartSessionKeyLists = A.Fake<IEnumerable<ICartSessionKeyList>>();
-            _cartManager = new CartManager(_cartModel, Session, _cartSessionManager, _cartSessionKeyLists);
+            _getUserGuid = A.Fake<IGetUserGuid>();
+            _cartManager = new CartManager(_cartModel, Session, _cartSessionManager, _cartSessionKeyLists, _getUserGuid);
         }
         [Fact]
         public void CartManager_AddToCart_AddsAnItemToTheCart()

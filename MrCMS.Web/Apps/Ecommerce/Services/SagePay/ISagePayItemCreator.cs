@@ -22,11 +22,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
     public class BasketItem
     {
         public string Description { get; set; }
-        public decimal ItemPrice { get; set; }
-        public decimal ItemTax { get; set; }
-        public decimal ItemTotal { get; set; }
+        public decimal? ItemPrice { get; set; }
+        public decimal? ItemTax { get; set; }
+        public decimal? ItemTotal { get; set; }
         public decimal LineTotal { get; set; }
-        public int Quantity { get; set; }
+        public int? Quantity { get; set; }
     }
 
     /// <summary>
@@ -108,13 +108,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                 builder.Append(":");
                 builder.Append(item.Description.Replace(":", "#"));
                 builder.Append(":");
-                builder.Append(item.Quantity);
+                if (item.Quantity.HasValue)
+                    builder.Append(item.Quantity);
                 builder.Append(":");
-                builder.AppendFormat(CultureInfo.InvariantCulture, "{0:F2}", item.ItemPrice);
+                if (item.ItemPrice.HasValue)
+                    builder.AppendFormat(CultureInfo.InvariantCulture, "{0:F2}", item.ItemPrice);
                 builder.Append(":");
-                builder.AppendFormat(CultureInfo.InvariantCulture, "{0:F2}", item.ItemTax);
+                if (item.ItemTax.HasValue)
+                    builder.AppendFormat(CultureInfo.InvariantCulture, "{0:F2}", item.ItemTax);
                 builder.Append(":");
-                builder.AppendFormat(CultureInfo.InvariantCulture, "{0:F2}", item.ItemTotal);
+                if (item.ItemTotal.HasValue)
+                    builder.AppendFormat(CultureInfo.InvariantCulture, "{0:F2}", item.ItemTotal);
                 builder.Append(":");
                 builder.AppendFormat(CultureInfo.InvariantCulture, "{0:F2}", item.LineTotal);
             }

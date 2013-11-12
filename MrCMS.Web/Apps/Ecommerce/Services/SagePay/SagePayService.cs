@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Routing;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.SagePay;
@@ -8,93 +9,50 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
 {
     public class SagePayService : ISagePayService, ICartSessionKeyList
     {
-        private readonly RequestContext _requestContext;
         private readonly ITransactionRegistrar _transactionRegistrar;
-        private readonly ISagePayItemCreator _sagePayItemCreator;
         private readonly ICartSessionManager _cartSessionManager;
-        private const string SagePayEnrolledResponseKey = "current.sagepayenrolledguid";
+        private readonly IGetUserGuid _getUserGuid;
+        private const string SagePayEnrolledResponseKey = "current.sagepayenrolledresponse";
+        private const string SagePayTransactionResponseKey = "current.sagepaytransactionresponse";
 
-        public SagePayService(RequestContext requestContext, ITransactionRegistrar transactionRegistrar, ISagePayItemCreator sagePayItemCreator,ICartSessionManager cartSessionManager)
+        public SagePayService(ITransactionRegistrar transactionRegistrar, ICartSessionManager cartSessionManager, IGetUserGuid getUserGuid)
         {
-            _requestContext = requestContext;
             _transactionRegistrar = transactionRegistrar;
-            _sagePayItemCreator = sagePayItemCreator;
             _cartSessionManager = cartSessionManager;
+            _getUserGuid = getUserGuid;
         }
 
         public TransactionRegistrationResponse RegisterTransaction(CartModel model)
         {
-            var response = _cartSessionManager.GetSessionValue<TransactionRegistrationResponse>(SagePayEnrolledResponseKey);
+            var response = _cartSessionManager.GetSessionValue<TransactionRegistrationResponse>(SagePayEnrolledResponseKey, _getUserGuid.UserGuid);
             if (response != null)
                 return response;
-            var transactionRegistrationResponse = _transactionRegistrar.Send( model.CartGuid.ToString(),
-                                                                             _sagePayItemCreator.GetShoppingBasket(model),
-                                                                             _sagePayItemCreator.GetAddress(
-                                                                                 model.BillingAddress),
-                                                                             _sagePayItemCreator.GetAddress(
-                                                                                 model.ShippingAddress),
-                                                                             model.OrderEmail, PaymentFormProfile.Low);
+
+            var transactionRegistrationResponse = _transactionRegistrar.Send(model);
+
             if (transactionRegistrationResponse.Status == ResponseType.Ok)
-                _cartSessionManager.SetSessionValue(SagePayEnrolledResponseKey, transactionRegistrationResponse);
+                _cartSessionManager.SetSessionValue(SagePayEnrolledResponseKey, _getUserGuid.UserGuid, transactionRegistrationResponse);
 
             return transactionRegistrationResponse;
         }
 
-        public string GetSecurityKey()
+        public string GetSecurityKey(Guid userGuid)
         {
-            var response = _cartSessionManager.GetSessionValue<TransactionRegistrationResponse>(SagePayEnrolledResponseKey);
+            var response = _cartSessionManager.GetSessionValue<TransactionRegistrationResponse>(SagePayEnrolledResponseKey, userGuid);
             return response != null ? response.SecurityKey : null;
         }
 
+        public void SetResponse(Guid userGuid, SagePayResponse response)
+        {
+            _cartSessionManager.SetSessionValue(SagePayTransactionResponseKey, userGuid, response, true);
+        }
+        
+        public SagePayResponse GetResponse(Guid userGuid)
+        {
+            return _cartSessionManager.GetSessionValue<SagePayResponse>(SagePayTransactionResponseKey, userGuid,
+                                                                        encrypted: true);
+        }
+
         public IEnumerable<string> Keys { get { yield return SagePayEnrolledResponseKey; } }
-    }
-    public interface ITransactionRegistrar
-    {
-        /// <summary>
-        /// Sends a transaction registration to SagePay and receives a TransactionRegistrationResponse
-        /// </summary>
-        TransactionRegistrationResponse Send(string vendorTxCode, ShoppingBasket basket,
-                                             Address billingAddress, Address deliveryAddress, string customerEmail,
-                                             PaymentFormProfile paymentFormProfile = PaymentFormProfile.Normal,
-                                             string currencyCode = "GBP");
-    }
-    public enum PaymentFormProfile
-    {
-        Low,
-        Normal
-    }	/// <summary>
-    /// Response received from a transaction registration
-    /// </summary>
-    public class TransactionRegistrationResponse
-    {
-        /// <summary>
-        /// Protocol version
-        /// </summary>
-        public string VPSProtocol { get; set; }
-
-        /// <summary>
-        /// Status
-        /// </summary>
-        public ResponseType Status { get; set; }
-
-        /// <summary>
-        /// Additional status details
-        /// </summary>
-        public string StatusDetail { get; set; }
-
-        /// <summary>
-        /// Transaction ID generated by SagePay
-        /// </summary>
-        public string VPSTxId { get; set; }
-
-        /// <summary>
-        /// Security Key
-        /// </summary>
-        public string SecurityKey { get; set; }
-
-        /// <summary>
-        /// Redirect URL
-        /// </summary>
-        public string NextURL { get; set; }
     }
 }

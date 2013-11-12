@@ -14,7 +14,7 @@
     <RootNamespace>MrCMS.Web</RootNamespace>
     <AssemblyName>MrCMS.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <FileUpgradeFlags>
@@ -416,7 +416,8 @@
     <Compile Include="Apps\Ecommerce\Controllers\ProductController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductSearchController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductVariantController.cs" />
-    <Compile Include="Apps\Ecommerce\Controllers\SagePayController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\SagePayNotificationController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\SagePayRedirectController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SetDeliveryDetailsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
@@ -737,15 +738,26 @@
     <Compile Include="Apps\Ecommerce\Services\Reports\ChartService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\ReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\IReportService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\HttpPostSerializer.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\HttpRequestSender.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\IHttpRequestSender.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\ISagePayCartLoader.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\ISagePayItemCreator.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\ISagePayService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\ITransactionRegistrar.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\ITransactionRegistrationBuilder.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\PaymentFormProfile.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\Results\ErrorResult.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\Results\InvalidSignatureResult.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\Results\SagePayResult.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\Results\TransactionNotFoundResult.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\Results\ValidOrderResult.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\SagePayCartLoader.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\SagePayItemCreator.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\SagePayService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionRegistrar.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionRegistrationBuilder.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionRegistrationResponse.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingCalculationManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingMethodManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\ShippingCalculationManager.cs" />
@@ -2347,6 +2359,8 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\OrderInfo\AmazonInfo.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PaymentMethod\SagePay.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\SagePaySettings\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\SagePayRedirect\Success.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\SagePayRedirect\Failed.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2693,7 +2707,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1834</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8889</IISUrl>
+          <IISUrl>http://localhost</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

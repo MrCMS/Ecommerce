@@ -1,7 +1,16 @@
-﻿@using SagePayMvc
-@model SagePayMvc.TransactionRegistrationResponse
+﻿@using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Web.Apps.Ecommerce.Payment.SagePay
+@model MrCMS.Web.Apps.Ecommerce.Services.SagePay.TransactionRegistrationResponse
+@{
+    var failureDetails = TempData["error-details"] as FailureDetails;
+}
 
-<h1>SagePay</h1>
+@if (failureDetails != null)
+{
+    <div class="alert alert-danger">
+        @failureDetails.Message
+    </div>
+}
 @if (Model.Status == ResponseType.Ok)
 {
     <iframe width="100%" height="500px" src="@Model.NextURL"></iframe>

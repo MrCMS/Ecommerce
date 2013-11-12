@@ -1,4 +1,5 @@
-﻿using MrCMS.Entities.Multisite;
+﻿using System;
+using MrCMS.Entities.Multisite;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
@@ -18,19 +19,47 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
 
             foreach (var item in model.Items)
             {
-                var vatMultiplier = 1 + (item.TaxRatePercentage / 100m);
-                //shoppingBasket.Add(new BasketItem(item.Quantity, item.Name, item.Price / vatMultiplier,
+                shoppingBasket.Add(new BasketItem
+                                       {
+                                           Description = item.Name,
+                                           ItemPrice = item.UnitPricePreTax,
+                                           ItemTax = item.UnitTax,
+                                           ItemTotal = item.UnitPrice,
+                                           LineTotal = item.Price,
+                                           Quantity = item.Quantity
+                                       });
+                if (item.DiscountAmount > 0)
+                {
+                    shoppingBasket.Add(new BasketItem
+                                           {
+                                               Description = "Discount for - " + item.Name,
+                                               LineTotal = item.DiscountAmount,
+                                           });
+                }
+                //(item.Quantity, item.Name, item.Price / vatMultiplier,
                 //                                  vatMultiplier));
             }
 
             if (model.HasDiscount)
             {
-                //shoppingBasket.Add(new BasketItem(1, "Discount - " + model.DiscountCode, model.DiscountAmount, 1));
+                //shoppingBasket.Add(new BasketItem(1, , model.DiscountAmount, 1));
+                shoppingBasket.Add(new BasketItem
+                                       {
+                                           Description = "Order Discount - " + model.DiscountCode,
+                                           LineTotal = model.DiscountAmount,
+                                       });
             }
 
             if (model.ShippingTotal.GetValueOrDefault() > 0)
             {
-                var multiplier = 1 + (model.ShippingTaxPercentage.GetValueOrDefault() / 100m);
+                shoppingBasket.Add(new BasketItem
+                {
+                    Description = "Shipping - " + model.ShippingMethod.Name,
+                    ItemPrice = model.ShippingPreTax,
+                    ItemTax = model.ShippingTax,
+                    ItemTotal = model.ShippingTotal,
+                    LineTotal = model.ShippingTotal.GetValueOrDefault(),
+                });
                 //shoppingBasket.Add(new BasketItem(1, "Shipping - " + model.ShippingMethod.Name,
                 //                                  model.ShippingTotal.GetValueOrDefault() / multiplier,
                 //                                  multiplier));
@@ -41,17 +70,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
 
         public Address GetAddress(Entities.Users.Address address)
         {
-            return new Address
-                       {
-                           Address1 = address.Address1,
-                           Address2 = address.Address2,
-                           City = address.City,
-                           Country = address.Country.ISOTwoLetterCode,
-                           Firstnames = address.FirstName,
-                           Phone = address.PhoneNumber,
-                           PostCode = address.PostalCode,
-                           Surname = address.LastName
-                       };
+            return address == null
+                       ? new Address()
+                       : new Address
+                             {
+                                 Address1 = address.Address1,
+                                 Address2 = address.Address2,
+                                 City = address.City,
+                                 Country = address.Country.ISOTwoLetterCode,
+                                 Firstnames = address.FirstName,
+                                 Phone = address.PhoneNumber,
+                                 PostCode = address.PostalCode,
+                                 Surname = address.LastName
+                             };
         }
     }
 }

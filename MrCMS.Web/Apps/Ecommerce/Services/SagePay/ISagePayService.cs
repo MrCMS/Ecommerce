@@ -11,7 +11,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
     public interface ISagePayService
     {
         TransactionRegistrationResponse RegisterTransaction(CartModel model);
-        string GetSecurityKey();
+        string GetSecurityKey(Guid guid);
+        void SetResponse(Guid userGuid, SagePayResponse response);
+        SagePayResponse GetResponse(Guid userGuid);
     }
 
     /// <summary>
@@ -176,7 +178,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
 
         private ResponseType GetStatus(IValueProvider valueProvider)
         {
-            return ResponseSerializer.ConvertStringToSagePayResponseType(this.GetFormField("Status", valueProvider));
+            return ResponseSerializer.ConvertStringToSagePayResponseType(this.GetFormField(Status, valueProvider));
         }
 
         private string GetFormField(string key, IValueProvider provider)
