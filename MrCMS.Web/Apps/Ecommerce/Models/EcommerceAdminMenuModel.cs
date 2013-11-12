@@ -149,6 +149,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                                           "/Admin/Apps/Ecommerce/PaypointSettings"),
                                                         new ChildMenuItem("PayPal Express Checkout",
                                                                           "/Admin/Apps/Ecommerce/PayPalExpressCheckoutSettings"),
+                                                        new ChildMenuItem("SagePay",
+                                                                          "/Admin/Apps/Ecommerce/SagePaySettings"),
                                                     }
                                             }
                                         });
