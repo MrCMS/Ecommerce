@@ -5,17 +5,12 @@
     <hr />
     if (!String.IsNullOrEmpty(Model.Title))
     {
-        <h4>@Model.Title</h4>
+    <h4>@Model.Title</h4>
     }
-
-    foreach (var group in Model.Products.Chunk(5))
-    {
-        <div class="row-fluid">
-            @foreach (var item in group)
-            {
-                Html.RenderPartial("ProductCardFeatured", item);
-            }
-        </div>
-    }
-
+    <div class="row-fluid">
+        @foreach (var item in Model.Products)
+        {
+            Html.RenderPartial("ProductCardFeatured", item);
+        }
+    </div>
 }
