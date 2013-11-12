@@ -19,7 +19,19 @@
             {
                 <span>@Model.PreviousPriceText : @Model.DisplayPreviousPrice.ToCurrencyFormat()</span>
             }
-
+            else
+            {
+                <span>&nbsp;</span>
+            }
         </div>
+        @if (!Model.IsMultiVariant && Model.Variants.FirstOrDefault().InStock)
+    {
+        using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+        {
+        @Html.Hidden("Id", Model.Variants.FirstOrDefault().Id)
+        @Html.Hidden("quantity", 1)
+        <button class="generic-button red-gradient span12" style="margin-left:0;">Add to basket</button>
+        }
+    }
     </div>
 </div>
