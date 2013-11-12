@@ -25,7 +25,7 @@
         @{ Html.RenderAction("CartDetails", "ProductAddedToCart");}
         <div class="row-fluid">
             <div class="offset6 span6 text-align-center">
-                <a href="@(Model.Product.Categories.Any() ? "/" + Model.Product.Categories.FirstOrDefault().UrlSegment : UniquePageHelper.GetUrl<ProductSearch>())" class="generic-button big-red-gradient span12">Continue Shopping</a>
+                <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())" class="generic-button green-gradient span12" style="line-height: 20px !important;padding:4px 12px;">Proceed to Checkout &raquo;</a>
             </div>
         </div>
     </div>
