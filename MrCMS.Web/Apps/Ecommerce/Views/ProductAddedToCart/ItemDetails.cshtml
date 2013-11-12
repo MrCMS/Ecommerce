@@ -3,27 +3,30 @@
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant 
-<div class="span8">
-    <div class="row-fluid">
-        <div class="span2">
-            @if (Model.Product.Images.Any())
-            {
-                <a href="/@Model.Product.UrlSegment" title="@Model.DisplayName">
-                    @RenderImage(Model.Product.Images.FirstOrDefault().FileUrl, new Size { Height = 150, Width = 150 })
-                </a>
-            }
-        </div>
-        <div class="span10">
-            <h2><a href="/@Model.Product.UrlSegment">@Model.DisplayName</a></h2>
-            <div class="product-price">@Model.Price.ToCurrencyFormat()</div>
-        </div>
-    </div>
-</div>
-<div class="span4 text-align-right">
-    @{ Html.RenderAction("CartDetails", "ProductAddedToCart");}
-    <div class="row-fluid">
-        <div class="offset6 span6 text-align-center">
-            <a href="@(Model.Product.Categories.Any() ? "/" + Model.Product.Categories.FirstOrDefault().UrlSegment : UniquePageHelper.GetUrl<ProductSearch>())" class="generic-button big-red-gradient span12">Continue Shopping</a>
+@if (Model != null)
+{
+    <div class="span8">
+        <div class="row-fluid">
+            <div class="span2">
+                @if (Model.Product.Images.Any())
+                {
+                    <a href="/@Model.Product.UrlSegment" title="@Model.DisplayName">
+                        @RenderImage(Model.Product.Images.FirstOrDefault().FileUrl, new Size { Height = 150, Width = 150 })
+                    </a>
+                }
+            </div>
+            <div class="span10">
+                <h2><a href="/@Model.Product.UrlSegment">@Model.DisplayName</a></h2>
+                <div class="product-price">@Model.Price.ToCurrencyFormat()</div>
+            </div>
         </div>
     </div>
-</div>
+    <div class="span4 text-align-right">
+        @{ Html.RenderAction("CartDetails", "ProductAddedToCart");}
+        <div class="row-fluid">
+            <div class="offset6 span6 text-align-center">
+                <a href="@(Model.Product.Categories.Any() ? "/" + Model.Product.Categories.FirstOrDefault().UrlSegment : UniquePageHelper.GetUrl<ProductSearch>())" class="generic-button big-red-gradient span12">Continue Shopping</a>
+            </div>
+        </div>
+    </div>
+}

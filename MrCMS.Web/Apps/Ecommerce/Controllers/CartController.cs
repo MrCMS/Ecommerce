@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using MrCMS.Helpers;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -19,12 +20,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly CartModel _cart;
         private readonly ICartManager _cartManager;
         private readonly IOrderShippingService _orderShippingService;
+        private readonly IDocumentService _documentService;
 
         public CartController(ICartManager cartManager,
-                              IOrderShippingService orderShippingService, CartModel cart)
+                              IOrderShippingService orderShippingService, IDocumentService documentService, CartModel cart)
         {
             _cartManager = cartManager;
             _orderShippingService = orderShippingService;
+            _documentService = documentService;
             _cart = cart;
         }
 
@@ -53,8 +56,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (productVariant != null && quantity > 0)
             {
                 _cartManager.AddToCart(productVariant, quantity);
-                if (UniquePageHelper.GetUrl<ProductAddedToCart>() != null)
-                    return Redirect(UniquePageHelper.GetUrl<ProductAddedToCart>( new {id=productVariant.Id,quantity} ));
+                var addedToCart = _documentService.GetUniquePage<ProductAddedToCart>();
+                if (addedToCart != null && addedToCart.Published)
+                    return Redirect(UniquePageHelper.GetUrl<ProductAddedToCart>(new {id = productVariant.Id, quantity}));
                 return Redirect(UniquePageHelper.GetUrl<Cart>());
             }
             return Redirect(UniquePageHelper.GetUrl<ProductSearch>());
