@@ -42,7 +42,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public List<int> GetSpecifications(ProductSearchQuery query)
         {
             var clone = query.Clone() as ProductSearchQuery;
-            clone.Specifications = new List<int>();
 
             var indexSearcher = _productSearcher.IndexSearcher;
             var valueCollector = new ValueCollector(indexSearcher, ProductSearchIndex.Specifications.FieldName);
