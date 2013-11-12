@@ -5,7 +5,7 @@
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant 
 @if (Model != null)
 {
-    <div class="span8">
+    <div class="span6">
         <div class="row-fluid">
             <div class="span2">
                 <a href="/@Model.Product.UrlSegment" title="@Model.DisplayName">
@@ -18,11 +18,22 @@
             </div>
         </div>
     </div>
-    <div class="span4 text-align-right">
-        @{ Html.RenderAction("CartDetails", "ProductAddedToCart");}
-        <div class="row-fluid">
-            <div class="offset6 span6 text-align-center">
-                <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())" class="generic-button green-gradient span12" style="line-height: 20px !important;padding:4px 12px;">Proceed to Checkout &raquo;</a>
+    <div class="span6">
+        <div class="alert alert-info">
+            <div class="row-fluid">
+                <div class="span4">
+                    @{ Html.RenderAction("CartDetails", "ProductAddedToCart");}
+                </div>
+                <div class="span8">
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <a href="@(UniquePageHelper.GetUrl<Cart>())" class="btn btn-white span12">Edit Basket</a>
+                        </div>
+                        <div class="span6 text-align-center">
+                            <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())" class="generic-button green-gradient span12" style="line-height: 20px !important;padding:4px 12px;">Proceed to Checkout</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
