@@ -7,9 +7,20 @@
         By Specifications
     </div>
     <div class="block-container padding-left-right-10">
-            @foreach (var specification in Model)
-            {
-                <div class="row-fluid dashed-border-bottom">
+        @if (Model.Any(model => model.Values.Any(valueModel => query.Specifications.Contains(valueModel.Id))))
+        {
+            <h5>Selected Filters</h5>
+            <ul>
+                @foreach (var specification in Model.Where(model => model.Values.Any(valueModel => query.Specifications.Contains(valueModel.Id))))
+                {
+                    var productValueModel = specification.Values.First(model => query.Specifications.Contains(model.Id));
+                    <li><strong>@specification.Name: </strong>@productValueModel.Name <a href="#" data-action="remove-specification"><strong>&times;</strong></a><input name="Specifications" type="hidden" value="@productValueModel.Id"/></li>
+                }
+            </ul>
+        }
+        @foreach (var specification in Model.Where(model => !model.Values.Any(valueModel => query.Specifications.Contains(valueModel.Id))))
+        {
+            <div class="row-fluid dashed-border-bottom">
                 <span>@specification.Name</span>
                 <select name="Specifications" id="specifications-@specification.Id" class="span12">
                     <option value="">All</option>
@@ -19,7 +30,8 @@
                             @option.Name
                         </option>
                     }
-                </select></div>
-            }
+                </select>
+            </div>
+        }
     </div>
 }
