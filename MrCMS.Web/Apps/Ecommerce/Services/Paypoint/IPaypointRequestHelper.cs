@@ -12,6 +12,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
         string GetAddress(Address address, string email);
         string GetOptions(PaypointPaymentDetailsModel model);
         string GetDate(int? month, int? year);
-        NameValueCollection ParseEnrolmentResponse(string response);
+        NameValueCollection ParseResponse(string response);
     }
 }

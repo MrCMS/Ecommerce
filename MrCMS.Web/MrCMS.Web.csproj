@@ -432,6 +432,7 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderLineOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderNoteOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\PaypointResponseOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\PriceBreakOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductVariantOverride.cs" />
@@ -583,6 +584,7 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalUrlService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\SetExpressCheckoutResponse.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Paypoint\PaypointPaymentMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Paypoint\PaypointResponse.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupOrdersService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\RevenueService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupRevenueService.cs" />
@@ -675,6 +677,8 @@
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointPaymentService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointRequestHelper.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointRequestService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointResponseLogger.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointResponseLogger.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BackInStockNotificationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IBackInStockNotificationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductOptionManagementService.cs" />

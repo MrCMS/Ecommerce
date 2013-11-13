@@ -50,7 +50,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
                                                                          _cartModel.OrderEmail),
                                                                      _paypointHelper.GetOptions(model)));
 
-            var response = _paypointHelper.ParseEnrolmentResponse(validateCardFullResponse.validateCardFullReturn);
+            var response = _paypointHelper.ParseResponse(validateCardFullResponse.validateCardFullReturn);
             return response["valid"] != "true"
                        ? GetFailureResponse(response)
                        : GetSuccessResponse(response);
@@ -96,9 +96,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
                                                             _paypointSettings.MPIMerchantUrl,
                                                             _paypointSettings.MPIDescription, "", "", ""));
 
-            var response = _paypointHelper.ParseEnrolmentResponse(threeDSecureEnrolmentRequestResponse.threeDSecureEnrolmentRequestReturn);
+            var response = _paypointHelper.ParseResponse(threeDSecureEnrolmentRequestResponse.threeDSecureEnrolmentRequestReturn);
 
-            return response["valid"] != "true"
+            return response["code"] != "A"
                        ? GetFailureResponse(response)
                        : (response["mpi_status_code"] == "200"
                               ? GetRedirectResponse(threeDSecureUrl, response)
@@ -112,7 +112,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
 
             var response = _secvpn.threeDSecureAuthorisationRequest(new threeDSecureAuthorisationRequestRequest(_paypointSettings.AccountName, _paypointSettings.VPNPassword, _cartModel.CartGuid.ToString(), md, paRes, ""));
 
-            var nameValueCollection = _paypointHelper.ParseEnrolmentResponse(response.threeDSecureAuthorisationRequestReturn);
+            var nameValueCollection = _paypointHelper.ParseResponse(response.threeDSecureAuthorisationRequestReturn);
 
             var statusCode = nameValueCollection["mpi_status_code"];
 

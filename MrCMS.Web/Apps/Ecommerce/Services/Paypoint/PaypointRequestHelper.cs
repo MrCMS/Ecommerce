@@ -11,10 +11,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
     public class PaypointRequestHelper : IPaypointRequestHelper
     {
         private readonly PaypointSettings _paypointSettings;
+        private readonly IPaypointResponseLogger _paypointResponseLogger;
 
-        public PaypointRequestHelper(PaypointSettings paypointSettings)
+        public PaypointRequestHelper(PaypointSettings paypointSettings, IPaypointResponseLogger paypointResponseLogger)
         {
             _paypointSettings = paypointSettings;
+            _paypointResponseLogger = paypointResponseLogger;
         }
 
         public string GetTotal(decimal total)
@@ -39,10 +41,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
 
             var yearString = year.ToString();
             return string.Format("{0}{1}", month == null ? "00" : month.ToString().PadLeft(2, '0'),
-                                 year == null ? "00" : yearString.PadLeft(2,'0'));
+                                 year == null ? "00" : yearString.PadLeft(2, '0'));
         }
 
-        public NameValueCollection ParseEnrolmentResponse(string response)
+        public NameValueCollection ParseResponse(string response)
         {
             response = response.Trim('?');
             var parameterList = response.Split('&');
@@ -52,6 +54,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
             var nameValueCollection = new NameValueCollection();
             foreach (var key in enrolmentResponse.Keys)
                 nameValueCollection.Add(key, enrolmentResponse[key]);
+
+            if (_paypointSettings.LogResponses)
+            {
+                _paypointResponseLogger.LogResponse(response, nameValueCollection);
+            }
 
             return nameValueCollection;
         }
@@ -84,6 +91,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
             }
             return string.Join(";", lineData);
         }
-
     }
 }

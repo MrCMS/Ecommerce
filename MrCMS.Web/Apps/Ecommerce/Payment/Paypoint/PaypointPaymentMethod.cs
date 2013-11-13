@@ -59,5 +59,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Paypoint
         public string MPIMerchantUrl { get; set; }
         [DisplayName("MPI description")]
         public string MPIDescription { get; set; }
+
+        [DisplayName("Log responses")]
+        public bool LogResponses { get; set; }
     }
 }
