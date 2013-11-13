@@ -51,7 +51,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
                                                                      _paypointHelper.GetOptions(model)));
 
             var response = _paypointHelper.ParseResponse(validateCardFullResponse.validateCardFullReturn);
-            return response["valid"] != "true"
+            return response["code"] != "A"
                        ? GetFailureResponse(response)
                        : GetSuccessResponse(response);
         }
@@ -98,7 +98,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
 
             var response = _paypointHelper.ParseResponse(threeDSecureEnrolmentRequestResponse.threeDSecureEnrolmentRequestReturn);
 
-            return response["code"] != "A"
+            return response["valid"] != "true"
                        ? GetFailureResponse(response)
                        : (response["mpi_status_code"] == "200"
                               ? GetRedirectResponse(threeDSecureUrl, response)
@@ -128,7 +128,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
                                                     }
                            };
             }
-            return statusCode == "229"
+            return statusCode == "229" || nameValueCollection["code"] != "A"
                        ? GetFailureResponse(nameValueCollection)
                        : GetSuccessResponse(nameValueCollection);
         }
