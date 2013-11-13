@@ -5,15 +5,12 @@
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant 
 @if (Model != null)
 {
-    <div class="span8">
+    <div class="span6">
         <div class="row-fluid">
             <div class="span2">
-                @if (Model.Product.Images.Any())
-                {
-                    <a href="/@Model.Product.UrlSegment" title="@Model.DisplayName">
-                        @RenderImage(Model.Product.Images.FirstOrDefault().FileUrl, new Size { Height = 150, Width = 150 })
-                    </a>
-                }
+                <a href="/@Model.Product.UrlSegment" title="@Model.DisplayName">
+                    @RenderImage(Model.Product.DisplayImageUrl, new Size { Height = 150, Width = 150 })
+                </a>
             </div>
             <div class="span10">
                 <h2><a href="/@Model.Product.UrlSegment">@Model.DisplayName</a></h2>
@@ -21,11 +18,22 @@
             </div>
         </div>
     </div>
-    <div class="span4 text-align-right">
-        @{ Html.RenderAction("CartDetails", "ProductAddedToCart");}
-        <div class="row-fluid">
-            <div class="offset6 span6 text-align-center">
-                <a href="@(Model.Product.Categories.Any() ? "/" + Model.Product.Categories.FirstOrDefault().UrlSegment : UniquePageHelper.GetUrl<ProductSearch>())" class="generic-button big-red-gradient span12">Continue Shopping</a>
+    <div class="span6">
+        <div class="alert alert-info">
+            <div class="row-fluid">
+                <div class="span4">
+                    @{ Html.RenderAction("CartDetails", "ProductAddedToCart");}
+                </div>
+                <div class="span8">
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <a href="@(UniquePageHelper.GetUrl<Cart>())" class="btn btn-white span12">Edit Basket</a>
+                        </div>
+                        <div class="span6 text-align-center">
+                            <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())" class="generic-button green-gradient span12" style="line-height: 20px !important;padding:4px 12px;">Proceed to Checkout</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
