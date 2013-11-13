@@ -132,7 +132,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public decimal? ShippingPreTax { get { return ShippingTotal - ShippingTax; } }
         public decimal? ShippingTaxPercentage
         {
-            get { return ShippingMethod == null ? (decimal?)null : ShippingMethod.TaxRatePercentage; }
+            get { return ShippingMethod == null ? (decimal?) null : ShippingMethod.TaxRatePercentage; }
         }
 
         public virtual decimal Weight

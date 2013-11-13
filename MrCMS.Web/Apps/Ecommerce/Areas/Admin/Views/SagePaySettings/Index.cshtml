@@ -1,0 +1,22 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Payment.SagePay.SagePaySettings
+@{
+    ViewBag.Title = "SagePay Settings";
+}
+@using (Html.BeginForm("Save", "SagePaySettings", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Paypoint Settings
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </span>
+        </legend>
+        @Html.InlineCheckboxFor(settings => settings.Enabled)
+
+        @Html.LabelFor(settings => settings.VendorName)
+        @Html.TextBoxFor(settings => settings.VendorName)
+
+        @Html.LabelFor(settings => settings.Mode)
+        @Html.DropDownListFor(settings => settings.Mode,Model.ModeOptions)
+    </fieldset>
+}

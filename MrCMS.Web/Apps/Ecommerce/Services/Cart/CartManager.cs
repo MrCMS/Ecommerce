@@ -32,13 +32,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private readonly ISession _session;
         private readonly ICartSessionManager _cartSessionManager;
         private readonly IEnumerable<ICartSessionKeyList> _sessionKeyLists;
+        private readonly IGetUserGuid _getUserGuid;
 
-        public CartManager(CartModel cart, ISession session, ICartSessionManager cartSessionManager, IEnumerable<ICartSessionKeyList> sessionKeyLists)
+        public CartManager(CartModel cart, ISession session, ICartSessionManager cartSessionManager, IEnumerable<ICartSessionKeyList> sessionKeyLists, IGetUserGuid getUserGuid)
         {
             _cart = cart;
             _session = session;
             _cartSessionManager = cartSessionManager;
             _sessionKeyLists = sessionKeyLists;
+            _getUserGuid = getUserGuid;
         }
 
         public void AddToCart(ProductVariant item, int quantity)
@@ -96,37 +98,37 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 _session.Transact(session => session.Delete(item));
             }
             _cart.Items.Clear();
-            CartKeys.ForEach(s => _cartSessionManager.RemoveValue(s));
+            CartKeys.ForEach(s => _cartSessionManager.RemoveValue(s, _getUserGuid.UserGuid));
         }
 
         public void SetShippingAddress(Address address)
         {
-            _cartSessionManager.SetSessionValue(CurrentShippingAddressKey, address);
+            _cartSessionManager.SetSessionValue(CurrentShippingAddressKey, _getUserGuid.UserGuid, address);
         }
 
         public void SetBillingAddress(Address address)
         {
-            _cartSessionManager.SetSessionValue(CurrentBillingAddressKey, address);
+            _cartSessionManager.SetSessionValue(CurrentBillingAddressKey, _getUserGuid.UserGuid, address);
         }
 
         public void SetBillingAddressSameAsShippingAddress(bool value)
         {
-            _cartSessionManager.SetSessionValue(CurrentBillingAddressSameAsShippingAddressKey, value);
+            _cartSessionManager.SetSessionValue(CurrentBillingAddressSameAsShippingAddressKey, _getUserGuid.UserGuid, value);
         }
 
         public void SetDiscountCode(string code)
         {
-            _cartSessionManager.SetSessionValue(CurrentDiscountCodeKey, code);
+            _cartSessionManager.SetSessionValue(CurrentDiscountCodeKey, _getUserGuid.UserGuid, code);
         }
 
         public void SetOrderEmail(string email)
         {
-            _cartSessionManager.SetSessionValue(CurrentOrderEmailKey, email);
+            _cartSessionManager.SetSessionValue(CurrentOrderEmailKey, _getUserGuid.UserGuid, email);
         }
 
         public void SetPaymentMethod(string methodName)
         {
-            _cartSessionManager.SetSessionValue(CurrentPaymentMethodKey, methodName);
+            _cartSessionManager.SetSessionValue(CurrentPaymentMethodKey, _getUserGuid.UserGuid, methodName);
         }
 
         public void SetShippingInfo(ShippingCalculation shippingCalculation)
@@ -134,20 +136,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             if (shippingCalculation == null) return;
 
             if (shippingCalculation.ShippingMethod != null)
-                _cartSessionManager.SetSessionValue(CurrentShippingMethodIdKey, shippingCalculation.ShippingMethod.Id);
+                _cartSessionManager.SetSessionValue(CurrentShippingMethodIdKey, _getUserGuid.UserGuid, shippingCalculation.ShippingMethod.Id);
             if (shippingCalculation.Country != null)
                 SetCountry(shippingCalculation.Country);
         }
 
         public void SetCountry(Country country)
         {
-            if (country != null) _cartSessionManager.SetSessionValue(CurrentCountryIdKey, country.Id);
+            if (country != null) _cartSessionManager.SetSessionValue(CurrentCountryIdKey, _getUserGuid.UserGuid, country.Id);
         }
 
         public void SetPayPalExpressInfo(string token, string payerId)
         {
-            _cartSessionManager.SetSessionValue(CurrentPayPalExpressToken, token);
-            _cartSessionManager.SetSessionValue(CurrentPayPalExpressPayerId, payerId);
+            _cartSessionManager.SetSessionValue(CurrentPayPalExpressToken, _getUserGuid.UserGuid, token);
+            _cartSessionManager.SetSessionValue(CurrentPayPalExpressPayerId, _getUserGuid.UserGuid, payerId);
         }
         public IEnumerable<string> CartKeys
         {
