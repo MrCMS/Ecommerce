@@ -2,7 +2,7 @@
 @using MrCMS.Web.Apps.Ecommerce.Payment.SagePay
 @model MrCMS.Web.Apps.Ecommerce.Services.SagePay.TransactionRegistrationResponse
 @{
-    var failureDetails = TempData["error-details"] as FailureDetails;
+    var failureDetails = ViewData["error-details"] as FailureDetails;
 }
 
 @if (failureDetails != null)
