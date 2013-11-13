@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Paypoint;
+using MrCMS.Web.Apps.Ecommerce.Services.SagePay;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
@@ -17,16 +18,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IPayPalExpressService _payPalExpressService;
         private readonly IPaypointPaymentService _paypointPaymentService;
         private readonly IDocumentService _documentService;
+        private readonly ISagePayService _sagePayService;
 
         public PaymentMethodController(CartModel cartModel, IOrderService orderService,
             IPayPalExpressService payPalExpressService, IPaypointPaymentService paypointPaymentService,
-            IDocumentService documentService)
+            IDocumentService documentService, ISagePayService sagePayService)
         {
             _cartModel = cartModel;
             _orderService = orderService;
             _payPalExpressService = payPalExpressService;
             _paypointPaymentService = paypointPaymentService;
             _documentService = documentService;
+            _sagePayService = sagePayService;
         }
 
         [HttpGet]
@@ -136,6 +139,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             TempData["error-details"] = response.FailureDetails;
             TempData["paypoint-model"] = model;
             return _documentService.RedirectTo<PaymentDetails>();
+        }
+
+        [HttpGet]
+        public PartialViewResult SagePay()
+        {
+            ViewData["error-details"] = _sagePayService.GetFailureDetails(_cartModel.UserGuid);
+            var transactionRegistrationResponse = _sagePayService.RegisterTransaction(_cartModel);
+            return PartialView(transactionRegistrationResponse);
         }
     }
 }

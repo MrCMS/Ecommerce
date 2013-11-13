@@ -15,20 +15,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
     public class CartSessionManager : ICartSessionManager
     {
         private readonly ISession _session;
-        private readonly IGetUserGuid _getUserGuid;
         private readonly Site _site;
         private const string _passPhrase = "MrCMS Ecommerce's passphrase for session encryption and decryption";
 
-        public CartSessionManager(ISession session, IGetUserGuid getUserGuid, Site site)
+        public CartSessionManager(ISession session,  Site site)
         {
             _session = session;
-            _getUserGuid = getUserGuid;
             _site = site;
         }
 
-        public T GetSessionValue<T>(string key, T defaultValue = default(T), bool encrypted = false)
+        public T GetSessionValue<T>(string key, Guid userGuid, T defaultValue = default(T), bool encrypted = false)
         {
-            var queryOver = _session.QueryOver<SessionData>().Where(data => data.UserGuid == _getUserGuid.UserGuid && data.Site.Id == _site.Id && data.Key == key);
+            var queryOver = _session.QueryOver<SessionData>().Where(data => data.UserGuid == userGuid && data.Site.Id == _site.Id && data.Key == key);
 
             if (encrypted)
                 queryOver = queryOver.Where(data => data.ExpireOn >= CurrentRequestData.Now);
@@ -53,14 +51,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             }
         }
 
-        public void SetSessionValue<T>(string key, T item, bool encrypt = false)
+        public void SetSessionValue<T>(string key, Guid userGuid, T item, bool encrypt = false)
         {
             var sessionData =
                 _session.QueryOver<SessionData>()
-                        .Where(data => data.UserGuid == _getUserGuid.UserGuid && data.Site.Id == _site.Id && data.Key == key)
+                        .Where(data => data.UserGuid == userGuid && data.Site.Id == _site.Id && data.Key == key)
                         .Take(1)
                         .Cacheable()
-                        .SingleOrDefault() ?? new SessionData { Key = key, UserGuid = _getUserGuid.UserGuid };
+                        .SingleOrDefault() ?? new SessionData { Key = key, UserGuid = userGuid };
 
 
             var obj = JsonConvert.SerializeObject(item);
@@ -73,11 +71,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _session.Transact(session => session.SaveOrUpdate(sessionData));
         }
 
-        public void RemoveValue(string key)
+        public void RemoveValue(string key, Guid userGuid)
         {
             var sessionData =
                 _session.QueryOver<SessionData>()
-                        .Where(data => data.UserGuid == _getUserGuid.UserGuid && data.Site.Id == _site.Id && data.Key == key)
+                        .Where(data => data.UserGuid == userGuid && data.Site.Id == _site.Id && data.Key == key)
                         .Take(1)
                         .Cacheable()
                         .SingleOrDefault();

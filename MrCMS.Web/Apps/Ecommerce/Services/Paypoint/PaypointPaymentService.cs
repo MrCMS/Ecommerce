@@ -15,13 +15,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
         private readonly PaypointSettings _paypointSettings;
         private readonly IPaypointRequestService _paypointRequestService;
         private readonly ICartSessionManager _cartSessionManager;
+        private readonly IGetUserGuid _getUserGuid;
         private const string PaypointPaymentModelKey = "current.paypoint-model";
 
-        public PaypointPaymentService(PaypointSettings paypointSettings, IPaypointRequestService paypointRequestService, ICartSessionManager cartSessionManager)
+        public PaypointPaymentService(PaypointSettings paypointSettings, IPaypointRequestService paypointRequestService,
+                                      ICartSessionManager cartSessionManager, IGetUserGuid getUserGuid)
         {
             _paypointSettings = paypointSettings;
             _paypointRequestService = paypointRequestService;
             _cartSessionManager = cartSessionManager;
+            _getUserGuid = getUserGuid;
         }
 
         public ProcessDetailsResponse ProcessDetails(PaypointPaymentDetailsModel model, string threeDSecureUrl)
@@ -84,12 +87,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
 
         public void SetModel(PaypointPaymentDetailsModel model)
         {
-            _cartSessionManager.SetSessionValue(PaypointPaymentModelKey, model, true);
+            _cartSessionManager.SetSessionValue(PaypointPaymentModelKey, _getUserGuid.UserGuid, model, true);
         }
 
         public PaypointPaymentDetailsModel GetModel()
         {
-            return _cartSessionManager.GetSessionValue<PaypointPaymentDetailsModel>(PaypointPaymentModelKey,
+            return _cartSessionManager.GetSessionValue<PaypointPaymentDetailsModel>(PaypointPaymentModelKey, _getUserGuid.UserGuid,
                                                                                     encrypted: true);
         }
 

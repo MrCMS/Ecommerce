@@ -66,5 +66,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
                 return CurrencyId > 0 ? session.Get<Currency>(CurrencyId) : session.QueryOver<Currency>().Take(1).SingleOrDefault();
             }
         }
+
+        public string CurrencyCode
+        {
+            get { return Currency != null ? Currency.Code : null; }
+        }
     }
 }
