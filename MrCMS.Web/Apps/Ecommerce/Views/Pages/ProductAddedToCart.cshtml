@@ -1,8 +1,9 @@
 ﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Entities.Products
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @model ProductAddedToCart
 @{
-    var productvariant = ViewData["productvariant"];
+    var productvariant = ViewData["productvariant"] as ProductVariant;
     var quantity = ViewData["quantity"] is int ? (int)ViewData["quantity"] : 1;
 }
 <div class="container margin-top-20 margin-bottom-20 productaddedtocart">
@@ -12,8 +13,7 @@
         </div>
         <div class="span4">
             <div class="row-fluid text-align-center">
-                <a href="@(UniquePageHelper.GetUrl<Cart>())" class="btn btn-white span6">Edit Basket</a>
-                <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())" class="generic-button green-gradient span6" style="line-height: 20px !important;padding:4px 12px;">Proceed to Checkout</a>
+                <a href="@(productvariant.Product.Categories.Any() ? "/" + productvariant.Product.Categories.OrderBy(x=>x.DisplayOrder).Take(1).SingleOrDefault().UrlSegment : UniquePageHelper.GetUrl<ProductSearch>())" class="btn btn-white offset6 span6">Continue Shopping</a>
             </div>
         </div>
     </div>

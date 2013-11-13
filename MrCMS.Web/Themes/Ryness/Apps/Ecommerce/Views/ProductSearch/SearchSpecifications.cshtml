@@ -14,7 +14,7 @@
                 @foreach (var specification in Model.Where(model => model.Values.Any(valueModel => query.Specifications.Contains(valueModel.Id))))
                 {
                     var productValueModel = specification.Values.First(model => query.Specifications.Contains(model.Id));
-                    <li><strong>@specification.Name: </strong>@productValueModel.Name <a href="#" data-action="remove-specification"><strong>&times;</strong></a><input name="Specifications" type="hidden" value="@productValueModel.Id"/></li>
+                    <li><strong>@specification.Name: </strong>@productValueModel.Name <a href="#" data-action="remove-specification"><strong style="font-size: 14px;">&times;</strong></a><input name="Specifications" type="hidden" value="@productValueModel.Id"/></li>
                 }
             </ul>
         }

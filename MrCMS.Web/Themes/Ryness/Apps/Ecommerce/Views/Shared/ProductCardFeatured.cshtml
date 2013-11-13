@@ -9,11 +9,22 @@
             {
             <img src="/Themes/Ryness/Content/Images/top-offer.png" alt="offer" title="offer" class="offer" />
             }
-            <a href="/@Model.LiveUrlSegment" title="@Model.Name">@RenderImage(Model.Images.First().FileUrl, new Size{ Height=150, Width = 150}, alt:Model.Name)</a>
+            <a href="/@Model.LiveUrlSegment" title="@Model.Name">@RenderImage(Model.Images.First().FileUrl, new Size { Height = 150, Width = 150 }, alt: Model.Name)</a>
         }
     </div>
     <div class="product-brief">
         <div class="product-abstract">
+            @if (!Model.IsMultiVariant && Model.Variants.FirstOrDefault().InStock)
+            {
+                <div class="row-fluid quick-add2cart padding-top-5">
+                    @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                    {
+                        @Html.Hidden("Id", Model.Variants.FirstOrDefault().Id)
+                        @Html.Hidden("quantity", 1)
+                        <button class="generic-button red-gradient span12" style="margin-left: 0;">Add to basket</button>
+                    }
+                </div>
+            }
             <h3><a href="/@Model.LiveUrlSegment">@Model.Name</a></h3>
             @Editable(Model, product => product.Abstract)
         </div>
@@ -22,6 +33,10 @@
             @if (Model.ShowPreviousPrice && Model.DisplayPreviousPrice.HasValue)
             {
                 <span>@Model.PreviousPriceText : @Model.DisplayPreviousPrice.ToCurrencyFormat()</span>
+            }
+            else
+            {
+                <span>&nbsp;</span>
             }
         </div>
     </div>
