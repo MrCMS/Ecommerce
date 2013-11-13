@@ -20,22 +20,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay.Results
         {
             context.HttpContext.Response.ContentType = "text/plain";
 
-            if (response.Status == ResponseType.Error)
-            {
-                context.HttpContext.Response.Output.WriteLine("Status=INVALID");
-            }
-            else
-            {
-                context.HttpContext.Response.Output.WriteLine("Status=OK");
-            }
+            //if (response.Status == ResponseType.Error)
+            //{
+            //}
+            //else
+            //{
+            //}
 
             if (response.WasTransactionSuccessful)
             {
+                context.HttpContext.Response.Output.WriteLine("Status=OK");
                 context.HttpContext.Response.Output.WriteLine("RedirectURL={0}", BuildSuccessUrl());
             }
             else
             {
-                context.HttpContext.Response.Output.WriteLine("RedirectURL={0}", BuildFailedUrl());
+                context.HttpContext.Response.Output.WriteLine("Status=INVALID");
+                var format = string.Format("RedirectURL={0}", BuildFailedUrl());
+                context.HttpContext.Response.Output.WriteLine(format);
             }
         }
     }

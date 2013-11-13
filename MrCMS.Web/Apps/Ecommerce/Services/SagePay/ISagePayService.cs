@@ -14,6 +14,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
         string GetSecurityKey(Guid guid);
         void SetResponse(Guid userGuid, SagePayResponse response);
         SagePayResponse GetResponse(Guid userGuid);
+        void ResetSessionInfo(Guid userGuid);
+        void SetFailureDetails(Guid userGuid, FailureDetails failureDetails);
+        FailureDetails GetFailureDetails(Guid userGuid);
     }
 
     /// <summary>

@@ -144,6 +144,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpGet]
         public PartialViewResult SagePay()
         {
+            ViewData["error-details"] = _sagePayService.GetFailureDetails(_cartModel.UserGuid);
             var transactionRegistrationResponse = _sagePayService.RegisterTransaction(_cartModel);
             return PartialView(transactionRegistrationResponse);
         }
