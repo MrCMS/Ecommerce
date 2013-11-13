@@ -173,7 +173,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
                Item1 = new OrderFulfillmentItemCollection()
             };
 
-            orderFulfillment.FulfillmentDate = amazonOrder.Order.ShippingDate.HasValue ? amazonOrder.Order.ShippingDate.Value.ToUniversalTime() : DateTime.UtcNow.AddMinutes(-10);
+            orderFulfillment.FulfillmentDate = amazonOrder.Order.ShippingDate.HasValue ? amazonOrder.Order.ShippingDate.Value.ToUniversalTime().AddMinutes(-15) : DateTime.UtcNow.AddMinutes(-15); //-15 because server times differ
 
             foreach (var amazonOrderItem in amazonOrder.Items)
             {
