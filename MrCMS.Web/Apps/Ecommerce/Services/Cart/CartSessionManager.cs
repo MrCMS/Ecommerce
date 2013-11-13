@@ -6,6 +6,7 @@ using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
 using NHibernate;
 using Newtonsoft.Json;
 
@@ -27,9 +28,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public T GetSessionValue<T>(string key, T defaultValue = default(T), bool encrypted = false)
         {
+            var queryOver = _session.QueryOver<SessionData>().Where(data => data.UserGuid == _getUserGuid.UserGuid && data.Site.Id == _site.Id && data.Key == key);
+
+            if (encrypted)
+                queryOver = queryOver.Where(data => data.ExpireOn >= CurrentRequestData.Now);
+
             var sessionData =
-                _session.QueryOver<SessionData>()
-                        .Where(data => data.UserGuid == _getUserGuid.UserGuid && data.Site.Id == _site.Id && data.Key == key)
+                queryOver
                         .Take(1)
                         .Cacheable()
                         .SingleOrDefault();
@@ -60,7 +65,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
             var obj = JsonConvert.SerializeObject(item);
             if (encrypt)
+            {
                 obj = StringCipher.Encrypt(obj, _passPhrase);
+                sessionData.ExpireOn = CurrentRequestData.Now.AddMinutes(5);
+            }
             sessionData.Data = obj;
             _session.Transact(session => session.SaveOrUpdate(sessionData));
         }

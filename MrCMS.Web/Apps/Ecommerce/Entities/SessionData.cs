@@ -8,5 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
         public virtual Guid UserGuid { get; set; }
         public virtual string Key { get; set; }
         public virtual string Data { get; set; }
+
+        public virtual DateTime? ExpireOn { get; set; }
     }
 }

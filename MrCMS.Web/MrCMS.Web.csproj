@@ -750,6 +750,7 @@
     <Compile Include="Apps\Ecommerce\Settings\GoogleBaseSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
     <Compile Include="Apps\Ecommerce\Tasks\BackInStockNotificationTask.cs" />
+    <Compile Include="Apps\Ecommerce\Tasks\ClearExpiredSessionDataTask.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\BreadCrumb.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CartWidget.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CategoriesOnlyNavigation.cs" />
