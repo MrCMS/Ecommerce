@@ -25,6 +25,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         public virtual string TaxRateName { get { return TaxRate == null ? string.Empty : TaxRate.Name; } }
 
+        public virtual decimal? TaxRatePercentage
+        {
+            get { return TaxRate == null ? (decimal?) null : TaxRate.Percentage; }
+        }
+
         public virtual bool CanBeUsed(CartModel model)
         {
             return ShippingCalculations.Any(calculation => calculation.CanBeUsed(model));
