@@ -16,7 +16,6 @@ namespace MrCMS.DbConfiguration.Conventions
             instance.Relationship.NotFound.Ignore();
             instance.Key.ForeignKey(string.Format("FK_{0}_{1}", instance.ChildType.Name, instance.EntityType.Name));
             instance.Where("(IsDeleted = 'False' or IsDeleted = 0 or IsDeleted is null)");
-
         }
     }
 }
