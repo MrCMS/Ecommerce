@@ -6,7 +6,6 @@ using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Website;
 using NHibernate;
-using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders
 {
@@ -22,6 +21,11 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
         public AmazonOrderSyncData Get(int id)
         {
             return _session.Get<AmazonOrderSyncData>(id);
+        }
+
+        public AmazonOrderSyncData GetByAmazonOrderId(string id)
+        {
+            return _session.QueryOver<AmazonOrderSyncData>().Where(item => item.OrderId == id).SingleOrDefault();
         }
 
         public IList<AmazonOrderSyncData> GetAllByOperationType(SyncAmazonOrderOperation operation, int pagesize = 25)

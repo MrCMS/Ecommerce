@@ -38,30 +38,50 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     {
                         if (!_importAmazonOrderService.IsCurrencyValid(order))
                         {
-                            _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Stage, null, null, AmazonApiSection.Orders,
+                            _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Stage, null, null,
+                                                  AmazonApiSection.Orders,
                                                   null, null, null, null,
-                                                  string.Format("Amazon Order #{0} uses different currency than current MrCMS Site.", order.AmazonOrderId));
+                                                  string.Format(
+                                                      "Amazon Order #{0} uses different currency than current MrCMS Site.",
+                                                      order.AmazonOrderId));
                         }
                         else
                         {
                             var amazonOrder = _amazonOrderService.GetByAmazonOrderId(order.AmazonOrderId);
-                            if (amazonOrder != null || order.OrderStatus != OrderStatusEnum.Canceled)
+                            var amazonOrderData = _amazonOrderSyncInfoService.GetByAmazonOrderId(order.AmazonOrderId);
+
+                            if (order.OrderStatus == OrderStatusEnum.Canceled) return amazonOrder;
+
+                            SyncAmazonOrderOperation operation;
+
+                            if (amazonOrderData == null)
                             {
-                                var amazonOrderData = new AmazonOrderSyncData
-                                                          {
-                                                              OrderId = order.AmazonOrderId,
-                                                              Operation =
-                                                                  amazonOrder == null
-                                                                      ? SyncAmazonOrderOperation.Add
-                                                                      : SyncAmazonOrderOperation.Update,
-                                                              Status = SyncAmazonOrderStatus.Pending,
-                                                              Data = AmazonAppHelper.SerializeToJson(order),
-                                                              Site = CurrentRequestData.CurrentSite
-                                                          };
-                                if (amazonOrder != null)
-                                    amazonOrderData.AmazonOrder = amazonOrder;
-                                _amazonOrderSyncInfoService.Add(amazonOrderData);
+                                operation = amazonOrder == null
+                                                ? SyncAmazonOrderOperation.Add
+                                                : SyncAmazonOrderOperation.Update;
                             }
+                            else if (amazonOrderData.Status == SyncAmazonOrderStatus.Pending &&
+                                     amazonOrderData.Status == SyncAmazonOrderStatus.InProgress)
+                                operation = SyncAmazonOrderOperation.Update;
+                            else
+                                operation = amazonOrder == null
+                                                ? SyncAmazonOrderOperation.Add
+                                                : SyncAmazonOrderOperation.Update;
+
+                            amazonOrderData = new AmazonOrderSyncData
+                                {
+                                    OrderId = order.AmazonOrderId,
+                                    Operation = operation,
+                                    Status = SyncAmazonOrderStatus.Pending,
+                                    Data = AmazonAppHelper.SerializeToJson(order),
+                                    Site = CurrentRequestData.CurrentSite
+                                };
+
+                            if (amazonOrder != null)
+                                amazonOrderData.AmazonOrder = amazonOrder;
+
+                            _amazonOrderSyncInfoService.Add(amazonOrderData);
+
                             return amazonOrder;
                         }
                     }
