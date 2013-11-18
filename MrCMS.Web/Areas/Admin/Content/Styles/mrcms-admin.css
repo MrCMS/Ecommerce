@@ -26,6 +26,9 @@ h1, h2, h3, h4 { font-weight: normal!important; }
 .field-validation-error span { color: red;}
 .sidebar-nav{ padding: 10px;}
 
+.navbar .brand { font-size: 16px;
+}
+
 /* Generic context menu styles */
 .contextMenu {
     background: #EEE;
@@ -98,3 +101,90 @@ ul.nav { margin-bottom: 10px;}
 #footer-popup { position: fixed;bottom: 0;width: 100%;background: white;padding-top: 0;padding-bottom: 10px;}
 
 #footer-popup hr { margin-top: 1px;}
+
+@media (max-width: 979px) {
+    /*body { padding-top: 0;}*/
+    .navbar-fixed-top { position: fixed;}
+}
+
+
+/*@media (max-width: 1250px) {
+
+    .nav-collapse, .nav-collapse.collapse {
+    height: 0;
+    overflow: hidden;
+    }
+    .nav-collapse.collapse {
+height: auto !important;
+overflow: visible !important;
+}
+
+    .navbar .btn-navbar {
+display: block;
+}
+    .navbar-fixed-top .navbar-inner, .navbar-fixed-bottom .navbar-inner {
+padding: 5px;
+}
+    .navbar-fixed-top {
+position: fixed;
+}
+    .navbar-fixed-top {
+margin-bottom: 20px;
+}
+    .nav-collapse {
+clear: both;
+}
+    .nav-collapse .nav {
+float: none;
+margin: 0 0 10px;
+}
+    .nav-collapse .nav > li {
+float: none;
+}
+    .navbar-inverse .nav-collapse .nav > li > a, .navbar-inverse .nav-collapse .dropdown-menu a {
+color: #999999;
+}
+    .nav-collapse .nav > li > a, .nav-collapse .dropdown-menu a {
+padding: 9px 15px;
+font-weight: bold;
+color: #777777;
+-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
+}
+    .nav-collapse .nav > li > a {
+margin-bottom: 2px;
+}
+    .nav-collapse .dropdown-menu {
+position: static;
+top: auto;
+left: auto;
+display: none;
+float: none;
+max-width: none;
+padding: 0;
+margin: 0 15px;
+background-color: transparent;
+border: none;
+-webkit-border-radius: 0;
+-moz-border-radius: 0;
+border-radius: 0;
+-webkit-box-shadow: none;
+-moz-box-shadow: none;
+box-shadow: none;
+}
+    .navbar-inverse .nav-collapse .navbar-form, .navbar-inverse .nav-collapse .navbar-search {
+border-top-color: #111111;
+border-bottom-color: #111111;
+}
+    .nav-collapse .navbar-form, .nav-collapse .navbar-search {
+float: none;
+padding: 10px 15px;
+margin: 10px 0;
+border-top: 1px solid #f2f2f2;
+border-bottom: 1px solid #f2f2f2;
+-webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+-moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+}*/

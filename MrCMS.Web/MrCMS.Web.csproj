@@ -1520,13 +1520,15 @@
     <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_zh-CN.js" />
     <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_zh-TW.js" />
     <Content Include="Areas\Admin\Content\Scripts\tag-it.min.js" />
-    <Content Include="Areas\Admin\Content\Styles\mrcms-admin.css" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\css\bootstrap-responsive.css" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\css\bootstrap.css" />
-    <Content Include="Areas\Admin\Content\Styles\bootstrap\img\glyphicons-halflings-white.png" />
-    <Content Include="Areas\Admin\Content\Styles\bootstrap\img\glyphicons-halflings.png" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.js" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Areas\Admin\Content\Styles\mrcms-admin.css" />
+    <Content Include="Areas\Admin\Content\Styles\bootstrap\img\glyphicons-halflings-white.png" />
+    <Content Include="Areas\Admin\Content\Styles\bootstrap\img\glyphicons-halflings.png" />
+    <None Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.js~" />
+    <None Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.min.js~" />
     <Content Include="Areas\Admin\Content\Styles\mrcms-frontendediting.css" />
     <Content Include="Areas\Admin\Content\Styles\Images\glyphicons-halflings-white.png" />
     <Content Include="Areas\Admin\Content\Styles\Images\glyphicons-halflings.png" />
@@ -2436,7 +2438,7 @@
     <Content Include="Areas\Admin\Views\Settings\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Navigation\SiteList.cshtml" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.min.js.map">
-      <DependentUpon>bootstrap.js</DependentUpon>
+      <DependentUpon>bootstrap.js~</DependentUpon>
     </Content>
     <Content Include="Areas\Admin\Views\Log\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Log\Show.cshtml" />
