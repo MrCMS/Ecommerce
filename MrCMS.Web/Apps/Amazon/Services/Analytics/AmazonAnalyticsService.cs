@@ -66,7 +66,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
 
         private static AmazonChartModel SetChartModel(DateTime from, DateTime to, IList<KeyValuePair<DateTime, decimal>> items)
         {
-            var data = new List<decimal>();
+            var data = new Dictionary<string, decimal>();
             var labels = new List<string>();
             var ts = to - from;
             var factor = (ts.Days/7)+1;
@@ -78,7 +78,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Analytics
                 oldDate = currentDate;
                 currentDate = oldDate.AddDays(ts.Days <= 7 ? 1 : factor);
                 labels.Add(oldDate.ToString("dd/MM"));
-                data.Add(i == 0
+                data.Add(oldDate.ToString("dd/MM"), i == 0
                              ? items.Where(x => x.Key.Date == currentDate.Date).Sum(x => x.Value)
                              : items.Where(x => oldDate.Date <= x.Key && x.Key <= currentDate.Date)
                                     .Sum(x => x.Value));
