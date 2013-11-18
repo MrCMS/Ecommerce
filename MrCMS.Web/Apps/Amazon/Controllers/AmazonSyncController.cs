@@ -17,7 +17,7 @@ namespace MrCMS.Web.Apps.Amazon.Controllers
 
         private readonly object _locker = new object();
 
-        public AmazonSyncController(IAmazonOrderSyncService amazonOrderSyncService, 
+        public AmazonSyncController(IAmazonOrderSyncService amazonOrderSyncService,
             IAmazonOrderSyncDataService amazonOrderSyncDataService, IUpdateAmazonOrder updateAmazonOrder)
         {
             _amazonOrderSyncService = amazonOrderSyncService;
@@ -37,19 +37,15 @@ namespace MrCMS.Web.Apps.Amazon.Controllers
             {
                 try
                 {
-                    _amazonOrderSyncDataService.MarkAllAsPendingIfNotSyncedAfterOneHour();
-                    var ordersForUpdate =
-                        _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Update);
+                    //_amazonOrderSyncDataService.MarkAllAsPendingIfNotSyncedAfterOneHour();
+
+                    var ordersForUpdate = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Update);
                     foreach (var amazonOrderSyncData in ordersForUpdate)
-                    {
                         Update(amazonOrderSyncData);
-                    }
-                    var ordersForAdd = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Add,
-                                                                                         10);
+
+                    var ordersForAdd = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Add,10);
                     foreach (var amazonOrderSyncData in ordersForAdd)
-                    {
                         Update(amazonOrderSyncData);
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -62,7 +58,6 @@ namespace MrCMS.Web.Apps.Amazon.Controllers
         {
             LogStatus(data, SyncAmazonOrderStatus.InProgress);
             _updateAmazonOrder.UpdateOrder(data);
-            LogStatus(data, SyncAmazonOrderStatus.Synced);
         }
         private void LogStatus(AmazonOrderSyncData data, SyncAmazonOrderStatus status)
         {

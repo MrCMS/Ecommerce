@@ -21,17 +21,19 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         private readonly IImportAmazonOrderService _importAmazonOrderService;
         private readonly IAmazonLogService _amazonLogService;
         private readonly IAmazonOrderService _amazonOrderService;
+        private readonly IAmazonOrderSyncDataService _amazonOrderSyncDataService;
 
         public UpdateAmazonOrder(IEnumerable<IPerformAmazonUpdates> amazonUpdates,
                                  IEnumerable<IOnAmazonOrderPlaced> onAmazonOrderPlaceds,
                                  IImportAmazonOrderService importAmazonOrderService, IAmazonLogService amazonLogService,
-                                 IAmazonOrderService amazonOrderService)
+                                 IAmazonOrderService amazonOrderService, IAmazonOrderSyncDataService amazonOrderSyncDataService)
         {
             _amazonUpdates = amazonUpdates;
             _onAmazonOrderPlaceds = onAmazonOrderPlaceds;
             _importAmazonOrderService = importAmazonOrderService;
             _amazonLogService = amazonLogService;
             _amazonOrderService = amazonOrderService;
+            _amazonOrderSyncDataService = amazonOrderSyncDataService;
         }
 
         public AmazonOrder UpdateOrder(Order order)
@@ -63,12 +65,12 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 newOrder = true;
             }
 
-            ProcessOrder(order, amazonOrder, newOrder);
+            ProcessOrder(order, ref amazonOrder, newOrder);
 
             return amazonOrder;
         }
 
-        private void ProcessOrder(Order order, AmazonOrder amazonOrder, bool newOrder)
+        private void ProcessOrder(Order order, ref AmazonOrder amazonOrder, bool newOrder)
         {
             foreach (var update in _amazonUpdates.OrderBy(updates => updates.Order))
                 update.Update(amazonOrder, order);
@@ -82,18 +84,24 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
         public AmazonOrder UpdateOrder(AmazonOrderSyncData amazonOrderSyncData)
         {
-
             if (amazonOrderSyncData.Operation == SyncAmazonOrderOperation.Add)
             {
                 var byAmazonOrderId = _amazonOrderService.GetByAmazonOrderId(amazonOrderSyncData.OrderId);
                 if (byAmazonOrderId != null)
+                {
+                    _amazonOrderSyncDataService.Delete(amazonOrderSyncData);
                     return byAmazonOrderId;
+                }
             }
 
             var amazonOrder = amazonOrderSyncData.AmazonOrder ?? new AmazonOrder();
             var order = AmazonAppHelper.DeserializeFromJson<Order>(amazonOrderSyncData.Data);
 
-            ProcessOrder(order, amazonOrder, amazonOrderSyncData.Operation == SyncAmazonOrderOperation.Add);
+            ProcessOrder(order, ref amazonOrder, amazonOrderSyncData.Operation == SyncAmazonOrderOperation.Add);
+
+            amazonOrderSyncData.Status = SyncAmazonOrderStatus.Synced;
+            _amazonOrderSyncDataService.Update(amazonOrderSyncData);
+            _amazonOrderSyncDataService.Delete(amazonOrderSyncData);
 
             return amazonOrder;
 
