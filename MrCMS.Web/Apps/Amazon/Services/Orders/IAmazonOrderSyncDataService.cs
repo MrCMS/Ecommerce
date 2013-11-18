@@ -7,7 +7,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
     public interface IAmazonOrderSyncDataService
     {
         AmazonOrderSyncData Get(int id);
-        AmazonOrderSyncData GetByAmazonOrderId(string id);
+        IList<AmazonOrderSyncData> GetByAmazonOrderId(string id);
         IList<AmazonOrderSyncData> GetAllByOperationType(SyncAmazonOrderOperation operation, int pagesize = 25);
         AmazonOrderSyncData Add(AmazonOrderSyncData item);
         AmazonOrderSyncData Update(AmazonOrderSyncData item);

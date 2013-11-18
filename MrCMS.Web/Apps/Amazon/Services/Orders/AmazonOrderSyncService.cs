@@ -41,7 +41,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
                 @from = lastRun.Value;
             }
             else
-                @from = now.AddMonths(-3);
+                @from = now.AddMonths(-2);
             var updatedOrdersRequest = new GetUpdatedOrdersRequest
             {
                 LastUpdatedAfter = @from,
@@ -50,8 +50,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             amazonSyncSettings.LastRun = to;
             _configurationProvider.SaveSettings(amazonSyncSettings);
             _amazonOrderSyncManager.GetUpdatedInfoFromAmazon(updatedOrdersRequest);
-
-
         }
 
         public GetUpdatedOrdersResult SyncSpecificOrders(string rawOrderIds)

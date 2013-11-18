@@ -33,8 +33,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             if (_amazonApiService.IsLive(AmazonApiSection.Orders))
             {
                 var orders = _amazonOrdersApiService.ListUpdatedOrders(updatedOrdersRequest)
-                                           .Distinct(
-                                               new StrictKeyEqualityComparer<Order, string>(order => order.AmazonOrderId));
+                                           .Distinct(new StrictKeyEqualityComparer<Order, string>(order => order.AmazonOrderId));
                 orders.Select(order => _scheduleAmazonOrderSync.ScheduleSync(order))
                                       .Where(amazonOrder => amazonOrder != null)
                                       .ToList();

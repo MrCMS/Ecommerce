@@ -48,39 +48,24 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                         else
                         {
                             var amazonOrder = _amazonOrderService.GetByAmazonOrderId(order.AmazonOrderId);
-                            var amazonOrderData = _amazonOrderSyncInfoService.GetByAmazonOrderId(order.AmazonOrderId);
 
                             if (order.OrderStatus == OrderStatusEnum.Canceled) return amazonOrder;
 
-                            SyncAmazonOrderOperation operation;
-
-                            if (amazonOrderData == null)
+                            var newAmazonOrderData = new AmazonOrderSyncData
                             {
-                                operation = amazonOrder == null
-                                                ? SyncAmazonOrderOperation.Add
-                                                : SyncAmazonOrderOperation.Update;
-                            }
-                            else if (amazonOrderData.Status == SyncAmazonOrderStatus.Pending &&
-                                     amazonOrderData.Status == SyncAmazonOrderStatus.InProgress)
-                                operation = SyncAmazonOrderOperation.Update;
-                            else
-                                operation = amazonOrder == null
-                                                ? SyncAmazonOrderOperation.Add
-                                                : SyncAmazonOrderOperation.Update;
-
-                            amazonOrderData = new AmazonOrderSyncData
-                                {
-                                    OrderId = order.AmazonOrderId,
-                                    Operation = operation,
-                                    Status = SyncAmazonOrderStatus.Pending,
-                                    Data = AmazonAppHelper.SerializeToJson(order),
-                                    Site = CurrentRequestData.CurrentSite
-                                };
+                                OrderId = order.AmazonOrderId,
+                                Operation = (amazonOrder == null
+                                            ? SyncAmazonOrderOperation.Add
+                                            : SyncAmazonOrderOperation.Update),
+                                Status = SyncAmazonOrderStatus.Pending,
+                                Data = AmazonAppHelper.SerializeToJson(order),
+                                Site = CurrentRequestData.CurrentSite
+                            };
 
                             if (amazonOrder != null)
-                                amazonOrderData.AmazonOrder = amazonOrder;
+                                newAmazonOrderData.AmazonOrder = amazonOrder;
 
-                            _amazonOrderSyncInfoService.Add(amazonOrderData);
+                            _amazonOrderSyncInfoService.Add(newAmazonOrderData);
 
                             return amazonOrder;
                         }

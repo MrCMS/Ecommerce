@@ -13,7 +13,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
     public class AmazonOrderSyncDataService : IAmazonOrderSyncDataService
     {
         private readonly ISession _session;
-        private readonly IAmazonLogService  _amazonLogService;
+        private readonly IAmazonLogService _amazonLogService;
 
         public AmazonOrderSyncDataService(ISession session, IAmazonLogService amazonLogService)
         {
@@ -26,9 +26,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             return _session.Get<AmazonOrderSyncData>(id);
         }
 
-        public AmazonOrderSyncData GetByAmazonOrderId(string id)
+        public IList<AmazonOrderSyncData> GetByAmazonOrderId(string id)
         {
-            return _session.QueryOver<AmazonOrderSyncData>().Where(item => item.OrderId == id).SingleOrDefault();
+            return _session.QueryOver<AmazonOrderSyncData>().Where(item => item.OrderId == id).Cacheable().List();
         }
 
         public IList<AmazonOrderSyncData> GetAllByOperationType(SyncAmazonOrderOperation operation, int pagesize = 25)
@@ -53,14 +53,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
         public AmazonOrderSyncData Add(AmazonOrderSyncData item)
         {
             _session.Transact(session =>
+            {
+                if (item.AmazonOrder != null)
                 {
-                    if (item.AmazonOrder != null)
-                    {
-                        item.AmazonOrder = session.Get<AmazonOrder>(item.AmazonOrder.Id);
-                        item.Site = session.Get<Site>(item.AmazonOrder.Site.Id);
-                    }
-                    session.Save(item);
-                });
+                    item.AmazonOrder = session.Get<AmazonOrder>(item.AmazonOrder.Id);
+                    item.Site = session.Get<Site>(item.AmazonOrder.Site.Id);
+                }
+                session.Save(item);
+            });
             _amazonLogService.Add(AmazonLogType.OrdersSyncData, AmazonLogStatus.Insert,
                                 null, null, null, null, null, null, null, "Amazon Order #" + item.OrderId);
             return item;
@@ -78,12 +78,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
                 session.Update(item);
             });
             _amazonLogService.Add(AmazonLogType.OrdersSyncData, AmazonLogStatus.Update,
-                                null, null, null, null, null, null, null,"Amazon Order #"+item.OrderId);
+                                null, null, null, null, null, null, null, "Amazon Order #" + item.OrderId);
             return item;
         }
 
         public void Delete(AmazonOrderSyncData item)
         {
+            _amazonLogService.Add(AmazonLogType.OrdersSyncData, AmazonLogStatus.Delete,
+                               null, null, null, null, null, null, null, "Amazon Order #" + item.OrderId);
             _session.Transact(session => session.Delete(item));
         }
     }
