@@ -41,8 +41,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             {
                 _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Error,
                        null, null, null, null, null, null, null, "Duplicate Amazon orders detected with #"+orders.First().AmazonOrderId);
+                return orders.First();
             }
-            else if (orders != null && orders.Count == 1)
+            if (orders != null && orders.Count == 1)
             {
                 return orders.First();
             }
