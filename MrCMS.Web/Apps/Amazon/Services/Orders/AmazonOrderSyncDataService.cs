@@ -4,6 +4,7 @@ using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
+using MrCMS.Web.Apps.Amazon.Services.Logs;
 using MrCMS.Website;
 using NHibernate;
 
@@ -12,10 +13,12 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
     public class AmazonOrderSyncDataService : IAmazonOrderSyncDataService
     {
         private readonly ISession _session;
+        private readonly IAmazonLogService  _amazonLogService;
 
-        public AmazonOrderSyncDataService(ISession session)
+        public AmazonOrderSyncDataService(ISession session, IAmazonLogService amazonLogService)
         {
             _session = session;
+            _amazonLogService = amazonLogService;
         }
 
         public AmazonOrderSyncData Get(int id)
@@ -58,6 +61,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
                     }
                     session.Save(item);
                 });
+            _amazonLogService.Add(AmazonLogType.OrdersSyncData, AmazonLogStatus.Insert,
+                                null, null, null, null, null, null, null, "Amazon Order #" + item.OrderId);
             return item;
         }
 
@@ -72,6 +77,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
                 }
                 session.Update(item);
             });
+            _amazonLogService.Add(AmazonLogType.OrdersSyncData, AmazonLogStatus.Update,
+                                null, null, null, null, null, null, null,"Amazon Order #"+item.OrderId);
             return item;
         }
 
