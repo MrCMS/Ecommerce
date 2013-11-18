@@ -6,7 +6,6 @@ using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
 using System.Linq;
 using MrCMS.Web.Apps.Amazon.Services.Orders.Events;
-using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 {
@@ -83,6 +82,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
         public AmazonOrder UpdateOrder(AmazonOrderSyncData amazonOrderSyncData)
         {
+
             if (amazonOrderSyncData.Operation == SyncAmazonOrderOperation.Add)
             {
                 var byAmazonOrderId = _amazonOrderService.GetByAmazonOrderId(amazonOrderSyncData.OrderId);
@@ -96,6 +96,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             ProcessOrder(order, amazonOrder, amazonOrderSyncData.Operation == SyncAmazonOrderOperation.Add);
 
             return amazonOrder;
+
         }
     }
 }

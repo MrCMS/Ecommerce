@@ -64,7 +64,11 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
 
         public void SaveOrUpdate(AmazonOrder amazonOrder)
         {
+            var orderId = amazonOrder.AmazonOrderId;
+            var id = amazonOrder.Id;
             _session.Transact(session => session.SaveOrUpdate(amazonOrder));
+            _amazonLogService.Add(AmazonLogType.Orders, id>0?AmazonLogStatus.Update:AmazonLogStatus.Insert, 
+                null, null, null, null, amazonOrder, null, null,"Amazon Order #"+orderId+" ("+id+")");
         }
 
         public void Delete(AmazonOrder item)
