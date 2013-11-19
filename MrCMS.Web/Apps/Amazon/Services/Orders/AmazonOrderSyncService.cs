@@ -67,7 +67,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             var orderIds = new List<string>();
             try
             {
-                var ids = rawOrderIds.Trim().Split(',');
+                var ids = rawOrderIds.Trim().Replace("\n", "").Replace("\r", "").Split(',');
                 orderIds.AddRange(ids.Where(id => !String.IsNullOrWhiteSpace(id)));
             }
             catch (Exception ex)
