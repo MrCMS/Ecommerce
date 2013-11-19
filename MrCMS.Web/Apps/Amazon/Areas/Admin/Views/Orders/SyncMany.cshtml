@@ -17,7 +17,7 @@
         <div class="row-fluid">
             <div class="span6">
                 <p>
-                    Enter up to 10 Amazon Order Ids to be synced (divided by ,):
+                    Enter up to 50 Amazon Order Ids to be synced (divided by ,):
                 </p>
                 @Html.TextAreaFor(x => x.Description, new {@class = "span12",placeholder="e.g:ID1,ID2"})
                 @Html.ValidationMessageFor(x => x.Description)
@@ -26,8 +26,8 @@
                 <div>
                     <strong>IMPORTANT :</strong>
                     <ul>
-                        <li>Please leave this tab open whilst syncing. Feel free to browse the admin/site in another tab</li>
-                        <li>Syncing can take over 10 minutes to complete</li>
+                        <li>After clicking on 'Sync Now' all valid Amazon order ids will be scheduled for sync.</li>
+                        <li>Syncing can take over 10 minutes to complete and it will be handled automatically.</li>
                         <li>More information can be viewed in the @Html.ActionLink("log", "Index", "Logs", new { type = AmazonLogType.Orders }, null)</li>
                     </ul>
                 </div>

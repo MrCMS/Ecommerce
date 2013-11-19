@@ -22,7 +22,7 @@ function sync() {
         dataType: "json",
         success: function (data) {
             $("#pb-start-task").show();
-            if (data.ErrorMessage != "") {
+            if (data.ErrorMessage != "" && data.ErrorMessage !=null) {
                 $("#Description").val("");
                 $("#results").append(data.ErrorMessage);
             } else {
@@ -39,11 +39,11 @@ function sync() {
 
 function updateResults(data) {
     if (data.OrdersUpdated.length > 0) {
-        $("#results").append("<strong>Updated/Imported Orders:</strong><br/><ul></ul>");
+        $("#results").append("<strong>Orders scheduled for sync:</strong><br/><ul></ul>");
         $.each(data.OrdersUpdated, function (index, value) {
             $("#results ul").append("<li>" + value + "</li>");
         });
     } else {
-        $("#results").append("<strong>No orders were updated.</strong>");
+        $("#results").append("<strong>No orders were scheduled for sync.</strong>");
     }
 }

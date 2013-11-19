@@ -82,7 +82,14 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
             if (!String.IsNullOrWhiteSpace(description))
             {
                 var result = _amazonOrderSyncService.SyncSpecificOrders(description);
-                return Json(new { OrdersUpdated = result.OrdersUpdated.ToList().Select(x=>x.AmazonOrderId), ErrorMessage="" });
+                return Json(new
+                    {
+                        OrdersUpdated =
+                                (result.OrdersUpdated != null && result.OrdersUpdated.Any())
+                                    ? result.OrdersUpdated.ToList().Select(x => x.AmazonOrderId)
+                                    : null,
+                        result.ErrorMessage
+                    });
             }
             return Json(new GetUpdatedOrdersResult() { ErrorMessage = "Please provide at least one valid Amazon Order Id." });
         }
