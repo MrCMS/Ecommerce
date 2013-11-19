@@ -22,8 +22,7 @@ var options = {
     'legend.position': 'none',
     'colors': ['#3498db', '#e74c3c', '#8e44ad', '#f39c12', '#27ae60'],
     'chartArea': { left: 30, top: 20, width: "95%", height: "75%" },
-    'hAxis.gridlines.count': 2,
-    'vAxis.gridlines.count': 2
+    'vAxis': { gridlines: { color: 'transparent' } }
 };
 
 function generateOrdersChart() {
