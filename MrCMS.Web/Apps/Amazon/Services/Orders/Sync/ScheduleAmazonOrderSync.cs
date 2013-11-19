@@ -1,4 +1,5 @@
-﻿using MarketplaceWebServiceOrders.Model;
+﻿using System.Linq;
+using MarketplaceWebServiceOrders.Model;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
@@ -48,6 +49,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                         else
                         {
                             var amazonOrder = _amazonOrderService.GetByAmazonOrderId(order.AmazonOrderId);
+                            var amazonOrderData = _amazonOrderSyncInfoService.GetByAmazonOrderId(order.AmazonOrderId).ToList();
 
                             if (order.OrderStatus == OrderStatusEnum.Canceled) return amazonOrder;
 
@@ -55,7 +57,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                             {
                                 OrderId = order.AmazonOrderId,
                                 Operation = (amazonOrder == null
-                                            ? SyncAmazonOrderOperation.Add
+                                            ? (amazonOrderData.Any(x=>x.Operation==SyncAmazonOrderOperation.Add)
+                                            ? SyncAmazonOrderOperation.Update:SyncAmazonOrderOperation.Add)
                                             : SyncAmazonOrderOperation.Update),
                                 Status = SyncAmazonOrderStatus.Pending,
                                 Data = AmazonAppHelper.SerializeToJson(order),

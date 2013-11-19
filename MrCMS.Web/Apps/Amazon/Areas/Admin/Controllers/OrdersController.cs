@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
@@ -73,25 +72,24 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         [HttpGet]
         public ViewResult SyncMany()
         {
-            return View(new AmazonSyncModel());
+            ViewData["Result"] = new GetUpdatedOrdersResult();
+            return View();
         }
 
         [HttpPost]
-        public JsonResult Sync(string description)
+        [ActionName("SyncMany")]
+        public ViewResult SyncMany_POST(string description)
         {
             if (!String.IsNullOrWhiteSpace(description))
             {
-                var result = _amazonOrderSyncService.SyncSpecificOrders(description);
-                return Json(new
-                    {
-                        OrdersUpdated =
-                                (result.OrdersUpdated != null && result.OrdersUpdated.Any())
-                                    ? result.OrdersUpdated.ToList().Select(x => x.AmazonOrderId)
-                                    : null,
-                        result.ErrorMessage
-                    });
+                ViewData["Result"] = _amazonOrderSyncService.SyncSpecificOrders(description);
+                return View();
             }
-            return Json(new GetUpdatedOrdersResult() { ErrorMessage = "Please provide at least one valid Amazon Order Id." });
+            ViewData["Result"] = new GetUpdatedOrdersResult()
+                {
+                    ErrorMessage = "Please provide at least one valid Amazon Order Id."
+                };
+            return View();
         }
     }
 }

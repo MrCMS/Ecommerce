@@ -49,10 +49,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                      .Distinct(new StrictKeyEqualityComparer<Order, string>(order => order.AmazonOrderId)).ToList();
                 if (orders.Any())
                 {
-                    var ordersUpdated=orders.Select(order => _scheduleAmazonOrderSync.ScheduleSync(order))
+                    orders.Select(order => _scheduleAmazonOrderSync.ScheduleSync(order))
                                       .Where(amazonOrder => amazonOrder != null)
                                       .ToList();
-                    return new GetUpdatedOrdersResult {OrdersUpdated = ordersUpdated};
+                    return new GetUpdatedOrdersResult {OrdersScheduledForSync = orders};
                 }
                 return new GetUpdatedOrdersResult { ErrorMessage = "We didn't found any Amazon Orders with provided Ids" };
             }
