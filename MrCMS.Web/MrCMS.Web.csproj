@@ -891,7 +891,6 @@
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\dashboard.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\listing-groups.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\listings.js" />
-    <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\orders.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\progress-bar-paged.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\sync-many-listing.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\sync-one-listing.js" />
