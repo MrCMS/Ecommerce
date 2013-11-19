@@ -43,14 +43,19 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
         public AmazonOrder UpdateOrder(AmazonOrderSyncData amazonOrderSyncData)
         {
-            if (amazonOrderSyncData.Operation == SyncAmazonOrderOperation.Add)
+            var byAmazonOrderId = _amazonOrderService.GetByAmazonOrderId(amazonOrderSyncData.OrderId);
+            if (amazonOrderSyncData.Operation == SyncAmazonOrderOperation.Add && byAmazonOrderId != null)
             {
-                var byAmazonOrderId = _amazonOrderService.GetByAmazonOrderId(amazonOrderSyncData.OrderId);
-                if (byAmazonOrderId != null)
-                {
+                    amazonOrderSyncData.Status = SyncAmazonOrderStatus.Synced;
+                    amazonOrderSyncData.AmazonOrder = byAmazonOrderId;
+                    _amazonOrderSyncDataService.Update(amazonOrderSyncData);
                     _amazonOrderSyncDataService.Delete(amazonOrderSyncData);
                     return byAmazonOrderId;
-                }
+            }
+            if (amazonOrderSyncData.AmazonOrder == null && byAmazonOrderId!=null)
+            {
+                amazonOrderSyncData.AmazonOrder = byAmazonOrderId;
+                _amazonOrderSyncDataService.Update(amazonOrderSyncData);
             }
 
             var amazonOrder = amazonOrderSyncData.AmazonOrder ?? new AmazonOrder();
@@ -59,6 +64,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             ProcessOrder(order, ref amazonOrder, amazonOrderSyncData.Operation == SyncAmazonOrderOperation.Add);
 
             amazonOrderSyncData.Status = SyncAmazonOrderStatus.Synced;
+            amazonOrderSyncData.AmazonOrder = amazonOrder;
             _amazonOrderSyncDataService.Update(amazonOrderSyncData);
             _amazonOrderSyncDataService.Delete(amazonOrderSyncData);
 
