@@ -39,12 +39,12 @@ namespace MrCMS.Web.Apps.Amazon.Controllers
                 {
                     //_amazonOrderSyncDataService.MarkAllAsPendingIfNotSyncedAfterOneHour();
 
-                    var ordersForUpdate = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Update);
-                    foreach (var amazonOrderSyncData in ordersForUpdate)
+                    var ordersForAdd = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Add, 10);
+                    foreach (var amazonOrderSyncData in ordersForAdd)
                         Update(amazonOrderSyncData);
 
-                    var ordersForAdd = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Add,10);
-                    foreach (var amazonOrderSyncData in ordersForAdd)
+                    var ordersForUpdate = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Update);
+                    foreach (var amazonOrderSyncData in ordersForUpdate)
                         Update(amazonOrderSyncData);
                 }
                 catch (Exception ex)
