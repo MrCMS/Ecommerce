@@ -388,6 +388,62 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             return PartialView(product);
         }
+
+        //Related Products
+
+        [HttpGet]
+        public PartialViewResult RelatedProducts(Product product)
+        {
+            return PartialView(product);
+        }
+
+        [HttpGet]
+        public PartialViewResult AddRelatedProduct(Product product, string query, int page = 1)
+        {
+            ViewData["product"] = product;
+            var items = _productService.Search(product, query, page, _siteSettings.DefaultPageSize);
+            return PartialView(items);
+        }
+
+        [HttpGet]
+        public PartialViewResult AddRelatedProductItems(Product product, string query, int page = 1)
+        {
+            ViewData["product"] = _documentService.GetDocument<Product>(product.Id);
+            var items = _productService.Search(product, query, page, _siteSettings.DefaultPageSize);
+            return PartialView(items);
+        }
+
+        [HttpPost]
+        public JsonResult AddRelatedProduct(Product product, int relatedProductId)
+        {
+            try
+            {
+                _productService.AddRelatedProduct(product, relatedProductId);
+                return Json(true);
+            }
+            catch
+            {
+                return Json(false);
+            }
+        }
+
+        [HttpGet]
+        public PartialViewResult RemoveRelatedProduct(Product product, int relatedProductId)
+        {
+            ViewData["related-product"] = product.RelatedProducts.SingleOrDefault(x => x.Id == relatedProductId);
+            return PartialView(product);
+        }
+
+        [HttpPost]
+        [ActionName("RemoveRelatedProduct")]
+        public RedirectToRouteResult RemoveRelatedProduct_POST(Product product, int relatedProductId)
+        {
+            var relatedProduct = product.RelatedProducts.SingleOrDefault(x => x.Id == relatedProductId);
+            product.RelatedProducts.Remove(relatedProduct);
+            _documentService.SaveDocument(relatedProduct);
+
+            return RedirectToAction("Edit", "Webpage", new { id = product.Id });
+        }
     }
 
     public class ProductOptionModelBinder : MrCMSDefaultModelBinder

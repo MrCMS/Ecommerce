@@ -65,6 +65,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                  .List()
                        : new List<Product>();
         }
+
+        public IPagedList<Product> Search(Product product, string query, int page = 1, int pageSize = 10)
+        {
+            var queryOver = QueryOver.Of<Product>();
+
+            if (!string.IsNullOrWhiteSpace(query))
+                queryOver = queryOver.Where(item => item.Name.IsInsensitiveLike(query, MatchMode.Anywhere));
+
+            queryOver = queryOver.Where(item => !item.Id.IsIn(product.RelatedProducts.Select(c => c.Id).ToArray()) && item.Id!=product.Id);
+
+            return _session.Paged(queryOver, page, pageSize);
+        }
         
         public void AddCategory(Product product, int categoryId)
         {
@@ -88,6 +100,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                       session.SaveOrUpdate(product);
                                       session.SaveOrUpdate(category);
                                   });
+        }
+
+        public void AddRelatedProduct(Product product, int relatedProductId)
+        {
+            var relatedProduct = _documentService.GetDocument<Product>(relatedProductId);
+
+            if (product.RelatedProducts.Any(x => x.Id == relatedProductId)) return;
+
+            product.RelatedProducts.Add(relatedProduct);
+            _session.Transact(session => session.SaveOrUpdate(product));
+        }
+
+        public void RemoveRelatedProduct(Product product, int relatedProductId)
+        {
+            var relatedProduct = _documentService.GetDocument<Product>(relatedProductId);
+            product.RelatedProducts.Remove(relatedProduct);
+            relatedProduct.RelatedProducts.Remove(product);
+            _session.Transact(session =>
+            {
+                session.SaveOrUpdate(product);
+                session.SaveOrUpdate(relatedProduct);
+            });
         }
 
         public List<SelectListItem> GetOptions()

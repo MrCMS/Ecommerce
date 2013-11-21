@@ -1,0 +1,22 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Pages
+@model Product
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+    var relatedProduct = ViewData["related-product"] as Product;
+}
+@using (Html.BeginForm("RemoveRelatedProduct", "Product", 
+    new { id = Model.Id, relatedProductId = relatedProduct.Id }, FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Remove Related Product
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Remove Category" />
+            </span>
+        </legend>
+        <p>
+            Are you sure you want to remove related product @relatedProduct.Name from the product 
+            @Model.Name? Removing this product can not be undone.
+        </p>
+    </fieldset>
+}
