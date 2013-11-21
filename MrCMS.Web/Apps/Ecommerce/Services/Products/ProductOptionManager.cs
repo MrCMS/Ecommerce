@@ -24,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public IList<ProductSpecificationAttribute> ListSpecificationAttributes()
         {
-            return _session.QueryOver<ProductSpecificationAttribute>().Cacheable().List();
+            return _session.QueryOver<ProductSpecificationAttribute>().Cacheable().List().OrderBy(x => x.DisplayOrder).ToList();
         }
         public ProductSpecificationAttribute GetSpecificationAttribute(int id)
         {
@@ -66,6 +66,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                specificationOption =>
                                specificationOption.Name.IsInsensitiveLike(name, MatchMode.Exact) && specificationOption.ProductSpecificationAttribute.Id == id)
                            .RowCount() > 0;
+        }
+        public void UpdateSpecificationAttributeDisplayOrder(IList<SortItem> options)
+        {
+            _session.Transact(session => options.ForEach(item =>
+            {
+                var formItem = session.Get<ProductSpecificationAttribute>(item.Id);
+                formItem.DisplayOrder = item.Order;
+                session.Update(formItem);
+            }));
         }
 
         public IList<ProductSpecificationAttributeOption> ListSpecificationAttributeOptions(int id)
