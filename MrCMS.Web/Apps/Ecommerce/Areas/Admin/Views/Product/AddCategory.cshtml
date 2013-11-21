@@ -7,41 +7,19 @@
 }
 
 <fieldset>
-        <legend>
-            Add Categories to Product
-            <span class="btn-group  display-inline  pull-right">
-                   <button id="close" class="btn-primary btn">Close</button>
-            </span>
-        </legend>
+    <legend>
+        Add Categories to Product
+        <span class="btn-group  display-inline  pull-right">
+            <button id="close" class="btn-primary btn">Close</button>
+        </span>
+    </legend>
 
-        <input autocomplete="off" class="search-query span2" id="searchparam" name="searchparam" placeholder="Search" type="text" />
+    <input autocomplete="off" class="search-query span2" id="searchparam" name="searchparam" placeholder="Search" type="text" />
     <br /><br />
-      <div class="modal-body-container">
-    @Html.Hidden("productId",product!=null?product.Id:0)
-    <div id="categories">
-        <table class="table table-striped table-condensed margin-top-0" style="margin-bottom: 0;">
-            <tbody>
-                
-                @foreach (var category in Model)
-                {
-                    <tr>
-                        <td>@category.NestedName</td>
-                        <td>
-                            <div class="pull-right">
-                                <button class="btn btn-success add-category" data-category-id="@category.Id" data-product-id="@product.Id" data-page="@(Model.PageCount > 1 ? Model.PageNumber : Model.PageNumber - 1)">Add</button>
-                            </div>
-                        </td>
-                    </tr>
-                }
-                
-            </tbody>
-        </table>
-        @if (Model.Count == 0)
-        {
-            <span>No categories to add to product.</span>
-        }
-        @Html.Pager(Model, "AddCategory", i => new { page = i, id = product.Id })
-        </div>
+    <div class="modal-body-container">
+        @Html.Hidden("productId",product!=null?product.Id:0)
+        @{Html.RenderPartial("AddCategoryCategories",Model);}
     </div>
 </fieldset>
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/async-paging.js"); }
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/product-categories.js"); }

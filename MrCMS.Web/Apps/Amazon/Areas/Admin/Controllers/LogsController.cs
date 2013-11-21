@@ -1,4 +1,5 @@
-﻿using MrCMS.Web.Apps.Amazon.Entities.Logs;
+﻿using MrCMS.Settings;
+using MrCMS.Web.Apps.Amazon.Entities.Logs;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
 using MrCMS.Website.Controllers;
@@ -9,16 +10,18 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
     public class LogsController : MrCMSAppAdminController<AmazonApp>
     {
         private readonly IAmazonLogService _amazonLogService;
+        private readonly SiteSettings _siteSettings;
 
-        public LogsController(IAmazonLogService amazonLogService)
+        public LogsController(IAmazonLogService amazonLogService, SiteSettings siteSettings)
         {
             _amazonLogService = amazonLogService;
+            _siteSettings = siteSettings;
         }
 
         [HttpGet]
         public ViewResult Index(AmazonLogType? type, AmazonLogStatus? status, int page = 1)
         {
-            var model = _amazonLogService.GetEntriesPaged(page, type, status);
+            var model = _amazonLogService.GetEntriesPaged(page, type, status, _siteSettings.DefaultPageSize);
             return View(model);
         }
 

@@ -41,11 +41,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             _session.Transact(session => session.SaveOrUpdate(item));
         }
 
-        public IPagedList<GoogleBaseCategory> SearchGoogleBaseCategories(string queryTerm = null, int page = 1)
+        public IPagedList<GoogleBaseCategory> SearchGoogleBaseCategories(string queryTerm = null, int page = 1, int pageSize=10)
         {
             var categories = GoogleBaseTaxonomyData.GetCategories();
 
-            return !string.IsNullOrWhiteSpace(queryTerm) ? categories.Where(x => x.Name.ToLower().Contains(queryTerm.ToLower())).Paged(page, 10) : categories.Paged(page, 10);
+            return !string.IsNullOrWhiteSpace(queryTerm) ? categories.Where(x => x.Name.ToLower().Contains(queryTerm.ToLower()))
+                .Paged(page, pageSize) : categories.Paged(page, pageSize);
         }
 
         /// <summary>

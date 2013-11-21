@@ -1,4 +1,5 @@
 ﻿using MrCMS.Paging;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Services.Listings;
 using MrCMS.Web.Apps.Amazon.Settings;
@@ -11,26 +12,28 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
     {
         private readonly IAmazonListingGroupService _amazonListingGroupService;
         private readonly AmazonAppSettings _amazonAppSettings;
+        private readonly SiteSettings _siteSettings;
 
         public ListingGroupController(IAmazonListingGroupService amazonListingGroupService, 
-            AmazonAppSettings amazonAppSettings)
+            AmazonAppSettings amazonAppSettings, SiteSettings siteSettings)
         {
             _amazonListingGroupService = amazonListingGroupService;
             _amazonAppSettings = amazonAppSettings;
+            _siteSettings = siteSettings;
         }
 
         [HttpGet]
         public ViewResult Index(string searchTerm,int page = 1)
         {
             ViewData["AmazonManageInventoryUrl"] = _amazonAppSettings.AmazonManageInventoryUrl;
-            var results = _amazonListingGroupService.Search(searchTerm,page);
+            var results = _amazonListingGroupService.Search(searchTerm, page, _siteSettings.DefaultPageSize);
             return View(results);
         }
 
         [HttpGet]
         public PartialViewResult ListingGroups(string name, int page = 1)
         {
-            var results = _amazonListingGroupService.Search(name, page);
+            var results = _amazonListingGroupService.Search(name, page, _siteSettings.DefaultPageSize);
             return PartialView(results);
         }
 
@@ -38,7 +41,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         public PartialViewResult Listings(AmazonListingGroup amazonListingGroup,int page = 1)
         {
             ViewData["AmazonProductDetailsUrl"] = _amazonAppSettings.AmazonProductDetailsUrl;
-            var results = new PagedList<AmazonListing>(amazonListingGroup.Items, page, 10);
+            var results = new PagedList<AmazonListing>(amazonListingGroup.Items, page, _siteSettings.DefaultPageSize);
             return PartialView(results);
         }
 

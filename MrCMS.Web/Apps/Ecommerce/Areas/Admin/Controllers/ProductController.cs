@@ -1,10 +1,8 @@
 using System.Web.Mvc;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
-using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
@@ -12,7 +10,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using System.Linq;
 using System.Collections.Generic;
 using MrCMS.Models;
-using System.Web;
 using System;
 using NHibernate;
 
@@ -27,10 +24,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IFileService _fileService;
         private readonly IBrandService _brandService;
         private readonly IProductOptionManagementService _productOptionManagementService;
+        private readonly SiteSettings _siteSettings;
 
         public ProductController(IProductService productService, IDocumentService documentService, ICategoryService categoryService,
             IProductOptionManager productOptionManager, IFileService fileService, IBrandService brandService,
-            IProductOptionManagementService productOptionManagementService)
+            IProductOptionManagementService productOptionManagementService, SiteSettings siteSettings)
         {
             _productService = productService;
             _documentService = documentService;
@@ -39,6 +37,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _fileService = fileService;
             _brandService = brandService;
             _productOptionManagementService = productOptionManagementService;
+            _siteSettings = siteSettings;
         }
 
         /// <summary>
@@ -66,7 +65,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult AddCategory(Product product, string query, int page = 1)
         {
             ViewData["product"] = product;
-            var categories = _categoryService.GetCategories(product, query, page);
+            var categories = _categoryService.GetCategories(product, query, page, _siteSettings.DefaultPageSize);
+            return PartialView(categories);
+        }
+
+        [HttpGet]
+        public PartialViewResult AddCategoryCategories(Product product, string query, int page = 1)
+        {
+            ViewData["product"] = product;
+            var categories = _categoryService.GetCategories(product, query, page, _siteSettings.DefaultPageSize);
             return PartialView(categories);
         }
 
@@ -88,9 +95,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public JsonResult SearchCategories(Product product, string term)
         {
             if (string.IsNullOrWhiteSpace(term))
-                return Json(_categoryService.GetCategories(product, String.Empty, 1).Select(x => new { Name = x.Name, CategoryID = x.Id }).Take(10).ToList());
+                return Json(_categoryService.GetCategories(product, String.Empty, 1, _siteSettings.DefaultPageSize)
+                    .Select(x => new { Name = x.Name, CategoryID = x.Id }).Take(_siteSettings.DefaultPageSize).ToList());
 
-            return Json(_categoryService.GetCategories(product, term, 1).Select(x => new { Name = x.Name, CategoryID = x.Id }).Take(10).ToList(), JsonRequestBehavior.AllowGet);
+            return Json(_categoryService.GetCategories(product, term, 1, _siteSettings.DefaultPageSize)
+                .Select(x => new { Name = x.Name, CategoryID = x.Id }).Take(_siteSettings.DefaultPageSize).ToList(), JsonRequestBehavior.AllowGet);
         }
 
 
@@ -139,7 +148,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             try
             {
-                var options = _productOptionManager.GetSpecificationAttribute(specificationAttributeId).Options.OrderBy(x => x.DisplayOrder).ToList().Select(item => new SelectListItem() { Selected = false, Text = item.Name, Value = item.Id.ToString() }).ToList();
+                var options = _productOptionManager.GetSpecificationAttribute(specificationAttributeId)
+                    .Options.OrderBy(x => x.DisplayOrder).ToList().Select(item => new SelectListItem() 
+                    { Selected = false, Text = item.Name, Value = item.Id.ToString() }).ToList();
                 return Json(options);
             }
             catch
@@ -155,7 +166,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             {
                 var option = _productOptionManager.GetSpecificationAttribute(Option);
                 if (!_productOptionManager.ListSpecificationAttributeOptions(Option).Any(x => x.Name == Value))
-                    _productOptionManager.AddSpecificationAttributeOption(new ProductSpecificationAttributeOption() { Name = Value, ProductSpecificationAttribute = option });
+                    _productOptionManager.AddSpecificationAttributeOption(new ProductSpecificationAttributeOption() 
+                    { Name = Value, ProductSpecificationAttribute = option });
                 _productOptionManager.SetSpecificationValue(_productService.Get(ProductId), option, Value);
                 return Json(true);
             }
@@ -250,7 +262,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             var sortItems =
             _fileService.GetFiles(product.Gallery).OrderBy(arg => arg.display_order)
                                 .Select(
-                                    arg => new ImageSortItem { Order = arg.display_order, Id = arg.Id, Name = arg.name, ImageUrl = arg.url, IsImage = arg.is_image })
+                                    arg => new ImageSortItem { Order = arg.display_order, 
+                                        Id = arg.Id, Name = arg.name, ImageUrl = arg.url, IsImage = arg.is_image })
                                 .ToList();
 
             return View(sortItems);
@@ -297,7 +310,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public JsonResult SearchProducts(string term)
         {
             if (!string.IsNullOrWhiteSpace(term))
-                return Json(_productService.Search(term).Select(x => new { Name = x.Name, ProductID = x.Id }).Take(15).ToList());
+                return Json(_productService.Search(term).Select(x => new 
+                { Name = x.Name, ProductID = x.Id }).Take(_siteSettings.DefaultPageSize).ToList());
 
             return Json(String.Empty, JsonRequestBehavior.AllowGet);
         }

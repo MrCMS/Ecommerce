@@ -3,8 +3,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Services.Users;
-using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -12,13 +10,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly ICountryService _countryService;
-        private readonly IAddressService _addressService;
 
-        public AddressController(IOrderService orderService, ICountryService countryService, IAddressService addressService)
+        public AddressController(IOrderService orderService, ICountryService countryService)
         {
             _orderService = orderService;
             _countryService = countryService;
-            _addressService = addressService;
         }
 
         [HttpGet]
