@@ -6,9 +6,11 @@
 <form>
     <fieldset>
         <legend>Product Specification Attributes
-        <span class="btn-group  display-inline  pull-right">
-            <a href="@Url.Action("Add", "ProductSpecificationAttribute")" class="btn btn-primary"  data-toggle="fb-modal">Add Attribute</a>
-        </span>
+            <span class="btn-group  display-inline  pull-right">
+                <a href="@Url.Action("Sort", "ProductSpecificationAttribute")" class="btn"  data-toggle="fb-modal">Sort</a>
+                <a href="@Url.Action("Add", "ProductSpecificationAttribute")" class="btn btn-primary"  data-toggle="fb-modal">Add Attribute</a>
+
+            </span>
         </legend>
         @if(Model.Count>0)
         {

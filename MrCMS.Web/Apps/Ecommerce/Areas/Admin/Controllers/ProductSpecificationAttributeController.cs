@@ -1,7 +1,8 @@
-﻿using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Entities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using MrCMS.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Website.Controllers;
 
@@ -83,6 +84,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                     return Json("There is already an attribute stored with that name.", JsonRequestBehavior.AllowGet);
             else
                     return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult Sort()
+        {
+            var options = _productOptionManager.ListSpecificationAttributes();
+            var sortItems = options.OrderBy(x => x.DisplayOrder)
+                                   .Select(
+                                       arg => new SortItem {Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Name})
+                                   .ToList();
+            return View(sortItems);
+        }
+
+        [HttpPost]
+        public ActionResult Sort(List<SortItem> items)
+        {
+            if (items != null && items.Count > 0)
+            {
+                _productOptionManager.UpdateSpecificationAttributeDisplayOrder(items);
+            }
+            return RedirectToAction("Index", "ProductSpecificationAttribute");
         }
     }
 }
