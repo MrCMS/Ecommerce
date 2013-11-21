@@ -13,8 +13,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 {
     public class EcommerceSettings : SiteSettingsBase
     {
-        [DisplayName("Page size for Administration")]
-        public int PageSizeAdmin { get; set; }
         [DisplayName("Search Products per Page")]
         public string SearchProductsPerPage { get; set; }
         [DisplayName("Previous Price text")]

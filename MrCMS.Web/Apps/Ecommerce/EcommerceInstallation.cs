@@ -134,7 +134,6 @@ namespace MrCMS.Web.Apps.Ecommerce
             siteSettings.ThemeName = "Ecommerce";
             configurationProvider.SaveSettings(siteSettings);
             ecommerceSettings.SearchProductsPerPage = "12,20,40";
-            ecommerceSettings.PageSizeAdmin = 20;
             ecommerceSettings.PreviousPriceText = "Previous price";
 
             configurationProvider.SaveSettings(ecommerceSettings);
@@ -202,7 +201,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             documentService.AddDocument(orderPlaced);
 
             //add currency
-            var britishCurrency = new MrCMS.Web.Apps.Ecommerce.Entities.Currencies.Currency
+            var britishCurrency = new Entities.Currencies.Currency
                                       {
                                           Name = "British Pound",
                                           Code = "GBP",

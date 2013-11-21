@@ -1,11 +1,9 @@
 ﻿using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
-using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -18,15 +16,12 @@ namespace MrCMS.EcommerceApp.Tests.Services
         private readonly IDocumentService _documentService;
         private readonly IProductSearchService _productSearchService;
         private readonly CategoryService _categoryService;
-        private readonly EcommerceSettings _ecommerceSettings;
 
         public CategoryServiceTests()
         {
             _documentService = A.Fake<IDocumentService>();
             _productSearchService = A.Fake<IProductSearchService>();
-            _ecommerceSettings = new EcommerceSettings();
-            _categoryService = new CategoryService(Session, CurrentSite, _documentService, _productSearchService,
-                                                   _ecommerceSettings);
+            _categoryService = new CategoryService(Session, CurrentSite, _documentService, _productSearchService);
         }
 
         [Fact]

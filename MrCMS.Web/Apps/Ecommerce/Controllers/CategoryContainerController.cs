@@ -20,7 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Categories(int page = 1)
+        public PartialViewResult Categories()
         {
             return PartialView(_categoryService.GetRootCategories());
         }
