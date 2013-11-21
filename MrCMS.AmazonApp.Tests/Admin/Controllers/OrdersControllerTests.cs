@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.EcommerceApp.Tests;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
@@ -19,7 +20,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         private readonly IAmazonOrderService _amazonOrderService;
         private readonly AmazonAppSettings _amazonAppSettings;
         private readonly IAmazonOrderSearchService _amazonOrderSearchService;
-        private readonly EcommerceSettings _ecommerceSettings;
+        private readonly SiteSettings _ecommerceSettings;
         private readonly OrdersController _ordersController;
         private readonly IAmazonOrderSyncService _amazonOrderSyncService;
 
@@ -28,7 +29,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
             _amazonOrderService = A.Fake<IAmazonOrderService>();
             _amazonAppSettings = A.Fake<AmazonAppSettings>();
             _amazonOrderSearchService = A.Fake<IAmazonOrderSearchService>();
-            _ecommerceSettings = new EcommerceSettings();
+            _ecommerceSettings = new SiteSettings() { DefaultPageSize = 10 };
             _amazonOrderSyncService = A.Fake<IAmazonOrderSyncService>();
             _ordersController = new OrdersController(_amazonOrderService,_amazonAppSettings,
                 _amazonOrderSearchService,_ecommerceSettings,_amazonOrderSyncService);
@@ -55,7 +56,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 
             var result = _ordersController.Index(model);
 
-            A.CallTo(() => _amazonOrderSearchService.Search(model, model.Page, 0)).MustHaveHappened();
+            A.CallTo(() => _amazonOrderSearchService.Search(model, model.Page, _ecommerceSettings.DefaultPageSize)).MustHaveHappened();
         }
 
         [Fact]
@@ -71,7 +72,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 
             var result = _ordersController.Orders(model);
 
-            A.CallTo(() => _amazonOrderSearchService.Search(model, model.Page, 0)).MustHaveHappened();
+            A.CallTo(() => _amazonOrderSearchService.Search(model, model.Page, _ecommerceSettings.DefaultPageSize)).MustHaveHappened();
         }
 
         [Fact]
@@ -99,11 +100,11 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         }
         
         [Fact]
-        public void OrdersController_Sync_ReturnsJsonResult()
+        public void OrdersController_SyncManyPOST_ReturnsJsonResult()
         {
-            var result = _ordersController.Sync(String.Empty);
+            var result = _ordersController.SyncMany_POST(String.Empty);
 
-            result.Should().BeOfType<JsonResult>();
+            result.Should().BeOfType<ViewResult>();
         }
     }
 }
