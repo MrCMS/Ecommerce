@@ -1,73 +1,67 @@
-﻿$(document).ready(function () {
-
-    $(window).resize(updateCharts);
-    
-    function updateCharts() {
-        generateChart();
-    };
-
+﻿//CHARTS
+google.load('visualization', '1.0', { 'packages': ['corechart'] });
+google.setOnLoadCallback(generateChart);
+window.onresize = function () {
     generateChart();
-});
-
-var chartData = {
-    labels: [],
-    datasets: [
-        {
-            fillColor: "rgba(52, 152, 219,0.5)",
-            strokeColor: "rgba(52, 152, 219,1.0)",
-            pointColor: "rgba(52, 152, 219,1.0)",
-            pointStrokeColor: "rgba(52, 152, 219,1.0)",
-            data: []
-        },
-        {
-            fillColor: "rgba(43, 191, 105,0.5)",
-            strokeColor: "rgba(43, 191, 105,1.0)",
-            pointColor: "rgba(43, 191, 105,1.0)",
-            pointStrokeColor: "rgba(43, 191, 105,1.0)",
-            data: []
-        },
-        {
-            fillColor: "rgba(231, 76, 60,0.5)",
-            strokeColor: "rgba(231, 76, 60,1.0)",
-            pointColor: "rgba(231, 76, 60,1.0)",
-            pointStrokeColor: "rgba(231, 76, 60,1.0)",
-            data: []
-        }
-    ]
+};
+var options = {
+    'width': '100%',
+    'titlePosition': 'top',
+    'legend': { position: 'bottom' },
+    'colors': ['#3498db', '#e74c3c', '#8e44ad', '#f39c12', '#27ae60'],
+    'chartArea': { left: 30, top: 20, width: "95%", height: "65%" },
+    'vAxis': { gridlines: { color: 'transparent' } },
 };
 
-var dataUrl = "/Admin/Apps/Ecommerce/Report/SalesByDay";
-var chart = $("#line-chart").get(0).getContext("2d");
-var chartContainer = $("#line-chart").parent();
-
 function generateChart() {
-    $.post(dataUrl, {
+    $.post('/Admin/Apps/Ecommerce/Report/SalesByDay', {
         from: $("#From").val(),
         to: $("#To").val()
     }, function (result) {
-        chartData.labels = result.ChartLabels;
-        var anyResults = false;
-        $.each(result.MultiChartData, function (index, value) {
-            if (value.length > 0) {
-                chartData.datasets[index].data = value;
-                anyResults = true;
-            }
-        });
-        if (chartData.datasets[1].data.length > 0)
-            $("#amazon").show();
-        else {
-            $("#amazon").hide();
+    var data = new google.visualization.DataTable();
+    var col = 0;
+    data.insertColumn(col, 'string', 'Days', 0);
+    var m, a, e;
+    if (result.MultipleData[0] != null && result.MultipleData[0].length > 0) {
+        col += 1;
+        data.insertColumn(col, 'number', 'MrCMS', 1);
+        m = true;
+    }
+    if (result.MultipleData[1] != null && result.MultipleData[1].length > 0) {
+        col += 1;
+        data.insertColumn(col, 'number', 'Amazon', 2);
+        a = true;
+    }
+    if (result.MultipleData[2] != null && result.MultipleData[2].length > 0) {
+        col += 1;
+        data.insertColumn(col, 'number', 'eBay', 3);
+        e = true;
+    }
+
+    $.each(result.Labels, function (index, value) {
+        var col = 0;
+        data.addRows(1);
+        data.setCell(index, 0, value);
+        if (m == true) {
+            col += 1;
+            data.setCell(index, col, result.MultipleData[0][index]);
         }
-        if (chartData.datasets[2].data.length > 0)
-            $("#ebay").show();
-        else {
-            $("#ebay").hide();
+        if (a == true) {
+            col += 1;
+            data.setCell(index, col, result.MultipleData[1][index]);
         }
-        if (anyResults === false) {
-            $("#message").html("No results were found with current filters, please refine and try again.");
-        } else
-            $("#message").html("");
-        var nc = $("#line-chart").attr('width', $(chartContainer).width());
-        new Chart(chart).Line(chartData, lineChartOptions);
+        if (e == true) {
+            col += 1;
+            data.setCell(index, col, result.MultipleData[2][index]);
+        }
     });
-};
+
+    if (m != true && a != true && e != true) {
+        $('#line-chart').html('<br/><p>No results were found with current filters, please refine and try again.</p>');
+    } else {
+        $('#line-chart').html('');
+        var chart = new google.visualization.LineChart(document.getElementById('line-chart'));
+        chart.draw(data, options);
+    }
+    });
+}

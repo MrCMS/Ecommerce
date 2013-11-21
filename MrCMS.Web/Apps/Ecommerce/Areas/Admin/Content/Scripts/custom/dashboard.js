@@ -1,139 +1,78 @@
-﻿$(document).ready(function () {
-
-    $(window).resize(updateCharts);
-    
-    function updateCharts() {
-        
-        $("#amazon").hide();
-        $("#ebay").hide();
-        
-        generateRevenueTodayChart();
-        generateRevenueThisWeekChart();
-    };
-
+﻿//CHARTS
+google.load('visualization', '1.0', { 'packages': ['corechart'] });
+google.setOnLoadCallback(generateRevenueTodayChart);
+google.setOnLoadCallback(generateRevenueThisWeekChart);
+window.onresize = function () {
     generateRevenueTodayChart();
     generateRevenueThisWeekChart();
-    
-    $("#amazon").hide();
-    $("#ebay").hide();
-});
-
-var lineChartOptions = {
-    scaleLineColor: "rgba(0,0,0,.1)",
-    scaleLineWidth: 0,
-    scaleShowLabels: false,
-    scaleLabel: "<%=value%>",
-    scaleFontFamily: "'Arial'",
-    scaleFontSize: 11,
-    scaleFontStyle: "normal",
-    scaleFontColor: "rgba(85, 85, 85,1.0)",
-    scaleShowGridLines: true,
-    scaleGridLineColor: "rgba(0,0,0,.05)",
-    scaleGridLineWidth: 0.1,
-    bezierCurve: true,
-    pointDot: true,
-    pointDotRadius: 1,
-    pointDotStrokeWidth: 0.2,
-    datasetStroke: true,
-    datasetStrokeWidth: 1,
-    datasetFill: true,
-    animation: true,
-    animationSteps: 60,
-    animationEasing: "easeOutQuart",
-    onAnimationComplete: null
 };
-
-var chartData1 = {
-    labels: [],
-    datasets: [
-        {
-            fillColor: "rgba(52, 152, 219,0.5)",
-            strokeColor: "rgba(52, 152, 219,1.0)",
-            pointColor: "rgba(52, 152, 219,1.0)",
-            pointStrokeColor: "rgba(52, 152, 219,1.0)",
-            data: []
-        },
-        {
-            fillColor: "rgba(43, 191, 105,0.5)",
-            strokeColor: "rgba(43, 191, 105,1.0)",
-            pointColor: "rgba(43, 191, 105,1.0)",
-            pointStrokeColor: "rgba(43, 191, 105,1.0)",
-            data: []
-        },
-        {
-            fillColor: "rgba(231, 76, 60,0.5)",
-            strokeColor: "rgba(231, 76, 60,1.0)",
-            pointColor: "rgba(231, 76, 60,1.0)",
-            pointStrokeColor: "rgba(231, 76, 60,1.0)",
-            data: []
-        }
-    ]
-};
-
-var chartData2 = {
-    labels: [],
-    datasets: [
-        {
-            fillColor: "rgba(52, 152, 219,0.5)",
-            strokeColor: "rgba(52, 152, 219,1.0)",
-            pointColor: "rgba(52, 152, 219,1.0)",
-            pointStrokeColor: "rgba(52, 152, 219,1.0)",
-            data: []
-        },
-        {
-            fillColor: "rgba(43, 191, 105,0.5)",
-            strokeColor: "rgba(43, 191, 105,1.0)",
-            pointColor: "rgba(43, 191, 105,1.0)",
-            pointStrokeColor: "rgba(43, 191, 105,1.0)",
-            data: []
-        },
-        {
-            fillColor: "rgba(231, 76, 60,0.5)",
-            strokeColor: "rgba(231, 76, 60,1.0)",
-            pointColor: "rgba(231, 76, 60,1.0)",
-            pointStrokeColor: "rgba(231, 76, 60,1.0)",
-            data: []
-        }
-    ]
+var options = {
+    'width': '100%',
+    'titlePosition': 'top',
+    'legend': { position: 'bottom' },
+    'colors': ['#3498db', '#e74c3c', '#8e44ad', '#f39c12', '#27ae60'],
+    'chartArea': { left: 30, top: 20, width: "95%", height: "65%" },
+    'vAxis': { gridlines: { color: 'transparent' } },
 };
 
 function generateRevenueTodayChart() {
-
-    var dataUrl = "/Admin/Apps/Ecommerce/Dashboard/RevenueToday";
-    var chart = $("#revenue-today").get(0).getContext("2d");
-    var chartContainer = $("#revenue-today").parent();
-    
-    getChartData("revenue-today", chartData1, dataUrl, chart, chartContainer);
+    $.post('/Admin/Apps/Ecommerce/Dashboard/RevenueToday', {
+    }, function (result) {
+        generateChart(result, 'revenue-today');
+    });
 };
 
 function generateRevenueThisWeekChart() {
-
-    var dataUrl = "/Admin/Apps/Ecommerce/Dashboard/RevenueThisWeek";
-    var chart = $("#revenue-this-week").get(0).getContext("2d");
-    var chartContainer = $("#revenue-this-week").parent();
-
-    getChartData("revenue-this-week", chartData2, dataUrl, chart, chartContainer);
+    $.post('/Admin/Apps/Ecommerce/Dashboard/RevenueThisWeek', {
+    }, function (result) {
+        generateChart(result,'revenue-this-week');
+    });
 };
 
-function getChartData(chartDiv, chartData, dataUrl, chart, chartContainer) {
+function generateChart(result,container) {
+    var data = new google.visualization.DataTable();
+    var col = 0;
+    data.insertColumn(col, 'string', 'Days', 0);
+    var m, a, e;
+    if (result.MultipleData[0] != null && result.MultipleData[0].length > 0) {
+        col += 1;
+        data.insertColumn(col, 'number', 'MrCMS', 1);
+        m = true;
+    }
+    if (result.MultipleData[1] != null && result.MultipleData[1].length > 0) {
+        col += 1;
+        data.insertColumn(col, 'number', 'Amazon', 2);
+        a = true;
+    }
+    if (result.MultipleData[2] != null && result.MultipleData[2].length > 0) {
+        col += 1;
+        data.insertColumn(col, 'number', 'eBay', 3);
+        e = true;
+    }
 
-    $.post(dataUrl, {
-        }, function(result) {
-            chartData.labels = result.ChartLabels;
-            $.each(result.MultiChartData, function(index, value) {
-                chartData.datasets[index].data = value;
-            });
-            if (chartData.datasets[1].data.length > 0 || $("#amazon").is(":visible")) {
-                $("#amazon").show();
-            } else {
-                $("#amazon").hide();
-            }
-            if (chartData.datasets[2].data.length > 0 || $("#ebay").is(":visible")) {
-                $("#ebay").show();
-            } else {
-                $("#ebay").hide();
-            }
-            var nc = $("#" + chartDiv).attr('width', $(chartContainer).width());
-            new Chart(chart).Line(chartData, lineChartOptions);
-        });
+    $.each(result.Labels, function (index, value) {
+        var col = 0;
+        data.addRows(1);
+        data.setCell(index, 0, value);
+        if (m == true) {
+            col += 1;
+            data.setCell(index, col, result.MultipleData[0][index]);
+        }
+        if (a == true) {
+            col += 1;
+            data.setCell(index, col, result.MultipleData[1][index]);
+        }
+        if (e == true) {
+            col += 1;
+            data.setCell(index, col, result.MultipleData[2][index]);
+        }
+    });
+
+    if (m != true && a != true && e != true) {
+        $('#' + container).html('<br/><p style="text-align:center">Not enough data found for this chart.</p>');
+    } else {
+        $('#' + container).html('');
+        var chart = new google.visualization.LineChart(document.getElementById(container));
+        chart.draw(data, options);
+    }
 }
