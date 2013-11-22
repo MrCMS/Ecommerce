@@ -374,7 +374,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                         .Eager.Where(option => option.Id.IsIn(values))
                         .Cacheable()
                         .List();
-            var productSpecificationAttributes = productSpecificationAttributeOptions.Select(value => value.ProductSpecificationAttribute).Distinct().ToList();
+            var productSpecificationAttributes = productSpecificationAttributeOptions.Select(value => value.ProductSpecificationAttribute).OrderBy(x=>x.DisplayOrder).Distinct().ToList();
 
             return productSpecificationAttributes.Select(attribute => new ProductOptionModel
                                                                           {
