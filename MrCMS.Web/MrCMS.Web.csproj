@@ -882,6 +882,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-shipping-type.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-payment-type.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-day.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\product-variant.css" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\dashboard.css" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\reports.css" />
     <Content Include="Apps\Ecommerce\Content\Images\tick.png" />

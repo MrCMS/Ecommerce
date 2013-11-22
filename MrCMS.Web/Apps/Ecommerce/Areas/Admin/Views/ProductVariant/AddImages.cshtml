@@ -1,5 +1,14 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 <div id="images" class="tab-pane">
-@Html.LabelFor(webpage => webpage.FeaturedImageUrl)
-@Html.TextBoxFor(webpage => webpage.FeaturedImageUrl, new { @class = "media-selector" })
+    @Html.HiddenFor(x=>x.FeaturedImageUrl)
+    <div style="width:100%; overflow: hidden">
+             <select id="FeaturedImageUrlBox" style="width:50%;min-width:300px">
+            <option value="0" data-url="" data-name="">Choose Featured Image for @Model.DisplayName</option>
+            @foreach (var item in Model.Product.Images)
+            {
+                var selectedValue = !String.IsNullOrWhiteSpace(Model.FeaturedImageUrl) && Model.FeaturedImageUrl==item.FileUrl?"selected='selected'":string.Empty;
+                <option value="@item.FileUrl" @Html.Raw(selectedValue) data-url="@item.FileUrl" data-name="@item.FileName">@item.FileName</option>
+            }
+        </select>
+     </div>
 </div>

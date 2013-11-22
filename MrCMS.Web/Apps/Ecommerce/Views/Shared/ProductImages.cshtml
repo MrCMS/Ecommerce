@@ -1,6 +1,12 @@
 ﻿@using MrCMS.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Pages.Product  
-@Html.RenderImage(Model.DisplayImageUrl)
+@using MrCMS.Web.Apps.Ecommerce.Entities.Products
+@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+@{
+    var selectedVariant = ViewData["selected-variant"] as ProductVariant ?? Model.VariantsByPrice.First();
+}
+
+@(!String.IsNullOrWhiteSpace(selectedVariant.FeaturedImageUrl) ? Html.RenderImage(selectedVariant.FeaturedImageUrl) : Html.RenderImage(Model.DisplayImageUrl))
+
 <div class="clearfix"></div>
 <div id="product-image-thumbnails">
     <ul class="thumbnails">

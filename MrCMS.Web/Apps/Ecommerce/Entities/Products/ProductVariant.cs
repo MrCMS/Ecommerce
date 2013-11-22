@@ -217,8 +217,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         [DisplayName("Featured Image")]
         public virtual string FeaturedImageUrl { get; set; }
-
-        [DisplayName("Featured Image")]
-        public virtual MediaFile FeaturedImage { get; set; }
     }
 }
