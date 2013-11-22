@@ -56,7 +56,7 @@
 
 $(document).ready(function() {
 
-    function format(state) {
+    function formatImageOption(state) {
         var option = state.element;
         var url = $(option).data('url');
         $("#FeaturedImageUrl").val($(option).data('url'));
@@ -69,9 +69,27 @@ $(document).ready(function() {
     }
 
     $("#FeaturedImageUrlBox").select2({
-        formatResult: format,
-        formatSelection: format,
+        formatResult: formatImageOption,
+        formatSelection: formatImageOption,
         escapeMarkup: function(m) { return m; }
     });
     
+    $('#SoldOut').click(function () {
+        $("#sold-out-message").toggle(this.checked);
+    });
+    
+    function formatOption(state) {
+        return state.text;
+    }
+
+    $("#ShippingMethodsBox").select2({
+        formatResult: formatOption,
+        formatSelection: formatOption,
+        escapeMarkup: function (m) { return m; }
+    });
+
+    $("#ShippingMethodsBox").on("change",
+        function(e) {
+            $("#ShippingMethodsValue").val($("#ShippingMethodsBox").select2("val"));
+        });
 });

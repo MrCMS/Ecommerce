@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
@@ -13,6 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         {
             ShippingCalculations = new List<ShippingCalculation>();
             Orders = new List<Order>();
+            ProductVariants = new List<ProductVariant>();
         }
 
         public virtual string Name { get; set; }
@@ -71,5 +73,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         {
             return ShippingCalculations.Where(calculation => calculation.CanBeUsed(model)).OrderBy(calculation => calculation.GetPrice(model)).FirstOrDefault();
         }
+
+        public virtual IList<ProductVariant> ProductVariants { get; set; }
     }
 }
