@@ -1531,6 +1531,10 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddRelatedProduct.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddRelatedProductItems.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\RemoveRelatedProduct.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\AddDetails.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\AddImages.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\EditDetails.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\EditImages.cshtml" />
     <None Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.js~" />
     <None Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.min.js~" />
     <Content Include="Areas\Admin\Content\Styles\mrcms-frontendediting.css" />
