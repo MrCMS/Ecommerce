@@ -31,3 +31,5 @@
 </div>
 <hr />
 @{ Html.RenderAction("Images", "Product", new { id = Model.Id }); }
+<hr />
+@{ Html.RenderAction("RelatedProducts", "Product", new { id = Model.Id }); }

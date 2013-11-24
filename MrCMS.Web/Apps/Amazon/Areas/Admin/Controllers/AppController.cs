@@ -1,4 +1,5 @@
 ﻿using System;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Analytics;
@@ -13,12 +14,14 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
     {
         private readonly IAmazonLogService _amazonLogService;
         private readonly IAmazonAnalyticsService _amazonAnalyticsService;
+        private readonly SiteSettings _siteSettings;
 
         public AppController(IAmazonLogService amazonLogService, 
-            IAmazonAnalyticsService amazonAnalyticsService)
+            IAmazonAnalyticsService amazonAnalyticsService, SiteSettings siteSettings)
         {
             _amazonLogService = amazonLogService;
             _amazonAnalyticsService = amazonAnalyticsService;
+            _siteSettings = siteSettings;
         }
 
         [HttpGet]
@@ -38,7 +41,7 @@ namespace MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers
         {
             var model = new AmazonDashboardModel()
             {
-                Logs = _amazonLogService.GetEntriesPaged(page,null,null,5)
+                Logs = _amazonLogService.GetEntriesPaged(page,null,null,_siteSettings.DefaultPageSize)
             };
             return PartialView(model);
         }

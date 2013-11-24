@@ -2,6 +2,7 @@
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.EcommerceApp.Tests;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Analytics;
@@ -16,12 +17,14 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         private readonly IAmazonLogService _amazonLogService;
         private readonly IAmazonAnalyticsService _amazonAnalyticsService;
         private readonly AppController _appController;
+        private readonly SiteSettings _siteSettings;
 
         public AppControllerTests()
         {
             _amazonLogService = A.Fake<IAmazonLogService>();
             _amazonAnalyticsService = A.Fake<IAmazonAnalyticsService>();
-            _appController = new AppController(_amazonLogService,_amazonAnalyticsService);
+            _siteSettings=new SiteSettings(){DefaultPageSize = 10};
+            _appController = new AppController(_amazonLogService, _amazonAnalyticsService, _siteSettings);
         }
 
         [Fact]
@@ -75,7 +78,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         {
             var result = _appController.Logs(1);
 
-            A.CallTo(() => _amazonLogService.GetEntriesPaged(1,null,null,5)).MustHaveHappened();
+            A.CallTo(() => _amazonLogService.GetEntriesPaged(1,null,null,_siteSettings.DefaultPageSize)).MustHaveHappened();
         }
 
         [Fact]

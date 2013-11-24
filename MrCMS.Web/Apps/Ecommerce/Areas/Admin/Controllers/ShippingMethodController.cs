@@ -6,7 +6,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Website.Controllers;
-using MrCMS.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {

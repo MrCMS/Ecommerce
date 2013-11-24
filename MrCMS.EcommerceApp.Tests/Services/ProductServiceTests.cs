@@ -2,9 +2,9 @@
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Services;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using Xunit;
 using MrCMS.Helpers;
 
@@ -13,14 +13,14 @@ namespace MrCMS.EcommerceApp.Tests.Services
     public class ProductServiceTests : InMemoryDatabaseTest
     {
         private readonly IDocumentService _documentService;
-        private readonly EcommerceSettings _ecommerceSettings;
         private readonly ProductService _productService;
+        private readonly SiteSettings _siteSettings;
 
         public ProductServiceTests()
         {
             _documentService = A.Fake<IDocumentService>();
-            _ecommerceSettings = new EcommerceSettings();
-            _productService = new ProductService(Session, _documentService, _ecommerceSettings);
+            _siteSettings = new SiteSettings() { DefaultPageSize = 10 };
+            _productService = new ProductService(Session, _documentService, _siteSettings);
         }
 
         [Fact]

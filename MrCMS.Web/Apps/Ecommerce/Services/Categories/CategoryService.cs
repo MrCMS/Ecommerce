@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Models;
@@ -8,7 +7,6 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using NHibernate;
 using NHibernate.Criterion;
 using MrCMS.Entities.Multisite;
@@ -21,23 +19,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         private readonly ISession _session;
         private readonly IDocumentService _documentService;
         private readonly IProductSearchService _productSearchService;
-        private readonly EcommerceSettings _ecommerceSettings;
         private readonly Site _currentSite;
 
-        public CategoryService(ISession session, Site currentSite, IDocumentService documentService, IProductSearchService productSearchService, EcommerceSettings ecommerceSettings)
+        public CategoryService(ISession session, Site currentSite, IDocumentService documentService,
+            IProductSearchService productSearchService)
         {
             _session = session;
             _currentSite = currentSite;
             _documentService = documentService;
             _productSearchService = productSearchService;
-            _ecommerceSettings = ecommerceSettings;
         }
 
-        public CategoryPagedList Search(string queryTerm = null, int page = 1, int pageSize=10)
+        public CategoryPagedList Search(string queryTerm = null, int page = 1,int pageSize=10)
         {
             IPagedList<Category> pagedList;
 
-            pageSize = _ecommerceSettings.PageSizeAdmin > 0 ? _ecommerceSettings.PageSizeAdmin : pageSize;
             if (!string.IsNullOrWhiteSpace(queryTerm))
             {
                 pagedList =
@@ -72,7 +68,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
                                                           });
         }
 
-        public IPagedList<Category> GetCategories(Product product, string query, int page)
+        public IPagedList<Category> GetCategories(Product product, string query, int page=1,int pageSize=10)
         {
             var queryOver = QueryOver.Of<Category>();
 
@@ -81,7 +77,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
 
             queryOver = queryOver.Where(category => !category.Id.IsIn(product.Categories.Select(c => c.Id).ToArray()));
 
-            return _session.Paged(queryOver, page, 10);
+            return _session.Paged(queryOver, page, pageSize);
         }
         public IList<Category> GetAll()
         {
@@ -131,11 +127,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
 
         public CategoryContainer GetSiteCategoryContainer()
         {
-            IList<CategoryContainer> categoryContainers = _session.QueryOver<CategoryContainer>().Where(x => x.Site == _currentSite).Cacheable().List();
-            if (categoryContainers.Any())
-                return _session.QueryOver<CategoryContainer>().Cacheable().List().First();
-            else
-                return null;
+            var categoryContainers = _session.QueryOver<CategoryContainer>().Where(x => x.Site == _currentSite).Cacheable().List();
+            return categoryContainers.Any() ? _session.QueryOver<CategoryContainer>().Cacheable().List().First() : null;
         }
     }
 }

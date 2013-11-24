@@ -76,13 +76,15 @@ namespace MrCMS.AmazonApp.Tests.Services.Orders
         [Fact]
         public void AmazonOrderService_Update_ShouldCallAddLog()
         {
-            var item = new AmazonOrder();
+            var item = new AmazonOrder(){AmazonOrderId = "1"};
             Session.Transact(session => session.Save(item));
 
             _amazonOrderService.Update(item);
 
             A.CallTo(() => _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Update,
-                                  null, null, null, null, item, null, null, string.Empty, string.Empty)).MustHaveHappened();
+                                 null, null, null, null, item, null, null,
+                                 "Amazon Order #" + item.AmazonOrderId,string.Empty)
+                                  ).MustHaveHappened();
         }
 
         [Fact]
@@ -99,12 +101,14 @@ namespace MrCMS.AmazonApp.Tests.Services.Orders
         [Fact]
         public void AmazonOrderService_Delete_ShouldCallAddLog()
         {
-            var item = new AmazonOrder();
+            var item = new AmazonOrder(){AmazonOrderId = "1"};
             Session.Transact(session => session.Save(item));
 
             _amazonOrderService.Delete(item);
 
-            A.CallTo(() => _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Delete, null, null, null, null, item, null, null, string.Empty, string.Empty)).MustHaveHappened();
+            A.CallTo(() => _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Delete,
+                null, null, null, null, item, null, null, "Amazon Order #" + 
+                item.AmazonOrderId,string.Empty)).MustHaveHappened();
         }
     }
 }

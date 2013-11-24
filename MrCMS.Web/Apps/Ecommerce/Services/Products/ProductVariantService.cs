@@ -1,10 +1,10 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Paging;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public IPagedList<ProductVariant> GetAllVariantsWithLowStock(int treshold, int page = 1)
         {
             var items = _session.QueryOver<ProductVariant>().Where(item => item.StockRemaining <= treshold && item.TrackingPolicy == TrackingPolicy.Track).OrderBy(x => x.Product.Id).Asc.Cacheable().List();
-            return new PagedList<ProductVariant>(items, page, MrCMSApplication.Get<EcommerceSettings>().PageSizeAdmin);
+            return new PagedList<ProductVariant>(items, page, MrCMSApplication.Get<SiteSettings>().DefaultPageSize);
         }
         public IList<ProductVariant> GetAllVariantsWithLowStock(int treshold)
         {
@@ -43,7 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public IPagedList<ProductVariant> GetAllVariants(string queryTerm, int categoryId = 0, int page = 1)
         {
             if (string.IsNullOrWhiteSpace(queryTerm) && categoryId == 0)
-                return _session.Paged(QueryOver.Of<ProductVariant>().Cacheable(), page, MrCMSApplication.Get<EcommerceSettings>().PageSizeAdmin);
+                return _session.Paged(QueryOver.Of<ProductVariant>().Cacheable(), page, MrCMSApplication.Get<SiteSettings>().DefaultPageSize);
 
             Category categoryAlias = null;
             Product productAlias = null;
@@ -55,7 +55,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                     () => (productVariantAlias.Name.IsInsensitiveLike(queryTerm,MatchMode.Anywhere)
                                         || productVariantAlias.SKU.IsInsensitiveLike(queryTerm,MatchMode.Anywhere))
                                     && (categoryId==0 || categoryAlias.Id==categoryId))
-                                .Paged(page, MrCMSApplication.Get<EcommerceSettings>().PageSizeAdmin);
+                                .Paged(page, MrCMSApplication.Get<SiteSettings>().DefaultPageSize);
         }
         public IList<ProductVariant> GetAllVariantsForGoogleBase()
         {

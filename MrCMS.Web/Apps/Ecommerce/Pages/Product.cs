@@ -25,6 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             SpecificationValues = new List<ProductSpecificationValue>();
             Categories = new List<Category>();
             Options = new List<ProductOption>();
+            RelatedProducts = new List<Product>();
         }
 
         public virtual MediaCategory Gallery { get; set; }
@@ -181,5 +182,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             get { return DisplayPreviousPrice.HasValue && DisplayPreviousPrice > DisplayPrice; }
         }
+
+        public virtual IList<Product> RelatedProducts { get; set; }
     }
 }

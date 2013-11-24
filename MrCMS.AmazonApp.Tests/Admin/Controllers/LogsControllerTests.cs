@@ -2,6 +2,7 @@
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.EcommerceApp.Tests;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Amazon.Entities.Logs;
 using MrCMS.Web.Apps.Amazon.Models;
@@ -14,11 +15,13 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
     {
         private readonly IAmazonLogService _amazonLogService;
         private readonly LogsController _logsController;
+        private readonly SiteSettings _siteSettings;
 
         public LogsControllerTests()
         {
             _amazonLogService = A.Fake<IAmazonLogService>();
-            _logsController = new LogsController(_amazonLogService);
+            _siteSettings = new SiteSettings() { DefaultPageSize = 10 };
+            _logsController = new LogsController(_amazonLogService, _siteSettings);
         }
 
         [Fact]
