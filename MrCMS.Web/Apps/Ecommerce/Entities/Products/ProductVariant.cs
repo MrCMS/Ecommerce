@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using MrCMS.Entities;
+using MrCMS.Entities.Documents.Media;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
+using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using System.Linq;
-using NHibernate;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
@@ -22,6 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             OptionValues = new List<ProductOptionValue>();
             PriceBreaks = new List<PriceBreak>();
+            ShippingMethods = new List<ShippingMethod>();
         }
 
         public virtual decimal Weight { get; set; }
@@ -214,5 +216,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         }
 
         public virtual GoogleBaseProduct GoogleBaseProduct { get; set; }
+
+        [DisplayName("Featured Image")]
+        public virtual string FeaturedImageUrl { get; set; }
+
+        [DisplayName("Sold Out")]
+        public virtual bool SoldOut { get; set; }
+
+        [DisplayName("Sold Out Message")]
+        public virtual string SoldOutMessage { get; set; }
+
+        [DisplayName("Allowed Shipping Methods")]
+        public virtual IList<ShippingMethod> ShippingMethods { get; set; }
     }
 }

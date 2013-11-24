@@ -9,75 +9,26 @@
                 <input type="submit" class="btn-primary btn" value="Add Product Variant" />
             </span>
         </legend>
-
-        <div class="row-fluid">
-            @Html.HiddenFor(variant => variant.Product.Id)
-            @Html.LabelFor(variant => variant.Name)
-            @Html.TextBoxFor(variant => variant.Name, new { @class = "span12" })
-        </div>
-        <div class="row-fluid">
-            @for (var index = 0; index < Model.Product.Options.Count; index++)
-            {
-
-                var option = Model.Product.Options[index];
-
-                @Html.LabelFor(variant => variant.OptionValues[index].Value, option.Name)
-                @Html.TextBoxFor(variant => variant.OptionValues[index].Value, new { @class = "span12" })
-                @Html.Hidden("OptionValues[" + index + "].Id", Model.OptionValues[index].Id)
-                @Html.Hidden("OptionValues[" + index + "].ProductOption.Id", option.Id.ToString())
-                
-            }
-        </div>
-        <div class="row-fluid">
-            <div class="span6">
-                @Html.LabelFor(variant => variant.BasePrice)
-                @Html.TextBoxFor(variant => variant.BasePrice, new { @class = "span12" })
-            </div>
-            <div class="span6">
-                @Html.LabelFor(variant => variant.PreviousPrice)
-                @Html.TextBoxFor(variant => variant.PreviousPrice, new { @class = "span12" })
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span6">
-                @Html.LabelFor(variant => variant.SKU)
-                @Html.TextBoxFor(variant => variant.SKU, new { @class = "span12" })
-            </div>
-            <div class="span6">
-                <table style="width:100%;">
-                    <tr>
-                        <td class="span6">@Html.LabelFor(variant => variant.Barcode)
-                            @Html.TextBoxFor(variant => variant.Barcode, new { @class = "span12" })</td>
-                        <td class="span6">@Html.LabelFor(variant => variant.ManufacturerPartNumber)
-                            @Html.TextBoxFor(variant => variant.ManufacturerPartNumber, new { @class = "span12" })</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span6">
-                @Html.LabelFor(variant => variant.StockRemaining)
-                @Html.TextBoxFor(variant => variant.StockRemaining, new { @class = "span12" })
-            </div>
-            <div class="span6">
-                @Html.LabelFor(product => product.TrackingPolicy)
-                @Html.DropDownListFor(product => product.TrackingPolicy, ViewData["tracking-policy"] as IEnumerable<SelectListItem>, new { @class = "span12" })
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span6">
-                @Html.LabelFor(variant => variant.Weight)
-                @Html.TextBoxFor(variant => variant.Weight, new { @class = "span12" })
-            </div>
-            <div class="span6">
-                @if (!MrCMS.Website.MrCMSApplication.Get<MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings>().LoadedPricesIncludeTax)
-                {
-                    @Html.LabelFor(product => product.TaxRate.Id, "Tax Rate")
-                    @Html.DropDownListFor(product => product.TaxRate.Id, ViewData["tax-rate-options"] as IEnumerable<SelectListItem>, new { @class = "span12" })
-                }
+        
+         <div id="tabs">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
+                <li><a href="#images" data-toggle="tab">Featured Image</a></li>
+                <li><a href="#sold-out" data-toggle="tab">Sold Out Options</a></li>
+                <li><a href="#shipping-options" data-toggle="tab">Shipping Options</a></li>
+            </ul>
+            <div class="tab-content">
+                @{ Html.RenderPartial("AddDetails", Model); }
+                @{ Html.RenderPartial("Images", Model); }
+                @{ Html.RenderPartial("SoldOut", Model); }
+                @{ Html.RenderPartial("ShippingOptions", Model); }
             </div>
         </div>
     </fieldset>
 }
-
+@{
+    Html.IncludeCss("~/Areas/Admin/Content/Scripts/select2-3.4.1/select2.css");
+    Html.IncludeScript("~/Areas/Admin/Content/Scripts/select2-3.4.1/select2.min.js");
+}
+@{ Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/product-variant.css"); }
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/product-variant.js"); }

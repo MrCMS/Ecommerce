@@ -2,6 +2,7 @@
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.EcommerceApp.Tests;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Services.Listings;
@@ -15,12 +16,14 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         private readonly IAmazonListingGroupService _amazonListingGroupService;
         private readonly AmazonAppSettings _amazonAppSettings;
         private readonly ListingGroupController _listingGroupController;
+        private readonly SiteSettings _siteSettings;
 
         public ListingGroupControllerTests()
         {
             _amazonListingGroupService = A.Fake<IAmazonListingGroupService>();
             _amazonAppSettings = A.Fake<AmazonAppSettings>();
-            _listingGroupController = new ListingGroupController(_amazonListingGroupService,_amazonAppSettings);
+            _siteSettings = new SiteSettings() { DefaultPageSize = 10 };
+            _listingGroupController = new ListingGroupController(_amazonListingGroupService, _amazonAppSettings, _siteSettings);
         }
 
         [Fact]

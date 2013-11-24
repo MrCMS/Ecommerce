@@ -18,9 +18,6 @@
                 @Html.ValidationMessageFor(x => x.CurrencyId)
 
                 @Html.HiddenFor(settings => settings.Site.Id)
-                @Html.LabelFor(x => x.PageSizeAdmin)
-                @Html.TextBoxFor(x => x.PageSizeAdmin, new {@class = "span12"})
-                @Html.ValidationMessageFor(x => x.PageSizeAdmin)
 
                 @Html.LabelFor(x => x.SearchProductsPerPage)
                 @Html.TextBoxFor(x => x.SearchProductsPerPage, new {@class = "span12"})

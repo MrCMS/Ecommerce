@@ -70,7 +70,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             _session.Transact(session => session.Update(item));
 
             _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Update,
-                                 null, null, null, null, item, null, null, "Amazon Order #" + item.AmazonOrderId);
+                                 null, null, null, null, item, null, null, 
+                                 "Amazon Order #" + item.AmazonOrderId);
         }
 
         public void SaveOrUpdate(AmazonOrder amazonOrder)
