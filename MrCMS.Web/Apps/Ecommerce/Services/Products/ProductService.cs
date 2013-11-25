@@ -173,6 +173,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             );
         }
 
+        public Product Update(Product product)
+        {
+            _session.Transact(session => session.Update(product));
+            return product;
+        }
+
         public IList<Product> GetNewIn(int numberOfItems = 10)
         {
             var ids =
