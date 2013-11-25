@@ -1,6 +1,5 @@
 ﻿using MrCMS.Models;
 using MrCMS.Paging;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using System.Collections.Generic;
@@ -24,5 +23,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         IList<Product> GetAll();
         IList<Product> GetNewIn(int numberOfItems = 10);
         void SetCategoryOrder(Product product, List<SortItem> items);
+        Product Update(Product product);
     }
 }
