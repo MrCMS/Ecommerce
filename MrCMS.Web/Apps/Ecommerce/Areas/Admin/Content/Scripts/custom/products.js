@@ -15,7 +15,7 @@
     }
 };
 
-$(function () {
+$(function() {
     'use strict';
 
 
@@ -23,13 +23,13 @@ $(function () {
     $('#fileupload').fileupload();
 
     // Load existing files:
-    $('#fileupload').each(function () {
+    $('#fileupload').each(function() {
         var that = this;
-        $.getJSON(this.action,{v: new Date().getTime()}, function (result) {
+        $.getJSON(this.action, { v: new Date().getTime() }, function(result) {
             if (result && result.length) {
                 var fileupload = $(that).fileupload('option', 'done');
                 fileupload.call(that, null, { result: result });
             }
         });
     });
-})
+});
