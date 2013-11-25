@@ -78,7 +78,7 @@
                 <div class="controls">
                     <label>
                     </label>
-                    <button class="btn btn-info"  id="continue" name="continue">Place order</button>
+                    <button class="btn btn-info" id="continue" name="continue">Place order</button>
                 </div>
             </div>
         </div>
@@ -87,15 +87,24 @@
 @if (failureDetails != null)
 {
     <ul>
-        @foreach (var error in failureDetails.Details)
+        @if (failureDetails.Details != null)
         {
+            foreach (var error in failureDetails.Details)
+            {
             <li>
                 @error
+            </li>
+            }
+        }
+        else
+        {
+            <li>
+                @failureDetails.Message
             </li>
         }
     </ul>
 }
 <style>
-    .input-validation-error { border: 1px solid red!important;}
-    .field-validation-error span { color: red;}
+    .input-validation-error { border: 1px solid red!important; }
+    .field-validation-error span { color: red; }
 </style>
