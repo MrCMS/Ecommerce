@@ -66,6 +66,24 @@ namespace MrCMS.EcommerceApp.Tests.Services
         }
 
         [Fact]
+        public void DownloadService_Download_ShouldReturnFilePathResultForDemoFileIfTypeIsSpecified()
+        {
+            var product = new Product() { NumberOfDownloads = 0, DownloadFileUrl = "dlurl", DemoFileUrl = "demourl" };
+            var productVariant = new ProductVariant() { Product = product };
+            var order = new Order();
+
+            var downloadFile = new MediaFile() { FileName = "dl", ContentType = "text/plain", FileUrl = "dlurl" };
+            var demoFile = new MediaFile() { FileName = "demo", ContentType = "text/plain", FileUrl = "demourl" };
+
+            A.CallTo(() => MrCMSApplication.Get<IFileService>().GetFileByUrl(product.DownloadFileUrl)).Returns(downloadFile);
+            A.CallTo(() => MrCMSApplication.Get<IFileService>().GetFileByUrl(product.DemoFileUrl)).Returns(demoFile);
+
+            var result = _downloadProductService.Download(productVariant, order, "demo");
+
+            result.As<FilePathResult>().FileName.Should().Be(demoFile.FileUrl);
+        }
+
+        [Fact]
         public void DownloadService_Download_ShouldCallUpdate()
         {
             var product = new Product() { NumberOfDownloads = 0, DownloadFileUrl = "dlurl", DemoFileUrl = "demourl" };
