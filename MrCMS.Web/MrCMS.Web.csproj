@@ -403,6 +403,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\DownloadProductController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\EnterOrderEmailController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GoogleAnalyticsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GoogleBaseFeedController.cs" />
@@ -688,6 +689,9 @@
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointResponseLogger.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointResponseLogger.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BackInStockNotificationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\Download\DownloadProductService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\Download\Rules\IDownloadProductValidationRules.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\Download\Rules\DownloadProductValidationRules.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IBackInStockNotificationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductOptionManagementService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
@@ -876,6 +880,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\async-paging.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\download-product.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\related-products.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\orders-by-shipping-type.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\dashboard.js" />
@@ -1537,6 +1542,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Images.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\SoldOut.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\ShippingOptions.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\DownloadProductOptions.cshtml" />
     <None Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.js~" />
     <None Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.min.js~" />
     <Content Include="Areas\Admin\Content\Styles\mrcms-frontendediting.css" />
@@ -2242,8 +2248,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Edit.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\ProductProperties.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\Variants.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Edit.cshtml" />
@@ -2266,7 +2270,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Category.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\CategoryContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Product.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductAdmin.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\DefaultEdit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\CategoriesOnlyNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\FeaturedCategories.cshtml" />
