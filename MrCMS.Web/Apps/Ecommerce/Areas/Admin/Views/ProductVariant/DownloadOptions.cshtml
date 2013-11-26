@@ -1,6 +1,6 @@
 ﻿@using MrCMS.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Pages.Product
-<div class="tab-pane" id="download-product-options">
+@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
+<div class="tab-pane" id="download-options">
      <label class="checkbox">@Html.CheckBox("IsDownloadable", Model.IsDownloadable) Downloadable?</label>
     <div id="downloadable" @(Model.IsDownloadable?Html.Raw("style='display:block'"):Html.Raw("style='display:none'"))>
         <br/>

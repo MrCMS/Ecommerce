@@ -9,17 +9,17 @@ using System.Linq;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download
 {
-    public interface IDownloadProductService
+    public interface IDownloadProductVariantService
     {
         FilePathResult Download(ProductVariant productVariant, Entities.Orders.Order order, string type = "");
-        DownloadProductResult Validate(ref Entities.Orders.Order order, string oguid, ProductVariant productVariant, string type = "");
+        DownloadProductVariantResult Validate(ref Entities.Orders.Order order, string oguid, ProductVariant productVariant, string type = "");
     }
-    public class DownloadProductService : IDownloadProductService
+    public class DownloadProductVariantService : IDownloadProductVariantService
     {
         private readonly IOrderService _orderService;
-        private readonly IProductService _productService;
+        private readonly IProductVariantService _productService;
 
-        public DownloadProductService(IOrderService orderService, IProductService productService)
+        public DownloadProductVariantService(IOrderService orderService, IProductVariantService productService)
         {
             _orderService = orderService;
             _productService = productService;
@@ -27,21 +27,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download
 
         public FilePathResult Download(ProductVariant productVariant, Entities.Orders.Order order, string type = "")
         {
-            productVariant.Product.NumberOfDownloads++;
-            _productService.Update(productVariant.Product);
+            productVariant.NumberOfDownloads++;
+            _productService.Update(productVariant);
 
-            if (string.IsNullOrWhiteSpace(type) && productVariant.Product.DownloadFileUrl != null)
+            if (string.IsNullOrWhiteSpace(type) && productVariant.DownloadFileUrl != null)
             {
-                return new FilePathResult(productVariant.Product.DownloadFile.FileUrl,
-                    productVariant.Product.DownloadFile.ContentType) 
-                    { FileDownloadName = productVariant.Product.DownloadFile.FileName };
+                return new FilePathResult(productVariant.DownloadFile.FileUrl,
+                    productVariant.DownloadFile.ContentType) 
+                    { FileDownloadName = productVariant.DownloadFile.FileName };
             }
-            return new FilePathResult(productVariant.Product.DemoFile.FileUrl, 
-                productVariant.Product.DemoFile.ContentType) 
-                { FileDownloadName = productVariant.Product.DemoFile.FileName };
+            return new FilePathResult(productVariant.DemoFile.FileUrl, 
+                productVariant.DemoFile.ContentType) 
+                { FileDownloadName = productVariant.DemoFile.FileName };
         }
 
-        public DownloadProductResult Validate(ref Entities.Orders.Order order,string oguid, ProductVariant productVariant, string type = "")
+        public DownloadProductVariantResult Validate(ref Entities.Orders.Order order,string oguid, ProductVariant productVariant, string type = "")
         {
             var basicRules = MrCMSApplication.GetAll<IDownloadProductBasicValidationRule>().ToList();
             var rules = MrCMSApplication.GetAll<IDownloadProductValidationRule>().ToList();
@@ -65,9 +65,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download
         }
     }
 
-    public class DownloadProductResult : ContentResult
+    public class DownloadProductVariantResult : ContentResult
     {
-        public DownloadProductResult(string message)
+        public DownloadProductVariantResult(string message)
         {
             Content = message;
             ContentEncoding = Encoding.UTF8;

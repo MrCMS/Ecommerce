@@ -8,7 +8,6 @@ using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products.Download;
 using MrCMS.Website;
 using Ninject.MockingKernel;
@@ -18,7 +17,7 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
 {
     public class DownloadProductControllerTests
     {
-        private readonly IDownloadProductService _downloadProductService;
+        private readonly IDownloadProductVariantService _downloadProductService;
         private readonly DownloadProductController _downloadProductController;
 
         public DownloadProductControllerTests()
@@ -31,7 +30,7 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
                         .ToMethod(context => A.Fake<MediaSettings>())
                         .InSingletonScope();
             MrCMSApplication.OverrideKernel(mockingKernel);
-            _downloadProductService = A.Fake<IDownloadProductService>();
+            _downloadProductService = A.Fake<IDownloadProductVariantService>();
             _downloadProductController = new DownloadProductController(_downloadProductService);
         }
 
@@ -39,20 +38,19 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
         public void DownloadProductController_Download_ReturnsFilePathResultIfValidationIsOk()
         {
             var oguid = Guid.NewGuid().ToString();
-            var product = new Product() { NumberOfDownloads = 0, DownloadFileUrl = "dlurl", DemoFileUrl = "demourl" };
-            var productVariant = new ProductVariant() { Product = product };
+            var productVariant = new ProductVariant() { NumberOfDownloads = 0, DownloadFileUrl = "dlurl", DemoFileUrl = "demourl" };
             Order order = null;
 
             var downloadFile = new MediaFile() { FileName = "dl", ContentType = "text/plain", FileUrl = "dlurl" };
             var demoFile = new MediaFile() { FileName = "demo", ContentType = "text/plain", FileUrl = "demourl" };
 
-            A.CallTo(() => MrCMSApplication.Get<IFileService>().GetFileByUrl(product.DownloadFileUrl)).Returns(downloadFile);
-            A.CallTo(() => MrCMSApplication.Get<IFileService>().GetFileByUrl(product.DemoFileUrl)).Returns(demoFile);
+            A.CallTo(() => MrCMSApplication.Get<IFileService>().GetFileByUrl(productVariant.DownloadFileUrl)).Returns(downloadFile);
+            A.CallTo(() => MrCMSApplication.Get<IFileService>().GetFileByUrl(productVariant.DemoFileUrl)).Returns(demoFile);
 
             A.CallTo(() => _downloadProductService.Validate(ref order, oguid, productVariant, string.Empty)).Returns(null);
 
-            A.CallTo(() => _downloadProductService.Download(productVariant, order, string.Empty)).Returns(new FilePathResult(productVariant.Product.DownloadFile.FileUrl,
-                    productVariant.Product.DownloadFile.ContentType) { FileDownloadName = productVariant.Product.DownloadFile.FileName });
+            A.CallTo(() => _downloadProductService.Download(productVariant, order, string.Empty)).Returns(new FilePathResult(productVariant.DownloadFile.FileUrl,
+                    productVariant.DownloadFile.ContentType) { FileDownloadName = productVariant.DownloadFile.FileName });
 
             var result = _downloadProductController.Download(oguid, productVariant, String.Empty);
 
