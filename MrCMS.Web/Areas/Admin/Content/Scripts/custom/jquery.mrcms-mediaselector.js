@@ -9,7 +9,7 @@
                 if (that.is("input")) {
                     var currentImage = that.val();
                     var para = $('<p>');
-                    buttonDiv = $('<div>').appendTo(para);
+                    buttonDiv = $('<br/><div>').appendTo(para);
                     $('<button class="btn btn-success">Select media...</button>')
 					    .click(function () {
 					        $(this).mediaselector('show', settings.mediaSelectorUrl, function (element, result) {
