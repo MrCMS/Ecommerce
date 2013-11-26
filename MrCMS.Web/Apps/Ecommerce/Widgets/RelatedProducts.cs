@@ -18,8 +18,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
             {
                 var product = (Product) page;
                 model.Title = "Related Products";
-                if (product.Categories.Any())
-                    products.AddRange(product.Categories.First().Products.Where(x => x.Id != product.Id && x.Published).Take(4));
+                if (product.RelatedProducts.Any())
+                    products.AddRange(product.RelatedProducts.Take(4));
+                else
+                {
+                    if (product.Categories.Any())
+                        products.AddRange(product.Categories.First()
+                            .Products.Where(x => x.Id != product.Id && x.Published).Take(4));
+                }
+                
             }
             model.Products = products.Distinct().ToList();
             return model;
