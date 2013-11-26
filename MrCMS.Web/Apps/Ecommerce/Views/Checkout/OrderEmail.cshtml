@@ -1,9 +1,17 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 @using MrCMS.Helpers
 
-<p><strong>Your Email</strong></p>
+@if (Model.CanUsePayPalExpress && string.IsNullOrEmpty(Model.PayPalExpressToken) )
+{
+    <h4>Or Checkout with...</h4>
+    using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
+    {
+        <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" class="btn-paypal" />
+    }
+}
+<hr/>
+<h4>Your Email</h4>
 <p>@Model.OrderEmail</p>
-
 @if (MrCMS.Website.CurrentRequestData.CurrentUser == null)
 {
     <a class="btn btn-info" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Edit</a>

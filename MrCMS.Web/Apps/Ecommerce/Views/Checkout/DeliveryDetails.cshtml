@@ -1,29 +1,14 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 @using MrCMS.Helpers
-
-<p><strong>Delivery Details</strong></p>
-<p>
-@(Model.ShippingAddress.Name??String.Empty)
-</p>
-<p>
-@(Model.ShippingAddress.PhoneNumber??String.Empty)
-</p>
-<p>
-@(Model.ShippingAddress.Company??String.Empty)
-</p>
-<p>
-@(Model.ShippingAddress.Address1??String.Empty)
-</p>
-<p>
-@(Model.ShippingAddress.Address2??String.Empty)
-</p>
-<p>
-@(Model.ShippingAddress.City??String.Empty)
-</p>
-<p>
-@(Model.ShippingAddress.PostalCode??String.Empty)
-</p>
-<p>
-@(Model.ShippingAddress.Country!=null?Model.ShippingAddress.Country.Name:String.Empty)
-    </p>
+<h4>Delivery Details</h4>
+<ul class="media-list">
+    <li>@(Model.ShippingAddress.Name??String.Empty)</li>
+    <li>@(Model.ShippingAddress.PhoneNumber??String.Empty)</li>
+    <li>@(Model.ShippingAddress.Company??String.Empty)</li>
+    <li>@(Model.ShippingAddress.Address1??String.Empty)</li>
+    <li>@(Model.ShippingAddress.Address2??String.Empty)</li>
+    <li>@(Model.ShippingAddress.City??String.Empty)</li>
+    <li>@(Model.ShippingAddress.PostalCode??String.Empty)</li>
+    <li>@(Model.ShippingAddress.Country!=null?Model.ShippingAddress.Country.Name:String.Empty)</li>
+</ul>
 <a class="btn btn-info" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.SetDeliveryDetails>())">Edit</a>

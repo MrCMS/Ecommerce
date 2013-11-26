@@ -1,20 +1,35 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+﻿@using System.Drawing
+@model MrCMS.Web.Apps.Ecommerce.Pages.Product
 <div class="span3">
     <div style="overflow: hidden;">
         @if (Model.Images.Any())
         {
-            <img src="@(Model.Images.First().FileUrl)" class="img-rounded pull-left span12" alt="@Model.Name" />
+            <a href="/@Model.LiveUrlSegment">@RenderImage(Model.DisplayImageUrl, new Size(240,140), null, null, new { @class = "img-rounded span12" })</a>
         }
     </div>
     <div class="clearfix"></div>
     <h4 class="product-title"><a href="/@Model.LiveUrlSegment">@Model.Name</a></h4>
-    <div style="height: 130px;">@(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)</div>
-    <h1 class="product-price">
+    <div style="min-height: 130px;">@(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)</div>
+    <div class="product-price">
         @Html.DisplayFor(product => product.DisplayPrice)
-    </h1>
+    </div>
     @if (Model.DisplayPreviousPrice.HasValue && Model.DisplayPreviousPrice > Model.DisplayPrice)
     {
-        <span>previous price @Html.DisplayFor(product => product.DisplayPreviousPrice)
-        </span>
+        <span>@Model.PreviousPriceText @Html.DisplayFor(product => product.DisplayPreviousPrice)</span>
     }
+    else
+    {
+        <span>&nbsp;</span>
+    }
+    @if (!Model.IsMultiVariant && Model.Variants.FirstOrDefault().InStock)
+            {
+                <div class="row-fluid">
+                    @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                    {
+                        @Html.Hidden("Id", Model.Variants.FirstOrDefault().Id)
+                        @Html.Hidden("quantity", 1)
+                        <button class="btn btn-info span12" style="margin-left: 0;">Add to basket</button>
+                    }
+                </div>
+            }
 </div>

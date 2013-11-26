@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.FeaturedCategoriesViewModel
+﻿@using System.Drawing
+@model MrCMS.Web.Apps.Ecommerce.Widgets.FeaturedCategoriesViewModel
 @if (Model != null)
 {
     <hr />
@@ -9,15 +10,15 @@
     <div class="row-fluid">
     @foreach (var item in Model.Categories)
     {
-            <div class="span3">
-                <div style="height:130px; overflow:hidden;" >
+            <div class="span3 text-center">
+                <div style="overflow:hidden;height: 150px;" >
                 @if(item.FeatureImage!=null)
                 {
-                    <img src="@(item.FeatureImage)" class="img-rounded pull-left span12" alt="@item.Name"/>
+                    <a href="/@item.LiveUrlSegment">@RenderImage(item.FeatureImage, new Size{Width = 150, Height = 150})</a>
                 }
                 </div>
                     <div class="clearfix"></div>
-                <h4 class="category-title"><a href="/@item.LiveUrlSegment">@item.Name</a></h4>
+                <h4 class="category-title"><a href="/@item.LiveUrlSegment" title="@item.Name">@item.Name</a></h4>
            </div>
     }
     </div>
