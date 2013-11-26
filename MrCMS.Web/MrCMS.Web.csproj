@@ -880,7 +880,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\async-paging.js" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\download-product.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\related-products.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\orders-by-shipping-type.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\dashboard.js" />
