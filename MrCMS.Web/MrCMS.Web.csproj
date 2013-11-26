@@ -689,9 +689,9 @@
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointResponseLogger.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointResponseLogger.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BackInStockNotificationService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Products\Download\DownloadProductService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Products\Download\Rules\IDownloadProductValidationRules.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Products\Download\Rules\DownloadProductValidationRules.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\Download\DownloadProductVariantService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\Download\Rules\IDownloadProductVariantValidationRules.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\Download\Rules\DownloadProductVariantValidationRules.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IBackInStockNotificationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductOptionManagementService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
@@ -1542,7 +1542,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Images.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\SoldOut.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\ShippingOptions.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\DownloadProductOptions.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\DownloadOptions.cshtml" />
     <None Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.js~" />
     <None Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.min.js~" />
     <Content Include="Areas\Admin\Content\Styles\mrcms-frontendediting.css" />
@@ -2270,7 +2270,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Category.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\CategoryContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Product.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\DefaultEdit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\CategoriesOnlyNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\FeaturedCategories.cshtml" />
@@ -2622,6 +2621,7 @@
     <Folder Include="Apps\Core\Entities\" />
     <Folder Include="Apps\Core\Helpers\" />
     <Folder Include="Apps\Core\Settings\" />
+    <Folder Include="Apps\Ecommerce\Areas\Admin\Views\Shared\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Controllers\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Views\Widgets\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Views\Widget\" />

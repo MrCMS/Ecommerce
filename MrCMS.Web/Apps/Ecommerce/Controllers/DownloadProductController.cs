@@ -8,9 +8,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class DownloadProductController : MrCMSAppUIController<EcommerceApp>
     {
-        private readonly IDownloadProductService _downloadProductService;
+        private readonly IDownloadProductVariantService _downloadProductService;
 
-        public DownloadProductController(IDownloadProductService downloadProductService)
+        public DownloadProductController(IDownloadProductVariantService downloadProductService)
         {
             _downloadProductService = downloadProductService;
         }

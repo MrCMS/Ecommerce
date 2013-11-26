@@ -16,12 +16,14 @@
                 <li><a href="#images" data-toggle="tab">Featured Image</a></li>
                 <li><a href="#sold-out" data-toggle="tab">Sold Out Options</a></li>
                 <li><a href="#shipping-options" data-toggle="tab">Shipping Options</a></li>
+                  <li><a href="#download-options" data-toggle="tab">Download Options</a></li>
             </ul>
             <div class="tab-content">
                 @{ Html.RenderPartial("AddDetails", Model); }
                 @{ Html.RenderPartial("Images", Model); }
                 @{ Html.RenderPartial("SoldOut", Model); }
                 @{ Html.RenderPartial("ShippingOptions", Model); }
+                @{ Html.RenderPartial("DownloadOptions", Model); }
             </div>
         </div>
     </fieldset>

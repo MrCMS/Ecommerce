@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
@@ -180,35 +179,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         }
 
         public virtual IList<Product> RelatedProducts { get; set; }
-
-        //Download Options
-        [DisplayName("Downloadable?")]
-        public virtual bool IsDownloadable { get; set; }
-
-        [DisplayName("Download File")]
-        public virtual string DownloadFileUrl { get; set; }
-
-        [DisplayName("Demo File")]
-        public virtual string DemoFileUrl { get; set; }
-
-        [DisplayName("Download File")]
-        public virtual MediaFile DownloadFile
-        {
-            get { return MrCMSApplication.Get<IFileService>().GetFileByUrl(DownloadFileUrl); }
-        }
-        [DisplayName("Demo File")]
-        public virtual MediaFile DemoFile
-        {
-            get { return MrCMSApplication.Get<IFileService>().GetFileByUrl(DemoFileUrl); }
-        }
-
-        [DisplayName("Allowed number of days for file download")]
-        public virtual int AllowedNumberOfDaysForDownload { get; set; }
-
-        [DisplayName("Allowed number of downloads")]
-        public virtual int AllowedNumberOfDownloads { get; set; }
-
-        [DisplayName("Number of downloads")]
-        public virtual int NumberOfDownloads { get; set; }
     }
 }
