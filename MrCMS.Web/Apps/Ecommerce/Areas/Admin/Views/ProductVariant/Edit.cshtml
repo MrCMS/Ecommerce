@@ -1,7 +1,7 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @using MrCMS.Helpers
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
-@using (Html.BeginForm("Edit", "ProductVariant", FormMethod.Post))
+@using (Html.BeginForm("Edit", "ProductVariant", FormMethod.Post,new {id="pv"}))
 {
     <fieldset>
         <legend>
@@ -11,18 +11,20 @@
             </span>
         </legend>
 
-           <div id="tabs">
+            <div id="tabs">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
                 <li><a href="#images" data-toggle="tab">Featured Image</a></li>
                 <li><a href="#sold-out" data-toggle="tab">Sold Out Options</a></li>
                 <li><a href="#shipping-options" data-toggle="tab">Shipping Options</a></li>
+                  <li><a href="#download-options" data-toggle="tab">Download Options</a></li>
             </ul>
             <div class="tab-content">
-                @{ Html.RenderPartial("EditDetails", Model); }
+                @{ Html.RenderPartial("AddDetails", Model); }
                 @{ Html.RenderPartial("Images", Model); }
                 @{ Html.RenderPartial("SoldOut", Model); }
                 @{ Html.RenderPartial("ShippingOptions", Model); }
+                @{ Html.RenderPartial("DownloadOptions", Model); }
             </div>
         </div>
     </fieldset>

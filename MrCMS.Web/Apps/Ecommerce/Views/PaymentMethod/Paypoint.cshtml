@@ -10,77 +10,75 @@
 }
 @using (Html.BeginForm("Paypoint", "PaymentMethod", FormMethod.Post, new { @class = "form-horizontal" }))
 {
-    <div class="border-grey margin-bottom-20" id="select-method">
-        <div class="sub-header grey-background">
-            Card Details
+    <div id="select-method">
+        <h5>Card Details</h5>
+        <div class="control-group">
+            <label class="control-label" for="CardType">Card Type <span class="red">*</span> :</label>
+            <div class="controls">
+                @Html.DropDownListFor(model => model.CardType, cardTypes)
+                @Html.ValidationMessageFor(model => model.CardType)
+            </div>
         </div>
-        <div class="padding-20">
-
-            <div class="control-group">
-                <label class="control-label" for="CardType">Card Type*</label>
-                <div class="controls">
-                    @Html.DropDownListFor(model => model.CardType, cardTypes)
-                    @Html.ValidationMessageFor(model => model.CardType)
+        <div class="control-group">
+            <label class="control-label" for="CardNumber">Card Number <span class="red">*</span> :</label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CardNumber)
+                @Html.ValidationMessageFor(model => model.CardNumber)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="NameOnCard">Name On Card <span class="red">*</span> :</label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.NameOnCard)
+                @Html.ValidationMessageFor(model => model.NameOnCard)
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="CardVerificationCode">Card Verification <span class="red">*</span> :</label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CardVerificationCode)
+                <span><img src="/Apps/Ecommerce/Content/Images/crv.gif" alt="CVC"/></span>
+                @Html.ValidationMessageFor(model => model.CardVerificationCode)
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="control-label">Valid From :</div>
+            <div class="controls">
+                <div class="pull-left margin-right-5">
+                    @Html.DropDownListFor(model => model.StartMonth, startMonths, new { @class="input-small"})
+                </div>
+                <div class="pull-left">
+                    @Html.DropDownListFor(model => model.StartYear, startYears, new { @class="input-small"})
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label" for="CardNumber">Card Number*</label>
-                <div class="controls">
-                    @Html.TextBoxFor(model => model.CardNumber, new { @class = "input-xlarge" })
-                    @Html.ValidationMessageFor(model => model.CardNumber)
+        </div>
+        <div class="control-group">
+            <div class="control-label">Expires On <span class="red">*</span> :</div>
+            <div class="controls">
+                <div class="pull-left margin-right-5">
+                    @Html.DropDownListFor(model => model.EndMonth, expiryMonths, new { @class="input-small"})
+                    @Html.ValidationMessageFor(model => model.EndMonth)
+                </div>
+                <div class="pull-left">
+                    @Html.DropDownListFor(model => model.EndYear, expiryYears, new { @class="input-small"})
+                    @Html.ValidationMessageFor(model => model.EndYear)
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label" for="NameOnCard">Name On Card*</label>
-                <div class="controls">
-                    @Html.TextBoxFor(model => model.NameOnCard, new { @class = "input-xlarge" })
-                    @Html.ValidationMessageFor(model => model.NameOnCard)
-                </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="NameOnCard">Issue Number :</label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.CardIssueNumber)
+                <span class="green">(Maestro/Solo only)</span>
             </div>
-            <div class="control-group">
-                <label class="control-label" for="CardVerificationCode">Card Verification (CV2)*</label>
-                <div class="controls">
-                    @Html.TextBoxFor(model => model.CardVerificationCode, new { @class = "input-small" })
-                    @Html.ValidationMessageFor(model => model.CardVerificationCode)
-                </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button class="btn btn-info" id="continue" name="continue">Confirm Order</button>
             </div>
-            <div class="control-group">
-                <div class="control-label">Valid From</div>
-                <div class="controls">
-                    <div class="pull-left">
-                        @Html.DropDownListFor(model => model.StartMonth, startMonths)
-                    </div>
-                    <div class="pull-left">
-                        @Html.DropDownListFor(model => model.StartYear, startYears)
-                    </div>
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="control-label">Expires On*</div>
-                <div class="controls">
-                    <div class="pull-left">
-                        @Html.DropDownListFor(model => model.EndMonth, expiryMonths)
-                        @Html.ValidationMessageFor(model => model.EndMonth)
-                    </div>
-                    <div class="pull-left">
-                        @Html.DropDownListFor(model => model.EndYear, expiryYears)
-                        @Html.ValidationMessageFor(model => model.EndYear)
-                    </div>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label" for="NameOnCard">Issue Number (Maestro/Solo only)</label>
-                <div class="controls">
-                    @Html.TextBoxFor(model => model.CardIssueNumber, new { @class = "input-medium" })
-                </div>
-            </div>
-            <div class="control-group">
-                <div class="controls">
-                    <label>
-                    </label>
-                    <button class="btn btn-info"  id="continue" name="continue">Place order</button>
-                </div>
-            </div>
+        </div>
+        <div class="alert alert-info">
+            <strong>Information:</strong> You may be taken to your card issuer’s website for card validation. You will be returned back to this site once the process is complete.
         </div>
     </div>
 }
@@ -96,6 +94,11 @@
     </ul>
 }
 <style>
-    .input-validation-error { border: 1px solid red!important;}
-    .field-validation-error span { color: red;}
+    .input-validation-error {
+        border: 1px solid red!important;
+    }
+
+    .field-validation-error span {
+        color: red;
+    }
 </style>

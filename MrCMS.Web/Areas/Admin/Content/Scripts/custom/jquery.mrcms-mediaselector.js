@@ -8,9 +8,9 @@
 				    buttonDiv = null;
                 if (that.is("input")) {
                     var currentImage = that.val();
-                    var para = $('<p>');
-                    buttonDiv = $('<br/><div>').appendTo(para);
-                    $('<button class="btn btn-success">Select media...</button>')
+                    var para = $('<p style="margin-top:10px">');
+                    buttonDiv = $('<div>').appendTo(para);
+                    $('<button class="btn btn-success" style="width:150px">Select media...</button>')
 					    .click(function () {
 					        $(this).mediaselector('show', settings.mediaSelectorUrl, function (element, result) {
 					            that.val(result);
@@ -20,7 +20,7 @@
 					        });
 					        return false;
 					    }).appendTo(buttonDiv);
-                    deleteSpan = $('<button class="btn btn-danger">Remove media...</button>')
+                    deleteSpan = $('<button class="btn btn-danger" style="width:150px">Remove media...</button>')
 					    .click(function () {
 					        $(this).mediaselector('show', settings.removeMediaUrl, function (element, result) {
 					            that.val('');
@@ -67,7 +67,7 @@
             iconImage: '',
             iconClass: 'media-selector-icon',
             noImageSelectedImage: '/Areas/Admin/Content/Images/no-media-selected.jpg',
-            previewStyle: 'max-height: 200px; max-width:200px;',
+            previewStyle: 'max-height: 100px; max-width:100px;',
             mediaSelectorUrl: '/Admin/MediaCategory/MediaSelector',
             removeMediaUrl: '/Admin/MediaCategory/RemoveMedia',
             miniUploaderUrl: '/Admin/MediaCategory/MiniUploader/',

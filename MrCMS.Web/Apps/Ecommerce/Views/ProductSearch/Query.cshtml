@@ -13,37 +13,42 @@
 <div id="product-query-container">
     @if (categories.Any())
     {
-        <div class="product-filter-box-title">
-            Filter by Category
-        </div>
-        <div class="row-fluid">
-            @Html.HiddenFor(query => query.CategoryId)
-            <ul class="nav nav-tabs nav-stacked ">
-                @{ var depth = 0; }
-                @if (categories.Hierarchy.Any())
-                {
-                    <li>
-                        <a href="@(UniquePageHelper.GetUrl<ProductSearch>())">Products<i class="icon-chevron-right pull-right"></i></a>
-                    </li>
-                    depth++;
-                }
-                @foreach (var parent in categories.Hierarchy)
-                {
-                    <li>
-                        <a href="/@parent.LiveUrlSegment">@string.Format("{0} {1}", new string('-', depth), parent.Name) <i class="icon-chevron-right pull-right"></i></a>
-                    </li>
-                    depth++;
-                }
-                @foreach (var item in categories.Children)
-                {
-                    <li>
-                        <a href="/@item.LiveUrlSegment">@string.Format("{0} {1}", new string('-', depth), item.Name) <i class="icon-chevron-right pull-right"></i></a>
-                    </li>
-                }
-            </ul>
+        <div class="h1">Refine Results</div>
+        <div class="margin-bottom-10">
+            <div class="product-filter-box-title">
+                Filter by Category
+            </div>
+            <div class="row-fluid">
+                @Html.HiddenFor(query => query.CategoryId)
+                <ul class="nav nav-tabs nav-stacked">
+                    @{ var depth = 0; }
+                    @if (categories.Hierarchy.Any())
+                    {
+                        <li>
+                            <a href="@(UniquePageHelper.GetUrl<ProductSearch>())">Products<i class="icon-chevron-right pull-right"></i></a>
+                        </li>
+                        depth++;
+                    }
+                    @foreach (var parent in categories.Hierarchy)
+                    {
+                        <li>
+                            <a href="/@parent.LiveUrlSegment">@string.Format("{0} {1}", new string('-', depth), parent.Name) <i class="icon-chevron-right pull-right"></i></a>
+                        </li>
+                        depth++;
+                    }
+                    @foreach (var item in categories.Children)
+                    {
+                        <li>
+                            <a href="/@item.LiveUrlSegment">@string.Format("{0} {1}", new string('-', depth), item.Name) <i class="icon-chevron-right pull-right"></i></a>
+                        </li>
+                    }
+                </ul>
+            </div>
         </div>
     }
+
     @{ Html.RenderPartial("SearchOptions", new ViewDataDictionary(options) { { "query", Model } }); }
+
     <div class="product-filter-box-title">
         Filter by Price
     </div>
@@ -57,6 +62,8 @@
             <br />
         </div>
     </div>
+
     @{ Html.RenderPartial("SearchSpecifications", new ViewDataDictionary(specifications) { { "query", Model } }); }
+
     @{ Html.RenderPartial("SearchBrands", new ViewDataDictionary(brands) { { "query", Model } }); }
 </div>
