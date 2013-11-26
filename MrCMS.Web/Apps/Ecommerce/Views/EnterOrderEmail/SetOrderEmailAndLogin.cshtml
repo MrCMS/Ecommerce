@@ -3,32 +3,41 @@
 @{
     var errorMessages = TempData.ErrorMessages();
 }
-@if (errorMessages.Any())
-{
-    <ul>
-        @foreach (var message in errorMessages)
-        {
-            <li>@message</li>
-        }
-    </ul>
-}
 @using (Html.BeginForm("SetOrderEmailAndLogin", "EnterOrderEmail", FormMethod.Post))
 {
     <h4>Email address</h4>
-    @Html.LabelFor(model => model.OrderEmail, "Enter your Email address *:")
-    @Html.TextBoxFor(x => x.OrderEmail, new { @class = "input-xxlarge" })
-    @Html.ValidationMessageFor(x => x.OrderEmail)
-
-    <span>Do you have a password?</span>
-    <label class="radio">
-        @Html.RadioButtonFor(model => model.HavePassword, false)
-    </label>
-    <label class="radio">
-        @Html.RadioButtonFor(model => model.HavePassword, true)
-    </label>
-    <div id="password-box" style="display: none">
-         @Html.PasswordFor(model => model.Password, new { placeholder="Enter your password here"})
+    if (errorMessages.Any())
+    {
+        <div class="alert alert-error">
+            <ul>
+                @foreach (var message in errorMessages)
+                {
+                    <li>@message</li>
+                }
+            </ul>
+        </div>
+    }
+    <label for="OrderEmail">Enter your Email address <span class="red">*</span> :</label>
+    <div class="row-fluid">
+        @Html.TextBoxFor(x => x.OrderEmail, new { @class = "span4", placeholder = "Email address" })
+        @Html.ValidationMessageFor(x => x.OrderEmail)
+        <div class="row-fluid">
+            <p class="margin-bottom-5">Do you have a password?</p>
+        </div>
+        <div class="form-inline margin-bottom-10">
+            <label class="radio padding-right-10">
+                @Html.RadioButtonFor(model => model.HavePassword, true) Yes
+            </label>
+            <label class="radio">
+                @Html.RadioButtonFor(model => model.HavePassword, false) No
+            </label>
+        </div>
+        <div id="password-box" style="display: none">
+            @Html.PasswordFor(model => model.Password, new { placeholder = "Enter your password here", @class = "span4" })
+        </div>
     </div>
-    <input class="btn btn-info" type="submit" id="continue" name="continue" value="Continue" />
+    <div class="row-fluid">
+        <input class="btn btn-info span4" type="submit" id="continue" name="continue" value="Continue" />
+    </div>
 }
 @{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/enter-order-email.js"); }
