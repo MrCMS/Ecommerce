@@ -139,6 +139,7 @@
     <Compile Include="Admin\Controllers\RegionControllerTests.cs" />
     <Compile Include="Admin\Controllers\TaxRateControllerTests.cs" />
     <Compile Include="Controllers\CategoryContainerControllerTests.cs" />
+    <Compile Include="Controllers\DownloadProductControllerTests.cs" />
     <Compile Include="Controllers\ProductSearchControllerTests.cs" />
     <Compile Include="EcommerceAppTests.cs" />
     <Compile Include="Entities\Discounts\DiscountTests.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="Services\CategoryServiceTests.cs" />
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateServiceTests.cs" />
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateValidationServiceTests.cs" />
+    <Compile Include="Services\DownloadProductServiceTests.cs" />
     <Compile Include="Services\ImportExport\ExportProductsManagerTests.cs" />
     <Compile Include="Services\OrderShippingServiceTests.cs" />
     <Compile Include="Services\OrderRefundServiceTests.cs" />

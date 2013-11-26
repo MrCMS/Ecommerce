@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System.Linq;
 using MrCMS.Helpers;
@@ -46,10 +42,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual string GetSpecification(string name)
         {
-            var spec = SpecificationValues.FirstOrDefault(value => value.ProductSpecificationAttributeOption.ProductSpecificationAttribute.Name == name);
+            var spec =
+                SpecificationValues.FirstOrDefault(
+                    value => value.ProductSpecificationAttributeOption.ProductSpecificationAttribute.Name == name);
             return spec == null ? null : spec.Value;
         }
-        
+
         public virtual IList<Category> Categories { get; set; }
 
         protected override void CustomInitialization(IDocumentService service, ISession session)
@@ -72,22 +70,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             if (mediaCategory == null)
             {
                 mediaCategory = new MediaCategory
-                                    {
-                                        Name = "Product Galleries",
-                                        UrlSegment = "product-galleries",
-                                        IsGallery = true,
-                                        HideInAdminNav = true
-                                    };
+                    {
+                        Name = "Product Galleries",
+                        UrlSegment = "product-galleries",
+                        IsGallery = true,
+                        HideInAdminNav = true
+                    };
                 service.AddDocument(mediaCategory);
             }
             var productGallery = new MediaCategory
-                                     {
-                                         Name = Name,
-                                         UrlSegment = "product-galleries/" + UrlSegment,
-                                         IsGallery = true,
-                                         Parent = mediaCategory,
-                                         HideInAdminNav = true
-                                     };
+                {
+                    Name = Name,
+                    UrlSegment = "product-galleries/" + UrlSegment,
+                    IsGallery = true,
+                    Parent = mediaCategory,
+                    HideInAdminNav = true
+                };
             Gallery = productGallery;
 
             service.AddDocument(productGallery);
@@ -167,10 +165,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual string PreviousPriceText
         {
-            get
-            {
-                return MrCMSApplication.Get<EcommerceSettings>().PreviousPriceText;
-            }
+            get { return MrCMSApplication.Get<EcommerceSettings>().PreviousPriceText; }
         }
 
         public virtual IEnumerable<ProductVariant> VariantsByPrice
