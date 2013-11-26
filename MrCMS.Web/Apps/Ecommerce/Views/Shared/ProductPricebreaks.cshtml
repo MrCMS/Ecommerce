@@ -10,18 +10,22 @@
         <div class="product-pricebreaks-title">
             PRICE BREAKS - The more you buy, the more you save.
         </div>
-        <table id="product-pricebreaks-table" class="table table-bordered table-condensed">
-            <tr>
-                <th>Quantity</th>
-                <th>Price</th>
-            </tr>
-            @foreach (var item in selectedVariant.PriceBreaks)
-            {
+        <table id="product-pricebreaks-table" class="table table-condensed table-striped table-bordered">
+            <thead>
                 <tr>
-                    <td>@item.Quantity</td>
-                    <td>@item.Price.ToCurrencyFormat()</td>
-                </tr> 
-            }
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in selectedVariant.PriceBreaks)
+                {
+                    <tr>
+                        <td>@item.Quantity&nbsp;+</td>
+                        <td>@item.Price.ToCurrencyFormat()</td>
+                    </tr> 
+                }
+            </tbody>
         </table>
     }
 </div>

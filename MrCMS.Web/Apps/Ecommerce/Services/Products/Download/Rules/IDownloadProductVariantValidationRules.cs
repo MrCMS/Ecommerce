@@ -5,10 +5,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download.Rules
 {
     public interface IDownloadProductValidationRule
     {
-        DownloadProductResult GetErrors(Order order, ProductVariant productVariant, string type = "");
+        DownloadProductVariantResult GetErrors(Order order, ProductVariant productVariant, string type = "");
     }
     public interface IDownloadProductBasicValidationRule
     {
-        DownloadProductResult GetErrors(string oguid, ProductVariant productVariant, string type = "");
+        DownloadProductVariantResult GetErrors(string oguid, ProductVariant productVariant, string type = "");
     }
 }

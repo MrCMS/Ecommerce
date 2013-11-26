@@ -9,15 +9,24 @@
         @(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)
     </div>
     <div class="span3">
-        <div class="pull-right">
-            <h1 class="product-price">
+        <div class="text-right">
+            <div class="product-price">
                 @Html.DisplayFor(product => product.DisplayPrice)
-            </h1>
+            </div>
             @if (Model.ShowPreviousPrice)
             {
-                <span>@Model.PreviousPriceText <span style="text-decoration: line-through">@Model.DisplayPreviousPrice </span></span>
+                <span>@Model.PreviousPriceText <span style="text-decoration: line-through">@Html.DisplayFor(product => product.DisplayPreviousPrice)</span></span>
             }   
-            <a href="/@Model.LiveUrlSegment" class="btn btn-info span12">View</a>
+            <a href="/@Model.LiveUrlSegment" class="btn btn-more margin-bottom-5 span12">View</a>
+            @if (!Model.IsMultiVariant && Model.Variants.FirstOrDefault().InStock)
+            {
+                    using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                    {
+                        @Html.Hidden("Id", Model.Variants.FirstOrDefault().Id)
+                        @Html.Hidden("quantity", 1)
+                        <button class="btn btn-info span12">Add to basket</button>
+                    }
+            }
         </div>
     </div>
 }
