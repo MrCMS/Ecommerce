@@ -12,7 +12,19 @@
             {% } %}</td>
             <td class="name">
                 <a href="{%=file.url%}" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
-        {% if (file.thumbnail_url) { %}
+            {% if (file.thumbnail_url) { %}
+                <input type="button" class="seo-attributes btn btn-mini" value="Set SEO attributes" />
+                <div style="display:none" class="seo-attributes-holder">
+                    <div data-action="{%=file.seo_url%}" class="seo-update-form">
+                        <label for="title">Title</label>
+                        <input name="title" type="text" value="{%=file.title%}" />
+                        <label for="description">Description</label>
+                        <textarea name="description" >{%=file.description%}</textarea>
+                        <br/>
+                        <input type="button" class="btn btn-primary btn-seo-update" value="Update" />
+                    </div>
+                    <div class="seo-update-message"></div>
+                <div>
         {% } %}
             </td>
             <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
