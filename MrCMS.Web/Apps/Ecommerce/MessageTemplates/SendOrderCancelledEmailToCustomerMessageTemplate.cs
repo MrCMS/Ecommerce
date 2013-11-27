@@ -10,7 +10,6 @@ using MrCMS.Settings;
 
 namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
 {
-    [FriendlyClassName("Send Order Cancelled Email To Customer Message Template")]
     public class SendOrderCancelledEmailToCustomerMessageTemplate : MessageTemplate, IMessageTemplate<Order>
     {
         public override MessageTemplate GetInitialTemplate(ISession session)

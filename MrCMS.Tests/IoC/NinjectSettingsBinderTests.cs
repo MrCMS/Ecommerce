@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FluentAssertions;
-using MrCMS.Entities.Multisite;
+﻿using FluentAssertions;
 using MrCMS.Settings;
 using Xunit;
 using MrCMS.Helpers;
@@ -15,7 +10,7 @@ namespace MrCMS.Tests.IoC
         [Fact]
         public void NinjectSettingsBinder_GetMethodExt_ReturnsGenericGetSiteSettingsMethod()
         {
-            var methodInfo = typeof(ConfigurationProvider).GetMethodExt("GetSiteSettings", typeof(Site));
+            var methodInfo = typeof(ConfigurationProvider).GetMethodExt("GetSiteSettings");
 
             methodInfo.Should().NotBeNull();
         }

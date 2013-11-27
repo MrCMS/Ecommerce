@@ -57,7 +57,13 @@ namespace MrCMS.Website
 
         public static CultureInfo CultureInfo
         {
-            get { return SiteSettings != null ? SiteSettings.CultureInfo : CultureInfo.CurrentCulture; }
+            get
+            {
+                return SiteSettings != null
+                           ? CurrentContext.Items["current.cultureinfo"] as CultureInfo ??
+                             (CurrentContext.Items["current.cultureinfo"] = SiteSettings.CultureInfo) as CultureInfo
+                           : CultureInfo.CurrentCulture;
+            }
         }
 
         public static TimeZoneInfo TimeZoneInfo
@@ -125,12 +131,13 @@ namespace MrCMS.Website
                     return UserGuidOverride.Value;
                 if (CurrentUser != null) return CurrentUser.Guid;
                 var o = CurrentContext.Request.Cookies[UserSessionId] != null ? CurrentContext.Request.Cookies[UserSessionId].Value : null;
-                if (o == null)
+                Guid result;
+                if (o == null || !Guid.TryParse(o, out result))
                 {
-                    o = Guid.NewGuid().ToString();
-                    AddCookieToResponse(UserSessionId, o, Now.AddMonths(3));
+                    result = Guid.NewGuid();
+                    AddCookieToResponse(UserSessionId, result.ToString(), Now.AddMonths(3));
                 }
-                return Guid.Parse(o);
+                return result;
             }
             set { UserGuidOverride = value; }
         }

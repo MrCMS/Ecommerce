@@ -63,6 +63,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentNHibernate.1.3.0.733\lib\FluentNHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="HibernatingRhinos.Profiler.Appender">
+      <HintPath>..\packages\NHibernateProfiler.2.0.2186.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -129,8 +136,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MySql.Data.6.6.4\lib\net40\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -156,7 +164,7 @@
       <HintPath>..\packages\PayPalCoreSDK.1.4.1\lib\net40\PayPalCoreSDK.dll</HintPath>
     </Reference>
     <Reference Include="PayPalMerchantSDK">
-      <HintPath>..\packages\PayPalMerchantSDK.2.6.106\lib\PayPalMerchantSDK.dll</HintPath>
+      <HintPath>..\packages\PayPalMerchantSDK.2.7.109\lib\PayPalMerchantSDK.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp">
       <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\PdfSharp.dll</HintPath>
@@ -173,7 +181,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\System.Data.SQLite.1.0.82.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
@@ -213,8 +220,8 @@
     <Compile Include="Apps\Amazon\Controllers\AmazonSyncController.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonLogEntryOverride.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonOrderOverride.cs" />
-    <Compile Include="Apps\Amazon\DbConfiguration\AmazonTableNameConvention.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonOrderSyncDataOverride.cs" />
+    <Compile Include="Apps\Amazon\DbConfiguration\AmazonTableNameConvention.cs" />
     <Compile Include="Apps\Amazon\Entities\Analytics\AmazonApiUsage.cs" />
     <Compile Include="Apps\Amazon\Entities\Listings\AmazonListing.cs" />
     <Compile Include="Apps\Amazon\Entities\Listings\AmazonListingGroup.cs" />
@@ -244,18 +251,18 @@
     <Compile Include="Apps\Amazon\Models\AmazonPaymentMethod.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonProgressMessageModel.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonProgressModel.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonServiceStatus.cs" />
+    <Compile Include="Apps\Amazon\Models\AmazonSyncModel.cs" />
     <Compile Include="Apps\Amazon\Models\SyncAmazonOrderOperation.cs" />
     <Compile Include="Apps\Amazon\Models\SyncAmazonOrderStatus.cs" />
-    <Compile Include="Apps\Amazon\Models\AmazonSyncModel.cs" />
-    <Compile Include="Apps\Amazon\Models\AmazonServiceStatus.cs" />
     <Compile Include="Apps\Amazon\Services\Analytics\AmazonAnalyticsService.cs" />
     <Compile Include="Apps\Amazon\Services\Analytics\IAmazonAnalyticsService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\AmazonApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonFeedsApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonGenerateFeedService.cs" />
+    <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonRequestService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\IAmazonFeedsApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Feeds\IAmazonGenerateFeedService.cs" />
-    <Compile Include="Apps\Amazon\Services\Api\Feeds\AmazonRequestService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\IAmazonApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Orders\AmazonOrdersApiService.cs" />
     <Compile Include="Apps\Amazon\Services\Api\Orders\IAmazonOrdersApiService.cs" />
@@ -280,26 +287,26 @@
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderEventService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSearchService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSyncDataService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSyncService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Events\IAmazonOrderEvent.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Events\IOnAmazonOrderPlaced.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderEventService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderSearchService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderService.cs" />
-    <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSyncService.cs" />
-    <Compile Include="Apps\Amazon\Services\Orders\AmazonOrderSyncDataService.cs" />
-    <Compile Include="Apps\Amazon\Services\Orders\Sync\AmazonOrderSyncManager.cs" />
-    <Compile Include="Apps\Amazon\Services\Orders\Sync\SetTaxDetails.cs" />
-    <Compile Include="Apps\Amazon\Services\Orders\Sync\SetTaxes.cs" />
-    <Compile Include="Apps\Amazon\Services\Orders\Sync\ScheduleAmazonOrderSync.cs" />
-    <Compile Include="Apps\Amazon\Services\Orders\Sync\GetOrderItems.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderSyncDataService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\AmazonOrderSyncManager.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\GetOrderItems.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IAmazonOrderSyncManager.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IImportAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\ImportAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IPerformAmazonUpdates.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IShipAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IValidateAmazonOrderService.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\ScheduleAmazonOrderSync.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\SetShippingAddress.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\SetTaxDetails.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\SetTaxes.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\ShipAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\UpdateAmazonInfo.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\UpdateAmazonOrder.cs" />
@@ -307,8 +314,8 @@
     <Compile Include="Apps\Amazon\Settings\AmazonAppSettings.cs" />
     <Compile Include="Apps\Amazon\Settings\AmazonSellerSettings.cs" />
     <Compile Include="Apps\Amazon\Settings\AmazonSyncSettings.cs" />
-    <Compile Include="Apps\Amazon\Tasks\SyncAmazonOrderItems.cs" />
     <Compile Include="Apps\Amazon\Tasks\DeleteAmazonFiles.cs" />
+    <Compile Include="Apps\Amazon\Tasks\SyncAmazonOrderItems.cs" />
     <Compile Include="Apps\Amazon\Tasks\SyncAmazonOrders.cs" />
     <Compile Include="Apps\Articles\Areas\Admin\Controllers\ArticleController.cs" />
     <Compile Include="Apps\Articles\Areas\Admin\Controllers\AuthorInfoController.cs" />
@@ -330,8 +337,10 @@
     <Compile Include="Apps\Core\DbConfiguration\PlainTextWidgetOveride.cs" />
     <Compile Include="Apps\Core\DbConfiguration\TextWidgetOveride.cs" />
     <Compile Include="Apps\Core\MessageTemplates\ResetPasswordMessageTemplate.cs" />
+    <Compile Include="Apps\Core\MessageTemplates\TokenProviders\UserTokenProvider.cs" />
     <Compile Include="Apps\Core\Metadata\ForgottenPasswordPageMetaData.cs" />
     <Compile Include="Apps\Core\Metadata\LoginPageMetaData.cs" />
+    <Compile Include="Apps\Core\Metadata\RegisterPageMedatData.cs" />
     <Compile Include="Apps\Core\Metadata\RegisterPageMetaData.cs" />
     <Compile Include="Apps\Core\Metadata\ResetPasswordPageMetaData.cs" />
     <Compile Include="Apps\Core\Metadata\SearchPageMetaData.cs" />
@@ -368,10 +377,9 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
-    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DashboardController.cs" />
-    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ReportController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CurrencyController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountApplicationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountLimitationController.cs" />
@@ -391,6 +399,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductSpecificationAttributeOptionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductVariantController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\RegionController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ReportController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingCalculationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingMethodController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\StockController.cs" />
@@ -445,10 +454,12 @@
     <Compile Include="Apps\Ecommerce\EcommerceApp.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceInstallation.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceRouteConfig.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\BackInStockNotification\BackInStockNotificationRequest.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\BackInStockNotification\BackInStockProductVariant.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Cart\CartItem.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Currencies\Currency.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercentFromOrder.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\FixedAmountFromOrder.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercentFromOrder.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderHasXOrMoreItems.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderTotalGreaterThanX.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Discounts\Discount.cs" />
@@ -461,8 +472,6 @@
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderLine.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderNote.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderRefund.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\BackInStockNotification\BackInStockNotificationRequest.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\BackInStockNotification\BackInStockProductVariant.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\Brand.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\PriceBreak.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductOption.cs" />
@@ -594,13 +603,13 @@
     <Compile Include="Apps\Ecommerce\Payment\SagePay\SagePayPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\SagePay\SagePaySettings.cs" />
     <Compile Include="Apps\Ecommerce\Payment\SagePay\VspServerMode.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupOrdersService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\RevenueService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupRevenueService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\OrderAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\GoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\IGoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\ITrackingService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupOrdersService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupRevenueService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\OrderAnalyticsService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\RevenueService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Products\ProductAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\TrackingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartBuilder.cs" />
@@ -683,17 +692,6 @@
     <Compile Include="Apps\Ecommerce\Services\Inventory\InventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\IStockReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\StockReportService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointPaymentService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointRequestHelper.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointRequestService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointResponseLogger.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointResponseLogger.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Products\BackInStockNotificationService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Products\Download\DownloadProductVariantService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Products\Download\Rules\IDownloadProductVariantValidationRules.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Products\Download\Rules\DownloadProductVariantValidationRules.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Products\IBackInStockNotificationService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Products\IProductOptionManagementService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\BulkShippingUpdateService.cs" />
@@ -707,10 +705,13 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\EmptyBasket.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderCancelled.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderFullyRefunded.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderPaid.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderPartiallyRefunded.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderPlaced.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderShipped.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOrderEvent.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOrderEventService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\Events\OrderEventService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\SendOrderCancelledEmailToCustomer.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\SendOrderFullyRefundedEmailToCustomer.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\SendOrderPartiallyRefundedEmailToCustomer.cs" />
@@ -720,24 +721,33 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\UpdateStock.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\ExportOrderService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IExportOrdersService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderPaid.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOrderEventService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderRefundService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IOrderShippingService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\Events\OrderEventService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderNoteService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderRefundService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderShippingService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointPaymentService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointRequestHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointRequestService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointResponseLogger.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointPaymentService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointRequestHelper.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointRequestService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointResponseLogger.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\ThreeDSecureException.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\BackInStockNotificationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BrandService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\Download\DownloadProductVariantService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\Download\Rules\DownloadProductVariantValidationRules.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\Download\Rules\IDownloadProductVariantValidationRules.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\IBackInStockNotificationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IBrandService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\IProductOptionManagementService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductOptionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductService.cs" />
@@ -747,8 +757,8 @@
     <Compile Include="Apps\Ecommerce\Services\Products\ProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductVariantService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\ChartService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Reports\ReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\IReportService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Reports\ReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\HttpPostSerializer.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\HttpRequestSender.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\IHttpRequestSender.cs" />
@@ -775,7 +785,6 @@
     <Compile Include="Apps\Ecommerce\Services\Shipping\ShippingMethodManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\ITaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\TaxRateManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Paypoint\ThreeDSecureException.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
@@ -786,10 +795,10 @@
     <Compile Include="Apps\Ecommerce\Widgets\BreadCrumb.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CartWidget.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CategoriesOnlyNavigation.cs" />
-    <Compile Include="Apps\Ecommerce\Widgets\PeopleWhoBoughtThisAlsoBought.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\EcommerceNavigation.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedCategories.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedProducts.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\PeopleWhoBoughtThisAlsoBought.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\RecentlyViewedItems.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\RelatedProducts.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\SearchBox.cs" />
@@ -839,6 +848,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\ACLController.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseDocumentController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MessageQueueController.cs" />
     <Compile Include="Areas\Admin\Controllers\MessageTemplateController.cs" />
     <Compile Include="Areas\Admin\Controllers\FileController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
@@ -849,6 +859,7 @@
     <Compile Include="Areas\Admin\Controllers\LogController.cs" />
     <Compile Include="Areas\Admin\Controllers\MediaCategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\NavigationController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RedirectedDomainController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleController.cs" />
     <Compile Include="Areas\Admin\Controllers\SearchController.cs" />
     <Compile Include="Areas\Admin\Controllers\SettingsController.cs" />
@@ -864,6 +875,7 @@
     <Compile Include="Areas\Admin\Models\AddPageModel.cs" />
     <Compile Include="Areas\Admin\Models\AddUserModel.cs" />
     <Compile Include="Areas\Admin\Models\Dashboard.cs" />
+    <Compile Include="Controllers\CKEditorController.cs" />
     <Compile Include="Controllers\FormController.cs" />
     <Compile Include="Controllers\InstallController.cs" />
     <Compile Include="Areas\Admin\Controllers\InPageAdminController.cs" />
@@ -872,24 +884,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\Paypoint\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\async-paging.js" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\related-products.js" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\orders-by-shipping-type.js" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\dashboard.js" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-shipping-type.js" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-payment-type.js" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-day.js" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\product-variant.css" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\dashboard.css" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\reports.css" />
-    <Content Include="Apps\Ecommerce\Content\Images\tick.png" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-many-listing.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\close-one-listing.js" />
@@ -964,21 +960,31 @@
     <Content Include="Apps\Core\Views\Widgets\PlainTextWidget.cshtml" />
     <Content Include="Apps\Core\Views\Widgets\TextWidget.cshtml" />
     <Content Include="Apps\Core\Views\Widgets\UserLinks.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\dashboard.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-discount.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-product.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-products.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\google-base.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\manage-options.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\orders-by-shipping-type.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-variant.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\products.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\related-products.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-day.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-payment-type.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-shipping-type.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sorting.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\specification-attributes.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\stock.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\tax-rates.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\dashboard.css" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\ecommerce-admin.css" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\product-variant.css" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\reports.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-responsive.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-responsive.min.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap.css" />
@@ -987,13 +993,57 @@
     <Content Include="Apps\Ecommerce\Content\Bootstrap\img\glyphicons-halflings.png" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.js" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.min.js" />
+    <Content Include="Apps\Ecommerce\Content\Images\ajax-loader.gif" />
+    <Content Include="Apps\Ecommerce\Content\Images\awaiting-image.jpg" />
+    <Content Include="Apps\Ecommerce\Content\Images\crv.gif" />
     <Content Include="Apps\Ecommerce\Content\Images\mrcms-logo.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\dark_rounded\btnNext.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\dark_rounded\btnPrevious.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\dark_rounded\contentPattern.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\dark_rounded\default_thumbnail.gif" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\dark_rounded\loader.gif" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\dark_rounded\sprite.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\dark_square\btnNext.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\dark_square\btnPrevious.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\dark_square\contentPattern.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\dark_square\default_thumbnail.gif" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\dark_square\loader.gif" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\dark_square\sprite.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\default\default_thumb.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\default\loader.gif" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\default\sprite.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\default\sprite_next.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\default\sprite_prev.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\default\sprite_x.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\default\sprite_y.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\facebook\btnNext.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\facebook\btnPrevious.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\facebook\contentPatternBottom.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\facebook\contentPatternLeft.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\facebook\contentPatternRight.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\facebook\contentPatternTop.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\facebook\default_thumbnail.gif" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\facebook\loader.gif" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\facebook\sprite.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\light_rounded\btnNext.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\light_rounded\btnPrevious.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\light_rounded\default_thumbnail.gif" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\light_rounded\loader.gif" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\light_rounded\sprite.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\light_square\btnNext.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\light_square\btnPrevious.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\light_square\default_thumbnail.gif" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\light_square\loader.gif" />
+    <Content Include="Apps\Ecommerce\Content\Images\prettyPhoto\light_square\sprite.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\search.jpg" />
+    <Content Include="Apps\Ecommerce\Content\Images\tick.png" />
     <Content Include="Apps\Ecommerce\Content\Scripts\bootstrap.dropdown.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\cart.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\category.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\enter-order-email.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\payment-details.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\product-gallery.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\product-search.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\product.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\shipping-methods.js" />
@@ -1003,6 +1053,7 @@
     <Content Include="Apps\Ecommerce\Content\Scripts\ecommerce.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\facebook.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.history.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\jquery.prettyPhoto.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.min.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\jquery.validate.unobtrusive.min.js" />
@@ -1025,6 +1076,7 @@
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\jquery-ui-1.9.2.custom.css" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\jquery.ui.1.10.0.ie.css" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\jquery.ui.1.9.2.ie.css" />
+    <Content Include="Apps\Ecommerce\Content\Styles\prettyPhoto.css" />
     <Content Include="Apps\Ecommerce\Content\Styles\style.css" />
     <Content Include="Apps\Ecommerce\Content\Styles\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Apps\Ecommerce\Content\Styles\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -1405,6 +1457,7 @@
     <Content Include="Areas\Admin\Content\Scripts\custom\form-builder.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\media-category.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\popup.js" />
+    <Content Include="Areas\Admin\Content\Scripts\custom\preview-message-template.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\search.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\sort.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\tagging.js" />
@@ -1523,27 +1576,13 @@
     <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_zh-CN.js" />
     <Content Include="Areas\Admin\Content\Scripts\select2-3.4.1\select2_locale_zh-TW.js" />
     <Content Include="Areas\Admin\Content\Scripts\tag-it.min.js" />
+    <Content Include="Areas\Admin\Content\Styles\mrcms-admin.css" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\css\bootstrap-responsive.css" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\css\bootstrap.css" />
-    <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.js" />
-    <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.min.js" />
-    <Content Include="Areas\Admin\Content\Styles\mrcms-admin.css" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\img\glyphicons-halflings-white.png" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\img\glyphicons-halflings.png" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddCategoryCategories.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductSpecificationAttribute\Sort.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\RelatedProducts.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddRelatedProduct.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddRelatedProductItems.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\RemoveRelatedProduct.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\AddDetails.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\EditDetails.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Images.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\SoldOut.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\ShippingOptions.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\DownloadOptions.cshtml" />
-    <None Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.js~" />
-    <None Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.min.js~" />
+    <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.js" />
+    <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.min.js" />
     <Content Include="Areas\Admin\Content\Styles\mrcms-frontendediting.css" />
     <Content Include="Areas\Admin\Content\Styles\Images\glyphicons-halflings-white.png" />
     <Content Include="Areas\Admin\Content\Styles\Images\glyphicons-halflings.png" />
@@ -1972,15 +2011,6 @@
     <Content Include="Content\install\scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Service References\Paypoint\configuration91.svcinfo" />
-    <Content Include="Service References\Paypoint\configuration.svcinfo" />
-    <Content Include="Service References\Paypoint\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
-    <Content Include="Themes\Default\Views\web.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\category.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\forgotten-password.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\password-reset.js" />
@@ -2146,14 +2176,17 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\DeleteAllLogs.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Details.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Index.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\OrderInfo\AmazonInfo.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Details.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Index.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\OrderDetails.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\OrderItems.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Orders.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\SyncMany.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Order\Amazon.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\App.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Seller.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Sync.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Shared\ProgressBarMessages.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\_ViewStart.cshtml" />
@@ -2172,7 +2205,10 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Dashboard\Revenue.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Dashboard\UserAndPageStats.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\FixedAmountFromOrder.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\XPercentFromOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\CartHasAtLeastXItems.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\CartSubtotalGreaterThanX.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Add.cshtml" />
@@ -2194,6 +2230,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Cancel.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\ForUser.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsPaid.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\MarkAsShipped.cshtml" />
@@ -2217,12 +2254,22 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductSpecificationAttribute\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductSpecificationAttribute\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductSpecificationAttribute\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductSpecificationAttribute\Sort.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\AddDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\DownloadOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\EditDetails.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Images.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\ShippingOptions.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\SoldOut.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddBrand.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddCategory.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddCategoryCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddProductOption.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddRelatedProduct.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddRelatedProductItems.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddSpecification.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Brands.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Categories.cshtml" />
@@ -2233,7 +2280,9 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\PricingButtons.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\PricingInfo.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ProductOptions.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\RelatedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\RemoveCategory.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\RemoveRelatedProduct.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\RemoveSpecification.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortImages.cshtml" />
@@ -2247,6 +2296,11 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\OrdersByShippingType.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\SalesByDay.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\SalesByPaymentType.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\SalesByShippingType.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\SagePaySettings\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Edit.cshtml" />
@@ -2265,10 +2319,12 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Settings.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\User\Order.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Category.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\CategoryContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Product.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductAddedToCart.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\CategoriesOnlyNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\FeaturedCategories.cshtml" />
@@ -2299,6 +2355,7 @@
     <Content Include="Apps\Ecommerce\Views\Pages\NewInProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\OrderPlaced.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\PaymentDetails.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Pages\ProductAddedToCart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\SetDeliveryDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\UserOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PaymentDetails\BillingAddress.cshtml" />
@@ -2307,8 +2364,14 @@
     <Content Include="Apps\Ecommerce\Views\PaymentMethod\CashOnDelivery.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PaymentMethod\PayPalExpressCheckout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PaymentMethod\Paypoint.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\PaymentMethod\Paypoint.cshtml.orig" />
+    <Content Include="Apps\Ecommerce\Views\PaymentMethod\SagePay.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Paypoint\PaymentDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Paypoint\Redirect3DSecure.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\CartDetails.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\CustomersAlsoBought.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\ItemDetails.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\RelatedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductSearch\ProductSearch.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductSearch\Query.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductSearch\Results.cshtml" />
@@ -2317,6 +2380,8 @@
     <Content Include="Apps\Ecommerce\Views\ProductSearch\SearchOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductSearch\SearchSpecifications.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Product\Product.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\SagePayRedirect\Failed.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\SagePayRedirect\Success.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SetDeliveryDetails\DeliveryAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SetDeliveryDetails\DeliveryDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\AnalyticsCode.cshtml" />
@@ -2338,6 +2403,7 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\EcommerceNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedProducts.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\PeopleWhoBoughtThisAlsoBought.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\RecentlyViewedItems.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\RelatedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\SearchBox.cshtml" />
@@ -2367,29 +2433,6 @@
     <Content Include="Apps\Ryness\Views\Pages\Store.cshtml" />
     <Content Include="Apps\Ryness\Views\Pages\StoreList.cshtml" />
     <Content Include="Apps\Ryness\Views\Web.config" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\User\Order.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\ForUser.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\SalesByDay.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\SalesByPaymentType.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\SalesByShippingType.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Dashboard\UserAndPageStats.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Dashboard\Revenue.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\OrdersByShippingType.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Widgets\PeopleWhoBoughtThisAlsoBought.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\XPercentFromOrder.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Sync.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Order\Amazon.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\OrderInfo\AmazonInfo.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductAddedToCart.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Pages\ProductAddedToCart.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\CartDetails.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\ItemDetails.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\PaymentMethod\SagePay.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\SagePaySettings\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\SagePayRedirect\Success.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\SagePayRedirect\Failed.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\RelatedProducts.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\CustomersAlsoBought.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2450,7 +2493,7 @@
     <Content Include="Areas\Admin\Views\Settings\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Navigation\SiteList.cshtml" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.min.js.map">
-      <DependentUpon>bootstrap.js~</DependentUpon>
+      <DependentUpon>bootstrap.js</DependentUpon>
     </Content>
     <Content Include="Areas\Admin\Views\Log\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Log\Show.cshtml" />
@@ -2508,14 +2551,14 @@
     <Content Include="Areas\Admin\Views\Form\ClearFormData.cshtml" />
     <Content Include="Areas\Admin\Views\User\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Log\Filter.cshtml" />
+    <Content Include="Areas\Admin\Views\MessageTemplate\Preview.cshtml" />
+    <Content Include="Areas\Admin\Views\Sites\RestrictedDomains.cshtml" />
+    <Content Include="Areas\Admin\Views\RedirectedDomain\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\RedirectedDomain\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\MessageQueue\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\MessageQueue\Show.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutWithoutWebTree.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
-    <Content Include="Service References\Paypoint\SECCardService.wsdl" />
-    <None Include="Themes\Default\Views\Web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="Themes\Default\Views\Web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
     <Content Include="Themes\Default\Web.config" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\LoginPage.cshtml" />
@@ -2529,8 +2572,9 @@
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\UserAccountOrders.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
-    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config" />
+    <Content Include="Themes\Ecommerce\Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Themes\Ecommerce\Areas\Admin\Views\Web.config" />
     <Content Include="Themes\Ecommerce\Views\Web.config" />
     <Content Include="Themes\Ryness\Apps\Articles\Views\Pages\Article.cshtml" />
     <Content Include="Themes\Ryness\Apps\Articles\Views\Pages\ArticleList.cshtml" />
@@ -2560,6 +2604,7 @@
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\EnterOrderEmail\SetOrderEmailAndLogin.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Pages\OrderPlaced.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Pages\PaymentDetails.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Pages\ProductAddedToCart.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentDetails\BillingAddress.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentDetails\SelectMethod.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\PaymentDetails\SetBillingAddress.cshtml" />
@@ -2586,10 +2631,13 @@
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\EcommerceNavigation.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\FeaturedCategories.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\FeaturedProducts.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\PeopleWhoBoughtThisAlsoBought.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\RecentlyViewedItems.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\RelatedProducts.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\SearchBox.cshtml" />
     <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
+    <Content Include="Themes\Ryness\Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Themes\Ryness\Areas\Admin\Views\Web.config" />
     <Content Include="Themes\Ryness\Views\Shared\_BaseCheckoutLayout.cshtml" />
     <Content Include="Themes\Ryness\Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Themes\Ryness\Views\Shared\_CheckoutLayout.cshtml" />
@@ -2605,14 +2653,10 @@
     <Content Include="Themes\Ryness\Views\Widgets\NewsletterSignup.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\RynessNavigation.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\Slider.cshtml" />
+    <Content Include="Themes\Ryness\Views\Widgets\SpendXMore.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
-    <Content Include="Themes\Ecommerce\Areas\Admin\Views\Home\Index.cshtml" />
-    <Content Include="Themes\Ecommerce\Areas\Admin\Views\Web.config" />
-    <Content Include="Themes\Ryness\Areas\Admin\Views\Home\Index.cshtml" />
-    <Content Include="Themes\Ryness\Areas\Admin\Views\Web.config" />
-    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Widgets\PeopleWhoBoughtThisAlsoBought.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />
@@ -2640,6 +2684,7 @@
     <Folder Include="Themes\Default\Shared\" />
     <Folder Include="Themes\Default\Views\Pages\" />
     <Folder Include="Themes\Default\Views\Widgets\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -2711,9 +2756,6 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\Paypoint\" />
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -2738,7 +2780,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1834</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8889/</IISUrl>
+          <IISUrl>http://localhost:8887</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

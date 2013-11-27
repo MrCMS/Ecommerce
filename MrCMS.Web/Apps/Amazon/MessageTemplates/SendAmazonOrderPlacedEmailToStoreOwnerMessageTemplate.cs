@@ -10,7 +10,6 @@ using NHibernate;
 
 namespace MrCMS.Web.Apps.Amazon.MessageTemplates
 {
-    [FriendlyClassName("Send Amazon Order Placed Email To Store Owner Message Template")]
     public class SendAmazonOrderPlacedEmailToStoreOwnerMessageTemplate : MessageTemplate, IMessageTemplate<Order>
     {
         public override MessageTemplate GetInitialTemplate(ISession session)

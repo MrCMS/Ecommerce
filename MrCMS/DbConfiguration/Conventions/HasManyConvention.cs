@@ -1,6 +1,5 @@
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
-using MrCMS.DbConfiguration.Filters;
 
 namespace MrCMS.DbConfiguration.Conventions
 {

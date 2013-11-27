@@ -52,13 +52,18 @@ namespace MrCMS.Website.Routing
 
         private void ProcessRequest(HttpContextWrapper context)
         {
-            var urlHistory = _session.QueryOver<UrlHistory>().Where(history => history.UrlSegment == Data).Take(1).Cacheable().SingleOrDefault();
+            var urlHistory =
+                _session.QueryOver<UrlHistory>()
+                        .Where(history => history.UrlSegment == Data && history.Site.Id == _siteSettings.Site.Id)
+                        .Take(1)
+                        .Cacheable()
+                        .SingleOrDefault();
             if (urlHistory != null && urlHistory.Webpage != null)
             {
                 context.Response.RedirectPermanent("~/" + urlHistory.Webpage.LiveUrlSegment);
             }
 
-            HandleError(context, 404, _siteSettings.Error404PageId, new HttpException(404, "Cannot find " + Data));
+            HandleError(context, 404, _siteSettings.Error404PageId, new HttpException(404, "Cannot find " + Data), _siteSettings.Log404s);
         }
 
         private string Data

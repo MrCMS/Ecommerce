@@ -10,7 +10,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
 {
-    [FriendlyClassName("Send Order Fully Refunded Email To Customer Message Template")]
     public class SendOrderFullyRefundedEmailToCustomerMessageTemplate : MessageTemplate, IMessageTemplate<Order>
     {
         public override MessageTemplate GetInitialTemplate(ISession session)

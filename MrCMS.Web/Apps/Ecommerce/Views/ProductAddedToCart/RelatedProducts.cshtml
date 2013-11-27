@@ -1,15 +1,14 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.RelatedProductsViewModel
 @if (Model != null && Model.Products.Any())
 {
-    <div class="row-fluid padding-top-bottom-10">
+    <hr/>
+    <div class="row-fluid">
         <div class="span12">
             @if (!String.IsNullOrEmpty(Model.Title))
             {
-                <div class="section-header">
-                    <span>Related products</span>
-                </div>
+                <h4>Related products</h4>
             }
-            <div class="row-fluid grid-items">
+            <div class="row-fluid">
                 @foreach (var item in Model.Products)
                 {
                     Html.RenderPartial("ProductCardFeatured", item);
