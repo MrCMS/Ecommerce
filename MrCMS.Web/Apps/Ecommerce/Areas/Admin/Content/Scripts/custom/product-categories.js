@@ -9,27 +9,18 @@ $(function () {
             $('.submit-form-btn').click();
         }
     });
-    $(document).on('click', '#categories .pagination a', function () {
-        var href = $(this).attr('href');
-        if (href != null && href != '') {
-            $('.modal-body').load(href + ' div#categories', function () {
-                resizeModal();
-            });
-        }
-        return false;
-    });
+
     $(document).on('click', '#categories .add-category', function () {
         var button = $(this),
             productId = button.data('product-id'),
-            categoryId = button.data('category-id'),
-            page = button.data('page');
+            categoryId = button.data('category-id');
         $.post('/Admin/Apps/Ecommerce/Product/AddCategory/',
             { id: productId, categoryId: categoryId },
             function (response) {
                 parent.$.get('/Admin/Apps/Ecommerce/Product/Categories/' + productId, function (products) {
                     parent.$('#category-list').replaceWith(products);
                 });
-                var href = '/Admin/Apps/Ecommerce/Product/AddCategory/' + productId + '?page=' + page;
+                var href = '/Admin/Apps/Ecommerce/Product/AddCategory/' + productId + '?page=' + 1;
                 $('.modal-body-container').load(href + ' div#categories', function () {
                     resizeModal();
                 });
@@ -52,7 +43,7 @@ $(function () {
             { Id: productId, term: term },
             function (response) {
                 $("table").empty();
-                $.each(response, function(key2,val) {
+                $.each(response, function (key2, val) {
                     $("table").append("<tr><td>" + val["Name"] + "</td><td><div class=\"pull-right\"><button data-page=\"0\" data-product-id=\"" + productId + "\"data-category-id=" + val["CategoryID"] + " class=\"btn btn-success add-category\">Add</button></div></td></tr>");
                 });
             });

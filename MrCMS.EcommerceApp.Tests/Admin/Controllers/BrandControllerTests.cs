@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using Xunit;
 using System;
@@ -15,11 +16,13 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
     {
         private readonly IBrandService _brandService;
         private readonly BrandController _brandController;
+        private readonly SiteSettings _siteSettings;
 
         public BrandControllerTests()
         {
             _brandService = A.Fake<IBrandService>();
-            _brandController = new BrandController(_brandService);
+            _siteSettings = new SiteSettings() { DefaultPageSize = 10 };
+            _brandController = new BrandController(_brandService, _siteSettings);
         }
 
         [Fact]

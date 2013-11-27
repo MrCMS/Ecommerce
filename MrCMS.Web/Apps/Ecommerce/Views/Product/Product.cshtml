@@ -6,6 +6,7 @@
 @using MrCMS.Web.Apps.Ecommerce.Models
 @{
     var selectedVariant = ViewData["selected-variant"] as ProductVariant ?? Model.VariantsByPrice.First();
+    var backInStock = ViewData["back-in-stock"] is bool && (bool)ViewData["back-in-stock"];
     var hasSpecifications = Model.SpecificationValues.Any();
 }
 @Html.HiddenFor(x => x.UrlSegment)
@@ -16,7 +17,7 @@
                 @{ Html.RenderPartial("ProductImages", Model); }
             </div>
             <div class="span8">
-                <h1>@Model.Name</h1>
+                <h1>@selectedVariant.Name</h1>
 
                 <div class="product-price">
                     @selectedVariant.Price.ToCurrencyFormat()
@@ -29,8 +30,10 @@
                 }
                 @Editable(Model, product => product.Abstract, true)
 
-                @{Html.RenderPartial("SocialLinks");}
-                
+                <div class="social-links">
+                    @{Html.RenderPartial("SocialLinks");}
+                </div>
+
                 @RenderZone("Below Product Price")
             </div>
         </div>
@@ -39,38 +42,58 @@
         @if (Model.IsMultiVariant)
         {
             <div class="product-variants-filter">
-                @Html.DropDownList("variant", Model.VariantsByPrice.BuildSelectItemList(variant => variant.SelectOptionName, variant => variant.Id.ToString(), variant => variant == selectedVariant, emptyItem: null))
+                <label class="span3 line-height-30">Variants</label>
+                @Html.DropDownList("variant", Model.VariantsByPrice.BuildSelectItemList(variant => variant.SelectOptionName, variant => variant.Id.ToString(), variant => variant == selectedVariant, emptyItem: null), new { @class = "span9" })
             </div>
         }
 
         @{Html.RenderPartial("ProductPricebreaks", Model);}
-        
+
         @if (selectedVariant.TrackingPolicy == TrackingPolicy.Track && selectedVariant.StockRemaining <= 0)
         {
-            <div id="product-addtobasket">
-                <p>
+            <div class="row-fluid out-of-stock">
+                <p class="red text-center">
                     Sorry, this item is out of stock.
                 </p>
-           </div>
+                @if (backInStock)
+                {
+                    <p class="padding-left-5 padding-right-5">Thank you, you will be notified when this product is back in stock.</p>
+                }
+                else
+                {
+                    using (Html.BeginForm("BackInStock", "Product", FormMethod.Post))
+                     {
+                         @Html.Hidden("ProductVariant.Id", selectedVariant.Id)
+                         <div class="row-fluid">
+                             <div class="span5 padding-left-5">
+                                 @Html.TextBox("Email", "", new {placeholder = "Email address", @class = "span12", data_val = "true", data_val_required = "The field Your email is required"})
+                             </div>
+                             <div class="span7 padding-right-5">
+                                 <input type="submit" class="btn btn-info span12" value="Email me when back in stock" />
+                             </div>
+                         </div>
+                     }
+                }
+            </div>
         }
         else
         {
             using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
             {
-                 @Html.Hidden("Id", selectedVariant.Id)
-                 <div id="product-addtobasket">
-                     <label class="pull-left">Quantity&nbsp;</label>
-                     <input type="text" class="input-mini pull-left" value="1" id="quantity" name="quantity" />
-                     <button class="btn btn-info btn-addtobasket pull-right span7" type="submit">Add to basket</button>
-                 </div>
+            @Html.Hidden("Id", selectedVariant.Id)
+            <div id="product-addtobasket">
+                <label class="span3 line-height-30">Quantity&nbsp;</label>
+                <input type="text" class="input-mini" value="1" id="quantity" name="quantity" />
+                <button class="btn btn-info btn-addtobasket pull-right span6" type="submit">Add to basket</button>
+            </div>
             }
         }
-        
+
         @RenderZone("Below Add to cart")
     </div>
 </div>
 
-<hr class="small-margin " />
+<hr class="small-margin" />
 
 <div class="row-fluid" id="product-description-container">
     <div class="@(hasSpecifications ? "span8" : "span12")">
@@ -82,6 +105,5 @@
         Html.RenderPartial("ProductSpecifications", Model);
     }
 </div>
-
-
+@RenderZone("Below Product Information")
 @{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/product.js"); }

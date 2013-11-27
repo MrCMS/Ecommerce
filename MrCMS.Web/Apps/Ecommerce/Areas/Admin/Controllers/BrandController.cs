@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Settings;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
@@ -8,17 +9,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class BrandController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly IBrandService _brandService;
+        private readonly SiteSettings _siteSettings;
 
-        public BrandController(IBrandService brandService)
+        public BrandController(IBrandService brandService, SiteSettings siteSettings)
         {
             _brandService = brandService;
+            _siteSettings = siteSettings;
         }
 
         [HttpGet]
         public ViewResult Index(string q, int page = 1)
         {
             ViewData["query"] = q;
-            var brands = _brandService.GetPaged(page, q);
+            var brands = _brandService.GetPaged(page, q, _siteSettings.DefaultPageSize);
             return View(brands);
         }
 
@@ -76,7 +79,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public JsonResult IsUniqueName(string name, int id=0)
         {
-            return _brandService.AnyExistingBrandsWithName(name, id) ? Json("There is already a brand stored with that name.", JsonRequestBehavior.AllowGet) : Json(true, JsonRequestBehavior.AllowGet);
+            return _brandService.AnyExistingBrandsWithName(name, id) ? 
+                Json("There is already a brand stored with that name.", JsonRequestBehavior.AllowGet) : Json(true, JsonRequestBehavior.AllowGet);
         }
     }
 }

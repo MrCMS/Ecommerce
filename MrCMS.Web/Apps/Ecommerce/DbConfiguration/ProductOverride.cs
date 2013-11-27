@@ -18,6 +18,9 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
                    .Not.Inverse();
 
             mapping.HasMany(product => product.Variants).Cascade.All();
+
+            mapping.HasManyToMany(m => m.RelatedProducts).ParentKeyColumn("ProductId").ChildKeyColumn("RelatedProductId")
+                   .Table("Ecommerce_RelatedProducts").Not.Inverse().Cascade.SaveUpdate();
         }
     }
 }

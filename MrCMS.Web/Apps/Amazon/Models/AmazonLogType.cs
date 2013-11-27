@@ -14,6 +14,8 @@ namespace MrCMS.Web.Apps.Amazon.Models
         ListingGroups,
         [Description("Orders")]
         Orders,
+        [Description("Orders Sync Data")]
+        OrdersSyncData,
         [Description("App Settings")]
         AppSettings,
         [Description("Seller Settings")]

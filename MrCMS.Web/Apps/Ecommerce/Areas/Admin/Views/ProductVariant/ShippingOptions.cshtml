@@ -1,0 +1,27 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Entities.Shipping
+@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
+@{
+    var shippingMethods = ViewData["shipping-methods"] as IList<ShippingMethod>;
+}           
+
+<div id="shipping-options" class="tab-pane">
+    @Html.Hidden("ShippingMethodsValue","0")
+    @if (shippingMethods!=null && shippingMethods.Any())
+    {
+        <div style="width: 100%; overflow: hidden">
+            <select id="ShippingMethodsBox" style="width: 100%; min-width: 300px" multiple>
+                @foreach (var item in shippingMethods)
+                {
+                    var selectedValue = Model.ShippingMethods.Any(x=>x.Id==item.Id) ? "selected='selected'" : string.Empty;
+                    <option value="@item.Id" @Html.Raw(selectedValue)>@item.Name</option>
+                }
+            </select>
+        </div>
+    }
+    else
+    {
+        <p>
+            No shipping methods added. Please add at least one shipping method and try again.
+        </p>
+    }
+</div>

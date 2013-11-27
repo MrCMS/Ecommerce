@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Amazon.Services.Orders.Sync;
 using MrCMS.Web.Apps.Amazon.Settings;
@@ -41,7 +40,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
                 @from = lastRun.Value;
             }
             else
-                @from = now.AddMonths(-1);
+                @from = now.AddMonths(-2);
             var updatedOrdersRequest = new GetUpdatedOrdersRequest
             {
                 LastUpdatedAfter = @from,
@@ -50,15 +49,17 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             amazonSyncSettings.LastRun = to;
             _configurationProvider.SaveSettings(amazonSyncSettings);
             _amazonOrderSyncManager.GetUpdatedInfoFromAmazon(updatedOrdersRequest);
-
-
         }
 
         public GetUpdatedOrdersResult SyncSpecificOrders(string rawOrderIds)
         {
             var orderIds = GetOrderIds(rawOrderIds);
-            return orderIds.Any() ? _amazonOrderSyncManager.GetUpdatedInfoFromAmazonAdHoc(orderIds) :
-                new GetUpdatedOrdersResult() { ErrorMessage = "Please provide at least one valid Amazon Order Id." };
+            if (orderIds.Any())
+            {
+                return orderIds.Count <= 50 ? _amazonOrderSyncManager.GetUpdatedInfoFromAmazonAdHoc(orderIds) 
+                    : new GetUpdatedOrdersResult() { ErrorMessage = "You can only sync up to 50 orders in one batch." };
+            }
+            return new GetUpdatedOrdersResult() { ErrorMessage = "Please provide at least one valid Amazon Order Id." };
         }
 
         private static List<string> GetOrderIds(string rawOrderIds)
@@ -66,7 +67,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             var orderIds = new List<string>();
             try
             {
-                var ids = rawOrderIds.Trim().Split(',');
+                var ids = rawOrderIds.Trim().Replace("\n", "").Replace("\r", "").Split(',');
                 orderIds.AddRange(ids.Where(id => !String.IsNullOrWhiteSpace(id)));
             }
             catch (Exception ex)

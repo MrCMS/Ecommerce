@@ -5,98 +5,88 @@
 <div id="delivery-address-container">
     @if (Model != null)
     {
-        using (Html.BeginForm("SetAddress", "SetDeliveryDetails", FormMethod.Post, new { id = "deliveryDetails" }))
+        using (Html.BeginForm("SetAddress", "SetDeliveryDetails", FormMethod.Post, new { id = "deliveryDetails", @class = "form-horizontal" }))
         {
-        <h4>Who shall we deliver to?</h4>
+            <h4>Who shall we deliver to?</h4>
 
             if (otherAddresses.Any())
             {
-        @Html.DropDownList("existing-addresses", otherAddresses)
+            <div class="control-group">
+                <label class="control-label" for="existing-addresses">Use Existing Address :</label>
+                <div class="controls">
+                    @Html.DropDownList("existing-addresses", otherAddresses)
+                </div>
+            </div>
             }
-        <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.FirstName)
+            <div class="control-group">
+                <label class="control-label" for="FirstName">First Name <span class="red">*</span> :</label>
+                <div class="controls">
+                    @Html.TextBoxFor(address => address.FirstName, new { placeholder = "First name" })
+                    @Html.ValidationMessageFor(address => address.FirstName)
+                </div>
             </div>
-            <div class="span8">
-                @Html.TextBoxFor(address => address.FirstName)
-                @Html.ValidationMessageFor(address => address.FirstName)
+            <div class="control-group">
+                <label class="control-label" for="LastName">Last Name <span class="red">*</span> :</label>
+                <div class="controls">
+                    @Html.TextBoxFor(address => address.LastName, new { placeholder = "Last name" })
+                    @Html.ValidationMessageFor(address => address.LastName)
+                </div>
             </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.LastName)
+            <div class="control-group">
+                <label class="control-label" for="PhoneNumber">Phone Number <span class="red">*</span> :</label>
+                <div class="controls">
+                    @Html.TextBoxFor(address => address.PhoneNumber, new { placeholder = "Phone number" })
+                    @Html.ValidationMessageFor(address => address.PhoneNumber)
+                </div>
             </div>
-            <div class="span8">
-                @Html.TextBoxFor(address => address.LastName)
-                @Html.ValidationMessageFor(address => address.LastName)
+            <hr />
+            <h4>Where would you like to deliver?</h4>
+            <div class="control-group">
+                <label class="control-label" for="Address1">Address 1 <span class="red">*</span> :</label>
+                <div class="controls">
+                    @Html.TextBoxFor(address => address.Address1, new { placeholder = "Address 1" })
+                    @Html.ValidationMessageFor(address => address.Address1)
+                </div>
             </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.PhoneNumber)
+            <div class="control-group">
+                <label class="control-label" for="Address2">Address 2 :</label>
+                <div class="controls">
+                    @Html.TextBoxFor(address => address.Address2, new { placeholder = "Address 2" })
+                    @Html.ValidationMessageFor(address => address.Address2)
+                </div>
             </div>
-            <div class="span8">
-                @Html.TextBoxFor(address => address.PhoneNumber)
-                @Html.ValidationMessageFor(address => address.PhoneNumber)
+            <div class="control-group">
+                <label class="control-label" for="City">City <span class="red">*</span> :</label>
+                <div class="controls">
+                    @Html.TextBoxFor(address => address.City, new { placeholder = "City" })
+                    @Html.ValidationMessageFor(address => address.City)
+                </div>
             </div>
-        </div>
-        <hr />
-        <h4>Where would you like to deliver?</h4>
-        <br />
-        <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.Address1)
+            <div class="control-group">
+                <label class="control-label" for="StateProvince">State/Province <span class="red">*</span> :</label>
+                <div class="controls">
+                    @Html.TextBoxFor(address => address.StateProvince, new { placeholder = "State/Province" })
+                    @Html.ValidationMessageFor(address => address.StateProvince)
+                </div>
             </div>
-            <div class="span8">
-                @Html.TextBoxFor(address => address.Address1)
-                @Html.ValidationMessageFor(address => address.Address1)
+            <div class="control-group">
+                <label class="control-label" for="Country">Country <span class="red">*</span> :</label>
+                <div class="controls line-height-30">
+                    @Html.DisplayFor(address => address.Country.Name)
+                </div>
             </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.Address2)
+            <div class="control-group">
+                <label class="control-label" for="PostalCode">Postal Code <span class="red">*</span> :</label>
+                <div class="controls">
+                    @Html.TextBoxFor(address => address.PostalCode, new { placeholder = "Postal Code" })
+                    @Html.ValidationMessageFor(address => address.PostalCode)
+                </div>
             </div>
-            <div class="span8">
-                @Html.TextBoxFor(address => address.Address2)
-                @Html.ValidationMessageFor(address => address.Address2)
+            <div class="control-group">
+                <div class="controls">
+                    <input type="submit" class="btn btn-info" id="continue" name="continue" value="Deliver to This Address" />
+                </div>
             </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.City)
-            </div>
-            <div class="span8">
-                @Html.TextBoxFor(address => address.City)
-                @Html.ValidationMessageFor(address => address.City)
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.StateProvince)
-            </div>
-            <div class="span8">
-                @Html.TextBoxFor(address => address.StateProvince)
-                @Html.ValidationMessageFor(address => address.StateProvince)
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.Country)
-            </div>
-            <div class="span8">
-                @Html.DisplayFor(address => address.Country.Name)
-            </div>
-        </div>
-        <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(address => address.PostalCode)
-            </div>
-            <div class="span8">
-                @Html.TextBoxFor(address => address.PostalCode)
-                @Html.ValidationMessageFor(address => address.PostalCode)
-            </div>
-        </div>
-        <input type="submit" class="btn btn-info" id="continue" name="continue" value="Submit" />
         }
     }
 </div>

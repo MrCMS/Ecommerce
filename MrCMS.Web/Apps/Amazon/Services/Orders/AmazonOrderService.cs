@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using MrCMS.Entities.Multisite;
+using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
@@ -36,7 +36,18 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
 
         public AmazonOrder GetByAmazonOrderId(string id)
         {
-            return _session.QueryOver<AmazonOrder>().Where(item => item.AmazonOrderId == id).SingleOrDefault();
+            var orders=_session.QueryOver<AmazonOrder>().Where(item => item.AmazonOrderId == id).Cacheable().List();
+            if (orders!=null && orders.Count > 1)
+            {
+                _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Error,
+                       null, null, null, null, null, null, null, "Duplicate Amazon orders detected with #"+orders.First().AmazonOrderId);
+                return orders.First();
+            }
+            if (orders != null && orders.Count == 1)
+            {
+                return orders.First();
+            }
+            return null;
         }
 
         public IPagedList<AmazonOrder> Search(string queryTerm = null, int page = 1, int pageSize = 10)
@@ -59,30 +70,36 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             _session.Transact(session => session.Update(item));
 
             _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Update,
-                                 null, null, null, null, item, null, null);
+                                 null, null, null, null, item, null, null, 
+                                 "Amazon Order #" + item.AmazonOrderId);
         }
 
         public void SaveOrUpdate(AmazonOrder amazonOrder)
         {
+            var orderId = amazonOrder.AmazonOrderId;
+            var id = amazonOrder.Id;
             _session.Transact(session => session.SaveOrUpdate(amazonOrder));
+            _amazonLogService.Add(AmazonLogType.Orders, id>0?AmazonLogStatus.Update:AmazonLogStatus.Insert, 
+                null, null, null, null, amazonOrder, null, null,"Amazon Order #"+orderId);
         }
 
         public void Delete(AmazonOrder item)
         {
-            _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Delete, null, null, null, null, item, null, null);
+            _amazonLogService.Add(AmazonLogType.Orders, AmazonLogStatus.Delete, 
+                null, null, null, null, item, null, null, "Amazon Order #" + item.AmazonOrderId);
 
             _session.Transact(session => session.Delete(item));
         }
 
         public void SaveOrUpdate(List<AmazonOrder> orders)
         {
-            _session.Transact(session => orders.ForEach(session.SaveOrUpdate));
+            _session.Transact(session => orders.ForEach(SaveOrUpdate));
         }
 
         public void MarkAsShipped(AmazonOrder amazonOrder)
         {
             amazonOrder.Status = AmazonOrderStatus.Shipped;
-            _session.Transact(session => session.SaveOrUpdate(amazonOrder));
+            SaveOrUpdate(amazonOrder);
         }
     }
 }

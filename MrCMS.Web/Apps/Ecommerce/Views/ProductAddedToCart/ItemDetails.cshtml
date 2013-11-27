@@ -13,7 +13,7 @@
                 </a>
             </div>
             <div class="span10">
-                <h2><a href="/@Model.Product.UrlSegment">@Model.DisplayName</a></h2>
+                <h4><a href="/@Model.Product.UrlSegment">@Model.DisplayName</a></h4>
                 <div class="product-price">@Model.Price.ToCurrencyFormat()</div>
             </div>
         </div>
@@ -27,10 +27,10 @@
                 <div class="span8">
                     <div class="row-fluid">
                         <div class="span6">
-                            <a href="@(UniquePageHelper.GetUrl<Cart>())" class="btn btn-white span12">Edit Basket</a>
+                            <a href="@(UniquePageHelper.GetUrl<Cart>())" class="btn span12">Edit Basket</a>
                         </div>
-                        <div class="span6 text-align-center">
-                            <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())" class="generic-button green-gradient span12" style="line-height: 20px !important;padding:4px 12px;">Proceed to Checkout</a>
+                        <div class="span6">
+                            <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())" class="btn btn-info span12">Proceed to Checkout</a>
                         </div>
                     </div>
                 </div>

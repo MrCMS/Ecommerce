@@ -1,13 +1,27 @@
-﻿@model List<MrCMS.Web.Apps.Ecommerce.Pages.Product>
+﻿@using System.Drawing
+@model List<MrCMS.Web.Apps.Ecommerce.Pages.Product>
 @if (Model != null && Model.Any())
 {
     <hr />
     <h4>Recently Viewed Items</h4>
-
+    foreach (var item in Model)
+    {
+        <div class="row-fluid margin-bottom-5">
+            <div class="span3">
+                @RenderImage(item.DisplayImageUrl, new Size { Width = 50, Height = 50 })
+            </div>
+            <div class="span9">
+                <a href="/@item.LiveUrlSegment">@item.Name</a>
+            </div>
+        </div>
+    }
+    @*
     <div class="row-fluid">
-        @foreach (var item in Model)
-        {
-            Html.RenderPartial("ProductCardFeatured", item);
-        }
-    </div>
+        <ul class="media-list">
+            @foreach (var item in Model)
+            {
+                <li><a href="/@item.LiveUrlSegment">@item.Name</a></li>
+            }
+        </ul>
+    </div>*@
 }

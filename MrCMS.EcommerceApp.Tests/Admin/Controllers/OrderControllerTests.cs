@@ -2,11 +2,11 @@ using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Services;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
@@ -20,7 +20,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private readonly IShippingMethodManager _shippingMethodManager;
         private readonly IOrderSearchService _orderSearchService;
         private readonly IOrderShippingService _orderShippingService;
-        private readonly EcommerceSettings _ecommerceSettings;
+        private readonly SiteSettings _ecommerceSettings;
 
         public OrderControllerTests()
         {
@@ -29,7 +29,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _shippingMethodManager = A.Fake<IShippingMethodManager>();
             _orderSearchService = A.Fake<IOrderSearchService>();
             _orderShippingService = A.Fake<IOrderShippingService>();
-            _ecommerceSettings = new EcommerceSettings();
+            _ecommerceSettings = new SiteSettings() { DefaultPageSize = 10 };
             _orderController = new OrderController(_orderService,
                 _shippingMethodManager, _orderSearchService, _orderShippingService, _optionService, _ecommerceSettings, A.Fake<IExportOrdersService>(), A.Fake<IUserService>());
         }

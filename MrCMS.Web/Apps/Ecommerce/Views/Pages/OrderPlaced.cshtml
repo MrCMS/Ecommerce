@@ -5,48 +5,38 @@
 @{
     var order = ViewData["order"] as Order;
 }
-
-<h4>Woahh! That was fast!
-</h4>
-<p>
-    Your order (ID:@order.Id) was successfully processed.
-</p>
-<p>
-    Thank you for shopping with Mr CMS Ecommerce!
-</p>
-
-<hr />
+<h1>Order Complete</h1>
+<div class="row-fluid">
+    <h4 class="green-tick">Your order (ID:@order.Id) was successfully processed.</h4>
+    <p>
+        Thank you for shopping with Mr CMS Ecommerce!
+    </p>
+</div>
 
 @{
-            if (CurrentRequestData.CurrentUser == null)
-            {
-            <div class="border-grey margin-bottom-20">
-                <div class="sub-header grey-background">
-                    Would you like us to remember your details for next time?
-                </div>
-                <div class="padding-20">
-                    <p>
-                        Simply enter a password :
-                    </p>
-                    @using (Html.BeginForm("RegistrationWithoutDetails", "UserAccount", null, FormMethod.Post, new { @class = "form-horizontal" }))
-                    {
-                        @Html.Hidden("Email", order.OrderEmail)
-                        @Html.Hidden("OrderId", order.Id)
-                        <div class="row-fluid">
-                            <input type="password" name="Password" id="password" class="span6" required />
-                        </div>
-                        <br />
-                        <div class="row-fluid">
-                            <input type="submit" class="btn red-gradient span4" value="Continue" />
-                        </div>
-                    }
+    if (CurrentRequestData.CurrentUser == null)
+    {
+        <hr/>
+        <h4>Would you like us to remember your details for next time?</h4>
+        using (Html.BeginForm("RegistrationWithoutDetails", "UserAccount", null, FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.Hidden("Email", order.OrderEmail)
+            @Html.Hidden("OrderId", order.Id)
+            <p>Then, simply enter a password.</p>
+            <div class="control-group">
+                <label class="control-label" for="inputEmail">Password <span class="red">*</span> :</label>
+                <div class="controls">
+                    <input type="password" name="Password" id="password" required />
                 </div>
             </div>
-            }
+            <div class="control-group">
+                <div class="controls">
+                  <input type="submit" class="btn" value="Create Account" />
+                </div>
+          </div>
         }
-
-
+    }
+}
 <hr />
-
 <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-info" >Return to shop
 </a>

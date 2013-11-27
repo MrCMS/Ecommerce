@@ -1,5 +1,5 @@
 #cookie-bar {background:#111111; height:24px; line-height:24px; color:#eeeeee; text-align:center; padding:3px 0;}
-#cookie-bar.fixed {position:fixed; top:0; left:0; width:100%;}
+#cookie-bar.fixed {position:fixed; bottom:0; left:0; width:100%;z-index: 999;}
 #cookie-bar p {margin:0; padding:0;}
 #cookie-bar a {color:#ffffff; display:inline-block; border-radius:3px; text-decoration:none; padding:0 6px; margin-left:8px;}
 #cookie-bar .cb-enable {background:#007700;}

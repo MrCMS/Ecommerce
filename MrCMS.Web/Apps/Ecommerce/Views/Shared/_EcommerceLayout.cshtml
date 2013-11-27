@@ -2,11 +2,10 @@
 @{
     Layout = "_BaseLayout.cshtml";
 }
-<div id="fb-root"></div>
 <div class="container">
     <div class="row-fluid">
         <div class="span3">
-            @RenderZone("Header left")
+            @RenderZone("Header Left")
         </div>
         <div class="span6">
             @RenderZone("Header Middle")
@@ -40,8 +39,8 @@
     @RenderZone("After Content")
 </div>
 
-<div id="footer">
+<footer>
     <div class="container">
         @RenderZone("Footer")
     </div>
-</div>
+</footer>

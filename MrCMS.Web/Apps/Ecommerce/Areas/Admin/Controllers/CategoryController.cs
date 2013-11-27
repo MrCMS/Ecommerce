@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using MrCMS.Services;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website.Controllers;
 using System;
 using System.Linq;
@@ -13,18 +13,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     {
         private readonly ICategoryService _categoryService;
         private readonly IDocumentService _documentService;
+        private readonly SiteSettings _siteSettings;
 
-        public CategoryController(ICategoryService categoryService, IDocumentService documentService)
+        public CategoryController(ICategoryService categoryService, IDocumentService documentService, SiteSettings siteSettings)
         {
             _categoryService = categoryService;
             _documentService = documentService;
+            _siteSettings = siteSettings;
         }
 
         public ViewResult Index(string q = null, int p = 1)
         {
             if (_documentService.GetUniquePage<CategoryContainer>() == null)
                 return View();
-            var categoryPagedList = _categoryService.Search(q, p);
+            var categoryPagedList = _categoryService.Search(q, p, _siteSettings.DefaultPageSize);
             return View(categoryPagedList);
         }
 

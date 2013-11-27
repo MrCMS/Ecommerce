@@ -15,6 +15,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [Required]
         [Remote("IsUniqueAttribute", "ProductSpecificationAttribute", AdditionalFields = "Id")]
         public virtual string Name { get; set; }
+        public virtual int DisplayOrder { get; set; }
 
         public virtual IList<ProductSpecificationAttributeOption> Options { get; set; }
     }

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
+﻿using System.Linq;
 using MrCMS.Models;
 using MrCMS.Paging;
 using MrCMS.Services;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using NHibernate;
 using MrCMS.Helpers;
@@ -15,9 +13,6 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using NHibernate.Criterion;
 using NHibernate.SqlCommand;
-using NHibernate.Transform;
-using NHibernate.Linq;
-using Order = MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
@@ -25,9 +20,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     {
         private readonly ISession _session;
         private readonly IDocumentService _documentService;
-        private readonly EcommerceSettings _ecommerceSettings;
+        private readonly SiteSettings _ecommerceSettings;
 
-        public ProductService(ISession session, IDocumentService documentService, EcommerceSettings ecommerceSettings)
+        public ProductService(ISession session, IDocumentService documentService, SiteSettings ecommerceSettings)
         {
             _session = session;
             _documentService = documentService;
@@ -37,7 +32,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public ProductPagedList Search(string queryTerm = null, int page = 1)
         {
             IPagedList<Product> pagedList;
-            var pageSize = _ecommerceSettings.PageSizeAdmin > 0 ? _ecommerceSettings.PageSizeAdmin : 10;
+            var pageSize = _ecommerceSettings.DefaultPageSize > 0 ? _ecommerceSettings.DefaultPageSize : 10;
             if (!string.IsNullOrWhiteSpace(queryTerm))
             {
                 Product productAlias = null;
@@ -70,6 +65,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                  .List()
                        : new List<Product>();
         }
+
+        public IPagedList<Product> Search(Product product, string query, int page = 1, int pageSize = 10)
+        {
+            var queryOver = QueryOver.Of<Product>();
+
+            if (!string.IsNullOrWhiteSpace(query))
+                queryOver = queryOver.Where(item => item.Name.IsInsensitiveLike(query, MatchMode.Anywhere));
+
+            queryOver = queryOver.Where(item => !item.Id.IsIn(product.RelatedProducts.Select(c => c.Id).ToArray()) && item.Id!=product.Id);
+
+            return _session.Paged(queryOver, page, pageSize);
+        }
         
         public void AddCategory(Product product, int categoryId)
         {
@@ -93,6 +100,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                       session.SaveOrUpdate(product);
                                       session.SaveOrUpdate(category);
                                   });
+        }
+
+        public void AddRelatedProduct(Product product, int relatedProductId)
+        {
+            var relatedProduct = _documentService.GetDocument<Product>(relatedProductId);
+
+            if (product.RelatedProducts.Any(x => x.Id == relatedProductId)) return;
+
+            product.RelatedProducts.Add(relatedProduct);
+            _session.Transact(session => session.SaveOrUpdate(product));
+        }
+
+        public void RemoveRelatedProduct(Product product, int relatedProductId)
+        {
+            var relatedProduct = _documentService.GetDocument<Product>(relatedProductId);
+            product.RelatedProducts.Remove(relatedProduct);
+            relatedProduct.RelatedProducts.Remove(product);
+            _session.Transact(session =>
+            {
+                session.SaveOrUpdate(product);
+                session.SaveOrUpdate(relatedProduct);
+            });
         }
 
         public List<SelectListItem> GetOptions()
@@ -142,6 +171,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     session.Update(product);
                 }
             );
+        }
+
+        public Product Update(Product product)
+        {
+            _session.Transact(session => session.Update(product));
+            return product;
         }
 
         public IList<Product> GetNewIn(int numberOfItems = 10)

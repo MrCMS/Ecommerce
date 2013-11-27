@@ -6,10 +6,10 @@ using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Services;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IOptionService _optionService;
-        private readonly EcommerceSettings _ecommerceSettings;
+        private readonly SiteSettings _ecommerceSettings;
         private readonly IExportOrdersService _exportOrdersService;
         private readonly IUserService _userService;
         private readonly IShippingMethodManager _shippingMethodManager;
@@ -31,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         public OrderController(IOrderService orderService,  IShippingMethodManager shippingMethodManager,
             IOrderSearchService orderSearchService, IOrderShippingService orderShippingService,
-            IOptionService optionService, EcommerceSettings ecommerceSettings, IExportOrdersService exportOrdersService, IUserService userService)
+            IOptionService optionService, SiteSettings ecommerceSettings, IExportOrdersService exportOrdersService, IUserService userService)
         {
             _orderService = orderService;
             _shippingMethodManager = shippingMethodManager;
@@ -48,10 +48,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             ViewData["ShippingStatuses"] = GeneralHelper.GetEnumOptionsWithEmpty<ShippingStatus>();
             ViewData["PaymentStatuses"] = GeneralHelper.GetEnumOptionsWithEmpty<PaymentStatus>();
-            model.Results = new PagedList<Order>(null, 1, _ecommerceSettings.PageSizeAdmin);
+            model.Results = new PagedList<Order>(null, 1, _ecommerceSettings.DefaultPageSize);
             try
             {
-                model.Results = _orderSearchService.SearchOrders(model, page, _ecommerceSettings.PageSizeAdmin);
+                model.Results = _orderSearchService.SearchOrders(model, page, _ecommerceSettings.DefaultPageSize);
             }
             catch (Exception)
             {
