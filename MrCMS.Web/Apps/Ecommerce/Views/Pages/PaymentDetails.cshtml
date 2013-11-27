@@ -6,30 +6,47 @@
 
 <div class="row-fluid">
     <div class="span8">
-        <h4>Billing Address
-        </h4>
-        @using (Html.BeginForm("BillingAddressSameAsShippingAddress", "PaymentDetails", FormMethod.Post))
+        <h4>Billing Address</h4>
+        @if (cart.BillingAddressSameAsShippingAddress)
         {
-            <label>
-                @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress)
-                Billing address same as shipping address?
-            </label>
+            using (Html.BeginForm("BillingAddressSameAsShippingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+            <div class="control-group">
+                <div class="control-label">
+                    <label class="checkbox" for="SameAsShipping">
+                        Use Delivery Address @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress)</label>
+                </div>
+                <div class="controls">
+                    @cart.ShippingAddress.GetDescription()
+                </div>
+            </div>
+            }
         }
         @if (settingBillingAddress)
         {
             Html.RenderAction("SetBillingAddress", "PaymentDetails");
         }
-        else if (!cart.BillingAddressSameAsShippingAddress)
+        else if (!cart.BillingAddressSameAsShippingAddress && cart.BillingAddress != null)
         {
-            <p>
-                @cart.BillingAddress.Address1, @cart.BillingAddress.Address2, @cart.BillingAddress.City
-            </p>
-            using (Html.BeginForm("SetBillingAddress", "PaymentDetails", FormMethod.Post))
+            <div class="form-horizontal">
+                <div class="control-group">
+                    <div class="control-label">Billing Address :</div>
+                    <div class="controls">
+                        @cart.BillingAddress.GetDescription()
+                    </div>
+                </div>    
+            </div>
+            using (Html.BeginForm("UpdateBillingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
             {
-            <input class="btn btn-primary" value="Change" type="submit" />
+                <div class="control-group">
+                    <div class="controls">
+                        <input class="btn btn-info" value="Edit" type="submit" />
+                    </div>
+                </div>
             }
         }
-        <h4>Payment details</h4>
+        <hr/>
+        <h4>Payment Details</h4>
         @if (!settingBillingAddress)
         {
             Html.RenderPartial("SelectMethod", cart);

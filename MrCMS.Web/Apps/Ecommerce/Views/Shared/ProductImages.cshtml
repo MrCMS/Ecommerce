@@ -1,4 +1,4 @@
-﻿@using MrCMS.Helpers
+﻿@*@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Entities.Products
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
 @{
@@ -17,4 +17,24 @@
             </li>
         }
     </ul>
+</div>*@
+@using System.Drawing
+@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Pages.Product  
+@Html.RenderImage(Model.DisplayImageUrl, new Size { Width = 240, Height = 140 }, Model.Name, Model.Name, new { @class = "span12" })
+<div id="product-image-thumbnails">
+    <ul class="thumbnails">
+        @foreach (var item in Model.Images)
+        {
+            <li class="span4">
+                <a href="@item.FileUrl" rel="prettyPhoto[product]">
+                    @Html.RenderImage(item.FileUrl, new Size {Width = 77,Height=77}, Model.Name, Model.Name, new { @class = "span12" })
+                </a>
+            </li>
+        }
+    </ul>
 </div>
+@{
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.prettyPhoto.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/product-gallery.js");
+}

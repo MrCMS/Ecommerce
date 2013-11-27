@@ -3,18 +3,20 @@
 <br />
 <div class="row-fluid">
     <div class="span8">
-        <h4>Select postage
-        </h4>
-        <br />
-        <div>
-            <div class="span4">Postage selection*:</div>
-            <div>
-                @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>)
+        <h4>Select postage</h4>
+
+        <div class="form-horizontal">
+            <div class="control-group">
+                <label class="control-label" for="ShippingCalculation">
+                    Postage Selection <span class="red">*</span> :
+                </label>
+                <div class="controls">
+                    @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>)
+                </div>
             </div>
         </div>
         <hr />
         @{Html.RenderAction("DeliveryAddress", "SetDeliveryDetails");}
-
     </div>
     <div class="span4">
         @{Html.RenderAction("Summary", "Checkout");}
