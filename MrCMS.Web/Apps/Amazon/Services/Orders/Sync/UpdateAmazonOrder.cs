@@ -90,7 +90,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     return byAmazonOrderId;
             }
 
-            var amazonOrder = amazonOrderSyncData.AmazonOrder ?? new AmazonOrder();
+            var amazonOrder = amazonOrderSyncData.AmazonOrder = amazonOrderSyncData.AmazonOrder ?? new AmazonOrder();
             var order = AmazonAppHelper.DeserializeFromJson<Order>(amazonOrderSyncData.Data);
 
             ProcessOrder(order, amazonOrder, amazonOrderSyncData.Operation == SyncAmazonOrderOperation.Add);

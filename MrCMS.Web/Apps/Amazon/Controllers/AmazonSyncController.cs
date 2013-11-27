@@ -53,6 +53,8 @@ namespace MrCMS.Web.Apps.Amazon.Controllers
         }
         private void Update(AmazonOrderSyncData data)
         {
+            if (data.Status != SyncAmazonOrderStatus.Pending)
+                return;
             LogStatus(data, SyncAmazonOrderStatus.InProgress);
             _updateAmazonOrder.UpdateOrder(data);
             LogStatus(data, SyncAmazonOrderStatus.Synced);
