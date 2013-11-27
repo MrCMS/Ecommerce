@@ -88,7 +88,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                        name = worksheet.GetValue<string>(rowId, 2);
                                 var handle = url.HasValue() ? url : SeoHelper.TidyUrl(name);
 
-
                                 if (!productsToImport.Any(x => x.Name == name || x.UrlSegment == url))
                                 {
                                     if (parseErrors.All(x => x.Key != handle))
@@ -215,8 +214,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     productsToImport.Add(product);
                                 }
                                 else
-                                    product =
-                                        productsToImport.SingleOrDefault(x => x.Name == name && x.UrlSegment == url);
+                                {
+                                    product = !string.IsNullOrWhiteSpace(url) ? 
+                                        productsToImport.SingleOrDefault(x => x.Name == name && x.UrlSegment == url) 
+                                        : productsToImport.SingleOrDefault(x => x.Name == name);
+                                }
 
                                 //Variants
                                 if (product != null)
@@ -298,17 +300,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                         try
                                         {
                                             var value = worksheet.GetValue<string>(rowId, 30);
-                                            if (!String.IsNullOrWhiteSpace(value))
+                                            if (!value.Contains(":"))
                                             {
-                                                if (!worksheet.GetValue<string>(rowId, 30).Contains(":"))
-                                                    parseErrors[handle].Add(
-                                                        "Product Variant Price Breaks field value contains illegal characters / not in correct format. Quantity and Price (Item) must be split with :, and items must be split by ;");
+                                                parseErrors[handle].Add(
+                                                    "Product Variant Price Breaks field value contains illegal characters / not in correct format. Quantity and Price (Item) must be split with :, and items must be split by ;");
+                                            }
+                                            else
+                                            {
                                                 var priceBreaks = value.Split(';');
                                                 foreach (var item in priceBreaks)
                                                 {
                                                     if (!String.IsNullOrWhiteSpace(item))
                                                     {
-                                                        string[] priceBreak = item.Split(':');
+                                                        var priceBreak = item.Split(':');
                                                         if (!String.IsNullOrWhiteSpace(priceBreak[0]) &&
                                                             !String.IsNullOrWhiteSpace(priceBreak[1]) &&
                                                             !productVariant.PriceBreaks.ContainsKey(

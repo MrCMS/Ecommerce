@@ -53,12 +53,13 @@ namespace MrCMS.Services.ImportExport
             if (_allDocuments == null)
                 _allDocuments = new List<Document>();
 
-            var documentByUrl = _allDocuments.OfType<Webpage>().SingleOrDefault(x => x.UrlSegment == documentDto.UrlSegment);
+            var type = DocumentMetadataHelper.GetTypeByName(documentDto.DocumentType);
+            var documentByUrl = _allDocuments.Where(x => x.DocumentType == type.Name).SingleOrDefault(x => x.UrlSegment == documentDto.UrlSegment) as Webpage;
             var document = documentByUrl ??(Webpage)Activator.CreateInstance(DocumentMetadataHelper.GetTypeByName(documentDto.DocumentType));
 
             if (!String.IsNullOrEmpty(documentDto.ParentUrl))
             {
-                var parent = _allDocuments.OfType<Webpage>().SingleOrDefault(x => x.UrlSegment == documentDto.ParentUrl);
+                var parent = _allDocuments.Where(x => x.DocumentType == type.Name).SingleOrDefault(x => x.UrlSegment == documentDto.ParentUrl);
                 document.Parent = parent;
                 document.SetParent(parent);
             }
@@ -88,22 +89,14 @@ namespace MrCMS.Services.ImportExport
                 if (!document.Tags.Contains(tag))
                     document.Tags.Add(tag);
             }
-            //Url History
-            foreach (var item in documentDto.UrlHistory)
-            {
-                if (!String.IsNullOrWhiteSpace(item) && document.Urls.All(x => x.UrlSegment != item))
-                {
-                    if (_urlHistoryService.GetByUrlSegment(item) == null)
-                        _urlHistoryService.Add(new UrlHistory { UrlSegment = item, Webpage = document });
-                }
-            }
 
             if (document.Id == 0)
             {
                 document.DisplayOrder = documentDto.DisplayOrder > 0 ? documentDto.DisplayOrder : _allDocuments.Count();
-                _allDocuments.Add(document);
             }
 
+            if(documentByUrl==null)
+                _allDocuments.Add(document);
             return document;
         }
     }
