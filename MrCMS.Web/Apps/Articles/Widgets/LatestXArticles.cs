@@ -23,6 +23,7 @@ namespace MrCMS.Web.Apps.Articles.Widgets
                        {
                            Articles = session.QueryOver<Article>()
                                            .Where(article => article.Parent.Id == RelatedNewsList.Id && article.PublishOn != null && article.PublishOn <= CurrentRequestData.Now)
+                                           .OrderBy(article => article.PublishOn).Desc
                                            .Take(NumberOfArticles)
                                            .Cacheable()
                                            .List(),

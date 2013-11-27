@@ -23,12 +23,12 @@ namespace MrCMS.Web.Apps.Core.Services
         public User RegisterUser(RegisterModel model)
         {
             var user = new User
-                              {
-                                  FirstName = model.FirstName,
-                                  LastName = model.LastName,
-                                  Email = model.Email,
-                                  IsActive = true
-                              };
+                           {
+                               FirstName = model.FirstName,
+                               LastName = model.LastName,
+                               Email = model.Email,
+                               IsActive = true
+                           };
             _passwordManagementService.SetPassword(user, model.Password, model.ConfirmPassword);
             _userService.AddUser(user);
             _authorisationService.SetAuthCookie(model.Email, false);

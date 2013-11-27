@@ -8,7 +8,7 @@
         @using (Html.BeginForm("PaymentDetails", "Cart", FormMethod.Post))
         {
             <div>
-                <div class="span4">Card Type*:</div>
+                <div class="span4">Card Type <span class="red">*</span>:</div>
                 <div>
                     <select id="CartType" name="CartType">
                         <option value="visa">Visa</option>

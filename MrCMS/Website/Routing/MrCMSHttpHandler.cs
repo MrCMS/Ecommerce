@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -34,9 +33,10 @@ namespace MrCMS.Website.Routing
             CurrentRequestData.ErrorSignal.Raise(exception);
         }
 
-        protected void HandleError(HttpContextBase context, int code, int pageId, HttpException exception)
+        protected void HandleError(HttpContextBase context, int code, int pageId, HttpException exception, bool logException = true)
         {
-            HandleExceptionWithElmah(exception);
+            if (logException)
+                HandleExceptionWithElmah(exception);
             var webpage = _documentService.GetDocument<Webpage>(pageId);
             if (webpage != null)
             {
@@ -106,6 +106,8 @@ namespace MrCMS.Website.Routing
             if (PageIsRedirect(context)) return;
 
             if (RequiresSSLRedirect(context)) return;
+
+            if (RequiresSiteRedirect(context)) return;
 
             if (RedirectsToHomePage(context)) return;
 
@@ -184,8 +186,25 @@ namespace MrCMS.Website.Routing
         {
             if (Webpage == null || (!Webpage.Published) && !CurrentRequestData.CurrentUserIsAdmin)
             {
-                HandleError(context, 404, _siteSettings.Error404PageId, new HttpException(404, "Cannot find " + Data));
+                HandleError(context, 404, _siteSettings.Error404PageId, new HttpException(404, "Cannot find " + Data), _siteSettings.Log404s);
                 return true;
+            }
+            return false;
+        }
+        public bool RequiresSiteRedirect(HttpContextBase context)
+        {
+            var url = context.Request.Url;
+            if (url != null)
+            {
+                var scheme = url.Scheme;
+                var authority = url.Authority;
+                var baseUrl = Webpage.Site.BaseUrl;
+                if (!context.Request.IsLocal && !authority.Equals(baseUrl, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var redirectUrl = url.ToString().Replace(scheme + "://" + authority, scheme + "://" + baseUrl);
+                    context.Response.Redirect(redirectUrl);
+                    return true;
+                }
             }
             return false;
         }

@@ -11,7 +11,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
 {
-    [FriendlyClassName("Send Order Placed Email To Store Owner Message Template")]
     public class SendOrderPlacedEmailToStoreOwnerMessageTemplate : MessageTemplate, IMessageTemplate<Order>
     {
         public override MessageTemplate GetInitialTemplate(ISession session)

@@ -58,7 +58,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 _amazonOrderSyncDataService.Update(amazonOrderSyncData);
             }
 
-            var amazonOrder = amazonOrderSyncData.AmazonOrder ?? new AmazonOrder();
+            var amazonOrder = amazonOrderSyncData.AmazonOrder = amazonOrderSyncData.AmazonOrder ?? new AmazonOrder();
             var order = AmazonAppHelper.DeserializeFromJson<Order>(amazonOrderSyncData.Data);
 
             ProcessOrder(order, ref amazonOrder, amazonOrderSyncData.Operation == SyncAmazonOrderOperation.Add);

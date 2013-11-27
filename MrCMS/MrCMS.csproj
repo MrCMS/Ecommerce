@@ -216,19 +216,27 @@
     <Compile Include="Entities\Documents\Web\FormProperties\TextBox.cs" />
     <Compile Include="Entities\Documents\Web\UrlHistory.cs" />
     <Compile Include="Entities\Indexes\DocumentIndexDefinition.cs" />
+    <Compile Include="Entities\Multisite\RedirectedDomain.cs" />
     <Compile Include="Entities\People\IBelongToUser.cs" />
     <Compile Include="Entities\People\UserProfileData.cs" />
+    <Compile Include="Entities\SystemEntity.cs" />
     <Compile Include="Events\IOnDocumentAdded.cs" />
     <Compile Include="Events\IOnDocumentDeleted.cs" />
     <Compile Include="Events\IOnDocumentUnpublished.cs" />
+    <Compile Include="Logging\LogSearchQuery.cs" />
+    <Compile Include="Models\MessageQueueQuery.cs" />
     <Compile Include="Models\UserSearchQuery.cs" />
+    <Compile Include="Services\CloneSitePartsService.cs" />
     <Compile Include="Services\DocumentEventService.cs" />
     <Compile Include="Services\IAuthorisationService.cs" />
     <Compile Include="Services\IDocumentEventService.cs" />
     <Compile Include="Services\IHashAlgorithm.cs" />
+    <Compile Include="Services\IMessageQueueAdminService.cs" />
     <Compile Include="Services\IMessageTemplateService.cs" />
     <Compile Include="Services\IPasswordEncryptionManager.cs" />
+    <Compile Include="Services\IRedirectedDomainService.cs" />
     <Compile Include="Services\ITokenProvider.cs" />
+    <Compile Include="Services\MessageQueueAdminService.cs" />
     <Compile Include="Services\MessageTemplateService.cs" />
     <Compile Include="Services\IMessageParser.cs" />
     <Compile Include="Entities\Messaging\IMessageTemplate.cs" />
@@ -401,8 +409,10 @@
     <Compile Include="Models\SiteTree.cs" />
     <Compile Include="Models\SiteTreeNode.cs" />
     <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Services\PasswordEncryptionManager.cs" />
     <Compile Include="Services\PasswordManagementService.cs" />
     <Compile Include="Services\PropertyTokenProvider.cs" />
+    <Compile Include="Services\RedirectedDomainService.cs" />
     <Compile Include="Services\RoleService.cs" />
     <Compile Include="Services\SearchService.cs" />
     <Compile Include="Services\NopSHA1HashAlgorithm.cs" />
@@ -462,6 +472,7 @@
     <Compile Include="Tasks\ScheduledTaskManager.cs" />
     <Compile Include="Tasks\SendQueuedMessagesTask.cs" />
     <Compile Include="Tasks\TaskExecutor.cs" />
+    <Compile Include="Website\AdminUISiteAgnosticAttribute.cs" />
     <Compile Include="Website\Binders\ACLUpdateModelBinder.cs" />
     <Compile Include="Tasks\UpdateIndicesTask.cs" />
     <Compile Include="Website\Binders\AddDocumentModelBinder.cs" />
@@ -510,10 +521,10 @@
     <Compile Include="Website\OutOfContextSession.cs" />
     <Compile Include="Website\Routing\AppRouteConstraint.cs" />
     <Compile Include="Website\Routing\ControllerManager.cs" />
-    <Compile Include="Website\Routing\ErrorHandler.cs" />
     <Compile Include="Website\Routing\MrCMSHttpHandler.cs" />
     <Compile Include="Website\Routing\MrCMSRouteHandler.cs" />
     <Compile Include="Website\MrCMSPage.cs" />
+    <Compile Include="Website\ScheduledTaskChecker.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
