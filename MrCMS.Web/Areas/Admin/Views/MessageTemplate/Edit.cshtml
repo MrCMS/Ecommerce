@@ -7,7 +7,7 @@
 @using (Html.BeginForm("Edit", "MessageTemplate", FormMethod.Post, new { id = "edit-message-template" }))
 {
     <fieldset>
-        <legend>Edit @Model.GetType().GetFriendlyName()
+        <legend>Edit @Model.GetType().Name.BreakUpString()
             <span class="pull-right btn-group  display-inline ">
                 @Html.ActionLink("Back to list", "Index", "MessageTemplate", null, new { @class = "btn" })
                 @Html.ActionLink("Reset", "Reset", "MessageTemplate", new { Id = Model.Id }, new { @class = "btn", data_toggle = "fb-modal" })
@@ -60,8 +60,6 @@
         @Html.CheckBoxFor(x => x.IsHtml, new { @class = "pull-left" }) <span>&nbsp;Is HTML?</span>
 
         @{ Html.RenderAction("Tokens", "MessageTemplate", new {messageTemplate = Model});}
-
-
     </fieldset>
 }
 @{ Html.IncludeScript("~/Areas/Admin/Content/Scripts/custom/edit-message-template.js");}

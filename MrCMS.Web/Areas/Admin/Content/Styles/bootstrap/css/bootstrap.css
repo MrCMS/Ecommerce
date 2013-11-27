@@ -2288,7 +2288,7 @@ table th[class*="span"],
 }
 
 /* White icons with optional class, or on hover/focus/active states of certain elements */
-  
+
 .icon-white,
 .nav-pills > .active > a > [class^="icon-"],
 .nav-pills > .active > a > [class*=" icon-"],

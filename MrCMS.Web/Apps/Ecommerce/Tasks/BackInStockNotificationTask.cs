@@ -13,9 +13,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Tasks
 {
     public class BackInStockNotificationTask : BackgroundTask
     {
+        private readonly Site _site;
+
         public BackInStockNotificationTask(Site site)
             : base(site)
         {
+            _site = site;
         }
 
         public override void Execute()
@@ -26,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Tasks
                                      if (!backInStockProductVariants.Any())
                                          return;
 
-                                     var messageParser = new MessageParser<ProductBackInStockMessageTemplate, ProductVariant>(new MessageTemplateParser(MrCMSApplication.Get<IKernel>()), session);
+                                     var messageParser = new MessageParser<ProductBackInStockMessageTemplate, ProductVariant>(new MessageTemplateParser(MrCMSApplication.Get<IKernel>()), _site, session);
 
                                      foreach (var inStockProductVariant in backInStockProductVariants)
                                      {

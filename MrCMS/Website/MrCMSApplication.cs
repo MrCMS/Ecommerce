@@ -12,6 +12,10 @@ using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using MrCMS.Apps;
 using MrCMS.DbConfiguration.Configuration;
 using MrCMS.Entities.Documents.Web;
+using MrCMS.Entities.Multisite;
+using MrCMS.Events;
+using MrCMS.Indexing.Management;
+using MrCMS.Installation;
 using MrCMS.IoC;
 using MrCMS.Services;
 using MrCMS.Settings;
@@ -23,8 +27,10 @@ using NHibernate;
 using Ninject;
 using Ninject.Web.Common;
 using System.Linq;
+using MrCMS.Helpers;
 
-[assembly: WebActivator.PreApplicationStartMethod(typeof(MrCMSApplication), "Start")]
+[assembly: WebActivator.PreApplicationStartMethod(typeof(MrCMSApplication), "Start", Order = 1)]
+[assembly: WebActivator.PreApplicationStartMethod(typeof(MrCMSApplication), "EnsureIndexesExist", Order = 2)]
 [assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(MrCMSApplication), "Stop")]
 
 namespace MrCMS.Website
@@ -47,13 +53,17 @@ namespace MrCMS.Website
             ViewEngines.Engines.Insert(0, new MrCMSRazorViewEngine());
 
             ControllerBuilder.Current.SetControllerFactory(new MrCMSControllerFactory());
+
+            ScheduledTaskChecker.Instance.Start(10);
+
+            GlobalFilters.Filters.Add(new HoneypotFilterAttribute());
         }
 
         private static void SetModelBinders()
         {
             ModelBinders.Binders.DefaultBinder = new MrCMSDefaultModelBinder(Get<ISession>);
-            ModelBinders.Binders.Add(typeof (DateTime), new CultureAwareDateBinder());
-            ModelBinders.Binders.Add(typeof (DateTime?), new NullableCultureAwareDateBinder());
+            ModelBinders.Binders.Add(typeof(DateTime), new CultureAwareDateBinder());
+            ModelBinders.Binders.Add(typeof(DateTime?), new NullableCultureAwareDateBinder());
         }
 
         private static bool IsFileRequest(Uri uri)
@@ -101,24 +111,14 @@ namespace MrCMS.Website
                                                            .GetCurrentUser(CurrentRequestData.CurrentContext);
                                                }
                                            };
-
                 EndRequest += (sender, args) =>
-                                  {
-                                      if (!IsFileRequest(Request.Url))
-                                      {
-                                          if (CurrentRequestData.DatabaseIsInstalled)
-                                              AppendScheduledTasks();
-                                          TaskExecutor.StartExecuting();
-                                      }
-                                  };
+                {
+                    if (!IsFileRequest(Request.Url))
+                    {
+                        TaskExecutor.StartExecuting();
+                    }
+                };
             }
-        }
-
-        protected void AppendScheduledTasks()
-        {
-            var scheduledTaskManager = Get<IScheduledTaskManager>();
-            foreach (var scheduledTask in scheduledTaskManager.GetDueTasks())
-                TaskExecutor.ExecuteLater(scheduledTaskManager.GetTask(scheduledTask));
         }
 
         public abstract string RootNamespace { get; }
@@ -131,19 +131,19 @@ namespace MrCMS.Website
             routes.MapRoute("InstallerRoute", "install", new { controller = "Install", action = "Setup" });
             routes.MapRoute("Sitemap", "sitemap.xml", new { controller = "SEO", action = "Sitemap" });
             routes.MapRoute("robots.txt", "robots.txt", new { controller = "SEO", action = "Robots" });
+            routes.MapRoute("ckeditor Config", "Areas/Admin/Content/Editors/ckeditor/config.js",
+                            new { controller = "CKEditor", action = "Config" });
 
             routes.MapRoute("Logout", "logout", new { controller = "Login", action = "Logout" },
                             new[] { RootNamespace });
 
-            routes.MapRoute("zones", "render-widget", new { action = "Show", controller = "Widget" },
+            routes.MapRoute("zones", "render-widget", new { controller = "Widget", action = "Show" },
                             new[] { RootNamespace });
 
             routes.MapRoute("ajax content save", "admintools/savebodycontent",
                             new { controller = "AdminTools", action = "SaveBodyContent" });
 
             routes.MapRoute("form save", "save-form/{id}", new { controller = "Form", action = "Save" });
-
-            RegisterAppSpecificRoutes(routes);
 
             routes.Add(new Route("{*data}", new RouteValueDictionary(),
                                  new RouteValueDictionary(new { data = @".*\.aspx" }),
@@ -161,14 +161,6 @@ namespace MrCMS.Website
             }
         }
 
-        protected abstract void RegisterAppSpecificRoutes(RouteCollection routes);
-
-        //public static Layout OverridenDefaultLayout { get; set; }
-        //public static Layout GetDefaultLayout(Webpage page)
-        //{
-        //    return OverridenDefaultLayout ?? Get<IDocumentService>().GetDefaultLayout(page);
-        //}
-
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
         private static IKernel _kernel;
 
@@ -180,6 +172,17 @@ namespace MrCMS.Website
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
+        }
+
+        public static void EnsureIndexesExist()
+        {
+            if (CurrentRequestData.DatabaseIsInstalled)
+            {
+                var session = bootstrapper.Kernel.Get<ISessionFactory>().OpenFilteredSession();
+                var sites = session.QueryOver<Site>().List();
+                foreach (var site in sites)
+                    IndexManager.EnsureIndexesExist(session, site);
+            }
         }
 
         /// <summary>
@@ -236,5 +239,20 @@ namespace MrCMS.Website
 
         public const string AssemblyVersion = "0.3.1.*";
         public const string AssemblyFileVersion = "0.3.1.0";
+    }
+
+    public class HoneypotFilterAttribute : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (CurrentRequestData.DatabaseIsInstalled)
+            {
+                if (!string.IsNullOrWhiteSpace(
+                        filterContext.HttpContext.Request[MrCMSApplication.Get<SiteSettings>().HoneypotFieldName]))
+                {
+                    filterContext.Result = new EmptyResult();
+                }
+            }
+        }
     }
 }
