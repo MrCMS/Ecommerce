@@ -1118,7 +1118,6 @@
     </Content>
     <Content Include="Areas\Admin\Content\Editors\ckeditor\build-config.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\ckeditor.js" />
-    <Content Include="Areas\Admin\Content\Editors\ckeditor\config.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\contents.css" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\lang\en-gb.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\lang\en.js" />
@@ -2364,7 +2363,6 @@
     <Content Include="Apps\Ecommerce\Views\PaymentMethod\CashOnDelivery.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PaymentMethod\PayPalExpressCheckout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PaymentMethod\Paypoint.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\PaymentMethod\Paypoint.cshtml.orig" />
     <Content Include="Apps\Ecommerce\Views\PaymentMethod\SagePay.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Paypoint\PaymentDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Paypoint\Redirect3DSecure.cshtml" />
