@@ -75,7 +75,7 @@ namespace MrCMS.Web.Apps.Amazon
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)
         {
-            var configurationProvider = new ConfigurationProvider(new SettingService(session), site);
+            var configurationProvider = new ConfigurationProvider(new SettingService(session, site), site);
 
             var amazonAppSettings = configurationProvider.GetSiteSettings<AmazonAppSettings>();
             amazonAppSettings.FeedsApiVersion = "2009-01-01";

@@ -24,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce
     {
         public static void InstallApp(ISession session, InstallModel model, Site site)
         {
-            var configurationProvider = new ConfigurationProvider(new SettingService(session), site);
+            var configurationProvider = new ConfigurationProvider(new SettingService(session, site), site);
             var siteSettings = configurationProvider.GetSiteSettings<SiteSettings>();
             var ecommerceSettings = configurationProvider.GetSiteSettings<EcommerceSettings>();
             var eventService = MrCMSApplication.Get<IDocumentEventService>();

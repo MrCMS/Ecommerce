@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web;
-using System.Web.Routing;
 using MrCMS.Apps;
 using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
@@ -11,9 +9,7 @@ using MrCMS.Web.Apps.Ecommerce.DbConfiguration;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration.Listeners;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Payment.SagePay;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
-using MrCMS.Web.Apps.Ecommerce.Services.SagePay;
 using NHibernate;
 using NHibernate.Event;
 using Ninject;

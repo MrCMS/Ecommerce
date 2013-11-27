@@ -9,7 +9,7 @@
             @Html.DropDownList("type", ViewData["doc-types"] as IEnumerable<SelectListItem>)
             @Html.Label("parent", "Select Parent:")
             @Html.DropDownList("parent", ViewData["parents"] as IEnumerable<SelectListItem>)
-            <input type="submit" class="btn" />
+            <input type="button" value="Search" class="btn btn-primary" />
         </div>
     }
 </div>

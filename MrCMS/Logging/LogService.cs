@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
+using Elmah;
+using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Settings;
 using MrCMS.Website;
 using NHibernate;
+using NHibernate.Criterion;
 
 namespace MrCMS.Logging
 {
@@ -16,6 +21,14 @@ namespace MrCMS.Logging
         {
             _session = session;
             _siteSettings = siteSettings;
+        }
+
+        public void Insert(Log log)
+        {
+            if (log.Error == null)
+                log.Error = new Error();
+            log.Guid = Guid.NewGuid();
+            _session.Transact(session => session.Save(log));
         }
 
         public IList<Log> GetAllLogEntries()
@@ -34,12 +47,14 @@ namespace MrCMS.Logging
             _session.Transact(session => session.Delete(log));
         }
 
-        public IPagedList<Log> GetEntriesPaged(int pageNum, LogEntryType? type = null, int pageSize = 10)
+        public List<SelectListItem> GetSiteOptions()
         {
-            var query = BaseQuery();
-            if (type.HasValue)
-                query = query.Where(log => log.Type == type);
-            return query.Paged(pageNum, pageSize);
+            var sites = _session.QueryOver<Site>().OrderBy(site => site.Name).Asc.List();
+            return sites.Count == 1
+                       ? new List<SelectListItem>()
+                       : sites
+                             .BuildSelectItemList(site => site.Name, site => site.Id.ToString(),
+                                                  emptyItemText: "All sites");
         }
 
         public IPagedList<Log> GetEntriesPaged(LogSearchQuery searchQuery)
@@ -47,6 +62,19 @@ namespace MrCMS.Logging
             var query = BaseQuery();
             if (searchQuery.Type.HasValue)
                 query = query.Where(log => log.Type == searchQuery.Type);
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.Message))
+                query =
+                    query.Where(
+                        log =>
+                        log.Message.IsInsensitiveLike(searchQuery.Message, MatchMode.Anywhere));
+
+            if (!string.IsNullOrWhiteSpace(searchQuery.Detail))
+                query = query.Where(log => log.Detail.IsInsensitiveLike(searchQuery.Detail, MatchMode.Anywhere));
+
+            if (searchQuery.SiteId.HasValue)
+                query = query.Where(log => log.Site.Id == searchQuery.SiteId);
+
             return query.Paged(searchQuery.Page, _siteSettings.DefaultPageSize);
         }
 
@@ -54,7 +82,6 @@ namespace MrCMS.Logging
         {
             return
                 _session.QueryOver<Log>()
-                        .Where(entry => entry.Site == CurrentRequestData.CurrentSite)
                         .OrderBy(entry => entry.Id)
                         .Desc;
         }
