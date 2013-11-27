@@ -32,5 +32,27 @@ $(function() {
             }
         });
     });
+    
+    $(document).on('click', '.seo-attributes', function () {
+        var link = $(this);
+        link.siblings('.seo-attributes-holder').slideToggle('500', function () {
+            if (link.siblings('.seo-attributes-holder').is(":visible")) {
+                link.val('Hide SEO attributes');
+            } else {
+                link.val('Set SEO attributes');
+            }
+        });
+        return false;
+    });
+
+    $('#file-items-table').on('click', '.btn-seo-update', function (event) {
+        event.preventDefault();
+        var form = $(this).parents('.seo-update-form');
+        console.log(form.find(':input').serialize());
+        $.post(form.data('action'), form.find(':input').serialize(), function (response) {
+            form.siblings('.seo-update-message').show().html(response).delay(4000).fadeOut();
+        });
+        return false;
+    });
    
 });
