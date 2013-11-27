@@ -54,14 +54,14 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ImportExportController_ImportProducts_ShouldCallImportProductsFromExcelOfImportExportManager()
         {
-            //var file = new BasicHttpPostedFileBase();
-            //_importExportController.ServerMock = A.Fake<HttpServerUtilityBase>();
-            //A.CallTo(() => _importExportManager.ImportProductsFromExcel(file.InputStream))
-            // .Returns(new Dictionary<string, List<string>>());
+            var file = new BasicHttpPostedFileBase();
+            _importExportController.ServerMock = A.Fake<HttpServerUtilityBase>();
+            A.CallTo(() => _importExportManager.ImportProductsFromExcel(file.InputStream))
+             .Returns(new Dictionary<string, List<string>>());
 
-            //var result = _importExportController.ImportProducts(file);
+            var result = _importExportController.ImportProducts(file);
 
-            //AssertionExtensions.Should((object)AssertionExtensions.As<Dictionary<string, List<string>>>(result.ViewBag.Messages)).NotBeNull();
+            AssertionExtensions.Should((object)AssertionExtensions.As<Dictionary<string, List<string>>>(result.ViewBag.Messages)).NotBeNull();
         }
 
     }

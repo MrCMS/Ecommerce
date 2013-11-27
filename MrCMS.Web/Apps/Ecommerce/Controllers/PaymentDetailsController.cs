@@ -33,7 +33,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             ViewData["cart"] = _cart;
             ViewData["message"] = TempData["message"];
 
-            ViewData["setting-billing-address"] = TempData["setting-billing-address"];
+            ViewData["setting-billing-address"] = (TempData["setting-billing-address"] is bool &&
+                                                   (bool) TempData["setting-billing-address"]) ||
+                                                  (!_cart.BillingAddressSameAsShippingAddress &&
+                                                   _cart.BillingAddress == null);
+            
             return View(page);
         }
 

@@ -9,22 +9,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class ImportExportController : MrCMSAppAdminController<EcommerceApp>
     {
-        #region Props
         private readonly IExportProductsManager _exportProductsManager;
         private readonly IImportProductsManager _importExportManager;
 
-        #endregion
-
-        #region Ctor
         public ImportExportController(IImportProductsManager importExportManager, IExportProductsManager exportProductsManager)
         {
             _importExportManager = importExportManager;
             _exportProductsManager = exportProductsManager;
         }
 
-        #endregion
-
-        #region Products
         [HttpGet]
         public ViewResult Products()
         {
@@ -61,6 +54,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             }
             return View("Products");
         }
-        #endregion
     }
 }

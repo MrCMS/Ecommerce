@@ -2,7 +2,9 @@
 @using MrCMS.Web.Apps.Ecommerce.Models
 @model MrCMS.Web.Apps.Ecommerce.Pages.PaymentDetails
 @{ var cart = ViewData["cart"] as CartModel;}
-@{ var settingBillingAddress = ViewData["setting-billing-address"] is bool && (bool)ViewData["setting-billing-address"];}
+@{ var settingBillingAddress = ViewData["setting-billing-address"] is bool && (bool) ViewData["setting-billing-address"] ||
+                               (!cart.BillingAddressSameAsShippingAddress &&
+                                cart.BillingAddress == null);}
 <div class="row-fluid margin-bottom-20">
     <div class="span8">
         <div class="border-grey margin-bottom-20">

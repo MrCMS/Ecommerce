@@ -75,7 +75,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         private Guid GetCartGuid(Guid userGuid)
         {
-            var value = _cartSessionManager.GetSessionValue(CartManager.CurrentCartGuid,userGuid, Guid.Empty);
+            var value = _cartSessionManager.GetSessionValue(CartManager.CurrentCartGuid, userGuid, Guid.Empty);
             if (value == Guid.Empty)
             {
                 value = _cartGuidResetter.ResetCartGuid(userGuid);
@@ -124,7 +124,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         private bool GetBillingAddressSameAsShippingAddress(Guid userGuid)
         {
-            return _cartSessionManager.GetSessionValue(CartManager.CurrentBillingAddressSameAsShippingAddressKey,userGuid, true);
+            return _cartSessionManager.GetSessionValue(CartManager.CurrentBillingAddressSameAsShippingAddressKey, userGuid, true);
         }
 
         private Address GetBillingAddress(Guid userGuid)
