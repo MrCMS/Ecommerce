@@ -1,5 +1,5 @@
 ﻿using MrCMS.Models;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using System.Collections.Generic;
@@ -11,8 +11,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     {
         ProductPagedList Search(string queryTerm = null, int page = 1);
         IList<Product> Search(string queryTerm);
+        IPagedList<Product> Search(Product product, string query, int page = 1, int pageSize = 10);
         void AddCategory(Product product, int categoryId);
         void RemoveCategory(Product product, int categoryId);
+        void AddRelatedProduct(Product product, int relatedProductId);
+        void RemoveRelatedProduct(Product product, int relatedProductId);
         List<SelectListItem> GetOptions();
         Product Get(int id);
         Product GetByName(string name);
@@ -20,5 +23,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         IList<Product> GetAll();
         IList<Product> GetNewIn(int numberOfItems = 10);
         void SetCategoryOrder(Product product, List<SortItem> items);
+        Product Update(Product product);
     }
 }

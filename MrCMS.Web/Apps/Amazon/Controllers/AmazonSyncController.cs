@@ -15,7 +15,9 @@ namespace MrCMS.Web.Apps.Amazon.Controllers
         private readonly IAmazonOrderSyncDataService _amazonOrderSyncDataService;
         private readonly IUpdateAmazonOrder _updateAmazonOrder;
 
-        public AmazonSyncController(IAmazonOrderSyncService amazonOrderSyncService, 
+        private readonly object _locker = new object();
+
+        public AmazonSyncController(IAmazonOrderSyncService amazonOrderSyncService,
             IAmazonOrderSyncDataService amazonOrderSyncDataService, IUpdateAmazonOrder updateAmazonOrder)
         {
             _amazonOrderSyncService = amazonOrderSyncService;
@@ -31,25 +33,26 @@ namespace MrCMS.Web.Apps.Amazon.Controllers
 
         public ActionResult SyncItems()
         {
-            try
+            lock (_locker)
             {
-                _amazonOrderSyncDataService.MarkAllAsPendingIfNotSyncedAfterOneHour();
-                var ordersForUpdate = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Update);
-                foreach (var amazonOrderSyncData in ordersForUpdate)
+                try
                 {
-                    Update(amazonOrderSyncData);
+                    //_amazonOrderSyncDataService.MarkAllAsPendingIfNotSyncedAfterOneHour();
+
+                    var ordersForAdd = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Add, 10);
+                    foreach (var amazonOrderSyncData in ordersForAdd)
+                        Update(amazonOrderSyncData);
+
+                    var ordersForUpdate = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Update);
+                    foreach (var amazonOrderSyncData in ordersForUpdate)
+                        Update(amazonOrderSyncData);
                 }
-                var ordersForAdd = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Add, 10);
-                foreach (var amazonOrderSyncData in ordersForAdd)
+                catch (Exception ex)
                 {
-                    Update(amazonOrderSyncData);
+                    CurrentRequestData.ErrorSignal.Raise(ex);
                 }
+                return new EmptyResult();
             }
-            catch (Exception ex)
-            {
-                CurrentRequestData.ErrorSignal.Raise(ex);
-            }
-            return new EmptyResult();
         }
         private void Update(AmazonOrderSyncData data)
         {
@@ -57,7 +60,6 @@ namespace MrCMS.Web.Apps.Amazon.Controllers
                 return;
             LogStatus(data, SyncAmazonOrderStatus.InProgress);
             _updateAmazonOrder.UpdateOrder(data);
-            LogStatus(data, SyncAmazonOrderStatus.Synced);
         }
         private void LogStatus(AmazonOrderSyncData data, SyncAmazonOrderStatus status)
         {

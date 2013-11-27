@@ -12,7 +12,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
     {
         CategoryPagedList Search(string query = null, int page = 1,int pageSize=10);
         IEnumerable<AutoCompleteResult> Search(string query, List<int> ids);
-        IPagedList<Category> GetCategories(Product product, string query, int page);
+        IPagedList<Category> GetCategories(Product product, string query, int page=1,int pageSize=10);
         IList<Category> GetAll();
         IList<SelectListItem> GetOptions();
         CategoryContainer GetSiteCategoryContainer();

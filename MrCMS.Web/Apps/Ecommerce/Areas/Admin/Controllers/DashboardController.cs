@@ -3,7 +3,6 @@ using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Services.Reports;
 using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Website;
@@ -87,5 +86,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                                .List<WebpageStats>();
             return list;
         }
+
+        //[HttpGet]
+        //public string TestDigitalDownload(Entities.Orders.Order order)
+        //{
+        //    if (order == null) return string.Empty;
+
+        //    var productVariant = order.OrderLines.First().ProductVariant;
+
+        //    if (productVariant == null) return string.Empty;
+
+        //    var url = string.Format("digital-download/{0}/{1}/{2}", order.Guid, productVariant.Id, string.Empty);
+
+        //    return url;
+        //}
     }
 }

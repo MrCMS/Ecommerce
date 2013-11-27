@@ -4,6 +4,7 @@ using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Paging;
 using MrCMS.Services;
+using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -18,6 +19,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private ICategoryService _categoryService;
         private IDocumentService _documentService;
         private CategoryContainer _categoryContainer;
+        private SiteSettings _siteSettings;
 
         [Fact]
         public void CategoryController_Index_ReturnsViewResult()
@@ -69,7 +71,8 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _categoryContainer = new CategoryContainer();
             A.CallTo(() => _documentService.GetUniquePage<CategoryContainer>()).Returns(_categoryContainer);
             _categoryService = A.Fake<ICategoryService>();
-            return new CategoryController(_categoryService, _documentService);
+            _siteSettings = new SiteSettings() { DefaultPageSize = 10 };
+            return new CategoryController(_categoryService, _documentService, _siteSettings);
         } 
     }
 }

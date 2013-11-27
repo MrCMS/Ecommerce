@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Payment;
-using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
 using NHibernate;

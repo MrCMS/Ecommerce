@@ -1,6 +1,6 @@
 ﻿@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product  
-<div id="product-specifications">
+<div id="product-specifications" class="span4">
     <h4>Specifications</h4>
     <table class="table table-bordered table-striped table-condensed">
         @foreach (var item in Model.SpecificationValues.OrderBy(x => x.DisplayOrder))

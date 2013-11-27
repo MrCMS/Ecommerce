@@ -10,13 +10,23 @@ $(document).ready(function () {
     function init() {
         setImageSize();
     }
+
+    scrollToElement();
+    function scrollToElement() {
+        var browserWidth = $(window).width();
+        var page = window.location.pathname;
+        if (browserWidth < 767 && page!="/") {
+            $('html, body').animate({ scrollTop: $('#mobileStart').offset().top }, 500);
+        }
+    }
     
     $.cookieBar({
         message: "Ryness use cookies to improve your shopping experience.",
         acceptText : "Dismiss",
         policyButton: true,
         policyText: "Find out more",
-        policyURL : "/privacy-policy-and-cookie-info"
+        policyURL: "/privacy-policy-and-cookie-info",
+        fixed: true
     });
 
 

@@ -1,10 +1,19 @@
-﻿@using MrCMS.Helpers
-@using MrCMS.Website
+﻿@using MrCMS.Website
 @model IEnumerable<MrCMS.Entities.Documents.Web.Webpage>
+@{
+    var page = CurrentRequestData.CurrentPage; 
+}
 <ul class="breadcrumb">
     <li><a href="/">Home</a> <span class="divider">/</span></li>
     @foreach (var p in Model)
     {
-        <li><a href="/@p.LiveUrlSegment">@p.Name</a> <span class="divider">/</span></li>
+        if (p == page)
+        {
+            <li class="active">@p.Name</li>
+        }
+        else
+        {
+            <li><a href="/@p.LiveUrlSegment">@p.Name</a> <span class="divider">/</span></li>
+        }
     }
 </ul>

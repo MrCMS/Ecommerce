@@ -16,6 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void UpdateSpecificationAttribute(ProductSpecificationAttribute option);
         void DeleteSpecificationAttribute(ProductSpecificationAttribute option);
         bool AnyExistingSpecificationAttributesWithName(string name);
+        void UpdateSpecificationAttributeDisplayOrder(IList<SortItem> options);
 
         IList<ProductSpecificationAttributeOption> ListSpecificationAttributeOptions(int id);
         void AddSpecificationAttributeOption(ProductSpecificationAttributeOption option);

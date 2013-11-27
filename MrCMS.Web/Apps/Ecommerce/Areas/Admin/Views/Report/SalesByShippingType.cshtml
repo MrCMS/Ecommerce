@@ -27,7 +27,7 @@
 
     <div class="row-fluid">
         <div class="span12">
-            <canvas id="chart"></canvas>
+            <div id="chart"></div>
         </div>
     </div>
     <br />
@@ -35,17 +35,9 @@
         <div class="span6">
             <div id="message"></div>
         </div>
-        <div class="span6">
-            <div class="pull-right">
-                <span class="label peter-river">Mr CMS</span>
-                <span class="label emerald" id="amazon">Amazon</span>
-                <span class="label alizarin" id="ebay">eBay</span>
-            </div>
-        </div>
     </div>
 </fieldset>
 
-@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/charts/Chart.js"); }
-@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/base-chart.js"); }
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/sales-by-shipping-type.js"); }
 @{ Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/reports.css"); }

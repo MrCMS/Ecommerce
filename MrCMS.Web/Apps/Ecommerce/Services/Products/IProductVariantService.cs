@@ -3,6 +3,7 @@ using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {

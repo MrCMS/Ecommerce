@@ -1,21 +1,24 @@
-﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+﻿@using System.Drawing
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Entities.Cart.CartItem
-<div class="row-fluid row">
-    <div class="span4 cell">
-        <div class="span4 photo">
-            @if (Model.Item.Product.Images.Any())
-            {
-                <img src="@(Model.Item.Product.Images.First().FileUrl)" class="img-rounded pull-left span12" alt="@Model.Name" />
-            }
+<div class="row-fluid cart-row border-bottom">
+    <div class="span4">
+        <div class="row-fluid">
+            <div class="span4 photo">
+            <a href="/@Model.Item.Product.LiveUrlSegment">
+                @RenderImage(Model.Item.Product.DisplayImageUrl, new Size { Width = 110, Height = 110 })
+            </a>
         </div>
         <div class="span8 name">
-            @Model.Name
+            <a href="/@Model.Item.Product.LiveUrlSegment">@Model.Name</a>
         </div>
+        </div>
+        
     </div>
-    <div class="span3 cell">
+    <div class="span2">
         @foreach (var option in Model.Item.OptionValues)
         {
-            <p class="pull-left">
+            <p>
                 <strong>
                     @option.ProductOption.Name
                 </strong>
@@ -24,13 +27,14 @@
             </p>
         }
     </div>
-    <div class="span2 cell">
-        <input type="text" class="input-mini" name="@Html.Raw("quantity-" + Model.Id)" value="@Model.Quantity" data-cart-id="@Model.Id"/>
+    <div class="span2 text-center">
+        <input type="text" class="input-mini text-center" name="@Html.Raw("quantity-" + Model.Id)" value="@Model.Quantity" data-cart-id="@Model.Id"/>
     </div>
-    <div class="span3 cell">
-        <div class="pull-right price">
-            <h4>@Model.Price.ToCurrencyFormat()</h4>
-            <a data-id="@Model.Id" data-action="delete-cart-item" href="#">Delete</a>
-        </div>
+    <div class="span2 text-right">
+        @Model.UnitPrice.ToCurrencyFormat()
+    </div>
+    <div class="span2 text-right padding-right-5">
+        <div class="total">@Model.Price.ToCurrencyFormat()</div>
+        <a data-id="@Model.Id" data-action="delete-cart-item" href="#" class="btn btn-mini btn-danger">Remove</a>
     </div>
 </div>

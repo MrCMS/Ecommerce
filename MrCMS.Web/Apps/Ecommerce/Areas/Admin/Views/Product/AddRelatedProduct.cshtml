@@ -1,0 +1,25 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model MrCMS.Paging.IPagedList<Product>
+@{ 
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+    var product = ViewData["product"] as Product;
+}
+
+<fieldset>
+    <legend>
+        Add Related Product
+        <span class="btn-group  display-inline  pull-right">
+            <button id="close" class="btn-primary btn">Close</button>
+        </span>
+    </legend>
+
+    <input autocomplete="off" class="search-query span2" id="searchparam" name="searchparam" placeholder="Search" type="text" />
+    <br /><br />
+    <div class="modal-body-container">
+        @Html.Hidden("productId",product!=null?product.Id:0)
+        @{Html.RenderPartial("AddRelatedProductItems",Model);}
+    </div>
+</fieldset>
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/async-paging.js"); }
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/related-products.js"); }

@@ -21,16 +21,15 @@
                     @RenderZone("Navigation")
                 </div>
                 <div class="pull-right" style="position: fixed; top: 0; right: 0;">
-                    @RenderZone("User Links")
-                    <div class="mobile-menu">
-                        <a href="/basket" title="Basket">
-                            <img src="/Themes/Ryness/Content/Images/mobile-cart.png" alt="Cart" /></a>
+                    <div>
+                        @RenderZone("User Links")
+                        <div class="mobile-menu">
+                            <a href="@(UniquePageHelper.GetUrl<Cart>())" title="Basket">
+                                <img src="/Themes/Ryness/Content/Images/mobile-cart.png" alt="Cart" /></a>
+                        </div>
                     </div>
                     <div class="clearfix"></div>
                 </div>
-                @*
-                    @RenderZone("Header Right")
-                *@
             </div>
         </div>
     </div>
@@ -110,6 +109,7 @@
 </header>
 
 <div class="all-contents">
+    <a id="mobileStart" name="mobileStart"></a>
     @RenderZone("Before Content")
     @RenderBody()
     @RenderZone("After Content")
