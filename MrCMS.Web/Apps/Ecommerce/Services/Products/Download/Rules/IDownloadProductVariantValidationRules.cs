@@ -1,14 +1,11 @@
-﻿using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+﻿using System.Collections.Generic;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download.Rules
 {
-    public interface IDownloadProductValidationRule
+    public interface IDownloadOrderedFileValidationRule
     {
-        DownloadProductVariantResult GetErrors(Order order, ProductVariant productVariant, string type = "");
-    }
-    public interface IDownloadProductBasicValidationRule
-    {
-        DownloadProductVariantResult GetErrors(string oguid, ProductVariant productVariant, string type = "");
+        IEnumerable<string> GetErrors(Order order, OrderLine orderLine);
     }
 }

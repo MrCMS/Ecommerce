@@ -1,4 +1,5 @@
 ﻿using FakeItEasy;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
@@ -14,12 +15,16 @@ namespace MrCMS.EcommerceApp.Tests.Services
         private readonly ISession _session;
         private readonly OrderService _orderService;
         private readonly IOrderEventService _orderEventService;
+        private readonly IFileService _fileService;
+        private readonly IOrderNoteService _orderNoteService;
 
         public OrderServiceTests()
         {
             _session = A.Fake<ISession>();
             _orderEventService = A.Fake<IOrderEventService>();
-            _orderService = new OrderService(_session, _orderEventService, A.Fake<IOrderNoteService>());
+            _orderNoteService = A.Fake<IOrderNoteService>();
+            _fileService = A.Fake<IFileService>();
+            _orderService = new OrderService(_session, _orderEventService, _orderNoteService, _fileService);
         }
 
         //TODO PlaceOrder

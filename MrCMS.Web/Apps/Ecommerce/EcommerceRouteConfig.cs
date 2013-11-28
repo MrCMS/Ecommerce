@@ -68,8 +68,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Checkout - SagePay Failed Url", "Apps/Ecommerce/SagePay/Failed/{vendorTxCode}", new { controller = "SagePayRedirect", action = "Failed" }, new[] { typeof(SagePayRedirectController).Namespace });
             context.MapRoute("Checkout - SagePay Failed POST", "Apps/Ecommerce/SagePay/FailedRedirect", new { controller = "SagePayRedirect", action = "FailedPost" }, new[] { typeof(SagePayRedirectController).Namespace });
 
-            context.MapRoute("Download Product", "digital-download/{oguid}/{id}/{type}", new { controller = "DownloadProduct", action = "Download"
-                ,type = UrlParameter.Optional }, new[] { typeof(DownloadProductController).Namespace });
+            context.MapRoute("Download Product", "digital-download/{guid}/{id}", new { controller = "DownloadOrderedFile", action = "Download" }, new[] { typeof(DownloadOrderedFileController).Namespace });
         }
     }
 }

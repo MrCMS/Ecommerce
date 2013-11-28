@@ -57,6 +57,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         {
             get { return Item.GetUnitTax(Quantity); }
         }
+
+        public virtual bool IsDownloadable
+        {
+            get { return Item.IsDownloadable; }
+        }
         public virtual decimal DiscountAmount
         {
             get
@@ -67,6 +72,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
             }
         }
 
+        public virtual int? AllowedNumberOfDownloads
+        {
+            get { return Item.AllowedNumberOfDownloads; }
+        }
+
+        public virtual int? AllowedNumberOfDaysForDownload
+        {
+            get { return Item.AllowedNumberOfDaysForDownload; }
+        }
+
+        public virtual string DownloadFileUrl
+        {
+            get { return Item.DownloadFileUrl; }
+        }
 
         public virtual void SetDiscountInfo(Discount discount, string discountCode)
         {

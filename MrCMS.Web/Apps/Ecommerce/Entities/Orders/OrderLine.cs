@@ -1,4 +1,5 @@
-﻿using MrCMS.Entities;
+﻿using System;
+using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using System.ComponentModel;
 
@@ -26,6 +27,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual decimal Discount { get; set; }
         public virtual decimal Weight { get; set; }
 
-        public virtual decimal Subtotal { get { return Quantity*UnitPrice; }}
+        public virtual decimal Subtotal { get { return Quantity * UnitPrice; } }
+
+        public virtual bool IsDownloadable { get; set; }
+        public virtual int? AllowedNumberOfDownloads { get; set; }
+        public virtual DateTime? DownloadExpiresOn { get; set; }
+        public virtual int NumberOfDownloads { get; set; }
+        public virtual string DownloadFileUrl { get; set; }
+        public virtual string DownloadFileContentType { get; set; }
+        public virtual string DownloadFileName { get; set; }
     }
 }
