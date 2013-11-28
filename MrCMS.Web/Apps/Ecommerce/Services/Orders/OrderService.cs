@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
@@ -21,12 +22,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         private readonly ISession _session;
         private readonly IOrderEventService _orderEventService;
         private readonly IOrderNoteService _orderNoteService;
+        private readonly IFileService _fileService;
 
-        public OrderService(ISession session, IOrderEventService orderEventService, IOrderNoteService orderNoteService)
+        public OrderService(ISession session, IOrderEventService orderEventService, IOrderNoteService orderNoteService, IFileService fileService)
         {
             _session = session;
             _orderEventService = orderEventService;
             _orderNoteService = orderNoteService;
+            _fileService = fileService;
         }
 
         public Order PlaceOrder(CartModel cartModel, Action<Order> postCreationActions)
@@ -61,23 +64,43 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                         {
                                                             var options = string.Join(", ", item.Item.OptionValues.Select(value => value.FormattedValue));
 
-                                                            order.OrderLines.Add(new OrderLine
-                                                                                     {
-                                                                                         Order = order,
-                                                                                         UnitPrice = item.UnitPrice,
-                                                                                         UnitPricePreTax = item.UnitPricePreTax,
-                                                                                         Weight = item.Weight,
-                                                                                         TaxRate = item.TaxRatePercentage,
-                                                                                         Tax = item.Tax,
-                                                                                         Quantity = item.Quantity,
-                                                                                         ProductVariant = item.Item,
-                                                                                         PricePreTax = item.PricePreTax,
-                                                                                         Price = item.Price,
-                                                                                         SKU = item.Item.SKU,
-                                                                                         Name = !string.IsNullOrEmpty(item.Item.Name) ? item.Item.Name : item.Item.Product.Name,
-                                                                                         Options = options,
-                                                                                         Discount = item.DiscountAmount,
-                                                                                     });
+                                                            var orderLine = new OrderLine
+                                                                                {
+                                                                                    Order = order,
+                                                                                    UnitPrice = item.UnitPrice,
+                                                                                    UnitPricePreTax = item.UnitPricePreTax,
+                                                                                    Weight = item.Weight,
+                                                                                    TaxRate = item.TaxRatePercentage,
+                                                                                    Tax = item.Tax,
+                                                                                    Quantity = item.Quantity,
+                                                                                    ProductVariant = item.Item,
+                                                                                    PricePreTax = item.PricePreTax,
+                                                                                    Price = item.Price,
+                                                                                    SKU = item.Item.SKU,
+                                                                                    Name = !string.IsNullOrEmpty(item.Item.Name) ? item.Item.Name : item.Item.Product.Name,
+                                                                                    Options = options,
+                                                                                    Discount = item.DiscountAmount,
+                                                                                };
+                                                            if (item.IsDownloadable)
+                                                            {
+                                                                orderLine.IsDownloadable = true;
+                                                                orderLine.AllowedNumberOfDownloads = item.AllowedNumberOfDownloads;
+                                                                orderLine.DownloadExpiresOn = CurrentRequestData.Now.AddDays(item.AllowedNumberOfDaysForDownload.GetValueOrDefault());
+                                                                orderLine.NumberOfDownloads = 0;
+                                                                var fileByUrl = _fileService.GetFileByUrl(item.DownloadFileUrl);
+                                                                if (fileByUrl != null)
+                                                                {
+                                                                    orderLine.DownloadFileUrl = fileByUrl.FileUrl;
+                                                                    orderLine.DownloadFileContentType =
+                                                                        fileByUrl.ContentType;
+                                                                    orderLine.DownloadFileUrl = fileByUrl.FileUrl;
+                                                                }
+                                                                else
+                                                                {
+                                                                    orderLine.DownloadFileUrl = item.DownloadFileUrl;
+                                                                }
+                                                            }
+                                                            order.OrderLines.Add(orderLine);
                                                         }
                                                         if (postCreationActions != null)
                                                             postCreationActions(order);

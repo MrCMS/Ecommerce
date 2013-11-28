@@ -412,7 +412,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
-    <Compile Include="Apps\Ecommerce\Controllers\DownloadProductController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\DownloadOrderedFileController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\EnterOrderEmailController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GoogleAnalyticsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GoogleBaseFeedController.cs" />
@@ -742,7 +742,9 @@
     <Compile Include="Apps\Ecommerce\Services\Paypoint\ThreeDSecureException.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BackInStockNotificationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BrandService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Products\Download\DownloadProductVariantService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\Download\DownloadOrderedFileService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\Download\DownloadValidationResult.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\Download\IDownloadOrderedFileService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\Download\Rules\DownloadProductVariantValidationRules.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\Download\Rules\IDownloadProductVariantValidationRules.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IBackInStockNotificationService.cs" />

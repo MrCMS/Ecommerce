@@ -240,24 +240,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [DisplayName("Demo File")]
         public virtual string DemoFileUrl { get; set; }
 
-        [DisplayName("Download File")]
-        public virtual MediaFile DownloadFile
-        {
-            get { return MrCMSApplication.Get<IFileService>().GetFileByUrl(DownloadFileUrl); }
-        }
-        [DisplayName("Demo File")]
-        public virtual MediaFile DemoFile
-        {
-            get { return MrCMSApplication.Get<IFileService>().GetFileByUrl(DemoFileUrl); }
-        }
-
         [DisplayName("Allowed number of days for file download")]
-        public virtual int AllowedNumberOfDaysForDownload { get; set; }
+        public virtual int? AllowedNumberOfDaysForDownload { get; set; }
 
         [DisplayName("Allowed number of downloads")]
-        public virtual int AllowedNumberOfDownloads { get; set; }
-
-        [DisplayName("Number of downloads")]
-        public virtual int NumberOfDownloads { get; set; }
+        public virtual int? AllowedNumberOfDownloads { get; set; }
     }
 }

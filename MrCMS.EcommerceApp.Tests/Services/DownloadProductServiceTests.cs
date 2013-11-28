@@ -3,100 +3,147 @@ using System.Linq;
 using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
-using MrCMS.Entities.Documents.Media;
 using MrCMS.Helpers;
-using MrCMS.Services;
-using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Services.Orders;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products.Download;
 using MrCMS.Web.Apps.Ecommerce.Services.Products.Download.Rules;
-using MrCMS.Website;
-using Ninject.MockingKernel;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services
 {
-    public class DownloadServiceTests : InMemoryDatabaseTest
+    public class DownloadOrderedFileService_GetDownloadTests : InMemoryDatabaseTest
     {
-        private readonly DownloadProductVariantService _downloadProductService;
-        private readonly IOrderService _orderService;
-        private readonly IProductVariantService _productService;
-        private IEnumerable<IDownloadProductValidationRule> _rules;
-        private IEnumerable<IDownloadProductBasicValidationRule> _basicRules;
 
-        public DownloadServiceTests()
+        private readonly DownloadOrderedFileService _downloadProductService;
+        private readonly List<IDownloadOrderedFileValidationRule> _rules = new List<IDownloadOrderedFileValidationRule>();
+
+        public DownloadOrderedFileService_GetDownloadTests()
         {
-            var mockingKernel = new MockingKernel();
-            _rules = Enumerable.Range(1, 10).Select(i => A.Fake<IDownloadProductValidationRule>()).ToList();
-            _rules.ForEach(rule => mockingKernel.Bind<IDownloadProductValidationRule>().ToMethod(context => rule));
-            _basicRules = Enumerable.Range(1, 10).Select(i => A.Fake<IDownloadProductBasicValidationRule>()).ToList();
-            _basicRules.ForEach(rule => mockingKernel.Bind<IDownloadProductBasicValidationRule>().ToMethod(context => rule));
-            mockingKernel.Bind<IFileService>()
-                         .ToMethod(context => A.Fake<IFileService>())
-                         .InSingletonScope();
-            mockingKernel.Bind<MediaSettings>()
-                        .ToMethod(context => A.Fake<MediaSettings>())
-                        .InSingletonScope();
-            MrCMSApplication.OverrideKernel(mockingKernel);
-            _orderService = A.Fake<IOrderService>();
-            _productService = A.Fake<IProductVariantService>();
-            _downloadProductService = new DownloadProductVariantService(_orderService, _productService);
+            _downloadProductService = new DownloadOrderedFileService(Session, _rules);
         }
 
         [Fact]
-        public void DownloadService_Download_ShouldReturnFilePathResult()
+        public void IfOrderIsNullReturnsNull()
         {
-            var productVariant = new ProductVariant() { NumberOfDownloads = 0, DownloadFileUrl = "dlurl", DemoFileUrl = "demourl" };
-            var order = new Order();
+            var result = _downloadProductService.GetDownload(null, new OrderLine());
 
-            var downloadFile = new MediaFile() { FileName = "dl", ContentType = "text/plain", FileUrl = "dlurl" };
-            var demoFile = new MediaFile() { FileName = "demo", ContentType = "text/plain", FileUrl = "demourl" };
-
-            A.CallTo(() => MrCMSApplication.Get<IFileService>().GetFileByUrl(productVariant.DownloadFileUrl)).Returns(downloadFile);
-            A.CallTo(() => MrCMSApplication.Get<IFileService>().GetFileByUrl(productVariant.DemoFileUrl)).Returns(demoFile);
-
-            var result = _downloadProductService.Download(productVariant, order,string.Empty);
-
-            result.Should().BeOfType<FilePathResult>();
+            result.Should().BeNull();
         }
 
         [Fact]
-        public void DownloadService_Download_ShouldReturnFilePathResultForDemoFileIfTypeIsSpecified()
+        public void IfOrderLineIsNullReturnsNull()
         {
-            var productVariant = new ProductVariant() { NumberOfDownloads = 0, DownloadFileUrl = "dlurl", DemoFileUrl = "demourl" };
-            var order = new Order();
+            var result = _downloadProductService.GetDownload(new Order(), null);
 
-            var downloadFile = new MediaFile() { FileName = "dl", ContentType = "text/plain", FileUrl = "dlurl" };
-            var demoFile = new MediaFile() { FileName = "demo", ContentType = "text/plain", FileUrl = "demourl" };
-
-            A.CallTo(() => MrCMSApplication.Get<IFileService>().GetFileByUrl(productVariant.DownloadFileUrl)).Returns(downloadFile);
-            A.CallTo(() => MrCMSApplication.Get<IFileService>().GetFileByUrl(productVariant.DemoFileUrl)).Returns(demoFile);
-
-            var result = _downloadProductService.Download(productVariant, order, "demo");
-
-            result.As<FilePathResult>().FileName.Should().Be(demoFile.FileUrl);
+            result.Should().BeNull();
         }
 
         [Fact]
-        public void DownloadService_Download_ShouldCallUpdate()
+        public void IfAnyRuleErrorsReturnNull()
         {
-            var productVariant = new ProductVariant() { NumberOfDownloads = 0, DownloadFileUrl = "dlurl", DemoFileUrl = "demourl" };
             var order = new Order();
+            var orderLine = new OrderLineBuilder().Build();
+            var downloadOrderedFileValidationRule = A.Fake<IDownloadOrderedFileValidationRule>();
+            A.CallTo(() => downloadOrderedFileValidationRule.GetErrors(order, orderLine)).Returns(new List<string> { "an error" });
+            _rules.Add(downloadOrderedFileValidationRule);
 
+            var result = _downloadProductService.GetDownload(order, orderLine);
 
-            var downloadFile = new MediaFile() { FileName = "dl", ContentType = "text/plain", FileUrl = "dlurl" };
-            var demoFile = new MediaFile() { FileName = "demo", ContentType = "text/plain", FileUrl = "demourl" };
+            result.Should().BeNull();
+        }
 
-            A.CallTo(() => MrCMSApplication.Get<IFileService>().GetFileByUrl(productVariant.DownloadFileUrl)).Returns(downloadFile);
-            A.CallTo(() => MrCMSApplication.Get<IFileService>().GetFileByUrl(productVariant.DemoFileUrl)).Returns(demoFile);
+        [Fact]
+        public void IfAllRulesPassReturnASuccessfulFilePathResult()
+        {
+            var order = new Order();
+            var orderLine = new OrderLineBuilder().Build();
+            Session.Transact(session => session.Save(orderLine));
+            var downloadOrderedFileValidationRule = A.Fake<IDownloadOrderedFileValidationRule>();
+            A.CallTo(() => downloadOrderedFileValidationRule.GetErrors(order, orderLine)).Returns(new List<string>());
+            _rules.Add(downloadOrderedFileValidationRule);
 
-            var result = _downloadProductService.Download(productVariant, order, string.Empty);
+            var downloadValidationResult = _downloadProductService.GetDownload(order, orderLine);
 
-            productVariant.NumberOfDownloads++;
-            A.CallTo(() => _productService.Update(productVariant)).MustHaveHappened();
+            downloadValidationResult.Should().NotBeNull();
+            downloadValidationResult.Should().BeOfType<FilePathResult>();
+        }
+
+        [Fact]
+        public void IfValidFileDownloadNameShouldBeOrderLineFileName()
+        {
+            var order = new Order();
+            var orderLine = new OrderLineBuilder().WithFileName("test-file-name").Build();
+            Session.Transact(session => session.Save(orderLine));
+
+            var downloadValidationResult = _downloadProductService.GetDownload(order, orderLine);
+
+            downloadValidationResult.FileDownloadName.Should().Be("test-file-name");
+        }
+
+        [Fact]
+        public void IfValidFileContentTypeShouldBeOrderLineContentType()
+        {
+            var order = new Order();
+            var orderLine = new OrderLineBuilder().WithContentType("test-content-type").Build();
+            Session.Transact(session => session.Save(orderLine));
+
+            var downloadValidationResult = _downloadProductService.GetDownload(order, orderLine);
+
+            downloadValidationResult.ContentType.Should().Be("test-content-type");
+        }
+
+        [Fact]
+        public void IfValidFileFileNameShouldBeOrderLineFileUrl()
+        {
+            var order = new Order();
+            var orderLine = new OrderLineBuilder().WithFileUrl("test-file-url").Build();
+            Session.Transact(session => session.Save(orderLine));
+
+            var downloadValidationResult = _downloadProductService.GetDownload(order, orderLine);
+
+            downloadValidationResult.FileName.Should().Be("test-file-url");
+        }
+    }
+
+    public class OrderLineBuilder
+    {
+        private string _downloadFileUrl;
+        private string _downloadContentType;
+        private string _downloadFileName;
+
+        public OrderLineBuilder()
+        {
+            _downloadFileUrl = "test-url";
+            _downloadContentType = "content-type";
+            _downloadFileName = "file-name";
+        }
+
+        public OrderLineBuilder WithFileUrl(string fileUrl)
+        {
+            _downloadFileUrl = fileUrl;
+            return this;
+        }
+
+        public OrderLineBuilder WithContentType(string contentType)
+        {
+            _downloadContentType = contentType;
+            return this;
+        }
+
+        public OrderLineBuilder WithFileName(string fileName)
+        {
+            _downloadFileName = fileName;
+            return this;
+        }
+
+        public OrderLine Build()
+        {
+            return new OrderLine
+                       {
+                           DownloadFileUrl = _downloadFileUrl,
+                           DownloadFileContentType = _downloadContentType,
+                           DownloadFileName = _downloadFileName
+                       };
         }
     }
 }
