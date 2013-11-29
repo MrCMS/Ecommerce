@@ -17,7 +17,10 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
                    .AsList(part => part.Column("DisplayOrder"))
                    .Not.Inverse();
 
-            mapping.HasMany(product => product.Variants).AsList(part => part.Column("DisplayOrder")).Cascade.All();
+            mapping.HasMany(product => product.Variants)
+                   .AsList(part => part.Column("DisplayOrder"))
+                   .Cascade.All()
+                   .Not.Inverse();
 
             mapping.HasManyToMany(m => m.RelatedProducts).ParentKeyColumn("ProductId").ChildKeyColumn("RelatedProductId")
                    .Table("Ecommerce_RelatedProducts").Not.Inverse().Cascade.SaveUpdate();

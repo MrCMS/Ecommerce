@@ -20,6 +20,7 @@
                   <li><a href="#download-options" data-toggle="tab">Download Options</a></li>
             </ul>
             <div class="tab-content">
+                @Html.HiddenFor(variant => variant.Id)
                 @{ Html.RenderPartial("AddDetails", Model); }
                 @{ Html.RenderPartial("Images", Model); }
                 @{ Html.RenderPartial("SoldOut", Model); }

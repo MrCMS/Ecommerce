@@ -1,7 +1,6 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 <div id="details" class="tab-pane active">
     <div class="row-fluid">
-        @Html.HiddenFor(variant => variant.Id)
         @Html.HiddenFor(variant => variant.Product.Id)
         @Html.LabelFor(variant => variant.Name)
         @Html.TextBoxFor(variant => variant.Name, new { @class = "span12" })
