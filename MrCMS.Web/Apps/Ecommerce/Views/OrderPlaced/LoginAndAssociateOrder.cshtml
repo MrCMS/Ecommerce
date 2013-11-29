@@ -18,6 +18,7 @@
             @Html.Hidden("Id", order.Guid)
             <div class="row-fluid">
                 @Html.PasswordFor(model => model.Password, new { @class = "span6" })
+                @Html.ValidationMessageFor(x=>x.Password)
             </div>
             <br />
             <div class="row-fluid">
