@@ -1,26 +1,7 @@
-﻿@*@using MrCMS.Helpers
-@using MrCMS.Web.Apps.Ecommerce.Entities.Products
-@model MrCMS.Web.Apps.Ecommerce.Pages.Product
-@{
-    var selectedVariant = ViewData["selected-variant"] as ProductVariant ?? Model.VariantsByPrice.First();
-}
-
-@(!String.IsNullOrWhiteSpace(selectedVariant.FeaturedImageUrl) ? Html.RenderImage(selectedVariant.FeaturedImageUrl) : Html.RenderImage(Model.DisplayImageUrl))
-
-<div class="clearfix"></div>
-<div id="product-image-thumbnails">
-    <ul class="thumbnails">
-        @foreach (var item in Model.Images)
-        {
-            <li class="span3">
-                @Html.RenderImage(item.FileUrl, Model.Name)
-            </li>
-        }
-    </ul>
-</div>*@
-@using System.Drawing
+﻿@using System.Drawing
 @using MrCMS.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Pages.Product  
+@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
+
 @Html.RenderImage(Model.DisplayImageUrl, new Size { Width = 240, Height = 140 }, Model.Name, Model.Name, new { @class = "span12" })
 <div id="product-image-thumbnails">
     <ul class="thumbnails">

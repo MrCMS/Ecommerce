@@ -1,7 +1,17 @@
 ﻿$(window).load(function () {
-    $('#slider').nivoSlider({ effect: 'fade', pauseTime: 8000, controlNav: false });
-    $("#pikame").PikaChoose({ autoPlay: false });
+    InitializeSliders.nivoSlider();
+    InitializeSliders.PikaChoose();
 });
+
+var InitializeSliders = new function () {
+    this.nivoSlider = function () {
+        $('#slider').nivoSlider({ effect: 'fade', pauseTime: 8000, controlNav: false });
+
+    };
+    this.PikaChoose = function () {
+        $("#pikame").PikaChoose({ autoPlay: false });
+    };
+};
 
 $(document).ready(function () {
 
@@ -15,14 +25,14 @@ $(document).ready(function () {
     function scrollToElement() {
         var browserWidth = $(window).width();
         var page = window.location.pathname;
-        if (browserWidth < 767 && page!="/") {
+        if (browserWidth < 767 && page != "/") {
             $('html, body').animate({ scrollTop: $('#mobileStart').offset().top }, 500);
         }
     }
-    
+
     $.cookieBar({
         message: "Ryness use cookies to improve your shopping experience.",
-        acceptText : "Dismiss",
+        acceptText: "Dismiss",
         policyButton: true,
         policyText: "Find out more",
         policyURL: "/privacy-policy-and-cookie-info",
@@ -57,7 +67,7 @@ $(document).ready(function () {
                 $(".row-fluid .span2 .product-picture").attr("style", "height:" + currentHeight + "px !important");
         });
     }
-    
+
     $(".navbar-inverse .nav > li ul li").hover(function () {
         $(this).children("a").addClass("active");
         var currentUlHeight = $(this).closest("ul").height();
@@ -84,4 +94,8 @@ $(document).ready(function () {
     }, function () {
         $(this).parent("li").children("a").removeClass("active");
     });
+
+    if (Product) {
+        Product.onChangeVariant = InitializeSliders.PikaChoose;
+    }
 });
