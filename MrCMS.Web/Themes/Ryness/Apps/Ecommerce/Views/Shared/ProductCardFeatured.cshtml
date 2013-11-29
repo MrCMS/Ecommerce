@@ -1,5 +1,6 @@
 ﻿@using System.Drawing
 @using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product 
 <div class="span3">
     <div class="product-picture text-align-center margin-top-10 padding-top-bottom-10">
@@ -32,7 +33,7 @@
             @Model.DisplayPrice.ToCurrencyFormat()
             @if (Model.ShowPreviousPrice && Model.DisplayPreviousPrice.HasValue)
             {
-                <span>@Model.PreviousPriceText : @Model.DisplayPreviousPrice.ToCurrencyFormat()</span>
+                <span>@(SiteSettings<EcommerceSettings>().PreviousPriceText) : @Model.DisplayPreviousPrice.ToCurrencyFormat()</span>
             }
             else
             {

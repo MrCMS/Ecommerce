@@ -2433,6 +2433,15 @@
     <Content Include="Apps\Ryness\Views\Pages\Store.cshtml" />
     <Content Include="Apps\Ryness\Views\Pages\StoreList.cshtml" />
     <Content Include="Apps\Ryness\Views\Web.config" />
+    <Content Include="Apps\Ecommerce\Views\Product\VariantDetails.cshtml" />
+    <Content Include="Apps\Ryness\Views\Widgets\TopSellers.cshtml" />
+    <Content Include="Apps\Ryness\Views\Widgets\FeaturedProductsVertical.cshtml" />
+    <Content Include="Apps\Ryness\Views\Widgets\NewsletterSignup.cshtml" />
+    <Content Include="Apps\Ryness\Views\Widgets\RynessNavigation.cshtml" />
+    <Content Include="Apps\Ryness\Views\Widgets\Slider.cshtml" />
+    <Content Include="Apps\Ryness\Views\Widgets\SpendXMore.cshtml" />
+    <Content Include="Apps\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
+    <Content Include="Apps\Ryness\Views\Widgets\TopBanner.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
@@ -2657,6 +2666,7 @@
     <Content Include="Themes\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopBanner.cshtml" />
     <Content Include="Themes\Ryness\Views\Widgets\TopSellers.cshtml" />
+    <Content Include="Themes\Ryness\Apps\Ecommerce\Views\Product\VariantDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Articles\Controllers\" />

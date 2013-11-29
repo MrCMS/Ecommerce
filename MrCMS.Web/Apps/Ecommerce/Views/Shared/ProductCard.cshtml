@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+﻿@using MrCMS.Web.Apps.Ecommerce.Settings
+@model MrCMS.Web.Apps.Ecommerce.Pages.Product
 @if (Model.Variants.Any())
 {
     <div class="span3 photo">
@@ -15,7 +16,7 @@
             </div>
             @if (Model.ShowPreviousPrice)
             {
-                <span>@Model.PreviousPriceText <span style="text-decoration: line-through">@Html.DisplayFor(product => product.DisplayPreviousPrice)</span></span>
+                <span>@(SiteSettings<EcommerceSettings>().PreviousPriceText) <span style="text-decoration: line-through">@Html.DisplayFor(product => product.DisplayPreviousPrice)</span></span>
             }   
             <a href="/@Model.LiveUrlSegment" class="btn btn-more margin-bottom-5 span12">View</a>
             @if (!Model.IsMultiVariant && Model.Variants.FirstOrDefault().InStock)

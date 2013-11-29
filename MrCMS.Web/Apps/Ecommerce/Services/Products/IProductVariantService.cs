@@ -1,12 +1,53 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Helpers;
 using MrCMS.Paging;
+using MrCMS.Web.Apps.Ecommerce.Entities.BackInStockNotification;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Website;
+using NHibernate;
+using System.Linq;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
+    public interface IProductUiService
+    {
+        bool UserNotifiedOfBackInStock(ProductVariant productVariant, bool justNotified);
+        ProductVariant GetVariantToShow(Product product, int? variantId);
+    }
+
+    public class ProductUiService : IProductUiService
+    {
+        private readonly ISession _session;
+
+        public ProductUiService(ISession session)
+        {
+            _session = session;
+        }
+
+        public bool UserNotifiedOfBackInStock(ProductVariant productVariant, bool justNotified)
+        {
+            if (justNotified)
+                return true;
+            var currentUser = CurrentRequestData.CurrentUser;
+            if (currentUser == null)
+                return false;
+            return
+                _session.QueryOver<BackInStockNotificationRequest>()
+                        .Where(request => request.Email == currentUser.Email && request.ProductVariant == productVariant)
+                        .Any();
+        }
+
+        public ProductVariant GetVariantToShow(Product product, int? variantId)
+        {
+            if (!variantId.HasValue)
+                return product.Variants.FirstOrDefault();
+            return product.Variants.FirstOrDefault(variant => variant.Id == variantId);
+        }
+    }
+
     public interface IProductVariantService
     {
         IList<ProductVariant> GetAll();

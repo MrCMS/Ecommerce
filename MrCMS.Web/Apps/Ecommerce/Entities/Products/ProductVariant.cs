@@ -245,5 +245,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         [DisplayName("Allowed number of downloads")]
         public virtual int? AllowedNumberOfDownloads { get; set; }
+
+        public virtual string DisplayImageUrl
+        {
+            get
+            {
+                return !string.IsNullOrWhiteSpace(FeaturedImageUrl)
+                           ? FeaturedImageUrl
+                           : Product != null
+                                 ? Product.DisplayImageUrl
+                                 : MrCMSApplication.Get<EcommerceSettings>().DefaultNoProductImage;
+            }
+        }
+        public virtual IEnumerable<MediaFile> Images
+        {
+            get
+            {
+                return Product != null
+                           ? (IEnumerable<MediaFile>)Product.Images.OrderByDescending(file => file.FileUrl == DisplayImageUrl)
+                           : new List<MediaFile>();
+            }
+        }
     }
 }

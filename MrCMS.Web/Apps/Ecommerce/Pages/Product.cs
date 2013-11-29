@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
@@ -163,11 +164,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             }
         }
 
-        public virtual string PreviousPriceText
-        {
-            get { return MrCMSApplication.Get<EcommerceSettings>().PreviousPriceText; }
-        }
-
         public virtual IEnumerable<ProductVariant> VariantsByPrice
         {
             get { return Variants.OrderBy(variant => variant.Price); }
@@ -179,5 +175,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         }
 
         public virtual IList<Product> RelatedProducts { get; set; }
+
+        public virtual List<SelectListItem> GetVariantOptions(ProductVariant productVariant)
+        {
+            return VariantsByPrice.BuildSelectItemList(variant => variant.SelectOptionName,
+                                                       variant => variant.Id.ToString(),
+                                                       variant => variant == productVariant,
+                                                       emptyItem: null);
+        }
     }
 }

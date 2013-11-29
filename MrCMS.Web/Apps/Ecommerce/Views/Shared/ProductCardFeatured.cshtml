@@ -1,4 +1,5 @@
 ﻿@using System.Drawing
+@using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
 <div class="span3">
     <div style="overflow: hidden;">
@@ -15,7 +16,7 @@
     </div>
     @if (Model.DisplayPreviousPrice.HasValue && Model.DisplayPreviousPrice > Model.DisplayPrice)
     {
-        <span>@Model.PreviousPriceText @Html.DisplayFor(product => product.DisplayPreviousPrice)</span>
+        <span>@(SiteSettings<EcommerceSettings>().PreviousPriceText) @Html.DisplayFor(product => product.DisplayPreviousPrice)</span>
     }
     else
     {
