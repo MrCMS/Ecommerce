@@ -1,5 +1,7 @@
 ﻿using System.Timers;
 using MrCMS.Tasks;
+using NHibernate;
+using MrCMS.Helpers;
 
 namespace MrCMS.Website
 {
@@ -32,7 +34,7 @@ namespace MrCMS.Website
 
         private void AppendScheduledTasks(object sender, ElapsedEventArgs e)
         {
-            var scheduledTaskManager = MrCMSApplication.Get<IScheduledTaskManager>();
+            var scheduledTaskManager = new ScheduledTaskManager(MrCMSApplication.Get<ISessionFactory>().OpenFilteredSession());
             foreach (var scheduledTask in scheduledTaskManager.GetDueTasks())
                 TaskExecutor.ExecuteLater(scheduledTaskManager.GetTask(scheduledTask));
 
