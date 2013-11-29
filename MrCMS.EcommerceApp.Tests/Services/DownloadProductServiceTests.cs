@@ -13,7 +13,6 @@ namespace MrCMS.EcommerceApp.Tests.Services
 {
     public class DownloadOrderedFileService_GetDownloadTests : InMemoryDatabaseTest
     {
-
         private readonly DownloadOrderedFileService _downloadProductService;
         private readonly List<IDownloadOrderedFileValidationRule> _rules = new List<IDownloadOrderedFileValidationRule>();
 
