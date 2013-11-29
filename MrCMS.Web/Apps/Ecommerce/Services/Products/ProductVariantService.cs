@@ -33,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         }
         public IList<ProductVariant> GetAllVariantsWithLowStock(int treshold)
         {
-            return _session.QueryOver<ProductVariant>().Where(item => item.StockRemaining <= treshold 
+            return _session.QueryOver<ProductVariant>().Where(item => item.StockRemaining <= treshold
                 && item.TrackingPolicy == TrackingPolicy.Track).OrderBy(x => x.Product.Id).Asc.Cacheable().List();
         }
         public IList<ProductVariant> GetAllVariantsForStockReport()
@@ -52,9 +52,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                 .JoinAlias(() => productVariantAlias.Product, () => productAlias, JoinType.InnerJoin)
                                 .JoinAlias(() => productAlias.Categories, () => categoryAlias, JoinType.LeftOuterJoin)
                                 .Where(
-                                    () => (productVariantAlias.Name.IsInsensitiveLike(queryTerm,MatchMode.Anywhere)
-                                        || productVariantAlias.SKU.IsInsensitiveLike(queryTerm,MatchMode.Anywhere))
-                                    && (categoryId==0 || categoryAlias.Id==categoryId))
+                                    () => (productVariantAlias.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)
+                                        || productVariantAlias.SKU.IsInsensitiveLike(queryTerm, MatchMode.Anywhere))
+                                    && (categoryId == 0 || categoryAlias.Id == categoryId))
                                 .Paged(page, MrCMSApplication.Get<SiteSettings>().DefaultPageSize);
         }
         public IList<ProductVariant> GetAllVariantsForGoogleBase()
@@ -140,7 +140,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public void Delete(ProductVariant productVariant)
         {
-            _session.Transact(session => session.Delete(productVariant));
+            var product = productVariant.Product;
+            if (product != null)
+                product.Variants.Remove(productVariant);
+            _session.Transact(session =>
+                                  {
+                                      session.Delete(productVariant);
+                                      if (product != null)
+                                          session.Update(product);
+                                  });
         }
 
         public bool AnyExistingProductVariantWithSKU(string sku, int id)
@@ -149,7 +157,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             return _session.QueryOver<ProductVariant>()
                            .Where(
                                variant =>
-                               variant.SKU== trim && variant.Id != id)
+                               variant.SKU == trim && variant.Id != id)
                            .RowCount() > 0;
         }
 
