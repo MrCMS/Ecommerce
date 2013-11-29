@@ -6,6 +6,7 @@ using MrCMS.Paging;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Models;
 using MrCMS.Web.Apps.Core.Pages;
+using MrCMS.Web.Apps.Core.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website;
@@ -21,16 +22,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IUserService _userService;
         private readonly IPasswordManagementService _passwordManagementService;
         private readonly IAuthorisationService _authorisationService;
+        private readonly ILoginService _loginService;
 
         public UserAccountController(IOrderService orderService,
             IUserService userService, 
             IPasswordManagementService passwordManagementService, 
-            IAuthorisationService authorisationService)
+            IAuthorisationService authorisationService,ILoginService loginService)
         {
             _orderService = orderService;
             _userService = userService;
             _passwordManagementService = passwordManagementService;
             _authorisationService = authorisationService;
+            _loginService = loginService;
         }
 
         public ActionResult UserAccountOrders(int page = 1)
@@ -76,7 +79,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 if (existingUser != null)
                     return Redirect(UniquePageHelper.GetUrl<ProductSearch>());
                 
-
+                
                 var user = new User
                 {
                     FirstName = String.Empty,

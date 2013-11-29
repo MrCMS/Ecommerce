@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using MrCMS.Web.Apps.Core.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
@@ -19,5 +20,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public string Password { get; set; }
 
         public string ReturnUrl { get; set; }
+
+        public LoginModel ToLoginModel()
+        {
+            return new LoginModel
+                       {
+                           Email = Email,
+                           Password = Password,
+                           RememberMe = false
+                       };
+        }
     }
 }

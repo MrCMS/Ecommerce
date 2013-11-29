@@ -1,13 +1,9 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
-@using System.Drawing
 @using MrCMS.Helpers
 @using System.Linq
 @using MrCMS.Web.Apps.Ecommerce.Entities.Products
-@using MrCMS.Web.Apps.Ecommerce.Helpers
-@using MrCMS.Web.Apps.Ecommerce.Models
-@using MrCMS.Web.Apps.Ecommerce.Settings
 @{
-    var selectedVariant = ViewData["selected-variant"] as ProductVariant ?? Model.VariantsByPrice.First();
+    var selectedVariant = ViewData["selected-variant"] as ProductVariant ?? Model.Variants.First();
     var hasSpecifications = Model.SpecificationValues.Any();
 }
 @Html.HiddenFor(x => x.UrlSegment)

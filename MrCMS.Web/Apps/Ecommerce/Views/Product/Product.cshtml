@@ -6,7 +6,7 @@
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @{
-    var selectedVariant = ViewData["selected-variant"] as ProductVariant ?? Model.VariantsByPrice.First();
+    var selectedVariant = ViewData["selected-variant"] as ProductVariant ?? Model.Variants.First();
     var backInStock = ViewData["back-in-stock"] is bool && (bool)ViewData["back-in-stock"];
     var hasSpecifications = Model.SpecificationValues.Any();
 }

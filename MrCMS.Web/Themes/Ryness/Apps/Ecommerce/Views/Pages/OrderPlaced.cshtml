@@ -1,10 +1,14 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.OrderPlaced
 @using MrCMS.Helpers
+@using MrCMS.Web.Apps.Core.Models
 @using MrCMS.Web.Apps.Core.Pages
+@using MrCMS.Web.Apps.Ecommerce.Controllers
 @using MrCMS.Web.Apps.Ecommerce.Entities.Orders
+@using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Website
 @{
     var order = ViewData["order"] as Order;
+    var emailRegistrationStatus = ViewData["user-can-register"] is EmailRegistrationStatus ? (EmailRegistrationStatus)ViewData["user-can-register"] : EmailRegistrationStatus.Available;
 }
 
 <div class="row-fluid margin-bottom-20">
@@ -19,7 +23,7 @@
                 </p>
                 <p>
                     Complete order details have been emailed to @order.OrderEmail
-                    @if (CurrentRequestData.CurrentUser != null)
+                    @if (order.User != null)
                     {
                         <text>and current order status can be viewed in </text><a href="@(UniquePageHelper.GetUrl<UserAccountPage>())">your account</a>
                     }
@@ -31,36 +35,15 @@
             </div>
         </div>
 
-        @{
-            if ((bool)ViewData["user-can-register"])
-            {
-            <div class="border-grey margin-bottom-20">
-                <div class="sub-header grey-background">
-                    Would you like us to remember your details for next time?
-                </div>
-                <div class="padding-20">
-                    <p>
-                        Simply enter a password :
-                    </p>
-                    @using (Html.BeginForm("RegistrationWithoutDetails", "UserAccount", null, FormMethod.Post, new { @class = "form-horizontal" }))
-                    {
-                        @Html.Hidden("Email", order.OrderEmail)
-                        @Html.Hidden("OrderId", order.Id)
-                        <div class="row-fluid">
-                            <input type="password" name="Password" id="password" class="span6" required />
-                        </div>
-                        <br />
-                        <div class="row-fluid">
-                            <input type="submit" class="btn red-gradient span4" value="Continue" />
-                        </div>
-                    }
-                </div>
-            </div>
-            }
+        @switch (emailRegistrationStatus)
+        {
+            case EmailRegistrationStatus.EmailInUse:
+                Html.RenderPartial("LoginAndAssociateOrder", new LoginModel { Email = order.OrderEmail });
+                break;
+            case EmailRegistrationStatus.Available:
+                Html.RenderPartial("RegisterAndAssociateOrder", new RegisterModel { Email = order.OrderEmail, FirstName = order.BillingAddress.FirstName, LastName = order.BillingAddress.LastName });
+                break;
         }
-
-
-
         <div class="border-grey padding-20 tablet-continue">
             <div class="row-fluid">
                 <div class="span4">

@@ -24,5 +24,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         IList<Product> GetNewIn(int numberOfItems = 10);
         void SetCategoryOrder(Product product, List<SortItem> items);
         Product Update(Product product);
+        void SetVariantOrders(Product product, List<SortItem> items);
     }
 }

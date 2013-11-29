@@ -1,0 +1,33 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Entities.Orders
+@model MrCMS.Web.Apps.Core.Models.RegisterModel
+@{
+    var order = ViewData["order"] as Order;
+    var errorMessage = TempData["register-error"] as string;
+}
+<div class="border-grey margin-bottom-20">
+    <div class="sub-header grey-background">
+        Would you like us to remember your details for next time?
+    </div>
+    <div class="padding-20">
+        @using (Html.BeginForm("RegisterAndAssociateOrder", "OrderPlaced", null, FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.HiddenFor(model => model.Email)
+            @Html.HiddenFor(model => model.FirstName)
+            @Html.HiddenFor(model => model.LastName)
+            @Html.Hidden("Id", order.Guid)
+            <div class="row-fluid">
+                @Html.LabelFor(model => model.Password)
+                @Html.PasswordFor(model => model.Password, new { @class = "span6" })
+            </div>
+            <div class="row-fluid">
+                @Html.LabelFor(model => model.ConfirmPassword)
+                @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "span6" })
+            </div>
+            <br />
+            <div class="row-fluid">
+                <input type="submit" class="btn red-gradient span4" value="Continue" />
+            </div>
+        }
+    </div>
+</div>
+

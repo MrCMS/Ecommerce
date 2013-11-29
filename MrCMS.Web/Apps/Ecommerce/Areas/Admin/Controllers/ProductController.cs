@@ -136,7 +136,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
             ViewData["specification-attributes"] = new SelectList(attributes, "Id", "Name");
             var options = attributes.Any()
-                              ? attributes.First().Options.OrderBy(x=>x.DisplayOrder).ToList()
+                              ? attributes.First().Options.OrderBy(x => x.DisplayOrder).ToList()
                               : new List<ProductSpecificationAttributeOption>();
             options.Add(new ProductSpecificationAttributeOption() { Id = 0, Name = "Other" });
             ViewData["specification-attributes-options"] = new SelectList(options, "Id", "Name");
@@ -149,8 +149,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             try
             {
                 var options = _productOptionManager.GetSpecificationAttribute(specificationAttributeId)
-                    .Options.OrderBy(x => x.DisplayOrder).ToList().Select(item => new SelectListItem() 
-                    { Selected = false, Text = item.Name, Value = item.Id.ToString() }).ToList();
+                    .Options.OrderBy(x => x.DisplayOrder).ToList().Select(item => new SelectListItem() { Selected = false, Text = item.Name, Value = item.Id.ToString() }).ToList();
                 return Json(options);
             }
             catch
@@ -166,8 +165,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             {
                 var option = _productOptionManager.GetSpecificationAttribute(Option);
                 if (!_productOptionManager.ListSpecificationAttributeOptions(Option).Any(x => x.Name == Value))
-                    _productOptionManager.AddSpecificationAttributeOption(new ProductSpecificationAttributeOption() 
-                    { Name = Value, ProductSpecificationAttribute = option });
+                    _productOptionManager.AddSpecificationAttributeOption(new ProductSpecificationAttributeOption() { Name = Value, ProductSpecificationAttribute = option });
                 _productOptionManager.SetSpecificationValue(_productService.Get(ProductId), option, Value);
                 return Json(true);
             }
@@ -262,8 +260,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             var sortItems =
             _fileService.GetFiles(product.Gallery).OrderBy(arg => arg.display_order)
                                 .Select(
-                                    arg => new ImageSortItem { Order = arg.display_order, 
-                                        Id = arg.Id, Name = arg.name, ImageUrl = arg.url, IsImage = arg.is_image })
+                                    arg => new ImageSortItem
+                                    {
+                                        Order = arg.display_order,
+                                        Id = arg.Id,
+                                        Name = arg.name,
+                                        ImageUrl = arg.url,
+                                        IsImage = arg.is_image
+                                    })
                                 .ToList();
 
             return View(sortItems);
@@ -310,8 +314,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public JsonResult SearchProducts(string term)
         {
             if (!string.IsNullOrWhiteSpace(term))
-                return Json(_productService.Search(term).Select(x => new 
-                { Name = x.Name, ProductID = x.Id }).Take(_siteSettings.DefaultPageSize).ToList());
+                return Json(_productService.Search(term).Select(x => new { Name = x.Name, ProductID = x.Id }).Take(_siteSettings.DefaultPageSize).ToList());
 
             return Json(String.Empty, JsonRequestBehavior.AllowGet);
         }
@@ -442,6 +445,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             product.RelatedProducts.Remove(relatedProduct);
             _documentService.SaveDocument(relatedProduct);
 
+            return RedirectToAction("Edit", "Webpage", new { id = product.Id });
+        }
+
+        [HttpGet]
+        public PartialViewResult SortVariants(Product product)
+        {
+            ViewData["sort-items"] = product.Variants.Select(arg => new SortItem { Order = product.Variants.IndexOf(arg), Id = arg.Id, Name = arg.Name }).ToList();
+            return PartialView(product);
+        }
+
+        [HttpPost]
+        public RedirectToRouteResult SortVariants(Product product, List<SortItem> items)
+        {
+            _productService.SetVariantOrders(product, items);
             return RedirectToAction("Edit", "Webpage", new { id = product.Id });
         }
     }

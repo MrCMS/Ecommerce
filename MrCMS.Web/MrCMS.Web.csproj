@@ -519,6 +519,7 @@
     <Compile Include="Apps\Ecommerce\Metadata\SetDeliveryDetailsMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\UserAccountMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\UserOrderMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\ModelBinders\DownloadOrderedFileOrderByGuidModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddPriceBreakModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddressComparison.cs" />
     <Compile Include="Apps\Ecommerce\Models\AgeGroup.cs" />
@@ -2442,6 +2443,9 @@
     <Content Include="Apps\Ryness\Views\Widgets\SpendXMore.cshtml" />
     <Content Include="Apps\Ryness\Views\Widgets\TestimonialWidget.cshtml" />
     <Content Include="Apps\Ryness\Views\Widgets\TopBanner.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortVariants.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\OrderPlaced\LoginAndAssociateOrder.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\OrderPlaced\RegisterAndAssociateOrder.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
