@@ -15,10 +15,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public void UpdateCart(GetExpressCheckoutDetailsResponseDetailsType details)
         {
-            if (!string.IsNullOrWhiteSpace(details.BuyerMarketingEmail))
-            {
-                _cartManager.SetOrderEmail(details.BuyerMarketingEmail);
-            }
             _cartManager.SetPaymentMethod(new PayPalExpressCheckoutPaymentMethod().SystemName);
             _cartManager.SetPayPalExpressInfo(details.Token,
                                               details.PayerInfo.PayerID);

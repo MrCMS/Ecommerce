@@ -18,10 +18,12 @@
             <div class="row-fluid">
                 @Html.LabelFor(model => model.Password)
                 @Html.PasswordFor(model => model.Password, new { @class = "span6" })
+                @Html.ValidationMessageFor(x=>x.Password)
             </div>
             <div class="row-fluid">
                 @Html.LabelFor(model => model.ConfirmPassword)
                 @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "span6" })
+                @Html.ValidationMessageFor(x=>x.ConfirmPassword)
             </div>
             <br />
             <div class="row-fluid">
