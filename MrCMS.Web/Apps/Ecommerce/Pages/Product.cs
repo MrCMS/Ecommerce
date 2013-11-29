@@ -176,9 +176,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual IList<Product> RelatedProducts { get; set; }
 
-        public virtual List<SelectListItem> GetVariantOptions(ProductVariant productVariant)
+        public virtual List<SelectListItem> GetVariantOptions(ProductVariant productVariant, bool showName = true, bool showOptionValues = true)
         {
-            return VariantsByPrice.BuildSelectItemList(variant => variant.SelectOptionName,
+            return VariantsByPrice.BuildSelectItemList(variant => variant.GetSelectOptionName(showName, showOptionValues),
                                                        variant => variant.Id.ToString(),
                                                        variant => variant == productVariant,
                                                        emptyItem: null);

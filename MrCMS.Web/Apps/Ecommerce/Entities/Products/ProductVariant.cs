@@ -193,22 +193,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get { return !string.IsNullOrWhiteSpace(Name) ? Name : (Product != null ? Product.Name : ""); }
         }
-        public virtual string SelectOptionName
+        public virtual string GetSelectOptionName(bool showName = true, bool showOptionValues = true)
         {
-            get
+            var title = string.Empty;
+            if (!string.IsNullOrWhiteSpace(Name) && showName)
+                title = Name + " - ";
+
+            if (OptionValues.Any() && showOptionValues)
             {
-                var title = string.Empty;
-                if (!string.IsNullOrWhiteSpace(Name)) title = Name + " - ";
-
-                if (OptionValues.Any())
-                {
-                    title += string.Join(", ", AttributeValuesOrdered.Select(value => value.Value));
-                }
-
-                title += " - " + Price.ToCurrencyFormat();
-
-                return title;
+                title += string.Join(", ", AttributeValuesOrdered.Select(value => value.Value)) + " - ";
             }
+
+            title += Price.ToCurrencyFormat();
+
+            return title;
         }
 
         public virtual bool ShowPreviousPrice
