@@ -45,7 +45,6 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Checkout - Save Billing Address", "Apps/Ecommerce/PaymentDetails/SaveBillingAddress", new { controller = "PaymentDetails", action = "SaveBillingAddress" }, new[] { typeof(PaymentDetailsController).Namespace });
             context.MapRoute("Checkout - Set Payment Method", "Apps/Ecommerce/PaymentDetails/SetPaymentMethod", new { controller = "PaymentDetails", action = "SetPaymentMethod" }, new[] { typeof(PaymentDetailsController).Namespace });
             context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders", new { controller = "UserAccount", action = "UserAccountOrders" });
-            context.MapRoute("User Account Register Without Details", "Apps/Ecommerce/UserAccount/RegistrationWithoutDetails", new { controller = "UserAccount", action = "RegistrationWithoutDetails" });
             context.MapRoute("User Account - download Order PDF", "Apps/Ecommerce/OrderPdf/ExportOrderToPdf/{id}", new { controller = "OrderPdf", action = "ExportOrderToPdf" }, new[] { typeof(OrderPdfController).Namespace });
             context.MapRoute("PayPal Express Checkout - SetExpressCheckout", "Apps/Ecommerce/PayPalExpress/SetExpressCheckout", new { controller = "PayPalExpressCheckout", action = "SetExpressCheckout" },
                              new[] { typeof(PayPalExpressCheckoutController).Namespace });
@@ -73,6 +72,14 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Product - Get Variant Details", "product/variant-details/{id}",
                              new {controller = "Product", action = "VariantDetails"},
                              new[] {typeof (ProductController).Namespace});
+
+            context.MapRoute("Order Placed - Login and associate order", "order-placed/login",
+                             new {controller = "OrderPlaced", action = "LoginAndAssociateOrder"},
+                             new[] {typeof (OrderPlacedController).Namespace});
+
+            context.MapRoute("Order Placed - Register and associate order", "order-placed/register",
+                             new {controller = "OrderPlaced", action = "RegisterAndAssociateOrder"},
+                             new[] {typeof (OrderPlacedController).Namespace});
         }
     }
 }

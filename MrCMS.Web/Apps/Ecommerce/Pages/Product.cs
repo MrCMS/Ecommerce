@@ -150,11 +150,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             }
         }
 
-        public virtual IEnumerable<ProductVariant> VariantsByPrice
-        {
-            get { return Variants.OrderBy(variant => variant.Price); }
-        }
-
         public virtual bool ShowPreviousPrice
         {
             get { return DisplayPreviousPrice.HasValue && DisplayPreviousPrice > DisplayPrice; }
@@ -164,7 +159,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual List<SelectListItem> GetVariantOptions(ProductVariant productVariant, bool showName = true, bool showOptionValues = true)
         {
-            return VariantsByPrice.BuildSelectItemList(variant => variant.GetSelectOptionName(showName, showOptionValues),
+            return Variants.BuildSelectItemList(variant => variant.GetSelectOptionName(showName, showOptionValues),
                                                        variant => variant.Id.ToString(),
                                                        variant => variant == productVariant,
                                                        emptyItem: null);

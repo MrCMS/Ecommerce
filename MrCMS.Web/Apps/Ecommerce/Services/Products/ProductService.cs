@@ -73,11 +73,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (!string.IsNullOrWhiteSpace(query))
                 queryOver = queryOver.Where(item => item.Name.IsInsensitiveLike(query, MatchMode.Anywhere));
 
-            queryOver = queryOver.Where(item => !item.Id.IsIn(product.RelatedProducts.Select(c => c.Id).ToArray()) && item.Id!=product.Id);
+            queryOver = queryOver.Where(item => !item.Id.IsIn(product.RelatedProducts.Select(c => c.Id).ToArray()) && item.Id != product.Id);
 
             return _session.Paged(queryOver, page, pageSize);
         }
-        
+
         public void AddCategory(Product product, int categoryId)
         {
             var category = _documentService.GetDocument<Category>(categoryId);
@@ -177,6 +177,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             _session.Transact(session => session.Update(product));
             return product;
+        }
+
+        public void SetVariantOrders(Product product, List<SortItem> items)
+        {
+            _session.Transact(session =>
+                                  {
+                                      items.ForEach(item =>
+                                                        {
+                                                            var variant = session.Get<ProductVariant>(item.Id);
+                                                            if (variant != null)
+                                                            {
+                                                                product.Variants.Remove(variant);
+                                                                product.Variants.Insert(item.Order, variant);
+                                                            }
+                                                        });
+                                      session.Update(product);
+                                  });
         }
 
         public IList<Product> GetNewIn(int numberOfItems = 10)

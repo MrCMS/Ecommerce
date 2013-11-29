@@ -1,0 +1,28 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Entities.Orders
+@model MrCMS.Web.Apps.Core.Models.LoginModel
+@{
+    var order = ViewData["order"] as Order;
+    var errorMessage = TempData["register-error"] as string;
+}
+<div class="border-grey margin-bottom-20">
+    <div class="sub-header grey-background">
+        Log in to remember your order
+    </div>
+    <div class="padding-20">
+        <p>
+            Enter your password :
+        </p>
+        @using (Html.BeginForm("LoginAndAssociateOrder", "OrderPlaced", null, FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.HiddenFor(model => model.Email)
+            @Html.Hidden("Id", order.Guid)
+            <div class="row-fluid">
+                @Html.PasswordFor(model => model.Password, new { @class = "span6" })
+            </div>
+            <br />
+            <div class="row-fluid">
+                <input type="submit" class="btn red-gradient span4" value="Continue" />
+            </div>
+        }
+    </div>
+</div>

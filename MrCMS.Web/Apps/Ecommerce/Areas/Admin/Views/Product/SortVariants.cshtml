@@ -1,0 +1,37 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Models
+@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+   var sortItems = ViewData["sort-items"] as List<SortItem> ?? new List<SortItem>();}
+
+@using (Html.BeginForm("SortVariants", "Product", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Sort Product Specification Atrribute Options
+            <span class="btn-group  display-inline  pull-right">
+                <button class="btn btn-primary" id="submit">
+                    Save & Close</button>
+            </span>
+        </legend>
+
+        <ul id="sortable">
+            @if (sortItems.Any())
+            {
+                for (var i = 0; i < sortItems.Count; i++)
+                {
+                <li>
+                    @Html.Hidden(string.Format("[{0}].Id", i), sortItems[i].Id)
+                    @Html.Hidden(string.Format("[{0}].Order", i), sortItems[i].Order)
+                    <i class="icon-resize-full"></i>&nbsp;&nbsp;
+                        @sortItems[i].Name
+                </li>
+                }
+            }
+            else
+            {
+                <li>No specifications to sort.</li>
+            }
+        </ul>
+    </fieldset>
+}
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/sorting.js"); }
