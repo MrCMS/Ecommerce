@@ -27,11 +27,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual MediaCategory Gallery { get; set; }
 
-        public virtual decimal Tax
-        {
-            get { return Variants.Sum(x => x.Tax); }
-        }
-
         public virtual bool IsMultiVariant
         {
             get { return Variants.Count > 1; }
@@ -90,15 +85,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             Gallery = productGallery;
 
             service.AddDocument(productGallery);
-        }
-
-        public virtual string ContainerUrl
-        {
-            get
-            {
-                var webpage = (Parent as Webpage);
-                return webpage != null ? webpage.LiveUrlSegment : string.Empty;
-            }
         }
 
         public virtual IList<ProductOption> Options { get; set; }
