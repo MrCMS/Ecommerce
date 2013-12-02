@@ -6,6 +6,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public interface IImportProductVariantPriceBreaksService
     {
+        IImportProductVariantPriceBreaksService Initialize();
         IEnumerable<PriceBreak> ImportVariantPriceBreaks(ProductVariantImportDataTransferObject item, ProductVariant productVariant);
     }
 }

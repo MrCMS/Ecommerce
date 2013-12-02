@@ -5,6 +5,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public interface IImportProductsService
     {
-        void ImportProductsFromDTOs(IEnumerable<ProductImportDataTransferObject> productsToImport);
+        IImportProductsService Initialize();
+        void ImportProductsFromDTOs(HashSet<ProductImportDataTransferObject> productsToImport);
     }
 }

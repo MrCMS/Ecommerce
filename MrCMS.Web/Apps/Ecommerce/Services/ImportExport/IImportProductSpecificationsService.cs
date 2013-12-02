@@ -7,9 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public interface IImportProductSpecificationsService
     {
+        IImportProductSpecificationsService Initialize();
         IEnumerable<ProductSpecificationValue> ImportSpecifications(ProductImportDataTransferObject dataTransferObject, Product product);
-
-        void ImportVariantSpecifications(ProductVariantImportDataTransferObject dataTransferObject, Product product,
-                                         ProductVariant productVariant);
     }
 }

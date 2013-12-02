@@ -23,7 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
 
         public TaxRate Get(int id)
         {
-            return _session.QueryOver<TaxRate>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
+            return _session.Get<TaxRate>(id);
         }
         public TaxRate GetDefaultRate()
         {
@@ -36,11 +36,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
             if (pv != null && pv.TaxRate != null)
                 taxRate = pv.TaxRate;
             return taxRate ?? GetDefaultRate();
-        }
-        public TaxRate GetByCodeOrName(string value)
-        {
-            return _session.QueryOver<TaxRate>().Where(x => x.Code.IsInsensitiveLike(value, MatchMode.Exact) 
-                || x.Name.IsInsensitiveLike(value, MatchMode.Exact)).Cacheable().SingleOrDefault();
         }
         public IList<TaxRate> GetAll()
         {

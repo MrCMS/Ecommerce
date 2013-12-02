@@ -22,8 +22,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private readonly IImportProductImagesService _importProductImagesService;
         private readonly IImportProductUrlHistoryService _importUrlHistoryService;
         private readonly ISession _session;
-        private List<Document> _allDocuments;
-        private IList<Brand> _allBrands;
+        private HashSet<Document> _allDocuments;
+        private HashSet<Brand> _allBrands;
         private ProductSearch _uniquePage;
         private MediaCategory _productGalleriesCategory;
 
@@ -39,19 +39,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _importProductImagesService = importProductImagesService;
             _importUrlHistoryService = importUrlHistoryService;
             _session = session;
+        }
 
-            _allDocuments=new List<Document>();
-            _allBrands=new List<Brand>();
+        public IImportProductsService Initialize()
+        {
+            _allDocuments = new HashSet<Document>(_documentService.GetAllDocuments<Document>());
+            _allBrands = new HashSet<Brand>(_brandService.GetAll());
+            _importSpecificationsService.Initialize();
+            _importProductVariantsService.Initialize();
+            _importUrlHistoryService.Initialize();
+            return this;
         }
 
         /// <summary>
         /// Do import
         /// </summary>
         /// <param name="productsToImport"></param>
-        public void ImportProductsFromDTOs(IEnumerable<ProductImportDataTransferObject> productsToImport)
+        public void ImportProductsFromDTOs(HashSet<ProductImportDataTransferObject> productsToImport)
         {
-            _allDocuments = _documentService.GetAllDocuments<Document>().ToList();
-            _allBrands = _brandService.GetAll();
             _uniquePage = _documentService.GetUniquePage<ProductSearch>();
             _productGalleriesCategory = _documentService.GetDocumentByUrl<MediaCategory>("product-galleries");
             if (_productGalleriesCategory == null)
@@ -92,8 +97,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// <param name="dataTransferObject"></param>
         public Product ImportProduct(ProductImportDataTransferObject dataTransferObject)
         {
-            if(_allDocuments==null)
-                _allDocuments=new List<Document>();
+            if (_allDocuments == null)
+                _allDocuments = new HashSet<Document>();
             var product = 
                 _allDocuments.OfType<Product>()
                              .SingleOrDefault(x => x.UrlSegment == dataTransferObject.UrlSegment) ??

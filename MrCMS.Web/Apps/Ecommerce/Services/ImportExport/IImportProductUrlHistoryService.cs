@@ -7,6 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public interface IImportProductUrlHistoryService
     {
+        IImportProductUrlHistoryService Initialize();
         IEnumerable<UrlHistory> ImportUrlHistory(ProductImportDataTransferObject item, Product product);
     }
 }

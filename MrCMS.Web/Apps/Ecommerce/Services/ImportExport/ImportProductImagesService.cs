@@ -41,7 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                             continue;
                         }
                     }
-                    var resultWithOutQuery= !string.IsNullOrEmpty(result.Query) ? result.ToString().Replace(result.Query, "") : result.ToString();
+                    var resultWithOutQuery = !string.IsNullOrEmpty(result.Query) ? result.ToString().Replace(result.Query, "") : result.ToString();
                     ImportImageToGallery(resultWithOutQuery, mediaCategory);
                 }
             }

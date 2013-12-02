@@ -2,7 +2,6 @@
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
@@ -10,12 +9,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     public class ImportProductVariantPriceBreaksService : IImportProductVariantPriceBreaksService
     {
         private readonly ISession _session;
-        private readonly IList<PriceBreak> _priceBreaks;
+        private HashSet<PriceBreak> _priceBreaks;
 
         public ImportProductVariantPriceBreaksService(ISession session)
         {
             _session = session;
-            _priceBreaks = _session.QueryOver<PriceBreak>().List();
+        }
+
+        public IImportProductVariantPriceBreaksService Initialize()
+        {
+            _priceBreaks = new HashSet<PriceBreak>(_session.QueryOver<PriceBreak>().List());
+            return this;
         }
 
         public IEnumerable<PriceBreak> ImportVariantPriceBreaks(ProductVariantImportDataTransferObject item, ProductVariant productVariant)

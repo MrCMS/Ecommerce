@@ -7,7 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     public interface IImportProductsValidationService
     {
         Dictionary<string, List<string>> ValidateBusinessLogic(IEnumerable<ProductImportDataTransferObject> productsToImport);
-        List<ProductImportDataTransferObject> ValidateAndImportProductsWithVariants(ExcelPackage spreadsheet,
+        HashSet<ProductImportDataTransferObject> ValidateAndImportProductsWithVariants(ExcelPackage spreadsheet,
                                                                                     ref Dictionary<string, List<string>>
                                                                                         parseErrors);
         Dictionary<string, List<string>> ValidateImportFile(ExcelPackage spreadsheet);

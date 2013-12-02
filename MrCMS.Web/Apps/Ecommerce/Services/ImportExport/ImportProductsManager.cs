@@ -29,11 +29,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             var businessLogicErrors = _importProductsValidationService.ValidateBusinessLogic(productsToImport);
             if (businessLogicErrors.Any())
                 return businessLogicErrors;
+            _importProductsService.Initialize();
             _importProductsService.ImportProductsFromDTOs(productsToImport);
             return new Dictionary<string, List<string>>();
         }
 
-        private List<ProductImportDataTransferObject> GetProductsFromSpreadSheet(ExcelPackage spreadsheet,
+        private HashSet<ProductImportDataTransferObject> GetProductsFromSpreadSheet(ExcelPackage spreadsheet,
                                                                                  out Dictionary<string, List<string>>
                                                                                      parseErrors)
         {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -13,28 +14,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     public class ImportProductVariantsService : IImportProductVariantsService
     {
         private readonly IImportProductVariantPriceBreaksService _importProductVariantPriceBreaksService;
-        private readonly IImportProductSpecificationsService _importProductSpecificationsService;
-        private readonly IProductVariantService _productVariantService;
+        private readonly IImportProductOptionsService _importProductOptionsService;
         private readonly ITaxRateManager _taxRateManager;
         private readonly IProductOptionManager _productOptionManager;
-        private readonly IDocumentService _documentService;
         private readonly ISession _session;
 
-        private readonly IList<ProductVariant> _allVariants;
+        private HashSet<ProductVariant> _allVariants;
 
-        public ImportProductVariantsService(IImportProductVariantPriceBreaksService importPriceBreaksService, IImportProductSpecificationsService importSpecificationsService,
-            IProductVariantService productVariantService, ITaxRateManager taxRateManager,
-            IProductOptionManager productOptionManager, IDocumentService documentService, ISession session)
+        public ImportProductVariantsService(IImportProductVariantPriceBreaksService importPriceBreaksService, IImportProductOptionsService importProductOptionsService,
+             ITaxRateManager taxRateManager, IProductOptionManager productOptionManager, ISession session)
         {
-            _importProductSpecificationsService = importSpecificationsService;
-            _productVariantService = productVariantService;
             _taxRateManager = taxRateManager;
             _productOptionManager = productOptionManager;
-            _documentService = documentService;
             _session = session;
             _importProductVariantPriceBreaksService = importPriceBreaksService;
+            _importProductOptionsService = importProductOptionsService;
+        }
 
-            _allVariants = _session.QueryOver<ProductVariant>().Fetch(x => x.PriceBreaks).Eager.List().Distinct().ToList();
+        public IImportProductVariantsService Initialize()
+        {
+            _allVariants = new HashSet<ProductVariant>(_session.QueryOver<ProductVariant>().List());
+            _importProductVariantPriceBreaksService.Initialize();
+            _importProductOptionsService.Initialize();
+            return this;
         }
 
         public IEnumerable<ProductVariant> ImportVariants(ProductImportDataTransferObject dataTransferObject, Product product)
@@ -72,10 +74,66 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 _importProductVariantPriceBreaksService.ImportVariantPriceBreaks(item, productVariant);
 
                 //Specifications
-                _importProductSpecificationsService.ImportVariantSpecifications(item, product, productVariant);
+                _importProductOptionsService.ImportVariantSpecifications(item, product, productVariant);
             }
 
             return dataTransferObject.ProductVariants.Any() ? product.Variants : null;
+        }
+    }
+
+    public interface IImportProductOptionsService
+    {
+        IImportProductOptionsService Initialize();
+        void ImportVariantSpecifications(ProductVariantImportDataTransferObject dataTransferObject, Product product,
+                                         ProductVariant productVariant);
+    }
+
+    public class ImportProductOptionsService : IImportProductOptionsService
+    {
+        private readonly ISession _session;
+        private HashSet<ProductOption> _productOptions;
+        private HashSet<ProductOptionValue> _productOptionValues;
+
+        public ImportProductOptionsService(ISession session)
+        {
+            _session = session;
+        }
+
+
+        public IImportProductOptionsService Initialize()
+        {
+            _productOptions = new HashSet<ProductOption>(_session.QueryOver<ProductOption>().List());
+            _productOptionValues = new HashSet<ProductOptionValue>(_session.QueryOver<ProductOptionValue>().List());
+            return this;
+        }
+
+        public void ImportVariantSpecifications(ProductVariantImportDataTransferObject item, Product product, ProductVariant productVariant)
+        {
+            productVariant.OptionValues.Clear();
+            foreach (var opt in item.Options)
+            {
+                var option =
+                    _productOptions.FirstOrDefault(
+                        productOption => productOption.Name.Equals(opt.Key, StringComparison.InvariantCultureIgnoreCase)) ??
+                    new ProductOption { Name = opt.Key };
+                if (!product.Options.Contains(option))
+                    product.Options.Add(option);
+
+                var productOptionValue = productVariant.OptionValues.FirstOrDefault(x => x.ProductOption.Id == option.Id);
+                if (productOptionValue == null)
+                {
+                    productVariant.OptionValues.Add(new ProductOptionValue
+                    {
+                        ProductOption = option,
+                        ProductVariant = productVariant,
+                        Value = opt.Value
+                    });
+                }
+                else
+                {
+                    productOptionValue.Value = opt.Value;
+                }
+            }
         }
     }
 }
