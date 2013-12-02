@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Web;
 using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
@@ -18,31 +20,41 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
         {
             _downloadProductService = A.Fake<IDownloadOrderedFileService>();
             _downloadOrderedFileController = new DownloadOrderedFileController(_downloadProductService);
-        } 
-
-        [Fact]
-        public void IfServiceGetDownloadReturnsAValueReturnsThat()
-        {
-            var order = new Order();
-            var orderLine = new OrderLine();
-            var filePathResult = new FilePathResult("test", "test");
-            A.CallTo(() => _downloadProductService.GetDownload(order, orderLine)).Returns(filePathResult);
-
-            var actionResult = _downloadOrderedFileController.Download(order, orderLine);
-
-            actionResult.Should().Be(filePathResult);
         }
-        
+
         [Fact]
-        public void IfServiceGetDownloadReturnsNullReturnAnEmptyResult()
+        public void ACallToWriteDownloadToResponseShouldHappen()
         {
             var order = new Order();
             var orderLine = new OrderLine();
-            A.CallTo(() => _downloadProductService.GetDownload(order, orderLine)).Returns(null);
+
+            _downloadOrderedFileController.Download(order, orderLine);
+
+            A.CallTo(() => _downloadProductService.WriteDownloadToResponse(_downloadOrderedFileController.Response, order, orderLine)).MustHaveHappened();
+        }
+
+        [Fact]
+        public void ReturnsAnEmptyResult()
+        {
+            var order = new Order();
+            var orderLine = new OrderLine();
 
             var actionResult = _downloadOrderedFileController.Download(order, orderLine);
 
             actionResult.Should().BeOfType<EmptyResult>();
+        }
+    }
+
+    public class StubFileStreamResult : FileStreamResult
+    {
+        public StubFileStreamResult()
+            : base(new MemoryStream(), "stub")
+        {
+        }
+
+        protected override void WriteFile(HttpResponseBase response)
+        {
+
         }
     }
 }

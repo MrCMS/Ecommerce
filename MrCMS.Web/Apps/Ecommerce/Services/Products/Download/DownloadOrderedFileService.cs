@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Web;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Products.Download.Rules;
 using System.Web.Mvc;
@@ -12,29 +16,40 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download
     {
         private readonly ISession _session;
         private readonly IEnumerable<IDownloadOrderedFileValidationRule> _rules;
+        private readonly IFileSystem _fileSystem;
 
-        public DownloadOrderedFileService(ISession session, IEnumerable<IDownloadOrderedFileValidationRule> rules)
+        public DownloadOrderedFileService(ISession session, IEnumerable<IDownloadOrderedFileValidationRule> rules, IFileSystem fileSystem)
         {
             _session = session;
             _rules = rules;
+            _fileSystem = fileSystem;
         }
 
-        public FilePathResult GetDownload(Order order, OrderLine orderLine)
+        public void WriteDownloadToResponse(HttpResponseBase response, Order order, OrderLine orderLine)
         {
             if (order == null || orderLine == null)
-                return null;
+                return;
 
             var errors = _rules.SelectMany(rule => rule.GetErrors(order, orderLine));
             if (errors.Any())
-                return null;
+                return;
+
+            if (!_fileSystem.Exists(orderLine.DownloadFileUrl))
+                return;
+
+            try
+            {
+                response.Buffer = false;
+                response.AddHeader("Content-Disposition", "attachment; filename=" + orderLine.DownloadFileName);
+                _fileSystem.WriteToStream(orderLine.DownloadFileUrl, response.OutputStream);
+            }
+            catch
+            {
+                return;
+            }
 
             orderLine.NumberOfDownloads++;
             _session.Transact(session => session.Update(orderLine));
-
-            return new FilePathResult(orderLine.DownloadFileUrl, orderLine.DownloadFileContentType)
-                       {
-                           FileDownloadName = orderLine.DownloadFileName
-                       };
         }
     }
 }

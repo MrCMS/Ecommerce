@@ -36,7 +36,7 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
                             foreach (var item in order.OrderLines)
                             {
                                 sb.Append("<tr>");
-                                sb.Append("<td>" + item.Name + " (" + item.SKU + ")" + "</td>");
+                                sb.Append("<td>" + item.Name + " (" + item.SKU + ")" + GetDownloadLink(item) + "</td>");
                                 sb.Append("<td>" + item.Quantity + "</td>");
                                 sb.Append("<td>" + item.UnitPrice + "</td>");
                                 sb.Append("<td>" + item.Subtotal + "</td>");
@@ -48,6 +48,14 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
                         }
                     }
                 };
+        }
+
+        private string GetDownloadLink(OrderLine item)
+        {
+            if (!item.IsDownloadable)
+                return string.Empty;
+            return string.Format(" - <a href=\"{0}\">Download</a>",
+                                 string.Format("http://{0}/digital-download/{1}/{2}", item.Site.BaseUrl, item.Order.Guid, item.Id));
         }
     }
 }

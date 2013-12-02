@@ -36,7 +36,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download.Rules
     {
         public IEnumerable<string> GetErrors(Order order, OrderLine orderLine)
         {
-            if (orderLine.NumberOfDownloads >= orderLine.AllowedNumberOfDownloads)
+            if (orderLine.AllowedNumberOfDownloads.HasValue && orderLine.NumberOfDownloads >= orderLine.AllowedNumberOfDownloads)
                 yield return "Download limit reached.";
         }
     }
