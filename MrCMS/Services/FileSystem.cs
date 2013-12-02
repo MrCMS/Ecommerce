@@ -79,7 +79,10 @@ namespace MrCMS.Services
 
         public void WriteToStream(string filePath, Stream stream)
         {
-            throw new System.NotImplementedException();
+            using (var fileStream = File.OpenRead(filePath))
+            {
+                fileStream.CopyTo(stream);
+            }
         }
 
 

@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
         private readonly IList<ProductVariant> _allVariants;
 
-        public ImportProductVariantsService(IImportProductVariantPriceBreaksService importPriceBreaksService, IImportProductSpecificationsService importSpecificationsService, 
+        public ImportProductVariantsService(IImportProductVariantPriceBreaksService importPriceBreaksService, IImportProductSpecificationsService importSpecificationsService,
             IProductVariantService productVariantService, ITaxRateManager taxRateManager,
             IProductOptionManager productOptionManager, IDocumentService documentService, ISession session)
         {
@@ -52,10 +52,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 productVariant.StockRemaining = item.Stock.HasValue ? item.Stock.Value : 0;
                 productVariant.Weight = item.Weight.HasValue ? item.Weight.Value : 0;
                 productVariant.TrackingPolicy = item.TrackingPolicy;
-                productVariant.TaxRate = (item.TaxRate.HasValue && item.TaxRate.Value!=0)?_taxRateManager.Get(item.TaxRate.Value):_taxRateManager.GetDefaultRate();
+                productVariant.TaxRate = (item.TaxRate.HasValue && item.TaxRate.Value != 0) ? _taxRateManager.Get(item.TaxRate.Value) : _taxRateManager.GetDefaultRate();
                 productVariant.Product = product;
 
-                product.Variants.Add(productVariant);
+                if (!product.Variants.Contains(productVariant))
+                {
+                    product.Variants.Add(productVariant);
+                }
 
 
                 for (var i = productVariant.OptionValues.Count - 1; i >= 0; i--)
@@ -66,10 +69,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 }
 
                 //Price Breaks
-                _importProductVariantPriceBreaksService.ImportVariantPriceBreaks(item,productVariant);
+                _importProductVariantPriceBreaksService.ImportVariantPriceBreaks(item, productVariant);
 
                 //Specifications
-               _importProductSpecificationsService.ImportVariantSpecifications(item, product, productVariant);
+                _importProductSpecificationsService.ImportVariantSpecifications(item, product, productVariant);
             }
 
             return dataTransferObject.ProductVariants.Any() ? product.Variants : null;
