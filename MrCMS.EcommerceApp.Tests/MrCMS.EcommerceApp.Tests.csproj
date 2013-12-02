@@ -138,6 +138,7 @@
     <Compile Include="Admin\Controllers\ProductVariantControllerTests.cs" />
     <Compile Include="Admin\Controllers\RegionControllerTests.cs" />
     <Compile Include="Admin\Controllers\TaxRateControllerTests.cs" />
+    <Compile Include="Builders\OrderLineBuilder.cs" />
     <Compile Include="Controllers\CategoryContainerControllerTests.cs" />
     <Compile Include="Controllers\DownloadProductControllerTests.cs" />
     <Compile Include="Controllers\ProductSearchControllerTests.cs" />
