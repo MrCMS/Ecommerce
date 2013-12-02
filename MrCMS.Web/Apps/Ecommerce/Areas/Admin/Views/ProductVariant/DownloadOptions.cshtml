@@ -1,34 +1,34 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 <div class="tab-pane" id="download-options">
-     <label class="checkbox">@Html.CheckBox("IsDownloadable", Model.IsDownloadable) Downloadable?</label>
-    <div id="downloadable" @(Model.IsDownloadable?Html.Raw("style='display:block'"):Html.Raw("style='display:none'"))>
-        <br/>
+    <label class="checkbox">@Html.CheckBox("IsDownloadable", Model.IsDownloadable) Downloadable?</label>
+    <div id="downloadable" @(Model.IsDownloadable ? Html.Raw("style='display:block'") : Html.Raw("style='display:none'"))>
+        <br />
         <div class="row-fluid">
             <div class="span8">
                 <div class="row-fluid">
                     <div class="span6">
                         @Html.LabelFor(x => x.DownloadFileUrl)
-                        @Html.TextBoxFor(x => x.DownloadFileUrl, new {@class = "media-selector"})
+                        @Html.TextBoxFor(x => x.DownloadFileUrl, new { @class = "media-selector" })
                         @Html.ValidationMessageFor(x => x.DownloadFileUrl)
                     </div>
                     <div class="span6">
                         @Html.LabelFor(x => x.DemoFileUrl)
-                        @Html.TextBoxFor(x => x.DemoFileUrl, new {@class = "media-selector"})
+                        @Html.TextBoxFor(x => x.DemoFileUrl, new { @class = "media-selector" })
                         @Html.ValidationMessageFor(x => x.DemoFileUrl)
                     </div>
                 </div>
             </div>
             <div class="span4">
-                @Html.LabelFor(x=>x.AllowedNumberOfDaysForDownload)
-                @Html.TextBoxFor(x=>x.AllowedNumberOfDaysForDownload,new {@class="span3"})
-                @Html.ValidationMessageFor(x=>x.AllowedNumberOfDaysForDownload)
-          
-                @Html.LabelFor(x=>x.AllowedNumberOfDownloads)
-                @Html.TextBoxFor(x=>x.AllowedNumberOfDownloads,new {@class="span3"})
-                @Html.ValidationMessageFor(x=>x.AllowedNumberOfDownloads)
+                @Html.LabelFor(x => x.AllowedNumberOfDaysForDownload)
+                @Html.TextBoxFor(x => x.AllowedNumberOfDaysForDownload, new { @class = "span3" })
+                @Html.ValidationMessageFor(x => x.AllowedNumberOfDaysForDownload)
+
+                @Html.LabelFor(x => x.AllowedNumberOfDownloads)
+                @Html.TextBoxFor(x => x.AllowedNumberOfDownloads, new { @class = "span3" })
+                @Html.ValidationMessageFor(x => x.AllowedNumberOfDownloads)
             </div>
         </div>
-       
+
 
     </div>
 </div>

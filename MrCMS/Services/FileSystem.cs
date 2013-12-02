@@ -77,6 +77,11 @@ namespace MrCMS.Services
 
         public byte[] ReadAllBytes(string filePath) { return File.ReadAllBytes(GetPath(filePath)); }
 
+        public void WriteToStream(string filePath, Stream stream)
+        {
+            throw new System.NotImplementedException();
+        }
+
 
         public string MapPath(string path) { return CurrentRequestData.CurrentContext.Server.MapPath(path); }
     }

@@ -85,15 +85,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                             {
                                                                 orderLine.IsDownloadable = true;
                                                                 orderLine.AllowedNumberOfDownloads = item.AllowedNumberOfDownloads;
-                                                                orderLine.DownloadExpiresOn = CurrentRequestData.Now.AddDays(item.AllowedNumberOfDaysForDownload.GetValueOrDefault());
+                                                                orderLine.DownloadExpiresOn =
+                                                                    item.AllowedNumberOfDaysForDownload.HasValue
+                                                                        ? CurrentRequestData.Now.AddDays(
+                                                                            item.AllowedNumberOfDaysForDownload
+                                                                                .GetValueOrDefault())
+                                                                        : (DateTime?) null;
                                                                 orderLine.NumberOfDownloads = 0;
                                                                 var fileByUrl = _fileService.GetFileByUrl(item.DownloadFileUrl);
                                                                 if (fileByUrl != null)
                                                                 {
                                                                     orderLine.DownloadFileUrl = fileByUrl.FileUrl;
-                                                                    orderLine.DownloadFileContentType =
-                                                                        fileByUrl.ContentType;
-                                                                    orderLine.DownloadFileUrl = fileByUrl.FileUrl;
+                                                                    orderLine.DownloadFileContentType = fileByUrl.ContentType;
+                                                                    orderLine.DownloadFileName = fileByUrl.FileName;
                                                                 }
                                                                 else
                                                                 {
