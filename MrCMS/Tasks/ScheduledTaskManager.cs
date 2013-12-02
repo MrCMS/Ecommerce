@@ -18,7 +18,7 @@ namespace MrCMS.Tasks
         public IEnumerable<ScheduledTask> GetDueTasks()
         {
             var scheduledTasks =
-                _session.QueryOver<ScheduledTask>().Cacheable().List()
+                _session.QueryOver<ScheduledTask>().List()
                     .Where(
                         task => task.LastRun < CurrentRequestData.Now.AddMinutes(-task.EveryXMinutes) || task.LastRun == null)
                     .ToList();
