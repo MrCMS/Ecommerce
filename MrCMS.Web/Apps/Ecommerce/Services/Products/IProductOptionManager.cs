@@ -30,20 +30,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void UpdateSpecificationValueDisplayOrder(IList<SortItem> options);
         ProductSpecificationValue GetSpecificationValue(int id);
 
-        IList<ProductOption> GetAllAttributeOptions();
-        IList<ProductOption> ListAttributeOptions();
-        ProductOption GetAttributeOption(int id);
         ProductOption GetAttributeOptionByName(string name);
         void AddAttributeOption(ProductOption productOption);
-        void UpdateAttributeOption(ProductOption option);
-        void UpdateAttributeOption(string name, int id, Product product);
         void UpdateAttributeOptionDisplayOrder(Product product, IList<SortItem> options);
-        void DeleteAttributeOption(ProductOption option);
-        void SetAttributeValue(ProductVariant productVariant, string attributeName, string value);
         void DeleteProductAttributeValue(ProductOptionValue value);
-        bool AnyExistingAttributeOptionsWithName(ProductOption option);
-        bool AnyExistingAttributeOptionsWithName(string name, int id);
-        bool AnyExistingAttributeOptionsWithName(string name);
         
         List<ProductOptionModel> GetSearchAttributeOptions(ProductSearchQuery query);
         List<ProductOptionModel> GetSearchSpecificationAttributes(ProductSearchQuery query);

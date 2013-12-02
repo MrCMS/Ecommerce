@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
@@ -10,62 +11,34 @@ using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
-    public class ImportProductSpecificationsServiceTests
+    public class ImportProductSpecificationsServiceTests : InMemoryDatabaseTest
     {
-        private readonly IProductOptionManager _productOptionManager;
         private readonly ImportProductSpecificationsService _importSpecificationsService;
-        private readonly IProductVariantService _productVariantService;
 
         public ImportProductSpecificationsServiceTests()
         {
-            _productOptionManager = A.Fake<IProductOptionManager>();
-            _productVariantService = A.Fake<IProductVariantService>();
-            _importSpecificationsService = new ImportProductSpecificationsService(_productOptionManager, _productVariantService);
+            _importSpecificationsService = new ImportProductSpecificationsService(Session);
         }
 
 
         [Fact]
-        public void ImportSpecificationsService_ImportVariantSpecifications_ShouldAddOptionsToProduct()
+        public void ImportSpecificationsService_ImportSpecifications_ShouldAddANewSpecificationAttributeOptionIfItDoesntExist()
         {
-            var productVariantDTO = new ProductVariantImportDataTransferObject
-                                        {
-                                            SKU = "123",
-                                            Options = new Dictionary<string, string>() { { "Storage", "16GB" } }
-                                        };
             var productDTO = new ProductImportDataTransferObject
                                  {
                                      UrlSegment = "test-url",
-                                     ProductVariants = new List<ProductVariantImportDataTransferObject>() { productVariantDTO }
-                                 };
-
-            var product = new Product() { Name = "Test Product" };
-            var productVariant = new ProductVariant() { Name = "Test Product Variant", Product = product };
-
-            var option = new ProductOption() { Id = 1, Name = "Storage" };
-            A.CallTo(() => _productOptionManager.GetAttributeOptionByName("Storage")).Returns(option);
-
-            _importSpecificationsService.ImportVariantSpecifications(productVariantDTO, product, productVariant);
-
-            product.Options.Should().HaveCount(1);
-        }
-
-        [Fact(Skip = "Refactoring")]
-        public void ImportSpecificationsService_ImportSpecifications_ShouldAddANewSpecificationAttributeOptionIfItDoesntExist()
-        {
-            var productDTO = new ProductImportDataTransferObject()
-                                 {
-                                     UrlSegment = "test-url",
-                                     Specifications = new Dictionary<string, string>()
+                                     Specifications = new Dictionary<string, string>
                                                           {
                                                               {"Storage","16GB"}
                                                           }
                                  };
 
             var product = new Product() { Name = "Test Product" };
+            _importSpecificationsService.Initialize();
 
             _importSpecificationsService.ImportSpecifications(productDTO, product);
 
-            A.CallTo(() => _productOptionManager.UpdateSpecificationAttribute(A<ProductSpecificationAttribute>.Ignored)).MustHaveHappened();
+            _importSpecificationsService.ProductSpecificationAttributes.Should().HaveCount(1);
         }
 
         [Fact]
@@ -81,32 +54,58 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                                  };
 
             var product = new Product() { Name = "Test Product" };
+            _importSpecificationsService.Initialize();
 
             _importSpecificationsService.ImportSpecifications(productDTO, product);
 
-            A.CallTo(() => _productOptionManager.AddSpecificationAttribute(A<ProductSpecificationAttribute>.Ignored)).MustHaveHappened();
+            _importSpecificationsService.ProductSpecificationAttributes.First().Options.Should().HaveCount(1);
         }
 
-        [Fact]
-        public void ImportSpecificationsService_ImportSpecifications_ShouldCallGetAttributeOptionByNameOfProductOptionManager()
-        {
-            var productVariantDTO = new ProductVariantImportDataTransferObject()
-                                        {
-                                            SKU = "123",
-                                            Options = new Dictionary<string, string>() { { "Storage", "16GB" } }
-                                        };
-            var productDTO = new ProductImportDataTransferObject()
-                                 {
-                                     UrlSegment = "test-url",
-                                     ProductVariants = new List<ProductVariantImportDataTransferObject>() { productVariantDTO }
-                                 };
 
-            var product = new Product();
-            var productVariant = new ProductVariant { Product = product };
-            _importSpecificationsService.ImportVariantSpecifications(productVariantDTO, product, productVariant);
+        //[Fact]
+        //public void ImportSpecificationsService_ImportVariantSpecifications_ShouldAddOptionsToProduct()
+        //{
+        //    var productVariantDTO = new ProductVariantImportDataTransferObject
+        //                                {
+        //                                    SKU = "123",
+        //                                    Options = new Dictionary<string, string>() { { "Storage", "16GB" } }
+        //                                };
+        //    var productDTO = new ProductImportDataTransferObject
+        //                         {
+        //                             UrlSegment = "test-url",
+        //                             ProductVariants = new List<ProductVariantImportDataTransferObject>() { productVariantDTO }
+        //                         };
 
-            A.CallTo(() => _productOptionManager.GetAttributeOptionByName("Storage")).MustHaveHappened();
-        }
+        //    var product = new Product() { Name = "Test Product" };
+        //    var productVariant = new ProductVariant() { Name = "Test Product Variant", Product = product };
+
+        //    var option = new ProductOption() { Id = 1, Name = "Storage" };
+        //    A.CallTo(() => _productOptionManager.GetAttributeOptionByName("Storage")).Returns(option);
+
+        //    _importSpecificationsService.ImportVariantSpecifications(productVariantDTO, product, productVariant);
+
+        //    product.Options.Should().HaveCount(1);
+        //}
+        //[Fact]
+        //public void ImportSpecificationsService_ImportSpecifications_ShouldCallGetAttributeOptionByNameOfProductOptionManager()
+        //{
+        //    var productVariantDTO = new ProductVariantImportDataTransferObject()
+        //                                {
+        //                                    SKU = "123",
+        //                                    Options = new Dictionary<string, string>() { { "Storage", "16GB" } }
+        //                                };
+        //    var productDTO = new ProductImportDataTransferObject()
+        //                         {
+        //                             UrlSegment = "test-url",
+        //                             ProductVariants = new List<ProductVariantImportDataTransferObject>() { productVariantDTO }
+        //                         };
+
+        //    var product = new Product();
+        //    var productVariant = new ProductVariant { Product = product };
+        //    _importSpecificationsService.ImportVariantSpecifications(productVariantDTO, product, productVariant);
+
+        //    A.CallTo(() => _productOptionManager.GetAttributeOptionByName("Storage")).MustHaveHappened();
+        //}
 
         [Fact]
         public void ImportSpecificationsService_ImportSpecifications_ShouldCallAnyExistingSpecificationAttributesWithNameOfProductOptionManager()
@@ -118,9 +117,11 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                                  };
 
             var product = new Product();
+            _importSpecificationsService.Initialize();
+
             _importSpecificationsService.ImportSpecifications(productDTO, product);
 
-            A.CallTo(() => _productOptionManager.AnyExistingSpecificationAttributesWithName("Storage")).MustHaveHappened();
+            _importSpecificationsService.ProductSpecificationAttributes.First().Name.Should().Be("Storage");
         }
 
         [Fact]
@@ -133,9 +134,11 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                                  };
 
             var product = new Product();
+            _importSpecificationsService.Initialize();
+
             _importSpecificationsService.ImportSpecifications(productDTO, product);
 
-            A.CallTo(() => _productOptionManager.GetSpecificationAttributeByName("Storage")).MustHaveHappened();
+            _importSpecificationsService.ProductSpecificationAttributes.First().Options.First().Name.Should().Be("16GB");
         }
 
         [Fact]
@@ -151,6 +154,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                                  };
 
             var product = new Product() { Name = "Test Product" };
+            _importSpecificationsService.Initialize();
 
             _importSpecificationsService.ImportSpecifications(productDTO, product);
 

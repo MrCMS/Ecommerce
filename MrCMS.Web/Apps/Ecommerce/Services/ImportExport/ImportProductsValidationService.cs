@@ -61,9 +61,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// <param name="spreadsheet"></param>
         /// <param name="parseErrors"></param>
         /// <returns></returns>
-        public List<ProductImportDataTransferObject> ValidateAndImportProductsWithVariants(ExcelPackage spreadsheet, ref Dictionary<string, List<string>> parseErrors)
+        public HashSet<ProductImportDataTransferObject> ValidateAndImportProductsWithVariants(ExcelPackage spreadsheet, ref Dictionary<string, List<string>> parseErrors)
         {
-            var productsToImport = new List<ProductImportDataTransferObject>();
+            var productsToImport = new HashSet<ProductImportDataTransferObject>();
 
             if (!parseErrors.Any())
             {

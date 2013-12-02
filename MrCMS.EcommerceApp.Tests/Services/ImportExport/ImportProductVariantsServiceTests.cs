@@ -19,24 +19,19 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
     public class ImportProductVariantsServiceTests
     {
         private readonly IImportProductVariantPriceBreaksService _importProductVariantPriceBreaksService;
-        private readonly IImportProductSpecificationsService _importSpecificationsService;
-        private readonly IProductVariantService _productVariantService;
         private readonly ITaxRateManager _taxRateManager;
         private readonly IProductOptionManager _productOptionManager;
         private readonly ImportProductVariantsService _importProductVariantsService;
-        private readonly IDocumentService _documentService;
+        private readonly IImportProductOptionsService _importProductOptionsService;
 
         public ImportProductVariantsServiceTests()
         {
             _importProductVariantPriceBreaksService = A.Fake<IImportProductVariantPriceBreaksService>();
-            _productVariantService = A.Fake<IProductVariantService>();
             _taxRateManager = A.Fake<ITaxRateManager>();
             _productOptionManager = A.Fake<IProductOptionManager>();
-            _importSpecificationsService = A.Fake<IImportProductSpecificationsService>();
-            _documentService = A.Fake<IDocumentService>();
-            _importProductVariantsService = new ImportProductVariantsService(_importProductVariantPriceBreaksService,_importSpecificationsService,
-                                                                             _productVariantService, _taxRateManager,
-                                                                             _productOptionManager, _documentService, A.Fake<ISession>());
+            _importProductOptionsService = A.Fake<IImportProductOptionsService>();
+            _importProductVariantsService = new ImportProductVariantsService(_importProductVariantPriceBreaksService,_importProductOptionsService,
+                                                                              _taxRateManager, _productOptionManager, A.Fake<ISession>());
         }
 
         [Fact(Skip = "To be refactored")]
@@ -54,9 +49,6 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                                  };
 
             var product = new Product { Name = "Test Product" };
-
-            var productVariant = new ProductVariant() { Name = "Test Product Variant", SKU = "123" };
-            A.CallTo(() => _productVariantService.GetProductVariantBySKU("123")).Returns(productVariant);
 
             var taxRate = new TaxRate() { Id = 1, Name = "GLOBAL" };
             A.CallTo(() => _taxRateManager.Get(productVariantDTO.TaxRate.Value)).Returns(taxRate);
@@ -88,9 +80,6 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 
             var product = new Product() { Name = "Test Product" };
 
-            var productVariant = new ProductVariant() { Name = "Test Product Variant", SKU = "123" };
-            A.CallTo(() => _productVariantService.GetProductVariantBySKU("123")).Returns(productVariant);
-
             var result = _importProductVariantsService.ImportVariants(productDTO, product);
 
             result.First().PreviousPrice.ShouldBeEquivalentTo(2);
@@ -120,11 +109,10 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             var product = new Product() { Name = "Test Product" };
 
             var productVariant = new ProductVariant() { Name = "Test Product Variant", SKU = "123" };
-            A.CallTo(() => _productVariantService.GetProductVariantBySKU("123")).Returns(productVariant);
 
             _importProductVariantsService.ImportVariants(productDTO, product);
 
-            A.CallTo(() => _importSpecificationsService.ImportVariantSpecifications(productVariantDTO, product, productVariant)).MustHaveHappened();
+            A.CallTo(() => _importProductOptionsService.ImportVariantSpecifications(productVariantDTO, product, productVariant)).MustHaveHappened();
         }
 
         [Fact(Skip = "To be refactored")]
@@ -141,9 +129,6 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                                  };
 
             var product = new Product() { Name = "Test Product" };
-
-            var productVariant = new ProductVariant() { Name = "Test Product Variant", SKU = "123" };
-            A.CallTo(() => _productVariantService.GetProductVariantBySKU("123")).Returns(productVariant);
 
             _importProductVariantsService.ImportVariants(productDTO, product);
 
@@ -165,8 +150,6 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 
             var product = new Product();
             _importProductVariantsService.ImportVariants(productDTO, product);
-
-            A.CallTo(() => _productVariantService.GetProductVariantBySKU(productVariant.SKU)).MustHaveHappened();
         }
 
         [Fact(Skip = "To be refactored")]
@@ -175,7 +158,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             var productVariantDTO = new ProductVariantImportDataTransferObject
             {
                 SKU = "123",
-                PriceBreaks = new Dictionary<int, decimal>(){ {10,299} }
+                PriceBreaks = new Dictionary<int, decimal>() { { 10, 299 } }
             };
             var productDTO = new ProductImportDataTransferObject
             {
@@ -186,7 +169,6 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             var product = new Product();
 
             var productVariant = new ProductVariant() { Name = "Test Product Variant" };
-            A.CallTo(() => _productVariantService.GetProductVariantBySKU(productVariantDTO.SKU)).Returns(productVariant);
 
             _importProductVariantsService.ImportVariants(productDTO, product);
 

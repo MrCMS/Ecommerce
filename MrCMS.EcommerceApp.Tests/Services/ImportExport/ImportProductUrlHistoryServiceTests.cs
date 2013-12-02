@@ -13,35 +13,35 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
     public class ImportProductUrlHistoryServiceTests
     {
-        private readonly IUrlHistoryService _urlHistoryService;
-        private readonly IImportProductUrlHistoryService _importProductUrlHistoryService;
+        //private readonly IUrlHistoryService _urlHistoryService;
+        //private readonly IImportProductUrlHistoryService _importProductUrlHistoryService;
 
-        public ImportProductUrlHistoryServiceTests()
-        {
-            _urlHistoryService = A.Fake<IUrlHistoryService>();
-            _importProductUrlHistoryService = new ImportProductUrlHistoryService(_urlHistoryService);
-        }
+        //public ImportProductUrlHistoryServiceTests()
+        //{
+        //    _urlHistoryService = A.Fake<IUrlHistoryService>();
+        //    _importProductUrlHistoryService = new ImportProductUrlHistoryService();
+        //}
 
 
-        [Fact(Skip = "To be refactored")]
-        public void ImportProductUrlHistoryService_ImportUrlHistory_ShouldCallUrlHistoryServiceAdd()
-        {
-            var productDTO = new ProductImportDataTransferObject
-                                 {
-                                     UrlSegment = "test-url",
-                                     UrlHistory = new List<string>(){"test-url"}
-                                 };
+        //[Fact(Skip = "To be refactored")]
+        //public void ImportProductUrlHistoryService_ImportUrlHistory_ShouldCallUrlHistoryServiceAdd()
+        //{
+        //    var productDTO = new ProductImportDataTransferObject
+        //                         {
+        //                             UrlSegment = "test-url",
+        //                             UrlHistory = new List<string>(){"test-url"}
+        //                         };
 
-            var product = new Product() { UrlSegment = "test-url" };
+        //    var product = new Product() { UrlSegment = "test-url" };
 
-            A.CallTo(() => _urlHistoryService.GetByUrlSegment("test-url")).Returns(null);
+        //    A.CallTo(() => _urlHistoryService.GetByUrlSegment("test-url")).Returns(null);
 
-            var urlHistory = _importProductUrlHistoryService.ImportUrlHistory(productDTO, product);
+        //    var urlHistory = _importProductUrlHistoryService.ImportUrlHistory(productDTO, product);
 
-            urlHistory.Should().HaveCount(1);
-            var urlHistoryItem = urlHistory.ToList()[0];
-            urlHistoryItem.UrlSegment.Should().Be("test-url");
-            urlHistoryItem.Webpage.Should().Be(product);
-        }
+        //    urlHistory.Should().HaveCount(1);
+        //    var urlHistoryItem = urlHistory.ToList()[0];
+        //    urlHistoryItem.UrlSegment.Should().Be("test-url");
+        //    urlHistoryItem.Webpage.Should().Be(product);
+        //}
     }
 }

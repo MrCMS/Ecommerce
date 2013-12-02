@@ -34,21 +34,19 @@ namespace MrCMS.Services
             var urls = _session.QueryOver<Document>().Where(x => x.Id != document.Id).Cacheable().List();
             foreach (var url in urls)
             {
-                if (!urlHistory.Any(x => x.UrlSegment == url.UrlSegment))
+                if (urlHistory.All(x => x.UrlSegment != url.UrlSegment))
                     urlHistory.Add(new UrlHistory() { UrlSegment = url.UrlSegment, Webpage = document });
             }
             return urlHistory;
         }
         public UrlHistory GetByUrlSegment(string url)
         {
-            return _session.QueryOver<UrlHistory>().Where(x => x.Site == CurrentRequestData.CurrentSite
-                && x.UrlSegment.IsInsensitiveLike(url, MatchMode.Exact)).SingleOrDefault();
+            return _session.QueryOver<UrlHistory>().Where(x => x.Site == CurrentRequestData.CurrentSite && x.UrlSegment == url).SingleOrDefault();
         }
 
         public UrlHistory GetByUrlSegmentWithSite(string url, Site site, Webpage page)
         {
-            return _session.QueryOver<UrlHistory>().Where(x => x.Site == site && x.Webpage == page
-                && x.UrlSegment.IsInsensitiveLike(url, MatchMode.Exact)).SingleOrDefault();
+            return _session.QueryOver<UrlHistory>().Where(x => x.Site == site && x.Webpage == page && x.UrlSegment == url).SingleOrDefault();
         }
     }
 }
