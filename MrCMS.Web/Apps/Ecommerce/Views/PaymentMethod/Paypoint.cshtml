@@ -8,6 +8,28 @@
     var cardTypes = ViewData["card-types"] as IEnumerable<SelectListItem>;
     var failureDetails = TempData["error-details"] as FailureDetails;
 }
+@if (failureDetails != null)
+{
+    <div class="alert alert-error">
+        <ul>
+            @if (failureDetails.Details != null)
+            {
+                foreach (var error in failureDetails.Details)
+                {
+                <li>
+                    @error
+                </li>
+                }
+            }
+            else
+            {
+                <li>
+                    @failureDetails.Message
+                </li>
+            }
+        </ul>
+    </div>
+}
 @using (Html.BeginForm("Paypoint", "PaymentMethod", FormMethod.Post, new { @class = "form-horizontal" }))
 {
     <div id="select-method">
@@ -81,26 +103,6 @@
             <strong>Information:</strong> You may be taken to your card issuer’s website for card validation. You will be returned back to this site once the process is complete.
         </div>
     </div>
-}
-@if (failureDetails != null)
-{
-    <ul>
-        @if (failureDetails.Details != null)
-        {
-            foreach (var error in failureDetails.Details)
-            {
-            <li>
-                @error
-            </li>
-            }
-        }
-        else
-        {
-            <li>
-                @failureDetails.Message
-            </li>
-        }
-    </ul>
 }
 <style>
     .input-validation-error {
