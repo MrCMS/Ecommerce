@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
@@ -61,6 +64,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         public virtual bool CanBeUsed(CartModel model)
         {
+            if (model.Items.Any(item => ExcludedProductVariants.Contains(item.Item)))
+                return false;
             if (model.ShippingAddress != null && model.ShippingAddress.Country != Country)
                 return false;
             switch (ShippingCriteria)
@@ -72,6 +77,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public virtual IList<ProductVariant> ExcludedProductVariants
+        {
+            get { return ShippingMethod != null ? ShippingMethod.ExcludedProductVariants : new List<ProductVariant>(); }
         }
 
 
@@ -114,15 +124,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         private string GetCartTotalValue()
         {
             return UpperBound.HasValue
-                       ? string.Format("{0:C} to {1:C}", LowerBound.ToString("#.##"), UpperBound.Value.ToString("#.##"))
-                       : string.Format("{0:C} or greater", LowerBound.ToString("#.##"));
+                       ? string.Format("{0} to {1}", LowerBound.ToString("0.00"), UpperBound.Value.ToString("0.00"))
+                       : string.Format("{0} or greater", LowerBound.ToString("0.00"));
         }
 
         private string GetCartWeightValue()
         {
             return UpperBound.HasValue
-                       ? string.Format("{0}kg to {1}kg", LowerBound.ToString("#.##"), UpperBound.Value.ToString("#.##"))
-                       : string.Format("{0}kg or greater", LowerBound.ToString("#.##"));
+                       ? string.Format("{0}kg to {1}kg", LowerBound.ToString("0.00"), UpperBound.Value.ToString("#.##"))
+                       : string.Format("{0}kg or greater", LowerBound.ToString("0.00"));
         }
     }
 

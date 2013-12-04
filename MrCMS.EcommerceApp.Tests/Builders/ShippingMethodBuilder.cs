@@ -30,12 +30,6 @@ namespace MrCMS.EcommerceApp.Tests.Builders
             return this;
         }
 
-        public ShippingMethodBuilder WithRestrictedVariant(ProductVariant productVariant)
-        {
-            _excludedProductVariants.Add(productVariant);
-            return this;
-        }
-
         public ShippingMethod Build()
         {
             return new TestableShippingMethod(canBeUsed: _canBeUsed)

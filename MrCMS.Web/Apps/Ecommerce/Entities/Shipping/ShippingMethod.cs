@@ -34,8 +34,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         public virtual bool CanBeUsed(CartModel model)
         {
-            if (model.Items.Any(item => ExcludedProductVariants.Contains(item.Item)))
-                return false;
             return ShippingCalculations.Any(calculation => calculation.CanBeUsed(model));
         }
 

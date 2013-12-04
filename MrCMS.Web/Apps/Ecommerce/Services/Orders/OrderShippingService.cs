@@ -85,10 +85,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 _session.QueryOver<ShippingCalculation>()
                         .Fetch(calculation => calculation.ShippingMethod)
                         .Eager.Cacheable()
-                        .List().Where(x => x.CanBeUsed(cart))
+                        .List()
+                        .Where(x => x.CanBeUsed(cart))
                         .OrderBy(x => x.Country.DisplayOrder)
-                        .ThenBy(x => x.ShippingMethod.DisplayOrder)
-                        .Where(calculation => calculation.GetPrice(cart).HasValue);
+                        .ThenBy(x => x.ShippingMethod.DisplayOrder);
             return shippingCalculations;
         }
 

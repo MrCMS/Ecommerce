@@ -1,6 +1,9 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using MrCMS.EcommerceApp.Tests.Builders;
+using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using Xunit;
@@ -77,6 +80,19 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
             var cartModel = new CartModelBuilder().WithShippingAddressCountry(country).Build();
 
             calculation.CanBeUsed(cartModel).Should().BeTrue();
+        }
+
+        [Fact]
+        public void IfOneOfTheProductsInTheCartIsExcludedItCannotBeUsed()
+        {
+            var productVariant = new ProductVariant();
+            var shippingCalculation = new ShippingCalculationBuilder().WithRestrictedVariant(productVariant).Build();
+            var cartModel = new CartModel
+            {
+                Items = new List<CartItem> { new CartItem { Item = productVariant } }
+            };
+
+            shippingCalculation.CanBeUsed(cartModel).Should().BeFalse();
         }
     }
 }
