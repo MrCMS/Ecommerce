@@ -1,4 +1,6 @@
-﻿using MrCMS.DbConfiguration.Mapping;
+﻿using System.Collections.Generic;
+using MrCMS.DbConfiguration.Mapping;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -31,6 +33,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
         private readonly decimal? _price;
         private readonly decimal? _tax;
         private readonly TaxRate _taxRate;
+        private IList<ProductVariant> _productVariants;
 
         public TestableShippingCalculation(bool? canBeUsed = null, decimal? price = null, decimal taxRate = 0m, decimal? tax = null)
         {
@@ -58,6 +61,16 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
         public override decimal? GetPrice(CartModel model)
         {
             return _price ?? base.GetPrice(model);
+        }
+
+        public void SetExcludedProductVariants(IList<ProductVariant> productVariants)
+        {
+            _productVariants = productVariants;
+        }
+
+        public override IList<ProductVariant> ExcludedProductVariants
+        {
+            get { return _productVariants ?? base.ExcludedProductVariants; }
         }
     }
 }

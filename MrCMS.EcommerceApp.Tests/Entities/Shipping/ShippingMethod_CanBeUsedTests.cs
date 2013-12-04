@@ -36,18 +36,5 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
 
             canBeUsed.Should().BeTrue();
         }
-
-        [Fact]
-        public void IfOneOfTheProductsInTheCartIsExcludedItCannotBeUsed()
-        {
-            var productVariant = new ProductVariant();
-            var shippingMethod = new ShippingMethodBuilder().WithRestrictedVariant(productVariant).Build();
-            var cartModel = new CartModel
-                                {
-                                    Items = new List<CartItem> { new CartItem { Item = productVariant } }
-                                };
-
-            shippingMethod.CanBeUsed(cartModel).Should().BeFalse();
-        }
     }
 }
