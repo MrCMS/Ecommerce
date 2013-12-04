@@ -94,5 +94,14 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
 
             shippingCalculation.CanBeUsed(cartModel).Should().BeFalse();
         }
+
+        [Fact]
+        public void IfTheShippingMethodIsNullIsCannotBeUsed()
+        {
+            var shippingCalculation = new ShippingCalculationBuilder().Build();
+            shippingCalculation.ShippingMethod = null;
+
+            shippingCalculation.CanBeUsed(new CartModel()).Should().BeFalse();
+        }
     }
 }
