@@ -14,7 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         {
             ShippingCalculations = new List<ShippingCalculation>();
             Orders = new List<Order>();
-            ProductVariants = new List<ProductVariant>();
+            ExcludedProductVariants = new List<ProductVariant>();
         }
 
         public virtual string Name { get; set; }
@@ -34,14 +34,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         public virtual bool CanBeUsed(CartModel model)
         {
+            if (model.Items.Any(item => ExcludedProductVariants.Contains(item.Item)))
+                return false;
             return ShippingCalculations.Any(calculation => calculation.CanBeUsed(model));
         }
 
         public virtual decimal? GetPrice(CartModel model)
         {
+            if (!CanBeUsed(model))
+                return null;
+
             var shippingCalculation = GetCheapestShippingCalculation(model);
 
-            if(model.Country != null)
+            if (model.Country != null)
                 shippingCalculation = ShippingCalculations
                     .Where(calculation => calculation.CanBeUsed(model)
                     && calculation.Country.Id == model.Country.Id)
@@ -53,15 +58,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
                        : null;
         }
 
-        public virtual ShippingCalculation GetShippingCalculation(CartModel model)
-        {
-            if (model.ShippingAddress != null && model.ShippingAddress.Country != null)
-                return ShippingCalculations.FirstOrDefault(calculation => calculation.CanBeUsed(model) && calculation.Country.Id == model.ShippingAddress.Country.Id);
-            return GetCheapestShippingCalculation(model);
-        }
-
         public virtual decimal? GetTax(CartModel model)
         {
+            if (!CanBeUsed(model))
+                return null;
+
             var shippingCalculation = GetCheapestShippingCalculation(model);
 
             return shippingCalculation != null
@@ -74,6 +75,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
             return ShippingCalculations.Where(calculation => calculation.CanBeUsed(model)).OrderBy(calculation => calculation.GetPrice(model)).FirstOrDefault();
         }
 
-        public virtual IList<ProductVariant> ProductVariants { get; set; }
+        public virtual IList<ProductVariant> ExcludedProductVariants { get; set; }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 {
@@ -85,6 +87,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         public virtual string DownloadFileUrl
         {
             get { return Item.DownloadFileUrl; }
+        }
+
+        public virtual IList<ShippingMethod> RestrictedShippingMethods
+        {
+            get { return Item.RestrictedShippingMethods; }
         }
 
         public virtual void SetDiscountInfo(Discount discount, string discountCode)

@@ -22,13 +22,19 @@ namespace MrCMS.EcommerceApp.Tests
 {
     public abstract class MrCMSTest : IDisposable
     {
+        private readonly MockingKernel _kernel;
 
         protected MrCMSTest()
         {
-            var mockingKernel = new MockingKernel();
-            mockingKernel.Load(new ContextModule());
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            _kernel = new MockingKernel();
+            Kernel.Load(new ContextModule());
+            MrCMSApplication.OverrideKernel(Kernel);
             CurrentRequestData.SiteSettings = new SiteSettings();
+        }
+
+        public MockingKernel Kernel
+        {
+            get { return _kernel; }
         }
 
         public virtual void Dispose()

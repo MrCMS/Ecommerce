@@ -24,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             OptionValues = new List<ProductOptionValue>();
             PriceBreaks = new List<PriceBreak>();
-            ShippingMethods = new List<ShippingMethod>();
+            RestrictedShippingMethods = new List<ShippingMethod>();
         }
 
         public virtual decimal Weight { get; set; }
@@ -226,7 +226,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual string SoldOutMessage { get; set; }
 
         [DisplayName("Allowed Shipping Methods")]
-        public virtual IList<ShippingMethod> ShippingMethods { get; set; }
+        public virtual IList<ShippingMethod> RestrictedShippingMethods { get; set; }
 
         //Download Options
         [DisplayName("Downloadable?")]

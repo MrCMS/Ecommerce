@@ -446,7 +446,11 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\PaypointResponseOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\PriceBreakOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\ProductAttributeValueOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\ProductOptionOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\ProductSpecificationAttributeOptionOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\ProductSpecificationAttributeOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductVariantOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\SessionDataOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ShippingMethodOverride.cs" />

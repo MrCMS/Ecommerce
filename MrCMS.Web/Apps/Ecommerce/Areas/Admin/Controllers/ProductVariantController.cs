@@ -88,7 +88,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         private void SetShippingMethods(ref ProductVariant productVariant, string shippingMethodsValue)
         {
-            productVariant.ShippingMethods.Clear();
+            productVariant.RestrictedShippingMethods.Clear();
 
             if (string.IsNullOrWhiteSpace(shippingMethodsValue)) return;
 
@@ -101,7 +101,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                     Int32.TryParse(s, out id);
                     if (id <= 0) continue;
                     var shippingMethod = _shippingMethodManager.Get(id);
-                    productVariant.ShippingMethods.Add(shippingMethod);
+                    productVariant.RestrictedShippingMethods.Add(shippingMethod);
                 }
             }
             catch (Exception ex)
