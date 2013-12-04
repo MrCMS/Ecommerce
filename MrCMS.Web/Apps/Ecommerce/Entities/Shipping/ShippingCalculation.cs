@@ -64,6 +64,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         public virtual bool CanBeUsed(CartModel model)
         {
+            if (ShippingMethod == null)
+                return false;
             if (model.Items.Any(item => ExcludedProductVariants.Contains(item.Item)))
                 return false;
             if (model.ShippingAddress != null && model.ShippingAddress.Country != Country)
