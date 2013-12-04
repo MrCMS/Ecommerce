@@ -12,7 +12,7 @@
             <select id="ShippingMethodsBox" style="width: 100%; min-width: 300px" multiple>
                 @foreach (var item in shippingMethods)
                 {
-                    var selectedValue = Model.ShippingMethods.Any(x=>x.Id==item.Id) ? "selected='selected'" : string.Empty;
+                    var selectedValue = Model.RestrictedShippingMethods.Any(x=>x.Id==item.Id) ? "selected='selected'" : string.Empty;
                     <option value="@item.Id" @Html.Raw(selectedValue)>@item.Name</option>
                 }
             </select>

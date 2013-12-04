@@ -61,50 +61,38 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         public virtual bool CanBeUsed(CartModel model)
         {
-            return GetPrice(model) != null;
-        }
-
-        public virtual decimal? GetPrice(CartModel model)
-        {
+            if (model.ShippingAddress != null && model.ShippingAddress.Country != Country)
+                return false;
             switch (ShippingCriteria)
             {
                 case ShippingCriteria.ByWeight:
-                    return GetPriceByWeight(model);
+                    return IsValid(model.Weight);
                 case ShippingCriteria.ByCartTotal:
-                    return GetPriceByCartTotal(model);
+                    return IsValid(model.TotalPreShipping);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private decimal? GetPriceByCartTotal(CartModel model)
+
+        public virtual decimal? GetPrice(CartModel model)
         {
-            return GetPrice(model.TotalPreShipping);
+            return !CanBeUsed(model) ? (decimal?)null : Amount;
         }
 
-        private decimal? GetPriceByWeight(CartModel model)
+        private bool IsValid(decimal value)
         {
-            return GetPrice(model.Weight);
-        }
-
-        private decimal? GetPrice(decimal value)
-        {
-            if (UpperBound.HasValue && value > UpperBound)
-                return null;
-            if (value < LowerBound)
-                return null;
-            return Amount;
+            return value >= LowerBound && (!UpperBound.HasValue || value <= UpperBound);
         }
 
         public virtual decimal? GetTax(CartModel model)
         {
-            var price = GetPrice(model);
-            return price == null ? (decimal?)null : Tax;
+            return CanBeUsed(model) ? Tax : (decimal?)null;
         }
 
         public virtual decimal Tax
         {
-            get { return Amount - AmountPreTax; }
+            get { return TaxAwareShippingRate.GetTax(BaseAmount, TaxRate); }
         }
 
         public virtual string Description

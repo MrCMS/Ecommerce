@@ -138,7 +138,11 @@
     <Compile Include="Admin\Controllers\ProductVariantControllerTests.cs" />
     <Compile Include="Admin\Controllers\RegionControllerTests.cs" />
     <Compile Include="Admin\Controllers\TaxRateControllerTests.cs" />
+    <Compile Include="Builders\CartItemBuilder.cs" />
+    <Compile Include="Builders\CartModelBuilder.cs" />
     <Compile Include="Builders\OrderLineBuilder.cs" />
+    <Compile Include="Builders\ShippingCalculationBuilder.cs" />
+    <Compile Include="Builders\ShippingMethodBuilder.cs" />
     <Compile Include="Controllers\CategoryContainerControllerTests.cs" />
     <Compile Include="Controllers\DownloadProductControllerTests.cs" />
     <Compile Include="Controllers\ProductSearchControllerTests.cs" />
@@ -148,7 +152,16 @@
     <Compile Include="Entities\Products\ProductVariantTests\PricingTests.cs" />
     <Compile Include="Entities\Products\ProductVariantTests\StockLevelTests.cs" />
     <Compile Include="Entities\Shipping\ShippingCalculationTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingMethodTests.cs" />
+    <Compile Include="Entities\Shipping\ShippingCalculation_AmountPreTaxTests.cs" />
+    <Compile Include="Entities\Shipping\ShippingCalculation_AmountTests.cs" />
+    <Compile Include="Entities\Shipping\ShippingCalculation_CanBeUsedTests.cs" />
+    <Compile Include="Entities\Shipping\ShippingCalculation_GetPriceTests.cs" />
+    <Compile Include="Entities\Shipping\ShippingCalculation_GetTaxTests.cs" />
+    <Compile Include="Entities\Shipping\ShippingCalculation_TaxTests.cs" />
+    <Compile Include="Entities\Shipping\ShippingMethod_CanBeUsedTests.cs" />
+    <Compile Include="Entities\Shipping\ShippingMethod_GetPriceTests.cs" />
+    <Compile Include="Entities\Shipping\ShippingMethod_GetTaxTests.cs" />
+    <Compile Include="Helpers\InlineDataExtensions.cs" />
     <Compile Include="InMemoryDatabaseTest.cs" />
     <Compile Include="InterfaceMappingTest.cs" />
     <Compile Include="Entities\Cart\CartItemTests.cs" />
@@ -202,6 +215,7 @@
     <Compile Include="Services\TaxRateManagerTests.cs" />
     <Compile Include="Stubs\BasicHttpPostedFileBase.cs" />
     <Compile Include="Stubs\BasicHttpPostedFileBaseCSV.cs" />
+    <Compile Include="TestableModels\TestableCartModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -210,7 +224,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Helpers\" />
     <Folder Include="Indexing\" />
     <Folder Include="Services\Payment\" />
   </ItemGroup>
