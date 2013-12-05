@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
-using MrCMS.Web.Apps.Ecommerce.Controllers;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -12,7 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
     public interface ICartManager
     {
-        void AddToCart(ProductVariant item, int quantity);
+        void AddToCart(AddToCartModel model);
         void Delete(CartItem item);
         void UpdateQuantity(CartItem item, int quantity);
         void UpdateQuantities(List<CartUpdateValue> quantities);

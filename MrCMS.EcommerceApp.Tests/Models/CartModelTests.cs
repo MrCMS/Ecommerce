@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using FakeItEasy;
 using FluentAssertions;
-using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.EcommerceApp.Tests.Builders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -175,14 +175,10 @@ namespace MrCMS.EcommerceApp.Tests.Models
         }
 
         [Fact]
-        public void CartModel_CanCheckout_IfAllItemsAreTrueThenReturnsTrue()
+        public void CartModel_CanCheckout_IfAllItemsCanBeBoughtThenReturnsTrue()
         {
-            var cartItem1 = A.Fake<CartItem>();
-            A.CallTo(() => cartItem1.CurrentlyAvailable).Returns(true);
-            var cartModel = new CartModel
-            {
-                Items = new List<CartItem> { cartItem1 },
-            };
+            var cartItem = new CartItemBuilder().CanBuy().Build();
+            var cartModel = new CartModelBuilder().WithItems(cartItem).Build();
 
             var canCheckout = cartModel.CanCheckout;
 
@@ -190,9 +186,15 @@ namespace MrCMS.EcommerceApp.Tests.Models
         }
 
         [Fact]
-        public void CartModel_CanCheckout_NoItemsShouldBeFalse()
+        public void CartModel_CanCheckout_IfAnyItemsCannotBeBoughtThenReturnsFalse()
         {
-            var cartModel = new CartModel();
+            var cartItem1 = new CartItemBuilder().CanBuy().Build();
+            var cartItem2 = new CartItemBuilder().CanBuy().Build();
+            var cartItem3 = new CartItemBuilder().CannotBuy().Build();
+            var cartModel = new CartModel
+            {
+                Items = new List<CartItem> { cartItem1, cartItem2, cartItem3 },
+            };
 
             var canCheckout = cartModel.CanCheckout;
 
@@ -200,13 +202,9 @@ namespace MrCMS.EcommerceApp.Tests.Models
         }
 
         [Fact]
-        public void CartModel_CanCheckout_AnyItemsWithFalseShouldBeFalse()
+        public void CartModel_CanCheckout_NoItemsShouldBeFalse()
         {
-            var cartItem1 = A.Fake<CartItem>();
-            A.CallTo(() => cartItem1.CurrentlyAvailable).Returns(true);
-            var cartItem2 = A.Fake<CartItem>();
-            A.CallTo(() => cartItem2.CurrentlyAvailable).Returns(false);
-            var cartModel = new CartModel { Items = new List<CartItem> { cartItem1, cartItem2 } };
+            var cartModel = new CartModel();
 
             var canCheckout = cartModel.CanCheckout;
 

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using System.ComponentModel.DataAnnotations;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 {
@@ -17,15 +17,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         [DisplayName("Shipping Criteria")]
         [Required]
         public virtual ShippingCriteria ShippingCriteria { get; set; }
+
         [DisplayName("Lower Bound")]
         [Required]
-        [Remote("IsValidShippingCalculation", "ShippingCalculation", AdditionalFields = "Id,ShippingMethod.Id,Country.Id,ShippingCriteria,UpperBound")]
+        [Remote("IsValidShippingCalculation", "ShippingCalculation",
+            AdditionalFields = "Id,ShippingMethod.Id,Country.Id,ShippingCriteria,UpperBound")]
         public virtual decimal LowerBound { get; set; }
+
         [DisplayName("Upper Bound")]
         public virtual decimal? UpperBound { get; set; }
+
         [DisplayName("Amount")]
         [Required]
         public virtual decimal BaseAmount { get; set; }
+
         public virtual TaxRate TaxRate
         {
             get
@@ -35,6 +40,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
                            : null;
             }
         }
+
         public virtual decimal TaxRatePercentage
         {
             get
@@ -44,6 +50,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
                            : TaxRate.Percentage;
             }
         }
+
         [DisplayName("Amount Pre Tax")]
         public virtual decimal AmountPreTax
         {
@@ -62,44 +69,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         [Required]
         public virtual Country Country { get; set; }
 
-        public virtual bool CanBeUsed(CartModel model)
-        {
-            if (ShippingMethod == null)
-                return false;
-            if (model.Items.Any(item => ExcludedProductVariants.Contains(item.Item)))
-                return false;
-            if (model.ShippingAddress != null && model.ShippingAddress.Country != Country)
-                return false;
-            switch (ShippingCriteria)
-            {
-                case ShippingCriteria.ByWeight:
-                    return IsValid(model.Weight);
-                case ShippingCriteria.ByCartTotal:
-                    return IsValid(model.TotalPreShipping);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
         public virtual IList<ProductVariant> ExcludedProductVariants
         {
             get { return ShippingMethod != null ? ShippingMethod.ExcludedProductVariants : new List<ProductVariant>(); }
-        }
-
-
-        public virtual decimal? GetPrice(CartModel model)
-        {
-            return !CanBeUsed(model) ? (decimal?)null : Amount;
-        }
-
-        private bool IsValid(decimal value)
-        {
-            return value >= LowerBound && (!UpperBound.HasValue || value <= UpperBound);
-        }
-
-        public virtual decimal? GetTax(CartModel model)
-        {
-            return CanBeUsed(model) ? Tax : (decimal?)null;
         }
 
         public virtual decimal Tax
@@ -123,6 +95,41 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
             }
         }
 
+        public virtual bool CanBeUsed(CartModel model)
+        {
+            if (ShippingMethod == null)
+                return false;
+            if (model.Items.Any(item => ExcludedProductVariants.Contains(item.Item)))
+                return false;
+            if (model.ShippingAddress != null && model.ShippingAddress.Country != Country)
+                return false;
+            switch (ShippingCriteria)
+            {
+                case ShippingCriteria.ByWeight:
+                    return IsValid(model.Weight);
+                case ShippingCriteria.ByCartTotal:
+                    return IsValid(model.TotalPreShipping);
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+
+        public virtual decimal? GetPrice(CartModel model)
+        {
+            return !CanBeUsed(model) ? (decimal?) null : Amount;
+        }
+
+        private bool IsValid(decimal value)
+        {
+            return value >= LowerBound && (!UpperBound.HasValue || value <= UpperBound);
+        }
+
+        public virtual decimal? GetTax(CartModel model)
+        {
+            return CanBeUsed(model) ? Tax : (decimal?) null;
+        }
+
         private string GetCartTotalValue()
         {
             return UpperBound.HasValue
@@ -140,9 +147,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
     public enum ShippingCriteria
     {
-        [Description("Based on cart weight")]
-        ByWeight = 1,
-        [Description("Based on cart total")]
-        ByCartTotal = 2
+        [Description("Based on cart weight")] ByWeight = 1,
+        [Description("Based on cart total")] ByCartTotal = 2
     }
 }
