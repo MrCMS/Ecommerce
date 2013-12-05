@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
@@ -7,9 +8,9 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
     public class StockLevelTests
     {
         [Fact]
-        public void ProductVariant_InStock_ShouldBeTrueIfStockRemainingIsNull()
+        public void ProductVariant_InStock_ShouldBeTrueIfTrackingPolicyIsDoNotTrack()
         {
-            var productVariant = new ProductVariant();
+            var productVariant = new ProductVariant {TrackingPolicy = TrackingPolicy.DontTrack};
 
             var inStock = productVariant.InStock;
 
@@ -47,9 +48,9 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         }
 
         [Fact]
-        public void ProductVariant_CanBuy_ReturnTrueForPositiveAmountWhenStockRemainingIsNull()
+        public void ProductVariant_CanBuy_ReturnTrueForPositiveAmountWhenTrackingPolicyIsDoNotTrack()
         {
-            var productVariant = new ProductVariant { StockRemaining = null };
+            var productVariant = new ProductVariant {TrackingPolicy = TrackingPolicy.DontTrack};
 
             var canBuy = productVariant.CanBuy(1);
 
