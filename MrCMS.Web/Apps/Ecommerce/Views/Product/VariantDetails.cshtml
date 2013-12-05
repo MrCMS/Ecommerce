@@ -14,7 +14,7 @@
                 @{ Html.RenderPartial("ProductImages", Model); }
             </div>
             <div class="span8">
-                <h1>@Model.Name</h1>
+                <h1>@Model.Product.Name</h1>
 
                 <div class="product-price">
                     @Model.Price.ToCurrencyFormat()
