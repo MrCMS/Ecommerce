@@ -409,6 +409,7 @@
     <Compile Include="Apps\Ecommerce\Binders\DiscountApplicationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Binders\DiscountLimitationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CartController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\CartValidationController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
@@ -526,7 +527,9 @@
     <Compile Include="Apps\Ecommerce\ModelBinders\DownloadOrderedFileOrderByGuidModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddPriceBreakModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddressComparison.cs" />
+    <Compile Include="Apps\Ecommerce\Models\AddToCartModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\AgeGroup.cs" />
+    <Compile Include="Apps\Ecommerce\Models\CanAddQuantityValidationResult.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartUpdateValue.cs" />
     <Compile Include="Apps\Ecommerce\Models\CashOnDeliveryConfirmModel.cs" />
@@ -564,6 +567,7 @@
     <Compile Include="Apps\Ecommerce\Models\TaxAwareShippingRate.cs" />
     <Compile Include="Apps\Ecommerce\Models\TrackingPolicy.cs" />
     <Compile Include="Apps\Ecommerce\Models\UserAccountOrdersModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ValidationResult.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Cart.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Category.cs" />
     <Compile Include="Apps\Ecommerce\Pages\CategoryContainer.cs" />
@@ -617,6 +621,7 @@
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\RevenueService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Products\ProductAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\TrackingService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\CartValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartBuilder.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartSessionManager.cs" />
@@ -642,6 +647,7 @@
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseTaxonomyData.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\IGoogleBaseManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ICartValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IGetUserGuid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductImportDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductVariantImportDataTransferObject.cs" />
@@ -2195,7 +2201,6 @@
     <Content Include="Apps\Ecommerce\Views\Cart\DeleteCartItem.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\Details.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\DiscountCode.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Cart\EditCartItem.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\EditDiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\EnterOrderEmail.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\PaymentDetails.cshtml" />
@@ -2271,6 +2276,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortVariants.cshtml" />
     <Content Include="Apps\Ecommerce\Views\OrderPlaced\LoginAndAssociateOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Views\OrderPlaced\RegisterAndAssociateOrder.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Cart\AddToCart.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

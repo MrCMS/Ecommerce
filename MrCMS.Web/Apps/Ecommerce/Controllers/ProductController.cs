@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.BackInStockNotification;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
@@ -13,12 +14,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly ITrackingService _trackingService;
         private readonly IProductUiService _productUiService;
         private readonly IBackInStockNotificationService _backInStockNotificationService;
+        private readonly CartModel _cart;
 
-        public ProductController(ITrackingService trackingService, IProductUiService productUiService, IBackInStockNotificationService backInStockNotificationService)
+        public ProductController(ITrackingService trackingService, IProductUiService productUiService, IBackInStockNotificationService backInStockNotificationService, CartModel cart)
         {
             _trackingService = trackingService;
             _productUiService = productUiService;
             _backInStockNotificationService = backInStockNotificationService;
+            _cart = cart;
         }
 
         public ViewResult Show(Product page, int? variant)
@@ -26,16 +29,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _trackingService.AddItemToRecentlyViewedItemsCookie(page.Id);
             var variantToShow = _productUiService.GetVariantToShow(page, variant);
             ViewData["selected-variant"] = variantToShow;
+            ViewData["cart"] = _cart;
             ViewData["back-in-stock"] = _productUiService.UserNotifiedOfBackInStock(variantToShow,
                                                                                     TempData["back-in-stock"] is bool &&
-                                                                                    (bool) TempData["back-in-stock"]);
+                                                                                    (bool)TempData["back-in-stock"]);
             return View(page);
         }
         public PartialViewResult VariantDetails(ProductVariant productVariant)
         {
             ViewData["back-in-stock"] = _productUiService.UserNotifiedOfBackInStock(productVariant,
                                                                                     TempData["back-in-stock"] is bool &&
-                                                                                    (bool) TempData["back-in-stock"]);
+                                                                                    (bool)TempData["back-in-stock"]);
             return PartialView(productVariant);
         }
 
