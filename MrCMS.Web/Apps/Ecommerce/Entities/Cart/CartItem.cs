@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 {
@@ -19,42 +18,52 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         {
             get { return Item.GetPrice(Quantity) - DiscountAmount; }
         }
+
         public virtual decimal Saving
         {
             get { return Item.GetSaving(Quantity); }
         }
+
         public virtual decimal Tax
         {
             get { return Item.GetTax(Quantity); }
         }
+
         public virtual bool CurrentlyAvailable
         {
             get { return Item.CanBuy(Quantity); }
         }
+
         public virtual decimal PricePreTax
         {
             get { return Price - Tax; }
         }
+
         public virtual decimal TaxRatePercentage
         {
             get { return Item.TaxRatePercentage; }
         }
+
         public virtual decimal Weight
         {
             get { return Item.Weight * Quantity; }
         }
+
         public virtual string Name
         {
             get { return Item.DisplayName; }
         }
+
         public virtual decimal UnitPrice
         {
             get { return Item.GetUnitPrice(Quantity); }
         }
+
         public virtual decimal UnitPricePreTax
         {
             get { return Item.GetUnitPricePreTax(Quantity); }
         }
+
         public virtual decimal UnitTax
         {
             get { return Item.GetUnitTax(Quantity); }
@@ -64,6 +73,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         {
             get { return Item.IsDownloadable; }
         }
+
         public virtual decimal DiscountAmount
         {
             get
@@ -89,15 +99,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
             get { return Item.DownloadFileUrl; }
         }
 
-        public virtual IList<ShippingMethod> RestrictedShippingMethods
-        {
-            get { return Item.RestrictedShippingMethods; }
-        }
-
         public virtual void SetDiscountInfo(Discount discount, string discountCode)
         {
             _discount = discount;
             _discountCode = discountCode;
+        }
+
+        public virtual bool CanBuy(CartModel cartModel)
+        {
+            return Item.CanBuy(cartModel).OK;
+        }
+
+        public virtual string Error(CartModel cartModel)
+        {
+            return Item.CanBuy(cartModel).Message;
         }
     }
 }

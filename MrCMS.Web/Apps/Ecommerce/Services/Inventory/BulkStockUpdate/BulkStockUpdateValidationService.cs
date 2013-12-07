@@ -60,7 +60,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Inventory.BulkStockUpdate
                         else
                             pv.StockRemaining = file.GetField<string>(2).HasValue()
                                            ? Int32.Parse(file.GetField<string>(2))
-                                           : (int?) null;
+                                           : 0;
 
                         items.Add(pv);
                     }

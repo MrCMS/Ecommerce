@@ -25,8 +25,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private readonly ICartSessionManager _cartSessionManager;
         private readonly ICartGuidResetter _cartGuidResetter;
 
-        public CartBuilder(ISession session, IGetUserGuid getUserGuid, IPaymentMethodService paymentMethodService, IOrderShippingService orderShippingService, ICartSessionManager cartSessionManager,
-        ICartGuidResetter cartGuidResetter)
+        public CartBuilder(ISession session, IGetUserGuid getUserGuid, IPaymentMethodService paymentMethodService, 
+        IOrderShippingService orderShippingService, ICartSessionManager cartSessionManager,ICartGuidResetter cartGuidResetter)
         {
             _session = session;
             _getUserGuid = getUserGuid;
@@ -70,6 +70,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
             cartItems.ForEach(item => item.SetDiscountInfo(cart.Discount, cart.DiscountCode));
             cart.ShippingMethod = GetShippingMethod(cart, userGuid);
+            cart.AvailableShippingMethods = _orderShippingService.AvailableShippingMethods(cart);
             return cart;
         }
 

@@ -141,6 +141,7 @@
     <Compile Include="Builders\CartItemBuilder.cs" />
     <Compile Include="Builders\CartModelBuilder.cs" />
     <Compile Include="Builders\OrderLineBuilder.cs" />
+    <Compile Include="Builders\ProductVariantBuilder.cs" />
     <Compile Include="Builders\ShippingCalculationBuilder.cs" />
     <Compile Include="Builders\ShippingMethodBuilder.cs" />
     <Compile Include="Controllers\CategoryContainerControllerTests.cs" />
@@ -150,6 +151,7 @@
     <Compile Include="Entities\Discounts\DiscountTests.cs" />
     <Compile Include="Entities\Products\ProductVariantTests\AvailabilityTests.cs" />
     <Compile Include="Entities\Products\ProductVariantTests\PricingTests.cs" />
+    <Compile Include="Entities\Products\ProductVariantTests\ProductVariant_CanBuyTests.cs" />
     <Compile Include="Entities\Products\ProductVariantTests\StockLevelTests.cs" />
     <Compile Include="Entities\Shipping\ShippingCalculationTests.cs" />
     <Compile Include="Entities\Shipping\ShippingCalculation_AmountPreTaxTests.cs" />
@@ -216,6 +218,7 @@
     <Compile Include="Stubs\BasicHttpPostedFileBase.cs" />
     <Compile Include="Stubs\BasicHttpPostedFileBaseCSV.cs" />
     <Compile Include="TestableModels\TestableCartModel.cs" />
+    <Compile Include="TestableModels\TestableProductVariant.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

@@ -57,6 +57,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                        };
         }
 
+        public List<ShippingMethod> AvailableShippingMethods(CartModel cart)
+        {
+            return GetShippingCalculations(cart).Select(calculation => calculation.ShippingMethod).Distinct().ToList();
+        }
+
         private List<BulkShippingUpdateDataTransferObject> GetOrdersFromFile(Stream file,
                                                                              out Dictionary<string, List<string>>
                                                                                  parseErrors)

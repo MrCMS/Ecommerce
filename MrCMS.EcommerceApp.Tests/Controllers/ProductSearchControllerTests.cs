@@ -4,6 +4,7 @@ using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Entities.Documents.Layout;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
@@ -19,6 +20,7 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
         private readonly IProductService _productService;
         private readonly IProductSearchService _productSearchService;
         private readonly IBrandService _brandService;
+        private CartModel _cartModel;
 
         public ProductSearchControllerTests()
         {
@@ -27,7 +29,8 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
             _categoryService = A.Fake<ICategoryService>();
             _productSearchService = A.Fake<IProductSearchService>();
             _brandService = A.Fake<IBrandService>();
-            _controller = new ProductSearchController(_categoryService, _productOptionManager, _productSearchService, _brandService) { RequestMock = A.Fake<HttpRequestBase>() };
+            _cartModel = new CartModel();
+            _controller = new ProductSearchController(_categoryService, _productOptionManager, _productSearchService, _brandService, _cartModel) { RequestMock = A.Fake<HttpRequestBase>() };
         }
 
         private ProductSearch GetProductSearch()
