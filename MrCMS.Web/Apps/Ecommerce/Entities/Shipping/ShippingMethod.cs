@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 {
@@ -25,12 +25,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         public virtual TaxRate TaxRate { get; set; }
 
-        public virtual string TaxRateName { get { return TaxRate == null ? string.Empty : TaxRate.Name; } }
+        public virtual string TaxRateName
+        {
+            get { return TaxRate == null ? string.Empty : TaxRate.Name; }
+        }
 
         public virtual decimal TaxRatePercentage
         {
             get { return TaxRate == null ? 0m : TaxRate.Percentage; }
         }
+
+        public virtual IList<ProductVariant> ExcludedProductVariants { get; set; }
 
         public virtual bool CanBeUsed(CartModel model)
         {
@@ -42,12 +47,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
             if (!CanBeUsed(model))
                 return null;
 
-            var shippingCalculation = GetCheapestShippingCalculation(model);
+            ShippingCalculation shippingCalculation = GetCheapestShippingCalculation(model);
 
             if (model.Country != null)
                 shippingCalculation = ShippingCalculations
                     .Where(calculation => calculation.CanBeUsed(model)
-                    && calculation.Country.Id == model.Country.Id)
+                                          && calculation.Country.Id == model.Country.Id)
                     .OrderBy(calculation => calculation.GetPrice(model))
                     .FirstOrDefault();
 
@@ -61,7 +66,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
             if (!CanBeUsed(model))
                 return null;
 
-            var shippingCalculation = GetCheapestShippingCalculation(model);
+            ShippingCalculation shippingCalculation = GetCheapestShippingCalculation(model);
 
             return shippingCalculation != null
                        ? shippingCalculation.GetTax(model)
@@ -70,9 +75,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         public virtual ShippingCalculation GetCheapestShippingCalculation(CartModel model)
         {
-            return ShippingCalculations.Where(calculation => calculation.CanBeUsed(model)).OrderBy(calculation => calculation.GetPrice(model)).FirstOrDefault();
+            return
+                ShippingCalculations.Where(calculation => calculation.CanBeUsed(model))
+                                    .OrderBy(calculation => calculation.GetPrice(model))
+                                    .FirstOrDefault();
         }
-
-        public virtual IList<ProductVariant> ExcludedProductVariants { get; set; }
     }
 }

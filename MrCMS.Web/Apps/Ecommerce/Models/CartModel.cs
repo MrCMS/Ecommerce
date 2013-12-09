@@ -18,6 +18,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public CartModel()
         {
             Items = new List<CartItem>();
+            AvailablePaymentMethods = new List<IPaymentMethod>();
+            AvailableShippingMethods = new List<ShippingMethod>();
         }
         public Guid CartGuid { get; set; }
         public List<CartItem> Items { get; set; }
@@ -107,7 +109,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public bool CanCheckout
         {
-            get { return Items.Any() && Items.All(item => item.CurrentlyAvailable); }
+            get { return Items.Any() && Items.All(item => item.CanBuy(this)); }
+        }
+
+        public IEnumerable<string> CannotCheckoutReasons
+        {
+            get { return Items.Where(item => !item.CanBuy(this)).Select(item => item.Error(this)); }
         }
 
         public User User { get; set; }
@@ -132,7 +139,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public decimal? ShippingPreTax { get { return ShippingTotal - ShippingTax; } }
         public decimal? ShippingTaxPercentage
         {
-            get { return ShippingMethod == null ? (decimal?) null : ShippingMethod.TaxRatePercentage; }
+            get { return ShippingMethod == null ? (decimal?)null : ShippingMethod.TaxRatePercentage; }
         }
 
         public virtual decimal Weight
@@ -141,11 +148,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         }
 
         public bool AnyStandardPaymentMethodsAvailable { get; set; }
-        public bool CanEnterPaymentFlow { get { return Items.Any() && AnyStandardPaymentMethodsAvailable; } }
+        public bool CanEnterPaymentFlow { get { return CanCheckout && AnyStandardPaymentMethodsAvailable; } }
         public bool PayPalExpressAvailable { get; set; }
-        public bool CanUsePayPalExpress { get { return Items.Any() && PayPalExpressAvailable; } }
+        public bool CanUsePayPalExpress { get { return CanCheckout && PayPalExpressAvailable; } }
 
         public IEnumerable<IPaymentMethod> AvailablePaymentMethods { get; set; }
+        public IList<ShippingMethod> AvailableShippingMethods { get; set; }
 
         public Country Country { get; set; }
 
@@ -176,7 +184,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public bool CanPlaceOrder
         {
-            get { return ShippingAddress != null && BillingAddress != null && Items.Any(); }
+            get { return CanCheckout && ShippingAddress != null && BillingAddress != null; }
+        }
+
+        public IEnumerable<string> CannotPlaceOrderReasons
+        {
+            get
+            {
+                foreach (var cannotCheckoutReason in CannotCheckoutReasons)
+                    yield return cannotCheckoutReason;
+                if (ShippingAddress == null)
+                    yield return "Shipping address is not set";
+                if (BillingAddress == null)
+                    yield return "Billing address is not set";
+            }
         }
     }
 }

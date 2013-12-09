@@ -25,7 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public ActionResult Show(ProductAddedToCart page, ProductVariant productVariant, int quantity = 1)
         {
-            if (productVariant == null)
+            if (productVariant == null || productVariant.Id == 0) //model binder always creates a product variant so shouldn't be null
                 return _documentService.RedirectTo<Cart>();
             ViewData["productvariant"] = productVariant;
             ViewData["quantity"] = quantity;
