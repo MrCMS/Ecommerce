@@ -10,8 +10,6 @@
             </span>
         </legend>
 
-        @Html.ValidationSummary()
-
         <div id="tabs">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
@@ -22,7 +20,7 @@
             </ul>
             <div class="tab-content">
                 @Html.HiddenFor(variant => variant.Id)
-                @{ Html.RenderPartial("AddDetails", Model); }
+                @{ Html.RenderPartial("Details", Model); }
                 @{ Html.RenderPartial("Images", Model); }
                 @{ Html.RenderPartial("SoldOut", Model); }
                 @{ Html.RenderPartial("ShippingOptions", Model); }
