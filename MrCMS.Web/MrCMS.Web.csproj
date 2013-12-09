@@ -2122,11 +2122,10 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductSpecificationAttribute\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductSpecificationAttribute\Sort.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Add.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\AddDetails.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Details.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\DownloadOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Edit.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\EditDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Images.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\ShippingOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\SoldOut.cshtml" />

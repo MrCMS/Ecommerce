@@ -12,7 +12,7 @@
             var option = Model.Product.Options[index];
 
             @Html.LabelFor(variant => variant.OptionValues[index].Value, option.Name)
-            @Html.TextBoxFor(variant => variant.OptionValues[index].Value, new { @class = "span12" })
+            @Html.TextBoxFor(variant => variant.OptionValues[index].Value, new { @class = "span12 required" })
             @Html.Hidden("OptionValues[" + index + "].Id", Model.OptionValues[index].Id)
             @Html.Hidden("OptionValues[" + index + "].ProductOption.Id", option.Id.ToString())
                 
@@ -22,16 +22,19 @@
         <div class="span6">
             @Html.LabelFor(variant => variant.BasePrice)
             @Html.TextBoxFor(variant => variant.BasePrice, new { @class = "span12" })
+            @Html.ValidationMessageFor(variant => variant.BasePrice)
         </div>
         <div class="span6">
             @Html.LabelFor(variant => variant.PreviousPrice)
             @Html.TextBoxFor(variant => variant.PreviousPrice, new { @class = "span12" })
+            @Html.ValidationMessageFor(variant => variant.PreviousPrice)
         </div>
     </div>
     <div class="row-fluid">
         <div class="span6">
             @Html.LabelFor(variant => variant.SKU)
             @Html.TextBoxFor(variant => variant.SKU, new { @class = "span12" })
+            @Html.ValidationMessageFor(variant => variant.SKU)
         </div>
         <div class="span6">
             <table style="width: 100%;">
@@ -48,6 +51,7 @@
         <div class="span6">
             @Html.LabelFor(variant => variant.StockRemaining)
             @Html.TextBoxFor(variant => variant.StockRemaining, new { @class = "span12" })
+            @Html.ValidationMessageFor(variant => variant.StockRemaining)
         </div>
         <div class="span6">
             @Html.LabelFor(product => product.TrackingPolicy)
@@ -58,6 +62,7 @@
         <div class="span6">
             @Html.LabelFor(variant => variant.Weight)
             @Html.TextBoxFor(variant => variant.Weight, new { @class = "span12" })
+            @Html.ValidationMessageFor(variant => variant.Weight)
         </div>
         <div class="span6">
             @if (!MrCMS.Website.MrCMSApplication.Get<MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings>().LoadedPricesIncludeTax)
