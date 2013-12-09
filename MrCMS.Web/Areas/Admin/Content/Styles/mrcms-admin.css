@@ -89,6 +89,8 @@ ul.nav { margin-bottom: 10px;}
 
 #footer-popup hr { margin-top: 1px;}
 
+input.input-validation-error, select.input-validation-error { border: 1px solid red!important;}
+
 @media (max-width: 979px) {
     /*body { padding-top: 0;}*/
     .navbar-fixed-top { position: fixed;}
