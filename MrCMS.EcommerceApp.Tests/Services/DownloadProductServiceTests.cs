@@ -8,6 +8,7 @@ using FakeItEasy;
 using FluentAssertions;
 using MrCMS.EcommerceApp.Tests.Builders;
 using MrCMS.Helpers;
+using MrCMS.Logging;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Products.Download;
@@ -29,7 +30,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         {
             _fileSystem = A.Fake<IFileSystem>();
             _session = A.Fake<ISession>();
-            _downloadProductService = new DownloadOrderedFileService(_session, _rules, _fileSystem);
+            _downloadProductService = new DownloadOrderedFileService(_session, _rules, _fileSystem, A.Fake<ILogService>());
         }
 
         [Fact]

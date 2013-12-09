@@ -18,8 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public ActionResult Download([IoCModelBinder(typeof(DownloadOrderedFileOrderByGuidModelBinder))] Order order, OrderLine line)
         {
-            _downloadOrderedFileService.WriteDownloadToResponse(Response, order, line);
-            return new EmptyResult();
+            return _downloadOrderedFileService.WriteDownloadToResponse(Response, order, line);
         }
     }
 }

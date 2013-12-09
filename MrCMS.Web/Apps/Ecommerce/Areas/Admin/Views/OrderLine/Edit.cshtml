@@ -1,0 +1,33 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.OrderLine
+@{
+    ViewBag.Title = "Edit Order Line Details";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+}
+
+@using (Html.BeginForm("Edit", "OrderLine", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Edit Order Line
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Save Changes" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+        
+        @Html.LabelFor(x=>x.NumberOfDownloads)
+        @Html.TextBoxFor(x=>x.NumberOfDownloads)
+        @Html.ValidationMessageFor(x=>x.NumberOfDownloads)
+        
+        @Html.LabelFor(x=>x.AllowedNumberOfDownloads)
+        @Html.TextBoxFor(x=>x.AllowedNumberOfDownloads)
+        @Html.ValidationMessageFor(x=>x.AllowedNumberOfDownloads)
+        
+        @Html.LabelFor(x=>x.DownloadExpiresOn)
+        @Html.TextBoxFor(x=>x.DownloadExpiresOn, new {@class="date-time-picker"})
+        @Html.ValidationMessageFor(x=>x.DownloadExpiresOn)
+        
+
+
+    </fieldset>
+}

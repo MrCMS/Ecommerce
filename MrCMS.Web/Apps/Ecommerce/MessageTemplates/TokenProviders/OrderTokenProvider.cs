@@ -54,8 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
         {
             if (!item.IsDownloadable)
                 return string.Empty;
-            return string.Format(" - <a href=\"{0}\">Download</a>",
-                                 string.Format("http://{0}/digital-download/{1}/{2}", item.Site.BaseUrl, item.Order.Guid, item.Id));
+            return string.Format(" - <a href=\"{0}\">Download</a>", item.DownloadMaskedLink);
         }
     }
 }

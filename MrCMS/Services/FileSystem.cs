@@ -79,7 +79,7 @@ namespace MrCMS.Services
 
         public void WriteToStream(string filePath, Stream stream)
         {
-            using (var fileStream = File.OpenRead(filePath))
+            using (var fileStream = File.OpenRead(GetPath(filePath)))
             {
                 fileStream.CopyTo(stream);
             }

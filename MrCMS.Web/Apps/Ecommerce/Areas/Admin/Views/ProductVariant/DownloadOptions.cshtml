@@ -26,6 +26,10 @@
                 @Html.LabelFor(x => x.AllowedNumberOfDownloads)
                 @Html.TextBoxFor(x => x.AllowedNumberOfDownloads, new { @class = "span3" })
                 @Html.ValidationMessageFor(x => x.AllowedNumberOfDownloads)
+            
+                <div class="alert alert-info">
+                    Set Allowed number of days or Allowed number of downloads to blank to not restrict downloads.
+                </div>
             </div>
         </div>
 
