@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download.Rules
@@ -27,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download.Rules
     {
         public IEnumerable<string> GetErrors(Order order, OrderLine orderLine)
         {
-            if (orderLine.DownloadExpiresOn > CurrentRequestData.Now)
+            if (orderLine.DownloadExpiresOn.HasValue && orderLine.DownloadExpiresOn > CurrentRequestData.Now)
                 yield return "Download link has expired.";
         }
     }
@@ -38,6 +39,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download.Rules
         {
             if (orderLine.AllowedNumberOfDownloads.HasValue && orderLine.NumberOfDownloads >= orderLine.AllowedNumberOfDownloads)
                 yield return "Download limit reached.";
+        }
+    }
+
+    public class OrderMustBePaid : IDownloadOrderedFileValidationRule
+    {
+        public IEnumerable<string> GetErrors(Order order, OrderLine orderLine)
+        {
+            if (!order.PaymentStatus.Equals(PaymentStatus.Paid))
+                yield return "This order must be paid before being downloaded.";
         }
     }
 }

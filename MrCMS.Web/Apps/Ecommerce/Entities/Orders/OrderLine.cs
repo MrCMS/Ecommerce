@@ -36,5 +36,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual string DownloadFileUrl { get; set; }
         public virtual string DownloadFileContentType { get; set; }
         public virtual string DownloadFileName { get; set; }
+        public virtual string DownloadMaskedLink { get { return string.Format("http://{0}/digital-download/{1}/{2}", Site.BaseUrl, Order.Guid, Id); } }
+
     }
 }

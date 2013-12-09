@@ -377,6 +377,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderLineController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CurrencyController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DashboardController.cs" />
@@ -705,6 +706,8 @@
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\StockReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderLineService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\OrderLineService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\BulkShippingUpdateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\BulkShippingUpdateValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\DTOs\BulkShippingUpdateDataTransferObject.cs" />
@@ -2277,6 +2280,7 @@
     <Content Include="Apps\Ecommerce\Views\OrderPlaced\LoginAndAssociateOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Views\OrderPlaced\RegisterAndAssociateOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\AddToCart.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderLine\Edit.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
