@@ -11,6 +11,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
     {
         Dictionary<string, List<string>> BulkShippingUpdate(Stream file);
 
+        List<ShippingMethod> AvailableShippingMethods(CartModel cart);
         List<SelectListItem> GetShippingOptions(CartModel cart);
         List<SelectListItem> GetCheapestShippingOptions(CartModel cart);
         ShippingMethod GetDefaultShippingMethod(CartModel cart);
