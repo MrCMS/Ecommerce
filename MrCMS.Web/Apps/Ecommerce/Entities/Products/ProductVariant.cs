@@ -34,6 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         [Required]
         [DisplayName("Price")]
+        [DisplayFormat(DataFormatString = "{0:0.##}")]
         public virtual decimal BasePrice { get; set; }
 
         [DisplayName("Previous Price")]
@@ -155,6 +156,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get { return TrackingPolicy == TrackingPolicy.DontTrack || StockRemaining > 0; }
         }
+        
         [DisplayName("Stock Remaining")]
         public virtual int StockRemaining { get; set; }
 
