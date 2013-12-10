@@ -39,23 +39,24 @@
         </div>
     </div>
     <div class="span4">
-        @if (product.IsMultiVariant)
+        @if (!Model.SoldOut)
         {
+            if (product.IsMultiVariant)
+            {
             <div class="product-variants-filter">
                 <label class="span3 line-height-30">Variants</label>
                 @Html.DropDownList("variant", product.GetVariantOptions(Model), new { @class = "span9" })
             </div>
-        }
+            }
 
-        @{Html.RenderPartial("ProductPricebreaks", Model);}
+            { Html.RenderPartial("ProductPricebreaks", Model); }
 
-
-        @if (canBuy.OK)
-        {
-            Html.RenderAction("AddToCart", "Cart", new { model = new AddToCartModel { ProductVariant = Model, Quantity = 1 } });
-        }
-        else if (canBuy is OutOfStock)
-        {
+            if (canBuy.OK)
+            {
+                Html.RenderAction("AddToCart", "Cart", new { model = new AddToCartModel { ProductVariant = Model, Quantity = 1 } });
+            }
+            else if (canBuy is OutOfStock)
+            {
             <div class="row-fluid out-of-stock">
                 <p class="red text-center">
                     Sorry, this item is out of stock.
@@ -80,22 +81,27 @@
                     }
                 }
             </div>
-        }
-        else if (canBuy is CannotOrderQuantity)
-        {
+            }
+            else if (canBuy is CannotOrderQuantity)
+            {
             <div class="row-fluid out-of-stock">
                 <p class="text-center">
                     You currently have all all available stock in your cart
                 </p>
             </div>
-        }
-        else if (canBuy is NoShippingMethodWouldBeAvailable)
-        {
+            }
+            else if (canBuy is NoShippingMethodWouldBeAvailable)
+            {
             <div class="row-fluid out-of-stock">
                 <p class="text-center">
                     @canBuy.Message
                 </p>
             </div>
+            }
+        }
+        else
+        {
+            @Model.SoldOutMessage
         }
 
         @RenderZone("Below Add to cart")
