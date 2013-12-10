@@ -132,6 +132,9 @@
     <Reference Include="MigraDoc.RtfRendering">
       <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.RtfRendering.dll</HintPath>
     </Reference>
+    <Reference Include="MVC Foolproof Validation">
+      <HintPath>..\packages\foolproof.0.9.4517\lib\MVC Foolproof Validation.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.6.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MySql.Data.6.6.4\lib\net40\MySql.Data.dll</HintPath>
@@ -1422,6 +1425,7 @@
     <Content Include="Areas\Admin\Content\Images\no-image.jpg" />
     <Content Include="Areas\Admin\Content\Images\no-media-selected.jpg" />
     <Content Include="Areas\Admin\Content\Images\pencil.png" />
+    <Content Include="Areas\Admin\Content\Scripts\MicrosoftMvcJQueryValidation.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\admin.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\add-page-widget.js" />
     <Content Include="Areas\Admin\Content\Scripts\custom\add-webpage.js" />
@@ -1990,6 +1994,12 @@
     <Content Include="Content\install\scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Areas\Admin\Content\Scripts\mvcfoolproof.unobtrusive.min.js" />
+    <Content Include="Areas\Admin\Content\Scripts\MvcFoolproofJQueryValidation.min.js" />
+    <Content Include="Areas\Admin\Content\Scripts\MvcFoolproofValidation.min.js" />
+    <Content Include="Areas\Admin\Content\Scripts\MicrosoftAjax.js" />
+    <Content Include="Areas\Admin\Content\Scripts\MicrosoftMvcAjax.js" />
+    <Content Include="Areas\Admin\Content\Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\category.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\forgotten-password.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\password-reset.js" />
@@ -2445,6 +2455,7 @@
     <Folder Include="Apps\Galleries\Views\Widgets\" />
     <Folder Include="Apps\Galleries\Widgets\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\" />
     <Folder Include="Themes\Default\Apps\" />
     <Folder Include="Themes\Default\Content\" />
     <Folder Include="Themes\Default\Shared\" />

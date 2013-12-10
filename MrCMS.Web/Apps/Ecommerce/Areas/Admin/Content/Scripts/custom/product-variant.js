@@ -1,5 +1,11 @@
 ﻿$(document).ready(function () {
     
+    //this will validate hidden fields required for IsDownloadable
+    $.validator.setDefaults({
+        ignore: [],
+        // any other default options and/or rules
+    });
+
     function formatImageOption(state) {
         var option = state.element;
         var url = $(option).data('url');

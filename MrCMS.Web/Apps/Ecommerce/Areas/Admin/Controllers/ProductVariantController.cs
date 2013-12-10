@@ -39,14 +39,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             ViewData["shipping-methods"] = _shippingMethodManager.GetAll();
             ViewData["tax-rate-options"] = _taxRateManager.GetOptions();
             ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
+            var productVariant = new ProductVariant
+                {
+                    Product = product, OptionValues = Enumerable.Range(0, product.Options.Count).Select(i => new ProductOptionValue()).ToList()
+                };
             return
-                PartialView(new ProductVariant
-                                {
-                                    Product = product,
-                                    OptionValues =
-                                        Enumerable.Range(0, product.Options.Count)
-                                                  .Select(i => new ProductOptionValue()).ToList()
-                                });
+                PartialView(productVariant);
         }
 
         [ActionName("Add")]
