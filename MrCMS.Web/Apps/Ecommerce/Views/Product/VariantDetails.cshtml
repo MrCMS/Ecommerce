@@ -101,7 +101,7 @@
         }
         else
         {
-            @Model.SoldOutMessage
+            @Html.Raw(Model.SoldOutMessage)
         }
 
         @RenderZone("Below Add to cart")
