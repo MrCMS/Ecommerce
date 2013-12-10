@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Foolproof;
 using MrCMS.Entities;
 using MrCMS.Entities.Documents.Media;
+using MrCMS.Helpers.Validation;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
@@ -34,10 +36,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         [Required]
         [DisplayName("Price")]
-        [DisplayFormat(DataFormatString = "{0:0.##}")]
+        [CurrencyValidator]
         public virtual decimal BasePrice { get; set; }
 
         [DisplayName("Previous Price")]
+        [CurrencyValidator]
         public virtual decimal? PreviousPrice { get; set; }
 
         public virtual decimal? PreviousPriceIncludingTax
@@ -235,6 +238,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual bool IsDownloadable { get; set; }
 
         [DisplayName("Download File")]
+        [RequiredIf("IsDownloadable", true)]
         public virtual string DownloadFileUrl { get; set; }
 
         [DisplayName("Demo File")]
