@@ -24,6 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
         public IEnumerable<PriceBreak> ImportVariantPriceBreaks(ProductVariantImportDataTransferObject item, ProductVariant productVariant)
         {
+            productVariant.PriceBreaks.Clear();
             foreach (var priceBreakItem in item.PriceBreaks)
             {
                 var priceBreak = _priceBreaks.SingleOrDefault(x => x.Quantity == priceBreakItem.Key && x.ProductVariant.Id == productVariant.Id);
