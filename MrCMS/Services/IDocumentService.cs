@@ -40,7 +40,6 @@ namespace MrCMS.Services
         void SetParent(Document document, int? parentId);
         DocumentMetadata GetDefinitionByType(Type type);
         void SetFrontEndRoles(string frontEndRoles, Webpage webpage);
-        void SetAdminRoles(string adminRoles, Webpage webpage);
         bool UrlIsValidForMediaCategory(string urlSegment, int? id);
         bool UrlIsValidForLayout(string urlSegment, int? id);
         bool UrlIsValidForWebpage(string url, int? id);
@@ -49,5 +48,7 @@ namespace MrCMS.Services
         IEnumerable<Document> GetParents(int? parent);
         Webpage GetHomePage();
         RedirectResult RedirectTo<T>(object routeValues = null) where T : Webpage, IUniquePage;
+        
+        void RevertToVersion(DocumentVersion documentVersion);
     }
 }

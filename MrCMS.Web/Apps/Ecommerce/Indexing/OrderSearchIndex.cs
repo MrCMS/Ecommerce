@@ -107,6 +107,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
             get { return "Order Search Index"; }
         }
 
+        public string IndexFolderName
+        {
+            get { return "Orders"; }
+        }
+
         public IEnumerable<FieldDefinition<Order>> Definitions
         {
             get

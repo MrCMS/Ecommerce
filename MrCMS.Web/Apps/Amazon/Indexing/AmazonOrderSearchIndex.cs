@@ -24,7 +24,7 @@ namespace MrCMS.Web.Apps.Amazon.Indexing
 
         public Term GetIndex(AmazonOrder entity)
         {
-            return new Term("id", entity.Id.ToString());
+            return new Lucene.Net.Index.Term("id", entity.Id.ToString());
         }
 
         public AmazonOrder Convert(ISession session, Document document)
@@ -57,6 +57,7 @@ namespace MrCMS.Web.Apps.Amazon.Indexing
         }
 
         public string IndexName { get { return "Amazon Order Search Index"; } }
+        public string IndexFolderName { get; private set; }
 
         public IEnumerable<FieldDefinition<AmazonOrder>> Definitions
         {
