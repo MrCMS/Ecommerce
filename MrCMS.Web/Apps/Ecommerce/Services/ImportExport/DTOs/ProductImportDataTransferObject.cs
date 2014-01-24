@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs
 {
@@ -32,5 +33,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs
         public List<string> Images { get; set; }
         public List<string> UrlHistory { get; set; }
         public DateTime? PublishDate { get; set; }
+
+        public IEnumerable<string> Options
+        {
+            get { return ProductVariants.SelectMany(o => o.Options.Keys).Distinct(StringComparer.OrdinalIgnoreCase); }
+        }
     }
 }
