@@ -34,7 +34,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         public IImportProductVariantsService Initialize()
         {
             _allVariants = new HashSet<ProductVariant>(_session.QueryOver<ProductVariant>().List());
-            _importProductVariantPriceBreaksService.Initialize();
             _importProductOptionsService.Initialize();
             return this;
         }
@@ -92,7 +91,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     {
         private readonly ISession _session;
         private HashSet<ProductOption> _productOptions;
-        private HashSet<ProductOptionValue> _productOptionValues;
 
         public ImportProductOptionsService(ISession session)
         {
@@ -103,7 +101,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         public IImportProductOptionsService Initialize()
         {
             _productOptions = new HashSet<ProductOption>(_session.QueryOver<ProductOption>().List());
-            _productOptionValues = new HashSet<ProductOptionValue>(_session.QueryOver<ProductOptionValue>().List());
             return this;
         }
 
