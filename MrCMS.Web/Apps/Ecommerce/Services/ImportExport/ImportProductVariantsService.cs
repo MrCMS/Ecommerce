@@ -108,7 +108,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 _importProductVariantPriceBreaksService.ImportVariantPriceBreaks(item, productVariant);
 
                 //Specifications
-                _importProductOptionsService.ImportVariantSpecifications(item, product, productVariant);
+                //_importProductOptionsService.ImportVariantSpecifications(item, product, productVariant);
             }
 
             return dataTransferObject.ProductVariants.Any() ? product.Variants : null;
