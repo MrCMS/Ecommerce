@@ -58,6 +58,21 @@
     <Reference Include="Lucene.Net">
       <HintPath>..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
     </Reference>
+    <Reference Include="Lucene.Net.Store.Azure">
+      <HintPath>..\packages\Lucene.Net.Store.Azure.2.0.4937.26631\lib\net40\Lucene.Net.Store.Azure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationServer.Caching.AzureClientHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.Caching.2.2.0.0\lib\net40-full\Microsoft.ApplicationServer.Caching.AzureClientHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationServer.Caching.AzureCommon, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.Caching.2.2.0.0\lib\net40-full\Microsoft.ApplicationServer.Caching.AzureCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationServer.Caching.Client, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.Caching.2.2.0.0\lib\net40-full\Microsoft.ApplicationServer.Caching.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationServer.Caching.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.Caching.2.2.0.0\lib\net40-full\Microsoft.ApplicationServer.Caching.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Data.Edm, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Data.Edm.5.2.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
@@ -65,6 +80,9 @@
     <Reference Include="Microsoft.Data.OData, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Data.OData.5.2.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.DistributedCache, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.Caching.2.2.0.0\lib\net40-full\Microsoft.Web.DistributedCache.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -75,6 +93,12 @@
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Storage, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAzure.Storage.2.0.5.1\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsFabric.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.Caching.2.2.0.0\lib\net40-full\Microsoft.WindowsFabric.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsFabric.Data.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WindowsAzure.Caching.2.2.0.0\lib\net40-full\Microsoft.WindowsFabric.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=6.6.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -154,6 +178,15 @@
     <Compile Include="ACL\TypeACLRule.cs" />
     <Compile Include="Apps\MrCMSApp.cs" />
     <Compile Include="Apps\MrCMSAppRegistrationContext.cs" />
+    <Compile Include="Config\MrCMSConfigSection.cs" />
+    <Compile Include="DbConfiguration\Caches\Azure\AzureCacheAdapter.cs" />
+    <Compile Include="DbConfiguration\Caches\Azure\AzureCacheAdapterFactory.cs" />
+    <Compile Include="DbConfiguration\Caches\Azure\AzureCacheAdapterType.cs" />
+    <Compile Include="DbConfiguration\Caches\Azure\AzureCacheFactory.cs" />
+    <Compile Include="DbConfiguration\Caches\Azure\AzureCacheProvider.cs" />
+    <Compile Include="DbConfiguration\Caches\Azure\IAzureCacheFactory.cs" />
+    <Compile Include="DbConfiguration\Caches\Azure\ISerializationProvider.cs" />
+    <Compile Include="DbConfiguration\Caches\Azure\SerializationProvider.cs" />
     <Compile Include="DbConfiguration\ConfigHelper.cs" />
     <Compile Include="DbConfiguration\Configuration\DatabaseType.cs" />
     <Compile Include="DbConfiguration\Configuration\SoftDeleteListener.cs" />
@@ -223,8 +256,10 @@
     <Compile Include="Events\IOnDocumentAdded.cs" />
     <Compile Include="Events\IOnDocumentDeleted.cs" />
     <Compile Include="Events\IOnDocumentUnpublished.cs" />
-    <Compile Include="Helpers\Validation\EmailValidator.cs" />
     <Compile Include="Helpers\Validation\CurrencyValidator.cs" />
+    <Compile Include="Helpers\Validation\EmailValidator.cs" />
+    <Compile Include="Indexing\Management\AzureDirectoryIndexManager.cs" />
+    <Compile Include="Indexing\Querying\AzureDirectorySearcher.cs" />
     <Compile Include="Logging\LogSearchQuery.cs" />
     <Compile Include="Models\MessageQueueQuery.cs" />
     <Compile Include="Models\UserSearchQuery.cs" />
@@ -235,9 +270,14 @@
     <Compile Include="Services\IHashAlgorithm.cs" />
     <Compile Include="Services\IMessageQueueAdminService.cs" />
     <Compile Include="Services\IMessageTemplateService.cs" />
+    <Compile Include="Services\ImportExport\IUpdateTagsService.cs" />
+    <Compile Include="Services\ImportExport\IUpdateUrlHistoryService.cs" />
+    <Compile Include="Services\ImportExport\UpdateTagsService.cs" />
+    <Compile Include="Services\ImportExport\UpdateUrlHistoryService.cs" />
     <Compile Include="Services\IPasswordEncryptionManager.cs" />
     <Compile Include="Services\IRedirectedDomainService.cs" />
     <Compile Include="Services\ITokenProvider.cs" />
+    <Compile Include="Services\IUserSearchService.cs" />
     <Compile Include="Services\MessageQueueAdminService.cs" />
     <Compile Include="Services\MessageTemplateService.cs" />
     <Compile Include="Services\IMessageParser.cs" />
@@ -367,7 +407,7 @@
     <Compile Include="Services\ICloneSitePartsService.cs" />
     <Compile Include="Services\ICloneSiteService.cs" />
     <Compile Include="Services\ICurrentSiteLocator.cs" />
-    <Compile Include="Services\ImportExport\DTOs\DocumentImportDataTransferObject.cs" />
+    <Compile Include="Services\ImportExport\DTOs\DocumentImportDTO.cs" />
     <Compile Include="Services\ImportExport\IImportExportManager.cs" />
     <Compile Include="Services\ImportExport\IImportDocumentsService.cs" />
     <Compile Include="Services\ImportExport\IImportDocumentsValidationService.cs" />
@@ -422,6 +462,7 @@
     <Compile Include="Services\SiteService.cs" />
     <Compile Include="Services\TagService.cs" />
     <Compile Include="Services\UrlHistoryService.cs" />
+    <Compile Include="Services\UserSearchService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="Services\WidgetService.cs" />
     <Compile Include="Settings\ConfigurationProvider.cs" />
@@ -466,6 +507,7 @@
     <Compile Include="Shortcodes\Forms\ValidationMessaageRenderer.cs" />
     <Compile Include="Shortcodes\IShortcodeParser.cs" />
     <Compile Include="Tasks\BackgroundTask.cs" />
+    <Compile Include="Tasks\DeleteExpiredLogsTask.cs" />
     <Compile Include="Tasks\DeleteIndicesTask.cs" />
     <Compile Include="Tasks\IndexManagementTask.cs" />
     <Compile Include="Tasks\InsertIndicesTask.cs" />
@@ -529,11 +571,14 @@
     <Compile Include="Website\ScheduledTaskChecker.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Eula.htm" />
+    <Content Include="Readme.html" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
