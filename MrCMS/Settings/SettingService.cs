@@ -17,7 +17,7 @@ namespace MrCMS.Settings
     {
         private readonly ISession _session;
         private readonly Site _site;
-        private IList<Setting> _allSettings;
+        private static IList<Setting> _allSettings;
         private IDictionary<string, KeyValuePair<int, string>> _allSettingsDictionary;
 
         /// <summary>
@@ -90,7 +90,6 @@ namespace MrCMS.Settings
         /// Set setting value
         /// </summary>
         /// <typeparam name="T">Type</typeparam>
-        /// <param name="site">Site (null for global parameter)</param>
         /// <param name="key">Key</param>
         /// <param name="value">Value</param>
         public virtual void SetSetting<T>(string key, T value)
@@ -99,15 +98,12 @@ namespace MrCMS.Settings
                 throw new ArgumentNullException("key");
             key = key.Trim().ToLowerInvariant();
 
-            var settings = GetAllSettings();
-
-            Setting setting = null;
+            Setting setting =
+                _session.QueryOver<Setting>().Where(s => s.Site == _site && s.Name == key).SingleOrDefault();
             string valueStr = typeof(T).GetCustomTypeConverter().ConvertToInvariantString(value);
-            if (settings.ContainsKey(key))
+            if (setting != null)
             {
                 //update
-                var settingId = settings[key].Key;
-                setting = GetSettingById(settingId);
                 setting.Value = valueStr;
                 setting.Site = _site;
             }
@@ -137,6 +133,11 @@ namespace MrCMS.Settings
             _session.Transact(session => session.Delete(setting));
         }
 
+        public void ResetSettingCache()
+        {
+            _allSettings = null;
+        }
+
         /// <summary>
         /// Gets all settings
         /// </summary>
@@ -150,7 +151,7 @@ namespace MrCMS.Settings
         {
             //format: <name, <id, value>>
             var dictionary = new Dictionary<string, KeyValuePair<int, string>>();
-            foreach (var s in AllSettings)
+            foreach (var s in AllSettings.Where(setting => setting.Site.Id == _site.Id))
             {
                 var resourceName = s.Name.ToLowerInvariant();
                 if (!dictionary.ContainsKey(resourceName))
@@ -166,9 +167,13 @@ namespace MrCMS.Settings
                 return
                     _allSettings =
                     _allSettings ??
-                    _session.QueryOver<Setting>().Where(setting => setting.Site.Id == _site.Id).Cacheable().List();
+                    GetAllSettingForSite();
             }
         }
 
+        private IList<Setting> GetAllSettingForSite()
+        {
+            return _session.QueryOver<Setting>().Cacheable().List();
+        }
     }
 }

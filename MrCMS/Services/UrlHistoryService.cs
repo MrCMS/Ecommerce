@@ -25,6 +25,7 @@ namespace MrCMS.Services
 
         public void Add(UrlHistory urlHistory)
         {
+            urlHistory.Webpage.Urls.Add(urlHistory);
             _session.Transact(session => session.Save(urlHistory));
         }
 
@@ -41,12 +42,14 @@ namespace MrCMS.Services
         }
         public UrlHistory GetByUrlSegment(string url)
         {
-            return _session.QueryOver<UrlHistory>().Where(x => x.Site == CurrentRequestData.CurrentSite && x.UrlSegment == url).SingleOrDefault();
+            return _session.QueryOver<UrlHistory>().Where(x => x.Site == CurrentRequestData.CurrentSite
+                && x.UrlSegment.IsInsensitiveLike(url, MatchMode.Exact)).SingleOrDefault();
         }
 
         public UrlHistory GetByUrlSegmentWithSite(string url, Site site, Webpage page)
         {
-            return _session.QueryOver<UrlHistory>().Where(x => x.Site == site && x.Webpage == page && x.UrlSegment == url).SingleOrDefault();
+            return _session.QueryOver<UrlHistory>().Where(x => x.Site == site && x.Webpage == page
+                && x.UrlSegment.IsInsensitiveLike(url, MatchMode.Exact)).SingleOrDefault();
         }
     }
 }
