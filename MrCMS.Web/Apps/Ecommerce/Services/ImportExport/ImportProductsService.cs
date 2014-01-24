@@ -176,9 +176,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                          {
                                              Name = option,
                                          };
+                    
                     _productOptions.Add(existingOption);
+                    _session.Save(existingOption);
                 }
                 product.Options.Add(existingOption);
+                existingOption.Products.Add(product);
             }
             foreach (var option in optionsToRemove)
             {
