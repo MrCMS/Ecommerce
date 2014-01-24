@@ -16,7 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download
 {
     public class EcommerceDownloadResult : ActionResult
     {
-        private IFileSystem _fileSystem;
+        private readonly IFileSystem _fileSystem;
         private readonly OrderLine _orderLine;
 
         public EcommerceDownloadResult(IFileSystem fileSystem, OrderLine orderLine)
@@ -25,11 +25,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download
             _orderLine = orderLine;
         }
 
+        public OrderLine OrderLine
+        {
+            get { return _orderLine; }
+        }
+
         public override void ExecuteResult(ControllerContext context)
         {
             context.HttpContext.Response.Buffer = false;
-            context.HttpContext.Response.AddHeader("Content-Disposition", "attachment; filename=" + _orderLine.DownloadFileName);
-            _fileSystem.WriteToStream(_orderLine.DownloadFileUrl, context.HttpContext.Response.OutputStream);
+            context.HttpContext.Response.AddHeader("Content-Disposition", "attachment; filename=" + OrderLine.DownloadFileName);
+            _fileSystem.WriteToStream(OrderLine.DownloadFileUrl, context.HttpContext.Response.OutputStream);
         }
     }
     public class DownloadOrderedFileService : IDownloadOrderedFileService
@@ -50,14 +55,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download
         public ActionResult WriteDownloadToResponse(HttpResponseBase response, Order order, OrderLine orderLine)
         {
             if (order == null || orderLine == null)
-                return new ContentResult() { Content = "Error", ContentType = "text/plain" };
+                return new ContentResult { Content = "Error", ContentType = "text/plain" };
 
             var errors = _rules.SelectMany(rule => rule.GetErrors(order, orderLine));
             if (errors.Any())
-                return new ContentResult() { Content = "Sorry the file you requested to be downloaded is unavailable. Either the order is not paid or the file has been downloaded a maximum amount of times. Contact the store owner if you believe this to be incorrect.", ContentType = "text/plain" };
+                return new ContentResult { Content = "Sorry the file you requested to be downloaded is unavailable. Either the order is not paid or the file has been downloaded a maximum amount of times. Contact the store owner if you believe this to be incorrect.", ContentType = "text/plain" };
 
             if (!_fileSystem.Exists(orderLine.DownloadFileUrl))
-                return new ContentResult() { Content = "File no longer exists.", ContentType = "text/plain" };
+                return new ContentResult { Content = "File no longer exists.", ContentType = "text/plain" };
 
             EcommerceDownloadResult writeDownloadToResponse;
             try
@@ -71,7 +76,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download
                         Error = new Error(exception),
                         Message = "Error downloading file"
                     });
-                return new ContentResult() { Content = "An error occoured, please contact the store owner.", ContentType = "text/plain" };
+                return new ContentResult { Content = "An error occoured, please contact the store owner.", ContentType = "text/plain" };
             }
 
             orderLine.NumberOfDownloads++;
