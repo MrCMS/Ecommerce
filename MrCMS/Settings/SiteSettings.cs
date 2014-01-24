@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Net;
 using System.Web.Mvc;
 using NHibernate;
 
@@ -22,6 +24,7 @@ namespace MrCMS.Settings
             Log404s = true;
             CKEditorConfig = SettingDefaults.CkEditorConfig;
             HoneypotFieldName = "YourStatus";
+            DaysToKeepLogs = 30;
         }
 
         [DropDownSelection("Themes")]
@@ -70,12 +73,33 @@ namespace MrCMS.Settings
         [DisplayName("Honeypot Field Name")]
         public string HoneypotFieldName { get; set; }
 
-        public bool HasHoneyPot { get { return !string.IsNullOrWhiteSpace(HoneypotFieldName); }
+        public bool HasHoneyPot
+        {
+            get { return !string.IsNullOrWhiteSpace(HoneypotFieldName); }
         }
 
         [DisplayName("CKEditor Config")]
         [TextArea]
         public string CKEditorConfig { get; set; }
+
+        public int DaysToKeepLogs { get; set; }
+
+        [DisplayName("Allowed Admin IPs")]
+        public string AllowedAdminIPs { get; set; }
+        public IEnumerable<string> AllowedIPs
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(AllowedAdminIPs)) yield break;
+                var ips = AllowedAdminIPs.Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var ip in ips)
+                {
+                    IPAddress address;
+                    if (IPAddress.TryParse(ip, out address))
+                        yield return ip;
+                }
+            }
+        }
 
         public override void SetViewData(ISession session, ViewDataDictionary viewDataDictionary)
         {

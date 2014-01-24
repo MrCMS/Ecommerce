@@ -5,13 +5,14 @@ using MrCMS.Services.ImportExport.DTOs;
 using MrCMS.Website;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using System.Linq;
 
 namespace MrCMS.Services.ImportExport
 {
     public interface IImportDocumentsService
     {
-        void ImportDocumentsFromDTOs(IEnumerable<DocumentImportDataTransferObject> items);
-        Webpage ImportDocument(DocumentImportDataTransferObject dataTransferObject);
+        void ImportDocumentsFromDTOs(IEnumerable<DocumentImportDTO> items);
+        Webpage ImportDocument(DocumentImportDTO dto);
     }
 
     public interface IExportDocumentsService
@@ -83,7 +84,7 @@ namespace MrCMS.Services.ImportExport
                 wsItems.Cells["H" + rowId].Value = webpages[i].MetaKeywords;
                 for (var j = 0; j < webpages[i].Tags.Count; j++)
                 {
-                    wsItems.Cells["I" + rowId].Value += webpages[i].Tags[j].Name;
+                    wsItems.Cells["I" + rowId].Value += webpages[i].Tags.ElementAt(j).Name;
                     if (j != webpages[i].Tags.Count - 1)
                         wsItems.Cells["I" + rowId].Value += ",";
                 }
