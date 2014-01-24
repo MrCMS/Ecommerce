@@ -62,11 +62,46 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 }
 
 
-                for (var i = productVariant.OptionValues.Count - 1; i >= 0; i--)
+                var optionsToAdd =
+                    item.Options.Where(
+                        s =>
+                        !productVariant.OptionValues.Select(value => value.ProductOption.Name)
+                                        .Contains(s.Key, StringComparer.OrdinalIgnoreCase)).ToList();
+                var optionsToRemove =
+                    productVariant.OptionValues.Where(
+                        value => !item.Options.Keys.Contains(value.ProductOption.Name, StringComparer.OrdinalIgnoreCase))
+                                  .ToList();
+                var optionsToUpdate =
+                    productVariant.OptionValues.Where(value => !optionsToRemove.Contains(value)).ToList();
+
+                foreach (var option in optionsToAdd)
                 {
-                    var value = productVariant.OptionValues[i];
-                    productVariant.OptionValues.Remove(value);
-                    _productOptionManager.DeleteProductAttributeValue(value);
+                    var productOption = product.Options.FirstOrDefault(po => po.Name == option.Key);
+                    if (productOption != null)
+                    {
+                        var productOptionValue = new ProductOptionValue
+                                                     {
+                                                         ProductOption = productOption,
+                                                         ProductVariant = productVariant,
+                                                         Value = option.Value
+                                                     };
+                        productVariant.OptionValues.Add(productOptionValue);
+                        productOption.Values.Add(productOptionValue);
+                    }
+                }
+                foreach (var value in optionsToRemove)
+                {
+                    var productOption = value.ProductOption;
+                    productVariant.OptionValues.Add(value);
+                    productOption.Values.Add(value);
+                    _session.Delete(value);
+                }
+                foreach (var value in optionsToUpdate)
+                {
+                    var key =
+                        item.Options.Keys.FirstOrDefault(
+                            s => s.Equals(value.ProductOption.Name, StringComparison.OrdinalIgnoreCase));
+                    if (key != null) value.Value = item.Options[key];
                 }
 
                 //Price Breaks
