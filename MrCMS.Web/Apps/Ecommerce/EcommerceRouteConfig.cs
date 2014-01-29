@@ -89,7 +89,7 @@ namespace MrCMS.Web.Apps.Ecommerce
 
             context.MapRoute("Order Placed - Login and associate order", "order-placed/login", new { controller = "OrderPlaced", action = "LoginAndAssociateOrder" }, new[] { typeof(OrderPlacedController).Namespace });
 
-            context.MapRoute("Order Placed - Register and associate order", "order-placed/register", new { controller = "OrderPlaced", action = "RegisterAndAssociateOrder" }, new[] { typeof(OrderPlacedController).Namespace });
+            context.MapRoute("Order Placed - Register and associate order", "order-placed/register", new { controller = "UserAccount", action = "RegistrationWithoutDetails" }, new[] { typeof(OrderPlacedController).Namespace });
         }
 
         private static void MapCartRoutes(MrCMSAppRegistrationContext context)
