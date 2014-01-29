@@ -2,6 +2,7 @@
 using MrCMS.Web.Apps.Ecommerce.Entities.BackInStockNotification;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
@@ -30,16 +31,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             var variantToShow = _productUiService.GetVariantToShow(page, variant);
             ViewData["selected-variant"] = variantToShow;
             ViewData["cart"] = _cart;
-            ViewData["back-in-stock"] = _productUiService.UserNotifiedOfBackInStock(variantToShow,
-                                                                                    TempData["back-in-stock"] is bool &&
-                                                                                    (bool)TempData["back-in-stock"]);
             return View(page);
         }
         public PartialViewResult VariantDetails(ProductVariant productVariant)
         {
-            ViewData["back-in-stock"] = _productUiService.UserNotifiedOfBackInStock(productVariant,
-                                                                                    TempData["back-in-stock"] is bool &&
-                                                                                    (bool)TempData["back-in-stock"]);
+            ViewData["cart"] = _cart;
             return PartialView(productVariant);
         }
 
@@ -59,11 +55,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult BackInStockForm(ProductVariant variant)
+        public PartialViewResult BackInStockForm(ProductVariant productVariant)
         {
-            ViewData["back-in-stock"] = TempData["back-in-stock"];
+            ViewData["back-in-stock"] = _productUiService.UserNotifiedOfBackInStock(productVariant,
+                                                                                    TempData["back-in-stock"] is bool &&
+                                                                                    (bool)TempData["back-in-stock"]);
+            var backInStockrequest = new BackInStockNotificationRequest {ProductVariant = productVariant};
+            if (CurrentRequestData.CurrentUser != null)
+                backInStockrequest.Email = CurrentRequestData.CurrentUser.Email;
 
-            return PartialView( new BackInStockNotificationRequest {ProductVariant = variant});
+            return PartialView(backInStockrequest);
         }
     }
 }

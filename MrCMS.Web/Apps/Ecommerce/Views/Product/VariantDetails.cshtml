@@ -56,7 +56,7 @@
             }
             else if (canBuy is OutOfStock)
             {
-                Html.RenderAction("BackInStockForm", "Product", new { Model } );
+                Html.RenderAction("BackInStockForm", "Product", new { id = Model.Id } );
             }
             else if (canBuy is CannotOrderQuantity)
             {
