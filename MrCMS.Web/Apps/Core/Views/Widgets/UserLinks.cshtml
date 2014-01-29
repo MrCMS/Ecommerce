@@ -1,8 +1,15 @@
-﻿@using MrCMS.Website
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@using MrCMS.Website
 @model List<MrCMS.Web.Apps.Core.Models.NavigationRecord>
 <ul class="nav nav-pills pull-right">
     @foreach (var page in Model)
     {
         <li><a href="@page.Url">@page.Text</a></li>    
     }
+    <li>
+        <a href="@(UniquePageHelper.GetUrl<Wishlist>())">
+            @{Html.RenderAction("Summary", "Wishlist");}
+        </a>
+    </li>
 </ul>
