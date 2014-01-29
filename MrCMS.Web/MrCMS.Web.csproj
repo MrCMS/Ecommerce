@@ -512,6 +512,7 @@
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToStoreOwnerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderShippedEmailToCustomerMessageTemplate.cs" />
+    <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\BackInStockTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\OrderTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\ProductVariantTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />

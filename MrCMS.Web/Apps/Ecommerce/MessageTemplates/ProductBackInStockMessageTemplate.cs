@@ -16,12 +16,12 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
             return new ProductBackInStockMessageTemplate
                        {
                            FromName = CurrentRequestData.CurrentSite.Name,
-                           ToAddress = "{OrderEmail}",
-                           ToName = "{CustomerName}",
+                           ToAddress = "{Email}",
+                           ToName = "Customer",
                            Bcc = String.Empty,
                            Cc = String.Empty,
                            Subject = String.Format("{0} - Product Back In Stock", CurrentRequestData.CurrentSite.Name),
-                           Body = "The product {Name} is back in stock.",
+                           Body = "<p>The product {Name} is back in stock.</p><p>{ProductUrl}</p>",
                            IsHtml = true
                        };
         }
