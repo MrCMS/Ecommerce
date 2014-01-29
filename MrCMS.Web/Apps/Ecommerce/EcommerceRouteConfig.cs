@@ -16,6 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             MapCheckoutRoutes(context);
             MapPaymentMethodRoutes(context);
             MapRemoteValidationRoutes(context);
+            MapWishlistRoutes(context);
 
             context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders", new { controller = "UserAccount", action = "UserAccountOrders" });
             context.MapRoute("User Account - download Order PDF", "Apps/Ecommerce/OrderPdf/ExportOrderToPdf/{id}", new { controller = "OrderPdf", action = "ExportOrderToPdf" }, new[] { typeof(OrderPdfController).Namespace });
@@ -31,6 +32,19 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Download Product", "digital-download/{guid}/{id}", new { controller = "DownloadOrderedFile", action = "Download" }, new[] { typeof(DownloadOrderedFileController).Namespace });
 
             context.MapRoute("Product - Get Variant Details", "product/variant-details/{id}", new { controller = "Product", action = "VariantDetails" }, new[] { typeof(ProductController).Namespace });
+        }
+
+        private static void MapWishlistRoutes(MrCMSAppRegistrationContext context)
+        {
+            context.MapRoute("Wishlist - Add to Wishlist", "Apps/Ecommerce/AddToWishlist",
+                             new {controller = "Wishlist", action = "Add"},
+                             new[] {typeof (WishlistController).Namespace});
+            context.MapRoute("Wishlist - Remove from Wishlist", "Apps/Ecommerce/RemoveFromWishlist",
+                             new {controller = "Wishlist", action = "Remove"},
+                             new[] {typeof (WishlistController).Namespace});
+            context.MapRoute("Wishlist - Summary", "Apps/Ecommerce/WishlistSummary",
+                             new {controller = "Wishlist", action = "Summary"},
+                             new[] {typeof (WishlistController).Namespace});
         }
 
         private static void MapRemoteValidationRoutes(MrCMSAppRegistrationContext context)

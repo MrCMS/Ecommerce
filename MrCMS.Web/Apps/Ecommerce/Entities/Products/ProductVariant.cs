@@ -159,7 +159,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get { return TrackingPolicy == TrackingPolicy.DontTrack || StockRemaining > 0; }
         }
-        
+
         [DisplayName("Stock Remaining")]
         public virtual int StockRemaining { get; set; }
 
@@ -268,6 +268,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                 return Product != null
                            ? (IEnumerable<MediaFile>)Product.Images.OrderByDescending(file => file.FileUrl == DisplayImageUrl)
                            : new List<MediaFile>();
+            }
+        }
+
+        public virtual string DirectUrl
+        {
+            get
+            {
+                return Product == null
+                           ? string.Empty
+                           : string.Format("/{0}?variant={1}", Product.LiveUrlSegment, Id); 
             }
         }
 

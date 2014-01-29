@@ -4,7 +4,7 @@ using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Widgets
 {
-    public class CartWidget : Widget 
+    public class CartWidget : Widget
     {
         public override object GetModel(NHibernate.ISession session)
         {

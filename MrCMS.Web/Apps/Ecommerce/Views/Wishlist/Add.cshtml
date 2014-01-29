@@ -1,0 +1,20 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
+@{
+    var inWishlist = ViewData["in-wishlist"] is bool && (bool)ViewData["in-wishlist"];
+}
+<div data-add-to-wishlist="@Model.Id" class="row-fluid">
+    @if (!inWishlist)
+    {
+        using (Html.BeginForm("Add", "Wishlist", new { Model.Id }, FormMethod.Post, new { data_wishlist_action = "add" }))
+        {
+        <input type="submit" class="btn btn-primary span12" value="Add to wishlist" />
+        }
+    }
+    else
+    {
+        using (Html.BeginForm("Remove", "Wishlist", new { Model.Id }, FormMethod.Post, new { data_wishlist_action = "remove" }))
+        {
+        <input type="submit" class="btn btn-primary span12" value="Remove from wishlist" />
+        }
+    }
+</div>
