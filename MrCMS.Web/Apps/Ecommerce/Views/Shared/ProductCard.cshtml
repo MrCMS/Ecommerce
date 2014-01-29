@@ -21,7 +21,7 @@
                 <span>@(SiteSettings<EcommerceSettings>().PreviousPriceText) <span style="text-decoration: line-through">@Html.DisplayFor(product => product.DisplayPreviousPrice)</span></span>
             }
             <a href="/@Model.LiveUrlSegment" class="btn btn-more margin-bottom-5 span12">View</a>
-            @if (Model.Variants.Any(variant => variant.CanBuy(cart, 1).OK))
+            @if (Model.Variants.Count == 1 && Model.Variants.Any(variant => variant.CanBuy(cart, 1).OK))
             {
                 using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
                 {

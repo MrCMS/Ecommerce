@@ -5,7 +5,7 @@
 var Product = new function() {
     this.History = window.History;
     this.setVariant = function(variantId) {
-        Product.History.pushState({ variant: variantId }, $('title').html(), location.pathname + '?variant' + variantId);
+        Product.History.pushState({ variant: variantId }, $('title').html(), location.pathname + '?variant=' + variantId);
     };
     this.init = function() {
         $(document).on('change', '#variant', function() {
