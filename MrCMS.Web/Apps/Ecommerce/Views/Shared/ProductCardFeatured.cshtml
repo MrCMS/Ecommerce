@@ -3,10 +3,7 @@
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
 <div class="span3">
     <div style="overflow: hidden;">
-        @if (Model.Images.Any())
-        {
-            <a href="/@Model.LiveUrlSegment">@RenderImage(Model.DisplayImageUrl, new Size(240,140), null, null, new { @class = "img-rounded span12" })</a>
-        }
+        <a href="/@Model.LiveUrlSegment">@RenderImage(Model.DisplayImageUrl, null, null, new { @class = "img-rounded span12" })</a>
     </div>
     <div class="clearfix"></div>
     <h4 class="product-title"><a href="/@Model.LiveUrlSegment">@Model.Name</a></h4>
@@ -23,14 +20,14 @@
         <span>&nbsp;</span>
     }
     @if (!Model.IsMultiVariant && Model.Variants.FirstOrDefault().InStock)
+    {
+        <div class="row-fluid">
+            @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
             {
-                <div class="row-fluid">
-                    @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
-                    {
-                        @Html.Hidden("Id", Model.Variants.FirstOrDefault().Id)
-                        @Html.Hidden("quantity", 1)
-                        <button class="btn btn-info span12" style="margin-left: 0;">Add to basket</button>
-                    }
-                </div>
+                @Html.Hidden("Id", Model.Variants.FirstOrDefault().Id)
+                @Html.Hidden("quantity", 1)
+                <button class="btn btn-info span12" style="margin-left: 0;">Add to basket</button>
             }
+        </div>
+    }
 </div>
