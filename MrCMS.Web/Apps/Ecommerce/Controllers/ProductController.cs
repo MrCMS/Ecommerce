@@ -46,13 +46,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpPost]
         public RedirectResult BackInStock(BackInStockNotificationRequest request)
         {
-            _backInStockNotificationService.SaveRequest(request);
-            TempData["back-in-stock"] = true;
-            if (request.ProductVariant != null && request.ProductVariant.Product != null)
-                return
-                    Redirect(string.Format("~/{0}?variant={1}", request.ProductVariant.Product.LiveUrlSegment,
-                                           request.ProductVariant.Id));
+            if (ModelState.IsValid)
+            {
+                _backInStockNotificationService.SaveRequest(request);
+                TempData["back-in-stock"] = true;
+                if (request.ProductVariant != null && request.ProductVariant.Product != null)
+                    return
+                        Redirect(string.Format("~/{0}?variant={1}", request.ProductVariant.Product.LiveUrlSegment,
+                                               request.ProductVariant.Id));
+            }
             return Redirect(Referrer.ToString());
+        }
+
+        [HttpGet]
+        public PartialViewResult BackInStockForm(ProductVariant variant)
+        {
+            ViewData["back-in-stock"] = TempData["back-in-stock"];
+
+            return PartialView( new BackInStockNotificationRequest {ProductVariant = variant});
         }
     }
 }

@@ -6,7 +6,6 @@
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
     var product = Model.Product;
-    var backInStock = ViewData["back-in-stock"] is bool && (bool)ViewData["back-in-stock"];
     var cart = ViewData["cart"] as CartModel;
     var canBuy = Model.CanBuy(cart, 1);
 }
@@ -57,30 +56,7 @@
             }
             else if (canBuy is OutOfStock)
             {
-            <div class="row-fluid out-of-stock">
-                <p class="red text-center">
-                    Sorry, this item is out of stock.
-                </p>
-                @if (backInStock)
-                {
-                    <p class="padding-left-5 padding-right-5">Thank you, you will be notified when this product is back in stock.</p>
-                }
-                else
-                {
-                    using (Html.BeginForm("BackInStock", "Product", FormMethod.Post))
-                    {
-                    @Html.Hidden("ProductVariant.Id", Model.Id)
-                    <div class="row-fluid">
-                        <div class="span5 padding-left-5">
-                            @Html.TextBox("Email", "", new { placeholder = "Email address", @class = "span12", data_val = "true", data_val_required = "The field Your email is required" })
-                        </div>
-                        <div class="span7 padding-right-5">
-                            <input type="submit" class="btn btn-info span12" value="Email me when back in stock" />
-                        </div>
-                    </div>
-                    }
-                }
-            </div>
+                Html.RenderAction("BackInStockForm", "Product", new { Model } );
             }
             else if (canBuy is CannotOrderQuantity)
             {

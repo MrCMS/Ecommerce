@@ -7,7 +7,7 @@
     </div>
     <div class="clearfix"></div>
     <h4 class="product-title"><a href="/@Model.LiveUrlSegment">@Model.Name</a></h4>
-    <div style="min-height: 130px;">@(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)</div>
+    <div>@(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)</div>
     <div class="product-price">
         @Html.DisplayFor(product => product.DisplayPrice)
     </div>
