@@ -435,6 +435,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\SagePayRedirectController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SetDeliveryDetailsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\WishlistController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CategoryOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CountryOverride.cs" />
@@ -488,6 +489,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationAttributeOption.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Products\WishlistItem.cs" />
     <Compile Include="Apps\Ecommerce\Entities\SessionData.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingMethod.cs" />
@@ -528,6 +530,7 @@
     <Compile Include="Apps\Ecommerce\Metadata\SetDeliveryDetailsMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\UserAccountMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\UserOrderMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\WishlistMetadata.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\DownloadOrderedFileOrderByGuidModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddPriceBreakModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddressComparison.cs" />
@@ -584,6 +587,7 @@
     <Compile Include="Apps\Ecommerce\Pages\ProductSearch.cs" />
     <Compile Include="Apps\Ecommerce\Pages\SetDeliveryDetails.cs" />
     <Compile Include="Apps\Ecommerce\Pages\UserOrder.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\Wishlist.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\CashOnDeliveryPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\IPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaymentSettings.cs" />
@@ -823,6 +827,7 @@
     <Compile Include="Apps\Ecommerce\Widgets\SearchBox.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\SpendXMore.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\UserOrdersList.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\WishlistWidget.cs" />
     <Compile Include="Apps\Galleries\GalleriesApp.cs" />
     <Compile Include="Apps\Core\DbConfiguration\PlainTextWidgetOveride.cs" />
     <Compile Include="Apps\Core\DbConfiguration\TextWidgetOveride.cs" />
@@ -2291,6 +2296,11 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\_ChildCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\BackInStockForm.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Wishlist\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Wishlist\Summary.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\WishlistWidget.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Pages\Wishlist.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\VariantCard.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
