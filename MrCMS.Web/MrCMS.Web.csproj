@@ -2290,6 +2290,7 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\UserOrdersList.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\_ChildCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\BackInStockForm.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />
