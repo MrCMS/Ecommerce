@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
@@ -9,36 +10,36 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     public class ImportProductVariantPriceBreaksService : IImportProductVariantPriceBreaksService
     {
         private readonly ISession _session;
-        private HashSet<PriceBreak> _priceBreaks;
 
         public ImportProductVariantPriceBreaksService(ISession session)
         {
             _session = session;
         }
 
-        public IImportProductVariantPriceBreaksService Initialize()
+        public IEnumerable<PriceBreak> ImportVariantPriceBreaks(ProductVariantImportDataTransferObject dto, ProductVariant productVariant)
         {
-            _priceBreaks = new HashSet<PriceBreak>(_session.QueryOver<PriceBreak>().List());
-            return this;
-        }
 
-        public IEnumerable<PriceBreak> ImportVariantPriceBreaks(ProductVariantImportDataTransferObject item, ProductVariant productVariant)
-        {
-            productVariant.PriceBreaks.Clear();
-            foreach (var priceBreakItem in item.PriceBreaks)
+            var priceBreaksToAdd = dto.PriceBreaks.Where(s => !productVariant.PriceBreaks.Select(@break => @break.Quantity).Contains(s.Key)).ToList();
+            var priceBreaksToRemove = productVariant.PriceBreaks.Where(@break => !dto.PriceBreaks.Keys.Contains(@break.Quantity)).ToList();
+            var priceBreaksToUpdate = productVariant.PriceBreaks.Where(@break => !priceBreaksToRemove.Contains(@break)).ToList();
+            foreach (var item in priceBreaksToAdd)
             {
-                var priceBreak = _priceBreaks.SingleOrDefault(x => x.Quantity == priceBreakItem.Key && x.ProductVariant.Id == productVariant.Id);
-                if (priceBreak == null)
-                {
-                    priceBreak = new PriceBreak
-                        {
-                            Price = priceBreakItem.Value,
-                            Quantity = priceBreakItem.Key,
-                            ProductVariant = productVariant
-                        };
-                    productVariant.PriceBreaks.Add(priceBreak);
-                }
+                var priceBreak = new PriceBreak
+                                     {
+                                         Quantity = item.Key,
+                                         Price = item.Value,
+                                         ProductVariant = productVariant
+                                     };
+                productVariant.PriceBreaks.Add(priceBreak);
             }
+
+            foreach (var priceBreak in priceBreaksToRemove)
+            {
+                productVariant.PriceBreaks.Remove(priceBreak);
+                _session.Delete(priceBreak);
+            }
+            foreach (var priceBreak in priceBreaksToUpdate)
+                priceBreak.Price = dto.PriceBreaks[priceBreak.Quantity];
             return productVariant.PriceBreaks;
         }
     }

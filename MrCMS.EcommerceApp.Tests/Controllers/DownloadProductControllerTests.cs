@@ -34,14 +34,19 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
         }
 
         [Fact]
-        public void ReturnsAnEmptyResult()
+        public void ReturnsTheResultOfServiceCall()
         {
             var order = new Order();
             var orderLine = new OrderLine();
+            var stubFileStreamResult = new StubFileStreamResult();
+            A.CallTo(
+                () =>
+                _downloadProductService.WriteDownloadToResponse(_downloadOrderedFileController.Response, order,
+                                                                orderLine)).Returns(stubFileStreamResult);
 
             var actionResult = _downloadOrderedFileController.Download(order, orderLine);
 
-            actionResult.Should().BeOfType<EmptyResult>();
+            actionResult.Should().Be(stubFileStreamResult);
         }
     }
 
