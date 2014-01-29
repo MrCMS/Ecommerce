@@ -1,6 +1,8 @@
 ﻿@using System.Drawing
+@using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
+@{ var cart = ViewData["cart"] as CartModel;}
 <div class="span3">
     <div style="overflow: hidden;">
         <a href="/@Model.LiveUrlSegment">@RenderImage(Model.DisplayImageUrl, null, null, new { @class = "img-rounded span12" })</a>
@@ -19,15 +21,13 @@
     {
         <span>&nbsp;</span>
     }
-    @if (!Model.IsMultiVariant && Model.Variants.FirstOrDefault().InStock)
+    @if (Model.Variants.Count == 1 && Model.Variants.Any(variant => variant.CanBuy(cart, 1).OK))
     {
-        <div class="row-fluid">
-            @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
-            {
-                @Html.Hidden("Id", Model.Variants.FirstOrDefault().Id)
-                @Html.Hidden("quantity", 1)
-                <button class="btn btn-info span12" style="margin-left: 0;">Add to basket</button>
-            }
-        </div>
+        using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+        {
+        @Html.Hidden("ProductVariant.Id", Model.Variants.First(variant => variant.CanBuy(cart, 1).OK).Id)
+        @Html.Hidden("quantity", 1)
+        <button class="btn btn-info span12">Add to basket</button>
+        }
     }
 </div>
