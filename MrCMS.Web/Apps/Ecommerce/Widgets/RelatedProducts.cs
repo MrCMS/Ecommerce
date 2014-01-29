@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Entities.Widget;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website;
 
@@ -29,6 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
                 
             }
             model.Products = products.Distinct().ToList();
+            model.Cart = MrCMSApplication.Get<CartModel>();
             return model;
         }
     }
@@ -36,5 +38,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
     {
         public IList<Product> Products { get; set; }
         public string Title { get; set; }
+        public CartModel Cart { get; set; }
     }
 }
