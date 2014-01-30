@@ -3,7 +3,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.Metadata
 {
-    public class WishlistMetadata : DocumentMetadataMap<Wishlist>
+    public class ShowWishlistMetadata : DocumentMetadataMap<ShowWishlist>
     {
         public override string WebGetController
         {

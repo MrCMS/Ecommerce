@@ -33,9 +33,6 @@ var AddToWishlist = function (el, options) {
         event.preventDefault();
         var form = $(event.target);
         $.post(form.attr('action'), refreshUI);
-        if (form.data('wishlist-action') == 'remove') {
-            $('[data-wishlist-item=' + id + ']').remove();
-        }
     };
     var refreshUI = function (success) {
         if (success) {

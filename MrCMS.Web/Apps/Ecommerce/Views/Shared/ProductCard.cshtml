@@ -1,7 +1,8 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
-@{ var cart = ViewData["cart"] as CartModel;
+@{ 
+    var cart = ViewData["cart"] as CartModel;
     var buyableVariant = Model.Variants.Count == 1 ? Model.Variants.FirstOrDefault(variant => variant.CanBuy(cart, 1).OK) : null;
 }
 @if (Model.Variants.Any())

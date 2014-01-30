@@ -8,8 +8,6 @@
         <li><a href="@page.Url">@page.Text</a></li>    
     }
     <li>
-        <a href="@(UniquePageHelper.GetUrl<Wishlist>())">
-            @{Html.RenderAction("Summary", "Wishlist");}
-        </a>
+        @{Html.RenderAction("Summary", "Wishlist");}
     </li>
 </ul>
