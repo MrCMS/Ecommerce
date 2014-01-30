@@ -2,7 +2,7 @@
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
-    public class Wishlist : Webpage, IUniquePage
+    public class ShowWishlist : Webpage, IUniquePage
     {
 
     }

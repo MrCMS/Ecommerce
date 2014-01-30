@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
-using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.Wishlists;
 using MrCMS.Website.Controllers;
-using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
@@ -21,11 +20,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _cartModel = cartModel;
         }
 
-        public ViewResult Show(Wishlist page)
+        public ActionResult Show(ShowWishlist page, string id)
         {
-            ViewData["wishlist"] = _wishlistUIService.GetWishlist();
+            var wishlist = _wishlistUIService.GetWishlist(id);
+            if (wishlist == null)
+                return Redirect("~");
+            ViewData["wishlist"] = wishlist;
+            ViewData["my-wishlist"] = string.IsNullOrWhiteSpace(id);
             ViewData["cart"] = _cartModel;
-           return View(page);
+            return View(page);
         }
 
         public PartialViewResult Add(ProductVariant productVariant)
@@ -53,74 +56,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public PartialViewResult Summary()
         {
             return PartialView(_wishlistUIService.GetSummary());
-        }
-    }
-
-    public interface IWishlistUIService
-    {
-        void Add(ProductVariant productVariant);
-        WishlistSummary GetSummary();
-        bool IsInWishlist(ProductVariant productVariant);
-        void Remove(ProductVariant productVariant);
-        IList<WishlistItem> GetWishlist();
-    }
-
-    public class WishlistSummary
-    {
-        public int Count { get; set; }
-    }
-
-    public class WishlistUIService : IWishlistUIService
-    {
-        private readonly IGetUserGuid _getUserGuid;
-        private readonly ISession _session;
-
-        public WishlistUIService(IGetUserGuid getUserGuid, ISession session)
-        {
-            _getUserGuid = getUserGuid;
-            _session = session;
-        }
-
-        public void Add(ProductVariant productVariant)
-        {
-            if (!IsInWishlist(productVariant))
-            {
-                _session.Transact(session => session.Save(new WishlistItem
-                                                              {
-                                                                  Item = productVariant,
-                                                                  UserGuid = _getUserGuid.UserGuid
-                                                              }));
-            }
-        }
-
-        public WishlistSummary GetSummary()
-        {
-            return new WishlistSummary
-                       {
-                           Count = GetCurrentUsersItemsQuery().RowCount()
-                       };
-        }
-
-        public bool IsInWishlist(ProductVariant productVariant)
-        {
-            return GetCurrentUsersItemsQuery().Where(item => item.Item == productVariant).Any();
-        }
-
-        public void Remove(ProductVariant productVariant)
-        {
-            var wishlistItem = GetCurrentUsersItemsQuery().Where(item => item.Item == productVariant).SingleOrDefault();
-            if (wishlistItem != null)
-                _session.Transact(session => session.Delete(wishlistItem));
-        }
-
-        public IList<WishlistItem> GetWishlist()
-        {
-            return GetCurrentUsersItemsQuery().List();
-        }
-
-        private IQueryOver<WishlistItem, WishlistItem> GetCurrentUsersItemsQuery()
-        {
-            return _session.QueryOver<WishlistItem>().Where(item => item.UserGuid == _getUserGuid.UserGuid);
         }
     }
 }
