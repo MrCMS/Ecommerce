@@ -42,7 +42,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         {
             foreach (var item in dataTransferObject.ProductVariants)
             {
-                var productVariant = _allVariants.SingleOrDefault(x => x.SKU == item.SKU) ?? new ProductVariant();
+                ProductVariant productVariant;
+                if (_allVariants.SingleOrDefault(x => x.SKU == item.SKU) != null)
+                    productVariant = _allVariants.SingleOrDefault(x => x.SKU == item.SKU);
+                else
+                {
+                    productVariant = new ProductVariant();
+                    _allVariants.Add(productVariant);
+                }
 
                 productVariant.Name = item.Name;
                 productVariant.SKU = item.SKU;
@@ -109,6 +116,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 //Specifications
                 //_importProductOptionsService.ImportVariantSpecifications(item, product, productVariant);
+                _session.SaveOrUpdate(productVariant);
+            }
+            var variantsToRemove =
+                product.Variants.Where(
+                    variant => !dataTransferObject.ProductVariants.Select(o => o.SKU).Contains(variant.SKU)).ToList();
+            foreach (var variant in variantsToRemove)
+            {
+                _allVariants.Remove(variant);
+                product.Variants.Remove(variant);
+                _session.Delete(variant);
             }
 
             return dataTransferObject.ProductVariants.Any() ? product.Variants : null;
