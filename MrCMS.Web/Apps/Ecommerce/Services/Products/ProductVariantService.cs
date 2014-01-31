@@ -97,13 +97,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 Quantity = model.Quantity,
                 Price = model.Price
             };
-
-            _session.Transact(session =>
-            {
-                session.SaveOrUpdate(priceBreak);
-                session.SaveOrUpdate(productVariant);
-            });
-
+            productVariant.PriceBreaks.Add(priceBreak);
+            _session.Transact(session => session.SaveOrUpdate(priceBreak));
             return priceBreak;
         }
 
