@@ -7,7 +7,7 @@
 @using (Html.BeginForm("SortVariants", "Product", FormMethod.Post))
 {
     <fieldset>
-        <legend>Sort Product Specification Atrribute Options
+        <legend>Sort Variants
             <span class="btn-group  display-inline  pull-right">
                 <button class="btn btn-primary" id="submit">
                     Save & Close</button>
@@ -23,7 +23,7 @@
                     @Html.Hidden(string.Format("[{0}].Id", i), sortItems[i].Id)
                     @Html.Hidden(string.Format("[{0}].Order", i), sortItems[i].Order)
                     <i class="icon-resize-full"></i>&nbsp;&nbsp;
-                        @sortItems[i].Name
+                       @sortItems[i].Name
                 </li>
                 }
             }
