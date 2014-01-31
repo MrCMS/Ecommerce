@@ -25,7 +25,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectResult Add(AddPriceBreakModel model)
         {
             var priceBreak = _productVariantService.AddPriceBreak(model);
-
             return Redirect(priceBreak.ProductVariant.EditUrl);
         }
 
