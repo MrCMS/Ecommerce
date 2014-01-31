@@ -27,7 +27,9 @@
         {
         @Html.Hidden("ProductVariant.Id", Model.Variants.First(variant => variant.CanBuy(cart, 1).OK).Id)
         @Html.Hidden("quantity", 1)
-        <button class="btn btn-info span12">Add to basket</button>
+            <div class="row-fluid">
+                <button class="btn btn-info span12">Add to basket</button>
+            </div>
         }
     }
 </div>
