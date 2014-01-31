@@ -185,6 +185,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public void DeleteSpecificationValue(ProductSpecificationValue specification)
         {
+            specification.Product.SpecificationValues.Remove(specification);
             _session.Transact(session => session.Delete(specification));
         }
 
