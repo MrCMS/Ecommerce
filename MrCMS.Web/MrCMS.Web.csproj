@@ -2440,6 +2440,7 @@
     <Content Include="Areas\Admin\Views\MessageQueue\Show.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_LayoutWithoutWebTree.cshtml" />
     <Content Include="Areas\Admin\Views\Webpage\RevertToVersion.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\EditorTemplates\Currency.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <None Include="Themes\Default\Views\Web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
