@@ -8,6 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
     {
         [Remote("IsUniqueName", "Brand", AdditionalFields = "Id")]
         [StringLength(255)]
+        [Required]
         public virtual string Name { get; set; }
         public virtual string Logo { get; set; }
     }
