@@ -62,6 +62,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult Edit(ProductVariant productVariant)
         {
+            ModelState.Clear();
             ViewData["shipping-methods"] = _shippingMethodManager.GetAll();
             ViewData["tax-rate-options"] = _taxRateManager.GetOptions(productVariant.TaxRate);
             ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();

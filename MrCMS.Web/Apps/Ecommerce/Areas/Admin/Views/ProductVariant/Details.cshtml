@@ -21,12 +21,12 @@
     <div class="row-fluid">
         <div class="span6">
             @Html.LabelFor(variant => variant.BasePrice)
-            @Html.TextBoxFor(variant => variant.BasePrice, new { @class = "span12" })
+            @Html.EditorFor(variant => variant.BasePrice)
             @Html.ValidationMessageFor(variant => variant.BasePrice)
         </div>
         <div class="span6">
             @Html.LabelFor(variant => variant.PreviousPrice)
-            @Html.TextBoxFor(variant => variant.PreviousPrice, new { @class = "span12" })
+            @Html.EditorFor(variant => variant.PreviousPrice)
             @Html.ValidationMessageFor(variant => variant.PreviousPrice)
         </div>
     </div>

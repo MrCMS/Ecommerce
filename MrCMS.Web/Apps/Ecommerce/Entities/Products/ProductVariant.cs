@@ -37,10 +37,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [Required]
         [DisplayName("Price")]
         [CurrencyValidator]
+        [UIHint("Currency")]
         public virtual decimal BasePrice { get; set; }
 
         [DisplayName("Previous Price")]
         [CurrencyValidator]
+        [UIHint("Currency")]
         public virtual decimal? PreviousPrice { get; set; }
 
         public virtual decimal? PreviousPriceIncludingTax
