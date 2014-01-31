@@ -17,7 +17,7 @@
             @Html.CheckBox("Published", Model.Product.Published, new {disabled = "disabled"})
         </div>
         <div class="span2">
-        @Html.TextBox("StockRemaining", Model.StockRemaining.GetValueOrDefault(), new {@class = "input-mini"})
+        @Html.TextBox("StockRemaining", Model.StockRemaining, new {@class = "input-mini"})
             </div>
         <div class="span2">
             <button type="submit" class="btn update-stock">
