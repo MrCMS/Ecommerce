@@ -37,16 +37,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateStock(ProductVariant productVariant, int threshold=10)
+        public JsonResult UpdateStock(ProductVariant productVariant)
         {
-            if (productVariant != null)
-            {
-                var pv = _productVariantService.Get(productVariant.Id);
-                pv.StockRemaining = productVariant.StockRemaining;
-                _productVariantService.Update(productVariant);
-                return Json(true);
-            }
-            return Json(false);
+            _productVariantService.Update(productVariant);
+            return Json(true);
         }
 
         [HttpGet]
