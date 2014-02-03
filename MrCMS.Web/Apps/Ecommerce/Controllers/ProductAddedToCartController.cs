@@ -16,11 +16,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly CartModel _cartModel;
         private readonly IDocumentService _documentService;
+        private readonly CartModel _cart;
 
-        public ProductAddedToCartController(CartModel cartModel, IDocumentService documentService )
+        public ProductAddedToCartController(CartModel cartModel, IDocumentService documentService, CartModel cart)
         {
             _cartModel = cartModel;
             _documentService = documentService;
+            _cart = cart;
         }
 
         public ActionResult Show(ProductAddedToCart page, ProductVariant productVariant, int quantity = 1)
@@ -44,7 +46,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public PartialViewResult RelatedProducts(ProductVariant productVariant)
         {
-            var model = new RelatedProductsViewModel {Title = "Related products", Products = new List<Product>()};
+            var model = new RelatedProductsViewModel
+                {
+                    Title = "Related products",
+                    Products = new List<Product>(),
+                    Cart = _cart
+                };
             var products = new List<Product>();
             if (productVariant.Product.Categories.Any())
                 products.AddRange(productVariant.Product.Categories.First().Products.Where(x => x.Id != productVariant.Product.Id && x.Published).Take(4));

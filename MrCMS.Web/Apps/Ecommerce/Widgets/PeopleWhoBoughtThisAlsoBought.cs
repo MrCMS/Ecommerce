@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MrCMS.Entities.Widget;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Analytics.Products;
 using MrCMS.Website;
@@ -19,6 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
                 model.Title = "People Who Bought '" + product.Name + "' Also Bought";
                 model.Products = MrCMSApplication.Get<IProductAnalyticsService>().GetListOfProductsWhoWhereAlsoBought(product);
             }
+            model.Cart = MrCMSApplication.Get<CartModel>();
             return model;
         }
     }
@@ -26,5 +28,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
     {
         public IList<Product> Products { get; set; }
         public string Title { get; set; }
+        public CartModel Cart { get; set; }
     }
 }
