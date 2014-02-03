@@ -13,6 +13,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Discounts
         void Delete(Discount discount);
         DiscountApplication GetApplication(Discount discount, string applicationType);
         DiscountLimitation GetLimitation(Discount discount, string limitationType);
-        bool IsUniqueCode(string code);
+        bool IsUniqueCode(string code, int? id = null);
     }
 }
