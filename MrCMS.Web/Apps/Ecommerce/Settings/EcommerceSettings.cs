@@ -21,10 +21,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         [DisplayName("Product Image not specified replacement image")]
         public string DefaultNoProductImage { get; set; }
 
-        [DisplayName("Report Logo Image")]
+        [DisplayName("PDF Invoice Logo Image")]
         public string ReportLogoImage { get; set; }
 
-        [DisplayName("Report Footer Text")]
+        [DisplayName("PDF Invoice Footer Text")]
         public string ReportFooterText { get; set; }
 
         public IEnumerable<int> ProductPerPageOptions
