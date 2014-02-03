@@ -26,25 +26,24 @@
                 @Html.LabelFor(x => x.PreviousPriceText)
                 @Html.TextBoxFor(x => x.PreviousPriceText, new {@class = "span12"})
                 @Html.ValidationMessageFor(x => x.PreviousPriceText)
-                
-                @Html.LabelFor(x => x.ReportFooterText)
-                @Html.TextAreaFor(x => x.ReportFooterText, new {@class = "span12",style="height:90px"})
-                @Html.ValidationMessageFor(x => x.ReportFooterText)        
-                
-               
             </div>
             <div class="span6">
-                
                 @Html.LabelFor(x => x.DefaultNoProductImage)
                 @Html.TextBoxFor(x => x.DefaultNoProductImage, new {@class = "media-selector"})
                 @Html.ValidationMessageFor(x => x.DefaultNoProductImage)
-
+            </div>
+        </div>
+        
+        <div class="row-fluid">
+            <div class="span12">
                 @Html.LabelFor(x => x.ReportLogoImage)
                 @Html.TextBoxFor(x => x.ReportLogoImage, new {@class = "media-selector"})
                 @Html.ValidationMessageFor(x => x.ReportLogoImage)
-                     
+                
+                @Html.LabelFor(x => x.ReportFooterText)
+                @Html.TextAreaFor(x => x.ReportFooterText, new {@class = "span12",style="height:90px"})
+                @Html.ValidationMessageFor(x => x.ReportFooterText)  
             </div>
         </div>
-       
     </fieldset>
 }
