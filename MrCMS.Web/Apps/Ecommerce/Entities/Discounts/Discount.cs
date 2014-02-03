@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
         public virtual string Name { get; set; }
         [Required]
         [StringLength(30, ErrorMessage = "Minimum length for code is {2} characters.", MinimumLength = 3)]
-        [Remote("IsUniqueCode", "Discount")]
+        [Remote("IsUniqueCode", "Discount", AdditionalFields = "Id")]
         public virtual string Code { get; set; }
         public virtual IList<Order> Orders { get; set; }
 

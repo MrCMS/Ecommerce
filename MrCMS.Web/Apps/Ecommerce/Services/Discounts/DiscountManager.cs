@@ -139,8 +139,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Discounts
                        : Activator.CreateInstance(limitation) as DiscountLimitation;
         }
 
-        public bool IsUniqueCode(string code)
+        public bool IsUniqueCode(string code, int? id = null)
         {
+            if (id.HasValue)
+            {
+                return _session.QueryOver<Discount>().Where(d => d.Code == code && d.Id != id.Value).RowCount() == 0;
+            }
             return _session.QueryOver<Discount>().Where(d => d.Code == code).RowCount() == 0;
         }
     }

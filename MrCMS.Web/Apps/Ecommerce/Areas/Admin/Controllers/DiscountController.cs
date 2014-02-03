@@ -67,9 +67,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public JsonResult IsUniqueCode(string code)
+        public JsonResult IsUniqueCode(string code, int? id)
         {
-            if (_discountManager.IsUniqueCode(code))
+            if (_discountManager.IsUniqueCode(code, id))
                 return Json(true, JsonRequestBehavior.AllowGet);
 
             return Json("Code already in use.", JsonRequestBehavior.AllowGet);
