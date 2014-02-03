@@ -105,6 +105,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 _allDocuments.OfType<Product>()
                              .SingleOrDefault(x => x.UrlSegment == dataTransferObject.UrlSegment) ??
                              new Product();
+            var isNew = false;
+            var productGallery = product.Gallery ?? new MediaCategory();
+            if (product.Id == 0)
+            {
+                isNew = true;
+                product.DisplayOrder = _allDocuments.Count(webpage => webpage.Parent == _uniquePage);
+                productGallery.Name = product.Name;
+                productGallery.UrlSegment = "product-galleries/" + product.UrlSegment;
+                productGallery.IsGallery = true;
+                productGallery.Parent = _productGalleriesCategory;
+                productGallery.HideInAdminNav = true;
+                product.Gallery = productGallery;
+            }
 
             product.Parent = _uniquePage;
             product.UrlSegment = dataTransferObject.UrlSegment;
@@ -198,19 +211,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             ////Variants
             _importProductVariantsService.ImportVariants(dataTransferObject, product);
 
-            if (product.Id == 0)
+            if (isNew)
             {
-                product.DisplayOrder = _allDocuments.Count(webpage => webpage.Parent == _uniquePage);
-                var productGallery = new MediaCategory
-                {
-                    Name = product.Name,
-                    UrlSegment = "product-galleries/" + product.UrlSegment,
-                    IsGallery = true,
-                    Parent = _productGalleriesCategory,
-                    HideInAdminNav = true
-                };
-                product.Gallery = productGallery;
-
                 _allDocuments.Add(product);
                 _allDocuments.Add(productGallery);
             }
