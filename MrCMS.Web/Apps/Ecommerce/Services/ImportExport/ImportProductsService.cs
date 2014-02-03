@@ -105,6 +105,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 _allDocuments.OfType<Product>()
                              .SingleOrDefault(x => x.UrlSegment == dataTransferObject.UrlSegment) ??
                              new Product();
+            
+            
+
+            product.Parent = _uniquePage;
+            product.UrlSegment = dataTransferObject.UrlSegment;
+            product.Name = dataTransferObject.Name;
+            product.BodyContent = dataTransferObject.Description;
+            product.MetaTitle = dataTransferObject.SEOTitle;
+            product.MetaDescription = dataTransferObject.SEODescription;
+            product.MetaKeywords = dataTransferObject.SEOKeywords;
+            product.Abstract = dataTransferObject.Abstract;
+            product.PublishOn = dataTransferObject.PublishDate;
+
             var isNew = false;
             var productGallery = product.Gallery ?? new MediaCategory();
             if (product.Id == 0)
@@ -118,16 +131,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 productGallery.HideInAdminNav = true;
                 product.Gallery = productGallery;
             }
-
-            product.Parent = _uniquePage;
-            product.UrlSegment = dataTransferObject.UrlSegment;
-            product.Name = dataTransferObject.Name;
-            product.BodyContent = dataTransferObject.Description;
-            product.MetaTitle = dataTransferObject.SEOTitle;
-            product.MetaDescription = dataTransferObject.SEODescription;
-            product.MetaKeywords = dataTransferObject.SEOKeywords;
-            product.Abstract = dataTransferObject.Abstract;
-            product.PublishOn = dataTransferObject.PublishDate;
 
             //Brand
             if (!String.IsNullOrWhiteSpace(dataTransferObject.Brand))
