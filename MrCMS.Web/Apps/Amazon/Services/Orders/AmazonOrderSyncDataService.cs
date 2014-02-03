@@ -28,7 +28,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
 
         public IList<AmazonOrderSyncData> GetByAmazonOrderId(string id)
         {
-            return _session.QueryOver<AmazonOrderSyncData>().Where(item => item.OrderId == id).Cacheable().List();
+            return _session.QueryOver<AmazonOrderSyncData>().Where(item => item.OrderId == id).List();
         }
 
         public IList<AmazonOrderSyncData> GetAllByOperationType(SyncAmazonOrderOperation operation, int pagesize = 25)
@@ -59,7 +59,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
                     item.AmazonOrder = session.Get<AmazonOrder>(item.AmazonOrder.Id);
                     item.Site = session.Get<Site>(item.AmazonOrder.Site.Id);
                 }
-                session.Save(item);
+                //sanity check there are no orders already in the table as we were getting duplicates
+                var itemInTable =
+                    session.QueryOver<AmazonOrderSyncData>()
+                           .Where(x => x.OrderId == item.OrderId && x.Operation == SyncAmazonOrderOperation.Add)
+                           .RowCount();
+
+                if (itemInTable == 0)
+                    session.Save(item);
             });
             _amazonLogService.Add(AmazonLogType.OrdersSyncData, AmazonLogStatus.Insert,
                                 null, null, null, null, null, null, null, "Amazon Order #" + item.OrderId);

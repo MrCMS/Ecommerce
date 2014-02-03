@@ -57,9 +57,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                             {
                                 OrderId = order.AmazonOrderId,
                                 Operation = (amazonOrder == null
-                                            ? (amazonOrderData.Any(x=>x.Operation==SyncAmazonOrderOperation.Add)
-                                            ? SyncAmazonOrderOperation.Update:SyncAmazonOrderOperation.Add)
-                                            : SyncAmazonOrderOperation.Update),
+                                            ? (amazonOrderData.Any(x=>x.Operation==SyncAmazonOrderOperation.Add) ? SyncAmazonOrderOperation.Update : SyncAmazonOrderOperation.Add) : SyncAmazonOrderOperation.Update),
                                 Status = SyncAmazonOrderStatus.Pending,
                                 Data = AmazonAppHelper.SerializeToJson(order),
                                 Site = CurrentRequestData.CurrentSite
