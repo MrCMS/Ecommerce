@@ -1,6 +1,7 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.RelatedProductsViewModel
 @if (Model != null && Model.Products.Any())
 {
+    ViewData["cart"] = Model.Cart;
     <hr/>
     <div class="row-fluid">
         <div class="span12">
