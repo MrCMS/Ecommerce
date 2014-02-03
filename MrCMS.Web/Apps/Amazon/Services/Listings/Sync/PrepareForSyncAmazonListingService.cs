@@ -4,6 +4,7 @@ using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
@@ -19,10 +20,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
         private readonly IProductVariantService _productVariantService;
 
         public PrepareForSyncAmazonListingService(
-            IAmazonListingService amazonListingService,
-            IAmazonListingGroupService amazonListingGroupService,
+            IAmazonListingService amazonListingService, 
+            IAmazonListingGroupService amazonListingGroupService, 
             EcommerceSettings ecommerceSettings,
-            AmazonSellerSettings amazonSellerSettings,
+            AmazonSellerSettings amazonSellerSettings, 
             IProductVariantService productVariantService)
         {
             _amazonListingService = amazonListingService;
@@ -47,10 +48,12 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             amazonListing.ProductVariant = productVariant;
             amazonListing.Brand = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.Condition = ConditionType.New;
-            amazonListing.Currency = (_ecommerceSettings.Currency != null && !String.IsNullOrWhiteSpace(_ecommerceSettings.Currency.Code)) ? _ecommerceSettings.Currency.Code : CurrencyCode.GBP.GetDescription();
+            amazonListing.Currency = (_ecommerceSettings.Currency!=null && !String.IsNullOrWhiteSpace(_ecommerceSettings.Currency.Code))?_ecommerceSettings.Currency.Code:CurrencyCode.GBP.GetDescription();
             amazonListing.Manafacturer = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.MfrPartNumber = productVariant.ManufacturerPartNumber;
-            amazonListing.Quantity = productVariant.StockRemaining;
+            amazonListing.Quantity = productVariant.TrackingPolicy == TrackingPolicy.Track
+                                          ? productVariant.StockRemaining
+                                          : 1000;
             amazonListing.Price = productVariant.Price;
             amazonListing.SellerSKU = productVariant.SKU;
             amazonListing.Title = productVariant.DisplayName;
@@ -100,7 +103,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             amazonListing.Currency = (_ecommerceSettings.Currency != null && !String.IsNullOrWhiteSpace(_ecommerceSettings.Currency.Code)) ? _ecommerceSettings.Currency.Code : CurrencyCode.GBP.GetDescription();
             amazonListing.Manafacturer = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.MfrPartNumber = productVariant.ManufacturerPartNumber;
-            amazonListing.Quantity = productVariant.StockRemaining;
+            amazonListing.Quantity = productVariant.TrackingPolicy == TrackingPolicy.Track
+                                          ? productVariant.StockRemaining
+                                          : 1000;
             amazonListing.Price = productVariant.Price;
             amazonListing.SellerSKU = productVariant.SKU;
             amazonListing.Title = productVariant.DisplayName;
