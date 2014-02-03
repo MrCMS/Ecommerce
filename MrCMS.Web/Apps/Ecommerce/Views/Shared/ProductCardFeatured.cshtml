@@ -26,7 +26,7 @@
     }
     @if (buyableVariant != null)
     {
-        using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+        using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post,new { @class = "margin-bottom-5" }))
         {
         <div class="row-fluid">
             <button class="btn btn-info span12">Add to basket</button>
