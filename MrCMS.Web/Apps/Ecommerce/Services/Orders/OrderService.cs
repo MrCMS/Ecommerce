@@ -86,7 +86,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                 orderLine.IsDownloadable = true;
                                                                 orderLine.AllowedNumberOfDownloads = item.AllowedNumberOfDownloads;
                                                                 orderLine.DownloadExpiresOn =
-                                                                    item.AllowedNumberOfDaysForDownload.HasValue
+                                                                    (item.AllowedNumberOfDaysForDownload.HasValue && item.AllowedNumberOfDaysForDownload > 0)
                                                                         ? CurrentRequestData.Now.AddDays(
                                                                             item.AllowedNumberOfDaysForDownload
                                                                                 .GetValueOrDefault())
