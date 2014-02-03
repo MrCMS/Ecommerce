@@ -2,7 +2,10 @@
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
-@{ var cart = ViewData["cart"] as CartModel;}
+@{ 
+    var cart = ViewData["cart"] as CartModel;
+    var buyableVariant = Model.Variants.Count == 1 ? Model.Variants.FirstOrDefault(variant => variant.CanBuy(cart, 1).OK) : null;
+}
 <div class="span3">
     <div style="overflow: hidden;">
         <a href="/@Model.LiveUrlSegment">@RenderImage(Model.DisplayImageUrl, null, null, new { @class = "img-rounded span12" })</a>
@@ -21,15 +24,16 @@
     {
         <span>&nbsp;</span>
     }
-    @if (Model.Variants.Count == 1 && Model.Variants.Any(variant => variant.CanBuy(cart, 1).OK))
+    @if (buyableVariant != null)
     {
         using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
         {
-        @Html.Hidden("ProductVariant.Id", Model.Variants.First(variant => variant.CanBuy(cart, 1).OK).Id)
+        <div class="row-fluid">
+            <button class="btn btn-info span12">Add to basket</button>
+        </div>
+        @Html.Hidden("ProductVariant.Id", buyableVariant.Id)
         @Html.Hidden("quantity", 1)
-            <div class="row-fluid">
-                <button class="btn btn-info span12">Add to basket</button>
-            </div>
         }
+        Html.RenderAction("Add", "Wishlist", new { id = buyableVariant.Id });
     }
 </div>
