@@ -64,7 +64,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             var model = new PeopleWhoBoughtThisAlsoBoughtViewModel
                 {
                     Title = "Customers also bought",
-                    Products = new List<Product>()
+                    Products = new List<Product>(),
+                    Cart = _cart
                 };
             model.Products =
                 MrCMSApplication.Get<IProductAnalyticsService>()
