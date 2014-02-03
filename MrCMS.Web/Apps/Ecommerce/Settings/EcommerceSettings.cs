@@ -27,6 +27,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         [DisplayName("PDF Invoice Footer Text")]
         public string ReportFooterText { get; set; }
 
+        [DisplayName("Enable Wish Lists")]
+        public bool EnableWishlists { get; set; }
+
         public IEnumerable<int> ProductPerPageOptions
         {
             get

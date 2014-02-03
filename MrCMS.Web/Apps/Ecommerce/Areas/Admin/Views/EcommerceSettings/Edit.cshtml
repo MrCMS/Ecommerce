@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Settings.EcommerceSettings
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Settings.EcommerceSettings
 @{
     ViewBag.Title = "Edit Ecommerce Settings";
 }
@@ -26,6 +27,10 @@
                 @Html.LabelFor(x => x.PreviousPriceText)
                 @Html.TextBoxFor(x => x.PreviousPriceText, new {@class = "span12"})
                 @Html.ValidationMessageFor(x => x.PreviousPriceText)
+                
+                @Html.InlineCheckboxFor(x=>x.EnableWishlists, null, null,  "Enable wishlists")
+                
+                @Html.InfoBlock("Heads up!", " You will also need to add the 'Show wishlist' page in order to fully enable wishlists.")
             </div>
             <div class="span6">
                 @Html.LabelFor(x => x.DefaultNoProductImage)

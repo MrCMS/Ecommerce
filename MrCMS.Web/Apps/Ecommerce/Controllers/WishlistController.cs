@@ -5,6 +5,8 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Wishlists;
+using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
@@ -22,18 +24,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public ActionResult Show(ShowWishlist page, string id)
         {
+            if (!MrCMSApplication.Get<EcommerceSettings>().EnableWishlists)
+                return Redirect("/");
+
             var wishlist = _wishlistUIService.GetWishlist(id);
             if (wishlist == null)
                 return Redirect("~");
             ViewData["wishlist"] = wishlist;
             ViewData["my-wishlist"] = string.IsNullOrWhiteSpace(id);
             ViewData["cart"] = _cartModel;
+            
             return View(page);
         }
 
         public PartialViewResult Add(ProductVariant productVariant)
         {
             ViewData["in-wishlist"] = _wishlistUIService.IsInWishlist(productVariant);
+            ViewData["wisthlist-enabled"] = MrCMSApplication.Get<EcommerceSettings>().EnableWishlists;
             return PartialView(productVariant);
         }
 
