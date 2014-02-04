@@ -27,6 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             OptionValues = new List<ProductOptionValue>();
             PriceBreaks = new List<PriceBreak>();
             RestrictedShippingMethods = new List<ShippingMethod>();
+            RequiresShipping = true;
         }
 
         public virtual decimal Weight { get; set; }
@@ -282,6 +283,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                            : string.Format("/{0}?variant={1}", Product.LiveUrlSegment, Id); 
             }
         }
+
+        [DisplayName("Requires shipping?")]
+        public virtual bool RequiresShipping { get; set; }
 
         public virtual CanBuyStatus CanBuy(CartModel cart, int additionalQuantity = 0)
         {
