@@ -47,7 +47,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
                                                 .WithUpperBound(upperBound.ToDecimal())
                                                 .WithShippingCriteria(ShippingCriteria.ByCartTotal)
                                                 .Build();
-            var cartModel = new CartModelBuilder().WithTotalPreShipping(total.ToDecimal()).Build();
+            var cartModel = new CartModelBuilder().WithShippableCalculationTotal(total.ToDecimal()).Build();
 
             shippingCalculation.CanBeUsed(cartModel).Should().Be(result);
         }

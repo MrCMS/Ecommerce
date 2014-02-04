@@ -29,6 +29,8 @@
                         </th>
                         <th>Weight
                         </th>
+                        <th>Requires shipping?
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -66,41 +68,43 @@
                             <td>
                                 @item.Weight.ToString("n2")
                             </td>
+                            <td>
+                                @item.RequiresShipping
+                            </td>
                         </tr>
-                        
                                 if (item.IsDownloadable)
                                 {
-                                    <tr>
-                                        <td></td>
-                                        <td colspan="7">
-                                            <div class="row-fluid">
-                                                <div class="span12">
-                                                    <h5 class="margin-bottom-5">This product is downloadable</h5>
-                                                    <table class="table table-condensed margin-bottom-5">
-                                                        <tr>
-                                                            <td>Number of downloads</td>
-                                                            <td>@item.NumberOfDownloads</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Allowed of downloads</td>
-                                                            <td>@item.AllowedNumberOfDownloads</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Expires</td>
-                                                            <td>@item.DownloadExpiresOn</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Link</td>
-                                                            <td>@item.DownloadMaskedLink</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="2">@Html.ActionLink("Edit", "Edit", "OrderLine", new { id = item.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })</td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>  
+                        <tr>
+                            <td></td>
+                            <td colspan="7">
+                                <div class="row-fluid">
+                                    <div class="span12">
+                                        <h5 class="margin-bottom-5">This product is downloadable</h5>
+                                        <table class="table table-condensed margin-bottom-5">
+                                            <tr>
+                                                <td>Number of downloads</td>
+                                                <td>@item.NumberOfDownloads</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Allowed of downloads</td>
+                                                <td>@item.AllowedNumberOfDownloads</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Expires</td>
+                                                <td>@item.DownloadExpiresOn</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Link</td>
+                                                <td>@item.DownloadMaskedLink</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">@Html.ActionLink("Edit", "Edit", "OrderLine", new { id = item.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>  
                                 }
                     }
                 </tbody>
