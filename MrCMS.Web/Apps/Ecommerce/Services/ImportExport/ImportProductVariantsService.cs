@@ -99,8 +99,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 foreach (var value in optionsToRemove)
                 {
                     var productOption = value.ProductOption;
-                    productVariant.OptionValues.Add(value);
-                    productOption.Values.Add(value);
+                    productVariant.OptionValues.Remove(value);
+                    productOption.Values.Remove(value);
                     _session.Delete(value);
                 }
                 foreach (var value in optionsToUpdate)
@@ -114,8 +114,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 //Price Breaks
                 _importProductVariantPriceBreaksService.ImportVariantPriceBreaks(item, productVariant);
 
-                //Specifications
-                //_importProductOptionsService.ImportVariantSpecifications(item, product, productVariant);
                 _session.SaveOrUpdate(productVariant);
             }
             var variantsToRemove =

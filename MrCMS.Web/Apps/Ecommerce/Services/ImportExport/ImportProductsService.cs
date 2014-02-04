@@ -154,7 +154,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                             .Contains(s, StringComparer.OrdinalIgnoreCase)).ToList();
             var categoriesToRemove =
                 product.Categories.Where(
-                    category => !dataTransferObject.Categories.Contains(category.Name, StringComparer.OrdinalIgnoreCase))
+                    category => !dataTransferObject.Categories.Contains(category.UrlSegment, StringComparer.OrdinalIgnoreCase))
                        .ToList();
             foreach (var item in categoriesToAdd)
             {
