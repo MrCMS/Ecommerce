@@ -97,6 +97,8 @@
                     </div>
                 </div>
                 }
+                if (Model.RequiresShipping)
+                {
                 <div class="row-fluid">
                     <div class="span6">
                         @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new { @class = "input-xlarge" })
@@ -112,6 +114,7 @@
                         }
                     </div>
                 </div>
+                }
                 <div class="total-divider"></div>
                 <div>
                     <div class="span6">Total</div>
@@ -130,10 +133,10 @@
             {
                 using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
                 {
-                    <div class="text-right">
-                        <p>or</p>
-                        <input class="btn-paypal" type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />
-                    </div>
+                <div class="text-right">
+                    <p>or</p>
+                    <input class="btn-paypal" type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />
+                </div>
                 }
             }
         </div>

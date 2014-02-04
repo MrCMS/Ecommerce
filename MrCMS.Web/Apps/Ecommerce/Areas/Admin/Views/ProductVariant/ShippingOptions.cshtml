@@ -1,4 +1,5 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Entities.Shipping
+@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
     var shippingMethods = ViewData["shipping-methods"] as IList<ShippingMethod> ?? new List<ShippingMethod>();
@@ -18,5 +19,11 @@
                 }
             </div>
         </div>
+        <hr />
     }
+    <div class="row-fluid">
+        <div class="span12">
+            @Html.InlineCheckboxFor(variant => variant.RequiresShipping)
+        </div>
+    </div>
 </div>

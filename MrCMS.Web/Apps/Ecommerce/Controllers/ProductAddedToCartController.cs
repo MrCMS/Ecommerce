@@ -17,12 +17,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly CartModel _cartModel;
         private readonly IDocumentService _documentService;
         private readonly CartModel _cart;
+        private readonly IProductAnalyticsService _productAnalyticsService;
 
-        public ProductAddedToCartController(CartModel cartModel, IDocumentService documentService, CartModel cart)
+        public ProductAddedToCartController(CartModel cartModel, IDocumentService documentService, CartModel cart, IProductAnalyticsService productAnalyticsService)
         {
             _cartModel = cartModel;
             _documentService = documentService;
             _cart = cart;
+            _productAnalyticsService = productAnalyticsService;
         }
 
         public ActionResult Show(ProductAddedToCart page, ProductVariant productVariant, int quantity = 1)
@@ -31,6 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 return _documentService.RedirectTo<Cart>();
             ViewData["productvariant"] = productVariant;
             ViewData["quantity"] = quantity;
+            ViewData["cart"] = _cart;
             return View(page);
         }
 
@@ -66,9 +69,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                     Title = "Customers also bought",
                     Products = new List<Product>()
                 };
-            model.Products =
-                MrCMSApplication.Get<IProductAnalyticsService>()
-                                .GetListOfProductsWhoWhereAlsoBought(productvariant.Product);
+            ViewData["cart"] = _cart;
+            model.Products = _productAnalyticsService.GetListOfProductsWhoWhereAlsoBought(productvariant.Product);
             return PartialView(model);
         }
     }

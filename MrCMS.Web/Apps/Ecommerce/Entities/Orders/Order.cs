@@ -53,6 +53,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual decimal Weight { get; set; }
         [DisplayName("Shipping Method")]
         public virtual ShippingMethod ShippingMethod { get; set; }
+        [DisplayName("Shipping Method Name")]
+        public virtual string ShippingMethodName { get; set; }
         [DisplayName("Shipping Total")]
         public virtual decimal? ShippingTotal { get; set; }
         [DisplayName("Shipping Tax")]

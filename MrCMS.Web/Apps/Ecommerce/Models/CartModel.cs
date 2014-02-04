@@ -23,6 +23,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         }
         public Guid CartGuid { get; set; }
         public List<CartItem> Items { get; set; }
+
+        public IEnumerable<CartItem> ShippableItems { get { return Items.Where(item => item.RequiresShipping); } }
+
         public bool Empty
         {
             get { return !Items.Any(); }
@@ -36,6 +39,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public decimal TotalPreDiscount
         {
             get { return Items.Sum(item => item.Price); }
+        }
+
+        public virtual decimal ShippableTotalPreDiscount
+        {
+            get { return ShippableItems.Sum(item => item.Price); }
+        }
+
+        public virtual decimal ShippableCalculationTotal
+        {
+            get { return ShippableTotalPreDiscount - OrderTotalDiscount; }
         }
 
         public IDictionary<decimal, decimal> TaxRates
@@ -107,16 +120,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get { return Items.Sum(item => item.Tax); }
         }
 
-        public bool CanCheckout
-        {
-            get { return Items.Any() && Items.All(item => item.CanBuy(this)); }
-        }
-
-        public IEnumerable<string> CannotCheckoutReasons
-        {
-            get { return Items.Where(item => !item.CanBuy(this)).Select(item => item.Error(this)); }
-        }
-
         public User User { get; set; }
 
         public Guid UserGuid { get; set; }
@@ -146,11 +149,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get { return Items.Any() ? Items.Sum(item => item.Weight) : decimal.Zero; }
         }
-
-        public bool AnyStandardPaymentMethodsAvailable { get; set; }
-        public bool CanEnterPaymentFlow { get { return CanCheckout && AnyStandardPaymentMethodsAvailable; } }
-        public bool PayPalExpressAvailable { get; set; }
-        public bool CanUsePayPalExpress { get { return CanCheckout && PayPalExpressAvailable; } }
 
         public IEnumerable<IPaymentMethod> AvailablePaymentMethods { get; set; }
         public IList<ShippingMethod> AvailableShippingMethods { get; set; }
@@ -182,9 +180,38 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get { return !string.IsNullOrWhiteSpace(PayPalExpressToken) && !string.IsNullOrWhiteSpace(PayPalExpressPayerId); }
         }
 
+        public bool RequiresShipping
+        {
+            get { return ShippableItems.Any(); }
+        }
+
+
+        public bool CanCheckout
+        {
+            get { return !CannotCheckoutReasons.Any(); }
+        }
+
+        public bool AnyStandardPaymentMethodsAvailable { get; set; }
+        public bool CanEnterPaymentFlow { get { return CanCheckout && AnyStandardPaymentMethodsAvailable; } }
+        public bool PayPalExpressAvailable { get; set; }
+        public bool CanUsePayPalExpress { get { return CanCheckout && PayPalExpressAvailable; } }
+
         public bool CanPlaceOrder
         {
-            get { return CanCheckout && ShippingAddress != null && BillingAddress != null; }
+            get { return !CannotPlaceOrderReasons.Any(); }
+        }
+        public IEnumerable<string> CannotCheckoutReasons
+        {
+            get
+            {
+                if (!Items.Any())
+                    yield return "You have nothing in your cart";
+                foreach (CartItem item in Items)
+                {
+                    if (!item.CanBuy(this))
+                        yield return item.Error(this);
+                }
+            }
         }
 
         public IEnumerable<string> CannotPlaceOrderReasons
@@ -193,8 +220,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             {
                 foreach (var cannotCheckoutReason in CannotCheckoutReasons)
                     yield return cannotCheckoutReason;
-                if (ShippingAddress == null)
+                if (RequiresShipping && ShippingAddress == null)
                     yield return "Shipping address is not set";
+                if (RequiresShipping && ShippingMethod == null)
+                    yield return "Shipping method is not set";
                 if (BillingAddress == null)
                     yield return "Billing address is not set";
             }
