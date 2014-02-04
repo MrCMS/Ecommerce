@@ -20,6 +20,8 @@ namespace MrCMS.EcommerceApp.Tests.Builders
                                                                                 new TestableShippingMethod(true)
                                                                             };
 
+        private decimal? _shippableCalculationTotal;
+
         public CartModelBuilder WithWeight(decimal weight)
         {
             _weight = weight;
@@ -29,6 +31,12 @@ namespace MrCMS.EcommerceApp.Tests.Builders
         public CartModelBuilder WithTotalPreShipping(decimal totalPreShipping)
         {
             _totalPreShipping = totalPreShipping;
+            return this;
+        }
+
+        public CartModelBuilder WithShippableCalculationTotal(decimal shippableCalculationTotal)
+        {
+            _shippableCalculationTotal = shippableCalculationTotal;
             return this;
         }
 
@@ -47,7 +55,7 @@ namespace MrCMS.EcommerceApp.Tests.Builders
 
         public CartModel Build()
         {
-            return new TestableCartModel(_weight, _totalPreShipping)
+            return new TestableCartModel(_weight, _totalPreShipping,_shippableCalculationTotal)
                        {
                            ShippingAddress = new Address { Country = _shippingAddressCountry },
                            Items = _items,

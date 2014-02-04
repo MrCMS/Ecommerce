@@ -69,6 +69,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
             get { return Item.GetUnitTax(Quantity); }
         }
 
+        public virtual bool RequiresShipping
+        {
+            get { return Item.RequiresShipping; }
+        }
+
         public virtual bool IsDownloadable
         {
             get { return Item.IsDownloadable; }
