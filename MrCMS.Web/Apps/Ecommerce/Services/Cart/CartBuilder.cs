@@ -25,8 +25,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private readonly ICartSessionManager _cartSessionManager;
         private readonly ICartGuidResetter _cartGuidResetter;
 
-        public CartBuilder(ISession session, IGetUserGuid getUserGuid, IPaymentMethodService paymentMethodService, 
-        IOrderShippingService orderShippingService, ICartSessionManager cartSessionManager,ICartGuidResetter cartGuidResetter)
+        public CartBuilder(ISession session, IGetUserGuid getUserGuid, IPaymentMethodService paymentMethodService,
+        IOrderShippingService orderShippingService, ICartSessionManager cartSessionManager, ICartGuidResetter cartGuidResetter)
         {
             _session = session;
             _getUserGuid = getUserGuid;
@@ -53,8 +53,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 UserGuid = userGuid,
                 Items = cartItems,
                 ShippingAddress = GetShippingAddress(userGuid),
-                BillingAddressSameAsShippingAddress = GetBillingAddressSameAsShippingAddress(userGuid),
-                BillingAddress = GetBillingAddress(userGuid),
                 Country = GetCountry(userGuid),
                 OrderEmail = GetOrderEmail(userGuid),
                 DiscountCode = GetDiscountCode(userGuid),
@@ -64,12 +62,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 PayPalExpressPayerId = GetPayPalExpressPayerId(userGuid),
                 PayPalExpressToken = GetPayPalExpressToken(userGuid),
             };
+            cart.BillingAddressSameAsShippingAddress = cart.RequiresShipping &&
+                GetBillingAddressSameAsShippingAddress(userGuid);
+            cart.BillingAddress = GetBillingAddress(userGuid, cart.RequiresShipping);
             var availablePaymentMethods = _paymentMethodService.GetAllAvailableMethods(cart);
             cart.AvailablePaymentMethods = availablePaymentMethods;
             cart.PaymentMethod = GetPaymentMethod(userGuid) ?? (availablePaymentMethods.Count() == 1 ? availablePaymentMethods.First().SystemName : null);
 
             cartItems.ForEach(item => item.SetDiscountInfo(cart.Discount, cart.DiscountCode));
-            cart.ShippingMethod = GetShippingMethod(cart, userGuid);
+            if (cart.RequiresShipping)
+            {
+                cart.ShippingMethod = GetShippingMethod(cart, userGuid);
+            }
             cart.AvailableShippingMethods = _orderShippingService.AvailableShippingMethods(cart);
             return cart;
         }
@@ -128,9 +132,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             return _cartSessionManager.GetSessionValue(CartManager.CurrentBillingAddressSameAsShippingAddressKey, userGuid, true);
         }
 
-        private Address GetBillingAddress(Guid userGuid)
+        private Address GetBillingAddress(Guid userGuid, bool requiresShipping)
         {
-            var billingAddress = GetBillingAddressSameAsShippingAddress(userGuid) ? GetShippingAddress(userGuid) : _cartSessionManager.GetSessionValue<Address>(CartManager.CurrentBillingAddressKey, userGuid);
+            var billingAddress = GetBillingAddressSameAsShippingAddress(userGuid) && requiresShipping ? GetShippingAddress(userGuid) : _cartSessionManager.GetSessionValue<Address>(CartManager.CurrentBillingAddressKey, userGuid);
             if (billingAddress != null)
             {
                 billingAddress.Country = GetCountry(userGuid);

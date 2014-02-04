@@ -108,7 +108,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
                 case ShippingCriteria.ByWeight:
                     return IsValid(model.Weight);
                 case ShippingCriteria.ByCartTotal:
-                    return IsValid(model.TotalPreShipping);
+                    return IsValid(model.ShippableCalculationTotal);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -117,7 +117,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         public virtual decimal? GetPrice(CartModel model)
         {
-            return !CanBeUsed(model) ? (decimal?) null : Amount;
+            return !CanBeUsed(model) ? (decimal?)null : Amount;
         }
 
         private bool IsValid(decimal value)
@@ -127,7 +127,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         public virtual decimal? GetTax(CartModel model)
         {
-            return CanBeUsed(model) ? Tax : (decimal?) null;
+            return CanBeUsed(model) ? Tax : (decimal?)null;
         }
 
         private string GetCartTotalValue()
@@ -147,7 +147,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
     public enum ShippingCriteria
     {
-        [Description("Based on cart weight")] ByWeight = 1,
-        [Description("Based on cart total")] ByCartTotal = 2
+        [Description("Based on cart weight")]
+        ByWeight = 1,
+        [Description("Based on cart total")]
+        ByCartTotal = 2
     }
 }

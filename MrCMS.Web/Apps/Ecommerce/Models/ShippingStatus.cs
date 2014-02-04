@@ -18,5 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         Unfulfillable = 5,
         [Description("Invoice Unconfirmed")]
         InvoiceUnconfirmed = 6,
+        [Description("Shipping Not Required")]
+        ShippingNotRequired = 7,
     }
 }
