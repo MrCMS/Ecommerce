@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using FakeItEasy;
 using FluentAssertions;
+using MrCMS.EcommerceApp.Tests.TestableModels;
 using MrCMS.Entities.People;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -36,7 +37,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
             _cartSessionManager = A.Fake<ICartSessionManager>();
             _getUserGuid = A.Fake<IGetUserGuid>();
             _cartGuidResetter = A.Fake<ICartGuidResetter>();
-            _cartBuilder = new CartBuilder(Session, _getUserGuid, _paymentMethodService, _orderShippingService, _cartSessionManager,_cartGuidResetter);
+            _cartBuilder = new CartBuilder(Session, _getUserGuid, _paymentMethodService, _orderShippingService, _cartSessionManager, _cartGuidResetter);
         }
         [Fact]
         public void GetCartImpl_GetCart_ReturnsACartModel()
@@ -63,7 +64,8 @@ namespace MrCMS.EcommerceApp.Tests.Services
                                       .Select(i =>
                                               new CartItem
                                                   {
-                                                      UserGuid = newGuid    
+                                                      UserGuid = newGuid,
+                                                      Item = new TestableProductVariant(true)
                                                   }).ToList();
             Session.Transact(session => cartItems.ForEach(item => session.Save(item)));
 

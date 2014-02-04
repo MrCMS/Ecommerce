@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Helpers;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -15,20 +16,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly CartModel _cart;
         private readonly IOrderShippingService _orderShippingService;
         private readonly ICartManager _cartManager;
+        private readonly IDocumentService _documentService;
 
-        public SetDeliveryDetailsController(CartModel cart, IOrderShippingService orderShippingService, ICartManager cartManager)
+        public SetDeliveryDetailsController(CartModel cart, IOrderShippingService orderShippingService, ICartManager cartManager, IDocumentService documentService)
         {
             _cart = cart;
             _orderShippingService = orderShippingService;
             _cartManager = cartManager;
+            _documentService = documentService;
         }
 
         public ActionResult Show(SetDeliveryDetails page)
         {
             if (_cart.Empty)
-                return Redirect(UniquePageHelper.GetUrl<Cart>());
+                return _documentService.RedirectTo<Cart>();
             if (string.IsNullOrWhiteSpace(_cart.OrderEmail))
-                return Redirect(UniquePageHelper.GetUrl<EnterOrderEmail>());
+                return _documentService.RedirectTo<EnterOrderEmail>();
+            if (!_cart.RequiresShipping)
+                return _documentService.RedirectTo<PaymentDetails>();
             ViewData["shipping-calculations"] = _orderShippingService.GetCheapestShippingOptions(_cart);
             ViewData["cart"] = _cart;
             return View(page);

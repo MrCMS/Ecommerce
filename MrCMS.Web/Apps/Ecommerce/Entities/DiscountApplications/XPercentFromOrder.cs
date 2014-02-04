@@ -10,8 +10,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications
     {
         public override decimal GetDiscount(CartModel cartModel)
         {
-            if (cartModel.Subtotal > 0 && DiscountPercent > 0 && DiscountPercent <= 100)
-                return cartModel.Subtotal*(DiscountPercent/100);
+            if (cartModel.TotalPreDiscount > 0 && DiscountPercent > 0 && DiscountPercent <= 100)
+                return cartModel.TotalPreDiscount * (DiscountPercent / 100);
             return decimal.Zero;
         }
 

@@ -116,16 +116,27 @@
                             <td>
                                 @if (!item.IsCancelled)
                                 {
-                                    @item.ShippingStatus
                                     <span></span>
-                                    if (item.ShippingStatus != ShippingStatus.Shipped)
+                                    if (item.ShippingStatus == ShippingStatus.ShippingNotRequired)
                                     {
-                                    @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                    @item.ShippingMethodName
                                     }
-                                    <br />
-                                    if (item.ShippingMethod != null)
+                                    else
                                     {
+                                    @item.ShippingStatus
+                                        if (item.ShippingStatus != ShippingStatus.Shipped)
+                                        {
+                                    @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                        }
+                                    <br />
+                                        if (!string.IsNullOrWhiteSpace(item.ShippingMethodName))
+                                        {
+                                    @item.ShippingMethodName
+                                        }
+                                        else if (item.ShippingMethod != null)
+                                        {
                                     @item.ShippingMethod.Name
+                                        }
                                     }
                                 }
                                 else
