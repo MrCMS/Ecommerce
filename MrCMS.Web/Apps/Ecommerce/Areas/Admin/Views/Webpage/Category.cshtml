@@ -1,6 +1,14 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Category
-@Html.LabelFor(webpage => webpage.FeatureImage)
-@Html.TextBoxFor(webpage => webpage.FeatureImage, new { @class = "media-selector" })
-
+<div class="row-fluid">
+    <div class="span3">
+        @Html.LabelFor(webpage => webpage.FeatureImage)
+        @Html.TextBoxFor(webpage => webpage.FeatureImage, new { @class = "media-selector" })
+    </div>
+    <div class="span9">
+        @Html.LabelFor(product => product.Abstract)
+        @Html.TextAreaFor(product => product.Abstract, new { rows = 4, @class = "span12" })
+        @Html.ValidationMessageFor(product => product.Abstract)
+    </div>
+</div>
 @Html.LabelFor(webpage => webpage.DefaultProductSearchSort)
 @Html.DropDownListFor(webpage => webpage.DefaultProductSearchSort, ViewData["product-search-sort-options"] as IEnumerable<SelectListItem>)

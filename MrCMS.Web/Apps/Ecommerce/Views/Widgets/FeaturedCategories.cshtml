@@ -12,13 +12,17 @@
     {
             <div class="span3 text-center">
                 <div style="overflow:hidden;height: 150px;" >
-                @if(item.FeatureImage!=null)
-                {
-                    <a href="/@item.LiveUrlSegment">@RenderImage(item.FeatureImage, new Size{Width = 150, Height = 150})</a>
-                }
+                    @if(item.FeatureImage!=null)
+                    {
+                        <a href="/@item.LiveUrlSegment">@RenderImage(item.FeatureImage, new Size{Width = 150, Height = 150})</a>
+                    }
                 </div>
-                    <div class="clearfix"></div>
+                <div class="clearfix"></div>
                 <h4 class="category-title"><a href="/@item.LiveUrlSegment" title="@item.Name">@item.Name</a></h4>
+                @if (!string.IsNullOrWhiteSpace(item.Abstract))
+                {
+                    <p>@item.Abstract</p>
+                }
            </div>
     }
     </div>
