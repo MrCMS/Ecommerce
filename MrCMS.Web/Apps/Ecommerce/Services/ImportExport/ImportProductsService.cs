@@ -42,6 +42,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _session = session;
         }
 
+        public void SetAllDocuments(IEnumerable<Document> documents)
+        {
+            _allDocuments = new HashSet<Document>(documents);
+        }
+
         public IImportProductsService Initialize()
         {
             _allDocuments = new HashSet<Document>(_documentService.GetAllDocuments<Document>());
@@ -49,7 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _importSpecificationsService.Initialize();
             _importProductVariantsService.Initialize();
             _importUrlHistoryService.Initialize();
-            _productOptions = new HashSet<ProductOption>( _session.QueryOver<ProductOption>().List());
+            _productOptions = new HashSet<ProductOption>(_session.QueryOver<ProductOption>().List());
             return this;
         }
 
@@ -105,8 +110,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 _allDocuments.OfType<Product>()
                              .SingleOrDefault(x => x.UrlSegment == dataTransferObject.UrlSegment) ??
                              new Product();
-            
-            
 
             product.Parent = _uniquePage;
             product.UrlSegment = dataTransferObject.UrlSegment;
@@ -132,6 +135,32 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 product.Gallery = productGallery;
             }
 
+            SetBrand(dataTransferObject, product);
+
+            SetCategories(dataTransferObject, product);
+
+            SetOptions(dataTransferObject, product);
+
+            ////Url History
+            _importUrlHistoryService.ImportUrlHistory(dataTransferObject, product);
+
+            ////Specifications
+            _importSpecificationsService.ImportSpecifications(dataTransferObject, product);
+
+            ////Variants
+            _importProductVariantsService.ImportVariants(dataTransferObject, product);
+
+            if (isNew)
+            {
+                _allDocuments.Add(product);
+                _allDocuments.Add(productGallery);
+            }
+
+            return product;
+        }
+
+        private void SetBrand(ProductImportDataTransferObject dataTransferObject, Product product)
+        {
             //Brand
             if (!String.IsNullOrWhiteSpace(dataTransferObject.Brand))
             {
@@ -144,9 +173,45 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 }
                 product.Brand = brand;
             }
+        }
 
+        private void SetOptions(ProductImportDataTransferObject dataTransferObject, Product product)
+        {
+            var optionsToAdd =
+                dataTransferObject.Options.Where(
+                    s => !product.Options.Select(option => option.Name).Contains(s, StringComparer.OrdinalIgnoreCase))
+                                  .ToList();
+            var optionsToRemove =
+                product.Options.Where(option => !dataTransferObject.Options.Contains(option.Name)).ToList();
+
+            foreach (var option in optionsToAdd)
+            {
+                var existingOption =
+                    _productOptions.FirstOrDefault(
+                        productOption => productOption.Name.Equals(option, StringComparison.OrdinalIgnoreCase));
+                if (existingOption == null)
+                {
+                    existingOption = new ProductOption
+                        {
+                            Name = option,
+                        };
+
+                    _productOptions.Add(existingOption);
+                    _session.Save(existingOption);
+                }
+                product.Options.Add(existingOption);
+                existingOption.Products.Add(product);
+            }
+            foreach (var option in optionsToRemove)
+            {
+                product.Options.Remove(option);
+                option.Products.Remove(product);
+            }
+        }
+
+        public void SetCategories(ProductImportDataTransferObject dataTransferObject, Product product)
+        {
             //Categories
-
             var categoriesToAdd =
                 dataTransferObject.Categories.Where(
                     s =>
@@ -171,57 +236,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 product.Categories.Remove(category);
                 if (category.Products.Contains(product))
                     category.Products.Remove(product);
-
             }
-
-            var optionsToAdd =
-                dataTransferObject.Options.Where(
-                    s => !product.Options.Select(option => option.Name).Contains(s, StringComparer.OrdinalIgnoreCase))
-                                  .ToList();
-            var optionsToRemove =
-                product.Options.Where(option => !dataTransferObject.Options.Contains(option.Name)).ToList();
-
-            foreach (var option in optionsToAdd)
-            {
-                var existingOption =
-                    _productOptions.FirstOrDefault(
-                        productOption => productOption.Name.Equals(option, StringComparison.OrdinalIgnoreCase));
-                if (existingOption == null)
-                {
-                    existingOption = new ProductOption
-                                         {
-                                             Name = option,
-                                         };
-                    
-                    _productOptions.Add(existingOption);
-                    _session.Save(existingOption);
-                }
-                product.Options.Add(existingOption);
-                existingOption.Products.Add(product);
-            }
-            foreach (var option in optionsToRemove)
-            {
-                product.Options.Remove(option);
-                option.Products.Remove(product);
-            }
-
-            ////Url History
-            _importUrlHistoryService.ImportUrlHistory(dataTransferObject, product);
-
-            ////Specifications
-            _importSpecificationsService.ImportSpecifications(dataTransferObject, product);
-
-            ////Variants
-            _importProductVariantsService.ImportVariants(dataTransferObject, product);
-
-            if (isNew)
-            {
-                _allDocuments.Add(product);
-                _allDocuments.Add(productGallery);
-            }
-
-            return product;
         }
-
     }
 }
