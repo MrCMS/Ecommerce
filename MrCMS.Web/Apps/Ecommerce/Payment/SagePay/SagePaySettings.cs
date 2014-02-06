@@ -12,8 +12,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.SagePay
     public class SagePaySettings : SiteSettingsBase
     {
         public static CultureInfo CultureForTransactionEncoding = new CultureInfo("en-gb");
-        public const string LiveUrl = "https://live.sagepay.com/gateway/service/vspserver-register.vsp";
-        public const string TestUrl = "https://test.sagepay.com/gateway/service/vspserver-register.vsp";
+        public const string LiveRegistrationUrl = "https://live.sagepay.com/gateway/service/vspserver-register.vsp";
+        public const string TestRegistrationUrl = "https://test.sagepay.com/gateway/service/vspserver-register.vsp";
+
+        public const string LiveVoidUrl = "https://live.sagepay.com/gateway/service/cancel.vsp";
+        public const string TestVoidUrl = "https://test.sagepay.com/gateway/service/cancel.vsp";
 
         public const string LiveRefundUrl = "https://live.sagepay.com/gateway/service/refund.vsp";
         public const string TestRefundUrl = "https://test.sagepay.com/gateway/service/refund.vsp";
@@ -59,9 +62,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.SagePay
                 switch (Mode)
                 {
                     case VspServerMode.Test:
-                        return TestUrl;
+                        return TestRegistrationUrl;
                     case VspServerMode.Live:
-                        return LiveUrl;
+                        return LiveRegistrationUrl;
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// The registration URL
+        /// </summary>
+        public string VoidUrl
+        {
+            get
+            {
+                switch (Mode)
+                {
+                    case VspServerMode.Test:
+                        return TestVoidUrl;
+                    case VspServerMode.Live:
+                        return LiveVoidUrl;
                 }
                 return null;
             }

@@ -4,6 +4,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
 {
     public interface ITransactionRegistrationBuilder
     {
-        TransactionRegistration Build(CartModel cartModel);
+        TransactionRegistration BuildRegistration(CartModel cartModel);
     }
 }
