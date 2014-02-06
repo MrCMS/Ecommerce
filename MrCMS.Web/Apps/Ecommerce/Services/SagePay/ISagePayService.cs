@@ -11,7 +11,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
     public interface ISagePayService
     {
         TransactionRegistrationResponse RegisterTransaction(CartModel model);
-        string GetSecurityKey(Guid guid);
+        string GetSecurityKey(Guid userGuid);
+        decimal GetCartTotal(Guid userGuid);
         void SetResponse(Guid userGuid, SagePayResponse response);
         SagePayResponse GetResponse(Guid userGuid);
         void ResetSessionInfo(Guid userGuid);
@@ -82,6 +83,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                     return true;
             }
         }
+
+        public decimal CartTotal { get; set; }
 
         /// <summary>
         /// Is the signature valid

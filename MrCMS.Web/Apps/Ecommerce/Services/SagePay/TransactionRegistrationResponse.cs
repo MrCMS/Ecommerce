@@ -36,5 +36,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
         /// Redirect URL
         /// </summary>
         public string NextURL { get; set; }
+
+        public string VendorTxCode { get; set; }
+
+        public decimal CartTotal { get; set; }
     }
 }

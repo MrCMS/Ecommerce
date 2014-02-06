@@ -23,11 +23,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public ActionResult Notification(SagePayResponse response)
         {
-            if (string.IsNullOrEmpty(response.VendorTxCode))
+            var vendorTxCode = response.VendorTxCode;
+            if (string.IsNullOrEmpty(vendorTxCode))
                 return new ErrorResult();
-
-            var cart = _sagePayCartLoader.GetCart(response.VendorTxCode);
-            if (cart == null || cart.CartGuid.ToString() != response.VendorTxCode)
+            var cart = _sagePayCartLoader.GetCart(vendorTxCode);
+            if (cart == null || cart.CartGuid.ToString() != vendorTxCode || _sagePayService.GetCartTotal(cart.UserGuid) != cart.Total)
             {
                 ResetSessionInfo(cart,
                                  new FailureDetails
@@ -35,18 +35,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                                          Message =
                                              "There was an error communicating with SagePay. No funds have been transferred. Please try again, and if you continue to have errors please contact support"
                                      });
-                return new TransactionNotFoundResult(response.VendorTxCode);
+                return new TransactionNotFoundResult(vendorTxCode);
             }
 
             if (!response.IsSignatureValid(_sagePayService.GetSecurityKey(cart.UserGuid), _sagePaySettings.VendorName))
             {
                 ResetSessionInfo(cart,
                                  new FailureDetails
-                                     {
-                                         Message =
-                                             "There was an error communicating with SagePay. No funds have been transferred. Please try again, and if you continue to have errors please contact support"
-                                     });
-                return new InvalidSignatureResult(response.VendorTxCode);
+                                 {
+                                     Message =
+                                         "There was an error communicating with SagePay. No funds have been transferred. Please try again, and if you continue to have errors please contact support"
+                                 });
+                return new InvalidSignatureResult(vendorTxCode);
+            }
+
+            if (!response.IsSignatureValid(_sagePayService.GetSecurityKey(cart.UserGuid), _sagePaySettings.VendorName))
+            {
+                ResetSessionInfo(cart,
+                                 new FailureDetails
+                                 {
+                                     Message =
+                                         "There was an error communicating with SagePay. No funds have been transferred. Please try again, and if you continue to have errors please contact support"
+                                 });
+                return new InvalidSignatureResult(vendorTxCode);
             }
 
             if (!response.WasTransactionSuccessful)
@@ -61,7 +72,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             {
                 _sagePayService.SetResponse(cart.UserGuid, response);
             }
-            return new ValidOrderResult(response.VendorTxCode, response);
+            return new ValidOrderResult(vendorTxCode, response);
 
         }
 
