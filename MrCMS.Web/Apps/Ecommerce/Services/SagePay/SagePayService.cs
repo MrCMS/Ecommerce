@@ -9,7 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
 {
     public class SagePayService : ISagePayService, ICartSessionKeyList
     {
-        private readonly ITransactionRegistrar _transactionRegistrar;
+        private readonly ITransactionManager _transactionManager;
         private readonly ICartSessionManager _cartSessionManager;
         private readonly IGetUserGuid _getUserGuid;
         private readonly ICartGuidResetter _cartGuidResetter;
@@ -17,9 +17,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
         private const string SagePayTransactionResponseKey = "current.sagepaytransactionresponse";
         private const string SagePayFailureDetailsKey = "current.sagepayfailuredetails";
 
-        public SagePayService(ITransactionRegistrar transactionRegistrar, ICartSessionManager cartSessionManager, IGetUserGuid getUserGuid, ICartGuidResetter cartGuidResetter)
+        public SagePayService(ITransactionManager transactionManager, ICartSessionManager cartSessionManager, IGetUserGuid getUserGuid, ICartGuidResetter cartGuidResetter)
         {
-            _transactionRegistrar = transactionRegistrar;
+            _transactionManager = transactionManager;
             _cartSessionManager = cartSessionManager;
             _getUserGuid = getUserGuid;
             _cartGuidResetter = cartGuidResetter;
@@ -27,22 +27,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
 
         public TransactionRegistrationResponse RegisterTransaction(CartModel model)
         {
-            var response = _cartSessionManager.GetSessionValue<TransactionRegistrationResponse>(SagePayEnrolledResponseKey, _getUserGuid.UserGuid);
-            if (response != null)
-                return response;
-
-            var transactionRegistrationResponse = _transactionRegistrar.Send(model);
-
-            if (transactionRegistrationResponse.Status == ResponseType.Ok)
-                _cartSessionManager.SetSessionValue(SagePayEnrolledResponseKey, _getUserGuid.UserGuid, transactionRegistrationResponse);
-
-            return transactionRegistrationResponse;
+            var tryCount = 0;
+            while (tryCount++ < 5)
+            {
+                var transactionRegistrationResponse = _transactionManager.Register(model);
+                if (transactionRegistrationResponse.Status == ResponseType.Ok)
+                {
+                    _cartSessionManager.SetSessionValue(SagePayEnrolledResponseKey, _getUserGuid.UserGuid,
+                                                        transactionRegistrationResponse);
+                    return transactionRegistrationResponse;
+                }
+                model.CartGuid = _cartGuidResetter.ResetCartGuid(_getUserGuid.UserGuid);
+            }
+            return new TransactionRegistrationResponse { Status = ResponseType.Error };
         }
 
         public string GetSecurityKey(Guid userGuid)
         {
             var response = _cartSessionManager.GetSessionValue<TransactionRegistrationResponse>(SagePayEnrolledResponseKey, userGuid);
             return response != null ? response.SecurityKey : null;
+        }
+
+        public decimal GetCartTotal(Guid userGuid)
+        {
+            var response = _cartSessionManager.GetSessionValue<TransactionRegistrationResponse>(SagePayEnrolledResponseKey, userGuid);
+            return response != null ? response.CartTotal : decimal.Zero;
         }
 
         public void SetResponse(Guid userGuid, SagePayResponse response)
