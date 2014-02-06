@@ -3,14 +3,13 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
 {
-    public interface ITransactionRegistrar
+    public interface ITransactionManager
     {
         /// <summary>
         /// Sends a transaction registration to SagePay and receives a TransactionRegistrationResponse
         /// </summary>
-        TransactionRegistrationResponse Send(CartModel cartModel);
+        TransactionRegistrationResponse Register(CartModel cartModel);
     }
-
     /// <summary>
     /// Represents a transaction registration that is sent to SagePay. 
     /// This should be serialized using the HttpPostSerializer.
