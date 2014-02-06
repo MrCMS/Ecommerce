@@ -14,7 +14,7 @@
     <RootNamespace>MrCMS.Web</RootNamespace>
     <AssemblyName>MrCMS.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <FileUpgradeFlags>
@@ -790,7 +790,7 @@
     <Compile Include="Apps\Ecommerce\Services\SagePay\ISagePayCartLoader.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\ISagePayItemCreator.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\ISagePayService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\SagePay\ITransactionRegistrar.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\ITransactionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\ITransactionRegistrationBuilder.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\PaymentFormProfile.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\Results\ErrorResult.cs" />
@@ -801,7 +801,7 @@
     <Compile Include="Apps\Ecommerce\Services\SagePay\SagePayCartLoader.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\SagePayItemCreator.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\SagePayService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionRegistrar.cs" />
+    <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionRegistrationBuilder.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionRegistrationResponse.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingCalculationManager.cs" />

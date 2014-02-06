@@ -11,7 +11,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
         private readonly EcommerceSettings _ecommerceSettings;
         private readonly ISagePayUrlResolver _sagePayUrlResolver;
 
-        public TransactionRegistrationBuilder(SagePaySettings sagePaySettings, 
+        public TransactionRegistrationBuilder(SagePaySettings sagePaySettings,
                                               ISagePayItemCreator sagePayItemCreator,
                                               EcommerceSettings ecommerceSettings,
                                               ISagePayUrlResolver sagePayUrlResolver)
@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
             _sagePayUrlResolver = sagePayUrlResolver;
         }
 
-        public TransactionRegistration Build(CartModel cartModel)
+        public TransactionRegistration BuildRegistration(CartModel cartModel)
         {
             var shoppingBasket = _sagePayItemCreator.GetShoppingBasket(cartModel);
             var billingAddress = _sagePayItemCreator.GetAddress(cartModel.BillingAddress);
@@ -54,7 +54,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                                                   DeliveryPostcode = deliveryAddress.PostCode,
                                                   DeliveryState = deliveryAddress.State,
                                                   DeliverySurname = deliveryAddress.Surname,
-                                                  Description = string.Format("Order from {0}", _sagePaySettings.Site.Name),
+                                                  Description =
+                                                      string.Format("Order from {0}", _sagePaySettings.Site.Name),
                                                   NotificationUrl = _sagePayUrlResolver.BuildNotificationUrl(),
                                                   Profile = _sagePaySettings.PaymentFormProfileString,
                                                   TxType = "PAYMENT",
