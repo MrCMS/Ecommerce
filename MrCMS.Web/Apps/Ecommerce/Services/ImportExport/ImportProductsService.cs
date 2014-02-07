@@ -42,6 +42,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _session = session;
         }
 
+        public void SetAllDocuments(IEnumerable<Document> documents)
+        {
+            _allDocuments = new HashSet<Document>(documents);
+        }
+
         public IImportProductsService Initialize()
         {
             _allDocuments = new HashSet<Document>(_documentService.GetAllDocuments<Document>());
@@ -49,7 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _importSpecificationsService.Initialize();
             _importProductVariantsService.Initialize();
             _importUrlHistoryService.Initialize();
-            _productOptions = new HashSet<ProductOption>( _session.QueryOver<ProductOption>().List());
+            _productOptions = new HashSet<ProductOption>(_session.QueryOver<ProductOption>().List());
             return this;
         }
 
@@ -105,8 +110,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 _allDocuments.OfType<Product>()
                              .SingleOrDefault(x => x.UrlSegment == dataTransferObject.UrlSegment) ??
                              new Product();
-            
-            
 
             product.Parent = _uniquePage;
             product.UrlSegment = dataTransferObject.UrlSegment;
@@ -132,78 +135,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 product.Gallery = productGallery;
             }
 
-            //Brand
-            if (!String.IsNullOrWhiteSpace(dataTransferObject.Brand))
-            {
-                var dtoBrand = dataTransferObject.Brand.Trim();
-                var brand = _allBrands.SingleOrDefault(x => x.Name == dtoBrand);
-                if (brand == null)
-                {
-                    brand = new Brand { Name = dtoBrand };
-                    _allBrands.Add(brand);
-                }
-                product.Brand = brand;
-            }
+            SetBrand(dataTransferObject, product);
 
-            //Categories
+            SetCategories(dataTransferObject, product);
 
-            var categoriesToAdd =
-                dataTransferObject.Categories.Where(
-                    s =>
-                    !product.Categories.Select(category => category.UrlSegment)
-                            .Contains(s, StringComparer.OrdinalIgnoreCase)).ToList();
-            var categoriesToRemove =
-                product.Categories.Where(
-                    category => !dataTransferObject.Categories.Contains(category.Name, StringComparer.OrdinalIgnoreCase))
-                       .ToList();
-            foreach (var item in categoriesToAdd)
-            {
-                var category = _allDocuments.OfType<Category>().SingleOrDefault(x => x.UrlSegment == item);
-                if (category != null)
-                {
-                    product.Categories.Add(category);
-                    if (!category.Products.Contains(product))
-                        category.Products.Add(product);
-                }
-            }
-            foreach (var category in categoriesToRemove)
-            {
-                product.Categories.Remove(category);
-                if (category.Products.Contains(product))
-                    category.Products.Remove(product);
-
-            }
-
-            var optionsToAdd =
-                dataTransferObject.Options.Where(
-                    s => !product.Options.Select(option => option.Name).Contains(s, StringComparer.OrdinalIgnoreCase))
-                                  .ToList();
-            var optionsToRemove =
-                product.Options.Where(option => !dataTransferObject.Options.Contains(option.Name)).ToList();
-
-            foreach (var option in optionsToAdd)
-            {
-                var existingOption =
-                    _productOptions.FirstOrDefault(
-                        productOption => productOption.Name.Equals(option, StringComparison.OrdinalIgnoreCase));
-                if (existingOption == null)
-                {
-                    existingOption = new ProductOption
-                                         {
-                                             Name = option,
-                                         };
-                    
-                    _productOptions.Add(existingOption);
-                    _session.Save(existingOption);
-                }
-                product.Options.Add(existingOption);
-                existingOption.Products.Add(product);
-            }
-            foreach (var option in optionsToRemove)
-            {
-                product.Options.Remove(option);
-                option.Products.Remove(product);
-            }
+            SetOptions(dataTransferObject, product);
 
             ////Url History
             _importUrlHistoryService.ImportUrlHistory(dataTransferObject, product);
@@ -223,5 +159,84 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             return product;
         }
 
+        private void SetBrand(ProductImportDataTransferObject dataTransferObject, Product product)
+        {
+            //Brand
+            if (!String.IsNullOrWhiteSpace(dataTransferObject.Brand))
+            {
+                var dtoBrand = dataTransferObject.Brand.Trim();
+                var brand = _allBrands.SingleOrDefault(x => x.Name == dtoBrand);
+                if (brand == null)
+                {
+                    brand = new Brand { Name = dtoBrand };
+                    _allBrands.Add(brand);
+                }
+                product.Brand = brand;
+            }
+        }
+
+        private void SetOptions(ProductImportDataTransferObject dataTransferObject, Product product)
+        {
+            var optionsToAdd =
+                dataTransferObject.Options.Where(
+                    s => !product.Options.Select(option => option.Name).Contains(s, StringComparer.OrdinalIgnoreCase))
+                                  .ToList();
+            var optionsToRemove =
+                product.Options.Where(option => !dataTransferObject.Options.Contains(option.Name)).ToList();
+
+            foreach (var option in optionsToAdd)
+            {
+                var existingOption =
+                    _productOptions.FirstOrDefault(
+                        productOption => productOption.Name.Equals(option, StringComparison.OrdinalIgnoreCase));
+                if (existingOption == null)
+                {
+                    existingOption = new ProductOption
+                        {
+                            Name = option,
+                        };
+
+                    _productOptions.Add(existingOption);
+                    _session.Save(existingOption);
+                }
+                product.Options.Add(existingOption);
+                existingOption.Products.Add(product);
+            }
+            foreach (var option in optionsToRemove)
+            {
+                product.Options.Remove(option);
+                option.Products.Remove(product);
+            }
+        }
+
+        public void SetCategories(ProductImportDataTransferObject dataTransferObject, Product product)
+        {
+            //Categories
+            var categoriesToAdd =
+                dataTransferObject.Categories.Where(
+                    s =>
+                    !product.Categories.Select(category => category.UrlSegment)
+                            .Contains(s, StringComparer.OrdinalIgnoreCase)).ToList();
+            var categoriesToRemove =
+                product.Categories.Where(
+                    category => !dataTransferObject.Categories.Contains(category.UrlSegment, StringComparer.OrdinalIgnoreCase))
+                       .ToList();
+            foreach (var item in categoriesToAdd)
+            {
+                var category = _allDocuments.OfType<Category>().SingleOrDefault(x => x.UrlSegment == item);
+                if (category != null)
+                {
+                    product.Categories.Add(category);
+                    if (!category.Products.Contains(product))
+                        category.Products.Add(product);
+                }
+            }
+            foreach (var category in categoriesToRemove)
+            {
+                product.Categories.Remove(category);
+                if (category.Products.Contains(product))
+                    category.Products.Remove(product);
+            }
+        }
     }
 }
