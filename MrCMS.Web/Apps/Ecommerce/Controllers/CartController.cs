@@ -7,6 +7,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Website.Binders;
@@ -19,13 +20,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly CartModel _cart;
         private readonly ICartManager _cartManager;
+        private readonly ICartValidationService _cartValidationService;
         private readonly IOrderShippingService _orderShippingService;
         private readonly IDocumentService _documentService;
 
-        public CartController(ICartManager cartManager,
+        public CartController(ICartManager cartManager, ICartValidationService cartValidationService,
                               IOrderShippingService orderShippingService, IDocumentService documentService, CartModel cart)
         {
             _cartManager = cartManager;
+            _cartValidationService = cartValidationService;
             _orderShippingService = orderShippingService;
             _documentService = documentService;
             _cart = cart;
@@ -50,36 +53,32 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return PartialView(_cart);
         }
 
-        [HttpPost]
-        public RedirectResult AddToCart(ProductVariant productVariant, int quantity = 0)
+        public JsonResult CanAddQuantity(AddToCartModel model)
         {
-            if (productVariant != null && quantity > 0)
+            var result = _cartValidationService.CanAddQuantity(model);
+            return result.Valid
+                       ? Json(true, JsonRequestBehavior.AllowGet)
+                       : Json(result.Message, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public PartialViewResult AddToCart(AddToCartModel model)
+        {
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        [ActionName("AddToCart")]
+        public RedirectResult AddToCart_POST(AddToCartModel model)
+        {
+            if (_cartValidationService.CanAddQuantity(model).Valid)
             {
-                _cartManager.AddToCart(productVariant, quantity);
+                _cartManager.AddToCart(model);
                 var addedToCart = _documentService.GetUniquePage<ProductAddedToCart>();
                 if (addedToCart != null && addedToCart.Published)
-                    return Redirect(UniquePageHelper.GetUrl<ProductAddedToCart>(new {id = productVariant.Id, quantity}));
+                    return Redirect(UniquePageHelper.GetUrl<ProductAddedToCart>(new { id = model.ProductVariant.Id, quantity = model.Quantity }));
                 return Redirect(UniquePageHelper.GetUrl<Cart>());
             }
             return Redirect(UniquePageHelper.GetUrl<ProductSearch>());
-        }
-
-        [HttpGet]
-        public ViewResult EditCartItem(CartItem item)
-        {
-            return View("EditCartItem", item);
-        }
-
-        [ActionName("EditCartItem")]
-        [HttpPost]
-        public ActionResult EditCartItem_POST(CartItem item)
-        {
-            if (ModelState.IsValid)
-            {
-                _cartManager.UpdateQuantity(item, item.Quantity);
-                return Redirect(UniquePageHelper.GetUrl<Cart>());
-            }
-            return PartialView(item);
         }
 
         [ActionName("DeleteCartItem")]

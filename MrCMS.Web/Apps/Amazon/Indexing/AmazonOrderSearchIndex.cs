@@ -58,6 +58,8 @@ namespace MrCMS.Web.Apps.Amazon.Indexing
 
         public string IndexName { get { return "Amazon Order Search Index"; } }
 
+        public string IndexFolderName { get { return "AmazonOrders"; } }
+
         public IEnumerable<FieldDefinition<AmazonOrder>> Definitions
         {
             get
@@ -106,7 +108,7 @@ namespace MrCMS.Web.Apps.Amazon.Indexing
         private static readonly FieldDefinition<AmazonOrder> _purchaseDate =
             new StringFieldDefinition<AmazonOrder>("purchaseDate",
                                          item =>
-                                         DateTools.DateToString(item.PurchaseDate.HasValue?item.PurchaseDate.Value:item.CreatedOn,
+                                         DateTools.DateToString(item.PurchaseDate.HasValue ? item.PurchaseDate.Value : item.CreatedOn,
                                                                 DateTools.Resolution.SECOND), Field.Store.NO,
                                          Field.Index.NOT_ANALYZED);
 

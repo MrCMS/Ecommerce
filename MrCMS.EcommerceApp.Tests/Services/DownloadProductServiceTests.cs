@@ -8,6 +8,7 @@ using FakeItEasy;
 using FluentAssertions;
 using MrCMS.EcommerceApp.Tests.Builders;
 using MrCMS.Helpers;
+using MrCMS.Logging;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Products.Download;
@@ -29,7 +30,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         {
             _fileSystem = A.Fake<IFileSystem>();
             _session = A.Fake<ISession>();
-            _downloadProductService = new DownloadOrderedFileService(_session, _rules, _fileSystem);
+            _downloadProductService = new DownloadOrderedFileService(_session, _rules, _fileSystem, A.Fake<ILogService>());
         }
 
         [Fact]
@@ -79,44 +80,29 @@ namespace MrCMS.EcommerceApp.Tests.Services
         }
 
         [Fact]
-        public void IfAllChecksPassUnbufferTheResponse()
+        public void IfAllChecksPassReturnAnEcommerceResult()
         {
             var order = new Order();
             var orderLine = new OrderLineBuilder().WithFileUrl("test-file-url").Build();
-            HttpResponseBase response = new OutOfContextResponse { Buffer = true };
-            A.CallTo(() => _fileSystem.Exists("test-file-url")).Returns(true);
-
-            _downloadProductService.WriteDownloadToResponse(response, order, orderLine);
-
-            response.Buffer.Should().BeFalse();
-        }
-
-        [Fact]
-        public void IfAllChecksPassSetContentDispositionHeaderWithFileName()
-        {
-            var order = new Order();
-            var orderLine = new OrderLineBuilder().WithFileUrl("test-file-url").WithFileName("test-file-name").Build();
             HttpResponseBase response = new OutOfContextResponse();
             A.CallTo(() => _fileSystem.Exists("test-file-url")).Returns(true);
 
-            _downloadProductService.WriteDownloadToResponse(response, order, orderLine);
+            var writeDownloadToResponse = _downloadProductService.WriteDownloadToResponse(response, order, orderLine);
 
-            response.Headers.AllKeys.Should().Contain("Content-Disposition");
-            response.Headers["Content-Disposition"].Should()
-                                                   .Be("attachment; filename=test-file-name");
+            writeDownloadToResponse.Should().BeOfType<EcommerceDownloadResult>();
         }
 
         [Fact]
-        public void IfAllChecksPassCallFileSystemWriteToOutputStream()
+        public void IfAllChecksPassEcommerceResultShouldBeCorrectOrderline()
         {
             var order = new Order();
-            var orderLine = new OrderLineBuilder().WithFileUrl("test-file-url").WithFileName("test-file-name").Build();
+            var orderLine = new OrderLineBuilder().WithFileUrl("test-file-url").Build();
             HttpResponseBase response = new OutOfContextResponse();
             A.CallTo(() => _fileSystem.Exists("test-file-url")).Returns(true);
 
-            _downloadProductService.WriteDownloadToResponse(response, order, orderLine);
+            var writeDownloadToResponse = _downloadProductService.WriteDownloadToResponse(response, order, orderLine);
 
-            A.CallTo(() => _fileSystem.WriteToStream("test-file-url", response.OutputStream)).MustHaveHappened();
+            writeDownloadToResponse.As<EcommerceDownloadResult>().OrderLine.Should().Be(orderLine);
         }
 
         [Fact]

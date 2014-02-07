@@ -43,7 +43,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _getUserGuid = getUserGuid;
         }
 
-        public void AddToCart(ProductVariant item, int quantity)
+        public void AddToCart(AddToCartModel model)
+        {
+            AddToCart(model.ProductVariant, model.Quantity);
+        }
+
+        private void AddToCart(ProductVariant item, int quantity)
         {
             var existingItem = _cart.Items.FirstOrDefault(cartItem => cartItem.Item.SKU == item.SKU);
             if (existingItem != null)

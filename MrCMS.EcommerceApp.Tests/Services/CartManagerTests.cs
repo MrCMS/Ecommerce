@@ -32,7 +32,8 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void CartManager_AddToCart_AddsAnItemToTheCart()
         {
-            _cartManager.AddToCart(_productVariant, 1);
+            var addToCartModel = new AddToCartModel { ProductVariant = _productVariant, Quantity = 1 };
+            _cartManager.AddToCart(addToCartModel);
 
             _cartModel.Items.Should().HaveCount(1);
         }
@@ -41,8 +42,9 @@ namespace MrCMS.EcommerceApp.Tests.Services
         public void CartManager_AddToCart_ShouldIncreaseAmountIfItAlreadyExists()
         {
             _cartModel.Items.Add(new CartItem { Item = _productVariant, Quantity = 1 });
+            var addToCartModel = new AddToCartModel { ProductVariant = _productVariant, Quantity = 1 };
 
-            _cartManager.AddToCart(_productVariant, 1);
+            _cartManager.AddToCart(addToCartModel);
 
             _cartModel.Items.Should().HaveCount(1);
         }
@@ -50,7 +52,8 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void CartManager_AddToCart_ShouldPersistToDb()
         {
-            _cartManager.AddToCart(_productVariant, 1);
+            var addToCartModel = new AddToCartModel { ProductVariant = _productVariant, Quantity = 1 };
+            _cartManager.AddToCart(addToCartModel);
 
             Session.QueryOver<CartItem>().RowCount().Should().Be(1);
         }
@@ -59,8 +62,9 @@ namespace MrCMS.EcommerceApp.Tests.Services
         public void CartManager_AddToCart_WithExistingItemShouldOnlyHave1DbRecord()
         {
             _cartModel.Items.Add(new CartItem { Item = _productVariant, Quantity = 1 });
+            var addToCartModel = new AddToCartModel { ProductVariant = _productVariant, Quantity = 1 };
 
-            _cartManager.AddToCart(_productVariant, 1);
+            _cartManager.AddToCart(addToCartModel);
 
             Session.QueryOver<CartItem>().RowCount().Should().Be(1);
         }

@@ -1,4 +1,5 @@
 @using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
 <table class="table table-condensed table-striped" id="product-pricing-info">
     <thead>
@@ -71,7 +72,7 @@
                     }
                 </td>
                 <td>
-                    @(variant.StockRemaining.HasValue ? variant.StockRemaining.ToString() : "0")
+                    @(variant.TrackingPolicy  == TrackingPolicy.DontTrack ? "Not tracked" : variant.StockRemaining.ToString())
                 </td>
                 <td>
                     @variant.Weight.ToString("0.0000")

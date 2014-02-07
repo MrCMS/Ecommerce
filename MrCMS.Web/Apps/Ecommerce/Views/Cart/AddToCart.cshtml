@@ -1,0 +1,12 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.AddToCartModel
+@using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.ProductVariant.Id)
+    <div id="product-addtobasket">
+        @Html.LabelFor(model => model.Quantity, new { @class = "span3 line-height-30" })
+        @Html.TextBoxFor(model => model.Quantity, new { @class = "input-mini" })
+        <button class="btn btn-info btn-addtobasket pull-right span6" type="submit">Add to basket</button>
+        @Html.ValidationMessageFor(model => model.Quantity)
+    </div>
+}

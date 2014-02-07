@@ -6,6 +6,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download
 {
     public interface IDownloadOrderedFileService
     {
-        void WriteDownloadToResponse(HttpResponseBase response, Order order, OrderLine orderLine);
+        ActionResult WriteDownloadToResponse(HttpResponseBase response, Order order, OrderLine orderLine);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Elmah;
+using Iesi.Collections.Generic;
 using MrCMS.DbConfiguration;
 using MrCMS.DbConfiguration.Configuration;
 using MrCMS.Entities.Multisite;
@@ -22,13 +23,19 @@ namespace MrCMS.EcommerceApp.Tests
 {
     public abstract class MrCMSTest : IDisposable
     {
+        private readonly MockingKernel _kernel;
 
         protected MrCMSTest()
         {
-            var mockingKernel = new MockingKernel();
-            mockingKernel.Load(new ContextModule());
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            _kernel = new MockingKernel();
+            Kernel.Load(new ContextModule());
+            MrCMSApplication.OverrideKernel(Kernel);
             CurrentRequestData.SiteSettings = new SiteSettings();
+        }
+
+        public MockingKernel Kernel
+        {
+            get { return _kernel; }
         }
 
         public virtual void Dispose()
@@ -98,8 +105,8 @@ namespace MrCMS.EcommerceApp.Tests
                                         Name = UserRole.Administrator
                                     };
 
-            user.Roles = new List<UserRole> { adminUserRole };
-            adminUserRole.Users = new List<User> { user };
+            user.Roles = new HashedSet<UserRole> { adminUserRole };
+            adminUserRole.Users = new HashedSet<User> { user };
 
             CurrentRequestData.CurrentUser = user;
         }

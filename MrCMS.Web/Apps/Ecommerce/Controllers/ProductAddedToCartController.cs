@@ -16,19 +16,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly CartModel _cartModel;
         private readonly IDocumentService _documentService;
+        private readonly CartModel _cart;
+        private readonly IProductAnalyticsService _productAnalyticsService;
 
-        public ProductAddedToCartController(CartModel cartModel, IDocumentService documentService )
+        public ProductAddedToCartController(CartModel cartModel, IDocumentService documentService, CartModel cart, IProductAnalyticsService productAnalyticsService)
         {
             _cartModel = cartModel;
             _documentService = documentService;
+            _cart = cart;
+            _productAnalyticsService = productAnalyticsService;
         }
 
         public ActionResult Show(ProductAddedToCart page, ProductVariant productVariant, int quantity = 1)
         {
-            if (productVariant == null)
+            if (productVariant == null || productVariant.Id == 0) //model binder always creates a product variant so shouldn't be null
                 return _documentService.RedirectTo<Cart>();
             ViewData["productvariant"] = productVariant;
             ViewData["quantity"] = quantity;
+            ViewData["cart"] = _cart;
             return View(page);
         }
 
@@ -44,7 +49,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public PartialViewResult RelatedProducts(ProductVariant productVariant)
         {
-            var model = new RelatedProductsViewModel {Title = "Related products", Products = new List<Product>()};
+            var model = new RelatedProductsViewModel
+                {
+                    Title = "Related products",
+                    Products = new List<Product>(),
+                    Cart = _cart
+                };
             var products = new List<Product>();
             if (productVariant.Product.Categories.Any())
                 products.AddRange(productVariant.Product.Categories.First().Products.Where(x => x.Id != productVariant.Product.Id && x.Published).Take(4));
@@ -57,11 +67,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             var model = new PeopleWhoBoughtThisAlsoBoughtViewModel
                 {
                     Title = "Customers also bought",
-                    Products = new List<Product>()
+                    Products = new List<Product>(),
+                    Cart = _cart
                 };
-            model.Products =
-                MrCMSApplication.Get<IProductAnalyticsService>()
-                                .GetListOfProductsWhoWhereAlsoBought(productvariant.Product);
+            ViewData["cart"] = _cart;
+            model.Products = _productAnalyticsService.GetListOfProductsWhoWhereAlsoBought(productvariant.Product);
             return PartialView(model);
         }
     }

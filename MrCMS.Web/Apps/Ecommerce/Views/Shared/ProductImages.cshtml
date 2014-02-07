@@ -5,7 +5,7 @@
 @Html.RenderImage(Model.DisplayImageUrl, new Size { Width = 240, Height = 140 }, Model.Name, Model.Name, new { @class = "span12" })
 <div id="product-image-thumbnails">
     <ul class="thumbnails">
-        @foreach (var item in Model.Images)
+        @foreach (var item in Model.Images.Skip(1))
         {
             <li class="span4">
                 <a href="@item.FileUrl" rel="prettyPhoto[product]">

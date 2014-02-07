@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
@@ -9,7 +11,9 @@ using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Website;
+using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -35,35 +39,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             ViewData["shipping-methods"] = _shippingMethodManager.GetAll();
             ViewData["tax-rate-options"] = _taxRateManager.GetOptions();
             ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
+            var productVariant = new ProductVariant
+                {
+                    Product = product, OptionValues = Enumerable.Range(0, product.Options.Count).Select(i => new ProductOptionValue()).ToList()
+                };
             return
-                PartialView(new ProductVariant
-                                {
-                                    Product = product,
-                                    OptionValues =
-                                        Enumerable.Range(0, product.Options.Count)
-                                                  .Select(i => new ProductOptionValue()).ToList()
-                                });
+                PartialView(productVariant);
         }
 
         [ActionName("Add")]
         [HttpPost]
-        public ActionResult Add_POST(ProductVariant productVariant, string shippingMethodsValue="")
+        public ActionResult Add_POST([IoCModelBinder(typeof(ProductVariantModelBinder))]ProductVariant productVariant)
         {
             if (ModelState.IsValid)
             {
-                SetShippingMethods(ref productVariant, shippingMethodsValue);
                 _productVariantService.Add(productVariant);
                 return RedirectToAction("Edit", "Webpage", new { id = productVariant.Product.Id });
             }
-            ViewData["shipping-methods"] = _shippingMethodManager.GetAll();
-            ViewData["tax-rate-options"] = _taxRateManager.GetOptions(productVariant.TaxRate);
-            ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
-            return PartialView(productVariant);
+            return RedirectToAction("Add", "ProductVariant", new { id = productVariant.Product.Id });
         }
 
         [HttpGet]
         public PartialViewResult Edit(ProductVariant productVariant)
         {
+            ModelState.Clear();
             ViewData["shipping-methods"] = _shippingMethodManager.GetAll();
             ViewData["tax-rate-options"] = _taxRateManager.GetOptions(productVariant.TaxRate);
             ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
@@ -72,42 +71,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Edit")]
         [HttpPost]
-        public ActionResult Edit_POST(ProductVariant productVariant, string shippingMethodsValue = "")
+        public ActionResult Edit_POST([IoCModelBinder(typeof(ProductVariantModelBinder))]ProductVariant productVariant)
         {
             if (ModelState.IsValid)
             {
-                SetShippingMethods(ref productVariant, shippingMethodsValue);
                 _productVariantService.Update(productVariant);
                 return RedirectToAction("Edit", "Webpage", new { id = productVariant.Product.Id });
             }
-            ViewData["shipping-methods"] = _shippingMethodManager.GetAll();
-            ViewData["tax-rate-options"] = _taxRateManager.GetOptions(productVariant.TaxRate);
-            ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
-            return PartialView(productVariant);
-        }
-
-        private void SetShippingMethods(ref ProductVariant productVariant, string shippingMethodsValue)
-        {
-            productVariant.ShippingMethods.Clear();
-
-            if (string.IsNullOrWhiteSpace(shippingMethodsValue)) return;
-
-            try
-            {
-                var smRaw = shippingMethodsValue.Trim().Split(',').Where(x => !string.IsNullOrWhiteSpace(x));
-                foreach (var s in smRaw)
-                {
-                    int id;
-                    Int32.TryParse(s, out id);
-                    if (id <= 0) continue;
-                    var shippingMethod = _shippingMethodManager.Get(id);
-                    productVariant.ShippingMethods.Add(shippingMethod);
-                }
-            }
-            catch (Exception ex)
-            {
-                CurrentRequestData.ErrorSignal.Raise(ex);
-            }
+            return RedirectToAction("Edit", "ProductVariant", new { id = productVariant.Product.Id });
         }
 
         [HttpGet]
@@ -129,6 +100,38 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return _productVariantService.AnyExistingProductVariantWithSKU(sku, Id)
                        ? Json("There is already an SKU stored with that value.", JsonRequestBehavior.AllowGet)
                        : Json(true, JsonRequestBehavior.AllowGet);
+        }
+    }
+
+    public class ProductVariantModelBinder : MrCMSDefaultModelBinder
+    {
+        private const string ShippingMethodPrefix = "shipping-method-";
+
+        public ProductVariantModelBinder(ISession session)
+            : base(() => session)
+        {
+        }
+
+        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+        {
+            var bindModel = base.BindModel(controllerContext, bindingContext);
+            if (bindModel is ProductVariant)
+            {
+                var productVariant = bindModel as ProductVariant;
+
+                var methodKeys =
+                    controllerContext.HttpContext.Request.Params.AllKeys.Where(s => s.StartsWith(ShippingMethodPrefix))
+                                     .ToList();
+
+                var excludedMethods = new List<ShippingMethod>();
+                foreach (var key in methodKeys)
+                {
+                    var method = Session.Get<ShippingMethod>(Convert.ToInt32(key.Replace(ShippingMethodPrefix, "")));
+                    excludedMethods.Add(method);
+                }
+                productVariant.RestrictedShippingMethods = excludedMethods;
+            }
+            return bindModel;
         }
     }
 }

@@ -18,9 +18,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public CartModel()
         {
             Items = new List<CartItem>();
+            AvailablePaymentMethods = new List<IPaymentMethod>();
+            AvailableShippingMethods = new List<ShippingMethod>();
         }
         public Guid CartGuid { get; set; }
         public List<CartItem> Items { get; set; }
+
+        public IEnumerable<CartItem> ShippableItems { get { return Items.Where(item => item.RequiresShipping); } }
+
         public bool Empty
         {
             get { return !Items.Any(); }
@@ -34,6 +39,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public decimal TotalPreDiscount
         {
             get { return Items.Sum(item => item.Price); }
+        }
+
+        public virtual decimal ShippableTotalPreDiscount
+        {
+            get { return ShippableItems.Sum(item => item.Price); }
+        }
+
+        public virtual decimal ShippableCalculationTotal
+        {
+            get { return ShippableTotalPreDiscount - OrderTotalDiscount; }
         }
 
         public IDictionary<decimal, decimal> TaxRates
@@ -105,11 +120,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get { return Items.Sum(item => item.Tax); }
         }
 
-        public bool CanCheckout
-        {
-            get { return Items.Any() && Items.All(item => item.CurrentlyAvailable); }
-        }
-
         public User User { get; set; }
 
         public Guid UserGuid { get; set; }
@@ -132,7 +142,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public decimal? ShippingPreTax { get { return ShippingTotal - ShippingTax; } }
         public decimal? ShippingTaxPercentage
         {
-            get { return ShippingMethod == null ? (decimal?) null : ShippingMethod.TaxRatePercentage; }
+            get { return ShippingMethod == null ? (decimal?)null : ShippingMethod.TaxRatePercentage; }
         }
 
         public virtual decimal Weight
@@ -140,12 +150,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get { return Items.Any() ? Items.Sum(item => item.Weight) : decimal.Zero; }
         }
 
-        public bool AnyStandardPaymentMethodsAvailable { get; set; }
-        public bool CanEnterPaymentFlow { get { return Items.Any() && AnyStandardPaymentMethodsAvailable; } }
-        public bool PayPalExpressAvailable { get; set; }
-        public bool CanUsePayPalExpress { get { return Items.Any() && PayPalExpressAvailable; } }
-
         public IEnumerable<IPaymentMethod> AvailablePaymentMethods { get; set; }
+        public IList<ShippingMethod> AvailableShippingMethods { get; set; }
 
         public Country Country { get; set; }
 
@@ -174,9 +180,53 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get { return !string.IsNullOrWhiteSpace(PayPalExpressToken) && !string.IsNullOrWhiteSpace(PayPalExpressPayerId); }
         }
 
+        public bool RequiresShipping
+        {
+            get { return ShippableItems.Any(); }
+        }
+
+
+        public bool CanCheckout
+        {
+            get { return !CannotCheckoutReasons.Any(); }
+        }
+
+        public bool AnyStandardPaymentMethodsAvailable { get; set; }
+        public bool CanEnterPaymentFlow { get { return CanCheckout && AnyStandardPaymentMethodsAvailable; } }
+        public bool PayPalExpressAvailable { get; set; }
+        public bool CanUsePayPalExpress { get { return CanCheckout && PayPalExpressAvailable; } }
+
         public bool CanPlaceOrder
         {
-            get { return ShippingAddress != null && BillingAddress != null && Items.Any(); }
+            get { return !CannotPlaceOrderReasons.Any(); }
+        }
+        public IEnumerable<string> CannotCheckoutReasons
+        {
+            get
+            {
+                if (!Items.Any())
+                    yield return "You have nothing in your cart";
+                foreach (CartItem item in Items)
+                {
+                    if (!item.CanBuy(this))
+                        yield return item.Error(this);
+                }
+            }
+        }
+
+        public IEnumerable<string> CannotPlaceOrderReasons
+        {
+            get
+            {
+                foreach (var cannotCheckoutReason in CannotCheckoutReasons)
+                    yield return cannotCheckoutReason;
+                if (RequiresShipping && ShippingAddress == null)
+                    yield return "Shipping address is not set";
+                if (RequiresShipping && ShippingMethod == null)
+                    yield return "Shipping method is not set";
+                if (BillingAddress == null)
+                    yield return "Billing address is not set";
+            }
         }
     }
 }

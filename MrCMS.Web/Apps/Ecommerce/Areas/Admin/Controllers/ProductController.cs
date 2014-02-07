@@ -451,7 +451,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult SortVariants(Product product)
         {
-            ViewData["sort-items"] = product.Variants.Select(arg => new SortItem { Order = product.Variants.IndexOf(arg), Id = arg.Id, Name = arg.Name }).ToList();
+            var variants = product.Variants;
+            var sortItems = new List<SortItem>();
+            foreach (var variant in variants)
+            {
+                var name = !string.IsNullOrEmpty(variant.Name) ? variant.Name : product.Name;
+
+                if (variant.OptionValues.Any())
+                {
+                    name += string.Format(" {0}", string.Join(" - ", variant.OptionValues.Select(value => value.Value)));
+                }
+                sortItems.Add(new SortItem
+                    {
+                        Id = variant.Id,
+                        Name = name,
+                        Order = product.Variants.IndexOf(variant)
+                    });
+            }
+            ViewData["sort-items"] = sortItems;
             return PartialView(product);
         }
 
