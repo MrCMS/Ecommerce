@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 AddHeader(wsItems);
 
-                var productVariants = _productVariantService.GetAll().Where(variant => variant.Product != null).ToList();
+                var productVariants = _productVariantService.GetAll().Where(variant => variant.Product != null).OrderBy(x=>x.Product.Id).ToList();
 
                 for (var i = 0; i < productVariants.Count; i++)
                 {

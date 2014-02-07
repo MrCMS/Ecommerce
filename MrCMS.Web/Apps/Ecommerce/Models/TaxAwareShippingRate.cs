@@ -20,6 +20,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             return PriceCreator(value, rate,  settings).PriceIncludingTax.GetValueOrDefault();
         }
+        public static decimal GetTax(decimal value, TaxRate rate, TaxSettings settings = null)
+        {
+            return PriceCreator(value, rate,  settings).Tax.GetValueOrDefault();
+        }
         public static decimal? GetPriceExcludingTax(decimal? value, TaxRate rate, TaxSettings settings = null)
         {
             return PriceCreator(value, rate,  settings).PriceExcludingTax;
@@ -27,6 +31,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public static decimal? GetPriceIncludingTax(decimal? value, TaxRate rate,  TaxSettings settings = null)
         {
             return PriceCreator(value, rate, settings).PriceIncludingTax;
+        }
+        public static decimal? GetTax(decimal? value, TaxRate rate, TaxSettings settings = null)
+        {
+            return PriceCreator(value, rate, settings).Tax;
         }
 
         private static Func<decimal?, TaxRate, TaxSettings, TaxAwareShippingRate> PriceCreator =

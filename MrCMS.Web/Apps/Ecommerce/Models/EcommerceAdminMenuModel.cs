@@ -100,7 +100,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                 "Orders",
                                                 new List<IMenuItem>
                                                     {
-                                                        new ChildMenuItem("Order by shipping type",
+                                                        new ChildMenuItem("Orders by shipping type",
                                                                           "/Admin/Apps/Ecommerce/Report/OrdersByShippingType"),
                                                     }
                                             }

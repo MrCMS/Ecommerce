@@ -1,6 +1,8 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.RelatedProductsViewModel
 @if (Model != null && Model.Products.Any())
 {
+    ViewData["cart"] = Model.Cart;
+    
     <hr />
     if (!String.IsNullOrEmpty(Model.Title))
     {

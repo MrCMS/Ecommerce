@@ -26,6 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private HashSet<Brand> _allBrands;
         private ProductSearch _uniquePage;
         private MediaCategory _productGalleriesCategory;
+        private HashSet<ProductOption> _productOptions;
 
 
         public ImportProductsService(IDocumentService documentService, IBrandService brandService,
@@ -41,6 +42,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _session = session;
         }
 
+        public void SetAllDocuments(IEnumerable<Document> documents)
+        {
+            _allDocuments = new HashSet<Document>(documents);
+        }
+
         public IImportProductsService Initialize()
         {
             _allDocuments = new HashSet<Document>(_documentService.GetAllDocuments<Document>());
@@ -48,6 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _importSpecificationsService.Initialize();
             _importProductVariantsService.Initialize();
             _importUrlHistoryService.Initialize();
+            _productOptions = new HashSet<ProductOption>(_session.QueryOver<ProductOption>().List());
             return this;
         }
 
@@ -99,7 +106,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         {
             if (_allDocuments == null)
                 _allDocuments = new HashSet<Document>();
-            var product = 
+            var product =
                 _allDocuments.OfType<Product>()
                              .SingleOrDefault(x => x.UrlSegment == dataTransferObject.UrlSegment) ??
                              new Product();
@@ -114,6 +121,46 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             product.Abstract = dataTransferObject.Abstract;
             product.PublishOn = dataTransferObject.PublishDate;
 
+            var isNew = false;
+            var productGallery = product.Gallery ?? new MediaCategory();
+            if (product.Id == 0)
+            {
+                isNew = true;
+                product.DisplayOrder = _allDocuments.Count(webpage => webpage.Parent == _uniquePage);
+                productGallery.Name = product.Name;
+                productGallery.UrlSegment = "product-galleries/" + product.UrlSegment;
+                productGallery.IsGallery = true;
+                productGallery.Parent = _productGalleriesCategory;
+                productGallery.HideInAdminNav = true;
+                product.Gallery = productGallery;
+            }
+
+            SetBrand(dataTransferObject, product);
+
+            SetCategories(dataTransferObject, product);
+
+            SetOptions(dataTransferObject, product);
+
+            ////Url History
+            _importUrlHistoryService.ImportUrlHistory(dataTransferObject, product);
+
+            ////Specifications
+            _importSpecificationsService.ImportSpecifications(dataTransferObject, product);
+
+            ////Variants
+            _importProductVariantsService.ImportVariants(dataTransferObject, product);
+
+            if (isNew)
+            {
+                _allDocuments.Add(product);
+                _allDocuments.Add(productGallery);
+            }
+
+            return product;
+        }
+
+        private void SetBrand(ProductImportDataTransferObject dataTransferObject, Product product)
+        {
             //Brand
             if (!String.IsNullOrWhiteSpace(dataTransferObject.Brand))
             {
@@ -126,48 +173,70 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 }
                 product.Brand = brand;
             }
-
-            //Categories
-            product.Categories.Clear();
-            foreach (var item in dataTransferObject.Categories)
-            {
-                var category = _allDocuments.OfType<Category>().SingleOrDefault(x => x.UrlSegment == item);
-                if (category != null && product.Categories.All(x => x.Id != category.Id))
-                {
-                    product.Categories.Add((Category)category);
-                }
-            }
-
-            product.Options.Clear();
-
-            ////Url History
-            _importUrlHistoryService.ImportUrlHistory(dataTransferObject, product);
-
-            ////Specifications
-            _importSpecificationsService.ImportSpecifications(dataTransferObject, product);
-
-            ////Variants
-            _importProductVariantsService.ImportVariants(dataTransferObject, product);
-
-            if (product.Id == 0)
-            {
-                product.DisplayOrder = _allDocuments.Count(webpage => webpage.Parent == _uniquePage);
-                var productGallery = new MediaCategory
-                {
-                    Name = product.Name,
-                    UrlSegment = "product-galleries/" + product.UrlSegment,
-                    IsGallery = true,
-                    Parent = _productGalleriesCategory,
-                    HideInAdminNav = true
-                };
-                product.Gallery = productGallery;
-
-                _allDocuments.Add(product);
-                _allDocuments.Add(productGallery);
-            }
-
-            return product;
         }
 
+        private void SetOptions(ProductImportDataTransferObject dataTransferObject, Product product)
+        {
+            var optionsToAdd =
+                dataTransferObject.Options.Where(
+                    s => !product.Options.Select(option => option.Name).Contains(s, StringComparer.OrdinalIgnoreCase))
+                                  .ToList();
+            var optionsToRemove =
+                product.Options.Where(option => !dataTransferObject.Options.Contains(option.Name)).ToList();
+
+            foreach (var option in optionsToAdd)
+            {
+                var existingOption =
+                    _productOptions.FirstOrDefault(
+                        productOption => productOption.Name.Equals(option, StringComparison.OrdinalIgnoreCase));
+                if (existingOption == null)
+                {
+                    existingOption = new ProductOption
+                        {
+                            Name = option,
+                        };
+
+                    _productOptions.Add(existingOption);
+                    _session.Save(existingOption);
+                }
+                product.Options.Add(existingOption);
+                existingOption.Products.Add(product);
+            }
+            foreach (var option in optionsToRemove)
+            {
+                product.Options.Remove(option);
+                option.Products.Remove(product);
+            }
+        }
+
+        public void SetCategories(ProductImportDataTransferObject dataTransferObject, Product product)
+        {
+            //Categories
+            var categoriesToAdd =
+                dataTransferObject.Categories.Where(
+                    s =>
+                    !product.Categories.Select(category => category.UrlSegment)
+                            .Contains(s, StringComparer.OrdinalIgnoreCase)).ToList();
+            var categoriesToRemove =
+                product.Categories.Where(
+                    category => !dataTransferObject.Categories.Contains(category.UrlSegment, StringComparer.OrdinalIgnoreCase))
+                       .ToList();
+            foreach (var item in categoriesToAdd)
+            {
+                var category = _allDocuments.OfType<Category>().SingleOrDefault(x => x.UrlSegment == item);
+                if (category != null)
+                {
+                    product.Categories.Add(category);
+                    if (!category.Products.Contains(product))
+                        category.Products.Add(product);
+                }
+            }
+            foreach (var category in categoriesToRemove)
+            {
+                product.Categories.Remove(category);
+                if (category.Products.Contains(product))
+                    category.Products.Remove(product);
+            }
+        }
     }
 }

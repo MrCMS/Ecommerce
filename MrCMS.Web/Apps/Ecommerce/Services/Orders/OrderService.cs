@@ -38,9 +38,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                     {
                                                         var order = new Order
                                                                         {
-                                                                            ShippingAddress = cartModel.ShippingAddress.ToAddressData(_session),
+                                                                            ShippingAddress = cartModel.RequiresShipping ? cartModel.ShippingAddress.ToAddressData(_session) : null,
                                                                             BillingAddress = cartModel.BillingAddress.ToAddressData(_session),
                                                                             ShippingMethod = cartModel.ShippingMethod,
+                                                                            ShippingMethodName = cartModel.RequiresShipping ? cartModel.ShippingMethod.Name : "No shipping required",
                                                                             Subtotal = cartModel.Subtotal,
                                                                             DiscountAmount = cartModel.OrderTotalDiscount,
                                                                             Discount = cartModel.Discount,
@@ -54,7 +55,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                             OrderEmail = cartModel.OrderEmail,
                                                                             CustomerIP = RequestHelper.GetIP(),
                                                                             PaymentMethod = cartModel.PaymentMethod,
-                                                                            ShippingStatus = ShippingStatus.Pending,
+                                                                            ShippingStatus = cartModel.RequiresShipping ? ShippingStatus.Pending : ShippingStatus.ShippingNotRequired,
                                                                             ShippingTaxPercentage = cartModel.ShippingTaxPercentage,
                                                                             SalesChannel = EcommerceApp.DefaultSalesChannel,
                                                                             Guid = cartModel.CartGuid
@@ -80,17 +81,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                                     Name = !string.IsNullOrEmpty(item.Item.Name) ? item.Item.Name : item.Item.Product.Name,
                                                                                     Options = options,
                                                                                     Discount = item.DiscountAmount,
+                                                                                    RequiresShipping = item.RequiresShipping
                                                                                 };
                                                             if (item.IsDownloadable)
                                                             {
                                                                 orderLine.IsDownloadable = true;
                                                                 orderLine.AllowedNumberOfDownloads = item.AllowedNumberOfDownloads;
                                                                 orderLine.DownloadExpiresOn =
-                                                                    item.AllowedNumberOfDaysForDownload.HasValue
+                                                                    (item.AllowedNumberOfDaysForDownload.HasValue && item.AllowedNumberOfDaysForDownload > 0)
                                                                         ? CurrentRequestData.Now.AddDays(
                                                                             item.AllowedNumberOfDaysForDownload
                                                                                 .GetValueOrDefault())
-                                                                        : (DateTime?) null;
+                                                                        : (DateTime?)null;
                                                                 orderLine.NumberOfDownloads = 0;
                                                                 var fileByUrl = _fileService.GetFileByUrl(item.DownloadFileUrl);
                                                                 if (fileByUrl != null)
@@ -121,9 +123,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                 _session.Save(clone);
                                                                 addresses.Add(clone);
                                                             }
-                                                            if (!addresses.Contains(cartModel.ShippingAddress, AddressComparison.Comparer))
+                                                            if (cartModel.RequiresShipping && !addresses.Contains(cartModel.ShippingAddress, AddressComparison.Comparer))
+                                                            {
                                                                 _session.Save(cartModel.ShippingAddress.Clone(session));
-
+                                                            }
                                                             if (string.IsNullOrEmpty(currentUser.FirstName) &&
                                                                 string.IsNullOrEmpty(currentUser.LastName) && cartModel.BillingAddress != null)
                                                             {

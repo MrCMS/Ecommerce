@@ -7,7 +7,7 @@
 <div class="row-fluid">
     <div class="span8">
         <h4>Billing Address</h4>
-        @if (cart.BillingAddressSameAsShippingAddress)
+        @if (cart.RequiresShipping && cart.BillingAddressSameAsShippingAddress)
         {
             using (Html.BeginForm("BillingAddressSameAsShippingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
             {
@@ -34,18 +34,18 @@
                     <div class="controls">
                         @cart.BillingAddress.GetDescription()
                     </div>
-                </div>    
+                </div>
             </div>
             using (Html.BeginForm("UpdateBillingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
             {
-                <div class="control-group">
-                    <div class="controls">
-                        <input class="btn btn-info" value="Edit" type="submit" />
-                    </div>
+            <div class="control-group">
+                <div class="controls">
+                    <input class="btn btn-info" value="Edit" type="submit" />
                 </div>
+            </div>
             }
         }
-        <hr/>
+        <hr />
         <h4>Payment Details</h4>
         @if (!settingBillingAddress)
         {
@@ -66,8 +66,11 @@
         @{Html.RenderAction("Summary", "Checkout");}
         <hr />
         @{Html.RenderAction("OrderEmail", "Checkout");}
-        <hr />
-        @{Html.RenderAction("DeliveryDetails", "Checkout");}
+        @if (cart.RequiresShipping)
+        {
+            <hr />
+            Html.RenderAction("DeliveryDetails", "Checkout");
+        }
     </div>
 </div>
 

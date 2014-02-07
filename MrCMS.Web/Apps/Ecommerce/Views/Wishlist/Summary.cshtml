@@ -1,0 +1,6 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model MrCMS.Web.Apps.Ecommerce.Models.WishlistSummary
+<a data-wishlist-summary="true" href="@(UniquePageHelper.GetUrl<ShowWishlist>())">
+Wishlist (@Model.Count)
+</a>

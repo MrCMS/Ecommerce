@@ -7,6 +7,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 {
     public class OrderLine : SiteEntity
     {
+        public OrderLine()
+        {
+            RequiresShipping = true;
+        }
         //product title or product variant name if available
         public virtual string Name { get; set; }
         //ie blue large cotton
@@ -29,6 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 
         public virtual decimal Subtotal { get { return Quantity * UnitPrice; } }
 
+        public virtual bool RequiresShipping { get; set; }
         public virtual bool IsDownloadable { get; set; }
         public virtual int? AllowedNumberOfDownloads { get; set; }
         public virtual DateTime? DownloadExpiresOn { get; set; }
@@ -36,5 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual string DownloadFileUrl { get; set; }
         public virtual string DownloadFileContentType { get; set; }
         public virtual string DownloadFileName { get; set; }
+        public virtual string DownloadMaskedLink { get { return string.Format("http://{0}/digital-download/{1}/{2}", Site.BaseUrl, Order.Guid, Id); } }
+
     }
 }

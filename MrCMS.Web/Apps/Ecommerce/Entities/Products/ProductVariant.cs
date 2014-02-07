@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Foolproof;
 using MrCMS.Entities;
 using MrCMS.Entities.Documents.Media;
+using MrCMS.Helpers.Validation;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
@@ -24,7 +26,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             OptionValues = new List<ProductOptionValue>();
             PriceBreaks = new List<PriceBreak>();
-            ShippingMethods = new List<ShippingMethod>();
+            RestrictedShippingMethods = new List<ShippingMethod>();
+            RequiresShipping = true;
         }
 
         public virtual decimal Weight { get; set; }
@@ -34,9 +37,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         [Required]
         [DisplayName("Price")]
+        [CurrencyValidator]
+        [UIHint("Currency")]
         public virtual decimal BasePrice { get; set; }
 
         [DisplayName("Previous Price")]
+        [CurrencyValidator]
+        [UIHint("Currency")]
         public virtual decimal? PreviousPrice { get; set; }
 
         public virtual decimal? PreviousPriceIncludingTax
@@ -135,7 +142,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual bool CanBuy(int quantity)
         {
-            return quantity > 0 && (!StockRemaining.HasValue || StockRemaining >= quantity);
+            return quantity > 0 && (TrackingPolicy == TrackingPolicy.DontTrack || StockRemaining >= quantity);
         }
 
         public virtual ProductAvailability Availability
@@ -153,10 +160,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual bool InStock
         {
-            get { return !StockRemaining.HasValue || StockRemaining > 0; }
+            get { return TrackingPolicy == TrackingPolicy.DontTrack || StockRemaining > 0; }
         }
+
         [DisplayName("Stock Remaining")]
-        public virtual int? StockRemaining { get; set; }
+        public virtual int StockRemaining { get; set; }
 
         public virtual Product Product { get; set; }
 
@@ -226,13 +234,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual string SoldOutMessage { get; set; }
 
         [DisplayName("Allowed Shipping Methods")]
-        public virtual IList<ShippingMethod> ShippingMethods { get; set; }
+        public virtual IList<ShippingMethod> RestrictedShippingMethods { get; set; }
 
         //Download Options
         [DisplayName("Downloadable?")]
         public virtual bool IsDownloadable { get; set; }
 
         [DisplayName("Download File")]
+        [RequiredIf("IsDownloadable", true)]
         public virtual string DownloadFileUrl { get; set; }
 
         [DisplayName("Demo File")]
@@ -262,6 +271,119 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                 return Product != null
                            ? (IEnumerable<MediaFile>)Product.Images.OrderByDescending(file => file.FileUrl == DisplayImageUrl)
                            : new List<MediaFile>();
+            }
+        }
+
+        public virtual string DirectUrl
+        {
+            get
+            {
+                return Product == null
+                           ? string.Empty
+                           : string.Format("/{0}?variant={1}", Product.LiveUrlSegment, Id); 
+            }
+        }
+
+        [DisplayName("Requires shipping?")]
+        public virtual bool RequiresShipping { get; set; }
+
+        public virtual CanBuyStatus CanBuy(CartModel cart, int additionalQuantity = 0)
+        {
+            if (!InStock)
+                return new OutOfStock(this);
+            var requestedQuantity = additionalQuantity;
+            var existingItem = cart.Items.FirstOrDefault(item => item.Item == this);
+            if (existingItem != null)
+                requestedQuantity += existingItem.Quantity;
+            if (TrackingPolicy == TrackingPolicy.Track && requestedQuantity > StockRemaining)
+                return new CannotOrderQuantity(this, requestedQuantity);
+            if (!cart.AvailableShippingMethods.Except(RestrictedShippingMethods).Any())
+                return new NoShippingMethodWouldBeAvailable(this);
+            return new CanBuy();
+        }
+    }
+
+    public class NoShippingMethodWouldBeAvailable : CanBuyStatus
+    {
+        private readonly ProductVariant _variant;
+
+        public NoShippingMethodWouldBeAvailable(ProductVariant variant)
+        {
+            _variant = variant;
+        }
+
+        public override bool OK
+        {
+            get { return false; }
+        }
+
+        public override string Message
+        {
+            get { return string.Format("You cannot order {0} as adding it to your cart would mean that there are no availble shipping methods", _variant.DisplayName); }
+        }
+    }
+
+    public abstract class CanBuyStatus
+    {
+        public abstract bool OK { get; }
+        public abstract string Message { get; }
+    }
+
+    public class CanBuy : CanBuyStatus
+    {
+        public override bool OK
+        {
+            get { return true; }
+        }
+
+        public override string Message
+        {
+            get { return null; }
+        }
+    }
+
+    public class OutOfStock : CanBuyStatus
+    {
+        private readonly ProductVariant _variant;
+
+        public OutOfStock(ProductVariant variant)
+        {
+            _variant = variant;
+        }
+
+        public override bool OK
+        {
+            get { return false; }
+        }
+
+        public override string Message
+        {
+            get { return string.Format("Sorry, but {0} is currently out of stock", _variant.DisplayName); }
+        }
+    }
+
+    public class CannotOrderQuantity : CanBuyStatus
+    {
+        private readonly ProductVariant _variant;
+        private readonly int _requestedQuantity;
+
+        public CannotOrderQuantity(ProductVariant variant, int requestedQuantity)
+        {
+            _variant = variant;
+            _requestedQuantity = requestedQuantity;
+        }
+
+        public override bool OK
+        {
+            get { return false; }
+        }
+
+        public override string Message
+        {
+            get
+            {
+                return string.Format("Sorry, but there are currently only {0} units of {1} in stock",
+                                     _variant.StockRemaining, _variant.DisplayName);
             }
         }
     }

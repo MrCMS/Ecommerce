@@ -20,16 +20,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IProductOptionManager _productOptionManager;
         private readonly IProductSearchService _productSearchService;
         private readonly IBrandService _brandService;
+        private readonly CartModel _cart;
 
         public ProductSearchController(ICategoryService categoryService,
                                        IProductOptionManager productOptionManager,
                                        IProductSearchService productSearchService,
-                                       IBrandService brandService)
+                                       IBrandService brandService, CartModel cart)
         {
             _categoryService = categoryService;
             _productOptionManager = productOptionManager;
             _productSearchService = productSearchService;
             _brandService = brandService;
+            _cart = cart;
         }
 
         public ViewResult Show(ProductSearch page, [IoCModelBinder(typeof(ProductSearchQueryModelBinder))]ProductSearchQuery query)
@@ -59,6 +61,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public PartialViewResult Results([IoCModelBinder(typeof(ProductSearchQueryModelBinder))]ProductSearchQuery query)
         {
             ViewData["query"] = query;
+            ViewData["cart"] = _cart;
             return PartialView(_productSearchService.SearchProducts(query));
         }
     }

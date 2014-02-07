@@ -34,7 +34,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         public IImportProductVariantsService Initialize()
         {
             _allVariants = new HashSet<ProductVariant>(_session.QueryOver<ProductVariant>().List());
-            _importProductVariantPriceBreaksService.Initialize();
             _importProductOptionsService.Initialize();
             return this;
         }
@@ -43,7 +42,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         {
             foreach (var item in dataTransferObject.ProductVariants)
             {
-                var productVariant = _allVariants.SingleOrDefault(x => x.SKU == item.SKU) ?? new ProductVariant();
+                ProductVariant productVariant;
+                if (_allVariants.SingleOrDefault(x => x.SKU == item.SKU) != null)
+                    productVariant = _allVariants.SingleOrDefault(x => x.SKU == item.SKU);
+                else
+                {
+                    productVariant = new ProductVariant();
+                    _allVariants.Add(productVariant);
+                }
 
                 productVariant.Name = item.Name;
                 productVariant.SKU = item.SKU;
@@ -63,18 +69,61 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 }
 
 
-                for (var i = productVariant.OptionValues.Count - 1; i >= 0; i--)
+                var optionsToAdd =
+                    item.Options.Where(
+                        s =>
+                        !productVariant.OptionValues.Select(value => value.ProductOption.Name)
+                                        .Contains(s.Key, StringComparer.OrdinalIgnoreCase)).ToList();
+                var optionsToRemove =
+                    productVariant.OptionValues.Where(
+                        value => !item.Options.Keys.Contains(value.ProductOption.Name, StringComparer.OrdinalIgnoreCase))
+                                  .ToList();
+                var optionsToUpdate =
+                    productVariant.OptionValues.Where(value => !optionsToRemove.Contains(value)).ToList();
+
+                foreach (var option in optionsToAdd)
                 {
-                    var value = productVariant.OptionValues[i];
+                    var productOption = product.Options.FirstOrDefault(po => po.Name == option.Key);
+                    if (productOption != null)
+                    {
+                        var productOptionValue = new ProductOptionValue
+                                                     {
+                                                         ProductOption = productOption,
+                                                         ProductVariant = productVariant,
+                                                         Value = option.Value
+                                                     };
+                        productVariant.OptionValues.Add(productOptionValue);
+                        productOption.Values.Add(productOptionValue);
+                    }
+                }
+                foreach (var value in optionsToRemove)
+                {
+                    var productOption = value.ProductOption;
                     productVariant.OptionValues.Remove(value);
-                    _productOptionManager.DeleteProductAttributeValue(value);
+                    productOption.Values.Remove(value);
+                    _session.Delete(value);
+                }
+                foreach (var value in optionsToUpdate)
+                {
+                    var key =
+                        item.Options.Keys.FirstOrDefault(
+                            s => s.Equals(value.ProductOption.Name, StringComparison.OrdinalIgnoreCase));
+                    if (key != null) value.Value = item.Options[key];
                 }
 
                 //Price Breaks
                 _importProductVariantPriceBreaksService.ImportVariantPriceBreaks(item, productVariant);
 
-                //Specifications
-                _importProductOptionsService.ImportVariantSpecifications(item, product, productVariant);
+                _session.SaveOrUpdate(productVariant);
+            }
+            var variantsToRemove =
+                product.Variants.Where(
+                    variant => !dataTransferObject.ProductVariants.Select(o => o.SKU).Contains(variant.SKU)).ToList();
+            foreach (var variant in variantsToRemove)
+            {
+                _allVariants.Remove(variant);
+                product.Variants.Remove(variant);
+                _session.Delete(variant);
             }
 
             return dataTransferObject.ProductVariants.Any() ? product.Variants : null;
@@ -92,7 +141,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     {
         private readonly ISession _session;
         private HashSet<ProductOption> _productOptions;
-        private HashSet<ProductOptionValue> _productOptionValues;
 
         public ImportProductOptionsService(ISession session)
         {
@@ -103,7 +151,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         public IImportProductOptionsService Initialize()
         {
             _productOptions = new HashSet<ProductOption>(_session.QueryOver<ProductOption>().List());
-            _productOptionValues = new HashSet<ProductOptionValue>(_session.QueryOver<ProductOptionValue>().List());
             return this;
         }
 

@@ -448,48 +448,6 @@ namespace MrCMS.Services
             return _session.QueryOver<UserRole>().Where(role => role.Name.IsInsensitiveLike(name, MatchMode.Exact)).SingleOrDefault();
         }
 
-        public void SetAdminRoles(string adminRoles, Webpage webpage)
-        {
-            if (webpage == null) throw new ArgumentNullException("webpage");
-
-            if (adminRoles == null)
-                adminRoles = string.Empty;
-
-            var roleNames =
-                adminRoles.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()).Where(
-                    x => !string.IsNullOrWhiteSpace(x));
-
-            var roles = webpage.AdminAllowedRoles.ToList();
-
-            if (webpage.InheritAdminRolesFromParent)
-            {
-                roles.ForEach(role =>
-                {
-                    role.AdminWebpages.Remove(webpage);
-                    webpage.AdminAllowedRoles.Remove(role);
-                });
-            }
-            else
-            {
-                roleNames.ForEach(name =>
-                {
-                    var role = GetRole(name);
-                    if (!webpage.AdminAllowedRoles.Contains(role))
-                    {
-                        webpage.AdminAllowedRoles.Add(role);
-                        role.AdminWebpages.Add(webpage);
-                    }
-                    roles.Remove(role);
-                });
-
-                roles.ForEach(role =>
-                {
-                    webpage.AdminAllowedRoles.Remove(role);
-                    role.AdminWebpages.Remove(webpage);
-                });
-            }
-        }
-
         public T GetDocumentByUrl<T>(string url) where T : Document
         {
             return _session.QueryOver<T>()
@@ -585,6 +543,19 @@ namespace MrCMS.Services
                                                      pair => string.Format("{0}={1}", pair.Key, pair.Value))));
             }
             return new RedirectResult(url);
+        }
+
+        public void RevertToVersion(DocumentVersion documentVersion)
+        {
+            var currentVersion = documentVersion.Document;
+            var previousVersion = currentVersion.GetVersion(documentVersion.Id);
+
+            var versionProperties = currentVersion.GetType().GetVersionProperties();
+            foreach (var versionProperty in versionProperties)
+            {
+                versionProperty.SetValue(currentVersion, versionProperty.GetValue(previousVersion, null), null);
+            }
+            _session.Transact(session => session.Update(currentVersion));
         }
 
         public bool UrlIsValidForMediaCategory(string url, int? id)

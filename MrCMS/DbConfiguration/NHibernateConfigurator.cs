@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Reflection;
+using System.Web.Configuration;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using MrCMS.Apps;
+using MrCMS.Config;
 using MrCMS.DbConfiguration.Configuration;
 using MrCMS.DbConfiguration.Conventions;
 using MrCMS.DbConfiguration.Filters;
@@ -152,15 +154,29 @@ namespace MrCMS.DbConfiguration
                 .Cache(builder =>
                 {
                     if (CacheEnabled)
-                        builder.UseSecondLevelCache().UseQueryCache().ProviderClass<SysCacheProvider>().
-                            QueryCacheFactory<StandardQueryCacheFactory>();
+                    {
+                        builder.UseSecondLevelCache().UseQueryCache().QueryCacheFactory<StandardQueryCacheFactory>();
+                        var mrCMSSection = WebConfigurationManager.GetSection("mrcms") as MrCMSConfigSection;
+                        if (mrCMSSection != null)
+                        {
+                            builder.ProviderClass(mrCMSSection.CacheProvider.AssemblyQualifiedName);
+                            if (mrCMSSection.MinimizePuts)
+                                builder.UseMinimalPuts();
+                        }
+                        else
+                            builder.ProviderClass<SysCacheProvider>();
+                    }
                 })
                 .ExposeConfiguration(AppendListeners)
                 .ExposeConfiguration(AppSpecificConfiguration)
                 .ExposeConfiguration(c =>
                 {
+#if DEBUG
                     c.SetProperty(Environment.GenerateStatistics, "true");
+#endif
                     c.SetProperty(Environment.Hbm2ddlKeyWords, "auto-quote");
+                    c.SetProperty(Environment.DefaultBatchFetchSize, "25");
+                    c.SetProperty(Environment.BatchSize, "25");
                 })
                 .BuildConfiguration();
 

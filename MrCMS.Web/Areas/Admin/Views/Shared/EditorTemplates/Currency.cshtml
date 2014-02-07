@@ -1,0 +1,4 @@
+﻿@using MrCMS.Website
+@model decimal?
+
+@Html.TextBox("", (Model.HasValue ? Model.Value.ToString("0.00") : string.Empty), new {@class = "span12"})

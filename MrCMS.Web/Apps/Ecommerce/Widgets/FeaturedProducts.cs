@@ -1,8 +1,10 @@
 ﻿using System;
 using MrCMS.Entities.Widget;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using System.Collections.Generic;
 using System.ComponentModel;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Widgets
 {
@@ -33,7 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
             {
                 model.Title = "Error during widget loading. Review widget settings in Administration.";
             }
-
+            model.Cart = MrCMSApplication.Get<CartModel>();
             return model;
         }
     }
@@ -42,5 +44,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
     {
         public IList<Product> Products { get; set; }
         public string Title { get; set; }
+        public CartModel Cart { get; set; }
     }
 }

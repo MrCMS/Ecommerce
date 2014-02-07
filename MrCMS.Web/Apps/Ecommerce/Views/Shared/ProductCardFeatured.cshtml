@@ -1,16 +1,18 @@
 ﻿@using System.Drawing
+@using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
+@{ 
+    var cart = ViewData["cart"] as CartModel;
+    var buyableVariant = Model.Variants.Count == 1 ? Model.Variants.FirstOrDefault(variant => variant.CanBuy(cart, 1).OK) : null;
+}
 <div class="span3">
     <div style="overflow: hidden;">
-        @if (Model.Images.Any())
-        {
-            <a href="/@Model.LiveUrlSegment">@RenderImage(Model.DisplayImageUrl, new Size(240,140), null, null, new { @class = "img-rounded span12" })</a>
-        }
+        <a href="/@Model.LiveUrlSegment">@RenderImage(Model.DisplayImageUrl, null, null, new { @class = "img-rounded span12" })</a>
     </div>
     <div class="clearfix"></div>
     <h4 class="product-title"><a href="/@Model.LiveUrlSegment">@Model.Name</a></h4>
-    <div style="min-height: 130px;">@(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)</div>
+    <div>@(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)</div>
     <div class="product-price">
         @Html.DisplayFor(product => product.DisplayPrice)
     </div>
@@ -22,15 +24,16 @@
     {
         <span>&nbsp;</span>
     }
-    @if (!Model.IsMultiVariant && Model.Variants.FirstOrDefault().InStock)
-            {
-                <div class="row-fluid">
-                    @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
-                    {
-                        @Html.Hidden("Id", Model.Variants.FirstOrDefault().Id)
-                        @Html.Hidden("quantity", 1)
-                        <button class="btn btn-info span12" style="margin-left: 0;">Add to basket</button>
-                    }
-                </div>
-            }
+    @if (buyableVariant != null)
+    {
+        using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post,new { @class = "margin-bottom-5" }))
+        {
+        <div class="row-fluid">
+            <button class="btn btn-info span12">Add to basket</button>
+        </div>
+        @Html.Hidden("ProductVariant.Id", buyableVariant.Id)
+        @Html.Hidden("quantity", 1)
+        }
+        Html.RenderAction("Add", "Wishlist", new { id = buyableVariant.Id });
+    }
 </div>

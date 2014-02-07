@@ -25,7 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.Events
                                               line => line.ProductVariant.TrackingPolicy == TrackingPolicy.Track))
                                       {
                                           var productVariant = orderLine.ProductVariant;
-                                          if (productVariant != null && productVariant.StockRemaining.HasValue)
+                                          if (productVariant != null)
                                               productVariant.StockRemaining -= orderLine.Quantity;
                                           session.Update(productVariant);
                                       }
