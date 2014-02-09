@@ -210,6 +210,7 @@
     <Compile Include="Services\ImportExport\OldImportProductsServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductsManagerTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductVariantsServiceTests.cs" />
+    <Compile Include="Services\ProductOrCategoryDeletedTest.cs" />
     <Compile Include="Services\ProductServiceTests.cs" />
     <Compile Include="Services\CountryServiceTests.cs" />
     <Compile Include="Services\GetCartImplTests.cs" />

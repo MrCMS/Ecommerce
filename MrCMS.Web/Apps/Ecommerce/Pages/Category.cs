@@ -9,6 +9,7 @@ using MrCMS.Helpers;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
@@ -62,6 +63,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                     .BuildSelectItemList(sort => sort.GetDescription(), sort => sort.ToString(),
                                          sort => sort == DefaultProductSearchSort, emptyItemText: "System default");
             base.AdminViewData(viewData, session);
+        }
+
+        public override void OnDeleting(ISession session)
+        {
+            if (this.Products.Count > 0)
+            {
+                foreach (var product in this.Products)
+                    product.Categories.Remove(this);
+
+                this.Products.Clear();
+            }
+            base.OnDeleting(session);
         }
     }
 }
