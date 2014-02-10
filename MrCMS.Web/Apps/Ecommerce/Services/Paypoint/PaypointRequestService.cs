@@ -18,13 +18,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
         private readonly CartModel _cartModel;
         private readonly IPaypointRequestHelper _paypointHelper;
         private readonly PaypointSettings _paypointSettings;
+        private readonly IPaypoint3DSecureHelper _paypoint3DSecureHelper;
 
-        public PaypointRequestService(SECVPN secvpn, CartModel cartModel, IPaypointRequestHelper paypointHelper, PaypointSettings paypointSettings)
+        public PaypointRequestService(SECVPN secvpn, CartModel cartModel, IPaypointRequestHelper paypointHelper, PaypointSettings paypointSettings, IPaypoint3DSecureHelper paypoint3DSecureHelper)
         {
             _secvpn = secvpn;
             _cartModel = cartModel;
             _paypointHelper = paypointHelper;
             _paypointSettings = paypointSettings;
+            _paypoint3DSecureHelper = paypoint3DSecureHelper;
         }
 
         public ProcessDetailsResponse ProcessStandardTransaction(PaypointPaymentDetailsModel model)
@@ -59,17 +61,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
         private static ProcessDetailsResponse GetSuccessResponse(NameValueCollection response)
         {
             return new ProcessDetailsResponse
-                       {
-                           PaypointPaymentDetails = new PaypointPaymentDetails
-                                                        {
-                                                            TransactionId = response["trans_id"],
-                                                            AuthCode = response["auth_code"],
-                                                        }
-                       };
+            {
+                PaypointPaymentDetails = new PaypointPaymentDetails
+                {
+                    TransactionId = response["trans_id"],
+                    AuthCode = response["auth_code"],
+                }
+            };
         }
 
         public ProcessDetailsResponse Process3DSecureTransaction(PaypointPaymentDetailsModel model, string threeDSecureUrl)
         {
+            _cartModel.CartGuid = _paypoint3DSecureHelper.ResetCartGuid();
+            _paypoint3DSecureHelper.SetCartGuid(_cartModel.CartGuid);
+            _paypoint3DSecureHelper.SetOrderAmount(_cartModel.Total);
+
             var threeDSecureEnrolmentRequestResponse =
                 _secvpn.threeDSecureEnrolmentRequest(
                     new threeDSecureEnrolmentRequestRequest(_paypointSettings.AccountName,
@@ -99,10 +105,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
             var response = _paypointHelper.ParseResponse(threeDSecureEnrolmentRequestResponse.threeDSecureEnrolmentRequestReturn);
 
             return response["valid"] != "true"
-                       ? GetFailureResponse(response)
-                       : (response["mpi_status_code"] == "200"
-                              ? GetRedirectResponse(threeDSecureUrl, response)
-                              : GetSuccessResponse(response));
+                ? GetFailureResponse(response)
+                : (response["mpi_status_code"] == "200"
+                    ? GetRedirectResponse(threeDSecureUrl, response)
+                    : response["code"] == "A"
+                        ? GetSuccessResponse(response)
+                        : GetFailureResponse(response));
         }
 
         public ProcessDetailsResponse Handle3DSecureResponse(FormCollection formCollection)
@@ -110,7 +118,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
             var md = formCollection["MD"];
             var paRes = formCollection["PaRes"];
 
-            var response = _secvpn.threeDSecureAuthorisationRequest(new threeDSecureAuthorisationRequestRequest(_paypointSettings.AccountName, _paypointSettings.VPNPassword, _cartModel.CartGuid.ToString(), md, paRes, ""));
+            var response =
+                _secvpn.threeDSecureAuthorisationRequest(
+                    new threeDSecureAuthorisationRequestRequest(_paypointSettings.AccountName,
+                        _paypointSettings.VPNPassword, _cartModel.CartGuid.ToString(), md, paRes, ""));
 
             var nameValueCollection = _paypointHelper.ParseResponse(response.threeDSecureAuthorisationRequestReturn);
 
@@ -119,14 +130,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
             if (string.IsNullOrWhiteSpace(statusCode))
             {
                 return new ProcessDetailsResponse
-                           {
-                               FailureDetails = new FailureDetails
-                                                    {
-                                                        ErrorCode = nameValueCollection["code"],
-                                                        Details = GetErrors(nameValueCollection["code"]),
-                                                        Message = nameValueCollection["message"]
-                                                    }
-                           };
+                {
+                    FailureDetails = new FailureDetails
+                    {
+                        ErrorCode = nameValueCollection["code"],
+                        Details = GetErrors(nameValueCollection["code"]),
+                        Message = nameValueCollection["message"]
+                    }
+                };
             }
             return statusCode == "229" || nameValueCollection["code"] != "A"
                        ? GetFailureResponse(nameValueCollection)
@@ -136,29 +147,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
         private static ProcessDetailsResponse GetRedirectResponse(string threeDSecureUrl, NameValueCollection response)
         {
             return new ProcessDetailsResponse
-                       {
-                           RedirectDetails = new RedirectDetails
-                                                 {
-                                                     ACSUrl = HttpUtility.UrlDecode(response["acs_url"]),
-                                                     MD = response["MD"],
-                                                     PaReq = response["PaReq"],
-                                                     TermUrl = threeDSecureUrl
-                                                 }
-                       };
+            {
+                RedirectDetails = new RedirectDetails
+                {
+                    ACSUrl = HttpUtility.UrlDecode(response["acs_url"]),
+                    MD = response["MD"],
+                    PaReq = response["PaReq"],
+                    TermUrl = threeDSecureUrl
+                }
+            };
         }
 
         private static ProcessDetailsResponse GetFailureResponse(NameValueCollection response)
         {
             CurrentRequestData.ErrorSignal.Raise(new ThreeDSecureException(response));
             return new ProcessDetailsResponse
-                       {
-                           FailureDetails = new FailureDetails
-                                                {
-                                                    ErrorCode = response["code"],
-                                                    Details = GetErrors(response["code"]),
-                                                    Message = response["message"]
-                                                }
-                       };
+            {
+                FailureDetails = new FailureDetails
+                {
+                    ErrorCode = response["code"],
+                    Details = GetErrors(response["code"]),
+                    Message = response["message"]
+                }
+            };
         }
 
         private static IEnumerable<string> GetErrors(string code)
