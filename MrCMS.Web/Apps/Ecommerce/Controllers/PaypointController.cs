@@ -14,13 +14,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IDocumentService _documentService;
         private readonly CartModel _cartModel;
         private readonly IOrderService _orderService;
+        private readonly IPaypoint3DSecureHelper _paypoint3DSecureHelper;
 
-        public PaypointController(IPaypointPaymentService paypointPaymentService, IDocumentService documentService, CartModel cartModel, IOrderService orderService)
+        public PaypointController(IPaypointPaymentService paypointPaymentService, IDocumentService documentService, CartModel cartModel, IOrderService orderService, IPaypoint3DSecureHelper paypoint3DSecureHelper)
         {
             _paypointPaymentService = paypointPaymentService;
             _documentService = documentService;
             _cartModel = cartModel;
             _orderService = orderService;
+            _paypoint3DSecureHelper = paypoint3DSecureHelper;
         }
 
         public PartialViewResult PaymentDetails(PaypointPaymentDetailsModel model)
@@ -33,12 +35,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (!_cartModel.CanPlaceOrder)
             {
                 TempData["error-details"] = new FailureDetails
-                                                {
-                                                    Message = "We were unable to process your order with the specified cart. Please check your details and try again"
-                                                };
                 {
-                    return _documentService.RedirectTo<PaymentDetails>();
-                }
+                    Message =
+                        "We were unable to process your order with the specified cart. Please check your details and try again"
+                };
+                return _documentService.RedirectTo<PaymentDetails>();
+            }
+            if (_cartModel.CartGuid != _paypoint3DSecureHelper.GetCartGuid() ||
+                _cartModel.Total != _paypoint3DSecureHelper.GetOrderAmount())
+            {
+                TempData["error-details"] = new FailureDetails
+                {
+                    Message = "Your order was changed after going off to PayPoint for 3D secure validation. No payment has been taken, but you will need to re-submit your details."
+                };
+                return _documentService.RedirectTo<PaymentDetails>();
             }
 
             var response = _paypointPaymentService.Handle3DSecureResponse(formCollection);
@@ -57,7 +67,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                     o.ShippingStatus = ShippingStatus.Unshipped;
                     o.AuthorisationToken = response.PaypointPaymentDetails.AuthCode;
                 });
-                return _documentService.RedirectTo<OrderPlaced>(new {id = order.Guid});
+                return _documentService.RedirectTo<OrderPlaced>(new { id = order.Guid });
             }
 
             TempData["error-details"] = response.FailureDetails;
