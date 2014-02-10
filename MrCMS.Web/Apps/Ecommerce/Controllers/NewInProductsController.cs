@@ -16,15 +16,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     public class NewInProductsController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly IProductService _productService;
+        private readonly CartModel _cartModel;
 
-        public NewInProductsController(IProductService productService)
+        public NewInProductsController(IProductService productService, CartModel cartModel)
         {
             _productService = productService;
+            _cartModel = cartModel;
         }
 
         public ViewResult Show(NewInProducts page)
         {
             ViewData["newinproducts"] = _productService.GetNewIn(12);
+            ViewData["cart"] = _cartModel;
             return View(page);
         }
     }
