@@ -28,20 +28,23 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration.Listeners
             if (newValue.GetValueOrDefault() <= 0)
                 return;
 
-            using (var session = @event.Session.SessionFactory.OpenFilteredSession())
+            if (newValue > oldValue)
             {
-                session.Transact(sess =>
-                                     {
-                                         var variant = sess.Get<ProductVariant>(productVariant.Id);
-                                         var backInStockProductVariant = new BackInStockProductVariant
-                                                                             {
-                                                                                 ProductVariant = variant,
-                                                                                 CreatedOn = CurrentRequestData.Now,
-                                                                                 UpdatedOn = CurrentRequestData.Now,
-                                                                                 Site = sess.Get<Site>(CurrentRequestData.CurrentSite.Id)
-                                                                             };
-                                         sess.Save(backInStockProductVariant);
-                                     });
+                using (var session = @event.Session.SessionFactory.OpenFilteredSession())
+                {
+                    session.Transact(sess =>
+                    {
+                        var variant = sess.Get<ProductVariant>(productVariant.Id);
+                        var backInStockProductVariant = new BackInStockProductVariant
+                        {
+                            ProductVariant = variant,
+                            CreatedOn = CurrentRequestData.Now,
+                            UpdatedOn = CurrentRequestData.Now,
+                            Site = sess.Get<Site>(CurrentRequestData.CurrentSite.Id)
+                        };
+                        sess.Save(backInStockProductVariant);
+                    });
+                }
             }
         }
     }
