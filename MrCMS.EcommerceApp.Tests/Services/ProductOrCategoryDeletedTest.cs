@@ -61,5 +61,24 @@ namespace MrCMS.EcommerceApp.Tests.Services
             _documentService.DeleteDocument(product);
             category.Products.Count.Should().Be(0);
         }
+
+        [Fact]
+        public void ProductOnDeletingRemovesCategory()
+        {
+            //arrange
+            var category = new CategoryBuilder().Build();
+            var product = new ProductBuilder().Build();
+            product.Categories.Add(category);
+            category.Products.Add(product);
+            product.Categories.Count.Should().Be(1);
+            category.Products.Count.Should().Be(1);
+
+            //act
+            product.OnDeleting(Session);
+            
+            //assert
+            product.Categories.Count.Should().Be(0);
+            category.Products.Count.Should().Be(0);
+        }
     }
 }
