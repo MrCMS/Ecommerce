@@ -1,4 +1,5 @@
 ﻿@using System.Drawing
+@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Widgets.FeaturedCategoriesViewModel
 @if (Model != null)
 {
@@ -7,19 +8,26 @@
     {
     <h4>@Model.Title</h4>
     }
-    <div class="row-fluid">
-    @foreach (var item in Model.Categories)
+    foreach (var itemRow in Model.Categories.Chunk(4))
     {
+    <div class="row-fluid">
+        @foreach (var item in itemRow)
+        {
             <div class="span3 text-center">
-                <div style="overflow:hidden;height: 150px;" >
-                @if(item.FeatureImage!=null)
-                {
-                    <a href="/@item.LiveUrlSegment">@RenderImage(item.FeatureImage, new Size{Width = 150, Height = 150})</a>
-                }
+                <div style="overflow: hidden; height: 150px;">
+                    @if (!string.IsNullOrWhiteSpace(item.FeatureImage))
+                    {
+                        <a href="/@item.LiveUrlSegment">@RenderImage(item.FeatureImage, new Size { Width = 150, Height = 150 })</a>
+                    }
                 </div>
-                    <div class="clearfix"></div>
+                <div class="clearfix"></div>
                 <h4 class="category-title"><a href="/@item.LiveUrlSegment" title="@item.Name">@item.Name</a></h4>
-           </div>
-    }
+                @if (!string.IsNullOrWhiteSpace(item.Abstract))
+                {
+                    <p>@item.Abstract</p>
+                }
+            </div>
+        }
     </div>
+    }
 }

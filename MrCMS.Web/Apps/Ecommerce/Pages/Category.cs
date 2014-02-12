@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using System.Xml;
 using MrCMS.Entities.Documents.Web;
@@ -42,6 +43,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         [DisplayName("Featured Image")]
         public virtual string FeatureImage { get; set; }
+
+        [StringLength(500)]
+        public virtual string Abstract { get; set; }
 
         [DisplayName("Default Product Search Sort")]
         public virtual ProductSearchSort? DefaultProductSearchSort { get; set; }
