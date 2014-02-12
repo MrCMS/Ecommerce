@@ -164,5 +164,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                                                        variant => variant == productVariant,
                                                        emptyItem: null);
         }
+
+        public override void OnDeleting(ISession session)
+        {
+            if (this.Categories.Count > 0)
+            {
+                foreach (var category in this.Categories)
+                    category.Products.Remove(this);
+                this.Categories.Clear();
+            }
+            base.OnDeleting(session);
+        }
     }
 }
