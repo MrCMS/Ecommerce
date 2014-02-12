@@ -20,14 +20,17 @@ namespace MrCMS.Web.Apps.Articles.Widgets
 
 
             return new LatestXArticlesViewModel
-                       {
-                           Articles = session.QueryOver<Article>()
-                                           .Where(article => article.Parent.Id == RelatedNewsList.Id && article.PublishOn != null && article.PublishOn <= CurrentRequestData.Now)
-                                           .Take(NumberOfArticles)
-                                           .Cacheable()
-                                           .List(),
-                           Title = this.Name
-                       };
+            {
+                Articles = session.QueryOver<Article>()
+                                  .Where(
+                                      article =>
+                                      article.Parent.Id == RelatedNewsList.Id && article.PublishOn != null &&
+                                      article.PublishOn <= CurrentRequestData.Now).OrderBy(x => x.PublishOn).Desc
+                                  .Take(NumberOfArticles)
+                                  .Cacheable()
+                                  .List(),
+                Title = this.Name
+            };
 
         }
 

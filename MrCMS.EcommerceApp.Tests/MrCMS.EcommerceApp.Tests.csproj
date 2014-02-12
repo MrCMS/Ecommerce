@@ -191,6 +191,11 @@
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateValidationServiceTests.cs" />
     <Compile Include="Services\DownloadProductServiceTests.cs" />
     <Compile Include="Services\ImportExport\ExportProductsManagerTests.cs" />
+    <Compile Include="Services\ImportExport\ImportProductsServiceTests\CategoryBuilder.cs" />
+    <Compile Include="Services\ImportExport\ImportProductsServiceTests\ImportProductsServiceBuilder.cs" />
+    <Compile Include="Services\ImportExport\ImportProductsServiceTests\ProductBuilder.cs" />
+    <Compile Include="Services\ImportExport\ImportProductsServiceTests\ProductImportDTOBuilder.cs" />
+    <Compile Include="Services\ImportExport\ImportProductsServiceTests\SetCategories.cs" />
     <Compile Include="Services\OrderShippingServiceTests.cs" />
     <Compile Include="Services\OrderRefundServiceTests.cs" />
     <Compile Include="Services\OrderServiceTests.cs" />
@@ -202,9 +207,10 @@
     <Compile Include="Services\ImportExport\ImportProductImagesServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductSpecificationsServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductsValidationServiceTests.cs" />
-    <Compile Include="Services\ImportExport\ImportProductsServiceTests.cs" />
+    <Compile Include="Services\ImportExport\OldImportProductsServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductsManagerTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductVariantsServiceTests.cs" />
+    <Compile Include="Services\ProductOrCategoryDeletedTest.cs" />
     <Compile Include="Services\ProductServiceTests.cs" />
     <Compile Include="Services\CountryServiceTests.cs" />
     <Compile Include="Services\GetCartImplTests.cs" />

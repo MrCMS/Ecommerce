@@ -757,10 +757,12 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderShippingService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypoint3DSecureHelper.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointPaymentService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointRequestHelper.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointRequestService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointResponseLogger.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Paypoint\Paypoint3DSecureHelper.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointPaymentService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointRequestHelper.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointRequestService.cs" />
@@ -2308,6 +2310,7 @@
     <Content Include="Apps\Ecommerce\Views\Pages\ShowWishlist.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\VariantCard.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ShowWishlist.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\NewInProducts.cshtml" />
     <None Include="Areas\Admin\Content\Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.js" />
     <Content Include="Areas\Admin\Content\Scripts\jquery.validate.min.js" />

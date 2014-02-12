@@ -12,7 +12,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
-    public class ImportProductsServiceTests : InMemoryDatabaseTest
+    public class OldImportProductsServiceTests : InMemoryDatabaseTest
     {
         private readonly IDocumentService _documentService;
         private readonly IBrandService _brandService;
@@ -23,7 +23,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         private readonly ISession _session;
         private readonly ImportProductsService _importProductsService;
 
-        public ImportProductsServiceTests()
+        public OldImportProductsServiceTests()
         {
             _documentService = A.Fake<IDocumentService>();
             _brandService = A.Fake<IBrandService>();
