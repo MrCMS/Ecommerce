@@ -44,6 +44,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         [DisplayName("Featured Image")]
         public virtual string FeatureImage { get; set; }
 
+        [StringLength(500)]
+        public virtual string Abstract { get; set; }
+
         [DisplayName("Default Product Search Sort")]
         public virtual ProductSearchSort? DefaultProductSearchSort { get; set; }
 
