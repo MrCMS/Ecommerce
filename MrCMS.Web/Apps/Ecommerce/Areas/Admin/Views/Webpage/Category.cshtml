@@ -5,9 +5,9 @@
         @Html.TextBoxFor(webpage => webpage.FeatureImage, new { @class = "media-selector" })
     </div>
     <div class="span9">
-        @Html.LabelFor(product => product.Abstract)
-        @Html.TextAreaFor(product => product.Abstract, new { rows = 4, @class = "span12" })
-        @Html.ValidationMessageFor(product => product.Abstract)
+        @Html.LabelFor(category => category.Abstract)
+        @Html.TextAreaFor(category => category.Abstract, new { rows=4, @class="span12"})
+        @Html.ValidationMessageFor(category=>category.Abstract)
     </div>
 </div>
 @Html.LabelFor(webpage => webpage.DefaultProductSearchSort)

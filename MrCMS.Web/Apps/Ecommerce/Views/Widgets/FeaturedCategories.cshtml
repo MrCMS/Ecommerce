@@ -16,7 +16,7 @@
         {
             <div class="span3 text-center">
                 <div style="overflow: hidden; height: 150px;">
-                    @if (item.FeatureImage != null)
+                    @if (!string.IsNullOrWhiteSpace(item.FeatureImage))
                     {
                         <a href="/@item.LiveUrlSegment">@RenderImage(item.FeatureImage, new Size { Width = 150, Height = 150 })</a>
                     }
