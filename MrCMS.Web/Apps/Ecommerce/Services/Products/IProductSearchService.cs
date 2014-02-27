@@ -14,6 +14,7 @@ using MrCMS.Indexing.Management;
 using MrCMS.Paging;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using NHibernate;
@@ -100,7 +101,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public Filter GetFilter()
         {
             var dateValue = DateTools.DateToString(CurrentRequestData.Now, DateTools.Resolution.SECOND);
-            var filter = FieldCacheRangeFilter.NewStringRange(ProductSearchIndex.PublishOn.FieldName, null,
+            var filter = FieldCacheRangeFilter.NewStringRange(FieldDefinition.GetFieldName<ProductSearchPublishOnDefinition>(), null,
                                                               dateValue, false, true);
             return filter;
         }
@@ -123,7 +124,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (!String.IsNullOrWhiteSpace(SearchTerm))
             {
                 var fuzzySearchTerm = MakeFuzzy(SearchTerm);
-                var q = new MultiFieldQueryParser(Version.LUCENE_30, FieldDefinition.GetFieldNames(DocumentIndexDefinition.Name, ProductSearchIndex.SKUs), new StandardAnalyzer(Version.LUCENE_30));
+                var q = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30,
+                    new[]
+                    {
+                        FieldDefinition.GetFieldName<ProductSearchNameDefinition>(),
+                        FieldDefinition.GetFieldName<ProductSearchSkuDefinition>(),
+                        FieldDefinition.GetFieldName<ProductSearchBodyContentDefinition>(),
+                        FieldDefinition.GetFieldName<ProductSearchMetaDescriptionDefinition>(),
+                        FieldDefinition.GetFieldName<ProductSearchMetaKeywordsDefinition>(),
+                        FieldDefinition.GetFieldName<ProductSearchMetaTitleDefinition>(),
+                    },
+                    MrCMSApplication.Get<AdminWebpageIndexDefinition>().GetAnalyser());
                 var query = q.Parse(fuzzySearchTerm);
                 booleanQuery.Add(query, Occur.MUST);
             }
@@ -142,7 +153,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var query = new BooleanQuery();
 
             foreach (var type in Options)
-                query.Add(new TermQuery(new Term(ProductSearchIndex.Options.FieldName, type.ToString())), Occur.MUST);
+                query.Add(new TermQuery(new Term(FieldDefinition.GetFieldName<ProductSearchOptionsDefinition>(), type.ToString())), Occur.MUST);
 
             return query;
         }
@@ -152,7 +163,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var booleanQuery = new BooleanQuery();
 
             foreach (var type in Specifications)
-                booleanQuery.Add(new TermQuery(new Term(ProductSearchIndex.Specifications.FieldName, type.ToString())),
+                booleanQuery.Add(new TermQuery(new Term(FieldDefinition.GetFieldName<ProductSearchSpecificationsDefinition>(), type.ToString())),
                                  Occur.MUST);
 
             return booleanQuery;
@@ -162,7 +173,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             var booleanQuery = new BooleanQuery();
 
-            booleanQuery.Add(new TermQuery(new Term(ProductSearchIndex.Categories.FieldName, CategoryId.ToString())),
+            booleanQuery.Add(new TermQuery(new Term(FieldDefinition.GetFieldName<ProductSearchCategoriesDefinition>(), CategoryId.ToString())),
                                  Occur.MUST);
 
             return booleanQuery;
@@ -174,7 +185,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                    {
                                        {
                                            NumericRangeQuery.NewDoubleRange(
-                                               ProductSearchIndex.Price.FieldName,
+                                               FieldDefinition.GetFieldName<ProductSearchPriceDefinition>(),
                                                PriceFrom, PriceTo, true, PriceTo.HasValue),
                                            Occur.MUST
                                        }
@@ -187,7 +198,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             var booleanQuery = new BooleanQuery();
 
-            booleanQuery.Add(new TermQuery(new Term(ProductSearchIndex.Brand.FieldName, BrandId.ToString())),
+            booleanQuery.Add(new TermQuery(new Term(FieldDefinition.GetFieldName<ProductSearchBrandDefinition>(), BrandId.ToString())),
                                  Occur.MUST);
 
             return booleanQuery;
@@ -198,9 +209,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             switch (SortByValue)
             {
                 case ProductSearchSort.MostPopular:
-                    return new Sort(new[] { new SortField(ProductSearchIndex.NumberBought.FieldName, SortField.INT, true) });
+                    return new Sort(new[] { new SortField(FieldDefinition.GetFieldName<ProductSearchNumberBoughtDefinition>(), SortField.INT, true) });
                 case ProductSearchSort.Latest:
-                    return new Sort(new[] { new SortField(ProductSearchIndex.CreatedOn.FieldName, SortField.STRING, true) });
+                    return new Sort(new[] { new SortField(FieldDefinition.GetFieldName<ProductSearchCreatedOnDefinition>(), SortField.STRING, true) });
                 case ProductSearchSort.NameAToZ:
                     return new Sort(new[] { new SortField("nameSort", SortField.STRING) });
                 case ProductSearchSort.NameZToA:

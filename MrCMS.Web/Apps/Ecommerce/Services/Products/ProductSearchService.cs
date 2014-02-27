@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
+using MrCMS.Indexing.Management;
 using MrCMS.Indexing.Querying;
 using MrCMS.Indexing.Utils;
 using MrCMS.Paging;
+using MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Indexing;
 
@@ -32,10 +34,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var search = _productSearcher.IndexSearcher.Search(clone.GetQuery(), clone.GetFilter(), int.MaxValue);
             var documents = search.ScoreDocs.Select(doc => _productSearcher.IndexSearcher.Doc(doc.Doc)).ToList();
             var max = documents.Count > 0
-                          ? documents.Select(document => document.GetValue<decimal>(ProductSearchIndex.Price.FieldName)).Max()
+                          ? documents.Select(document => document.GetValue<decimal>(FieldDefinition.GetFieldName<ProductSearchPriceDefinition>())).Max()
                           : 0;
             if (documents.Any())
-                max = documents.Select(document => document.GetValue<decimal>(ProductSearchIndex.Price.FieldName)).Max();
+                max = documents.Select(document => document.GetValue<decimal>(FieldDefinition.GetFieldName<ProductSearchPriceDefinition>())).Max();
             return Convert.ToDouble(Math.Ceiling(max / 5.0m) * 5m);
         }
 
@@ -44,7 +46,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var clone = query.Clone() as ProductSearchQuery;
 
             var indexSearcher = _productSearcher.IndexSearcher;
-            var valueCollector = new ValueCollector(indexSearcher, ProductSearchIndex.Specifications.FieldName);
+            var valueCollector = new ValueCollector(indexSearcher, FieldDefinition.GetFieldName<ProductSearchSpecificationsDefinition>());
             indexSearcher.Search(clone.GetQuery(), clone.GetFilter(), valueCollector);
             return valueCollector.Values.Select(s => Convert.ToInt32(s)).Distinct().ToList();
         }
@@ -54,7 +56,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var clone = query.Clone() as ProductSearchQuery;
             clone.Options = new List<int>();
             var indexSearcher = _productSearcher.IndexSearcher;
-            var valueCollector = new ValueCollector(indexSearcher, ProductSearchIndex.Options.FieldName);
+            var valueCollector = new ValueCollector(indexSearcher, FieldDefinition.GetFieldName<ProductSearchOptionsDefinition>());
             indexSearcher.Search(clone.GetQuery(), clone.GetFilter(), valueCollector);
             return valueCollector.Values.Select(s => Convert.ToInt32(s)).Distinct().ToList();
         }
@@ -64,7 +66,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var clone = query.Clone() as ProductSearchQuery;
             clone.BrandId = null;
             var indexSearcher = _productSearcher.IndexSearcher;
-            var valueCollector = new ValueCollector(indexSearcher, ProductSearchIndex.Brand.FieldName);
+            var valueCollector = new ValueCollector(indexSearcher, FieldDefinition.GetFieldName<ProductSearchBrandDefinition>());
             indexSearcher.Search(clone.GetQuery(), clone.GetFilter(), valueCollector);
             return valueCollector.Values.Select(s => Convert.ToInt32(s)).Distinct().ToList();
         }
@@ -74,7 +76,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var clone = query.Clone() as ProductSearchQuery;
             clone.CategoryId = null;
             var indexSearcher = _productSearcher.IndexSearcher;
-            var valueCollector = new ValueCollector(indexSearcher, ProductSearchIndex.Categories.FieldName);
+            var valueCollector = new ValueCollector(indexSearcher, FieldDefinition.GetFieldName<ProductSearchCategoriesDefinition>());
             indexSearcher.Search(clone.GetQuery(), clone.GetFilter(), valueCollector);
             return valueCollector.Values.Select(s => Convert.ToInt32(s)).Distinct().ToList();
         }

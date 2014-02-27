@@ -21,12 +21,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         private readonly ISession _session;
         private readonly IDocumentService _documentService;
         private readonly SiteSettings _ecommerceSettings;
+        private readonly IUniquePageService _uniquePageService;
 
-        public ProductService(ISession session, IDocumentService documentService, SiteSettings ecommerceSettings)
+        public ProductService(ISession session, IDocumentService documentService, SiteSettings ecommerceSettings, IUniquePageService uniquePageService)
         {
             _session = session;
             _documentService = documentService;
             _ecommerceSettings = ecommerceSettings;
+            _uniquePageService = uniquePageService;
         }
 
         public ProductPagedList Search(string queryTerm = null, int page = 1)
@@ -51,7 +53,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 pagedList = _session.Paged(QueryOver.Of<Product>(), page, pageSize);
             }
 
-            var productContainer = _documentService.GetUniquePage<ProductSearch>();
+            var productContainer = _uniquePageService.GetUniquePage<ProductSearch>();
             var productContainerId = productContainer == null ? (int?)null : productContainer.Id;
             return new ProductPagedList(pagedList, productContainerId);
         }

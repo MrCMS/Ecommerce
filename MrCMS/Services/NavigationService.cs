@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using System.Xml;
+using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Layout;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
@@ -96,7 +98,7 @@ namespace MrCMS.Services
         public IEnumerable<SelectListItem> GetParentsList()
         {
             var selectListItems = GetPageListItems(GetWebsiteTree().Children, 2).ToList();
-            selectListItems.Insert(0, new SelectListItem { Selected = false, Text = "Root", Value = "" });
+            selectListItems.Insert(0, new SelectListItem { Selected = false, Text = "Root", Value = "0" });
             return selectListItems;
         }
 

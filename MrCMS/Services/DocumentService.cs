@@ -41,7 +41,10 @@ namespace MrCMS.Services
                                   {
                                       document.DisplayOrder = GetMaxParentDisplayOrder(document);
                                       document.CustomInitialization(this, _session);
+                                      if (document.Parent != null)
+                                          document.Parent.Children.Add(document);
                                       session.SaveOrUpdate(document);
+                                      
                                   });
             _documentEventService.OnDocumentAdded(document);
         }
@@ -82,13 +85,6 @@ namespace MrCMS.Services
         {
             return _session.Get<T>(id);
         }
-
-        public T GetUniquePage<T>()
-            where T : Document, IUniquePage
-        {
-            return _session.QueryOver<T>().Where(arg => arg.Site.Id == _currentSite.Id).Take(1).Cacheable().SingleOrDefault();
-        }
-
         public T SaveDocument<T>(T document) where T : Document
         {
             _session.Transact(session =>
@@ -114,82 +110,16 @@ namespace MrCMS.Services
             return uniqueResult != 0;
         }
 
-        public IEnumerable<T> GetFrontEndDocumentsByParentId<T>(int? id) where T : Document
-        {
-            IEnumerable<T> children;
-            Document document = null;
-            if (id.HasValue)
-            {
-                document = _session.Get<Document>(id);
-                children = document.Children.Select(TypeHelper.Unproxy).OfType<T>();
-            }
-            else
-            {
-                children = _session.QueryOver<T>().Where(arg => arg.Parent == null).List();
-            }
-
-            children =
-                children.Where(
-                    arg => !(arg is Webpage) || (arg as Webpage).IsAllowed(CurrentRequestData.CurrentUser));
-
-            if (document != null)
-            {
-                var documentTypeDefinition = document.GetMetadata();
-                if (documentTypeDefinition != null)
-                {
-                    return Sort(documentTypeDefinition, children);
-                }
-            }
-            return children.OrderBy(arg => arg.DisplayOrder);
-        }
-
         public IEnumerable<T> GetDocumentsByParent<T>(T parent) where T : Document
         {
-            IEnumerable<T> list;
-            if (parent != null)
-            {
-                var documentTypeDefinition = parent.GetMetadata();
-                list = parent.Children.OfType<T>();
-                if (documentTypeDefinition != null)
-                    list = Sort(documentTypeDefinition, list);
-            }
-            else
-            {
-                list = _session.QueryOver<T>().Where(arg => arg.Parent == null).Cacheable().List();
-            }
-            list = list.Where(arg => arg.Site == _currentSite);
+            IEnumerable<T> list = parent != null
+                ? parent.Children.OfType<T>()
+                : _session.QueryOver<T>()
+                    .Where(arg => arg.Parent == null && arg.Site.Id == _currentSite.Id)
+                    .OrderBy(arg => arg.DisplayOrder)
+                    .Asc.Cacheable()
+                    .List();
             return list;
-        }
-
-        public IEnumerable<T> GetAdminDocumentsByParent<T>(T parent) where T : Document
-        {
-            var queryOver = _session.QueryOver<T>().Where(arg => arg.Site.Id == _currentSite.Id);
-
-            queryOver = parent != null
-                            ? queryOver.Where(arg => arg.Parent.Id == parent.Id)
-                            : queryOver.Where(arg => arg.Parent == null);
-
-            IEnumerable<T> children =
-                queryOver.Cacheable().List();
-
-            if (parent is Webpage)
-            {
-                var documentTypeDefinition = parent.GetMetadata();
-                if (documentTypeDefinition != null)
-                {
-                    return Sort(documentTypeDefinition, children);
-                }
-            }
-            return children.Where(arg => arg.ShowInAdminNav).OrderBy(arg => arg.DisplayOrder);
-        }
-
-        private static IEnumerable<T> Sort<T>(DocumentMetadata documentMetadata, IEnumerable<T> children) where T : Document
-        {
-            var childrenSortedNull =
-                children.OrderByDescending(arg => documentMetadata.SortBy(arg) == null);
-            return documentMetadata.SortByDesc
-                       ? childrenSortedNull.ThenByDescending(documentMetadata.SortBy)
-                       : childrenSortedNull.ThenBy(documentMetadata.SortBy);
         }
 
         public string GetDocumentUrl(string pageName, Webpage parent, bool useHierarchy = false)
@@ -229,7 +159,12 @@ namespace MrCMS.Services
                 string defaultLayoutName = currentPage.GetMetadata().DefaultLayoutName;
                 if (!String.IsNullOrEmpty(defaultLayoutName))
                 {
-                    var layout = _session.QueryOver<Layout>().Where(x => x.Name == defaultLayoutName).Cacheable().Take(1).SingleOrDefault();
+                    var layout =
+                        _session.QueryOver<Layout>()
+                                .Where(x => x.Name == defaultLayoutName)
+                                .Cacheable()
+                                .List()
+                                .FirstOrDefault();
                     if (layout != null)
                         return layout;
                 }
@@ -380,11 +315,11 @@ namespace MrCMS.Services
             return _session.Get<DocumentVersion>(id);
         }
 
-        public void SetParent(Document document, int? parentId)
+        public void SetParent(Document document, int? parentVal)
         {
             if (document == null) return;
 
-            var parent = parentId.HasValue ? GetDocument<Webpage>(parentId.Value) : null;
+            var parent = parentVal.HasValue ? GetDocument<Webpage>(parentVal.Value) : null;
 
             document.SetParent(parent);
 
@@ -492,12 +427,19 @@ namespace MrCMS.Services
 
             foreach (var metadata in validParentTypes)
             {
-                potentialParents.AddRange(_session.CreateCriteria(metadata.Type).SetCacheable(true).List<Webpage>());
+                potentialParents.AddRange(
+                    _session.CreateCriteria(metadata.Type)
+                        .Add(Restrictions.Eq(Projections.Property("Site.Id"), _currentSite.Id))
+                        .SetCacheable(true)
+                        .List<Webpage>());
             }
 
-            var result = potentialParents.Distinct().Where(page => !page.ActivePages.Contains(webpage) && page.Site.Id == _currentSite.Id).OrderBy(x => x.Name)
-                                                        .BuildSelectItemList(page => string.Format("{0} ({1})", page.Name, page.GetMetadata().Name),
-                                                                             page => page.Id.ToString(), emptyItem: null);
+            var result = potentialParents.Distinct()
+                .Where(page => !page.ActivePages.Contains(webpage))
+                .OrderBy(x => x.Name)
+                .BuildSelectItemList(page => string.Format("{0} ({1})", page.Name, page.GetMetadata().Name),
+                    page => page.Id.ToString(),
+                    webpage1 => webpage.Parent != null && webpage.ParentId == webpage1.Id, emptyItem: null);
 
             if (!webpage.GetMetadata().RequiresParent)
                 result.Insert(0, SelectListItemHelper.EmptyItem("Root"));
@@ -528,21 +470,6 @@ namespace MrCMS.Services
                         .OrderBy(webpage => webpage.DisplayOrder).Asc
                         .Cacheable().List()
                         .FirstOrDefault(webpage => webpage.Published);
-        }
-
-        public RedirectResult RedirectTo<T>(object routeValues = null) where T : Webpage, IUniquePage
-        {
-            var page = GetUniquePage<T>();
-            var url = page != null ? string.Format("/{0}", page.LiveUrlSegment) : "/";
-            if (routeValues != null)
-            {
-                var dictionary = new RouteValueDictionary(routeValues);
-                url += string.Format("?{0}",
-                                     string.Join("&",
-                                                 dictionary.Select(
-                                                     pair => string.Format("{0}={1}", pair.Key, pair.Value))));
-            }
-            return new RedirectResult(url);
         }
 
         public void RevertToVersion(DocumentVersion documentVersion)

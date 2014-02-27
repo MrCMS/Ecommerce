@@ -1,17 +1,8 @@
-﻿@using MrCMS.Helpers
-@using MrCMS.Web.Apps.Ecommerce.Pages
-@using MrCMS.Web.Apps.Ecommerce.Settings
-@using MrCMS.Website
-@model List<MrCMS.Web.Apps.Core.Models.NavigationRecord>
-<ul class="nav nav-pills pull-right">
+﻿@using MrCMS.Website
+@model List<MrCMS.Web.Apps.Core.Models.Navigation.NavigationRecord>
+<ul class="dropdown-menu">
     @foreach (var page in Model)
     {
         <li><a href="@page.Url">@page.Text</a></li>    
-    }
-    @if (MrCMSApplication.Get<EcommerceSettings>().EnableWishlists)
-    {
-        <li>
-            @{Html.RenderAction("Summary", "Wishlist");}
-        </li>
     }
 </ul>

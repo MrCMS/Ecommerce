@@ -17,13 +17,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly CartModel _cart;
         private readonly IDocumentService _documentService;
         private readonly IPayPalIPNService _payPalIPNService;
+        private readonly IUniquePageService _uniquePageService;
 
-        public PayPalExpressCheckoutController(IPayPalExpressService payPalExpressService, CartModel cart, IDocumentService documentService, IPayPalIPNService payPalIPNService)
+        public PayPalExpressCheckoutController(IPayPalExpressService payPalExpressService, CartModel cart, IDocumentService documentService, IPayPalIPNService payPalIPNService, IUniquePageService uniquePageService)
         {
             _payPalExpressService = payPalExpressService;
             _cart = cart;
             _documentService = documentService;
             _payPalIPNService = payPalIPNService;
+            _uniquePageService = uniquePageService;
         }
 
         [HttpPost]
@@ -33,7 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
             return response.Success
                        ? Redirect(response.Url)
-                       : _documentService.RedirectTo<Cart>();
+                       : _uniquePageService.RedirectTo<Cart>();
         }
 
         public ActionResult Return(string token)
@@ -41,8 +43,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             var response = _payPalExpressService.ProcessReturn(token);
 
             return response.Success
-                       ? _documentService.RedirectTo<SetDeliveryDetails>()
-                       : _documentService.RedirectTo<Cart>();
+                       ? _uniquePageService.RedirectTo<SetDeliveryDetails>()
+                       : _uniquePageService.RedirectTo<Cart>();
         }
 
         public ActionResult IPN()

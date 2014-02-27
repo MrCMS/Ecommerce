@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Linq;
-using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
+using MrCMS.Entities.Indexes;
 using MrCMS.Indexing.Management;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
-using MrCMS.Web.Apps.Amazon.Indexing;
+using MrCMS.Web.Apps.Amazon.Indexing.AmazonOrderSearch;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders
 {
@@ -48,7 +49,17 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
             if (!String.IsNullOrWhiteSpace(SearchText))
             {
                 var fuzzySearchTerm = MakeFuzzy(SearchText);
-                var q = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30, FieldDefinition.GetFieldNames(AmazonOrderSearchIndex.Email, AmazonOrderSearchIndex.Name, AmazonOrderSearchIndex.AmazonOrderId), new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30));
+                var q = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30,
+                    new[]
+                    {
+                        FieldDefinition.GetFieldName<AmazonOrderAmountFieldDefinition>(),
+                        FieldDefinition.GetFieldName<AmazonOrderEmailFieldDefinition>(),
+                        FieldDefinition.GetFieldName<AmazonOrderIdFieldDefinition>(),
+                        FieldDefinition.GetFieldName<AmazonOrderNameFieldDefinition>(),
+                        FieldDefinition.GetFieldName<AmazonOrderPurchaseDateFieldDeginition>(),
+                        FieldDefinition.GetFieldName<AmazonOrderStatusFieldDefinition>()
+                    },
+                    MrCMSApplication.Get<AdminWebpageIndexDefinition>().GetAnalyser());
                 var query = q.Parse(fuzzySearchTerm);
                 booleanQuery.Add(query, Occur.SHOULD);
             }
@@ -71,7 +82,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
 
         private Query GetDateQuery()
         {
-            return new TermRangeQuery(AmazonOrderSearchIndex.PurchaseDate.FieldName,
+            return new TermRangeQuery(FieldDefinition.GetFieldName<AmazonOrderPurchaseDateFieldDeginition>(),
                                          DateFrom.HasValue
                                              ? DateTools.DateToString(DateFrom.Value, DateTools.Resolution.SECOND)
                                              : null,
@@ -84,7 +95,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
         {
             return new BooleanQuery
                 {
-                    {new TermQuery(new Term(AmazonOrderSearchIndex.Status.FieldName, Status.ToString())), Occur.MUST}
+                    {new TermQuery(new Term(FieldDefinition.GetFieldName<AmazonOrderStatusFieldDefinition>(), Status.ToString())), Occur.MUST}
                 };
         }
 
@@ -92,7 +103,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
         {
             return new BooleanQuery
                 {
-                    {new TermQuery(new Term(AmazonOrderSearchIndex.AmazonOrderId.FieldName, OrderId)), Occur.MUST}
+                    {new TermQuery(new Term(FieldDefinition.GetFieldName<AmazonOrderIdFieldDefinition>(), OrderId)), Occur.MUST}
                 };
         }
         

@@ -6,9 +6,9 @@ namespace MrCMS.Website
     {
         private readonly HttpCookieCollection _cookies;
 
-        public OutOfContextResponse(HttpCookieCollection cookies=null)
+        public OutOfContextResponse(HttpCookieCollection cookies)
         {
-            _cookies = cookies ?? new HttpCookieCollection();
+            _cookies = cookies;
         }
 
         public override void Clear()
