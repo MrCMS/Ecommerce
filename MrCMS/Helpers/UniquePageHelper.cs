@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Routing;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
 using MrCMS.Website;
-using System.Linq;
 
 namespace MrCMS.Helpers
 {
@@ -13,6 +13,7 @@ namespace MrCMS.Helpers
         {
             return Get<T>(queryString, arg => "/" + arg.LiveUrlSegment);
         }
+
         public static string GetAbsoluteUrl<T>(object queryString = null) where T : Webpage, IUniquePage
         {
             return Get<T>(queryString, arg => arg.AbsoluteUrl);
@@ -20,10 +21,10 @@ namespace MrCMS.Helpers
 
         private static string Get<T>(object queryString, Func<T, string> selector) where T : Webpage, IUniquePage
         {
-            var documentService = MrCMSApplication.Get<IDocumentService>();
+            var service = MrCMSApplication.Get<IUniquePageService>();
 
-            var processPage = documentService.GetUniquePage<T>();
-            var url = processPage != null ? selector(processPage) : "/";
+            var processPage = service.GetUniquePage<T>();
+            string url = processPage != null ? selector(processPage) : "/";
             if (queryString != null && processPage != null)
             {
                 var dictionary = new RouteValueDictionary(queryString);

@@ -19,19 +19,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     public class CartController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly CartModel _cart;
+        private readonly IUniquePageService _uniquePageService;
         private readonly ICartManager _cartManager;
         private readonly ICartValidationService _cartValidationService;
         private readonly IOrderShippingService _orderShippingService;
         private readonly IDocumentService _documentService;
 
         public CartController(ICartManager cartManager, ICartValidationService cartValidationService,
-                              IOrderShippingService orderShippingService, IDocumentService documentService, CartModel cart)
+                              IOrderShippingService orderShippingService, IDocumentService documentService, CartModel cart, IUniquePageService uniquePageService)
         {
             _cartManager = cartManager;
             _cartValidationService = cartValidationService;
             _orderShippingService = orderShippingService;
             _documentService = documentService;
             _cart = cart;
+            _uniquePageService = uniquePageService;
         }
 
         public ViewResult Show(Cart page)
@@ -73,7 +75,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (_cartValidationService.CanAddQuantity(model).Valid)
             {
                 _cartManager.AddToCart(model);
-                var addedToCart = _documentService.GetUniquePage<ProductAddedToCart>();
+                var addedToCart = _uniquePageService.GetUniquePage<ProductAddedToCart>();
                 if (addedToCart != null && addedToCart.Published)
                     return Redirect(UniquePageHelper.GetUrl<ProductAddedToCart>(new { id = model.ProductVariant.Id, quantity = model.Quantity }));
                 return Redirect(UniquePageHelper.GetUrl<Cart>());

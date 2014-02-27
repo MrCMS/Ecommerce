@@ -49,11 +49,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public ActionResult UserAndPageStats()
         {
+            //todo this
             var model = new Dashboard
                 {
-                    ActiveUsers = _userServices.ActiveUsers(),
+                    ActiveUsers = 10,
                     Stats = GetPageStats(),
-                    NoneActiveUsers = _userServices.NonActiveUsers()
+                    NoneActiveUsers = 10
                 };
             return PartialView(model);
         }
