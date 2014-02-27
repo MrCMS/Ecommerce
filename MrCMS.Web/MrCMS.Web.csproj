@@ -2195,9 +2195,6 @@
     <Content Include="Areas\Admin\Views\MessageTemplate\Tokens.cshtml" />
     <Content Include="Areas\Admin\Views\Form\ClearFormData.cshtml" />
     <Content Include="Apps\Core\Views\Widgets\Navigation.cshtml" />
-    <Content Include="Themes\Default\Views\web.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Areas\Admin\Views\User\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Log\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\MessageTemplate\Preview.cshtml" />
@@ -2300,7 +2297,9 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Seller.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Sync.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Shared\ProgressBarMessages.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Apps\Amazon\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Address\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\Add.cshtml" />
@@ -2433,7 +2432,9 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Settings.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\User\Order.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Category.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\CategoryContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\NewInProducts.cshtml" />
@@ -2516,7 +2517,9 @@
     <Content Include="Apps\Ecommerce\Views\Shared\_EcommerceLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_ProductLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_SearchLayout.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Web.config" />
+    <Content Include="Apps\Ecommerce\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Apps\Ecommerce\Views\Widgets\BreadCrumb.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\CartWidget.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\CategoriesOnlyNavigation.cshtml" />
@@ -2536,12 +2539,6 @@
     <Content Include="Apps\Ecommerce\Views\Wishlist\Summary.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Service References\paypoint\SECCardService.wsdl" />
-    <None Include="Themes\Default\Views\Web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="Themes\Default\Views\Web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\LoginPage.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\RegisterPage.cshtml" />
@@ -2553,11 +2550,19 @@
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\UserAccountOrders.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
-    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Themes\Ecommerce\Areas\Admin\Views\Home\Index.cshtml" />
-    <Content Include="Themes\Ecommerce\Areas\Admin\Views\Web.config" />
-    <Content Include="Themes\Ecommerce\Views\Web.config" />
+    <Content Include="Themes\Ecommerce\Areas\Admin\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Themes\Ecommerce\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Core\Areas\Admin\Controllers\" />
@@ -2577,11 +2582,6 @@
     <Folder Include="Apps\Galleries\Views\Widgets\" />
     <Folder Include="Apps\Galleries\Widgets\" />
     <Folder Include="App_Data\" />
-    <Folder Include="Themes\Default\Apps\" />
-    <Folder Include="Themes\Default\Content\" />
-    <Folder Include="Themes\Default\Shared\" />
-    <Folder Include="Themes\Default\Views\Pages\" />
-    <Folder Include="Themes\Default\Views\Widgets\" />
     <Folder Include="Views\Article\" />
   </ItemGroup>
   <ItemGroup>
@@ -2679,7 +2679,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1834</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8880/</IISUrl>
+          <IISUrl>http://localhost:8885/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
