@@ -217,9 +217,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 case ProductSearchSort.NameZToA:
                     return new Sort(new[] { new SortField("nameSort", SortField.STRING, true) });
                 case ProductSearchSort.PriceLowToHigh:
-                    return new Sort(new[] { new SortField("price", SortField.DOUBLE) });
-                case ProductSearchSort.PriceHighToLow:
                     return new Sort(new[] { new SortField("price", SortField.DOUBLE, true) });
+                case ProductSearchSort.PriceHighToLow:
+                    return new Sort(new[] { new SortField("price", SortField.DOUBLE) });
                 default:
                     return Sort.RELEVANCE;
             }

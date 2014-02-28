@@ -68,7 +68,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var indexSearcher = _productSearcher.IndexSearcher;
             var valueCollector = new ValueCollector(indexSearcher, FieldDefinition.GetFieldName<ProductSearchBrandDefinition>());
             indexSearcher.Search(clone.GetQuery(), clone.GetFilter(), valueCollector);
-            return valueCollector.Values.Select(s => Convert.ToInt32(s)).Distinct().ToList();
+            return valueCollector.Values.Where(x=>!string.IsNullOrEmpty(x)).Select(s => Convert.ToInt32(s)).Distinct().ToList();
         }
 
         public List<int> GetCategories(ProductSearchQuery query)
