@@ -1,5 +1,6 @@
 ﻿using System;
 using MrCMS.Entities.Multisite;
+using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -12,13 +13,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
         private readonly Site _currentSite;
         private readonly PayPalExpressCheckoutSettings _payPalExpressCheckoutSettings;
         private readonly SiteSettings _siteSettings;
+        private readonly IUniquePageService _uniquePageService;
 
-        public PayPalUrlService(IDocumentService documentService, Site currentSite, PayPalExpressCheckoutSettings payPalExpressCheckoutSettings, SiteSettings siteSettings)
+        public PayPalUrlService(IDocumentService documentService, Site currentSite, PayPalExpressCheckoutSettings payPalExpressCheckoutSettings, SiteSettings siteSettings, IUniquePageService uniquePageService)
         {
             _documentService = documentService;
             _currentSite = currentSite;
             _payPalExpressCheckoutSettings = payPalExpressCheckoutSettings;
             _siteSettings = siteSettings;
+            _uniquePageService = uniquePageService;
         }
 
         private string GetScheme()
@@ -35,7 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public string GetCancelURL()
         {
-            var cart = _documentService.GetUniquePage<Cart>();
+            var cart = _uniquePageService.GetUniquePage<Cart>();
             return
                 new Uri(new Uri(GetScheme() + _currentSite.BaseUrl), cart == null ? string.Empty : cart.LiveUrlSegment)
                     .ToString();

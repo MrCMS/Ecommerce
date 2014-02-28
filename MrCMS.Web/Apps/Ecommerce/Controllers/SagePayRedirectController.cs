@@ -15,13 +15,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IOrderService _orderService;
         private readonly IDocumentService _documentService;
         private readonly ISagePayService _sagePayService;
+        private readonly IUniquePageService _uniquePageService;
 
-        public SagePayRedirectController(CartModel cart, IOrderService orderService, IDocumentService documentService, ISagePayService sagePayService)
+        public SagePayRedirectController(CartModel cart, IOrderService orderService, IDocumentService documentService, ISagePayService sagePayService, IUniquePageService uniquePageService)
         {
             _cart = cart;
             _orderService = orderService;
             _documentService = documentService;
             _sagePayService = sagePayService;
+            _uniquePageService = uniquePageService;
         }
 
         public ActionResult Failed(string vendorTxCode)
@@ -32,7 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpPost]
         public RedirectResult FailedPost()
         {
-            return _documentService.RedirectTo<PaymentDetails>();
+            return _uniquePageService.RedirectTo<PaymentDetails>();
         }
 
         public ActionResult Success(string vendorTxCode)
@@ -56,7 +58,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpPost]
         public RedirectResult SuccessPost(Guid id)
         {
-            return _documentService.RedirectTo<OrderPlaced>(new { id });
+            return _uniquePageService.RedirectTo<OrderPlaced>(new { id });
         }
     }
 }

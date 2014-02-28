@@ -48,31 +48,31 @@
             </div>
             }
 
-            { Html.RenderPartial("ProductPricebreaks", Model); }
+            Html.RenderPartial("ProductPricebreaks", Model);
 
             if (canBuy.OK)
             {
                 Html.RenderAction("AddToCart", "Cart", new { model = new AddToCartModel { ProductVariant = Model, Quantity = 1 } });
             }
-            else if (canBuy is OutOfStock)
+            if (canBuy is OutOfStock)
             {
                 Html.RenderAction("BackInStockForm", "Product", new { id = Model.Id } );
             }
-            else if (canBuy is CannotOrderQuantity)
+            if (canBuy is CannotOrderQuantity)
             {
-            <div class="row-fluid out-of-stock">
-                <p class="text-center">
-                    You currently have all all available stock in your cart
-                </p>
-            </div>
+                <div class="row-fluid out-of-stock">
+                    <p class="text-center">
+                        You currently have all all available stock in your cart
+                    </p>
+                </div>
             }
-            else if (canBuy is NoShippingMethodWouldBeAvailable)
+            if (canBuy is NoShippingMethodWouldBeAvailable)
             {
-            <div class="row-fluid out-of-stock">
-                <p class="text-center">
-                    @canBuy.Message
-                </p>
-            </div>
+                <div class="row-fluid out-of-stock">
+                    <p class="text-center">
+                        @canBuy.Message
+                    </p>
+                </div>
             }
             Html.RenderAction("Add", "Wishlist", new { productVariant = Model });
         }

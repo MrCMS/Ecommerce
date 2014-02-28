@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:intf="https://www.secpay.com/java-bin/services/SECCardService" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:impl="https://www.secpay.com/java-bin/services/SECCardService" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="https://www.secpay.com/java-bin/services/SECCardService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types />
+  <wsdl:message name="getReportResponse">
+    <wsdl:part name="getReportReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getTZReportResponse">
+    <wsdl:part name="getTZReportReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="repeatCardFullAddrRequest">
+    <wsdl:part name="mid" type="xsd:string" />
+    <wsdl:part name="vpn_pswd" type="xsd:string" />
+    <wsdl:part name="trans_id" type="xsd:string" />
+    <wsdl:part name="amount" type="xsd:string" />
+    <wsdl:part name="remote_pswd" type="xsd:string" />
+    <wsdl:part name="new_trans_id" type="xsd:string" />
+    <wsdl:part name="exp_date" type="xsd:string" />
+    <wsdl:part name="order" type="xsd:string" />
+    <wsdl:part name="bill" type="xsd:string" />
+    <wsdl:part name="ship" type="xsd:string" />
+    <wsdl:part name="options" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="repeatCardFullRequest">
+    <wsdl:part name="mid" type="xsd:string" />
+    <wsdl:part name="vpn_pswd" type="xsd:string" />
+    <wsdl:part name="trans_id" type="xsd:string" />
+    <wsdl:part name="amount" type="xsd:string" />
+    <wsdl:part name="remote_pswd" type="xsd:string" />
+    <wsdl:part name="new_trans_id" type="xsd:string" />
+    <wsdl:part name="exp_date" type="xsd:string" />
+    <wsdl:part name="order" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="validateCardFullRequest">
+    <wsdl:part name="mid" type="xsd:string" />
+    <wsdl:part name="vpn_pswd" type="xsd:string" />
+    <wsdl:part name="trans_id" type="xsd:string" />
+    <wsdl:part name="ip" type="xsd:string" />
+    <wsdl:part name="name" type="xsd:string" />
+    <wsdl:part name="card_number" type="xsd:string" />
+    <wsdl:part name="amount" type="xsd:string" />
+    <wsdl:part name="expiry_date" type="xsd:string" />
+    <wsdl:part name="issue_number" type="xsd:string" />
+    <wsdl:part name="start_date" type="xsd:string" />
+    <wsdl:part name="order" type="xsd:string" />
+    <wsdl:part name="shipping" type="xsd:string" />
+    <wsdl:part name="billing" type="xsd:string" />
+    <wsdl:part name="options" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="refundCardFullRequest">
+    <wsdl:part name="mid" type="xsd:string" />
+    <wsdl:part name="vpn_pswd" type="xsd:string" />
+    <wsdl:part name="trans_id" type="xsd:string" />
+    <wsdl:part name="amount" type="xsd:string" />
+    <wsdl:part name="remote_pswd" type="xsd:string" />
+    <wsdl:part name="new_trans_id" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="releaseCardFullRequest">
+    <wsdl:part name="mid" type="xsd:string" />
+    <wsdl:part name="vpn_pswd" type="xsd:string" />
+    <wsdl:part name="trans_id" type="xsd:string" />
+    <wsdl:part name="amount" type="xsd:string" />
+    <wsdl:part name="remote_pswd" type="xsd:string" />
+    <wsdl:part name="new_trans_id" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="getReportRequest">
+    <wsdl:part name="mid" type="xsd:string" />
+    <wsdl:part name="vpn_pswd" type="xsd:string" />
+    <wsdl:part name="remote_pswd" type="xsd:string" />
+    <wsdl:part name="report_type" type="xsd:string" />
+    <wsdl:part name="cond_type" type="xsd:string" />
+    <wsdl:part name="condition" type="xsd:string" />
+    <wsdl:part name="currency" type="xsd:string" />
+    <wsdl:part name="predicate" type="xsd:string" />
+    <wsdl:part name="html" type="xsd:boolean" />
+    <wsdl:part name="showErrs" type="xsd:boolean" />
+  </wsdl:message>
+  <wsdl:message name="getTZReportRequest">
+    <wsdl:part name="mid" type="xsd:string" />
+    <wsdl:part name="vpn_pswd" type="xsd:string" />
+    <wsdl:part name="remote_pswd" type="xsd:string" />
+    <wsdl:part name="report_type" type="xsd:string" />
+    <wsdl:part name="cond_type" type="xsd:string" />
+    <wsdl:part name="condition" type="xsd:string" />
+    <wsdl:part name="currency" type="xsd:string" />
+    <wsdl:part name="predicate" type="xsd:string" />
+    <wsdl:part name="html" type="xsd:boolean" />
+    <wsdl:part name="showErrs" type="xsd:boolean" />
+    <wsdl:part name="tz" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="threeDSecureEnrolmentRequestRequest">
+    <wsdl:part name="mid" type="xsd:string" />
+    <wsdl:part name="vpn_pswd" type="xsd:string" />
+    <wsdl:part name="trans_id" type="xsd:string" />
+    <wsdl:part name="ip" type="xsd:string" />
+    <wsdl:part name="name" type="xsd:string" />
+    <wsdl:part name="card_number" type="xsd:string" />
+    <wsdl:part name="amount" type="xsd:string" />
+    <wsdl:part name="expiry_date" type="xsd:string" />
+    <wsdl:part name="issue_number" type="xsd:string" />
+    <wsdl:part name="start_date" type="xsd:string" />
+    <wsdl:part name="order" type="xsd:string" />
+    <wsdl:part name="shipping" type="xsd:string" />
+    <wsdl:part name="billing" type="xsd:string" />
+    <wsdl:part name="options" type="xsd:string" />
+    <wsdl:part name="device_category" type="xsd:string" />
+    <wsdl:part name="accept_headers" type="xsd:string" />
+    <wsdl:part name="user_agent" type="xsd:string" />
+    <wsdl:part name="mpi_merchant_name" type="xsd:string" />
+    <wsdl:part name="mpi_merchant_url" type="xsd:string" />
+    <wsdl:part name="mpi_description" type="xsd:string" />
+    <wsdl:part name="purchaseRecurringFrequency" type="xsd:string" />
+    <wsdl:part name="purchaseRecurringExpiry" type="xsd:string" />
+    <wsdl:part name="purchaseInstallments" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="threeDSecureAuthorisationRequestRequest">
+    <wsdl:part name="mid" type="xsd:string" />
+    <wsdl:part name="vpn_pswd" type="xsd:string" />
+    <wsdl:part name="trans_id" type="xsd:string" />
+    <wsdl:part name="md" type="xsd:string" />
+    <wsdl:part name="paRes" type="xsd:string" />
+    <wsdl:part name="options" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="performTransactionViaAlternatePaymentMethodRequest">
+    <wsdl:part name="mid" type="xsd:string" />
+    <wsdl:part name="vpn_pswd" type="xsd:string" />
+    <wsdl:part name="paymentOrganisation" type="xsd:string" />
+    <wsdl:part name="paymentMethod" type="xsd:string" />
+    <wsdl:part name="paymentType" type="xsd:string" />
+    <wsdl:part name="paymentRequestType" type="xsd:string" />
+    <wsdl:part name="trans_id" type="xsd:string" />
+    <wsdl:part name="amount" type="xsd:string" />
+    <wsdl:part name="currency" type="xsd:string" />
+    <wsdl:part name="options" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="threeDSecureAuthorisationRequestResponse">
+    <wsdl:part name="threeDSecureAuthorisationRequestReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="threeDSecureEnrolmentRequestResponse">
+    <wsdl:part name="threeDSecureEnrolmentRequestReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="refundCardFullResponse">
+    <wsdl:part name="refundCardFullReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="validateCardFullResponse">
+    <wsdl:part name="validateCardFullReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="releaseCardFullResponse">
+    <wsdl:part name="releaseCardFullReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="repeatCardFullAddrResponse">
+    <wsdl:part name="repeatCardFullAddrReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="repeatCardFullResponse">
+    <wsdl:part name="repeatCardFullReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="performTransactionViaAlternatePaymentMethodResponse">
+    <wsdl:part name="performTransactionViaAlternatePaymentMethodReturn" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:portType name="SECVPN">
+    <wsdl:operation name="refundCardFull" parameterOrder="mid vpn_pswd trans_id amount remote_pswd new_trans_id">
+      <wsdl:input name="refundCardFullRequest" message="impl:refundCardFullRequest" />
+      <wsdl:output name="refundCardFullResponse" message="impl:refundCardFullResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="releaseCardFull" parameterOrder="mid vpn_pswd trans_id amount remote_pswd new_trans_id">
+      <wsdl:input name="releaseCardFullRequest" message="impl:releaseCardFullRequest" />
+      <wsdl:output name="releaseCardFullResponse" message="impl:releaseCardFullResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="repeatCardFullAddr" parameterOrder="mid vpn_pswd trans_id amount remote_pswd new_trans_id exp_date order bill ship options">
+      <wsdl:input name="repeatCardFullAddrRequest" message="impl:repeatCardFullAddrRequest" />
+      <wsdl:output name="repeatCardFullAddrResponse" message="impl:repeatCardFullAddrResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="repeatCardFull" parameterOrder="mid vpn_pswd trans_id amount remote_pswd new_trans_id exp_date order">
+      <wsdl:input name="repeatCardFullRequest" message="impl:repeatCardFullRequest" />
+      <wsdl:output name="repeatCardFullResponse" message="impl:repeatCardFullResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="validateCardFull" parameterOrder="mid vpn_pswd trans_id ip name card_number amount expiry_date issue_number start_date order shipping billing options">
+      <wsdl:input name="validateCardFullRequest" message="impl:validateCardFullRequest" />
+      <wsdl:output name="validateCardFullResponse" message="impl:validateCardFullResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="threeDSecureEnrolmentRequest" parameterOrder="mid vpn_pswd trans_id ip name card_number amount expiry_date issue_number start_date order shipping billing options device_category accept_headers user_agent mpi_merchant_name mpi_merchant_url mpi_description purchaseRecurringFrequency purchaseRecurringExpiry purchaseInstallments">
+      <wsdl:input name="threeDSecureEnrolmentRequestRequest" message="impl:threeDSecureEnrolmentRequestRequest" />
+      <wsdl:output name="threeDSecureEnrolmentRequestResponse" message="impl:threeDSecureEnrolmentRequestResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="threeDSecureAuthorisationRequest" parameterOrder="mid vpn_pswd trans_id md paRes options">
+      <wsdl:input name="threeDSecureAuthorisationRequestRequest" message="impl:threeDSecureAuthorisationRequestRequest" />
+      <wsdl:output name="threeDSecureAuthorisationRequestResponse" message="impl:threeDSecureAuthorisationRequestResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getReport" parameterOrder="mid vpn_pswd remote_pswd report_type cond_type condition currency predicate html showErrs">
+      <wsdl:input name="getReportRequest" message="impl:getReportRequest" />
+      <wsdl:output name="getReportResponse" message="impl:getReportResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="getTZReport" parameterOrder="mid vpn_pswd remote_pswd report_type cond_type condition currency predicate html showErrs tz">
+      <wsdl:input name="getTZReportRequest" message="impl:getTZReportRequest" />
+      <wsdl:output name="getTZReportResponse" message="impl:getTZReportResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="performTransactionViaAlternatePaymentMethod" parameterOrder="mid vpn_pswd paymentOrganisation paymentMethod paymentType paymentRequestType trans_id amount currency options">
+      <wsdl:input name="performTransactionViaAlternatePaymentMethodRequest" message="impl:performTransactionViaAlternatePaymentMethodRequest" />
+      <wsdl:output name="performTransactionViaAlternatePaymentMethodResponse" message="impl:performTransactionViaAlternatePaymentMethodResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SECCardServiceSoapBinding" type="impl:SECVPN">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="refundCardFull">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="refundCardFullRequest">
+        <wsdlsoap:body use="encoded" namespace="http://secvpn.secpay.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="refundCardFullResponse">
+        <wsdlsoap:body use="encoded" namespace="https://www.secpay.com/java-bin/services/SECCardService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="releaseCardFull">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="releaseCardFullRequest">
+        <wsdlsoap:body use="encoded" namespace="http://secvpn.secpay.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="releaseCardFullResponse">
+        <wsdlsoap:body use="encoded" namespace="https://www.secpay.com/java-bin/services/SECCardService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="repeatCardFullAddr">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="repeatCardFullAddrRequest">
+        <wsdlsoap:body use="encoded" namespace="http://secvpn.secpay.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="repeatCardFullAddrResponse">
+        <wsdlsoap:body use="encoded" namespace="https://www.secpay.com/java-bin/services/SECCardService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="repeatCardFull">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="repeatCardFullRequest">
+        <wsdlsoap:body use="encoded" namespace="http://secvpn.secpay.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="repeatCardFullResponse">
+        <wsdlsoap:body use="encoded" namespace="https://www.secpay.com/java-bin/services/SECCardService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="validateCardFull">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="validateCardFullRequest">
+        <wsdlsoap:body use="encoded" namespace="http://secvpn.secpay.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="validateCardFullResponse">
+        <wsdlsoap:body use="encoded" namespace="https://www.secpay.com/java-bin/services/SECCardService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="threeDSecureEnrolmentRequest">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="threeDSecureEnrolmentRequestRequest">
+        <wsdlsoap:body use="encoded" namespace="http://secvpn.secpay.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="threeDSecureEnrolmentRequestResponse">
+        <wsdlsoap:body use="encoded" namespace="https://www.secpay.com/java-bin/services/SECCardService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="threeDSecureAuthorisationRequest">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="threeDSecureAuthorisationRequestRequest">
+        <wsdlsoap:body use="encoded" namespace="http://secvpn.secpay.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="threeDSecureAuthorisationRequestResponse">
+        <wsdlsoap:body use="encoded" namespace="https://www.secpay.com/java-bin/services/SECCardService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getReport">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getReportRequest">
+        <wsdlsoap:body use="encoded" namespace="http://secvpn.secpay.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getReportResponse">
+        <wsdlsoap:body use="encoded" namespace="https://www.secpay.com/java-bin/services/SECCardService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTZReport">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="getTZReportRequest">
+        <wsdlsoap:body use="encoded" namespace="http://secvpn.secpay.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="getTZReportResponse">
+        <wsdlsoap:body use="encoded" namespace="https://www.secpay.com/java-bin/services/SECCardService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="performTransactionViaAlternatePaymentMethod">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="performTransactionViaAlternatePaymentMethodRequest">
+        <wsdlsoap:body use="encoded" namespace="http://secvpn.secpay.com" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output name="performTransactionViaAlternatePaymentMethodResponse">
+        <wsdlsoap:body use="encoded" namespace="https://www.secpay.com/java-bin/services/SECCardService" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SECVPNService">
+    <wsdl:port name="SECCardService" binding="impl:SECCardServiceSoapBinding">
+      <wsdlsoap:address location="https://www.secpay.com/java-bin/services/SECCardService" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

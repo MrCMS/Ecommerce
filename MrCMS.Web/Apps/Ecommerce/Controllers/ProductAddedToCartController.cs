@@ -18,19 +18,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IDocumentService _documentService;
         private readonly CartModel _cart;
         private readonly IProductAnalyticsService _productAnalyticsService;
+        private readonly IUniquePageService _uniquePageService;
 
-        public ProductAddedToCartController(CartModel cartModel, IDocumentService documentService, CartModel cart, IProductAnalyticsService productAnalyticsService)
+        public ProductAddedToCartController(CartModel cartModel, IDocumentService documentService, CartModel cart, IProductAnalyticsService productAnalyticsService, IUniquePageService uniquePageService)
         {
             _cartModel = cartModel;
             _documentService = documentService;
             _cart = cart;
             _productAnalyticsService = productAnalyticsService;
+            _uniquePageService = uniquePageService;
         }
 
         public ActionResult Show(ProductAddedToCart page, ProductVariant productVariant, int quantity = 1)
         {
             if (productVariant == null || productVariant.Id == 0) //model binder always creates a product variant so shouldn't be null
-                return _documentService.RedirectTo<Cart>();
+                return _uniquePageService.RedirectTo<Cart>();
             ViewData["productvariant"] = productVariant;
             ViewData["quantity"] = quantity;
             ViewData["cart"] = _cart;

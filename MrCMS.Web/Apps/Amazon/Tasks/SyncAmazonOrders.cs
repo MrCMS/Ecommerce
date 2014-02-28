@@ -5,20 +5,20 @@ using MrCMS.Tasks;
 
 namespace MrCMS.Web.Apps.Amazon.Tasks
 {
-    public class SyncAmazonOrders : BackgroundTask
-    {
-        public SyncAmazonOrders(Site site)
-            : base(site)
-        {
-        }
+    //public class SyncAmazonOrders : SchedulableTask
+    //{
+    //    public SyncAmazonOrders(Site site)
+    //        : base(site)
+    //    {
+    //    }
 
-        public override void Execute()
-        {
-            var webClient = new WebClient();
+    //    public override void Execute()
+    //    {
+    //        var webClient = new WebClient();
 
-            var url = Site.BaseUrl.Contains("http") ? new Uri(Site.BaseUrl) : new Uri("http://" + Site.BaseUrl);
+    //        var url = Site.BaseUrl.Contains("http") ? new Uri(Site.BaseUrl) : new Uri("http://" + Site.BaseUrl);
 
-            webClient.DownloadData(new Uri(url, "sync-amazon-orders"));
-        }
-    }
+    //        webClient.DownloadData(new Uri(url, "sync-amazon-orders"));
+    //    }
+    //}
 }
