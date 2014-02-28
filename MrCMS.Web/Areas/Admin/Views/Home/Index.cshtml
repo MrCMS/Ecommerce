@@ -7,7 +7,11 @@
 <form>
     <fieldset>
         <legend>Dashboard</legend>
-        @Html.RenderDashboardArea(DashboardArea.Top)
+        <div class="row-fluid">
+            <div class="span12">
+                @Html.RenderDashboardArea(DashboardArea.Top)
+            </div>
+        </div>
         <hr />
         <div class="row-fluid">
             <div class="span6">

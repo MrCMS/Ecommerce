@@ -17,7 +17,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
             if (obj.Brand != null)
                 yield return obj.Brand.Id.ToString();
 
-            yield return "";
+            yield return null;
         }
     }
 }
