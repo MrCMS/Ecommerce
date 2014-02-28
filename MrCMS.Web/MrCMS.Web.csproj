@@ -424,7 +424,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CurrencyController.cs" />
-    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DashboardController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceDashboardController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountApplicationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountLimitationController.cs" />
@@ -2316,8 +2316,8 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Dashboard\Revenue.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Dashboard\UserAndPageStats.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceDashboard\Revenue.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceDashboard\UserAndPageStats.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\FixedAmountFromOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\XPercentFromOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\CartHasAtLeastXItems.cshtml" />
@@ -2554,10 +2554,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Themes\Ecommerce\Areas\Admin\Views\Home\Index.cshtml" />
-    <Content Include="Themes\Ecommerce\Areas\Admin\Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Themes\Ecommerce\Views\Web.config">
