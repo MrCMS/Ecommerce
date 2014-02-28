@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Core.Models;
+using MrCMS.Web.Apps.Core.Models.RegisterAndLogin;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models

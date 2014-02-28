@@ -1,5 +1,4 @@
-﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Models.AddToCartModel
+﻿@model MrCMS.Web.Apps.Ecommerce.Models.AddToCartModel
 @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
 {
     @Html.HiddenFor(model => model.ProductVariant.Id)

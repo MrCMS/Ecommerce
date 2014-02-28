@@ -1,6 +1,6 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Website
-@model MrCMS.Web.Apps.Core.Models.NavigationList
+@model MrCMS.Web.Apps.Core.Models.Navigation.NavigationList
 @{
     var currentPage = CurrentRequestData.CurrentPage;
     var activePages = currentPage.ActivePages.Select(webpage => "/" + webpage.LiveUrlSegment).ToList();

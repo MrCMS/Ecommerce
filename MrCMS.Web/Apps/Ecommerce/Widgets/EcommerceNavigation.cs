@@ -1,4 +1,5 @@
 ﻿using MrCMS.Entities.Widget;
+using MrCMS.Web.Apps.Core.Models.Navigation;
 using NHibernate;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Web.Apps.Core.Models;

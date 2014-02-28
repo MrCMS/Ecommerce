@@ -9,9 +9,9 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders
 {
     public class AmazonOrderSearchService : IAmazonOrderSearchService
     {
-        private readonly ISearcher<AmazonOrder, AmazonOrderSearchIndex> _orderSearcher;
+        private readonly ISearcher<AmazonOrder, AmazonOrderSearchDefinition> _orderSearcher;
 
-        public AmazonOrderSearchService(ISearcher<AmazonOrder, AmazonOrderSearchIndex> orderSearcher)
+        public AmazonOrderSearchService(ISearcher<AmazonOrder, AmazonOrderSearchDefinition> orderSearcher)
         {
             _orderSearcher = orderSearcher;
         }

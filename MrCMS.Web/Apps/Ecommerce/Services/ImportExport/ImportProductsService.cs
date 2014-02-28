@@ -22,6 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private readonly IImportProductImagesService _importProductImagesService;
         private readonly IImportProductUrlHistoryService _importUrlHistoryService;
         private readonly ISession _session;
+        private readonly IUniquePageService _uniquePageService;
         private HashSet<Document> _allDocuments;
         private HashSet<Brand> _allBrands;
         private ProductSearch _uniquePage;
@@ -31,7 +32,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
         public ImportProductsService(IDocumentService documentService, IBrandService brandService,
              IImportProductSpecificationsService importSpecificationsService, IImportProductVariantsService importProductVariantsService,
-            IImportProductImagesService importProductImagesService, IImportProductUrlHistoryService importUrlHistoryService, ISession session)
+            IImportProductImagesService importProductImagesService, IImportProductUrlHistoryService importUrlHistoryService, ISession session, IUniquePageService uniquePageService)
         {
             _documentService = documentService;
             _brandService = brandService;
@@ -40,6 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _importProductImagesService = importProductImagesService;
             _importUrlHistoryService = importUrlHistoryService;
             _session = session;
+            _uniquePageService = uniquePageService;
         }
 
         public void SetAllDocuments(IEnumerable<Document> documents)
@@ -64,7 +66,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// <param name="productsToImport"></param>
         public void ImportProductsFromDTOs(HashSet<ProductImportDataTransferObject> productsToImport)
         {
-            _uniquePage = _documentService.GetUniquePage<ProductSearch>();
+            _uniquePage = _uniquePageService.GetUniquePage<ProductSearch>();
             _productGalleriesCategory = _documentService.GetDocumentByUrl<MediaCategory>("product-galleries");
             if (_productGalleriesCategory == null)
             {

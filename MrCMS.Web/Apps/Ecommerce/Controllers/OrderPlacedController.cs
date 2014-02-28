@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Models;
+using MrCMS.Web.Apps.Core.Models.RegisterAndLogin;
 using MrCMS.Web.Apps.Core.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.ModelBinders;
@@ -19,11 +20,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly IOrderPlacedService _orderPlacedService;
         private readonly IDocumentService _documentService;
+        private readonly IUniquePageService _uniquePageService;
 
-        public OrderPlacedController(IOrderPlacedService orderPlacedService,IDocumentService documentService)
+        public OrderPlacedController(IOrderPlacedService orderPlacedService,IDocumentService documentService, IUniquePageService uniquePageService)
         {
             _orderPlacedService = orderPlacedService;
             _documentService = documentService;
+            _uniquePageService = uniquePageService;
         }
 
         public ActionResult Show(OrderPlaced page, [IoCModelBinder(typeof(OrderByGuidModelBinder))]Order order)
@@ -46,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             var result = _orderPlacedService.LoginAndAssociateOrder(model, order);
             if (!result.Success)
                 TempData["login-error"] = result.Error;
-            return _documentService.RedirectTo<OrderPlaced>(new {id = order.Guid});
+            return _uniquePageService.RedirectTo<OrderPlaced>(new { id = order.Guid });
         }
 
         [HttpPost]
@@ -55,7 +58,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             var result = _orderPlacedService.RegisterAndAssociateOrder(model, order);
             if (!result.Success)
                 TempData["register-error"] = result.Error;
-            return _documentService.RedirectTo<OrderPlaced>(new {id = order.Guid});
+            return _uniquePageService.RedirectTo<OrderPlaced>(new { id = order.Guid });
         }
     }
 

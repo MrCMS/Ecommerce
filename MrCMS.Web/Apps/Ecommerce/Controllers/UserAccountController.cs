@@ -90,7 +90,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
                 _passwordManagementService.SetPassword(user, model.Password, model.Password);
                 _userService.AddUser(user);
-                _authorisationService.SetAuthCookie(model.Email, false);
+                _authorisationService.SetAuthCookie(user, false);
                 CurrentRequestData.CurrentUser = user;
 
                 var order = _orderService.SetLastOrderUserIdByOrderId(model.OrderId);

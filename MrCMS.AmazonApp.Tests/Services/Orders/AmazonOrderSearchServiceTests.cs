@@ -9,12 +9,12 @@ namespace MrCMS.AmazonApp.Tests.Services.Orders
 {
     public class AmazonOrderSearchServiceTests : InMemoryDatabaseTest
     {
-        private ISearcher<AmazonOrder, AmazonOrderSearchIndex> _orderSearcher;
+        private ISearcher<AmazonOrder, AmazonOrderSearchDefinition> _orderSearcher;
         private AmazonOrderSearchService _amazonOrderSearchService;
 
         public AmazonOrderSearchServiceTests()
         {
-            _orderSearcher = A.Fake<ISearcher<AmazonOrder, AmazonOrderSearchIndex>>();
+            _orderSearcher = A.Fake<ISearcher<AmazonOrder, AmazonOrderSearchDefinition>>();
             _amazonOrderSearchService = new AmazonOrderSearchService(_orderSearcher);
         }
 

@@ -60,9 +60,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             }
         }
 
-        [StringLength(500)]
-        public virtual string Abstract { get; set; }
-
         public override void AdminViewData(ViewDataDictionary viewData, NHibernate.ISession session)
         {
             viewData["product-search-sort-options"] =
