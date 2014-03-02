@@ -266,7 +266,6 @@
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\OrderInfoController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\OrdersController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\SettingsController.cs" />
-    <Compile Include="Apps\Amazon\Controllers\AmazonSyncController.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonLogEntryOverride.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonOrderOverride.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonOrderSyncDataOverride.cs" />
@@ -674,16 +673,19 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalHelper.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalInterfaceService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PaypalHealthCheck.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalOrderService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalRequestService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalResponse.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalUrlService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\SetExpressCheckoutResponse.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Paypoint\PayPointHealthCheck.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Paypoint\PaypointPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Paypoint\PaypointResponse.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Paypoint\PaypointSettings.cs" />
     <Compile Include="Apps\Ecommerce\Payment\SagePay\ISagePayUrlResolver.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\SagePay\SagepayHealthCheck.cs" />
     <Compile Include="Apps\Ecommerce\Payment\SagePay\ResponseType.cs" />
     <Compile Include="Apps\Ecommerce\Payment\SagePay\SagePayPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\SagePay\SagePaySettings.cs" />
@@ -2402,8 +2404,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortVariants.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Specifications.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Thumbnails.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Upload.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\UploadTemplate.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ViewCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Delete.cshtml" />
@@ -2561,11 +2561,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Apps\Amazon\Controllers\" />
     <Folder Include="Apps\Core\Areas\Admin\Controllers\" />
     <Folder Include="Apps\Core\Entities\" />
     <Folder Include="Apps\Core\Settings\" />
     <Folder Include="Apps\Core\Tasks\" />
-    <Folder Include="Apps\Ecommerce\Areas\Admin\Views\Shared\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Controllers\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Views\Widget\" />
     <Folder Include="Apps\Galleries\Controllers\" />

@@ -12,15 +12,5 @@
         </div>
     </div>
 </div>
-@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/products.js");}
 
-@using (Html.BeginForm("Edit", "MediaCategory", new { id = Model.Id }, FormMethod.Post, new { id = "edit-media" }))
-{
-}
-
-<p id="dragdropsupported" style="border: 2px dotted #808080; height: 30px; line-height: 30px;" onmouseover="$(this).css('background','#e7e7e7')" onmouseout="$(this).css('background','#fff')">&nbsp;Drag files here to upload.</p>
-
-@{ Html.RenderPartial("Upload", Model.Gallery); }
-
-@{ Html.RenderPartial("UploadTemplate"); }
-@{ Html.RenderPartial("DownloadTemplate"); }
+@{ Html.RenderPartial("UploadAnywhere", Model.Gallery); }

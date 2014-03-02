@@ -10,7 +10,6 @@ using MrCMS.Entities.Multisite;
 using MrCMS.Installation;
 using MrCMS.Services;
 using MrCMS.Settings;
-using MrCMS.Web.Apps.Amazon.Controllers;
 using MrCMS.Web.Apps.Amazon.DbConfiguration;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Amazon.Tasks;
@@ -70,12 +69,6 @@ namespace MrCMS.Web.Apps.Amazon
             context.MapAreaRoute("Amazon Admin controllers", "Admin", "Admin/Apps/Amazon/{controller}/{action}/{id}",
                                  new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                                  new[] { typeof(SettingsController).Namespace });
-            context.MapRoute("Sync Amazon Orders", "sync-amazon-orders",
-                                 new { controller = "AmazonSync", action = "Sync", id = UrlParameter.Optional },
-                                 new[] { typeof(AmazonSyncController).Namespace });
-            context.MapRoute("Sync Amazon Order Items", "sync-amazon-order-items",
-                                 new { controller = "AmazonSync", action = "SyncItems", id = UrlParameter.Optional },
-                                 new[] { typeof(AmazonSyncController).Namespace });
         }
 
         protected override void OnInstallation(ISession session, InstallModel model, Site site)

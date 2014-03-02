@@ -1,24 +1,35 @@
 ﻿using System;
-using System.Net;
-using MrCMS.Entities.Multisite;
 using MrCMS.Tasks;
+using MrCMS.Web.Apps.Amazon.Services.Orders;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Tasks
 {
-    //public class SyncAmazonOrders : SchedulableTask
-    //{
-    //    public SyncAmazonOrders(Site site)
-    //        : base(site)
-    //    {
-    //    }
+    public class SyncAmazonOrders : SchedulableTask
+    {
+        private readonly IAmazonOrderSyncService _amazonOrderSyncService;
 
-    //    public override void Execute()
-    //    {
-    //        var webClient = new WebClient();
+        public SyncAmazonOrders(IAmazonOrderSyncService amazonOrderSyncService)
+        {
+            _amazonOrderSyncService = amazonOrderSyncService;
+        }
 
-    //        var url = Site.BaseUrl.Contains("http") ? new Uri(Site.BaseUrl) : new Uri("http://" + Site.BaseUrl);
+        public override int Priority
+        {
+            get { return 1; }
+        }
 
-    //        webClient.DownloadData(new Uri(url, "sync-amazon-orders"));
-    //    }
-    //}
+        protected override void OnExecute()
+        {
+            try
+            {
+                _amazonOrderSyncService.Sync();
+            }
+            catch (Exception ex)
+            {
+                CurrentRequestData.ErrorSignal.Raise(ex);
+            }
+
+        }
+    }
 }

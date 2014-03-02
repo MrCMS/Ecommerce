@@ -10,7 +10,7 @@
             </span>
         </legend>
 
-        <div id="tabs">
+        <div id="tabs" data-stickytabs="edit-product-variant-@Model.Id" style="min-height: 600px;">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
                 <li><a href="#images" data-toggle="tab">Featured Image</a></li>
@@ -31,8 +31,8 @@
 }
 
 @{
-    Html.IncludeCss("~/Areas/Admin/Content/Scripts/select2-3.4.1/select2.css");
-    Html.IncludeScript("~/Areas/Admin/Content/Scripts/select2-3.4.1/select2.min.js");
+    Html.IncludeCss("~/Areas/Admin/Content/Scripts/lib/select2-3.4.5/select2.css");
+    Html.IncludeScript("~/Areas/Admin/Content/Scripts/lib/select2-3.4.5/select2.min.js");
 }
 @{ Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/product-variant.css"); }
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/product-variant.js"); }
