@@ -1,25 +1,57 @@
 ﻿using System;
-using System.Net;
-using MrCMS.Entities.Multisite;
 using MrCMS.Tasks;
+using MrCMS.Web.Apps.Amazon.Entities.Orders;
+using MrCMS.Web.Apps.Amazon.Models;
+using MrCMS.Web.Apps.Amazon.Services.Orders;
+using MrCMS.Web.Apps.Amazon.Services.Orders.Sync;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Tasks
 {
-    //TODO
-    //public class SyncAmazonOrderItems : SchedulableTask
-    //{
-    //    public SyncAmazonOrderItems(Site site)
-    //        : base(site)
-    //    {
-    //    }
+    public class SyncAmazonOrdersItems : SchedulableTask
+    {
+        private readonly IAmazonOrderSyncDataService _amazonOrderSyncDataService;
+        private readonly IUpdateAmazonOrder _updateAmazonOrder;
 
-    //    public override void Execute()
-    //    {
-    //        var webClient = new WebClient();
+        public SyncAmazonOrdersItems(IAmazonOrderSyncDataService amazonOrderSyncDataService, IUpdateAmazonOrder updateAmazonOrder)
+        {
+            _amazonOrderSyncDataService = amazonOrderSyncDataService;
+            _updateAmazonOrder = updateAmazonOrder;
+        }
 
-    //        var url = Site.BaseUrl.Contains("http") ? new Uri(Site.BaseUrl) : new Uri("http://" + Site.BaseUrl);
+        public override int Priority
+        {
+            get { return 2; }
+        }
 
-    //        webClient.DownloadData(new Uri(url, "sync-amazon-order-items"));
-    //    }
-    //}
+        protected override void OnExecute()
+        {
+            try
+            {
+                var ordersForAdd = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Add, 10);
+                foreach (var amazonOrderSyncData in ordersForAdd)
+                    Update(amazonOrderSyncData);
+
+                var ordersForUpdate = _amazonOrderSyncDataService.GetAllByOperationType(SyncAmazonOrderOperation.Update);
+                foreach (var amazonOrderSyncData in ordersForUpdate)
+                    Update(amazonOrderSyncData);
+            }
+            catch (Exception ex)
+            {
+                CurrentRequestData.ErrorSignal.Raise(ex);
+            }
+        }
+        private void Update(AmazonOrderSyncData data)
+        {
+            if (data.Status != SyncAmazonOrderStatus.Pending)
+                return;
+            LogStatus(data, SyncAmazonOrderStatus.InProgress);
+            _updateAmazonOrder.UpdateOrder(data);
+        }
+        private void LogStatus(AmazonOrderSyncData data, SyncAmazonOrderStatus status)
+        {
+            data.Status = status;
+            _amazonOrderSyncDataService.Update(data);
+        }
+    }
 }
