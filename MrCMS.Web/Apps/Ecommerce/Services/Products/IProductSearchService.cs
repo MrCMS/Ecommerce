@@ -134,7 +134,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                         FieldDefinition.GetFieldName<ProductSearchMetaKeywordsDefinition>(),
                         FieldDefinition.GetFieldName<ProductSearchMetaTitleDefinition>(),
                     },
-                    MrCMSApplication.Get<AdminWebpageIndexDefinition>().GetAnalyser());
+                    MrCMSApplication.Get<ProductSearchIndex>().GetAnalyser());
                 var query = q.Parse(fuzzySearchTerm);
                 booleanQuery.Add(query, Occur.MUST);
             }
