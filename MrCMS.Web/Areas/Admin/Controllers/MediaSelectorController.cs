@@ -94,9 +94,9 @@ namespace MrCMS.Web.Areas.Admin.Controllers
             var fileUrl = _fileService.GetFileUrl(value);
 
             return new SelectedItemInfo
-            {
-                Url = fileUrl
-            };
+                       {
+                           Url = fileUrl
+                       };
         }
     }
 
