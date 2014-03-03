@@ -29,12 +29,11 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private readonly IBrandService _brandService;
         private readonly IProductOptionManagementService _productOptionManagementService;
         private readonly SiteSettings _siteSettings;
+        private readonly IUniquePageService _uniquePageService;
 
         public ProductControllerTests()
         {
             _documentService = A.Fake<IDocumentService>();
-            _productSearch = new ProductSearch();
-            A.CallTo(() => _documentService.GetUniquePage<ProductSearch>()).Returns(_productSearch);
             _productService = A.Fake<IProductService>();
             _categoryService = A.Fake<ICategoryService>();
             _productOptionManager = A.Fake<IProductOptionManager>();
@@ -42,8 +41,11 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _brandService = A.Fake<IBrandService>();
             _productOptionManagementService = A.Fake<IProductOptionManagementService>();
             _siteSettings = new SiteSettings() { DefaultPageSize = 10 };
+            _uniquePageService = A.Fake<IUniquePageService>();
+            _productSearch = new ProductSearch();
+            A.CallTo(() => _uniquePageService.GetUniquePage<ProductSearch>()).Returns(_productSearch);
             _productController = new ProductController(_productService, _documentService, _categoryService, _productOptionManager,
-                _fileService, _brandService, _productOptionManagementService, _siteSettings);
+                _fileService, _brandService, _productOptionManagementService, _siteSettings,_uniquePageService);
         }
 
         [Fact]
@@ -76,7 +78,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductController_Index_ShouldReturnNullModelIfProductContainerIsNull()
         {
-            A.CallTo(() => _documentService.GetUniquePage<ProductSearch>()).Returns(null);
+            A.CallTo(() => _uniquePageService.GetUniquePage<ProductSearch>()).Returns(null);
 
             var viewResult = _productController.Index();
 
