@@ -33,16 +33,12 @@ namespace MrCMS.EcommerceApp.Tests
             CurrentRequestData.SiteSettings = new SiteSettings();
         }
 
-        public MockingKernel Kernel
-        {
-            get { return _kernel; }
-        }
+        public MockingKernel Kernel { get { return _kernel; } }
 
         public virtual void Dispose()
         {
         }
     }
-
 
     public abstract class InMemoryDatabaseTest : MrCMSTest
     {
@@ -59,12 +55,12 @@ namespace MrCMS.EcommerceApp.Tests
                 {
                     var assemblies = new List<Assembly> { typeof(CartItem).Assembly };
                     var nHibernateModule = new NHibernateConfigurator
-                                               {
-                                                   CacheEnabled = true,
-                                                   DatabaseType = DatabaseType.Sqlite,
-                                                   InDevelopment = true,
-                                                   ManuallyAddedAssemblies = assemblies
-                                               };
+                    {
+                        CacheEnabled = true,
+                        DatabaseType = DatabaseType.Sqlite,
+                        InDevelopment = true,
+                        ManuallyAddedAssemblies = assemblies
+                    };
                     Configuration = nHibernateModule.GetConfiguration();
 
                     SessionFactory = Configuration.BuildSessionFactory();
@@ -77,33 +73,36 @@ namespace MrCMS.EcommerceApp.Tests
 
             SetupUser();
 
-            CurrentSite = Session.Transact(session =>
-                {
-                    var site = new Site { Name = "Current Site", BaseUrl = "www.currentsite.com" };
-                    CurrentRequestData.CurrentSite = site;
-                    session.SaveOrUpdate(site);
-                    return site;
-                });
 
-            TaskExecutor.Discard();
+            CurrentSite = Session.Transact(session =>
+            {
+                var site = new Site { Name = "Current Site", BaseUrl = "www.currentsite.com" };
+                CurrentRequestData.CurrentSite = site;
+                session.SaveOrUpdate(site);
+                return site;
+            });
+
+            CurrentRequestData.SiteSettings = new SiteSettings { TimeZone = TimeZoneInfo.Local.Id };
 
             CurrentRequestData.ErrorSignal = new ErrorSignal();
         }
 
         protected Site CurrentSite { get; set; }
 
+
+
         private void SetupUser()
         {
             var user = new User
-                           {
-                               Email = "test@example.com",
-                               IsActive = true,
-                           };
+            {
+                Email = "test@example.com",
+                IsActive = true,
+            };
 
             var adminUserRole = new UserRole
-                                    {
-                                        Name = UserRole.Administrator
-                                    };
+            {
+                Name = UserRole.Administrator
+            };
 
             user.Roles = new HashedSet<UserRole> { adminUserRole };
             adminUserRole.Users = new HashedSet<User> { user };

@@ -15,12 +15,14 @@ namespace MrCMS.EcommerceApp.Tests.Services
         private readonly IDocumentService _documentService;
         private readonly ProductService _productService;
         private readonly SiteSettings _siteSettings;
+        private IUniquePageService _uniquePageService;
 
         public ProductServiceTests()
         {
             _documentService = A.Fake<IDocumentService>();
             _siteSettings = new SiteSettings() { DefaultPageSize = 10 };
-            _productService = new ProductService(Session, _documentService, _siteSettings);
+            _uniquePageService = A.Fake<IUniquePageService>();
+            _productService = new ProductService(Session, _documentService, _siteSettings, _uniquePageService);
         }
 
         [Fact]
@@ -77,7 +79,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ProductService_Search_ReturnsTheIdOfTheProductContainerIfItExists()
         {
-            A.CallTo(() => _documentService.GetUniquePage<ProductSearch>()).Returns(new ProductSearch { Id = 1 });
+            A.CallTo(() => _uniquePageService.GetUniquePage<ProductSearch>()).Returns(new ProductSearch { Id = 1 });
 
             var pagedList = _productService.Search();
 
@@ -87,7 +89,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void ProductService_Search_ReturnsNullContainerIdIfItDoesNotExist()
         {
-            A.CallTo(() => _documentService.GetUniquePage<ProductSearch>()).Returns(null);
+            A.CallTo(() => _uniquePageService.GetUniquePage<ProductSearch>()).Returns(null);
 
             var pagedList = _productService.Search();
 

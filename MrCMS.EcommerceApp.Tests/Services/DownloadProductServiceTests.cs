@@ -13,7 +13,6 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Products.Download;
 using MrCMS.Web.Apps.Ecommerce.Services.Products.Download.Rules;
-using MrCMS.Website;
 using NHibernate;
 using Xunit;
 
@@ -36,7 +35,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void IfOrderIsNullResponseStreamShouldNotBeWrittenTo()
         {
-            HttpResponseBase response = new OutOfContextResponse();
+            HttpResponseBase response = new OutOfContextResponseBuilder().Build();
 
             _downloadProductService.WriteDownloadToResponse(response, null, new OrderLine());
 
@@ -46,7 +45,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         [Fact]
         public void IfOrderLineIsNullStreamShouldNotBeWrittenTo()
         {
-            HttpResponseBase response = new OutOfContextResponse();
+            HttpResponseBase response = new OutOfContextResponseBuilder().Build();
 
             _downloadProductService.WriteDownloadToResponse(response, new Order(), null);
 
@@ -58,7 +57,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         {
             var order = new Order();
             var orderLine = new OrderLineBuilder().Build();
-            HttpResponseBase response = new OutOfContextResponse();
+            HttpResponseBase response = new OutOfContextResponseBuilder().Build();
             SetRulesStatus(order, orderLine, false);
 
             _downloadProductService.WriteDownloadToResponse(response, order, orderLine);
@@ -71,7 +70,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         {
             var order = new Order();
             var orderLine = new OrderLineBuilder().WithFileUrl("test-file-url").Build();
-            HttpResponseBase response = new OutOfContextResponse();
+            HttpResponseBase response = new OutOfContextResponseBuilder().Build();
             A.CallTo(() => _fileSystem.Exists("test-file-url")).Returns(false);
 
             _downloadProductService.WriteDownloadToResponse(response, order, orderLine);
@@ -84,7 +83,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         {
             var order = new Order();
             var orderLine = new OrderLineBuilder().WithFileUrl("test-file-url").Build();
-            HttpResponseBase response = new OutOfContextResponse();
+            HttpResponseBase response = new OutOfContextResponseBuilder().Build();
             A.CallTo(() => _fileSystem.Exists("test-file-url")).Returns(true);
 
             var writeDownloadToResponse = _downloadProductService.WriteDownloadToResponse(response, order, orderLine);
@@ -97,7 +96,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         {
             var order = new Order();
             var orderLine = new OrderLineBuilder().WithFileUrl("test-file-url").Build();
-            HttpResponseBase response = new OutOfContextResponse();
+            HttpResponseBase response = new OutOfContextResponseBuilder().Build();
             A.CallTo(() => _fileSystem.Exists("test-file-url")).Returns(true);
 
             var writeDownloadToResponse = _downloadProductService.WriteDownloadToResponse(response, order, orderLine);
@@ -110,7 +109,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         {
             var order = new Order();
             var orderLine = new OrderLineBuilder().WithFileUrl("test-file-url").WithFileName("test-file-name").WithNumberOfDownloads(1).Build();
-            HttpResponseBase response = new OutOfContextResponse();
+            HttpResponseBase response = new OutOfContextResponseBuilder().Build();
             A.CallTo(() => _fileSystem.Exists("test-file-url")).Returns(true);
 
             _downloadProductService.WriteDownloadToResponse(response, order, orderLine);
