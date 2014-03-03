@@ -1971,6 +1971,15 @@
     <Content Include="Content\install\scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\category.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\forgotten-password.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\password-reset.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\product.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\shipping-methods.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-account.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-login.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-registration.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\jquery.history.js" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -2513,6 +2522,20 @@
     <None Include="Themes\Default\Views\Web.Release.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\LoginPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\RegisterPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\ResetPasswordPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\UserAccountPage.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\ChangePassword.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\LoginBox.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\PasswordReset.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\UserAccountOrders.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config" />
+    <Content Include="Themes\Ecommerce\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Amazon\Controllers\" />
@@ -2540,6 +2563,13 @@
     <Folder Include="Themes\Default\Shared\" />
     <Folder Include="Themes\Default\Views\Pages\" />
     <Folder Include="Themes\Default\Views\Widgets\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Content\Styles\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Shared\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Webpage\" />
+    <Folder Include="Themes\Ecommerce\Shared\" />
+    <Folder Include="Themes\Ecommerce\Views\Shared\" />
     <Folder Include="Views\Article\" />
   </ItemGroup>
   <ItemGroup>
@@ -2631,7 +2661,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1834</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8880/</IISUrl>
+          <IISUrl>http://localhost:8885/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
