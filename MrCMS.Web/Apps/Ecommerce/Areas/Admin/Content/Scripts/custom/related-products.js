@@ -11,7 +11,7 @@ $(function () {
     });
 
     $(document).on('click', '#products .add-product', function () {
-        var term = $(this).val();
+        var term = $('#searchparam').val();
         var button = $(this),
             parentProductId = button.data('parent-product-id'),
             productId = button.data('product-id');
@@ -23,26 +23,17 @@ $(function () {
                 });
                 var href = '/Admin/Apps/Ecommerce/Product/AddRelatedProductItems/' + parentProductId + '?page=1&query=' + term;
                 $('.modal-body-container').load(href + ' div#products', function () {
-                    resizeModal();
                 });
             });
         return false;
     });
-    function resizeModal() {
-        setTimeout(function () {
-            parent.$('#fancybox-content').animate({ height: document.documentElement.scrollHeight }, function () {
-                parent.$.fancybox.center();
-            });
-        }, 100);
-    };
 
     $('#searchparam').keyup(function (key) {
         var term = $(this).val();
         var productId = $("#productId").val();
-        if (term !== "" && productId!="" && productId!=null) {
-            var href = '/Admin/Apps/Ecommerce/Product/AddRelatedProductItems/' + productId + '?page=1&query=' + term;
-            $('.modal-body-container').load(href + ' div#products', function () {
-                resizeModal();
+        if (term !== "" && productId != "" && productId != null) {
+            $.get('/Admin/Apps/Ecommerce/Product/AddRelatedProductItems/' + productId + '?page=1&query=' + term, function (response) {
+                $('.modal-body-container').html(response);
             });
         }
     });
