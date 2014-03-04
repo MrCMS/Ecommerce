@@ -28,8 +28,10 @@ $(function () {
         return false;
     });
 
-    $('#searchparam').keyup(function (key) {
-        var term = $(this).val();
+    $('#search').click(function (e) {
+        e.preventDefault();
+
+        var term = $("#searchparam").val();
         var productId = $("#productId").val();
         if (term !== "" && productId != "" && productId != null) {
             $.get('/Admin/Apps/Ecommerce/Product/AddRelatedProductItems/' + productId + '?page=1&query=' + term, function (response) {
