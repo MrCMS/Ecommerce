@@ -211,6 +211,7 @@
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -1009,6 +1010,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\Paypoint\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1971,6 +1977,42 @@
     <Content Include="Content\install\scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Service References\Paypoint\configuration91.svcinfo" />
+    <Content Include="Service References\Paypoint\configuration.svcinfo" />
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.getReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.getTZReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.performTransactionViaAlternatePaymentMethodResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.refundCardFullResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.releaseCardFullResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.repeatCardFullAddrResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.repeatCardFullResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.threeDSecureAuthorisationRequestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.threeDSecureEnrolmentRequestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.validateCardFullResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\Paypoint\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\category.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\forgotten-password.js" />
     <Content Include="Themes\Ecommerce\Content\Scripts\custom\password-reset.js" />
@@ -2377,7 +2419,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Index.cshtml.orig" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Edit.cshtml" />
@@ -2407,32 +2448,12 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\RecentlyViewedItems.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\SpendXMore.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Apps\Ecommerce\Content\Scripts\custom\product.js.orig" />
-    <Content Include="Apps\Ecommerce\Entities\Products\PriceBreak.cs.orig" />
-    <Content Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs.orig" />
-    <Content Include="Apps\Ecommerce\Entities\Shipping\ShippingMethod.cs.orig" />
-    <Content Include="Apps\Ecommerce\Entities\Users\Address.cs.orig" />
-    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderCancelledEmailToCustomerMessageTemplate.cs.orig" />
-    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderFullyRefundedEmailToCustomerMessageTemplate.cs.orig" />
-    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderPartiallyRefundedEmailToCustomerMessageTemplate.cs.orig" />
-    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToCustomerMessageTemplate.cs.orig" />
-    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToStoreOwnerMessageTemplate.cs.orig" />
-    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderShippedEmailToCustomerMessageTemplate.cs.orig" />
-    <Content Include="Apps\Ecommerce\Models\CartModel.cs.orig" />
-    <Content Include="Apps\Ecommerce\Pages\Product.cs.orig" />
-    <Content Include="Apps\Ecommerce\Payment\Paypoint\PaypointPaymentMethod.cs.orig" />
-    <Content Include="Apps\Ecommerce\Services\Cart\CartSessionManager.cs.orig" />
-    <Content Include="Apps\Ecommerce\Services\Cart\GetCartImpl.cs.orig" />
-    <Content Include="Apps\Ecommerce\Services\Products\IProductVariantService.cs.orig" />
-    <Content Include="Apps\Ecommerce\Services\Products\ProductSearchService.cs.orig" />
-    <Content Include="Apps\Ecommerce\Services\Shipping\IShippingMethodManager.cs.orig" />
     <Content Include="Apps\Ecommerce\Views\Cart\AddDiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\AddToCart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\Cart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\DeleteCartItem.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\Details.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Cart\Details.cshtml.orig" />
     <Content Include="Apps\Ecommerce\Views\Cart\DiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\EditDiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\EnterOrderEmail.cshtml" />
@@ -2485,7 +2506,6 @@
     <Content Include="Apps\Ecommerce\Views\Shared\AnalyticsCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\BackInStockForm.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductCard.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\ProductCard.cshtml.orig" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductCardFeatured.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductImages.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductPricebreaks.cshtml" />
@@ -2516,6 +2536,7 @@
     <Content Include="Apps\Ecommerce\Views\Wishlist\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Wishlist\Summary.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
+    <Content Include="Service References\Paypoint\SECCardService.wsdl" />
     <None Include="Themes\Default\Views\Web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -2557,7 +2578,6 @@
     <Folder Include="Apps\Galleries\Views\Shared\" />
     <Folder Include="Apps\Galleries\Views\Widgets\" />
     <Folder Include="Apps\Galleries\Widgets\" />
-    <Folder Include="App_Data\" />
     <Folder Include="Themes\Default\Apps\" />
     <Folder Include="Themes\Default\Content\" />
     <Folder Include="Themes\Default\Shared\" />
@@ -2637,6 +2657,12 @@
     <Content Include="Views\Shared\_Installation.cshtml" />
     <Content Include="Apps\Core\Views\Widgets\TextWidget.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\Paypoint\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -2661,7 +2687,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1834</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8885/</IISUrl>
+          <IISUrl>http://localhost:8881/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
