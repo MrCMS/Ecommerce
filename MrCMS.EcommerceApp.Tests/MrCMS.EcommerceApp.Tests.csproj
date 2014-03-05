@@ -190,7 +190,6 @@
     <Compile Include="Entities\Shipping\ShippingMethod_GetTaxTests.cs" />
     <Compile Include="Helpers\InlineDataExtensions.cs" />
     <Compile Include="InMemoryDatabaseTest.cs" />
-    <Compile Include="InterfaceMappingTest.cs" />
     <Compile Include="Entities\Cart\CartItemTests.cs" />
     <Compile Include="Metadata\CategoryContainerMetadataTests.cs" />
     <Compile Include="Metadata\CategoryMetadataTests.cs" />
