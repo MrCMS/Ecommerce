@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Web;
 using Elmah;
 using Iesi.Collections.Generic;
 using MrCMS.DbConfiguration;
@@ -16,10 +17,18 @@ using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using Ninject;
 using Ninject.MockingKernel;
+using Ninject.Modules;
 using Configuration = NHibernate.Cfg.Configuration;
 
 namespace MrCMS.Tests
 {
+    public class TestContextModule : NinjectModule
+    {
+        public override void Load()
+        {
+            Kernel.Bind<HttpContextBase>().To<OutOfContext>().InThreadScope();
+        }
+    }
     public abstract class MrCMSTest : IDisposable
     {
         private readonly MockingKernel _kernel;
@@ -27,7 +36,7 @@ namespace MrCMS.Tests
         protected MrCMSTest()
         {
             _kernel = new MockingKernel();
-            Kernel.Load(new ContextModule());
+            Kernel.Load(new TestContextModule());
             MrCMSApplication.OverrideKernel(Kernel);
             CurrentRequestData.SiteSettings = new SiteSettings();
         }
@@ -54,12 +63,12 @@ namespace MrCMS.Tests
                 {
                     var assemblies = new List<Assembly> { typeof(BasicMappedWebpage).Assembly };
                     var nHibernateModule = new NHibernateConfigurator
-                                               {
-                                                   CacheEnabled = true,
-                                                   DatabaseType = DatabaseType.Sqlite,
-                                                   InDevelopment = true,
-                                                   ManuallyAddedAssemblies = assemblies
-                                               };
+                    {
+                        CacheEnabled = true,
+                        DatabaseType = DatabaseType.Sqlite,
+                        InDevelopment = true,
+                        ManuallyAddedAssemblies = assemblies
+                    };
                     Configuration = nHibernateModule.GetConfiguration();
 
                     SessionFactory = Configuration.BuildSessionFactory();
@@ -74,12 +83,12 @@ namespace MrCMS.Tests
 
 
             CurrentSite = Session.Transact(session =>
-                {
-                    var site = new Site { Name = "Current Site", BaseUrl = "www.currentsite.com" };
-                    CurrentRequestData.CurrentSite = site;
-                    session.SaveOrUpdate(site);
-                    return site;
-                });
+            {
+                var site = new Site { Name = "Current Site", BaseUrl = "www.currentsite.com" };
+                CurrentRequestData.CurrentSite = site;
+                session.SaveOrUpdate(site);
+                return site;
+            });
 
             CurrentRequestData.SiteSettings = new SiteSettings { TimeZone = TimeZoneInfo.Local.Id };
 
@@ -93,15 +102,15 @@ namespace MrCMS.Tests
         private void SetupUser()
         {
             var user = new User
-                           {
-                               Email = "test@example.com",
-                               IsActive = true,
-                           };
+            {
+                Email = "test@example.com",
+                IsActive = true,
+            };
 
             var adminUserRole = new UserRole
-                                    {
-                                        Name = UserRole.Administrator
-                                    };
+            {
+                Name = UserRole.Administrator
+            };
 
             user.Roles = new HashedSet<UserRole> { adminUserRole };
             adminUserRole.Users = new HashedSet<User> { user };
