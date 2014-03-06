@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Web;
 using Elmah;
 using Iesi.Collections.Generic;
 using MrCMS.DbConfiguration;
@@ -18,9 +19,17 @@ using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using Ninject;
 using Ninject.MockingKernel;
+using Ninject.Modules;
 
 namespace MrCMS.EcommerceApp.Tests
 {
+    public class TestContextModule : NinjectModule
+    {
+        public override void Load()
+        {
+            Kernel.Bind<HttpContextBase>().To<OutOfContext>().InThreadScope();
+        }
+    }
     public abstract class MrCMSTest : IDisposable
     {
         private readonly MockingKernel _kernel;
@@ -28,7 +37,7 @@ namespace MrCMS.EcommerceApp.Tests
         protected MrCMSTest()
         {
             _kernel = new MockingKernel();
-            Kernel.Load(new ContextModule());
+            Kernel.Load(new TestContextModule());
             MrCMSApplication.OverrideKernel(Kernel);
             CurrentRequestData.SiteSettings = new SiteSettings();
         }
@@ -39,7 +48,6 @@ namespace MrCMS.EcommerceApp.Tests
         {
         }
     }
-
     public abstract class InMemoryDatabaseTest : MrCMSTest
     {
         private static Configuration Configuration;
