@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System;
 using MrCMS.Entities.People;
 using System.ComponentModel;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 {
@@ -151,6 +153,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
                 yield return Country.Name;
             if (!string.IsNullOrWhiteSpace(PostalCode))
                 yield return PostalCode;
+        }
+
+        public virtual Address ToAddress(ISession session, User user)
+        {
+            return new Address
+            {
+                Address1 = Address1,
+                Address2 = Address2,
+                City = City,
+                Company = Company,
+                Country = Country == null ? null : session.Get<Country>(Country.Id),
+                FirstName = FirstName,
+                LastName = LastName,
+                PhoneNumber = PhoneNumber,
+                PostalCode = PostalCode,
+                StateProvince = StateProvince,
+                Title = Title,
+                User = user
+            };
         }
     }
 }

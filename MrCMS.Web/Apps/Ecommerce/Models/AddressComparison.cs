@@ -68,8 +68,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                 yield return PostalCode;
         }
 
-        public static readonly StrictKeyEqualityComparer<Address, AddressComparison> Comparer =
-            new StrictKeyEqualityComparer<Address, AddressComparison>(address => new AddressComparison(address));
+        public static readonly StrictKeyEqualityComparer<IAddress, AddressComparison> Comparer =
+            new StrictKeyEqualityComparer<IAddress, AddressComparison>(address => new AddressComparison(address));
 
         private readonly Country _country;
 
