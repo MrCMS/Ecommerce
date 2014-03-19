@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
 using MrCMS.Website;
@@ -34,6 +33,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public Order PlaceOrder(CartModel cartModel, Action<Order> postCreationActions)
         {
+            // this code is here to try and take into account a 3rd party posting back more than once for whatever reason (see bug #2754). 
+            // If the order with the guid has already been placed, we'll just return that placed order
+            var existingOrders = _session.QueryOver<Order>().Where(order => order.Guid == cartModel.CartGuid).List();
+            if (existingOrders.Any())
+            {
+                return existingOrders.First();
+            }
             var placedOrder = _session.Transact(session =>
                                                     {
                                                         var order = new Order
@@ -111,33 +117,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                         if (postCreationActions != null)
                                                             postCreationActions(order);
 
-                                                        session.SaveOrUpdate(order);
-
-                                                        User currentUser = CurrentRequestData.CurrentUser;
-                                                        if (currentUser != null)
+                                                            // Similarly, we check again just before we save - we should be fine as we are inside of a transaction
+                                                            // but we will err on the side of catching duplicates
+                                                        existingOrders = _session.QueryOver<Order>().Where(o=> o.Guid == cartModel.CartGuid).List();
+                                                        if (existingOrders.Any())
                                                         {
-                                                            var addresses = _session.QueryOver<Address>().Where(address => address.User == currentUser).List();
-                                                            if (!addresses.Contains(cartModel.BillingAddress, AddressComparison.Comparer))
-                                                            {
-                                                                var clone = cartModel.BillingAddress.Clone(session);
-                                                                _session.Save(clone);
-                                                                addresses.Add(clone);
-                                                            }
-                                                            if (cartModel.RequiresShipping && !addresses.Contains(cartModel.ShippingAddress, AddressComparison.Comparer))
-                                                            {
-                                                                _session.Save(cartModel.ShippingAddress.Clone(session));
-                                                            }
-                                                            if (string.IsNullOrEmpty(currentUser.FirstName) &&
-                                                                string.IsNullOrEmpty(currentUser.LastName) && cartModel.BillingAddress != null)
-                                                            {
-                                                                currentUser.FirstName = cartModel.BillingAddress.FirstName;
-                                                                currentUser.LastName = cartModel.BillingAddress.LastName;
-                                                                _session.Save(currentUser);
-                                                            }
+                                                            return existingOrders.First();
                                                         }
+
+                                                        session.SaveOrUpdate(order);
 
                                                         return order;
                                                     });
+
             _orderEventService.OrderPlaced(placedOrder);
             return placedOrder;
         }
