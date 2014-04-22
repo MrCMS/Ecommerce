@@ -152,7 +152,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual bool ShowPreviousPrice
         {
-            get { return DisplayPreviousPrice.HasValue && DisplayPreviousPrice > DisplayPrice; }
+            get { return DisplayPreviousPrice != null && DisplayPreviousPrice > DisplayPrice; }
         }
 
         public virtual IList<Product> RelatedProducts { get; set; }
