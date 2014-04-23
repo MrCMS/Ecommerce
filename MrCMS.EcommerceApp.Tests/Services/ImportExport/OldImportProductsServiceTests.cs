@@ -22,6 +22,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         private readonly IImportProductUrlHistoryService _importProductUrlHistoryService;
         private readonly ISession _session;
         private readonly ImportProductsService _importProductsService;
+        private IUniquePageService _uniquePageService;
 
         public OldImportProductsServiceTests()
         {
@@ -32,11 +33,12 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             _importProductImagesService = A.Fake<IImportProductImagesService>();
             _importProductUrlHistoryService = A.Fake<IImportProductUrlHistoryService>();
             _session = A.Fake<ISession>();
+            _uniquePageService = A.Fake<IUniquePageService>();
             _importProductsService = new ImportProductsService(_documentService, _brandService,
-                                                               _importSpecificationsService,
-                                                               _importProductVariantsService,
-                                                               _importProductImagesService,
-                                                               _importProductUrlHistoryService,Session);
+                _importSpecificationsService,
+                _importProductVariantsService,
+                _importProductImagesService,
+                _importProductUrlHistoryService, Session, _uniquePageService);
         }
 
         [Fact(Skip = "To be refactored")]
@@ -150,7 +152,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             var productDTO = new ProductImportDataTransferObject
             {
                 UrlSegment = "test-url",
-                UrlHistory = new List<string>(){ "test-url-old"}
+                UrlHistory = new List<string>() { "test-url-old" }
             };
 
             var product = new Product() { Name = "Test Product" };

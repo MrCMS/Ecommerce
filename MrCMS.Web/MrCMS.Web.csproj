@@ -59,9 +59,9 @@
     <Reference Include="EPPlus">
       <HintPath>..\packages\EPPlus.3.1.3.3\lib\net35\EPPlus.dll</HintPath>
     </Reference>
-    <Reference Include="FluentNHibernate, Version=1.3.0.733, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
+    <Reference Include="FluentNHibernate, Version=1.4.0.0, Culture=neutral, PublicKeyToken=8aa435e3cb308880, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\FluentNHibernate.1.3.0.733\lib\FluentNHibernate.dll</HintPath>
+      <HintPath>..\packages\FluentNHibernate.1.4.0.0\lib\net35\FluentNHibernate.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -162,7 +162,7 @@
     </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NHibernate.3.3.2.4000\lib\Net35\NHibernate.dll</HintPath>
+      <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate.Caches.SysCache2">
       <HintPath>..\packages\NHibernate.Caches.SysCache2.3.2.0.4000\lib\Net35\NHibernate.Caches.SysCache2.dll</HintPath>
@@ -183,8 +183,9 @@
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Owin.Security.Providers">
-      <HintPath>..\packages\Owin.Security.Providers.1.2.1\lib\net45\Owin.Security.Providers.dll</HintPath>
+    <Reference Include="Owin.Security.Providers, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Owin.Security.Providers.1.3\lib\net45\Owin.Security.Providers.dll</HintPath>
     </Reference>
     <Reference Include="PayPalCoreSDK">
       <HintPath>..\packages\PayPalCoreSDK.1.4.2\lib\net45\PayPalCoreSDK.dll</HintPath>
@@ -281,11 +282,11 @@
     <Compile Include="Apps\Amazon\Helpers\AmazonProgressBarHelper.cs" />
     <Compile Include="Apps\Amazon\Indexing\AmazonOrderSearchDefinition.cs" />
     <Compile Include="Apps\Amazon\Indexing\AmazonOrderSearch\AmazonOrderAmountFieldDefinition.cs" />
+    <Compile Include="Apps\Amazon\Indexing\AmazonOrderSearch\AmazonOrderEmailFieldDefinition.cs" />
     <Compile Include="Apps\Amazon\Indexing\AmazonOrderSearch\AmazonOrderIdFieldDefinition.cs" />
     <Compile Include="Apps\Amazon\Indexing\AmazonOrderSearch\AmazonOrderNameFieldDefinition.cs" />
     <Compile Include="Apps\Amazon\Indexing\AmazonOrderSearch\AmazonOrderPurchaseDateFieldDeginition.cs" />
     <Compile Include="Apps\Amazon\Indexing\AmazonOrderSearch\AmazonOrderStatusFieldDefinition.cs" />
-    <Compile Include="Apps\Amazon\Indexing\AmazonOrderSearch\AmazonOrderEmailFieldDefinition.cs" />
     <Compile Include="Apps\Amazon\MessageTemplates\SendAmazonOrderPlacedEmailToStoreOwnerMessageTemplate.cs" />
     <Compile Include="Apps\Amazon\ModelBinders\CultureAwareDateBinder.cs" />
     <Compile Include="Apps\Amazon\Models\AmazonAdminMenuModel.cs" />
@@ -423,10 +424,10 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CurrencyController.cs" />
-    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceDashboardController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountApplicationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountLimitationController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceDashboardController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\GoogleBaseController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ImportExportController.cs" />
@@ -556,22 +557,22 @@
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchSalesChannelDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchShippingStatusDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchTotalDefinition.cs" />
+    <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchBodyContentDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchBrandDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchCategoriesDefinition.cs" />
-    <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchBodyContentDefinition.cs" />
+    <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchCreatedOnDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchMetaDescriptionDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchMetaKeywordsDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchMetaTitleDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchNameDefinition.cs" />
-    <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchNumberBoughtDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchNameSortDefinition.cs" />
-    <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchCreatedOnDefinition.cs" />
-    <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchUrlsegmentDefinition.cs" />
+    <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchNumberBoughtDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchOptionsDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchPriceDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchPublishOnDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchSkuDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchSpecificationsDefinition.cs" />
+    <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchUrlsegmentDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchIndex.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\ProductBackInStockMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderCancelledEmailToCustomerMessageTemplate.cs" />
@@ -671,9 +672,9 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressCheckoutPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressCheckoutSettings.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PaypalHealthCheck.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalHelper.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalInterfaceService.cs" />
-    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PaypalHealthCheck.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalOrderService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalRequestService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalResponse.cs" />
@@ -685,8 +686,8 @@
     <Compile Include="Apps\Ecommerce\Payment\Paypoint\PaypointResponse.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Paypoint\PaypointSettings.cs" />
     <Compile Include="Apps\Ecommerce\Payment\SagePay\ISagePayUrlResolver.cs" />
-    <Compile Include="Apps\Ecommerce\Payment\SagePay\SagepayHealthCheck.cs" />
     <Compile Include="Apps\Ecommerce\Payment\SagePay\ResponseType.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\SagePay\SagepayHealthCheck.cs" />
     <Compile Include="Apps\Ecommerce\Payment\SagePay\SagePayPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\SagePay\SagePaySettings.cs" />
     <Compile Include="Apps\Ecommerce\Payment\SagePay\VspServerMode.cs" />
@@ -822,6 +823,7 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderSearchService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\OrderShippingService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\UpdateUsersAddresses.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypoint3DSecureHelper.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointPaymentService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\IPaypointRequestHelper.cs" />
@@ -1009,7 +1011,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\paypoint\Reference.cs">
+    <Compile Include="Service References\Paypoint\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -1976,39 +1978,39 @@
     <Content Include="Content\install\scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Service References\paypoint\configuration91.svcinfo" />
-    <Content Include="Service References\paypoint\configuration.svcinfo" />
-    <Content Include="Service References\paypoint\MrCMS.Web.paypoint.getReportResponse.datasource">
+    <Content Include="Service References\Paypoint\configuration91.svcinfo" />
+    <Content Include="Service References\Paypoint\configuration.svcinfo" />
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.getReportResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\paypoint\MrCMS.Web.paypoint.getTZReportResponse.datasource">
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.getTZReportResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\paypoint\MrCMS.Web.paypoint.performTransactionViaAlternatePaymentMethodResponse.datasource">
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.performTransactionViaAlternatePaymentMethodResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\paypoint\MrCMS.Web.paypoint.refundCardFullResponse.datasource">
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.refundCardFullResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\paypoint\MrCMS.Web.paypoint.releaseCardFullResponse.datasource">
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.releaseCardFullResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\paypoint\MrCMS.Web.paypoint.repeatCardFullAddrResponse.datasource">
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.repeatCardFullAddrResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\paypoint\MrCMS.Web.paypoint.repeatCardFullResponse.datasource">
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.repeatCardFullResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\paypoint\MrCMS.Web.paypoint.threeDSecureAuthorisationRequestResponse.datasource">
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.threeDSecureAuthorisationRequestResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\paypoint\MrCMS.Web.paypoint.threeDSecureEnrolmentRequestResponse.datasource">
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.threeDSecureEnrolmentRequestResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\paypoint\MrCMS.Web.paypoint.validateCardFullResponse.datasource">
+    <Content Include="Service References\Paypoint\MrCMS.Web.Paypoint.validateCardFullResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\paypoint\Reference.svcmap">
+    <Content Include="Service References\Paypoint\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
@@ -2197,6 +2199,9 @@
     <Content Include="Areas\Admin\Views\MessageTemplate\Tokens.cshtml" />
     <Content Include="Areas\Admin\Views\Form\ClearFormData.cshtml" />
     <Content Include="Apps\Core\Views\Widgets\Navigation.cshtml" />
+    <Content Include="Themes\Default\Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Areas\Admin\Views\User\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\Log\Filter.cshtml" />
     <Content Include="Areas\Admin\Views\MessageTemplate\Preview.cshtml" />
@@ -2299,9 +2304,7 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Seller.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Sync.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Shared\ProgressBarMessages.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Address\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\Add.cshtml" />
@@ -2318,8 +2321,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceDashboard\Revenue.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceDashboard\UserAndPageStats.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\FixedAmountFromOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\XPercentFromOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\CartHasAtLeastXItems.cshtml" />
@@ -2328,6 +2329,8 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceDashboard\Revenue.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceDashboard\UserAndPageStats.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceSettings\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\GoogleBase\Dashboard.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\GoogleBase\GoogleBaseProduct.cshtml" />
@@ -2432,9 +2435,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Settings.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\User\Order.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Category.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\CategoryContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\NewInProducts.cshtml" />
@@ -2517,9 +2518,7 @@
     <Content Include="Apps\Ecommerce\Views\Shared\_EcommerceLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_ProductLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_SearchLayout.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Apps\Ecommerce\Views\Web.config" />
     <Content Include="Apps\Ecommerce\Views\Widgets\BreadCrumb.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\CartWidget.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\CategoriesOnlyNavigation.cshtml" />
@@ -2538,7 +2537,13 @@
     <Content Include="Apps\Ecommerce\Views\Wishlist\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Wishlist\Summary.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
-    <Content Include="Service References\paypoint\SECCardService.wsdl" />
+    <Content Include="Service References\Paypoint\SECCardService.wsdl" />
+    <None Include="Themes\Default\Views\Web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="Themes\Default\Views\Web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\ForgottenPasswordPage.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\LoginPage.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Pages\RegisterPage.cshtml" />
@@ -2550,15 +2555,10 @@
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\RegistrationDetails.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\UserAccountDetails.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\UserAccountOrders.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Themes\Ecommerce\Views\Web.config">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config" />
+    <Content Include="Themes\Ecommerce\Views\Web.config" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Widgets\UserLinks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Amazon\Controllers\" />
@@ -2566,6 +2566,9 @@
     <Folder Include="Apps\Core\Entities\" />
     <Folder Include="Apps\Core\Settings\" />
     <Folder Include="Apps\Core\Tasks\" />
+    <Folder Include="Apps\Ecommerce\Areas\Admin\Views\Shared\" />
+    <Folder Include="Apps\Ecommerce\Content\Scripts\charts\" />
+    <Folder Include="Apps\Ecommerce\Queries\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Controllers\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Views\Widget\" />
     <Folder Include="Apps\Galleries\Controllers\" />
@@ -2577,7 +2580,18 @@
     <Folder Include="Apps\Galleries\Views\Shared\" />
     <Folder Include="Apps\Galleries\Views\Widgets\" />
     <Folder Include="Apps\Galleries\Widgets\" />
-    <Folder Include="App_Data\" />
+    <Folder Include="Themes\Default\Apps\" />
+    <Folder Include="Themes\Default\Content\" />
+    <Folder Include="Themes\Default\Shared\" />
+    <Folder Include="Themes\Default\Views\Pages\" />
+    <Folder Include="Themes\Default\Views\Widgets\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Content\Styles\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Shared\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Webpage\" />
+    <Folder Include="Themes\Ecommerce\Shared\" />
+    <Folder Include="Themes\Ecommerce\Views\Shared\" />
     <Folder Include="Views\Article\" />
   </ItemGroup>
   <ItemGroup>
@@ -2649,7 +2663,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\paypoint\" />
+    <WCFMetadataStorage Include="Service References\Paypoint\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -2675,7 +2689,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1834</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8885/</IISUrl>
+          <IISUrl>http://localhost:8881/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
