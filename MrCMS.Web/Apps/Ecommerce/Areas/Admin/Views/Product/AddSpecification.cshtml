@@ -8,27 +8,26 @@
     var specificationAttributesOptions = ViewData["specification-attributes-options"] as IEnumerable<SelectListItem> ?? new List<SelectListItem>();
 }
 <fieldset>
-    <legend>
-        Add Specifications to Product
+    <legend>Add Specifications to Product
         <span class="btn-group  display-inline  pull-right">
             <button id="close" class="btn-primary btn">Save & Close</button>
         </span>
     </legend>
 
     <div id="categories">
-        @Html.Hidden("ProductId",Model.Product.Id)
+        @Html.Hidden("ProductId", Model.Product.Id)
         @if (specificationAttributes.Any())
         {
             @Html.DropDownList("Option", specificationAttributes)
             <br />
-            @Html.DropDownListFor(x => x.Value, specificationAttributesOptions, new {@class = "pull-left"})
+            @Html.DropDownListFor(x => x.Value, specificationAttributesOptions)
             var dc = "none";
             if (specificationAttributesOptions.Count() == 1)
             {
                 dc = "block";
             }
-            <div id="other" class="pull-right" style="display: @dc">
-                New option value: <input type="text" class="input-medium" id="new-option-value"/>
+            <div id="other" style="display: @dc">
+                <input type="text" class="input-medium" id="new-option-value" placeholder="New option value" />
             </div>
         }
         else

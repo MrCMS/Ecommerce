@@ -37,19 +37,19 @@ namespace MrCMS.Web.Apps.Core
             SetupTasks(session, site);
             SetupMessageTemplates(session, site, model);
             var siteSettings = new SiteSettings
-                                   {
-                                       Site = site,
-                                       TimeZone = model.TimeZone,
-                                       UICulture = model.UiCulture
-                                   };
+            {
+                Site = site,
+                TimeZone = model.TimeZone,
+                UICulture = model.UiCulture
+            };
             var mediaSettings = new MediaSettings
-                                    {
-                                        Site = site
-                                    };
+            {
+                Site = site
+            };
             var mailSettings = new MailSettings
-                                   {
-                                       Site = site
-                                   };
+            {
+                Site = site
+            };
             mailSettings.Port = 25;
 
             CurrentRequestData.SiteSettings = siteSettings;
@@ -65,10 +65,10 @@ namespace MrCMS.Web.Apps.Core
             var imageProcessor = new ImageProcessor(session, fileSystem, mediaSettings);
             var fileService = new FileService(session, fileSystem, imageProcessor, mediaSettings, site, siteSettings);
             var user = new User
-                           {
-                               Email = model.AdminEmail,
-                               IsActive = true
-                           };
+            {
+                Email = model.AdminEmail,
+                IsActive = true
+            };
 
             var hashAlgorithms = new List<IHashAlgorithm> { new SHA512HashAlgorithm() };
             var hashAlgorithmProvider = new HashAlgorithmProvider(hashAlgorithms);
@@ -79,13 +79,8 @@ namespace MrCMS.Web.Apps.Core
             passwordManagementService.ValidatePassword(model.AdminPassword, model.ConfirmPassword);
             passwordManagementService.SetPassword(user, model.AdminPassword, model.ConfirmPassword);
             var userService = new UserService(session, siteSettings);
-            var roleService = new RoleService(session);
-            var userManager = new UserManager<User>(new UserStore(userService, roleService, session));
-            userManager.UserValidator = new UserValidator<User>(userManager)
-                                        {
-                                            AllowOnlyAlphanumericUserNames = false
-                                        };
-            var identityResult = userManager.Create(user);
+
+            userService.AddUser(user);
             CurrentRequestData.CurrentUser = user;
 
             documentService.AddDocument(model.BaseLayout);
@@ -146,7 +141,7 @@ namespace MrCMS.Web.Apps.Core
                 Site = site,
                 Name = "Two Column"
             };
-            
+
             documentService.AddDocument(layoutTwoColumn);
 
             var layoutAreasTwoColumn = new List<LayoutArea>
@@ -160,24 +155,24 @@ namespace MrCMS.Web.Apps.Core
             };
             foreach (LayoutArea l in layoutAreasTwoColumn)
                 layoutAreaService.SaveArea(l);
-            
+
             var navigationWidget = new Navigation();
             navigationWidget.LayoutArea = layoutAreas.Single(x => x.AreaName == "Main Navigation");
             widgetService.AddWidget(navigationWidget);
 
 
             widgetService.AddWidget(new UserLinks
-                                        {
-                                            Name = "User Links",
-                                            LayoutArea = layoutAreas.Single(x => x.AreaName == "Header Right")
-                                        });
+            {
+                Name = "User Links",
+                LayoutArea = layoutAreas.Single(x => x.AreaName == "Header Right")
+            });
 
             widgetService.AddWidget(new TextWidget
-                                        {
-                                            Name = "Footer text",
-                                            Text = string.Format("<p>© Mr CMS {0}</p>", CurrentRequestData.Now.Year),
-                                            LayoutArea = layoutAreas.Single(x => x.AreaName == "Footer")
-                                        });
+            {
+                Name = "Footer text",
+                Text = string.Format("<p>© Mr CMS {0}</p>", CurrentRequestData.Now.Year),
+                LayoutArea = layoutAreas.Single(x => x.AreaName == "Footer")
+            });
 
             documentService.AddDocument(model.HomePage);
             CurrentRequestData.HomePage = model.HomePage;
@@ -191,54 +186,54 @@ namespace MrCMS.Web.Apps.Core
             documentService.AddDocument(model.Error500);
 
             var loginPage = new LoginPage
-                                {
-                                    Name = "Login",
-                                    UrlSegment = "login",
-                                    CreatedOn = CurrentRequestData.Now,
-                                    Site = site,
-                                    PublishOn = CurrentRequestData.Now,
-                                    DisplayOrder = 100,
-                                    RevealInNavigation = false
-                                };
+            {
+                Name = "Login",
+                UrlSegment = "login",
+                CreatedOn = CurrentRequestData.Now,
+                Site = site,
+                PublishOn = CurrentRequestData.Now,
+                DisplayOrder = 100,
+                RevealInNavigation = false
+            };
             documentService.AddDocument(loginPage);
 
             var forgottenPassword = new ForgottenPasswordPage
-                                        {
-                                            Name = "Forgot Password",
-                                            UrlSegment = "forgot-password",
-                                            CreatedOn = CurrentRequestData.Now,
-                                            Site = site,
-                                            PublishOn = CurrentRequestData.Now,
-                                            Parent = loginPage,
-                                            DisplayOrder = 0,
-                                            RevealInNavigation = false
-                                        };
+            {
+                Name = "Forgot Password",
+                UrlSegment = "forgot-password",
+                CreatedOn = CurrentRequestData.Now,
+                Site = site,
+                PublishOn = CurrentRequestData.Now,
+                Parent = loginPage,
+                DisplayOrder = 0,
+                RevealInNavigation = false
+            };
             documentService.AddDocument(forgottenPassword);
 
             var resetPassword = new ResetPasswordPage
-                                    {
-                                        Name = "Reset Password",
-                                        UrlSegment = "reset-password",
-                                        CreatedOn = CurrentRequestData.Now,
-                                        Site = site,
-                                        PublishOn = CurrentRequestData.Now,
-                                        Parent = loginPage,
-                                        DisplayOrder = 1,
-                                        RevealInNavigation = false
-                                    };
+            {
+                Name = "Reset Password",
+                UrlSegment = "reset-password",
+                CreatedOn = CurrentRequestData.Now,
+                Site = site,
+                PublishOn = CurrentRequestData.Now,
+                Parent = loginPage,
+                DisplayOrder = 1,
+                RevealInNavigation = false
+            };
             documentService.AddDocument(resetPassword);
 
             var userAccountPage = new UserAccountPage
-                                      {
-                                          Name = "My Account",
-                                          UrlSegment = "my-account",
-                                          CreatedOn = CurrentRequestData.Now,
-                                          Site = site,
-                                          PublishOn = CurrentRequestData.Now,
-                                          Parent = loginPage,
-                                          DisplayOrder = 1,
-                                          RevealInNavigation = false
-                                      };
+            {
+                Name = "My Account",
+                UrlSegment = "my-account",
+                CreatedOn = CurrentRequestData.Now,
+                Site = site,
+                PublishOn = CurrentRequestData.Now,
+                Parent = loginPage,
+                DisplayOrder = 1,
+                RevealInNavigation = false
+            };
             documentService.AddDocument(userAccountPage);
 
             var registerPage = new RegisterPage
@@ -265,11 +260,11 @@ namespace MrCMS.Web.Apps.Core
             webpages.ForEach(documentService.PublishNow);
 
             var defaultMediaCategory = new MediaCategory
-                                           {
-                                               Name = "Default",
-                                               UrlSegment = "default",
-                                               Site = site
-                                           };
+            {
+                Name = "Default",
+                UrlSegment = "default",
+                Site = site
+            };
             documentService.AddDocument(defaultMediaCategory);
 
 
@@ -308,24 +303,31 @@ namespace MrCMS.Web.Apps.Core
             var fileStream1 = new FileStream(logoPath1, FileMode.Open);
             var dbFile1 = fileService.AddFile(fileStream1, Path.GetFileName(logoPath1), "image/gif", fileStream1.Length,
                                              defaultMediaCategory);
-            
+
             widgetService.AddWidget(new TextWidget
-                                        {
-                                            Name = "Mr CMS Logo",
-                                            Text = @"<a class=""navbar-brand"" href=""/""><img src=""/Apps/Core/Content/Images/mrcms-hat.gif"" style=""width: 40px; height: auto;"" />Mr CMS</a>",
-                                            LayoutArea = layoutAreas.Single(x => x.AreaName == "Header Left")
-                                        });
+            {
+                Name = "Mr CMS Logo",
+                Text = @"<a class=""navbar-brand"" href=""/""><img src=""/Apps/Core/Content/Images/mrcms-hat.gif"" style=""width: 40px; height: auto;"" />Mr CMS</a>",
+                LayoutArea = layoutAreas.Single(x => x.AreaName == "Header Left")
+            });
 
             var adminUserRole = new UserRole
-                                    {
-                                        Name = UserRole.Administrator
-                                    };
+            {
+                Name = UserRole.Administrator
+            };
 
             user.Roles = new HashedSet<UserRole> { adminUserRole };
             adminUserRole.Users = new HashedSet<User> { user };
+
+            var roleService = new RoleService(session);
             roleService.SaveRole(adminUserRole);
 
             var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
+            var userManager = new UserManager<User>(new UserStore(userService, roleService, session));
+            userManager.UserValidator = new UserValidator<User>(userManager)
+            {
+                AllowOnlyAlphanumericUserNames = false
+            };
             var authorisationService = new AuthorisationService(authenticationManager, userManager);
             authorisationService.Logout();
             authorisationService.SetAuthCookie(user, true);
