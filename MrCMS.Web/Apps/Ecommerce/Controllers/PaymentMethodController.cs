@@ -19,10 +19,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IPaypointPaymentService _paypointPaymentService;
         private readonly IDocumentService _documentService;
         private readonly ISagePayService _sagePayService;
+        private readonly IUniquePageService _uniquePageService;
 
         public PaymentMethodController(CartModel cartModel, IOrderService orderService,
             IPayPalExpressService payPalExpressService, IPaypointPaymentService paypointPaymentService,
-            IDocumentService documentService, ISagePayService sagePayService)
+            IDocumentService documentService, ISagePayService sagePayService, IUniquePageService uniquePageService)
         {
             _cartModel = cartModel;
             _orderService = orderService;
@@ -30,6 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _paypointPaymentService = paypointPaymentService;
             _documentService = documentService;
             _sagePayService = sagePayService;
+            _uniquePageService = uniquePageService;
         }
 
         [HttpGet]
@@ -59,7 +61,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                                                         "We were unable to process your order with the specified cart. Please check your details and try again"
                                                 };
                 {
-                    redirectResult = _documentService.RedirectTo<PaymentDetails>();
+                    redirectResult = _uniquePageService.RedirectTo<PaymentDetails>();
                     return false;
                 }
             }
@@ -93,7 +95,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                                                     Message =
                                                         "An error occurred processing your PayPal Express order, please contact the merchant"
                                                 };
-            return _documentService.RedirectTo<PaymentDetails>();
+            return _uniquePageService.RedirectTo<PaymentDetails>();
         }
 
         [HttpGet]
@@ -133,12 +135,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                                                                          o.AuthorisationToken = response.PaypointPaymentDetails.AuthCode;
                                                                          o.ShippingStatus = ShippingStatus.Unshipped;
                                                                      });
-                return _documentService.RedirectTo<OrderPlaced>(new { id = order.Guid });
+                return _uniquePageService.RedirectTo<OrderPlaced>(new { id = order.Guid });
             }
 
             TempData["error-details"] = response.FailureDetails;
             TempData["paypoint-model"] = model;
-            return _documentService.RedirectTo<PaymentDetails>();
+            return _uniquePageService.RedirectTo<PaymentDetails>();
         }
 
         [HttpGet]

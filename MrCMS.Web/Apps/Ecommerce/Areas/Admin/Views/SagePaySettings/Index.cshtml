@@ -12,11 +12,12 @@
             </span>
         </legend>
         @Html.InlineCheckboxFor(settings => settings.Enabled)
+        @Html.InlineCheckboxFor(settings => settings.RequiresSSL)
 
         @Html.LabelFor(settings => settings.VendorName)
         @Html.TextBoxFor(settings => settings.VendorName)
 
         @Html.LabelFor(settings => settings.Mode)
-        @Html.DropDownListFor(settings => settings.Mode,Model.ModeOptions)
+        @Html.DropDownListFor(settings => settings.Mode, Model.ModeOptions)
     </fieldset>
 }

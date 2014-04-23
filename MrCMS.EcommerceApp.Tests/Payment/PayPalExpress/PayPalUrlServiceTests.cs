@@ -19,6 +19,7 @@ namespace MrCMS.EcommerceApp.Tests.Payment.PayPalExpress
         private readonly SiteSettings _siteSettings;
         private readonly PayPalUrlService _payPalUrlService;
         private readonly IDocumentService _documentService;
+        private readonly IUniquePageService _uniquePageService;
 
         public PayPalUrlServiceTests()
         {
@@ -26,7 +27,8 @@ namespace MrCMS.EcommerceApp.Tests.Payment.PayPalExpress
             _payPalExpressCheckoutSettings = new PayPalExpressCheckoutSettings();
             _siteSettings = new SiteSettings();
             _documentService = A.Fake<IDocumentService>();
-            _payPalUrlService = new PayPalUrlService(_documentService, _currentSite, _payPalExpressCheckoutSettings, _siteSettings);
+            _uniquePageService = A.Fake<IUniquePageService>();
+            _payPalUrlService = new PayPalUrlService(_documentService, _currentSite, _payPalExpressCheckoutSettings, _siteSettings,_uniquePageService);
         }
 
         [Fact]
@@ -61,7 +63,7 @@ namespace MrCMS.EcommerceApp.Tests.Payment.PayPalExpress
         public void PayPalUrlService_GetCancelURL_ShouldRedirectBackToCartPage()
         {
             var cart = new Cart { UrlSegment = "site-cart" };
-            A.CallTo(() => _documentService.GetUniquePage<Cart>()).Returns(cart);
+            A.CallTo(() => _uniquePageService.GetUniquePage<Cart>()).Returns(cart);
 
             var cancelUrl = _payPalUrlService.GetCancelURL();
 

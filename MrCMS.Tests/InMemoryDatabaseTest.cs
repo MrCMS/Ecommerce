@@ -1,42 +1,47 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Configuration;
 using System.Reflection;
 using System.Web;
 using Elmah;
-using FakeItEasy;
 using Iesi.Collections.Generic;
 using MrCMS.DbConfiguration;
 using MrCMS.DbConfiguration.Configuration;
-using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Multisite;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.IoC;
-using MrCMS.Services;
 using MrCMS.Settings;
-using MrCMS.Tasks;
 using MrCMS.Tests.Stubs;
 using MrCMS.Website;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using Ninject;
 using Ninject.MockingKernel;
+using Ninject.Modules;
 using Configuration = NHibernate.Cfg.Configuration;
 
 namespace MrCMS.Tests
 {
+    public class TestContextModule : NinjectModule
+    {
+        public override void Load()
+        {
+            Kernel.Bind<HttpContextBase>().To<OutOfContext>().InThreadScope();
+        }
+    }
     public abstract class MrCMSTest : IDisposable
     {
+        private readonly MockingKernel _kernel;
 
         protected MrCMSTest()
         {
-            var mockingKernel = new MockingKernel();
-            mockingKernel.Load(new ContextModule());
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            _kernel = new MockingKernel();
+            Kernel.Load(new TestContextModule());
+            MrCMSApplication.OverrideKernel(Kernel);
             CurrentRequestData.SiteSettings = new SiteSettings();
         }
+
+        public MockingKernel Kernel { get { return _kernel; } }
 
         public virtual void Dispose()
         {
@@ -58,12 +63,12 @@ namespace MrCMS.Tests
                 {
                     var assemblies = new List<Assembly> { typeof(BasicMappedWebpage).Assembly };
                     var nHibernateModule = new NHibernateConfigurator
-                                               {
-                                                   CacheEnabled = true,
-                                                   DatabaseType = DatabaseType.Sqlite,
-                                                   InDevelopment = true,
-                                                   ManuallyAddedAssemblies = assemblies
-                                               };
+                    {
+                        CacheEnabled = true,
+                        DatabaseType = DatabaseType.Sqlite,
+                        InDevelopment = true,
+                        ManuallyAddedAssemblies = assemblies
+                    };
                     Configuration = nHibernateModule.GetConfiguration();
 
                     SessionFactory = Configuration.BuildSessionFactory();
@@ -78,16 +83,14 @@ namespace MrCMS.Tests
 
 
             CurrentSite = Session.Transact(session =>
-                {
-                    var site = new Site { Name = "Current Site", BaseUrl = "www.currentsite.com" };
-                    CurrentRequestData.CurrentSite = site;
-                    session.SaveOrUpdate(site);
-                    return site;
-                });
+            {
+                var site = new Site { Name = "Current Site", BaseUrl = "www.currentsite.com" };
+                CurrentRequestData.CurrentSite = site;
+                session.SaveOrUpdate(site);
+                return site;
+            });
 
             CurrentRequestData.SiteSettings = new SiteSettings { TimeZone = TimeZoneInfo.Local.Id };
-
-            TaskExecutor.Discard();
 
             CurrentRequestData.ErrorSignal = new ErrorSignal();
         }
@@ -99,15 +102,15 @@ namespace MrCMS.Tests
         private void SetupUser()
         {
             var user = new User
-                           {
-                               Email = "test@example.com",
-                               IsActive = true,
-                           };
+            {
+                Email = "test@example.com",
+                IsActive = true,
+            };
 
             var adminUserRole = new UserRole
-                                    {
-                                        Name = UserRole.Administrator
-                                    };
+            {
+                Name = UserRole.Administrator
+            };
 
             user.Roles = new HashedSet<UserRole> { adminUserRole };
             adminUserRole.Users = new HashedSet<User> { user };

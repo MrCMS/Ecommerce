@@ -1,9 +1,8 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.OrderPlaced
 @using MrCMS.Helpers
-@using MrCMS.Web.Apps.Core.Models
+@using MrCMS.Web.Apps.Core.Models.RegisterAndLogin
 @using MrCMS.Web.Apps.Ecommerce.Controllers
 @using MrCMS.Web.Apps.Ecommerce.Entities.Orders
-@using MrCMS.Website
 @{
     var order = ViewData["order"] as Order;
     var emailRegistrationStatus = ViewData["user-can-register"] is EmailRegistrationStatus ? (EmailRegistrationStatus)ViewData["user-can-register"] : EmailRegistrationStatus.Available;

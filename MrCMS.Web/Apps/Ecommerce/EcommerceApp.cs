@@ -28,10 +28,14 @@ namespace MrCMS.Web.Apps.Ecommerce
             get { return EcommerceAppName; }
         }
 
+        public override string Version
+        {
+            get { return "0.1.1"; }
+        }
+
         protected override void RegisterServices(IKernel kernel)
         {
             kernel.Rebind<CartModel>().ToMethod(context => context.Kernel.Get<ICartBuilder>().BuildCart()).InRequestScope();
-            kernel.Bind<SECVPN>().To<SECVPNClient>().InRequestScope();
         }
 
         public override IEnumerable<Type> BaseTypes

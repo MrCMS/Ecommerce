@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
@@ -9,7 +8,9 @@ using MrCMS.Indexing.Management;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Indexing;
+using MrCMS.Web.Apps.Ecommerce.Indexing.OrderSearchIndexDefinitions;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 {
@@ -49,7 +50,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             if (!String.IsNullOrWhiteSpace(SearchText))
             {
                 var fuzzySearchTerm = MakeFuzzy(SearchText);
-                var q = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30, FieldDefinition.GetFieldNames(OrderSearchIndex.Email, OrderSearchIndex.LastName, OrderSearchIndex.SalesChannel), new StandardAnalyzer(Lucene.Net.Util.Version.LUCENE_30));
+                var q = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30,
+                    new[]
+                    {
+                        FieldDefinition.GetFieldName<OrderSearchCreatedOnDefinition>(),
+                        FieldDefinition.GetFieldName<OrderSearchEmaillDefinition>(),
+                        FieldDefinition.GetFieldName<OrderSearchLastnamelDefinition>(),
+                        FieldDefinition.GetFieldName<OrderSearchPaymentStatusDefinition>(),
+                        FieldDefinition.GetFieldName<OrderSearchShippingStatusDefinition>(),
+                    },
+                    MrCMSApplication.Get<OrderSearchIndex>().GetAnalyser());
                 var query = q.Parse(fuzzySearchTerm);
                 booleanQuery.Add(query, Occur.SHOULD);
             }
@@ -68,7 +78,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         private Query GetDateQuery()
         {
-            return new TermRangeQuery(OrderSearchIndex.CreatedOn.FieldName,
+            return new TermRangeQuery(FieldDefinition.GetFieldName<OrderSearchCreatedOnDefinition>(),
                                       DateFrom.HasValue
                                           ? DateTools.DateToString(DateFrom.Value, DateTools.Resolution.SECOND)
                                           : null,
@@ -87,7 +97,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             return new BooleanQuery
                 {
-                    {new TermQuery(new Term(OrderSearchIndex.SalesChannel.FieldName, SalesChannel)), Occur.MUST}
+                    {new TermQuery(new Term(FieldDefinition.GetFieldName<OrderSearchSalesChannelDefinition>(), SalesChannel)), Occur.MUST}
                 };
         }
 
@@ -95,7 +105,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             return new BooleanQuery
                 {
-                    {new TermQuery(new Term(OrderSearchIndex.ShippingStatus.FieldName, ShippingStatus.ToString())), Occur.MUST}
+                    {new TermQuery(new Term(FieldDefinition.GetFieldName<OrderSearchShippingStatusDefinition>(), ShippingStatus.ToString())), Occur.MUST}
                 };
         }
 
@@ -103,7 +113,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             return new BooleanQuery
                 {
-                    {new TermQuery(new Term(OrderSearchIndex.PaymentStatus.FieldName, PaymentStatus.ToString())), Occur.MUST}
+                    {new TermQuery(new Term(FieldDefinition.GetFieldName<OrderSearchPaymentStatusDefinition>(), PaymentStatus.ToString())), Occur.MUST}
                 };
         }
 

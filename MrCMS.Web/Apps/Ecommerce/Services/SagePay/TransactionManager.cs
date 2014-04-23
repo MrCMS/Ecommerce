@@ -31,6 +31,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
 
             var deserializer = new ResponseSerializer();
             var registrationResponse = deserializer.Deserialize<TransactionRegistrationResponse>(response);
+            if (registrationResponse.StatusDetail.StartsWith("4042"))
+                registrationResponse.Status = ResponseType.Invalid;
             registrationResponse.VendorTxCode = registration.VendorTxCode;
             registrationResponse.CartTotal = cartModel.Total;
             return registrationResponse;

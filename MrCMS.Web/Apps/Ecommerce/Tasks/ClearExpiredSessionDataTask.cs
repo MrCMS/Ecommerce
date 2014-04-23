@@ -6,16 +6,23 @@ using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Tasks
 {
-    public class ClearExpiredSessionDataTask : BackgroundTask
+    public class ClearExpiredSessionDataTask : SchedulableTask
     {
-        public ClearExpiredSessionDataTask(Site site)
-            : base(site)
+        private readonly ISessionFactory _sessionFactory;
+
+        public ClearExpiredSessionDataTask(Site site, ISessionFactory sessionFactory)
         {
+            _sessionFactory = sessionFactory;
         }
 
-        public override void Execute()
+        public override int Priority
         {
-            var statelessSession = MrCMSApplication.Get<ISessionFactory>().OpenStatelessSession();
+            get { return 100; }
+        }
+
+        protected override void OnExecute()
+        {
+            var statelessSession = _sessionFactory.OpenStatelessSession();
             var sessionDatas =
                 statelessSession.QueryOver<SessionData>().Where(data => data.ExpireOn <= CurrentRequestData.Now).List();
 

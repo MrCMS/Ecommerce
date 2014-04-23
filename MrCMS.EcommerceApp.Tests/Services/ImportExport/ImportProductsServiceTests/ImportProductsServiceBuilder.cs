@@ -18,14 +18,16 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport.ImportProductsServiceTe
         private IImportProductUrlHistoryService _importUrlHistoryService = A.Fake<IImportProductUrlHistoryService>();
         private ISession _session = A.Fake<ISession>();
         private IEnumerable<Document> _documents = new List<Document>();
+        private IUniquePageService _uniquePageService;
 
         public ImportProductsService Build()
         {
+            _uniquePageService = A.Fake<IUniquePageService>();
             var importProductsService = new ImportProductsService(_documentService, _brandService,
                                                                   _importProductSpecificationsService,
                                                                   _importProductVariantsService,
                                                                   _importProductImagesService, _importUrlHistoryService,
-                                                                  _session);
+                                                                  _session,_uniquePageService);
             importProductsService.SetAllDocuments(_documents);
             return importProductsService;
         }

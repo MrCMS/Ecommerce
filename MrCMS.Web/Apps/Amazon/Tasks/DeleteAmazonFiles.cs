@@ -6,23 +6,24 @@ using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Tasks
 {
-    public class DeleteAmazonFiles : BackgroundTask
-    {
-        public DeleteAmazonFiles(Site site)
-            : base(site)
-        {
-        }
+    //TODO
+    //public class DeleteAmazonFiles : BackgroundTask
+    //{
+    //    public DeleteAmazonFiles(Site site)
+    //        : base(site)
+    //    {
+    //    }
 
-        public override void Execute()
-        {
-            try
-            {
-                AmazonAppHelper.DeleteAmazonFilesOlderThan(new TimeSpan(-30, 0, 0, 0));
-            }
-            catch (Exception ex)
-            {
-                CurrentRequestData.ErrorSignal.Raise(ex);
-            }
-        }
-    }
+    //    public override void Execute()
+    //    {
+    //        try
+    //        {
+    //            AmazonAppHelper.DeleteAmazonFilesOlderThan(new TimeSpan(-30, 0, 0, 0));
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            CurrentRequestData.ErrorSignal.Raise(ex);
+    //        }
+    //    }
+    //}
 }
