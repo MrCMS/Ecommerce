@@ -1,5 +1,6 @@
-﻿$(function () {
-    $('button#close').click(function () {
+﻿var AddSpecifications = function () {
+    var updateCallingPage = function (event) {
+        event.preventDefault();
         var pId = $("#ProductId").val();
         var saId = $("#Option").val();
         var noOfOptions = $("#Option option").length;
@@ -15,16 +16,13 @@
                         parent.$('#specification-list').replaceWith(products);
                         parent.$.fancybox.close();
                     });
-                    return false;
                 });
         } else {
             parent.$.fancybox.close();
-            return false;
         }
-        return false;
-    });
-
-    $('#Option').live("change", function () {
+    };
+    var updateValues = function (event) {
+        event.preventDefault();
         var saId = $(this).val();
         $.getJSON('/Admin/Apps/Ecommerce/Product/GetSpecificationAttributeOptions',
             { specificationAttributeId: saId },
@@ -33,13 +31,22 @@
                 for (var i = 0, len = response.length; i < len; i++)
                     $("#Value").append("<option value=" + response[i].Value + ">" + response[i].Text + "</option>");
             });
-    });
-
-    $('#Value').live("change", function () {
-        if ($(this).val() === "0") {;
+    };
+    var showHideOther = function (event) {
+        if ($(this).val() === "0") {
             $("#other").show();
         } else {
             $("#other").hide();
         }
-    });
-})
+    };
+    return {
+        init: function () {
+            $(document).on('click', 'button#close', updateCallingPage);
+            $(document).on('change', '#Option', updateValues);
+            $(document).on('change', '#Value', showHideOther);
+        }
+    };
+};
+$(function () {
+    new AddSpecifications().init();
+});

@@ -14,17 +14,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly ICategoryService _categoryService;
         private readonly IDocumentService _documentService;
         private readonly SiteSettings _siteSettings;
+        private readonly IUniquePageService _uniquePageService;
 
-        public CategoryController(ICategoryService categoryService, IDocumentService documentService, SiteSettings siteSettings)
+        public CategoryController(ICategoryService categoryService, IDocumentService documentService, SiteSettings siteSettings, IUniquePageService uniquePageService)
         {
             _categoryService = categoryService;
             _documentService = documentService;
             _siteSettings = siteSettings;
+            _uniquePageService = uniquePageService;
         }
 
         public ViewResult Index(string q = null, int p = 1)
         {
-            if (_documentService.GetUniquePage<CategoryContainer>() == null)
+            if (_uniquePageService.GetUniquePage<CategoryContainer>() == null)
                 return View();
             var categoryPagedList = _categoryService.Search(q, p, _siteSettings.DefaultPageSize);
             return View(categoryPagedList);

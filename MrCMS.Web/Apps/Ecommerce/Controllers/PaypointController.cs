@@ -15,14 +15,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly CartModel _cartModel;
         private readonly IOrderService _orderService;
         private readonly IPaypoint3DSecureHelper _paypoint3DSecureHelper;
+        private readonly IUniquePageService _uniquePageService;
 
-        public PaypointController(IPaypointPaymentService paypointPaymentService, IDocumentService documentService, CartModel cartModel, IOrderService orderService, IPaypoint3DSecureHelper paypoint3DSecureHelper)
+        public PaypointController(IPaypointPaymentService paypointPaymentService, IDocumentService documentService, CartModel cartModel, IOrderService orderService, IPaypoint3DSecureHelper paypoint3DSecureHelper, IUniquePageService uniquePageService)
         {
             _paypointPaymentService = paypointPaymentService;
             _documentService = documentService;
             _cartModel = cartModel;
             _orderService = orderService;
             _paypoint3DSecureHelper = paypoint3DSecureHelper;
+            _uniquePageService = uniquePageService;
         }
 
         public PartialViewResult PaymentDetails(PaypointPaymentDetailsModel model)
@@ -39,7 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                     Message =
                         "We were unable to process your order with the specified cart. Please check your details and try again"
                 };
-                return _documentService.RedirectTo<PaymentDetails>();
+                return _uniquePageService.RedirectTo<PaymentDetails>();
             }
             if (_cartModel.CartGuid != _paypoint3DSecureHelper.GetCartGuid() ||
                 _cartModel.Total != _paypoint3DSecureHelper.GetOrderAmount())
@@ -48,7 +50,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 {
                     Message = "Your order was changed after going off to PayPoint for 3D secure validation. No payment has been taken, but you will need to re-submit your details."
                 };
-                return _documentService.RedirectTo<PaymentDetails>();
+                return _uniquePageService.RedirectTo<PaymentDetails>();
             }
 
             var response = _paypointPaymentService.Handle3DSecureResponse(formCollection);
@@ -67,11 +69,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                     o.ShippingStatus = ShippingStatus.Unshipped;
                     o.AuthorisationToken = response.PaypointPaymentDetails.AuthCode;
                 });
-                return _documentService.RedirectTo<OrderPlaced>(new { id = order.Guid });
+                return _uniquePageService.RedirectTo<OrderPlaced>(new { id = order.Guid });
             }
 
             TempData["error-details"] = response.FailureDetails;
-            return _documentService.RedirectTo<PaymentDetails>();
+            return _uniquePageService.RedirectTo<PaymentDetails>();
         }
 
         public ActionResult Redirect3DSecure()
@@ -79,7 +81,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             var redirectDetails = TempData["redirect-details"] as RedirectDetails;
             if (redirectDetails != null)
                 return View(redirectDetails);
-            return _documentService.RedirectTo<PaymentDetails>();
+            return _uniquePageService.RedirectTo<PaymentDetails>();
         }
     }
 }

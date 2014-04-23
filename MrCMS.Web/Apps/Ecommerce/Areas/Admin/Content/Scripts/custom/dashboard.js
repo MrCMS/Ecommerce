@@ -16,14 +16,14 @@ var options = {
 };
 
 function generateRevenueTodayChart() {
-    $.post('/Admin/Apps/Ecommerce/Dashboard/RevenueToday', {
+    $.post('/Admin/Apps/Ecommerce/EcommerceDashboard/RevenueToday', {
     }, function (result) {
         generateChart(result, 'revenue-today');
     });
 };
 
 function generateRevenueThisWeekChart() {
-    $.post('/Admin/Apps/Ecommerce/Dashboard/RevenueThisWeek', {
+    $.post('/Admin/Apps/Ecommerce/EcommerceDashboard/RevenueThisWeek', {
     }, function (result) {
         generateChart(result,'revenue-this-week');
     });

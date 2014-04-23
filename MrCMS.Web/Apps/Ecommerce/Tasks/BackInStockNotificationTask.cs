@@ -7,50 +7,59 @@ using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.MessageTemplates;
 using MrCMS.Website;
+using NHibernate;
 using Ninject;
+using PayPal.OpenIdConnect;
 
 namespace MrCMS.Web.Apps.Ecommerce.Tasks
 {
-    public class BackInStockNotificationTask : BackgroundTask
+    public class BackInStockNotificationTask : SchedulableTask
     {
         private readonly Site _site;
+        private readonly ISession _session;
 
-        public BackInStockNotificationTask(Site site)
-            : base(site)
+        public BackInStockNotificationTask(Site site, ISession session)
         {
             _site = site;
+            _session = session;
         }
 
-        public override void Execute()
+        public override int Priority
         {
-            Session.Transact(session =>
-                                 {
-                                     var backInStockProductVariants = session.QueryOver<BackInStockProductVariant>().Where(variant => !variant.Processed).List();
-                                     if (!backInStockProductVariants.Any())
-                                         return;
+            get { throw new System.NotImplementedException(); }
+        }
+        
 
-                                     var messageParser = new MessageParser<ProductBackInStockMessageTemplate, ProductVariant>(new MessageTemplateParser(MrCMSApplication.Get<IKernel>()), _site, session);
+        protected override void OnExecute()
+        {
+            _session.Transact(session =>
+            {
+                var backInStockProductVariants = session.QueryOver<BackInStockProductVariant>().Where(variant => !variant.Processed).List();
+                if (!backInStockProductVariants.Any())
+                    return;
 
-                                     foreach (var inStockProductVariant in backInStockProductVariants)
-                                     {
-                                         BackInStockProductVariant variant = inStockProductVariant;
-                                         var notificationRequests =
-                                             session.QueryOver<BackInStockNotificationRequest>()
-                                                    .Where(request => !request.IsNotified && request.ProductVariant == variant.ProductVariant)
-                                                    .List();
+                var messageParser = new MessageParser<ProductBackInStockMessageTemplate, ProductVariant>(new MessageTemplateParser(MrCMSApplication.Get<IKernel>()), _site, session);
 
-                                         foreach (var notificationRequest in notificationRequests)
-                                         {
-                                             var queuedMessage = messageParser.GetMessage(variant.ProductVariant, toAddress: notificationRequest.Email);
-                                             messageParser.QueueMessage(queuedMessage);
-                                             notificationRequest.IsNotified = true;
-                                             session.Update(notificationRequest);
-                                         }
+                foreach (var inStockProductVariant in backInStockProductVariants)
+                {
+                    BackInStockProductVariant variant = inStockProductVariant;
+                    var notificationRequests =
+                        session.QueryOver<BackInStockNotificationRequest>()
+                               .Where(request => !request.IsNotified && request.ProductVariant == variant.ProductVariant)
+                               .List();
 
-                                         inStockProductVariant.Processed = true;
-                                         session.Update(inStockProductVariant);
-                                     }
-                                 });
+                    foreach (var notificationRequest in notificationRequests)
+                    {
+                        var queuedMessage = messageParser.GetMessage(variant.ProductVariant, toAddress: notificationRequest.Email);
+                        messageParser.QueueMessage(queuedMessage);
+                        notificationRequest.IsNotified = true;
+                        session.Update(notificationRequest);
+                    }
+
+                    inStockProductVariant.Processed = true;
+                    session.Update(inStockProductVariant);
+                }
+            });
         }
     }
 }

@@ -20,6 +20,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private IDocumentService _documentService;
         private CategoryContainer _categoryContainer;
         private SiteSettings _siteSettings;
+        private IUniquePageService _uniquePageService;
 
         [Fact]
         public void CategoryController_Index_ReturnsViewResult()
@@ -58,7 +59,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             
             var categoryController = GetCategoryController();
-            A.CallTo(() => _documentService.GetUniquePage<CategoryContainer>()).Returns(null);
+            A.CallTo(() => _uniquePageService.GetUniquePage<CategoryContainer>()).Returns(null);
 
             var index = categoryController.Index("test", 1);
 
@@ -68,11 +69,12 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         CategoryController GetCategoryController()
         {
             _documentService = A.Fake<IDocumentService>();
-            _categoryContainer = new CategoryContainer();
-            A.CallTo(() => _documentService.GetUniquePage<CategoryContainer>()).Returns(_categoryContainer);
             _categoryService = A.Fake<ICategoryService>();
             _siteSettings = new SiteSettings() { DefaultPageSize = 10 };
-            return new CategoryController(_categoryService, _documentService, _siteSettings);
+            _uniquePageService = A.Fake<IUniquePageService>();
+            _categoryContainer = new CategoryContainer();
+            A.CallTo(() => _uniquePageService.GetUniquePage<CategoryContainer>()).Returns(_categoryContainer);
+            return new CategoryController(_categoryService, _documentService, _siteSettings, _uniquePageService);
         } 
     }
 }

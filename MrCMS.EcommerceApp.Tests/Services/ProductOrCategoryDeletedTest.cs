@@ -26,8 +26,8 @@ namespace MrCMS.EcommerceApp.Tests.Services
             _documentEventService = A.Fake<IDocumentEventService>();
             _siteSettings = new SiteSettings();
             _documentService = new DocumentService(Session, _documentEventService, _siteSettings, CurrentSite);
-            _productService = new ProductService(Session, _documentService, _siteSettings);
-            
+            _productService = new ProductService(Session, _documentService, _siteSettings, null);
+
         }
 
         [Fact]

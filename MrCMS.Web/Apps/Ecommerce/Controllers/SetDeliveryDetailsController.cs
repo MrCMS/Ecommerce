@@ -17,23 +17,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IOrderShippingService _orderShippingService;
         private readonly ICartManager _cartManager;
         private readonly IDocumentService _documentService;
+        private readonly IUniquePageService _uniquePageService;
 
-        public SetDeliveryDetailsController(CartModel cart, IOrderShippingService orderShippingService, ICartManager cartManager, IDocumentService documentService)
+        public SetDeliveryDetailsController(CartModel cart, IOrderShippingService orderShippingService, ICartManager cartManager, IDocumentService documentService, IUniquePageService uniquePageService)
         {
             _cart = cart;
             _orderShippingService = orderShippingService;
             _cartManager = cartManager;
             _documentService = documentService;
+            _uniquePageService = uniquePageService;
         }
 
         public ActionResult Show(SetDeliveryDetails page)
         {
             if (_cart.Empty)
-                return _documentService.RedirectTo<Cart>();
+                return _uniquePageService.RedirectTo<Cart>();
             if (string.IsNullOrWhiteSpace(_cart.OrderEmail))
-                return _documentService.RedirectTo<EnterOrderEmail>();
+                return _uniquePageService.RedirectTo<EnterOrderEmail>();
             if (!_cart.RequiresShipping)
-                return _documentService.RedirectTo<PaymentDetails>();
+                return _uniquePageService.RedirectTo<PaymentDetails>();
             ViewData["shipping-calculations"] = _orderShippingService.GetCheapestShippingOptions(_cart);
             ViewData["cart"] = _cart;
             return View(page);

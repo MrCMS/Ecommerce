@@ -59,6 +59,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                 imageLoc.InnerText = urlHelper.AbsoluteContent(FeatureImage);
             }
         }
+
         public override void AdminViewData(ViewDataDictionary viewData, NHibernate.ISession session)
         {
             viewData["product-search-sort-options"] =

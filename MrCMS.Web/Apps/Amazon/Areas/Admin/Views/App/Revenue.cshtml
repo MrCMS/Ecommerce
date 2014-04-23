@@ -4,20 +4,19 @@
 @model MrCMS.Web.Apps.Amazon.Models.AmazonDashboardModel
 
 <div class="row-fluid">
-                <div class="span12">
-                    <div class="dashboard-box">
-                        <div class="graphics">
-                           <div id="orders" ></div>  
-                        </div>
-                        <div class="info orders">
-                            <div class="stats">
-                            
-                            </div>
-                            <div class="stats-description">                           
-                                Revenue (@(MrCMSApplication.Get<EcommerceSettings>().Currency.Code))
-                            </div>
-                        </div>
-                        @Html.ActionLink("All Orders", "Index", "Orders", null,new { @class = "more-info peter-river"})
-                    </div>
-                </div> 
+    <div class="span12">
+        <div class="dashboard-box">
+            <div class="graphics">
+                <div id="orders"></div>
             </div>
+            <div class="info orders">
+                <div class="stats">
+                </div>
+                <div class="stats-description">
+                    Revenue (@(MrCMSApplication.Get<EcommerceSettings>().Currency.Code))
+                </div>
+            </div>
+            @Html.ActionLink("All Orders", "Index", "Orders", null, new { @class = "more-info peter-river" })
+        </div>
+    </div>
+</div>

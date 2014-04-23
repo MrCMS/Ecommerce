@@ -8,6 +8,7 @@
     {
     <h4>@Model.Title</h4>
     }
+    
     foreach (var itemRow in Model.Categories.Chunk(4))
     {
     <div class="row-fluid">
@@ -29,5 +30,6 @@
             </div>
         }
     </div>
+            
     }
 }

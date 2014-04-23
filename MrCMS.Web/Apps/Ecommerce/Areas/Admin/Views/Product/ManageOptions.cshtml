@@ -9,7 +9,7 @@
     @Html.Hidden("product-id", Model.Id)
 
     <div class="row-fluid">
-        <div class="span6">
+        <div class="span8">
             @{ Html.RenderAction("AddProductOption", "Product", new { id = Model.Id });}
 
             <div id="new-product-option" style="display: none;">

@@ -1,0 +1,17 @@
+﻿@using MrCMS.Helpers
+@model dynamic 
+
+<div class="row-fluid">
+    <div class="span6">
+        <h4 class="chart-title">Revenue today</h4>
+        <div id="revenue-today"></div>
+    </div>
+    <div class="span6">
+        <h4 class="chart-title">Revenue in last 7 days</h4>
+        <div id="revenue-this-week"></div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/dashboard.js"); }
+@{ Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/dashboard.css"); }

@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using MrCMS.Entities.People;
 using System.Linq;
+using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using MrCMS.Web.Apps.Ecommerce.Payment;
+using MrCMS.Website;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
@@ -226,6 +230,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     yield return "Shipping method is not set";
                 if (BillingAddress == null)
                     yield return "Billing address is not set";
+                if (MrCMSApplication.Get<ISession>().QueryOver<Order>().Where(order => order.Guid == CartGuid).Any())
+                    yield return "Order has already been placed";
             }
         }
     }

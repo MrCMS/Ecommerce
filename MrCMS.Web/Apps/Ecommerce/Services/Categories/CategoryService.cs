@@ -19,15 +19,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         private readonly ISession _session;
         private readonly IDocumentService _documentService;
         private readonly IProductSearchService _productSearchService;
+        private readonly IUniquePageService _uniquePageService;
         private readonly Site _currentSite;
 
         public CategoryService(ISession session, Site currentSite, IDocumentService documentService,
-            IProductSearchService productSearchService)
+            IProductSearchService productSearchService, IUniquePageService uniquePageService)
         {
             _session = session;
             _currentSite = currentSite;
             _documentService = documentService;
             _productSearchService = productSearchService;
+            _uniquePageService = uniquePageService;
         }
 
         public CategoryPagedList Search(string queryTerm = null, int page = 1,int pageSize=10)
@@ -47,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
                 pagedList = _session.Paged(QueryOver.Of<Category>(), page, pageSize);
             }
 
-            var categoryContainer = _documentService.GetUniquePage<CategoryContainer>();
+            var categoryContainer = _uniquePageService.GetUniquePage<CategoryContainer>();
             var categoryContainerId = categoryContainer == null ? (int?)null : categoryContainer.Id;
             return new CategoryPagedList(pagedList, categoryContainerId);
         }
@@ -94,7 +96,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
 
         public List<Category> GetRootCategories()
         {
-            var categoryContainer = _documentService.GetUniquePage<CategoryContainer>();
+            var categoryContainer = _uniquePageService.GetUniquePage<CategoryContainer>();
             return categoryContainer.PublishedChildren.OfType<Category>().ToList();
         }
 
@@ -117,7 +119,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
 
         private CategorySearchModel GetRootCategoryModel(List<int> availableCategories)
         {
-            var categoryContainer = _documentService.GetUniquePage<CategoryContainer>();
+            var categoryContainer = _uniquePageService.GetUniquePage<CategoryContainer>();
             var categories = categoryContainer.PublishedChildren.OfType<Category>().Where(cat => availableCategories.Contains(cat.Id)).ToList();
             return new CategorySearchModel()
                        {
