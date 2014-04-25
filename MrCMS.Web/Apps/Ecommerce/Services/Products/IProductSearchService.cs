@@ -10,7 +10,9 @@ using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using MrCMS.Entities.Indexes;
 using MrCMS.Helpers;
+using MrCMS.Indexing;
 using MrCMS.Indexing.Management;
+using MrCMS.Indexing.Utils;
 using MrCMS.Paging;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
@@ -123,19 +125,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 booleanQuery.Add(GetPriceRangeQuery(), Occur.MUST);
             if (!String.IsNullOrWhiteSpace(SearchTerm))
             {
-                var fuzzySearchTerm = MakeFuzzy(SearchTerm);
-                var q = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30,
-                    new[]
-                    {
-                        FieldDefinition.GetFieldName<ProductSearchNameDefinition>(),
-                        FieldDefinition.GetFieldName<ProductSearchSkuDefinition>(),
-                        FieldDefinition.GetFieldName<ProductSearchBodyContentDefinition>(),
-                        FieldDefinition.GetFieldName<ProductSearchMetaDescriptionDefinition>(),
-                        FieldDefinition.GetFieldName<ProductSearchMetaKeywordsDefinition>(),
-                        FieldDefinition.GetFieldName<ProductSearchMetaTitleDefinition>(),
-                    },
-                    MrCMSApplication.Get<ProductSearchIndex>().GetAnalyser());
-                var query = q.Parse(fuzzySearchTerm);
+                var indexDefinition = IndexingHelper.Get<ProductSearchIndex>();
+                var analyser = indexDefinition.GetAnalyser();
+                var parser = new MultiFieldQueryParser(Version.LUCENE_30, indexDefinition.SearchableFieldNames, analyser);
+                Query query = SearchTerm.SafeGetSearchQuery(parser, analyser);
+
                 booleanQuery.Add(query, Occur.MUST);
             }
             if (BrandId.HasValue)
@@ -143,11 +137,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             return booleanQuery;
         }
 
-        private string MakeFuzzy(string keywords)
-        {
-            var split = keywords.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            return string.Join(" ", split.Select(s => s + "~"));
-        }
         private Query GetOptionsQuery()
         {
             var query = new BooleanQuery();
