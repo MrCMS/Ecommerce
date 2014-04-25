@@ -16,7 +16,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 
         public virtual decimal Price
         {
-            get { return Item.GetPrice(Quantity) - DiscountAmount; }
+            get { return PricePreDiscount - DiscountAmount; }
+        }
+
+        public virtual decimal PricePreDiscount
+        {
+            get { return Item.GetPrice(Quantity); }
         }
 
         public virtual decimal Saving
@@ -102,6 +107,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         public virtual string DownloadFileUrl
         {
             get { return Item.DownloadFileUrl; }
+        }
+
+        public virtual bool HasDiscount
+        {
+            get { return DiscountAmount > 0; }
         }
 
         public virtual void SetDiscountInfo(Discount discount, string discountCode)

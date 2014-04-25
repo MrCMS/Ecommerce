@@ -1,35 +1,31 @@
-﻿using System.ComponentModel;
-using System.Linq;
+﻿using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations
 {
-    public class CartHasAtLeastXItems : DiscountLimitation
+    public class ItemIsInCategory : DiscountLimitation
     {
+        public virtual int CategoryId { get; set; }
         public override string DisplayName
         {
-            get { return "Cart has at least x items"; }
+            get { return "Item is in category"; }
         }
 
         public override bool IsCartValid(CartModel cartModel)
         {
-            var itemQuantity = cartModel.Items.Any() ? cartModel.Items.Sum(item => item.Quantity) : 0;
-            return itemQuantity >= NumberOfItems;
+            return false;
         }
 
         public override bool IsItemValid(CartItem cartItem)
         {
-            return false;
+            return cartItem.Item.Product.Categories.Select(category => category.Id).Contains(CategoryId);
         }
-
-        [DisplayName("Number of items")]
-        public virtual int NumberOfItems { get; set; }
 
         public override void CopyValues(DiscountLimitation limitation)
         {
-            NumberOfItems = ((CartHasAtLeastXItems)limitation).NumberOfItems;
+            CategoryId = ((ItemIsInCategory)limitation).CategoryId;
         }
     }
 }
