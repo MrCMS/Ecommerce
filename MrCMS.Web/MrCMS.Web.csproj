@@ -513,6 +513,7 @@
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\FixedAmountFromOrder.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\FreeShipping.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercentFromOrder.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemIsInCategory.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderHasXOrMoreItems.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderTotalGreaterThanX.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Discounts\Discount.cs" />
@@ -2537,6 +2538,9 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Wishlist\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Wishlist\Summary.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\ItemIsInCategory.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\FreeShipping.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\XPercent.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Service References\Paypoint\SECCardService.wsdl" />
     <None Include="Themes\Default\Views\Web.Debug.config">

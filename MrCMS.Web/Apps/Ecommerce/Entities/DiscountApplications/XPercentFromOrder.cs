@@ -22,12 +22,39 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications
         }
 
         [DisplayName("Discount % (e.g: 15)")]
-        [Range(0,100)]
+        [Range(0, 100)]
         public virtual decimal DiscountPercent { get; set; }
 
         public override void CopyValues(DiscountApplication application)
         {
             this.DiscountPercent = ((XPercentFromOrder)application).DiscountPercent;
+        }
+    }
+    public class XPercent : DiscountApplication
+    {
+        public override decimal GetDiscount(CartModel cartModel)
+        {
+            if (cartModel.TotalPreDiscount > 0 && DiscountPercent > 0 && DiscountPercent <= 100)
+                //TODO: Rounding? 
+                return cartModel.TotalPreDiscount * (DiscountPercent / 100);
+            return decimal.Zero;
+        }
+
+        public override decimal GetDiscount(CartItem cartItem)
+        {
+            if (cartItem.PricePreDiscount > 0 && DiscountPercent > 0 && DiscountPercent <= 100)
+                //TODO: Rounding? 
+                return cartItem.PricePreDiscount * (DiscountPercent / 100);
+            return decimal.Zero;
+        }
+
+        [DisplayName("Discount % (e.g: 15)")]
+        [Range(0, 100)]
+        public virtual decimal DiscountPercent { get; set; }
+
+        public override void CopyValues(DiscountApplication application)
+        {
+            this.DiscountPercent = ((XPercent)application).DiscountPercent;
         }
     }
 }
