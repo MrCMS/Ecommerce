@@ -11,6 +11,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications
         public override decimal GetDiscount(CartModel cartModel)
         {
             if (cartModel.TotalPreDiscount > 0 && DiscountPercent > 0 && DiscountPercent <= 100)
+                //TODO: Rounding? 
                 return cartModel.TotalPreDiscount * (DiscountPercent / 100);
             return decimal.Zero;
         }

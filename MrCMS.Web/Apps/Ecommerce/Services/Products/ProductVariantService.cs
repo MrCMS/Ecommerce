@@ -111,6 +111,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public void DeletePriceBreak(PriceBreak priceBreak)
         {
+            if (priceBreak.ProductVariant != null)
+            {
+                priceBreak.ProductVariant.PriceBreaks.Remove(priceBreak);
+            }
             _session.Transact(session => session.Delete(priceBreak));
         }
 
