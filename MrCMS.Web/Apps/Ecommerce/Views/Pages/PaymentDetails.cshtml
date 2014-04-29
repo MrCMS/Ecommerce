@@ -4,73 +4,72 @@
 @{ var cart = ViewData["cart"] as CartModel;}
 @{ var settingBillingAddress = ViewData["setting-billing-address"] is bool && (bool)ViewData["setting-billing-address"];}
 
-<div class="row-fluid">
-    <div class="span8">
-        <h4>Billing Address</h4>
-        @if (cart.RequiresShipping && cart.BillingAddressSameAsShippingAddress)
-        {
-            using (Html.BeginForm("BillingAddressSameAsShippingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
+<div class="padding-top-bottom-20">
+    <div class="row">
+        <div class="col-md-8 col-sm-8 padding-left-0">
+            <div class="block-title">
+                <h1>Billing Address</h1>
+            </div>
+            @if (cart.RequiresShipping && cart.BillingAddressSameAsShippingAddress)
             {
-            <div class="control-group">
-                <div class="control-label">
-                    <label class="checkbox" for="SameAsShipping">
-                        Use Delivery Address @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress)</label>
-                </div>
-                <div class="controls">
-                    @cart.ShippingAddress.GetDescription()
-                </div>
-            </div>
-            }
-        }
-        @if (settingBillingAddress)
-        {
-            Html.RenderAction("SetBillingAddress", "PaymentDetails");
-        }
-        else if (!cart.BillingAddressSameAsShippingAddress && cart.BillingAddress != null)
-        {
-            <div class="form-horizontal">
-                <div class="control-group">
-                    <div class="control-label">Billing Address :</div>
-                    <div class="controls">
-                        @cart.BillingAddress.GetDescription()
-                    </div>
-                </div>
-            </div>
-            using (Html.BeginForm("UpdateBillingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
-            {
-            <div class="control-group">
-                <div class="controls">
-                    <input class="btn btn-info" value="Edit" type="submit" />
-                </div>
-            </div>
-            }
-        }
-        <hr />
-        <h4>Payment Details</h4>
-        @if (!settingBillingAddress)
-        {
-            Html.RenderPartial("SelectMethod", cart);
-            <div id="payment-confirmation">
-                @if (!string.IsNullOrWhiteSpace(cart.PaymentMethod))
+                using (Html.BeginForm("BillingAddressSameAsShippingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
                 {
-                    Html.RenderAction(cart.PaymentMethod, "PaymentMethod");
+                    <div class="checkbox">
+                        <label>
+                            Use Delivery Address @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress)
+                            @cart.ShippingAddress.GetDescription()
+                        </label>
+                    </div>
                 }
+            }
+
+            @if (settingBillingAddress)
+            {
+                Html.RenderAction("SetBillingAddress", "PaymentDetails");
+            }
+            else if (!cart.BillingAddressSameAsShippingAddress && cart.BillingAddress != null)
+            {
+                <div class="margin-bottom-10">
+                    <label>
+                        Billing Address :
+                    </label>
+                    @cart.BillingAddress.GetDescription()
+                </div>
+                
+                using (Html.BeginForm("UpdateBillingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    <input class="btn btn-default" value="Edit" type="submit" />
+                }
+            }
+
+            <br/>
+
+            <div class="block-title">
+                <div class="h1style">Payment Details</div>
             </div>
-        }
-        else
-        {
-            <p>Select after updating billing address...</p>
-        }
-    </div>
-    <div class="span4">
-        @{Html.RenderAction("Summary", "Checkout");}
-        <hr />
-        @{Html.RenderAction("OrderEmail", "Checkout");}
-        @if (cart.RequiresShipping)
-        {
-            <hr />
-            Html.RenderAction("DeliveryDetails", "Checkout");
-        }
+            @if (!settingBillingAddress)
+            {
+                Html.RenderPartial("SelectMethod", cart);
+                <div id="payment-confirmation">
+                    @if (!string.IsNullOrWhiteSpace(cart.PaymentMethod))
+                    {
+                        Html.RenderAction(cart.PaymentMethod, "PaymentMethod");
+                    }
+                </div>
+            }
+            else
+            {
+                <p>Select after updating billing address...</p>
+            }
+        </div>
+        <div class="col-md-4 col-sm-4">
+            @{Html.RenderAction("Summary", "Checkout");}
+            @{Html.RenderAction("OrderEmail", "Checkout");}
+            @if (cart.RequiresShipping)
+            {
+                Html.RenderAction("DeliveryDetails", "Checkout");
+            }
+        </div>
     </div>
 </div>
 

@@ -2,45 +2,127 @@
 @{
     Layout = "_BaseLayout.cshtml";
 }
-<div class="container">
-    <div class="row-fluid">
-        <div class="span3">
-            @RenderZone("Header Left")
-        </div>
-        <div class="span6">
-            @RenderZone("Header Middle")
-        </div>
-        <div class="span3">
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="pull-right">
-                        @RenderZone("User Links")
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="fixedHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div id="sidebarmenu" class="visible-xs visible-sm">
+                    <div class="mobilemenu">
+                        <a id="menu" href="#sidr"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Menu</a>
+                    </div>
+                </div>
+                <div class="hidden-sm">
+                    <div class="navbar-collapse collapse">
+                        @RenderZone("Navigation")
                     </div>
                 </div>
             </div>
-            @RenderZone("Header Right")
         </div>
     </div>
 </div>
 
-<div id="navbar-wrapper">
+<div class="searchbar" id="search">
     <div class="container">
-        <div class="navbar">
-            <div class="navbar-inner">
-                @RenderZone("Navigation")
+        <div class="row">
+            <div class="col-md-2 col-sm-2 col-xs-3">
+                <div class="padding-top-bottom-9 logo">
+                    @RenderZone("Header Left")
+                </div>
+            </div>
+            <div class="col-md-5 col-md-offset-3 grey-border-right col-sm-7 col-xs-4 padding-l-r-0">
+                @RenderZone("Header Middle")
+            </div>
+            <div class="col-md-2 text-right padding-left-0 col-sm-3 col-xs-5">
+                @RenderZone("Header Right")
+                @RenderZone("User Links")
             </div>
         </div>
     </div>
 </div>
 
-<div class="container">
+
+<div id="wrapper">
+    <div class="info">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-left">
+                        <ul>
+                            <li>
+                                <img src="/Apps/Ecommerce/Content/Images/tick-small.png" /> FREE delivery
+                            </li>
+                            <li>
+                                <img src="/Apps/Ecommerce/Content/Images/tick-small.png" /> 100 % Secure shopping
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pull-right margin-right-minus">
+                        <ul>
+                            <li>
+                                e : <a href="mailto:info@mrcms.co.uk">
+                                        info@mrcms.co.uk
+                                    </a>
+                            </li>
+                            <li>
+                                t : 0208 444 4545
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @RenderZone("Before Content")
     @RenderBody()
     @RenderZone("After Content")
-</div>
 
-<footer>
-    <div class="container">
-        @RenderZone("Footer")
+    <div class="margin-top-bottom-30">
+        <div class="container">
+            <div class="padding-top-bottom-20 payment grey-border-top-bottom">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img src="/Apps/Ecommerce/Content/Images/payment.gif" class="img-responsive" />
+                    </div>
+                    <div class="col-md-9">
+                        We accept Visa, Mastercard and Maestro card payments. We also take payments from customers with a Paypal account.
+                    </div>
+                </div>
+            </div>
+                
+        </div>
     </div>
-</footer>
+
+    <div class="margin-top-bottom-30">
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        @RenderZone("Footer")
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        @RenderZone("Footer Area 2")
+                    </div>
+
+                    <div class="clearfix visible-xs padding-top-bottom-10">&nbsp;</div>
+
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        @RenderZone("Footer Area 3")
+                    </div>
+
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <h3>Newsletter</h3>
+                        @RenderZone("Footer Area 4")
+                        @*<form class="form-horizontal" role="form"><input class="form-control" id="inputEmail3" placeholder="Email address" type="email" /><br />
+                            <button class="btn btn-default btn-block" type="submit">Sign in</button></form>*@
+                    </div>
+                </div>
+
+                
+            </div>
+        </footer>
+    </div>
+</div>

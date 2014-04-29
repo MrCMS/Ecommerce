@@ -7,41 +7,69 @@
     <div id="loading-message" style="display: none; position: fixed; top: 50%; left: 50%;">
         <img src="/Apps/Ecommerce/Content/Images/ajax-loader.gif" alt="Loading" />
     </div>
-    <div id="products-operations">
-        <div id="stats" class="pull-left">
-            @if (Model.Any())
-            {
-                <text>
-                Showing @(Model.PageSize > 1 ? Model.FirstItemOnPage + " - " + Model.LastItemOnPage : Model.PageNumber.ToString()) of @Model.TotalItemCount
-                </text>
-            }
-        </div>
-        <div id="show" class="pull-right">
-            <label for="PageSize">Show</label>
-            @Html.DropDownList("PageSize", query.PerPageOptions)
-        </div>
-        <div id="sorting" class="pull-right">
-            <label for="SortBy">Sort by</label>
-            @Html.DropDownList("SortBy", query.SortByOptions)
-        </div>
+    <div id="products-operations" class="grey-border-bottom">
+        <div class="row margin-bottom-10">
+            @*<div class="col-sm-4 padding-0">
+                <h1>
+                    
+                </h1>
+            </div>*@
+            <div class="col-sm-4">
+                <div class="col-md-3 col-sm-4 col-xs-3 line-height-30 padding-0">
+                    Sort by
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-9 margin-bottom-10 padding-0" id="sorting">
+                    @Html.DropDownList("SortBy", query.SortByOptions, new{@class="form-control"})
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-sm-4 padding-0">
+                <div class="col-md-3 col-sm-4 col-xs-3 line-height-30 padding-0">
+                    Show
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-9 margin-bottom-10 padding-0" id="show">
+                    @Html.DropDownList("PageSize", query.PerPageOptions, new{@class="form-control"})
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>        
+
+
+        
+        
     </div>
+    <div class="clearfix"></div>
+
+    <div id="stats">
+        @if (Model.Any())
+        {
+            <div class="row padding-top-bottom-10">
+                <div class="col-sm-12">
+                    <small>Showing @(Model.PageSize > 1 ? Model.FirstItemOnPage + " - " + Model.LastItemOnPage : Model.PageNumber.ToString()) of @Model.TotalItemCount</small>
+                </div>
+            </div>
+        }
+    </div>
+    
+
     <div id="products-wrapper">
         @if (Model.Any())
         {
             <div id="products">
-                @foreach (var product in Model)
+                @foreach (var products in Model.Chunk(3))
                 {
-                    <div class="row-fluid">
-                        @{ Html.RenderPartial("ProductCard", product); }
+                    <div class="row text-center">
+                        @foreach (var product in products)
+                        {
+                            Html.RenderPartial("ProductCard", product);
+                        }
                     </div>
-                    <hr />
                 }
             </div>
            
             <div id="products-paging">
                 @Html.PageCurrentPage(Model, i => new { page = i }, PagedListRenderOptions.OnlyShowFivePagesAtATime)
             </div>
-
         }
         else
         {

@@ -1,11 +1,15 @@
 ﻿@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 <br />
-<div class="row-fluid">
-    <div class="span8">
+<div class="row">
+    <div class="col-sm-8">
         @using (Html.BeginForm("EnterOrderEmail", "Cart", FormMethod.Post))
         {
-            <h4>Email address</h4>
+            <div class="block-title">
+                <h1>
+                    Email address
+                </h1>
+            </div>
             <span>Enter your Email address *:</span>
             <br />
             @Html.TextBoxFor(x => x.OrderEmail, new { @class = "input-xxlarge" })
@@ -28,7 +32,7 @@
             <input class="btn btn-info" type="submit" id="continue" name="continue" value="Continue" />
         }
     </div>
-    <div class="span4">
+    <div class="col-sm-4">
         @{Html.RenderAction("BasicDetails", "Cart");}
     </div>
 </div>

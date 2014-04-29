@@ -20,6 +20,13 @@
     $('[data-add-to-wishlist]').each(function() {
         return new AddToWishlist($(this)).init();
     });
+
+    $(".logo a img").addClass("img-responsive");
+    
+    if ($(".mrcms-admin-nav-bar").length > 0) {
+        $("#fixedHeader").attr("style", "top:30px;");
+        $("#search").attr("style", "top:69px;");
+    }
 });
 
 
