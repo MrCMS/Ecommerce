@@ -3,38 +3,42 @@
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 <div id="details">
-    <div class="row-fluid">
-        <div class="span6">
+    <div class="row margin-bottom-20">
+        <div class="col-sm-6">
             <h1>Shopping Basket</h1>
         </div>
-        <div class="span6">
-            <div class="row-fluid">
-                <a class="btn offset4 span4" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">Continue Shopping</a>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-6">
+                    <a class="btn btn-default btn-block" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">Continue Shopping</a>
+                </div>
                 @if (Model.CanEnterPaymentFlow)
                 {
-                    <a class="btn btn-info span4" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay Securely NOW!</a>
+                    <div class="col-sm-6">
+                        <a class="btn btn-info btn-block" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay Securely NOW!</a>
+                    </div>
                 }
             </div>
         </div>
-    </div>
-    <div class="row-fluid cart" id="cart-items">
+    </div>    
+    <div id="cart-items" class="margin-bottom-20">
         @if (Model.Items.Any())
         {
-            <div class="row-fluid cart-heading-row" id="header">
-                <div class="span4 padding-left-5">
-                    Item Description
+            <div class="row margin-bottom-10 padding-bottom-10 grey-border-bottom" id="header">
+                <div class="col-sm-4">
+                    <strong>Item Description</strong>
                 </div>
-                <div class="span2">
-                    Your Options
+                <div class="col-sm-2">
+                    <strong>Your Options</strong>
                 </div>
-                <div class="span2 text-center">
-                    Quantity
+                <div class="col-sm-2 text-center">
+                    <strong>Quantity</strong>
                 </div>
-                <div class="span2 text-right">
-                    Price
+                <div class="col-sm-2 text-right">
+                    <strong>Price</strong>
                 </div>
-                <div class="span2 text-right padding-right-5">
-                    Total
+                <div class="col-sm-2 text-right">
+                    <strong>Total</strong>
                 </div>
             </div>
             foreach (var item in Model.Items)
@@ -44,101 +48,130 @@
         }
         else
         {
-            <span>No items in basket.</span>
+            <small>No items in basket.</small>
         }
     </div>
+
     @if (Model.Items.Any())
     {
-        <div class="row-fluid">
-            <div class="offset6 span6">
-                <button type="button" class="btn offset4 span4" id="update-basket">Update Basket</button>
-                <button type="button" class="btn btn-danger span4" id="empty-basket">Empty Basket</button>
+        <div class="row margin-bottom-20">
+            <div class="col-sm-6 col-sm-offset-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-default btn-block" id="update-basket">Update Basket</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-danger btn-block" id="empty-basket">Empty Basket</button>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="row-fluid cart-discount-container" id="cart-discount">
-            <div class="offset6 span6">
+        
+        <div class="row margin-bottom-10" id="cart-discount">
+            <div class="col-sm-6 col-sm-offset-6">
                 @Html.HiddenFor(x => x.DiscountCode)
-                <div class="row-fluid" id="discount-code-box">
-                    <div class="span4 discount-header">Discount Code</div>
-                    <div class="span4">
-                        <input class="span12" type="text" id="discount-code" />
+                <div class="row" id="discount-code-box">
+                    <div class="col-sm-4 line-height-30">
+                        Discount Code
                     </div>
-                    <div class="span4 padding-right-5">
-                        <button id="apply-discount-code" class="btn span12">Apply Discount Code</button>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" id="discount-code" />
+                    </div>
+                    <div class="col-sm-4">
+                        <button id="apply-discount-code" class="btn btn-default">Apply Discount Code</button>
                     </div>
                 </div>
             </div>
         </div>
     }
-    <div class="row-fluid">
-        <div class="span6">
-        </div>
-        <div class="span6" id="cart-summary">
+
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-6" id="cart-summary">
             @if (Model.Items.Any())
             {
-                <div class="row-fluid">
-                    <div class="span6">Subtotal before delivery charges</div>
-                    <div class="span6 text-right">@Model.Subtotal.ToCurrencyFormat()</div>
+                <div class="row margin-bottom-10">
+                    <div class="col-sm-6">
+                        Subtotal before delivery charges
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        @Model.Subtotal.ToCurrencyFormat()
+                    </div>
                 </div>
                 if (Model.HasDiscount)
                 {
-                <div class="row-fluid">
-                    <div class="span6">Discount</div>
-                    <div class="span6 text-right">@((-Model.OrderTotalDiscount).ToCurrencyFormat())
+                    <div class="row margin-bottom-10">
+                        <div class="col-sm-6">
+                            Discount
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            @((-Model.OrderTotalDiscount).ToCurrencyFormat())
+                        </div>
                     </div>
-                </div>
                 }
                 if (MrCMS.Website.MrCMSApplication.Get<TaxSettings>().TaxesEnabled)
                 {
-                <div class="row-fluid">
-                    <div class="span6">VAT</div>
-                    <div class="span6 text-right">@Model.Tax.ToCurrencyFormat()
+                    <div class="row margin-bottom-10">
+                        <div class="col-sm-6">
+                            VAT
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            @Model.Tax.ToCurrencyFormat()
+                        </div>
                     </div>
-                </div>
                 }
                 if (Model.RequiresShipping)
                 {
-                <div class="row-fluid">
-                    <div class="span6">
-                        @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new { @class = "input-xlarge" })
+                    <div class="row margin-bottom-10">
+                        <div class="col-sm-6">
+                            @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            @if (Model.ShippingTotal.HasValue)
+                            {
+                                @Model.ShippingTotal.Value.ToCurrencyFormat()
+                            }
+                            else
+                            {
+                                <span>Please choose a shipping method</span>
+                            }
+                        </div>
                     </div>
-                    <div class="span6 text-right">
-                        @if (Model.ShippingTotal.HasValue)
-                        {
-                            @Model.ShippingTotal.Value.ToCurrencyFormat()
-                        }
-                        else
-                        {
-                            <span>Please choose a shipping method</span>
-                        }
-                    </div>
-                </div>
                 }
-                <div class="total-divider"></div>
-                <div>
-                    <div class="span6">Total</div>
-                    <div class="text-right total">@Model.Total.ToCurrencyFormat()</div>
+                <hr/>
+                <div class="row margin-bottom-10">
+                    <div class="col-sm-6">
+                        <strong>Total</strong>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <strong>@Model.Total.ToCurrencyFormat()</strong>
+                    </div>
                 </div>
             }
         </div>
     </div>
-    <div class="row-fluid">
-        <div class="offset6 span6">
+    <div class="row margin-bottom-10">
+        <div class="col-sm-6 col-sm-offset-6">
             @if (Model.CanEnterPaymentFlow)
             {
-                <a class="btn btn-info offset8 span4" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay Securely NOW!</a>
+                <a class="btn btn-info btn-block" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay Securely NOW!</a>
             }
             @if (Model.CanUsePayPalExpress)
             {
                 using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
                 {
-                <div class="text-right">
-                    <p>or</p>
-                    <input class="btn-paypal" type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />
-                </div>
+                    <div class="text-right">
+                        <p>or</p>
+                        <input class="btn btn-info" type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />
+                    </div>
                 }
             }
+        </div>
+    </div>
+
+
+    <div class="row-fluid">
+        <div class="offset6 span6">
+            
         </div>
     </div>
 </div>

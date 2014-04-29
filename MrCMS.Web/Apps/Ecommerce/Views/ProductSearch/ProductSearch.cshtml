@@ -7,19 +7,23 @@
 @Html.HiddenFor(x => x.Id)
 @Html.HiddenFor(x => x.LiveUrlSegment)
 @Html.HiddenFor(x => x.UrlSegment)
-
-<div class="row-fluid" id="product-search-container">
-    <div class="span3">
-        @RenderZone("Before Filters")
-        @{ Html.RenderAction("Query", "ProductSearch", new { query });}
-        @RenderZone("After Filters")
-    </div>
-    <div class="span9">
-        <h1>@Editable(Model, page => page.Name, false)</h1>
-        @Editable(Model, page => page.BodyContent, true)
-        @{ Html.RenderAction("Results", "ProductSearch", new { query }); }
-    </div>
+ <div class="margin-bottom-30 grey-border-top padding-top-10">
+     <div class="container">
+         <div class="row" id="product-search-container">
+             <div class="col-sm-3">
+                 @RenderZone("Before Filters")
+                @{ Html.RenderAction("Query", "ProductSearch", new { query });}
+                @RenderZone("After Filters")
+             </div>
+             <div class="col-sm-9">
+                 <h1>@Editable(Model, page => page.Name, false)</h1>
+                 @*@Editable(Model, page => page.BodyContent, true)*@
+                 @{ Html.RenderAction("Results", "ProductSearch", new { query }); }
+             </div>
+         </div>
+     </div>
 </div>
+
 @{
     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.history.js");
     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/product-search.js");

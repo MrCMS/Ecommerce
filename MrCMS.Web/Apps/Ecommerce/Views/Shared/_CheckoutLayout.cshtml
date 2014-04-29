@@ -7,26 +7,80 @@
     var activePages = currentPage.ActivePages.Select(webpage => webpage.DocumentType).ToList();
 }
 
-<div class="container">
-    <div class="row-fluid margin-bottom-10">
-        <div class="span4">
-            @RenderZone("Header Left")
+<div class="container padding-top-bottom-20">
+    <div class="row">
+        <div class="col-md-2 col-sm-2 col-xs-2">
+            <div class="padding-top-10">
+                @RenderZone("Header Left")
+            </div>
         </div>
-        <div class="span4">
+        <div class="col-md-3 col-sm-3 col-xs-3">
+            @*<img src="../secure.png" class="img-responsive"/>*@
             @RenderZone("Header Middle")
         </div>
-        <div class="span4">
-            <div id="checkout-nav-buttons">
-                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())" class="btn btn-info btn-large span6">Basket</a>
-                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-info btn-large span6">Return to shop</a>
+        <div class="col-md-4 col-md-offset-3 col-sm-5 col-sm-offset-2 col-xs-7" id="checkout-nav-buttons">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())" class="btn btn-default btn-block">
+                    Basket
+                </a>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-default btn-block">
+                    Return to shop
+                </a>
             </div>
         </div>
     </div>
 </div>
-<div class="container">
+<div class="clearfix"></div>
+<div class="navigation">
+    <div class="container">
+        <div class="row" id="checkout">
+            <div class="col-md-3 col-sm-3 col-xs-3 padding-0 @(activePages.Contains("EnterOrderEmail", StringComparer.OrdinalIgnoreCase) ? "light-green" : "light-grey")">
+                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">
+                    <div class="circle">
+                        1
+                    </div>
+                    <div class="session">
+                        Welcome
+                    </div>
+                    <div class="pointer"></div>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 padding-0 @(activePages.Contains("SetDeliveryDetails", StringComparer.OrdinalIgnoreCase) ? "light-green" : "dark-grey")">
+                <div class="circle">
+                    2
+                </div>
+                <div class="session">
+                    Delivery
+                </div>
+                <div class="pointer"></div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 padding-0 @(activePages.Contains("PaymentDetails", StringComparer.OrdinalIgnoreCase) ? "light-green" : "light-grey")">
+                <div class="circle">
+                    3
+                </div>
+                <div class="session">
+                    Payment
+                </div>
+                <div class="pointer"></div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 padding-0 @(activePages.Contains("OrderPlaced", StringComparer.OrdinalIgnoreCase) ? "light-green" : "dark-grey")">
+                <div class="circle">
+                    4
+                </div>
+                <div class="session">
+                    Receipt
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div class="container">
     <div class="navbar">
         <div class="navbar-inner">
-            <div id="checkout" class="wizard">
+            <div class="wizard">
                 <ul class="steps">
                     <li class="span2 @(activePages.Contains("EnterOrderEmail", StringComparer.OrdinalIgnoreCase) ? "active" : "")">
                         <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Welcome
@@ -42,23 +96,18 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 <div class="container">
-    <div class="row-fluid">
-        <div class="span12">
-            @RenderBody()
-        </div>
-    </div>
+    @RenderBody()
 </div>
 
 <footer>
     <div class="container">
-        <hr />
-        <div class="row-fluid">
-            <div class="span6">
+        <div class="row">
+            <div class="col-sm-6">
                 @RenderZone("Footer Left")
             </div>
-            <div class="span6">
+            <div class="col-sm-6">
                 @RenderZone("Footer Right")
             </div>
         </div>

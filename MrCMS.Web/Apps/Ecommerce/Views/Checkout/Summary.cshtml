@@ -2,11 +2,16 @@
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
-<div id="basic-details">
+<div id="basic-details" class="margin-bottom-20">
     @if (Model.Items.Any())
     {
-        <h4>Your Order</h4>
-        <table class="table summary-table">
+        <div class="block-title">
+            <div class="h1style">
+                Your Order
+            </div>
+        </div>
+
+        <table class="table">
             <thead>
                 <tr>
                     <th>Description</th>
@@ -18,10 +23,10 @@
                 {
                     <tr>
                         <td>
-                            <ul class="media-list summary-items">
+                            <ul class="media-list">
                                 <li>@item.Name</li>
-                                <li class="summary-small">Item Price : @item.UnitPrice.ToCurrencyFormat()</li>
-                                <li class="summary-small">Quantity : @item.Quantity</li>
+                                <li>Item Price : @item.UnitPrice.ToCurrencyFormat()</li>
+                                <li>Quantity : @item.Quantity</li>
                             </ul>
                         </td>
                         <td>@item.Price.ToCurrencyFormat()</td>
@@ -36,30 +41,30 @@
                 @if (Model.ShippingTotal.HasValue)
                 {
                     <tr>
-                        <th class="no-border">Shipping :</th>
-                        <td class="no-border">@Model.ShippingTotal.Value.ToCurrencyFormat()</td>
+                        <th>Shipping :</th>
+                        <td>@Model.ShippingTotal.Value.ToCurrencyFormat()</td>
                     </tr>
                 }
                 @if (Model.HasDiscount)
                 {
                     <tr>
-                        <th class="no-border">Discount : </th>
-                        <td class="no-border">@((-Model.OrderTotalDiscount).ToCurrencyFormat())</td>
+                        <th>Discount : </th>
+                        <td>@((-Model.OrderTotalDiscount).ToCurrencyFormat())</td>
                     </tr>
                 }
                 @if (MrCMS.Website.MrCMSApplication.Get<TaxSettings>().TaxesEnabled)
                 {
                     <tr>
-                        <th class="no-border">Tax : </th>
-                        <td class="no-border">@Model.Tax.ToCurrencyFormat()</td>
+                        <th>Tax : </th>
+                        <td>@Model.Tax.ToCurrencyFormat()</td>
                     </tr>
                 }
                 <tr>
-                    <th class="no-border">Total :</th>
-                    <td class="no-border"><strong>@Model.Total.ToCurrencyFormat()</strong></td>
+                    <th>Total :</th>
+                    <td><strong>@Model.Total.ToCurrencyFormat()</strong></td>
                 </tr>
             </tfoot>
         </table>
     }
-    <a class="btn btn-info" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())">Edit</a>
+    <a class="btn btn-default" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())">Edit</a>
 </div>

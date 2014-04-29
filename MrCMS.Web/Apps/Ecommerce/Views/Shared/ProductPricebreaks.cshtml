@@ -4,21 +4,18 @@
 <div id="product-variants-pricebreaks">
     @if (Model.PriceBreaks.Any())
     {
-        <div class="product-pricebreaks-title">
-            PRICE BREAKS - The more you buy, the more you save.
-        </div>
-        <table id="product-pricebreaks-table" class="table table-condensed table-striped table-bordered">
+        <table id="product-pricebreaks-table" class="table grey-border price-break">
             <thead>
                 <tr>
-                    <th>Quantity</th>
-                    <th>Price</th>
+                    <th>Price Breaks</th>
+                    <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.PriceBreaks)
                 {
                     <tr>
-                        <td>@item.Quantity&nbsp;+</td>
+                        <td>Buy @item.Quantity&nbsp;+</td>
                         <td>@item.Price.ToCurrencyFormat()</td>
                     </tr> 
                 }

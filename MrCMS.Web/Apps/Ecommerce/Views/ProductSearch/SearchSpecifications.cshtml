@@ -3,28 +3,32 @@
 @{ var query = ViewData["query"] as ProductSearchQuery;}
 @if (Model.Any())
 {
-    <div class="product-filter-box-title">
-        Filter by Specifications
-    </div>
-    <div class="row-fluid">
-        <ul id="product-filter-box-specifications" class="nav nav-tabs nav-stacked">
+    <div class="widget-con">
+        <div class="title-con">
+            By specifications
+        </div>
+        <div class="options-con" id="product-filter-box-specifications">
             @foreach (var specification in Model)
             {
-                <li>
-                    <label for="specifications-@specification.Id">@specification.Name</label>
-                    <select name="Specifications" id="specifications-@specification.Id" class="span12">
-                        <option value="">All</option>
-                        @foreach (var option in specification.Values)
-                        {
+                <div class="option">
+                    <div class="col-sm-4 padding-0 line-height-30">
+                        <label for="specifications-@specification.Id">@specification.Name</label>
+                    </div>
+                    <div class="col-sm-8 padding-right-0">
+                        <select name="Specifications" id="specifications-@specification.Id" class="form-control">
+                            <option value="">All</option>
+                            @foreach (var option in specification.Values)
+                            {
 
-                            <option value="@option.Id"@(query.Specifications.Contains(option.Id) ? " selected=\"selected\"" : string.Empty)>
-                                @option.Name
-                            </option>
-                        }
-                    </select>
-                </li>
+                                <option value="@option.Id"@(query.Specifications.Contains(option.Id) ? " selected=\"selected\"" : string.Empty)>
+                                    @option.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
             }
-        
-        </ul>
+        </div>
     </div>
 }

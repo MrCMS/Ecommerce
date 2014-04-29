@@ -1,21 +1,20 @@
 ﻿@using System.Drawing
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Entities.Cart.CartItem
-<div class="row-fluid cart-row border-bottom">
-    <div class="span4">
-        <div class="row-fluid">
-            <div class="span4 photo">
-            <a href="/@Model.Item.Product.LiveUrlSegment">
-                @RenderImage(Model.Item.Product.DisplayImageUrl, new Size { Width = 110, Height = 110 })
-            </a>
+<div class="row grey-border-bottom padding-top-10">
+    <div class="col-sm-4">
+        <div class="row">
+            <div class="col-sm-4">
+                <a href="/@Model.Item.Product.LiveUrlSegment">
+                    @RenderImage(Model.Item.Product.DisplayImageUrl, new Size { Width = 110, Height = 110 })
+                </a>
+            </div>
+            <div class="col-sm-8">
+                <a href="/@Model.Item.Product.LiveUrlSegment">@Model.Name</a>
+            </div>
         </div>
-        <div class="span8 name">
-            <a href="/@Model.Item.Product.LiveUrlSegment">@Model.Name</a>
-        </div>
-        </div>
-        
     </div>
-    <div class="span2">
+    <div class="col-sm-2">
         @foreach (var option in Model.Item.OptionValues)
         {
             <p>
@@ -27,13 +26,13 @@
             </p>
         }
     </div>
-    <div class="span2 text-center">
+    <div class="col-sm-2 text-center">
         <input type="text" class="input-mini text-center" name="@Html.Raw("quantity-" + Model.Id)" value="@Model.Quantity" data-cart-id="@Model.Id"/>
     </div>
-    <div class="span2 text-right">
+    <div class="col-sm-2 text-right">
         @Model.UnitPrice.ToCurrencyFormat()
     </div>
-    <div class="span2 text-right padding-right-5">
+    <div class="col-sm-2 text-right">
         <div class="total">@Model.Price.ToCurrencyFormat()</div>
         <a data-id="@Model.Id" data-action="delete-cart-item" href="#" class="btn btn-mini btn-danger">Remove</a>
     </div>

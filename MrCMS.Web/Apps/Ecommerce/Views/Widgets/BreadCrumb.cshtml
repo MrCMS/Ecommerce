@@ -3,17 +3,24 @@
 @{
     var page = CurrentRequestData.CurrentPage; 
 }
-<ul class="breadcrumb">
-    <li><a href="/">Home</a> <span class="divider">/</span></li>
-    @foreach (var p in Model)
-    {
-        if (p == page)
-        {
-            <li class="active">@p.Name</li>
-        }
-        else
-        {
-            <li><a href="/@p.LiveUrlSegment">@p.Name</a> <span class="divider">/</span></li>
-        }
-    }
-</ul>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                @foreach (var p in Model)
+                {
+                    if (p == page)
+                    {
+                        <li class="active">@p.Name</li>
+                    }
+                    else
+                    {
+                        <li><a href="/@p.LiveUrlSegment">@p.Name</a></li>
+                    }
+                }
+            </ol>
+        </div>
+    </div>
+</div>
+
