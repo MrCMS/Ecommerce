@@ -234,7 +234,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             _orderNoteService.AddOrderNoteAudit(string.Format("Order marked as deleted by {0}.",
                                                                        CurrentRequestData.CurrentUser.Name), order);
-            _session.Delete(order);
+            _session.Transact(session => session.Delete(order));
         }
     }
 }
