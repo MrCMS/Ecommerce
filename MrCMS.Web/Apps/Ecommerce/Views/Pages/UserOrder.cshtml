@@ -11,13 +11,13 @@
 
 }
 <div class="container padding-top-bottom-20">
-    <div class="row-fluid">
-        <div class="span12">
-            <div class="row-fluid">
-                <div class="span6">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-6">
                     <h1>View Order @order.Id</h1>
                 </div>
-                <div class="span6">
+                <div class="col-sm-6">
                     <div class="pull-right btn-group">
                         <a href="@(UniquePageHelper.GetUrl<UserAccountPage>())" class="btn">Return to account</a>
                         <a href="/Apps/Ecommerce/OrderPdf/ExportOrderToPdf/@order.Id" class="btn btn-primary">Download PDF</a>
@@ -27,24 +27,24 @@
             <br class="clearfix" />
             <table class="table table-condensed table-striped">
                 <tr>
-                    <td class="bold-font">Order GUID</td>
+                    <td>Order GUID</td>
                     <td>@order.Guid</td>
                 </tr>
                 <tr>
-                    <td class="bold-font">Order Subtotal (ex TAX)</td>
+                    <td>Order Subtotal (ex TAX)</td>
                     <td>@order.Subtotal.ToCurrencyFormat()</td>
                 </tr>
                 <tr>
-                    <td class="bold-font">Order Shipping (ex TAX)</td>
+                    <td>Order Shipping (ex TAX)</td>
                     <td>@orderShipping.ToCurrencyFormat()</td>
                 </tr>
 
                 <tr>
-                    <td class="bold-font">Order Tax</td>
+                    <td>Order Tax</td>
                     <td>@order.Tax.ToCurrencyFormat()</td>
                 </tr>
                 <tr>
-                    <td class="bold-font">Order Total</td>
+                    <td>Order Total</td>
                     <td>@order.Total.ToCurrencyFormat()</td>
                 </tr>
             </table>
@@ -85,8 +85,8 @@
     }
 
     <hr class="small-margin" />
-    <div class="row-fluid">
-        <div class="span6">
+    <div class="row">
+        <div class="col-sm-6">
             <h4>Payment</h4>
 
             <table class="table table-condensed">
@@ -100,7 +100,7 @@
                 </tr>
             </table>
         </div>
-        <div class="span6">
+        <div class="col-sm-6">
             <h4>Shipping</h4>
 
             <table class="table table-condensed">
@@ -125,8 +125,8 @@
         </div>
     </div>
     <hr />
-    <div class="row-fluid">
-        <div class="span6">
+    <div class="row">
+        <div class="col-sm-6">
             <h4>Shipping Address</h4>
             <div class="pull-left">
                 @if (order.ShippingAddress != null)
@@ -135,7 +135,7 @@
                 }
             </div>
         </div>
-        <div class="span6">
+        <div class="col-sm-6">
             <h4>Billing Address</h4>
             <div class="pull-left">
                 @if (order.BillingAddress != null)

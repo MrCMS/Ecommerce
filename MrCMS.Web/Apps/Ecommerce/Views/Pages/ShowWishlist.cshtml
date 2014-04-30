@@ -6,20 +6,23 @@
     var wishlist = ViewData["wishlist"] as Wishlist ?? new Wishlist();
     var myWishlist = ViewData["my-wishlist"] is bool && (bool)ViewData["my-wishlist"];
 }
-<div class="row-fluid">
-    <div class="span12">
-        @if (myWishlist)
-        {
-            var url = UniquePageHelper.GetAbsoluteUrl<ShowWishlist>(new { id = wishlist.Guid });
-            <p>
-                Direct Url: <a href="@url">@url</a>
-            </p>
-        }
-        <div id="products">
-            @foreach (var productVariant in wishlist.WishlistItems.Select(item => item.Item))
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            @if (myWishlist)
             {
-                Html.RenderPartial("VariantCard", productVariant);
+                var url = UniquePageHelper.GetAbsoluteUrl<ShowWishlist>(new { id = wishlist.Guid });
+                <p>
+                    Direct Url: <a href="@url">@url</a>
+                </p>
             }
+            <div id="products">
+                @foreach (var productVariant in wishlist.WishlistItems.Select(item => item.Item))
+                {
+                    Html.RenderPartial("VariantCard", productVariant);
+                }
+            </div>
         </div>
     </div>
 </div>
+

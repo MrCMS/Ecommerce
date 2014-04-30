@@ -5,11 +5,15 @@
 @model MrCMS.Web.Apps.Ecommerce.Models.UserAccountOrdersModel
 <div class="container">
     <div data-paging-type="async">
-        <h3>Your Orders</h3>
+        <div class="block-title">
+            <div class="h1style">
+                Your Orders
+            </div>
+        </div>
         @if (Model != null && !Model.Items.Any())
         {
             @:You have no orders yet.
-    }
+        }
         else
         {
             <table class="table table-condensed table-striped">
