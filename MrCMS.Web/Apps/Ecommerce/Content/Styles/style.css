@@ -125,6 +125,7 @@ table.price-break tbody tr td { border-top: 1px dotted #ddd;}
 .grey-border-top {border-top:1px solid #f0f0f0;}
 .grey-border-bottom {border-bottom:1px solid #f0f0f0;}
 .line-height-30 {line-height:30px;}
+.padding-20 { padding: 20px;}
 
 /* checkout css */
 .navigation {border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;padding:15px 10px;}

@@ -4,9 +4,11 @@
     var order = ViewData["order"] as Order;
     var errorMessage = TempData["register-error"] as string;
 }
-<div class="border-grey margin-bottom-20">
-    <div class="sub-header grey-background">
-        Log in to remember your order
+<div class="margin-bottom-20 grey-border">
+    <div class="block-title">
+        <div class="h1style">
+            Log in to remember your order
+        </div>
     </div>
     <div class="padding-20">
         <p>
@@ -16,13 +18,15 @@
         {
             @Html.HiddenFor(model => model.Email)
             @Html.Hidden("Id", order.Guid)
-            <div class="row-fluid">
+            <div class="margin-bottom">
                 @Html.PasswordFor(model => model.Password, new { @class = "span6" })
                 @Html.ValidationMessageFor(x=>x.Password)
             </div>
             <br />
-            <div class="row-fluid">
-                <input type="submit" class="btn red-gradient span4" value="Continue" />
+            <div class="row">
+                <div class="col-sm-4">
+                    <input type="submit" class="btn btn-danger btn-block" value="Continue" />
+                </div>
             </div>
         }
     </div>

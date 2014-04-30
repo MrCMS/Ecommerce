@@ -2,8 +2,8 @@
 @using MrCMS.Helpers
 
 <br />
-<div class="row-fluid">
-    <div class="span8">
+<div class="row">
+    <div class="col-sm-8">
         <h4>Payment details</h4>
         @using (Html.BeginForm("PaymentDetails", "Cart", FormMethod.Post))
         {
@@ -164,7 +164,7 @@
             <button class="btn btn-info" type="submit" id="continue" name="continue">Place order</button>
         }
     </div>
-    <div class="span4">
+    <div class="col-sm-4">
         @{Html.RenderAction("BasicDetails", "Cart");}
         <hr />
         @{Html.RenderAction("OrderEmail", "Cart");}
