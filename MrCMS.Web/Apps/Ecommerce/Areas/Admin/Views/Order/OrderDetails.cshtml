@@ -184,7 +184,7 @@
         <div class="pull-left">
             @if (Model.ShippingAddress != null)
             {
-                @Html.Raw(Model.BillingAddress.GetDescriptionHtml())
+                @Html.Raw(Model.ShippingAddress.GetDescriptionHtml())
                 
                 <p>@Model.ShippingAddress.PhoneNumber</p>
             }
