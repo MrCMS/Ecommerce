@@ -176,8 +176,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             p.AddFormattedText("Ship to:", TextFormat.Bold);
             p = frame1.AddParagraph();
             p.AddText(order.BillingAddress.Name);
+            if (!string.IsNullOrEmpty(order.BillingAddress.Company))
+            {
+                p = frame1.AddParagraph();
+                p.AddText(order.BillingAddress.Company);
+            }
             p = frame2.AddParagraph();
             p.AddText(order.ShippingAddress.Name);
+            if (!string.IsNullOrEmpty(order.ShippingAddress.Company))
+            {
+                p = frame2.AddParagraph();
+                p.AddText(order.ShippingAddress.Company);
+            }
             p = frame1.AddParagraph();
             p.AddText(order.BillingAddress.PhoneNumber);
             p = frame2.AddParagraph();
