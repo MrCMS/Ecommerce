@@ -15,7 +15,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         private readonly IDocumentService _documentService;
         private readonly ProductService _productService;
         private readonly SiteSettings _siteSettings;
-        private IUniquePageService _uniquePageService;
+        private readonly IUniquePageService _uniquePageService;
 
         public ProductServiceTests()
         {

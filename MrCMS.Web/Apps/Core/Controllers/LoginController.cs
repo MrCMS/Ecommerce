@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using Elmah;
 using MrCMS.Entities.People;
@@ -42,18 +43,18 @@ namespace MrCMS.Web.Apps.Core.Controllers
         }
 
         [HttpPost]
-        public RedirectResult Post([IoCModelBinder(typeof(LoginModelModelBinder))]LoginModel loginModel)
+        public async Task<RedirectResult> Post([IoCModelBinder(typeof(LoginModelModelBinder))]LoginModel loginModel)
         {
             if (loginModel != null && ModelState.IsValid)
             {
-                var result = _loginService.AuthenticateUser(loginModel);
+                var result = await _loginService.AuthenticateUser(loginModel);
                 if (result.Success)
                     return Redirect(result.RedirectUrl);
                 loginModel.Message = result.Message;
             }
             TempData["login-model"] = loginModel;
 
-            return Redirect("~/" + _uniquePageService.GetUniquePage<LoginPage>().LiveUrlSegment);
+            return _uniquePageService.RedirectTo<LoginPage>();
         }
 
 
@@ -76,7 +77,7 @@ namespace MrCMS.Web.Apps.Core.Controllers
             if (string.IsNullOrEmpty(email))
             {
                 TempData["message"] = "Email not recognized.";
-                return Redirect("~/" + _uniquePageService.GetUniquePage<ForgottenPasswordPage>().LiveUrlSegment);
+                return _uniquePageService.RedirectTo<ForgottenPasswordPage>();
             }
 
             var user = _userService.GetUserByEmail(email);
@@ -92,7 +93,7 @@ namespace MrCMS.Web.Apps.Core.Controllers
                 TempData["message"] = "Email not recognized.";
             }
 
-            return Redirect("~/" + _uniquePageService.GetUniquePage<ForgottenPasswordPage>().LiveUrlSegment);
+            return _uniquePageService.RedirectTo<ForgottenPasswordPage>(); 
         }
 
 
@@ -117,12 +118,12 @@ namespace MrCMS.Web.Apps.Core.Controllers
             try
             {
                 _resetPasswordService.ResetPassword(model);
-                return Redirect("~/" + _uniquePageService.GetUniquePage<LoginPage>().LiveUrlSegment);
+                return _uniquePageService.RedirectTo<LoginPage>(); 
             }
             catch (Exception ex)
             {
                 ErrorSignal.FromCurrentContext().Raise(ex);
-                return Redirect("~/" + _uniquePageService.GetUniquePage<LoginPage>().LiveUrlSegment);
+                return _uniquePageService.RedirectTo<LoginPage>();
             }
         }
     }

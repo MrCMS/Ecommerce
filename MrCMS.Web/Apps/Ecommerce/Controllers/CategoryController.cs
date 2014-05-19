@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;

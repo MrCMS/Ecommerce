@@ -22,6 +22,7 @@ using MrCMS.Settings;
 using MrCMS.Tasks;
 using MrCMS.Website;
 using MrCMS.Website.Binders;
+using MrCMS.Website.Filters;
 using MrCMS.Website.Routing;
 using NHibernate;
 using Ninject;
@@ -54,11 +55,13 @@ namespace MrCMS.Website
             ControllerBuilder.Current.SetControllerFactory(new MrCMSControllerFactory());
 
             GlobalFilters.Filters.Add(new HoneypotFilterAttribute());
+
+            ModelMetadataProviders.Current = new MrCMSMetadataProvider(Kernel);
         }
 
         private static void SetModelBinders()
         {
-            ModelBinders.Binders.DefaultBinder = new MrCMSDefaultModelBinder(Get<ISession>);
+            ModelBinders.Binders.DefaultBinder = new MrCMSDefaultModelBinder(Kernel);
             ModelBinders.Binders.Add(typeof(DateTime), new CultureAwareDateBinder());
             ModelBinders.Binders.Add(typeof(DateTime?), new NullableCultureAwareDateBinder());
         }
@@ -87,49 +90,54 @@ namespace MrCMS.Website
             if (CurrentRequestData.DatabaseIsInstalled)
             {
                 BeginRequest += (sender, args) =>
-                {
-                    if (!IsFileRequest(Request.Url))
                     {
-                        CurrentRequestData.ErrorSignal = ErrorSignal.FromCurrentContext();
-                        CurrentRequestData.CurrentSite = Get<ICurrentSiteLocator>().GetCurrentSite();
-                        CurrentRequestData.SiteSettings = Get<SiteSettings>();
-                        CurrentRequestData.HomePage = Get<IDocumentService>().GetHomePage();
-                        Thread.CurrentThread.CurrentCulture = CurrentRequestData.SiteSettings.CultureInfo;
-                        Thread.CurrentThread.CurrentUICulture = CurrentRequestData.SiteSettings.CultureInfo;
-                    }
-                };
-                AuthenticateRequest += (sender, args) =>
-                {
-                    if (!IsFileRequest(Request.Url))
-                    {
-                        if (CurrentRequestData.CurrentContext.User != null)
+                        if (!IsFileRequest(Request.Url))
                         {
-                            var currentUser = Get<IUserService>().GetCurrentUser(CurrentRequestData.CurrentContext);
-                            if (currentUser == null || !currentUser.IsActive)
-                                Get<IAuthorisationService>().Logout();
-                            else
-                                CurrentRequestData.CurrentUser = currentUser;
+                            CurrentRequestData.ErrorSignal = ErrorSignal.FromCurrentContext();
+                            CurrentRequestData.CurrentSite = Get<ICurrentSiteLocator>().GetCurrentSite();
+                            CurrentRequestData.SiteSettings = Get<SiteSettings>();
+                            CurrentRequestData.HomePage = Get<IDocumentService>().GetHomePage();
+                            Thread.CurrentThread.CurrentCulture = CurrentRequestData.SiteSettings.CultureInfo;
+                            Thread.CurrentThread.CurrentUICulture = CurrentRequestData.SiteSettings.CultureInfo;
                         }
-                    }
-                };
-                EndRequest += (sender, args) =>
-                {
-                    if (CurrentRequestData.QueuedTasks.Any())
+                    };
+                AuthenticateRequest += (sender, args) =>
                     {
-                        Kernel.Get<ISession>()
-                               .Transact(session =>
-                               {
-                                   foreach (var queuedTask in CurrentRequestData.QueuedTasks)
-                                       session.Save(queuedTask);
-                               });
-                    }
-                };
+                        if (!IsFileRequest(Request.Url))
+                        {
+                            if (CurrentRequestData.CurrentContext.User != null)
+                            {
+                                var currentUser = Get<IUserService>().GetCurrentUser(CurrentRequestData.CurrentContext);
+                                if (!Request.Url.AbsolutePath.StartsWith("/signalr/") && currentUser == null || !currentUser.IsActive)
+                                    Get<IAuthorisationService>().Logout();
+                                else
+                                    CurrentRequestData.CurrentUser = currentUser;
+                            }
+                        }
+                    };
+                EndRequest += (sender, args) =>
+                    {
+                        if (CurrentRequestData.QueuedTasks.Any())
+                        {
+                            Kernel.Get<ISession>()
+                                  .Transact(session =>
+                                      {
+                                          foreach (var queuedTask in CurrentRequestData.QueuedTasks)
+                                              session.Save(queuedTask);
+                                      });
+                        }
+                        foreach (var action in CurrentRequestData.OnEndRequest)
+                            action(Kernel);
+                    };
             }
-            EndRequest += (sender, args) =>
+            else
             {
-                foreach (var action in CurrentRequestData.OnEndRequest)
-                    action(Kernel);
-            };
+                EndRequest += (sender, args) =>
+                    {
+                        foreach (var action in CurrentRequestData.OnEndRequest)
+                            action(Kernel);
+                    };
+            }
         }
 
         public abstract string RootNamespace { get; }
@@ -238,22 +246,7 @@ namespace MrCMS.Website
             return Kernel.Get(type);
         }
 
-        public const string AssemblyVersion = "0.4.0.0";
-        public const string AssemblyFileVersion = "0.4.0.0";
-    }
-
-    public class HoneypotFilterAttribute : ActionFilterAttribute
-    {
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            if (CurrentRequestData.DatabaseIsInstalled)
-            {
-                if (!string.IsNullOrWhiteSpace(
-                        filterContext.HttpContext.Request[MrCMSApplication.Get<SiteSettings>().HoneypotFieldName]))
-                {
-                    filterContext.Result = new EmptyResult();
-                }
-            }
-        }
+        public const string AssemblyVersion = "0.4.1.0";
+        public const string AssemblyFileVersion = "0.4.1.0";
     }
 }

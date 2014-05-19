@@ -21,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
             _cartBuilder = cartBuilder;
         }
 
-        public void UserLoggedIn(User user, Guid previousSession)
+        private void UserLoggedIn(User user, Guid previousSession)
         {
             var itemsToCopy = _session.QueryOver<CartItem>().Where(item => item.UserGuid == previousSession).List();
 
@@ -48,8 +48,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
                         session.SaveOrUpdate(existingItem);
                         session.Delete(item);
                     }
-                    
+
                 });
+        }
+
+        public void Execute(UserLoggedInEventArgs args)
+        {
+            UserLoggedIn(args.User, args.PreviousSession);
         }
     }
 }

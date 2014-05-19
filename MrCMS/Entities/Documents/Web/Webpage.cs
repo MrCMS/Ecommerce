@@ -4,11 +4,9 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 using System.Xml;
 using MrCMS.Entities.Documents.Web.FormProperties;
 using MrCMS.Entities.People;
-using MrCMS.Models;
 using MrCMS.Paging;
 using MrCMS.Services;
 using MrCMS.Website;
@@ -16,6 +14,7 @@ using MrCMS.Helpers;
 using System.Linq;
 using NHibernate;
 using NHibernate.Criterion;
+using Ninject;
 
 namespace MrCMS.Entities.Documents.Web
 {
@@ -25,6 +24,7 @@ namespace MrCMS.Entities.Documents.Web
         {
             InheritFrontEndRolesFromParent = true;
             Urls = new List<UrlHistory>();
+            Widgets = new List<Widget.Widget>();
         }
         private Layout.Layout _layout;
 
@@ -33,6 +33,10 @@ namespace MrCMS.Entities.Documents.Web
         [RegularExpression("[a-zA-Z0-9\\-\\.\\~\\/_\\\\]+$", ErrorMessage = "Url must alphanumeric characters only with dashes or underscore for spaces.")]
         [DisplayName("Url Segment")]
         public override string UrlSegment { get; set; }
+
+        [StringLength(250, ErrorMessage = "SEO Target Phrase cannot be longer than 250 characters.")]
+        [DisplayName("SEO Target Phrase")]
+        public virtual string SEOTargetPhrase { get; set; }
 
         [DisplayName("Meta Title")]
         [StringLength(250, ErrorMessage = "Meta title cannot be longer than 250 characters.")]
@@ -122,7 +126,7 @@ namespace MrCMS.Entities.Documents.Web
 
         [DisplayName("Block Anonymous Access")]
         public virtual bool BlockAnonymousAccess { get; set; }
-        
+
         //forms
         [DisplayName("Form Submitted Message")]
         [AllowHtml]
@@ -145,7 +149,7 @@ namespace MrCMS.Entities.Documents.Web
         [StringLength(100)]
         [DisplayName("Submit button custom text")]
         public virtual string SubmitButtonText { get; set; }
-        
+
 
         [DisplayName("Same as parent")]
         public virtual bool InheritFrontEndRolesFromParent { get; set; }
@@ -169,18 +173,8 @@ namespace MrCMS.Entities.Documents.Web
                 return string.Format("{0}{1}/{2}", scheme, authority, LiveUrlSegment);
             }
         }
-        
-        public virtual IList<UrlHistory> Urls { get; set; }
 
-        public virtual IEnumerable<Webpage> PublishedChildren
-        {
-            get
-            {
-                return
-                    Children.OfType<Webpage>().Where(document => document.Published)
-                            .OrderBy(webpage => webpage.DisplayOrder);
-            }
-        }
+        public virtual IList<UrlHistory> Urls { get; set; }
 
         public virtual bool IsAllowed(User currentUser)
         {
@@ -224,8 +218,8 @@ namespace MrCMS.Entities.Documents.Web
         {
             return this.GetMetadata().ValidChildrenTypes.Any();
         }
-        
-        public override void CustomBinding(ControllerContext controllerContext, ISession session)
+
+        public override void CustomBinding(ControllerContext controllerContext, IKernel kernel)
         {
         }
 
