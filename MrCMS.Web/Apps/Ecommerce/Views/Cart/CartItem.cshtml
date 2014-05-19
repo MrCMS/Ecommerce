@@ -35,6 +35,10 @@
     </div>
     <div class="span2 text-right padding-right-5">
         <div class="total">@Model.Price.ToCurrencyFormat()</div>
+        @if (Model.HasDiscount)
+        {
+            <span>(includes @Model.DiscountAmount.ToCurrencyFormat() discount)</span>
+        }
         <a data-id="@Model.Id" data-action="delete-cart-item" href="#" class="btn btn-mini btn-danger">Remove</a>
     </div>
 </div>
