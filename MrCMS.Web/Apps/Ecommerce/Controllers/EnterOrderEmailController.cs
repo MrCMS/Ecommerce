@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Models;
@@ -52,14 +53,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         }
 
         [HttpPost]
-        public ActionResult SetOrderEmailAndLogin(EmailAndLoginModel model)
+        public async Task<RedirectResult> SetOrderEmailAndLogin(EmailAndLoginModel model)
         {
             if (model.HavePassword)
             {
                 var user = _userService.GetUserByEmail(model.OrderEmail.Trim());
                 if (user != null)
                 {
-                    var authenticated = _loginService.AuthenticateUser(new LoginModel
+                    var authenticated =await _loginService.AuthenticateUser(new LoginModel
                                                        {
                                                            Email = user.Email,
                                                            Password = model.Password

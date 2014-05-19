@@ -5,6 +5,7 @@ using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
@@ -127,32 +128,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         {
             _cartManager.EmptyBasket();
             return Json(true);
-        }
-    }
-
-    public class UpdateBasketModelBinder : MrCMSDefaultModelBinder
-    {
-        public UpdateBasketModelBinder(ISession session)
-            : base(() => session)
-        {
-        }
-
-        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
-        {
-            var cartUpdateValues = new List<CartUpdateValue>();
-
-            var splitQuantities = (controllerContext.HttpContext.Request["quantities"] ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-
-            splitQuantities.ForEach(s =>
-                                        {
-                                            var strings = s.Split(':');
-                                            cartUpdateValues.Add(new CartUpdateValue
-                                            {
-                                                ItemId = Convert.ToInt32(strings[0]),
-                                                Quantity = Convert.ToInt32(strings[1])
-                                            });
-                                        });
-            return cartUpdateValues;
         }
     }
 }

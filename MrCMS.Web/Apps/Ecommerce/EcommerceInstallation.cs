@@ -27,8 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var configurationProvider = new ConfigurationProvider(new SettingService(session, site), site);
             var siteSettings = configurationProvider.GetSiteSettings<SiteSettings>();
             var ecommerceSettings = configurationProvider.GetSiteSettings<EcommerceSettings>();
-            var eventService = MrCMSApplication.Get<IDocumentEventService>();
-            var documentService = new DocumentService(session, eventService, siteSettings, site);
+            var documentService = new DocumentService(session, siteSettings, site);
             var currencyService = new CurrencyService(session);
             var widgetService = new WidgetService(session);
             var defaultMediaCategory = documentService.GetDocumentByUrl<MediaCategory>("default");

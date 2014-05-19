@@ -122,8 +122,10 @@ namespace MrCMS.Website
                 .Where(
                     q =>
                         q.IsPublic &&
-                        (typeof(ActionResult).IsAssignableFrom(q.ReturnType) ||
-                         typeof(Task<ActionResult>).IsAssignableFrom(q.ReturnType)));
+                        (typeof (ActionResult).IsAssignableFrom(q.ReturnType) ||
+                         (q.ReturnType.IsGenericType && q.ReturnType.GetGenericTypeDefinition() == typeof (Task<>) &&
+                          q.ReturnType.GetGenericArguments().Count() == 1 &&
+                          typeof (ActionResult).IsAssignableFrom(q.ReturnType.GetGenericArguments()[0]))));
         }
 
         public static List<ActionMethodInfo<T>> GetActionMethodsWithAttribute<T>() where T : Attribute
@@ -134,12 +136,12 @@ namespace MrCMS.Website
                     controllerDescriptor.GetCanonicalActions()
                         .Where(actionDescriptor => actionDescriptor.GetCustomAttributes(typeof(T), true).Any()));
             return descriptors.Select(descriptor => new ActionMethodInfo<T>
-                                                    {
-                                                        Descriptor = descriptor,
-                                                        Attribute =
-                                                            descriptor.GetCustomAttributes(typeof(T), true)
-                                                            .FirstOrDefault() as T
-                                                    }).ToList();
+            {
+                Descriptor = descriptor,
+                Attribute =
+                    descriptor.GetCustomAttributes(typeof(T), true)
+                    .FirstOrDefault() as T
+            }).ToList();
 
 
         }

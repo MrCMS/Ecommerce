@@ -1,0 +1,26 @@
+using System;
+using System.Web.Mvc;
+using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.Payment.SagePay;
+using MrCMS.Website.Binders;
+using NHibernate;
+using Ninject;
+
+namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders
+{
+    internal class SagePaySettingsModelBinder : MrCMSDefaultModelBinder
+    {
+        private readonly IConfigurationProvider _configurationProvider;
+
+
+        public SagePaySettingsModelBinder(IKernel kernel, IConfigurationProvider configurationProvider) : base(kernel)
+        {
+            _configurationProvider = configurationProvider;
+        }
+
+        protected override object CreateModel(ControllerContext controllerContext, ModelBindingContext bindingContext, Type modelType)
+        {
+            return _configurationProvider.GetSiteSettings<SagePaySettings>();
+        }
+    }
+}

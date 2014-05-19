@@ -184,11 +184,11 @@ namespace MrCMS.Indexing.Management
         {
             if (arg is T)
                 yield return new LuceneAction
-                {
-                    Entity = arg,
-                    IndexDefinition = this,
-                    Operation = operation,
-                };
+                             {
+                                 Entity = arg,
+                                 IndexDefinition = this,
+                                 Operation = operation,
+                             };
         }
     }
 }

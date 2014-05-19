@@ -1,6 +1,6 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
@@ -30,21 +30,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _configurationProvider.SaveSettings(settings);
             return RedirectToAction("Index");
-        }
-
-        private class PaymentSettingsModelBinder : MrCMSDefaultModelBinder
-        {
-            private readonly IConfigurationProvider _configurationProvider;
-
-            public PaymentSettingsModelBinder(ISession session, IConfigurationProvider configurationProvider)
-                : base(() => session)
-            {
-                _configurationProvider = configurationProvider;
-            }
-            protected override object CreateModel(ControllerContext controllerContext, ModelBindingContext bindingContext, Type modelType)
-            {
-                return _configurationProvider.GetSiteSettings<PaymentSettings>();
-            }
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Async;
 using System.Web.Routing;
 using System.Web.SessionState;
 using MrCMS.Apps;
@@ -50,7 +51,9 @@ namespace MrCMS.Website.Routing
 
                 CurrentRequestData.CurrentPage = webpage;
                 var controller = _controllerManager.GetController(RequestContext, webpage, context.Request.HttpMethod);
-                (controller as IController).Execute(new RequestContext(context, controller.RouteData));
+
+                var asyncController = (controller as IAsyncController);
+                asyncController.BeginExecute(new RequestContext(context, controller.RouteData), asyncController.EndExecute, null);
             }
             else
             {
@@ -123,7 +126,8 @@ namespace MrCMS.Website.Routing
             {
                 if (_seoSettings.EnableHtmlMinification)
                     context.Response.Filter = new WhitespaceFilter(context.Response.Filter);
-                (controller as IController).Execute(RequestContext);
+                var asyncController = (controller as IAsyncController);
+                asyncController.BeginExecute(RequestContext, asyncController.EndExecute, null);
             }
             catch (Exception exception)
             {

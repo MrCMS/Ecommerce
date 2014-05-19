@@ -1,10 +1,9 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
-using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -24,25 +23,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public RedirectToRouteResult Save([IoCModelBinder(typeof(PayPalExpressCheckoutSettingsModelBinder))] PayPalExpressCheckoutSettings settings)
+        public RedirectToRouteResult Save(
+            [IoCModelBinder(typeof (PayPalExpressCheckoutSettingsModelBinder))] PayPalExpressCheckoutSettings settings)
         {
             _configurationProvider.SaveSettings(settings);
             return RedirectToAction("Index");
-        }
-
-        private class PayPalExpressCheckoutSettingsModelBinder : MrCMSDefaultModelBinder
-        {
-            private readonly IConfigurationProvider _configurationProvider;
-
-            public PayPalExpressCheckoutSettingsModelBinder(ISession session, IConfigurationProvider configurationProvider)
-                : base(() => session)
-            {
-                _configurationProvider = configurationProvider;
-            }
-            protected override object CreateModel(ControllerContext controllerContext, ModelBindingContext bindingContext, Type modelType)
-            {
-                return _configurationProvider.GetSiteSettings<PayPalExpressCheckoutSettings>();
-            }
         }
     }
 }

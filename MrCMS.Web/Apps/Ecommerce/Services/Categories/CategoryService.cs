@@ -32,7 +32,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
             _uniquePageService = uniquePageService;
         }
 
-        public CategoryPagedList Search(string queryTerm = null, int page = 1,int pageSize=10)
+        public CategoryPagedList Search(string queryTerm = null, int page = 1, int pageSize = 10)
         {
             IPagedList<Category> pagedList;
 
@@ -70,7 +70,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
                                                           });
         }
 
-        public IPagedList<Category> GetCategories(Product product, string query, int page=1,int pageSize=10)
+        public IPagedList<Category> GetCategories(Product product, string query, int page = 1, int pageSize = 10)
         {
             var queryOver = QueryOver.Of<Category>();
 
@@ -97,7 +97,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
         public List<Category> GetRootCategories()
         {
             var categoryContainer = _uniquePageService.GetUniquePage<CategoryContainer>();
-            return categoryContainer.PublishedChildren.OfType<Category>().ToList();
+            return categoryContainer == null
+                ? new List<Category>()
+                : _session.QueryOver<Category>()
+                    .Where(category => category.Parent.Id == categoryContainer.Id)
+                    .Cacheable()
+                    .List()
+                    .ToList();
         }
 
         public CategorySearchModel GetCategoriesForSearch(ProductSearchQuery query)
@@ -107,7 +113,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
                 return GetRootCategoryModel(availableCategories);
 
             var category = _session.Get<Category>(query.CategoryId);
-            var categories = category.PublishedChildren.OfType<Category>().Where(cat => availableCategories.Contains(cat.Id)).ToList();
+            var categories =
+                _session.QueryOver<Category>()
+                    .Where(cat => category.Parent.Id == category.Id && availableCategories.Contains(cat.Id))
+                    .Cacheable()
+                    .List().ToList();
             var hierarchy = category.ActivePages.OfType<Category>().Where(cat => availableCategories.Contains(cat.Id)).ToList();
             hierarchy.Reverse();
             return new CategorySearchModel()
@@ -119,12 +129,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
 
         private CategorySearchModel GetRootCategoryModel(List<int> availableCategories)
         {
-            var categoryContainer = _uniquePageService.GetUniquePage<CategoryContainer>();
-            var categories = categoryContainer.PublishedChildren.OfType<Category>().Where(cat => availableCategories.Contains(cat.Id)).ToList();
-            return new CategorySearchModel()
-                       {
-                           Children = categories
-                       };
+            var categories = GetRootCategories().Where(cat => availableCategories.Contains(cat.Id)).ToList();
+            return new CategorySearchModel
+                   {
+                       Children = categories
+                   };
         }
 
         public CategoryContainer GetSiteCategoryContainer()

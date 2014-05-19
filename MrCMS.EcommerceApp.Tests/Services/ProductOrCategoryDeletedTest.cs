@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FakeItEasy;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MrCMS.EcommerceApp.Tests.Services.ImportExport.ImportProductsServiceTests;
 using MrCMS.Services;
 using MrCMS.Settings;
-using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 
@@ -18,14 +11,12 @@ namespace MrCMS.EcommerceApp.Tests.Services
     {
         private readonly SiteSettings _siteSettings;
         private readonly IDocumentService _documentService;
-        private readonly IDocumentEventService _documentEventService;
         private readonly ProductService _productService;
 
         public ProductOrCategoryDeletedTest()
         {
-            _documentEventService = A.Fake<IDocumentEventService>();
             _siteSettings = new SiteSettings();
-            _documentService = new DocumentService(Session, _documentEventService, _siteSettings, CurrentSite);
+            _documentService = new DocumentService(Session, _siteSettings, CurrentSite);
             _productService = new ProductService(Session, _documentService, _siteSettings, null);
 
         }

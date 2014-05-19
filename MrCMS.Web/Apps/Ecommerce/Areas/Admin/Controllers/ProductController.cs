@@ -1,6 +1,7 @@
 using System.Web.Mvc;
 using MrCMS.Services;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
@@ -479,23 +480,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _productService.SetVariantOrders(product, items);
             return RedirectToAction("Edit", "Webpage", new { id = product.Id });
-        }
-    }
-
-    public class ProductOptionModelBinder : MrCMSDefaultModelBinder
-    {
-        public ProductOptionModelBinder(ISession session)
-            : base(() => session)
-        {
-
-        }
-
-        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
-        {
-            int id;
-            return int.TryParse(GetValueFromContext(controllerContext, "productOptionId"), out id)
-                       ? Session.Get<ProductOption>(id)
-                       : null;
         }
     }
 }
