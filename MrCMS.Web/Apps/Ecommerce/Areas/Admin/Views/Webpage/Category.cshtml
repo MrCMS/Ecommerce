@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Category
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Pages.Category
 <div class="row-fluid">
     <div class="span3">
         @Html.LabelFor(webpage => webpage.FeatureImage)
@@ -6,9 +7,12 @@
     </div>
     <div class="span9">
         @Html.LabelFor(category => category.Abstract)
-        @Html.TextAreaFor(category => category.Abstract, new { rows=4, @class="span12"})
-        @Html.ValidationMessageFor(category=>category.Abstract)
+        @Html.TextAreaFor(category => category.Abstract, new { rows = 4, @class = "span12" })
+        @Html.ValidationMessageFor(category => category.Abstract)
     </div>
 </div>
 @Html.LabelFor(webpage => webpage.DefaultProductSearchSort)
 @Html.DropDownListFor(webpage => webpage.DefaultProductSearchSort, ViewData["product-search-sort-options"] as IEnumerable<SelectListItem>)
+
+@{ Html.RenderAction("HiddenSpecifications", "Category", new { id = Model.Id });}
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/edit-category.js"); }

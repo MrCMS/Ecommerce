@@ -17,17 +17,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
     public class CategoryService : ICategoryService
     {
         private readonly ISession _session;
-        private readonly IDocumentService _documentService;
         private readonly IProductSearchService _productSearchService;
         private readonly IUniquePageService _uniquePageService;
         private readonly Site _currentSite;
 
-        public CategoryService(ISession session, Site currentSite, IDocumentService documentService,
+        public CategoryService(ISession session, Site currentSite,
             IProductSearchService productSearchService, IUniquePageService uniquePageService)
         {
             _session = session;
             _currentSite = currentSite;
-            _documentService = documentService;
             _productSearchService = productSearchService;
             _uniquePageService = uniquePageService;
         }
@@ -115,7 +113,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
             var category = _session.Get<Category>(query.CategoryId);
             var categories =
                 _session.QueryOver<Category>()
-                    .Where(cat => category.Parent.Id == category.Id && cat.Id.IsIn(availableCategories))
+                    .Where(cat => cat.Parent.Id == category.Id && cat.Id.IsIn(availableCategories))
                     .Cacheable()
                     .List().ToList();
             var hierarchy = category.ActivePages.OfType<Category>().Where(cat => availableCategories.Contains(cat.Id)).ToList();

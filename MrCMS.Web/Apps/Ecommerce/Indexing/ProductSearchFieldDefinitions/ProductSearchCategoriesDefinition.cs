@@ -32,7 +32,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
         {
             var list = new List<Category>();
             list.AddRange(categories.SelectMany(GetCategoryHierarchy));
-            return list.Distinct().Select(category => category.Id.ToString());
+            var enumerable = list.Distinct().Select(category => category.Id.ToString()).ToList();
+            return enumerable;
         }
 
         private static IEnumerable<Category> GetCategoryHierarchy(Category category)

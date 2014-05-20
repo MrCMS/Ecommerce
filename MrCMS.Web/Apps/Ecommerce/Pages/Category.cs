@@ -4,10 +4,12 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using System.Xml;
+using Iesi.Collections.Generic;
 using MrCMS.Entities.Documents.Web;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Core.Pages;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using NHibernate;
@@ -19,6 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         public Category()
         {
             Products = new List<Product>();
+            HiddenSearchSpecifications = new HashedSet<ProductSpecificationAttribute>();
         }
 
         private string _nestedName;
@@ -36,6 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         }
 
         public virtual IList<Product> Products { get; set; }
+        public virtual Iesi.Collections.Generic.ISet<ProductSpecificationAttribute> HiddenSearchSpecifications { get; set; }
         public virtual string ContainerUrl
         {
             get { return (Parent as Webpage).LiveUrlSegment; }

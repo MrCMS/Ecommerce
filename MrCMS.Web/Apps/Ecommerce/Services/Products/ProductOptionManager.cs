@@ -293,6 +293,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                     .OrderBy(x => x.DisplayOrder)
                                                     .Distinct()
                                                     .ToList();
+            if (query.CategoryId.HasValue)
+            {
+                var category = _session.Get<Category>(query.CategoryId.Value);
+                if (category != null)
+                {
+                    productSpecificationAttributes.RemoveAll(
+                        attribute => category.HiddenSearchSpecifications.Contains(attribute));
+                }
+            }
 
             return productSpecificationAttributes.Select(attribute => new ProductOptionModel
                                                                           {

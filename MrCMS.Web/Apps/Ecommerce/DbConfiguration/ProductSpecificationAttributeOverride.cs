@@ -10,6 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
         {
             mapping.Map(x => x.Name).Index("IX_ProductSpecificationAttribute_Name");
             mapping.Map(x => x.HideInSearch).Not.Nullable().Default("0");
+            mapping.HasManyToMany(attribute => attribute.HiddenInCategories).Table("Ecommerce_CategoryHiddenSearchSpecifications").Inverse();
         }
     }
 }
