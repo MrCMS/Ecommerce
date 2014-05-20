@@ -33,7 +33,7 @@ namespace MrCMS.EcommerceApp.Tests
 
     public abstract class MrCMSTest : IDisposable
     {
-        private readonly IEventContext _eventContext = A.Fake<IEventContext>();
+        protected readonly IEventContext _eventContext = A.Fake<IEventContext>();
         private readonly MockingKernel _kernel;
 
         protected MrCMSTest()

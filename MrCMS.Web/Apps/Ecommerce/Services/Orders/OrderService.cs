@@ -19,14 +19,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
     public class OrderService : IOrderService
     {
         private readonly ISession _session;
-        private readonly IOrderEventService _orderEventService;
         private readonly IOrderNoteService _orderNoteService;
         private readonly IFileService _fileService;
 
-        public OrderService(ISession session, IOrderEventService orderEventService, IOrderNoteService orderNoteService, IFileService fileService)
+        public OrderService(ISession session, IOrderNoteService orderNoteService, IFileService fileService)
         {
             _session = session;
-            _orderEventService = orderEventService;
             _orderNoteService = orderNoteService;
             _fileService = fileService;
         }
@@ -117,9 +115,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                         if (postCreationActions != null)
                                                             postCreationActions(order);
 
-                                                            // Similarly, we check again just before we save - we should be fine as we are inside of a transaction
-                                                            // but we will err on the side of catching duplicates
-                                                        existingOrders = _session.QueryOver<Order>().Where(o=> o.Guid == cartModel.CartGuid).List();
+                                                        // Similarly, we check again just before we save - we should be fine as we are inside of a transaction
+                                                        // but we will err on the side of catching duplicates
+                                                        existingOrders = _session.QueryOver<Order>().Where(o => o.Guid == cartModel.CartGuid).List();
                                                         if (existingOrders.Any())
                                                         {
                                                             return existingOrders.First();
@@ -130,7 +128,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                         return order;
                                                     });
 
-            _orderEventService.OrderPlaced(placedOrder);
+            EventContext.Instance.Publish<IOnOrderPlaced, OrderPlacedArgs>(new OrderPlacedArgs { Order = placedOrder });
             return placedOrder;
         }
 
@@ -180,7 +178,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
             order.IsCancelled = true;
             _session.Transact(session => session.Update(order));
-            _orderEventService.OrderCancelled(order);
+            EventContext.Instance.Publish<IOnOrderCancelled, OrderCancelledArgs>(new OrderCancelledArgs { Order = order });
         }
 
         public void MarkAsShipped(Order order)
@@ -191,7 +189,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             order.ShippingDate = CurrentRequestData.Now;
             order.ShippingStatus = ShippingStatus.Shipped;
             _session.Transact(session => session.Update(order));
-            _orderEventService.OrderShipped(order);
+            EventContext.Instance.Publish<IOnOrderShipped, OrderShippedArgs>(new OrderShippedArgs { Order = order });
         }
 
         public void MarkAsPaid(Order order)
@@ -202,7 +200,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             order.PaidDate = CurrentRequestData.Now;
             order.PaymentStatus = PaymentStatus.Paid;
             _session.Transact(session => session.Update(order));
-            _orderEventService.OrderPaid(order);
+            EventContext.Instance.Publish<IOnOrderPaid, OrderPaidArgs>(new OrderPaidArgs { Order = order });
         }
 
         public void MarkAsVoided(Order order)

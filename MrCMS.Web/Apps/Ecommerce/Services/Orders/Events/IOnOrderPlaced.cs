@@ -1,9 +1,14 @@
-﻿using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+﻿using MrCMS.Events;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.Events
 {
-    public interface IOnOrderPlaced : IOrderEvent
+    public interface IOnOrderPlaced : IEvent<OrderPlacedArgs>
     {
-        void OnOrderPlaced(Order order);
+    }
+
+    public class OrderPlacedArgs
+    {
+        public Order Order { get; set; }
     }
 }
