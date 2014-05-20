@@ -834,9 +834,6 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderPartiallyRefunded.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderPlaced.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOnOrderShipped.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOrderEvent.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\Events\IOrderEventService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\Events\OrderEventService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\SendOrderCancelledEmailToCustomer.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\SendOrderFullyRefundedEmailToCustomer.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\SendOrderPartiallyRefundedEmailToCustomer.cs" />

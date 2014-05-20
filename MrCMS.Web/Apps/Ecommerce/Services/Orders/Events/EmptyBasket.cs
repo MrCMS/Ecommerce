@@ -12,8 +12,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.Events
             _cartManager = cartManager;
         }
 
-        public int Order { get { return 10; } }
-        public void OnOrderPlaced(Order order)
+        public void Execute(OrderPlacedArgs args)
         {
             _cartManager.EmptyBasket();
         }

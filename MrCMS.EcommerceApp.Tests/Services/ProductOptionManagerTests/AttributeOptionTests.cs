@@ -71,7 +71,8 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             _productOptionManager.UpdateAttributeOption(option);
 
             Session.Evict(option);
-            Session.Get<ProductOption>(1).Name.Should().Be("Test");
+            var name = Session.Get<ProductOption>(1).Name;
+            name.Should().Be("Test", "because {0} is wrong", name);
         }
 
         [Fact]
@@ -84,7 +85,8 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             _productOptionManager.UpdateAttributeOption(option);
 
             Session.Evict(option);
-            Session.Get<ProductOption>(1).Name.Should().Be("Test");
+            var name = Session.Get<ProductOption>(1).Name;
+            name.Should().Be("Test", "because {0} is wrong", name);
         }
 
         [Fact]

@@ -14,17 +14,15 @@ namespace MrCMS.EcommerceApp.Tests.Services
     {
         private readonly ISession _session;
         private readonly OrderService _orderService;
-        private readonly IOrderEventService _orderEventService;
         private readonly IFileService _fileService;
         private readonly IOrderNoteService _orderNoteService;
 
         public OrderServiceTests()
         {
             _session = A.Fake<ISession>();
-            _orderEventService = A.Fake<IOrderEventService>();
             _orderNoteService = A.Fake<IOrderNoteService>();
             _fileService = A.Fake<IFileService>();
-            _orderService = new OrderService(_session, _orderEventService, _orderNoteService, _fileService);
+            _orderService = new OrderService(_session, _orderNoteService, _fileService);
         }
 
         //TODO PlaceOrder
@@ -36,7 +34,10 @@ namespace MrCMS.EcommerceApp.Tests.Services
 
             _orderService.Cancel(order);
 
-            A.CallTo(() => _orderEventService.OrderCancelled(order)).MustHaveHappened();
+            A.CallTo(
+                () =>
+                    _eventContext.Publish<IOnOrderCancelled, OrderCancelledArgs>(
+                        A<OrderCancelledArgs>.That.Matches(args => args.Order == order))).MustHaveHappened();
         }
 
         [Fact]
@@ -46,7 +47,10 @@ namespace MrCMS.EcommerceApp.Tests.Services
 
             _orderService.MarkAsShipped(order);
 
-            A.CallTo(() => _orderEventService.OrderShipped(order)).MustHaveHappened();
+            A.CallTo(
+                () =>
+                    _eventContext.Publish<IOnOrderShipped, OrderShippedArgs>(
+                        A<OrderShippedArgs>.That.Matches(args => args.Order == order))).MustHaveHappened();
         }
     }
 }
