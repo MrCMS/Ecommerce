@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -15,7 +17,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void AddSpecificationAttribute(ProductSpecificationAttribute option);
         void UpdateSpecificationAttribute(ProductSpecificationAttribute option);
         void DeleteSpecificationAttribute(ProductSpecificationAttribute option);
-        bool AnyExistingSpecificationAttributesWithName(string name);
+        bool AnyExistingSpecificationAttributesWithName(UniqueAttributeNameModel model);
         void UpdateSpecificationAttributeDisplayOrder(IList<SortItem> options);
 
         IList<ProductSpecificationAttributeOption> ListSpecificationAttributeOptions(int id);
