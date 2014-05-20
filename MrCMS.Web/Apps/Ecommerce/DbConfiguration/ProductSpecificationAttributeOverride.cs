@@ -9,6 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
         public void Override(AutoMapping<ProductSpecificationAttribute> mapping)
         {
             mapping.Map(x => x.Name).Index("IX_ProductSpecificationAttribute_Name");
+            mapping.Map(x => x.HideInSearch).Not.Nullable().Default("0");
         }
     }
 }

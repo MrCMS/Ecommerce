@@ -115,7 +115,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
             var category = _session.Get<Category>(query.CategoryId);
             var categories =
                 _session.QueryOver<Category>()
-                    .Where(cat => category.Parent.Id == category.Id && availableCategories.Contains(cat.Id))
+                    .Where(cat => category.Parent.Id == category.Id && cat.Id.IsIn(availableCategories))
                     .Cacheable()
                     .List().ToList();
             var hierarchy = category.ActivePages.OfType<Category>().Where(cat => availableCategories.Contains(cat.Id)).ToList();

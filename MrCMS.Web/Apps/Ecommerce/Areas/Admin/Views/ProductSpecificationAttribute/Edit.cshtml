@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationAttribute
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationAttribute
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 @using (Html.BeginForm("Edit", "ProductSpecificationAttribute", FormMethod.Post))
 {
@@ -10,10 +11,12 @@
             </span>
         </legend>
 
+        @Html.HiddenFor(attribute => attribute.Id)
         @Html.LabelFor(x => x.Name)
         @Html.TextBoxFor(x => x.Name)
         <br />
         @Html.ValidationMessageFor(x => x.Name)
 
+        @Html.InlineCheckboxFor(attribute => attribute.HideInSearch)
     </fieldset>
 }
