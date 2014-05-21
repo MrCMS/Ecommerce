@@ -2,6 +2,7 @@ using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.Currencies;
 using MrCMS.Web.Apps.Ecommerce.Services.Currencies;
 using MrCMS.Website.Controllers;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -26,6 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Add(Currency currency)
         {
             _currencyService.Add(currency);
@@ -41,6 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Edit")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Edit(Currency currency)
         {
             _currencyService.Update(currency);
@@ -56,6 +59,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Delete")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Delete(Currency currency)
         {
             _currencyService.Delete(currency);

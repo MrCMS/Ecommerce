@@ -5,6 +5,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Website.Controllers;
 using System.Collections.Generic;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -34,6 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Add")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Add_POST(Country country)
         {
             _countryService.AddCountry(country);
@@ -48,6 +50,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Edit")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Edit_POST(Country country)
         {
             _countryService.Save(country);
@@ -63,6 +66,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Delete")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Delete_POST(Country country)
         {
             _countryService.Delete(country);
@@ -88,6 +92,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public ActionResult Sort(List<SortItem> items)
         {
             if (items != null && items.Count > 0)

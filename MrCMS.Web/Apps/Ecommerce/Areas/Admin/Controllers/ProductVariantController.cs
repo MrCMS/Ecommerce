@@ -11,6 +11,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Website;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
+using MrCMS.Website.Filters;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
@@ -47,6 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Add")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public ActionResult Add_POST([IoCModelBinder(typeof(ProductVariantModelBinder))]ProductVariant productVariant)
         {
             if (ModelState.IsValid)
@@ -69,6 +71,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Edit")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public ActionResult Edit_POST([IoCModelBinder(typeof(ProductVariantModelBinder))]ProductVariant productVariant)
         {
             if (ModelState.IsValid)
@@ -87,6 +90,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Delete")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Delete_POST(ProductVariant productVariant)
         {
             _productVariantService.Delete(productVariant);

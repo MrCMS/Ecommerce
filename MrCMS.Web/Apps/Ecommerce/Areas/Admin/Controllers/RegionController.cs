@@ -1,9 +1,8 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Website.Controllers;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -24,6 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Add")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Add_POST(Region region)
         {
             _regionService.Add(region);
@@ -39,6 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Edit")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Edit_POST(Region region)
         {
             _regionService.Update(region);
@@ -53,6 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Delete")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Delete_POST(Region region)
         {
             _regionService.Delete(region);

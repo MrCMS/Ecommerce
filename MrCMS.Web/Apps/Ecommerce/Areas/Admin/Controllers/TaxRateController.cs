@@ -6,6 +6,8 @@ using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website.Controllers;
 using System.Linq;
+using MrCMS.Website.Filters;
+
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class TaxRateController : MrCMSAppAdminController<EcommerceApp>
@@ -37,6 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Add")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Add_POST(TaxRate taxRate, string source="")
         {
             _taxRateManager.Add(taxRate);
@@ -58,6 +61,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Edit")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Edit_POST(TaxRate taxRate)
         {
             _taxRateManager.Update(taxRate);
@@ -72,6 +76,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Delete")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Delete_POST(TaxRate taxRate)
         {
             _taxRateManager.Delete(taxRate);
@@ -85,6 +90,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public ActionResult Settings(TaxSettings settings)
         {
             if (settings.TaxesEnabled && _taxRateManager.GetDefaultRate() == null)

@@ -3,6 +3,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.Currencies;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website.Controllers;
 using System.Web.Mvc;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -29,6 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Edit")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Edit_POST(EcommerceSettings ecommerceSettings)
         {
             _configurationProvider.SaveSettings(ecommerceSettings);
