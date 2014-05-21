@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using MrCMS.Website;
+using Newtonsoft.Json;
 
 namespace MrCMS.Web.Apps.Ecommerce.Helpers
 {
@@ -31,6 +33,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
         public static string UserAgent()
         {
             return CurrentRequestData.CurrentContext.Request.UserAgent;
+        }
+
+        public static string GetRawHttpData()
+        {
+            try
+            {
+                var serverVariables = CurrentRequestData.CurrentContext.Request.ServerVariables;
+                var dictionary = serverVariables.AllKeys.ToDictionary(s => s, s => serverVariables[s]);
+                return JsonConvert.SerializeObject(dictionary);
+            }
+            catch
+            {
+                return "Could not get data";
+            }
         }
     }
 }

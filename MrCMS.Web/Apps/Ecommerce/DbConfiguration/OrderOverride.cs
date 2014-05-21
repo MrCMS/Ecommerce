@@ -1,5 +1,6 @@
 ﻿using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
+using MrCMS.DbConfiguration;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
@@ -36,6 +37,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
                                                                      part.Map(data => data.StateProvince).Column("ShippingStateProvince");
                                                                      part.Map(data => data.Title).Column("ShippingTitle");
                                                                  });
+            mapping.Map(order => order.HttpData).MakeVarCharMax();
         }
     }
 }
