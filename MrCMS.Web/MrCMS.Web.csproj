@@ -482,6 +482,8 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\UniqueAttributeNameModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CategoryAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICategoryAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercent.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemHasSKU.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\AddDiscountApplicationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\OrderByGuidModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\ProductSearchQueryModelBinder.cs" />
@@ -2646,6 +2648,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\On404SearchWidget.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Category\AddSpecification.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Category\HiddenSpecifications.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\ItemHasSKU.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <None Include="Themes\Default\Views\Web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
