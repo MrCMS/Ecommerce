@@ -15,6 +15,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Website;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -76,6 +77,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Edit")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Edit_POST(Order order, int shippingMethodId = 0)
         {
             if (shippingMethodId != 0)
@@ -93,6 +95,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Cancel")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Cancel_POST(Order order)
         {
             _orderService.Cancel(order);
@@ -116,6 +119,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("MarkAsShipped")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult MarkAsShipped_POST(Order order,bool index = false)
         {
             _orderService.MarkAsShipped(order);
@@ -131,6 +135,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("MarkAsPaid")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult MarkAsPaid_POST(Order order, bool index = false)
         {
             _orderService.MarkAsPaid(order);
@@ -146,6 +151,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("MarkAsVoided")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult MarkAsVoided_POST(Order order, bool index = false)
         {
             _orderService.MarkAsVoided(order);
@@ -164,6 +170,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("BulkShippingUpdate")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult BulkShippingUpdate_POST(HttpPostedFileBase document)
         {
             if (document != null && document.ContentLength > 0 && (document.ContentType.ToLower() == "text/csv" || document.ContentType.ToLower().Contains("excel")))
@@ -181,6 +188,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("SetTrackingNumber")]
+        [ForceImmediateLuceneUpdate]
         public ActionResult SetTrackingNumber_POST(Order order)
         {
             _orderService.Save(order);
@@ -195,6 +203,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Delete")]
+        [ForceImmediateLuceneUpdate]
         public ActionResult Delete_POST(Order order)
         {
             _orderService.Delete(order);

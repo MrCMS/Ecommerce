@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -38,6 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Add")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public ActionResult Add_POST(ShippingCalculation shippingCalculation)
         {
             if (ModelState.IsValid)
@@ -65,6 +67,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Edit")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public ActionResult Edit_POST(ShippingCalculation shippingCalculation)
         {
             if (ModelState.IsValid)
@@ -90,6 +93,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Delete")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Delete_POST(ShippingCalculation shippingCalculation)
         {
             _shippingCalculationManager.Delete(shippingCalculation);

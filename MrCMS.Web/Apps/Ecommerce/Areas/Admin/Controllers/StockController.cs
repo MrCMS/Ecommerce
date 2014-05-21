@@ -6,6 +6,7 @@ using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Inventory;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -37,6 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public JsonResult UpdateStock(ProductVariant productVariant)
         {
             _productVariantService.Update(productVariant);
@@ -74,6 +76,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("BulkStockUpdate")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult BulkStockUpdate_POST(HttpPostedFileBase document)
         {
             if (document != null && document.ContentLength > 0 && (document.ContentType.ToLower() == "text/csv" || document.ContentType.ToLower().Contains("excel")))

@@ -5,6 +5,7 @@ using MrCMS.Web.Apps.Ecommerce.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Services.Discounts;
 using MrCMS.Website.Controllers;
 using MrCMS.Website.Binders;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -31,6 +32,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Add")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Add_POST(Discount discount)
         {
             _discountManager.Add(discount);
@@ -45,6 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Edit")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Edit_POST(Discount discount, [IoCModelBinder(typeof(AddDiscountLimitationModelBinder))] DiscountLimitation limitation, 
             [IoCModelBinder(typeof(AddDiscountApplicationModelBinder))] DiscountApplication application)
         {
@@ -61,6 +64,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Delete")]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Delete_POST(Discount discount)
         {
             _discountManager.Delete(discount);

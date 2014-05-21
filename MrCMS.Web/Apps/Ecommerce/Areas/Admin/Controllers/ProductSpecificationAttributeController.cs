@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Website.Controllers;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -31,6 +32,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public ActionResult Add(ProductSpecificationAttribute option)
         {
             if (ModelState.IsValid)
@@ -52,6 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Edit")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public ActionResult Edit_POST(ProductSpecificationAttribute option)
         {
             if (ModelState.IsValid)
@@ -73,6 +76,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Delete")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Delete_POST(ProductSpecificationAttribute option)
         {
             _productOptionManager.DeleteSpecificationAttribute(option);
@@ -98,6 +102,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public ActionResult Sort(List<SortItem> items)
         {
             if (items != null && items.Count > 0)
