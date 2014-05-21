@@ -23,7 +23,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
             _documentService = A.Fake<IDocumentService>();
             _productSearchService = A.Fake<IProductSearchService>();
             _uniquePageService = A.Fake<IUniquePageService>();
-            _categoryService = new CategoryService(Session, CurrentSite, _documentService, _productSearchService,_uniquePageService);
+            _categoryService = new CategoryService(Session, CurrentSite, _productSearchService,_uniquePageService);
         }
 
         [Fact]
