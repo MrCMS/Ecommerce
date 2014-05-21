@@ -51,12 +51,13 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
         {
             var option = new ProductOption {Name = "Test"};
             Session.Transact(session => session.Save(option));
+            var id = option.Id;
             option.Name = "Updated";
 
             _productOptionManager.UpdateAttributeOption(option);
 
             Session.Evict(option);
-            Session.Get<ProductOption>(1).Name.Should().Be("Updated");
+            Session.Get<ProductOption>(id).Name.Should().Be("Updated");
         }
 
         [Fact]
@@ -64,6 +65,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
         {
             var option = new ProductOption {Name = "Test"};
             Session.Transact(session => session.Save(option));
+            var id = option.Id;
             var option2 = new ProductOption {Name = "Test 2"};
             Session.Transact(session => session.Save(option2));
             option.Name = "Test 2";
@@ -71,7 +73,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             _productOptionManager.UpdateAttributeOption(option);
 
             Session.Evict(option);
-            var name = Session.Get<ProductOption>(1).Name;
+            var name = Session.Get<ProductOption>(id).Name;
             name.Should().Be("Test", "because {0} is wrong", name);
         }
 
@@ -80,12 +82,13 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
         {
             var option = new ProductOption {Name = "Test"};
             Session.Transact(session => session.Save(option));
+            var id = option.Id;
             option.Name = "";
 
             _productOptionManager.UpdateAttributeOption(option);
 
             Session.Evict(option);
-            var name = Session.Get<ProductOption>(1).Name;
+            var name = Session.Get<ProductOption>(id).Name;
             name.Should().Be("Test", "because {0} is wrong", name);
         }
 

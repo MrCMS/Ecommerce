@@ -80,6 +80,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 
         [DisplayName("Customer IP")]
         public virtual string CustomerIP { get; set; }
+
+        [DisplayName("HTTP Data")]
+        public virtual string HttpData { get; set; }
+
         public virtual User User { get; set; }
         [DisplayName("Order Email")]
         public virtual string OrderEmail { get; set; }
@@ -100,6 +104,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 
         [DisplayName("Sales Channel")]
         public virtual string SalesChannel { get; set; }
+
     }
 
     public class AddressData : IAddress

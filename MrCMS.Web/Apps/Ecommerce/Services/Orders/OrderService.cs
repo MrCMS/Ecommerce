@@ -58,6 +58,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                             Weight = cartModel.Weight,
                                                                             OrderEmail = cartModel.OrderEmail,
                                                                             CustomerIP = RequestHelper.GetIP(),
+                                                                            HttpData = RequestHelper.GetRawHttpData(),
                                                                             PaymentMethod = cartModel.PaymentMethod,
                                                                             ShippingStatus = cartModel.RequiresShipping ? ShippingStatus.Pending : ShippingStatus.ShippingNotRequired,
                                                                             ShippingTaxPercentage = cartModel.ShippingTaxPercentage,
