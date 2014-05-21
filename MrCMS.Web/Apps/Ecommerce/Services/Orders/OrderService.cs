@@ -82,7 +82,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                                                     PricePreTax = item.PricePreTax,
                                                                                     Price = item.Price,
                                                                                     SKU = item.Item.SKU,
-                                                                                    Name = !string.IsNullOrEmpty(item.Item.Name) ? item.Item.Name : item.Item.Product.Name,
+                                                                                    Name = item.Item.FullName,
                                                                                     Options = options,
                                                                                     Discount = item.DiscountAmount,
                                                                                     RequiresShipping = item.RequiresShipping

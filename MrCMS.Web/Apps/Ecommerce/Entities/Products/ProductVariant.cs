@@ -201,6 +201,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get { return !string.IsNullOrWhiteSpace(Name) ? Name : (Product != null ? Product.Name : ""); }
         }
+
+        public virtual string FullName
+        {
+            get
+            {
+                var list = new List<string>();
+                if (Product != null && !string.IsNullOrWhiteSpace(Product.Name))
+                {
+                    list.Add(Product.Name);
+                }
+                if (!string.IsNullOrWhiteSpace(Name))
+                {
+                    list.Add(Name);
+                }
+                return string.Join(" - ", list);
+            }
+        }
         public virtual string GetSelectOptionName(bool showName = true, bool showOptionValues = true)
         {
             var title = string.Empty;
