@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Lucene.Net.Documents;
 using MrCMS.Entities;
+using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
 using MrCMS.Indexing;
 using MrCMS.Indexing.Management;
@@ -13,6 +14,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
+using NHibernate.Transform;
 
 namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 {
@@ -33,9 +35,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 
         private int GetNumberBought(IList<ProductVariant> variants)
         {
-            var orderLines = _session.QueryOver<OrderLine>().Where(line => line.ProductVariant.IsIn(variants.ToList())).List();
-            return orderLines.Sum(line => line.Quantity);
+            var values = variants.Select(variant => variant.Id).ToList();
+            var numberBoughtCount = new NumberBoughtCount();
+            var singleOrDefault = _session.QueryOver<OrderLine>()
+                .Where(line => line.ProductVariant.Id.IsIn(values))
+                .SelectList(
+                    builder =>
+                        builder.SelectSum(line => line.Quantity)
+                            .WithAlias(() => numberBoughtCount.Count))
+                .TransformUsing(Transformers.AliasToBean<NumberBoughtCount>())
+                .SingleOrDefault<NumberBoughtCount>();
+            return singleOrDefault != null ? singleOrDefault.Count : 0;
         }
+
         public override Dictionary<Type, Func<SystemEntity, IEnumerable<LuceneAction>>> GetRelatedEntities()
         {
             return new Dictionary<Type, Func<SystemEntity, IEnumerable<LuceneAction>>>
@@ -59,5 +71,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                                          IndexingHelper.Get<ProductSearchIndex>()
                                  };
         }
+    }
+
+    internal class NumberBoughtCount
+    {
+        public int Count { get; set; }
     }
 }

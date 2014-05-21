@@ -1,0 +1,8 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.On404SearchWidget
+
+@Html.LabelFor(widget => widget.Text)
+@Html.TextAreaFor(widget => widget.Text, new { @class = "ckedit-enabled" })
+
+@Html.LabelFor(widget => widget.MaxProductsToShow)
+@Html.TextBoxFor(widget => widget.MaxProductsToShow)
+@Html.ValidationMessageFor(widget => widget.MaxProductsToShow)

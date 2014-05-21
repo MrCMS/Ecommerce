@@ -77,7 +77,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             clone.CategoryId = null;
             var indexSearcher = _productSearcher.IndexSearcher;
             var valueCollector = new ValueCollector(indexSearcher, FieldDefinition.GetFieldName<ProductSearchCategoriesDefinition>());
-            indexSearcher.Search(clone.GetQuery(), clone.GetFilter(), valueCollector);
+            var query1 = clone.GetQuery();
+            indexSearcher.Search(query1, clone.GetFilter(), valueCollector);
             return valueCollector.Values.Select(s => Convert.ToInt32(s)).Distinct().ToList();
         }
     }

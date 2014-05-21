@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Models;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -62,12 +64,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             _session.Transact(session => session.Delete(option));
         }
 
-        public bool AnyExistingSpecificationAttributesWithName(string name)
+        public bool AnyExistingSpecificationAttributesWithName(UniqueAttributeNameModel model)
         {
             return
                 _session.QueryOver<ProductSpecificationAttribute>()
-                        .Where(specificationOption => specificationOption.Name == name)
-                        .RowCount() > 0;
+                        .Where(specificationOption => specificationOption.Name == model.Name && specificationOption.Id != model.Id)
+                        .Any();
         }
 
         public bool AnyExistingSpecificationAttributeOptionsWithName(string name, int id)
@@ -278,10 +280,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public List<ProductOptionModel> GetSearchSpecificationAttributes(ProductSearchQuery query)
         {
             List<int> values = _productSearchService.GetSpecifications(query);
+            ProductSpecificationAttribute attributeAlias = null;
             IList<ProductSpecificationAttributeOption> productSpecificationAttributeOptions =
                 _session.QueryOver<ProductSpecificationAttributeOption>()
-                        .Fetch(value => value.ProductSpecificationAttribute)
-                        .Eager.Where(option => option.Id.IsIn(values))
+                        .JoinAlias(option => option.ProductSpecificationAttribute, () => attributeAlias)
+                        .Where(option => option.Id.IsIn(values) && !attributeAlias.HideInSearch)
+                        .Fetch(option => option.ProductSpecificationAttribute).Eager
                         .Cacheable()
                         .List();
             List<ProductSpecificationAttribute> productSpecificationAttributes =
@@ -289,6 +293,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                     .OrderBy(x => x.DisplayOrder)
                                                     .Distinct()
                                                     .ToList();
+            if (query.CategoryId.HasValue)
+            {
+                var category = _session.Get<Category>(query.CategoryId.Value);
+                if (category != null)
+                {
+                    productSpecificationAttributes.RemoveAll(
+                        attribute => category.HiddenSearchSpecifications.Contains(attribute));
+                }
+            }
 
             return productSpecificationAttributes.Select(attribute => new ProductOptionModel
                                                                           {

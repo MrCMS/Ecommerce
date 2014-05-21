@@ -479,6 +479,9 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\ProductOptionModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\ProductVariantModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\SagePaySettingsModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\UniqueAttributeNameModel.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CategoryAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICategoryAdminService.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\AddDiscountApplicationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\OrderByGuidModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\ProductSearchQueryModelBinder.cs" />
@@ -931,6 +934,8 @@
     <Compile Include="Apps\Ecommerce\Widgets\EcommerceNavigation.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedCategories.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedProducts.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\NotWhatYouWereLookingForWidget.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\On404SearchWidget.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\PeopleWhoBoughtThisAlsoBought.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\RecentlyViewedItems.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\RelatedProducts.cs" />
@@ -1122,6 +1127,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\dashboard.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-category.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-discount.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-product.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-categories.js" />
@@ -1132,6 +1138,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-variant.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\products.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\hide-specifications.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\related-products.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-day.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-payment-type.js" />
@@ -2634,6 +2641,11 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Wishlist\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Wishlist\Summary.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\NotWhatYouWereLookingForWidget.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\On404SearchWidget.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\On404SearchWidget.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Category\AddSpecification.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Category\HiddenSpecifications.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <None Include="Themes\Default\Views\Web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
@@ -2775,7 +2787,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1834</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8880/</IISUrl>
+          <IISUrl>http://localhost:8895/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

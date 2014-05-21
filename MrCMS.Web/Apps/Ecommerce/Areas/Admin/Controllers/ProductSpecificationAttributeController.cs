@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Models;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Website.Controllers;
@@ -78,12 +79,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        public JsonResult IsUniqueAttribute(string name)
+        public JsonResult IsUniqueAttribute(UniqueAttributeNameModel model)
         {
-            if (_productOptionManager.AnyExistingSpecificationAttributesWithName(name))
-                    return Json("There is already an attribute stored with that name.", JsonRequestBehavior.AllowGet);
-            else
-                    return Json(true, JsonRequestBehavior.AllowGet);
+            return Json(_productOptionManager.AnyExistingSpecificationAttributesWithName(model)
+                ? (object) "There is already an attribute stored with that name."
+                : true, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -92,7 +92,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             var options = _productOptionManager.ListSpecificationAttributes();
             var sortItems = options.OrderBy(x => x.DisplayOrder)
                                    .Select(
-                                       arg => new SortItem {Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Name})
+                                       arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Name })
                                    .ToList();
             return View(sortItems);
         }
