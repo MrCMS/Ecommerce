@@ -8,6 +8,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.SagePay
     {
         public override string Name { get { return "SagePay"; } }
         public override string SystemName { get { return "SagePay"; } }
+
+        public override string ControllerName
+        {
+            get { return "SagePay"; }
+        }
+
+        public override string ActionName
+        {
+            get { return "Form"; }
+        }
+
         public override PaymentType PaymentType { get { return PaymentType.ServiceBased; } }
         public override bool Enabled { get { return MrCMSApplication.Get<SagePaySettings>().Enabled; } }
         public override bool CanUse(CartModel cart)

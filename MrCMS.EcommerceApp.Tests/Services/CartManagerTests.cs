@@ -19,6 +19,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         private readonly ICartSessionManager _cartSessionManager;
         private readonly IEnumerable<ICartSessionKeyList> _cartSessionKeyLists;
         private readonly IGetUserGuid _getUserGuid;
+        private readonly ICartBuilder _cartBuilder;
 
         public CartManagerTests()
         {
@@ -27,7 +28,9 @@ namespace MrCMS.EcommerceApp.Tests.Services
             _cartSessionManager = A.Fake<ICartSessionManager>();
             _cartSessionKeyLists = A.Fake<IEnumerable<ICartSessionKeyList>>();
             _getUserGuid = A.Fake<IGetUserGuid>();
-            _cartManager = new CartManager(_cartModel, Session, _cartSessionManager, _cartSessionKeyLists, _getUserGuid);
+            _cartBuilder = A.Fake<ICartBuilder>();
+            A.CallTo(() => _cartBuilder.BuildCart()).Returns(_cartModel);
+            _cartManager = new CartManager(_cartBuilder, Session, _cartSessionManager, _cartSessionKeyLists, _getUserGuid);
         }
         [Fact]
         public void CartManager_AddToCart_AddsAnItemToTheCart()

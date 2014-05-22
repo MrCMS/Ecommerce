@@ -67,7 +67,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             cart.BillingAddress = GetBillingAddress(userGuid, cart.RequiresShipping);
             var availablePaymentMethods = _paymentMethodService.GetAllAvailableMethods(cart);
             cart.AvailablePaymentMethods = availablePaymentMethods;
-            cart.PaymentMethod = GetPaymentMethod(userGuid) ?? (availablePaymentMethods.Count() == 1 ? availablePaymentMethods.First().SystemName : null);
+            cart.PaymentMethod = GetPaymentMethodInfo(userGuid, availablePaymentMethods, cart);
 
             cartItems.ForEach(item => item.SetDiscountInfo(cart.Discount, cart.DiscountCode));
             if (cart.RequiresShipping)
@@ -76,6 +76,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             }
             cart.AvailableShippingMethods = _orderShippingService.AvailableShippingMethods(cart);
             return cart;
+        }
+
+        private IPaymentMethod GetPaymentMethodInfo(Guid userGuid, List<IPaymentMethod> availablePaymentMethods, CartModel cart)
+        {
+            var paymentMethodName = GetPaymentMethod(userGuid) ??
+                                    (availablePaymentMethods.Count() == 1
+                                        ? availablePaymentMethods.First().SystemName
+                                        : null);
+            var paymentMethodInfo = _paymentMethodService.GetMethodForCart(paymentMethodName,cart);
+            
+            return paymentMethodInfo;
         }
 
         private Guid GetCartGuid(Guid userGuid)

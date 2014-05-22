@@ -15,6 +15,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Paypoint
             get { return "Paypoint"; }
         }
 
+        public override string ControllerName
+        {
+            get { return "Paypoint"; }
+        }
+
+        public override string ActionName
+        {
+            get { return "Form"; }
+        }
+
         public override PaymentType PaymentType
         {
             get { return PaymentType.ServiceBased; }
