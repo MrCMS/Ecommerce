@@ -452,6 +452,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\GoogleBaseController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ImportExportController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\NewsletterTemplateController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderLineController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderNoteController.cs" />
@@ -487,6 +488,8 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\NewsletterTemplateOverride.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercent.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemHasSKU.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\Abstract.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\Newsletter.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\NewsletterTemplate.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\AddDiscountApplicationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\OrderByGuidModelBinder.cs" />
@@ -831,6 +834,8 @@
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\StockReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\NewsletterBuilder\INewsletterTemplateService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\NewsletterBuilder\NewsletterTemplateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\BulkShippingUpdateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\BulkShippingUpdateValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\DTOs\BulkShippingUpdateDataTransferObject.cs" />
@@ -2653,6 +2658,10 @@
     <Content Include="Apps\Ecommerce\Views\Paypoint\Form.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SagePay\Form.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PayPalExpressCheckout\Form.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <None Include="Themes\Default\Views\Web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
