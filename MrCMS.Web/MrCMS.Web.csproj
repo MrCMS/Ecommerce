@@ -14,7 +14,7 @@
     <RootNamespace>MrCMS.Web</RootNamespace>
     <AssemblyName>MrCMS.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <FileUpgradeFlags>
@@ -482,6 +482,8 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\UniqueAttributeNameModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CategoryAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICategoryAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\CashOnDeliveryController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\SagePayController.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercent.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemHasSKU.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\AddDiscountApplicationModelBinder.cs" />
@@ -663,6 +665,7 @@
     <Compile Include="Apps\Ecommerce\Models\OrderSearchModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaymentDetailsModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaymentStatus.cs" />
+    <Compile Include="Apps\Ecommerce\Models\Payment\CashOnDeliveryPlaceOrderResult.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaypointPaymentDetails.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaypointPaymentDetailsModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\Process3DSecureDetailsResponse.cs" />
@@ -748,6 +751,8 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartSessionKeyList.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartSessionManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\CashOnDelivery\CashOnDeliveryUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\CashOnDelivery\ICashOnDeliveryUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\CategoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\ICategoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Currencies\ICurrencyService.cs" />
@@ -2546,8 +2551,6 @@
     <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToCustomerMessageTemplate.cs.orig" />
     <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToStoreOwnerMessageTemplate.cs.orig" />
     <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderShippedEmailToCustomerMessageTemplate.cs.orig" />
-    <Content Include="Apps\Ecommerce\Models\CartModel.cs.orig" />
-    <Content Include="Apps\Ecommerce\Pages\Product.cs.orig" />
     <Content Include="Apps\Ecommerce\Payment\Paypoint\PaypointPaymentMethod.cs.orig" />
     <Content Include="Apps\Ecommerce\Services\Cart\CartSessionManager.cs.orig" />
     <Content Include="Apps\Ecommerce\Services\Cart\GetCartImpl.cs.orig" />
@@ -2587,11 +2590,6 @@
     <Content Include="Apps\Ecommerce\Views\PaymentDetails\BillingAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PaymentDetails\SelectMethod.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PaymentDetails\SetBillingAddress.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\PaymentMethod\CashOnDelivery.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\PaymentMethod\PayPalExpressCheckout.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\PaymentMethod\Paypoint.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\PaymentMethod\SagePay.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Paypoint\PaymentDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Paypoint\Redirect3DSecure.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\CartDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\CustomersAlsoBought.cshtml" />
@@ -2649,6 +2647,10 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceSearchablePage\AddSpecification.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceSearchablePage\HiddenSpecifications.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\ItemHasSKU.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\CashOnDelivery\Form.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Paypoint\Form.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\SagePay\Form.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\PayPalExpressCheckout\Form.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <None Include="Themes\Default\Views\Web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
@@ -2681,6 +2683,7 @@
     <Folder Include="Apps\Ecommerce\Areas\Admin\Views\Shared\" />
     <Folder Include="Apps\Ecommerce\Content\Scripts\charts\" />
     <Folder Include="Apps\Ecommerce\Queries\" />
+    <Folder Include="Apps\Ecommerce\Views\PaymentMethod\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Controllers\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Views\Widget\" />
     <Folder Include="Apps\Galleries\Controllers\" />
@@ -2790,7 +2793,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1834</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8895/</IISUrl>
+          <IISUrl>http://localhost</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -11,15 +11,16 @@
         {
             using (Html.BeginForm("BillingAddressSameAsShippingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
             {
-            <div class="control-group">
-                <div class="control-label">
-                    <label class="checkbox" for="SameAsShipping">
-                        Use Delivery Address @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress)</label>
+                <div class="control-group">
+                    <div class="control-label">
+                        <label class="checkbox" for="SameAsShipping">
+                            Use Delivery Address @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress)
+                        </label>
+                    </div>
+                    <div class="controls">
+                        @cart.ShippingAddress.GetDescription()
+                    </div>
                 </div>
-                <div class="controls">
-                    @cart.ShippingAddress.GetDescription()
-                </div>
-            </div>
             }
         }
         @if (settingBillingAddress)
@@ -38,11 +39,11 @@
             </div>
             using (Html.BeginForm("UpdateBillingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
             {
-            <div class="control-group">
-                <div class="controls">
-                    <input class="btn btn-info" value="Edit" type="submit" />
+                <div class="control-group">
+                    <div class="controls">
+                        <input class="btn btn-info" value="Edit" type="submit" />
+                    </div>
                 </div>
-            </div>
             }
         }
         <hr />
@@ -51,9 +52,9 @@
         {
             Html.RenderPartial("SelectMethod", cart);
             <div id="payment-confirmation">
-                @if (!string.IsNullOrWhiteSpace(cart.PaymentMethod))
+                @if (cart.PaymentMethod != null)
                 {
-                    Html.RenderAction(cart.PaymentMethod, "PaymentMethod");
+                    Html.RenderAction(cart.PaymentMethodAction, cart.PaymentMethodController);
                 }
             </div>
         }

@@ -2,6 +2,7 @@
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Website.Controllers;
@@ -90,8 +91,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpPost]
         public JsonResult SetPaymentMethod(string paymentMethod)
         {
-            _cartManager.SetPaymentMethod(paymentMethod);
-            return Json(true);
+            var method = _cartManager.SetPaymentMethod(paymentMethod);
+            return Json(method.GetUrl(Url));
         }
     }
 }

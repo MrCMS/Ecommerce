@@ -159,7 +159,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public Country Country { get; set; }
 
-        public string PaymentMethod { get; set; }
+        public IPaymentMethod PaymentMethod { get; set; }
+        public bool PaymentMethodSet { get { return PaymentMethod != null; } }
+
+        public string PaymentMethodSystemName
+        {
+            get { return PaymentMethod == null ? string.Empty : PaymentMethod.SystemName; }
+        }
+
+        public string PaymentMethodAction
+        {
+            get { return PaymentMethod == null ? string.Empty : PaymentMethod.ActionName; }
+        }
+        public string PaymentMethodController
+        {
+            get { return PaymentMethod == null ? string.Empty : PaymentMethod.ControllerName; }
+        }
 
         [DisplayName("Billing Address same as Shipping Address?")]
         public bool BillingAddressSameAsShippingAddress { get; set; }
@@ -204,6 +219,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get { return !CannotPlaceOrderReasons.Any(); }
         }
+
         public IEnumerable<string> CannotCheckoutReasons
         {
             get

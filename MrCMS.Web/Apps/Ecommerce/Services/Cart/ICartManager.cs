@@ -4,6 +4,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Payment;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
@@ -20,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         void SetBillingAddress(Address address);
         void SetBillingAddressSameAsShippingAddress(bool value);
         void SetDiscountCode(string code);
-        void SetPaymentMethod(string methodName);
+        IPaymentMethod SetPaymentMethod(string methodName);
         void SetShippingInfo(ShippingCalculation shippingCalculation);
         void SetCountry(Country country);
         void SetPayPalExpressInfo(string token, string payerId);

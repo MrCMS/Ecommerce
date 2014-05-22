@@ -15,6 +15,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
             get { return "PayPalExpressCheckout"; }
         }
 
+        public override string ControllerName
+        {
+            get { return "PayPalExpressCheckout"; }
+        }
+
+        public override string ActionName
+        {
+            get { return "Form"; }
+        }
+
         public override PaymentType PaymentType
         {
             get { return PaymentType.PayPalExpress; }

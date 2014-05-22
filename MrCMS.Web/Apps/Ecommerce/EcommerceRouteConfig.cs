@@ -37,23 +37,37 @@ namespace MrCMS.Web.Apps.Ecommerce
         private static void MapWishlistRoutes(MrCMSAppRegistrationContext context)
         {
             context.MapRoute("Wishlist - Add to Wishlist", "Apps/Ecommerce/AddToWishlist",
-                             new {controller = "Wishlist", action = "Add"},
-                             new[] {typeof (WishlistController).Namespace});
+                             new { controller = "Wishlist", action = "Add" },
+                             new[] { typeof(WishlistController).Namespace });
             context.MapRoute("Wishlist - Remove from Wishlist", "Apps/Ecommerce/RemoveFromWishlist",
-                             new {controller = "Wishlist", action = "Remove"},
-                             new[] {typeof (WishlistController).Namespace});
+                             new { controller = "Wishlist", action = "Remove" },
+                             new[] { typeof(WishlistController).Namespace });
             context.MapRoute("Wishlist - Summary", "Apps/Ecommerce/WishlistSummary",
-                             new {controller = "Wishlist", action = "Summary"},
-                             new[] {typeof (WishlistController).Namespace});
+                             new { controller = "Wishlist", action = "Summary" },
+                             new[] { typeof(WishlistController).Namespace });
         }
 
         private static void MapRemoteValidationRoutes(MrCMSAppRegistrationContext context)
         {
-            context.MapRoute("Can add quantity to cart", "can-add-quantity", new {controller = "Cart", action = "CanAddQuantity"}, new[] {typeof (CartController).Namespace});
+            context.MapRoute("Can add quantity to cart", "can-add-quantity", new { controller = "Cart", action = "CanAddQuantity" }, new[] { typeof(CartController).Namespace });
         }
 
         private static void MapPaymentMethodRoutes(MrCMSAppRegistrationContext context)
         {
+            context.MapRoute("Cash On Delivery - Form", "Apps/Ecommerce/Confirm/CashOnDelivery",
+                new { controller = "CashOnDelivery", action = "Form" },
+                new[] { typeof(CashOnDeliveryController).Namespace });
+            context.MapRoute("Paypoint - Form", "Apps/Ecommerce/Confirm/Paypoint",
+                new { controller = "Paypoint", action = "Form" },
+                new[] { typeof(PaypointController).Namespace });
+            context.MapRoute("SagePay - Form", "Apps/Ecommerce/Confirm/SagePay",
+                new { controller = "SagePay", action = "Form" },
+                new[] { typeof(SagePayController).Namespace });
+            context.MapRoute("PayPal Express Checkout - Form", "Apps/Ecommerce/Confirm/PaypalExpressCheckout",
+                new { controller = "PayPalExpressCheckout", action = "Form" },
+                new[] { typeof(PayPalExpressCheckoutController).Namespace });
+
+
             context.MapRoute("PayPal Express Checkout - SetExpressCheckout", "Apps/Ecommerce/PayPalExpress/SetExpressCheckout", new { controller = "PayPalExpressCheckout", action = "SetExpressCheckout" },
                             new[] { typeof(PayPalExpressCheckoutController).Namespace });
             context.MapRoute("PayPal Express Checkout - IPN", "Apps/Ecommerce/PayPalExpress/IPN", new { controller = "PayPalExpressCheckout", action = "IPN" },
@@ -86,14 +100,6 @@ namespace MrCMS.Web.Apps.Ecommerce
                              new[] { typeof(EnterOrderEmailController).Namespace });
             context.MapRoute("Checkout - Price Summary", "Apps/Ecommerce/Checkout/Summary", new { controller = "Checkout", action = "Summary" },
                              new[] { typeof(CheckoutController).Namespace });
-            context.MapRoute("Confirm Order - Cash On Delivery", "Apps/Ecommerce/Confirm/CashOnDelivery", new { controller = "PaymentMethod", action = "CashOnDelivery" },
-                             new[] { typeof(PaymentMethodController).Namespace });
-            context.MapRoute("Confirm Order - PayPal Express Checkout", "Apps/Ecommerce/Confirm/PayPalExpressCheckout", new { controller = "PaymentMethod", action = "PayPalExpressCheckout" },
-                             new[] { typeof(PaymentMethodController).Namespace });
-            context.MapRoute("Confirm Order - Paypoint", "Apps/Ecommerce/Confirm/Paypoint", new { controller = "PaymentMethod", action = "Paypoint" },
-                             new[] { typeof(PaymentMethodController).Namespace });
-            context.MapRoute("Confirm Order - SagePay", "Apps/Ecommerce/Confirm/SagePay", new { controller = "PaymentMethod", action = "SagePay" },
-                             new[] { typeof(PaymentMethodController).Namespace });
             context.MapRoute("Checkout - Billing Address same as Shipping Address", "Apps/Ecommerce/PaymentDetails/BillingAddressSameAsShippingAddress", new { controller = "PaymentDetails", action = "BillingAddressSameAsShippingAddress" },
                              new[] { typeof(PaymentDetailsController).Namespace });
             context.MapRoute("Checkout - Update Billing Address", "Apps/Ecommerce/PaymentDetails/UpdateBillingAddress", new { controller = "PaymentDetails", action = "UpdateBillingAddress" },

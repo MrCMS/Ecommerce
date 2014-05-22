@@ -1,5 +1,6 @@
 ﻿using MrCMS.Entities.Widget;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website;
 
@@ -11,17 +12,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
 
         public override object GetModel(NHibernate.ISession session)
         {
-            var model = new SpendXMoreModel() { SpendAmountMore = 0 };
+            var model = new SpendXMoreModel { SpendAmountMore = 0 };
 
-            var cartBuilder = MrCMSApplication.Get<ICartBuilder>();
-            if (cartBuilder == null) return model;
+            var cartModel = MrCMSApplication.Get<CartModel>();
+            if (cartModel == null) return model;
 
-            var cartModel = cartBuilder.BuildCart();
-            if (cartModel != null)
-            {
-                if (cartModel.Subtotal > 0 && cartModel.Subtotal < Amount)
-                    model.SpendAmountMore = Amount - (cartModel.Subtotal + cartModel.ItemTax);
-            }
+            if (cartModel.Subtotal > 0 && cartModel.Subtotal < Amount)
+                model.SpendAmountMore = Amount - (cartModel.Subtotal + cartModel.ItemTax);
 
             return model;
         }
