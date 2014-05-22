@@ -72,8 +72,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult AddCategory(Product product, string query, int page = 1)
         {
             ViewData["product"] = product;
-            IPagedList<Category> categories = _categoryService.GetCategories(product, query, page,
-                _siteSettings.DefaultPageSize);
+            IPagedList<Category> categories = _categoryService.GetCategories(product, query, page);
             return PartialView(categories);
         }
 
@@ -81,8 +80,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult AddCategoryCategories(Product product, string query, int page = 1)
         {
             ViewData["product"] = product;
-            IPagedList<Category> categories = _categoryService.GetCategories(product, query, page,
-                _siteSettings.DefaultPageSize);
+            IPagedList<Category> categories = _categoryService.GetCategories(product, query, page);
             return PartialView(categories);
         }
 
@@ -105,10 +103,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public JsonResult SearchCategories(Product product, string term)
         {
             if (string.IsNullOrWhiteSpace(term))
-                return Json(_categoryService.GetCategories(product, String.Empty, 1, _siteSettings.DefaultPageSize)
+                return Json(_categoryService.GetCategories(product, String.Empty, 1)
                     .Select(x => new { x.Name, CategoryID = x.Id }).Take(_siteSettings.DefaultPageSize).ToList());
 
-            return Json(_categoryService.GetCategories(product, term, 1, _siteSettings.DefaultPageSize)
+            return Json(_categoryService.GetCategories(product, term, 1)
                 .Select(x => new { x.Name, CategoryID = x.Id }).Take(_siteSettings.DefaultPageSize).ToList(),
                 JsonRequestBehavior.AllowGet);
         }
@@ -439,7 +437,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult AddRelatedProduct(Product product, string query, int page = 1)
         {
             ViewData["product"] = product;
-            IPagedList<Product> items = _productService.Search(product, query, page, _siteSettings.DefaultPageSize);
+            IPagedList<Product> items = _productService.RelatedProductsSearch(product, query, page);
             return PartialView(items);
         }
 
@@ -447,7 +445,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult AddRelatedProductItems(Product product, string query, int page = 1)
         {
             ViewData["product"] = _documentService.GetDocument<Product>(product.Id);
-            IPagedList<Product> items = _productService.Search(product, query, page, _siteSettings.DefaultPageSize);
+            IPagedList<Product> items = _productService.RelatedProductsSearch(product, query, page);
             return PartialView(items);
         }
 

@@ -168,7 +168,7 @@
     <Compile Include="Builders\ProductVariantBuilder.cs" />
     <Compile Include="Builders\ShippingCalculationBuilder.cs" />
     <Compile Include="Builders\ShippingMethodBuilder.cs" />
-    <Compile Include="Controllers\CategoryContainerControllerTests.cs" />
+    <Compile Include="Controllers\ProductContainerControllerTests.cs" />
     <Compile Include="Controllers\DownloadProductControllerTests.cs" />
     <Compile Include="Controllers\ProductSearchControllerTests.cs" />
     <Compile Include="EcommerceAppTests.cs" />
@@ -190,9 +190,9 @@
     <Compile Include="Helpers\InlineDataExtensions.cs" />
     <Compile Include="InMemoryDatabaseTest.cs" />
     <Compile Include="Entities\Cart\CartItemTests.cs" />
-    <Compile Include="Metadata\CategoryContainerMetadataTests.cs" />
-    <Compile Include="Metadata\CategoryMetadataTests.cs" />
     <Compile Include="Metadata\ProductContainerMetadataTests.cs" />
+    <Compile Include="Metadata\CategoryMetadataTests.cs" />
+    <Compile Include="Metadata\ProductSearchMetadataTests.cs" />
     <Compile Include="Metadata\ProductMetadataTests.cs" />
     <Compile Include="Models\CartModelTests.cs" />
     <Compile Include="Models\TaxAwareProductPriceTests.cs" />
@@ -208,7 +208,6 @@
     <Compile Include="Services\BulkStockUpdate\BulkStockUpdateServiceTests.cs" />
     <Compile Include="Services\BulkStockUpdate\BulkStockUpdateValidationServiceTests.cs" />
     <Compile Include="Services\CartManagerTests.cs" />
-    <Compile Include="Services\CategoryServiceTests.cs" />
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateServiceTests.cs" />
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateValidationServiceTests.cs" />
     <Compile Include="Services\DownloadProductServiceTests.cs" />

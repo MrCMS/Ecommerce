@@ -3,6 +3,7 @@ using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Helpers;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
@@ -17,7 +18,8 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
         public AttributeOptionTests()
         {
             _productSearchService = A.Fake<IProductSearchService>();
-            _productOptionManager = new ProductOptionManager(Session, _productSearchService);
+            _productOptionManager = new ProductOptionManager(Session, _productSearchService,
+                A.Fake<IUniquePageService>());
         }
 
         [Fact]
@@ -57,7 +59,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             _productOptionManager.UpdateAttributeOption(option);
 
             Session.Evict(option);
-            Session.Get<ProductOption>(id).Name.Should().Be("Updated");
+            Session.QueryOver<ProductOption>().Where(productOption => productOption.Id == id).SingleOrDefault().Name.Should().Be("Updated");
         }
 
         [Fact]
@@ -73,7 +75,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             _productOptionManager.UpdateAttributeOption(option);
 
             Session.Evict(option);
-            var name = Session.Get<ProductOption>(id).Name;
+            var name = Session.QueryOver<ProductOption>().Where(productOption => productOption.Id==id).SingleOrDefault().Name;
             name.Should().Be("Test", "because {0} is wrong", name);
         }
 
@@ -88,7 +90,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
             _productOptionManager.UpdateAttributeOption(option);
 
             Session.Evict(option);
-            var name = Session.Get<ProductOption>(id).Name;
+            var name = Session.QueryOver<ProductOption>().Where(productOption => productOption.Id == id).SingleOrDefault().Name;
             name.Should().Be("Test", "because {0} is wrong", name);
         }
 

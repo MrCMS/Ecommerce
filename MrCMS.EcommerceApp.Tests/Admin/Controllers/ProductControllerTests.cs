@@ -112,7 +112,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             var result = _productController.AddCategory(product, "query", 1);
 
-            A.CallTo(() => _categoryService.GetCategories(product, "query", 1,_siteSettings.DefaultPageSize)).MustHaveHappened();
+            A.CallTo(() => _categoryService.GetCategories(product, "query", 1)).MustHaveHappened();
         }
 
         [Fact]
@@ -120,7 +120,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var product = new Product { Id = 123 };
             var pagedList = A.Fake<IPagedList<Category>>();
-            A.CallTo(() => _categoryService.GetCategories(product, "query", 1,_siteSettings.DefaultPageSize)).Returns(pagedList);
+            A.CallTo(() => _categoryService.GetCategories(product, "query", 1)).Returns(pagedList);
 
             var result = _productController.AddCategory(product, "query", 1);
 

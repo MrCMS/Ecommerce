@@ -14,5 +14,5 @@
 @Html.LabelFor(webpage => webpage.DefaultProductSearchSort)
 @Html.DropDownListFor(webpage => webpage.DefaultProductSearchSort, ViewData["product-search-sort-options"] as IEnumerable<SelectListItem>)
 
-@{ Html.RenderAction("HiddenSpecifications", "Category", new { id = Model.Id });}
+@{ Html.RenderAction("HiddenSpecifications", "EcommerceSearchablePage", new { id = Model.Id });}
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/edit-category.js"); }

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
-using MrCMS.Models;
 using MrCMS.Paging;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -9,135 +8,75 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using NHibernate;
 using NHibernate.Criterion;
-using MrCMS.Entities.Multisite;
-using System.Web.Mvc;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
 {
     public class CategoryService : ICategoryService
     {
-        private readonly ISession _session;
         private readonly IProductSearchService _productSearchService;
+        private readonly ISession _session;
         private readonly IUniquePageService _uniquePageService;
-        private readonly Site _currentSite;
 
-        public CategoryService(ISession session, Site currentSite,
-            IProductSearchService productSearchService, IUniquePageService uniquePageService)
+        public CategoryService(ISession session, IProductSearchService productSearchService, IUniquePageService uniquePageService)
         {
             _session = session;
-            _currentSite = currentSite;
             _productSearchService = productSearchService;
             _uniquePageService = uniquePageService;
         }
 
-        public CategoryPagedList Search(string queryTerm = null, int page = 1, int pageSize = 10)
+        public IPagedList<Category> GetCategories(Product product, string query, int page = 1)
         {
-            IPagedList<Category> pagedList;
-
-            if (!string.IsNullOrWhiteSpace(queryTerm))
-            {
-                pagedList =
-                    _session.Paged(
-                        QueryOver.Of<Category>()
-                                 .Where(category => category.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)), page,
-                        pageSize);
-            }
-            else
-            {
-                pagedList = _session.Paged(QueryOver.Of<Category>(), page, pageSize);
-            }
-
-            var categoryContainer = _uniquePageService.GetUniquePage<CategoryContainer>();
-            var categoryContainerId = categoryContainer == null ? (int?)null : categoryContainer.Id;
-            return new CategoryPagedList(pagedList, categoryContainerId);
-        }
-
-        public IEnumerable<AutoCompleteResult> Search(string query, List<int> ids)
-        {
-            return _session.QueryOver<Category>()
-                           .Where(
-                               category =>
-                               !category.Id.IsIn(ids) && category.Name.IsInsensitiveLike(query, MatchMode.Anywhere))
-                           .Take(5)
-                           .Cacheable()
-                           .List().Select(category => new AutoCompleteResult
-                                                          {
-                                                              id = category.Id,
-                                                              label = category.NestedName,
-                                                              value = category.NestedName
-                                                          });
-        }
-
-        public IPagedList<Category> GetCategories(Product product, string query, int page = 1, int pageSize = 10)
-        {
-            var queryOver = QueryOver.Of<Category>();
+            QueryOver<Category, Category> queryOver = QueryOver.Of<Category>();
 
             if (!string.IsNullOrWhiteSpace(query))
                 queryOver = queryOver.Where(category => category.Name.IsInsensitiveLike(query, MatchMode.Anywhere));
 
             queryOver = queryOver.Where(category => !category.Id.IsIn(product.Categories.Select(c => c.Id).ToArray()));
 
-            return _session.Paged(queryOver, page, pageSize);
-        }
-        public IList<Category> GetAll()
-        {
-            return _session.QueryOver<Category>().Cacheable().List();
-        }
-        public IList<SelectListItem> GetOptions()
-        {
-            return GetAll().OrderBy(x => x.ParentId).BuildSelectItemList(item => item.Name, item => item.Id.ToString(), null, new SelectListItem());
-        }
-        public Category Get(int id)
-        {
-            return _session.QueryOver<Category>().Where(x => x.Id == id).Cacheable().SingleOrDefault();
+            return _session.Paged(queryOver, page);
         }
 
-        public List<Category> GetRootCategories()
+        public CategorySearchModel GetCategoriesForSearch(ProductSearchQuery query)
         {
-            var categoryContainer = _uniquePageService.GetUniquePage<CategoryContainer>();
-            return categoryContainer == null
+            List<int> availableCategories = _productSearchService.GetCategories(query);
+            if (!query.CategoryId.HasValue)
+                return GetRootCategoryModel(availableCategories);
+
+            var category = _session.Get<Category>(query.CategoryId);
+            List<Category> categories =
+                _session.QueryOver<Category>()
+                    .Where(cat => cat.Parent.Id == category.Id && cat.Id.IsIn(availableCategories))
+                    .Cacheable()
+                    .List().ToList();
+            List<Category> hierarchy =
+                category.ActivePages.OfType<Category>().Where(cat => availableCategories.Contains(cat.Id)).ToList();
+            hierarchy.Reverse();
+            return new CategorySearchModel
+                   {
+                       Children = categories,
+                       Hierarchy = hierarchy
+                   };
+        }
+
+        private List<Category> GetRootCategories()
+        {
+            var productSearch = _uniquePageService.GetUniquePage<ProductSearch>();
+            return productSearch == null
                 ? new List<Category>()
                 : _session.QueryOver<Category>()
-                    .Where(category => category.Parent.Id == categoryContainer.Id)
+                    .Where(category => category.Parent.Id == productSearch.Id)
                     .Cacheable()
                     .List()
                     .ToList();
         }
 
-        public CategorySearchModel GetCategoriesForSearch(ProductSearchQuery query)
-        {
-            var availableCategories = _productSearchService.GetCategories(query);
-            if (!query.CategoryId.HasValue)
-                return GetRootCategoryModel(availableCategories);
-
-            var category = _session.Get<Category>(query.CategoryId);
-            var categories =
-                _session.QueryOver<Category>()
-                    .Where(cat => cat.Parent.Id == category.Id && cat.Id.IsIn(availableCategories))
-                    .Cacheable()
-                    .List().ToList();
-            var hierarchy = category.ActivePages.OfType<Category>().Where(cat => availableCategories.Contains(cat.Id)).ToList();
-            hierarchy.Reverse();
-            return new CategorySearchModel()
-                       {
-                           Children = categories,
-                           Hierarchy = hierarchy
-                       };
-        }
-
         private CategorySearchModel GetRootCategoryModel(List<int> availableCategories)
         {
-            var categories = GetRootCategories().Where(cat => availableCategories.Contains(cat.Id)).ToList();
+            List<Category> categories = GetRootCategories().Where(cat => availableCategories.Contains(cat.Id)).ToList();
             return new CategorySearchModel
                    {
                        Children = categories
                    };
-        }
-
-        public CategoryContainer GetSiteCategoryContainer()
-        {
-            var categoryContainers = _session.QueryOver<CategoryContainer>().Where(x => x.Site == _currentSite).Cacheable().List();
-            return categoryContainers.Any() ? _session.QueryOver<CategoryContainer>().Cacheable().List().First() : null;
         }
     }
 }

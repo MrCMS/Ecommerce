@@ -68,7 +68,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                        : new List<Product>();
         }
 
-        public IPagedList<Product> Search(Product product, string query, int page = 1, int pageSize = 10)
+        public IPagedList<Product> RelatedProductsSearch(Product product, string query, int page = 1)
         {
             var queryOver = QueryOver.Of<Product>();
 
@@ -77,7 +77,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
             queryOver = queryOver.Where(item => !item.Id.IsIn(product.RelatedProducts.Select(c => c.Id).ToArray()) && item.Id != product.Id);
 
-            return _session.Paged(queryOver, page, pageSize);
+            return _session.Paged(queryOver, page);
         }
 
         public void AddCategory(Product product, int categoryId)

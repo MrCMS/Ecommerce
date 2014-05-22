@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
@@ -17,7 +18,8 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
         public SpecificationAttributeTests()
         {
             _productSearchService = A.Fake<IProductSearchService>();
-            _productOptionManager = new ProductOptionManager(Session, _productSearchService);
+            _productOptionManager = new ProductOptionManager(Session, _productSearchService,
+                A.Fake<IUniquePageService>());
         }
         [Fact]
         public void ProductOptionManager_AddSpecificationAttribute_SavesOption()

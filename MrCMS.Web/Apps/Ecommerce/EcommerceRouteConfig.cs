@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("User Account - download Order PDF", "Apps/Ecommerce/OrderPdf/ExportOrderToPdf/{id}", new { controller = "OrderPdf", action = "ExportOrderToPdf" }, new[] { typeof(OrderPdfController).Namespace });
             context.MapRoute("Product Search - Query", "search/query", new { controller = "ProductSearch", action = "Query" }, new[] { typeof(ProductSearchController).Namespace });
             context.MapRoute("Product Search - Results", "search/results", new { controller = "ProductSearch", action = "Results" }, new[] { typeof(ProductSearchController).Namespace });
-            context.MapRoute("Category Container - Categories", "Apps/Ecommerce/CategoryContainer/Categories", new { controller = "CategoryContainer", action = "Categories" }, new[] { typeof(CategoryContainer).Namespace });
+            context.MapRoute("Category Container - Categories", "Apps/Ecommerce/CategoryContainer/Categories", new { controller = "CategoryContainer", action = "Categories" }, new[] { typeof(ProductContainer).Namespace });
 
             context.MapRoute("Export Google Base Feed", "export/google-base-feed", new { controller = "GoogleBaseFeed", action = "ExportProductsToGoogleBaseInResponse" }, new[] { typeof(GoogleBaseFeedController).Namespace });
 

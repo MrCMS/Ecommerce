@@ -15,7 +15,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
 
         public override IEnumerable<Type> ChildrenList
         {
-            get { yield return typeof(Product); }
+            get { yield return typeof(Category); }
         }
 
         public override bool ShowChildrenInAdminNav { get { return false; } }

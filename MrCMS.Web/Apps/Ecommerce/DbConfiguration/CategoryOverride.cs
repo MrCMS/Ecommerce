@@ -10,7 +10,14 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
         {
             mapping.Map(category => category.Abstract).Length(500);
             mapping.HasManyToMany(category => category.Products).Table("Ecommerce_ProductCategories").Inverse();
-            mapping.HasManyToMany(category => category.HiddenSearchSpecifications).Table("Ecommerce_CategoryHiddenSearchSpecifications");
+        }
+    }
+    public class EcommerceSearchablePageOverride:IAutoMappingOverride<EcommerceSearchablePage>
+    {
+        public void Override(AutoMapping<EcommerceSearchablePage> mapping)
+        {
+            mapping.HasManyToMany(category => category.HiddenSearchSpecifications)
+                .Table("Ecommerce_SearchablePageHiddenSearchSpecifications");
         }
     }
 }

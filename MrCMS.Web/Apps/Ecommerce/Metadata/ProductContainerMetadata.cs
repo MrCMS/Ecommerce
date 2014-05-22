@@ -6,7 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.Metadata
 {
-    public class CategoryContainerMetadata : DocumentMetadataMap<CategoryContainer>
+    public class ProductContainerMetadata : DocumentMetadataMap<ProductContainer>
     {
         public override ChildrenListType ChildrenListType
         {
@@ -15,17 +15,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
 
         public override IEnumerable<Type> ChildrenList
         {
-            get { yield return typeof(Category); }
+            get { yield return typeof(Product); }
         }
 
         public override string WebGetController
         {
-            get { return "CategoryContainer"; }
-        }
-        public override string WebGetAction
-        {
-            get { return "Show"; }
-        }
+            get { return "ProductContainer"; }
+        } 
         public override bool ChildrenMaintainHierarchy
         {
             get { return false; }

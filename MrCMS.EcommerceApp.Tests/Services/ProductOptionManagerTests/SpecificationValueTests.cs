@@ -1,4 +1,5 @@
 ﻿using FakeItEasy;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -23,7 +24,8 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
         public SpecificationValueTests()
         {
             _productSearchService = A.Fake<IProductSearchService>();
-            _productOptionManager = new ProductOptionManager(Session, _productSearchService);
+            _productOptionManager = new ProductOptionManager(Session, _productSearchService,
+                A.Fake<IUniquePageService>());
         }
         [Fact]
         public void ProductOptionManager_SetSpecificationValue_CreatesValueIfOptionExists()
