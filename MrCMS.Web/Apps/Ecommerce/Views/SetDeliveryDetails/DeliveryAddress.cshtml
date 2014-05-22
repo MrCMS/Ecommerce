@@ -17,7 +17,7 @@
                     {
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-sm-6 control-label">Use Existing Address :</label>
+                                <label class="col-sm-6 control-label">Use Existing Address</label>
                                 <div class="col-sm-6">
                                     @Html.DropDownList("existing-addresses", otherAddresses, new{@class="form-control"})
                                 </div>
@@ -26,19 +26,19 @@
                     }
                     
                     <div class="margin-bottom-10">
-                        <label for="firstname">First Name <span class="red">*</span> :</label>
+                        <label for="firstname">First Name<span class="red">*</span></label>
                         @Html.TextBoxFor(address => address.FirstName, new { placeholder = "First name", @class="form-control" })
                         @Html.ValidationMessageFor(address => address.FirstName)
                     </div>
                     
                     <div class="margin-bottom-10">
-                        <label for="LastName">Last Name <span class="red">*</span> :</label>
+                        <label for="LastName">Last Name<span class="red">*</span></label>
                         @Html.TextBoxFor(address => address.LastName, new { placeholder = "Last name", @class="form-control" })
                         @Html.ValidationMessageFor(address => address.LastName)
                     </div>
 
                     <div class="margin-bottom-10">
-                        <label for="PhoneNumber">Phone Number <span class="red">*</span> :</label>
+                        <label for="PhoneNumber">Phone Number<span class="red">*</span></label>
                         @Html.TextBoxFor(address => address.PhoneNumber, new { placeholder = "Phone number", @class="form-control" })
                         @Html.ValidationMessageFor(address => address.PhoneNumber)
                     </div>
@@ -54,36 +54,36 @@
             <div class="row margin-bottom-10">
                 <div class="col-sm-6">
                     <div class="margin-bottom-10">
-                        <label for="Address1">Address 1 <span class="red">*</span> :</label>
+                        <label for="Address1">Address 1<span class="red">*</span></label>
                         @Html.TextBoxFor(address => address.Address1, new { placeholder = "Address 1", @class="form-control" })
                         @Html.ValidationMessageFor(address => address.Address1)
                     </div>
                         
                     <div class="margin-bottom-10">
-                        <label for="Address2">Address 2 :</label>
+                        <label for="Address2">Address 2</label>
                         @Html.TextBoxFor(address => address.Address2, new { placeholder = "Address 2", @class="form-control" })
                         @Html.ValidationMessageFor(address => address.Address2)
                     </div>
                         
                     <div class="margin-bottom-10">
-                        <label for="City">City <span class="red">*</span> :</label>
+                        <label for="City">City<span class="red">*</span></label>
                         @Html.TextBoxFor(address => address.City, new { placeholder = "City", @class="form-control" })
                         @Html.ValidationMessageFor(address => address.City)
                     </div>
 
                     <div class="margin-bottom-10">
-                        <label for="StateProvince">State/Province <span class="red">*</span> :</label>
+                        <label for="StateProvince">State/Province<span class="red">*</span></label>
                         @Html.TextBoxFor(address => address.StateProvince, new { placeholder = "State/Province", @class="form-control" })
                         @Html.ValidationMessageFor(address => address.StateProvince)
                     </div>
                         
                     <div class="margin-bottom-10">
-                        <label for="Country">Country <span class="red">*</span> :</label>
+                        <label for="Country">Country<span class="red">*</span></label>
                         @Html.DisplayFor(address => address.Country.Name, new{@class="form-control"})
                     </div>
                     
                     <div class="margin-bottom-10">
-                        <label for="PostalCode">Postal Code <span class="red">*</span> :</label>
+                        <label for="PostalCode">Postal Code<span class="red">*</span></label>
                         @Html.TextBoxFor(address => address.PostalCode, new { placeholder = "Postal Code", @class="form-control" })
                         @Html.ValidationMessageFor(address => address.PostalCode)
                     </div>

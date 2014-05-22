@@ -1,10 +1,11 @@
 ﻿body {font-family: 'Maven Pro', sans-serif;color:#444444;font-size:14px;}
 a {color:#4679C3;}
-h1 {font-size:23px;line-height:28px;margin:0 0 10px 0;padding:0;font-weight:normal;color: #333333;}
+h1 {font-size: 20px;line-height: 26px;margin: 0 0 10px 0;padding: 0;color: #333333;}
 .h1style {font-size:23px;line-height:28px;margin:0 0 10px 0;padding:0;font-weight:normal;color: #333333;}
 h3 {font-size:20px;line-height:26px;margin:0 0 10px 0;padding:0;font-weight:normal;}
 h4 {font-size:15px;line-height:20px;margin:0 0 10px 0;padding:0;font-weight:normal;}
 label { font-weight: normal;}
+html {min-height: 101%;}
 
 .navbar {min-height: 38px;margin-bottom:0;}
 .navbar-inverse {background-color: #0172B7;border-color: #0172B7;}
@@ -94,7 +95,7 @@ select {color:#4679C3 !important;}
 table.price-break thead tr th { background: #f0f0f0;border-bottom: none;}
 table.price-break tbody tr td { border-top: 1px dotted #ddd;}
 .breadcrumb {margin-bottom:0;background-color: #fff;border-radius: 4px;padding-left: 0;padding-right: 0;}
-.breadcrumb>li+li:before {content: "\003E\003E";}
+.breadcrumb>li+li:before {content: "»";}
 .panel-group {border-top: 1px solid #f0f0f0;}
 .panel { -webkit-box-shadow: none;box-shadow: none;}
 .panel-default {border: none;}
