@@ -19,7 +19,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             _categoryAdminService = A.Fake<ICategoryAdminService>();
             //use the default of the container existing
-            A.CallTo(() => _categoryAdminService.CategoryContainerExists()).Returns(true);
+            A.CallTo(() => _categoryAdminService.ProductContainerExists()).Returns(true);
             _categoryController = new CategoryController(_categoryAdminService);
         }
 
@@ -53,7 +53,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void CategoryController_Index_ModelIsNullIfTheCategoryContainerDoesNotExist()
         {
-            A.CallTo(() => _categoryAdminService.CategoryContainerExists()).Returns(false);
+            A.CallTo(() => _categoryAdminService.ProductContainerExists()).Returns(false);
 
             ViewResult index = _categoryController.Index("test", 1);
 

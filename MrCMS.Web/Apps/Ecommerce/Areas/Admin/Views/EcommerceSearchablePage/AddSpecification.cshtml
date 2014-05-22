@@ -2,7 +2,7 @@
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @model List<MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationAttribute>
 @{
-    var category = ViewData["category"] as Category;
+    var category = ViewData["category"] as EcommerceSearchablePage;
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
 }
 <fieldset>

@@ -9,6 +9,7 @@ using MrCMS.Web.Apps.Ecommerce.DbConfiguration;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration.Listeners;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using NHibernate;
 using NHibernate.Event;
@@ -44,6 +45,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             {
                 yield return typeof(DiscountLimitation);
                 yield return typeof(DiscountApplication);
+                yield return typeof(EcommerceSearchablePage);
             }
         }
 

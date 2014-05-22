@@ -13,7 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public ProductSpecificationAttribute()
         {
             Options = new List<ProductSpecificationAttributeOption>();
-            HiddenInCategories = new HashedSet<Category>();
+            HiddenInSearchpages = new HashedSet<EcommerceSearchablePage>();
         }
 
         [Required]
@@ -24,6 +24,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual bool HideInSearch { get; set; }
 
         public virtual IList<ProductSpecificationAttributeOption> Options { get; set; }
-        public virtual Iesi.Collections.Generic.ISet<Category> HiddenInCategories { get; set; }
+        public virtual Iesi.Collections.Generic.ISet<EcommerceSearchablePage> HiddenInSearchpages { get; set; }
     }
 }

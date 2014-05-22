@@ -39,8 +39,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                 pagedList = _session.Paged(QueryOver.Of<Category>(), page);
             }
 
-            var categoryContainer = _uniquePageService.GetUniquePage<CategoryContainer>();
-            var categoryContainerId = categoryContainer == null ? (int?)null : categoryContainer.Id;
+            var productContainer = _uniquePageService.GetUniquePage<ProductContainer>();
+            var categoryContainerId = productContainer == null ? (int?)null : productContainer.Id;
             return new CategoryPagedList(pagedList, categoryContainerId);
         }
 
@@ -61,42 +61,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         }
 
 
-        public bool CategoryContainerExists()
+        public bool ProductContainerExists()
         {
-            return _uniquePageService.GetUniquePage<CategoryContainer>() != null;
-        }
-
-        public List<ProductSpecificationAttribute> GetShownSpecifications(Category category)
-        {
-            return _session.QueryOver<ProductSpecificationAttribute>()
-                .Cacheable()
-                .List()
-                .Where(attribute => !category.HiddenSearchSpecifications.Contains(attribute))
-                .ToList();
-        }
-
-        public bool AddSpecificationToHidden(ProductSpecificationAttribute attribute, int categoryId)
-        {
-            var category = _session.Get<Category>(categoryId);
-
-            if (category == null)
-                return false;
-            category.HiddenSearchSpecifications.Add(attribute);
-            attribute.HiddenInCategories.Add(category);
-            _session.Transact(session => session.Update(category));
-            return true;
-        }
-
-        public bool RemoveSpecificationFromHidden(ProductSpecificationAttribute attribute, int categoryId)
-        {
-            var category = _session.Get<Category>(categoryId);
-
-            if (category == null)
-                return false;
-            category.HiddenSearchSpecifications.Remove(attribute);
-            attribute.HiddenInCategories.Remove(category);
-            _session.Transact(session => session.Update(category));
-            return true;
+            return _uniquePageService.GetUniquePage<ProductContainer>() != null;
         }
     }
 }

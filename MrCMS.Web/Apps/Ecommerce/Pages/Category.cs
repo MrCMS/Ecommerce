@@ -10,18 +10,27 @@ using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
-    public class Category : Webpage
+    public abstract class EcommerceSearchablePage : Webpage
+    {
+        public virtual Iesi.Collections.Generic.ISet<ProductSpecificationAttribute> HiddenSearchSpecifications { get; set; }
+
+        protected EcommerceSearchablePage()
+        {
+            HiddenSearchSpecifications = new HashedSet<ProductSpecificationAttribute>();
+        }
+    }
+    public class Category : EcommerceSearchablePage
     {
         public Category()
         {
             Products = new List<Product>();
-            HiddenSearchSpecifications = new HashedSet<ProductSpecificationAttribute>();
         }
 
         private string _nestedName;
@@ -39,7 +48,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         }
 
         public virtual IList<Product> Products { get; set; }
-        public virtual Iesi.Collections.Generic.ISet<ProductSpecificationAttribute> HiddenSearchSpecifications { get; set; }
         public virtual string ContainerUrl
         {
             get { return (Parent as Webpage).LiveUrlSegment; }
@@ -67,7 +75,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         public override void AdminViewData(ViewDataDictionary viewData, NHibernate.ISession session)
         {
             viewData["product-search-sort-options"] =
-                Enum.GetValues(typeof (ProductSearchSort))
+                Enum.GetValues(typeof(ProductSearchSort))
                     .Cast<ProductSearchSort>()
                     .BuildSelectItemList(sort => sort.GetDescription(), sort => sort.ToString(),
                                          sort => sort == DefaultProductSearchSort, emptyItemText: "System default");

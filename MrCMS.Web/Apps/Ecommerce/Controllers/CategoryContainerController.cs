@@ -1,28 +1,22 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website.Controllers;
-using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
-    public class CategoryContainerController : MrCMSAppUIController<EcommerceApp>
+    public class ProductContainerController : MrCMSAppUIController<EcommerceApp>
     {
-        private readonly ICategoryService _categoryService;
+        private readonly IUniquePageService _uniquePageService;
 
-        public CategoryContainerController(ICategoryService categoryService)
+        public ProductContainerController(IUniquePageService uniquePageService)
         {
-            _categoryService = categoryService;
+            _uniquePageService = uniquePageService;
         }
 
-        public ViewResult Show(CategoryContainer page)
+        public RedirectResult Show(ProductContainer page)
         {
-            return View(page);
-        }
-
-        [HttpGet]
-        public PartialViewResult Categories()
-        {
-            return PartialView(_categoryService.GetRootCategories());
+            return _uniquePageService.RedirectTo<ProductSearch>();
         }
     }
 }

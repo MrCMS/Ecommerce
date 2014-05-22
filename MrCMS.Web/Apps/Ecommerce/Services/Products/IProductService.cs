@@ -11,7 +11,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     {
         ProductPagedList Search(string queryTerm = null, int page = 1);
         IList<Product> Search(string queryTerm);
-        IPagedList<Product> Search(Product product, string query, int page = 1, int pageSize = 10);
+        IPagedList<Product> RelatedProductsSearch(Product product, string query, int page = 1);
         void AddCategory(Product product, int categoryId);
         void RemoveCategory(Product product, int categoryId);
         void AddRelatedProduct(Product product, int relatedProductId);

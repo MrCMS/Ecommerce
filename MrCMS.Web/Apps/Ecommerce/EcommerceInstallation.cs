@@ -45,7 +45,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 UrlSegment = "products",
                 RevealInNavigation = true
             };
-            var categoryContainer = new CategoryContainer
+            var categoryContainer = new ProductContainer
             {
                 Name = "Categories",
                 UrlSegment = "categories",

@@ -621,7 +621,7 @@
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\OrderTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\ProductVariantTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
-    <Compile Include="Apps\Ecommerce\Metadata\CategoryContainerMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\ProductContainerMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\EnterOrderEmailMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\NewInProducts.cs" />
@@ -685,7 +685,7 @@
     <Compile Include="Apps\Ecommerce\Models\WishlistSummary.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Cart.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Category.cs" />
-    <Compile Include="Apps\Ecommerce\Pages\CategoryContainer.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\ProductContainer.cs" />
     <Compile Include="Apps\Ecommerce\Pages\EnterOrderEmail.cs" />
     <Compile Include="Apps\Ecommerce\Pages\NewInProducts.cs" />
     <Compile Include="Apps\Ecommerce\Pages\OrderPlaced.cs" />
@@ -2523,11 +2523,11 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\User\Order.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Category.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\CategoryContainer.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\NewInProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Product.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductAddedToCart.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductContainer.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductSearch.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ShowWishlist.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\CategoriesOnlyNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\FeaturedCategories.cshtml" />
@@ -2646,8 +2646,8 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\NotWhatYouWereLookingForWidget.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\On404SearchWidget.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\On404SearchWidget.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Category\AddSpecification.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Category\HiddenSpecifications.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceSearchablePage\AddSpecification.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceSearchablePage\HiddenSpecifications.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\ItemHasSKU.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <None Include="Themes\Default\Views\Web.Debug.config">

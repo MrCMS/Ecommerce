@@ -8,13 +8,13 @@ $(function () {
         var button = $(this),
             specificationId = button.data('specification-id'),
             categoryId = $('#categoryId').val();
-        $.post('/Admin/Apps/Ecommerce/Category/AddSpecification/',
+        $.post('/Admin/Apps/Ecommerce/EcommerceSearchablePage/AddSpecification/',
             { id: specificationId, categoryId: categoryId },
             function (response) {
-                parent.$.get('/Admin/Apps/Ecommerce/Category/HiddenSpecifications/' + categoryId, function (products) {
+                parent.$.get('/Admin/Apps/Ecommerce/EcommerceSearchablePage/HiddenSpecifications/' + categoryId, function (products) {
                     parent.$('#hidden-specifications').replaceWith(products);
                 });
-                var href = '/Admin/Apps/Ecommerce/Category/AddSpecification/' + categoryId;
+                var href = '/Admin/Apps/Ecommerce/EcommerceSearchablePage/AddSpecification/' + categoryId;
                 $('.modal-body-container').load(href + ' div#specifications', function() {
                 });
             });

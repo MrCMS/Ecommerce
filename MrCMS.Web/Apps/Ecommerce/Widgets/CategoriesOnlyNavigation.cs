@@ -24,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
         public override object GetModel(ISession session)
         {
             var categoryContainer =
-                session.QueryOver<CategoryContainer>()
+                session.QueryOver<ProductContainer>()
                        .Where(x => x.Site == CurrentRequestData.CurrentSite)
                        .Cacheable().SingleOrDefault();
             var navigationRecords =

@@ -2,6 +2,7 @@
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Helpers;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
@@ -16,7 +17,8 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
         public AttributeValueTests()
         {
             _productSearchService = A.Fake<IProductSearchService>();
-            _productOptionManager = new ProductOptionManager(Session, _productSearchService);
+            _productOptionManager = new ProductOptionManager(Session, _productSearchService,
+                A.Fake<IUniquePageService>());
         }
 
         [Fact]

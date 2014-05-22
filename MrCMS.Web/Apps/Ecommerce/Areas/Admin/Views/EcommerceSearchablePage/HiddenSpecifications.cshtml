@@ -1,4 +1,4 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Category
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.EcommerceSearchablePage
 
 <div id="hidden-specifications">
     <div class="row-fluid">
@@ -7,7 +7,7 @@
         </div>
         <div class="span6">
             <div class="btn-group pull-right">
-                @Html.ActionLink("Add", "AddSpecification", "Category", new { id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                @Html.ActionLink("Add", "AddSpecification", "EcommerceSearchablePage", new { id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
             </div>
         </div>
     </div>
@@ -27,7 +27,7 @@
                         {
                             <tr>
                                 <td>@attribute.Name</td>
-                                <td>@Html.ActionLink("Remove", "RemoveSpecification", "Category", new { categoryId = Model.Id, id = attribute.Id }, new { @class = "btn btn-danger btn-mini pull-right", data_action = "remove-category-hidden-specification" })</td>
+                                <td>@Html.ActionLink("Remove", "RemoveSpecification", "EcommerceSearchablePage", new { categoryId = Model.Id, id = attribute.Id }, new { @class = "btn btn-danger btn-mini pull-right", data_action = "remove-searchable-page-hidden-specification" })</td>
                             </tr>
                         }
                     </tbody>

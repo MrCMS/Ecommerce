@@ -1,37 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
+using FluentAssertions;
 using MrCMS.Entities.Documents;
 using MrCMS.Web.Apps.Ecommerce.Metadata;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using Xunit;
-using FluentAssertions;
 
 namespace MrCMS.EcommerceApp.Tests.Metadata
 {
-    public class ProductSearchMetadataTests
+    public class ProductContainerMetadataTests
     {
-        private ProductSearchMetadata _metadata;
-
-        public ProductSearchMetadataTests()
-        {
-            _metadata = new ProductSearchMetadata();
-        }
         [Fact]
-        public void ProductSearchMetaData_ChildrenListType_ShouldBeWhiteList()
+        public void ProductContainerMetaData_ChildrenListType_ShouldBeWhiteList()
         {
-            _metadata.ChildrenListType.Should().Be(ChildrenListType.WhiteList);
+            var metadata = GetMetadata();
+
+            metadata.ChildrenListType.Should().Be(ChildrenListType.WhiteList);
         }
 
         [Fact]
-        public void ProductSearchMetaData_ChildrenList_ShouldBeJustProducts()
+        public void ProductContainerMetaData_ChildrenList_ShouldBeJustProducts()
         {
-            _metadata.ChildrenList.Should().BeEquivalentTo(new List<Type> {typeof (Product)});
+            var metadata = GetMetadata();
+
+            metadata.ChildrenList.Should().BeEquivalentTo(new List<Type> { typeof(Product) });
         }
 
         [Fact]
-        public void ProductSearchMetaData_ShowChildrenInAdminNav_ShouldBeFalse()
+        public void ProductContainerMetaData_ShowChildrenInAdminNav_ShouldBeTrue()
         {
-            _metadata.ShowChildrenInAdminNav.Should().BeFalse();
+            var metadata = GetMetadata();
+
+            metadata.ShowChildrenInAdminNav.Should().BeTrue();
+        }
+        
+        private static ProductContainerMetadata GetMetadata()
+        {
+            return new ProductContainerMetadata();
         }
     }
 }

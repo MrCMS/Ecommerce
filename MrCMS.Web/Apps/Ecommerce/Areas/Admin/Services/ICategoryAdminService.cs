@@ -10,9 +10,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
     {
         CategoryPagedList Search(string searchTerm, int page = 1);
         IEnumerable<AutoCompleteResult> Search(string query, List<int> ids);
-        bool CategoryContainerExists();
-        List<ProductSpecificationAttribute> GetShownSpecifications(Category category);
-        bool AddSpecificationToHidden(ProductSpecificationAttribute attribute, int categoryId);
-        bool RemoveSpecificationFromHidden(ProductSpecificationAttribute attribute, int categoryId);
+        bool ProductContainerExists();
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Models;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
@@ -16,12 +17,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     public class ProductOptionManager : IProductOptionManager
     {
         private readonly IProductSearchService _productSearchService;
+        private readonly IUniquePageService _uniquePageService;
         private readonly ISession _session;
 
-        public ProductOptionManager(ISession session, IProductSearchService productSearchService)
+        public ProductOptionManager(ISession session, IProductSearchService productSearchService,IUniquePageService uniquePageService)
         {
             _session = session;
             _productSearchService = productSearchService;
+            _uniquePageService = uniquePageService;
         }
 
         public IList<ProductSpecificationAttribute> ListSpecificationAttributes()
@@ -293,15 +296,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                     .OrderBy(x => x.DisplayOrder)
                                                     .Distinct()
                                                     .ToList();
-            if (query.CategoryId.HasValue)
-            {
-                var category = _session.Get<Category>(query.CategoryId.Value);
-                if (category != null)
-                {
-                    productSpecificationAttributes.RemoveAll(
-                        attribute => category.HiddenSearchSpecifications.Contains(attribute));
-                }
-            }
+
+            RemoveHiddenSearchSpecifications(query, productSpecificationAttributes);
 
             return productSpecificationAttributes.Select(attribute => new ProductOptionModel
                                                                           {
@@ -324,6 +320,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                                                               Id = value.Id
                                                                                           }).ToList()
                                                                           }).ToList();
+        }
+
+        private void RemoveHiddenSearchSpecifications(ProductSearchQuery query, List<ProductSpecificationAttribute> productSpecificationAttributes)
+        {
+            var category = query.CategoryId.HasValue
+                ? (EcommerceSearchablePage)_session.Get<Category>(query.CategoryId.Value)
+                : _uniquePageService.GetUniquePage<ProductSearch>();
+            if (category != null)
+            {
+                productSpecificationAttributes.RemoveAll(
+                    attribute => category.HiddenSearchSpecifications.Contains(attribute));
+            }
         }
 
         public IList<ProductOption> ListAttributeOptions()
