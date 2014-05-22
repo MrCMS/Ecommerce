@@ -1,0 +1,34 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.WorldPaySettings
+@{
+    ViewBag.Title = "WorldPay Settings";
+}
+@using (Html.BeginForm("Save", "WorldPaySettings", FormMethod.Post))
+{
+    <fieldset>
+        <legend>WorldPay Settings
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </span>
+        </legend>
+        @Html.InlineCheckboxFor(settings => settings.Enabled)
+        @Html.InlineCheckboxFor(settings => settings.UseSandbox)
+        @Html.InlineCheckboxFor(settings => settings.RequiresSSL)
+
+        @Html.LabelFor(settings => settings.InstanceId)
+        @Html.TextBoxFor(settings => settings.InstanceId)
+        @Html.ValidationMessageFor(settings => settings.InstanceId)
+        
+        @Html.LabelFor(settings => settings.PaymentMethod)
+        @Html.TextBoxFor(settings => settings.PaymentMethod)
+        @Html.ValidationMessageFor(settings => settings.PaymentMethod)
+
+        @Html.LabelFor(settings => settings.CallbackPassword)
+        @Html.TextBoxFor(settings => settings.CallbackPassword)
+        @Html.ValidationMessageFor(settings => settings.CallbackPassword)
+
+        @Html.LabelFor(settings => settings.CssName)
+        @Html.TextBoxFor(settings => settings.CssName)
+        @Html.ValidationMessageFor(settings => settings.CssName)
+    </fieldset>
+}

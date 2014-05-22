@@ -472,6 +472,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingMethodController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\StockController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\TaxRateController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\WorldPaySettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\AddDiscountLimitationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\PaymentSettingsModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\PayPalExpressCheckoutSettingsModelBinder.cs" />
@@ -479,11 +480,13 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\ProductOptionModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\ProductVariantModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\SagePaySettingsModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\WorldPaySettingsModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\UniqueAttributeNameModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CategoryAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICategoryAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CashOnDeliveryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SagePayController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\WorldPayController.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercent.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemHasSKU.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\AddDiscountApplicationModelBinder.cs" />
@@ -651,6 +654,7 @@
     <Compile Include="Apps\Ecommerce\Models\CountryToAdd.cs" />
     <Compile Include="Apps\Ecommerce\Models\DeliveryStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\EcommerceAdminMenuModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\EcommerceSettingsMenuModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\EmailAndLoginModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\EmailRegistrationStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\FailureDetails.cs" />
@@ -700,8 +704,10 @@
     <Compile Include="Apps\Ecommerce\Pages\ShowWishlist.cs" />
     <Compile Include="Apps\Ecommerce\Pages\UserOrder.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\CashOnDeliveryPaymentMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Helpers\PaymentMethodExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Payment\IPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaymentSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PaymentType.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\GetExpressCheckoutResponse.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalCartManager.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalExpressService.cs" />
@@ -734,6 +740,13 @@
     <Compile Include="Apps\Ecommerce\Payment\SagePay\SagePayPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\SagePay\SagePaySettings.cs" />
     <Compile Include="Apps\Ecommerce\Payment\SagePay\VspServerMode.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Services\IPaymentMethodService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Services\PaymentMethodService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\WorldPay\Models\WorldPayPostInfo.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\WorldPay\Services\IWorldPayPaymentService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\WorldPay\Services\WorldPayPaymentService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\WorldPay\WorldPayPaymentMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\WorldPay\WorldPaySettings.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\GoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\IGoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\ITrackingService.cs" />
@@ -2651,6 +2664,8 @@
     <Content Include="Apps\Ecommerce\Views\Paypoint\Form.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SagePay\Form.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PayPalExpressCheckout\Form.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\WorldPaySettings\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\WorldPay\Form.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <None Include="Themes\Default\Views\Web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
