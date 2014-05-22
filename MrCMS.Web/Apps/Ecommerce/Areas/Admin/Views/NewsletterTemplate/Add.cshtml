@@ -1,0 +1,58 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.NewsletterTemplate
+@{
+    ViewBag.Title = "Add Newsletter Template";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Add", "NewsletterTemplate", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Add Newsletter Template
+            <span class="btn-group display-inline pull-right">
+                @Html.ActionLink("Return to List", "Index", "NewsletterTemplate", null, new { @class = "btn" })
+                <input type="submit" class="btn btn-primary" value="Add Newsletter Template"/>
+            </span>
+        </legend>
+        
+        <div class="row">
+            <div class="span12">
+                @Html.LabelFor(x => x.Name)
+                @Html.TextBoxFor(x => x.Name)
+                @Html.ValidationMessageFor(x => x.Name)
+
+                @Html.LabelFor(x => x.BaseTemplate)
+                @Html.TextAreaFor(x => x.BaseTemplate)
+                @Html.ValidationMessageFor(x => x.BaseTemplate)
+        
+                @Html.LabelFor(x => x.Divider)
+                @Html.TextAreaFor(x => x.Divider)
+                @Html.ValidationMessageFor(x => x.Divider)
+        
+                <h4>Content Items Templates</h4>
+        
+                @Html.LabelFor(x => x.FreeTextTemplate)
+                @Html.TextAreaFor(x => x.FreeTextTemplate)
+                @Html.ValidationMessageFor(x => x.FreeTextTemplate)
+        
+                @Html.LabelFor(x => x.ImageAndTextTemplate)
+                @Html.TextAreaFor(x => x.ImageAndTextTemplate)
+                @Html.ValidationMessageFor(x => x.ImageAndTextTemplate)
+        
+                @Html.LabelFor(x => x.ProductGridTemplate)
+                @Html.TextAreaFor(x => x.ProductGridTemplate)
+                @Html.ValidationMessageFor(x => x.ProductGridTemplate)
+        
+                @Html.LabelFor(x => x.ProductRowTemplate)
+                @Html.TextAreaFor(x => x.ProductRowTemplate)
+                @Html.ValidationMessageFor(x => x.ProductRowTemplate)
+        
+                @Html.LabelFor(x => x.ProductTemplate)
+                @Html.TextAreaFor(x => x.ProductTemplate)
+                @Html.ValidationMessageFor(x => x.ProductTemplate)
+        
+                @Html.LabelFor(x => x.BannerTemplate)
+                @Html.TextAreaFor(x => x.BannerTemplate)
+                @Html.ValidationMessageFor(x => x.BannerTemplate)
+            </div>
+        </div>
+    </fieldset>
+}
