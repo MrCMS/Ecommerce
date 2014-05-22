@@ -489,6 +489,7 @@
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercent.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemHasSKU.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\Abstract.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\FreeText.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\Newsletter.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\NewsletterTemplate.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\AddDiscountApplicationModelBinder.cs" />
