@@ -484,8 +484,10 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICategoryAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CashOnDeliveryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SagePayController.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\NewsletterTemplateOverride.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercent.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemHasSKU.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\NewsletterTemplate.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\AddDiscountApplicationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\OrderByGuidModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\ProductSearchQueryModelBinder.cs" />
