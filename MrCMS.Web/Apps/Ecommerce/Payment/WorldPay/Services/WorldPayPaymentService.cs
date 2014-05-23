@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
@@ -151,31 +152,35 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
                             transStatus, orderId));
 
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
+                CurrentRequestData.ErrorSignal.Raise(exception);
                 return new ContentResult
                        {
-                           Content = ex.Message
+                           Content = exception.Message
                        };
             }
-            _orderService.PlaceOrder(_cart, o =>
-                                            {
-                                                o.PaymentStatus = PaymentStatus.Paid;
-                                                o.ShippingStatus = ShippingStatus.Unshipped;
-                                                o.AuthorisationToken = authCode;
-                                                o.CaptureTransactionId = transId;
-                                            });
+            Order order = _orderService.PlaceOrder(cart, o =>
+            {
+                o.PaymentStatus = PaymentStatus.Paid;
+                o.ShippingStatus = ShippingStatus.Unshipped;
+                o.AuthorisationToken = authCode;
+                o.CaptureTransactionId = transId;
+            });
 
-            return new ContentResult {Content = "OK"};
+            return new ViewResult {ViewName = "RedirectToComplete", ViewData = new ViewDataDictionary(order)};
         }
 
         private CartModel GetCart(string orderId)
         {
             var serializedTxCode = JsonConvert.SerializeObject(orderId);
             var sessionData = _session.QueryOver<SessionData>().Where(data => data.Key == CartManager.CurrentCartGuid && data.Data == serializedTxCode).SingleOrDefault();
-            return sessionData == null
-                ? null
-                : _cartBuilder.BuildCart(sessionData.UserGuid);
+            if (sessionData != null)
+            {
+                CurrentRequestData.UserGuid = sessionData.UserGuid;
+                return _cartBuilder.BuildCart(sessionData.UserGuid);
+            }
+            return null;
         }
 
         private string GetSchemeAndAuthority()

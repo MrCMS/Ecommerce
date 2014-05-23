@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Ecommerce.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Models.Payment;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 
-namespace MrCMS.Web.Apps.Ecommerce.Services.CashOnDelivery
+namespace MrCMS.Web.Apps.Ecommerce.Payment.CashOnDelivery.Services
 {
     public class CashOnDeliveryUIService : ICashOnDeliveryUIService
     {
