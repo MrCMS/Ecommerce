@@ -14,7 +14,7 @@
     <RootNamespace>MrCMS.Web</RootNamespace>
     <AssemblyName>MrCMS.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <FileUpgradeFlags>
@@ -704,6 +704,8 @@
     <Compile Include="Apps\Ecommerce\Pages\ShowWishlist.cs" />
     <Compile Include="Apps\Ecommerce\Pages\UserOrder.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\CashOnDeliveryPaymentMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\Services\CashOnDeliveryUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\Services\ICashOnDeliveryUIService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Helpers\PaymentMethodExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Payment\IPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaymentSettings.cs" />
@@ -764,8 +766,6 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartSessionKeyList.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartSessionManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\CashOnDelivery\CashOnDeliveryUIService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\CashOnDelivery\ICashOnDeliveryUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\CategoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\ICategoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Currencies\ICurrencyService.cs" />
@@ -2666,6 +2666,7 @@
     <Content Include="Apps\Ecommerce\Views\PayPalExpressCheckout\Form.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\WorldPaySettings\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Views\WorldPay\Form.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\WorldPay\RedirectToComplete.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <None Include="Themes\Default\Views\Web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
@@ -2804,16 +2805,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1834</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8895</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
