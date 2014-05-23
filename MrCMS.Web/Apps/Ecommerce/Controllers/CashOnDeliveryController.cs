@@ -1,7 +1,7 @@
 using System.Web.Mvc;
-using FluentNHibernate.Testing.Values;
 using MrCMS.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Services.CashOnDelivery;
+using MrCMS.Web.Apps.Ecommerce.Models.Payment;
+using MrCMS.Web.Apps.Ecommerce.Payment.CashOnDelivery.Services;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
@@ -25,7 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [ActionName("Form")]
         public RedirectResult Form_POST()
         {
-            var result = _cashOnDeliveryUIService.TryPlaceOrder();
+            CashOnDeliveryPlaceOrderResult result = _cashOnDeliveryUIService.TryPlaceOrder();
             result.CannotPlaceOrderReasons.ForEach(s => TempData.ErrorMessages().Add(s));
             return result.RedirectResult;
         }
