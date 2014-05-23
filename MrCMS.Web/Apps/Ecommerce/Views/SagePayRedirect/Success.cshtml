@@ -9,24 +9,25 @@
         <noscript>
             <br>
             <br>
-            <div style="text-align: center;" >
+            <div style="text-align: center;">
                 <h1>Completing your order</h1>
                 <h2>
                     JavaScript is currently disabled or is not supported
-                    by your browser.<br></h2>
-                <h3>Please click Submit to continue
-                    to the order complete page.</h3>
+                    by your browser.<br>
+                </h2>
+                <h3>
+                    Please click Submit to continue
+                    to the order complete page.
+                </h3>
                 <input type="submit" value="Submit">
             </div>
         </noscript>
         <input type="hidden" value="@Model" name="id" />
     </form>
     <script type="text/javascript">
-<!--
-    function OnLoadEvent() {
-        document.mainform.submit();
-    }
-    //-->
+        function OnLoadEvent() {
+            document.mainform.submit();
+        }
     </script>
 </body>
 </html>

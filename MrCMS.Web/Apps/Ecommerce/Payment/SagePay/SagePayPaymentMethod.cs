@@ -1,27 +1,41 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Payment.Paypoint;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.SagePay
 {
-    public class SagePayPaymentMethod : BasePaymentMethod
+    public class SagePayPaymentMethod : IPaymentMethod
     {
-        public override string Name { get { return "SagePay"; } }
-        public override string SystemName { get { return "SagePay"; } }
-
-        public override string ControllerName
+        public string Name
         {
             get { return "SagePay"; }
         }
 
-        public override string ActionName
+        public string SystemName
+        {
+            get { return "SagePay"; }
+        }
+
+        public string ControllerName
+        {
+            get { return "SagePay"; }
+        }
+
+        public string ActionName
         {
             get { return "Form"; }
         }
 
-        public override PaymentType PaymentType { get { return PaymentType.ServiceBased; } }
-        public override bool Enabled { get { return MrCMSApplication.Get<SagePaySettings>().Enabled; } }
-        public override bool CanUse(CartModel cart)
+        public PaymentType PaymentType
+        {
+            get { return PaymentType.ServiceBased; }
+        }
+
+        public bool Enabled
+        {
+            get { return MrCMSApplication.Get<SagePaySettings>().Enabled; }
+        }
+
+        public bool CanUse(CartModel cart)
         {
             return !cart.IsPayPalTransaction;
         }

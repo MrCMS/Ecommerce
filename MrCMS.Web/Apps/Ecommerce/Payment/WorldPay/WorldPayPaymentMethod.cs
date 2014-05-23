@@ -1,25 +1,23 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 
-namespace MrCMS.Web.Apps.Ecommerce.Payment.CashOnDelivery
+namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay
 {
-    public class CashOnDeliveryPaymentMethod : IPaymentMethod
+    public class WorldPayPaymentMethod : IPaymentMethod
     {
         public string Name
         {
-            get { return "Cash On Delivery"; }
+            get { return "WorldPay"; }
         }
 
         public string SystemName
         {
-            get { return "CashOnDelivery"; }
+            get { return "WorldPay"; }
         }
 
         public string ControllerName
         {
-            get { return "CashOnDelivery"; }
+            get { return "WorldPay"; }
         }
 
         public string ActionName
@@ -29,12 +27,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CashOnDelivery
 
         public PaymentType PaymentType
         {
-            get { return PaymentType.ServiceBased; }
+            get { return PaymentType.Redirection; }
         }
 
         public bool Enabled
         {
-            get { return MrCMSApplication.Get<PaymentSettings>().CashOnDeliveryEnabled; }
+            get { return MrCMSApplication.Get<WorldPaySettings>().Enabled; }
         }
 
         public bool CanUse(CartModel cart)
