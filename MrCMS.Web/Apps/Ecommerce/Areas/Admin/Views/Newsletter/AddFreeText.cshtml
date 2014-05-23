@@ -1,0 +1,27 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems.FreeText
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+}
+
+@using (Html.BeginForm("AddFreeText", "Newsletter", new { id = "" },FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Add Free Text
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn btn-primary" value="Add" />
+            </span>
+        </legend>
+        
+        @Html.HiddenFor(x => x.Newsletter.Id)
+
+        @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name)
+        @Html.ValidationMessageFor(x => x.Name)
+
+        @Html.LabelFor(x => x.Text)
+        @Html.TextAreaFor(x => x.Text, new { @class = "ckedit-enabled" })
+        @Html.ValidationMessageFor(x => x.Text)
+
+    </fieldset>
+}
