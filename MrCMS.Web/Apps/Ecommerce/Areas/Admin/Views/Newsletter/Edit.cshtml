@@ -1,0 +1,104 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder
+@model Newsletter
+@{
+    ViewBag.Title = "Edit Newsletter";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var templates = ViewData["templates"] as IEnumerable<SelectListItem>;
+}
+@using (Html.BeginForm("Edit", "Newsletter", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Edit Newsletter
+            <span class="btn-group display-inline pull-right">
+                @Html.ActionLink("Return to List", "Index", "Newsletter", null, new { @class = "btn" })
+                <a href="#" class="btn btn-warning" data-toggle="fb-modal">Preview</a>
+                <a href="@Url.Action("Delete", "Newsletter", new { id = Model.Id })" class="btn btn-danger" data-toggle="fb-modal">Delete</a>
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </span>
+        </legend>
+
+        <div class="row-fluid">
+            <div class="span6">
+                @Html.LabelFor(x => x.Name)
+                @Html.TextBoxFor(x => x.Name)
+                @Html.ValidationMessageFor(x => x.Name)
+
+                @Html.LabelFor(x => x.NewsletterTemplate)
+                @Html.DropDownListFor(x => x.NewsletterTemplate.Id, templates)
+                @Html.ValidationMessageFor(x => x.NewsletterTemplate)
+
+                
+                <hr/>
+                <div id="content-items">
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <h4>Content Items</h4>
+                        </div>
+                        <div class="span6">
+                            <div class="btn-group pull-right">
+                                @if (Model.ContentItems.Any())
+                                {
+                                    @Html.ActionLink("Sort", "SortContentItems", "Newsletter", new { id = Model.Id }, new { @class = "btn", data_toggle = "fb-modal" })
+                                }
+                                <a class="btn btn-success" data-toggle="dropdown"><i class="icon-plus icon-white"></i> Add Content Item</a>
+                                <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Banner", "AddBanner", "Newsletter", new { id = Model.Id }, new { data_toggle = "fb-modal" })</li>
+                                    <li>@Html.ActionLink("Free Text", "AddFreeText", "Newsletter", new { id = Model.Id }, new { data_toggle = "fb-modal" })</li>
+                                    <li>@Html.ActionLink("Image and Text", "AddImageAndText", "Newsletter", new { id = Model.Id }, new { data_toggle = "fb-modal" })</li>
+                                    <li>@Html.ActionLink("Product List", "AddProductList", "Newsletter", new { id = Model.Id }, new { data_toggle = "fb-modal" })</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    @if (!Model.ContentItems.Any())
+                    {
+                        <p>No Content Items to display.</p>
+                    }
+                    else
+                    {
+                        <table class="table table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var contentItem in Model.ContentItems)
+                                {
+                                    <tr>
+                                        <td>@contentItem.Name</td>
+                                        <td>@contentItem.GetType().Name</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                @Html.ActionLink("Edit", "Edit" + contentItem.GetType().Name, new { id = contentItem.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                                @Html.ActionLink("Delete", "DeleteContentItem", new { id = contentItem.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+            <div class="span6">
+                <h4>Preview</h4>
+                <div class="row-fluid">
+                    <iframe class="span12">dfasf</iframe>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+    </fieldset>
+}

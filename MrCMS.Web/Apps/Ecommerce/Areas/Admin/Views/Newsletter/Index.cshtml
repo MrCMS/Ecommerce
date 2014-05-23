@@ -1,0 +1,54 @@
+﻿@model IList<MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.Newsletter>
+
+@{
+    ViewBag.Title = "Newsletters";
+}
+
+@if (Model != null)
+{
+    <form>
+        <fieldset>
+            <legend>Newsletters
+                <span class="btn-group display-inline pull-right">
+                    @Html.ActionLink("Add Newsletter", "Add", null, new { @class = "btn btn-primary", data_toggle ="fb-modal" })
+                </span>
+            </legend>
+        </fieldset>
+    </form>
+    
+    
+
+    if (!Model.Any())
+    {
+        <p>No newsletters to display.</p>
+    }
+    else
+    {
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Created On</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var newsletter in Model)
+                {
+                    <tr>
+                        <td>@newsletter.Name</td>
+                        <td>@newsletter.CreatedOn</td>
+                        <td>
+                            <div class="btn-group">
+                                @Html.ActionLink("Edit", "Edit", new { id = newsletter.Id }, new { @class = "btn btn-mini" })
+                                @Html.ActionLink("Delete", "Delete", new { id = newsletter.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+        
+    }
+}

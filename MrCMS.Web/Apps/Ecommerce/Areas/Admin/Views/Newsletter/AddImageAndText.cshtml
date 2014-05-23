@@ -1,0 +1,30 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems.ImageAndText
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+}
+
+@using (Html.BeginForm("AddImageAndText", "Newsletter", new { id = "" }, FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Add Image and Text
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn btn-primary" value="Add" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Newsletter.Id)
+
+        @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name)
+        @Html.ValidationMessageFor(x => x.Name)
+
+        @Html.LabelFor(x => x.ImageUrl)
+        @Html.TextBoxFor(x => x.ImageUrl, new { @class = "media-selector" })
+        @Html.ValidationMessageFor(x => x.ImageUrl)
+
+        @Html.LabelFor(x => x.Text)
+        @Html.TextAreaFor(x => x.Text, new { @class = "ckedit-enabled" })
+        @Html.ValidationMessageFor(x => x.Text)
+    </fieldset>
+}

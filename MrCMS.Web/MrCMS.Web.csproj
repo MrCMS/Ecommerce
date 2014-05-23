@@ -452,6 +452,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\GoogleBaseController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ImportExportController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\NewsletterController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\NewsletterTemplateController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderLineController.cs" />
@@ -485,11 +486,17 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICategoryAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CashOnDeliveryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SagePayController.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\FreeTextOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\ImageAndTextOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\NewsletterTemplateOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\ProductListOverride.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercent.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemHasSKU.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\Abstract.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\Banner.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ContentItem.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\FreeText.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ImageAndText.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ProductList.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\Newsletter.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\NewsletterTemplate.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\AddDiscountApplicationModelBinder.cs" />
@@ -835,7 +842,11 @@
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\StockReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\NewsletterBuilder\ContentItemService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\NewsletterBuilder\IContentItemService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\NewsletterBuilder\INewsletterService.cs" />
     <Compile Include="Apps\Ecommerce\Services\NewsletterBuilder\INewsletterTemplateService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\NewsletterBuilder\NewsletterService.cs" />
     <Compile Include="Apps\Ecommerce\Services\NewsletterBuilder\NewsletterTemplateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\BulkShippingUpdateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\BulkShippingUpdateValidationService.cs" />
@@ -1141,6 +1152,7 @@
     <Content Include="Apps\Core\Content\SocialButtons\zocial.css" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\content-item-product-list.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\dashboard.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-category.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-discount.js" />
@@ -2663,6 +2675,20 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddBanner.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddFreeText.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddImageAndText.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\DeleteContentItem.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditBanner.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditFreeText.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditImageAndText.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddProductList.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditProductList.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\SortContentItems.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <None Include="Themes\Default\Views\Web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
