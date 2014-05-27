@@ -12,7 +12,7 @@
             Edit Newsletter
             <span class="btn-group display-inline pull-right">
                 @Html.ActionLink("Return to List", "Index", "Newsletter", null, new { @class = "btn" })
-                <a href="#" class="btn btn-warning" data-toggle="fb-modal">Preview</a>
+                <a href="@Url.Action("Preview", "Newsletter", new { id = Model.Id })" class="btn btn-warning" data-toggle="fb-modal">Preview</a>
                 <a href="@Url.Action("Delete", "Newsletter", new { id = Model.Id })" class="btn btn-danger" data-toggle="fb-modal">Delete</a>
                 <input type="submit" value="Edit" class="btn btn-primary" />
             </span>
@@ -89,7 +89,7 @@
             <div class="span6">
                 <h4>Preview</h4>
                 <div class="row-fluid">
-                    <iframe class="span12">dfasf</iframe>
+                    <iframe class="span12" src="@Url.Action("Preview", "Newsletter", new { id = Model.Id })"></iframe>
                 </div>
 
             </div>

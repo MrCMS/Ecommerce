@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using Elmah.ContentSyndication;
 using MrCMS.Helpers;
 using MrCMS.Models;
+using MrCMS.Web.Apps.Ecommerce.ActionResults;
 using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder;
 using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems;
 using MrCMS.Web.Apps.Ecommerce.Services.NewsletterBuilder;
@@ -89,7 +90,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         public ActionResult Preview(Newsletter newsletter)
         {
-            return View(newsletter);
+            return new NewsletterActionResult(newsletter);
         }
 
         public PartialViewResult ShowContentItems()
@@ -281,6 +282,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _contentItemService.Edit(productList);
             return RedirectToAction("Edit", new { id = productList.Newsletter.Id });
         }
-
     }
 }
