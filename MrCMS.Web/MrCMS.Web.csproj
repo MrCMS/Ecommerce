@@ -1161,6 +1161,8 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-products.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\google-base.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\manage-options.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\newsletter-ck.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\newsletter-config.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\orders-by-shipping-type.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-variant.js" />
