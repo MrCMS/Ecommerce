@@ -9,7 +9,7 @@ using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Parsing
 {
-    public class ProductListItemParser : AbstractNewsletterItemParser<ProductList>
+    public class ProductListItemParser : INewsletterItemParser<ProductList>
     {
         private static readonly Regex RowRegex = new Regex(@"\[(?i)ProductRow\]");
         private static readonly Regex ProductRegex = new Regex(@"\[(?i)Product\]");
@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Parsing
             _productParser = productParser;
         }
 
-        public override string Parse(NewsletterTemplate template, ProductList item)
+        public string Parse(NewsletterTemplate template, ProductList item)
         {
             string output = template.ProductGridTemplate;
             Product[] products = GetProducts(item);

@@ -717,13 +717,14 @@
     <Compile Include="Apps\Ecommerce\Pages\SetDeliveryDetails.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ShowWishlist.cs" />
     <Compile Include="Apps\Ecommerce\Pages\UserOrder.cs" />
-    <Compile Include="Apps\Ecommerce\Parsing\AbstractNewsletterItemParser.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\IUrlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\BannerItemParser.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\FreeTextItemParser.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\INewsletterItemParser.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\ImageAndTextItemParser.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\ProductParser.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\ProductListItemParser.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\UrlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\CashOnDeliveryPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\Services\CashOnDeliveryUIService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\Services\ICashOnDeliveryUIService.cs" />

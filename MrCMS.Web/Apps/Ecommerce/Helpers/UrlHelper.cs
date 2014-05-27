@@ -1,22 +1,18 @@
-﻿using System;
+using System;
 using MrCMS.Entities.Multisite;
-using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder;
-using MrCMS.Website;
 
-namespace MrCMS.Web.Apps.Ecommerce.Parsing
+namespace MrCMS.Web.Apps.Ecommerce.Helpers
 {
-    public abstract class AbstractNewsletterItemParser<T> : INewsletterItemParser<T>
+    public class UrlHelper : IUrlHelper
     {
-        private Site _site;
+        private readonly Site _site;
 
-        protected Site Site
+        public UrlHelper(Site site)
         {
-            get { return _site ?? (_site = MrCMSApplication.Get<Site>()); }
+            _site = site;
         }
 
-        public abstract string Parse(NewsletterTemplate template, T item);
-
-        protected string ToAbsolute(string urlSegment)
+        public string ToAbsolute(string urlSegment)
         {
             const string scheme = "http://";
 
@@ -25,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Parsing
                 return string.Empty;
             }
 
-            string authority = Site.BaseUrl;
+            string authority = _site.BaseUrl;
 
             if (authority.EndsWith("/"))
                 authority = authority.TrimEnd('/');
