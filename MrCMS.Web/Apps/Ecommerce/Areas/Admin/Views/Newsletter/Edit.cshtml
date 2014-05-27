@@ -68,7 +68,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var contentItem in Model.ContentItems)
+                                @foreach (var contentItem in Model.ContentItems.OrderBy(x=>x.DisplayOrder).ToList())
                                 {
                                     <tr>
                                         <td>@contentItem.Name</td>

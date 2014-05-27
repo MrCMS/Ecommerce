@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Elmah.ContentSyndication;
 using MrCMS.Helpers;
 using MrCMS.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder;
@@ -119,12 +120,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult SortContentItems(List<SortItem> items)
         {
-            //if (items != null && items.Count > 0)
-            //{
-            //    _productOptionManager.UpdateSpecificationAttributeDisplayOrder(items);
-            //}
-            //return RedirectToAction("Index", "ProductSpecificationAttribute");
-            return null;
+            if (items != null && items.Count > 0)
+            {
+                _newsletterService.UpdateContentItemsDisplayOrder(items);
+            }
+            return RedirectToAction("Index");
         }
 
         // Content Items
