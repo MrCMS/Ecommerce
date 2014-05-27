@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems.ImageAndText
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems.ImageAndText
 @{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
 }
@@ -24,7 +25,11 @@
         @Html.ValidationMessageFor(x => x.ImageUrl)
 
         @Html.LabelFor(x => x.Text)
-        @Html.TextAreaFor(x => x.Text, new { @class = "ckedit-enabled" })
+        @Html.TextAreaFor(x => x.Text, new { @class = "newsletter-ck" })
         @Html.ValidationMessageFor(x => x.Text)
     </fieldset>
+}
+
+@{
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/newsletter-ck.js");
 }
