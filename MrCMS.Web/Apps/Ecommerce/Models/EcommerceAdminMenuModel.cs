@@ -30,6 +30,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                         
                                                     }
                                             },
+                                            {
+                                                "Newsletter Builder",
+                                                new List<IMenuItem>
+                                                    {
+                                                        new ChildMenuItem("Templates", "/Admin/Apps/Ecommerce/NewsletterTemplate"),
+                                                        new ChildMenuItem("Newsletter", "/Admin/Apps/Ecommerce/Newsletter")
+                                                    }
+                                            }
                                         });
             }
         }
