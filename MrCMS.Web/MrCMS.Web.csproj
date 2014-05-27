@@ -440,6 +440,7 @@
     <Compile Include="Apps\Core\Models\RegisterAndLogin\ResetPasswordViewModel.cs" />
     <Compile Include="Apps\Core\Services\OnUserRegisteredEventArgs.cs" />
     <Compile Include="Apps\Core\Widgets\Slider.cs" />
+    <Compile Include="Apps\Ecommerce\ActionResults\NewsletterActionResult.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
@@ -716,6 +717,13 @@
     <Compile Include="Apps\Ecommerce\Pages\SetDeliveryDetails.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ShowWishlist.cs" />
     <Compile Include="Apps\Ecommerce\Pages\UserOrder.cs" />
+    <Compile Include="Apps\Ecommerce\Parsing\AbstractNewsletterItemParser.cs" />
+    <Compile Include="Apps\Ecommerce\Parsing\BannerItemParser.cs" />
+    <Compile Include="Apps\Ecommerce\Parsing\FreeTextItemParser.cs" />
+    <Compile Include="Apps\Ecommerce\Parsing\INewsletterItemParser.cs" />
+    <Compile Include="Apps\Ecommerce\Parsing\ImageAndTextItemParser.cs" />
+    <Compile Include="Apps\Ecommerce\Parsing\ProductParser.cs" />
+    <Compile Include="Apps\Ecommerce\Parsing\ProductListItemParser.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\CashOnDeliveryPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\Services\CashOnDeliveryUIService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\Services\ICashOnDeliveryUIService.cs" />
