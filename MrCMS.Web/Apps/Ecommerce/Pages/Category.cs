@@ -14,6 +14,7 @@ using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using NHibernate;
+using UrlHelper = System.Web.Mvc.UrlHelper;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
