@@ -26,11 +26,11 @@
         <div class="col-sm-8">
             <div class="form-horizontal">
                 <div class="form-group">
-                    <label for="OrderEmail" class="col-sm-6">Enter your Email address <span class="red">*</span> :</label>
-                    <div class="col-sm-6">
-                        @Html.TextBoxFor(x => x.OrderEmail, new { placeholder = "Email address", @class="form-control" })
-                        @Html.ValidationMessageFor(x => x.OrderEmail)
-                    </div>
+                    <label for="OrderEmail" class="col-sm-6">Enter your Email address<span class="red">*</span>:</label>
+                        <div class="col-sm-12">
+                            @Html.TextBoxFor(x => x.OrderEmail, new { placeholder = "Email address", @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.OrderEmail)
+                        </div>
                 </div>
             </div>
             <p>Do you have a password?</p>    

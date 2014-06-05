@@ -8,7 +8,26 @@
 }
 
 <div class="container padding-top-bottom-20">
-    <div class="row">
+    <div class="row visible-xs">
+        <div class="col-xs-4">
+            <div class="padding-top-10">
+                @RenderZone("Header Left")
+            </div>
+        </div>
+        <div class="col-xs-8">
+            <div class="col-xs-6 padding-left-0">
+                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())" class="btn btn-default btn-block">
+                    Basket
+                </a>
+            </div>
+            <div class="col-xs-6 padding-l-r-0">
+                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-default btn-block">
+                    Return to shop
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row hidden-xs">
         <div class="col-md-2 col-sm-2 col-xs-2">
             <div class="padding-top-10">
                 @RenderZone("Header Left")

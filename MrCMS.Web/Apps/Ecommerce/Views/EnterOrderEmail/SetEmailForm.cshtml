@@ -2,7 +2,7 @@
 @using MrCMS.Website
 @model CartModel
 <div class="row">
-    <div class="col-sm-8 padding-left-0">
+    <div class="col-sm-8 padding-left-0 mobile-left-padding">
         @if (CurrentRequestData.CurrentUser == null)
         {
             Html.RenderPartial("SetOrderEmailAndLogin", new EmailAndLoginModel { OrderEmail = Model.OrderEmail });

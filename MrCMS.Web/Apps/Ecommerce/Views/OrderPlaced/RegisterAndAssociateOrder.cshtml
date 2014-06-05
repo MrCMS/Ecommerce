@@ -6,7 +6,7 @@
 }
 <div class="grey-border margin-bottom-20">
     <div class="block-title">
-        <div class="h1style">
+        <div class="h1style padding-left-10">
             Would you like us to remember your details for next time?
         </div>
     </div>
@@ -17,22 +17,27 @@
             @Html.HiddenFor(model => model.FirstName)
             @Html.HiddenFor(model => model.LastName)
             @Html.Hidden("Id", order.Guid)
-            <div class="margin-bottom-10">
-                @Html.LabelFor(model => model.Password)
-                @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x=>x.Password)
-            </div>
-            <div class="margin-bottom-10">
-                @Html.LabelFor(model => model.ConfirmPassword)
-                @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x=>x.ConfirmPassword)
-            </div>
-            <br />
             <div class="row">
-                <div class="col-sm-4">
-                    <input type="submit" class="btn btn-danger btn-block" value="Continue" />
+                <div class="col-sm-6">
+                    <div class="margin-bottom-10">
+                        @Html.LabelFor(model => model.Password)
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.Password)
+                    </div>
+                    <div class="margin-bottom-10">
+                        @Html.LabelFor(model => model.ConfirmPassword)
+                        @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.ConfirmPassword)
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <input type="submit" class="btn btn-normalgreen btn-block" value="Continue" />
+                        </div>
+                    </div>
                 </div>
             </div>
+            
         }
     </div>
 </div>

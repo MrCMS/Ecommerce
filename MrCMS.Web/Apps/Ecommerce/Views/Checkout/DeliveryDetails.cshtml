@@ -11,4 +11,4 @@
     <li>@(Model.ShippingAddress.PostalCode??String.Empty)</li>
     <li>@(Model.ShippingAddress.Country!=null?Model.ShippingAddress.Country.Name:String.Empty)</li>
 </ul>
-<a class="btn btn-info" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.SetDeliveryDetails>())">Edit</a>
+<a class="btn btn-grey" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.SetDeliveryDetails>())">Edit</a>

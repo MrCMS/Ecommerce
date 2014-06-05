@@ -21,16 +21,18 @@
     <div class="col-sm-6">
         <div class="alert alert-info">
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-12">
                     @{ Html.RenderAction("CartDetails", "ProductAddedToCart");}
                 </div>
-                <div class="col-sm-8">
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
                     <div class="row">
                         <div class="col-sm-6">
-                            <a href="@(UniquePageHelper.GetUrl<Cart>())" class="btn btn-link">Edit Basket</a>
+                            <a href="@(UniquePageHelper.GetUrl<Cart>())" class="btn btn-grey btn-block">Edit Basket</a>
                         </div>
                         <div class="col-sm-6">
-                            <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())" class="btn btn-info span12">Proceed to Checkout</a>
+                            <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())" class="btn btn-normalgreen btn-block">Proceed to Checkout</a>
                         </div>
                     </div>
                 </div>

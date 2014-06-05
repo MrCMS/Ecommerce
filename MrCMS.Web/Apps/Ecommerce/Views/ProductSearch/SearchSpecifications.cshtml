@@ -11,10 +11,10 @@
             @foreach (var specification in Model)
             {
                 <div class="option">
-                    <div class="col-sm-4 padding-0 line-height-30">
+                    <div class="padding-0 line-height-30">
                         <label for="specifications-@specification.Id">@specification.Name</label>
                     </div>
-                    <div class="col-sm-8 padding-right-0">
+                    <div class="padding-right-0">
                         <select name="Specifications" id="specifications-@specification.Id" class="form-control">
                             <option value="">All</option>
                             @foreach (var option in specification.Values)

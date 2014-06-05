@@ -3,7 +3,7 @@
 @using (Html.BeginForm("UserAccountDetails", "UserAccount", null, FormMethod.Post, new { @class = "form-horizontal" }))
 {   
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-12">
             <div class="margin-bottom-10">
                 <label for="FirstName">First Name</label>
                 @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control"})

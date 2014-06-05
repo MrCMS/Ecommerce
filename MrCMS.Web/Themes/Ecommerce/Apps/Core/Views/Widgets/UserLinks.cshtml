@@ -1,6 +1,6 @@
 ﻿@using MrCMS.Website
 @model List<MrCMS.Web.Apps.Core.Models.Navigation.NavigationRecord>
-<ul class="nav navbar-nav navbar-right">
+<ul class="nav navbar-nav navbar-right account">
     <li>
         <a href="#" data-toggle="dropdown">
             <span class="glyphicon glyphicon-user"></span>
@@ -10,7 +10,7 @@
             {
                 if (@page.Text.ToString() == "My Account")
                 {
-                    <li><a href="@page.Url"><span class="glyphicon glyphicon-user"></span></a></li>
+                    <li><a href="@page.Url">@page.Text</a></li>
                 }
                 else
                 {

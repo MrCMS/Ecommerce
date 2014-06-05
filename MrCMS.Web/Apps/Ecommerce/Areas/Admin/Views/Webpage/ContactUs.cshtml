@@ -1,0 +1,22 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.ContactUs
+
+<div class="row-fluid">
+    <div class="span6">
+        @Html.LabelFor(x => x.Address)
+        @Html.TextAreaFor(x => x.Address, new { @class = "ckedit-enabled" })
+        @Html.ValidationMessageFor(x => x.Address)
+
+        @Html.LabelFor(x => x.Latitude)
+        @Html.TextBoxFor(x => x.Latitude)
+        @Html.ValidationMessageFor(x => x.Latitude)
+
+        @Html.LabelFor(x => x.Longitude)
+        @Html.TextBoxFor(x => x.Longitude)
+        @Html.ValidationMessageFor(x => x.Longitude)
+    </div>
+    <div class="span6">
+        @Html.LabelFor(x => x.PinImage)
+        @Html.TextBoxFor(x => x.PinImage, new { @class = "media-selector" })
+        @Html.ValidationMessageFor(x => x.PinImage)
+    </div>
+</div>
