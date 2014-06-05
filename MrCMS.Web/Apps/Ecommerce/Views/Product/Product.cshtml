@@ -8,17 +8,38 @@
 }
 @Html.HiddenFor(x => x.UrlSegment)
 @{ Html.RenderPartial("VariantDetails", selectedVariant);}
-<hr class="small-margin" />
 
-<div class="row-fluid" id="product-description-container">
-    <div class="@(hasSpecifications ? "span8" : "span12")">
-        <h4>Description</h4>
-        @Editable(Model, product => product.BodyContent)
+<div class="margin-top-bottom-30">
+    <div class="container">
+        <div class="row" id="fulldescription">
+            <div class="@(hasSpecifications ? "col-sm-6" : "col-sm-12")">
+                <div class="block-title">
+                    <span>
+                        <img src="/Apps/Ecommerce/Content/Images/description.png"/>
+                    </span>
+                    Full Description
+                </div>
+                @Editable(Model, product => product.BodyContent)
+                <div class="clearfix"></div>
+                @RenderZone("Below Product Description")
+            </div>
+            @if (hasSpecifications)
+            {
+                
+                <div class="col-sm-6">
+                    <div class="block-title">
+                        <span>
+                            <img src="/Apps/Ecommerce/Content/Images/specification.png"/>
+                        </span>
+                        Specification
+                    </div>
+                    @{
+                        Html.RenderPartial("ProductSpecifications", Model);
+                    }
+                </div>
+            }
+        </div>
     </div>
-    @if (hasSpecifications)
-    {
-        Html.RenderPartial("ProductSpecifications", Model);
-    }
 </div>
 @RenderZone("Below Product Information")
 @{

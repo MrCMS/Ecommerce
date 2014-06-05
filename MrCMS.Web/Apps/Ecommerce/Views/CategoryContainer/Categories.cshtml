@@ -8,22 +8,25 @@
         <h1>Categories</h1>
         foreach (var items in Model.Chunk(4))
         {
-            <div class="row-fluid grid-items margin-bottom-20">
+            <div class="row">
                 @foreach (var item in items)
                 {
-                    <div class="span3">
-                        <div class="product-picture text-align-center margin-top-10 padding-top-bottom-10">
-                            @if (item.FeatureImage != null)
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <div class="category-con">
+                            @if (!string.IsNullOrWhiteSpace(item.FeatureImage))
                             {
-                                <a href="/@item.LiveUrlSegment" title="@item.Name">
-                                    @RenderImage(item.FeatureImage, new Size{Height = 150,Width = 150})
-                                </a>
+                                <div class="category-image">
+                                    <a href="/@item.LiveUrlSegment">@RenderImage(item.FeatureImage, new Size { Width = 263, Height = 184 }, "", "", new{@class="img-responsive"})</a>
+                                </div>
                             }
+                            <div class="category-name">
+                                <a href="/@item.LiveUrlSegment">@item.Name</a>
+                            </div>
                         </div>
-                        <div class="category-name">
-                            <h3><a href="/@item.LiveUrlSegment">@item.Name</a></h3> 
-                        </div>
-                        <div class="clearfix"></div>
+                        @*@if (!string.IsNullOrWhiteSpace(item.Abstract))
+                        {
+                            <p>@item.Abstract</p>
+                        }*@
                     </div>
                 }
             </div>

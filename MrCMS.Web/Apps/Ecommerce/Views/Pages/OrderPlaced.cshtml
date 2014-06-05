@@ -8,24 +8,29 @@
     var order = ViewData["order"] as Order;
     var emailRegistrationStatus = ViewData["user-can-register"] is EmailRegistrationStatus ? (EmailRegistrationStatus)ViewData["user-can-register"] : EmailRegistrationStatus.Available;
 }
-<h1>Order Complete</h1>
-<div class="row-fluid">
-    <h4 class="green-tick">Your order (ID:@order.Id) was successfully processed.</h4>
-    <p>
-        Thank you for shopping with Mr CMS Ecommerce!
-    </p>
+<div class="padding-top-bottom-20">
+    <div class="row">
+        <div class="col-sm-12 padding-left-0 mobile-left-padding">
+            <h1>Order Complete</h1>
+
+            <h3>Your order (ID:@order.Id) was successfully processed.</h3>
+            <p>
+                Thank you for shopping with Mr CMS Ecommerce!
+            </p>
+
+             @switch (emailRegistrationStatus)
+            {
+                case EmailRegistrationStatus.EmailInUse:
+                    Html.RenderPartial("LoginAndAssociateOrder", new LoginModel { Email = order.OrderEmail });
+                    break;
+                case EmailRegistrationStatus.Available:
+                    Html.RenderPartial("RegisterAndAssociateOrder", new RegisterModel { Email = order.OrderEmail, FirstName = order.BillingAddress.FirstName, LastName = order.BillingAddress.LastName });
+                    break;
+            }
+
+            <hr />
+            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-default" >Return to shop
+            </a>
+        </div>
+    </div>
 </div>
-
- @switch (emailRegistrationStatus)
-        {
-            case EmailRegistrationStatus.EmailInUse:
-                Html.RenderPartial("LoginAndAssociateOrder", new LoginModel { Email = order.OrderEmail });
-                break;
-            case EmailRegistrationStatus.Available:
-                Html.RenderPartial("RegisterAndAssociateOrder", new RegisterModel { Email = order.OrderEmail, FirstName = order.BillingAddress.FirstName, LastName = order.BillingAddress.LastName });
-                break;
-        }
-
-<hr />
-<a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-info" >Return to shop
-</a>

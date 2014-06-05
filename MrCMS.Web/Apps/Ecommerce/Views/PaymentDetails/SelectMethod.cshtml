@@ -1,11 +1,11 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 <div class="form-horizontal">
-    <h5>Select Payment Method</h5>
-    <div class="control-group">
-        <label class="control-label">
+    <h3>Select Payment Method</h3>
+    <div class="margin-bottom-10">
+        <label>
             Payment Method <span class="red">*</span> :
         </label>
-        <div class="controls">
+        <div class="margin-bottom-10">
             @foreach (var paymentMethod in Model.AvailablePaymentMethods)
             {
                 <label class="radio">@paymentMethod.Name @Html.RadioButtonFor(details => details.PaymentMethodSystemName, paymentMethod.SystemName)</label>

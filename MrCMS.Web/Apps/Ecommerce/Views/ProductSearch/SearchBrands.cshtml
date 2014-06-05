@@ -3,10 +3,14 @@
 @{ var query = ViewData["query"] as ProductSearchQuery;}
 @if (Model.Any())
 {
-    <div class="product-filter-box-title">
-        Filter by Brand
-    </div>
-    <div class="row-fluid">
-        @Html.DropDownList("BrandId", Model, new { @class = "span12" })
+    <div class="widget-con">
+        <div class="title-con">
+            By brand
+        </div>
+        <div class="options-con">
+            <div class="option">
+                @Html.DropDownList("BrandId", Model, new { @class = "form-control" })
+            </div>
+        </div>
     </div>
 }

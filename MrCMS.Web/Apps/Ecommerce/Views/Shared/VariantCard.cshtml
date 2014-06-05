@@ -4,18 +4,18 @@
 @using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
-    var @abstract = Model.Product != null ? Model.Product.Abstract ?? string.Empty : string.Empty;
     var cartModel = ViewData["cart"] as CartModel ?? MrCMSApplication.Get<CartModel>();
+    var @abstract = Model.Product != null ? Model.Product.Abstract ?? string.Empty : string.Empty;
 }
-<div class="row-fluid" data-wishlist-item="@Model.Id">
-    <div class="span3 photo">
-        @RenderImage(Model.DisplayImageUrl)
+<div class="row" data-wishlist-item="@Model.Id">
+    <div class="col-sm-3">
+        @RenderImage(Model.DisplayImageUrl, null, null, new{@class="img-responsive"})
     </div>
-    <div class="span6">
+    <div class="col-sm-6">
         <h4><a href="@Model.DirectUrl">@(!string.IsNullOrWhiteSpace(Model.Name) ? Model.Name : Model.Product.Name)</a></h4>
         @(@abstract.Length > 255 ? @abstract.Substring(0, 250) + "..." : @abstract)
     </div>
-    <div class="span3">
+    <div class="col-sm-3">
         <div class="text-right">
             <div class="product-price">
                 @Model.Price.ToCurrencyFormat()

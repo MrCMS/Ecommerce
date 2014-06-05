@@ -9,78 +9,100 @@
     var cart = ViewData["cart"] as CartModel;
     var canBuy = Model.CanBuy(cart, 1);
 }
-<div class="row-fluid" id="variant-details">
-    <div class="span8">
-        <div class="row-fluid">
-            <div class="span4">
-                @{ Html.RenderPartial("ProductImages", Model); }
-            </div>
-            <div class="span8">
-                <h1>@Model.Product.Name</h1>
 
-                <div class="product-price">
-                    @Model.Price.ToCurrencyFormat()
+<div class="margin-bottom-30 grey-border-top">
+    <div class="container">
+        <div class="margin-top-bottom-30">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1>@Model.Product.Name</h1>
                 </div>
-                @if (Model.ShowPreviousPrice)
-                {
-                    <span>
-                        @(SiteSettings<EcommerceSettings>().PreviousPriceText) <span style="text-decoration: line-through">@Model.PreviousPrice.Value.ToCurrencyFormat()</span>
-                    </span>
-                }
-                @Editable(product, p => p.Abstract, true)
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    @{ Html.RenderPartial("ProductImages", Model); }
+                </div>
+                <div class="col-sm-4">
+                    <div class="price margin-bottom-10">
+                        @Model.Price.ToCurrencyFormat()
+                        @if (canBuy.OK)
+                        {
+                            <span class="instock">in stock</span>
+                        }
+                        @if (Model.ShowPreviousPrice)
+                        {
+                            <span class="previous-price">
+                                <span class="inner">@Model.PreviousPrice.Value.ToCurrencyFormat()</span>
+                            </span>
+                        }
+                    </div>
+                    
+                    @if (!Model.SoldOut)
+                    {
+                        if (product.IsMultiVariant)
+                        {
+                            <div class="margin-bottom-10">
+                                <div class="col-sm-3 col-xs-4 padding-left-0">
+                                    <label class="line-height-30">Options :</label>
+                                </div>
+                                <div class="col-sm-9 col-xs-8 padding-right-0">
+                                    @Html.DropDownList("variant", product.GetVariantOptions(Model), new { @class = "form-control" })
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        }
 
-                <div class="social-links">
+                        if (canBuy.OK)
+                        {
+                            Html.RenderAction("AddToCart", "Cart", new { model = new AddToCartModel { ProductVariant = Model, Quantity = 1 } });
+                        }
+                        if (canBuy is OutOfStock)
+                        {
+                            Html.RenderAction("BackInStockForm", "Product", new { id = Model.Id } );
+                        }
+                        if (canBuy is CannotOrderQuantity)
+                        {
+                            <p class="text-center">
+                                You currently have all available stock in your cart
+                            </p>
+                        }
+                        if (canBuy is NoShippingMethodWouldBeAvailable)
+                        {
+                            <p class="text-center">
+                                @canBuy.Message
+                            </p>
+                        }
+
+                        Html.RenderAction("Add", "Wishlist", new { productVariant = Model });
+                        
+                        Html.RenderPartial("ProductPricebreaks", Model);
+
+                    }
+                    else
+                    {
+                        @Html.Raw(Model.SoldOutMessage)
+                    }
+
+
+                    <div class="padding-bottom-10">
+                        @Editable(product, p => p.Abstract, true)
+                        <br/>
+                        <p>
+                            <a href="#fulldescription">Read full description</a>
+                        </p>
+                    </div>
+                    
+                    @RenderZone("Below Product Price")
+                </div>
+                <div class="col-sm-3">
+                    <div class="padding-bottom-10 margin-bottom-20 grey-border-bottom">
+                        <img src="/Apps/Ecommerce/Content/Images/secure.jpg" class="img-responsive"/>
+                    </div>
                     @{Html.RenderPartial("SocialLinks");}
                 </div>
-
-                @RenderZone("Below Product Price")
             </div>
         </div>
     </div>
-    <div class="span4">
-        @if (!Model.SoldOut)
-        {
-            if (product.IsMultiVariant)
-            {
-            <div class="product-variants-filter">
-                <label class="span3 line-height-30">Variants</label>
-                @Html.DropDownList("variant", product.GetVariantOptions(Model), new { @class = "span9" })
-            </div>
-            }
-
-            Html.RenderPartial("ProductPricebreaks", Model);
-
-            if (canBuy.OK)
-            {
-                Html.RenderAction("AddToCart", "Cart", new { model = new AddToCartModel { ProductVariant = Model, Quantity = 1 } });
-            }
-            if (canBuy is OutOfStock)
-            {
-                Html.RenderAction("BackInStockForm", "Product", new { id = Model.Id } );
-            }
-            if (canBuy is CannotOrderQuantity)
-            {
-                <div class="row-fluid out-of-stock">
-                    <p class="text-center">
-                        You currently have all all available stock in your cart
-                    </p>
-                </div>
-            }
-            if (canBuy is NoShippingMethodWouldBeAvailable)
-            {
-                <div class="row-fluid out-of-stock">
-                    <p class="text-center">
-                        @canBuy.Message
-                    </p>
-                </div>
-            }
-            Html.RenderAction("Add", "Wishlist", new { productVariant = Model });
-        }
-        else
-        {
-            @Html.Raw(Model.SoldOutMessage)
-        }
-
-        @RenderZone("Below Add to cart")
-    </div>
 </div>
+
+@RenderZone("Below Add to cart")

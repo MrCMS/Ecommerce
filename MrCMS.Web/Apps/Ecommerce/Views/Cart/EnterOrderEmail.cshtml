@@ -1,8 +1,8 @@
 ﻿@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 <br />
-<div class="row-fluid">
-    <div class="span8">
+<div class="row">
+    <div class="col-sm-8">
         @using (Html.BeginForm("EnterOrderEmail", "Cart", FormMethod.Post))
         {
             <h4>Email address</h4>
@@ -28,7 +28,7 @@
             <input class="btn btn-info" type="submit" id="continue" name="continue" value="Continue" />
         }
     </div>
-    <div class="span4">
+    <div class="col-sm-4">
         @{Html.RenderAction("BasicDetails", "Cart");}
     </div>
 </div>

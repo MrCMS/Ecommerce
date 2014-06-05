@@ -2,10 +2,16 @@
 @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
 {
     @Html.HiddenFor(model => model.ProductVariant.Id)
-    <div id="product-addtobasket">
-        @Html.LabelFor(model => model.Quantity, new { @class = "span3 line-height-30" })
-        @Html.TextBoxFor(model => model.Quantity, new { @class = "input-mini" })
-        <button class="btn btn-info btn-addtobasket pull-right span6" type="submit">Add to basket</button>
+    <div id="product-addtobasket" class="padding-bottom-20 grey-border-bottom">
+        <div class="col-sm-3 col-xs-4 padding-left-0">
+            @Html.LabelFor(model => model.Quantity, new { @class = "line-height-30" }) :
+        </div>
+        <div class="col-sm-9 col-xs-8">
+            @Html.TextBoxFor(model => model.Quantity, new {@class = "form-control"})
+        </div>
+        <div class="clearfix"></div>
+        <button class="btn btn-green btn-block" type="submit">Add to basket</button>
+        <div class="clearfix"></div>
         @Html.ValidationMessageFor(model => model.Quantity)
     </div>
 }

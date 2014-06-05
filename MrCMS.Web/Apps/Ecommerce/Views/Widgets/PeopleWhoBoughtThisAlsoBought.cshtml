@@ -4,15 +4,28 @@
 {
     ViewData["cart"] = Model.Cart;
     
-    <hr />
-    if (!String.IsNullOrEmpty(Model.Title))
-    {
-    <h4>@Model.Title</h4>
-    }
-    <div class="row-fluid">
-        @foreach (var item in Model.Products)
-        {
-            Html.RenderPartial("ProductCardFeatured", item);
-        }
+    <div class="margin-top-70-bottom-30 grey-border-top">
+        <div class="container">
+            <div class="margin-top-bottom-30">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="title">
+                            if (!String.IsNullOrEmpty(Model.Title))
+                            {
+                            @Model.Title
+                            }
+                        </span>
+                    </div>
+                </div>
+                @foreach (var item in Model.Products)
+                {
+                    <div class="col-md-2 col-sm-2 col-xs-6">
+                        @{
+                            Html.RenderPartial("ProductCardFeatured", item);
+                        }
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 }

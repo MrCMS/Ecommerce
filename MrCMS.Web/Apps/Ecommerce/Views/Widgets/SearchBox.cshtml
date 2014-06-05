@@ -1,11 +1,9 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.SearchBox
-<div id="search-box">
-    <div class="row-fluid">
-        <div class="span8">
-            @Html.TextBox("searchTerm", Request.QueryString["SearchTerm"], new { @class = "span12 search-input", placeholder = "e.g : Shorts" })
-        </div>
-        <div class="span4">
-            <button class="btn span12" type="button" id="searchButton" name="searchButton">Search</button>
-        </div>
+<div class="padding-top-bottom-9" id="search-box">
+    <div class="input-group">
+        @Html.TextBox("searchTerm", Request.QueryString["SearchTerm"], new { @class = "form-control", placeholder = "e.g : Shorts" })
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button" id="searchButton" name="searchButton"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
     </div>
 </div>

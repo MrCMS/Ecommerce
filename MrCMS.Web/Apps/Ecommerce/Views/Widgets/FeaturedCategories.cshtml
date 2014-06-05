@@ -3,33 +3,45 @@
 @model MrCMS.Web.Apps.Ecommerce.Widgets.FeaturedCategoriesViewModel
 @if (Model != null)
 {
-    <hr />
-    if (!String.IsNullOrEmpty(Model.Title))
-    {
-    <h4>@Model.Title</h4>
-    }
-    
-    foreach (var itemRow in Model.Categories.Chunk(4))
-    {
-    <div class="row-fluid">
-        @foreach (var item in itemRow)
-        {
-            <div class="span3 text-center">
-                <div style="overflow: hidden; height: 150px;">
-                    @if (!string.IsNullOrWhiteSpace(item.FeatureImage))
-                    {
-                        <a href="/@item.LiveUrlSegment">@RenderImage(item.FeatureImage, new Size { Width = 150, Height = 150 })</a>
-                    }
+    <div class="margin-top-70-bottom-30 grey-border-top">
+        <div class="container">
+            <div class="margin-top-bottom-30">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="title">
+                            @if (!String.IsNullOrEmpty(Model.Title))
+                            {
+                            @Model.Title
+                            }
+                        </span>
+                    </div>
                 </div>
-                <div class="clearfix"></div>
-                <h4 class="category-title"><a href="/@item.LiveUrlSegment" title="@item.Name">@item.Name</a></h4>
-                @if (!string.IsNullOrWhiteSpace(item.Abstract))
-                {
-                    <p>@item.Abstract</p>
-                }
+                    @foreach (var itemRow in Model.Categories.Chunk(4))
+                    {
+                        <div class="row">
+                            @foreach (var item in itemRow)
+                            {
+                                <div class="col-md-3 col-sm-3 col-xs-6">
+                                    <div class="category-con">
+                                        @if (!string.IsNullOrWhiteSpace(item.FeatureImage))
+                                        {
+                                            <div class="category-image">
+                                                <a href="/@item.LiveUrlSegment">@RenderImage(item.FeatureImage, new Size { Width = 263, Height = 184 }, "", "", new{@class="img-responsive"})</a>
+                                            </div>
+                                        }
+                                        <div class="category-name">
+                                            <a href="/@item.LiveUrlSegment" title="@item.Name">@item.Name</a>
+                                        </div>
+                                    </div>
+                                    @*@if (!string.IsNullOrWhiteSpace(item.Abstract))
+                                    {
+                                        <p>@item.Abstract</p>
+                                    }*@
+                                </div>
+                            }
+                        </div>
+                    }
             </div>
-        }
+        </div>
     </div>
-            
-    }
 }
