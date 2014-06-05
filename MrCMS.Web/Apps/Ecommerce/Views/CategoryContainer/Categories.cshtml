@@ -16,7 +16,7 @@
                             @if (!string.IsNullOrWhiteSpace(item.FeatureImage))
                             {
                                 <div class="category-image">
-                                    <a href="/@item.LiveUrlSegment">@RenderImage(item.FeatureImage, new Size { Width = 263, Height = 184 })</a>
+                                    <a href="/@item.LiveUrlSegment">@RenderImage(item.FeatureImage, new Size { Width = 263, Height = 184 }, "", "", new{@class="img-responsive"})</a>
                                 </div>
                             }
                             <div class="category-name">

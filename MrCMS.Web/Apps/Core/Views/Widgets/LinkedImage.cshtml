@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Core.Widgets.LinkedImage 
+﻿@using System.Drawing
+@model MrCMS.Web.Apps.Core.Widgets.LinkedImage 
 <a href="@Model.Link">
-    @RenderImage(Model.Image)
+    @RenderImage(Model.Image,"","",new{@class="img-responsive"})
 </a>

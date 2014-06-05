@@ -15,12 +15,14 @@ html {min-height: 101%;}
 .navbar-nav.navbar-right:last-child {margin-right:0;}
 .navbar-right li {position:relative;float:none;display:inline-block;}
 .navbar-right li a.notification {position:absolute;top:3px;right:3px;background:url(/Apps/Ecommerce/Content/Images/notification.png) no-repeat 0 0;width:24px;height:25px;color:#fff;font-size:12px;line-height:25px;padding:0;text-align:center;}
-.navbar-right li a {padding-left:8px;padding-right:12px;padding-top:16px;padding-bottom:16px;} 
+.navbar-right li a {padding-left:13px;padding-right:13px;padding-top:16px;padding-bottom:16px;} 
 .navbar-right li a.checkout {background-color:#88A825;color:#fff;padding-left:13px;padding-right:13px;}
 .navbar-right li a.basket {background-color:#333745;color:#fff;padding-left:18px;padding-right:18px;}
 .navbar-right li a:hover {background-color:inherit;}
 .navbar-right li a.checkout:hover {background-color:#88A825;color:#fff;}
 .navbar-right li a.basket:hover {background-color:#333745;color:#fff;}
+.dropdown-menu {min-width: 158px;}
+.dropdown-menu>li>a {padding: 3px 8px;}
 .searchbar {position:fixed;top:39px;right:0;left:0;z-index:999;background:#fff;border-bottom:1px solid #eee;}
 .info {background-color:#eeeeee;font-size:13px;padding:5px 0;}
 .info ul {margin:0;padding:0;list-style:none;}
@@ -39,6 +41,10 @@ html {min-height: 101%;}
 .btn-default:hover {background-color:#0172b7;border-color:#0172b7;}
 .btn-green { color: #ffffff;background-color:#88A825;border-color: #dddddd;padding: 19px 12px;}
 .btn-green:Hover { color: #ffffff;background-color:#89ae18;border-color: #dddddd;padding:19px 12px;}
+.btn-grey {background-color:#cccccc;border-color:#cccccc;padding:6px 30px;}
+.btn-grey:hover {background-color:#b7b7b7;border-color:#b7b7b7;padding:6px 30px;}
+.btn-normalgreen {color: #ffffff;background-color:#88A825;border-color: #dddddd;}
+.btn-normalgreen:hover {color: #ffffff;background-color:#89ae18;border-color: #dddddd;}
 .payment {font-size:13px;}
 .product-con {}
 .product-con .product-info {border-right:1px solid #f0f0f0;text-align:left;}
@@ -115,6 +121,7 @@ table.price-break tbody tr td { border-top: 1px dotted #ddd;}
 .padding-left-0 {padding-left:0;}
 .padding-right-0 { padding-right: 0;}
 .padding-right-10 { padding-right: 10px;}
+.padding-left-10 { padding-left: 10px;}
 .margin-top-70-bottom-30 {margin-top:70px;margin-bottom:30px;}
 .margin-bottom-30 {margin-bottom:30px;}
 .margin-bottom-20 {margin-bottom:20px;}
@@ -253,7 +260,7 @@ background: -o-linear-gradient(top,#eee,#dedede) !important;}
    -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
    box-shadow:         inset 0 0 10px rgba(0,0,0,0.3);*/
 }
-.sidr .sidr-inner{padding:0 0 15px}
+.sidr .sidr-inner{ padding: 0;}
 .sidr .sidr-inner > p {margin-left: 15px;margin-right: 15px;}
 .sidr.right {left: auto;right: -260px;}
 .sidr.left {left: -260px;right: auto;}
@@ -324,28 +331,46 @@ background: -o-linear-gradient(top,#eee,#dedede) !important;
 #sidebarmenu a {color:#fff;}
 #sidebarmenu a:hover {text-decoration:none;}
 /* mobile menu end */
+.field-validation-error {color: #cc0000 !important;}
+.input-validation-error {border: 1px solid #cc0000 !important;}
+.error {color: #cc0000 !important;}
+.red { color: red;}
+#map-canvas { height: 300px;}
+.input-lg {font-size: 13px;}
+
 
 @media (max-width: 767px) {
     .searchbar .container {padding-left:0;padding-right:0;}
     .navbar-right li {padding:0;margin:0;}
     .navbar-right li a {padding-left:0px;padding-right:5px;padding-top:16px;padding-bottom:16px;margin:0;}
     .navbar-right li a.checkout {background-color:#88A825;color:#fff;padding-left:5px;padding-right:5px;}
-    .navbar-right li a.basket {background-color:#333745;color:#fff;padding-left:10px;padding-right:10px;}
+    .navbar-right li a.basket {background-color:#333745;color:#fff;padding-left:7px;padding-right:7px;}
+    .account { width: 28px;float: left;/*margin-top: -52px !important;*/}
+    .account li { width: 28px;}
+    .account li.open .dropdown-menu { background: #fff!important;position: absolute !important;}
+    .account li.open .dropdown-menu li { width: auto;float: left;}
     .slider {background:none;}
-    .logo {padding:19px 0 19px 5px;}
+    .logo {padding:16px 0 16px 5px;}
     .navbar-nav {margin: 0;}
     .info .pull-right {float:left !important;}
     .margin-right-minus ul li {padding-left: 0 !important;padding-right: 10px !important;}
     .product-con .product-image {text-align:center;position:relative;min-height:140px;line-height:140px;}
     .product-con .product-info {border-right:none;}
     .searchbar {top:38px;}
-    #wrapper {margin-top:0;padding-top:89px;-webkit-box-shadow: -1px 0 1em rgba(0,0,0,0.3);box-shadow: -1px 0 1em rgba(0,0,0,0.3);}
+    #wrapper {margin-top:0;padding-top:89px;-webkit-box-shadow: -1px 0 1em rgba(0,0,0,0.3);box-shadow: -1px 0 1em rgba(0,0,0,0.3);z-index: 9;}
     .padding-l-r-0 {padding-left:0;padding-right:0;border-right:none!important;}
     .mobile-padding-0 {padding:0;}
+    #search .container .row .text-right .layout-area { float: right !important;}
+    #search .form-control { box-shadow: none!important;-webkit-box-shadow: none!important;background: #ffffff !important;-moz-box-shadow: none !important;-o-box-shadow: none !important;-webkit-appearance: caret;-moz-appearance: caret; /* mobile firefox too! */}
+    #products-operations .mobile { padding-left: 15px;padding-right: 15px;}
+    .circle { display: none;}
+    .navigation .session {padding-left: 14px;font-size: 12px;}
+    .navigation .col-md-3:first-child .session {padding-left: 5px;}
+    .mobile-left-padding { padding-left: 15px;}
 }
 
 @media (min-width: 768px) and (max-width:979px) {
-    .navbar-right li a {padding-left:0px;padding-right:10px;padding-top:16px;padding-bottom:16px;}
+    .navbar-right li a {padding-left:10px;padding-right:10px;padding-top:16px;padding-bottom:16px;}
     .navbar-right li a.checkout {background-color:#88A825;color:#fff;padding-left:12px;padding-right:12px;}
     .navbar-right li a.basket {background-color:#333745;color:#fff;padding-left:18px;padding-right:18px;}
     .slider {background:url(/Apps/Ecommerce/Content/Images/sliderbg3.jpg) no-repeat center center;}
@@ -361,7 +386,9 @@ background: -o-linear-gradient(top,#eee,#dedede) !important;
     .navbar-right li a.basket {background-color:#333745;color:#fff;padding-left:12px;padding-right:12px;}
     .slider {background:url(/Apps/Ecommerce/Content/Images/sliderbg2.jpg) no-repeat center center;}
     .logo {padding:13px 0;}
+    #mfnav-desktop ul li a span { display: none;}
 }
 
 @media (min-width: 1200px) {
+    #mfnav-desktop ul li a span { display: none;}
 }

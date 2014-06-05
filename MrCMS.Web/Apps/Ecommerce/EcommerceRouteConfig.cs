@@ -32,6 +32,16 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Download Product", "digital-download/{guid}/{id}", new { controller = "DownloadOrderedFile", action = "Download" }, new[] { typeof(DownloadOrderedFileController).Namespace });
 
             context.MapRoute("Product - Get Variant Details", "product/variant-details/{id}", new { controller = "Product", action = "VariantDetails" }, new[] { typeof(ProductController).Namespace });
+
+            // Public Routes
+            context.MapRoute("Generate Contact Us Map", "get-contact-map",
+                             new
+                             {
+                                 controller = "ContactUs",
+                                 action = "GenerateMap"
+                             },
+                             new[] { typeof(ContactUsController).Namespace }
+                );
         }
 
         private static void MapWishlistRoutes(MrCMSAppRegistrationContext context)

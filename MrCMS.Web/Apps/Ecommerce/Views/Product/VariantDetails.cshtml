@@ -42,10 +42,10 @@
                         if (product.IsMultiVariant)
                         {
                             <div class="margin-bottom-10">
-                                <div class="col-sm-3 padding-left-0">
+                                <div class="col-sm-3 col-xs-4 padding-left-0">
                                     <label class="line-height-30">Options :</label>
                                 </div>
-                                <div class="col-sm-9 padding-right-0">
+                                <div class="col-sm-9 col-xs-8 padding-right-0">
                                     @Html.DropDownList("variant", product.GetVariantOptions(Model), new { @class = "form-control" })
                                 </div>
                                 <div class="clearfix"></div>

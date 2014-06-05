@@ -8,11 +8,11 @@
 }
 <div class="margin-bottom-20">
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-9">
             <h1 class="green-tick">@quantity item@(quantity != 1 ? "s were" : " was") added to your basket</h1>
         </div>
-        <div class="col-sm-4">
-            <a href="@(productvariant.Product.Categories.Any() ? "/" + productvariant.Product.Categories.OrderBy(x => x.DisplayOrder).Take(1).SingleOrDefault().UrlSegment : UniquePageHelper.GetUrl<ProductSearch>())" class="btn btn-default">Continue Shopping</a>
+        <div class="col-sm-3">
+            <a href="@(productvariant.Product.Categories.Any() ? "/" + productvariant.Product.Categories.OrderBy(x => x.DisplayOrder).Take(1).SingleOrDefault().UrlSegment : UniquePageHelper.GetUrl<ProductSearch>())" class="btn btn-default btn-block">Continue Shopping</a>
         </div>
     </div>
 </div>
