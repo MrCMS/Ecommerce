@@ -3,12 +3,12 @@
 @model MrCMS.Web.Apps.Core.Models.RegisterAndLogin.LoginModel 
 @using (Html.BeginForm())
 {
-    <div class="row-fluid">
-        <div class="span12">
+    <div class="row">
+        <div class="col-sm-6">
             <div class="control-group">
                 <label class="control-label" for="Email">Email</label>
                 <div class="controls">
-                    @Html.TextBoxFor(model => model.Email, new { @class = "span3"})
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control"})
                     @Html.ValidationMessageFor(model => model.Email)
                 </div>
             </div>
@@ -16,7 +16,7 @@
                 <label class="control-label" for="Password">
                     Password</label>
                 <div class="controls">
-                    @Html.PasswordFor(model => model.Password, new { @class = "span3"})
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Password)
                 </div>
             </div>
@@ -26,7 +26,7 @@
                         @Html.CheckBoxFor(model => model.RememberMe)
                         Remember me
                     </label>
-                    <input type="submit" value="Login" class="generic-button big-red-gradient span3" />
+                    <input type="submit" value="Login" class="btn btn-default btn-block" />
                 </div>
             </div>
             <div class="control-group">

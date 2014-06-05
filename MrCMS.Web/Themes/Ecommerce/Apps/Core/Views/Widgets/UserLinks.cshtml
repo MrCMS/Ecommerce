@@ -1,8 +1,22 @@
 ﻿@using MrCMS.Website
 @model List<MrCMS.Web.Apps.Core.Models.Navigation.NavigationRecord>
-<ul class="nav nav-pills">
-    @foreach (var page in Model)
-    {
-        <li><a href="@page.Url">@page.Text</a></li>    
-    }
+<ul class="nav navbar-nav navbar-right account">
+    <li>
+        <a href="#" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-user"></span>
+        </a>
+        <ul class="dropdown-menu">
+            @foreach (var page in Model)
+            {
+                if (@page.Text.ToString() == "My Account")
+                {
+                    <li><a href="@page.Url">@page.Text</a></li>
+                }
+                else
+                {
+                    <li><a href="@page.Url">@page.Text</a></li>    
+                }
+            }
+        </ul>
+    </li>
 </ul>

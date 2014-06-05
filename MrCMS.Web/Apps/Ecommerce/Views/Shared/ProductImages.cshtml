@@ -2,18 +2,33 @@
 @using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 
-@Html.RenderImage(Model.DisplayImageUrl, new Size { Width = 240, Height = 140 }, Model.Name, Model.Name, new { @class = "span12" })
-<div id="product-image-thumbnails">
-    <ul class="thumbnails">
-        @foreach (var item in Model.Images.Skip(1))
-        {
-            <li class="span4">
-                <a href="@item.FileUrl" rel="prettyPhoto[product]">
-                    @Html.RenderImage(item.FileUrl, new Size {Width = 77,Height=77}, Model.Name, Model.Name, new { @class = "span12" })
-                </a>
-            </li>
-        }
-    </ul>
+<div class="grey-border text-center product-image-box">
+    @Html.RenderImage(Model.DisplayImageUrl, new Size { Width = 458, Height = 367 }, Model.Name, Model.Name, new { @class = "col-sm-12 img-responsive" })    
+    <div class="clearfix"></div>
+
+    <div class="row">
+        <div class="col-sm-2">
+            
+        </div>
+        <div class="col-sm-8">
+            <div id="product-image-thumbnails">
+                <ul class="thumbnails">
+                    @foreach (var item in Model.Images.Skip(1))
+                    {
+                        <li>
+                            <a href="@item.FileUrl" rel="prettyPhoto[product]">
+                                @Html.RenderImage(item.FileUrl, new Size {Width = 77,Height=77}, Model.Name, Model.Name, new { @class = "img-responsive" })
+                            </a>
+                        </li>
+                    }
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            
+        </div>
+    </div>
 </div>
 @{
     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.prettyPhoto.js");

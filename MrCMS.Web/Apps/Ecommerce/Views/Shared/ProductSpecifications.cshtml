@@ -1,13 +1,12 @@
 ﻿@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product  
-<div id="product-specifications" class="span4">
-    <h4>Specifications</h4>
-    <table class="table table-bordered table-striped table-condensed">
+<div id="product-specifications">
+    <table class="table table-condensed">
         @foreach (var item in Model.SpecificationValues.OrderBy(x => x.DisplayOrder))
         {
             <tr>
-                <td><strong>@item.SpecificationName</strong></td>
-                <td>@item.Value</td>
+                <td class="col-sm-4"><strong>@item.SpecificationName</strong></td>
+                <td class="col-sm-8">@item.Value</td>
             </tr>
         }
     </table>

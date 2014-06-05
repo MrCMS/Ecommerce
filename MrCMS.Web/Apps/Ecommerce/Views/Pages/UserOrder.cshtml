@@ -10,83 +10,86 @@
     var orderShipping = order.ShippingTotal.GetValueOrDefault() - order.ShippingTax.GetValueOrDefault();
 
 }
-<div class="container padding-top-bottom-20">
-    <div class="row-fluid">
-        <div class="span12">
-            <div class="row-fluid">
-                <div class="span6">
-                    <h1>View Order @order.Id</h1>
-                </div>
-                <div class="span6">
-                    <div class="pull-right btn-group">
-                        <a href="@(UniquePageHelper.GetUrl<UserAccountPage>())" class="btn">Return to account</a>
-                        <a href="/Apps/Ecommerce/OrderPdf/ExportOrderToPdf/@order.Id" class="btn btn-primary">Download PDF</a>
+<div class="container">
+    <div class="padding-top-bottom-20">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h1>View Order @order.Id</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="pull-right btn-group">
+                            <a href="@(UniquePageHelper.GetUrl<UserAccountPage>())" class="btn">Return to account</a>
+                            <a href="/Apps/Ecommerce/OrderPdf/ExportOrderToPdf/@order.Id" class="btn btn-primary">Download PDF</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <br class="clearfix" />
-            <table class="table table-condensed table-striped">
-                <tr>
-                    <td class="bold-font">Order GUID</td>
-                    <td>@order.Guid</td>
-                </tr>
-                <tr>
-                    <td class="bold-font">Order Subtotal (ex TAX)</td>
-                    <td>@order.Subtotal.ToCurrencyFormat()</td>
-                </tr>
-                <tr>
-                    <td class="bold-font">Order Shipping (ex TAX)</td>
-                    <td>@orderShipping.ToCurrencyFormat()</td>
-                </tr>
+                <br class="clearfix" />
+                <table class="table table-condensed table-striped">
+                    <tr>
+                        <td>Order GUID</td>
+                        <td>@order.Guid</td>
+                    </tr>
+                    <tr>
+                        <td>Order Subtotal (ex TAX)</td>
+                        <td>@order.Subtotal.ToCurrencyFormat()</td>
+                    </tr>
+                    <tr>
+                        <td>Order Shipping (ex TAX)</td>
+                        <td>@orderShipping.ToCurrencyFormat()</td>
+                    </tr>
 
-                <tr>
-                    <td class="bold-font">Order Tax</td>
-                    <td>@order.Tax.ToCurrencyFormat()</td>
-                </tr>
-                <tr>
-                    <td class="bold-font">Order Total</td>
-                    <td>@order.Total.ToCurrencyFormat()</td>
-                </tr>
-            </table>
+                    <tr>
+                        <td>Order Tax</td>
+                        <td>@order.Tax.ToCurrencyFormat()</td>
+                    </tr>
+                    <tr>
+                        <td>Order Total</td>
+                        <td>@order.Total.ToCurrencyFormat()</td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
+    
 
 
     @{
         if (order.OrderRefunds.Count > 0)
         {
-        <div class="row-fluid">
-            <div class="span12">
-                @if (order.OrderRefunds.Count > 0)
-                {
-                    <p>Refunds:</p>
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Amount
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in order.OrderRefunds)
-                            {
+            <div class="row">
+                <div class="col-sm-12">
+                    @if (order.OrderRefunds.Count > 0)
+                    {
+                        <p>Refunds:</p>
+                        <table class="table table-bordered table-striped">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        @item.Amount.ToCurrencyFormat()
-                                    </td>
+                                    <th>Amount
+                                    </th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                }
+                            </thead>
+                            <tbody>
+                                @foreach (var item in order.OrderRefunds)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.Amount.ToCurrencyFormat()
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
             </div>
-        </div>
         }
     }
 
     <hr class="small-margin" />
-    <div class="row-fluid">
-        <div class="span6">
+    <div class="row">
+        <div class="col-sm-6">
             <h4>Payment</h4>
 
             <table class="table table-condensed">
@@ -100,7 +103,7 @@
                 </tr>
             </table>
         </div>
-        <div class="span6">
+        <div class="col-sm-6">
             <h4>Shipping</h4>
 
             <table class="table table-condensed">
@@ -115,18 +118,18 @@
                 @{
                     if (!string.IsNullOrEmpty(order.TrackingNumber))
                     {
-                    <tr>
-                        <td class="bold-font">Tracking Number</td>
-                        <td>@order.TrackingNumber</td>
-                    </tr>
+                        <tr>
+                            <td class="bold-font">Tracking Number</td>
+                            <td>@order.TrackingNumber</td>
+                        </tr>
                     }
                 }
             </table>
         </div>
     </div>
     <hr />
-    <div class="row-fluid">
-        <div class="span6">
+    <div class="row">
+        <div class="col-sm-6">
             <h4>Shipping Address</h4>
             <div class="pull-left">
                 @if (order.ShippingAddress != null)
@@ -135,7 +138,7 @@
                 }
             </div>
         </div>
-        <div class="span6">
+        <div class="col-sm-6">
             <h4>Billing Address</h4>
             <div class="pull-left">
                 @if (order.BillingAddress != null)
@@ -149,8 +152,8 @@
 
     <hr />
     <h4>Order Items</h4>
-    <div class="row-fluid">
-        <div class="span12">
+    <div class="row">
+        <div class="col-sm-12">
             @if (order.OrderLines.Count == 0)
             {
                 @:No lines.

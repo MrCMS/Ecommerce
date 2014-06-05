@@ -5,7 +5,48 @@
     var currentPage = CurrentRequestData.CurrentPage;
     var activePages = currentPage.ActivePages.Select(webpage => "/" + webpage.LiveUrlSegment).ToList();
 }
-<ul class="nav">
+
+<ul class="nav navbar-nav">
+    @foreach (var page in Model)
+    {
+        if (page.Children.Any())
+        {
+            <li><a href="#" data-toggle="dropdown">Category two<span class="caret"></span></a>
+                @if (page.Children.Any())
+                {
+                    @Html.Hidden("ProductSearchUrl", page.Url);
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        @foreach (var record in page.Children)
+                        {
+                            if(record.Children.Any())
+                            {
+                                <li class="dropdown-submenu">
+                                    <a href="@record.Url">@record.Text</a>
+                                    @Html.Partial("_EcommerceNavigationChildren", record)
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="@(activePages.Contains(record.Url.ToString(), StringComparer.OrdinalIgnoreCase) ? "active" : "")">
+                                    <a href="@record.Url">@record.Text</a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                }
+                
+            </li>
+        }
+        else
+        {
+            <li class="@(activePages.Any(s => s == page.Url.ToString()) ? "active" : "")">
+                <a href="@page.Url">@page.Text</a>
+            </li>
+        }
+    }
+</ul>
+
+@*<ul class="nav">
     @foreach (var page in Model)
     {
         if (page.Children.Any())
@@ -44,4 +85,4 @@
             </li>      
         }
     }
-</ul>
+</ul>*@

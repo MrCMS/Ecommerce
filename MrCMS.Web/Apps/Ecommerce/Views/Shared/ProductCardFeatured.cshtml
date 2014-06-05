@@ -6,34 +6,46 @@
     var cart = ViewData["cart"] as CartModel;
     var buyableVariant = Model.Variants.Count == 1 ? Model.Variants.FirstOrDefault(variant => variant.CanBuy(cart, 1).OK) : null;
 }
-<div class="span3">
-    <div style="overflow: hidden;">
-        <a href="/@Model.LiveUrlSegment">@RenderImage(Model.DisplayImageUrl, null, null, new { @class = "img-rounded span12" })</a>
-    </div>
-    <div class="clearfix"></div>
-    <h4 class="product-title"><a href="/@Model.LiveUrlSegment">@Model.Name</a></h4>
-    <div>@(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)</div>
-    <div class="product-price">
-        @Html.DisplayFor(product => product.DisplayPrice)
-    </div>
-    @if (Model.DisplayPreviousPrice.HasValue && Model.DisplayPreviousPrice > Model.DisplayPrice)
-    {
-        <span>@(SiteSettings<EcommerceSettings>().PreviousPriceText) @Html.DisplayFor(product => product.DisplayPreviousPrice)</span>
-    }
-    else
-    {
-        <span>&nbsp;</span>
-    }
-    @if (buyableVariant != null)
-    {
-        using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post,new { @class = "margin-bottom-5" }))
-        {
-        <div class="row-fluid">
-            <button class="btn btn-info span12">Add to basket</button>
+
+
+    <div class="product-con">
+        <div class="product-image">
+            <a href="/@Model.LiveUrlSegment">@RenderImage(Model.DisplayImageUrl, null, null, new { @class = "img-responsive" })</a>
+            <img src="/Apps/Ecommerce/Content/Images/topoffer.png" class="offer" />
         </div>
-        @Html.Hidden("ProductVariant.Id", buyableVariant.Id)
-        @Html.Hidden("quantity", 1)
-        }
-        Html.RenderAction("Add", "Wishlist", new { id = buyableVariant.Id });
+        <div class="product-info">
+            <div class="product-name">
+                <a href="/@Model.LiveUrlSegment">@Model.Name</a>
+            </div>
+            <div class="product-price">
+                <span class="current-price">
+                    @Html.DisplayFor(product => product.DisplayPrice)
+                </span>
+                @if (Model.DisplayPreviousPrice.HasValue && Model.DisplayPreviousPrice > Model.DisplayPrice)
+                {
+                    <span class="old-price">
+                        <span class="inner">
+                            @(SiteSettings<EcommerceSettings>().PreviousPriceText) @Html.DisplayFor(product => product.DisplayPreviousPrice)
+                        </span>
+                    </span>
+                    <span></span>
+                }
+            </div>
+        </div>
+    </div>
+
+@*@(Model.Abstract != null ? (Model.Abstract.Length > 255 ? Model.Abstract.Substring(0, 250) + "..." : Model.Abstract) : String.Empty)
+@if (buyableVariant != null)
+{
+    using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post,new { @class = "margin-bottom-5" }))
+    {
+    <div class="row-fluid">
+        <button class="btn btn-info span12">Add to basket</button>
+    </div>
+    @Html.Hidden("ProductVariant.Id", buyableVariant.Id)
+    @Html.Hidden("quantity", 1)
     }
-</div>
+    Html.RenderAction("Add", "Wishlist", new { id = buyableVariant.Id });
+}*@
+
+

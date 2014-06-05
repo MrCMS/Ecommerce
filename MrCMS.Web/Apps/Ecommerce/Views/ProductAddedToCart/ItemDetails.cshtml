@@ -5,32 +5,34 @@
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant 
 @if (Model != null)
 {
-    <div class="span6">
-        <div class="row-fluid">
-            <div class="span2">
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-2">
                 <a href="/@Model.Product.UrlSegment" title="@Model.DisplayName">
-                    @RenderImage(Model.Product.DisplayImageUrl, new Size { Height = 150, Width = 150 })
+                    @RenderImage(Model.Product.DisplayImageUrl, null, null, new { @class = "img-responsive" })
                 </a>
             </div>
-            <div class="span10">
+            <div class="col-sm-10">
                 <h4><a href="/@Model.Product.UrlSegment">@Model.DisplayName</a></h4>
                 <div class="product-price">@Model.Price.ToCurrencyFormat()</div>
             </div>
         </div>
     </div>
-    <div class="span6">
+    <div class="col-sm-6">
         <div class="alert alert-info">
-            <div class="row-fluid">
-                <div class="span4">
+            <div class="row">
+                <div class="col-sm-12">
                     @{ Html.RenderAction("CartDetails", "ProductAddedToCart");}
                 </div>
-                <div class="span8">
-                    <div class="row-fluid">
-                        <div class="span6">
-                            <a href="@(UniquePageHelper.GetUrl<Cart>())" class="btn span12">Edit Basket</a>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a href="@(UniquePageHelper.GetUrl<Cart>())" class="btn btn-grey btn-block">Edit Basket</a>
                         </div>
-                        <div class="span6">
-                            <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())" class="btn btn-info span12">Proceed to Checkout</a>
+                        <div class="col-sm-6">
+                            <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())" class="btn btn-normalgreen btn-block">Proceed to Checkout</a>
                         </div>
                     </div>
                 </div>

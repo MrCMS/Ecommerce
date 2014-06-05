@@ -64,7 +64,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public PartialViewResult SetBillingAddress()
         {
             ViewData["other-addresses"] = _orderShippingService.ExistingAddressOptions(_cart, _cart.BillingAddress);
-            return PartialView(_cart.BillingAddress);
+            return PartialView(_cart.BillingAddress ?? new Address {Country = _cart.Country});
         }
 
         [ChildActionOnly]

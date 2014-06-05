@@ -6,83 +6,76 @@
 <div id="billing-address">
     @using (Html.BeginForm("SaveBillingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
     {
-        if (otherAddresses != null && otherAddresses.Any())
-        {
-            <div class="control-group">
-                <label class="control-label" for="existing-addresses">
-                    Use Existing Address:
-                </label>
-                <div class="controls">
-                    @Html.DropDownList("existing-addresses", otherAddresses)
+        <div class="row margin-bottom-10">
+            <div class="col-sm-6">
+                @if (otherAddresses != null && otherAddresses.Any())
+                {
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">Use Existing Address :</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownList("existing-addresses", otherAddresses, new{@class="form-control"})
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="margin-bottom-10">
+                    <label for="FirstName">First Name <span class="red">*</span> :</label>
+                    @Html.TextBoxFor(address => address.FirstName, new { placeholder = "First name", @class="form-control" })
+                    @Html.ValidationMessageFor(address => address.FirstName)
                 </div>
-            </div>
-        }
-        <div class="control-group">
-            <label class="control-label" for="FirstName">First Name <span class="red">*</span> :</label>
-            <div class="controls">
-                @Html.TextBoxFor(address => address.FirstName, new { placeholder = "First name" })
-                @Html.ValidationMessageFor(address => address.FirstName)
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="LastName">Last Name <span class="red">*</span> :</label>
-            <div class="controls">
-                @Html.TextBoxFor(address => address.LastName, new { placeholder = "Last name" })
-                @Html.ValidationMessageFor(address => address.LastName)
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="PhoneNumber">Phone Number <span class="red">*</span> :</label>
-            <div class="controls">
-                @Html.TextBoxFor(address => address.PhoneNumber, new { placeholder = "Phone number" })
-                @Html.ValidationMessageFor(address => address.PhoneNumber)
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="Address1">Address 1 <span class="red">*</span> :</label>
-            <div class="controls">
-                @Html.TextBoxFor(address => address.Address1, new { placeholder = "Address 1" })
-                @Html.ValidationMessageFor(address => address.Address1)
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="Address2">Address 2 :</label>
-            <div class="controls">
-                @Html.TextBoxFor(address => address.Address2, new { placeholder = "Address 2" })
-                @Html.ValidationMessageFor(address => address.Address2)
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="City">City <span class="red">*</span> :</label>
-            <div class="controls">
-                @Html.TextBoxFor(address => address.City, new { placeholder = "City" })
-                @Html.ValidationMessageFor(address => address.City)
-            </div>
-        </div>
-        
-        <div class="control-group">
-            <label class="control-label" for="StateProvince">State/Province <span class="red">*</span> :</label>
-            <div class="controls">
-                @Html.TextBoxFor(address => address.StateProvince, new { placeholder = "State/Province" })
-                @Html.ValidationMessageFor(address => address.StateProvince)
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="Country">Country <span class="red">*</span> :</label>
-            <div class="controls line-height-30">
-                @Html.DisplayFor(address => address.Country.Name)
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="PostalCode">Postal Code <span class="red">*</span> :</label>
-            <div class="controls">
-                @Html.TextBoxFor(address => address.PostalCode, new { placeholder = "Postal Code" })
-                @Html.ValidationMessageFor(address => address.PostalCode)
-            </div>
-        </div>
-        <div class="control-group">
-            <div class="controls">
-                <input type="submit" class="btn btn-info" id="continue" name="continue" value="Set Billing Address" />
+                    
+                <div class="margin-bottom-10">
+                    <label for="LastName">Last Name <span class="red">*</span> :</label>
+                    @Html.TextBoxFor(address => address.LastName, new { placeholder = "Last name", @class="form-control" })
+                    @Html.ValidationMessageFor(address => address.LastName)
+                </div>
+
+                <div class="margin-bottom-10">
+                    <label for="PhoneNumber">Phone Number <span class="red">*</span> :</label>
+                    @Html.TextBoxFor(address => address.PhoneNumber, new { placeholder = "Phone number", @class="form-control" })
+                    @Html.ValidationMessageFor(address => address.PhoneNumber)
+                </div>
+
+                <div class="margin-bottom-10">
+                    <label for="Address1">Address 1 <span class="red">*</span> :</label>
+                    @Html.TextBoxFor(address => address.Address1, new { placeholder = "Address 1", @class="form-control" })
+                    @Html.ValidationMessageFor(address => address.Address1)
+                </div>
+                
+                <div class="margin-bottom-10">
+                    <label for="Address2">Address 2 :</label>
+                    @Html.TextBoxFor(address => address.Address2, new { placeholder = "Address 2", @class="form-control" })
+                    @Html.ValidationMessageFor(address => address.Address2)
+                </div>
+                
+                <div class="margin-bottom-10">
+                    <label for="City">City <span class="red">*</span> :</label>
+                    @Html.TextBoxFor(address => address.City, new { placeholder = "City", @class="form-control" })
+                    @Html.ValidationMessageFor(address => address.City)
+                </div>
+                
+                <div class="margin-bottom-10">
+                    <label for="StateProvince">State/Province <span class="red">*</span> :</label>
+                    @Html.TextBoxFor(address => address.StateProvince, new { placeholder = "State/Province", @class="form-control" })
+                    @Html.ValidationMessageFor(address => address.StateProvince)
+                </div>
+
+                <div class="margin-bottom-10">
+                    <label for="Country">Country <span class="red">*</span> :</label>
+                    @Html.DisplayFor(address => address.Country.Name, new {@class="form-control"})
+                </div>
+                
+                <div class="margin-bottom-10">
+                    <label for="PostalCode">Postal Code <span class="red">*</span> :</label>
+                    @Html.TextBoxFor(address => address.PostalCode, new { placeholder = "Postal Code", @class="form-control" })
+                    @Html.ValidationMessageFor(address => address.PostalCode)
+                </div>
+
+                <div class="margin-bottom-10">
+                    <input type="submit" class="btn btn-default btn-block" id="continue" name="continue" value="Set Billing Address" />
+                </div>
             </div>
         </div>
     }

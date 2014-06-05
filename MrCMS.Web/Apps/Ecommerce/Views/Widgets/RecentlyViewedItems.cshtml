@@ -2,15 +2,18 @@
 @model List<MrCMS.Web.Apps.Ecommerce.Pages.Product>
 @if (Model != null && Model.Any())
 {
-    <hr />
-    <h4>Recently Viewed Items</h4>
-    foreach (var item in Model)
+    <div class="block-title">
+        <div class="h1style">
+            Recently Viewed Items
+        </div>
+    </div>
+    @foreach (var item in Model)
     {
-        <div class="row-fluid margin-bottom-5">
-            <div class="span3">
-                @RenderImage(item.DisplayImageUrl, new Size { Width = 50, Height = 50 })
+        <div class="row">
+            <div class="col-sm-3">
+                @RenderImage(item.DisplayImageUrl, null, null, new { @class = "img-responsive" })
             </div>
-            <div class="span9">
+            <div class="col-sm-9">
                 <a href="/@item.LiveUrlSegment">@item.Name</a>
             </div>
         </div>

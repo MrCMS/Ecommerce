@@ -1,27 +1,32 @@
 ﻿@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
-<br />
-<div class="row-fluid">
-    <div class="span8">
-        <h4>Select postage</h4>
 
-        <div class="form-horizontal">
-            <div class="control-group">
-                <label class="control-label" for="ShippingCalculation">
-                    Postage Selection <span class="red">*</span> :
-                </label>
-                <div class="controls">
-                    @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>)
+<div class="padding-top-bottom-20">
+    <div class="row">
+        <div class="col-md-8 col-sm-8 padding-left-0 mobile-left-padding">
+            <div class="block-title">
+                <h1>Select postage</h1>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">Postage Selection <span class="red">*</span> :</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new{@class="form-control"})
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            @{Html.RenderAction("DeliveryAddress", "SetDeliveryDetails");}
         </div>
-        <hr />
-        @{Html.RenderAction("DeliveryAddress", "SetDeliveryDetails");}
-    </div>
-    <div class="span4">
-        @{Html.RenderAction("Summary", "Checkout");}
-        <hr />
-        @{Html.RenderAction("OrderEmail", "Checkout");}
+        <div class="col-md-4 col-sm-4">
+            @{Html.RenderAction("Summary", "Checkout");}
+            @{Html.RenderAction("OrderEmail", "Checkout");}
+        </div>
     </div>
 </div>
+
 @{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/shipping-methods.js"); }
