@@ -2606,7 +2606,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Index.cshtml.orig" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Edit.cshtml" />
@@ -2636,30 +2635,12 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\RecentlyViewedItems.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\SpendXMore.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Apps\Ecommerce\Content\Scripts\custom\product.js.orig" />
-    <Content Include="Apps\Ecommerce\Entities\Products\PriceBreak.cs.orig" />
-    <Content Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs.orig" />
-    <Content Include="Apps\Ecommerce\Entities\Shipping\ShippingMethod.cs.orig" />
-    <Content Include="Apps\Ecommerce\Entities\Users\Address.cs.orig" />
-    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderCancelledEmailToCustomerMessageTemplate.cs.orig" />
-    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderFullyRefundedEmailToCustomerMessageTemplate.cs.orig" />
-    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderPartiallyRefundedEmailToCustomerMessageTemplate.cs.orig" />
-    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToCustomerMessageTemplate.cs.orig" />
-    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToStoreOwnerMessageTemplate.cs.orig" />
-    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderShippedEmailToCustomerMessageTemplate.cs.orig" />
-    <Content Include="Apps\Ecommerce\Payment\Paypoint\PaypointPaymentMethod.cs.orig" />
-    <Content Include="Apps\Ecommerce\Services\Cart\CartSessionManager.cs.orig" />
-    <Content Include="Apps\Ecommerce\Services\Cart\GetCartImpl.cs.orig" />
-    <Content Include="Apps\Ecommerce\Services\Products\IProductVariantService.cs.orig" />
-    <Content Include="Apps\Ecommerce\Services\Products\ProductSearchService.cs.orig" />
-    <Content Include="Apps\Ecommerce\Services\Shipping\IShippingMethodManager.cs.orig" />
     <Content Include="Apps\Ecommerce\Views\Cart\AddDiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\AddToCart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\Cart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\DeleteCartItem.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\Details.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Cart\Details.cshtml.orig" />
     <Content Include="Apps\Ecommerce\Views\Cart\DiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\EditDiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\EnterOrderEmail.cshtml" />
@@ -2695,7 +2676,6 @@
     <Content Include="Apps\Ecommerce\Views\ProductSearch\Query.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductSearch\Results.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductSearch\SearchBrands.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\ProductSearch\SearchCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductSearch\SearchOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductSearch\SearchSpecifications.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Product\Product.cshtml" />
@@ -2707,7 +2687,6 @@
     <Content Include="Apps\Ecommerce\Views\Shared\AnalyticsCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\BackInStockForm.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductCard.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\ProductCard.cshtml.orig" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductCardFeatured.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductImages.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductPricebreaks.cshtml" />
@@ -2779,6 +2758,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditProductList.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\SortContentItems.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
+    <None Include="Properties\PublishProfiles\Web Preview - JASPER.pubxml" />
     <None Include="Themes\Default\Views\Web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

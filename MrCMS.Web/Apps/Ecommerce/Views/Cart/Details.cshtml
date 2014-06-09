@@ -9,13 +9,13 @@
         </div>
         <div class="col-sm-6">
             <div class="row">
-                <div class="col-sm-6">
-                    <a class="btn btn-default btn-block" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">Continue Shopping</a>
+                <div class="@(!Model.CanEnterPaymentFlow ? "col-sm-offset-6" : "") col-sm-6">
+                    <a class="btn btn-default btn-block " href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">Continue Shopping</a>
                 </div>
                 @if (Model.CanEnterPaymentFlow)
                 {
                     <div class="col-sm-6">
-                        <a class="btn btn-info btn-block" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay Securely NOW!</a>
+                        <a class="btn btn-normalgreen btn-block" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay Securely NOW!</a>
                     </div>
                 }
             </div>
@@ -78,7 +78,7 @@
                         <input class="form-control" type="text" id="discount-code" />
                     </div>
                     <div class="col-sm-4">
-                        <button id="apply-discount-code" class="btn btn-default">Apply Discount Code</button>
+                        <button id="apply-discount-code" class="btn btn-default btn-block">Apply Discount Code</button>
                     </div>
                 </div>
             </div>
@@ -153,7 +153,7 @@
         <div class="col-sm-6 col-sm-offset-6">
             @if (Model.CanEnterPaymentFlow)
             {
-                <a class="btn btn-info btn-block" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay Securely NOW!</a>
+                <a class="btn btn-normalgreen btn-block" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay Securely NOW!</a>
             }
             @if (Model.CanUsePayPalExpress)
             {

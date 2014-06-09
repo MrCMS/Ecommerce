@@ -59,9 +59,9 @@
             {
                 Html.RenderPartial("SelectMethod", cart);
                 <div id="payment-confirmation">
-                    @if (!string.IsNullOrWhiteSpace(cart.PaymentMethod))
+                    @if (cart.PaymentMethodSet)
                     {
-                        Html.RenderAction(cart.PaymentMethod, "PaymentMethod");
+                        Html.RenderAction(cart.PaymentMethodAction, cart.PaymentMethodController);
                     }
                 </div>
             }

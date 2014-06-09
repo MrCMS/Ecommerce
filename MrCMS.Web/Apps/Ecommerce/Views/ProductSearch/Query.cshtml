@@ -11,66 +11,72 @@
     var brands = ViewData["product-brands"] as List<SelectListItem>;
 }
 <div id="product-query-container">
-    @if (categories.Any())
-    {
-        <div class="margin-bottom-10">
-            <h3>
-                Refine results
-            </h3>
-        </div>
-        <div class="widget-con">
-            <div class="title-con">
-                By category
-            </div>
-            <div class="options-con">
-                @Html.HiddenFor(query => query.CategoryId)
-                @{ var depth = 0; }
-                @if (categories.Hierarchy.Any())
-                {
-                    <div class="option">
-                        <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="@(UniquePageHelper.GetUrl<ProductSearch>())">Products</a>
-                    </div>
-                    depth++;
-                }
-                @foreach (var parent in categories.Hierarchy)
-                {
-                    <div class="option">
-                        <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="/@parent.LiveUrlSegment">@string.Format("{0} {1}", new string('-', depth), parent.Name)</a>
-                    </div>
-                    depth++;
-                }
-                @foreach (var item in categories.Children)
-                {
-                    <div class="option">
-                        <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="/@item.LiveUrlSegment">@string.Format("{0} {1}", new string('-', depth), item.Name)</a>
-                    </div>
-                }
-            </div>
-        </div>
-    }
-
-            @{ Html.RenderPartial("SearchOptions", new ViewDataDictionary(options) { { "query", Model } }); }
-    <div class="widget-con">
-        <div class="title-con">
-            By price
-        </div>
-        <div class="options-con">
-            <div class="option">
-                @Html.HiddenFor(query => query.PriceFrom)
-                @Html.Hidden("PriceTo", Model.PriceTo ?? Model.MaxPrice)
-                @Html.HiddenFor(query => query.MaxPrice)
-                <span class="price-range" id="amount">
-                    &#163;0.00 - &#163;250
-                </span>
-                <div class="padding-right-10">
-                    <div id="slider-range"></div>
-                </div>
-                
-            </div>
-        </div>
+    <div class="margin-bottom-10">
+        <h3 class="hidden-xs">
+            Refine results
+        </h3>
+        <a class="btn btn-default visible-xs" data-toggle="collapse" data-target="#filter-container">Refine results</a>
     </div>
 
-    @{ Html.RenderPartial("SearchSpecifications", new ViewDataDictionary(specifications) { { "query", Model } }); }
+    <div id="filter-container" class="collapse">
+        @if (categories.Any())
+        {
+            <div class="widget-con">
+                <div class="title-con">
+                    By category
+                </div>
+                <div class="options-con">
+                    @Html.HiddenFor(query => query.CategoryId)
+                    @{ var depth = 0; }
+                    @if (categories.Hierarchy.Any())
+                    {
+                        <div class="option">
+                            <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="@(UniquePageHelper.GetUrl<ProductSearch>())">Products</a>
+                        </div>
+                        depth++;
+                    }
+                    @foreach (var parent in categories.Hierarchy)
+                    {
+                        <div class="option">
+                            <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="/@parent.LiveUrlSegment">@string.Format("{0} {1}", new string('-', depth), parent.Name)</a>
+                        </div>
+                        depth++;
+                    }
+                    @foreach (var item in categories.Children)
+                    {
+                        <div class="option">
+                            <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="/@item.LiveUrlSegment">@string.Format("{0} {1}", new string('-', depth), item.Name)</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
 
-    @{ Html.RenderPartial("SearchBrands", new ViewDataDictionary(brands) { { "query", Model } }); }
+        @{ Html.RenderPartial("SearchOptions", new ViewDataDictionary(options) { { "query", Model } }); }
+        <div class="widget-con">
+            <div class="title-con">
+                By price
+            </div>
+            <div class="options-con">
+                <div class="option">
+                    @Html.HiddenFor(query => query.PriceFrom)
+                    @Html.Hidden("PriceTo", Model.PriceTo ?? Model.MaxPrice)
+                    @Html.HiddenFor(query => query.MaxPrice)
+                    <span class="price-range" id="amount">
+                        &#163;0.00 - &#163;250
+                    </span>
+                    <div class="padding-right-10">
+                        <div id="slider-range"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        @{ Html.RenderPartial("SearchSpecifications", new ViewDataDictionary(specifications) { { "query", Model } }); }
+
+        @{ Html.RenderPartial("SearchBrands", new ViewDataDictionary(brands) { { "query", Model } }); }
+
+    </div>
+
 </div>
