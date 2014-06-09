@@ -3,13 +3,11 @@
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 
 <div class="grey-border text-center product-image-box">
-    @Html.RenderImage(Model.DisplayImageUrl, new Size { Width = 458, Height = 367 }, Model.Name, Model.Name, new { @class = "col-sm-12 img-responsive" })    
+    @Html.RenderImage(Model.DisplayImageUrl, new Size { Width = 458, Height = 367 }, Model.Name, Model.Name, new { @class = "img-responsive center-block" })    
     <div class="clearfix"></div>
 
     <div class="row">
-        <div class="col-sm-2">
-            
-        </div>
+        <div class="col-sm-2"></div>
         <div class="col-sm-8">
             <div id="product-image-thumbnails">
                 <ul class="thumbnails">

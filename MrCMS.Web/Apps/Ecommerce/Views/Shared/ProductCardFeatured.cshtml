@@ -10,8 +10,8 @@
 
     <div class="product-con">
         <div class="product-image">
-            <a href="/@Model.LiveUrlSegment">@RenderImage(Model.DisplayImageUrl, null, null, new { @class = "img-responsive" })</a>
-            <img src="/Apps/Ecommerce/Content/Images/topoffer.png" class="offer" />
+            <a href="/@Model.LiveUrlSegment">@RenderImage(Model.DisplayImageUrl, new Size{Width = 200, Height = 200}, null, null, new { @class = "img-responsive" })</a>
+            @*<img src="/Apps/Ecommerce/Content/Images/topoffer.png" class="offer" />*@
         </div>
         <div class="product-info">
             <div class="product-name">
@@ -19,6 +19,7 @@
             </div>
             <div class="product-price">
                 <span class="current-price">
+                    @(Model.IsMultiVariant ? "From " : "")
                     @Html.DisplayFor(product => product.DisplayPrice)
                 </span>
                 @if (Model.DisplayPreviousPrice.HasValue && Model.DisplayPreviousPrice > Model.DisplayPrice)
