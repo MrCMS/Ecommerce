@@ -345,14 +345,15 @@ background: -o-linear-gradient(top,#eee,#dedede) !important;
 .fb-like > span { vertical-align: inherit !important;}
 .form-control { border-radius: 0 !important;}
 input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .uneditable-input { border-radius: 0 !important;}
+.carousel-control { color: #0172B7;}
 
 @media (max-width: 767px) {
     .navbar-right { float: right !important;}
     .searchbar .container {padding-left:0;padding-right:0;}
     .navbar-right li {padding:0;margin:0;}
-    .navbar-right li a {padding-left:24px;padding-right:24px;padding-top:16px;padding-bottom:16px;margin:0;}
-    .navbar-right li a.checkout {background-color:#88A825;color:#fff;padding-left:24px;padding-right:24px;}
-    .navbar-right li a.basket {background-color:#333745;color:#fff;padding-left:24px;padding-right:24px;}
+    .navbar-right li a {padding-left:20px;padding-right:20px;padding-top:16px;padding-bottom:16px;margin:0;}
+    .navbar-right li a.checkout {background-color:#88A825;color:#fff;padding-left:20px;padding-right:20px;}
+    .navbar-right li a.basket {background-color:#333745;color:#fff;padding-left:20px;padding-right:20px;}
     .account { /*width: 28px;*/float: left;/*margin-top: -52px !important;*/}
     .account li { /*width: 28px;*/}
     .account li.open .dropdown-menu { background: #fff!important;position: absolute !important;}
