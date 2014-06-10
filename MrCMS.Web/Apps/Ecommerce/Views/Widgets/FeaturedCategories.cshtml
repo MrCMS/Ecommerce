@@ -18,15 +18,19 @@
                 </div>
                     @foreach (var itemRow in Model.Categories.Chunk(4))
                     {
+                        var i = 0;
                         <div class="row">
                             @foreach (var item in itemRow)
                             {
-                                <div class="col-md-3 col-sm-3 col-xs-6">
+                                i++;
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6">
                                     <div class="category-con">
                                         @if (!string.IsNullOrWhiteSpace(item.FeatureImage))
                                         {
                                             <div class="category-image">
-                                                <a href="/@item.LiveUrlSegment">@RenderImage(item.FeatureImage, new Size { Width = 263, Height = 184 }, "", "", new{@class="img-responsive center-block"})</a>
+                                                <a href="/@item.LiveUrlSegment">
+                                                    @RenderImage(item.FeatureImage, new Size { Width = 263, Height = 184 }, null, null, new { @class = "img-responsive center-block" })
+                                                </a>
                                             </div>
                                         }
                                         <div class="category-name">
@@ -38,6 +42,10 @@
                                         <p>@item.Abstract</p>
                                     }*@
                                 </div>
+                                if (i % 2 == 0)
+                                {
+                                    <div class="clearfix visible-xs"></div>
+                                }
                             }
                         </div>
                     }
