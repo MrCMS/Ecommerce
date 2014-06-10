@@ -1,4 +1,6 @@
-﻿@model MrCMS.Entities.Documents.Web.Webpage
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model MrCMS.Entities.Documents.Web.Webpage
 @{
     Layout = "_BaseLayout.cshtml";
 }
@@ -11,9 +13,15 @@
                     <div class="mobilemenu">
                         <a id="menu" href="#" data-mfnav="toggleMobileNav"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Menu</a>
                         <div class="pull-right">
-                            <input type="text" placeholder="search" style="display: none;"/>
-                            <a id="" href="" class=""><span class="glyphicon glyphicon-search"></span></a>
+                            <a href="#" data-toggle="collapse" data-target="#mobSearch"><span class="glyphicon glyphicon-search"></span></a>
                         </div>
+                    </div>
+                    <div id="mobSearch" class="collapse">
+                        <form class="form-inline" method="GET" action="@(UniquePageHelper.GetUrl<ProductSearch>())">
+                            <input type="text" placeholder="search" name="searchTerm"/>
+                            <input type="submit" class="btn" value="Go"/>
+                        </form>
+                        
                     </div>
                 </div>
                 <div class="hidden-sm">
