@@ -351,15 +351,15 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
     .navbar-right { float: right !important;}
     .searchbar .container {padding-left:0;padding-right:0;}
     .navbar-right li {padding:0;margin:0;}
-    .navbar-right li a {padding-left:20px;padding-right:20px;padding-top:16px;padding-bottom:16px;margin:0;}
-    .navbar-right li a.checkout {background-color:#88A825;color:#fff;padding-left:20px;padding-right:20px;}
-    .navbar-right li a.basket {background-color:#333745;color:#fff;padding-left:20px;padding-right:20px;}
+    .navbar-right li a {padding-left:18px;padding-right:18px;padding-top:16px;padding-bottom:16px;margin:0;}
+    .navbar-right li a.checkout {background-color:#88A825;color:#fff;padding-left:18px;padding-right:18px;}
+    .navbar-right li a.basket {background-color:#333745;color:#fff;padding-left:18px;padding-right:18px;}
     .account { /*width: 28px;*/float: left;/*margin-top: -52px !important;*/}
     .account li { /*width: 28px;*/}
-    .account li.open .dropdown-menu { background: #fff!important;position: absolute !important;}
+    .account li.open .dropdown-menu { background: #fff!important;position: absolute !important;border: 1px solid #ddd;}
     .account li.open .dropdown-menu li { width: auto;float: left;}
     .slider {background:none;}
-    .logo {padding:16px 0 16px 5px;}
+    .logo {padding:8px 0 8px 5px;}
     .navbar-nav {margin: 0;}
     .info .pull-right {float:left !important;}
     .margin-right-minus ul li {padding-left: 0 !important;padding-right: 10px !important;}
@@ -403,4 +403,9 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
 @media (min-width: 1200px) {
     #mfnav-desktop ul li a span { display: none;}
     #filter-container { display: block !important;}
+}
+
+/* Iphone 5s*/
+@media (max-width: 321px) {
+    .logo { padding: 18px 0 0 5px;}
 }
