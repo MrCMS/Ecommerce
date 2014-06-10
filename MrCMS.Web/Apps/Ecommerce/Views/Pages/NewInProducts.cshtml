@@ -10,14 +10,20 @@
     var products = ViewData["newinproducts"] as IList<Product>;
     foreach (var chunk in products.Chunk(4))
     {
+        var i = 0;
         <div class="row">
             @foreach (var product in chunk)
             {
+                i++;
                 <div class="col-md-3 col-sm-3 col-xs-6">
                     @{
                         Html.RenderPartial("ProductCardFeatured", product);
                     }
                 </div>
+                if (i % 2 == 0)
+                {
+                    <div class="clearfix visible-xs"></div>
+                }
             }
         </div>
     }
