@@ -32,11 +32,7 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-        </div>        
-
-
-        
-        
+        </div>
     </div>
     <div class="clearfix"></div>
 
@@ -50,23 +46,25 @@
             </div>
         }
     </div>
-    
-
     <div id="products-wrapper">
         @if (Model.Any())
         {
+            var p = 1;
             <div id="products">
-                @foreach (var products in Model.Chunk(3))
+                @foreach (var product in Model)
                 {
-                    <div class="row text-center">
-                        @foreach (var product in products)
-                        {
-                            Html.RenderPartial("ProductCard", product);
-                        }
-                    </div>
+                    Html.RenderPartial("ProductCard", product);
+                    if (p % 3 == 0)
+                    {
+                        <div class="clearfix hidden-xs"></div>
+                    }
+                    if (p % 2 == 0)
+                    {
+                        <div class="clearfix visible-xs"></div>
+                    }
+                    p++;
                 }
             </div>
-           
             <div id="products-paging">
                 @Html.PageCurrentPage(Model, i => new { page = i }, PagedListRenderOptions.OnlyShowFivePagesAtATime)
             </div>
