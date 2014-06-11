@@ -5,7 +5,7 @@
     ViewData["cart"] = Model.Cart;
     if (!String.IsNullOrEmpty(Model.Title))
     {
-        <div class="margin-top-70-bottom-30 grey-border-top">
+        <div class="margin-top-70-bottom-30 grey-border-top featured-products-widget">
             <div class="container">
                 <div class="margin-top-bottom-30">
                     <div class="row">
@@ -25,7 +25,7 @@
     }
     else
     {
-        <div class="margin-top-bottom-30">
+        <div class="margin-top-bottom-30 featured-products-widget">
             <div class="container">
                 <div class="padding-top-bottom-20">
                     @ShowItems()

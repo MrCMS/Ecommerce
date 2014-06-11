@@ -12,11 +12,10 @@
                 <div id="sidebarmenu" class="visible-xs visible-sm c">
                     <div class="mobilemenu">
                         <a id="menu" href="#" data-mfnav="toggleMobileNav"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Menu</a>
-                        <div class="pull-right">
+                        <div class="pull-right hidden-sm">
                             <a data-toggle="collapse" data-target="#mobSearch" style="cursor: pointer;"><span class="glyphicon glyphicon-search"></span></a>
                         </div>
                     </div>
-                    
                 </div>
                 <div id="mobSearch" class="collapse">
                     <form class="form-inline" method="GET" action="@(UniquePageHelper.GetUrl<ProductSearch>())">
