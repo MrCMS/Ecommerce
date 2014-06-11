@@ -353,6 +353,9 @@ background: -o-linear-gradient(top,#eee,#dedede) !important;
 .form-control { border-radius: 0 !important;}
 input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .uneditable-input { border-radius: 0 !important;}
 .carousel-control { color: #0172B7;}
+.carousel-control:hover { color: #0172B7;}
+.carousel-indicators li { border: 1px solid #0172B7;}
+.carousel-indicators .active {background-color: #0172B7;}
 
 @media (max-width: 767px) {
     .navbar-right { float: right !important;}
