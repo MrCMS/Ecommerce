@@ -38,10 +38,10 @@ html {min-height: 101%;}
 .searchbar .input-group-addon {color: #0072B7;background-color: #fff;border: 1px solid #0072B7;border-left-width:0;}
 #wrapper {margin-top:0;padding-top:90px;position:relative;}
 .btn {border-radius:0;}
-.btn-default {color: #fff;background-color: #467AC3;border-color: #467AC3;}
+.btn-default {color: #ffffff;background-color: #467AC3;border-color: #467AC3;}
 .btn-default:hover {background-color:#0172b7;border-color:#0172b7;}
 .btn-green { color: #ffffff;background-color:#88A825;border-color: #dddddd;padding: 19px 12px;}
-.btn-green:Hover { color: #ffffff;background-color:#89ae18;border-color: #dddddd;padding:19px 12px;}
+.btn-green:hover { color: #ffffff;background-color:#89ae18;border-color: #dddddd;padding:19px 12px;}
 .btn-grey {background-color:#cccccc;border-color:#cccccc;padding:6px 30px;}
 .btn-grey:hover {background-color:#b7b7b7;border-color:#b7b7b7;padding:6px 30px;}
 .btn-white {background-color:#ffffff;border-color:#cccccc;padding:6px 30px;}
