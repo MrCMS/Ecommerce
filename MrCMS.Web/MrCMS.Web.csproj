@@ -1219,6 +1219,8 @@
     <Content Include="Apps\Ecommerce\Content\Bootstrap\img\glyphicons-halflings.png" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.js" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.min.js" />
+    <Content Include="Apps\Ecommerce\Content\Fonts\mavenpro-regular-webfont.svg" />
+    <Content Include="Apps\Ecommerce\Content\Fonts\fonts.css" />
     <Content Include="Apps\Ecommerce\Content\Images\ajax-loader.gif" />
     <Content Include="Apps\Ecommerce\Content\Images\awaiting-image.jpg" />
     <Content Include="Apps\Ecommerce\Content\Images\basket.png" />
@@ -2757,6 +2759,9 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddProductList.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditProductList.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\SortContentItems.cshtml" />
+    <Content Include="Apps\Ecommerce\Content\Fonts\mavenpro-regular-webfont.eot" />
+    <Content Include="Apps\Ecommerce\Content\Fonts\mavenpro-regular-webfont.ttf" />
+    <Content Include="Apps\Ecommerce\Content\Fonts\mavenpro-regular-webfont.woff" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <None Include="Properties\PublishProfiles\Web Preview - JASPER.pubxml" />
     <None Include="Themes\Default\Views\Web.Debug.config">

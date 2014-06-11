@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'Maven Pro';
+    src: url('mavenpro-regular-webfont.eot');
+    src: url('mavenpro-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('mavenpro-regular-webfont.woff') format('woff'),
+         url('mavenpro-regular-webfont.ttf') format('truetype'),
+         url('mavenpro-regular-webfont.svg#maven_proregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}

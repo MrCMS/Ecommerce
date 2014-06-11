@@ -14,16 +14,14 @@
             {
                 using (Html.BeginForm("BillingAddressSameAsShippingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
                 {
-                <div class="control-group">
-                    <div class="control-label">
+                    <div class="control-group">
                         <label class="checkbox" for="SameAsShipping">
                             Use Delivery Address @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress)
                         </label>
+                        <div class="controls">
+                            @cart.ShippingAddress.GetDescription()
+                        </div>
                     </div>
-                    <div class="controls">
-                        @cart.ShippingAddress.GetDescription()
-                    </div>
-                </div>
                 }
             }
 

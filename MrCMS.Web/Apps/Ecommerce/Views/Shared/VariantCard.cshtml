@@ -1,4 +1,5 @@
-﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+﻿@using System.Drawing
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @using MrCMS.Website
@@ -8,32 +9,35 @@
     var @abstract = Model.Product != null ? Model.Product.Abstract ?? string.Empty : string.Empty;
 }
 <div class="row" data-wishlist-item="@Model.Id">
-    <div class="col-sm-3">
-        @RenderImage(Model.DisplayImageUrl, null, null, new{@class="img-responsive"})
+    <div class="hidden-xs col-sm-2 col-md-2">
+        <a href="@Model.DirectUrl">
+            @RenderImage(Model.DisplayImageUrl, new Size { Width = 150, Height = 150 }, null, null, new { @class = "img-responsive" })
+        </a>
     </div>
-    <div class="col-sm-6">
-        <h4><a href="@Model.DirectUrl">@(!string.IsNullOrWhiteSpace(Model.Name) ? Model.Name : Model.Product.Name)</a></h4>
-        @(@abstract.Length > 255 ? @abstract.Substring(0, 250) + "..." : @abstract)
+    <div class="col-xs-12 col-sm-7 col-md-8">
+        <h3><a href="@Model.DirectUrl">@(!string.IsNullOrWhiteSpace(Model.Name) ? Model.Name : Model.Product.Name)</a></h3>
+        <div class="price">
+            @Model.Price.ToCurrencyFormat()
+        </div>
+        @if (Model.ShowPreviousPrice)
+        {
+            <div class="margin-bottom-10">
+                <span class="previous-price">@(SiteSettings<EcommerceSettings>().PreviousPriceText) <span style="text-decoration: line-through">@Model.PreviousPrice.ToCurrencyFormat()</span></span>
+            </div>
+        }
+        <div class="margin-bottom-10">
+            @(@abstract.Length > 255 ? @abstract.Substring(0, 250) + "..." : @abstract)
+        </div>
     </div>
-    <div class="col-sm-3">
+    <div class="col-xs-12 col-sm-3 col-md-2">
         <div class="text-right">
-            <div class="product-price">
-                @Model.Price.ToCurrencyFormat()
-            </div>
-            @if (Model.ShowPreviousPrice)
-            {
-                <span>@(SiteSettings<EcommerceSettings>().PreviousPriceText) <span style="text-decoration: line-through">@Model.PreviousPrice.ToCurrencyFormat()</span></span>
-            }
-            <div>
-                <a href="@Model.DirectUrl" class="btn btn-more margin-bottom-5 span12">View</a>
-            </div>
             @if (Model.CanBuy(cartModel, 1).OK)
             {
                 using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
                 {
-                <button class="btn btn-info span12 margin-bottom-5">Add to basket</button>
-                @Html.Hidden("ProductVariant.Id", Model.Id)
-                @Html.Hidden("quantity", 1)
+                    <button class="btn btn-green btn-block margin-bottom-10">Add to basket</button>
+                    @Html.Hidden("ProductVariant.Id", Model.Id)
+                    @Html.Hidden("quantity", 1)
                 }
             }
             @{ Html.RenderAction("Add", "Wishlist", new { id = Model.Id }); }
