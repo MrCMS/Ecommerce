@@ -1,4 +1,5 @@
-﻿@using MrCMS.Helpers
+﻿@using System.Drawing
+@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Entities.Products
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
@@ -73,6 +74,16 @@
                             </p>
                         }
 
+                        if (product.Brand != null)
+                        {
+                            if (!string.IsNullOrWhiteSpace(product.Brand.Logo))
+                            {
+                                <div>
+                                    @RenderImage(product.Brand.Logo, new Size {Width = 120}, product.Brand.Name, product.Brand.Name, new {@class = "img-responsive"})
+                                </div>
+                            }
+                        }
+
                         Html.RenderAction("Add", "Wishlist", new { productVariant = Model });
                         
                         Html.RenderPartial("ProductPricebreaks", Model);
@@ -83,20 +94,24 @@
                         @Html.Raw(Model.SoldOutMessage)
                     }
 
+                    @if (!string.IsNullOrWhiteSpace(product.Abstract))
+                    {
+                        <div class="padding-bottom-10">
+                            @Editable(product, p => p.Abstract, true)
+                        </div>
+                    }
 
-                    <div class="padding-bottom-10">
-                        @Editable(product, p => p.Abstract, true)
-                        <br/>
-                        <p>
-                            <a href="#fulldescription">Read full description</a>
+                    <div class="padding-bottom-10" id="readFullDescription">
+                        <p class="hidden-xs">
+                            <a href="#fulldescription" title="Read full description">Read full description</a>
                         </p>
                     </div>
                     
                     @RenderZone("Below Product Price")
                 </div>
                 <div class="col-sm-3">
-                    <div class="padding-bottom-10 margin-bottom-20 grey-border-bottom">
-                        <img src="/Apps/Ecommerce/Content/Images/secure.jpg" class="img-responsive"/>
+                    <div class="padding-bottom-10 margin-bottom-20 grey-border-bottom hidden-xs">
+                        <img src="/Apps/Ecommerce/Content/Images/secure.jpg" class="img-responsive" alt="Secure payments"/>
                     </div>
                     @{Html.RenderPartial("SocialLinks");}
                 </div>
