@@ -13,16 +13,22 @@
                     <div class="mobilemenu">
                         <a id="menu" href="#" data-mfnav="toggleMobileNav"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Menu</a>
                         <div class="pull-right">
-                            <a href="#" data-toggle="collapse" data-target="#mobSearch"><span class="glyphicon glyphicon-search"></span></a>
+                            <a data-toggle="collapse" data-target="#mobSearch" style="cursor: pointer;"><span class="glyphicon glyphicon-search"></span></a>
                         </div>
                     </div>
-                    <div id="mobSearch" class="collapse">
-                        <form class="form-inline" method="GET" action="@(UniquePageHelper.GetUrl<ProductSearch>())">
-                            <input type="text" placeholder="search" name="searchTerm"/>
-                            <input type="submit" class="btn" value="Go"/>
-                        </form>
-                        
-                    </div>
+                    
+                </div>
+                <div id="mobSearch" class="collapse">
+                    <form class="form-inline" method="GET" action="@(UniquePageHelper.GetUrl<ProductSearch>())">
+                        <div class="input-group">
+                            <input type="text" placeholder="e.g. Shorts" name="searchTerm" class="form-control" style="margin-bottom: 5px;"/>
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn" style="margin-bottom: 5px;">
+                                    Search
+                                </button>
+                            </span>
+                        </div>
+                    </form>
                 </div>
                 <div class="hidden-sm">
                     <div class="navbar-collapse collapse">
@@ -96,7 +102,7 @@
             <div class="padding-top-bottom-20 payment grey-border-top-bottom">
                 <div class="row">
                     <div class="col-md-3">
-                        <img src="/Apps/Ecommerce/Content/Images/payment.gif" class="img-responsive" />
+                        <img src="/Apps/Ecommerce/Content/Images/payment.gif" class="img-responsive" alt="Our payment methods"/>
                     </div>
                     <div class="col-md-9">
                         We accept Visa, Mastercard and Maestro card payments. We also take payments from customers with a Paypal account.
