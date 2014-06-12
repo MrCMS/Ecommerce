@@ -28,6 +28,7 @@
 
         History.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
     });
+
     $(document).on('click', '#product-query-container a[data-action=remove-option]', function (event) {
         event.preventDefault();
         $(this).siblings('input[name=Options]').remove();
