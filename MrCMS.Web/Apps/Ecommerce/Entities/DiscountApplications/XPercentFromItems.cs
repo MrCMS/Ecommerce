@@ -7,12 +7,12 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications
 {
-    public class XPercent : DiscountApplication
+    public class XPercentFromItems : DiscountApplication
     {
         public override decimal GetDiscount(CartModel cartModel)
         {
-            if (cartModel.TotalPreDiscount > 0 && DiscountPercent > 0 && DiscountPercent <= 100)
-                return Math.Round(cartModel.TotalPreDiscount*(DiscountPercent/100), 2, MidpointRounding.AwayFromZero);
+            //if (cartModel.TotalPreDiscount > 0 && DiscountPercent > 0 && DiscountPercent <= 100)
+            //    return Math.Round(cartModel.TotalPreDiscount*(DiscountPercent/100), 2, MidpointRounding.AwayFromZero);
             return decimal.Zero;
         }
 
@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications
 
         public override void CopyValues(DiscountApplication application)
         {
-            this.DiscountPercent = ((XPercent)application).DiscountPercent;
+            this.DiscountPercent = ((XPercentFromItems)application).DiscountPercent;
         }
     }
 }

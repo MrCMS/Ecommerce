@@ -6,8 +6,8 @@
 @model MrCMS.Web.Apps.Ecommerce.Services.Products.ProductSearchQuery
 @{
     var categories = ViewData["categories"] as CategorySearchModel;
-    var options = ViewData["product-options"] as List<ProductOptionModel>;
-    var specifications = ViewData["product-specifications"] as List<ProductOptionModel>;
+    var options = ViewData["product-options"] as List<ProductOptionModel<string>>;
+    var specifications = ViewData["product-specifications"] as List<ProductOptionModel<int>>;
     var brands = ViewData["product-brands"] as List<SelectListItem>;
 }
 <div id="product-query-container">

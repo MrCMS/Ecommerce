@@ -51,14 +51,37 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             return valueCollector.Values.Select(s => Convert.ToInt32(s)).Distinct().ToList();
         }
 
-        public List<int> GetOptions(ProductSearchQuery query)
+        public List<OptionInfo> GetOptions(ProductSearchQuery query)
         {
             var clone = query.Clone() as ProductSearchQuery;
-            clone.Options = new List<int>();
+            clone.Options = new List<string>();
             var indexSearcher = _productSearcher.IndexSearcher;
             var valueCollector = new ValueCollector(indexSearcher, FieldDefinition.GetFieldName<ProductSearchOptionsDefinition>());
             indexSearcher.Search(clone.GetQuery(), clone.GetFilter(), valueCollector);
-            return valueCollector.Values.Select(s => Convert.ToInt32(s)).Distinct().ToList();
+            return
+                valueCollector.Values.Select(GetOptionInfo)
+                    .Where(info => !info.Equals(default(OptionInfo)))
+                    .Distinct()
+                    .ToList();
+        }
+
+        private OptionInfo GetOptionInfo(string value)
+        {
+            if (!value.Contains("["))
+                return default(OptionInfo);
+
+            int bracketsOpened = value.IndexOf('[');
+            var optionIdString = value.Substring(0, bracketsOpened);
+
+            int startIndex = bracketsOpened + 1;
+            var valueData = value.Substring(startIndex, value.Length - startIndex - 1);
+            
+
+            int optionId;
+            if (!int.TryParse(optionIdString, out optionId))
+                return default(OptionInfo);
+
+            return new OptionInfo { OptionId = optionId, Value = valueData };
         }
 
         public List<int> GetBrands(ProductSearchQuery query)
@@ -68,7 +91,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var indexSearcher = _productSearcher.IndexSearcher;
             var valueCollector = new ValueCollector(indexSearcher, FieldDefinition.GetFieldName<ProductSearchBrandDefinition>());
             indexSearcher.Search(clone.GetQuery(), clone.GetFilter(), valueCollector);
-            return valueCollector.Values.Where(x=>!string.IsNullOrEmpty(x)).Select(s => Convert.ToInt32(s)).Distinct().ToList();
+            return valueCollector.Values.Where(x => !string.IsNullOrEmpty(x)).Select(s => Convert.ToInt32(s)).Distinct().ToList();
         }
 
         public List<int> GetCategories(ProductSearchQuery query)
@@ -81,6 +104,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             indexSearcher.Search(query1, clone.GetFilter(), valueCollector);
             return valueCollector.Values.Select(s => Convert.ToInt32(s)).Distinct().ToList();
         }
+    }
+
+    public struct OptionInfo
+    {
+        public int OptionId { get; set; }
+        public string Value { get; set; }
     }
 
     public class ValueCollector : Collector

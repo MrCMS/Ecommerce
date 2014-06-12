@@ -1,5 +1,5 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Services.Products
-@model List<MrCMS.Web.Apps.Ecommerce.Models.ProductOptionModel>
+@model List<MrCMS.Web.Apps.Ecommerce.Models.ProductOptionModel<string>>
 @{ var query = ViewData["query"] as ProductSearchQuery;}
 @if (Model.Any())
 {

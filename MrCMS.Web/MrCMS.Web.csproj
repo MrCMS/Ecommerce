@@ -494,7 +494,7 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\ImageAndTextOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\NewsletterTemplateOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductListOverride.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercent.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercentFromItems.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemHasSKU.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\Banner.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ContentItem.cs" />
@@ -2508,7 +2508,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Currency\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\FixedAmountFromOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\FreeShipping.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\XPercent.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\XPercentFromItems.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\XPercentFromOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\CartHasAtLeastXItems.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\CartSubtotalGreaterThanX.cshtml" />
