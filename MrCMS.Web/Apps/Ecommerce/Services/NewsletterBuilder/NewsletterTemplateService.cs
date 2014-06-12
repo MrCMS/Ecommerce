@@ -20,12 +20,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.NewsletterBuilder
             return _session.QueryOver<NewsletterTemplate>().Cacheable().List();
         }
 
-        public IPagedList<NewsletterTemplate> GetAllPaged()
-        {
-            return null;
-            //return _session.QueryOver<NewsletterTemplate>().Paged(,10);
-        }
-
         public void Add(NewsletterTemplate newsletterTemplate)
         {
             _session.Transact(session => session.Save(newsletterTemplate));

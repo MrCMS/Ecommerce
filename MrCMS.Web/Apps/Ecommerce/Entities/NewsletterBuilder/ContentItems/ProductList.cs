@@ -5,8 +5,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems
 {
     public class ProductList : ContentItem
     {
-        //public virtual IList<Product> Products { get; set; }
-
         public virtual string Products { get; set; }
     }
 }
