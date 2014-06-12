@@ -37,7 +37,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void UpdateAttributeOptionDisplayOrder(Product product, IList<SortItem> options);
         void DeleteProductAttributeValue(ProductOptionValue value);
         
-        List<ProductOptionModel> GetSearchAttributeOptions(ProductSearchQuery query);
-        List<ProductOptionModel> GetSearchSpecificationAttributes(ProductSearchQuery query);
+        List<ProductOptionModel<string>> GetSearchAttributeOptions(ProductSearchQuery query);
+        List<ProductOptionModel<int>> GetSearchSpecificationAttributes(ProductSearchQuery query);
     }
 }

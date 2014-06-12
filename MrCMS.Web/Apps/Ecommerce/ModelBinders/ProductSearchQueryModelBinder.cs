@@ -32,7 +32,6 @@ namespace MrCMS.Web.Apps.Ecommerce.ModelBinders
                             Options =
                                 (controllerContext.HttpContext.Request["Options"] ?? string.Empty)
                                 .Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries)
-                                .Select(s => Convert.ToInt32(s))
                                 .ToList(),
                             PageSize = !string.IsNullOrWhiteSpace(controllerContext.HttpContext.Request["PageSize"])
                                 ? Convert.ToInt32(controllerContext.HttpContext.Request["PageSize"])

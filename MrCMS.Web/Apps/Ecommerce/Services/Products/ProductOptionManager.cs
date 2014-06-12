@@ -20,7 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         private readonly IUniquePageService _uniquePageService;
         private readonly ISession _session;
 
-        public ProductOptionManager(ISession session, IProductSearchService productSearchService,IUniquePageService uniquePageService)
+        public ProductOptionManager(ISession session, IProductSearchService productSearchService, IUniquePageService uniquePageService)
         {
             _session = session;
             _productSearchService = productSearchService;
@@ -244,43 +244,38 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             _session.Transact(session => session.Delete(value));
         }
 
-        public List<ProductOptionModel> GetSearchAttributeOptions(ProductSearchQuery query)
+        public List<ProductOptionModel<string>> GetSearchAttributeOptions(ProductSearchQuery query)
         {
-            List<int> values = _productSearchService.GetOptions(query);
-            IList<ProductOptionValue> productAttributeValues =
-                _session.QueryOver<ProductOptionValue>()
-                        .Fetch(value => value.ProductOption)
-                        .Eager.Where(value => value.Id.IsIn(values))
-                        .Cacheable()
+            List<OptionInfo> values = _productSearchService.GetOptions(query);
+            var optionIds = values.Select(info => info.OptionId).Distinct().ToList();
+            IList<ProductOption> productAttributeOptions =
+                _session.QueryOver<ProductOption>()
+                        .Where(value => value.Id.IsIn(optionIds)).Cacheable()
                         .List();
 
-            List<ProductOption> productAttributeOptions =
-                productAttributeValues.Select(value => value.ProductOption).Distinct().ToList();
-
-            return productAttributeOptions.Select(option => new ProductOptionModel
+            return productAttributeOptions.Select(option => new ProductOptionModel<string>
                                                                 {
                                                                     Name = option.Name,
                                                                     Id = option.Id,
                                                                     Values =
-                                                                        productAttributeValues.Where(
+                                                                        values.Where(
                                                                             value =>
-                                                                            value.ProductOption == option)
-                                                                                              .OrderBy(
-                                                                                                  x => x.DisplayOrder)
+                                                                            value.OptionId == option.Id)
+                                                                                              .OrderBy(x => x.Value)
                                                                                               .Distinct()
                                                                                               .Select(
                                                                                                   value =>
-                                                                                                  new ProductValueModel
+                                                                                                  new ProductValueModel<string>
                                                                                                       {
                                                                                                           Name =
                                                                                                               value
                                                                                                               .Value,
-                                                                                                          Id = value.Id
+                                                                                                          Id = string.Format("{0}[{1}]", option.Id, value.Value)
                                                                                                       }).ToList()
                                                                 }).ToList();
         }
 
-        public List<ProductOptionModel> GetSearchSpecificationAttributes(ProductSearchQuery query)
+        public List<ProductOptionModel<int>> GetSearchSpecificationAttributes(ProductSearchQuery query)
         {
             List<int> values = _productSearchService.GetSpecifications(query);
             ProductSpecificationAttribute attributeAlias = null;
@@ -299,7 +294,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
             RemoveHiddenSearchSpecifications(query, productSpecificationAttributes);
 
-            return productSpecificationAttributes.Select(attribute => new ProductOptionModel
+            return productSpecificationAttributes.Select(attribute => new ProductOptionModel<int>
                                                                           {
                                                                               Name = attribute.Name,
                                                                               Id = attribute.Id,
@@ -314,7 +309,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                                                                   .Distinct()
                                                                                   .Select(
                                                                                       value =>
-                                                                                      new ProductValueModel
+                                                                                      new ProductValueModel<int>
                                                                                           {
                                                                                               Name = value.Name,
                                                                                               Id = value.Id

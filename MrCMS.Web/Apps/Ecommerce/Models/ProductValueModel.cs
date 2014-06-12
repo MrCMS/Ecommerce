@@ -1,8 +1,8 @@
 ﻿namespace MrCMS.Web.Apps.Ecommerce.Models
 {
-    public class ProductValueModel
+    public class ProductValueModel<T>
     {
         public string Name { get; set; }
-        public int Id { get; set; }
+        public T Id { get; set; }
     }
 }

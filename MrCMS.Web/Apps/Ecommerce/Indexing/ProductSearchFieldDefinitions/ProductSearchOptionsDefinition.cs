@@ -23,8 +23,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
         protected override IEnumerable<string> GetValues(Product obj)
         {
             return
-                obj.Variants.SelectMany(variant => variant.OptionValues.Select(value => value.Id))
-                   .Select(i => i.ToString());
+                obj.Variants.SelectMany(variant => variant.OptionValues)
+                    .Select(i => string.Format("{0}[{1}]", i.ProductOption.Id, i.Value));
         }
 
         public override Dictionary<Type, Func<SystemEntity, IEnumerable<LuceneAction>>> GetRelatedEntities()

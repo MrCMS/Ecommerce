@@ -32,7 +32,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         IPagedList<Product> SearchProducts(ProductSearchQuery query);
         double GetMaxPrice(ProductSearchQuery query);
         List<int> GetSpecifications(ProductSearchQuery query);
-        List<int> GetOptions(ProductSearchQuery query);
+        List<OptionInfo> GetOptions(ProductSearchQuery query);
         List<int> GetBrands(ProductSearchQuery query);
         List<int> GetCategories(ProductSearchQuery query);
     }
@@ -43,7 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public ProductSearchQuery()
         {
-            Options = new List<int>();
+            Options = new List<string>();
             Specifications = new List<int>();
             Page = 1;
             PageSize = 10;
@@ -54,7 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             get { return (double)(_maxPrice = _maxPrice ?? MrCMSApplication.Get<IProductSearchService>().GetMaxPrice(this)); }
         }
 
-        public List<int> Options { get; set; }
+        public List<string> Options { get; set; }
         public List<int> Specifications { get; set; }
         public double PriceFrom { get; set; }
         public double? PriceTo { get; set; }
