@@ -150,9 +150,12 @@
         }
 
         function showSubNav($subNav) {
-            $subNav
-                .height($subNav.parent().closest(subNavSelector).height())
-                .show();
+            var parentHeight = $subNav.parent().closest(subNavSelector).outerHeight();
+            var subNavHeight = $subNav.outerHeight();
+            if (parentHeight > subNavHeight) {
+                $subNav.css("min-height", parentHeight + "px");
+            }
+            $subNav.show();
         }
 
         function hideSubNav($subNav) {
