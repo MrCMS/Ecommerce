@@ -26,14 +26,14 @@
                 @Html.TextBoxFor(x => x.Name)
                 @Html.ValidationMessageFor(x => x.Name)
 
-                @Html.LabelFor(x => x.NewsletterTemplate)
+                @Html.LabelFor(x => x.NewsletterTemplate.Id, Resource("Newsletter Template"))
                 @Html.DropDownListFor(x => x.NewsletterTemplate.Id, templates)
                 @Html.ValidationMessageFor(x => x.NewsletterTemplate)
-                
-                <br/>
+
+                <br />
                 <input type="submit" value="Save Details" class="btn btn-primary" />
 
-                <hr/>
+                <hr />
                 <div id="content-items">
                     <div class="row-fluid">
                         <div class="span6">
@@ -56,7 +56,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     @if (!Model.ContentItems.Any())
                     {
                         <p>No Content Items to display.</p>
@@ -72,7 +72,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var contentItem in Model.ContentItems.OrderBy(x=>x.DisplayOrder).ToList())
+                                @foreach (var contentItem in Model.ContentItems.OrderBy(x => x.DisplayOrder).ToList())
                                 {
                                     <tr>
                                         <td>@contentItem.Name</td>
