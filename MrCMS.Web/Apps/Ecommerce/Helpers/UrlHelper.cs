@@ -12,13 +12,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
             _site = site;
         }
 
+        const string scheme = "http";
         public string ToAbsolute(string urlSegment)
         {
-            const string scheme = "http://";
-
-            if (string.IsNullOrWhiteSpace(urlSegment) || urlSegment.StartsWith(scheme, StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrWhiteSpace(urlSegment))
             {
                 return string.Empty;
+            }
+
+            if (urlSegment.StartsWith(scheme, StringComparison.OrdinalIgnoreCase))
+            {
+                return urlSegment;
             }
 
             string authority = _site.BaseUrl;
@@ -29,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
             if (urlSegment.StartsWith("/"))
                 urlSegment = urlSegment.TrimStart('/');
 
-            return string.Format("{0}{1}/{2}", scheme, authority, urlSegment);
+            return string.Format("{0}://{1}/{2}", scheme, authority, urlSegment);
         }
     }
 }
