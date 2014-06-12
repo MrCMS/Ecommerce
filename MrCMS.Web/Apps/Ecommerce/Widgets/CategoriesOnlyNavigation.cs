@@ -23,12 +23,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
 
         public override object GetModel(ISession session)
         {
-            var categoryContainer =
-                session.QueryOver<ProductContainer>()
+            var productSearch =
+                session.QueryOver<ProductSearch>()
                        .Where(x => x.Site == CurrentRequestData.CurrentSite)
                        .Cacheable().SingleOrDefault();
             var navigationRecords =
-                session.QueryOver<Category>().Where(webpage => webpage.Parent != null && webpage.Parent.Id == categoryContainer.Id && webpage.PublishOn != null &&
+                session.QueryOver<Category>().Where(webpage => webpage.Parent != null && webpage.Parent.Id == productSearch.Id && webpage.PublishOn != null &&
                         webpage.PublishOn <= CurrentRequestData.Now && webpage.RevealInNavigation && webpage.Site == Site).Cacheable()
                        .List().OrderBy(webpage => webpage.DisplayOrder)
                        .Select(webpage => new NavigationRecord
@@ -53,17 +53,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
             if (publishedChildren.Any())
             {
                 navigation.AddRange(publishedChildren.Select(item => new NavigationRecord
-                                                                            {
-                                                                                Text =
-                                                                                    MvcHtmlString.Create(item.Name),
-                                                                                Url =
-                                                                                    MvcHtmlString.Create("/" +
-                                                                                                         item
-                                                                                    .UrlSegment),
-                                                                                Children =
-                                                                                    GetChildCategories(item,
-                                                                                        nextLevel + 1, session)
-                                                                            }));
+                {
+                    Text =
+                        MvcHtmlString.Create(item.Name),
+                    Url =
+                        MvcHtmlString.Create("/" +
+                                             item
+                        .UrlSegment),
+                    Children =
+                        GetChildCategories(item,
+                            nextLevel + 1, session)
+                }));
             }
             return navigation;
         }
