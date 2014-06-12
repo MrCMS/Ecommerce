@@ -54,9 +54,9 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="CsvHelper">
+    <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CsvHelper.2.4.1\lib\net40-client\CsvHelper.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Elmah">
       <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
@@ -157,15 +157,12 @@
     </Reference>
     <Reference Include="MigraDoc.DocumentObjectModel">
       <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.DocumentObjectModel.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="MigraDoc.Rendering">
       <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.Rendering.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="MigraDoc.RtfRendering">
       <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\MigraDoc.RtfRendering.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="MVC Foolproof Validation">
       <HintPath>..\packages\foolproof.0.9.4517\lib\MVC Foolproof Validation.dll</HintPath>
@@ -175,7 +172,8 @@
       <HintPath>..\packages\MySql.Data.6.6.4\lib\net40\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -209,15 +207,12 @@
     </Reference>
     <Reference Include="PayPalMerchantSDK">
       <HintPath>..\packages\PayPalMerchantSDK.2.7.109\lib\PayPalMerchantSDK.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="PdfSharp">
       <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\PdfSharp.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="PdfSharp.Charting">
       <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\PdfSharp.Charting.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
@@ -487,28 +482,9 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\UniqueAttributeNameModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CategoryAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICategoryAdminService.cs" />
-    <Compile Include="Apps\Ecommerce\Controllers\CashOnDeliveryController.cs" />
-    <Compile Include="Apps\Ecommerce\Controllers\SagePayController.cs" />
-    <Compile Include="Apps\Ecommerce\Controllers\WorldPayController.cs" />
-    <Compile Include="Apps\Ecommerce\DbConfiguration\FreeTextOverride.cs" />
-    <Compile Include="Apps\Ecommerce\DbConfiguration\ImageAndTextOverride.cs" />
-    <Compile Include="Apps\Ecommerce\DbConfiguration\NewsletterTemplateOverride.cs" />
-    <Compile Include="Apps\Ecommerce\DbConfiguration\ProductListOverride.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercentFromItems.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemHasSKU.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\Banner.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ContentItem.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\FreeText.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ImageAndText.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ProductList.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\Newsletter.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\NewsletterTemplate.cs" />
-    <Compile Include="Apps\Ecommerce\ModelBinders\AddDiscountApplicationModelBinder.cs" />
-    <Compile Include="Apps\Ecommerce\ModelBinders\OrderByGuidModelBinder.cs" />
-    <Compile Include="Apps\Ecommerce\ModelBinders\ProductSearchQueryModelBinder.cs" />
-    <Compile Include="Apps\Ecommerce\ModelBinders\UpdateBasketModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CartValidationController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\CashOnDeliveryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryContainerController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
@@ -528,11 +504,13 @@
     <Compile Include="Apps\Ecommerce\Controllers\ProductController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductSearchController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductVariantController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\SagePayController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SagePayNotificationController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SagePayRedirectController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SetDeliveryDetailsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\WishlistController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\WorldPayController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CategoryOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CountryOverride.cs" />
@@ -540,8 +518,11 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountLimitationOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\FeaturedCategoryWidgetOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\FeaturedProductsWidgetOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\FreeTextOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\GoogleBaseProductOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\ImageAndTextOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\Listeners\BackInStockListener.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\NewsletterTemplateOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\NotificationTemplateSettingsOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderLineOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\OrderNoteOverride.cs" />
@@ -549,6 +530,7 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\PaypointResponseOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\PriceBreakOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductAttributeValueOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\ProductListOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductOptionOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductSpecificationAttributeOptionOverride.cs" />
@@ -566,7 +548,9 @@
     <Compile Include="Apps\Ecommerce\Entities\Currencies\Currency.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\FixedAmountFromOrder.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\FreeShipping.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercentFromItems.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\XPercentFromOrder.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemHasSKU.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ItemIsInCategory.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderHasXOrMoreItems.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderTotalGreaterThanX.cs" />
@@ -576,6 +560,13 @@
     <Compile Include="Apps\Ecommerce\Entities\Geographic\Country.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Geographic\Region.cs" />
     <Compile Include="Apps\Ecommerce\Entities\GoogleBase\GoogleBaseProduct.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\Banner.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ContentItem.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\FreeText.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ImageAndText.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ProductList.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\Newsletter.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\NewsletterTemplate.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\Order.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderLine.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderNote.cs" />
@@ -602,9 +593,11 @@
     <Compile Include="Apps\Ecommerce\Helpers\EnumHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\GeneralHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\IUrlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\MrCMSEcommerceHtmlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\PolymorphicMappingHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\RequestHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\UrlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchCreatedOnDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchEmaillDefinition.cs" />
@@ -641,20 +634,24 @@
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\OrderTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\ProductVariantTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
-    <Compile Include="Apps\Ecommerce\Metadata\ProductContainerMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\EnterOrderEmailMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\NewInProducts.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\OrderPlacedMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\PaymentDetailsMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\ProductAddedToCartMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\ProductContainerMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\ProductMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\ProductSearchMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\SetDeliveryDetailsMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\ShowWishlistMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\UserAccountMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\UserOrderMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\ModelBinders\AddDiscountApplicationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\DownloadOrderedFileOrderByGuidModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\ModelBinders\OrderByGuidModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\ModelBinders\ProductSearchQueryModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\ModelBinders\UpdateBasketModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddPriceBreakModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddressComparison.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddToCartModel.cs" />
@@ -707,7 +704,6 @@
     <Compile Include="Apps\Ecommerce\Models\WishlistSummary.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Cart.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Category.cs" />
-    <Compile Include="Apps\Ecommerce\Pages\ProductContainer.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ContactUs.cs" />
     <Compile Include="Apps\Ecommerce\Pages\EnterOrderEmail.cs" />
     <Compile Include="Apps\Ecommerce\Pages\NewInProducts.cs" />
@@ -715,18 +711,17 @@
     <Compile Include="Apps\Ecommerce\Pages\PaymentDetails.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Product.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ProductAddedToCart.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\ProductContainer.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ProductSearch.cs" />
     <Compile Include="Apps\Ecommerce\Pages\SetDeliveryDetails.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ShowWishlist.cs" />
     <Compile Include="Apps\Ecommerce\Pages\UserOrder.cs" />
-    <Compile Include="Apps\Ecommerce\Helpers\IUrlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\BannerItemParser.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\FreeTextItemParser.cs" />
-    <Compile Include="Apps\Ecommerce\Parsing\INewsletterItemParser.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\ImageAndTextItemParser.cs" />
-    <Compile Include="Apps\Ecommerce\Parsing\ProductParser.cs" />
+    <Compile Include="Apps\Ecommerce\Parsing\INewsletterItemParser.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\ProductListItemParser.cs" />
-    <Compile Include="Apps\Ecommerce\Helpers\UrlHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Parsing\ProductParser.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\CashOnDeliveryPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\Services\CashOnDeliveryUIService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\Services\ICashOnDeliveryUIService.cs" />
@@ -993,11 +988,6 @@
     <Compile Include="Apps\Ecommerce\Widgets\SpendXMore.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\UserOrdersList.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\WishlistWidget.cs" />
-    <Compile Include="Areas\Admin\ACL\NotificationACL.cs" />
-    <Compile Include="Areas\Admin\Controllers\NotificationController.cs" />
-    <Compile Include="Areas\Admin\Controllers\PersistentNotificationController.cs" />
-    <Compile Include="Areas\Admin\Controllers\ResourceUpdateController.cs" />
-    <Compile Include="Areas\Admin\Controllers\SiteListController.cs" />
     <Compile Include="Apps\MobileFriendlyNavigation\Controllers\MobileFriendlyNavigationController.cs" />
     <Compile Include="Apps\MobileFriendlyNavigation\MobileFriendlyNavigationApp.cs" />
     <Compile Include="Apps\MobileFriendlyNavigation\Models\MobileFriendlyNavigation\MobileFriendlyNavigationChildNode.cs" />
@@ -1005,6 +995,11 @@
     <Compile Include="Apps\MobileFriendlyNavigation\Services\IMobileFriendlyNavigationService.cs" />
     <Compile Include="Apps\MobileFriendlyNavigation\Services\MobileFriendlyNavigationService.cs" />
     <Compile Include="Apps\MobileFriendlyNavigation\Widgets\MobileFriendlyNavigation.cs" />
+    <Compile Include="Areas\Admin\ACL\NotificationACL.cs" />
+    <Compile Include="Areas\Admin\Controllers\NotificationController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PersistentNotificationController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ResourceUpdateController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SiteListController.cs" />
     <Compile Include="Areas\Admin\Controllers\ClearCachesController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\HealthCheckController.cs" />
@@ -1191,6 +1186,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-products.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\google-base.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\hide-specifications.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\manage-options.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\newsletter-ck.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\newsletter-config.js" />
@@ -1198,7 +1194,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\product-variant.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\products.js" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\hide-specifications.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\related-products.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-day.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\sales-by-payment-type.js" />
@@ -1215,12 +1210,13 @@
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap.min.css" />
+    <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\img\glyphicons-halflings-white.png" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\img\glyphicons-halflings.png" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.js" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.min.js" />
-    <Content Include="Apps\Ecommerce\Content\Fonts\mavenpro-regular-webfont.svg" />
     <Content Include="Apps\Ecommerce\Content\Fonts\fonts.css" />
+    <Content Include="Apps\Ecommerce\Content\Fonts\mavenpro-regular-webfont.svg" />
     <Content Include="Apps\Ecommerce\Content\Images\ajax-loader.gif" />
     <Content Include="Apps\Ecommerce\Content\Images\awaiting-image.jpg" />
     <Content Include="Apps\Ecommerce\Content\Images\basket.png" />
@@ -2512,6 +2508,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountApplication\XPercentFromOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\CartHasAtLeastXItems.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\CartSubtotalGreaterThanX.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\ItemHasSKU.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\ItemIsInCategory.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Delete.cshtml" />
@@ -2519,12 +2516,32 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Discount\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceDashboard\Revenue.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceDashboard\UserAndPageStats.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceSearchablePage\AddSpecification.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceSearchablePage\HiddenSpecifications.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceSettings\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\GoogleBase\Dashboard.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\GoogleBase\GoogleBaseProduct.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\GoogleBase\GoogleBaseSearch.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\GoogleBase\GoogleBaseSettings.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ImportExport\Products.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddBanner.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddFreeText.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddImageAndText.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddProductList.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\DeleteContentItem.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditBanner.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditFreeText.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditImageAndText.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditProductList.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\SortContentItems.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderLine\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderNote\Delete.cshtml" />
@@ -2608,6 +2625,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Index.cshtml.orig" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Edit.cshtml" />
@@ -2625,29 +2643,59 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\User\Order.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Category.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductContainer.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ContactUs.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\NewInProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\Product.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductAddedToCart.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ProductSearch.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ShowWishlist.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\CategoriesOnlyNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\FeaturedCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\FeaturedProducts.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\On404SearchWidget.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\RecentlyViewedItems.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\SpendXMore.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\WorldPaySettings\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-theme.css.map" />
+    <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap.css.map" />
+    <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Apps\Ecommerce\Content\Fonts\mavenpro-regular-webfont.eot" />
+    <Content Include="Apps\Ecommerce\Content\Fonts\mavenpro-regular-webfont.ttf" />
+    <Content Include="Apps\Ecommerce\Content\Fonts\mavenpro-regular-webfont.woff" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\product.js.orig" />
+    <Content Include="Apps\Ecommerce\Entities\Products\PriceBreak.cs.orig" />
+    <Content Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs.orig" />
+    <Content Include="Apps\Ecommerce\Entities\Shipping\ShippingMethod.cs.orig" />
+    <Content Include="Apps\Ecommerce\Entities\Users\Address.cs.orig" />
+    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderCancelledEmailToCustomerMessageTemplate.cs.orig" />
+    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderFullyRefundedEmailToCustomerMessageTemplate.cs.orig" />
+    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderPartiallyRefundedEmailToCustomerMessageTemplate.cs.orig" />
+    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToCustomerMessageTemplate.cs.orig" />
+    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderPlacedEmailToStoreOwnerMessageTemplate.cs.orig" />
+    <Content Include="Apps\Ecommerce\MessageTemplates\SendOrderShippedEmailToCustomerMessageTemplate.cs.orig" />
+    <Content Include="Apps\Ecommerce\Payment\Paypoint\PaypointPaymentMethod.cs.orig" />
+    <Content Include="Apps\Ecommerce\Services\Cart\CartSessionManager.cs.orig" />
+    <Content Include="Apps\Ecommerce\Services\Cart\GetCartImpl.cs.orig" />
+    <Content Include="Apps\Ecommerce\Services\Products\IProductVariantService.cs.orig" />
+    <Content Include="Apps\Ecommerce\Services\Products\ProductSearchService.cs.orig" />
+    <Content Include="Apps\Ecommerce\Services\Shipping\IShippingMethodManager.cs.orig" />
     <Content Include="Apps\Ecommerce\Views\Cart\AddDiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\AddToCart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\Cart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\DeleteCartItem.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\Details.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Cart\Details.cshtml.orig" />
     <Content Include="Apps\Ecommerce\Views\Cart\DiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\EditDiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\EnterOrderEmail.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\PaymentDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\ShippingMethods.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\CashOnDelivery\Form.cshtml" />
     <Content Include="Apps\Ecommerce\Views\CategoryContainer\Categories.cshtml" />
     <Content Include="Apps\Ecommerce\Views\CategoryContainer\CategoryContainer.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Category\Category.cshtml" />
@@ -2658,6 +2706,7 @@
     <Content Include="Apps\Ecommerce\Views\EnterOrderEmail\SetOrderEmailAndLogin.cshtml" />
     <Content Include="Apps\Ecommerce\Views\OrderPlaced\LoginAndAssociateOrder.cshtml" />
     <Content Include="Apps\Ecommerce\Views\OrderPlaced\RegisterAndAssociateOrder.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Pages\ContactUs.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\EnterOrderEmail.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\NewInProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\OrderPlaced.cshtml" />
@@ -2669,6 +2718,8 @@
     <Content Include="Apps\Ecommerce\Views\PaymentDetails\BillingAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PaymentDetails\SelectMethod.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PaymentDetails\SetBillingAddress.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\PayPalExpressCheckout\Form.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Paypoint\Form.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Paypoint\Redirect3DSecure.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\CartDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\CustomersAlsoBought.cshtml" />
@@ -2684,11 +2735,13 @@
     <Content Include="Apps\Ecommerce\Views\Product\VariantDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SagePayRedirect\Failed.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SagePayRedirect\Success.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\SagePay\Form.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SetDeliveryDetails\DeliveryAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SetDeliveryDetails\DeliveryDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\AnalyticsCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\BackInStockForm.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductCard.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\ProductCard.cshtml.orig" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductCardFeatured.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductImages.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ProductPricebreaks.cshtml" />
@@ -2697,7 +2750,9 @@
     <Content Include="Apps\Ecommerce\Views\Shared\VariantCard.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_CheckoutLayout.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\_ContentLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_EcommerceLayout.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\_HomeLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_ProductLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_SearchLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Web.config" />
@@ -2707,6 +2762,8 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\EcommerceNavigation.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\FeaturedProducts.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\NotWhatYouWereLookingForWidget.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\On404SearchWidget.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\PeopleWhoBoughtThisAlsoBought.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\RecentlyViewedItems.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Widgets\RelatedProducts.cshtml" />
@@ -2718,52 +2775,13 @@
     <Content Include="Apps\Ecommerce\Views\Widgets\_EcommerceNavigationChildren.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Wishlist\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Wishlist\Summary.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Widgets\NotWhatYouWereLookingForWidget.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Widgets\On404SearchWidget.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\On404SearchWidget.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceSearchablePage\AddSpecification.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceSearchablePage\HiddenSpecifications.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DiscountLimitation\ItemHasSKU.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\CashOnDelivery\Form.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Paypoint\Form.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\SagePay\Form.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\PayPalExpressCheckout\Form.cshtml" />
-    <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-theme.css.map" />
-    <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap.css.map" />
-    <Content Include="Apps\Ecommerce\Views\Shared\_HomeLayout.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\_ContentLayout.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Pages\ContactUs.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\ContactUs.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\WorldPay\Form.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\WorldPay\RedirectToComplete.cshtml" />
     <Content Include="Apps\MobileFriendlyNavigation\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\MobileFriendlyNavigation\Areas\Admin\Views\Widget\MobileFriendlyNavigation.cshtml" />
     <Content Include="Apps\MobileFriendlyNavigation\Views\web.config" />
     <Content Include="Apps\MobileFriendlyNavigation\Views\Widgets\MobileFriendlyNavigation.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\WorldPaySettings\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\WorldPay\Form.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\WorldPay\RedirectToComplete.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Add.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Delete.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\NewsletterTemplate\Edit.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Add.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Edit.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Delete.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddBanner.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddFreeText.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddImageAndText.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\DeleteContentItem.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditBanner.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditFreeText.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditImageAndText.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddProductList.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditProductList.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\SortContentItems.cshtml" />
-    <Content Include="Apps\Ecommerce\Content\Fonts\mavenpro-regular-webfont.eot" />
-    <Content Include="Apps\Ecommerce\Content\Fonts\mavenpro-regular-webfont.ttf" />
-    <Content Include="Apps\Ecommerce\Content\Fonts\mavenpro-regular-webfont.woff" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
-    <None Include="Properties\PublishProfiles\Web Preview - JASPER.pubxml" />
     <None Include="Themes\Default\Views\Web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -2820,7 +2838,6 @@
     <Folder Include="Themes\Ecommerce\Shared\" />
     <Folder Include="Themes\Ecommerce\Views\Shared\" />
     <Folder Include="Views\Article\" />
-    <Folder Include="Views\ContactUs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
@@ -2902,7 +2919,16 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>1834</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:8880/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>
