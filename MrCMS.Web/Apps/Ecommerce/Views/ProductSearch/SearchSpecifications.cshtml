@@ -8,9 +8,21 @@
             By specifications
         </div>
         <div class="options-con" id="product-filter-box-specifications">
-            @foreach (var specification in Model)
-            {
-                <div class="option">
+            <div class="option">
+                @if (Model.Any(model => model.Values.Any(valueModel => query.Specifications.Contains(valueModel.Id))))
+                {
+                    <h5>Selected Filters</h5>
+                    <ul>
+                        @foreach (var specification in Model.Where(model => model.Values.Any(valueModel => query.Specifications.Contains(valueModel.Id))))
+                        {
+                            var productValueModel = specification.Values.First(model => query.Specifications.Contains(model.Id));
+                            <li><strong>@specification.Name: </strong>@productValueModel.Name <a href="#" data-action="remove-specification"><strong>&times;</strong></a><input name="Specifications" type="hidden" value="@productValueModel.Id" /></li>
+                        }
+                    </ul>
+                }
+
+                @foreach (var specification in Model.Where(model => !model.Values.Any(valueModel => query.Specifications.Contains(valueModel.Id))))
+                {
                     <div class="padding-0 line-height-30">
                         <label for="specifications-@specification.Id">@specification.Name</label>
                     </div>
@@ -20,15 +32,15 @@
                             @foreach (var option in specification.Values)
                             {
 
-                                <option value="@option.Id"@(query.Specifications.Contains(option.Id) ? " selected=\"selected\"" : string.Empty)>
+                                <option value="@option.Id" @(query.Specifications.Contains(option.Id) ? " selected=\"selected\"" : string.Empty)>
                                     @option.Name
                                 </option>
                             }
                         </select>
                     </div>
                     <div class="clearfix"></div>
-                </div>
-            }
+                }
+            </div>
         </div>
     </div>
 }
