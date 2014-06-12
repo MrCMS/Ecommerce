@@ -54,7 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public List<OptionInfo> GetOptions(ProductSearchQuery query)
         {
             var clone = query.Clone() as ProductSearchQuery;
-            clone.Options = new List<string>();
+            //clone.Options = new List<string>();
             var indexSearcher = _productSearcher.IndexSearcher;
             var valueCollector = new ValueCollector(indexSearcher, FieldDefinition.GetFieldName<ProductSearchOptionsDefinition>());
             indexSearcher.Search(clone.GetQuery(), clone.GetFilter(), valueCollector);
