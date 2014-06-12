@@ -79,6 +79,7 @@ namespace MrCMS.Services
 
             IList list =
                 _session.CreateCriteria(indexManagerBase.GetEntityType())
+                    .Add(Restrictions.Eq("Site.Id", _site.Id))
                     .List();
 
             object listInstance =
