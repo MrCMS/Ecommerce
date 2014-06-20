@@ -29,8 +29,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Parsing
         {
             string output = template.ProductTemplate;
             var image = _imageProcessor.GetImage(item.DisplayImageUrl);
-
-            output = ImageRegex.Replace(output, _urlHelper.ToAbsolute(_fileService.GetFileLocation(image, new Size{Width = 200, Height = 200})));
+            output = ImageRegex.Replace(output,
+                _urlHelper.ToAbsolute(_fileService.GetFileLocation(image, new Size {Width = 150, Height = 150})));
             output = NameRegex.Replace(output, item.Name ?? string.Empty);
             output = LinkRegex.Replace(output, item.AbsoluteUrl);
             output = PriceRegex.Replace(output, GetPrice(item.DisplayPrice));
