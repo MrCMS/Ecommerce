@@ -1,4 +1,6 @@
+using System.Drawing;
 using System.Text.RegularExpressions;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -13,16 +15,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Parsing
         private static readonly Regex PriceRegex = new Regex(@"\[(?i)ProductPrice\]");
         private static readonly Regex OldPriceRegex = new Regex(@"\[(?i)ProductOldPrice\]");
         private readonly IUrlHelper _urlHelper;
+        private readonly IFileService _fileService;
+        private readonly IImageProcessor _imageProcessor;
 
-        public ProductParser(IUrlHelper urlHelper)
+        public ProductParser(IUrlHelper urlHelper, IFileService fileService, IImageProcessor imageProcessor)
         {
             _urlHelper = urlHelper;
+            _fileService = fileService;
+            _imageProcessor = imageProcessor;
         }
 
         public string Parse(NewsletterTemplate template, Product item)
         {
             string output = template.ProductTemplate;
-            output = ImageRegex.Replace(output, _urlHelper.ToAbsolute(item.DisplayImageUrl));
+            var image = _imageProcessor.GetImage(item.DisplayImageUrl);
+
+            output = ImageRegex.Replace(output, _urlHelper.ToAbsolute(_fileService.GetFileLocation(image, new Size{Width = 200, Height = 200})));
             output = NameRegex.Replace(output, item.Name ?? string.Empty);
             output = LinkRegex.Replace(output, item.AbsoluteUrl);
             output = PriceRegex.Replace(output, GetPrice(item.DisplayPrice));
