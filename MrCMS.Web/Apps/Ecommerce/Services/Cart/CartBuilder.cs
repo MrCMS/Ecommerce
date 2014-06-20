@@ -111,7 +111,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         private void DeleteNullProducts(IEnumerable<CartItem> items)
         {
-            foreach (var cartItem in items.Where(x => x.Item == null))
+            foreach (var cartItem in items.Where(x => x.Item == null || x.Item.Product == null))
             {
                 CartItem item = cartItem;
                 _session.Transact(session => _session.Delete(item));
