@@ -10,7 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
     public class ProductSearchSkuDefinition : StringFieldDefinition<ProductSearchIndex, Product>
     {
         public ProductSearchSkuDefinition(ILuceneSettingsService luceneSettingsService)
-            : base(luceneSettingsService, "skus", index: Field.Index.NOT_ANALYZED)
+            : base(luceneSettingsService, "skus", index: Field.Index.ANALYZED)
         {
         }
 
