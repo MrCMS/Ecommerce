@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -34,11 +35,12 @@ namespace MrCMS.Web.Apps.Ecommerce.ActionResults
         {
             string bodyContent = string.Empty;
 
-            if (_newsletter.ContentItems.Any())
+            IList<ContentItem> contentItems = _newsletter.ContentItems.OrderBy(x => x.DisplayOrder).ToList();
+            if (contentItems.Any())
             {
-                bodyContent += ParseItem(_newsletter.ContentItems.First());
+                bodyContent += ParseItem(contentItems.First());
 
-                foreach (ContentItem item in _newsletter.ContentItems.Skip(1))
+                foreach (ContentItem item in contentItems.Skip(1))
                 {
                     bodyContent += _template.Divider;
                     bodyContent += ParseItem(item);
