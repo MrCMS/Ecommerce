@@ -202,9 +202,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 case ProductSearchSort.Latest:
                     return new Sort(new[] { new SortField(FieldDefinition.GetFieldName<ProductSearchCreatedOnDefinition>(), SortField.STRING, true) });
                 case ProductSearchSort.NameAToZ:
-                    return new Sort(new[] { new SortField("nameSort", SortField.STRING) });
+                    return new Sort(new[] { new SortField("namesort", SortField.STRING) });
                 case ProductSearchSort.NameZToA:
-                    return new Sort(new[] { new SortField("nameSort", SortField.STRING, true) });
+                    return new Sort(new[] { new SortField("namesort", SortField.STRING, true) });
                 case ProductSearchSort.PriceLowToHigh:
                     return new Sort(new[] { new SortField("price", SortField.DOUBLE) });
                 case ProductSearchSort.PriceHighToLow:
