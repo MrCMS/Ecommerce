@@ -1,5 +1,6 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch
 @using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Services.Products
 @{
     var query = ViewData["query"] as ProductSearchQuery;
@@ -7,21 +8,21 @@
 @Html.HiddenFor(x => x.Id)
 @Html.HiddenFor(x => x.LiveUrlSegment)
 @Html.HiddenFor(x => x.UrlSegment)
- <div class="margin-bottom-30 padding-top-10">
-     <div class="container">
-         <div class="row" id="product-search-container">
-             <div class="col-sm-3">
-                 @RenderZone("Before Filters")
-                @{ Html.RenderAction("Query", "ProductSearch", new { query });}
+<div class="margin-bottom-30 padding-top-10">
+    <div class="container">
+        <div class="row" id="product-search-container">
+            <div class="col-sm-3">
+                @RenderZone("Before Filters")
+                @{ Html.RenderPartial("Query", query);}
                 @RenderZone("After Filters")
-             </div>
-             <div class="col-sm-9">
-                 <h1>@Editable(Model, page => page.Name, false)</h1>
-                 @*@Editable(Model, page => page.BodyContent, true)*@
-                 @{ Html.RenderAction("Results", "ProductSearch", new { query }); }
-             </div>
-         </div>
-     </div>
+            </div>
+            <div class="col-sm-9">
+                <h1>@Editable(Model, page => page.Name, false)</h1>
+                @*@Editable(Model, page => page.BodyContent, true)*@
+                @{ Html.RenderAction("Results", "ProductSearch", new { query }); }
+            </div>
+        </div>
+    </div>
 </div>
 
 @{

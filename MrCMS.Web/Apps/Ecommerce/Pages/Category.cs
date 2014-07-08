@@ -10,6 +10,7 @@ using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Helpers;

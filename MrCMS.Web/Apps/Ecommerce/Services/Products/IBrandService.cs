@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Paging;
+using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;

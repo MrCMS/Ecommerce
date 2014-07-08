@@ -13,14 +13,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
 {
     public class CategoryService : ICategoryService
     {
-        private readonly IProductSearchService _productSearchService;
+        private readonly IProductSearchIndexService _productSearchIndexService;
         private readonly ISession _session;
         private readonly IUniquePageService _uniquePageService;
 
-        public CategoryService(ISession session, IProductSearchService productSearchService, IUniquePageService uniquePageService)
+        public CategoryService(ISession session, IProductSearchIndexService productSearchIndexService, IUniquePageService uniquePageService)
         {
             _session = session;
-            _productSearchService = productSearchService;
+            _productSearchIndexService = productSearchIndexService;
             _uniquePageService = uniquePageService;
         }
 
@@ -38,7 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
 
         public CategorySearchModel GetCategoriesForSearch(ProductSearchQuery query)
         {
-            List<int> availableCategories = _productSearchService.GetCategories(query);
+            List<int> availableCategories = _productSearchIndexService.GetCategories(query);
             if (!query.CategoryId.HasValue)
                 return GetRootCategoryModel(availableCategories);
 

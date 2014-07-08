@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using MrCMS.Entities.Widget;
 using MrCMS.Paging;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Website;
@@ -26,7 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
             var requestBase = MrCMSApplication.Get<HttpRequestBase>();
             var path = requestBase.Url.AbsolutePath;
 
-            var productSearchService = MrCMSApplication.Get<IProductSearchService>();
+            var productSearchService = MrCMSApplication.Get<IProductSearchIndexService>();
             return new On404SearchWidgetModel
                        {
                            Text = Text,

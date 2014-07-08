@@ -680,6 +680,7 @@
     <Compile Include="Apps\Ecommerce\Models\KeyEqualityComparer.cs" />
     <Compile Include="Apps\Ecommerce\Models\LoginAndAssociateOrderResult.cs" />
     <Compile Include="Apps\Ecommerce\Models\OptionManagementModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\OptionSearchData.cs" />
     <Compile Include="Apps\Ecommerce\Models\OrderPlacedLoginModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\OrderSearchModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaymentDetailsModel.cs" />
@@ -693,6 +694,8 @@
     <Compile Include="Apps\Ecommerce\Models\ProductCondition.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductOptionModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductPagedList.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ProductSearchQuery.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ProductSearchSort.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductValueModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\RedirectDetails.cs" />
     <Compile Include="Apps\Ecommerce\Models\RegisterAndAssociateOrderResult.cs" />
@@ -931,11 +934,11 @@
     <Compile Include="Apps\Ecommerce\Services\Products\IBrandService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductOptionManagementService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductOptionManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Products\IProductSearchService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\IProductSearchIndexService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductVariantService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductOptionManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Products\ProductSearchService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\ProductSearchIndexService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductVariantService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\ChartService.cs" />
@@ -2713,11 +2716,11 @@
     <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\ItemDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\RelatedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductSearch\ProductSearch.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\ProductSearch\Query.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\ProductSearch\Results.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\ProductSearch\SearchBrands.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\ProductSearch\SearchOptions.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\ProductSearch\SearchSpecifications.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\Query.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\Results.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\SearchBrands.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\SearchOptions.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\SearchSpecifications.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Product\Product.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Product\VariantDetails.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SagePayRedirect\Failed.cshtml" />
