@@ -25,31 +25,32 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
         {
             var productSearch =
                 session.QueryOver<ProductSearch>()
-                       .Where(x => x.Site == CurrentRequestData.CurrentSite)
                        .Cacheable().SingleOrDefault();
+
+            var categories = session.QueryOver<Category>().Cacheable().List();
+
             var navigationRecords =
-                session.QueryOver<Category>().Where(webpage => webpage.Parent != null && webpage.Parent.Id == productSearch.Id && webpage.PublishOn != null &&
-                        webpage.PublishOn <= CurrentRequestData.Now && webpage.RevealInNavigation && webpage.Site == Site).Cacheable()
-                       .List().OrderBy(webpage => webpage.DisplayOrder)
+                categories.Where(webpage => webpage.Parent != null && webpage.Parent.Id == productSearch.Id && webpage.PublishOn != null &&
+                        webpage.PublishOn <= CurrentRequestData.Now && webpage.RevealInNavigation && webpage.Site == Site)
+                       .OrderBy(webpage => webpage.DisplayOrder)
                        .Select(webpage => new NavigationRecord
                        {
                            Text = MvcHtmlString.Create(webpage.Name),
                            Url = MvcHtmlString.Create("/" + webpage.LiveUrlSegment),
-                           Children = GetChildCategories(webpage, 2, session)
+                           Children = GetChildCategories(webpage, 2, categories)
                        }).ToList();
 
             return new NavigationList(navigationRecords.ToList());
         }
 
-        protected virtual List<NavigationRecord> GetChildCategories(Webpage entity, int nextLevel, ISession session)
+        protected virtual List<NavigationRecord> GetChildCategories(Webpage entity, int maxLevel, IList<Category> categories)
         {
             var navigation = new List<NavigationRecord>();
-            if (nextLevel > NoOfMenuLevels) return navigation;
+            if (maxLevel > NoOfMenuLevels) return navigation;
             var publishedChildren =
-                session.QueryOver<Webpage>()
+                categories
                     .Where(webpage => webpage.Parent.Id == entity.Id && webpage.PublishOn != null)
-                    .Cacheable()
-                    .List().Where(webpage => webpage.Published).ToList();
+                    .Where(webpage => webpage.Published).ToList();
             if (publishedChildren.Any())
             {
                 navigation.AddRange(publishedChildren.Select(item => new NavigationRecord
@@ -62,7 +63,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
                         .UrlSegment),
                     Children =
                         GetChildCategories(item,
-                            nextLevel + 1, session)
+                            maxLevel + 1, categories)
                 }));
             }
             return navigation;

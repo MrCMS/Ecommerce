@@ -33,6 +33,37 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
             yield return GetNumberBought(obj.Variants);
         }
 
+        protected override Dictionary<Product, IEnumerable<int>> GetValues(List<Product> objs)
+        {
+            var numberBoughtCount = new GroupedNumberBoughtCount();
+            var groupedNumberBought = new HashSet<GroupedNumberBoughtCount>(_session.QueryOver<OrderLine>()
+                .SelectList(
+                    builder =>
+                        builder.SelectGroup(line => line.ProductVariant.Id)
+                            .WithAlias(() => numberBoughtCount.VariantId)
+                            .SelectSum(line => line.Quantity)
+                            .WithAlias(() => numberBoughtCount.Count))
+                .TransformUsing(Transformers.AliasToBean<GroupedNumberBoughtCount>())
+                .List<GroupedNumberBoughtCount>());
+
+            HashSet<ProductVariant> variants =
+                new HashSet<ProductVariant>(
+                    _session.QueryOver<ProductVariant>().Fetch(variant => variant.Product).Eager.List());
+
+            return objs.ToDictionary(product => product, product =>
+            {
+                IEnumerable<ProductVariant> productVariants = variants.Where(variant => variant.Product == product);
+
+                return new List<int>
+                {
+                    productVariants.Sum(
+                        variant =>
+                            groupedNumberBought.Where(count => count.VariantId == variant.Id).Sum(count => count.Count))
+
+                }.AsEnumerable();
+            });
+        }
+
         private int GetNumberBought(IList<ProductVariant> variants)
         {
             var values = variants.Select(variant => variant.Id).ToList();
@@ -64,17 +95,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
             var line = entity as OrderLine;
             if (line != null && line.ProductVariant != null && line.ProductVariant.Product != null)
                 yield return new LuceneAction
-                                 {
-                                     Entity = line.ProductVariant.Product.Unproxy(),
-                                     Operation = LuceneOperation.Update,
-                                     IndexDefinition =
-                                         IndexingHelper.Get<ProductSearchIndex>()
-                                 };
+                {
+                    Entity = line.ProductVariant.Product.Unproxy(),
+                    Operation = LuceneOperation.Update,
+                    IndexDefinition =
+                        IndexingHelper.Get<ProductSearchIndex>()
+                };
         }
     }
 
     internal class NumberBoughtCount
     {
+        public int Count { get; set; }
+    }
+
+    internal class GroupedNumberBoughtCount
+    {
+        public int VariantId { get; set; }
         public int Count { get; set; }
     }
 }

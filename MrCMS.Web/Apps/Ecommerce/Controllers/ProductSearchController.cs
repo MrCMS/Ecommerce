@@ -13,22 +13,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class ProductSearchController : MrCMSAppUIController<EcommerceApp>
     {
-        private readonly ICategoryService _categoryService;
-        private readonly IProductOptionManager _productOptionManager;
-        private readonly IProductSearchService _productSearchService;
-        private readonly IBrandService _brandService;
+        private readonly IProductSearchIndexService _productSearchIndexService;
         private readonly CartModel _cart;
+        private readonly IProductSearchQueryService _productSearchQueryService;
 
-        public ProductSearchController(ICategoryService categoryService,
-                                       IProductOptionManager productOptionManager,
-                                       IProductSearchService productSearchService,
-                                       IBrandService brandService, CartModel cart)
+        public ProductSearchController(IProductSearchIndexService productSearchIndexService, CartModel cart,
+            IProductSearchQueryService productSearchQueryService)
         {
-            _categoryService = categoryService;
-            _productOptionManager = productOptionManager;
-            _productSearchService = productSearchService;
-            _brandService = brandService;
+            _productSearchIndexService = productSearchIndexService;
             _cart = cart;
+            _productSearchQueryService = productSearchQueryService;
         }
 
         public ViewResult Show(ProductSearch page, [IoCModelBinder(typeof(ProductSearchQueryModelBinder))]ProductSearchQuery query)
@@ -40,12 +34,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         private void SetViewData(ProductSearchQuery query)
         {
-            ViewData["product-options"] = _productOptionManager.GetSearchAttributeOptions(query);
-            ViewData["product-specifications"] = _productOptionManager.GetSearchSpecificationAttributes(query);
-            ViewData["product-brands"] = _brandService.GetAvailableBrands(query);
+            _productSearchQueryService.SetViewData(query, ViewData);
             ViewData["product-price-range-min"] = 0;
             ViewData["product-price-range-max"] = 5000;
-            ViewData["categories"] = _categoryService.GetCategoriesForSearch(query);
         }
 
         public PartialViewResult Query([IoCModelBinder(typeof(ProductSearchQueryModelBinder))]ProductSearchQuery query)
@@ -59,7 +50,36 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         {
             ViewData["query"] = query;
             ViewData["cart"] = _cart;
-            return PartialView(_productSearchService.SearchProducts(query));
+            return PartialView(_productSearchIndexService.SearchProducts(query));
+        }
+    }
+
+    public interface IProductSearchQueryService
+    {
+        void SetViewData(ProductSearchQuery query, ViewDataDictionary viewData);
+    }
+
+    public class ProductSearchQueryService : IProductSearchQueryService
+    {
+        private readonly IProductOptionManager _productOptionManager;
+        private readonly IBrandService _brandService;
+        private readonly ICategoryService _categoryService;
+
+        public ProductSearchQueryService(IProductOptionManager productOptionManager, IBrandService brandService, ICategoryService categoryService)
+        {
+            _productOptionManager = productOptionManager;
+            _brandService = brandService;
+            _categoryService = categoryService;
+        }
+
+        public void SetViewData(ProductSearchQuery query, ViewDataDictionary viewData)
+        {
+            var productOptionSearchData = _productOptionManager.GetSearchData(query);
+            viewData["product-options"] = productOptionSearchData.AttributeOptions;
+            viewData["product-specifications"] = productOptionSearchData.SpecificationOptions;
+            viewData["product-brands"] = _brandService.GetAvailableBrands(query);
+            viewData["categories"] = _categoryService.GetCategoriesForSearch(query);
+
         }
     }
 }

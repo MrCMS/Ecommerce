@@ -9,14 +9,18 @@ using MrCMS.Tasks;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Helpers;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 {
     public class ProductSearchSpecificationsDefinition : StringFieldDefinition<ProductSearchIndex, Product>
     {
-        public ProductSearchSpecificationsDefinition(ILuceneSettingsService luceneSettingsService)
+        private readonly ISession _session;
+
+        public ProductSearchSpecificationsDefinition(ILuceneSettingsService luceneSettingsService, ISession session)
             : base(luceneSettingsService, "specifications", index: Field.Index.NOT_ANALYZED)
         {
+            _session = session;
         }
 
         protected override IEnumerable<string> GetValues(Product obj)
@@ -24,6 +28,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
             return
                 obj.SpecificationValues.Select(value => value.ProductSpecificationAttributeOption.Id.ToString())
                    .Distinct();
+        }
+
+        protected override Dictionary<Product, IEnumerable<string>> GetValues(List<Product> objs)
+        {
+            var values =
+                new HashSet<ProductSpecificationValue>(_session.QueryOver<ProductSpecificationValue>()
+                    .Fetch(value => value.ProductSpecificationAttributeOption)
+                    .Eager.List());
+
+            return objs.ToDictionary(product => product, product => GetValues(product, values));
+        }
+
+        private IEnumerable<string> GetValues(Product product, HashSet<ProductSpecificationValue> values)
+        {
+            return
+                values.Where(value => value.Product == product)
+                    .Select(value => value.ProductSpecificationAttributeOption.Id.ToString())
+                    .ToList();
         }
 
         public override Dictionary<Type, Func<SystemEntity, IEnumerable<LuceneAction>>> GetRelatedEntities()
@@ -47,12 +69,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
             foreach (var product in productSpecificationValues.Select(value => value.Product).Where(p => p != null))
             {
                 yield return new LuceneAction
-                                 {
-                                     Entity = product.Unproxy(),
-                                     Operation = LuceneOperation.Update,
-                                     IndexDefinition =
-                                         IndexingHelper.Get<ProductSearchIndex>()
-                                 };
+                {
+                    Entity = product.Unproxy(),
+                    Operation = LuceneOperation.Update,
+                    IndexDefinition =
+                        IndexingHelper.Get<ProductSearchIndex>()
+                };
             }
         }
     }
