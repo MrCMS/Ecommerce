@@ -30,8 +30,8 @@ using Ninject.Web.Common;
 using System.Linq;
 using MrCMS.Helpers;
 
-[assembly: WebActivator.PreApplicationStartMethod(typeof(MrCMSApplication), "Start", Order = 1)]
-[assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(MrCMSApplication), "Stop")]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(MrCMSApplication), "Start", Order = 1)]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(MrCMSApplication), "Stop")]
 
 namespace MrCMS.Website
 {

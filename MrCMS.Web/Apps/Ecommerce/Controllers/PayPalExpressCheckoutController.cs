@@ -10,6 +10,7 @@ using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Website.Controllers;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
@@ -38,6 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         [HttpPost]
         [ActionName("Form")]
+        [ForceImmediateLuceneUpdate]
         public RedirectResult Form_POST()
         {
             if (!_cart.CanPlaceOrder)
