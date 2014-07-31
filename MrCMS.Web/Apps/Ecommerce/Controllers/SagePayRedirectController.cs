@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.SagePay;
 using MrCMS.Website.Controllers;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
@@ -37,6 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return _uniquePageService.RedirectTo<PaymentDetails>();
         }
 
+        [ForceImmediateLuceneUpdate]
         public ActionResult Success(string vendorTxCode)
         {
             var sagePayResponse = _sagePayService.GetResponse(_cart.UserGuid);

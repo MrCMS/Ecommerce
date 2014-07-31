@@ -1,24 +1,29 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.Brand
-@{ 
+@{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
     var product = ViewData["product"] as Product;
 }
-<fieldset>
-    <legend>Add Brand
-        <span class="btn-group  display-inline  pull-right">
-            <button id="close" class="btn-primary btn">Save Brand</button>
-        </span>
-    </legend>
+@using (Html.BeginForm("AddBrand", "Product", new { id = "" }, FormMethod.Post, new { id = "add-brand-inline" }))
+{
+    <fieldset>
+        <legend>
+            Add Brand
+            <span class="btn-group  display-inline  pull-right">
+                <button id="close" class="btn-primary btn">Save Brand</button>
+            </span>
+        </legend>
 
-    @Html.Hidden("productId", product != null ? product.Id : 0)
+        @Html.Hidden("productId", product != null ? product.Id : 0)
 
-    @Html.LabelFor(x => x.Name)
-    @Html.TextBoxFor(x => x.Name)
-    @Html.ValidationMessageFor(x => x.Name)
+        @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name)
+        @Html.ValidationMessageFor(x => x.Name)
 
+        @Html.LabelFor(brand => brand.Logo)
+        @Html.TextBoxFor(brand => brand.Logo, new { data_type = "media-selector" })
 
-</fieldset>
-
+    </fieldset>
+}
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/brands.js"); }

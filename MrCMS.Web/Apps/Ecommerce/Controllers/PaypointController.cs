@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Paypoint;
 using MrCMS.Website.Controllers;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
@@ -39,6 +40,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         }
 
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public ActionResult Form(PaypointPaymentDetailsModel model)
         {
             _paypointPaymentService.SetModel(model);
@@ -72,6 +74,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return _uniquePageService.RedirectTo<PaymentDetails>();
         }
 
+        [ForceImmediateLuceneUpdate]
         public ActionResult Response3DSecure(FormCollection formCollection)
         {
             if (!_cartModel.CanPlaceOrder)
