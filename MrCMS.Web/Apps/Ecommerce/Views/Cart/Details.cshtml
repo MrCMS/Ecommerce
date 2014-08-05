@@ -26,11 +26,8 @@
         @if (Model.Items.Any())
         {
             <div class="row margin-bottom-10 padding-bottom-10 grey-border-bottom" id="header">
-                <div class="col-xs-4">
+                <div class="col-xs-6">
                     <strong>Item Description</strong>
-                </div>
-                <div class="col-xs-2 col-sm-2 hidden-xs">
-                    <strong>Your Options</strong>
                 </div>
                 <div class="col-xs-2 text-center">
                     <strong class="hidden-xs">Quantity</strong>
@@ -57,7 +54,7 @@
     @if (Model.Items.Any())
     {
         <div class="row margin-bottom-20">
-            <div class="col-sm-6 col-sm-offset-6">
+            <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6">
                 <div class="row">
                     <div class="col-sm-6">
                         <button type="button" class="btn btn-default btn-block" id="update-basket">Update Basket</button>
@@ -71,7 +68,7 @@
         </div>
         
         <div class="row margin-bottom-10" id="cart-discount">
-            <div class="col-sm-6 col-sm-offset-6">
+            <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6">
                 @Html.HiddenFor(x => x.DiscountCode)
                 <div class="row" id="discount-code-box">
                     <div class="col-sm-4 line-height-30">
@@ -90,7 +87,7 @@
     }
 
     <div class="row">
-        <div class="col-sm-6 col-sm-offset-6" id="cart-summary">
+        <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6" id="cart-summary">
             @if (Model.Items.Any())
             {
                 <div class="row margin-bottom-10">
@@ -141,7 +138,7 @@
                         </div>
                     </div>
                 }
-                <hr/>
+                <hr />
                 <div class="row margin-bottom-10">
                     <div class="col-xs-8 col-sm-6">
                         <strong>Total</strong>
