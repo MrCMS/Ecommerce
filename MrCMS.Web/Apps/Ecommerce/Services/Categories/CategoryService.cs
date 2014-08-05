@@ -6,6 +6,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
 
@@ -34,6 +35,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Categories
             queryOver = queryOver.Where(category => !category.Id.IsIn(product.Categories.Select(c => c.Id).ToArray()));
 
             return _session.Paged(queryOver, page);
+        }
+
+        public IList<Category> GetSubCategories(Category category)
+        {
+            return _session.QueryOver<Category>().Where(x => x.Parent.Id == category.Id && x.PublishOn <= CurrentRequestData.Now).Cacheable().List();
         }
 
         public CategorySearchModel GetCategoriesForSearch(ProductSearchQuery query)
