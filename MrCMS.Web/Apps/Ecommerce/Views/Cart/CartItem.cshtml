@@ -2,32 +2,30 @@
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Entities.Cart.CartItem
 <div class="row grey-border-bottom padding-top-10">
-    <div class="col-xs-4">
+    <div class="col-xs-6">
         <div class="row">
-            <div class="col-xs-10 col-sm-4">
+            <div class="col-xs-10 col-sm-3">
                 <a href="/@Model.Item.Product.LiveUrlSegment">
                     @RenderImage(Model.Item.Product.DisplayImageUrl, new Size { Width = 110, Height = 110 }, null, null, new { @class = "img-responsive" })
                 </a>
             </div>
-            <div class="col-xs-12 col-sm-8">
+            <div class="col-xs-12 col-sm-9">
                 <a href="/@Model.Item.Product.LiveUrlSegment">@Model.Name</a>
+                @foreach (var option in Model.Item.OptionValues)
+                {
+                    <br />
+                        <strong>
+                            @option.ProductOption.Name
+                        </strong>
+                        <span>:</span>
+                        @option.Value
+                    
+                }
                 <div>
                     <a data-id="@Model.Id" data-action="delete-cart-item" href="#" class="btn btn-mini btn-danger">Remove</a>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col-xs-2 col-sm-2 hidden-xs">
-        @foreach (var option in Model.Item.OptionValues)
-        {
-            <p>
-                <strong>
-                    @option.ProductOption.Name
-                </strong>
-                <span>:</span>
-                @option.Value
-            </p>
-        }
     </div>
     <div class="col-xs-2 text-center">
         <input type="text" class="input-mini text-center form-control" name="@Html.Raw("quantity-" + Model.Id)" value="@Model.Quantity" data-cart-id="@Model.Id"/>
