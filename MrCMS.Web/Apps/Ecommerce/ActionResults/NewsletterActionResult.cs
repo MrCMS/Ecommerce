@@ -47,6 +47,19 @@ namespace MrCMS.Web.Apps.Ecommerce.ActionResults
                 }
             }
 
+            //Find image src with out HTTP
+            var linksDealtWith = new List<string>();
+            var url = "http://" + CurrentRequestData.CurrentSite.BaseUrl;
+            foreach (Match m in Regex.Matches(bodyContent, @"<\s*?img\s+[^>]*?\s*src\s*=\s*([""'])((\\?.)*?)\1[^>]*?>"))
+            {
+                var link = m.Groups[2].Value;
+                if (!link.ToLower().Contains("http") && !linksDealtWith.Contains(link))
+                {
+                    bodyContent = bodyContent.Replace(link, link.Insert(0, url.TrimEnd('/')));
+                    linksDealtWith.Add(link);
+                }
+            }
+
             return BodyRegex.Replace(_template.BaseTemplate, bodyContent);
         }
 
