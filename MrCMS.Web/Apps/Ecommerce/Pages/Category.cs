@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using System.Xml;
 using Iesi.Collections.Generic;
+using MarketplaceWebServiceFeedsClasses;
 using MrCMS.Entities.Documents.Web;
 using System.Linq;
 using MrCMS.Helpers;
@@ -14,6 +15,8 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
 using NHibernate;
 using UrlHelper = System.Web.Mvc.UrlHelper;
 
@@ -57,6 +60,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         [DisplayName("Featured Image")]
         public virtual string FeatureImage { get; set; }
+
+        public virtual string DisplayImageUrl
+        {
+            get
+            {
+                return (string.IsNullOrEmpty(FeatureImage) ? MrCMSApplication.Get<EcommerceSettings>().DefaultNoProductImage : FeatureImage);
+            }
+        }
+
+        [DisplayName("Show sub categories")]
+        public virtual bool ShowSubCategories { get; set; }
 
         [StringLength(500)]
         public virtual string Abstract { get; set; }

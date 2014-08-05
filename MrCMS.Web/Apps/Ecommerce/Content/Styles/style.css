@@ -54,19 +54,20 @@ input[type="image"] { border: none;-webkit-transition: none;-moz-transition: non
 .btn-normalgreen {color: #ffffff;background-color:#88A825;border-color: #dddddd;}
 .btn-normalgreen:hover, .btn-normalgreen:focus, .btn-normalgreen:active, .btn-normalgreen.active, .open .dropdown-toggle.btn-normalgreen {color: #ffffff;background-color:#89ae18;border-color: #dddddd;}
 .payment {font-size:13px;}
-.product-con {}
+.product-con, .category-con {}
 .product-con .product-info {/*border-right:1px solid #f0f0f0;*/text-align:left;}
 .product-con .product-image {text-align:center;position:relative;min-height:230px;line-height:230px;}
 .col-sm-2 .product-con .product-image {min-height:150px;line-height:150px;}
 .product-con .product-image img.offer {position:absolute;top:0;left:15px;}
 .product-con .product-image a {/*display:inline-block;*/}
-.product-con .product-image a img.img-responsive {margin:0 auto;}
-.product-con .product-image a img:hover {-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)"; filter: alpha(opacity=90); -moz-opacity: 0.9; opacity: 0.9;}
-.product-con .product-name {font-size:15px;line-height:20px;margin:0 0 10px 0;padding:0;font-weight:normal;}
+.product-con a img.img-responsive {margin:0 auto;}
+.product-con a img:hover, .category-con a img:hover {-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)"; filter: alpha(opacity=80); -moz-opacity: 0.8; opacity: 0.8;}
+.product-con .product-name, .category-con .category-name {font-size:15px;line-height:20px;margin:0 0 10px 0;padding:0;font-weight:normal;}
 .product-con .product-price {font-size:15px;line-height:20px;}
 .product-con .product-price .current-price {font-size:18px;color:#EA2D48;font-weight:bold;line-height:22px;display:block;}
 .product-con .product-price .old-price .inner {color:#444444;}
 .product-con .product-price .old-price {text-decoration:line-through;color:#EA2D48;}
+
 .title {border-left:1px solid #f0f0f0;border-right:1px solid #f0f0f0;border-top:1px solid #f0f0f0;border-bottom:1px solid #fff;display:inline-block;padding:10px;position:absolute;top:-72px;left:15px;}
 .welcome-con {background:#ddd;}
 .category-con { margin-bottom: 10px;}

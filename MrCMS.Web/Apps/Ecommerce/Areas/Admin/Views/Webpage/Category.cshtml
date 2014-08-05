@@ -4,6 +4,8 @@
     <div class="span3">
         @Html.LabelFor(webpage => webpage.FeatureImage)
         @Html.TextBoxFor(webpage => webpage.FeatureImage, new { @class = "media-selector" })
+        
+        @Html.InlineCheckboxFor(x=>x.ShowSubCategories)
     </div>
     <div class="span9">
         @Html.LabelFor(category => category.Abstract)

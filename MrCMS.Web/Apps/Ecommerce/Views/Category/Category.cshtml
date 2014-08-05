@@ -18,7 +18,24 @@
                  @{ Html.RenderAction("Query", "ProductSearch", new { query });}
              </div>
             <div class="col-sm-9">
-                 <h1>@Editable(Model, category => category.Name)</h1>
+                <h1>@Editable(Model, category => category.Name)</h1>
+                @if (Model.ShowSubCategories)
+                {
+                    var categories = ViewData["subcategories"] as IList<Category>;
+                    if (categories != null)
+                    {
+                        foreach (var categoryChunk in categories.Chunk(3))
+                        {
+                             <div class="row">
+                                @foreach (var category in categoryChunk)
+                                {
+                                    Html.RenderPartial("CategoryCard", category);
+                                }
+                            </div>
+                        }
+                    }
+                }
+
                 @{ Html.RenderAction("Results", "ProductSearch", new { query });}
                 @Editable(Model, category => category.BodyContent, true)
              </div>
