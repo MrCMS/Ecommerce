@@ -53,7 +53,7 @@ namespace MrCMS.Web.Apps.Ecommerce.ActionResults
             foreach (Match m in Regex.Matches(bodyContent, @"<\s*?img\s+[^>]*?\s*src\s*=\s*([""'])((\\?.)*?)\1[^>]*?>"))
             {
                 var link = m.Groups[2].Value;
-                if (!link.ToLower().Contains("http") && !linksDealtWith.Contains(link))
+                if (!link.ToLower().Contains("http") && !linksDealtWith.Contains(link) && !string.IsNullOrWhiteSpace(link))
                 {
                     bodyContent = bodyContent.Replace(link, link.Insert(0, url.TrimEnd('/')));
                     linksDealtWith.Add(link);
