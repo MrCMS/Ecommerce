@@ -8,12 +8,12 @@
                 <h1>Select postage</h1>
             </div>
             <div class="row">
-                <div class="col-md-6 col-sm-12">
+                <div class="col-sm-12">
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-sm-6 control-label">Postage Selection <span class="red">*</span> :</label>
-                            <div class="col-sm-6">
-                                @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new{@class="form-control"})
+                            <label class="col-lg-3 control-label">Postage Selection <span class="red">*</span> :</label>
+                            <div class="col-lg-9 col-sm-12">
+                                @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
                             </div>
                         </div>
                     </div>
