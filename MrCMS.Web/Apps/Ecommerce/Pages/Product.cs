@@ -1,16 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
-using MrCMS.Services;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Models;
-using System.Linq;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
-using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
@@ -36,56 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual IList<ProductSpecificationValue> SpecificationValues { get; set; }
 
-        public virtual string GetSpecification(string name)
-        {
-            var spec =
-                SpecificationValues.FirstOrDefault(
-                    value => value.ProductSpecificationAttributeOption.ProductSpecificationAttribute.Name == name);
-            return spec == null ? null : spec.Value;
-        }
-
         public virtual IList<Category> Categories { get; set; }
-
-        protected override void CustomInitialization(IDocumentService service, ISession session)
-        {
-            base.CustomInitialization(service, session);
-
-            if (!Variants.Any())
-            {
-                var productVariant = new ProductVariant
-                    {
-                        Name = Name,
-                        TrackingPolicy = TrackingPolicy.DontTrack,
-                    };
-                Variants.Add(productVariant);
-                productVariant.Product = this;
-                session.Transact(s => s.Save(productVariant));
-            }
-
-            var mediaCategory = service.GetDocumentByUrl<MediaCategory>("product-galleries");
-            if (mediaCategory == null)
-            {
-                mediaCategory = new MediaCategory
-                    {
-                        Name = "Product Galleries",
-                        UrlSegment = "product-galleries",
-                        IsGallery = true,
-                        HideInAdminNav = true
-                    };
-                service.AddDocument(mediaCategory);
-            }
-            var productGallery = new MediaCategory
-                {
-                    Name = Name,
-                    UrlSegment = "product-galleries/" + UrlSegment,
-                    IsGallery = true,
-                    Parent = mediaCategory,
-                    HideInAdminNav = true
-                };
-            Gallery = productGallery;
-
-            service.AddDocument(productGallery);
-        }
 
         public virtual IList<ProductOption> Options { get; set; }
 
@@ -99,9 +47,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             get
             {
                 return Gallery != null
-                           ? (IEnumerable<MediaFile>)
-                             Gallery.Files.Where(file => file.IsImage).OrderBy(file => file.DisplayOrder)
-                           : new List<MediaFile>();
+                    ? (IEnumerable<MediaFile>)
+                        Gallery.Files.Where(file => file.IsImage).OrderBy(file => file.DisplayOrder)
+                    : new List<MediaFile>();
             }
         }
 
@@ -110,8 +58,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             get
             {
                 return Images.Any()
-                           ? Images.First().FileUrl
-                           : MrCMSApplication.Get<EcommerceSettings>().DefaultNoProductImage;
+                    ? Images.First().FileUrl
+                    : MrCMSApplication.Get<EcommerceSettings>().DefaultNoProductImage;
             }
         }
 
@@ -128,8 +76,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                 if (Variants.Any())
                 {
                     return Variants.Count == 1
-                               ? Variants.First().Price
-                               : Variants.OrderBy(x => x.Price).First().Price;
+                        ? Variants.First().Price
+                        : Variants.OrderBy(x => x.Price).First().Price;
                 }
                 return null;
             }
@@ -143,8 +91,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
                 if (Variants.Any())
                 {
                     return Variants.Count == 1
-                               ? Variants.First().PreviousPriceIncludingTax
-                               : Variants.OrderBy(x => x.Price).First().PreviousPriceIncludingTax;
+                        ? Variants.First().PreviousPriceIncludingTax
+                        : Variants.OrderBy(x => x.Price).First().PreviousPriceIncludingTax;
                 }
                 return null;
             }
@@ -157,23 +105,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual IList<Product> RelatedProducts { get; set; }
 
-        public virtual List<SelectListItem> GetVariantOptions(ProductVariant productVariant, bool showName = true, bool showOptionValues = true)
+        public virtual string GetSpecification(string name)
         {
-            return Variants.BuildSelectItemList(variant => variant.GetSelectOptionName(showName, showOptionValues),
-                                                       variant => variant.Id.ToString(),
-                                                       variant => variant == productVariant,
-                                                       emptyItem: null);
+            ProductSpecificationValue spec =
+                SpecificationValues.FirstOrDefault(
+                    value => value.ProductSpecificationAttributeOption.ProductSpecificationAttribute.Name == name);
+            return spec == null ? null : spec.Value;
         }
 
-        public override void OnDeleting(ISession session)
+        public virtual List<SelectListItem> GetVariantOptions(ProductVariant productVariant, bool showName = true,
+            bool showOptionValues = true)
         {
-            if (this.Categories.Count > 0)
-            {
-                foreach (var category in this.Categories)
-                    category.Products.Remove(this);
-                this.Categories.Clear();
-            }
-            base.OnDeleting(session);
+            return Variants.BuildSelectItemList(variant => variant.GetSelectOptionName(showName, showOptionValues),
+                variant => variant.Id.ToString(),
+                variant => variant == productVariant,
+                emptyItem: null);
         }
     }
 }

@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Web;
 using Elmah;
-using FakeItEasy;
-using FakeItEasy.Core;
 using Iesi.Collections.Generic;
 using MrCMS.DbConfiguration;
 using MrCMS.DbConfiguration.Configuration;
 using MrCMS.Entities.Multisite;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
+using MrCMS.IoC;
 using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Website;
@@ -18,48 +16,9 @@ using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using Ninject;
-using Ninject.MockingKernel;
-using Ninject.Modules;
 
 namespace MrCMS.EcommerceApp.Tests
 {
-    public class TestContextModule : NinjectModule
-    {
-        public override void Load()
-        {
-            Kernel.Bind<HttpContextBase>().To<OutOfContext>().InThreadScope();
-        }
-    }
-
-    public abstract class MrCMSTest : IDisposable
-    {
-        protected readonly IEventContext _eventContext = A.Fake<IEventContext>();
-        private readonly MockingKernel _kernel;
-
-        protected MrCMSTest()
-        {
-            _kernel = new MockingKernel();
-            Kernel.Load(new TestContextModule());
-            Kernel.Bind<IEventContext>().ToMethod(context => _eventContext);
-            MrCMSApplication.OverrideKernel(Kernel);
-            CurrentRequestData.SiteSettings = new SiteSettings();
-        }
-
-        public IEnumerable<ICompletedFakeObjectCall> EventsRaised
-        {
-            get { return Fake.GetCalls(_eventContext); }
-        }
-
-        public MockingKernel Kernel
-        {
-            get { return _kernel; }
-        }
-
-        public virtual void Dispose()
-        {
-        }
-    }
-
     public abstract class InMemoryDatabaseTest : MrCMSTest
     {
         private static Configuration Configuration;
@@ -73,14 +32,14 @@ namespace MrCMS.EcommerceApp.Tests
             {
                 lock (lockObject)
                 {
-                    var assemblies = new List<Assembly> {typeof (EcommerceAppTests).Assembly};
+                    var assemblies = new List<Assembly> {typeof (InMemoryDatabaseTest).Assembly};
                     var nHibernateModule = new NHibernateConfigurator
-                                           {
-                                               CacheEnabled = true,
-                                               DatabaseType = DatabaseType.Sqlite,
-                                               InDevelopment = true,
-                                               ManuallyAddedAssemblies = assemblies
-                                           };
+                    {
+                        CacheEnabled = true,
+                        DatabaseType = DatabaseType.Sqlite,
+                        InDevelopment = true,
+                        ManuallyAddedAssemblies = assemblies
+                    };
                     Configuration = nHibernateModule.GetConfiguration();
 
                     SessionFactory = Configuration.BuildSessionFactory();
@@ -95,21 +54,21 @@ namespace MrCMS.EcommerceApp.Tests
 
 
             CurrentSite = Session.Transact(session =>
-                                           {
-                                               var site = new Site
-                                                          {
-                                                              Name = "Current Site",
-                                                              BaseUrl = "www.currentsite.com",
-                                                              Id = 1
-                                                          };
-                                               CurrentRequestData.CurrentSite = site;
-                                               session.Save(site);
-                                               return site;
-                                           });
+            {
+                var site = new Site {Name = "Current Site", BaseUrl = "www.currentsite.com", Id = 1};
+                CurrentRequestData.CurrentSite = site;
+                session.Save(site);
+                return site;
+            });
 
             CurrentRequestData.SiteSettings = new SiteSettings {TimeZone = TimeZoneInfo.Local.Id};
 
             CurrentRequestData.ErrorSignal = new ErrorSignal();
+
+            Kernel.Unbind<IEventContext>();
+            Kernel.Load(new ServiceModule(true));
+            _eventContext = new TestableEventContext(Kernel.Get<EventContext>());
+            Kernel.Rebind<IEventContext>().ToMethod(context => EventContext);
         }
 
         protected Site CurrentSite { get; set; }
@@ -118,15 +77,15 @@ namespace MrCMS.EcommerceApp.Tests
         private void SetupUser()
         {
             var user = new User
-                       {
-                           Email = "test@example.com",
-                           IsActive = true,
-                       };
+            {
+                Email = "test@example.com",
+                IsActive = true,
+            };
 
             var adminUserRole = new UserRole
-                                {
-                                    Name = UserRole.Administrator
-                                };
+            {
+                Name = UserRole.Administrator
+            };
 
             user.Roles = new HashedSet<UserRole> {adminUserRole};
             adminUserRole.Users = new HashedSet<User> {user};

@@ -5,20 +5,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 {
     public class EcommerceSettingsMenuModel : IAdminMenuItem
     {
-        private IDictionary<string, List<IMenuItem>> _children;
+        private SubMenu _children;
         public string Text { get { return "e-Settings"; } }
         public string Url { get; private set; }
         public bool CanShow { get { return true; } }
-        public IDictionary<string, List<IMenuItem>> Children
+        public SubMenu Children
         {
             get
             {
                 return _children ??
-                       (_children = new Dictionary<string, List<IMenuItem>>
+                       (_children = new SubMenu
                                     {
                                         {
                                             "General settings",
-                                            new List<IMenuItem>
+                                            new List<ChildMenuItem>
                                             {
                                                 new ChildMenuItem("Global Settings",
                                                     "/Admin/Apps/Ecommerce/EcommerceSettings/Edit"),
@@ -34,7 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                         },
                                         {
                                             "Payment settings",
-                                            new List<IMenuItem>
+                                            new List<ChildMenuItem>
                                             {
                                                 new ChildMenuItem("Payment Settings",
                                                     "/Admin/Apps/Ecommerce/PaymentSettings"),

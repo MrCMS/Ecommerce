@@ -15,8 +15,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
 
         public ProductOrCategoryDeletedTest()
         {
-            _siteSettings = new SiteSettings();
-            _documentService = new DocumentService(Session, _siteSettings, CurrentSite);
+            _documentService = new DocumentService(Session, CurrentSite);
             _productService = new ProductService(Session, _documentService, _siteSettings, null);
 
         }
@@ -50,25 +49,6 @@ namespace MrCMS.EcommerceApp.Tests.Services
             _productService.AddCategory(product, category.Id);
             category.Products.Count.Should().Be(1);
             _documentService.DeleteDocument(product);
-            category.Products.Count.Should().Be(0);
-        }
-
-        [Fact]
-        public void ProductOnDeletingRemovesCategory()
-        {
-            //arrange
-            var category = new CategoryBuilder().Build();
-            var product = new ProductBuilder().Build();
-            product.Categories.Add(category);
-            category.Products.Add(product);
-            product.Categories.Count.Should().Be(1);
-            category.Products.Count.Should().Be(1);
-
-            //act
-            product.OnDeleting(Session);
-            
-            //assert
-            product.Categories.Count.Should().Be(0);
             category.Products.Count.Should().Be(0);
         }
     }

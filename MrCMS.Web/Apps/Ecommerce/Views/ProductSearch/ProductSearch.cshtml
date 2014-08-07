@@ -12,9 +12,9 @@
     <div class="container">
         <div class="row" id="product-search-container">
             <div class="col-sm-3">
-                @RenderZone("Before Filters")
+                @{ RenderZone("Before Filters"); }
                 @{ Html.RenderPartial("Query", query);}
-                @RenderZone("After Filters")
+                @{ RenderZone("After Filters"); }
             </div>
             <div class="col-sm-9">
                 <h1>@Editable(Model, page => page.Name, false)</h1>

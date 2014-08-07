@@ -15,25 +15,20 @@ namespace MrCMS.Services
     public class CloneSitePartsService : ICloneSitePartsService
     {
         private readonly ISession _session;
+        private readonly ILegacySettingsProvider _legacySettingsProvider;
 
-        public CloneSitePartsService(ISession session)
+        public CloneSitePartsService(ISession session, ILegacySettingsProvider legacySettingsProvider)
         {
             _session = session;
+            _legacySettingsProvider = legacySettingsProvider;
         }
 
         public void CopySettings(Site @from, Site to)
         {
-            _session.Transact(session =>
-            {
-                var fromProvider = new ConfigurationProvider(new SettingService(_session, @from), @from);
-                var toProvider = new ConfigurationProvider(new SettingService(_session, @to), @to);
-                var siteSettingsBases = fromProvider.GetAllSiteSettings();
-                siteSettingsBases.ForEach(@base =>
-                {
-                    @base.Site = to;
-                    toProvider.SaveSettings(@base);
-                });
-            });
+            var fromProvider = new ConfigurationProvider(@from, _legacySettingsProvider);
+            var toProvider = new ConfigurationProvider(@to, _legacySettingsProvider);
+            var siteSettingsBases = fromProvider.GetAllSiteSettings();
+            siteSettingsBases.ForEach(toProvider.SaveSettings);
         }
 
         public void CopyLayouts(Site @from, Site to)
@@ -51,12 +46,12 @@ namespace MrCMS.Services
             }));
         }
 
-        private IEnumerable<Layout> GetLayoutCopies(Site @from, Site to, Layout parent = null)
+        private IEnumerable<Layout> GetLayoutCopies(Site @from, Site to, Layout fromParent = null, Layout toParent = null)
         {
             var queryOver = _session.QueryOver<Layout>().Where(layout => layout.Site.Id == @from.Id);
-            queryOver = parent == null
+            queryOver = fromParent == null
                             ? queryOver.Where(layout => layout.Parent == null)
-                            : queryOver.Where(layout => layout.Parent.Id == parent.Id);
+                            : queryOver.Where(layout => layout.Parent.Id == fromParent.Id);
             var layouts = queryOver.List();
 
             foreach (var layout in layouts)
@@ -77,9 +72,9 @@ namespace MrCMS.Services
                                            .ToList();
                     return areaCopy;
                 }).ToList();
-                copy.Parent = parent;
+                copy.Parent = toParent;
                 yield return copy;
-                foreach (var child in GetLayoutCopies(@from, to, layout))
+                foreach (var child in GetLayoutCopies(@from, to, layout, copy))
                 {
                     yield return child;
                 }
@@ -100,19 +95,19 @@ namespace MrCMS.Services
             _session.Transact(session => copies.ForEach(category => session.Save(category)));
         }
 
-        private IEnumerable<MediaCategory> GetMediaCategoryCopies(Site @from, Site to, MediaCategory parent = null)
+        private IEnumerable<MediaCategory> GetMediaCategoryCopies(Site @from, Site to, MediaCategory fromParent = null, MediaCategory toParent = null)
         {
             var queryOver = _session.QueryOver<MediaCategory>().Where(layout => layout.Site.Id == @from.Id);
-            queryOver = parent == null
+            queryOver = fromParent == null
                             ? queryOver.Where(layout => layout.Parent == null)
-                            : queryOver.Where(layout => layout.Parent.Id == parent.Id);
+                            : queryOver.Where(layout => layout.Parent.Id == fromParent.Id);
             var categories = queryOver.List();
             foreach (var category in categories)
             {
                 var copy = GetCopy(category, to);
-                copy.Parent = parent;
+                copy.Parent = toParent;
                 yield return copy;
-                foreach (var child in GetMediaCategoryCopies(@from, to, category))
+                foreach (var child in GetMediaCategoryCopies(@from, to, category, copy))
                 {
                     yield return child;
                 }
@@ -123,7 +118,7 @@ namespace MrCMS.Services
         {
             var home =
                 _session.QueryOver<Webpage>()
-                        .Where(webpage => webpage.Site == @from && webpage.Parent == null)
+                        .Where(webpage => webpage.Site.Id == @from.Id && webpage.Parent == null)
                         .OrderBy(webpage => webpage.DisplayOrder)
                         .Asc.Take(1)
                         .SingleOrDefault();
@@ -134,8 +129,8 @@ namespace MrCMS.Services
 
         public void Copy404(Site @from, Site to)
         {
-            var fromProvider = new ConfigurationProvider(new SettingService(_session, @from), @from);
-            var toProvider = new ConfigurationProvider(new SettingService(_session, @to), @to);
+            var fromProvider = new ConfigurationProvider(@from, _legacySettingsProvider);
+            var toProvider = new ConfigurationProvider(@to, _legacySettingsProvider);
             var siteSettings = fromProvider.GetSiteSettings<SiteSettings>();
             var error404 = _session.Get<Webpage>(siteSettings.Error404PageId);
 
@@ -149,8 +144,8 @@ namespace MrCMS.Services
 
         public void Copy403(Site @from, Site to)
         {
-            var fromProvider = new ConfigurationProvider(new SettingService(_session, @from), @from);
-            var toProvider = new ConfigurationProvider(new SettingService(_session, @to), @to);
+            var fromProvider = new ConfigurationProvider(@from, _legacySettingsProvider);
+            var toProvider = new ConfigurationProvider(@to, _legacySettingsProvider);
             var siteSettings = fromProvider.GetSiteSettings<SiteSettings>();
             var error403 = _session.Get<Webpage>(siteSettings.Error403PageId);
 
@@ -164,8 +159,8 @@ namespace MrCMS.Services
 
         public void Copy500(Site @from, Site to)
         {
-            var fromProvider = new ConfigurationProvider(new SettingService(_session, @from), @from);
-            var toProvider = new ConfigurationProvider(new SettingService(_session, @to), @to);
+            var fromProvider = new ConfigurationProvider(@from, _legacySettingsProvider);
+            var toProvider = new ConfigurationProvider(@to, _legacySettingsProvider);
             var siteSettings = fromProvider.GetSiteSettings<SiteSettings>();
             var error500 = _session.Get<Webpage>(siteSettings.Error500PageId);
 

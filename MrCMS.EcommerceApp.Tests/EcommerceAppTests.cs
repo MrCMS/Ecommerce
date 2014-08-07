@@ -5,7 +5,7 @@ namespace MrCMS.EcommerceApp.Tests
 {
     public class EcommerceAppTests
     {
-        private Web.Apps.Ecommerce.EcommerceApp _ecommerceApp;
+        private readonly Web.Apps.Ecommerce.EcommerceApp _ecommerceApp;
 
         public EcommerceAppTests()
         {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using MrCMS.Entities.Documents.Layout;
 using MrCMS.Entities.Documents.Media;
+using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Multisite;
 using MrCMS.Installation;
 using MrCMS.Services;
@@ -15,6 +16,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Currencies;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Web.Apps.Ecommerce.Widgets;
+using MrCMS.Web.Areas.Admin.Services;
 using MrCMS.Website;
 using NHibernate;
 
@@ -24,10 +26,10 @@ namespace MrCMS.Web.Apps.Ecommerce
     {
         public static void InstallApp(ISession session, InstallModel model, Site site)
         {
-            var configurationProvider = new ConfigurationProvider(new SettingService(session, site), site);
+            var configurationProvider = new ConfigurationProvider(site,new LegacySettingsProvider(session));
             var siteSettings = configurationProvider.GetSiteSettings<SiteSettings>();
             var ecommerceSettings = configurationProvider.GetSiteSettings<EcommerceSettings>();
-            var documentService = new DocumentService(session, siteSettings, site);
+            var documentService = new DocumentService(session, site);
             var currencyService = new CurrencyService(session);
             var widgetService = new WidgetService(session);
             var defaultMediaCategory = documentService.GetDocumentByUrl<MediaCategory>("default");
@@ -84,14 +86,14 @@ namespace MrCMS.Web.Apps.Ecommerce
                                               new LayoutArea {AreaName = "Footer", Layout = eCommerceLayout}
                                           };
             documentService.AddDocument(eCommerceLayout);
-            var layoutAreaService = new LayoutAreaService(session);
+            var layoutAreaService = new LayoutAreaAdminService(session);
             foreach (var area in ecommerceLayoutArea)
                 layoutAreaService.SaveArea(area);
             //checkout layout
             var checkoutLayout = new Layout
             {
                 Name = "Checkout Layout",
-                UrlSegment = "~/Apps/Ecommerce/Views/Shared/_CheckoutLayout.cshtml",
+                UrlSegment = "_CheckoutLayout",
                 LayoutAreas = new List<LayoutArea>(),
                 Parent = eCommerceLayout
             };
@@ -103,6 +105,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                     new LayoutArea {AreaName = "Footer Right", Layout = checkoutLayout}
                 };
             documentService.AddDocument(checkoutLayout);
+
             foreach (var area in checkoutLayoutAreas)
                 layoutAreaService.SaveArea(area);
 
@@ -153,7 +156,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             {
                 Name = "Logo",
                 Link = "/",
-                Image = logoFile.url,
+                Image = logoFile.FileUrl,
                 LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Header Left")
             };
             widgetService.AddWidget(linkedImageLogo);
@@ -210,7 +213,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var fileStream = new FileStream(imgPath, FileMode.Open);
             var dbFile = fileService.AddFile(fileStream, Path.GetFileName(imgPath), "image/jpeg", fileStream.Length, defaultMediaCategory);
 
-            ecommerceSettings.DefaultNoProductImage = dbFile.url;
+            ecommerceSettings.DefaultNoProductImage = dbFile.FileUrl;
 
             configurationProvider.SaveSettings(ecommerceSettings);
 
@@ -239,7 +242,6 @@ namespace MrCMS.Web.Apps.Ecommerce
                 Parent = yourBasket,
                 DisplayOrder = 0,
                 PublishOn = DateTime.UtcNow,
-                Layout = checkoutLayout
             };
             documentService.AddDocument(enterOrderEmail);
             var setPaymentDetails = new PaymentDetails
@@ -250,7 +252,6 @@ namespace MrCMS.Web.Apps.Ecommerce
                 Parent = yourBasket,
                 DisplayOrder = 1,
                 PublishOn = DateTime.UtcNow,
-                Layout = checkoutLayout
             };
             documentService.AddDocument(setPaymentDetails);
             var setDeliveryDetails = new SetDeliveryDetails
@@ -261,7 +262,6 @@ namespace MrCMS.Web.Apps.Ecommerce
                 Parent = yourBasket,
                 DisplayOrder = 2,
                 PublishOn = DateTime.UtcNow,
-                Layout = checkoutLayout
             };
             documentService.AddDocument(setDeliveryDetails);
             var orderPlaced = new OrderPlaced
@@ -272,7 +272,6 @@ namespace MrCMS.Web.Apps.Ecommerce
                 Parent = yourBasket,
                 DisplayOrder = 3,
                 PublishOn = DateTime.UtcNow,
-                Layout = checkoutLayout
             };
             documentService.AddDocument(orderPlaced);
 

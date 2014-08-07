@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Web;
 using System.Web.Mvc;
+using MrCMS.Entities.Multisite;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
@@ -24,10 +25,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
         private readonly ICartBuilder _cartBuilder;
         private readonly ISession _session;
         private readonly IOrderService _orderService;
+        private readonly Site _site;
 
         public WorldPayPaymentService(WorldPaySettings worldPaySettings, CartModel cart,
             EcommerceSettings ecommerceSettings, ICartBuilder cartBuilder,
-            ISession session, IOrderService orderService)
+            ISession session, IOrderService orderService,Site site)
         {
             _worldPaySettings = worldPaySettings;
             _cart = cart;
@@ -35,6 +37,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
             _cartBuilder = cartBuilder;
             _session = session;
             _orderService = orderService;
+            _site = site;
         }
 
         public WorldPayPostInfo GetInfo()
@@ -62,7 +65,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
             postInfo.email = _cart.OrderEmail;
             postInfo.withDelivery = _cart.RequiresShipping ? "true" : "false";
             postInfo.amount = _cart.Total.ToString(new CultureInfo("en-US", false).NumberFormat);
-            postInfo.desc = _worldPaySettings.Site.Name;
+            postInfo.desc = _site.Name;
             postInfo.M_UserID = _cart.UserGuid.ToString();
             postInfo.M_FirstName = _cart.BillingAddress.FirstName;
             postInfo.M_LastName = _cart.BillingAddress.LastName;
@@ -186,7 +189,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
         private string GetSchemeAndAuthority()
         {
             var scheme = _worldPaySettings.RequiresSSL ? "https://" : "http://";
-            var authority = _worldPaySettings.Site.BaseUrl;
+            var authority = _site.BaseUrl;
             if (authority.EndsWith("/"))
                 authority = authority.TrimEnd('/');
             return string.Format("{0}{1}", scheme, authority);
