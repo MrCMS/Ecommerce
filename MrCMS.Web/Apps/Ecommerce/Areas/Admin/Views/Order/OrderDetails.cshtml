@@ -6,8 +6,8 @@
     var orderShipping = Model.ShippingTotal.GetValueOrDefault() - Model.ShippingTax.GetValueOrDefault();
     var nonSystemSalesChannel = Model.SalesChannel != EcommerceApp.DefaultSalesChannel;
 }
-<div class="row-fluid">
-    <div class="@(nonSystemSalesChannel ? "span6" : "span12")">
+<div class="row">
+    <div class="@(nonSystemSalesChannel ? "col-lg-6" : "col-lg-12")">
         <table class="table table-condensed table-striped">
             <tr>
                 <td>Sales Channel</td>
@@ -64,7 +64,7 @@
     </div>
     @if (nonSystemSalesChannel)
     {
-        <div class="span6">
+        <div class="col-lg-6">
             @Html.GetSalesChannelInfo()
         </div>
     }
@@ -72,8 +72,8 @@
 @{
     if (Model.OrderRefunds.Count > 0)
     {
-    <div class="row-fluid">
-        <div class="span12">
+    <div class="row">
+        <div class="col-lg-12">
             @if (Model.OrderRefunds.Count > 0)
             {
                 <h4>Refunds</h4>
@@ -100,7 +100,7 @@
                                 </td>
                                 <td>
                                     <div class="btn-group">
-                                        @Html.ActionLink("Delete", "Delete", "OrderRefund", new { id = item.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
+                                        @Html.ActionLink("Delete", "Delete", "OrderRefund", new { id = item.Id }, new { @class = "btn btn-danger btn-xs", data_toggle = "fb-modal" })
                                     </div>
                                 </td>
                             </tr>
@@ -113,8 +113,8 @@
     }
 }
 <hr class="small-margin" />
-<div class="row-fluid">
-    <div class="span6">
+<div class="row">
+    <div class="col-lg-6">
         <h4>Payment</h4>
 
         <table class="table table-condensed table-striped">
@@ -129,17 +129,17 @@
         </table>
         @if (Model.PaymentStatus == PaymentStatus.Pending)
         {
-            @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+            @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
             <span></span>
-            @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+            @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
         }
         @if (Model.PaymentStatus == PaymentStatus.Paid)
         {
-            <a href="@Url.Action("Add", "OrderRefund", new { orderID = Model.Id, index = false })" class="btn btn-mini" data-toggle="fb-modal">Add Refund</a>
+            <a href="@Url.Action("Add", "OrderRefund", new { orderID = Model.Id, index = false })" class="btn btn-xs btn-default" data-toggle="fb-modal">Add Refund</a>
         }
 
     </div>
-    <div class="span6">
+    <div class="col-lg-6">
         <h4>Shipping</h4>
 
         <table class="table table-condensed">
@@ -170,16 +170,16 @@
         </table>
         @if (Model.ShippingStatus != ShippingStatus.Shipped)
         {
-            @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+            @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
         }
-        @Html.ActionLink("Set tracking number", "SetTrackingNumber", "Order", new { id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+        @Html.ActionLink("Set tracking number", "SetTrackingNumber", "Order", new { id = Model.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
     </div>
 </div>
 <hr />
-<div class="row-fluid">
-    <div class="span6">
+<div class="row">
+    <div class="col-lg-6">
         <h4>Shipping Address
-                @Html.ActionLink("Edit", "Edit", "Address", new { Id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                @Html.ActionLink("Edit", "Edit", "Address", new { Id = Model.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
         </h4>
         <div class="pull-left">
             @if (Model.ShippingAddress != null)
@@ -190,9 +190,9 @@
             }
         </div>
     </div>
-    <div class="span6">
+    <div class="col-lg-6">
         <h4>Billing Address
-                @Html.ActionLink("Edit", "Edit", "Address", new { Id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                @Html.ActionLink("Edit", "Edit", "Address", new { Id = Model.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
         </h4>
         <div class="pull-left">
             @if (Model.BillingAddress != null)

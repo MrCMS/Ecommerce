@@ -13,13 +13,13 @@
 
         @Html.HiddenFor(x => x.Country.Id)
         
-        <div class="row-fluid">
-            <div class="span12">
+        <div class="row">
+            <div class="col-lg-12">
                 @Html.LabelFor(x => x.ShippingMethod)
-                @Html.DropDownListFor(x => x.ShippingMethod.Id, ViewData["shipping-methods"] as IEnumerable<SelectListItem>, new {@class = "span12"})
+                @Html.DropDownListFor(x => x.ShippingMethod.Id, ViewData["shipping-methods"] as IEnumerable<SelectListItem>, new {@class = "form-control"})
                 @Html.ValidationMessageFor(x => x.ShippingMethod)
                 @Html.LabelFor(x => x.ShippingCriteria)
-                @Html.DropDownListFor(x => x.ShippingCriteria, ViewData["criterias"] as IEnumerable<SelectListItem>, new {@class = "span12"})
+                @Html.DropDownListFor(x => x.ShippingCriteria, ViewData["criterias"] as IEnumerable<SelectListItem>, new {@class = "form-control"})
                 @Html.ValidationMessageFor(x => x.ShippingCriteria)
                 @Html.LabelFor(x => x.LowerBound)
                 @Html.TextBoxFor(x => x.LowerBound, new {@class = "input-xlarge"})
@@ -39,8 +39,8 @@
             <br/>
         }
 
-        <div class="row-fluid">
-            <div class="span12">
+        <div class="row">
+            <div class="col-lg-12">
                 @Html.ValidationMessageFor(x => x.LowerBound)
             </div>
         </div>

@@ -1,15 +1,15 @@
 ﻿@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Pages.Category
-<div class="row-fluid">
-    <div class="span3">
+<div class="row">
+    <div class="col-lg-3">
         @Html.LabelFor(webpage => webpage.FeatureImage)
         @Html.TextBoxFor(webpage => webpage.FeatureImage, new { @class = "media-selector" })
         
         @Html.InlineCheckboxFor(x=>x.ShowSubCategories)
     </div>
-    <div class="span9">
+    <div class="col-lg-9">
         @Html.LabelFor(category => category.Abstract)
-        @Html.TextAreaFor(category => category.Abstract, new { rows = 4, @class = "span12" })
+        @Html.TextAreaFor(category => category.Abstract, new { rows = 4, @class = "form-control" })
         @Html.ValidationMessageFor(category => category.Abstract)
     </div>
 </div>

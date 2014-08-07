@@ -9,11 +9,11 @@
 
 <fieldset>
     <legend>
-        <div class="row-fluid">
-                <div class="span6">
+        <div class="row">
+                <div class="col-lg-6">
                      Amazon Listing Groups
                 </div>
-                <div class="span6">
+                <div class="col-lg-6">
                     <span class="btn-group  display-inline  pull-right" style="margin-left: 10px">
                         @Html.ActionLink("Add", "Add", "ListingGroup", null, new { @class = "btn btn-info", data_toggle = "fb-modal"})
                     </span>
@@ -36,8 +36,8 @@
 @Html.TextBox("ListingGroupName",String.Empty, new {@class = "input-xlarge search-query search-listing-groups", placeholder = "Enter listing group name..."})
 <button class="btn btn-success" id="search-listings" type="button">Filter</button>
 <br/><br/>
-<div class="row-fluid">
-    <div class="span12">
+<div class="row">
+    <div class="col-lg-12">
         @{Html.RenderPartial("ListingGroups", Model); }
     </div>
 </div>

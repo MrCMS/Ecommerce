@@ -13,7 +13,7 @@
             <td class="name">
                 <a href="{%=file.url%}" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
             {% if (file.thumbnail_url) { %}
-                <input type="button" class="seo-attributes btn btn-mini" value="Set SEO attributes" />
+                <input type="button" class="seo-attributes btn btn-xs btn-default" value="Set SEO attributes" />
                 <div style="display:none" class="seo-attributes-holder">
                     <div data-action="{%=file.seo_url%}" class="seo-update-form">
                         <label for="title">Title</label>

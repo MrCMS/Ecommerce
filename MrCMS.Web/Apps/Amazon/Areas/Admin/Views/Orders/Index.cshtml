@@ -11,11 +11,11 @@
 
     <fieldset>
         <legend> 
-            <div class="row-fluid">
-                <div class="span6">
+            <div class="row">
+                <div class="col-lg-6">
                     Amazon Orders
                 </div>
-                <div class="span6">
+                <div class="col-lg-6">
                      <span class="btn-group  display-inline  pull-right margin-left-10">
                         <button type="submit" class="btn btn-primary">Search</button>
                     </span>
@@ -41,24 +41,24 @@
     </fieldset>
 
 
-    <div class="row-fluid">
-        <div class="span12">
+    <div class="row">
+        <div class="col-lg-12">
             @Html.LabelFor(x => x.SearchText, "Search (Order Id, Name or Email)")
-            @Html.TextBoxFor(x => x.SearchText, new {@class = "span12"})
+            @Html.TextBoxFor(x => x.SearchText, new {@class = "form-control"})
         </div>
     </div>
-    <div class="row-fluid">
-        <div class="span4">
+    <div class="row">
+        <div class="col-lg-4">
             @Html.LabelFor(x => x.DateFrom)
-            @Html.TextBoxFor(x => x.DateFrom, new {@class = "span12 date-time-picker"})
+            @Html.TextBoxFor(x => x.DateFrom, new {@class = "col-lg-12 date-time-picker"})
         </div>
-        <div class="span4">
+        <div class="col-lg-4">
             @Html.LabelFor(x => x.DateTo)
-            @Html.TextBoxFor(x => x.DateTo, new {@class = "span12 date-time-picker"})
+            @Html.TextBoxFor(x => x.DateTo, new {@class = "col-lg-12 date-time-picker"})
         </div>
-        <div class="span4">
+        <div class="col-lg-4">
             @Html.LabelFor(x => x.ShippingStatus)
-            @Html.DropDownList("ShippingStatus", ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new {@class = "span12"})
+            @Html.DropDownList("ShippingStatus", ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new {@class = "form-control"})
         </div>
     </div>
 
@@ -66,8 +66,8 @@
 }
 
 
-<div class="row-fluid">
-    <div class="span12">
+<div class="row">
+    <div class="col-lg-12">
         @{Html.RenderPartial("Orders", Model); }
     </div>
 </div>

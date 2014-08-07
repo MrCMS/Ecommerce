@@ -1,8 +1,8 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Amazon.Entities.Orders.AmazonOrder
 
-<div class="row-fluid">
-    <div class="span12">
+<div class="row">
+    <div class="col-lg-12">
         <table class="table table-condensed table-striped">
             <tr>
                 <td>Marketplace Id</td>
@@ -37,8 +37,8 @@
 </div>
 
 <hr class="small-margin" />
-<div class="row-fluid">
-        <div class="span6">
+<div class="row">
+        <div class="col-lg-6">
         <h4>Shipping</h4>
 
         <table class="table table-condensed">
@@ -65,7 +65,7 @@
         </table>
 
     </div>
-    <div class="span6">
+    <div class="col-lg-6">
         <h4>Payment</h4>
 
         <table class="table table-condensed">
@@ -82,8 +82,8 @@
     </div>
 </div>
 <hr />
-<div class="row-fluid">
-    <div class="span6">
+<div class="row">
+    <div class="col-lg-6">
         <h4>Shipping Address</h4>
         <div class="pull-left">
             @if (Model.ShippingAddress != null)

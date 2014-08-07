@@ -47,8 +47,8 @@
                                                     <td>@region.Name</td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            @Html.ActionLink("Edit", "Edit", "Region", new {id = region.Id}, new {@class = "btn btn-mini", data_toggle = "fb-modal"})
-                                                            @Html.ActionLink("Delete", "Delete", "Region", new {id = region.Id}, new {@class = "btn btn-mini btn-danger", data_toggle = "fb-modal"})
+                                                            @Html.ActionLink("Edit", "Edit", "Region", new {id = region.Id}, new {@class = "btn btn-xs btn-default", data_toggle = "fb-modal"})
+                                                            @Html.ActionLink("Delete", "Delete", "Region", new {id = region.Id}, new {@class = "btn btn-xs btn-default btn-danger", data_toggle = "fb-modal"})
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -60,9 +60,9 @@
                             <td>@country.ISOTwoLetterCode</td>
                             <td>
                                 <div class="btn-group">
-                                    @Html.ActionLink("Edit", "Edit", "Country", new {id = country.Id}, new {@class = "btn btn-mini", data_toggle = "fb-modal"})
-                                    @Html.ActionLink("Delete", "Delete", "Country", new {id = country.Id}, new {@class = "btn btn-mini btn-danger", data_toggle = "fb-modal"})
-                                    @Html.ActionLink("Add Region", "Add", "Region", new { id = country.Id }, new { @class = "btn btn-mini btn-success", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Edit", "Edit", "Country", new {id = country.Id}, new {@class = "btn btn-xs btn-default", data_toggle = "fb-modal"})
+                                    @Html.ActionLink("Delete", "Delete", "Country", new {id = country.Id}, new {@class = "btn btn-xs btn-default btn-danger", data_toggle = "fb-modal"})
+                                    @Html.ActionLink("Add Region", "Add", "Region", new { id = country.Id }, new { @class = "btn btn-xs btn-default btn-success", data_toggle = "fb-modal" })
                                 </div>
                             </td>
                         </tr>

@@ -17,7 +17,7 @@
         <div class="clearfix"></div>
         <hr/>
     }
-    <div class="row-fluid">
+    <div class="row">
     @using (Html.BeginForm("LowStockReport", "Stock", FormMethod.Get))
     {
         <input type="text" class="search-query input-mini" placeholder="Threshold" id="threshold" name="threshold" value="@ViewData["threshold"]" />

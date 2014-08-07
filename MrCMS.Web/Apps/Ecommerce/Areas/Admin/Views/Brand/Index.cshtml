@@ -14,7 +14,7 @@
             </span>
         </legend>
 
-        <div class="row-fluid">
+        <div class="row">
             @using (Html.BeginForm("Index", "Brand", FormMethod.Get))
             {
                 <input type="text" class="search-query" placeholder="Search" id="searchParam" name="q" value="@ViewData["query"]" />
@@ -46,8 +46,8 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    @Html.ActionLink("Edit", "Edit", "Brand", new { id = item.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                                    @Html.ActionLink("Delete", "Delete", "Brand", new { id = item.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Edit", "Edit", "Brand", new { id = item.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Delete", "Delete", "Brand", new { id = item.Id }, new { @class = "btn btn-xs btn-default btn-danger", data_toggle = "fb-modal" })
                                 </div>
                             </td>
                         </tr>

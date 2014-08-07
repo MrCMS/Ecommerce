@@ -3,13 +3,13 @@
     ViewBag.Title = "Edit Order Details";
 }
 
-<div class="row-fluid">
-    <div class="span12">
+<div class="row">
+    <div class="col-lg-12">
         <fieldset>
             <legend>Order - #@Model.Id
 
                 <span class="pull-right btn-group">
-                    <a href="/Admin/Apps/Ecommerce/Order" class="btn">Back</a>
+                    <a href="/Admin/Apps/Ecommerce/Order" class="btn btn-default">Back</a>
                     @if (!Model.IsCancelled)
                     {
                         @Html.ActionLink("Cancel Order", "Cancel", "Order", new { id = Model.Id }, new { @class = "btn btn-danger", data_toggle = "fb-modal" })

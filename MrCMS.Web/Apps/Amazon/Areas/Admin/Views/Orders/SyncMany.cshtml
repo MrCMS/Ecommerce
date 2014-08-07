@@ -15,14 +15,14 @@
             </span>
         </legend>
 
-        <div class="row-fluid">
-            <div class="span6">
+        <div class="row">
+            <div class="col-lg-6">
                  @using (Html.BeginForm("SyncMany", "Orders", new {id = ""}, FormMethod.Post))
                  {
                      <p>
                          Enter up to 50 Amazon Order Ids to be synced (divided by ,):
                      </p>
-                     @Html.TextArea("Description", new {@class = "span12", placeholder = "e.g:ID1,ID2"})
+                     @Html.TextArea("Description", new {@class = "form-control", placeholder = "e.g:ID1,ID2"})
                      <br />
                      <br />
                      <div>
@@ -39,7 +39,7 @@
                          Sync Now</button>
                  }
             </div>
-            <div class="span6" id="results">
+            <div class="col-lg-6" id="results">
                 @if (result!=null && !string.IsNullOrWhiteSpace(result.ErrorMessage))
                 {
                     <div class="alert alert-error">

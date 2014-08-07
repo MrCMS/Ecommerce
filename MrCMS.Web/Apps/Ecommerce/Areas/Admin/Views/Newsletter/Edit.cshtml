@@ -20,8 +20,8 @@
             </span>
         </legend>
 
-        <div class="row-fluid">
-            <div class="span6">
+        <div class="row">
+            <div class="col-lg-6">
                 <h4>Details</h4>
 
                 @Html.LabelFor(x => x.Name)
@@ -34,11 +34,11 @@
 
                 <hr />
                 <div id="content-items">
-                    <div class="row-fluid">
-                        <div class="span6">
+                    <div class="row">
+                        <div class="col-lg-6">
                             <h4>Content Items</h4>
                         </div>
-                        <div class="span6">
+                        <div class="col-lg-6">
                             <div class="btn-group pull-right">
                                 @if (Model.ContentItems.Any())
                                 {
@@ -78,8 +78,8 @@
                                         <td>@contentItem.GetType().Name</td>
                                         <td>
                                             <div class="btn-group">
-                                                @Html.ActionLink("Edit", "Edit" + contentItem.GetType().Name, new { id = contentItem.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                                                @Html.ActionLink("Delete", "DeleteContentItem", new { id = contentItem.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
+                                                @Html.ActionLink("Edit", "Edit" + contentItem.GetType().Name, new { id = contentItem.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                                @Html.ActionLink("Delete", "DeleteContentItem", new { id = contentItem.Id }, new { @class = "btn btn-danger btn-xs btn-default", data_toggle = "fb-modal" })
                                             </div>
                                         </td>
                                     </tr>
@@ -89,10 +89,10 @@
                     }
                 </div>
             </div>
-            <div class="span6">
+            <div class="col-lg-6">
                 <h4>Preview</h4>
-                <div class="row-fluid">
-                    <iframe id="preview" class="span12" src="@previewUrl" style="height:500px;border: 0;"></iframe>
+                <div class="row">
+                    <iframe id="preview" class="col-lg-12" src="@previewUrl" style="height:500px;border: 0;"></iframe>
                 </div>
                 <a href="#" id="copy-link" data-preview-url="@previewUrl" class="padding-left-10">Copy HTML to clipboard</a>
                 <div class="alert alert-info" id="data-copied-notice" style="display:none">
