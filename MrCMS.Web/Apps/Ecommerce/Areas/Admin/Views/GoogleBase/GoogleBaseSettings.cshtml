@@ -13,7 +13,7 @@
         @Html.LabelFor(x => x.DefaultCondition)
         @Html.DropDownListFor(x => x.DefaultCondition, ViewData["product-conditions"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
         <br />
-        <button type="submit" class="btn btn-primary btn-mini">Save Settings</button>
+        <button type="submit" class="btn btn-primary btn-xs btn-default">Save Settings</button>
     }
     
     @Html.InfoBlock("Heads up", " You can set up Google Base to download directly from this URL: http://" + CurrentRequestData.CurrentSite.BaseUrl + "/export/google-base-feed")

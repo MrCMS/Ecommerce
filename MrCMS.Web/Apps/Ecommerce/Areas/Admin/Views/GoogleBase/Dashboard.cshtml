@@ -12,15 +12,15 @@
     
         @if (!string.IsNullOrWhiteSpace(Model.Status))
         {
-            <div class="row-fluid">
+            <div class="row">
                 <span class="alert alert-info">@Html.Encode(Model.Status)</span>
                 <div class="clearfix"></div>
             </div>
             <div class="clearfix"></div>
             <hr/>
         }
-    <div class="row-fluid">
-            <div class="span12">
+    <div class="row">
+            <div class="col-lg-12">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#search" data-toggle="tab">Search & Edit Products</a></li>
                 <li><a href="#settings" data-toggle="tab">Settings</a></li>
@@ -28,7 +28,7 @@
     </div>
     </div>
 
-    <div class="row-fluid">
+    <div class="row">
                 <div class="tab-content">
                 @{Html.RenderPartial("GoogleBaseSearch", Model); }
                 @{Html.RenderPartial("GoogleBaseSettings", ViewData["settings"] as MrCMS.Web.Apps.Ecommerce.Settings.GoogleBaseSettings);}

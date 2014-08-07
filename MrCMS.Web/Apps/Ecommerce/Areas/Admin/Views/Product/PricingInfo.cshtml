@@ -48,7 +48,7 @@
                     @variant.SKU
                 </td>
                 <td>
-                    @variant.BasePrice.ToCurrencyFormat() @Html.ActionLink("Add price break", "Add", "PriceBreak", new { id = variant.Id, type = "ProductVariant" }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                    @variant.BasePrice.ToCurrencyFormat() @Html.ActionLink("Add price break", "Add", "PriceBreak", new { id = variant.Id, type = "ProductVariant" }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
                     @if (variant.PriceBreaks.Any())
                     {
                         <h5>Price Breaks</h5>
@@ -63,7 +63,7 @@
                                 <tr>
                                     <td>@priceBreak.Quantity</td>
                                     <td>@priceBreak.Price.ToCurrencyFormat()</td>
-                                    <td>@Html.ActionLink("Delete", "Delete", "PriceBreak", new { id = priceBreak.Id }, new { @class = "btn btn-danger btn-mini pull-right", data_toggle = "fb-modal" })</td>
+                                    <td>@Html.ActionLink("Delete", "Delete", "PriceBreak", new { id = priceBreak.Id }, new { @class = "btn btn-danger btn-xs btn-default pull-right", data_toggle = "fb-modal" })</td>
                                 </tr>
                             }
 
@@ -79,10 +79,10 @@
                 </td>
                 <td>
                     <div class="btn-group">
-                        @Html.ActionLink("Edit", "Edit", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                        @Html.ActionLink("Edit", "Edit", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
                         @if (Model.Variants.Count > 1)
                         {
-                            @Html.ActionLink("Delete", "Delete", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                            @Html.ActionLink("Delete", "Delete", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-xs btn-default btn-danger", data_toggle = "fb-modal" })
                         }
                     </div>
                 </td>

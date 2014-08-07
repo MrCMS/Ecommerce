@@ -62,9 +62,9 @@
                                 <div class="pull-left">
                                     @if (item.PaymentStatus == PaymentStatus.Pending)
                                     {
-                                        @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                        @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
                                         <span></span>
-                                        @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                        @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
                                     }
                                 </div>
                             }
@@ -82,7 +82,7 @@
                                 <div class="pull-left">
                                     @if (item.ShippingStatus != ShippingStatus.Shipped)
                                     {
-                                        @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                        @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
                                     }
                                 </div>
                             }
@@ -98,7 +98,7 @@
                         </td>
                         <td>
                             <div class="btn-group">
-                                @Html.ActionLink("Details", "Edit", "Order", new { id = item.Id }, new { @class = "btn btn-mini" })
+                                @Html.ActionLink("Details", "Edit", "Order", new { id = item.Id }, new { @class = "btn btn-xs btn-default" })
                             </div>
                         </td>
                     </tr>

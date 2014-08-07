@@ -10,8 +10,8 @@
 {
     <fieldset>
         <legend>
-            <div class="row-fluid">
-                <div class="span12">
+            <div class="row">
+                <div class="col-lg-12">
                     <span class="btn-group  display-inline  pull-right margin-left-10">
                         @Html.ActionLink("Back to Listing Groups", "Index", "ListingGroup", null, new { @class = "btn" })
                     </span>
@@ -33,23 +33,23 @@
         </legend>
 
 
-        <div class="row-fluid">
-            <div class="span6">
+        <div class="row">
+            <div class="col-lg-6">
                 @Html.HiddenFor(x => x.Id)
                 @Html.LabelFor(x => x.Name)
-                @Html.TextBoxFor(x => x.Name, new { @class = "span12" })
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
             </div>
-            <div class="span6">
+            <div class="col-lg-6">
                 @Html.LabelFor(x => x.FulfillmentChannel)
                 @Html.DropDownListFor(x => x.FulfillmentChannel, Enum.GetValues(typeof(AmazonFulfillmentChannel))
                                                                      .OfType<AmazonFulfillmentChannel>().BuildSelectItemList(type => type.GetDescription(),
-                                                                                                                             type => type.ToString(), type => type == Model.FulfillmentChannel, "Choose Fulfillment Channel"), null, new { @class = "margin0 span12" })
+                                                                                                                             type => type.ToString(), type => type == Model.FulfillmentChannel, "Choose Fulfillment Channel"), null, new { @class = "margin0 col-lg-12" })
                 </div>
 
         </div>
         <hr />
-        <div class="row-fluid">
-            <div class="span12">
+        <div class="row">
+            <div class="col-lg-12">
                 @{ Html.RenderAction("Listings", Model.Id); }
             </div>
         </div>

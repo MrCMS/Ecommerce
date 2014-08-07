@@ -10,7 +10,7 @@
            
         </span>
     </legend>
-    <div class="row-fluid">
+    <div class="row">
         <ul>
             <li>Upload a CSV file with 3 fields
                 <ol>
@@ -41,12 +41,12 @@
                             break;
                         case "no-supplied-id":
                             <div class="alert alert-error">
-                                Row with Order Id missing! Please check CSV document.
+                                row with Order Id missing! Please check CSV document.
                             </div>
                             break;
                         default:
                             <span>
-                                Row with Order <strong>#@item.Key</strong> has the following errors:
+                                row with Order <strong>#@item.Key</strong> has the following errors:
                             </span>
                             <ul>
                                 @foreach (var error in item.Value)

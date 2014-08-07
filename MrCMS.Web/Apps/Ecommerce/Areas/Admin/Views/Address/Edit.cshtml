@@ -12,8 +12,8 @@
         @Html.HiddenFor(x => x.Id)
         
         <h4>Billing Address</h4>
-        <div class="row-fluid">
-            <div class="span6">
+        <div class="row">
+            <div class="col-lg-6">
                 @Html.LabelFor(x => x.BillingAddress.FirstName)
                 @Html.TextBoxFor(x => x.BillingAddress.FirstName)
 
@@ -31,7 +31,7 @@
 
 
             </div>
-            <div class="span6">
+            <div class="col-lg-6">
                 @Html.LabelFor(x => x.BillingAddress.Address1)
                 @Html.TextBoxFor(x => x.BillingAddress.Address1)
 
@@ -54,8 +54,8 @@
         </div>
         
         <h4>Shipping Address</h4>
-        <div class="row-fluid">
-            <div class="span6">
+        <div class="row">
+            <div class="col-lg-6">
                 @Html.LabelFor(x => x.ShippingAddress.FirstName)
                 @Html.TextBoxFor(x => x.ShippingAddress.FirstName)
 
@@ -73,7 +73,7 @@
 
 
             </div>
-            <div class="span6">
+            <div class="col-lg-6">
                 @Html.LabelFor(x => x.ShippingAddress.Address1)
                 @Html.TextBoxFor(x => x.ShippingAddress.Address1)
 

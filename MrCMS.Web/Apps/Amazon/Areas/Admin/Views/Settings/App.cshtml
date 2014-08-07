@@ -17,37 +17,37 @@
         
         @Html.HiddenFor(x => x.SiteId)
 
-        <div class="row-fluid">
-            <div class="span6">
+        <div class="row">
+            <div class="col-lg-6">
                 @Html.LabelFor(x => x.AWSAccessKeyId)
-                @Html.TextBoxFor(x => x.AWSAccessKeyId, new {@class = "span12"})
+                @Html.TextBoxFor(x => x.AWSAccessKeyId, new {@class = "form-control"})
                 @Html.ValidationMessageFor(x => x.AWSAccessKeyId)
 
                 @Html.LabelFor(x => x.SecretKey)
-                @Html.TextBoxFor(x => x.SecretKey, new {@class = "span12"})
+                @Html.TextBoxFor(x => x.SecretKey, new {@class = "form-control"})
                 @Html.ValidationMessageFor(x => x.SecretKey)
                 
             </div>       
-            <div class="span6">
+            <div class="col-lg-6">
                 
                 @Html.LabelFor(x => x.ApiEndpoint)
-                @Html.TextBoxFor(x => x.ApiEndpoint, new {@class = "span12"})
+                @Html.TextBoxFor(x => x.ApiEndpoint, new {@class = "form-control"})
                 @Html.ValidationMessageFor(x => x.ApiEndpoint)
                 
-                <div class="row-fluid">
-                    <div class="span4">
+                <div class="row">
+                    <div class="col-lg-4">
                         @Html.LabelFor(x => x.FeedsApiVersion)
-                        @Html.TextBoxFor(x => x.FeedsApiVersion, new {@class = "span12"})
+                        @Html.TextBoxFor(x => x.FeedsApiVersion, new {@class = "form-control"})
                         @Html.ValidationMessageFor(x => x.FeedsApiVersion)
                     </div>
-                    <div class="span4">
+                    <div class="col-lg-4">
                         @Html.LabelFor(x => x.OrdersApiVersion)
-                        @Html.TextBoxFor(x => x.OrdersApiVersion, new {@class = "span12"})
+                        @Html.TextBoxFor(x => x.OrdersApiVersion, new {@class = "form-control"})
                         @Html.ValidationMessageFor(x => x.OrdersApiVersion)
                     </div>
-                    <div class="span4">
+                    <div class="col-lg-4">
                         @Html.LabelFor(x => x.ProductsApiVersion)
-                        @Html.TextBoxFor(x => x.ProductsApiVersion, new {@class = "span12"})
+                        @Html.TextBoxFor(x => x.ProductsApiVersion, new {@class = "form-control"})
                         @Html.ValidationMessageFor(x => x.ProductsApiVersion)
                     </div>
                 </div>
@@ -57,34 +57,34 @@
             
         </div>
         
-         <div class="row-fluid">
-            <div class="span12">
+         <div class="row">
+            <div class="col-lg-12">
                 @Html.LabelFor(x => x.AmazonProductDetailsUrl)
-                @Html.TextBoxFor(x => x.AmazonProductDetailsUrl, new {@class = "span12"})
+                @Html.TextBoxFor(x => x.AmazonProductDetailsUrl, new {@class = "form-control"})
                 @Html.ValidationMessageFor(x => x.AmazonProductDetailsUrl)
             </div>
         </div>
         
-        <div class="row-fluid">
-            <div class="span12">
+        <div class="row">
+            <div class="col-lg-12">
                 @Html.LabelFor(x => x.AmazonOrderDetailsUrl)
-                @Html.TextBoxFor(x => x.AmazonOrderDetailsUrl, new {@class = "span12"})
+                @Html.TextBoxFor(x => x.AmazonOrderDetailsUrl, new {@class = "form-control"})
                 @Html.ValidationMessageFor(x => x.AmazonOrderDetailsUrl)
             </div>
         </div>
         
-        <div class="row-fluid">
-            <div class="span12">
+        <div class="row">
+            <div class="col-lg-12">
                 @Html.LabelFor(x => x.AmazonManageOrdersUrl)
-                @Html.TextBoxFor(x => x.AmazonManageOrdersUrl, new {@class = "span12"})
+                @Html.TextBoxFor(x => x.AmazonManageOrdersUrl, new {@class = "form-control"})
                 @Html.ValidationMessageFor(x => x.AmazonManageOrdersUrl)
             </div>
         </div>
         
-        <div class="row-fluid">
-             <div class="span12">
+        <div class="row">
+             <div class="col-lg-12">
                  @Html.LabelFor(x => x.AmazonManageInventoryUrl)
-                @Html.TextBoxFor(x => x.AmazonManageInventoryUrl, new {@class = "span12"})
+                @Html.TextBoxFor(x => x.AmazonManageInventoryUrl, new {@class = "form-control"})
                 @Html.ValidationMessageFor(x => x.AmazonManageInventoryUrl)
              </div>
         </div>

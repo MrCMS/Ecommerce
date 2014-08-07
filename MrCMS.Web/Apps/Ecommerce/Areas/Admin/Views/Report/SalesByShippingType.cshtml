@@ -9,8 +9,8 @@
 
 <fieldset>
     <legend>
-        <div class="row-fluid">
-            <div class="span12">
+        <div class="row">
+            <div class="col-lg-12">
                 Sales by shipping type
                 <span class="pull-right">
                     @using (Html.BeginForm("SalesByShippingType", "Report", new { id = "" }, FormMethod.Get))
@@ -25,14 +25,14 @@
         </div>
     </legend>
 
-    <div class="row-fluid">
-        <div class="span12">
+    <div class="row">
+        <div class="col-lg-12">
             <div id="chart"></div>
         </div>
     </div>
     <br />
-    <div class="row-fluid">
-        <div class="span6">
+    <div class="row">
+        <div class="col-lg-6">
             <div id="message"></div>
         </div>
     </div>

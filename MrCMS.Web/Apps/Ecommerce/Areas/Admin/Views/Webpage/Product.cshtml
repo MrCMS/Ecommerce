@@ -1,31 +1,31 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
-<div class="row-fluid">
-    <div class="span3">
+<div class="row">
+    <div class="col-lg-3">
         <div id="brands">
             @{Html.RenderAction("Brands", "Product", new { id = Model.Id, brandId = Model.Brand != null ? Model.Brand.Id.ToString() : String.Empty });}
         </div>
     </div>
-    <div class="span9">
+    <div class="col-lg-9">
         @Html.LabelFor(product => product.Abstract)
-        @Html.TextAreaFor(product => product.Abstract, new { rows = 4, @class = "span12" })
+        @Html.TextAreaFor(product => product.Abstract, new { rows = 4, @class = "form-control" })
     </div>
 </div>
 <hr />
-<div class="row-fluid">
-    <div class="span6">
+<div class="row">
+    <div class="col-lg-6">
         <h4>Prices and Variants</h4>
     </div>
-    <div class="span6">
+    <div class="col-lg-6">
         @{ Html.RenderAction("PricingButtons", "Product", new { id = Model.Id });}
     </div>
 </div>
 @{ Html.RenderAction("PricingInfo", "Product", new { id = Model.Id }); }
 <hr />
-<div class="row-fluid">
-    <div class="span6">
+<div class="row">
+    <div class="col-lg-6">
         @{Html.RenderAction("Categories", "Product", new { id = Model.Id });}
     </div>
-    <div class="span6">
+    <div class="col-lg-6">
         @{Html.RenderAction("Specifications", "Product", new { id = Model.Id });}
     </div>
 </div>

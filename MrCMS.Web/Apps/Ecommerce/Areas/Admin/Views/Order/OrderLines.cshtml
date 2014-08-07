@@ -2,8 +2,8 @@
 @model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
 <hr />
 <h4>Order Items</h4>
-<div class="row-fluid">
-    <div class="span12">
+<div class="row">
+    <div class="col-lg-12">
         @if (Model.OrderLines.Count == 0)
         {
             @:No lines.
@@ -77,8 +77,8 @@
                         <tr>
                             <td></td>
                             <td colspan="7">
-                                <div class="row-fluid">
-                                    <div class="span12">
+                                <div class="row">
+                                    <div class="col-lg-12">
                                         <h5 class="margin-bottom-5">This product is downloadable</h5>
                                         <table class="table table-condensed margin-bottom-5">
                                             <tr>
@@ -98,7 +98,7 @@
                                                 <td>@item.DownloadMaskedLink</td>
                                             </tr>
                                             <tr>
-                                                <td colspan="2">@Html.ActionLink("Edit", "Edit", "OrderLine", new { id = item.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })</td>
+                                                <td colspan="2">@Html.ActionLink("Edit", "Edit", "OrderLine", new { id = item.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })</td>
                                             </tr>
                                         </table>
                                     </div>
