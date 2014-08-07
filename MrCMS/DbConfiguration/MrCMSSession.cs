@@ -517,7 +517,7 @@ namespace MrCMS.DbConfiguration
                 EventInfo eventInfo = obj.GetEventInfo();
                 Added.Add(eventInfo);
                 eventInfo.PreTransactionHandled = true;
-                eventInfo.Publish(this, typeof (IOnAdding<>),
+                eventInfo.Publish(this, typeof(IOnAdding<>),
                     (info, ses, t) => info.GetTypedInfo(t).ToAddingArgs(ses, t));
             }
         }
@@ -530,7 +530,7 @@ namespace MrCMS.DbConfiguration
                 UpdatedEventInfo eventInfo = obj.GetUpdatedEventInfo(originalVersion);
                 Updated.Add(eventInfo);
                 eventInfo.PreTransactionHandled = true;
-                eventInfo.Publish(this, typeof (IOnUpdating<>),
+                eventInfo.Publish(this, typeof(IOnUpdating<>),
                     (info, ses, t) => info.GetTypedInfo(t).ToUpdatingArgs(ses, t));
             }
         }
@@ -579,7 +579,7 @@ namespace MrCMS.DbConfiguration
                 EventInfo eventInfo = obj.GetEventInfo();
                 Deleted.Add(eventInfo);
                 eventInfo.PreTransactionHandled = true;
-                eventInfo.Publish(this, typeof (IOnDeleting<>),
+                eventInfo.Publish(this, typeof(IOnDeleting<>),
                     (info, ses, t) => info.GetTypedInfo(t).ToDeletingArgs(ses, t));
             }
         }

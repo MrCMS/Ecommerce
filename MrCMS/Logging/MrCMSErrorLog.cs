@@ -6,11 +6,13 @@ using MrCMS.Entities.Multisite;
 using MrCMS.Website;
 using NHibernate;
 using MrCMS.Helpers;
+using System.Linq;
 
 namespace MrCMS.Logging
 {
-    public class MrCMSErrorLog : ErrorLog
+    public class MrCMSErrorLog : ErrorLog, IDisposable
     {
+        private ISession _session;
 
         public override string Name
         {
@@ -22,19 +24,15 @@ namespace MrCMS.Logging
 
         public MrCMSErrorLog(IDictionary config)
         {
-        }
-
-        private ISession GetSession()
-        {
-            return CurrentRequestData.DatabaseIsInstalled ? MrCMSApplication.Get<ISessionFactory>().OpenFilteredSession() : null;
+            if (CurrentRequestData.DatabaseIsInstalled)
+                _session = MrCMSApplication.Get<ISessionFactory>().OpenFilteredSession();
         }
 
         public override string Log(Error error)
         {
             var newGuid = Guid.NewGuid();
 
-            var session = GetSession();
-            if (session != null)
+            if (_session != null)
             {
                 var log = new Log
                               {
@@ -42,9 +40,9 @@ namespace MrCMS.Logging
                                   Guid = newGuid,
                                   Message = error.Message,
                                   Detail = error.Detail,
-                                  Site = session.Get<Site>(CurrentRequestData.CurrentSite.Id)
+                                  Site = _session.Get<Site>(CurrentRequestData.CurrentSite.Id)
                               };
-                session.Transact(ses => ses.Save(log));
+                _session.Transact(session => session.Save(log));
             }
 
             return newGuid.ToString();
@@ -57,9 +55,8 @@ namespace MrCMS.Logging
             if (pageSize < 0)
                 throw new ArgumentOutOfRangeException("pageSize", pageSize, null);
 
-            var session = GetSession();
             var errorLogEntries =
-                session.QueryOver<Log>()
+                _session.QueryOver<Log>()
                         .Where(entry => entry.Type == LogEntryType.Error)
                         .OrderBy(entry => entry.CreatedOn).Desc
                         .Paged(pageIndex + 1, pageSize);
@@ -83,12 +80,39 @@ namespace MrCMS.Logging
 
             try
             {
-                var session = GetSession();
-                var logEntry = session.QueryOver<Log>().Where(entry => entry.Guid == guid).Cacheable().SingleOrDefault();
+                var logEntry = _session.QueryOver<Log>().Where(entry => entry.Guid == guid).Cacheable().SingleOrDefault();
                 return new ErrorLogEntry(this, id, logEntry.Error);
             }
             finally
             {
+            }
+        }
+
+        private bool _disposed;
+        public void Dispose()
+        {
+            Dispose(true);
+
+            // Use SupressFinalize in case a subclass 
+            // of this type implements a finalizer.
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // If you need thread safety, use a lock around these  
+            // operations, as well as in your methods that use the resource. 
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    if (_session != null)
+                        _session.Dispose();
+                }
+
+                // Indicate that the instance has been disposed.
+                _session = null;
+                _disposed = true;
             }
         }
     }

@@ -36,7 +36,7 @@ namespace MrCMS.IoC
             Kernel.Bind(syntax => syntax.From(TypeHelper.GetAllMrCMSAssemblies()).SelectAllClasses()
                 .Where(
                     t =>
-                        !typeof(SiteSettingsBase).IsAssignableFrom(t) && !typeof(SystemSettingsBase).IsAssignableFrom(t) &&
+                        !typeof(SiteSettingsBase).IsAssignableFrom(t) &&
                         !typeof(IController).IsAssignableFrom(t) && !Kernel.GetBindings(t).Any())
                 .BindWith<NinjectServiceToInterfaceBinder>()
                 .Configure(onSyntax => onSyntax.InRequestScope()));
@@ -45,7 +45,7 @@ namespace MrCMS.IoC
                 var joinExcludeIncludeBindSyntax = syntax.From(TypeHelper.GetAllMrCMSAssemblies()).SelectAllClasses()
                     .Where(
                         t =>
-                            typeof(SiteSettingsBase).IsAssignableFrom(t) && !typeof(IController).IsAssignableFrom(t) && !Kernel.GetBindings(t).Any());
+                            typeof(SiteSettingsBase).IsAssignableFrom(t) && !Kernel.GetBindings(t).Any());
 
                 if (_forTest)
                 {
@@ -63,7 +63,7 @@ namespace MrCMS.IoC
                 var joinExcludeIncludeBindSyntax = syntax.From(TypeHelper.GetAllMrCMSAssemblies()).SelectAllClasses()
                     .Where(
                         t =>
-                            typeof(SystemSettingsBase).IsAssignableFrom(t) && !typeof(IController).IsAssignableFrom(t) && !Kernel.GetBindings(t).Any());
+                            typeof(SystemSettingsBase).IsAssignableFrom(t) && !Kernel.GetBindings(t).Any());
 
                 if (_forTest)
                 {

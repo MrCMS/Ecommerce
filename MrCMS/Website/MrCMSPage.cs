@@ -119,6 +119,7 @@ namespace MrCMS.Website
 
                     try
                     {
+
                         Html.RenderAction("Show", "Widget", new { widget });
                     }
                     catch (Exception ex)
