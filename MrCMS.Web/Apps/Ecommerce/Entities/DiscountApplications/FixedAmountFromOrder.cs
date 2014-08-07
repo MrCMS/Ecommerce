@@ -8,7 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications
     {
         public override decimal GetDiscount(CartModel cartModel)
         {
-            return DiscountAmount;
+            return cartModel.TotalPreDiscount <= DiscountAmount ? cartModel.TotalPreDiscount : DiscountAmount;
         }
 
         public override decimal GetDiscount(CartItem cartItem)
