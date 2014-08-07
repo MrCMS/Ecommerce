@@ -185,21 +185,21 @@ namespace MrCMS.EcommerceApp.Tests.Models
             canCheckout.Should().BeTrue();
         }
 
-        [Fact]
-        public void CartModel_CanCheckout_IfAnyItemsCannotBeBoughtThenReturnsFalse()
-        {
-            var cartItem1 = new CartItemBuilder().CanBuy().Build();
-            var cartItem2 = new CartItemBuilder().CanBuy().Build();
-            var cartItem3 = new CartItemBuilder().CannotBuy().Build();
-            var cartModel = new CartModel
-            {
-                Items = new List<CartItem> { cartItem1, cartItem2, cartItem3 },
-            };
+        //[Fact]
+        //public void CartModel_CanCheckout_IfAnyItemsCannotBeBoughtThenReturnsFalse()
+        //{
+        //    var cartItem1 = new CartItemBuilder().CanBuy().Build();
+        //    var cartItem2 = new CartItemBuilder().CanBuy().Build();
+        //    var cartItem3 = new CartItemBuilder().CannotBuy().Build();
+        //    var cartModel = new CartModel
+        //    {
+        //        Items = new List<CartItem> { cartItem1, cartItem2, cartItem3 },
+        //    };
 
-            var canCheckout = cartModel.CanCheckout;
+        //    var canCheckout = cartModel.CanCheckout;
 
-            canCheckout.Should().BeFalse();
-        }
+        //    canCheckout.Should().BeFalse();
+        //}
 
         [Fact]
         public void CartModel_CanCheckout_NoItemsShouldBeFalse()

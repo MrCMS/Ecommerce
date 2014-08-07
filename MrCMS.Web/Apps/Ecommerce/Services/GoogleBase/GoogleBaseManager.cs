@@ -37,7 +37,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
         public void SaveGoogleBaseProduct(GoogleBaseProduct item)
         {
             if (item.ProductVariant != null)
-                item.ProductVariant.GoogleBaseProduct = item;
+            {
+                item.ProductVariant.GoogleBaseProducts.Clear();
+                item.ProductVariant.GoogleBaseProducts.Add(item);
+            }
             _session.Transact(session => session.SaveOrUpdate(item));
         }
 
@@ -124,10 +127,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             xml.WriteCData(description);
             xml.WriteEndElement();
 
+            var googleBaseProduct = pv.GoogleBaseProducts.FirstOrDefault();
+
             //CONDITION
             xml.WriteElementString("g", "condition", ns,
-                                   pv.GoogleBaseProduct != null
-                                       ? pv.GoogleBaseProduct.Condition.ToString()
+                                   googleBaseProduct != null
+                                       ? googleBaseProduct.Condition.ToString()
                                        : ProductCondition.New.ToString());
 
             //PRICE
@@ -140,15 +145,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             xml.WriteElementString("g", "availability", ns, availability);
 
             //GOOGLE PRODUCT CATEGORY
-            if (pv.GoogleBaseProduct != null)
-                xml.WriteElementString("g", "google_product_category", ns, pv.GoogleBaseProduct.Category);
+            if (googleBaseProduct != null)
+                xml.WriteElementString("g", "google_product_category", ns, googleBaseProduct.Category);
 
             //PRODUCT CATEGORY
             if (pv.Product != null && pv.Product.Categories.Any() && !String.IsNullOrWhiteSpace(pv.Product.Categories.First().Name))
                 xml.WriteElementString("g", "product_type", ns, pv.Product.Categories.First().Name);
             else
-                if (pv.GoogleBaseProduct != null)
-                    xml.WriteElementString("g", "product_type", ns, pv.GoogleBaseProduct.Category);
+                if (googleBaseProduct != null)
+                    xml.WriteElementString("g", "product_type", ns, googleBaseProduct.Category);
 
             //IMAGES
             if (pv.Product != null && pv.Product.Images.Any() && !String.IsNullOrWhiteSpace(pv.Product.Images.First().FileUrl))
@@ -175,36 +180,36 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             if (!String.IsNullOrWhiteSpace(pv.ManufacturerPartNumber))
                 xml.WriteElementString("g", "mpn", ns, pv.ManufacturerPartNumber);
 
-            if (pv.GoogleBaseProduct != null)
+            if (googleBaseProduct != null)
             {
                 //GENDER
-                xml.WriteElementString("g", "gender", ns, pv.GoogleBaseProduct.Gender.ToString());
+                xml.WriteElementString("g", "gender", ns, googleBaseProduct.Gender.ToString());
 
                 //AGE GROUP
-                xml.WriteElementString("g", "age_group", ns, pv.GoogleBaseProduct.AgeGroup.ToString());
+                xml.WriteElementString("g", "age_group", ns, googleBaseProduct.AgeGroup.ToString());
             }
 
             //ITEM GROUP ID
             if (pv.Product != null)
                 xml.WriteElementString("g", "item_group_id", ns,pv.Product.Id.ToString(new CultureInfo("en-GB", false).NumberFormat));
 
-            if (pv.GoogleBaseProduct != null)
+            if (googleBaseProduct != null)
             {
                 //COLOR
-                if (!String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.Color))
-                    xml.WriteElementString("g", "color", ns, pv.GoogleBaseProduct.Color);
+                if (!String.IsNullOrWhiteSpace(googleBaseProduct.Color))
+                    xml.WriteElementString("g", "color", ns, googleBaseProduct.Color);
 
                 //SIZE
-                if (!String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.Size))
-                    xml.WriteElementString("g", "size", ns, pv.GoogleBaseProduct.Size);
+                if (!String.IsNullOrWhiteSpace(googleBaseProduct.Size))
+                    xml.WriteElementString("g", "size", ns, googleBaseProduct.Size);
 
                 //PATTERN
-                if (!String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.Pattern))
-                    xml.WriteElementString("g", "pattern", ns, pv.GoogleBaseProduct.Pattern);
+                if (!String.IsNullOrWhiteSpace(googleBaseProduct.Pattern))
+                    xml.WriteElementString("g", "pattern", ns, googleBaseProduct.Pattern);
 
                 //MATERIAL
-                if (!String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.Material))
-                    xml.WriteElementString("g", "material", ns, pv.GoogleBaseProduct.Material);
+                if (!String.IsNullOrWhiteSpace(googleBaseProduct.Material))
+                    xml.WriteElementString("g", "material", ns, googleBaseProduct.Material);
             }
 
             //SHIPPING
@@ -217,14 +222,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
                                                  "kg"));
 
             //ADWORDS
-            if (pv.GoogleBaseProduct != null)
+            if (googleBaseProduct != null)
             {
-                if (!String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.Grouping))
-                    xml.WriteElementString("g", "adwords_grouping", ns, pv.GoogleBaseProduct.Grouping);
-                if (!String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.Labels))
-                    xml.WriteElementString("g", "adwords_labels", ns, pv.GoogleBaseProduct.Labels);
-                if (!String.IsNullOrWhiteSpace(pv.GoogleBaseProduct.Redirect))
-                    xml.WriteElementString("g", "adwords_redirect", ns, pv.GoogleBaseProduct.Redirect);
+                if (!String.IsNullOrWhiteSpace(googleBaseProduct.Grouping))
+                    xml.WriteElementString("g", "adwords_grouping", ns, googleBaseProduct.Grouping);
+                if (!String.IsNullOrWhiteSpace(googleBaseProduct.Labels))
+                    xml.WriteElementString("g", "adwords_labels", ns, googleBaseProduct.Labels);
+                if (!String.IsNullOrWhiteSpace(googleBaseProduct.Redirect))
+                    xml.WriteElementString("g", "adwords_redirect", ns, googleBaseProduct.Redirect);
             }
 
             xml.WriteEndElement();

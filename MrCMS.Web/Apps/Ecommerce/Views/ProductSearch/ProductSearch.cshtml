@@ -13,7 +13,7 @@
         <div class="row" id="product-search-container">
             <div class="col-sm-3">
                 @{ RenderZone("Before Filters"); }
-                @{ Html.RenderPartial("Query", query);}
+                @{ Html.RenderAction("Query", "ProductSearch", new { query });}
                 @{ RenderZone("After Filters"); }
             </div>
             <div class="col-sm-9">

@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Website;
+using MrCMS.Website.Caching;
 using NHibernate;
 using MrCMS.Web.Apps.Ecommerce.Entities.Currencies;
 
