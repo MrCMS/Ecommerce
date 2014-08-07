@@ -21,10 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         {
             if (!productVariant.InStock)
                 return new OutOfStock(productVariant);
-            var requestedQuantity = additionalQuantity;
-            var existingItem = _cart.Items.FirstOrDefault(item => item.Item == productVariant);
-            if (existingItem != null)
-                requestedQuantity += existingItem.Quantity;
+            var requestedQuantity = GetRequestedQuantity(productVariant, additionalQuantity);
             if (productVariant.TrackingPolicy == TrackingPolicy.Track && requestedQuantity > productVariant.StockRemaining)
                 return new CannotOrderQuantity(productVariant, requestedQuantity);
             var restrictedShippingMethods =
@@ -33,6 +30,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             if (!_cart.AvailableShippingMethods.Except(restrictedShippingMethods).Any())
                 return new NoShippingMethodWouldBeAvailable(productVariant);
             return new CanBuy();
+        }
+
+        private int GetRequestedQuantity(ProductVariant productVariant, int additionalQuantity)
+        {
+            var requestedQuantity = additionalQuantity;
+            var existingItem = _cart.Items.FirstOrDefault(item => item.Item == productVariant);
+            if (existingItem != null)
+                requestedQuantity += existingItem.Quantity;
+            return requestedQuantity;
         }
     }
 }

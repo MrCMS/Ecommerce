@@ -1117,6 +1117,7 @@
     <Compile Include="Areas\Admin\ModelBinders\AddUserModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\AddWebpageModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\AddWidgetModelBinder.cs" />
+    <Compile Include="Areas\Admin\ModelBinders\AddWidgetPropertiesModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\EditUserModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\EditWebpageModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\FileSystemSettingsModelBinder.cs" />
