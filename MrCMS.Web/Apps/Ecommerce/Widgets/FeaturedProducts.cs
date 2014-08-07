@@ -1,10 +1,5 @@
-﻿using System;
+﻿using System.ComponentModel;
 using MrCMS.Entities.Widget;
-using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Pages;
-using System.Collections.Generic;
-using System.ComponentModel;
-using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Widgets
 {
@@ -12,38 +7,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Widgets
     {
         [DisplayName("Featured Products")]
         public virtual string ListOfFeaturedProducts { get; set; }
-
-        public override object GetModel(NHibernate.ISession session)
-        {
-            var model = new FeaturedProductsViewModel() { Title = Name, Products = new List<Product>() };
-            try
-            {
-                var rawValues = ListOfFeaturedProducts.Split(',');
-                foreach (var value in rawValues)
-                {
-                    var items = value.Split('/');
-                    var id = 0;
-
-                    if (!Int32.TryParse(items[0], out id) || id == 0) continue;
-
-                    var product = session.Get<Product>(id);
-                    if (product != null && product.Published)
-                        model.Products.Add(product);
-                }
-            }
-            catch (Exception)
-            {
-                model.Title = "Error during widget loading. Review widget settings in Administration.";
-            }
-            model.Cart = MrCMSApplication.Get<CartModel>();
-            return model;
-        }
-    }
-
-    public class FeaturedProductsViewModel
-    {
-        public IList<Product> Products { get; set; }
-        public string Title { get; set; }
-        public CartModel Cart { get; set; }
     }
 }

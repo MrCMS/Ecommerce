@@ -52,13 +52,8 @@ namespace MrCMS.Installation
 
             if (result.Success)
             {
-                var kernel = MrCMSApplication.Get<IKernel>();
-                IEnumerable<IBinding> bindings = new List<IBinding>();
                 try
                 {
-                    bindings = kernel.GetBindings(typeof(IEventContext));
-
-                    kernel.Rebind<IEventContext>().ToMethod(context => new InstallationEventContext());
                     var connectionString = CreateDatabase(model);
 
                     //save settings
@@ -88,22 +83,9 @@ namespace MrCMS.Installation
                 {
                     result.AddModelError("Setup failed: " + exception);
                 }
-                finally
-                {
-                    kernel.GetBindings(typeof(IEventContext)).ForEach(kernel.RemoveBinding);
-                    bindings.ForEach(kernel.AddBinding);
-                }
             }
 
             return result;
-        }
-
-        class InstallationEventContext : IEventContext
-        {
-            public void Publish<TEvent, TArgs>(TArgs args) where TEvent : IEvent<TArgs>
-            {
-
-            }
         }
 
         private string CreateDatabase(InstallModel model)
@@ -379,8 +361,16 @@ namespace MrCMS.Installation
             ISessionFactory sessionFactory = configurator.CreateSessionFactory();
             ISession session = sessionFactory.OpenFilteredSession();
             MrCMSApplication.Get<IKernel>().Rebind<ISession>().ToMethod(context => session);
-            var site = new Site { Name = model.SiteName, BaseUrl = model.SiteUrl };
-            session.Transact(s => s.Save(site));
+            var site = new Site { Name = model.SiteName, BaseUrl = model.SiteUrl,CreatedOn = DateTime.UtcNow,UpdatedOn = DateTime.UtcNow};
+            using (var statelessSession = sessionFactory.OpenStatelessSession())
+            {
+                using (var transaction = statelessSession.BeginTransaction())
+                {
+                    statelessSession.Insert(site);
+                    transaction.Commit();
+                }
+            }
+            CurrentRequestData.CurrentSite = site;
 
             MrCMSApp.InstallApps(session, model, site);
 

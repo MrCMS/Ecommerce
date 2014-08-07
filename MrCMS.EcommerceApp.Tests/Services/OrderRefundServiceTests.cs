@@ -25,8 +25,8 @@ namespace MrCMS.EcommerceApp.Tests.Services
             _orderRefundService.Add(orderRefund);
 
             A.CallTo(
-                () =>
-                    _eventContext.Publish<IOnOrderPartiallyRefunded, OrderPartiallyRefundedArgs>(
+                () => 
+                    EventContext.FakeEventContext.Publish<IOnOrderPartiallyRefunded, OrderPartiallyRefundedArgs>(
                         A<OrderPartiallyRefundedArgs>.That.Matches(args => args.Order == order))).MustHaveHappened();
         }
 
@@ -40,7 +40,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
 
             A.CallTo(
                 () =>
-                    _eventContext.Publish<IOnOrderFullyRefunded, OrderFullyRefundedArgs>(
+                   EventContext.FakeEventContext.Publish<IOnOrderFullyRefunded, OrderFullyRefundedArgs>(
                         A<OrderFullyRefundedArgs>.That.Matches(args => args.Order == order))).MustHaveHappened();
         }
     }

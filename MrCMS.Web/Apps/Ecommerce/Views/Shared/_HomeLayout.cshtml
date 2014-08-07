@@ -7,10 +7,10 @@
 }
 
 
-    <div class="welcome-con">
-        <div class="container">
-            <div class="margin-top-bottom-30">
-                @*<div class="row">
+<div class="welcome-con">
+    <div class="container">
+        <div class="margin-top-bottom-30">
+            @*<div class="row">
                     <div class="col-md-2 col-md-offset-5 col-sm-4 col-sm-offset-4 col-xs-8 col-xs-offset-2">
                         <a href="#" class="btn btn-default btn-block">
                             About my shop
@@ -18,32 +18,32 @@
                     </div>
                 </div>
                 <br />*@
-                <div class="row">
-                    <div class="col-md-10 col-md-offset-1 text-center col-sm-10 col-sm-offset-1">
-                        @RenderBody()
-                    </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1 text-center col-sm-10 col-sm-offset-1">
+                    @RenderBody()
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 
-@RenderZone("Home After Content")
+@{ RenderZone("Home After Content"); }
 
 <div class="margin-top-bottom-30">
     <div class="container">
         <div class="row">
             <div class="col-md-3 col-sm-3 col-xs-12">
-                @RenderZone("Teaser1")
+                @{RenderZone("Teaser1");}
             </div>
             <div class="col-md-3 col-sm-3 col-xs-12">
-                @RenderZone("Teaser2")
+                @{RenderZone("Teaser2");}
             </div>
             <div class="col-md-3 col-sm-3 col-xs-12">
-                @RenderZone("Teaser3")
+                @{RenderZone("Teaser3");}
             </div>
             <div class="col-md-3 col-sm-3 col-xs-12">
-                @RenderZone("Teaser4")
+                @{RenderZone("Teaser4");}
             </div>
         </div>
     </div>

@@ -15,33 +15,33 @@
             <div class="@(hasSpecifications ? "col-sm-6" : "col-sm-12")">
                 <div class="block-title">
                     <span>
-                        <img src="/Apps/Ecommerce/Content/Images/description.png" alt="Description"/>
+                        <img src="/Apps/Ecommerce/Content/Images/description.png" alt="Description" />
                     </span>
                     Full Description
                 </div>
                 @Editable(Model, product => product.BodyContent, true)
                 <div class="clearfix"></div>
-                @RenderZone("Below Product Description")
+                @{ RenderZone("Below Product Description"); }
             </div>
             @if (hasSpecifications)
             {
-                
+
                 <div class="col-sm-6">
                     <div class="block-title">
                         <span>
-                            <img src="/Apps/Ecommerce/Content/Images/specification.png" alt="Specifications"/>
+                            <img src="/Apps/Ecommerce/Content/Images/specification.png" alt="Specifications" />
                         </span>
                         Specifications
                     </div>
                     @{
-                        Html.RenderPartial("ProductSpecifications", Model);
+                Html.RenderPartial("ProductSpecifications", Model);
                     }
                 </div>
             }
         </div>
     </div>
 </div>
-@RenderZone("Below Product Information")
+@{ RenderZone("Below Product Information"); }
 @{
     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.history.js");
     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/product.js");

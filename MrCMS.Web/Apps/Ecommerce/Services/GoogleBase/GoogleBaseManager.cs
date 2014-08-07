@@ -135,7 +135,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
 
             //AVAILABILITY
             var availability = "In Stock";
-            if (pv.TrackingPolicy == TrackingPolicy.Track && pv.StockRemaining!=null && pv.StockRemaining <= 0)
+            if (pv.TrackingPolicy == TrackingPolicy.Track && pv.StockRemaining <= 0)
                 availability = "Out of Stock";
             xml.WriteElementString("g", "availability", ns, availability);
 

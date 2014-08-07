@@ -9,6 +9,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Products.Download.Rules;
 using System.Web.Mvc;
 using System.Linq;
+using MrCMS.Web.Areas.Admin.Services;
 using NHibernate;
 using MrCMS.Helpers;
 
@@ -42,9 +43,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products.Download
         private readonly ISession _session;
         private readonly IEnumerable<IDownloadOrderedFileValidationRule> _rules;
         private readonly IFileSystem _fileSystem;
-        private readonly ILogService _logService;
+        private readonly ILogAdminService _logService;
 
-        public DownloadOrderedFileService(ISession session, IEnumerable<IDownloadOrderedFileValidationRule> rules, IFileSystem fileSystem, ILogService logService)
+        public DownloadOrderedFileService(ISession session, IEnumerable<IDownloadOrderedFileValidationRule> rules, IFileSystem fileSystem, ILogAdminService logService)
         {
             _session = session;
             _rules = rules;
