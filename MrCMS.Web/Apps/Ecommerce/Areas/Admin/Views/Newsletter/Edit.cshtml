@@ -3,7 +3,7 @@
 @model Newsletter
 @{
     ViewBag.Title = "Edit Newsletter";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutWithoutWebTree.cshtml";
     var templates = ViewData["templates"] as IEnumerable<SelectListItem>;
     string previewUrl = Url.Action("Preview", "Newsletter", new { id = Model.Id });
 }
@@ -16,7 +16,7 @@
                 @Html.ActionLink("Return to List", "Index", "Newsletter", null, new { @class = "btn" })
                 <a href="@previewUrl" class=" btn btn-warning" data-toggle="fb-modal">Preview</a>
                 <a href="@Url.Action("Delete", "Newsletter", new { id = Model.Id })" class="btn btn-danger" data-toggle="fb-modal">Delete</a>
-                <input type="submit" value="Edit" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </span>
         </legend>
 
@@ -31,9 +31,6 @@
                 @Html.LabelFor(x => x.NewsletterTemplate.Id, Resource("Newsletter Template"))
                 @Html.DropDownListFor(x => x.NewsletterTemplate.Id, templates)
                 @Html.ValidationMessageFor(x => x.NewsletterTemplate)
-
-                <br />
-                <input type="submit" value="Save Details" class="btn btn-primary" />
 
                 <hr />
                 <div id="content-items">
