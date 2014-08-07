@@ -9,6 +9,8 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Website;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 {
@@ -69,9 +71,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         [Required]
         public virtual Country Country { get; set; }
 
-        public virtual IList<ProductVariant> ExcludedProductVariants
+        private HashSet<ProductVariant> _excludedProductVariants;
+        public virtual HashSet<ProductVariant> ExcludedProductVariants
         {
-            get { return ShippingMethod != null ? ShippingMethod.ExcludedProductVariants : new List<ProductVariant>(); }
+            get
+            {
+                return
+                    _excludedProductVariants =
+                        _excludedProductVariants ??
+                        new HashSet<ProductVariant>(
+                            MrCMSApplication.Get<ISession>()
+                                .QueryOver<ProductVariant>()
+                                .JoinQueryOver<ShippingMethod>(p => p.RestrictedShippingMethods)
+                                .Where(method => method.Id == ShippingMethod.Id).Cacheable().List());
+            }
         }
 
         public virtual decimal Tax
@@ -99,7 +112,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         {
             if (ShippingMethod == null)
                 return false;
-            if (model.Items.Any(item => ExcludedProductVariants.Contains(item.Item)))
+            var excludedProductVariants = new HashSet<ProductVariant>(ExcludedProductVariants);
+            if (model.Items.Any(item => excludedProductVariants.Contains(item.Item)))
                 return false;
             if (model.ShippingAddress != null && model.ShippingAddress.Country != Country)
                 return false;

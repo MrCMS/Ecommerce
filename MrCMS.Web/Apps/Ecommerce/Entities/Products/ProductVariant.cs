@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web.Mvc;
 using Foolproof;
 using MrCMS.Entities;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Helpers.Validation;
-using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
-using System.Linq;
-using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
-using MrCMS.Web.Apps.Ecommerce.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 {
@@ -28,12 +27,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             PriceBreaks = new List<PriceBreak>();
             RestrictedShippingMethods = new List<ShippingMethod>();
             RequiresShipping = true;
+            GoogleBaseProducts = new List<GoogleBaseProduct>();
         }
 
         public virtual decimal Weight { get; set; }
+
         [StringLength(400)]
         public virtual string Name { get; set; }
-        public virtual string EditUrl { get { return Product.EditUrl; } }
+
+        public virtual string EditUrl
+        {
+            get { return Product.EditUrl; }
+        }
 
         [Required]
         [DisplayName("Price")]
@@ -61,10 +66,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             get
             {
                 return PreviousPrice != null
-                           ? PreviousPrice.Value > PricePreTax
-                                 ? PreviousPrice.Value - PricePreTax
-                                 : 0
-                           : 0;
+                    ? PreviousPrice.Value > PricePreTax
+                        ? PreviousPrice.Value - PricePreTax
+                        : 0
+                    : 0;
             }
         }
 
@@ -73,8 +78,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             get
             {
                 return PreviousPrice != null && PreviousPrice != 0
-                           ? ReducedBy / PreviousPrice.Value
-                           : 0;
+                    ? ReducedBy / PreviousPrice.Value
+                    : 0;
             }
         }
 
@@ -89,61 +94,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             get { return TaxAwareProductPrice.GetPriceExcludingTax(BasePrice, TaxRate); }
         }
 
-        private PriceBreak GetPriceBreak(int quantity)
-        {
-            return PriceBreaks != null
-                       ? PriceBreaks.OrderBy(x => x.Price).FirstOrDefault(x => x.Quantity <= quantity)
-                       : null;
-        }
-
-        public virtual decimal GetPrice(int quantity)
-        {
-            return GetUnitPrice(quantity) * quantity;
-        }
-
-        public virtual decimal GetTax(int quantity)
-        {
-            return GetUnitTax(quantity) * quantity;
-        }
-
-        public virtual decimal GetUnitPrice(int quantity)
-        {
-            var priceBreak = GetPriceBreak(quantity);
-            return priceBreak != null
-                       ? priceBreak.PriceIncludingTax
-                       : Price;
-        }
-
-        public virtual decimal GetUnitTax(int quantity)
-        {
-            var priceBreak = GetPriceBreak(quantity);
-            return priceBreak != null
-                       ? priceBreak.Tax
-                       : Tax;
-        }
-
-        public virtual decimal GetUnitPricePreTax(int quantity)
-        {
-            return GetUnitPrice(quantity) - GetUnitTax(quantity);
-        }
-
-        public virtual decimal GetSaving(int quantity)
-        {
-            return PreviousPriceIncludingTax.GetValueOrDefault() != 0
-                       ? ((PreviousPriceIncludingTax * quantity) - GetPrice(quantity)).Value
-                       : (Price * quantity) - GetPrice(quantity);
-        }
-
         [Required]
         [Remote("IsUniqueSKU", "ProductVariant", AdditionalFields = "Id")]
         public virtual string SKU { get; set; }
 
-        public virtual decimal Tax { get { return TaxAwareProductPrice.GetTax(BasePrice, TaxRate); } }
-
-        public virtual bool CanBuy(int quantity)
+        public virtual decimal Tax
         {
-            return quantity > 0 && (TrackingPolicy == TrackingPolicy.DontTrack || StockRemaining >= quantity);
+            get { return TaxAwareProductPrice.GetTax(BasePrice, TaxRate); }
         }
+
+        //public virtual bool CanBuy(int quantity)
+        //{
+        //    return quantity > 0 && (TrackingPolicy == TrackingPolicy.DontTrack || StockRemaining >= quantity);
+        //}
 
         public virtual ProductAvailability Availability
         {
@@ -169,11 +132,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual Product Product { get; set; }
 
         public virtual IList<ProductOptionValue> OptionValues { get; set; }
-        public virtual IEnumerable<ProductOptionValue> AttributeValuesOrdered { get { return OptionValues.OrderBy(value => value.DisplayOrder); } }
+
+        public virtual IEnumerable<ProductOptionValue> AttributeValuesOrdered
+        {
+            get { return OptionValues.OrderBy(value => value.DisplayOrder); }
+        }
+
         public virtual IList<PriceBreak> PriceBreaks { get; set; }
 
         [StringLength(200)]
         public virtual string Barcode { get; set; }
+
         [DisplayName("Tracking Policy")]
         public virtual TrackingPolicy TrackingPolicy { get; set; }
 
@@ -190,10 +159,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             get
             {
                 return MrCMSApplication.Get<TaxSettings>().TaxesEnabled
-                           ? TaxRate == null
-                                 ? 0
-                                 : TaxRate.Percentage
-                           : 0;
+                    ? TaxRate == null
+                        ? 0
+                        : TaxRate.Percentage
+                    : 0;
             }
         }
 
@@ -218,28 +187,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                 return string.Join(" - ", list);
             }
         }
-        public virtual string GetSelectOptionName(bool showName = true, bool showOptionValues = true)
-        {
-            var title = string.Empty;
-            if (!string.IsNullOrWhiteSpace(Name) && showName)
-                title = Name + " - ";
-
-            if (OptionValues.Any() && showOptionValues)
-            {
-                title += string.Join(", ", AttributeValuesOrdered.Select(value => value.Value)) + " - ";
-            }
-
-            title += Price.ToCurrencyFormat();
-
-            return title;
-        }
 
         public virtual bool ShowPreviousPrice
         {
             get { return PreviousPrice.HasValue & PreviousPrice > Price; }
         }
 
-        public virtual GoogleBaseProduct GoogleBaseProduct { get; set; }
+        public virtual IList<GoogleBaseProduct> GoogleBaseProducts { get; set; }
 
         [DisplayName("Featured Image")]
         public virtual string FeaturedImageUrl { get; set; }
@@ -275,19 +229,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             get
             {
                 return !string.IsNullOrWhiteSpace(FeaturedImageUrl)
-                           ? FeaturedImageUrl
-                           : Product != null
-                                 ? Product.DisplayImageUrl
-                                 : MrCMSApplication.Get<EcommerceSettings>().DefaultNoProductImage;
+                    ? FeaturedImageUrl
+                    : Product != null
+                        ? Product.DisplayImageUrl
+                        : MrCMSApplication.Get<EcommerceSettings>().DefaultNoProductImage;
             }
         }
+
         public virtual IEnumerable<MediaFile> Images
         {
             get
             {
                 return Product != null
-                           ? (IEnumerable<MediaFile>)Product.Images.OrderByDescending(file => file.FileUrl == DisplayImageUrl)
-                           : new List<MediaFile>();
+                    ? (IEnumerable<MediaFile>)Product.Images.OrderByDescending(file => file.FileUrl == DisplayImageUrl)
+                    : new List<MediaFile>();
             }
         }
 
@@ -296,27 +251,73 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             get
             {
                 return Product == null
-                           ? string.Empty
-                           : string.Format("/{0}?variant={1}", Product.LiveUrlSegment, Id); 
+                    ? string.Empty
+                    : string.Format("/{0}?variant={1}", Product.LiveUrlSegment, Id);
             }
         }
 
         [DisplayName("Requires shipping?")]
         public virtual bool RequiresShipping { get; set; }
 
-        public virtual CanBuyStatus CanBuy(CartModel cart, int additionalQuantity = 0)
+        private PriceBreak GetPriceBreak(int quantity)
         {
-            if (!InStock)
-                return new OutOfStock(this);
-            var requestedQuantity = additionalQuantity;
-            var existingItem = cart.Items.FirstOrDefault(item => item.Item == this);
-            if (existingItem != null)
-                requestedQuantity += existingItem.Quantity;
-            if (TrackingPolicy == TrackingPolicy.Track && requestedQuantity > StockRemaining)
-                return new CannotOrderQuantity(this, requestedQuantity);
-            if (!cart.AvailableShippingMethods.Except(RestrictedShippingMethods).Any())
-                return new NoShippingMethodWouldBeAvailable(this);
-            return new CanBuy();
+            return PriceBreaks != null
+                ? PriceBreaks.OrderBy(x => x.Price).FirstOrDefault(x => x.Quantity <= quantity)
+                : null;
+        }
+
+        public virtual decimal GetPrice(int quantity)
+        {
+            return GetUnitPrice(quantity) * quantity;
+        }
+
+        public virtual decimal GetTax(int quantity)
+        {
+            return GetUnitTax(quantity) * quantity;
+        }
+
+        public virtual decimal GetUnitPrice(int quantity)
+        {
+            PriceBreak priceBreak = GetPriceBreak(quantity);
+            return priceBreak != null
+                ? priceBreak.PriceIncludingTax
+                : Price;
+        }
+
+        public virtual decimal GetUnitTax(int quantity)
+        {
+            PriceBreak priceBreak = GetPriceBreak(quantity);
+            return priceBreak != null
+                ? priceBreak.Tax
+                : Tax;
+        }
+
+        public virtual decimal GetUnitPricePreTax(int quantity)
+        {
+            return GetUnitPrice(quantity) - GetUnitTax(quantity);
+        }
+
+        public virtual decimal GetSaving(int quantity)
+        {
+            return PreviousPriceIncludingTax.GetValueOrDefault() != 0
+                ? ((PreviousPriceIncludingTax * quantity) - GetPrice(quantity)).Value
+                : (Price * quantity) - GetPrice(quantity);
+        }
+
+        public virtual string GetSelectOptionName(bool showName = true, bool showOptionValues = true)
+        {
+            string title = string.Empty;
+            if (!string.IsNullOrWhiteSpace(Name) && showName)
+                title = Name + " - ";
+
+            if (OptionValues.Any() && showOptionValues)
+            {
+                title += string.Join(", ", AttributeValuesOrdered.Select(value => value.Value)) + " - ";
+            }
+
+            title += Price.ToCurrencyFormat();
+
+            return title;
         }
     }
 
@@ -336,7 +337,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public override string Message
         {
-            get { return string.Format("You cannot order {0} as adding it to your cart would mean that there are no availble shipping methods", _variant.DisplayName); }
+            get
+            {
+                return
+                    string.Format(
+                        "You cannot order {0} as adding it to your cart would mean that there are no availble shipping methods",
+                        _variant.DisplayName);
+            }
         }
     }
 
@@ -381,8 +388,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
     public class CannotOrderQuantity : CanBuyStatus
     {
-        private readonly ProductVariant _variant;
         private readonly int _requestedQuantity;
+        private readonly ProductVariant _variant;
 
         public CannotOrderQuantity(ProductVariant variant, int requestedQuantity)
         {
@@ -400,7 +407,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             get
             {
                 return string.Format("Sorry, but there are currently only {0} units of {1} in stock",
-                                     _variant.StockRemaining, _variant.DisplayName);
+                    _variant.StockRemaining, _variant.DisplayName);
             }
         }
     }

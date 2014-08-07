@@ -5,7 +5,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 {
     public class PeopleWhoBoughtThisAlsoBoughtViewModel
     {
-        public IList<Product> Products { get; set; }
+        public PeopleWhoBoughtThisAlsoBoughtViewModel()
+        {
+            Products = new List<ProductCardModel>();
+        }
+        public List<ProductCardModel> Products { get; set; }
         public string Title { get; set; }
         public CartModel Cart { get; set; }
     }

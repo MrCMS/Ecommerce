@@ -12,16 +12,13 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
             mapping.Map(x => x.BasePrice).Scale(2);
             mapping.Map(x => x.PreviousPrice).Scale(2);
             mapping.HasMany(variant => variant.OptionValues).KeyColumn("ProductVariantId").Cascade.All();
-            mapping.HasOne(variant => variant.GoogleBaseProduct)
-                   .PropertyRef(product => product.ProductVariant)
-                   .Cascade.All().Fetch.Join();
             mapping.HasMany(variant => variant.PriceBreaks).Cascade.All();
 
             mapping.Map(variant => variant.SKU).Index("IX_ProductVariant_SKU");
 
             mapping.HasManyToMany(variant => variant.RestrictedShippingMethods)
                 .Table("Ecommerce_ProductVariantRestrictedShippingMethods")
-                .Not.Inverse();
+                .Not.Inverse().Cache.ReadWrite();
         }
     }
 }

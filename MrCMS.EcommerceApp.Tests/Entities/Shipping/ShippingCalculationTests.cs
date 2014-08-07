@@ -33,7 +33,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
         private readonly decimal? _price;
         private readonly decimal? _tax;
         private readonly TaxRate _taxRate;
-        private IList<ProductVariant> _productVariants;
+        private HashSet<ProductVariant> _productVariants = new HashSet<ProductVariant>();
 
         public TestableShippingCalculation(bool? canBeUsed = null, decimal? price = null, decimal taxRate = 0m, decimal? tax = null)
         {
@@ -63,14 +63,14 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Shipping
             return _price ?? base.GetPrice(model);
         }
 
-        public void SetExcludedProductVariants(IList<ProductVariant> productVariants)
+        public void SetExcludedProductVariants(IEnumerable<ProductVariant> productVariants)
         {
-            _productVariants = productVariants;
+            _productVariants = new HashSet<ProductVariant>(productVariants);
         }
 
-        public override IList<ProductVariant> ExcludedProductVariants
+        public override HashSet<ProductVariant> ExcludedProductVariants
         {
-            get { return _productVariants ?? base.ExcludedProductVariants; }
+            get { return _productVariants; }
         }
     }
 }

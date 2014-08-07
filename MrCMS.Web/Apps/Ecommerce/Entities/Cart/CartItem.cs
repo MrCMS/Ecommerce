@@ -2,7 +2,9 @@
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Services;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 {
@@ -36,7 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 
         public virtual bool CurrentlyAvailable
         {
-            get { return Item.CanBuy(Quantity); }
+            get { return Item.CanBuy(Quantity).OK; }
         }
 
         public virtual decimal PricePreTax
@@ -122,12 +124,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 
         public virtual bool CanBuy(CartModel cartModel)
         {
-            return Item.CanBuy(cartModel).OK;
+            return Item.CanBuy().OK;
         }
 
         public virtual string Error(CartModel cartModel)
         {
-            return Item.CanBuy(cartModel).Message;
+            return Item.CanBuy().Message;
         }
     }
 }

@@ -637,6 +637,9 @@
     <Compile Include="Apps\Ecommerce\Helpers\IUrlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\MrCMSEcommerceHtmlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\PolymorphicMappingHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\ProductExtensions.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\ProductSearchQueryExtensions.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\ProductVariantExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\RequestHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\UrlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
@@ -735,6 +738,7 @@
     <Compile Include="Apps\Ecommerce\Models\Process3DSecureDetailsResponse.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProcessDetailsResponse.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductAvailability.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ProductCardModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductCondition.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductOptionModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ProductPagedList.cs" />
@@ -865,8 +869,15 @@
     <Compile Include="Apps\Ecommerce\Services\GetNotWhatYouWereLookingForData.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetOn404SearchData.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetPeopleWhoBoughtThisModel.cs" />
+    <Compile Include="Apps\Ecommerce\Services\GetProductCardModel.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetRecentlyViewedItems.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetRelatedProducts.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IPeopleWhoBoughtThisService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IProductAddedToCartUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IRelatedProductsService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\PeopleWhoBoughtThisService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ProductAddedToCartUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\RelatedProductsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetSpendXMoreData.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetUserGuid.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetUserOrders.cs" />
@@ -874,6 +885,7 @@
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseTaxonomyData.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\IGoogleBaseManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\ICartValidationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IGetProductCardModel.cs" />
     <Compile Include="Apps\Ecommerce\Services\IGetUserGuid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductImportDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductVariantImportDataTransferObject.cs" />
@@ -929,6 +941,8 @@
     <Compile Include="Apps\Ecommerce\Services\Inventory\InventoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\IStockReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\StockReportService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IProductSearchQueryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IProductVariantAvailabilityService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\NewsletterBuilder\ContentItemService.cs" />
@@ -987,6 +1001,7 @@
     <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointRequestService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\PaypointResponseLogger.cs" />
     <Compile Include="Apps\Ecommerce\Services\Paypoint\ThreeDSecureException.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ProductSearchQueryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BackInStockNotificationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BrandService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\Download\DownloadOrderedFileService.cs" />
@@ -1005,6 +1020,7 @@
     <Compile Include="Apps\Ecommerce\Services\Products\ProductSearchIndexService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductVariantService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ProductVariantAvailabilityService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\ChartService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\IReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\ReportService.cs" />
@@ -1038,6 +1054,7 @@
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Wishlists\IWishlistUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Wishlists\WishlistUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Settings\EcommerceSearchCacheSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\GoogleBaseSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />

@@ -44,10 +44,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public CartModel BuildCart(Guid userGuid)
         {
-            var cartItems = GetItems(userGuid);
+            List<CartItem> cartItems = GetItems(userGuid);
             DeleteNullProducts(cartItems);
-
-            var cart = new CartModel
+            CartModel cart = new CartModel
             {
                 CartGuid = GetCartGuid(userGuid),
                 User = CurrentRequestData.CurrentUser,
@@ -61,10 +60,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 AnyStandardPaymentMethodsAvailable = _paymentMethodService.AnyStandardMethodsEnabled(),
                 PayPalExpressAvailable = _paymentMethodService.PayPalExpressCheckoutIsEnabled(),
                 PayPalExpressPayerId = GetPayPalExpressPayerId(userGuid),
-                PayPalExpressToken = GetPayPalExpressToken(userGuid),
+                PayPalExpressToken = GetPayPalExpressToken(userGuid)
             };
             cart.BillingAddressSameAsShippingAddress = cart.RequiresShipping &&
-                GetBillingAddressSameAsShippingAddress(userGuid);
+                                                           GetBillingAddressSameAsShippingAddress(userGuid);
             cart.BillingAddress = GetBillingAddress(userGuid, cart.RequiresShipping);
             var availablePaymentMethods = _paymentMethodService.GetAllAvailableMethods(cart);
             cart.AvailablePaymentMethods = availablePaymentMethods;
@@ -85,8 +84,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                                     (availablePaymentMethods.Count() == 1
                                         ? availablePaymentMethods.First().SystemName
                                         : null);
-            var paymentMethodInfo = _paymentMethodService.GetMethodForCart(paymentMethodName,cart);
-            
+            var paymentMethodInfo = _paymentMethodService.GetMethodForCart(paymentMethodName, cart);
+
             return paymentMethodInfo;
         }
 
@@ -158,9 +157,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private ShippingMethod GetShippingMethod(CartModel cart, Guid userGuid)
         {
             var id = _cartSessionManager.GetSessionValue<int>(CartManager.CurrentShippingMethodIdKey, userGuid);
-
-            return _session.Get<ShippingMethod>(id) ??
-                   _orderShippingService.GetDefaultShippingMethod(cart);
+            if (id > 0)
+            {
+                var shippingMethod = _session.Get<ShippingMethod>(id);
+                if (shippingMethod != null)
+                    return shippingMethod;
+            }
+            return _orderShippingService.GetDefaultShippingMethod(cart);
         }
 
         private string GetOrderEmail(Guid userGuid)
@@ -192,8 +195,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             var id = _cartSessionManager.GetSessionValue<int>(CartManager.CurrentCountryIdKey, userGuid);
 
-            return _session.Get<Country>(id) ??
-                   _session.QueryOver<Country>().Cacheable().Take(1).SingleOrDefault();
+            if (id > 0)
+            {
+                var country = _session.Get<Country>(id);
+                if (country != null)
+                    return country;
+            }
+            return _session.QueryOver<Country>().Cacheable().List().FirstOrDefault();
         }
     }
 }
