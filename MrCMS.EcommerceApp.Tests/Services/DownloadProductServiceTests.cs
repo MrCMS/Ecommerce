@@ -13,6 +13,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Products.Download;
 using MrCMS.Web.Apps.Ecommerce.Services.Products.Download.Rules;
+using MrCMS.Web.Areas.Admin.Services;
 using NHibernate;
 using Xunit;
 
@@ -29,7 +30,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
         {
             _fileSystem = A.Fake<IFileSystem>();
             _session = A.Fake<ISession>();
-            _downloadProductService = new DownloadOrderedFileService(_session, _rules, _fileSystem, A.Fake<ILogService>());
+            _downloadProductService = new DownloadOrderedFileService(_session, _rules, _fileSystem, A.Fake<ILogAdminService>());
         }
 
         [Fact]

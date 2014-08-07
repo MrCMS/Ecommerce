@@ -12,6 +12,7 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Areas.Admin.Services;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
 using MrCMS.Website.Filters;
@@ -23,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IBrandService _brandService;
         private readonly ICategoryService _categoryService;
         private readonly IDocumentService _documentService;
-        private readonly IFileService _fileService;
+        private readonly IFileAdminService _fileAdminService;
         private readonly IProductOptionManagementService _productOptionManagementService;
         private readonly IProductOptionManager _productOptionManager;
         private readonly IProductService _productService;
@@ -32,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         public ProductController(IProductService productService, IDocumentService documentService,
             ICategoryService categoryService,
-            IProductOptionManager productOptionManager, IFileService fileService, IBrandService brandService,
+            IProductOptionManager productOptionManager, IFileAdminService fileAdminService, IBrandService brandService,
             IProductOptionManagementService productOptionManagementService, SiteSettings siteSettings,
             IUniquePageService uniquePageService)
         {
@@ -40,7 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _documentService = documentService;
             _categoryService = categoryService;
             _productOptionManager = productOptionManager;
-            _fileService = fileService;
+            _fileAdminService = fileAdminService;
             _brandService = brandService;
             _productOptionManagementService = productOptionManagementService;
             _siteSettings = siteSettings;
@@ -279,7 +280,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             ViewBag.Product = product;
             List<ImageSortItem> sortItems =
-                _fileService.GetFiles(product.Gallery).OrderBy(arg => arg.display_order)
+                _fileAdminService.GetFiles(product.Gallery).OrderBy(arg => arg.display_order)
                     .Select(
                         arg => new ImageSortItem
                                {
@@ -298,7 +299,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ForceImmediateLuceneUpdate]
         public ActionResult SortImages(int productId, List<SortItem> items)
         {
-            _fileService.SetOrders(items);
+            _fileAdminService.SetOrders(items);
             return RedirectToAction("Edit", "Webpage", new { id = productId });
         }
 

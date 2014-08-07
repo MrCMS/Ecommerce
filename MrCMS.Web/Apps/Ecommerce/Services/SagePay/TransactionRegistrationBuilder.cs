@@ -1,4 +1,5 @@
-﻿using MrCMS.Web.Apps.Ecommerce.Models;
+﻿using MrCMS.Entities.Multisite;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.SagePay;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 
@@ -10,16 +11,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
         private readonly ISagePayItemCreator _sagePayItemCreator;
         private readonly EcommerceSettings _ecommerceSettings;
         private readonly ISagePayUrlResolver _sagePayUrlResolver;
+        private readonly Site _site;
 
         public TransactionRegistrationBuilder(SagePaySettings sagePaySettings,
                                               ISagePayItemCreator sagePayItemCreator,
                                               EcommerceSettings ecommerceSettings,
-                                              ISagePayUrlResolver sagePayUrlResolver)
+                                              ISagePayUrlResolver sagePayUrlResolver,
+            Site site)
         {
             _sagePaySettings = sagePaySettings;
             _sagePayItemCreator = sagePayItemCreator;
             _ecommerceSettings = ecommerceSettings;
             _sagePayUrlResolver = sagePayUrlResolver;
+            _site = site;
         }
 
         public TransactionRegistration BuildRegistration(CartModel cartModel)
@@ -55,7 +59,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                                                   DeliveryState = deliveryAddress.State,
                                                   DeliverySurname = deliveryAddress.Surname,
                                                   Description =
-                                                      string.Format("Order from {0}", _sagePaySettings.Site.Name),
+                                                      string.Format("Order from {0}", _site.Name),
                                                   NotificationUrl = _sagePayUrlResolver.BuildNotificationUrl(),
                                                   Profile = _sagePaySettings.PaymentFormProfileString,
                                                   TxType = "PAYMENT",
