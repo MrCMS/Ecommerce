@@ -124,7 +124,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                                                             return existingOrders.First();
                                                         }
 
-                                                        session.SaveOrUpdate(order);
+                                                        session.Save(order);
 
                                                         return order;
                                                     });

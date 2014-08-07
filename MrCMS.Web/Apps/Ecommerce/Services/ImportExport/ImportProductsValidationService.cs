@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
+using MrCMS.Models;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.Rules;
 using MrCMS.Website;
@@ -15,10 +17,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     public class ImportProductsValidationService : IImportProductsValidationService
     {
         private readonly IDocumentService _documentService;
+        private readonly IWebpageUrlService _urlService;
 
-        public ImportProductsValidationService(IDocumentService documentService)
+        public ImportProductsValidationService(IDocumentService documentService,IWebpageUrlService urlService)
         {
             _documentService = documentService;
+            _urlService = urlService;
         }
 
         /// <summary>
@@ -94,8 +98,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                         parseErrors.Add(handle, new List<string>());
 
                                     product.UrlSegment = worksheet.GetValue<string>(rowId, 1).HasValue()
-                                                             ? worksheet.GetValue<string>(rowId, 1)
-                                                             : _documentService.GetDocumentUrl(name, null);
+                                        ? worksheet.GetValue<string>(rowId, 1)
+                                        : _urlService.Suggest(null,
+                                            new SuggestParams
+                                            {
+                                                PageName = name,
+                                                DocumentType = typeof (Product).FullName
+                                            });
                                     //skip duplicate url
                                     if (productsToImport.Any(x => x.UrlSegment == product.UrlSegment))
                                         continue;

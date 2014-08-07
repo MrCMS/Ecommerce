@@ -26,10 +26,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.SagePay
     public class MrCMSSagePayUrlResolver : ISagePayUrlResolver
     {
         private readonly SagePaySettings _sagePaySettings;
+        private readonly Site _site;
 
-        public MrCMSSagePayUrlResolver(SagePaySettings sagePaySettings)
+        public MrCMSSagePayUrlResolver(SagePaySettings sagePaySettings,Site site)
         {
             _sagePaySettings = sagePaySettings;
+            _site = site;
         }
 
         public string BuildFailedTransactionUrl(string vendorTxCode)
@@ -53,7 +55,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.SagePay
         private string GetSchemeAndAuthority()
         {
             var scheme = _sagePaySettings.RequiresSSL ? "https://" : "http://";
-            var authority = _sagePaySettings.Site.BaseUrl;
+            var authority = _site.BaseUrl;
             if (authority.EndsWith("/"))
                 authority = authority.TrimEnd('/');
             return string.Format("{0}{1}", scheme, authority);

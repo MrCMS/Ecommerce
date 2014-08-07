@@ -1,37 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-using MrCMS.IoC;
+using FakeItEasy;
+using FakeItEasy.Core;
+using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Website;
 using Ninject;
 using Ninject.MockingKernel;
-using Ninject.Modules;
 
 namespace MrCMS.Web.Tests
 {
     public abstract class MrCMSTest : IDisposable
     {
+        protected TestableEventContext _eventContext = new TestableEventContext();
+        protected TestableEventContext EventContext { get { return _eventContext; } }
+
+        private readonly MockingKernel _kernel;
+
         protected MrCMSTest()
         {
-            var mockingKernel = new MockingKernel();
-            mockingKernel.Load(new TestContextModule());
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            _kernel = new MockingKernel();
+            Kernel.Load(new TestContextModule());
+            Kernel.Bind<IEventContext>().ToMethod(context => _eventContext);
+            MrCMSApplication.OverrideKernel(Kernel);
             CurrentRequestData.SiteSettings = new SiteSettings();
+        }
+
+        public IEnumerable<ICompletedFakeObjectCall> EventsRaised
+        {
+            get { return Fake.GetCalls(EventContext.FakeEventContext); }
+        }
+
+        public MockingKernel Kernel
+        {
+            get { return _kernel; }
         }
 
         public virtual void Dispose()
         {
-        }
-    }
-
-    public class TestContextModule : NinjectModule
-    {
-        public override void Load()
-        {
-            Kernel.Bind<HttpContextBase>().To<OutOfContext>().InThreadScope();
         }
     }
 }

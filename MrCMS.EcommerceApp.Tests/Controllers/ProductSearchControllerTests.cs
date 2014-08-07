@@ -11,7 +11,7 @@ using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Controllers
 {
-    public class ProductSearchControllerTests
+    public class ProductSearchControllerTests : InMemoryDatabaseTest
     {
         private readonly ProductSearchController _controller;
         private readonly IProductSearchIndexService _productSearchIndexService;
@@ -31,7 +31,7 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
 
         private ProductSearch GetProductSearch()
         {
-            return new ProductSearch { Layout = new Layout() };
+            return new ProductSearch();
         }
 
         [Fact]

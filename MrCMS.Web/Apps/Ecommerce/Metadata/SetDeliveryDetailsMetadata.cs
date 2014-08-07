@@ -21,6 +21,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
         public override bool RequiresParent { get { return true; } }
         public override bool AutoBlacklist { get { return true; } }
 
+        public override string DefaultLayoutName
+        {
+            get { return "Checkout Layout"; }
+        }
+
         public override string App
         {
             get { return "Ecommerce"; }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Events;
@@ -8,21 +9,27 @@ namespace MrCMS.Services
 {
     public class EventContext : IEventContext
     {
-        /// <summary>
-        /// Added to allow this to be used with DI. If preferred, it can still be injected as an IEventContext 
-        /// </summary>
         public static IEventContext Instance { get { return MrCMSApplication.Get<IEventContext>(); } }
 
-        private readonly IEnumerable<IEvent> _events;
+        private readonly HashSet<IEvent> _events;
 
         public EventContext(IEnumerable<IEvent> events)
         {
-            _events = events;
+            _events = events.ToHashSet();
         }
 
         public void Publish<TEvent, TArgs>(TArgs args) where TEvent : IEvent<TArgs>
         {
             _events.OfType<TEvent>().ForEach(obj => obj.Execute(args));
+        }
+
+        public void Publish(Type eventType, object args)
+        {
+            _events.Where(@eventType.IsInstanceOfType).ForEach(@event =>
+            {
+                var methodInfo = @event.GetType().GetMethod("Execute", new[] {args.GetType()});
+                methodInfo.Invoke(@event, new[] {args});
+            });
         }
     }
 }

@@ -18,7 +18,7 @@
                 @Html.DropDownListFor(x => x.CurrencyId, ViewData["currency-options"] as IEnumerable<SelectListItem>, new {@class = "span12"})
                 @Html.ValidationMessageFor(x => x.CurrencyId)
 
-                @Html.HiddenFor(settings => settings.Site.Id)
+                @Html.HiddenFor(settings => settings.SiteId)
 
                 @Html.LabelFor(x => x.SearchProductsPerPage)
                 @Html.TextBoxFor(x => x.SearchProductsPerPage, new {@class = "span12"})

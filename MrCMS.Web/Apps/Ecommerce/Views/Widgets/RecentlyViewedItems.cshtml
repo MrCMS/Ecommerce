@@ -1,5 +1,4 @@
-﻿@using System.Drawing
-@model List<MrCMS.Web.Apps.Ecommerce.Pages.Product>
+﻿@model List<MrCMS.Web.Apps.Ecommerce.Pages.Product>
 @if (Model != null && Model.Any())
 {
     <div class="block-title">
@@ -11,20 +10,11 @@
     {
         <div class="row">
             <div class="col-sm-3">
-                @RenderImage(item.DisplayImageUrl, null, null, new { @class = "img-responsive" })
+                @RenderImage(item.DisplayImageUrl, attributes: new { @class = "img-responsive" })
             </div>
             <div class="col-sm-9">
                 <a href="/@item.LiveUrlSegment">@item.Name</a>
             </div>
         </div>
     }
-    @*
-    <div class="row-fluid">
-        <ul class="media-list">
-            @foreach (var item in Model)
-            {
-                <li><a href="/@item.LiveUrlSegment">@item.Name</a></li>
-            }
-        </ul>
-    </div>*@
 }

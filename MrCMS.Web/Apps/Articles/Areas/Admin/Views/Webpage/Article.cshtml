@@ -6,6 +6,9 @@
 
 @Html.LabelFor(model => model.Abstract)
 @Html.TextAreaFor(model => model.Abstract, new { @rows = "4", @class = "span12" })
+<span id="abstract-character-count">
+    <span>@((160 - (Model.Abstract ?? string.Empty).Length) + " characters remaining")</span>
+</span>
 
 @Html.LabelFor(model => model.User.Id, "Author")
 @Html.DropDownListFor(model => model.User.Id, ViewData["users"] as IEnumerable<SelectListItem>)

@@ -31,7 +31,7 @@
                 </div>
                 <div class="hidden-sm">
                     <div class="navbar-collapse collapse">
-                        @RenderZone("Navigation")
+                        @{ RenderZone("Navigation"); }
                     </div>
                 </div>
             </div>
@@ -44,15 +44,15 @@
         <div class="row">
             <div class="col-md-2 col-sm-2 col-xs-4">
                 <div class="padding-top-bottom-9 logo">
-                    @RenderZone("Header Left")
+                    @{ RenderZone("Header Left"); }
                 </div>
             </div>
             <div class="col-md-5 col-md-offset-3 grey-border-right col-sm-7 col-xs-4 padding-l-r-0 hidden-xs">
-                @RenderZone("Header Middle")
+                @{ RenderZone("Header Middle"); }
             </div>
             <div class="col-md-2 text-right padding-left-0 col-sm-3 col-xs-8">
-                @RenderZone("Header Right")
-                @RenderZone("User Links")
+                @{ RenderZone("Header Right"); }
+                @{ RenderZone("User Links"); }
             </div>
         </div>
     </div>
@@ -92,9 +92,9 @@
         </div>
     </div>
 
-    @RenderZone("Before Content")
+    @{ RenderZone("Before Content"); }
     @RenderBody()
-    @RenderZone("After Content")
+    @{ RenderZone("After Content"); }
 
     <div class="margin-top-bottom-30">
         
@@ -118,16 +118,16 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3 col-sm-3 col-xs-12">
-                        @RenderZone("Footer")
+                        @{ RenderZone("Footer"); }
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-12">
-                        @RenderZone("Footer Area 2")
+                        @{ RenderZone("Footer Area 2"); }
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-12">
-                        @RenderZone("Footer Area 3")
+                        @{ RenderZone("Footer Area 3"); }
                     </div>
                     <div class="col-md-3 col-sm-3 col-xs-12">
-                        @RenderZone("Footer Area 4")
+                        @{ RenderZone("Footer Area 4"); }
                     </div>
                 </div>
             </div>

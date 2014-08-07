@@ -1,58 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
-using System.Xml;
-using Iesi.Collections.Generic;
-using MarketplaceWebServiceFeedsClasses;
-using MrCMS.Entities.Documents.Web;
 using System.Linq;
+using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
-using MrCMS.Web.Apps.Core.Pages;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Services;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
-using NHibernate;
-using UrlHelper = System.Web.Mvc.UrlHelper;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
-    public abstract class EcommerceSearchablePage : Webpage
-    {
-        public virtual Iesi.Collections.Generic.ISet<ProductSpecificationAttribute> HiddenSearchSpecifications { get; set; }
-
-        protected EcommerceSearchablePage()
-        {
-            HiddenSearchSpecifications = new HashedSet<ProductSpecificationAttribute>();
-        }
-    }
     public class Category : EcommerceSearchablePage
     {
+        private string _nestedName;
+
         public Category()
         {
             Products = new List<Product>();
         }
-
-        private string _nestedName;
 
         public virtual string NestedName
         {
             get { return _nestedName ?? (_nestedName = GetNestedName()); }
         }
 
-        private string GetNestedName()
-        {
-            var categories = ActivePages.TakeWhile(webpage => webpage.Unproxy() is Category).Reverse();
-
-            return string.Join(" > ", categories.Select(webpage => webpage.Name));
-        }
-
         public virtual IList<Product> Products { get; set; }
+
         public virtual string ContainerUrl
         {
             get { return (Parent as Webpage).LiveUrlSegment; }
@@ -65,7 +38,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         {
             get
             {
-                return (string.IsNullOrEmpty(FeatureImage) ? MrCMSApplication.Get<EcommerceSettings>().DefaultNoProductImage : FeatureImage);
+                return (string.IsNullOrEmpty(FeatureImage)
+                    ? MrCMSApplication.Get<EcommerceSettings>().DefaultNoProductImage
+                    : FeatureImage);
             }
         }
 
@@ -78,36 +53,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         [DisplayName("Default Product Search Sort")]
         public virtual ProductSearchSort? DefaultProductSearchSort { get; set; }
 
-        public override void AddCustomSitemapData(UrlHelper urlHelper, XmlNode url, XmlDocument xmlDocument)
+        private string GetNestedName()
         {
-            if (!string.IsNullOrEmpty(FeatureImage))
-            {
-                var image = url.AppendChild(xmlDocument.CreateElement("image:image"));
-                var imageLoc = image.AppendChild(xmlDocument.CreateElement("image:loc"));
-                imageLoc.InnerText = urlHelper.AbsoluteContent(FeatureImage);
-            }
-        }
+            IEnumerable<Webpage> categories = ActivePages.TakeWhile(webpage => webpage.Unproxy() is Category).Reverse();
 
-        public override void AdminViewData(ViewDataDictionary viewData, NHibernate.ISession session)
-        {
-            viewData["product-search-sort-options"] =
-                Enum.GetValues(typeof(ProductSearchSort))
-                    .Cast<ProductSearchSort>()
-                    .BuildSelectItemList(sort => sort.GetDescription(), sort => sort.ToString(),
-                                         sort => sort == DefaultProductSearchSort, emptyItemText: "System default");
-            base.AdminViewData(viewData, session);
-        }
-
-        public override void OnDeleting(ISession session)
-        {
-            if (this.Products.Count > 0)
-            {
-                foreach (var product in this.Products)
-                    product.Categories.Remove(this);
-
-                this.Products.Clear();
-            }
-            base.OnDeleting(session);
+            return string.Join(" > ", categories.Select(webpage => webpage.Name));
         }
     }
 }

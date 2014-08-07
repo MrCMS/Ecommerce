@@ -17,29 +17,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Tasks
     {
         private readonly Site _site;
         private readonly ISession _session;
+        private readonly IMessageParser<ProductBackInStockMessageTemplate, ProductVariant> _messageParser;
 
-        public BackInStockNotificationTask(Site site, ISession session)
+        public BackInStockNotificationTask(Site site, ISession session, IMessageParser<ProductBackInStockMessageTemplate, ProductVariant> messageParser)
         {
             _site = site;
             _session = session;
+            _messageParser = messageParser;
         }
 
         public override int Priority
         {
             get { throw new System.NotImplementedException(); }
         }
-        
+
 
         protected override void OnExecute()
         {
+            var backInStockProductVariants = _session.QueryOver<BackInStockProductVariant>().Where(variant => !variant.Processed).List();
+            if (!backInStockProductVariants.Any())
+                return;
+
             _session.Transact(session =>
             {
-                var backInStockProductVariants = session.QueryOver<BackInStockProductVariant>().Where(variant => !variant.Processed).List();
-                if (!backInStockProductVariants.Any())
-                    return;
-
-                var messageParser = new MessageParser<ProductBackInStockMessageTemplate, ProductVariant>(new MessageTemplateParser(MrCMSApplication.Get<IKernel>()), _site, session);
-
                 foreach (var inStockProductVariant in backInStockProductVariants)
                 {
                     BackInStockProductVariant variant = inStockProductVariant;
@@ -50,8 +50,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Tasks
 
                     foreach (var notificationRequest in notificationRequests)
                     {
-                        var queuedMessage = messageParser.GetMessage(variant.ProductVariant, toAddress: notificationRequest.Email);
-                        messageParser.QueueMessage(queuedMessage);
+                        var queuedMessage = _messageParser.GetMessage(variant.ProductVariant, toAddress: notificationRequest.Email);
+                        _messageParser.QueueMessage(queuedMessage);
                         notificationRequest.IsNotified = true;
                         session.Update(notificationRequest);
                     }
