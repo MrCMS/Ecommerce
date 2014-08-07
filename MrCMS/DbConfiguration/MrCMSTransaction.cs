@@ -40,6 +40,7 @@ namespace MrCMS.DbConfiguration
 
         public void Commit()
         {
+            HandlePreTransaction(_session);
             _transaction.Commit();
             HandlePostTransaction(_session);
         }
@@ -82,7 +83,7 @@ namespace MrCMS.DbConfiguration
                 if (obj.PostTransactionHandled)
                     return;
                 obj.PostTransactionHandled = true;
-                obj.Publish(session, typeof (IOnAdded<>), (info, ses, t) => info.GetTypedInfo(t).ToAddedArgs(ses, t));
+                Publish(obj, session, typeof(IOnAdded<>), (info, ses, t) => info.GetTypedInfo(t).ToAddedArgs(ses, t));
             });
             HashSet<UpdatedEventInfo> updatedEventInfos = session.Updated.ToHashSet();
             updatedEventInfos.ForEach(obj =>
@@ -90,7 +91,7 @@ namespace MrCMS.DbConfiguration
                 if (obj.PostTransactionHandled)
                     return;
                 obj.PostTransactionHandled = true;
-                obj.Publish(session, typeof (IOnUpdated<>), (info, ses, t) => info.GetTypedInfo(t).ToUpdatedArgs(ses, t));
+                Publish(obj, session, typeof(IOnUpdated<>), (info, ses, t) => info.GetTypedInfo(t).ToUpdatedArgs(ses, t));
             });
             HashSet<EventInfo> hashSet = session.Deleted.ToHashSet();
             hashSet.ForEach(obj =>
@@ -98,7 +99,57 @@ namespace MrCMS.DbConfiguration
                 if (obj.PostTransactionHandled)
                     return;
                 obj.PostTransactionHandled = true;
-                obj.Publish(session, typeof (IOnDeleted<>), (info, ses, t) => info.GetTypedInfo(t).ToDeletedArgs(ses, t));
+                Publish(obj, session, typeof(IOnDeleted<>), (info, ses, t) => info.GetTypedInfo(t).ToDeletedArgs(ses, t));
+            });
+        }
+
+        private static void Publish<T>(T onUpdatedArgs, ISession session, Type eventType,
+            Func<T, ISession, Type, object> getArgs)
+        {
+            Type type = onUpdatedArgs.GetType().GenericTypeArguments[0];
+
+            List<Type> types = GetEntityTypes(type).Reverse().ToList();
+
+            types.ForEach(
+                t => EventContext.Instance.Publish(eventType.MakeGenericType(t), getArgs(onUpdatedArgs, session, t)));
+        }
+
+        private static IEnumerable<Type> GetEntityTypes(Type type)
+        {
+            Type thisType = type;
+            while (thisType != null && thisType != typeof (SystemEntity))
+            {
+                yield return thisType;
+                thisType = thisType.BaseType;
+            }
+            yield return typeof (SystemEntity);
+        }
+
+        private static void HandlePreTransaction(MrCMSSession session)
+        {
+            HashSet<EventInfo> eventInfos = session.Added.ToHashSet();
+            eventInfos.ForEach(obj =>
+            {
+                if (obj.PreTransactionHandled)
+                    return;
+                obj.PreTransactionHandled = true;
+                Publish(obj, session, typeof(IOnAdding<>), (info, ses, t) => info.GetTypedInfo(t).ToAddingArgs(ses, t));
+            });
+            HashSet<UpdatedEventInfo> updatedEventInfos = session.Updated.ToHashSet();
+            updatedEventInfos.ForEach(obj =>
+            {
+                if (obj.PreTransactionHandled)
+                    return;
+                obj.PreTransactionHandled = true;
+                Publish(obj, session, typeof(IOnUpdating<>), (info, ses, t) => info.GetTypedInfo(t).ToUpdatingArgs(ses, t));
+            });
+            HashSet<EventInfo> hashSet = session.Deleted.ToHashSet();
+            hashSet.ForEach(obj =>
+            {
+                if (obj.PreTransactionHandled)
+                    return;
+                obj.PreTransactionHandled = true;
+                Publish(obj, session, typeof(IOnDeleting<>), (info, ses, t) => info.GetTypedInfo(t).ToDeletingArgs(ses, t));
             });
         }
     }
@@ -120,12 +171,12 @@ namespace MrCMS.DbConfiguration
         private static IEnumerable<Type> GetEntityTypes(Type type)
         {
             Type thisType = type;
-            while (thisType != null && thisType != typeof (SystemEntity))
+            while (thisType != null && thisType != typeof(SystemEntity))
             {
                 yield return thisType;
                 thisType = thisType.BaseType;
             }
-            yield return typeof (SystemEntity);
+            yield return typeof(SystemEntity);
         }
     }
 }
