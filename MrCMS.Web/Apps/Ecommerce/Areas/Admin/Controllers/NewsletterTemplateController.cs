@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder;
 using MrCMS.Web.Apps.Ecommerce.Services.NewsletterBuilder;
 using MrCMS.Website.Controllers;
@@ -30,8 +31,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectToRouteResult Add(NewsletterTemplate newsletterTemplate)
         {
             _newsletterTemplateService.Add(newsletterTemplate);
-
-            return RedirectToAction("Index");
+            TempData.SuccessMessages().Add("Template Added");
+            return RedirectToAction("Edit", new{id = newsletterTemplate.Id});
         }
 
         [HttpGet]
@@ -45,8 +46,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectToRouteResult Edit_POST(NewsletterTemplate newsletterTemplate)
         {
             _newsletterTemplateService.Edit(newsletterTemplate);
-
-            return RedirectToAction("Index");
+            TempData.SuccessMessages().Add("Template Edited");
+            return RedirectToAction("Edit", new { id = newsletterTemplate.Id });
         }
 
         [HttpGet]

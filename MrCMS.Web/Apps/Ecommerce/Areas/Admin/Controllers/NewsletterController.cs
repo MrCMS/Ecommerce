@@ -48,7 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _newsletterService.Add(newsletter);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit", new{id=newsletter.Id});
         }
 
         // Edit
@@ -68,7 +68,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _newsletterService.Edit(newsletter);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit", new { id = newsletter.Id });
         }
 
         // Delete

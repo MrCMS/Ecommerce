@@ -7,14 +7,14 @@
     @using (Html.BeginForm("SaveBillingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
     {
         <div class="row margin-bottom-10">
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 @if (otherAddresses != null && otherAddresses.Any())
                 {
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-sm-6 control-label">Use Existing Address :</label>
-                            <div class="col-sm-6">
-                                @Html.DropDownList("existing-addresses", otherAddresses, new{@class="form-control"})
+                            <label class="col-lg-3 control-label">Use Existing Address :</label>
+                            <div class="col-lg-9 col-sm-12">
+                                @Html.DropDownList("existing-addresses", otherAddresses, new { @class = "form-control" })
                             </div>
                         </div>
                     </div>

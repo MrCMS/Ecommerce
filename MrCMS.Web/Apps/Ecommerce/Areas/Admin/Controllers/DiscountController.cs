@@ -36,7 +36,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectToRouteResult Add_POST(Discount discount)
         {
             _discountManager.Add(discount);
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit", new {id = discount.Id});
         }
 
         [HttpGet]
@@ -52,8 +52,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             [IoCModelBinder(typeof(AddDiscountApplicationModelBinder))] DiscountApplication application)
         {
             _discountManager.Save(discount, limitation, application);
-
-            return RedirectToAction("Index");
+            
+            return RedirectToAction("Edit", new { id = discount.Id });
         }
 
         [HttpGet]
