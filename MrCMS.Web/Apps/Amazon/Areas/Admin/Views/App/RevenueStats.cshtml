@@ -1,50 +1,47 @@
 ﻿@model MrCMS.Web.Apps.Amazon.Models.AmazonDashboardModel
 
-         <div class="row">
-                <div class="col-lg-4">
-         
-                    <div class="dashboard-box">
-                        <div class="info">
-                            <div class="stats">
-                                @Model.NoOfOrders
-                            </div>
-                            <div class="stats-description">                           
-                                Orders
-                            </div>
-                        </div>        
-                    </div>
+<div class="row">
+    <div class="col-lg-4">
 
+        <div class="dashboard-box">
+            <div class="info">
+                <div class="stats">
+                    @Model.NoOfOrders
                 </div>
-
-                <div class="col-lg-4">
-                
-                
-                    <div class="dashboard-box">
-                        <div class="info">
-                            <div class="stats">
-                                @Model.NoOfUnshippedOrders
-                            </div>
-                            <div class="stats-description">                           
-                                <span>Unshipped Orders</span>
-                            </div>
-                        </div>              
-                    </div>
-                
-
-                </div>
-            
-                <div class="col-lg-4">
-         
-                    <div class="dashboard-box">
-                        <div class="info">
-                            <div class="stats">
-                                @Model.AverageOrderAmount.ToString("n2")
-                            </div>
-                            <div class="stats-description">                           
-                                <span>Avg Order Amount</span>
-                            </div>
-                        </div>           
-                    </div>
-
+                <div class="stats-description">
+                    Orders
                 </div>
             </div>
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="dashboard-box">
+            <div class="info">
+                <div class="stats">
+                    @Model.NoOfUnshippedOrders
+                </div>
+                <div class="stats-description">
+                    <span>Unshipped Orders</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="dashboard-box">
+            <div class="info">
+                <div class="stats">
+                    @Model.AverageOrderAmount.ToString("n2")
+                </div>
+                <div class="stats-description">
+                    <span>Avg Order Amount</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

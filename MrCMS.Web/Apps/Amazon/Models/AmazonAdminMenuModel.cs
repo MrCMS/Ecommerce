@@ -6,7 +6,7 @@ namespace MrCMS.Web.Apps.Amazon.Models
     public class AmazonAdminMenuModel : IAdminMenuItem
     {
         private SubMenu _children;
-        public string Text { get { return "e-Amazon"; } }
+        public string Text { get { return "Amazon"; } }
         public string Url { get; private set; }
         public bool CanShow { get { return true; } }
         public SubMenu Children
