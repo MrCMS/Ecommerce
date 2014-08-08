@@ -1,14 +1,15 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Settings
-@model List<MrCMS.Web.Apps.Ecommerce.Entities.Shipping.ShippingMethod>
+@model List<MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers.ShippingMethodInfo>
 @{
     ViewBag.Title = "Shipping Methods";
 }
-<form>
+@using (Html.BeginForm("Index", "ShippingMethod"))
+{
     <fieldset>
-        <legend>Shipping Methods
+        <legend>
+            Shipping Methods
             <span class="btn-group  display-inline  pull-right">
-                <a href="@Url.Action("Sort", "ShippingMethod")" class="btn"  data-toggle="fb-modal">Sort</a>
-                <a href="@Url.Action("Add", "ShippingMethod")" class="btn btn-primary"  data-toggle="fb-modal">Add Shipping Method</a>
+                <button type="submit" class="btn btn-primary">Update enabled methods</button>
             </span>
         </legend>
         @if (Model.Any())
@@ -16,15 +17,17 @@
             <table class="table table-condensed table-striped">
                 <thead>
                     <tr>
-                        <th>Name
+                        <th>
+                            Name
                         </th>
-                        <th>Description
+                        <th>
+                            Description
                         </th>
-                        @if (MrCMS.Website.MrCMSApplication.Get<TaxSettings>().ShippingRateTaxesEnabled)
-                        {
-                            <th>Tax Rate </th>
-                        }
-                        <th>Actions
+                        <th>
+                            Enabled?
+                        </th>
+                        <th>
+                            Actions
                         </th>
                     </tr>
                 </thead>
@@ -38,17 +41,14 @@
                             <td>
                                 @item.Description
                             </td>
-                            @if (MrCMS.Website.MrCMSApplication.Get<TaxSettings>().ShippingRateTaxesEnabled)
-                            {
-                                <td>
-                                    @item.TaxRateName
-                                </td>
-                            }
                             <td>
-                                <div class="btn-group">
-                                    @Html.ActionLink("Edit", "Edit", "ShippingMethod", new { id = item.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                                    @Html.ActionLink("Delete", "Delete", "ShippingMethod", new { id = item.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
-                                </div>
+                                @Html.CheckBox("method-" + item.Type, item.Enabled)
+                            </td>
+                            <td>
+                                @if (item.Configurable)
+                                {
+                                    <a href="@item.ConfigureUrl" target="_blank">Configure</a>
+                                }
                             </td>
                         </tr>
                     }
@@ -62,4 +62,4 @@
             </p>
         }
     </fieldset>
-</form>
+}

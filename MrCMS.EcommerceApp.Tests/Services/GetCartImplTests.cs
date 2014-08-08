@@ -21,22 +21,16 @@ namespace MrCMS.EcommerceApp.Tests.Services
     public class GetCartImplTests : InMemoryDatabaseTest
     {
         private readonly CartBuilder _cartBuilder;
-        private readonly ICartGuidResetter _cartGuidResetter;
-        private readonly ICartSessionManager _cartSessionManager;
         private readonly IGetUserGuid _getUserGuid;
-        private readonly IPaymentMethodService _paymentMethodService;
 
         public GetCartImplTests()
         {
             var currentUser = new User();
             Session.Transact(session => session.Save(currentUser));
             CurrentRequestData.CurrentUser = currentUser;
-            _paymentMethodService = A.Fake<IPaymentMethodService>();
-            _cartSessionManager = A.Fake<ICartSessionManager>();
             _getUserGuid = A.Fake<IGetUserGuid>();
-            _cartGuidResetter = A.Fake<ICartGuidResetter>();
-            _cartBuilder = new CartBuilder(Session, _getUserGuid, _paymentMethodService, _cartSessionManager,
-                _cartGuidResetter);
+            _cartBuilder = new CartBuilder(A.Fake<IAssignBasicCartInfo>(), A.Fake<IAssignCartDiscountInfo>(),
+                A.Fake<IAssignShippingInfo>(), A.Fake<IAssignPaymentInfo>(), _getUserGuid);
         }
 
         [Fact(Skip = "Refactoring")]

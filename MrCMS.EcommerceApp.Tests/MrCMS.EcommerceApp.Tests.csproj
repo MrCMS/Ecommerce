@@ -201,6 +201,8 @@
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateServiceTests.cs" />
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateValidationServiceTests.cs" />
     <Compile Include="Services\DownloadProductServiceTests.cs" />
+    <Compile Include="Services\GetDefaultTaxRateTests.cs" />
+    <Compile Include="Services\GetTaxRateOptionsTests.cs" />
     <Compile Include="Services\ImportExport\ExportProductsManagerTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductsServiceTests\CategoryBuilder.cs" />
     <Compile Include="Services\ImportExport\ImportProductsServiceTests\ImportProductsServiceBuilder.cs" />

@@ -7,10 +7,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models.Shipping
         }
 
         public static readonly ShippingAmount NoneAvailable = new ShippingAmount();
-        public static ShippingAmount Total(decimal amount)
+        public static ShippingAmount Amount(decimal amount)
         {
-            return new ShippingAmount { Amount = amount };
+            return new ShippingAmount { Value = amount };
         }
-        public decimal Amount { get; private set; }
+        public decimal Value { get; private set; }
     }
 }
