@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Settings;
@@ -7,6 +8,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Helpers.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Models.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
@@ -15,11 +17,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
     {
         private readonly ISession _session;
         private readonly UKCourierShippingSettings _ukCourierShippingSettings;
+        private readonly IGetDefaultTaxRate _getDefaultTaxRate;
 
-        public UKCourierShipping(ISession session, UKCourierShippingSettings ukCourierShippingSettings)
+        public UKCourierShipping(ISession session, UKCourierShippingSettings ukCourierShippingSettings, IGetDefaultTaxRate getDefaultTaxRate)
         {
             _session = session;
             _ukCourierShippingSettings = ukCourierShippingSettings;
+            _getDefaultTaxRate = getDefaultTaxRate;
         }
 
         public bool CanBeUsed(CartModel cart)
@@ -35,7 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             var calculation = GetBestAvailableCalculation(cart);
             return calculation == null
                 ? ShippingAmount.NoneAvailable
-                : ShippingAmount.Total(calculation.Amount(TaxRatePercentage));
+                : ShippingAmount.Amount(calculation.Amount(TaxRatePercentage));
         }
 
         public ShippingAmount GetShippingTax(CartModel cart)
@@ -43,7 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             var calculation = GetBestAvailableCalculation(cart);
             return calculation == null
                 ? ShippingAmount.NoneAvailable
-                : ShippingAmount.Total(calculation.Tax(TaxRatePercentage));
+                : ShippingAmount.Amount(calculation.Tax(TaxRatePercentage));
         }
 
         public string Name
@@ -61,14 +65,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             get
             {
                 var taxRateId = _ukCourierShippingSettings.TaxRateId;
-                var taxRate = taxRateId.HasValue
-                    ? _session.Get<TaxRate>(taxRateId)
-                    : null;
+                TaxRate taxRate = null;
+                if (taxRateId.HasValue)
+                {
+                    taxRate = _session.Get<TaxRate>(taxRateId);
+                }
+                if (taxRate == null)
+                {
+                    taxRate = _getDefaultTaxRate.Get();
+                }
                 return taxRate != null
                     ? taxRate.Percentage
                     : decimal.Zero;
             }
         }
+
+        public string ConfigureController { get { return "UKCourierShipping"; } }
+        public string ConfigureAction { get { return "Configure"; } }
 
         private UKCourierShippingCalculation GetBestAvailableCalculation(CartModel cart)
         {
@@ -87,6 +100,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             Name = "Courier Delivery";
         }
 
+        [Required]
         public string Name { get; set; }
         public string Description { get; set; }
         public int? TaxRateId { get; set; }

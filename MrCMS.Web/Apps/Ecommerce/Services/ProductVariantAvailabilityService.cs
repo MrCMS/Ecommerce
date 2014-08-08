@@ -24,12 +24,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             var requestedQuantity = GetRequestedQuantity(productVariant, additionalQuantity);
             if (productVariant.TrackingPolicy == TrackingPolicy.Track && requestedQuantity > productVariant.StockRemaining)
                 return new CannotOrderQuantity(productVariant, requestedQuantity);
-            throw new NotImplementedException();
             //var restrictedShippingMethods = _session.QueryOver<ShippingMethod>().JoinQueryOver<ProductVariant>(p => p.ExcludedProductVariants)
             //        .Where(c => c.Id == productVariant.Id).Cacheable().List();
             //if (!_cart.AvailableShippingMethods.Except(restrictedShippingMethods).Any())
             //    return new NoShippingMethodWouldBeAvailable(productVariant);
-            //return new CanBuy();
+            return new CanBuy();
         }
 
         private int GetRequestedQuantity(ProductVariant productVariant, int additionalQuantity)

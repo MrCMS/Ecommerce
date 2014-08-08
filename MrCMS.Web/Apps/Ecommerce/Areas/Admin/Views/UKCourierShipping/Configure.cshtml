@@ -1,0 +1,27 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Services.Shipping.UKCourierShippingSettings
+@{
+    ViewBag.Title = "UK Courier Shipping Settings";
+    var taxRateOptions = ViewData["tax-rate-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
+@using (Html.BeginForm("Configure", "UKCourierShipping", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            UK Courier Shipping Settings
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </span>
+        </legend>
+        @Html.LabelFor(settings => settings.Name)
+        @Html.TextBoxFor(settings => settings.Name)
+        @Html.ValidationMessageFor(settings => settings.Name)
+
+        @Html.LabelFor(settings => settings.Description)
+        @Html.TextBoxFor(settings => settings.Description)
+        @Html.ValidationMessageFor(settings => settings.Description)
+
+        @Html.LabelFor(settings => settings.Description)
+        @Html.DropDownListFor(settings => settings.TaxRateId, taxRateOptions)
+        @Html.ValidationMessageFor(settings => settings.Description)
+    </fieldset>
+}

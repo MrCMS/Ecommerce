@@ -18,21 +18,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class ProductVariantController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly IProductVariantService _productVariantService;
-        private readonly ITaxRateManager _taxRateManager;
+        private readonly IGetTaxRateOptions _getTaxRateOptions;
         private readonly IOptionService _optionService;
 
-        public ProductVariantController(IProductVariantService productVariantService, ITaxRateManager taxRateManager,
-            IOptionService optionService)
+        public ProductVariantController(IProductVariantService productVariantService,
+            IOptionService optionService, IGetTaxRateOptions getTaxRateOptions)
         {
             _productVariantService = productVariantService;
-            _taxRateManager = taxRateManager;
             _optionService = optionService;
+            _getTaxRateOptions = getTaxRateOptions;
         }
 
         [HttpGet]
         public PartialViewResult Add(Product product)
         {
-            ViewData["tax-rate-options"] = _taxRateManager.GetOptions();
+            ViewData["tax-rate-options"] = _getTaxRateOptions.GetOptions();
             ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
             var productVariant = new ProductVariant
                 {
@@ -59,7 +59,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult Edit(ProductVariant productVariant)
         {
             ModelState.Clear();
-            ViewData["tax-rate-options"] = _taxRateManager.GetOptions(productVariant.TaxRate);
+            ViewData["tax-rate-options"] = _getTaxRateOptions.GetOptions(productVariant.TaxRate);
             ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
             return PartialView(productVariant);
         }

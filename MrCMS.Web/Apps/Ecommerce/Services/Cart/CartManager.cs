@@ -21,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             "current.billing-address-same-as-shipping-address";
 
         public const string CurrentBillingAddressKey = "current.billing-address";
-        public const string CurrentShippingMethodIdKey = "current.shipping-method-id";
+        public const string CurrentShippingMethodTypeKey = "current.shipping-method-type";
         public const string CurrentOrderEmailKey = "current.order-email";
         public const string CurrentDiscountCodeKey = "current.discount-code";
         public const string CurrentPaymentMethodKey = "current.payment-method";
@@ -52,7 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 yield return CurrentShippingAddressKey;
                 yield return CurrentBillingAddressSameAsShippingAddressKey;
                 yield return CurrentBillingAddressKey;
-                yield return CurrentShippingMethodIdKey;
+                yield return CurrentShippingMethodTypeKey;
                 yield return CurrentOrderEmailKey;
                 yield return CurrentDiscountCodeKey;
                 yield return CurrentPaymentMethodKey;

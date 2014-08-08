@@ -11,5 +11,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         string Name { get; }
         string Description { get; }
         decimal TaxRatePercentage { get; }
+        
+        string ConfigureAction { get; }
+        string ConfigureController { get; }
     }
 }

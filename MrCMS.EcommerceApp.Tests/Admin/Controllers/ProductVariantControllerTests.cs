@@ -4,6 +4,7 @@ using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
@@ -16,15 +17,16 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
     {
         private readonly ProductVariantController _productVariantController;
         private readonly IProductVariantService _productVariantService;
-        private readonly ITaxRateManager _taxRateManager;
+        private readonly IGetTaxRateOptions _getTaxRateOptions;
         private readonly IOptionService _optionService;
 
         public ProductVariantControllerTests()
         {
             _productVariantService = A.Fake<IProductVariantService>();
-            _taxRateManager = A.Fake<ITaxRateManager>();
+            _getTaxRateOptions = A.Fake<IGetTaxRateOptions>();
             _optionService = A.Fake<IOptionService>();
-            _productVariantController = new ProductVariantController(_productVariantService, _taxRateManager, _optionService);
+            _productVariantController = new ProductVariantController(_productVariantService, _optionService,
+                _getTaxRateOptions);
         }
 
         [Fact]
@@ -50,7 +52,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var product = new Product();
             var selectListItems = new List<SelectListItem>();
-            A.CallTo(() => _taxRateManager.GetOptions(null)).Returns(selectListItems);
+            A.CallTo(() => _getTaxRateOptions.GetOptions((int?)null)).Returns(selectListItems);
             var add = _productVariantController.Add(product);
 
             add.ViewData["tax-rate-options"].Should().Be(selectListItems);
@@ -99,7 +101,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var productVariant = GetNewProductVariant();
             var selectListItems = new List<SelectListItem>();
-            A.CallTo(() => _taxRateManager.GetOptions(null)).Returns(selectListItems);
+            A.CallTo(() => _getTaxRateOptions.GetOptions((TaxRate)null)).Returns(selectListItems);
             var add = _productVariantController.Edit(productVariant);
 
             add.ViewData["tax-rate-options"].Should().Be(selectListItems);
@@ -171,7 +173,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             var productVariant = GetNewProductVariant();
 
             var delete = _productVariantController.Delete_POST(productVariant);
-            
+
             delete.RouteValues["action"].Should().Be("Edit");
             delete.RouteValues["controller"].Should().Be("Webpage");
             delete.RouteValues["id"].Should().Be(123);
