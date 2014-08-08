@@ -252,9 +252,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
             //PAYMENT AND SHIPPING METHODS
             p = frame1.AddParagraph();
-            p.AddText("Payment method: " + order.PaymentMethod);
+            p.AddText(string.Format("Payment method: {0}", order.PaymentMethod));
             p = frame2.AddParagraph();
-            p.AddText("Shipping method: " + (order.ShippingMethod != null ? order.ShippingMethod.Name : "Not set"));
+            p.AddText(string.Format("Shipping method: {0}", order.ShippingMethodName));
         }
 
         private Table SetTableStyle(ref Section section, Color tableColor)

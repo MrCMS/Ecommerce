@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
@@ -16,15 +15,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly CartModel _cart;
         private readonly IOrderShippingService _orderShippingService;
         private readonly ICartManager _cartManager;
-        private readonly IDocumentService _documentService;
         private readonly IUniquePageService _uniquePageService;
 
-        public SetDeliveryDetailsController(CartModel cart, IOrderShippingService orderShippingService, ICartManager cartManager, IDocumentService documentService, IUniquePageService uniquePageService)
+        public SetDeliveryDetailsController(CartModel cart, IOrderShippingService orderShippingService, ICartManager cartManager, IUniquePageService uniquePageService)
         {
             _cart = cart;
             _orderShippingService = orderShippingService;
             _cartManager = cartManager;
-            _documentService = documentService;
             _uniquePageService = uniquePageService;
         }
 
@@ -43,27 +40,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public PartialViewResult DeliveryAddress()
         {
-            Address shippingAddress = null;
-            var shippingMethod = _cart.ShippingMethod;
-            var country = _cart.Country;
-            if (shippingMethod != null && country != null)
-            {
-                shippingAddress = _cart.ShippingAddress ?? new Address { Country = country };
-            }
+            Address shippingAddress = _cart.ShippingAddress ?? new Address();
             ViewData["other-addresses"] = _orderShippingService.ExistingAddressOptions(_cart, shippingAddress);
             return PartialView(shippingAddress);
-        }
-
-        [HttpPost]
-        public void SetShipping(ShippingCalculation shippingCalculation)
-        {
-            _cartManager.SetShippingInfo(shippingCalculation);
         }
 
         public ActionResult SetAddress(Address address)
         {
             _cartManager.SetShippingAddress(address);
-            return Redirect(UniquePageHelper.GetUrl<PaymentDetails>());
+            return _uniquePageService.RedirectTo<PaymentDetails>();
         }
     }
 }

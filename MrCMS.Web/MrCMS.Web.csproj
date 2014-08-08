@@ -506,8 +506,6 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\RegionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ReportController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\SagePaySettingsController.cs" />
-    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingCalculationController.cs" />
-    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingMethodController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\StockController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\TaxRateController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\WorldPaySettingsController.cs" />
@@ -578,7 +576,6 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductSpecificationAttributeOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductVariantOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\SessionDataOverride.cs" />
-    <Compile Include="Apps\Ecommerce\DbConfiguration\ShippingMethodOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\TableNameConvention.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceApp.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceInstallation.cs" />
@@ -624,7 +621,8 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\WishlistItem.cs" />
     <Compile Include="Apps\Ecommerce\Entities\SessionData.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingCalculation.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Shipping\UKCourierShippingCalculation.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Shipping\UKFirstClassShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Tax\TaxRate.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Templating\NotificationTemplateSettings.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Users\Address.cs" />
@@ -637,10 +635,13 @@
     <Compile Include="Apps\Ecommerce\Helpers\IUrlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\MrCMSEcommerceHtmlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\PolymorphicMappingHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\Pricing\ProductPricingExtensions.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\Pricing\ShippingPricingExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ProductExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ProductSearchQueryExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ProductVariantExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\RequestHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\Shipping\StandardShippingCalculationExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\UrlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchCreatedOnDefinition.cs" />
@@ -750,10 +751,9 @@
     <Compile Include="Apps\Ecommerce\Models\RegisterModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\RelatedProductsViewModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ShippingStatus.cs" />
+    <Compile Include="Apps\Ecommerce\Models\Shipping\ShippingAmount.cs" />
     <Compile Include="Apps\Ecommerce\Models\SpendXMoreModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\StrictKeyEqualityComparer.cs" />
-    <Compile Include="Apps\Ecommerce\Models\TaxAwareProductPrice.cs" />
-    <Compile Include="Apps\Ecommerce\Models\TaxAwareShippingRate.cs" />
     <Compile Include="Apps\Ecommerce\Models\TrackingPolicy.cs" />
     <Compile Include="Apps\Ecommerce\Models\UserAccountOrdersModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ValidationResult.cs" />
@@ -876,6 +876,10 @@
     <Compile Include="Apps\Ecommerce\Services\IProductAddedToCartUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IRelatedProductsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\PeopleWhoBoughtThisService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Pricing\IProductPricingService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Pricing\IShippingPricingService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Pricing\ProductPricingService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Pricing\ShippingPricingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductAddedToCartUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\RelatedProductsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetSpendXMoreData.cs" />
@@ -1044,10 +1048,10 @@
     <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionRegistrationBuilder.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionRegistrationResponse.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingCalculationManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingMethodManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Shipping\ShippingCalculationManager.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Shipping\ShippingMethodManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Shipping\IStandardShippingCalculation.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Shipping\UKCourierShipping.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Shipping\UKFirstClassShipping.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\ITaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\TaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
@@ -1057,6 +1061,7 @@
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSearchCacheSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\GoogleBaseSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Settings\Shipping\UKFirstClassShippingSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
     <Compile Include="Apps\Ecommerce\Tasks\BackInStockNotificationTask.cs" />
     <Compile Include="Apps\Ecommerce\Tasks\ClearExpiredSessionDataTask.cs" />

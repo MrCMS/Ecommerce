@@ -20,7 +20,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                                               details.PayerInfo.PayerID);
 
             _cartManager.SetBillingAddress(details.BillingAddress.GetAddress());
-            _cartManager.SetCountry(details.BillingAddress.GetCountry());
 
             var paymentDetails = details.PaymentDetails.FirstOrDefault();
             if (paymentDetails != null)
