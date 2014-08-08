@@ -1,14 +1,15 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationValue
-@{ 
+@{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
     var product = ViewData["product"] as Product;
     var specificationAttributes = ViewData["specification-attributes"] as IEnumerable<SelectListItem> ?? new List<SelectListItem>();
     var specificationAttributesOptions = ViewData["specification-attributes-options"] as IEnumerable<SelectListItem> ?? new List<SelectListItem>();
 }
 <fieldset>
-    <legend>Add Specifications to Product
+    <legend>
+        Add Specifications to Product
         <span class="btn-group  display-inline  pull-right">
             <button id="close" class="btn-primary btn">Save & Close</button>
         </span>
@@ -18,16 +19,19 @@
         @Html.Hidden("ProductId", Model.Product.Id)
         @if (specificationAttributes.Any())
         {
-            @Html.DropDownList("Option", specificationAttributes)
-            <br />
-            @Html.DropDownListFor(x => x.Value, specificationAttributesOptions)
+            <div class="form-group">
+                @Html.DropDownList("Option", specificationAttributes, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.DropDownListFor(x => x.Value, specificationAttributesOptions, new { @class = "form-control" })
+            </div>
             var dc = "none";
             if (specificationAttributesOptions.Count() == 1)
             {
                 dc = "block";
             }
-            <div id="other" style="display: @dc">
-                <input type="text" class="input-medium" id="new-option-value" placeholder="New option value" />
+            <div id="other" style="display: @dc" class="form-group">
+                <input type="text" class="form-control" id="new-option-value" placeholder="New option value" />
             </div>
         }
         else

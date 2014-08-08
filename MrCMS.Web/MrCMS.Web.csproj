@@ -2767,7 +2767,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\AddSpecification.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Brands.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Categories.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\DownloadTemplate.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Images.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ManageOptions.cshtml" />
@@ -2784,7 +2783,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortSpecifications.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\SortVariants.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Specifications.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\Thumbnails.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ViewCategories.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Region\Delete.cshtml" />
@@ -2983,6 +2981,8 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="Service References\PayPoint\SECCardService.wsdl" />
+    <Content Include="Themes\Default\Apps\Core\Views\Shared\_BaseLayout.cshtml" />
+    <Content Include="Themes\Default\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Amazon\Controllers\" />
@@ -2990,7 +2990,6 @@
     <Folder Include="Apps\Core\Entities\" />
     <Folder Include="Apps\Core\Settings\" />
     <Folder Include="Apps\Core\Tasks\" />
-    <Folder Include="Apps\Ecommerce\Areas\Admin\Views\Shared\" />
     <Folder Include="Apps\Ecommerce\Content\Scripts\charts\" />
     <Folder Include="Apps\Ecommerce\Queries\" />
     <Folder Include="Apps\Ecommerce\Views\PaymentMethod\" />
@@ -3006,9 +3005,7 @@
     <Folder Include="Apps\Galleries\Views\Widgets\" />
     <Folder Include="Apps\Galleries\Widgets\" />
     <Folder Include="Themes\Default\Apps\Core\Views\Pages\" />
-    <Folder Include="Themes\Default\Apps\Core\Views\Shared\" />
     <Folder Include="Themes\Default\Content\" />
-    <Folder Include="Themes\Default\Shared\" />
     <Folder Include="Themes\Default\Views\Pages\" />
     <Folder Include="Themes\Default\Views\Widgets\" />
   </ItemGroup>

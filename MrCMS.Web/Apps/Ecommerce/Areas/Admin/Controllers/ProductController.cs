@@ -270,11 +270,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return PartialView(product);
         }
 
-        public ActionResult Thumbnails()
-        {
-            return PartialView();
-        }
-
         [HttpGet]
         public ActionResult SortImages(Product product)
         {

@@ -4,35 +4,25 @@
 }
 
 <fieldset>
-        <legend>Google Base Integration
-            <span class="btn-group  display-inline  pull-right">
-                <a href="@Url.Action("ExportProductsToGoogleBase", "GoogleBase")" class="btn btn-primary">Export Products</a>
-            </span>
-        </legend>
-    
-        @if (!string.IsNullOrWhiteSpace(Model.Status))
-        {
-            <div class="row">
-                <span class="alert alert-info">@Html.Encode(Model.Status)</span>
-                <div class="clearfix"></div>
-            </div>
-            <div class="clearfix"></div>
-            <hr/>
-        }
-    <div class="row">
-            <div class="col-lg-12">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#search" data-toggle="tab">Search & Edit Products</a></li>
-                <li><a href="#settings" data-toggle="tab">Settings</a></li>
-            </ul>
-    </div>
+    <legend>
+        Google Base Integration
+        <span class="btn-group  display-inline  pull-right">
+            <a href="@Url.Action("ExportProductsToGoogleBase", "GoogleBase")" class="btn btn-primary">Export Products</a>
+        </span>
+    </legend>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Status))
+    {
+        <span class="alert alert-info">@Html.Encode(Model.Status)</span>
+        <hr />
+    }
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#search" data-toggle="tab">Search & Edit Products</a></li>
+        <li><a href="#settings" data-toggle="tab">Settings</a></li>
+    </ul>
+    <div class="tab-content">
+        @{Html.RenderPartial("GoogleBaseSearch", Model); }
+        @{Html.RenderPartial("GoogleBaseSettings", ViewData["settings"] as MrCMS.Web.Apps.Ecommerce.Settings.GoogleBaseSettings);}
     </div>
 
-    <div class="row">
-                <div class="tab-content">
-                @{Html.RenderPartial("GoogleBaseSearch", Model); }
-                @{Html.RenderPartial("GoogleBaseSettings", ViewData["settings"] as MrCMS.Web.Apps.Ecommerce.Settings.GoogleBaseSettings);}
-            </div>
-    </div>
- 
 </fieldset>

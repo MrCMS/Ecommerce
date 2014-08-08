@@ -1,7 +1,7 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @model MrCMS.Paging.IPagedList<Category>
-@{ 
+@{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
     var product = ViewData["product"] as Product;
 }
@@ -13,13 +13,11 @@
             <button id="close" class="btn-primary btn">Close</button>
         </span>
     </legend>
-
-    <input autocomplete="off" class="search-query col-lg-2" id="searchparam" name="searchparam" placeholder="Search" type="text" />
-    <br /><br />
-    <div class="modal-body-container">
-        @Html.Hidden("productId",product!=null?product.Id:0)
-        @{Html.RenderPartial("AddCategoryCategories",Model);}
+    <div class="form-group">
+        <input autocomplete="off" class="search-query form-control" id="searchparam" name="searchparam" placeholder="Search" type="text" />
     </div>
+    @Html.Hidden("productId", product != null ? product.Id : 0)
+    @{Html.RenderPartial("AddCategoryCategories", Model);}
 </fieldset>
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/async-paging.js"); }
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/product-categories.js"); }

@@ -7,7 +7,7 @@
     <fieldset>
         <legend>Countries
             <span class="btn-group  display-inline  pull-right">
-                @Html.ActionLink("Sort", "Sort", null, new { @class = "btn", data_toggle = "fb-modal" })
+                @Html.ActionLink("Sort", "Sort", null, new { @class = "btn btn-default", data_toggle = "fb-modal" })
                 @Html.ActionLink("Add", "Add", null, new { @class = "btn btn-primary", data_toggle = "fb-modal" })
             </span>
         </legend>
@@ -29,13 +29,10 @@
                                 @country.Name
                                 @if (country.Regions.Any())
                                 {
-
-                                    <h5>Regions</h5>
-
-                                    <table class="table table-condensed table-striped">
+                                    <table class="table table-condensed table-striped padding-left-10">
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
+                                                <th>Region</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -48,7 +45,7 @@
                                                     <td>
                                                         <div class="btn-group">
                                                             @Html.ActionLink("Edit", "Edit", "Region", new {id = region.Id}, new {@class = "btn btn-xs btn-default", data_toggle = "fb-modal"})
-                                                            @Html.ActionLink("Delete", "Delete", "Region", new {id = region.Id}, new {@class = "btn btn-xs btn-default btn-danger", data_toggle = "fb-modal"})
+                                                            @Html.ActionLink("Delete", "Delete", "Region", new {id = region.Id}, new {@class = "btn btn-xs btn-danger", data_toggle = "fb-modal"})
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -61,8 +58,8 @@
                             <td>
                                 <div class="btn-group">
                                     @Html.ActionLink("Edit", "Edit", "Country", new {id = country.Id}, new {@class = "btn btn-xs btn-default", data_toggle = "fb-modal"})
-                                    @Html.ActionLink("Delete", "Delete", "Country", new {id = country.Id}, new {@class = "btn btn-xs btn-default btn-danger", data_toggle = "fb-modal"})
-                                    @Html.ActionLink("Add Region", "Add", "Region", new { id = country.Id }, new { @class = "btn btn-xs btn-default btn-success", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Delete", "Delete", "Country", new {id = country.Id}, new {@class = "btn btn-xs btn-danger", data_toggle = "fb-modal"})
+                                    @Html.ActionLink("Add Region", "Add", "Region", new { id = country.Id }, new { @class = "btn btn-xs btn-success", data_toggle = "fb-modal" })
                                 </div>
                             </td>
                         </tr>

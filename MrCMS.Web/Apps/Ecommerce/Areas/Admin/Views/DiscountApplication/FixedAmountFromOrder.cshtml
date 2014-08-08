@@ -1,4 +1,6 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications.FixedAmountFromOrder
 
+<div class="form-group">
 @Html.LabelFor(x => x.DiscountAmount)
-@Html.EditorFor(x => x.DiscountAmount)
+@Html.TextBoxFor(x => x.DiscountAmount, new{@class="form-control"})
+</div>

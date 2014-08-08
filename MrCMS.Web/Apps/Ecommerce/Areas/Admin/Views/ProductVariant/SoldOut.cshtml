@@ -1,9 +1,12 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 <div id="sold-out" class="tab-pane">
-    <label class="checkbox">@Html.CheckBox("SoldOut", Model.SoldOut) Sold Out?</label>
-    <div id="sold-out-message" @(Model.SoldOut?Html.Raw("style='display:block'"):Html.Raw("style='display:none'"))>
-        <br/>
-        @Html.LabelFor(x => x.SoldOutMessage)
-        @Html.TextAreaFor(x => x.SoldOutMessage,new {@class="col-lg-12"})       
+    <div class="checkbox-inline">
+        <label class="checkbox">@Html.CheckBox("SoldOut", Model.SoldOut) Sold Out?</label>
+    </div>
+    <div id="sold-out-message" @(Model.SoldOut ? Html.Raw("style='display:block'") : Html.Raw("style='display:none'"))>
+        <div class="form-group">
+            @Html.LabelFor(x => x.SoldOutMessage)
+            @Html.TextAreaFor(x => x.SoldOutMessage, new { @class = "form-control" })
+        </div>
     </div>
 </div>

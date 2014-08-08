@@ -1,4 +1,5 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations.ItemIsInCategory
-
-@Html.LabelFor(x => x.CategoryId)
-@Html.EditorFor(x => x.CategoryId)
+<div class="form-group">
+    @Html.LabelFor(x => x.CategoryId)
+    @Html.TextBoxFor(x => x.CategoryId, new { @class = "form-control" })
+</div>

@@ -1,75 +1,97 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 <div id="details" class="tab-pane active">
-    <div class="row">
-        @Html.HiddenFor(variant => variant.Product.Id)
+
+    @Html.HiddenFor(variant => variant.Product.Id)
+    <div class="form-group">
         @Html.LabelFor(variant => variant.Name)
         @Html.TextBoxFor(variant => variant.Name, new { @class = "form-control" })
     </div>
-    <div class="row">
-        @for (var index = 0; index < Model.Product.Options.Count; index++)
-        {
 
-            var option = Model.Product.Options[index];
+    @for (var index = 0; index < Model.Product.Options.Count; index++)
+    {
 
+        var option = Model.Product.Options[index];
+        <div class="form-group">
             @Html.LabelFor(variant => variant.OptionValues[index].Value, option.Name)
-            @Html.TextBoxFor(variant => variant.OptionValues[index].Value, new { @class = "col-lg-12 required" })
+            @Html.TextBoxFor(variant => variant.OptionValues[index].Value, new { @class = "form-control required" })
             @Html.Hidden("OptionValues[" + index + "].Id", Model.OptionValues[index].Id)
             @Html.Hidden("OptionValues[" + index + "].ProductOption.Id", option.Id.ToString())
-                
-        }
-    </div>
+        </div>
+    }
     <div class="row">
-        <div class="col-lg-6">
-            @Html.LabelFor(variant => variant.BasePrice)
-            @Html.EditorFor(variant => variant.BasePrice)
-            @Html.ValidationMessageFor(variant => variant.BasePrice)
+        <div class="col-xs-6">
+            <div class="form-group">
+                @Html.LabelFor(variant => variant.Barcode)
+                @Html.TextBoxFor(variant => variant.Barcode, new { @class = "form-control" })
+            </div>
         </div>
-        <div class="col-lg-6">
-            @Html.LabelFor(variant => variant.PreviousPrice)
-            @Html.EditorFor(variant => variant.PreviousPrice)
-            @Html.ValidationMessageFor(variant => variant.PreviousPrice)
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6">
-            @Html.LabelFor(variant => variant.SKU)
-            @Html.TextBoxFor(variant => variant.SKU, new { @class = "form-control" })
-            @Html.ValidationMessageFor(variant => variant.SKU)
-        </div>
-        <div class="col-lg-6">
-            <table style="width: 100%;">
-                <tr>
-                    <td class="col-lg-6">@Html.LabelFor(variant => variant.Barcode)
-                        @Html.TextBoxFor(variant => variant.Barcode, new { @class = "form-control" })</td>
-                    <td class="col-lg-6">@Html.LabelFor(variant => variant.ManufacturerPartNumber)
-                        @Html.TextBoxFor(variant => variant.ManufacturerPartNumber, new { @class = "form-control" })</td>
-                </tr>
-            </table>
+        <div class="col-xs-6">
+            <div class="form-group">
+                @Html.LabelFor(variant => variant.ManufacturerPartNumber)
+                @Html.TextBoxFor(variant => variant.ManufacturerPartNumber, new { @class = "form-control" })
+            </div>
         </div>
     </div>
+    
     <div class="row">
-        <div class="col-lg-6">
-            @Html.LabelFor(variant => variant.StockRemaining)
-            @Html.TextBoxFor(variant => variant.StockRemaining, new { @class = "form-control" })
-            @Html.ValidationMessageFor(variant => variant.StockRemaining)
+        <div class="col-xs-6">
+            <div class="form-group">
+                @Html.LabelFor(variant => variant.SKU)
+                @Html.TextBoxFor(variant => variant.SKU, new { @class = "form-control" })
+                @Html.ValidationMessageFor(variant => variant.SKU)
+            </div>
         </div>
-        <div class="col-lg-6">
-            @Html.LabelFor(product => product.TrackingPolicy)
-            @Html.DropDownListFor(product => product.TrackingPolicy, ViewData["tracking-policy"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+        <div class="col-xs-6">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        @Html.LabelFor(variant => variant.BasePrice)
+                        @Html.TextBoxFor(variant => variant.BasePrice, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(variant => variant.BasePrice)
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        @Html.LabelFor(variant => variant.PreviousPrice)
+                        @Html.TextBoxFor(variant => variant.PreviousPrice, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(variant => variant.PreviousPrice)
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-6">
-            @Html.LabelFor(variant => variant.Weight)
-            @Html.TextBoxFor(variant => variant.Weight, new { @class = "form-control" })
-            @Html.ValidationMessageFor(variant => variant.Weight)
+        <div class="col-xs-6">
+            <div class="form-group">
+                @Html.LabelFor(variant => variant.StockRemaining)
+                @Html.TextBoxFor(variant => variant.StockRemaining, new { @class = "form-control" })
+                @Html.ValidationMessageFor(variant => variant.StockRemaining)
+            </div>
         </div>
-        <div class="col-lg-6">
-            @if (MrCMS.Website.MrCMSApplication.Get<MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings>().TaxesEnabled)
-            {
-                @Html.LabelFor(product => product.TaxRate.Id, "Tax Rate")
-                @Html.DropDownListFor(product => product.TaxRate.Id, ViewData["tax-rate-options"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
-            }
+        <div class="col-xs-6">
+            <div class="form-group">
+                @Html.LabelFor(product => product.TrackingPolicy)
+                @Html.DropDownListFor(product => product.TrackingPolicy, ViewData["tracking-policy"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                @Html.LabelFor(variant => variant.Weight)
+                @Html.TextBoxFor(variant => variant.Weight, new { @class = "form-control" })
+                @Html.ValidationMessageFor(variant => variant.Weight)
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                @if (MrCMS.Website.MrCMSApplication.Get<MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings>().TaxesEnabled)
+                {
+                    @Html.LabelFor(product => product.TaxRate.Id, "Tax Rate")
+                    @Html.DropDownListFor(product => product.TaxRate.Id, ViewData["tax-rate-options"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                }
+            </div>
         </div>
     </div>
 
