@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
+using MrCMS.Entities.Documents;
 using MrCMS.Entities.Documents.Layout;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Widget;
@@ -6,6 +9,7 @@ using MrCMS.Helpers;
 using MrCMS.Models;
 using MrCMS.Services;
 using NHibernate;
+using NHibernate.Criterion;
 using NHibernate.Transform;
 
 namespace MrCMS.Web.Areas.Admin.Services
@@ -13,11 +17,14 @@ namespace MrCMS.Web.Areas.Admin.Services
     public class LayoutAreaAdminService : ILayoutAreaAdminService
     {
         private readonly ISession _session;
+        private readonly IDocumentService _documentService;
 
-        public LayoutAreaAdminService(ISession session)
+        public LayoutAreaAdminService(ISession session, IDocumentService documentService)
         {
             _session = session;
+            _documentService = documentService;
         }
+
         public LayoutArea GetArea(Layout layout, string name)
         {
             return _session.QueryOver<LayoutArea>().Where(x => x.Layout == layout && x.AreaName == name).Fetch(
@@ -111,6 +118,30 @@ namespace MrCMS.Web.Areas.Admin.Services
         {
             var webpage = _session.Get<Webpage>(pageId);
             return new PageWidgetSortModel(area.GetWidgets(webpage), area, webpage);
+        }
+
+        public IEnumerable<SelectListItem> GetValidParents(Layout doc)
+        {
+            IList<Layout> potentialParents = _session.QueryOver<Layout>().Cacheable().List<Layout>();
+            List<SelectListItem> result = potentialParents.Distinct()
+                .Where(page => page.Id != doc.Id)
+                .OrderBy(x => x.Name)
+                .
+                BuildSelectItemList(page => page.Name, page => page.Id.ToString(),
+                    webpage1 => doc.Parent != null && doc.ParentId == webpage1.Id, emptyItem: null);
+
+            return result;
+        }
+
+        public void Set(Layout doc, int? parentVal)
+        {
+            if (doc == null) return;
+
+            Layout parent = parentVal.HasValue ? _session.Get<Layout>(parentVal.Value) : null;
+
+            doc.Parent = parent;
+
+            _documentService.SaveDocument(doc);
         }
     }
 }

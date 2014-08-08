@@ -86,7 +86,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                                               new LayoutArea {AreaName = "Footer", Layout = eCommerceLayout}
                                           };
             documentService.AddDocument(eCommerceLayout);
-            var layoutAreaService = new LayoutAreaAdminService(session);
+            var layoutAreaService = new LayoutAreaAdminService(session,documentService);
             foreach (var area in ecommerceLayoutArea)
                 layoutAreaService.SaveArea(area);
             //checkout layout
