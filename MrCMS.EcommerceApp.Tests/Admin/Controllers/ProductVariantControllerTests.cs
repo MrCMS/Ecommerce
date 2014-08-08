@@ -6,7 +6,6 @@ using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
@@ -19,15 +18,13 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private readonly IProductVariantService _productVariantService;
         private readonly ITaxRateManager _taxRateManager;
         private readonly IOptionService _optionService;
-        private readonly IShippingMethodManager _shippingMethodManager;
 
         public ProductVariantControllerTests()
         {
             _productVariantService = A.Fake<IProductVariantService>();
             _taxRateManager = A.Fake<ITaxRateManager>();
             _optionService = A.Fake<IOptionService>();
-            _shippingMethodManager = A.Fake<IShippingMethodManager>();
-            _productVariantController = new ProductVariantController(_productVariantService, _taxRateManager, _optionService,_shippingMethodManager);
+            _productVariantController = new ProductVariantController(_productVariantService, _taxRateManager, _optionService);
         }
 
         [Fact]

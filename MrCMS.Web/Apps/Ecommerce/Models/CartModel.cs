@@ -7,11 +7,12 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using MrCMS.Web.Apps.Ecommerce.Models.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Payment;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Website;
 using NHibernate;
 
@@ -23,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             Items = new List<CartItem>();
             AvailablePaymentMethods = new List<IPaymentMethod>();
-            AvailableShippingMethods = new List<ShippingMethod>();
+            AvailableShippingMethods = new List<IShippingMethod>();
         }
         public Guid CartGuid { get; set; }
         public List<CartItem> Items { get; set; }
@@ -138,11 +139,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public Address ShippingAddress { get; set; }
         public Address BillingAddress { get; set; }
 
-        public ShippingMethod ShippingMethod { get; set; }
+        public IShippingMethod ShippingMethod { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:£0.00}")]
-        public decimal? ShippingTotal { get { return ShippingMethod == null ? null : ShippingMethod.GetPrice(this); } }
-        public decimal? ShippingTax { get { return ShippingMethod == null ? null : ShippingMethod.GetTax(this); } }
+        public decimal? ShippingTotal
+        {
+            get
+            {
+                if (ShippingMethod == null) return null;
+                var shippingAmount = ShippingMethod.GetShippingTotal(this);
+                return shippingAmount == ShippingAmount.NoneAvailable
+                    ? (decimal?) null
+                    : shippingAmount.Amount;
+            }
+        }
+        public decimal? ShippingTax
+        {
+            get
+            {
+                if (ShippingMethod == null) return null;
+                var shippingAmount = ShippingMethod.GetShippingTax(this);
+                return shippingAmount == ShippingAmount.NoneAvailable
+                    ? (decimal?) null
+                    : shippingAmount.Amount;
+            }
+        }
         public decimal? ShippingPreTax { get { return ShippingTotal - ShippingTax; } }
         public decimal? ShippingTaxPercentage
         {
@@ -155,9 +176,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         }
 
         public IEnumerable<IPaymentMethod> AvailablePaymentMethods { get; set; }
-        public IList<ShippingMethod> AvailableShippingMethods { get; set; }
-
-        public Country Country { get; set; }
+        public IList<IShippingMethod> AvailableShippingMethods { get; set; }
 
         public IPaymentMethod PaymentMethod { get; set; }
         public bool PaymentMethodSet { get { return PaymentMethod != null; } }

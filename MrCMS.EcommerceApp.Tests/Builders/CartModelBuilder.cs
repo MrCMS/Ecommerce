@@ -2,7 +2,6 @@
 using MrCMS.EcommerceApp.Tests.TestableModels;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Helpers;
@@ -15,10 +14,6 @@ namespace MrCMS.EcommerceApp.Tests.Builders
         private decimal? _weight;
         private Country _shippingAddressCountry;
         private readonly List<CartItem> _items = new List<CartItem>();
-        private readonly IList<ShippingMethod> _availableShippingMethods = new List<ShippingMethod>
-                                                                            {
-                                                                                new TestableShippingMethod(true)
-                                                                            };
 
         private decimal? _shippableCalculationTotal;
 
@@ -58,8 +53,7 @@ namespace MrCMS.EcommerceApp.Tests.Builders
             return new TestableCartModel(_weight, _totalPreShipping,_shippableCalculationTotal)
                        {
                            ShippingAddress = new Address { Country = _shippingAddressCountry },
-                           Items = _items,
-                           AvailableShippingMethods = _availableShippingMethods
+                           Items = _items
                        };
         }
     }

@@ -3,12 +3,12 @@ using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Web.Apps.Ecommerce.Payment.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Website;
 using NHibernate;
 using System;
@@ -22,17 +22,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private readonly ISession _session;
         private readonly IGetUserGuid _getUserGuid;
         private readonly IPaymentMethodService _paymentMethodService;
-        private readonly IOrderShippingService _orderShippingService;
         private readonly ICartSessionManager _cartSessionManager;
         private readonly ICartGuidResetter _cartGuidResetter;
 
         public CartBuilder(ISession session, IGetUserGuid getUserGuid, IPaymentMethodService paymentMethodService,
-        IOrderShippingService orderShippingService, ICartSessionManager cartSessionManager, ICartGuidResetter cartGuidResetter)
+         ICartSessionManager cartSessionManager, ICartGuidResetter cartGuidResetter)
         {
             _session = session;
             _getUserGuid = getUserGuid;
             _paymentMethodService = paymentMethodService;
-            _orderShippingService = orderShippingService;
             _cartSessionManager = cartSessionManager;
             _cartGuidResetter = cartGuidResetter;
         }
@@ -53,7 +51,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 UserGuid = userGuid,
                 Items = cartItems,
                 ShippingAddress = GetShippingAddress(userGuid),
-                Country = GetCountry(userGuid),
                 OrderEmail = GetOrderEmail(userGuid),
                 DiscountCode = GetDiscountCode(userGuid),
                 Discount = GetDiscount(userGuid),
@@ -74,7 +71,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             {
                 cart.ShippingMethod = GetShippingMethod(cart, userGuid);
             }
-            cart.AvailableShippingMethods = _orderShippingService.AvailableShippingMethods(cart);
+            throw new NotImplementedException();
+            //cart.AvailableShippingMethods = _orderShippingService.AvailableShippingMethods(cart);
             return cart;
         }
 
@@ -132,7 +130,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             var shippingAddress = _cartSessionManager.GetSessionValue<Address>(CartManager.CurrentShippingAddressKey, userGuid);
             if (shippingAddress != null)
             {
-                shippingAddress.Country = GetCountry(userGuid);
                 shippingAddress.User = CurrentRequestData.CurrentUser;
             }
             return shippingAddress;
@@ -148,22 +145,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             var billingAddress = GetBillingAddressSameAsShippingAddress(userGuid) && requiresShipping ? GetShippingAddress(userGuid) : _cartSessionManager.GetSessionValue<Address>(CartManager.CurrentBillingAddressKey, userGuid);
             if (billingAddress != null)
             {
-                billingAddress.Country = GetCountry(userGuid);
                 billingAddress.User = CurrentRequestData.CurrentUser;
             }
             return billingAddress;
         }
 
-        private ShippingMethod GetShippingMethod(CartModel cart, Guid userGuid)
+        private IShippingMethod GetShippingMethod(CartModel cart, Guid userGuid)
         {
-            var id = _cartSessionManager.GetSessionValue<int>(CartManager.CurrentShippingMethodIdKey, userGuid);
-            if (id > 0)
-            {
-                var shippingMethod = _session.Get<ShippingMethod>(id);
-                if (shippingMethod != null)
-                    return shippingMethod;
-            }
-            return _orderShippingService.GetDefaultShippingMethod(cart);
+            throw new NotImplementedException();
+            //var type = _cartSessionManager.GetSessionValue<string>(CartManager.CurrentShippingMethodIdKey, userGuid);
+            //if (id > 0)
+            //{
+            //    var shippingMethod = _session.Get<ShippingMethod>(id);
+            //    if (shippingMethod != null)
+            //        return shippingMethod;
+            //}
+            //return _orderShippingService.GetDefaultShippingMethod(cart);
         }
 
         private string GetOrderEmail(Guid userGuid)
@@ -189,19 +186,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private string GetPayPalExpressPayerId(Guid userGuid)
         {
             return _cartSessionManager.GetSessionValue<string>(CartManager.CurrentPayPalExpressPayerId, userGuid);
-        }
-
-        private Country GetCountry(Guid userGuid)
-        {
-            var id = _cartSessionManager.GetSessionValue<int>(CartManager.CurrentCountryIdKey, userGuid);
-
-            if (id > 0)
-            {
-                var country = _session.Get<Country>(id);
-                if (country != null)
-                    return country;
-            }
-            return _session.QueryOver<Country>().Cacheable().List().FirstOrDefault();
         }
     }
 }

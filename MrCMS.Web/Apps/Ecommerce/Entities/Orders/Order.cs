@@ -4,7 +4,6 @@ using MrCMS.Entities;
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System;
@@ -53,8 +52,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual string DiscountCode { get; set; }
 
         public virtual decimal Weight { get; set; }
-        [DisplayName("Shipping Method")]
-        public virtual ShippingMethod ShippingMethod { get; set; }
+        //[DisplayName("Shipping Method")]
+        //public virtual ShippingMethod ShippingMethod { get; set; }
         [DisplayName("Shipping Method Name")]
         public virtual string ShippingMethodName { get; set; }
         [DisplayName("Shipping Total")]
