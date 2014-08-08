@@ -54,8 +54,8 @@
                              <div class="btn-group">
                                  @Html.ActionLink("Edit", "Edit", "ListingGroup", new { id = item.Id }, new { @class = "btn btn-xs btn-default" })
                                  
-                                 @Html.ActionLink("Sync", "SyncMany", "Listing", new {id = item.Id}, new {@class = "btn btn-xs btn-default btn-success"})
-                                 @(item.IsListed ? Html.ActionLink("Close", "CloseMany", "Listing", new {id = item.Id}, new {@class = "btn btn-xs btn-default btn-warning"}) : Html.ActionLink("Delete", "Delete", "ListingGroup", new {id = item.Id}, new {@class = "btn btn-xs btn-default btn-danger", data_toggle = "fb-modal"}))
+                                 @Html.ActionLink("Sync", "SyncMany", "Listing", new {id = item.Id}, new {@class = "btn btn-xs btn-success"})
+                                 @(item.IsListed ? Html.ActionLink("Close", "CloseMany", "Listing", new {id = item.Id}, new {@class = "btn btn-xs btn-warning"}) : Html.ActionLink("Delete", "Delete", "ListingGroup", new {id = item.Id}, new {@class = "btn btn-xs btn-danger", data_toggle = "fb-modal"}))
                              </div>
                         </td>
                     </tr>

@@ -1,40 +1,36 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Amazon.Entities.Orders.AmazonOrder
 
-<div class="row">
-    <div class="col-lg-12">
-        <table class="table table-condensed table-striped">
-            <tr>
-                <td>Marketplace Id</td>
-                <td>@Model.MarketplaceId</td>
-            </tr>
-            <tr>
-                <td>Buyer Name</td>
-                <td>
-                    @Model.BuyerName
-                </td>
-            </tr>
-            <tr>
-                <td>Buyer Email</td>
-                <td>
-                    @Model.BuyerEmail
-                </td>
-            </tr>
-            <tr>
-                <td>Order Status</td>
-                <td>@Model.Status.GetDescription()</td>
-            </tr>
-            <tr>
-                <td>Order Type</td>
-                <td>@Model.OrderType</td>
-            </tr>
-            <tr>
-                <td>Order Total</td>
-                <td>@Model.OrderTotalAmount.ToCurrencyFormat()</td>
-            </tr>
-        </table>
-    </div>
-</div>
+<table class="table table-condensed table-striped">
+    <tr>
+        <td>Marketplace Id</td>
+        <td>@Model.MarketplaceId</td>
+    </tr>
+    <tr>
+        <td>Buyer Name</td>
+        <td>
+            @Model.BuyerName
+        </td>
+    </tr>
+    <tr>
+        <td>Buyer Email</td>
+        <td>
+            @Model.BuyerEmail
+        </td>
+    </tr>
+    <tr>
+        <td>Order Status</td>
+        <td>@Model.Status.GetDescription()</td>
+    </tr>
+    <tr>
+        <td>Order Type</td>
+        <td>@Model.OrderType</td>
+    </tr>
+    <tr>
+        <td>Order Total</td>
+        <td>@Model.OrderTotalAmount.ToCurrencyFormat()</td>
+    </tr>
+</table>
 
 <hr class="small-margin" />
 <div class="row">

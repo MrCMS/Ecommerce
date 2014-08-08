@@ -9,33 +9,26 @@
 
 <fieldset>
     <legend>
-        <div class="row">
-                <div class="col-lg-6">
-                     Amazon Listing Groups
-                </div>
-                <div class="col-lg-6">
-                    <span class="btn-group  display-inline  pull-right" style="margin-left: 10px">
-                        @Html.ActionLink("Add", "Add", "ListingGroup", null, new { @class = "btn btn-info", data_toggle = "fb-modal"})
-                    </span>
-                    <span class="btn-group  display-inline  pull-right">
-                        @if (!String.IsNullOrWhiteSpace(amazonManageInventoryUrl))
-                        {
-                                <a href='@amazonManageInventoryUrl' target="_blank" class="btn btn-default">
-                                    Manage Inventory on Amazon
-                                </a>
-                        }
-                    </span>
-                    <span class="btn-group  display-inline  pull-right">
-                        @Html.ActionLink("Logs", "Index", "Logs", new {type=AmazonLogType.ListingGroups}, new { @class = "btn"})
-                    </span>
-                </div>
-            </div>
+        Amazon Listing Groups
+        <span class="btn-group  display-inline  pull-right" style="margin-left: 10px">
+            @if (!String.IsNullOrWhiteSpace(amazonManageInventoryUrl))
+            {
+                <a href='@amazonManageInventoryUrl' target="_blank" class="btn btn-default">
+                    Manage Inventory on Amazon
+                </a>
+            }
+            @Html.ActionLink("Logs", "Index", "Logs", new { type = AmazonLogType.ListingGroups }, new { @class = "btn btn-default" })
+            @Html.ActionLink("Add", "Add", "ListingGroup", null, new { @class = "btn btn-primary", data_toggle = "fb-modal" })
+        </span>
     </legend>
 </fieldset>
-
-@Html.TextBox("ListingGroupName",String.Empty, new {@class = "input-xlarge search-query search-listing-groups", placeholder = "Enter listing group name..."})
-<button class="btn btn-success" id="search-listings" type="button">Filter</button>
-<br/><br/>
+<div class="input-group">
+    @Html.TextBox("ListingGroupName", String.Empty, new { @class = "form-control search-query search-listing-groups", placeholder = "Enter listing group name..." })
+    <span class="input-group-btn">
+        <button class="btn btn-default" id="search-listings" type="button">Filter</button>
+    </span>
+</div>
+<br />
 <div class="row">
     <div class="col-lg-12">
         @{Html.RenderPartial("ListingGroups", Model); }

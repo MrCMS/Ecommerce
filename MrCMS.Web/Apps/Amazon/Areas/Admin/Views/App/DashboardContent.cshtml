@@ -1,16 +1,16 @@
 ﻿@model MrCMS.Web.Apps.Amazon.Models.AmazonDashboardModel
 
 <div class="row">
-        <div class="col-lg-4">
-            @{Html.RenderPartial("RevenueStats",Model);}
-            @{Html.RenderPartial("Revenue",Model);}
-        </div>
-        <div class="col-lg-4">
-            @{Html.RenderPartial("ProductsSoldStats",Model);}
-            @{Html.RenderPartial("ProductsSold",Model);}
-        </div>
-        <div class="col-lg-4">
-            @{Html.RenderPartial("AppStats", Model);}
-            @{Html.RenderAction("Logs", "App");}
-        </div>
+    <div class="col-lg-4">
+        @{Html.RenderPartial("RevenueStats", Model);}
+        @{Html.RenderPartial("Revenue", Model);}
     </div>
+    <div class="col-lg-4">
+        @{Html.RenderPartial("ProductsSoldStats", Model);}
+        @{Html.RenderPartial("ProductsSold", Model);}
+    </div>
+    <div class="col-lg-4">
+        @{Html.RenderPartial("AppStats", Model);}
+        @{Html.RenderAction("Logs", "App");}
+    </div>
+</div>

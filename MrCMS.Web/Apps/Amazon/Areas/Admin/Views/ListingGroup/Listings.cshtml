@@ -62,8 +62,8 @@
                         <td>
                              <div class="btn-group">
                             @Html.ActionLink("Details", "Details", "Listing", new {id = item.Id}, new { @class="btn btn-xs btn-default"})
-                            @Html.ActionLink("Sync", "SyncOne", "Listing", new {id = item.Id}, new {@class = "btn btn-xs btn-default btn-success"})
-                            @(item.Status == AmazonListingStatus.Active ? Html.ActionLink("Close", "CloseOne", "Listing", new {id = item.Id}, new {@class = "btn btn-xs btn-default btn-warning"}) : Html.ActionLink("Delete", "Delete", "Listing", new {id = item.Id}, new {@class = "btn btn-xs btn-default btn-danger", data_toggle = "fb-modal"}))
+                            @Html.ActionLink("Sync", "SyncOne", "Listing", new {id = item.Id}, new {@class = "btn btn-xs btn-success"})
+                            @(item.Status == AmazonListingStatus.Active ? Html.ActionLink("Close", "CloseOne", "Listing", new {id = item.Id}, new {@class = "btn btn-xs btn-warning"}) : Html.ActionLink("Delete", "Delete", "Listing", new {id = item.Id}, new {@class = "btn btn-xs btn-danger", data_toggle = "fb-modal"}))
                              </div>
                         </td>
                     </tr>
