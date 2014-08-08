@@ -5,68 +5,65 @@
 }
 
 <fieldset>
-    <legend>Bulk Shipping Update
-         <span class="btn-group  display-inline  pull-right">
-           
-        </span>
+    <legend>
+        Bulk Shipping Update
     </legend>
-    <div class="row-fluid">
-        <ul>
-            <li>Upload a CSV file with 3 fields
-                <ol>
-                    <li>First field should be OrderId (required)</li>
-                    <li>Second field should be ShippingMethodName (required)</li>
-                    <li>Third field should be tracking number (optional)</li>
-                </ol>
-            </li>
-            <li>Already shipped orders cannot be re-shipped</li>
-            <li>The shipping method name must exist as one of your shipping methods</li>
-        </ul>
-        @using (Html.BeginForm("BulkShippingUpdate", "Order", FormMethod.Post, new {enctype = "multipart/form-data"}))
+    <ul>
+        <li>
+            Upload a CSV file with 3 fields
+            <ol>
+                <li>First field should be OrderId (required)</li>
+                <li>Second field should be ShippingMethodName (required)</li>
+                <li>Third field should be tracking number (optional)</li>
+            </ol>
+        </li>
+        <li>Already shipped orders cannot be re-shipped</li>
+        <li>The shipping method name must exist as one of your shipping methods</li>
+    </ul>
+    @using (Html.BeginForm("BulkShippingUpdate", "Order", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <label>Choose Import File</label>
+        <input type="file" name="document" id="document" />
+        <div class="clearfix"></div>
+        <br />
+        if (ViewBag.Messages != null)
         {
-            <label>Choose Import File</label>
-            <input type="file" name="document" id="document" />
-            <div class="clearfix"></div>
-            <br />
-            if (ViewBag.Messages != null)
+            foreach (var item in (Dictionary<string, List<string>>)ViewBag.Messages)
             {
-                foreach (var item in (Dictionary<string, List<string>>) ViewBag.Messages)
+                switch (item.Key)
                 {
-                    switch (item.Key)
-                    {
-                        case "success":
-                            <div class="alert alert-success">
-                                @item.Value.First()
-                            </div>
-                            break;
-                        case "no-supplied-id":
-                            <div class="alert alert-error">
-                                Row with Order Id missing! Please check CSV document.
-                            </div>
-                            break;
-                        default:
-                            <span>
-                                Row with Order <strong>#@item.Key</strong> has the following errors:
-                            </span>
-                            <ul>
-                                @foreach (var error in item.Value)
-                                {
-                                    <li>
-                                        @error
-                                    </li>
-                                }
-                            </ul>
-                            break;
-                    }
+                    case "success":
+                        <div class="alert alert-success">
+                            @item.Value.First()
+                        </div>
+                        break;
+                    case "no-supplied-id":
+                    <div class="alert alert-danger">
+                        row with Order Id missing! Please check CSV document.
+                    </div>
+                        break;
+                    default:
+                    <span>
+                        row with Order <strong>#@item.Key</strong> has the following errors:
+                    </span>
+                    <ul>
+                        @foreach (var error in item.Value)
+                        {
+                            <li>
+                                @error
+                            </li>
+                        }
+                    </ul>
+                        break;
                 }
             }
-            if (ViewBag.ImportStatus != null)
-            {
-                <div class="alert alert-error">@ViewBag.ImportStatus</div>
-                <div class="clearfix"></div>
-            }
-
-            <input type="submit" class="btn btn-primary" value="Start Bulk Shipping Update"/>
         }
-    </div>
+        if (ViewBag.ImportStatus != null)
+        {
+            <div class="alert alert-error">@ViewBag.ImportStatus</div>
+            <div class="clearfix"></div>
+        }
+
+        <input type="submit" class="btn btn-primary" value="Start Bulk Shipping Update" />
+    }
 </fieldset>

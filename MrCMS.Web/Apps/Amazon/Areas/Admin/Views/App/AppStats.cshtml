@@ -1,54 +1,52 @@
 ﻿@model MrCMS.Web.Apps.Amazon.Models.AmazonDashboardModel
 
-          <div class="row-fluid">
-                
-                <div class="span4">
-         
-                    <div class="dashboard-box">
-                        <div class="info">
-                            <div class="stats">
-                                @Model.NoOfApiCalls
-                            </div>
-                            <div class="stats-description">                           
-                                Api Calls
-                            </div>
-                        </div>
-                    </div>
+<div class="row">
 
+    <div class="col-lg-4">
+
+        <div class="dashboard-box">
+            <div class="info">
+                <div class="stats">
+                    @Model.NoOfApiCalls
                 </div>
-
-                <div class="span4">
-         
-                    <div class="dashboard-box @(Model.SellerSettingsStatus?"":"alizarin")">
-                        <div class="info">
-                            <div class="stats">
-                                @(Model.SellerSettingsStatus?"OK":"Check")
-                            </div>
-                            <div class="stats-description">
-                                @Html.ActionLink("Seller Settings", "Seller", "Settings", null,new { @class = ""})                                    
-                            </div>
-                        </div>
-                                
-                    </div>
-
+                <div class="stats-description">
+                    Api Calls
                 </div>
-
-                <div class="span4">
-                
-                
-                    <div class="dashboard-box @(Model.AppSettingsStatus?"":"alizarin")">
-                        <div class="info">
-                            <div class="stats">
-                                @(Model.AppSettingsStatus?"OK":"Check")
-                            </div>
-                            <div class="stats-description">
-                                @Html.ActionLink("App Settings", "App", "Settings", null,new { @class = ""})                                     
-                            </div>
-                        </div>
-                     
-                    </div>
-                
-
-                </div>
-   
             </div>
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="dashboard-box @(Model.SellerSettingsStatus?"":"alizarin")">
+            <div class="info">
+                <div class="stats">
+                    @(Model.SellerSettingsStatus ? "OK" : "Check")
+                </div>
+                <div class="stats-description">
+                    @Html.ActionLink("Seller Settings", "Seller", "Settings", null, new { @class = "" })
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="dashboard-box @(Model.AppSettingsStatus?"":"alizarin")">
+            <div class="info">
+                <div class="stats">
+                    @(Model.AppSettingsStatus ? "OK" : "Check")
+                </div>
+                <div class="stats-description">
+                    @Html.ActionLink("App Settings", "App", "Settings", null, new { @class = "" })
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

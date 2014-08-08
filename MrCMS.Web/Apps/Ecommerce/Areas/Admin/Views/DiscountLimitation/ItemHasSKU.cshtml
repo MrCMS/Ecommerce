@@ -1,4 +1,5 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations.ItemHasSKU
-
-@Html.LabelFor(x => x.SKU)
-@Html.EditorFor(x => x.SKU)
+<div class="form-group">
+    @Html.LabelFor(x => x.SKU)
+    @Html.TextBoxFor(x => x.SKU, new { @class = "form-control" })
+</div>

@@ -8,8 +8,8 @@
 
 @using (Html.BeginForm("UpdateGoogleBaseProduct", "GoogleBase", FormMethod.Post))
 {
-    <div class="row-fluid">
-        <div class="span6">
+    <div class="row">
+        <div class="col-lg-6">
             @Html.HiddenFor(x => x.ProductVariant.Id)
             @Html.HiddenFor(x => x.Id)
             <h4>&nbsp;@(!string.IsNullOrWhiteSpace(Model.ProductVariant.Name) ? Model.ProductVariant.Name : Model.ProductVariant.Product.Name)</h4>
@@ -19,26 +19,37 @@
                 @Html.HiddenFor(x => x.Category,new {@class="select2 select2-full", style="width:100%"})
             </div>
             <br />
-            <br />
-            <button type="button" class="btn update-google-base-product" data-google-base-product-id="@Model.Id" data-google-base-product-variant-id="@Model.ProductVariant.Id">
+            <button type="button" class="btn btn-default update-google-base-product" data-google-base-product-id="@Model.Id" data-google-base-product-variant-id="@Model.ProductVariant.Id">
                 Update
             </button>
         </div>
-        <div class="span3">
-            @Html.LabelFor(x => x.Condition)
-            @Html.DropDownListFor(x => x.Condition, GeneralHelper.SelectDefaultValue(productConditions, Model.Condition.ToString()), new {@class = "span12"})
-            @Html.LabelFor(x => x.Gender)
-            @Html.DropDownListFor(x => x.Gender, GeneralHelper.SelectDefaultValue(gender, Model.Gender.ToString()), new {@class = "span12"})
-            @Html.LabelFor(x => x.AgeGroup)
-            @Html.DropDownListFor(x => x.AgeGroup, GeneralHelper.SelectDefaultValue(ageGroup, Model.AgeGroup.ToString()), new {@class = "span12"})
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Condition)
+                @Html.DropDownListFor(x => x.Condition, GeneralHelper.SelectDefaultValue(productConditions, Model.Condition.ToString()), new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Gender)
+                @Html.DropDownListFor(x => x.Gender, GeneralHelper.SelectDefaultValue(gender, Model.Gender.ToString()), new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.AgeGroup)
+                @Html.DropDownListFor(x => x.AgeGroup, GeneralHelper.SelectDefaultValue(ageGroup, Model.AgeGroup.ToString()), new { @class = "form-control" })
+            </div>
         </div>
-        <div class="span3">
-            @Html.LabelFor(x => x.Grouping)
-            @Html.TextBoxFor(x => x.Grouping, new {@class = "span12", placeholder = "e.g: comforters"})
-            @Html.LabelFor(x => x.Labels)
-            @Html.TextBoxFor(x => x.Labels, new {@class = "span12", placeholder = "e.g: clothing, shoes"})
-            @Html.LabelFor(x => x.Redirect)
-            @Html.TextBoxFor(x => x.Redirect, new {@class = "span12", placeholder = "e.g: http://www.merchant.com/product.html"})
+        <div class="col-lg-3">
+            <div class="form-group">
+                @Html.LabelFor(x => x.Grouping)
+                @Html.TextBoxFor(x => x.Grouping, new { @class = "form-control", placeholder = "e.g: comforters" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Labels)
+                @Html.TextBoxFor(x => x.Labels, new { @class = "form-control", placeholder = "e.g: clothing, shoes" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Redirect)
+                @Html.TextBoxFor(x => x.Redirect, new { @class = "form-control", placeholder = "e.g: http://www.merchant.com/product.html" })
+            </div>
         </div>
     </div>
 }

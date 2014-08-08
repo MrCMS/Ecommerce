@@ -14,17 +14,21 @@
             </span>
         </legend>
 
-        @Html.LabelFor(x => x.Name)
-        @Html.TextBoxFor(x => x.Name)
-        @Html.ValidationMessageFor(x => x.Name)
-        
-        @Html.LabelFor(x => x.ImageUrl)
-        @Html.TextBoxFor(x => x.ImageUrl, new { @class = "media-selector" })
-        @Html.ValidationMessageFor(x => x.ImageUrl)
-
-        @Html.LabelFor(x => x.Text)
-        @Html.TextAreaFor(x => x.Text, new { @class = "newsletter-ck" })
-        @Html.ValidationMessageFor(x => x.Text)
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ImageUrl) <br />
+            @Html.TextBoxFor(x => x.ImageUrl, new { @class = "media-selector" })
+            @Html.ValidationMessageFor(x => x.ImageUrl)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Text)
+            @Html.TextAreaFor(x => x.Text, new { @class = "newsletter-ck" })
+            @Html.ValidationMessageFor(x => x.Text)
+        </div>
 
     </fieldset>
 }

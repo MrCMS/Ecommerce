@@ -8,27 +8,36 @@
 {
     <form>
         <fieldset>
-            <legend>Products
-            <span class="btn-group  display-inline  pull-right">
-                <a href="@Url.Action("Add", "Webpage", new { id = Model.ProductContainerId })" class="btn btn-success">Add Product</a>
-            </span>
+            <legend>
+                Products
+                <span class="btn-group  display-inline  pull-right">
+                    <a href="@Url.Action("Add", "Webpage", new { id = Model.ProductContainerId })" class="btn btn-primary">Add Product</a>
+                </span>
             </legend>
 
             @using (Html.BeginForm("Index", "Product", FormMethod.Get))
             {
-                @Html.TextBox("q", ViewData["q"], new { @class = "search-query" })
-                <input type="submit" value="Search" class="btn btn-primary" />
+                <div class="input-group">
+                    @Html.TextBox("q", ViewData["q"], new { @class = "search-query form-control" })
+                    <span class="input-group-btn">
+
+                        <input type="submit" value="Search" class="btn btn-default" />
+                    </span>
+                </div><br />
             }
             @if (Model.Any())
             {
                 <table class="table table-condensed table-striped">
                     <thead>
                         <tr>
-                            <th>Name
+                            <th>
+                                Name
                             </th>
-                            <th># of variants
+                            <th>
+                                # of variants
                             </th>
-                            <th>Published
+                            <th>
+                                Published
                             </th>
                         </tr>
                     </thead>
@@ -53,7 +62,7 @@
             }
             else
             {
-                <p>No products.</p>    
+                <p>No products.</p>
             }
         </fieldset>
     </form>
@@ -61,5 +70,5 @@
 else
 {
     <h2>Products</h2>
-    <p>Before you can add products, you need to add a Product Search to the navigation tree (Right-click on the Root item)</p>    
+    <p>Before you can add products, you need to add a Product Search to the navigation tree (Right-click on the Root item)</p>
 }

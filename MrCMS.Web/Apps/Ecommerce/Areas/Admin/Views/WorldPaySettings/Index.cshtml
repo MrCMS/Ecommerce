@@ -6,29 +6,40 @@
 @using (Html.BeginForm("Save", "WorldPaySettings", FormMethod.Post))
 {
     <fieldset>
-        <legend>WorldPay Settings
+        <legend>
+            WorldPay Settings
             <span class="btn-group display-inline pull-right">
                 <input type="submit" class="btn btn-primary" value="Save" />
             </span>
         </legend>
-        @Html.InlineCheckboxFor(settings => settings.Enabled)
-        @Html.InlineCheckboxFor(settings => settings.UseSandbox)
-        @Html.InlineCheckboxFor(settings => settings.RequiresSSL)
-
-        @Html.LabelFor(settings => settings.InstanceId)
-        @Html.TextBoxFor(settings => settings.InstanceId)
-        @Html.ValidationMessageFor(settings => settings.InstanceId)
-        
-        @Html.LabelFor(settings => settings.PaymentMethod)
-        @Html.TextBoxFor(settings => settings.PaymentMethod)
-        @Html.ValidationMessageFor(settings => settings.PaymentMethod)
-
-        @Html.LabelFor(settings => settings.CallbackPassword)
-        @Html.TextBoxFor(settings => settings.CallbackPassword)
-        @Html.ValidationMessageFor(settings => settings.CallbackPassword)
-
-        @Html.LabelFor(settings => settings.CssName)
-        @Html.TextBoxFor(settings => settings.CssName)
-        @Html.ValidationMessageFor(settings => settings.CssName)
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.Enabled)
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.UseSandbox)
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.RequiresSSL)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.InstanceId)
+            @Html.TextBoxFor(settings => settings.InstanceId, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.InstanceId)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.PaymentMethod)
+            @Html.TextBoxFor(settings => settings.PaymentMethod, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.PaymentMethod)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.CallbackPassword)
+            @Html.TextBoxFor(settings => settings.CallbackPassword, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.CallbackPassword)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.CssName)
+            @Html.TextBoxFor(settings => settings.CssName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.CssName)
+        </div>
     </fieldset>
 }

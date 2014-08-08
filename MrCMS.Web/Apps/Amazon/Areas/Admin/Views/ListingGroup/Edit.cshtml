@@ -10,46 +10,43 @@
 {
     <fieldset>
         <legend>
-            <div class="row-fluid">
-                <div class="span12">
-                    <span class="btn-group  display-inline  pull-right margin-left-10">
-                        @Html.ActionLink("Back to Listing Groups", "Index", "ListingGroup", null, new { @class = "btn" })
-                    </span>
-                    <span class="btn-group  display-inline  pull-left">
-                        @Html.ActionLink("Add Single", "ChooseProductVariant", "Listing", new { id = Model.Id }, new { @class = "btn btn-info" })
-                        @Html.ActionLink("Bulk Add", "AddMany", "Listing", new { id = Model.Id }, new { @class = "btn btn-info" })
-                    </span>
-                    <span class="btn-group  display-inline  pull-left">
-                         @Html.ActionLink("Sync", "SyncMany", "Listing", new { id = Model.Id }, new { @class = "btn btn-success" })
-                    </span>
-                    <span class="btn-group  display-inline  pull-left">
-                        @(Model.IsListed ? Html.ActionLink("Close", "CloseMany", "Listing", new { id = Model.Id }, new { @class = "btn btn-warning" }) : Html.ActionLink("Delete", "Delete", "ListingGroup", new { id = Model.Id }, new { @class = "btn btn-danger", data_toggle = "fb-modal" }))
-                    </span>
-                    <span class="btn-group  display-inline  pull-left margin-left-10">
-                         <button type="submit" class="btn btn-primary">Save</button>
-                    </span>
-                </div>
-            </div>
+            Edit Group
+            <span class="btn-group pull-right">
+                @Html.ActionLink("Back to Listing Groups", "Index", "ListingGroup", null, new { @class = "btn btn-default" })
+           
+                @Html.ActionLink("Add Single", "ChooseProductVariant", "Listing", new { id = Model.Id }, new { @class = "btn btn-info" })
+                @Html.ActionLink("Bulk Add", "AddMany", "Listing", new { id = Model.Id }, new { @class = "btn btn-info" })
+            
+                @Html.ActionLink("Sync", "SyncMany", "Listing", new { id = Model.Id }, new { @class = "btn btn-success" })
+           
+                @(Model.IsListed ? Html.ActionLink("Close", "CloseMany", "Listing", new { id = Model.Id }, new { @class = "btn btn-warning" }) : Html.ActionLink("Delete", "Delete", "ListingGroup", new { id = Model.Id }, new { @class = "btn btn-danger", data_toggle = "fb-modal" }))
+            
+                <button type="submit" class="btn btn-primary">Save</button>
+            </span>
         </legend>
 
 
-        <div class="row-fluid">
-            <div class="span6">
-                @Html.HiddenFor(x => x.Id)
-                @Html.LabelFor(x => x.Name)
-                @Html.TextBoxFor(x => x.Name, new { @class = "span12" })
-            </div>
-            <div class="span6">
-                @Html.LabelFor(x => x.FulfillmentChannel)
-                @Html.DropDownListFor(x => x.FulfillmentChannel, Enum.GetValues(typeof(AmazonFulfillmentChannel))
-                                                                     .OfType<AmazonFulfillmentChannel>().BuildSelectItemList(type => type.GetDescription(),
-                                                                                                                             type => type.ToString(), type => type == Model.FulfillmentChannel, "Choose Fulfillment Channel"), null, new { @class = "margin0 span12" })
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.HiddenFor(x => x.Id)
+                    @Html.LabelFor(x => x.Name)
+                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
                 </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.FulfillmentChannel)
+                    @Html.DropDownListFor(x => x.FulfillmentChannel, Enum.GetValues(typeof(AmazonFulfillmentChannel))
+                    .OfType<AmazonFulfillmentChannel>().BuildSelectItemList(type => type.GetDescription(),
+                        type => type.ToString(), type => type == Model.FulfillmentChannel, "Choose Fulfillment Channel"), null, new { @class = "form-control" })
+                </div>
+            </div>
 
         </div>
         <hr />
-        <div class="row-fluid">
-            <div class="span12">
+        <div class="row">
+            <div class="col-lg-12">
                 @{ Html.RenderAction("Listings", Model.Id); }
             </div>
         </div>

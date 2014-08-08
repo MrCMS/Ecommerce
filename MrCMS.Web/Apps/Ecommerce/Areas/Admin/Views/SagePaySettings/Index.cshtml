@@ -11,13 +11,20 @@
                 <input type="submit" class="btn btn-primary" value="Save" />
             </span>
         </legend>
-        @Html.InlineCheckboxFor(settings => settings.Enabled)
-        @Html.InlineCheckboxFor(settings => settings.RequiresSSL)
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.Enabled)
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.RequiresSSL)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.VendorName)
+            @Html.TextBoxFor(settings => settings.VendorName, new{@class="form-control"})
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.Mode)
+            @Html.DropDownListFor(settings => settings.Mode, Model.ModeOptions, new{@class="form-control"})
+        </div>
 
-        @Html.LabelFor(settings => settings.VendorName)
-        @Html.TextBoxFor(settings => settings.VendorName)
-
-        @Html.LabelFor(settings => settings.Mode)
-        @Html.DropDownListFor(settings => settings.Mode, Model.ModeOptions)
     </fieldset>
 }

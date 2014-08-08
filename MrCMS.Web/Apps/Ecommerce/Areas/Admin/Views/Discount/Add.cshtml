@@ -10,13 +10,16 @@
             </span>
         </legend>
 
-        @Html.LabelFor(x => x.Name)
-        @Html.TextBoxFor(x => x.Name)
-        @Html.ValidationMessageFor(x => x.Name)
-        <br/>
-        @Html.LabelFor(x => x.Code)
-        @Html.TextBoxFor(x => x.Code)
-        @Html.ValidationMessageFor(x => x.Code)
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Code)
+            @Html.TextBoxFor(x => x.Code, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Code)
+        </div>
 
     </fieldset>
 }

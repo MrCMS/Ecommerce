@@ -6,7 +6,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
     public class EcommerceToolsMenuModel : IAdminMenuItem
     {
         private SubMenu _children;
-        public string Text { get { return "e-Tools"; } }
+        public string Text { get { return "Tools"; } }
         public string Url { get; private set; }
         public bool CanShow { get { return true; } }
         public SubMenu Children

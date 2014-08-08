@@ -6,45 +6,60 @@
 @using (Html.BeginForm("Save", "PayPalExpressCheckoutSettings", FormMethod.Post))
 {
     <fieldset>
-        <legend>PayPal Express Checkout Settings
-        
+        <legend>
+            PayPal Express Checkout Settings
+
             <span class="btn-group display-inline pull-right">
                 <input type="submit" class="btn btn-primary" value="Save" />
             </span>
         </legend>
-        @Html.InlineCheckboxFor(settings => settings.Enabled, null, null)
-
-        @Html.InlineCheckboxFor(settings => settings.IsLive, null, null)
-
-        @Html.LabelFor(settings => settings.LocaleCode)
-        @Html.TextBoxFor(settings => settings.LocaleCode)
-
-        @Html.LabelFor(settings => settings.LogoImageURL)
-        @Html.TextBoxFor(settings => settings.LogoImageURL)
-
-        @Html.LabelFor(settings => settings.CartBorderColor)
-        @Html.TextBoxFor(settings => settings.CartBorderColor)
-
-        @Html.InlineCheckboxFor(settings => settings.RequireConfirmedShippingAddress, null, null)
-
-        @Html.InlineCheckboxFor(settings => settings.HaveBusinessAccount, null, null)
-
-        @Html.LabelFor(settings => settings.UserName)
-        @Html.TextBoxFor(settings => settings.UserName)
-
-        @Html.LabelFor(settings => settings.Password)
-        @Html.TextBoxFor(settings => settings.Password)
-
-        @Html.LabelFor(settings => settings.Signature)
-        @Html.TextBoxFor(settings => settings.Signature)
-
-        @Html.LabelFor(settings => settings.SubjectEmailAddress)
-        @Html.TextBoxFor(settings => settings.SubjectEmailAddress)
-
-        @Html.LabelFor(settings => settings.Currency)
-        @Html.DropDownListFor(settings => settings.Currency, Model.CurrencyOptions)
-
-        @Html.LabelFor(settings => settings.PaymentAction)
-        @Html.DropDownListFor(settings => settings.PaymentAction, Model.PaymentActionOptions)
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.Enabled, null, null)
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.IsLive, null, null)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.LocaleCode)
+            @Html.TextBoxFor(settings => settings.LocaleCode, new{@class="form-control"})
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.LogoImageURL)<br />
+            @Html.TextBoxFor(settings => settings.LogoImageURL, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.CartBorderColor)
+            @Html.TextBoxFor(settings => settings.CartBorderColor, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.RequireConfirmedShippingAddress, null, null)
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.HaveBusinessAccount, null, null)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.UserName)
+            @Html.TextBoxFor(settings => settings.UserName, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.Password)
+            @Html.TextBoxFor(settings => settings.Password, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.Signature)
+            @Html.TextBoxFor(settings => settings.Signature, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.SubjectEmailAddress)
+            @Html.TextBoxFor(settings => settings.SubjectEmailAddress, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.Currency)
+            @Html.DropDownListFor(settings => settings.Currency, Model.CurrencyOptions, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.PaymentAction)
+            @Html.DropDownListFor(settings => settings.PaymentAction, Model.PaymentActionOptions, new { @class = "form-control" })
+        </div>
     </fieldset>
 }

@@ -13,13 +13,15 @@
                 <input type="submit" value="Add Newsletter" class="btn btn-primary" />
             </span>
         </legend>
-
-        @Html.LabelFor(x => x.Name)
-        @Html.TextBoxFor(x => x.Name)
-        @Html.ValidationMessageFor(x => x.Name)
-
-        @Html.LabelFor(x => x.NewsletterTemplate)
-        @Html.DropDownListFor(x => x.NewsletterTemplate.Id, templates)
-        @Html.ValidationMessageFor(x => x.NewsletterTemplate)
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new{@class="form-control"})
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.NewsletterTemplate)
+            @Html.DropDownListFor(x => x.NewsletterTemplate.Id, templates, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.NewsletterTemplate)
+        </div>
     </fieldset>
 }
