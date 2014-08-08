@@ -1,5 +1,5 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.OrderRefund
-@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 
 @using (Html.BeginForm("Add", "OrderRefund", FormMethod.Post))
 {
@@ -13,14 +13,15 @@
 
         @Html.HiddenFor(x => x.Order.Id)
         @Html.HiddenFor(x => x.User.Id)
-        @Html.LabelFor(x => x.Amount)
-        @Html.EditorFor(x => x.Amount)
-        <span class="text-error">
-            @Html.ValidationMessageFor(x => x.Amount)</span>
-        <br />
-        <br />
-        @Html.LabelFor(x => x.Note)
-        @Html.TextAreaFor(x => x.Note, new {@class = "span12", style="height:250px"})
+        <div class="form-group">
+            @Html.LabelFor(x => x.Amount)
+            @Html.TextBoxFor(x => x.Amount, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Amount)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Note)
+            @Html.TextAreaFor(x => x.Note, new { @class = "form-control", style = "height:250px" })
+        </div>
 
     </fieldset>
 }

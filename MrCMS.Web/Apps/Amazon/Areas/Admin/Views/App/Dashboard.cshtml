@@ -6,18 +6,34 @@
 }
 
 <fieldset>
-    <legend>Amazon App Dashboard
+    <legend>
+        Amazon App Dashboard
         <span class="pull-right">
-             @using (Html.BeginForm("Dashboard", "App", new {id = ""}, FormMethod.Post))
-             {
-                 @Html.EditorFor(x => x.FilterFrom)
-                 @Html.EditorFor(x => x.FilterUntil)
-                 <button type="submit" class="btn">Filter</button>
-             }
+           
         </span>
     </legend>
+    @using (Html.BeginForm("Dashboard", "App", new { id = "" }, FormMethod.Post))
+    {
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.FilterFrom)
+                    @Html.TextBoxFor(x => x.FilterFrom, new { @class = "form-control" })
+                </div>
+            </div>
 
-     @{Html.RenderPartial("DashboardContent", Model);}
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.FilterUntil)
+                    @Html.TextBoxFor(x => x.FilterUntil, new { @class = "form-control" })
+                </div>
+            </div>
+
+        </div>
+        <button type="submit" class="btn btn-default">Filter</button>
+
+    }
+    @{Html.RenderPartial("DashboardContent", Model);}
 
 </fieldset>
 

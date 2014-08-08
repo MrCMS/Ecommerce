@@ -11,11 +11,11 @@
             </span>
         </legend>
 
-        @Html.HiddenFor(attribute => attribute.Id)
-        @Html.LabelFor(x => x.Name)
-        @Html.TextBoxFor(x => x.Name)
-        <br />
-        @Html.ValidationMessageFor(x => x.Name)
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
 
         @Html.InlineCheckboxFor(attribute => attribute.HideInSearch)
     </fieldset>

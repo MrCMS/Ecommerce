@@ -6,10 +6,13 @@
     <br />
     @using (Html.BeginForm("Dashboard", "GoogleBase", FormMethod.Get, new { id = "Filter" }))
     {
-        @Html.DropDownListFor(x => x.Category, ViewData["categories"] as IEnumerable<SelectListItem>, new { @class = "input-xlarge" })
+        @Html.DropDownListFor(x => x.Category, ViewData["categories"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
         <br />
-        @Html.TextBoxFor(x => x.Name, new { @class = "input-medium search-query", placeholder = "Enter search term..." })
-        <button type="submit" class="btn btn-primary">Search</button>
+        <div class="input-group">@Html.TextBoxFor(x => x.Name, new { @class = "form-control search-query", placeholder = "Enter search term..." })
+            <span class="input-group-btn"><button type="submit" class="btn btn-primary">Search</button>
+            </span>
+        </div>
+        
     }
     <hr />
     @if (Model.Items.Count == 0)

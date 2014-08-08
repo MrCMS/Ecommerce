@@ -6,7 +6,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
     public class EcommerceSettingsMenuModel : IAdminMenuItem
     {
         private SubMenu _children;
-        public string Text { get { return "e-Settings"; } }
+        public string Text { get { return "Settings"; } }
         public string Url { get; private set; }
         public bool CanShow { get { return true; } }
         public SubMenu Children

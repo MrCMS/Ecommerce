@@ -8,19 +8,22 @@
 
 <form>
     <fieldset>
-        <legend>Brands
+        <legend>
+            Brands
             <span class="btn-group  display-inline  pull-right">
-                <a href="@Url.Action("Add", "Brand")" class="btn btn-primary"  data-toggle="fb-modal">Add Brand</a>
+                <a href="@Url.Action("Add", "Brand")" class="btn btn-primary" data-toggle="fb-modal">Add Brand</a>
             </span>
         </legend>
 
-        <div class="row-fluid">
-            @using (Html.BeginForm("Index", "Brand", FormMethod.Get))
-            {
-                <input type="text" class="search-query" placeholder="Search" id="searchParam" name="q" value="@ViewData["query"]" />
-                <input type="submit" class="btn btn-primary btn-success" value="Search" />
-            }
-        </div>
+        @using (Html.BeginForm("Index", "Brand", FormMethod.Get))
+        {
+            <div class="input-group">
+                <input type="text" class="search-query form-control" placeholder="Search" id="searchParam" name="q" value="@ViewData["query"]" />
+                <span class="input-group-btn">
+                    <input type="submit" class="btn btn-primary btn-success" value="Search" />
+                </span>
+            </div>
+        }
         <hr />
         @if (Model.Count == 0)
         {
@@ -31,9 +34,11 @@
             <table class="table table-condensed table-striped">
                 <thead>
                     <tr>
-                        <th>Name
+                        <th>
+                            Name
                         </th>
-                        <th>Actions
+                        <th>
+                            Actions
                         </th>
                     </tr>
                 </thead>
@@ -46,8 +51,8 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    @Html.ActionLink("Edit", "Edit", "Brand", new { id = item.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                                    @Html.ActionLink("Delete", "Delete", "Brand", new { id = item.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Edit", "Edit", "Brand", new { id = item.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Delete", "Delete", "Brand", new { id = item.Id }, new { @class = "btn btn-xs btn-danger", data_toggle = "fb-modal" })
                                 </div>
                             </td>
                         </tr>

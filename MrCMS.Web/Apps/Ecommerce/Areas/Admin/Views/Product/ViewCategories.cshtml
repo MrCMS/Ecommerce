@@ -2,7 +2,7 @@
 
 <div id="category-list">
     @Html.LabelFor(product => product.Categories)
-    @Html.ActionLink("Add", "AddCategory", "Product", new { id = Model.Id }, new { @class = "btn btn-primary btn-mini", data_toggle = "fb-modal" })
+    @Html.ActionLink("Add", "AddCategory", "Product", new { id = Model.Id }, new { @class = "btn btn-primary btn-xs btn-default", data_toggle = "fb-modal" })
     
     @if (Model.Categories.Any())
     {
@@ -18,7 +18,7 @@
                 {
                     <tr>
                         <td>@category.NestedName</td>
-                        <td>@Html.ActionLink("Remove", "RemoveCategory", "Product", new {id = Model.Id, categoryId = category.Id}, new {@class = "btn btn-danger btn-mini", data_toggle = "fb-modal"})</td>
+                        <td>@Html.ActionLink("Remove", "RemoveCategory", "Product", new {id = Model.Id, categoryId = category.Id}, new {@class = "btn btn-danger btn-xs btn-default", data_toggle = "fb-modal"})</td>
                     </tr>
                 }
             </tbody>

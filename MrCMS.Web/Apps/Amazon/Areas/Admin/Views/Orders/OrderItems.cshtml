@@ -3,70 +3,72 @@
 <hr />
 <h4>Ordered Items</h4>
 
-<div class="row-fluid">
-    <div class="span12">
-        @if (Model.Items.Count == 0)
-        {
-            @:No items.
+@if (Model.Items.Count == 0)
+{
+    @:No items.
         }
-        else
-        {
-            <table class="table table-striped table-condensed">
-                <thead>
-                    <tr>
-                        <th>Title
-                        </th>
-                        <th>Condition
-                        </th>
-                        <th>Amount
-                        </th>
-                        <th>Discount
-                        </th>
-                        <th>Quantity
-                        </th>
-                         <th>Shipping
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Items)
-                    {
-                        <tr>
-                            <td>
-                                <strong><i>@item.Title</i></strong>
-                                 <br/>
-                                ASIN: @item.ASIN
-                                <br/>
-                                Seller SKU: @item.SellerSKU
-                            </td>
-                            <td>
-                                @item.Condition
-                            </td>
-                            <td>
-                                @item.ItemPriceAmount.ToCurrencyFormat()
-                                <br/>
-                                <br/>
-                                Tax:@item.ItemTaxAmount.ToCurrencyFormat()
-                            </td>
-                            <td>
-                                @item.PromotionDiscountAmount.ToCurrencyFormat()
-                            </td>
-                            <td>
-                                Ordered: @item.QuantityOrdered
-                                <br/>
-                                <br/>
-                                Shipped: @item.QuantityShipped
-                            </td>
-                            <td>
-                                @item.ShippingPriceAmount.ToCurrencyFormat()
-                                <br/>
-                                <br/>
-                                Tax: @item.ShippingTaxAmount.ToCurrencyFormat()
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-    </div>
-</div>
+else
+{
+    <table class="table table-striped table-condensed">
+        <thead>
+            <tr>
+                <th>
+                    Title
+                </th>
+                <th>
+                    Condition
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    Discount
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Shipping
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>
+                        <strong><i>@item.Title</i></strong>
+                        <br />
+                        ASIN: @item.ASIN
+                        <br />
+                        Seller SKU: @item.SellerSKU
+                    </td>
+                    <td>
+                        @item.Condition
+                    </td>
+                    <td>
+                        @item.ItemPriceAmount.ToCurrencyFormat()
+                        <br />
+                        <br />
+                        Tax:@item.ItemTaxAmount.ToCurrencyFormat()
+                    </td>
+                    <td>
+                        @item.PromotionDiscountAmount.ToCurrencyFormat()
+                    </td>
+                    <td>
+                        Ordered: @item.QuantityOrdered
+                        <br />
+                        <br />
+                        Shipped: @item.QuantityShipped
+                    </td>
+                    <td>
+                        @item.ShippingPriceAmount.ToCurrencyFormat()
+                        <br />
+                        <br />
+                        Tax: @item.ShippingTaxAmount.ToCurrencyFormat()
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

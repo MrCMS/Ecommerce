@@ -1,4 +1,6 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
-@Html.LabelFor(product => product.Brand.Id, "Brand")
-@Html.DropDownListFor(product => product.Brand.Id, ViewData["brands"] as IEnumerable<SelectListItem>, new { @class = "span12" })
-@Html.ActionLink("Add New", "AddBrand", "Product", new { id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+<div class="form-group">
+    @Html.LabelFor(product => product.Brand.Id, "Brand")
+    @Html.DropDownListFor(product => product.Brand.Id, ViewData["brands"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+</div>
+@Html.ActionLink("New Brand", "AddBrand", "Product", new { id = Model.Id }, new { @class = "btn btn-default", data_toggle = "fb-modal" })

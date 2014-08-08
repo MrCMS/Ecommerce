@@ -16,76 +16,84 @@
         </legend>
 
         <div class="row">
-            <div class="span12">
-                @Html.LabelFor(x => x.Name)
-                @Html.TextBoxFor(x => x.Name)
-                @Html.ValidationMessageFor(x => x.Name)
-                
+            <div class="col-lg-12">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Name)
+                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.Name)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BaseTemplate)
+                    @Html.TextAreaFor(x => x.BaseTemplate, new { @class = "form-control", rows = 6 })
+                    @Html.ValidationMessageFor(x => x.BaseTemplate)
+                </div>
 
-                @Html.LabelFor(x => x.BaseTemplate)
                 <div class="alert alert-info">
                     <strong>Available Tokens: </strong> [BodyContent]
                 </div>
-                @Html.TextAreaFor(x => x.BaseTemplate, new { @class = "span12", rows = 6 })
-                @Html.ValidationMessageFor(x => x.BaseTemplate)
-        
-                @Html.LabelFor(x => x.Divider)
-                @Html.TextAreaFor(x => x.Divider, new { @class = "span12", rows = 6 })
-                @Html.ValidationMessageFor(x => x.Divider)
-        
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Divider)
+                    @Html.TextAreaFor(x => x.Divider, new { @class = "form-control", rows = 6 })
+                    @Html.ValidationMessageFor(x => x.Divider)
+                </div>
                 <h4>Content Items Templates</h4>
-        
-                @Html.LabelFor(x => x.FreeTextTemplate)
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.FreeTextTemplate)
+                    @Html.TextAreaFor(x => x.FreeTextTemplate, new { @class = "form-control", rows = 6 })
+                    @Html.ValidationMessageFor(x => x.FreeTextTemplate)
+                </div>
                 <div class="alert alert-info">
                     <strong>Available Tokens: </strong> [Text]
                 </div>
-                @Html.TextAreaFor(x => x.FreeTextTemplate, new { @class = "span12", rows = 6 })
-                @Html.ValidationMessageFor(x => x.FreeTextTemplate)
-        
-                <br/>
-
-                @Html.LabelFor(x => x.ImageAndTextTemplate)
+                <br />
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ImageAndTextTemplate)
+                    @Html.TextAreaFor(x => x.ImageAndTextTemplate, new { @class = "form-control", rows = 6 })
+                    @Html.ValidationMessageFor(x => x.ImageAndTextTemplate)
+                </div>
                 <div class="alert alert-info">
                     <strong>Available Tokens: </strong> [ImageUrl], [Text]
                 </div>
-                @Html.TextAreaFor(x => x.ImageAndTextTemplate, new { @class = "span12", rows = 6 })
-                @Html.ValidationMessageFor(x => x.ImageAndTextTemplate)
-                
-                <br/>
-        
-                @Html.LabelFor(x => x.ProductGridTemplate)
-                <div class="alert alert-info">
-                    <strong>Available Tokens:</strong> [ProductRow]
+
+                <br />
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ProductGridTemplate)
+                    @Html.TextAreaFor(x => x.ProductGridTemplate, new { @class = "form-control", rows = 6 })
+                    @Html.ValidationMessageFor(x => x.ProductGridTemplate)
                 </div>
-                @Html.TextAreaFor(x => x.ProductGridTemplate, new { @class = "span12", rows = 6 })
-                @Html.ValidationMessageFor(x => x.ProductGridTemplate)
-                
-                <br/>
-        
-                @Html.LabelFor(x => x.ProductRowTemplate)
+                <div class="alert alert-info">
+                    <strong>Available Tokens: </strong> [Productrow]
+                </div>
+
+                <br />
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ProductRowTemplate)
+                    @Html.TextAreaFor(x => x.ProductRowTemplate, new { @class = "form-control", rows = 6 })
+                    @Html.ValidationMessageFor(x => x.ProductRowTemplate)
+                </div>
                 <div class="alert alert-info">
                     <strong>Available Tokens: </strong> [Product]
                 </div>
-                @Html.TextAreaFor(x => x.ProductRowTemplate, new { @class = "span12", rows = 6 })
-                @Html.ValidationMessageFor(x => x.ProductRowTemplate)
-                
-                <br/>
-        
-                @Html.LabelFor(x => x.ProductTemplate)
+                <br />
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ProductTemplate)
+                    @Html.TextAreaFor(x => x.ProductTemplate, new { @class = "form-control", rows = 6 })
+                    @Html.ValidationMessageFor(x => x.ProductTemplate)
+                </div>
                 <div class="alert alert-info">
                     <strong>Available Tokens: </strong> [ProductImage], [ProductName], [ProductUrl], [ProductPrice], [ProductOldPrice]
                 </div>
-                @Html.TextAreaFor(x => x.ProductTemplate, new { @class = "span12", rows = 6 })
-                @Html.ValidationMessageFor(x => x.ProductTemplate)
-                
-                <br/>
-                
-                @Html.LabelFor(x => x.BannerTemplate)
+                <br />
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BannerTemplate)
+                    @Html.TextAreaFor(x => x.BannerTemplate, new { @class = "form-control", rows = 6 })
+                    @Html.ValidationMessageFor(x => x.BannerTemplate)
+                </div>
                 <div class="alert alert-info">
                     <strong>Available Tokens: </strong> [ImageUrl], [LinkUrl]
                 </div>
-                @Html.TextAreaFor(x => x.BannerTemplate, new { @class = "span12", rows = 6 })
-                @Html.ValidationMessageFor(x => x.BannerTemplate)
             </div>
         </div>
     </fieldset>

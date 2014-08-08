@@ -1,22 +1,27 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @model MrCMS.Paging.IPagedList<Product>
-@{ 
+@{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
     var product = ViewData["product"] as Product;
 }
 
 <fieldset>
-    <legend>Add Related Product
+    <legend>
+        Add Related Product
         <span class="btn-group  display-inline  pull-right">
-            <button id="close" class="btn-primary btn">Close</button>
         </span>
     </legend>
 
-    <input autocomplete="off" class="search-query span2" id="searchparam" name="searchparam" placeholder="Search" type="text" />
-    <input type="button" class="btn btn-primary" value="Search" id="search" />
+
+    <div class="input-group">
+        <input autocomplete="off" class="search-query form-control" id="searchparam" name="searchparam" placeholder="Search" type="text" />
+        <span class="input-group-btn">
+            <input type="button" class="btn btn-primary" value="Search" id="search" />
+        </span>
+    </div>
+
     @Html.Hidden("productId", product != null ? product.Id : 0)
-    <br />
     <br />
     <div class="modal-body-container">
         @{Html.RenderPartial("AddRelatedProductItems", Model);}

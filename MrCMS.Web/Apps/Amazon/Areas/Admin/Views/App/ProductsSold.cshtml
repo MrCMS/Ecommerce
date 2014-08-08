@@ -1,22 +1,22 @@
 ﻿@using System.Web.Mvc.Html
 @model MrCMS.Web.Apps.Amazon.Models.AmazonDashboardModel
 
-<div class="row-fluid">
-                <div class="span12">
-        
-                    <div class="dashboard-box">
-                        <div class="graphics">
-                            <div id="products"></div>  
-                        </div>
-                        <div class="info orders">
-                            <div class="stats">
-                          
-                            </div>
-                            <div class="stats-description">                           
-                                Products Sold
-                            </div>
-                        </div>
-                        @Html.ActionLink("All Listings", "Index", "ListingGroup", null,new { @class = "more-info peter-river"}) 
-                    </div>
-                </div> 
+<div class="row">
+    <div class="col-lg-12">
+
+        <div class="dashboard-box">
+            <div class="graphics">
+                <div id="products"></div>
             </div>
+            <div class="info orders">
+                <div class="stats">
+
+                </div>
+                <div class="stats-description">
+                    Products Sold
+                </div>
+            </div>
+            @Html.ActionLink("All Listings", "Index", "ListingGroup", null, new { @class = "more-info peter-river" })
+        </div>
+    </div>
+</div>

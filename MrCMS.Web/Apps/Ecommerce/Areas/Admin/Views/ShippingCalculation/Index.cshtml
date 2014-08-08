@@ -22,7 +22,7 @@
                 <h4>@country.Name</h4>
             </div>
             <div class="pull-right">
-                @Html.ActionLink("Add", "Add", "ShippingCalculation", new { id = country.Id }, new { @class = "btn btn-primary btn-mini", data_toggle = "fb-modal" })
+                @Html.ActionLink("Add", "Add", "ShippingCalculation", new { id = country.Id }, new { @class = "btn btn-primary btn-xs btn-default", data_toggle = "fb-modal" })
             </div>
             <br />
             <br />
@@ -34,9 +34,9 @@
             <table class="table table-condensed table-striped">
                 <thead>
                     <tr>
-                        <th class="span4"></th>
-                        <th class="span2"></th>
-                        <th class="span2"></th>
+                        <th class="col-lg-4"></th>
+                        <th class="col-lg-2"></th>
+                        <th class="col-lg-2"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,8 +51,8 @@
                             </td>
                             <td>
                                 <div class="btn-group pull-right">
-                                    @Html.ActionLink("Edit", "Edit", "ShippingCalculation", new { id = shippingCalculation.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                                    @Html.ActionLink("Delete", "Delete", "ShippingCalculation", new { id = shippingCalculation.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Edit", "Edit", "ShippingCalculation", new { id = shippingCalculation.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Delete", "Delete", "ShippingCalculation", new { id = shippingCalculation.Id }, new { @class = "btn btn-xs btn-default btn-danger", data_toggle = "fb-modal" })
                                 </div>
                             </td>
                         </tr>

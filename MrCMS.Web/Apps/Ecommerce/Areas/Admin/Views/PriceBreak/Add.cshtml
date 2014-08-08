@@ -11,14 +11,16 @@
                 <input type="submit" class="btn btn-primary" value="Add Price Break" />
             </span>
         </legend>
-
         @Html.HiddenFor(model => model.Id)
-        @Html.LabelFor(model => model.Quantity)
-        @Html.TextBoxFor(model => model.Quantity)
-        @Html.ValidationMessageFor(model => model.Quantity)
-        @Html.LabelFor(model => model.Price)
-        @Html.TextBoxFor(model => model.Price)
-        @Html.ValidationMessageFor(model => model.Price)
-
+        <div class="form-group">
+            @Html.LabelFor(model => model.Quantity)
+            @Html.TextBoxFor(model => model.Quantity, new{@class="form-control"})
+            @Html.ValidationMessageFor(model => model.Quantity)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price)
+            @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Price)
+        </div>
     </fieldset>
 }

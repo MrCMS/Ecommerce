@@ -5,6 +5,9 @@
 }
 @using (Html.BeginForm("AddProductOption", "Product", new { id = Model.Id }, FormMethod.Post, new { id = "product-option-form", style = "margin:0px;" }))
 {
-    @Html.DropDownList("product-option", options)
-    <input type="submit" class="btn btn-primary btn-mini" value="Add" id="add-product-option" />
+    <div class="input-group">@Html.DropDownList("product-option", options, new{@class="form-control"})
+        <span class="input-group-btn">
+            <input type="submit" class="btn btn-primary" value="Add" id="add-product-option" />
+        </span>
+    </div>
 }

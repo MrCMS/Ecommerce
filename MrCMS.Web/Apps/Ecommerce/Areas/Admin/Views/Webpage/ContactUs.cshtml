@@ -1,22 +1,28 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.ContactUs
 
-<div class="row-fluid">
-    <div class="span6">
-        @Html.LabelFor(x => x.Address)
-        @Html.TextAreaFor(x => x.Address, new { @class = "ckedit-enabled" })
-        @Html.ValidationMessageFor(x => x.Address)
-
-        @Html.LabelFor(x => x.Latitude)
-        @Html.TextBoxFor(x => x.Latitude)
-        @Html.ValidationMessageFor(x => x.Latitude)
-
-        @Html.LabelFor(x => x.Longitude)
-        @Html.TextBoxFor(x => x.Longitude)
-        @Html.ValidationMessageFor(x => x.Longitude)
+<div class="row">
+    <div class="col-lg-6">
+        <div class="form-group">
+            @Html.LabelFor(x => x.Address)
+            @Html.TextAreaFor(x => x.Address, new { @class = "ckedit-enabled form-control" })
+            @Html.ValidationMessageFor(x => x.Address)
+        </div>
     </div>
-    <div class="span6">
-        @Html.LabelFor(x => x.PinImage)
-        @Html.TextBoxFor(x => x.PinImage, new { @class = "media-selector" })
-        @Html.ValidationMessageFor(x => x.PinImage)
+    <div class="col-lg-6">
+        <div class="form-group">
+            @Html.LabelFor(x => x.PinImage) <br />
+            @Html.TextBoxFor(x => x.PinImage, new { @class = "media-selector" })
+            @Html.ValidationMessageFor(x => x.PinImage)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Latitude)
+            @Html.TextBoxFor(x => x.Latitude, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Latitude)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Longitude)
+            @Html.TextBoxFor(x => x.Longitude, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Longitude)
+        </div>
     </div>
 </div>
