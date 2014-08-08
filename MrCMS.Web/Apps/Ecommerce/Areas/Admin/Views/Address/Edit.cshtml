@@ -3,98 +3,121 @@
 @using (Html.BeginForm("Edit", "Address", FormMethod.Post))
 {
     <fieldset>
-        <legend>Edit order addresses
+        <legend>
+            Edit order addresses
             <span class="btn-group  display-inline  pull-right">
                 <input type="submit" class="btn-primary btn" value="Save" />
             </span>
         </legend>
 
         @Html.HiddenFor(x => x.Id)
-        
+
         <h4>Billing Address</h4>
         <div class="row">
-            <div class="col-lg-6">
-                @Html.LabelFor(x => x.BillingAddress.FirstName)
-                @Html.TextBoxFor(x => x.BillingAddress.FirstName)
-
-                @Html.LabelFor(x => x.BillingAddress.LastName)
-                @Html.TextBoxFor(x => x.BillingAddress.LastName)
-
-                @Html.LabelFor(x => x.BillingAddress.Title)
-                @Html.TextBoxFor(x => x.BillingAddress.Title)
-
-                @Html.LabelFor(x => x.BillingAddress.Company)
-                @Html.TextBoxFor(x => x.BillingAddress.Company)
-
-                @Html.LabelFor(x => x.BillingAddress.PhoneNumber)
-                @Html.TextBoxFor(x => x.BillingAddress.PhoneNumber)
-
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.FirstName)
+                    @Html.TextBoxFor(x => x.BillingAddress.FirstName, new{@class="form-control"})
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.LastName)
+                    @Html.TextBoxFor(x => x.BillingAddress.LastName, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.Title)
+                    @Html.TextBoxFor(x => x.BillingAddress.Title, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.Company)
+                    @Html.TextBoxFor(x => x.BillingAddress.Company, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.PhoneNumber)
+                    @Html.TextBoxFor(x => x.BillingAddress.PhoneNumber, new { @class = "form-control" })
+                </div>
 
             </div>
-            <div class="col-lg-6">
-                @Html.LabelFor(x => x.BillingAddress.Address1)
-                @Html.TextBoxFor(x => x.BillingAddress.Address1)
-
-                @Html.LabelFor(x => x.BillingAddress.Address2)
-                @Html.TextBoxFor(x => x.BillingAddress.Address2)
-
-                @Html.LabelFor(x => x.BillingAddress.PostalCode)
-                @Html.TextBoxFor(x => x.BillingAddress.PostalCode)
-
-                @Html.LabelFor(x => x.BillingAddress.City)
-                @Html.TextBoxFor(x => x.BillingAddress.City)
-
-                @Html.LabelFor(x => x.BillingAddress.StateProvince)
-                @Html.TextBoxFor(x => x.BillingAddress.StateProvince)
-                
-                @Html.LabelFor(x => x.BillingAddress.Country.Id, "Country")
-                @Html.DropDownListFor(x => x.BillingAddress.Country.Id, ViewData["Countries"] as IEnumerable<SelectListItem>)
-
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.Address1)
+                    @Html.TextBoxFor(x => x.BillingAddress.Address1, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.Address2)
+                    @Html.TextBoxFor(x => x.BillingAddress.Address2, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.PostalCode)
+                    @Html.TextBoxFor(x => x.BillingAddress.PostalCode, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.City)
+                    @Html.TextBoxFor(x => x.BillingAddress.City, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.StateProvince)
+                    @Html.TextBoxFor(x => x.BillingAddress.StateProvince, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BillingAddress.Country.Id, "Country")
+                    @Html.DropDownListFor(x => x.BillingAddress.Country.Id, ViewData["Countries"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                </div>
             </div>
         </div>
-        
+
         <h4>Shipping Address</h4>
         <div class="row">
-            <div class="col-lg-6">
-                @Html.LabelFor(x => x.ShippingAddress.FirstName)
-                @Html.TextBoxFor(x => x.ShippingAddress.FirstName)
-
-                @Html.LabelFor(x => x.ShippingAddress.LastName)
-                @Html.TextBoxFor(x => x.ShippingAddress.LastName)
-
-                @Html.LabelFor(x => x.ShippingAddress.Title)
-                @Html.TextBoxFor(x => x.ShippingAddress.Title)
-
-                @Html.LabelFor(x => x.ShippingAddress.Company)
-                @Html.TextBoxFor(x => x.ShippingAddress.Company)
-
-                @Html.LabelFor(x => x.ShippingAddress.PhoneNumber)
-                @Html.TextBoxFor(x => x.ShippingAddress.PhoneNumber)
-
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.FirstName)
+                    @Html.TextBoxFor(x => x.ShippingAddress.FirstName, new{@class="form-control"})
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.LastName)
+                    @Html.TextBoxFor(x => x.ShippingAddress.LastName, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.Title)
+                    @Html.TextBoxFor(x => x.ShippingAddress.Title, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.Company)
+                    @Html.TextBoxFor(x => x.ShippingAddress.Company, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.PhoneNumber)
+                    @Html.TextBoxFor(x => x.ShippingAddress.PhoneNumber, new { @class = "form-control" })
+                </div>
 
             </div>
-            <div class="col-lg-6">
-                @Html.LabelFor(x => x.ShippingAddress.Address1)
-                @Html.TextBoxFor(x => x.ShippingAddress.Address1)
-
-                @Html.LabelFor(x => x.ShippingAddress.Address2)
-                @Html.TextBoxFor(x => x.ShippingAddress.Address2)
-
-                @Html.LabelFor(x => x.ShippingAddress.PostalCode)
-                @Html.TextBoxFor(x => x.ShippingAddress.PostalCode)
-
-                @Html.LabelFor(x => x.ShippingAddress.City)
-                @Html.TextBoxFor(x => x.ShippingAddress.City)
-
-                @Html.LabelFor(x => x.ShippingAddress.StateProvince)
-                @Html.TextBoxFor(x => x.ShippingAddress.StateProvince)
-                
-                @Html.LabelFor(x => x.ShippingAddress.Country.Id, "Country")
-                @Html.DropDownListFor(x => x.ShippingAddress.Country.Id, ViewData["Countries"] as IEnumerable<SelectListItem>)
-
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.Address1)
+                    @Html.TextBoxFor(x => x.ShippingAddress.Address1, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.Address2)
+                    @Html.TextBoxFor(x => x.ShippingAddress.Address2, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.PostalCode)
+                    @Html.TextBoxFor(x => x.ShippingAddress.PostalCode, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.City)
+                    @Html.TextBoxFor(x => x.ShippingAddress.City, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.StateProvince)
+                    @Html.TextBoxFor(x => x.ShippingAddress.StateProvince, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingAddress.Country.Id, "Country")
+                    @Html.DropDownListFor(x => x.ShippingAddress.Country.Id, ViewData["Countries"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                </div>
             </div>
         </div>
     </fieldset>
-    
+
     <p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 }

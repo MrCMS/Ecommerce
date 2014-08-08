@@ -2,19 +2,25 @@
 @model MrCMS.Web.Apps.Ecommerce.Pages.Category
 <div class="row">
     <div class="col-lg-3">
-        @Html.LabelFor(webpage => webpage.FeatureImage)
-        @Html.TextBoxFor(webpage => webpage.FeatureImage, new { @class = "media-selector" })
-        
-        @Html.InlineCheckboxFor(x=>x.ShowSubCategories)
+        <div class="form-group">
+            @Html.LabelFor(webpage => webpage.FeatureImage)<br />
+            @Html.TextBoxFor(webpage => webpage.FeatureImage, new { @class = "media-selector" })
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(x => x.ShowSubCategories)
+        </div>
     </div>
     <div class="col-lg-9">
-        @Html.LabelFor(category => category.Abstract)
-        @Html.TextAreaFor(category => category.Abstract, new { rows = 4, @class = "form-control" })
-        @Html.ValidationMessageFor(category => category.Abstract)
+        <div class="form-group">
+            @Html.LabelFor(category => category.Abstract)
+            @Html.TextAreaFor(category => category.Abstract, new { rows = 4, @class = "form-control" })
+            @Html.ValidationMessageFor(category => category.Abstract)
+        </div>
     </div>
 </div>
-@Html.LabelFor(webpage => webpage.DefaultProductSearchSort)
-@Html.DropDownListFor(webpage => webpage.DefaultProductSearchSort, ViewData["product-search-sort-options"] as IEnumerable<SelectListItem>)
-
+<div class="form-group">
+    @Html.LabelFor(webpage => webpage.DefaultProductSearchSort)
+    @Html.DropDownListFor(webpage => webpage.DefaultProductSearchSort, ViewData["product-search-sort-options"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+</div>
 @{ Html.RenderAction("HiddenSpecifications", "EcommerceSearchablePage", new { id = Model.Id });}
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/edit-category.js"); }

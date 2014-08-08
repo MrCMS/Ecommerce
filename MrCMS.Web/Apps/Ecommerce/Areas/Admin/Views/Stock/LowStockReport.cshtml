@@ -5,25 +5,30 @@
 }
 
 <fieldset>
-    <legend>Low Stock Report
+    <legend>
+        Low Stock Report
         <span class="btn-group  display-inline  pull-right">
-            @Html.ActionLink("Export Low Stock Report (CSV)","ExportLowStockReport", "Stock", new {threshold=ViewData["threshold"]} ,new { @class="btn btn-primary"}))
+            @Html.ActionLink("Export Low Stock Report (CSV)", "ExportLowStockReport", "Stock", new { threshold = ViewData["threshold"] }, new { @class = "btn btn-primary" })
         </span>
     </legend>
-    @if(!String.IsNullOrWhiteSpace(ViewBag.Status))
+    @if (!String.IsNullOrWhiteSpace(ViewBag.Status))
     {
         <br />
         <span class="alert alert-info">@ViewBag.Status</span>
         <div class="clearfix"></div>
-        <hr/>
+        <hr />
     }
-    <div class="row">
     @using (Html.BeginForm("LowStockReport", "Stock", FormMethod.Get))
     {
-        <input type="text" class="search-query input-mini" placeholder="Threshold" id="threshold" name="threshold" value="@ViewData["threshold"]" />
-        <input type="submit" class="btn btn-primary btn-success" value="Generate Report" />
+        <div class="input-group">
+            <input type="text" class="search-query form-control" placeholder="Threshold" id="threshold" name="threshold" value="@ViewData["threshold"]" />
+
+            <span class="input-group-btn">
+                <input type="submit" class="btn btn-primary btn-success" value="Generate Report" />
+
+            </span>
+        </div>
     }
-    </div>
     <hr />
     <div id="product-variants">
         @{ Html.RenderAction("LowStockReportProductVariants", "Stock");}

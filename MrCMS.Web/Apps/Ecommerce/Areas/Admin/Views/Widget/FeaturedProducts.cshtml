@@ -1,9 +1,9 @@
 ﻿@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Widgets.FeaturedProducts
-
-<br />
-@Html.LabelFor(widget => widget.ListOfFeaturedProducts)
-@Html.TextBoxFor(widget => widget.ListOfFeaturedProducts)
+<div class="form-group">
+    @Html.LabelFor(widget => widget.ListOfFeaturedProducts)
+    @Html.TextBoxFor(widget => widget.ListOfFeaturedProducts, new { @class = "form-control" })
+</div>
 
 <div class="clearfix"></div>
 <input autocomplete="off" class="search-query col-lg-6" id="searchparam" name="searchparam" placeholder="Search and add products to be featured within widget" type="text" />

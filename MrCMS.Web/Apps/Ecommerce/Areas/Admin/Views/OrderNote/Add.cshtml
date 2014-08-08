@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.OrderNote
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.OrderNote
 
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("Add", "OrderNote", FormMethod.Post))
@@ -12,12 +13,15 @@
 
         @Html.HiddenFor(x => x.Order.Id)
         @Html.HiddenFor(x => x.User.Id)
-        @Html.LabelFor(x => x.ShowToClient)
-        @Html.CheckBoxFor(x => x.ShowToClient)
-        <br />
-        <br />
-        @Html.LabelFor(x => x.Note)
-        @Html.TextAreaFor(x => x.Note, new {@class = "form-control", style="height:250px"})
+        
+        <div class="form-group">
+            @Html.InlineCheckboxFor(x => x.ShowToClient, text: "Show to Customer")
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(x => x.Note)
+            @Html.TextAreaFor(x => x.Note, new { @class = "form-control", style = "height:250px" })
+        </div>
 
     </fieldset>
 }

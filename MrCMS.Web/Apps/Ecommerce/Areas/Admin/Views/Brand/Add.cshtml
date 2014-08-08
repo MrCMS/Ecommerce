@@ -9,13 +9,16 @@
                </span>
         </legend>
         @Html.Hidden("productId", ViewBag.ProductId as string)
-
-        @Html.LabelFor(x => x.Name)
-        @Html.TextBoxFor(x => x.Name)
-        @Html.ValidationMessageFor(x => x.Name)
-
-        @Html.LabelFor(webpage => webpage.Logo)
-        @Html.TextBoxFor(webpage => webpage.Logo, new { @class = "media-selector" })
+        
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new{@class="form-control"})
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(webpage => webpage.Logo)<br />
+            @Html.TextBoxFor(webpage => webpage.Logo, new { @class = "media-selector form-control" })
+        </div>
 
     </fieldset>
 }

@@ -17,10 +17,10 @@
             @Html.CheckBox("Published", Model.Product.Published, new {disabled = "disabled"})
         </div>
         <div class="col-lg-2">
-        @Html.TextBox("StockRemaining", Model.StockRemaining, new {@class = "input-mini"})
+        @Html.TextBox("StockRemaining", Model.StockRemaining, new {@class = "form-control"})
             </div>
         <div class="col-lg-2">
-            <button type="submit" class="btn update-stock">
+            <button type="submit" class="btn btn-default update-stock">
                 Update
             </button>
         </div>

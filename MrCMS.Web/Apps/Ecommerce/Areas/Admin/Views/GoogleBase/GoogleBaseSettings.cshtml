@@ -6,16 +6,21 @@
     @using (Html.BeginForm("GoogleBaseSettings", "GoogleBase", FormMethod.Post, new { id = "Settings" }))
     {
         @Html.HiddenFor(settings => settings.SiteId)
-        @Html.LabelFor(x => x.GoogleBaseTaxonomyFeedUrl)
-        @Html.TextBoxFor(x => x.GoogleBaseTaxonomyFeedUrl, new {@class = "input-xxlarge"})
-        @Html.LabelFor(x => x.DefaultCategory)
-        @Html.HiddenFor(x => x.DefaultCategory,new {@class="select2 select2-full"})
+        <div class="form-group">
+            @Html.LabelFor(x => x.GoogleBaseTaxonomyFeedUrl)
+            @Html.TextBoxFor(x => x.GoogleBaseTaxonomyFeedUrl, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.DefaultCategory)<br />
+            @Html.HiddenFor(x => x.DefaultCategory, new { @class = "select2 " })
+        </div>
+    <div class="form-group">
         @Html.LabelFor(x => x.DefaultCondition)
-        @Html.DropDownListFor(x => x.DefaultCondition, ViewData["product-conditions"] as IEnumerable<SelectListItem>, new {@class = "input-medium"})
-        <br />
-        <button type="submit" class="btn btn-primary btn-xs btn-default">Save Settings</button>
+        @Html.DropDownListFor(x => x.DefaultCondition, ViewData["product-conditions"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+    </div>
+        <button type="submit" class="btn btn-default">Save Settings</button>
     }
-    
+    <br />
     @Html.InfoBlock("Heads up", " You can set up Google Base to download directly from this URL: http://" + CurrentRequestData.CurrentSite.BaseUrl + "/export/google-base-feed")
 </div>
 
