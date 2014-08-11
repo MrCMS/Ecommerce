@@ -16,26 +16,32 @@
                 <input type="submit" class="btn btn-primary" value="Save" />
             </span>
         </legend>
-        <div class="row-fluid">
-            <div class="span4">
-                @Html.LabelFor(settings => settings.DisplayName)
-                @Html.TextBoxFor(settings => settings.DisplayName)
-                @Html.ValidationMessageFor(settings => settings.DisplayName)
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    @Html.LabelFor(settings => settings.DisplayName)
+                    @Html.TextBoxFor(settings => settings.DisplayName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(settings => settings.DisplayName)
+                </div>
 
-                @Html.LabelFor(settings => settings.Description)
-                @Html.TextBoxFor(settings => settings.Description)
-                @Html.ValidationMessageFor(settings => settings.Description)
+                <div class="form-group">
+                    @Html.LabelFor(settings => settings.Description)
+                    @Html.TextBoxFor(settings => settings.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(settings => settings.Description)
+                </div>
 
-                @Html.LabelFor(settings => settings.TaxRateId)
-                @Html.DropDownListFor(settings => settings.TaxRateId, taxRateOptions)
-                @Html.ValidationMessageFor(settings => settings.TaxRateId)
+                <div class="form-group">
+                    @Html.LabelFor(settings => settings.TaxRateId)
+                    @Html.DropDownListFor(settings => settings.TaxRateId, taxRateOptions, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(settings => settings.TaxRateId)
+                </div>
             </div>
-            <div class="span8">
+            <div class="col-sm-8">
                 <fieldset>
                     <legend>
                         Rates
                         <span class="btn-group display-inline pull-right">
-                            @Html.ActionLink("Add rate", "Add", "UKCourierShippingCalculation", new { }, new { @class = "btn-small btn-primary btn", data_toggle = "fb-modal" })
+                            @Html.ActionLink("Add rate", "Add", "UKCourierShippingCalculation", new { }, new { @class = "btn-sm btn-primary btn", data_toggle = "fb-modal" })
                         </span>
                     </legend>
 
@@ -68,8 +74,8 @@
                                     </td>
                                     <td>
                                         <div class="btn-group pull-right">
-                                            @Html.ActionLink("Edit", "Edit", "UKCourierShippingCalculation", new { id = calculation.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                                            @Html.ActionLink("Delete", "Delete", "UKCourierShippingCalculation", new { id = calculation.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                                            @Html.ActionLink("Edit", "Edit", "UKCourierShippingCalculation", new { id = calculation.Id }, new { @class = "btn btn-default btn-xs", data_toggle = "fb-modal" })
+                                            @Html.ActionLink("Delete", "Delete", "UKCourierShippingCalculation", new { id = calculation.Id }, new { @class = "btn btn-xs btn-danger", data_toggle = "fb-modal" })
                                         </div>
                                     </td>
                                 </tr>
