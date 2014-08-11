@@ -49,5 +49,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         {
             _session.Transact(session => session.Update(calculation));
         }
+
+        public void Delete(UKFirstClassShippingCalculation calculation)
+        {
+            _session.Transact(session => session.Delete(calculation));
+        }
     }
 }
