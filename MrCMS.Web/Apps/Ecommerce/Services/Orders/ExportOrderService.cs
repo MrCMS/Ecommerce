@@ -130,7 +130,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             frame1.Width = new Unit(10, UnitType.Centimeter);
             var p = frame1.AddParagraph();
             p.Format.Font.Size = 16;
-            p.Format.Alignment=ParagraphAlignment.Right;
+            p.Format.Alignment = ParagraphAlignment.Right;
             p.AddFormattedText("Order #" + order.Id, TextFormat.Bold);
 
             frame1 = section.AddTextFrame();
@@ -226,15 +226,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 p = frame2.AddParagraph();
                 p.AddText(order.ShippingAddress.StateProvince);
             }
-            if (order.BillingAddress.Country != null)
+            var billingCountryName = order.BillingAddress.GetCountryName();
+            if (!string.IsNullOrWhiteSpace(billingCountryName))
             {
                 p = frame1.AddParagraph();
-                p.AddText(order.BillingAddress.Country.Name);
+                p.AddText(billingCountryName);
             }
-            if (order.ShippingAddress.Country != null)
+            var shippingCountryName = order.ShippingAddress.GetCountryName();
+            if (!string.IsNullOrWhiteSpace(shippingCountryName))
             {
                 p = frame2.AddParagraph();
-                p.AddText(order.ShippingAddress.Country.Name);
+                p.AddText(shippingCountryName);
             }
             if (!String.IsNullOrWhiteSpace(order.BillingAddress.PostalCode))
             {
@@ -428,10 +430,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public System.Drawing.Image ResizeImage(System.Drawing.Image origImg, int width, int maxHeight)
         {
-            var newHeight = origImg.Height*width/origImg.Width;
+            var newHeight = origImg.Height * width / origImg.Width;
             if (newHeight > maxHeight)
             {
-                width = origImg.Width*maxHeight/origImg.Height;
+                width = origImg.Width * maxHeight / origImg.Height;
                 newHeight = maxHeight;
             }
             var newImg = origImg.GetThumbnailImage(width, newHeight, null, IntPtr.Zero);

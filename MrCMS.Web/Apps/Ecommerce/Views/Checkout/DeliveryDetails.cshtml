@@ -1,5 +1,6 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 @using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 <h4>Delivery Details</h4>
 <ul class="media-list">
     <li>@(Model.ShippingAddress.Name??String.Empty)</li>
@@ -9,6 +10,6 @@
     <li>@(Model.ShippingAddress.Address2??String.Empty)</li>
     <li>@(Model.ShippingAddress.City??String.Empty)</li>
     <li>@(Model.ShippingAddress.PostalCode??String.Empty)</li>
-    <li>@(Model.ShippingAddress.Country!=null?Model.ShippingAddress.Country.Name:String.Empty)</li>
+    <li>@(Model.ShippingAddress.GetCountryName())</li>
 </ul>
-<a class="btn btn-grey" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.SetDeliveryDetails>())">Edit</a>
+<a class="btn btn-grey" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.SetShippingDetails>())">Edit</a>

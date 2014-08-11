@@ -77,7 +77,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                                  Address1 = address.Address1,
                                  Address2 = address.Address2,
                                  City = address.City,
-                                 Country = address.Country.ISOTwoLetterCode,
+                                 Country = address.CountryCode,
                                  Firstnames = address.FirstName,
                                  Phone = address.PhoneNumber,
                                  PostCode = address.PostalCode,

@@ -13,7 +13,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private readonly IGetShippingAddress _getShippingAddress;
         private readonly IShippingMethodUIService _shippingMethodUIService;
 
-        public AssignShippingInfo(ICartSessionManager cartSessionManager, IGetShippingAddress getShippingAddress, IShippingMethodUIService shippingMethodUIService)
+        public AssignShippingInfo(ICartSessionManager cartSessionManager, IGetShippingAddress getShippingAddress,
+            IShippingMethodUIService shippingMethodUIService)
         {
             _cartSessionManager = cartSessionManager;
             _getShippingAddress = getShippingAddress;
@@ -25,8 +26,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             cart.ShippingAddress = _getShippingAddress.Get(userGuid);
             if (cart.RequiresShipping)
             {
-                cart.AvailableShippingMethods =
-                    _shippingMethodUIService.GetAvailableMethods().FindAll(method => cart.ShippingAddress == null || method.CanBeUsed(cart));
+                cart.PotentiallyAvailableShippingMethods =
+                    _shippingMethodUIService.GetEnabledMethods().FindAll(method => method.CanPotentiallyBeUsed(cart));
                 cart.ShippingMethod = GetShippingMethod(cart, userGuid);
             }
             return cart;
@@ -35,7 +36,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private IShippingMethod GetShippingMethod(CartModel cart, Guid userGuid)
         {
             var type = _cartSessionManager.GetSessionValue<string>(CartManager.CurrentShippingMethodTypeKey, userGuid);
-            return cart.AvailableShippingMethods.FirstOrDefault(method => method.GetType().FullName == type);
+            var shippingMethod = _shippingMethodUIService.GetMethodByTypeName(type);
+            if (shippingMethod != null)
+                return shippingMethod.CanBeUsed(cart) ? shippingMethod : null;
+            return null;
         }
     }
 }

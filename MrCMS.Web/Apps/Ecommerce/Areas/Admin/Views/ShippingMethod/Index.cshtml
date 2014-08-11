@@ -1,5 +1,5 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Settings
-@model List<MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers.ShippingMethodInfo>
+@model List<MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.ShippingMethodInfo>
 @{
     ViewBag.Title = "Shipping Methods";
 }
@@ -21,6 +21,9 @@
                             Name
                         </th>
                         <th>
+                            Display Name
+                        </th>
+                        <th>
                             Description
                         </th>
                         <th>
@@ -37,6 +40,9 @@
                         <tr>
                             <td>
                                 @item.Name
+                            </td>
+                            <td>
+                                @item.DisplayName
                             </td>
                             <td>
                                 @item.Description

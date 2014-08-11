@@ -1,0 +1,26 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+@{
+    IEnumerable<SelectListItem> selectListItems = ViewData["shipping-methods"] as IEnumerable<SelectListItem> ?? new List<SelectListItem>();
+}
+<div class="block-title">
+    <h1>Select shipping method</h1>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-lg-3 control-label">Postage Selection <span class="red">*</span> :</label>
+                <div class="col-lg-9 col-sm-12">
+                    @Html.DropDownList("ShippingMethod", selectListItems, new { @class = "form-control margin-bottom-10" })
+                    <div id="to-payment-details" style="display:none">
+                        <a class="btn btn-default margin-top-10" href="@(UniquePageHelper.GetUrl<PaymentDetails>())">
+                            To Payment
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

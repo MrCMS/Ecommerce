@@ -15,7 +15,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
 
         public override IEnumerable<Type> ChildrenList
         {
-            get { yield return typeof(EnterOrderEmail); yield return typeof(OrderPlaced); yield return typeof(SetDeliveryDetails); yield return typeof(PaymentDetails); yield return typeof(ProductAddedToCart); }
+            get
+            {
+                yield return typeof (EnterOrderEmail);
+                yield return typeof (OrderPlaced);
+                yield return typeof (SetShippingDetails);
+                yield return typeof (PaymentDetails);
+                yield return typeof (ProductAddedToCart);
+            }
         }
 
         public override bool RequiresParent { get { return false; } }

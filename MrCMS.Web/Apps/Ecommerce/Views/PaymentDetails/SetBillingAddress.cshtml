@@ -2,6 +2,7 @@
 @model MrCMS.Web.Apps.Ecommerce.Entities.Users.Address
 @{
     var otherAddresses = ViewData["other-addresses"] as List<SelectListItem>;
+    var countryOptions = ViewData["country-options"] as List<SelectListItem>;
 }
 <div id="billing-address">
     @using (Html.BeginForm("SaveBillingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
@@ -64,7 +65,7 @@
 
                 <div class="margin-bottom-10">
                     <label for="Country">Country <span class="red">*</span> :</label>
-                    @Html.DisplayFor(address => address.Country.Name, new {@class="form-control"})
+                    @Html.DropDownListFor(address => address.CountryCode,countryOptions, new {@class="form-control"})
                 </div>
                 
                 <div class="margin-bottom-10">

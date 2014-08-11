@@ -1,4 +1,5 @@
-﻿using MrCMS.Entities.Multisite;
+﻿using System.Collections.Generic;
+using MrCMS.Entities.Multisite;
 using MrCMS.Tasks;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Website;
@@ -22,13 +23,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Tasks
 
         protected override void OnExecute()
         {
-            var statelessSession = _sessionFactory.OpenStatelessSession();
-            var sessionDatas =
+            IStatelessSession statelessSession = _sessionFactory.OpenStatelessSession();
+            IList<SessionData> sessionDatas =
                 statelessSession.QueryOver<SessionData>().Where(data => data.ExpireOn <= CurrentRequestData.Now).List();
 
-            using (var transaction = statelessSession.BeginTransaction())
+            using (ITransaction transaction = statelessSession.BeginTransaction())
             {
-                foreach (var sessionData in sessionDatas)
+                foreach (SessionData sessionData in sessionDatas)
                 {
                     statelessSession.Delete(sessionData);
                 }

@@ -7,6 +7,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Website;
 using NHibernate;
 
@@ -122,6 +123,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public void SetShippingAddress(Address address)
         {
             _cartSessionManager.SetSessionValue(CurrentShippingAddressKey, _getUserGuid.UserGuid, address);
+        }
+
+        public void SetShippingMethod(IShippingMethod shippingMethod)
+        {
+            if (shippingMethod != null)
+            {
+                _cartSessionManager.SetSessionValue(CurrentShippingMethodTypeKey, _getUserGuid.UserGuid,
+                    shippingMethod.GetType().FullName);
+            }
+            else
+            {
+                _cartSessionManager.RemoveValue(CurrentShippingMethodTypeKey, _getUserGuid.UserGuid);
+            }
         }
 
         public void SetBillingAddress(Address address)

@@ -14,23 +14,48 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 {
     public class UKFirstClassShipping : IShippingMethod
     {
+        private readonly IGetDefaultTaxRate _getDefaultTaxRate;
         private readonly ISession _session;
         private readonly UKFirstClassShippingSettings _ukFirstClassShippingSettings;
-        private readonly IGetDefaultTaxRate _getDefaultTaxRate;
 
-        public UKFirstClassShipping(ISession session, UKFirstClassShippingSettings ukFirstClassShippingSettings,IGetDefaultTaxRate getDefaultTaxRate)
+        public UKFirstClassShipping(ISession session, UKFirstClassShippingSettings ukFirstClassShippingSettings,
+            IGetDefaultTaxRate getDefaultTaxRate)
         {
             _session = session;
             _ukFirstClassShippingSettings = ukFirstClassShippingSettings;
             _getDefaultTaxRate = getDefaultTaxRate;
         }
 
+        public string Name
+        {
+            get { return "UK First Class"; }
+        }
+
+        public string DisplayName
+        {
+            get { return _ukFirstClassShippingSettings.DisplayName; }
+        }
+
+        public string Description
+        {
+            get { return _ukFirstClassShippingSettings.Description; }
+        }
+
         public bool CanBeUsed(CartModel cart)
         {
-            if (cart == null || cart.ShippingAddress == null || cart.ShippingAddress.Country == null ||
-                cart.ShippingAddress.Country.ISOTwoLetterCode != "GB")
+            if (!CanPotentiallyBeUsed(cart))
                 return false;
-            return GetBestAvailableCalculation(cart) != null;
+            if (cart.ShippingAddress == null)
+                return false;
+            return cart.ShippingAddress.CountryCode == "GB";
+        }
+
+        public bool CanPotentiallyBeUsed(CartModel cart)
+        {
+            if (cart == null)
+                return false;
+            var calculation = GetBestAvailableCalculation(cart);
+            return calculation != null;
         }
 
         public ShippingAmount GetShippingTotal(CartModel cart)
@@ -49,21 +74,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
                 : ShippingAmount.Amount(calculation.Tax(TaxRatePercentage));
         }
 
-        public string Name
-        {
-            get { return _ukFirstClassShippingSettings.Name; }
-        }
-
-        public string Description
-        {
-            get { return _ukFirstClassShippingSettings.Description; }
-        }
-
         public decimal TaxRatePercentage
         {
             get
             {
-                var taxRateId = _ukFirstClassShippingSettings.TaxRateId;
+                int? taxRateId = _ukFirstClassShippingSettings.TaxRateId;
                 TaxRate taxRate = null;
                 if (taxRateId.HasValue)
                 {
@@ -79,8 +94,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             }
         }
 
-        public string ConfigureController { get { return "UKFirstClassShipping"; } }
-        public string ConfigureAction { get { return "Configure"; } }
+        public string ConfigureController
+        {
+            get { return "UKFirstClassShipping"; }
+        }
+
+        public string ConfigureAction
+        {
+            get { return "Configure"; }
+        }
 
         private UKFirstClassShippingCalculation GetBestAvailableCalculation(CartModel cart)
         {
