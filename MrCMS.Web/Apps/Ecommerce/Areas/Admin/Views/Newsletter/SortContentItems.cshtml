@@ -5,7 +5,9 @@
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
 }
 @using (Html.BeginForm("SortContentItems", "Newsletter", FormMethod.Post))
-    {
+{
+    @Html.ReturnToReferrer();
+    
         <fieldset>
             <legend>
                 Sort Content Items
