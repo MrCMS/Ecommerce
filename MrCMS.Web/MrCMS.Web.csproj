@@ -523,10 +523,12 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICategoryAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IShippingMethodAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IUKCourierShippingAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IUKCourierShippingCalculationAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IUKFirstClassShippingAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IUKFirstClassShippingCalculationAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ShippingMethodAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\UKCourierShippingAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\UKCourierShippingCalculationAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\UKFirstClassShippingAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\UKFirstClassShippingCalculationAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ViewData\GetCategoryProductSortOptions.cs" />
@@ -3006,6 +3008,9 @@
     <Content Include="Apps\Ecommerce\Views\SetShippingAddress\ShippingAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SetShippingAddress\ShowShippingAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\UKCourierShippingCalculation\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\UKCourierShippingCalculation\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\UKCourierShippingCalculation\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\UKFirstClassShippingCalculation\Delete.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Default\Apps\Core\Web.config">
