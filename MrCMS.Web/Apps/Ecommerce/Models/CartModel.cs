@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using MrCMS.Entities.People;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
-using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
+using MrCMS.Web.Apps.Ecommerce.Models.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Payment;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Website;
 using NHibernate;
 
@@ -23,12 +23,47 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             Items = new List<CartItem>();
             AvailablePaymentMethods = new List<IPaymentMethod>();
-            AvailableShippingMethods = new List<ShippingMethod>();
         }
+
+        // user & items
         public Guid CartGuid { get; set; }
         public List<CartItem> Items { get; set; }
+        public User User { get; set; }
+        public Guid UserGuid { get; set; }
 
-        public IEnumerable<CartItem> ShippableItems { get { return Items.Where(item => item.RequiresShipping); } }
+        [Required]
+        public string OrderEmail { get; set; }
+
+        [DisplayName("Billing Address same as Shipping Address?")]
+        public bool BillingAddressSameAsShippingAddress { get; set; }
+
+        // discounts
+        public Discount Discount { get; set; }
+
+        [Required]
+        [DisplayName("Discount Code")]
+        public string DiscountCode { get; set; }
+
+        // shipping
+        public Address ShippingAddress { get; set; }
+        public IShippingMethod ShippingMethod { get; set; }
+        public HashSet<IShippingMethod> PotentiallyAvailableShippingMethods { get; set; }
+
+        // billing
+        public Address BillingAddress { get; set; }
+        public IPaymentMethod PaymentMethod { get; set; }
+        public IEnumerable<IPaymentMethod> AvailablePaymentMethods { get; set; }
+        public string PayPalExpressToken { get; set; }
+        public string PayPalExpressPayerId { get; set; }
+        public bool AnyStandardPaymentMethodsAvailable { get; set; }
+        public bool PayPalExpressAvailable { get; set; }
+
+
+
+        public IEnumerable<CartItem> ShippableItems
+        {
+            get { return Items.Where(item => item.RequiresShipping); }
+        }
 
         public bool Empty
         {
@@ -60,24 +95,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get
             {
                 return Items.GroupBy(item => item.TaxRatePercentage)
-                            .ToDictionary(items => items.Key,
-                                          items => items.Sum(item => item.Price));
+                    .ToDictionary(items => items.Key,
+                        items => items.Sum(item => item.Price));
             }
         }
-
-        public Discount Discount { get; set; }
 
         public decimal DiscountAmount
         {
             get
             {
-                var discountAmount = OrderTotalDiscount;
+                decimal discountAmount = OrderTotalDiscount;
 
                 discountAmount += ItemDiscount;
 
                 return discountAmount > TotalPreDiscount
-                           ? TotalPreDiscount
-                           : discountAmount;
+                    ? TotalPreDiscount
+                    : discountAmount;
             }
         }
 
@@ -86,8 +119,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get
             {
                 return Discount == null
-                           ? decimal.Zero
-                           : Discount.GetDiscount(this);
+                    ? decimal.Zero
+                    : Discount.GetDiscount(this);
             }
         }
 
@@ -96,8 +129,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get
             {
                 return Discount != null && Items.Any()
-                           ? Items.Sum(item => item.DiscountAmount)
-                           : decimal.Zero;
+                    ? Items.Sum(item => item.DiscountAmount)
+                    : decimal.Zero;
             }
         }
 
@@ -113,10 +146,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public decimal Tax
         {
-            get
-            {
-                return ItemTax + ShippingTax.GetValueOrDefault();
-            }
+            get { return ItemTax + ShippingTax.GetValueOrDefault(); }
         }
 
         public decimal ItemTax
@@ -124,43 +154,70 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get { return Items.Sum(item => item.Tax); }
         }
 
-        public User User { get; set; }
-
-        public Guid UserGuid { get; set; }
-
-        [Required]
-        [DisplayName("Discount Code")]
-        public string DiscountCode { get; set; }
-
-        [Required]
-        public string OrderEmail { get; set; }
-
-        public Address ShippingAddress { get; set; }
-        public Address BillingAddress { get; set; }
-
-        public ShippingMethod ShippingMethod { get; set; }
+        public CartShippingStatus ShippingStatus
+        {
+            get
+            {
+                if (!RequiresShipping)
+                {
+                    return CartShippingStatus.ShippingNotRequired;
+                }
+                if (!PotentiallyAvailableShippingMethods.Any())
+                {
+                    return CartShippingStatus.CannotShip;
+                }
+                if (ShippingMethod == null)
+                {
+                    return CartShippingStatus.ShippingNotSet;
+                }
+                return CartShippingStatus.ShippingSet;
+            }
+        }
 
         [DisplayFormat(DataFormatString = "{0:£0.00}")]
-        public decimal? ShippingTotal { get { return ShippingMethod == null ? null : ShippingMethod.GetPrice(this); } }
-        public decimal? ShippingTax { get { return ShippingMethod == null ? null : ShippingMethod.GetTax(this); } }
-        public decimal? ShippingPreTax { get { return ShippingTotal - ShippingTax; } }
+        public decimal? ShippingTotal
+        {
+            get
+            {
+                if (ShippingMethod == null) return null;
+                ShippingAmount shippingAmount = ShippingMethod.GetShippingTotal(this);
+                return shippingAmount == ShippingAmount.NoneAvailable
+                    ? (decimal?) null
+                    : shippingAmount.Value;
+            }
+        }
+
+        public decimal? ShippingTax
+        {
+            get
+            {
+                if (ShippingMethod == null) return null;
+                ShippingAmount shippingAmount = ShippingMethod.GetShippingTax(this);
+                return shippingAmount == ShippingAmount.NoneAvailable
+                    ? (decimal?) null
+                    : shippingAmount.Value;
+            }
+        }
+
+        public decimal? ShippingPreTax
+        {
+            get { return ShippingTotal - ShippingTax; }
+        }
+
         public decimal? ShippingTaxPercentage
         {
-            get { return ShippingMethod == null ? (decimal?)null : ShippingMethod.TaxRatePercentage; }
+            get { return ShippingMethod == null ? (decimal?) null : ShippingMethod.TaxRatePercentage; }
         }
 
         public virtual decimal Weight
         {
-            get { return Items.Any() ? Items.Sum(item => item.Weight) : decimal.Zero; }
+            get { return Items.Sum(item => item.Weight); }
         }
 
-        public IEnumerable<IPaymentMethod> AvailablePaymentMethods { get; set; }
-        public IList<ShippingMethod> AvailableShippingMethods { get; set; }
-
-        public Country Country { get; set; }
-
-        public IPaymentMethod PaymentMethod { get; set; }
-        public bool PaymentMethodSet { get { return PaymentMethod != null; } }
+        public bool PaymentMethodSet
+        {
+            get { return PaymentMethod != null; }
+        }
 
         public string PaymentMethodSystemName
         {
@@ -171,15 +228,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get { return PaymentMethod == null ? string.Empty : PaymentMethod.ActionName; }
         }
+
         public string PaymentMethodController
         {
             get { return PaymentMethod == null ? string.Empty : PaymentMethod.ControllerName; }
         }
 
-        [DisplayName("Billing Address same as Shipping Address?")]
-        public bool BillingAddressSameAsShippingAddress { get; set; }
-
-        public bool NeedToSetBillingAddress { get { return !BillingAddressSameAsShippingAddress && BillingAddress == null; } }
+        public bool NeedToSetBillingAddress
+        {
+            get { return !BillingAddressSameAsShippingAddress && BillingAddress == null; }
+        }
 
         public bool HasDiscount
         {
@@ -191,12 +249,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get { return Items.Sum(item => item.Quantity); }
         }
 
-        public string PayPalExpressToken { get; set; }
-        public string PayPalExpressPayerId { get; set; }
 
         public bool IsPayPalTransaction
         {
-            get { return !string.IsNullOrWhiteSpace(PayPalExpressToken) && !string.IsNullOrWhiteSpace(PayPalExpressPayerId); }
+            get
+            {
+                return !string.IsNullOrWhiteSpace(PayPalExpressToken) && !string.IsNullOrWhiteSpace(PayPalExpressPayerId);
+            }
         }
 
         public bool RequiresShipping
@@ -210,10 +269,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get { return !CannotCheckoutReasons.Any(); }
         }
 
-        public bool AnyStandardPaymentMethodsAvailable { get; set; }
-        public bool CanEnterPaymentFlow { get { return CanCheckout && AnyStandardPaymentMethodsAvailable; } }
-        public bool PayPalExpressAvailable { get; set; }
-        public bool CanUsePayPalExpress { get { return CanCheckout && PayPalExpressAvailable; } }
+        public bool CanEnterPaymentFlow
+        {
+            get { return CanCheckout && AnyStandardPaymentMethodsAvailable; }
+        }
+
+
+        public bool CanUsePayPalExpress
+        {
+            get { return CanCheckout && PayPalExpressAvailable; }
+        }
 
         public bool CanPlaceOrder
         {
@@ -231,6 +296,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     if (!item.CanBuy(this))
                         yield return item.Error(this);
                 }
+                if(ShippingStatus == CartShippingStatus.CannotShip)
+                    yield return "You are currently unable to ship the items in your cart";
             }
         }
 
@@ -238,7 +305,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get
             {
-                foreach (var cannotCheckoutReason in CannotCheckoutReasons)
+                foreach (string cannotCheckoutReason in CannotCheckoutReasons)
                     yield return cannotCheckoutReason;
                 if (RequiresShipping && ShippingAddress == null)
                     yield return "Shipping address is not set";
@@ -250,5 +317,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     yield return "Order has already been placed";
             }
         }
+
+    }
+
+    public enum CartShippingStatus
+    {
+        ShippingNotRequired,
+        CannotShip,
+        ShippingNotSet,
+        ShippingSet
     }
 }

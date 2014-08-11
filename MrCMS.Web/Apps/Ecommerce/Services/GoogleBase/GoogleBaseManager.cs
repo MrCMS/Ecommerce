@@ -254,21 +254,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
                                 }
                         }
                 };
-            var shippingCalculations = _orderShippingService.GetCheapestShippingCalculationsForEveryCountry(cart);
-            foreach (var shippingCalculation in shippingCalculations)
-            {
-                xml.WriteStartElement("g", "shipping", ns);
-                if (shippingCalculation.Country != null && !String.IsNullOrWhiteSpace(shippingCalculation.Country.ISOTwoLetterCode))
-                    xml.WriteElementString("g", "country", ns, shippingCalculation.Country.ISOTwoLetterCode);
-                if (shippingCalculation.ShippingMethod != null && !String.IsNullOrWhiteSpace(shippingCalculation.ShippingMethod.Name))
-                    xml.WriteElementString("g", "service", ns, shippingCalculation.ShippingMethod.Name);
-                var price = shippingCalculation.GetPrice(cart);
-                xml.WriteElementString("g", "price", ns,
-                                       price != null
-                                           ? price.Value.ToString(new CultureInfo("en-GB", false).NumberFormat)
-                                           : 0.ToString(new CultureInfo("en-GB", false).NumberFormat));
-                xml.WriteEndElement();
-            }
+            throw new NotImplementedException();
+            //var shippingCalculations = _orderShippingService.GetCheapestShippingCalculationsForEveryCountry(cart);
+            //foreach (var shippingCalculation in shippingCalculations)
+            //{
+            //    xml.WriteStartElement("g", "shipping", ns);
+            //    if (shippingCalculation.Country != null && !String.IsNullOrWhiteSpace(shippingCalculation.Country.ISOTwoLetterCode))
+            //        xml.WriteElementString("g", "country", ns, shippingCalculation.Country.ISOTwoLetterCode);
+            //    if (shippingCalculation.ShippingMethod != null && !String.IsNullOrWhiteSpace(shippingCalculation.ShippingMethod.Name))
+            //        xml.WriteElementString("g", "service", ns, shippingCalculation.ShippingMethod.Name);
+            //    var price = shippingCalculation.GetPrice(cart);
+            //    xml.WriteElementString("g", "price", ns,
+            //                           price != null
+            //                               ? price.Value.ToString(new CultureInfo("en-GB", false).NumberFormat)
+            //                               : 0.ToString(new CultureInfo("en-GB", false).NumberFormat));
+            //    xml.WriteEndElement();
+            //}
         }
     }
 }

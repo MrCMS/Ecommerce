@@ -6,7 +6,6 @@ using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate.Rules;
@@ -71,7 +70,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.BulkShippingUpdate
                     new Order()
                         {
                             Id = 1,
-                            ShippingMethod= new ShippingMethod(){Name = "Test"},
+                            ShippingMethodName= "Test",
                         }
                 };
 
@@ -87,7 +86,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.BulkShippingUpdate
                 foreach (var item in items)
                 {
                     w.WriteField(item.Id);
-                    w.WriteField(item.ShippingMethod.Name);
+                    w.WriteField(item.ShippingMethodName);
                     w.WriteField("Courier");
                     w.NextRecord();
                 }

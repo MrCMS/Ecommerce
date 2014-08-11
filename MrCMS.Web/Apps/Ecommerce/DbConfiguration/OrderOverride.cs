@@ -15,7 +15,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
                                                                      part.Map(data => data.Address2).Column("BillingAddress2");
                                                                      part.Map(data => data.City).Column("BillingCity");
                                                                      part.Map(data => data.Company).Column("BillingCompany");
-                                                                     part.References(data => data.Country).Column("BillingCountryId");
+                                                                     part.Map(data => data.CountryCode).Column("BillingCountryCode");
                                                                      part.Map(data => data.FirstName).Column("BillingFirstName");
                                                                      part.Map(data => data.LastName).Column("BillingLastName");
                                                                      part.Map(data => data.PhoneNumber).Column("BillingPhoneNumber");
@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
                                                                      part.Map(data => data.Address2).Column("ShippingAddress2");
                                                                      part.Map(data => data.City).Column("ShippingCity");
                                                                      part.Map(data => data.Company).Column("ShippingCompany");
-                                                                     part.References(data => data.Country).Column("ShippingCountryId");
+                                                                     part.Map(data => data.CountryCode).Column("ShippingCountryCode");
                                                                      part.Map(data => data.FirstName).Column("ShippingFirstName");
                                                                      part.Map(data => data.LastName).Column("ShippingLastName");
                                                                      part.Map(data => data.PhoneNumber).Column("ShippingPhoneNumber");

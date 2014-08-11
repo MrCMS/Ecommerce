@@ -21,7 +21,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         private readonly EcommerceSettings _ecommerceSettings;
         private readonly ISetTaxes _setTax;
 
-        public ValidateAmazonOrderService(ICountryService countryService, 
+        public ValidateAmazonOrderService(ICountryService countryService,
             EcommerceSettings ecommerceSettings, ISetTaxes setTax)
         {
             _countryService = countryService;
@@ -62,7 +62,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
                     GiftWrapPriceAmount =
                         (rawOrderItem.GiftWrapPrice != null && rawOrderItem.GiftWrapPrice.Amount != null)
-                            ? Decimal.Parse(rawOrderItem.GiftWrapPrice.Amount,new CultureInfo("en-GB", false))
+                            ? Decimal.Parse(rawOrderItem.GiftWrapPrice.Amount, new CultureInfo("en-GB", false))
                             : 0,
                     GiftWrapPriceCurrency =
                         (rawOrderItem.GiftWrapPrice != null && rawOrderItem.GiftWrapPrice.CurrencyCode != null)
@@ -165,6 +165,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 string lastName;
                 GetFirstAndLastName(rawOrder, out firstName, out lastName);
 
+                var country = (rawOrder.ShippingAddress != null &&
+                               !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.CountryCode))
+                    ? _countryService.GetCountryByCode(rawOrder.ShippingAddress.CountryCode)
+                    : null;
                 return new AddressData
                            {
                                Address1 =
@@ -199,11 +203,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                                     !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.City))
                                        ? rawOrder.ShippingAddress.City
                                        : String.Empty,
-                               Country =
-                                   (rawOrder.ShippingAddress != null &&
+                               CountryCode = (rawOrder.ShippingAddress != null &&
                                     !String.IsNullOrWhiteSpace(rawOrder.ShippingAddress.CountryCode))
-                                       ? _countryService.GetCountryByCode(rawOrder.ShippingAddress.CountryCode)
-                                       : null,
+                                       ? rawOrder.ShippingAddress.CountryCode
+                                       : String.Empty,
                            };
             }
             return null;
@@ -278,7 +281,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                 order.OrderLines.Add(new OrderLine()
                     {
                         Order = order,
-                        UnitPrice = amazonOrderItem.QuantityOrdered>0?(amazonOrderItem.ItemPriceAmount / amazonOrderItem.QuantityOrdered):0,
+                        UnitPrice = amazonOrderItem.QuantityOrdered > 0 ? (amazonOrderItem.ItemPriceAmount / amazonOrderItem.QuantityOrdered) : 0,
                         Price = amazonOrderItem.ItemPriceAmount,
                         Name = amazonOrderItem.Title,
                         Tax = amazonOrderItem.ItemTaxAmount,

@@ -1,4 +1,5 @@
 @using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Helpers.Cart
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
@@ -21,7 +22,7 @@
                 }
             </div>
         </div>
-    </div>    
+    </div>
     <div id="cart-items" class="margin-bottom-20">
         @if (Model.Items.Any())
         {
@@ -66,7 +67,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="row margin-bottom-10" id="cart-discount">
             <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6">
                 @Html.HiddenFor(x => x.DiscountCode)
@@ -120,31 +121,21 @@
                         </div>
                     </div>
                 }
-                if (Model.RequiresShipping)
-                {
-                    <div class="row margin-bottom-10">
-                        <div class="col-xs-8 col-sm-6">
-                            @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
-                        </div>
-                        <div class="col-xs-4 col-sm-6 text-right">
-                            @if (Model.ShippingTotal.HasValue)
-                            {
-                                @Model.ShippingTotal.Value.ToCurrencyFormat()
-                            }
-                            else
-                            {
-                                <span>Please choose a shipping method</span>
-                            }
-                        </div>
+                <div class="row margin-bottom-10">
+                    <div class="col-xs-8 col-sm-6">
+                        Shipping
                     </div>
-                }
+                    <div class="col-xs-4 col-sm-6 text-right">
+                        @Model.CartPageShipping()
+                    </div>
+                </div>
                 <hr />
                 <div class="row margin-bottom-10">
                     <div class="col-xs-8 col-sm-6">
                         <strong>Total</strong>
                     </div>
                     <div class="col-xs-4 col-sm-6 text-right">
-                        <strong>@Model.Total.ToCurrencyFormat()</strong>
+                        <strong>@Model.CartPageTotal()</strong>
                     </div>
                 </div>
             }

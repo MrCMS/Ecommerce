@@ -4,10 +4,10 @@ using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Website;
 using NHibernate;
 
@@ -22,11 +22,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             "current.billing-address-same-as-shipping-address";
 
         public const string CurrentBillingAddressKey = "current.billing-address";
-        public const string CurrentShippingMethodIdKey = "current.shipping-method-id";
+        public const string CurrentShippingMethodTypeKey = "current.shipping-method-type";
         public const string CurrentOrderEmailKey = "current.order-email";
         public const string CurrentDiscountCodeKey = "current.discount-code";
         public const string CurrentPaymentMethodKey = "current.payment-method";
-        public const string CurrentCountryIdKey = "current.country-id";
         public const string CurrentPayPalExpressToken = "current.paypal-express-token";
         public const string CurrentPayPalExpressPayerId = "current.paypal-express-payer-id";
 
@@ -54,11 +53,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 yield return CurrentShippingAddressKey;
                 yield return CurrentBillingAddressSameAsShippingAddressKey;
                 yield return CurrentBillingAddressKey;
-                yield return CurrentShippingMethodIdKey;
+                yield return CurrentShippingMethodTypeKey;
                 yield return CurrentOrderEmailKey;
                 yield return CurrentDiscountCodeKey;
                 yield return CurrentPaymentMethodKey;
-                yield return CurrentCountryIdKey;
                 yield return CurrentPayPalExpressToken;
                 yield return CurrentPayPalExpressPayerId;
                 foreach (string key in _sessionKeyLists.SelectMany(keyList => keyList.Keys))
@@ -127,6 +125,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _cartSessionManager.SetSessionValue(CurrentShippingAddressKey, _getUserGuid.UserGuid, address);
         }
 
+        public void SetShippingMethod(IShippingMethod shippingMethod)
+        {
+            if (shippingMethod != null)
+            {
+                _cartSessionManager.SetSessionValue(CurrentShippingMethodTypeKey, _getUserGuid.UserGuid,
+                    shippingMethod.GetType().FullName);
+            }
+            else
+            {
+                _cartSessionManager.RemoveValue(CurrentShippingMethodTypeKey, _getUserGuid.UserGuid);
+            }
+        }
+
         public void SetBillingAddress(Address address)
         {
             _cartSessionManager.SetSessionValue(CurrentBillingAddressKey, _getUserGuid.UserGuid, address);
@@ -154,22 +165,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             return _cartBuilder.BuildCart().PaymentMethod;
         }
 
-        public void SetShippingInfo(ShippingCalculation shippingCalculation)
-        {
-            if (shippingCalculation == null) return;
+        //public void SetShippingInfo(ShippingCalculation shippingCalculation)
+        //{
+        //    if (shippingCalculation == null) return;
 
-            if (shippingCalculation.ShippingMethod != null)
-                _cartSessionManager.SetSessionValue(CurrentShippingMethodIdKey, _getUserGuid.UserGuid,
-                    shippingCalculation.ShippingMethod.Id);
-            if (shippingCalculation.Country != null)
-                SetCountry(shippingCalculation.Country);
-        }
-
-        public void SetCountry(Country country)
-        {
-            if (country != null)
-                _cartSessionManager.SetSessionValue(CurrentCountryIdKey, _getUserGuid.UserGuid, country.Id);
-        }
+        //    if (shippingCalculation.ShippingMethod != null)
+        //        _cartSessionManager.SetSessionValue(CurrentShippingMethodIdKey, _getUserGuid.UserGuid,
+        //            shippingCalculation.ShippingMethod.Id);
+        //}
 
         public void SetPayPalExpressInfo(string token, string payerId)
         {

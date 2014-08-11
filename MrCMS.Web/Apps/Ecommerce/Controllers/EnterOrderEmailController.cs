@@ -42,14 +42,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 return View(page);
             }
             _cartManager.SetOrderEmail(CurrentRequestData.CurrentUser.Email);
-            return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
+            return Redirect(UniquePageHelper.GetUrl<SetShippingDetails>());
         }
 
         [HttpPost]
         public ActionResult SetOrderEmail(string orderEmail)
         {
             _cartManager.SetOrderEmail(orderEmail);
-            return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
+            return Redirect(UniquePageHelper.GetUrl<SetShippingDetails>());
         }
 
         [HttpPost]
@@ -67,14 +67,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                                                        });
                     if (authenticated.Success)
                     {
-                        return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
+                        return Redirect(UniquePageHelper.GetUrl<SetShippingDetails>());
                     }
                 }
                 TempData.ErrorMessages().Add("There was an error logging in with the provided email and password");
                 return Redirect(UniquePageHelper.GetUrl<EnterOrderEmail>());
             }
             _cartManager.SetOrderEmail(model.OrderEmail);
-            return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
+            return Redirect(UniquePageHelper.GetUrl<SetShippingDetails>());
         }
     }
 }

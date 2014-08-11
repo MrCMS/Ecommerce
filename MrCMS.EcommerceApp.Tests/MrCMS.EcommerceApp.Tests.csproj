@@ -157,8 +157,6 @@
     <Compile Include="Admin\Controllers\DiscountControllerTests.cs" />
     <Compile Include="Admin\Controllers\DiscountLimitationControllerTests.cs" />
     <Compile Include="Admin\Controllers\OrderControllerTests.cs" />
-    <Compile Include="Admin\Controllers\ShippingCalculationControllerTests.cs" />
-    <Compile Include="Admin\Controllers\ShippingMethodControllerTests.cs" />
     <Compile Include="Admin\Controllers\CountryControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductSpecificationAttributeControllerTests.cs" />
@@ -170,8 +168,6 @@
     <Compile Include="Builders\OrderLineBuilder.cs" />
     <Compile Include="Builders\OutOfContextResponseBuilder.cs" />
     <Compile Include="Builders\ProductVariantBuilder.cs" />
-    <Compile Include="Builders\ShippingCalculationBuilder.cs" />
-    <Compile Include="Builders\ShippingMethodBuilder.cs" />
     <Compile Include="Controllers\ProductContainerControllerTests.cs" />
     <Compile Include="Controllers\DownloadProductControllerTests.cs" />
     <Compile Include="Controllers\ProductSearchControllerTests.cs" />
@@ -179,19 +175,10 @@
     <Compile Include="Entities\Discounts\DiscountTests.cs" />
     <Compile Include="Entities\Products\ProductVariantTests\AvailabilityTests.cs" />
     <Compile Include="Entities\Products\ProductVariantTests\PricingTests.cs" />
-    <Compile Include="Entities\Products\ProductVariantTests\ProductVariant_CanBuyTests.cs" />
     <Compile Include="Entities\Products\ProductVariantTests\StockLevelTests.cs" />
     <Compile Include="Entities\Shipping\ShippingCalculationTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingCalculation_AmountPreTaxTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingCalculation_AmountTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingCalculation_CanBeUsedTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingCalculation_GetPriceTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingCalculation_GetTaxTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingCalculation_TaxTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingMethod_CanBeUsedTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingMethod_GetPriceTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingMethod_GetTaxTests.cs" />
     <Compile Include="Helpers\InlineDataExtensions.cs" />
+    <Compile Include="Helpers\SetTaxSettingsExtensions.cs" />
     <Compile Include="InMemoryDatabaseTest.cs" />
     <Compile Include="Entities\Cart\CartItemTests.cs" />
     <Compile Include="Metadata\ProductContainerMetadataTests.cs" />
@@ -199,8 +186,6 @@
     <Compile Include="Metadata\ProductSearchMetadataTests.cs" />
     <Compile Include="Metadata\ProductMetadataTests.cs" />
     <Compile Include="Models\CartModelTests.cs" />
-    <Compile Include="Models\TaxAwareProductPriceTests.cs" />
-    <Compile Include="Models\TaxAwareShippingRateTests.cs" />
     <Compile Include="MrCMSTest.cs" />
     <Compile Include="Pages\CategoryTests.cs" />
     <Compile Include="Pages\ProductTests\ProductPersistenceTests.cs" />
@@ -216,6 +201,8 @@
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateServiceTests.cs" />
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateValidationServiceTests.cs" />
     <Compile Include="Services\DownloadProductServiceTests.cs" />
+    <Compile Include="Services\GetDefaultTaxRateTests.cs" />
+    <Compile Include="Services\GetTaxRateOptionsTests.cs" />
     <Compile Include="Services\ImportExport\ExportProductsManagerTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductsServiceTests\CategoryBuilder.cs" />
     <Compile Include="Services\ImportExport\ImportProductsServiceTests\ImportProductsServiceBuilder.cs" />
@@ -245,6 +232,7 @@
     <Compile Include="Services\ProductOptionManagerTests\SpecificationAttributeTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\SpecificationValueTests.cs" />
     <Compile Include="Services\ProductVariantServiceTests.cs" />
+    <Compile Include="Services\ProductVariant_CanBuyTests.cs" />
     <Compile Include="Services\RegionServiceTests.cs" />
     <Compile Include="Services\StockReport\StockReportServiceTests.cs" />
     <Compile Include="Services\TaxRateManagerTests.cs" />

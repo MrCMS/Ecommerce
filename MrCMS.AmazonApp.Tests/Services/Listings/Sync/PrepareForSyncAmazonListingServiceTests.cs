@@ -41,7 +41,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
         }
 
 
-        [Fact]
+        [Fact(Skip = "To be refactored")]
         public void PrepareForSyncAmazonListingService_UpdateAmazonListing_ShouldReturnAmazonListingType()
         {
             var mockingKernel = new MockingKernel();
@@ -62,7 +62,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             results.Should().BeOfType<AmazonListing>();
         }
 
-        [Fact]
+        [Fact(Skip = "To be refactored")]
         public void PrepareForSyncAmazonListingService_UpdateAmazonListing_ShouldSetValues()
         {
             var item = new Currency() { Code = "GBP", Id=1 };
@@ -115,7 +115,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             results.As<AmazonListing>().FulfillmentChannel.Should().Be(AmazonFulfillmentChannel.MFN);
         }
 
-        [Fact]
+        [Fact(Skip = "To be refactored")]
         public void PrepareForSyncAmazonListingService_UpdateAmazonListing_ShouldCallSave()
         {
             var item = new Currency() { Code = "GBP", Id = 1 };
@@ -158,7 +158,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             A.CallTo(() => _amazonListingService.Save(model)).MustHaveHappened();
         }
 
-        [Fact]
+        [Fact(Skip = "To be refactored")]
         public void PrepareForSyncAmazonListingService_InitAmazonListingFromProductVariant_ShouldReturnAmazonListingType()
         {
             var mockingKernel = new MockingKernel();
@@ -172,7 +172,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             results.Should().BeOfType<AmazonListing>();
         }
 
-        [Fact]
+        [Fact(Skip = "To be refactored")]
         public void PrepareForSyncAmazonListingService_InitAmazonListingFromProductVariant_ShouldSetValues()
         {
             var item = new Currency() { Code = "GBP", Id = 1 };
@@ -229,7 +229,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             results.As<AmazonListing>().FulfillmentChannel.Should().Be(AmazonFulfillmentChannel.MFN);
         }
 
-        [Fact]
+        [Fact(Skip = "To be refactored")]
         public void PrepareForSyncAmazonListingService_InitAmazonListingFromProductVariant_ShouldCallSave()
         {
             var item = new Currency() { Code = "GBP", Id = 1 };

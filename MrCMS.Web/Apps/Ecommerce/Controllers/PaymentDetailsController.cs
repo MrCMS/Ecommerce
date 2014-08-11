@@ -1,9 +1,11 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Web.Apps.Ecommerce.Payment.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Website.Controllers;
@@ -14,20 +16,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     public class PaymentDetailsController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly CartModel _cart;
-        private readonly IOrderShippingService _orderShippingService;
+        private readonly IGetExistingAddressOptions _getExistingAddressOptions;
+        private readonly IGetCountryOptions _getCountryOptions;
         private readonly ICartManager _cartManager;
 
-        public PaymentDetailsController(CartModel cart, IOrderShippingService orderShippingService, ICartManager cartManager)
+        public PaymentDetailsController(CartModel cart, IGetExistingAddressOptions getExistingAddressOptions, IGetCountryOptions getCountryOptions, ICartManager cartManager)
         {
             _cart = cart;
-            _orderShippingService = orderShippingService;
+            _getExistingAddressOptions = getExistingAddressOptions;
+            _getCountryOptions = getCountryOptions;
             _cartManager = cartManager;
         }
 
         public ActionResult Show(PaymentDetails page)
         {
             if (_cart.RequiresShipping && (_cart.ShippingMethod == null || _cart.ShippingAddress == null))
-                return Redirect(UniquePageHelper.GetUrl<SetDeliveryDetails>());
+                return Redirect(UniquePageHelper.GetUrl<SetShippingDetails>());
             if (string.IsNullOrWhiteSpace(_cart.OrderEmail))
                 return Redirect(UniquePageHelper.GetUrl<EnterOrderEmail>());
             if (_cart.Empty)
@@ -63,8 +67,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [ChildActionOnly]
         public PartialViewResult SetBillingAddress()
         {
-            ViewData["other-addresses"] = _orderShippingService.ExistingAddressOptions(_cart, _cart.BillingAddress);
-            return PartialView(_cart.BillingAddress ?? new Address {Country = _cart.Country});
+            ViewData["other-addresses"] = _getExistingAddressOptions.Get(_cart.BillingAddress);
+            ViewData["country-options"] =_getCountryOptions.Get();
+            return PartialView(_cart.BillingAddress );
         }
 
         [ChildActionOnly]
