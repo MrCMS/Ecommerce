@@ -47,7 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 MediaFile image = mediaFiles.FirstOrDefault(file => file.IsImage && file.MediaCategory.Id == product.Gallery.Id);
                 var productVariants = variants.FindAll(productVariant => productVariant.Product.Id == product.Id);
                 ProductVariant variant = productVariants.Count == 1
-                    ? variants.FirstOrDefault(productVariant => productVariant.CanBuy().OK)
+                    ? productVariants.FirstOrDefault(productVariant => productVariant.CanBuy().OK)
                     : null;
                 var productCardModel = new ProductCardModel
                 {
@@ -65,7 +65,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 }
                 else
                 {
-                    productCardModel.Price = variants.Any() ? variants.First().Price : (decimal?)null;
+                    productCardModel.Price = productVariants.Any() ? productVariants.First().Price : (decimal?)null;
                 }
                 productCardModels.Add(productCardModel);
             }
