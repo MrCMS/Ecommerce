@@ -901,6 +901,7 @@
     <Compile Include="Apps\Ecommerce\Services\ISetShippingAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ISetShippingDetailsUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ISetShippingMethodService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IShippingMethodSubmenuGenerator.cs" />
     <Compile Include="Apps\Ecommerce\Services\IShippingMethodUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\GetExistingAddressOptions.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IGetExistingAddressOptions.cs" />
@@ -1083,6 +1084,7 @@
     <Compile Include="Apps\Ecommerce\Services\SetShippingAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\SetShippingDetailsUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\SetShippingMethodService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ShippingMethodSubmenuGenerator.cs" />
     <Compile Include="Apps\Ecommerce\Services\ShippingMethodUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingMethod.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IStandardShippingCalculation.cs" />

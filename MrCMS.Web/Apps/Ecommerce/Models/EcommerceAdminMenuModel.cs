@@ -1,10 +1,18 @@
 ﻿using System.Collections.Generic;
 using MrCMS.Models;
+using MrCMS.Web.Apps.Ecommerce.Services;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
     public class EcommerceAdminMenuModel : IAdminMenuItem
     {
+        private readonly IShippingMethodSubmenuGenerator _shippingMethodSubmenuGenerator;
+
+        public EcommerceAdminMenuModel(IShippingMethodSubmenuGenerator shippingMethodSubmenuGenerator)
+        {
+            _shippingMethodSubmenuGenerator = shippingMethodSubmenuGenerator;
+        }
+
         private SubMenu _children;
         public string Text { get { return "Catalog"; } }
         public string Url { get; private set; }
@@ -52,10 +60,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                             new ChildMenuItem("Geographic Data",
                                                                 "/Admin/Apps/Ecommerce/Country"),
                                                             new ChildMenuItem("Taxes", "/Admin/Apps/Ecommerce/TaxRate"),
-                                                            new ChildMenuItem("Shipping Methods",
-                                                                "/Admin/Apps/Ecommerce/ShippingMethod"),
-                                                            new ChildMenuItem("Shipping Calculations",
-                                                                "/Admin/Apps/Ecommerce/ShippingCalculation"),
+                                                            new ChildMenuItem("Shipping",
+                                                                "#",subMenu:_shippingMethodSubmenuGenerator.Get())
                                                                }}
                                                            }),
                                                            new ChildMenuItem("Payment Settings","#",subMenu: new SubMenu
