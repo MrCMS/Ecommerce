@@ -37,6 +37,44 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                         new ChildMenuItem("Templates", "/Admin/Apps/Ecommerce/NewsletterTemplate"),
                                                         new ChildMenuItem("Newsletter", "/Admin/Apps/Ecommerce/Newsletter")
                                                     }
+                                            },
+                                            {
+                                                "Settings",
+                                                new List<ChildMenuItem>
+                                                    {
+                                                        new ChildMenuItem("General Settings","#",subMenu: new SubMenu
+                                                           {
+                                                               {"",new List<ChildMenuItem>
+                                                               {
+                                                            new ChildMenuItem("Global Settings",
+                                                                "/Admin/Apps/Ecommerce/EcommerceSettings/Edit"),
+                                                            new ChildMenuItem("Currencies", "/Admin/Apps/Ecommerce/Currency"),
+                                                            new ChildMenuItem("Geographic Data",
+                                                                "/Admin/Apps/Ecommerce/Country"),
+                                                            new ChildMenuItem("Taxes", "/Admin/Apps/Ecommerce/TaxRate"),
+                                                            new ChildMenuItem("Shipping Methods",
+                                                                "/Admin/Apps/Ecommerce/ShippingMethod"),
+                                                            new ChildMenuItem("Shipping Calculations",
+                                                                "/Admin/Apps/Ecommerce/ShippingCalculation"),
+                                                               }}
+                                                           }),
+                                                           new ChildMenuItem("Payment Settings","#",subMenu: new SubMenu
+                                                           {
+                                                               {"",new List<ChildMenuItem>
+                                                               {
+                                                           new ChildMenuItem("Payment Settings",
+                                                                "/Admin/Apps/Ecommerce/PaymentSettings"),
+                                                            new ChildMenuItem("Paypoint",
+                                                                "/Admin/Apps/Ecommerce/PaypointSettings"),
+                                                            new ChildMenuItem("PayPal Express Checkout",
+                                                                "/Admin/Apps/Ecommerce/PayPalExpressCheckoutSettings"),
+                                                            new ChildMenuItem("SagePay",
+                                                                "/Admin/Apps/Ecommerce/SagePaySettings"),
+                                                            new ChildMenuItem("WorldPay",
+                                                                "/Admin/Apps/Ecommerce/WorldPaySettings"),
+                                                               }}
+                                                           }),
+                                                    }
                                             }
                                         });
             }

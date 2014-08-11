@@ -725,8 +725,6 @@
     <Compile Include="Apps\Ecommerce\Models\CountryToAdd.cs" />
     <Compile Include="Apps\Ecommerce\Models\DeliveryStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\EcommerceAdminMenuModel.cs" />
-    <Compile Include="Apps\Ecommerce\Models\EcommerceReportsMenuModel.cs" />
-    <Compile Include="Apps\Ecommerce\Models\EcommerceSettingsMenuModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\EcommerceToolsMenuModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\EmailAndLoginModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\EmailRegistrationStatus.cs" />
