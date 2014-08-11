@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using MrCMS.Helpers;
-using MrCMS.Settings;
-using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
-using MrCMS.Web.Apps.Ecommerce.Services.Tax;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
@@ -21,6 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public ViewResult Configure()
         {
             ViewData["tax-rate-options"] = _ukCourierShippingAdminService.GetTaxRateOptions();
+            ViewData["calculations"] = _ukCourierShippingAdminService.GetCalculations();
             return View(_ukCourierShippingAdminService.GetSettings());
         }
 
@@ -30,40 +29,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _ukCourierShippingAdminService.Save(settings);
             TempData.SuccessMessages().Add("Settings updated");
             return RedirectToAction("Configure");
-        }
-    }
-
-    public interface IUKCourierShippingAdminService
-    {
-        UKCourierShippingSettings GetSettings();
-        List<SelectListItem> GetTaxRateOptions();
-        void Save(UKCourierShippingSettings settings);
-    }
-
-    public class UKCourierShippingAdminService : IUKCourierShippingAdminService
-    {
-        private readonly IConfigurationProvider _configurationProvider;
-        private readonly IGetTaxRateOptions _taxRateOptions;
-
-        public UKCourierShippingAdminService(IConfigurationProvider configurationProvider, IGetTaxRateOptions taxRateOptions)
-        {
-            _configurationProvider = configurationProvider;
-            _taxRateOptions = taxRateOptions;
-        }
-
-        public UKCourierShippingSettings GetSettings()
-        {
-            return _configurationProvider.GetSiteSettings<UKCourierShippingSettings>();
-        }
-
-        public List<SelectListItem> GetTaxRateOptions()
-        {
-            return _taxRateOptions.GetOptions(GetSettings().TaxRateId);
-        }
-
-        public void Save(UKCourierShippingSettings settings)
-        {
-            _configurationProvider.SaveSettings(settings);
         }
     }
 }

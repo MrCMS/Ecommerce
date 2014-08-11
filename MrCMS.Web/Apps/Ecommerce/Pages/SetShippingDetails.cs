@@ -2,7 +2,7 @@
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
-    public class SetDeliveryDetails : Webpage, IUniquePage
+    public class SetShippingDetails : Webpage, IUniquePage
     {
          
     }

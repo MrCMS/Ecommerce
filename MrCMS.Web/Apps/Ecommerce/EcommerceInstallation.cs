@@ -254,7 +254,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 PublishOn = DateTime.UtcNow,
             };
             documentService.AddDocument(setPaymentDetails);
-            var setDeliveryDetails = new SetDeliveryDetails
+            var setDeliveryDetails = new SetShippingDetails
             {
                 Name = "Set Delivery Details",
                 UrlSegment = "set-delivery-details",

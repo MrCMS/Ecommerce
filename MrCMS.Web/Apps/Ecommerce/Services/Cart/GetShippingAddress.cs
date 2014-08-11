@@ -1,4 +1,5 @@
 using System;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Website;
 
@@ -7,10 +8,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
     public class GetShippingAddress : IGetShippingAddress
     {
         private readonly ICartSessionManager _cartSessionManager;
+        private readonly IGetCurrentUser _getCurrentUser;
 
-        public GetShippingAddress(ICartSessionManager cartSessionManager)
+        public GetShippingAddress(ICartSessionManager cartSessionManager,IGetCurrentUser getCurrentUser)
         {
             _cartSessionManager = cartSessionManager;
+            _getCurrentUser = getCurrentUser;
         }
 
         public Address Get(Guid userGuid)
@@ -18,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             var shippingAddress = _cartSessionManager.GetSessionValue<Address>(CartManager.CurrentShippingAddressKey, userGuid);
             if (shippingAddress != null)
             {
-                shippingAddress.User = CurrentRequestData.CurrentUser;
+                shippingAddress.User = _getCurrentUser.Get();
             }
             return shippingAddress;
         }

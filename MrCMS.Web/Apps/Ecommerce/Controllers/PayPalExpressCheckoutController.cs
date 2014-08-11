@@ -80,7 +80,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             var response = _payPalExpressService.ProcessReturn(token);
 
             return response.Success
-                       ? _uniquePageService.RedirectTo<SetDeliveryDetails>()
+                       ? _uniquePageService.RedirectTo<SetShippingDetails>()
                        : _uniquePageService.RedirectTo<Cart>();
         }
 

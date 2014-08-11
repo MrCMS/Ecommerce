@@ -1,0 +1,29 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
+@model MrCMS.Web.Apps.Ecommerce.Pages.SetShippingDetails
+@{
+    var cart = ViewData["cart"] as CartModel;
+}
+
+<div class="padding-top-bottom-20">
+    <div class="row">
+        <div class="col-md-8 col-sm-8 padding-left-0 mobile-left-padding">
+            <div id="address-info">
+                @{
+                    Html.RenderAction(cart.ShippingAddress == null ? "ShippingAddress" : "ShowShippingAddress", "SetShippingAddress");
+                }
+            </div>
+            <div id="method-info">
+                @{
+                    Html.RenderAction(cart.ShippingAddress == null ? "AwaitingAddress" : "ShippingOptions", "SetShippingMethod");
+                }
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4">
+            @{Html.RenderAction("Summary", "Checkout");}
+            @{Html.RenderAction("OrderEmail", "Checkout");}
+        </div>
+    </div>
+</div>
+
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/shipping-methods.js"); }

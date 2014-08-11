@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.Paypoint;
 
@@ -73,7 +74,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
             stringBuilder.AppendFormat("city={0},", address.City);
             stringBuilder.AppendFormat("state={0},", address.StateProvince);
             stringBuilder.AppendFormat("post_code={0},", address.PostalCode);
-            stringBuilder.AppendFormat("country={0},", address.Country.Name);
+            stringBuilder.AppendFormat("country={0},", address.GetCountryName());
             stringBuilder.AppendFormat("email={0},", email);
             return stringBuilder.ToString();
         }

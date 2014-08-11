@@ -23,7 +23,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             Items = new List<CartItem>();
             AvailablePaymentMethods = new List<IPaymentMethod>();
-            AvailableShippingMethods = new HashSet<IShippingMethod>();
         }
 
         // user & items
@@ -48,7 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         // shipping
         public Address ShippingAddress { get; set; }
         public IShippingMethod ShippingMethod { get; set; }
-        public HashSet<IShippingMethod> AvailableShippingMethods { get; set; }
+        public HashSet<IShippingMethod> PotentiallyAvailableShippingMethods { get; set; }
 
         // billing
         public Address BillingAddress { get; set; }
@@ -163,7 +162,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                 {
                     return CartShippingStatus.ShippingNotRequired;
                 }
-                if (!AvailableShippingMethods.Any())
+                if (!PotentiallyAvailableShippingMethods.Any())
                 {
                     return CartShippingStatus.CannotShip;
                 }
@@ -318,6 +317,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     yield return "Order has already been placed";
             }
         }
+
     }
 
     public enum CartShippingStatus

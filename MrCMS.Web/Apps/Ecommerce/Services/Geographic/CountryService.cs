@@ -94,6 +94,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Geographic
 
         public Country GetCountryByCode(string code)
         {
+            if (string.IsNullOrWhiteSpace(code))
+                return null;
             return _session.QueryOver<Country>()
                            .Where(country => country.ISOTwoLetterCode.IsInsensitiveLike(code, MatchMode.Exact))
                            .Take(1)

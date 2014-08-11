@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using MrCMS.Settings;
 
 namespace MrCMS.Web.Apps.Ecommerce.Settings.Shipping
@@ -6,10 +8,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings.Shipping
     {
         public UKFirstClassShippingSettings()
         {
-            Name = "UK First Class";
+            DisplayName = "UK First Class";
         }
-        public string Name { get; set; }
+
+        [Required]
+        [DisplayName("Display Name")]
+        public string DisplayName { get; set; }
+
         public string Description { get; set; }
+
+        [DisplayName("Tax Rate")]
         public int? TaxRateId { get; set; }
     }
 }

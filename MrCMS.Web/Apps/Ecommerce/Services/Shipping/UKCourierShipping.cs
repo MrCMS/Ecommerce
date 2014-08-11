@@ -1,58 +1,39 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using MrCMS.Helpers;
-using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Helpers.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Models.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 {
     public class UKCourierShipping : IShippingMethod
     {
+        private readonly IGetDefaultTaxRate _getDefaultTaxRate;
         private readonly ISession _session;
         private readonly UKCourierShippingSettings _ukCourierShippingSettings;
-        private readonly IGetDefaultTaxRate _getDefaultTaxRate;
 
-        public UKCourierShipping(ISession session, UKCourierShippingSettings ukCourierShippingSettings, IGetDefaultTaxRate getDefaultTaxRate)
+        public UKCourierShipping(ISession session, UKCourierShippingSettings ukCourierShippingSettings,
+            IGetDefaultTaxRate getDefaultTaxRate)
         {
             _session = session;
             _ukCourierShippingSettings = ukCourierShippingSettings;
             _getDefaultTaxRate = getDefaultTaxRate;
         }
 
-        public bool CanBeUsed(CartModel cart)
-        {
-            if (cart == null || cart.ShippingAddress == null || cart.ShippingAddress.Country == null ||
-                cart.ShippingAddress.Country.ISOTwoLetterCode != "GB")
-                return false;
-            return GetBestAvailableCalculation(cart) != null;
-        }
-
-        public ShippingAmount GetShippingTotal(CartModel cart)
-        {
-            var calculation = GetBestAvailableCalculation(cart);
-            return calculation == null
-                ? ShippingAmount.NoneAvailable
-                : ShippingAmount.Amount(calculation.Amount(TaxRatePercentage));
-        }
-
-        public ShippingAmount GetShippingTax(CartModel cart)
-        {
-            var calculation = GetBestAvailableCalculation(cart);
-            return calculation == null
-                ? ShippingAmount.NoneAvailable
-                : ShippingAmount.Amount(calculation.Tax(TaxRatePercentage));
-        }
-
         public string Name
         {
-            get { return _ukCourierShippingSettings.Name; }
+            get { return "UK Courier Delivery"; }
+        }
+
+        public string DisplayName
+        {
+            get { return _ukCourierShippingSettings.DisplayName; }
         }
 
         public string Description
@@ -60,11 +41,45 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             get { return _ukCourierShippingSettings.Description; }
         }
 
+        public bool CanBeUsed(CartModel cart)
+        {
+            if (!CanPotentiallyBeUsed(cart))
+                return false;
+            if (cart.ShippingAddress == null)
+                return false;
+            return cart.ShippingAddress.CountryCode == "GB";
+        }
+
+        public bool CanPotentiallyBeUsed(CartModel cart)
+        {
+            if (cart == null)
+                return false;
+            var calculation = GetBestAvailableCalculation(cart);
+            return calculation != null;
+        }
+
+        public ShippingAmount GetShippingTotal(CartModel cart)
+        {
+            UKCourierShippingCalculation calculation = GetBestAvailableCalculation(cart);
+            return calculation == null
+                ? ShippingAmount.NoneAvailable
+                : ShippingAmount.Amount(calculation.Amount(TaxRatePercentage));
+        }
+
+        public ShippingAmount GetShippingTax(CartModel cart)
+        {
+            UKCourierShippingCalculation calculation = GetBestAvailableCalculation(cart);
+            return calculation == null
+                ? ShippingAmount.NoneAvailable
+                : ShippingAmount.Amount(calculation.Tax(TaxRatePercentage));
+        }
+
+
         public decimal TaxRatePercentage
         {
             get
             {
-                var taxRateId = _ukCourierShippingSettings.TaxRateId;
+                int? taxRateId = _ukCourierShippingSettings.TaxRateId;
                 TaxRate taxRate = null;
                 if (taxRateId.HasValue)
                 {
@@ -80,8 +95,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             }
         }
 
-        public string ConfigureController { get { return "UKCourierShipping"; } }
-        public string ConfigureAction { get { return "Configure"; } }
+        public string ConfigureController
+        {
+            get { return "UKCourierShipping"; }
+        }
+
+        public string ConfigureAction
+        {
+            get { return "Configure"; }
+        }
 
         private UKCourierShippingCalculation GetBestAvailableCalculation(CartModel cart)
         {
@@ -91,18 +113,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
                 calculations.FindAll(calculation => calculation.CanBeUsed(cart));
             return potentialCalculations.OrderBy(calculation => calculation.Amount(TaxRatePercentage)).FirstOrDefault();
         }
-    }
-
-    public class UKCourierShippingSettings : SiteSettingsBase
-    {
-        public UKCourierShippingSettings()
-        {
-            Name = "Courier Delivery";
-        }
-
-        [Required]
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public int? TaxRateId { get; set; }
     }
 }

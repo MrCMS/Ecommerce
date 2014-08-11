@@ -6,6 +6,7 @@ using MrCMS.Entities.Multisite;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
@@ -29,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
 
         public WorldPayPaymentService(WorldPaySettings worldPaySettings, CartModel cart,
             EcommerceSettings ecommerceSettings, ICartBuilder cartBuilder,
-            ISession session, IOrderService orderService,Site site)
+            ISession session, IOrderService orderService, Site site)
         {
             _worldPaySettings = worldPaySettings;
             _cart = cart;
@@ -80,13 +81,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
 
             postInfo.testMode = _worldPaySettings.UseSandbox ? "100" : "0";
             postInfo.postcode = _cart.BillingAddress.PostalCode;
-            var billingCountry = _cart.BillingAddress.Country;
-            postInfo.country = billingCountry != null
-                ? billingCountry.ISOTwoLetterCode
-                : "";
+            postInfo.country = _cart.BillingAddress.CountryCode;
 
-            postInfo.address = string.Format("{0}{1}", _cart.BillingAddress.Address1,
-                (billingCountry != null ? ", " + billingCountry.Name : ""));
+            postInfo.address = string.Format("{0}{1}", _cart.BillingAddress.Address1, _cart.BillingAddress.GetCountryName());
             postInfo.MC_callback = returnUrl;
             postInfo.name = string.Format("{0} {1}", _cart.BillingAddress.FirstName, _cart.BillingAddress.LastName);
 
@@ -100,8 +97,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
                     : string.Empty;
                 postInfo.delvAddress = delvAddress;
                 postInfo.delvPostcode = _cart.ShippingAddress.PostalCode;
-                var shippingCountry = _cart.ShippingAddress.Country;
-                postInfo.delvCountry = shippingCountry != null ? shippingCountry.ISOTwoLetterCode : "";
+                postInfo.delvCountry = _cart.ShippingAddress.CountryCode;
             }
             else
             {
@@ -171,7 +167,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
                 o.CaptureTransactionId = transId;
             });
 
-            return new ViewResult {ViewName = "RedirectToComplete", ViewData = new ViewDataDictionary(order)};
+            return new ViewResult { ViewName = "RedirectToComplete", ViewData = new ViewDataDictionary(order) };
         }
 
         private CartModel GetCart(string orderId)
