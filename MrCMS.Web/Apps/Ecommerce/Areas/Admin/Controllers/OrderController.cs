@@ -3,7 +3,6 @@ using System;
 using System.Web;
 using System.Web.Mvc;
 using MrCMS.Entities.People;
-using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Services;
 using MrCMS.Settings;
@@ -14,7 +13,6 @@ using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Website;
-using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
@@ -26,16 +24,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly SiteSettings _ecommerceSettings;
         private readonly IExportOrdersService _exportOrdersService;
         private readonly IUserService _userService;
-        private readonly IShippingMethodManager _shippingMethodManager;
         private readonly IOrderSearchService _orderSearchService;
         private readonly IOrderShippingService _orderShippingService;
 
-        public OrderController(IOrderService orderService,  IShippingMethodManager shippingMethodManager,
+        public OrderController(IOrderService orderService,  
             IOrderSearchService orderSearchService, IOrderShippingService orderShippingService,
             IOptionService optionService, SiteSettings ecommerceSettings, IExportOrdersService exportOrdersService, IUserService userService)
         {
             _orderService = orderService;
-            _shippingMethodManager = shippingMethodManager;
             _orderSearchService = orderSearchService;
             _orderShippingService = orderShippingService;
             _optionService = optionService;
@@ -67,9 +63,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             ViewData["ShippingStatuses"] = _optionService.GetEnumOptions<ShippingStatus>();
             ViewData["PaymentStatuses"] = _optionService.GetEnumOptions<PaymentStatus>();
-            ViewData["ShippingMethods"] = _shippingMethodManager.GetOptions();
-            if (order.ShippingMethod != null)
-                ViewData["ShippingMethodId"] = order.ShippingMethod.Id;
             return order != null
                        ? (ActionResult)View(order)
                        : RedirectToAction("Index");
@@ -80,8 +73,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Edit_POST(Order order, int shippingMethodId = 0)
         {
-            if (shippingMethodId != 0)
-                order.ShippingMethod = _shippingMethodManager.Get(shippingMethodId);
             order.User = CurrentRequestData.CurrentUser;
             _orderService.Save(order);
             return RedirectToAction("Index");
@@ -106,13 +97,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult MarkAsShipped(Order order, bool index = false)
         {
             ViewBag.Index = index;
-            var selectedShippingMethod = order.ShippingMethod != null ? order.ShippingMethod.Id : 0;
+            //var selectedShippingMethod = order.ShippingMethod != null ? order.ShippingMethod.Id : 0;
 
-            ViewData["ShippingMethods"] = _shippingMethodManager.GetAll().BuildSelectItemList(
-                method => method.Name,
-                method => method.Id.ToString(),
-                method => method.Id.ToString() == selectedShippingMethod.ToString(),
-                emptyItem: null);
+            //ViewData["ShippingMethods"] = _shippingMethodManager.GetAll().BuildSelectItemList(
+            //    method => method.Name,
+            //    method => method.Id.ToString(),
+            //    method => method.Id.ToString() == selectedShippingMethod.ToString(),
+            //    emptyItem: null);
 
             return PartialView(order);
         }

@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using FakeItEasy;
 using MrCMS.EcommerceApp.Tests.TestableModels;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
 namespace MrCMS.EcommerceApp.Tests.Builders
 {
@@ -13,11 +14,11 @@ namespace MrCMS.EcommerceApp.Tests.Builders
     {
         private decimal? _totalPreShipping;
         private decimal? _weight;
-        private Country _shippingAddressCountry;
+        private string _shippingAddressCountry;
         private readonly List<CartItem> _items = new List<CartItem>();
-        private readonly IList<ShippingMethod> _availableShippingMethods = new List<ShippingMethod>
+        private readonly HashSet<IShippingMethod> _availableShippingMethods = new HashSet<IShippingMethod>
                                                                             {
-                                                                                new TestableShippingMethod(true)
+                                                                                A.Fake<IShippingMethod>()
                                                                             };
 
         private decimal? _shippableCalculationTotal;
@@ -40,9 +41,9 @@ namespace MrCMS.EcommerceApp.Tests.Builders
             return this;
         }
 
-        public CartModelBuilder WithShippingAddressCountry(Country country)
+        public CartModelBuilder WithShippingAddressCountry(string code)
         {
-            _shippingAddressCountry = country;
+            _shippingAddressCountry = code;
             return this;
         }
 
@@ -55,11 +56,11 @@ namespace MrCMS.EcommerceApp.Tests.Builders
 
         public CartModel Build()
         {
-            return new TestableCartModel(_weight, _totalPreShipping,_shippableCalculationTotal)
+            return new TestableCartModel(_weight, _totalPreShipping, _shippableCalculationTotal)
                        {
-                           ShippingAddress = new Address { Country = _shippingAddressCountry },
+                           ShippingAddress = new Address { CountryCode = _shippingAddressCountry },
                            Items = _items,
-                           AvailableShippingMethods = _availableShippingMethods
+                           PotentiallyAvailableShippingMethods = _availableShippingMethods
                        };
         }
     }

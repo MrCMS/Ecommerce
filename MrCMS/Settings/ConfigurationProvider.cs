@@ -29,6 +29,10 @@ namespace MrCMS.Settings
 
         public void SaveSettings(SiteSettingsBase settings)
         {
+            if (settings.SiteId <= 0)
+            {
+                settings.SiteId = _site.Id;
+            }
             lock (SaveLockObject)
             {
                 string location = GetFileLocation(settings);

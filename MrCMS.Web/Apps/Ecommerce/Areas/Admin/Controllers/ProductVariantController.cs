@@ -6,7 +6,6 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Website;
 using MrCMS.Website.Binders;
@@ -19,24 +18,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class ProductVariantController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly IProductVariantService _productVariantService;
-        private readonly ITaxRateManager _taxRateManager;
+        private readonly IGetTaxRateOptions _getTaxRateOptions;
         private readonly IOptionService _optionService;
-        private readonly IShippingMethodManager _shippingMethodManager;
 
-        public ProductVariantController(IProductVariantService productVariantService, ITaxRateManager taxRateManager,
-            IOptionService optionService, IShippingMethodManager shippingMethodManager)
+        public ProductVariantController(IProductVariantService productVariantService,
+            IOptionService optionService, IGetTaxRateOptions getTaxRateOptions)
         {
             _productVariantService = productVariantService;
-            _taxRateManager = taxRateManager;
             _optionService = optionService;
-            _shippingMethodManager = shippingMethodManager;
+            _getTaxRateOptions = getTaxRateOptions;
         }
 
         [HttpGet]
         public PartialViewResult Add(Product product)
         {
-            ViewData["shipping-methods"] = _shippingMethodManager.GetAll();
-            ViewData["tax-rate-options"] = _taxRateManager.GetOptions();
+            ViewData["tax-rate-options"] = _getTaxRateOptions.GetOptions();
             ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
             var productVariant = new ProductVariant
                 {
@@ -63,8 +59,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult Edit(ProductVariant productVariant)
         {
             ModelState.Clear();
-            ViewData["shipping-methods"] = _shippingMethodManager.GetAll();
-            ViewData["tax-rate-options"] = _taxRateManager.GetOptions(productVariant.TaxRate);
+            ViewData["tax-rate-options"] = _getTaxRateOptions.GetOptions(productVariant.TaxRate);
             ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
             return PartialView(productVariant);
         }

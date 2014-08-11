@@ -1,6 +1,5 @@
 ﻿using MrCMS.Entities;
-using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
-using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Helpers.Pricing;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 {
@@ -9,25 +8,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         public virtual ProductVariant ProductVariant { get; set; }
         public virtual int Quantity { get; set; }
         public virtual decimal Price { get; set; }
+
         public virtual decimal PriceExcludingTax
         {
-            get { return TaxAwareProductPrice.GetPriceExcludingTax(Price, TaxRate); }
-        }
-        public virtual decimal PriceIncludingTax
-        {
-            get { return TaxAwareProductPrice.GetPriceIncludingTax(Price, TaxRate); }
-        }
-        public virtual decimal Tax
-        {
-            get { return TaxAwareProductPrice.GetTax(Price, TaxRate); }
+            get { return Price.ProductPriceExcludingTax(TaxRatePercentage); }
         }
 
-        protected virtual TaxRate TaxRate
+        public virtual decimal PriceIncludingTax
         {
-            get
-            {
-                return ProductVariant != null ? ProductVariant.TaxRate : null;
-            }
+            get { return Price.ProductPriceIncludingTax(TaxRatePercentage); }
+        }
+
+        public virtual decimal Tax
+        {
+            get { return Price.ProductTax(TaxRatePercentage); }
+        }
+
+        protected virtual decimal TaxRatePercentage
+        {
+            get { return ProductVariant != null ? ProductVariant.TaxRatePercentage : decimal.Zero; }
         }
     }
 }

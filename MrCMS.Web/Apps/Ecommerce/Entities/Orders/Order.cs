@@ -4,7 +4,6 @@ using MrCMS.Entities;
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System;
@@ -53,8 +52,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual string DiscountCode { get; set; }
 
         public virtual decimal Weight { get; set; }
-        [DisplayName("Shipping Method")]
-        public virtual ShippingMethod ShippingMethod { get; set; }
+        //[DisplayName("Shipping Method")]
+        //public virtual ShippingMethod ShippingMethod { get; set; }
         [DisplayName("Shipping Method Name")]
         public virtual string ShippingMethodName { get; set; }
         [DisplayName("Shipping Total")]
@@ -124,41 +123,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public string City { get; set; }
         [DisplayName("County")]
         public string StateProvince { get; set; }
-        public Country Country { get; set; }
+        public string CountryCode { get; set; }
         public string PostalCode { get; set; }
         public string PhoneNumber { get; set; }
-
-        public string GetDescription(bool removeName = false)
-        {
-            var addressParts = GetAddressParts(removeName);
-            return string.Join(", ", addressParts);
-        }
-
-        public string GetDescriptionHtml(bool removeName = false)
-        {
-            var addressParts = GetAddressParts(removeName);
-            return string.Join("<br />", addressParts);
-        }
-
-        private IEnumerable<string> GetAddressParts(bool removeName)
-        {
-            if (!string.IsNullOrWhiteSpace(Name) && !removeName)
-                yield return Name;
-            if (!string.IsNullOrWhiteSpace(Company))
-                yield return Company;
-            if (!string.IsNullOrWhiteSpace(Address1))
-                yield return Address1;
-            if (!string.IsNullOrWhiteSpace(Address2))
-                yield return Address2;
-            if (!string.IsNullOrWhiteSpace(City))
-                yield return City;
-            if (!string.IsNullOrWhiteSpace(StateProvince))
-                yield return StateProvince;
-            if (Country != null)
-                yield return Country.Name;
-            if (!string.IsNullOrWhiteSpace(PostalCode))
-                yield return PostalCode;
-        }
 
         public virtual Address ToAddress(ISession session, User user)
         {
@@ -168,7 +135,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
                 Address2 = Address2,
                 City = City,
                 Company = Company,
-                Country = Country == null ? null : session.Get<Country>(Country.Id),
+                CountryCode = CountryCode,
                 FirstName = FirstName,
                 LastName = LastName,
                 PhoneNumber = PhoneNumber,

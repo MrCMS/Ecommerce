@@ -15,10 +15,6 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
             mapping.HasMany(variant => variant.PriceBreaks).Cascade.All();
 
             mapping.Map(variant => variant.SKU).Index("IX_ProductVariant_SKU");
-
-            mapping.HasManyToMany(variant => variant.RestrictedShippingMethods)
-                .Table("Ecommerce_ProductVariantRestrictedShippingMethods")
-                .Not.Inverse().Cache.ReadWrite();
         }
     }
 }

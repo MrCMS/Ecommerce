@@ -1,6 +1,6 @@
 ﻿using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Helpers.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using System.Linq;
@@ -34,13 +34,13 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
                 if (taxRate == null) continue;
 
-                var taxAwareProductPrice = TaxAwareProductPrice.Create(orderLine.UnitPrice, taxRate,
-                                                                       new TaxSettings
-                                                                           {
-                                                                               TaxesEnabled = true,
-                                                                               LoadedPricesIncludeTax =true
-                                                                           });
-                var tax = taxAwareProductPrice.Tax.GetValueOrDefault();
+                var tax = orderLine.UnitPrice.ProductTax(taxRate.Percentage);
+                                                                       //new TaxSettings
+                                                                       //    {
+                                                                       //        TaxesEnabled = true,
+                                                                       //        LoadedPricesIncludeTax =true
+                                                                       //    });
+                //var tax = taxAwareProductPrice.Tax.GetValueOrDefault();
                 orderLine.UnitPricePreTax = orderLine.UnitPrice - tax;
                 orderLine.PricePreTax = orderLine.UnitPricePreTax*orderLine.Quantity;
                 orderLine.Tax = orderLine.Price - orderLine.PricePreTax;
@@ -58,14 +58,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             var taxRate = _taxRateManager.GetDefaultRate();
 
             if (taxRate == null) return;
-            var taxAwareProductPrice = TaxAwareShippingRate.Create(order.ShippingTotal, taxRate,
-                                                                       new TaxSettings
-                                                                       {
-                                                                           TaxesEnabled = true,
-                                                                           ShippingRateIncludesTax = true,
-                                                                           ShippingRateTaxesEnabled = true
-                                                                       });
-            order.ShippingTax = taxAwareProductPrice.Tax.GetValueOrDefault();
+            //var taxAwareProductPrice = ,
+            //                                                           new TaxSettings
+            //                                                           {
+            //                                                               TaxesEnabled = true,
+            //                                                               ShippingRateIncludesTax = true,
+            //                                                               ShippingRateTaxesEnabled = true
+            //                                                           });
+            order.ShippingTax = order.ShippingTotal.ShippingTax(taxRate.Percentage);
             order.ShippingTaxPercentage = taxRate.Percentage;
             order.Tax += order.ShippingTax.GetValueOrDefault();
         }

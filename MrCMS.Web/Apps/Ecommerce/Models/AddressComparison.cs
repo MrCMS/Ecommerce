@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Entities.Users;
-using MrCMS.Website;
-using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
@@ -22,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                 Address2 = address.Address2;
                 City = address.City;
                 StateProvince = address.StateProvince;
-                _country = address.Country;
+                CountryCode = address.CountryCode;
                 PostalCode = address.PostalCode;
                 PhoneNumber = address.PhoneNumber;
             }
@@ -39,39 +35,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public string Address2 { get; private set; }
         public string City { get; private set; }
         public string StateProvince { get; private set; }
-        Country IAddress.Country { get { return _country; } }
+        public string CountryCode { get; private set; }
         public string PostalCode { get; private set; }
         public string PhoneNumber { get; private set; }
-        public string GetDescription(bool removeName = false)
-        {
-
-            var addressParts = GetAddressParts(removeName);
-            return string.Join(", ", addressParts);
-        }
-        private IEnumerable<string> GetAddressParts(bool removeName)
-        {
-            if (!string.IsNullOrWhiteSpace(Name) && !removeName)
-                yield return Name;
-            if (!string.IsNullOrWhiteSpace(Company))
-                yield return Company;
-            if (!string.IsNullOrWhiteSpace(Address1))
-                yield return Address1;
-            if (!string.IsNullOrWhiteSpace(Address2))
-                yield return Address2;
-            if (!string.IsNullOrWhiteSpace(City))
-                yield return City;
-            if (!string.IsNullOrWhiteSpace(StateProvince))
-                yield return StateProvince;
-            if (_country != null)
-                yield return _country.Name;
-            if (!string.IsNullOrWhiteSpace(PostalCode))
-                yield return PostalCode;
-        }
 
         public static readonly StrictKeyEqualityComparer<IAddress, AddressComparison> Comparer =
             new StrictKeyEqualityComparer<IAddress, AddressComparison>(address => new AddressComparison(address));
-
-        private readonly Country _country;
 
         public bool Equals(AddressComparison other)
         {
