@@ -1389,11 +1389,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\PayPoint\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -2409,42 +2404,6 @@
     <Content Include="Areas\Admin\Content\Scripts\lib\jquery.signalR-2.0.2.js" />
     <Content Include="Areas\Admin\Content\Scripts\lib\jquery.signalR-2.0.2.min.js" />
     <Content Include="Areas\Admin\Views\Layout\Set.cshtml" />
-    <None Include="Service References\PayPoint\configuration91.svcinfo" />
-    <None Include="Service References\PayPoint\configuration.svcinfo" />
-    <Content Include="Service References\PayPoint\MrCMS.Web.PayPoint.getReportResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\PayPoint\MrCMS.Web.PayPoint.getTZReportResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\PayPoint\MrCMS.Web.PayPoint.performTransactionViaAlternatePaymentMethodResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\PayPoint\MrCMS.Web.PayPoint.refundCardFullResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\PayPoint\MrCMS.Web.PayPoint.releaseCardFullResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\PayPoint\MrCMS.Web.PayPoint.repeatCardFullAddrResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\PayPoint\MrCMS.Web.PayPoint.repeatCardFullResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\PayPoint\MrCMS.Web.PayPoint.threeDSecureAuthorisationRequestResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\PayPoint\MrCMS.Web.PayPoint.threeDSecureEnrolmentRequestResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\PayPoint\MrCMS.Web.PayPoint.validateCardFullResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <None Include="Service References\PayPoint\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -3041,7 +3000,6 @@
     <Content Include="Themes\Default\Apps\Core\Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Service References\PayPoint\SECCardService.wsdl" />
     <Content Include="Themes\Default\Apps\Core\Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Themes\Default\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
   </ItemGroup>
@@ -3126,12 +3084,6 @@
       <Project>{9d6ecc0f-cda1-43e2-b88b-bc01299eb9ce}</Project>
       <Name>MrCMS</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\PayPoint\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
