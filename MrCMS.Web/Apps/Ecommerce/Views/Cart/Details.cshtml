@@ -105,9 +105,8 @@
                         <div class="col-xs-8 col-sm-6">
                             Discount
                         </div>
-                        <div class="col-xs-4 col-sm-6 text-right" id="cart-discount">
-                            <button id="remove-discount-code" class="btn btn-danger">Remove</button>
-
+                        <div class="col-xs-4 col-sm-6 text-right" id="cart-discount-total">
+                            <button id="remove-discount-code" class="btn btn-xs btn-danger">Remove</button>
                             @((-Model.OrderTotalDiscount).ToCurrencyFormat())
                         </div>
                     </div>
