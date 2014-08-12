@@ -11,5 +11,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         bool IsCalculationValid(CalculationInfo calculationInfo);
         void Add(UKFirstClassShippingCalculation calculation);
         void Update(UKFirstClassShippingCalculation calculation);
+        void Delete(UKFirstClassShippingCalculation calculation);
     }
 }

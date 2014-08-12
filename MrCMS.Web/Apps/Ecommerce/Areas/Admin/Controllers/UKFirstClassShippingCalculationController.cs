@@ -32,10 +32,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult Edit(UKFirstClassShippingCalculation ukFirstClassShippingCalculation)
+        public PartialViewResult Edit(UKFirstClassShippingCalculation calculation)
         {
             ViewData["criteria-options"] = _adminService.GetCriteriaOptions();
-            return PartialView(ukFirstClassShippingCalculation);
+            return PartialView(calculation);
         }
 
         [HttpPost]
@@ -44,6 +44,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _adminService.Update(calculation);
             TempData.SuccessMessages().Add("Calculation updated successfully");
+            return RedirectToAction("Configure", "UKFirstClassShipping");
+        }
+
+        [HttpGet]
+        public PartialViewResult Delete(UKFirstClassShippingCalculation calculation)
+        {
+            return PartialView(calculation);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public RedirectToRouteResult Delete_POST(UKFirstClassShippingCalculation calculation)
+        {
+            _adminService.Delete(calculation);
+            TempData.SuccessMessages().Add("Calculation removed successfully");
             return RedirectToAction("Configure", "UKFirstClassShipping");
         }
 
