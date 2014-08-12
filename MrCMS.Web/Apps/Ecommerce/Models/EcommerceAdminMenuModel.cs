@@ -56,6 +56,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                                                {
                                                             new ChildMenuItem("Global Settings",
                                                                 "/Admin/Apps/Ecommerce/EcommerceSettings/Edit"),
+                                                            new ChildMenuItem("Ecommerce Search Cache Settings",
+                                                                "/Admin/Apps/Ecommerce/EcommerceSearchCacheSettings/Edit"),
                                                             new ChildMenuItem("Currencies", "/Admin/Apps/Ecommerce/Currency"),
                                                             new ChildMenuItem("Geographic Data",
                                                                 "/Admin/Apps/Ecommerce/Country"),
