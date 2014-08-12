@@ -7,7 +7,7 @@
 @Editable(Model, model => model.BodyContent, true)
 
 @{
-    var products = ViewData["newinproducts"] as IList<Product>;
+    var products = ViewData["newinproducts"] as IList<ProductCardModel>;
     foreach (var chunk in products.Chunk(4))
     {
         var i = 0;

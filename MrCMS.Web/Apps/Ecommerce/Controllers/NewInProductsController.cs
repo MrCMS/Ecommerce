@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
@@ -26,7 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public ViewResult Show(NewInProducts page)
         {
-            ViewData["newinproducts"] = _productService.GetNewIn(12);
+            ViewData["newinproducts"] = _productService.GetNewIn(12).GetCardModels();
             ViewData["cart"] = _cartModel;
             return View(page);
         }
