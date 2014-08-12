@@ -95,7 +95,7 @@
                     <div class="col-xs-8 col-sm-6">
                         Subtotal before delivery charges
                     </div>
-                    <div class="col-xs-4 col-sm-6 text-right">
+                    <div class="col-xs-4 col-sm-6 text-right" id="cart-subtotal">
                         @Model.Subtotal.ToCurrencyFormat()
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                         <div class="col-xs-8 col-sm-6">
                             Discount
                         </div>
-                        <div class="col-xs-4 col-sm-6 text-right">
+                        <div class="col-xs-4 col-sm-6 text-right" id="cart-discount">
                             <button id="remove-discount-code" class="btn btn-danger">Remove</button>
 
                             @((-Model.OrderTotalDiscount).ToCurrencyFormat())
@@ -118,7 +118,7 @@
                         <div class="col-xs-8 col-sm-6">
                             VAT
                         </div>
-                        <div class="col-xs-4 col-sm-6 text-right">
+                        <div class="col-xs-4 col-sm-6 text-right" id="cart-tax">
                             @Model.Tax.ToCurrencyFormat()
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                     <div class="col-xs-8 col-sm-6">
                         Shipping
                     </div>
-                    <div class="col-xs-4 col-sm-6 text-right">
+                    <div class="col-xs-4 col-sm-6 text-right" id="cart-shipping">
                         @Model.CartPageShipping()
                     </div>
                 </div>
@@ -136,7 +136,7 @@
                     <div class="col-xs-8 col-sm-6">
                         <strong>Total</strong>
                     </div>
-                    <div class="col-xs-4 col-sm-6 text-right">
+                    <div class="col-xs-4 col-sm-6 text-right" id="cart-total">
                         <strong>@Model.CartPageTotal()</strong>
                     </div>
                 </div>
