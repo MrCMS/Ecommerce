@@ -13,10 +13,10 @@
         @Html.HiddenFor(x => x.Id)
         @Html.Hidden("index", (bool) ViewBag.Index)
         
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(x => x.ShippingMethod)
             @Html.DropDownListFor(x => x.ShippingMethod.Id, ViewData["ShippingMethods"] as IEnumerable<SelectListItem>, new {@class="form-control" })
-        </div>
+        </div>*@
         <div class="form-group">
             @Html.LabelFor(x => x.TrackingNumber, "Tracking number (optional)")
             @Html.TextBoxFor(x => x.TrackingNumber, new{@class="form-control"})
