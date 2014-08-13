@@ -59,8 +59,8 @@
                     @Html.TextBoxFor(x => x.BillingAddress.StateProvince, new { @class = "form-control" })
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(x => x.BillingAddress.Country.Id, "Country")
-                    @Html.DropDownListFor(x => x.BillingAddress.Country.Id, ViewData["Countries"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                    @Html.LabelFor(x => x.BillingAddress.CountryCode, "Country")
+                    @Html.DropDownListFor(x => x.BillingAddress.CountryCode, ViewData["Countries"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
                 </div>
             </div>
         </div>
@@ -112,8 +112,8 @@
                     @Html.TextBoxFor(x => x.ShippingAddress.StateProvince, new { @class = "form-control" })
                 </div>
                 <div class="form-group">
-                    @Html.LabelFor(x => x.ShippingAddress.Country.Id, "Country")
-                    @Html.DropDownListFor(x => x.ShippingAddress.Country.Id, ViewData["Countries"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                    @Html.LabelFor(x => x.ShippingAddress.CountryCode, "Country")
+                    @Html.DropDownListFor(x => x.ShippingAddress.CountryCode, ViewData["Countries"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
                 </div>
             </div>
         </div>
