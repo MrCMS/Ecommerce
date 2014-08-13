@@ -70,7 +70,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Inventory.StockReport
         {
             if (item.Product.Published)
             {
-                w.WriteField(item.Name);
+                w.WriteField(item.FullName);
                 w.WriteField(item.SKU);
                 w.WriteField(item.StockRemaining);
                 w.NextRecord();
