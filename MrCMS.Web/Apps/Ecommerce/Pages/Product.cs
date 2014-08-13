@@ -105,6 +105,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual IList<Product> RelatedProducts { get; set; }
 
+
+        public virtual IList<Product> PublishedRelatedProducts
+        {
+            get { return RelatedProducts.Where(x => x.Published).ToList(); }
+        }
+
         public virtual string GetSpecification(string name)
         {
             ProductSpecificationValue spec =
