@@ -24,8 +24,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             if (product != null)
             {
                 model.Title = "Related Products";
-                if (product.RelatedProducts.Any())
-                    products.AddRange(product.RelatedProducts.Take(4));
+                if (product.PublishedRelatedProducts.Any())
+                    products.AddRange(product.PublishedRelatedProducts.Take(4));
                 else
                 {
                     if (product.Categories.Any())
