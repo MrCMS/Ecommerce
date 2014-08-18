@@ -8,7 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications
     {
         public override decimal GetDiscount(CartModel cartModel)
         {
-            return cartModel.ShippingTotal.GetValueOrDefault();
+            return cartModel.ShippingTotal;
         }
 
         public override decimal GetDiscount(CartItem cartItem)

@@ -33,7 +33,7 @@
         <div class="text-right">
             @if (Model.CanBuy(1).OK)
             {
-                using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post))
+                using (Html.BeginForm("Add", "AddToCart", FormMethod.Post))
                 {
                     <button class="btn btn-green btn-block margin-bottom-10">Add to basket</button>
                     @Html.Hidden("ProductVariant.Id", Model.Id)

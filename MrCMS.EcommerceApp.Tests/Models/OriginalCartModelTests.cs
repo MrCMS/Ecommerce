@@ -9,7 +9,7 @@ using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Models
 {
-    public class CartModelTests
+    public class OriginalCartModelTests
     {
         [Fact]
         public void CartModel_SubTotal_ShouldBeTheSumOfPricePreTax()

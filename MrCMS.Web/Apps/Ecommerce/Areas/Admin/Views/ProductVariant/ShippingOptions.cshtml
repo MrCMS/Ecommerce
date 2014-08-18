@@ -1,28 +1,7 @@
 ﻿@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
-@{
-    var shippingMethods = ViewData["shipping-methods"] as IList<ShippingMethod> ?? new List<ShippingMethod>();
-}
 
 <div id="shipping-options" class="tab-pane">
-    @if (shippingMethods.Any())
-    {
-        <div class="row">
-            <div class="col-xs-12">
-                <p>Restrict Shipping method to:</p>
-                @foreach (var shippingMethod in shippingMethods)
-                {
-                    <div class="checkbox">
-                        <label class="checkbox">
-                            <input type="checkbox" name="shipping-method-@shippingMethod.Id" @(Model.RestrictedShippingMethods.Contains(shippingMethod) ? "checked=\"checked\"" : string.Empty) />
-                            @shippingMethod.Name
-                        </label>
-                    </div>
-                }
-            </div>
-        </div>
-        <hr />
-    }
     <div class="row">
         <div class="col-xs-12">
             @Html.InlineCheckboxFor(variant => variant.RequiresShipping)

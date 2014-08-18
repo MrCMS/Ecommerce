@@ -3,6 +3,7 @@ using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using Xunit;
 
@@ -123,7 +124,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         public void CartItem_GetDiscountAmount_IfNullDiscountIsPassedShouldBeZero()
         {
             var cartItem = new CartItem { Item = _productVariant, Quantity = 3 };
-            cartItem.SetDiscountInfo(null, null);
+            cartItem.SetDiscountInfo(null);
 
             var discountAmount = cartItem.DiscountAmount;
 
@@ -135,8 +136,9 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Cart
         {
             var discount = A.Fake<Discount>();
             var cartItem = new CartItem { Item = _productVariant, Quantity = 3 };
-            A.CallTo(() => discount.GetDiscount(cartItem, "test")).Returns(10m);
-            cartItem.SetDiscountInfo(discount, "test");
+            const string discountCode = "test";
+            A.CallTo(() => discount.GetDiscount(cartItem, discountCode)).Returns(10m);
+            cartItem.SetDiscountInfo(new CartModel {Discount = discount,DiscountCode = discountCode});
 
             var discountAmount = cartItem.DiscountAmount;
 

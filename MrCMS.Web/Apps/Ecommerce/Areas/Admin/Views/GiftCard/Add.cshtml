@@ -1,0 +1,69 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.GiftCards.GiftCard
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+    var giftCardTypeOptions = ViewData["gift-card-type-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
+@using (Html.BeginForm("Add", "GiftCard", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Add gift card
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" class="btn-primary btn" value="Add" />
+            </span>
+        </legend>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.GiftCardType)
+                    @Html.DropDownListFor(x => x.GiftCardType, giftCardTypeOptions, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.GiftCardType)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(giftCard => giftCard.Value)
+                    @Html.TextBoxFor(giftCard => giftCard.Value, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(giftCard => giftCard.Value)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(giftCard => giftCard.Code)
+                    @Html.TextBoxFor(giftCard => giftCard.Code, new { @class = "form-control" })
+                    <button data-generate-gift-card-code="Code" type="button" class="btn btn-default btn-block">Generate Code</button>
+                    @Html.ValidationMessageFor(giftCard => giftCard.Code)
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.LabelFor(giftCard => giftCard.SenderName)
+                    @Html.TextBoxFor(giftCard => giftCard.SenderName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(giftCard => giftCard.SenderName)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(giftCard => giftCard.SenderEmail)
+                    @Html.TextBoxFor(giftCard => giftCard.SenderEmail, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(giftCard => giftCard.SenderEmail)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(giftCard => giftCard.RecipientName)
+                    @Html.TextBoxFor(giftCard => giftCard.RecipientName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(giftCard => giftCard.RecipientName)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(giftCard => giftCard.RecipientEmail)
+                    @Html.TextBoxFor(giftCard => giftCard.RecipientEmail, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(giftCard => giftCard.RecipientEmail)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(giftCard => giftCard.Message)
+                    @Html.TextAreaFor(giftCard => giftCard.Message, 5, 20, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(giftCard => giftCard.Message)
+                </div>
+
+            </div>
+        </div>
+
+    </fieldset>
+}
+@{
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/gift-cards.js");
+}

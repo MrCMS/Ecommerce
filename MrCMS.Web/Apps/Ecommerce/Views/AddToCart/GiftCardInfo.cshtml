@@ -1,0 +1,50 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards
+@using MrCMS.Web.Apps.Ecommerce.Entities.Products
+@model MrCMS.Web.Apps.Ecommerce.Models.GiftCardInfo
+@{
+    var productVariant = ViewContext.ParentActionViewContext.ViewData.Model as ProductVariant;
+    var isVirtual = productVariant != null && productVariant.GiftCardType == GiftCardType.Virtual;
+}
+@if (isVirtual)
+{
+    <div class="row">
+        <div class="col-sm-3 col-xs-4 padding-left-0">@Html.LabelFor(model => model.SenderName, new { @class = "line-height-30" })</div>
+        <div class="col-sm-9 col-xs-8">
+            @Html.TextBoxFor(model => model.SenderName, new { @class = "form-control" })
+            <div class="clearfix"></div>
+            @Html.ValidationMessageFor(model => model.SenderName)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-xs-4 padding-left-0">@Html.LabelFor(model => model.SenderEmail, new { @class = "line-height-30" })</div>
+        <div class="col-sm-9 col-xs-8">
+            @Html.TextBoxFor(model => model.SenderEmail, new { @class = "form-control" })
+            <div class="clearfix"></div>
+            @Html.ValidationMessageFor(model => model.SenderEmail)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-xs-4 padding-left-0">@Html.LabelFor(model => model.RecipientName, new { @class = "line-height-30" })</div>
+        <div class="col-sm-9 col-xs-8">
+            @Html.TextBoxFor(model => model.RecipientName, new { @class = "form-control" })
+            <div class="clearfix"></div>
+            @Html.ValidationMessageFor(model => model.RecipientName)
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3 col-xs-4 padding-left-0">@Html.LabelFor(model => model.RecipientEmail, new { @class = "line-height-30" })</div>
+        <div class="col-sm-9 col-xs-8">
+            @Html.TextBoxFor(model => model.RecipientEmail, new { @class = "form-control" })
+            <div class="clearfix"></div>
+            @Html.ValidationMessageFor(model => model.RecipientEmail)
+        </div>
+    </div>
+}
+<div class="row margin-bottom-20">
+    <div class="col-sm-3 col-xs-4 padding-left-0">@Html.LabelFor(model => model.Message, new { @class = "line-height-30" })</div>
+    <div class="col-sm-9 col-xs-8">
+        @Html.TextAreaFor(model => model.Message, 5, 20, new { @class = "form-control" })
+        <div class="clearfix"></div>
+        @Html.ValidationMessageFor(model => model.Message)
+    </div>
+</div>
