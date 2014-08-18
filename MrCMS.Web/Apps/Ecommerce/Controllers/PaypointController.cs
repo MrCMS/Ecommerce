@@ -14,15 +14,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly IPaypointPaymentService _paypointPaymentService;
         private readonly CartModel _cartModel;
-        private readonly IOrderService _orderService;
+        private readonly IOrderPlacementService _orderPlacementService;
         private readonly IPaypoint3DSecureHelper _paypoint3DSecureHelper;
         private readonly IUniquePageService _uniquePageService;
 
-        public PaypointController(IPaypointPaymentService paypointPaymentService, CartModel cartModel, IOrderService orderService, IPaypoint3DSecureHelper paypoint3DSecureHelper, IUniquePageService uniquePageService)
+        public PaypointController(IPaypointPaymentService paypointPaymentService, CartModel cartModel,
+            IOrderPlacementService orderPlacementService, IPaypoint3DSecureHelper paypoint3DSecureHelper,
+            IUniquePageService uniquePageService)
         {
             _paypointPaymentService = paypointPaymentService;
             _cartModel = cartModel;
-            _orderService = orderService;
+            _orderPlacementService = orderPlacementService;
             _paypoint3DSecureHelper = paypoint3DSecureHelper;
             _uniquePageService = uniquePageService;
         }
@@ -60,7 +62,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
             if (response.PaymentSucceeded)
             {
-                var order = _orderService.PlaceOrder(_cartModel, o =>
+                var order = _orderPlacementService.PlaceOrder(_cartModel, o =>
                 {
                     o.PaymentStatus = PaymentStatus.Paid;
                     o.AuthorisationToken = response.PaypointPaymentDetails.AuthCode;
@@ -106,7 +108,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
             if (response.PaymentSucceeded)
             {
-                var order = _orderService.PlaceOrder(_cartModel, o =>
+                var order = _orderPlacementService.PlaceOrder(_cartModel, o =>
                 {
                     o.PaymentStatus = PaymentStatus.Paid;
                     o.ShippingStatus = ShippingStatus.Unshipped;

@@ -480,6 +480,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceDashboardController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceSearchCacheSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceSettingsController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\GiftCardController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\GoogleBaseController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ImportExportController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\NewsletterController.cs" />
@@ -518,10 +519,19 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\ShippingMethodSettingsModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\WorldPaySettingsModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\CalculationInfo.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\GiftCardSearchQuery.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ShippingMethodInfo.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\UniqueAttributeNameModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CategoryAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GenerateGiftCardCode.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetGiftCardTypeOptions.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetProductVariantTypeOptions.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GiftCardAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICategoryAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGenerateGiftCardCode.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetGiftCardTypeOptions.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetProductVariantTypeOptions.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGiftCardAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IShippingMethodAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IUKCourierShippingAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IUKCourierShippingCalculationAdminService.cs" />
@@ -533,6 +543,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\UKFirstClassShippingAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\UKFirstClassShippingCalculationAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ViewData\GetCategoryProductSortOptions.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\AddToCartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CartValidationController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CashOnDeliveryController.cs" />
@@ -540,8 +551,11 @@
     <Compile Include="Apps\Ecommerce\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CheckoutController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ContactUsController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\DiscountController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\DownloadOrderedFileController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\EmptyBasketController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\EnterOrderEmailController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\GiftCardController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GoogleAnalyticsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\GoogleBaseFeedController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\NewInProductsController.cs" />
@@ -572,6 +586,8 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\FeaturedCategoryWidgetOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\FeaturedProductsWidgetOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\FreeTextOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\GiftCardOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\GiftCardUsageOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\GoogleBaseProductOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ImageAndTextOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\Listeners\BackInStockListener.cs" />
@@ -611,6 +627,9 @@
     <Compile Include="Apps\Ecommerce\Entities\Discounts\DiscountLimitation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Geographic\Country.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Geographic\Region.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\GiftCards\GiftCard.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\GiftCards\GiftCardType.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\GiftCards\GiftCardUsage.cs" />
     <Compile Include="Apps\Ecommerce\Entities\GoogleBase\GoogleBaseProduct.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\Banner.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ContentItem.cs" />
@@ -619,6 +638,7 @@
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ProductList.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\Newsletter.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\NewsletterTemplate.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Orders\AddressData.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\Order.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderLine.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderNote.cs" />
@@ -641,6 +661,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Templating\NotificationTemplateSettings.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Users\Address.cs" />
     <Compile Include="Apps\Ecommerce\Events\CopyCartToUser.cs" />
+    <Compile Include="Apps\Ecommerce\Events\GenerateGiftCards.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\AddressExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\Cart\CartModelExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\CookieHelper.cs" />
@@ -648,6 +669,7 @@
     <Compile Include="Apps\Ecommerce\Helpers\EnumHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\GeneralHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\GiftCardExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\IUrlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\MrCMSEcommerceHtmlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\PolymorphicMappingHelper.cs" />
@@ -709,6 +731,7 @@
     <Compile Include="Apps\Ecommerce\Metadata\UserAccountMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\UserOrderMetadata.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\AddDiscountApplicationModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\ModelBinders\AddToCartModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\DownloadOrderedFileOrderByGuidModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\OrderByGuidModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\ProductSearchQueryModelBinder.cs" />
@@ -735,8 +758,10 @@
     <Compile Include="Apps\Ecommerce\Models\FeaturedCategoriesViewModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\FeaturedProductsViewModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\Gender.cs" />
+    <Compile Include="Apps\Ecommerce\Models\GiftCardInfo.cs" />
     <Compile Include="Apps\Ecommerce\Models\GoogleBaseModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\IAddress.cs" />
+    <Compile Include="Apps\Ecommerce\Models\IGiftCardUserDetails.cs" />
     <Compile Include="Apps\Ecommerce\Models\IShippingCalculationRequest.cs" />
     <Compile Include="Apps\Ecommerce\Models\KeyEqualityComparer.cs" />
     <Compile Include="Apps\Ecommerce\Models\LoginAndAssociateOrderResult.cs" />
@@ -766,7 +791,6 @@
     <Compile Include="Apps\Ecommerce\Models\RegisterModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\RelatedProductsViewModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ShippingStatus.cs" />
-    <Compile Include="Apps\Ecommerce\Models\Shipping\ShippingAmount.cs" />
     <Compile Include="Apps\Ecommerce\Models\SpendXMoreModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\StrictKeyEqualityComparer.cs" />
     <Compile Include="Apps\Ecommerce\Models\TrackingPolicy.cs" />
@@ -840,6 +864,7 @@
     <Compile Include="Apps\Ecommerce\Payment\WorldPay\Services\WorldPayPaymentService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\WorldPay\WorldPayPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\WorldPay\WorldPaySettings.cs" />
+    <Compile Include="Apps\Ecommerce\Services\AddToCartUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\GoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\IGoogleAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\ITrackingService.cs" />
@@ -852,20 +877,32 @@
     <Compile Include="Apps\Ecommerce\Services\CartValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\AssignBasicCartInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\AssignCartDiscountInfo.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\AssignGiftCardInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\AssignPaymentInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\AssignShippingInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartBuilder.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\CartDiscountService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\CartItemManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartSessionManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\ClearCartSessionKeys.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\EmptyBasket.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\GetGiftCardDataFromContext.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetShippingAddress.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IAssignBasicCartInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IAssignCartDiscountInfo.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\IAssignGiftCardInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IAssignPaymentInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IAssignShippingInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartBuilder.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\ICartDiscountService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\ICartItemManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartSessionKeyList.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartSessionManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\IClearCartSessionKeys.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\IEmptyBasket.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\IGetGiftCardDataFromContext.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetShippingAddress.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\CategoryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\ICategoryService.cs" />
@@ -888,7 +925,6 @@
     <Compile Include="Apps\Ecommerce\Services\GetBreadCrumb.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetCartWidgetModel.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetCategoriesOnlyNavModel.cs" />
-    <Compile Include="Apps\Ecommerce\Services\GetCheapestShippingMethod.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetCountryOptions.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetEcommerceNavigation.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetFeaturedCategories.cs" />
@@ -899,7 +935,7 @@
     <Compile Include="Apps\Ecommerce\Services\GetProductCardModel.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetRecentlyViewedItems.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetRelatedProducts.cs" />
-    <Compile Include="Apps\Ecommerce\Services\IGetCheapestShippingMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IAddToCartUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IGetCountryOptions.cs" />
     <Compile Include="Apps\Ecommerce\Services\ISetShippingAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ISetShippingDetailsUIService.cs" />
@@ -908,6 +944,11 @@
     <Compile Include="Apps\Ecommerce\Services\IShippingMethodUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\GetExistingAddressOptions.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IGetExistingAddressOptions.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IGiftCardApplier.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderLineCreator.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderPlacementService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\OrderLineCreator.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\OrderPlacementService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Pricing\IProductPricingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Pricing\IShippingPricingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Pricing\ProductPricingService.cs" />
@@ -1428,6 +1469,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-product.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-products.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\gift-cards.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\google-base.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\hide-specifications.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\manage-options.js" />
@@ -2864,7 +2906,7 @@
     <Content Include="Apps\Ecommerce\Content\Fonts\mavenpro-regular-webfont.ttf" />
     <Content Include="Apps\Ecommerce\Content\Fonts\mavenpro-regular-webfont.woff" />
     <Content Include="Apps\Ecommerce\Views\Cart\AddDiscountCode.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Cart\AddToCart.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\AddToCart\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\Cart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\CartItem.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\DeleteCartItem.cshtml" />
@@ -3009,13 +3051,16 @@
     <Content Include="Apps\Ecommerce\Views\SetShippingAddress\ShippingAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SetShippingAddress\ShowShippingAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\UKCourierShippingCalculation\Add.cshtml" />
-
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\UKCourierShippingCalculation\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\UKCourierShippingCalculation\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\UKFirstClassShippingCalculation\Delete.cshtml" />
-
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\EcommerceSearchCacheSettings\Edit.cshtml" />
-
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\GiftCard\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\GiftCard\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\GiftCard\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderGiftCards.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\GiftCardOptions.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\AddToCart\GiftCardInfo.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Default\Apps\Core\Web.config">
@@ -3048,7 +3093,7 @@
     <Folder Include="Apps\Core\Settings\" />
     <Folder Include="Apps\Core\Tasks\" />
     <Folder Include="Apps\Ecommerce\Content\Scripts\charts\" />
-    <Folder Include="Apps\Ecommerce\Queries\" />
+    <Folder Include="Apps\Ecommerce\Models\Shipping\" />
     <Folder Include="Apps\Ecommerce\Views\PaymentMethod\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Controllers\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Views\Widget\" />

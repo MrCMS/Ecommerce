@@ -18,15 +18,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly IPayPalExpressService _payPalExpressService;
         private readonly CartModel _cart;
-        private readonly IOrderService _orderService;
+        private readonly IOrderPlacementService _orderPlacementService;
         private readonly IPayPalIPNService _payPalIPNService;
         private readonly IUniquePageService _uniquePageService;
 
-        public PayPalExpressCheckoutController(IPayPalExpressService payPalExpressService, CartModel cart, IOrderService orderService, IPayPalIPNService payPalIPNService, IUniquePageService uniquePageService)
+        public PayPalExpressCheckoutController(IPayPalExpressService payPalExpressService, CartModel cart,
+            IOrderPlacementService orderPlacementService, IPayPalIPNService payPalIPNService, IUniquePageService uniquePageService)
         {
             _payPalExpressService = payPalExpressService;
             _cart = cart;
-            _orderService = orderService;
+            _orderPlacementService = orderPlacementService;
             _payPalIPNService = payPalIPNService;
             _uniquePageService = uniquePageService;
         }
@@ -52,7 +53,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
             if (response.Success)
             {
-                var order = _orderService.PlaceOrder(_cart, response.UpdateOrder);
+                var order = _orderPlacementService.PlaceOrder(_cart, response.UpdateOrder);
                 return Redirect(UniquePageHelper.GetUrl<OrderPlaced>(new { id = order.Guid }));
             }
 

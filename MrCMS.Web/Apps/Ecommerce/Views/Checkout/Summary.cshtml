@@ -38,11 +38,11 @@
                     <th>Sub Total :</th>
                     <td>@Model.TotalPreShipping.ToCurrencyFormat()</td>
                 </tr>
-                @if (Model.ShippingTotal.HasValue)
+                @if (Model.ShippingTotal > decimal.Zero)
                 {
                     <tr>
                         <th>Shipping :</th>
-                        <td>@Model.ShippingTotal.Value.ToCurrencyFormat()</td>
+                        <td>@Model.ShippingTotal.ToCurrencyFormat()</td>
                     </tr>
                 }
                 @if (Model.HasDiscount)
@@ -63,6 +63,24 @@
                     <th>Total :</th>
                     <td><strong>@Model.Total.ToCurrencyFormat()</strong></td>
                 </tr>
+                @if (Model.AppliedGiftCards.Any())
+                {
+                    foreach (var card in Model.AppliedGiftCards)
+                    {
+                        <tr>
+                            <td>
+                                Gift Card @card.Code
+                            </td>
+                            <td>
+                                @card.AvailableAmount.ToCurrencyFormat()
+                            </td>
+                        </tr>
+                    }
+                <tr>
+                    <th>Total to pay:</th>
+                    <td><strong>@Model.TotalToPay.ToCurrencyFormat()</strong></td>
+                </tr>
+                }
             </tfoot>
         </table>
     }

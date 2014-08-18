@@ -109,116 +109,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                     if (productsToImport.Any(x => x.UrlSegment == product.UrlSegment))
                                         continue;
 
-                                    if (worksheet.GetValue<string>(rowId, 2).HasValue())
-                                        product.Name = worksheet.GetValue<string>(rowId, 2);
-                                    else
-                                        parseErrors[handle].Add("Product Name is required.");
-                                    product.Description = worksheet.GetValue<string>(rowId, 3);
-                                    product.SEOTitle = worksheet.GetValue<string>(rowId, 4);
-                                    product.SEODescription = worksheet.GetValue<string>(rowId, 5);
-                                    product.SEOKeywords = worksheet.GetValue<string>(rowId, 6);
-                                    product.Abstract = worksheet.GetValue<string>(rowId, 7);
-                                    product.Brand = worksheet.GetValue<string>(rowId, 8);
-                                    if (worksheet.GetValue<string>(rowId, 32).HasValue())
-                                    {
-                                        if (!worksheet.GetValue<string>(rowId, 32).IsValidDateTime())
-                                            parseErrors[handle].Add("Publish Date is not a valid date.");
-                                        else
-                                            product.PublishDate = worksheet.GetValue<DateTime>(rowId, 32);
-                                    }
+                                    GetBasicData(parseErrors, worksheet, rowId, product, handle);
 
-                                    //Categories
-                                    try
-                                    {
-                                        var value = worksheet.GetValue<string>(rowId, 9);
-                                        if (!String.IsNullOrWhiteSpace(value))
-                                        {
-                                            var Cats = value.Split(';');
-                                            foreach (var item in Cats)
-                                            {
-                                                if (!String.IsNullOrWhiteSpace(item))
-                                                {
-                                                    if (!product.Categories.Any(x => x == item))
-                                                        product.Categories.Add(item);
-                                                    else
-                                                    {
-                                                        parseErrors[handle].Add(
-                                                            "Product Categories field value contains duplicate values.");
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    catch (Exception)
-                                    {
-                                        parseErrors[handle].Add(
-                                            "Product Categories field value contains illegal characters / not in correct format.");
-                                    }
+                                    GetCategories(parseErrors, worksheet, rowId, product, handle);
 
-                                    //Specifications
-                                    var specificationsValue = worksheet.GetValue<string>(rowId, 10);
-                                    if (!String.IsNullOrWhiteSpace(specificationsValue))
-                                    {
-                                        try
-                                        {
-                                            if (!String.IsNullOrWhiteSpace(specificationsValue))
-                                            {
-                                                if (!specificationsValue.Contains(":"))
-                                                    parseErrors[handle].Add(
-                                                        "Product Specifications field value contains illegal characters / not in correct format. Names and Values (Item) must be split with :, and items must be split by ;");
-                                                var specs = specificationsValue.Split(';');
-                                                foreach (var item in specs)
-                                                {
-                                                    if (!String.IsNullOrWhiteSpace(item))
-                                                    {
-                                                        string[] specificationValue = item.Split(':');
-                                                        if (!String.IsNullOrWhiteSpace(specificationValue[0]) &&
-                                                            !String.IsNullOrWhiteSpace(specificationValue[1]) &&
-                                                            !product.Specifications.ContainsKey(
-                                                                specificationValue[0]))
-                                                            product.Specifications.Add(specificationValue[0],
-                                                                                       specificationValue[1]);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        catch (Exception)
-                                        {
-                                            parseErrors[handle].Add(
-                                                "Product Specifications field value contains illegal characters / not in correct format. Names and Values (Item) must be split with :, and items must be split by ;");
-                                        }
-                                    }
+                                    GetSpecifications(parseErrors, worksheet, rowId, handle, product);
 
-                                    //Images
-                                    if (worksheet.GetValue<string>(rowId, 27).HasValue())
-                                        product.Images.Add(worksheet.GetValue<string>(rowId, 27));
-                                    if (worksheet.GetValue<string>(rowId, 28).HasValue())
-                                        product.Images.Add(worksheet.GetValue<string>(rowId, 28));
-                                    if (worksheet.GetValue<string>(rowId, 29).HasValue())
-                                        product.Images.Add(worksheet.GetValue<string>(rowId, 29));
+                                    GetImages(worksheet, rowId, product);
 
-                                    //Url History
-                                    try
-                                    {
-                                        var value = worksheet.GetValue<string>(rowId, 31);
-                                        if (!String.IsNullOrWhiteSpace(value))
-                                        {
-                                            var urlHistory = value.Split(',');
-                                            foreach (var item in urlHistory)
-                                            {
-                                                if (!String.IsNullOrWhiteSpace(item))
-                                                {
-                                                    product.UrlHistory.Add(item);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    catch (Exception)
-                                    {
-                                        parseErrors[handle].Add(
-                                            "Product Url History field value contains illegal characters / not in correct format.");
-                                    }
+                                    GetUrlHistory(parseErrors, worksheet, rowId, product, handle);
 
                                     productsToImport.Add(product);
                                 }
@@ -232,120 +131,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                 //Variants
                                 if (product != null)
                                 {
-                                    var productVariant = new ProductVariantImportDataTransferObject
-                                        {
-                                            Name = worksheet.GetValue<string>(rowId, 11)
-                                        };
-
-                                    if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 12)))
-                                        parseErrors[handle].Add("Price value is not a valid decimal number.");
-                                    else if (worksheet.GetValue<string>(rowId, 12).HasValue())
-                                        productVariant.Price =
-                                            GeneralHelper.GetValue<decimal>(worksheet.GetValue<string>(rowId, 12));
-                                    else
-                                        parseErrors[handle].Add("Price is required.");
-
-                                    if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 13)))
-                                        parseErrors[handle].Add(
-                                            "Previous Price value is not a valid decimal number.");
-                                    else
-                                        productVariant.PreviousPrice =
-                                            GeneralHelper.GetValue<decimal>(worksheet.GetValue<string>(rowId, 13));
-
-                                    if (!GeneralHelper.IsValidInput<int>(worksheet.GetValue<string>(rowId, 14)))
-                                        parseErrors[handle].Add("Tax Rate Id value is not a valid number.");
-                                    else
-                                        productVariant.TaxRate =
-                                            GeneralHelper.GetValue<int>(worksheet.GetValue<string>(rowId, 14));
-
-                                    if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 15)))
-                                        parseErrors[handle].Add("Weight value is not a valid decimal number.");
-                                    else
-                                        productVariant.Weight =
-                                            GeneralHelper.GetValue<decimal>(worksheet.GetValue<string>(rowId, 15));
-
-                                    if (!GeneralHelper.IsValidInput<int>(worksheet.GetValue<string>(rowId, 16)))
-                                        parseErrors[handle].Add("Stock value is not a valid decimal number.");
-                                    else
-                                        productVariant.Stock = worksheet.HasValue(rowId, 16)
-                                                                   ? GeneralHelper.GetValue<int>(
-                                                                       worksheet.GetValue<string>(rowId, 16))
-                                                                   : (int?) null;
-
-                                    if (!worksheet.GetValue<string>(rowId, 17).HasValue() ||
-                                        (worksheet.GetValue<string>(rowId, 17) != "Track" &&
-                                         worksheet.GetValue<string>(rowId, 17) != "DontTrack"))
-                                        parseErrors[handle].Add(
-                                            "Tracking Policy must have either 'Track' or 'DontTrack' value.");
-                                    else
-                                    {
-                                        productVariant.TrackingPolicy = worksheet.GetValue<string>(rowId, 17) == "Track" ? TrackingPolicy.Track : TrackingPolicy.DontTrack;
-                                    }
-                                    if (worksheet.GetValue<string>(rowId, 18).HasValue())
-                                        productVariant.SKU = worksheet.GetValue<string>(rowId, 18);
-                                    else
-                                        parseErrors[handle].Add("SKU is required.");
-                                    productVariant.Barcode = worksheet.GetValue<string>(rowId, 19);
-
-                                    productVariant.ManufacturerPartNumber = worksheet.GetValue<string>(rowId, 20);
+                                    var productVariant = GetProductVariant(parseErrors, worksheet, rowId, handle);
 
                                     //Options
-                                    if (worksheet.GetValue<string>(rowId, 21).HasValue() &&
-                                        worksheet.GetValue<string>(rowId, 22).HasValue())
-                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 21),
-                                                                   worksheet.GetValue<string>(rowId, 22));
-                                    if (worksheet.GetValue<string>(rowId, 23).HasValue() &&
-                                        worksheet.GetValue<string>(rowId, 24).HasValue())
-                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 23),
-                                                                   worksheet.GetValue<string>(rowId, 24));
-                                    if (worksheet.GetValue<string>(rowId, 25).HasValue() &&
-                                        worksheet.GetValue<string>(rowId, 26).HasValue())
-                                        productVariant.Options.Add(worksheet.GetValue<string>(rowId, 25),
-                                                                   worksheet.GetValue<string>(rowId, 26));
+                                    GetProductVariantOptions(worksheet, rowId, productVariant);
 
                                     //Price Breaks
-                                    if (!String.IsNullOrWhiteSpace(worksheet.GetValue<string>(rowId, 30)))
-                                    {
-                                        try
-                                        {
-                                            var value = worksheet.GetValue<string>(rowId, 30);
-                                            if (!value.Contains(":"))
-                                            {
-                                                parseErrors[handle].Add(
-                                                    "Product Variant Price Breaks field value contains illegal characters / not in correct format. Quantity and Price (Item) must be split with :, and items must be split by ;");
-                                            }
-                                            else
-                                            {
-                                                var priceBreaks = value.Split(';');
-                                                foreach (var item in priceBreaks)
-                                                {
-                                                    if (!String.IsNullOrWhiteSpace(item))
-                                                    {
-                                                        var priceBreak = item.Split(':');
-                                                        if (!String.IsNullOrWhiteSpace(priceBreak[0]) &&
-                                                            !String.IsNullOrWhiteSpace(priceBreak[1]) &&
-                                                            !productVariant.PriceBreaks.ContainsKey(
-                                                                Int32.Parse(priceBreak[0])))
-                                                        {
-                                                            var quantity = Int32.Parse(priceBreak[0]);
-                                                            var price = Decimal.Parse(priceBreak[1]);
-                                                            productVariant.PriceBreaks.Add(quantity, price);
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        catch (ArgumentException)
-                                        {
-                                            parseErrors[handle].Add(
-                                                "Product Variant Price Breaks field contains duplicate price breaks.");
-                                        }
-                                        catch (Exception)
-                                        {
-                                            parseErrors[handle].Add(
-                                                "Product Variant Price Breaks field value contains illegal characters / not in correct format. Quantity and Price (Item) must be split with :, and items must be split by ;");
-                                        }
-                                    }
+                                    GetPriceBreaks(parseErrors, worksheet, rowId, handle, productVariant);
 
                                     product.ProductVariants.Add(productVariant);
                                 }
@@ -359,6 +151,264 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             }
             var i = productsToImport.Where(x => x.ProductVariants.Count == 0).ToList();
             return productsToImport;
+        }
+
+        private static void GetPriceBreaks(Dictionary<string, List<string>> parseErrors, ExcelWorksheet worksheet, int rowId, string handle,
+            ProductVariantImportDataTransferObject productVariant)
+        {
+            if (!String.IsNullOrWhiteSpace(worksheet.GetValue<string>(rowId, 30)))
+            {
+                try
+                {
+                    var value = worksheet.GetValue<string>(rowId, 30);
+                    if (!value.Contains(":"))
+                    {
+                        parseErrors[handle].Add(
+                            "Product Variant Price Breaks field value contains illegal characters / not in correct format. Quantity and Price (Item) must be split with :, and items must be split by ;");
+                    }
+                    else
+                    {
+                        var priceBreaks = value.Split(';');
+                        foreach (var item in priceBreaks)
+                        {
+                            if (!String.IsNullOrWhiteSpace(item))
+                            {
+                                var priceBreak = item.Split(':');
+                                if (!String.IsNullOrWhiteSpace(priceBreak[0]) &&
+                                    !String.IsNullOrWhiteSpace(priceBreak[1]) &&
+                                    !productVariant.PriceBreaks.ContainsKey(
+                                        Int32.Parse(priceBreak[0])))
+                                {
+                                    var quantity = Int32.Parse(priceBreak[0]);
+                                    var price = Decimal.Parse(priceBreak[1]);
+                                    productVariant.PriceBreaks.Add(quantity, price);
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (ArgumentException)
+                {
+                    parseErrors[handle].Add(
+                        "Product Variant Price Breaks field contains duplicate price breaks.");
+                }
+                catch (Exception)
+                {
+                    parseErrors[handle].Add(
+                        "Product Variant Price Breaks field value contains illegal characters / not in correct format. Quantity and Price (Item) must be split with :, and items must be split by ;");
+                }
+            }
+        }
+
+        private static void GetProductVariantOptions(ExcelWorksheet worksheet, int rowId,
+            ProductVariantImportDataTransferObject productVariant)
+        {
+            if (worksheet.GetValue<string>(rowId, 21).HasValue() &&
+                worksheet.GetValue<string>(rowId, 22).HasValue())
+                productVariant.Options.Add(worksheet.GetValue<string>(rowId, 21),
+                    worksheet.GetValue<string>(rowId, 22));
+            if (worksheet.GetValue<string>(rowId, 23).HasValue() &&
+                worksheet.GetValue<string>(rowId, 24).HasValue())
+                productVariant.Options.Add(worksheet.GetValue<string>(rowId, 23),
+                    worksheet.GetValue<string>(rowId, 24));
+            if (worksheet.GetValue<string>(rowId, 25).HasValue() &&
+                worksheet.GetValue<string>(rowId, 26).HasValue())
+                productVariant.Options.Add(worksheet.GetValue<string>(rowId, 25),
+                    worksheet.GetValue<string>(rowId, 26));
+        }
+
+        private static ProductVariantImportDataTransferObject GetProductVariant(Dictionary<string, List<string>> parseErrors, ExcelWorksheet worksheet,
+            int rowId, string handle)
+        {
+            var productVariant = new ProductVariantImportDataTransferObject
+            {
+                Name = worksheet.GetValue<string>(rowId, 11)
+            };
+
+            if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 12)))
+                parseErrors[handle].Add("Price value is not a valid decimal number.");
+            else if (worksheet.GetValue<string>(rowId, 12).HasValue())
+                productVariant.Price =
+                    GeneralHelper.GetValue<decimal>(worksheet.GetValue<string>(rowId, 12));
+            else
+                parseErrors[handle].Add("Price is required.");
+
+            if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 13)))
+                parseErrors[handle].Add(
+                    "Previous Price value is not a valid decimal number.");
+            else
+                productVariant.PreviousPrice =
+                    GeneralHelper.GetValue<decimal>(worksheet.GetValue<string>(rowId, 13));
+
+            if (!GeneralHelper.IsValidInput<int>(worksheet.GetValue<string>(rowId, 14)))
+                parseErrors[handle].Add("Tax Rate Id value is not a valid number.");
+            else
+                productVariant.TaxRate =
+                    GeneralHelper.GetValue<int>(worksheet.GetValue<string>(rowId, 14));
+
+            if (!GeneralHelper.IsValidInput<decimal>(worksheet.GetValue<string>(rowId, 15)))
+                parseErrors[handle].Add("Weight value is not a valid decimal number.");
+            else
+                productVariant.Weight =
+                    GeneralHelper.GetValue<decimal>(worksheet.GetValue<string>(rowId, 15));
+
+            if (!GeneralHelper.IsValidInput<int>(worksheet.GetValue<string>(rowId, 16)))
+                parseErrors[handle].Add("Stock value is not a valid decimal number.");
+            else
+                productVariant.Stock = worksheet.HasValue(rowId, 16)
+                    ? GeneralHelper.GetValue<int>(
+                        worksheet.GetValue<string>(rowId, 16))
+                    : (int?) null;
+
+            if (!worksheet.GetValue<string>(rowId, 17).HasValue() ||
+                (worksheet.GetValue<string>(rowId, 17) != "Track" &&
+                 worksheet.GetValue<string>(rowId, 17) != "DontTrack"))
+                parseErrors[handle].Add(
+                    "Tracking Policy must have either 'Track' or 'DontTrack' value.");
+            else
+            {
+                productVariant.TrackingPolicy = worksheet.GetValue<string>(rowId, 17) == "Track"
+                    ? TrackingPolicy.Track
+                    : TrackingPolicy.DontTrack;
+            }
+            if (worksheet.GetValue<string>(rowId, 18).HasValue())
+                productVariant.SKU = worksheet.GetValue<string>(rowId, 18);
+            else
+                parseErrors[handle].Add("SKU is required.");
+            productVariant.Barcode = worksheet.GetValue<string>(rowId, 19);
+
+            productVariant.ManufacturerPartNumber = worksheet.GetValue<string>(rowId, 20);
+            return productVariant;
+        }
+
+        private static void GetBasicData(Dictionary<string, List<string>> parseErrors, ExcelWorksheet worksheet, int rowId,
+            ProductImportDataTransferObject product, string handle)
+        {
+            if (worksheet.GetValue<string>(rowId, 2).HasValue())
+                product.Name = worksheet.GetValue<string>(rowId, 2);
+            else
+                parseErrors[handle].Add("Product Name is required.");
+            product.Description = worksheet.GetValue<string>(rowId, 3);
+            product.SEOTitle = worksheet.GetValue<string>(rowId, 4);
+            product.SEODescription = worksheet.GetValue<string>(rowId, 5);
+            product.SEOKeywords = worksheet.GetValue<string>(rowId, 6);
+            product.Abstract = worksheet.GetValue<string>(rowId, 7);
+            product.Brand = worksheet.GetValue<string>(rowId, 8);
+            if (worksheet.GetValue<string>(rowId, 32).HasValue())
+            {
+                if (!worksheet.GetValue<string>(rowId, 32).IsValidDateTime())
+                    parseErrors[handle].Add("Publish Date is not a valid date.");
+                else
+                    product.PublishDate = worksheet.GetValue<DateTime>(rowId, 32);
+            }
+        }
+
+        private static void GetUrlHistory(Dictionary<string, List<string>> parseErrors, ExcelWorksheet worksheet, int rowId,
+            ProductImportDataTransferObject product, string handle)
+        {
+//Url History
+            try
+            {
+                var value = worksheet.GetValue<string>(rowId, 31);
+                if (!String.IsNullOrWhiteSpace(value))
+                {
+                    var urlHistory = value.Split(',');
+                    foreach (var item in urlHistory)
+                    {
+                        if (!String.IsNullOrWhiteSpace(item))
+                        {
+                            product.UrlHistory.Add(item);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                parseErrors[handle].Add(
+                    "Product Url History field value contains illegal characters / not in correct format.");
+            }
+        }
+
+        private static void GetImages(ExcelWorksheet worksheet, int rowId, ProductImportDataTransferObject product)
+        {
+//Images
+            if (worksheet.GetValue<string>(rowId, 27).HasValue())
+                product.Images.Add(worksheet.GetValue<string>(rowId, 27));
+            if (worksheet.GetValue<string>(rowId, 28).HasValue())
+                product.Images.Add(worksheet.GetValue<string>(rowId, 28));
+            if (worksheet.GetValue<string>(rowId, 29).HasValue())
+                product.Images.Add(worksheet.GetValue<string>(rowId, 29));
+        }
+
+        private static void GetSpecifications(Dictionary<string, List<string>> parseErrors, ExcelWorksheet worksheet, int rowId, string handle,
+            ProductImportDataTransferObject product)
+        {
+//Specifications
+            var specificationsValue = worksheet.GetValue<string>(rowId, 10);
+            if (!String.IsNullOrWhiteSpace(specificationsValue))
+            {
+                try
+                {
+                    if (!String.IsNullOrWhiteSpace(specificationsValue))
+                    {
+                        if (!specificationsValue.Contains(":"))
+                            parseErrors[handle].Add(
+                                "Product Specifications field value contains illegal characters / not in correct format. Names and Values (Item) must be split with :, and items must be split by ;");
+                        var specs = specificationsValue.Split(';');
+                        foreach (var item in specs)
+                        {
+                            if (!String.IsNullOrWhiteSpace(item))
+                            {
+                                string[] specificationValue = item.Split(':');
+                                if (!String.IsNullOrWhiteSpace(specificationValue[0]) &&
+                                    !String.IsNullOrWhiteSpace(specificationValue[1]) &&
+                                    !product.Specifications.ContainsKey(
+                                        specificationValue[0]))
+                                    product.Specifications.Add(specificationValue[0],
+                                        specificationValue[1]);
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    parseErrors[handle].Add(
+                        "Product Specifications field value contains illegal characters / not in correct format. Names and Values (Item) must be split with :, and items must be split by ;");
+                }
+            }
+        }
+
+        private static void GetCategories(Dictionary<string, List<string>> parseErrors, ExcelWorksheet worksheet, int rowId,
+            ProductImportDataTransferObject product, string handle)
+        {
+//Categories
+            try
+            {
+                var value = worksheet.GetValue<string>(rowId, 9);
+                if (!String.IsNullOrWhiteSpace(value))
+                {
+                    var Cats = value.Split(';');
+                    foreach (var item in Cats)
+                    {
+                        if (!String.IsNullOrWhiteSpace(item))
+                        {
+                            if (!product.Categories.Any(x => x == item))
+                                product.Categories.Add(item);
+                            else
+                            {
+                                parseErrors[handle].Add(
+                                    "Product Categories field value contains duplicate values.");
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                parseErrors[handle].Add(
+                    "Product Categories field value contains illegal characters / not in correct format.");
+            }
         }
 
         /// <summary>

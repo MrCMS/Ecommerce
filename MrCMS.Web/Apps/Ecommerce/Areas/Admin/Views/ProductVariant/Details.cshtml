@@ -1,10 +1,23 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
+@{
+    var productVariantTypeOptions = ViewData["product-variant-type-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
 <div id="details" class="tab-pane active">
 
     @Html.HiddenFor(variant => variant.Product.Id)
-    <div class="form-group">
-        @Html.LabelFor(variant => variant.Name)
-        @Html.TextBoxFor(variant => variant.Name, new { @class = "form-control" })
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                @Html.LabelFor(variant => variant.Name)
+                @Html.TextBoxFor(variant => variant.Name, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                @Html.LabelFor(variant => variant.VariantType)
+                @Html.DropDownListFor(variant => variant.VariantType, productVariantTypeOptions, new { @class = "form-control" })
+            </div>
+        </div>
     </div>
 
     @for (var index = 0; index < Model.Product.Options.Count; index++)
@@ -32,7 +45,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-xs-6">
             <div class="form-group">
@@ -58,7 +71,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
     <div class="row">

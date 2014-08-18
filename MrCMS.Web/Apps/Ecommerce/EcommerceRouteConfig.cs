@@ -221,10 +221,10 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new {controller = "Cart", action = "UpdateBasket"});
 
             context.MapRoute("Cart - Empty Basket", "Apps/Ecommerce/EmptyBasket",
-                new {controller = "Cart", action = "EmptyBasket"});
+                new {controller = "EmptyBasket", action = "Empty"});
 
             context.MapRoute("Cart - Add to Cart", "Apps/Ecommerce/AddToCart",
-                new {controller = "Cart", action = "AddToCart"});
+                new {controller = "AddToCart", action = "Add"});
 
             context.MapRoute("Cart - Edit Cart Item", "Apps/Ecommerce/EditCartItem",
                 new {controller = "Cart", action = "EditCartItem"});
@@ -233,7 +233,15 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new {controller = "Cart", action = "DeleteCartItem"});
 
             context.MapRoute("Cart - Apply Discount Code", "Apps/Ecommerce/ApplyDiscountCode",
-                new {controller = "Cart", action = "ApplyDiscountCode"});
+                new {controller = "Discount", action = "Apply"});
+
+            context.MapRoute("Cart - Apply Gift Card Code", "Apps/Ecommerce/ApplyGiftCardCode",
+                new {controller = "GiftCard", action = "Apply"},
+                new []{typeof(GiftCardController).Namespace});
+
+            context.MapRoute("Cart - Remove Gift Card Code", "Apps/Ecommerce/RemoveGiftCardCode",
+                new {controller = "GiftCard", action = "Remove"},
+                new []{typeof(GiftCardController).Namespace});
         }
     }
 }

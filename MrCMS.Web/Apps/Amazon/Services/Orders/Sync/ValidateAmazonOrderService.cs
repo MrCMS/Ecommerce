@@ -263,6 +263,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                            PaymentMethod = amazonOrder.PaymentMethod.GetDescription(),
                            PaidDate = amazonOrder.PurchaseDate,
                            Total = amazonOrder.OrderTotalAmount,
+                           TotalPaid = amazonOrder.OrderTotalAmount,
                            Subtotal = amazonOrder.ItemAmount,
                            DiscountAmount = amazonOrder.ItemDiscountAmount,
                            ShippingTax = amazonOrder.ShippingTax,

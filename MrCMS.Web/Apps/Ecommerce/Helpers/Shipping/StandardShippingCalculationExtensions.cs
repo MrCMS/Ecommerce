@@ -1,13 +1,33 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
-using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Helpers.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
 namespace MrCMS.Web.Apps.Ecommerce.Helpers.Shipping
 {
+    public static class CartModelShippingExtensions
+    {
+        public static IEnumerable<CartItem> ShippableItems(this CartModel cartModel)
+        {
+            return cartModel.Items.Where(item => item.RequiresShipping);
+        }
+
+        public static decimal ShippableTotalPreDiscount(this CartModel cartModel)
+        {
+            return cartModel.ShippableItems().Sum(item => item.Price);
+        }
+
+        public static decimal ShippableCalculationTotal(this CartModel cartModel)
+        {
+            return cartModel.ShippableTotalPreDiscount() - cartModel.OrderTotalDiscount;
+        }
+    }
+
     public static class StandardShippingCalculationExtensions
     {
         public static string GetDescription(this IStandardShippingCalculation calculation)
@@ -30,28 +50,32 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Shipping
                 case ShippingCriteria.ByWeight:
                     return IsValid(calculation, cart.Weight);
                 case ShippingCriteria.ByCartTotal:
-                    return IsValid(calculation, cart.ShippableCalculationTotal);
+                    return IsValid(calculation, cart.ShippableCalculationTotal());
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
+
         private static bool IsValid(IStandardShippingCalculation calculation, decimal value)
         {
-            return value >= calculation.LowerBound && (!calculation.UpperBound.HasValue || value <= calculation.UpperBound);
+            return value >= calculation.LowerBound &&
+                   (!calculation.UpperBound.HasValue || value <= calculation.UpperBound);
         }
 
 
         private static string GetCartTotalValue(IStandardShippingCalculation calculation)
         {
             return calculation.UpperBound.HasValue
-                ? string.Format("{0} to {1}", calculation.LowerBound.ToString("0.00"), calculation.UpperBound.Value.ToString("0.00"))
+                ? string.Format("{0} to {1}", calculation.LowerBound.ToString("0.00"),
+                    calculation.UpperBound.Value.ToString("0.00"))
                 : string.Format("{0} or greater", calculation.LowerBound.ToString("0.00"));
         }
 
         private static string GetCartWeightValue(IStandardShippingCalculation calculation)
         {
             return calculation.UpperBound.HasValue
-                ? string.Format("{0}kg to {1}kg", calculation.LowerBound.ToString("0.00"), calculation.UpperBound.Value.ToString("#.##"))
+                ? string.Format("{0}kg to {1}kg", calculation.LowerBound.ToString("0.00"),
+                    calculation.UpperBound.Value.ToString("#.##"))
                 : string.Format("{0}kg or greater", calculation.LowerBound.ToString("0.00"));
         }
 

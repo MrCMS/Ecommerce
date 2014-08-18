@@ -9,14 +9,13 @@ namespace MrCMS.EcommerceApp.Tests.Services
 {
     public class ProductOrCategoryDeletedTest : InMemoryDatabaseTest
     {
-        private readonly SiteSettings _siteSettings;
         private readonly IDocumentService _documentService;
         private readonly ProductService _productService;
 
         public ProductOrCategoryDeletedTest()
         {
             _documentService = new DocumentService(Session, CurrentSite);
-            _productService = new ProductService(Session, _documentService, _siteSettings, null);
+            _productService = new ProductService(Session, _documentService, new SiteSettings(), null);
 
         }
 

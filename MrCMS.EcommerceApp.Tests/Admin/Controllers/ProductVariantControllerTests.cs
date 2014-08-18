@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -26,7 +27,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _getTaxRateOptions = A.Fake<IGetTaxRateOptions>();
             _optionService = A.Fake<IOptionService>();
             _productVariantController = new ProductVariantController(_productVariantService, _optionService,
-                _getTaxRateOptions);
+                _getTaxRateOptions, A.Fake<IGetGiftCardTypeOptions>(), A.Fake<IGetProductVariantTypeOptions>());
         }
 
         [Fact]

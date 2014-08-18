@@ -11,13 +11,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CashOnDelivery.Services
     {
         private readonly CartModel _cart;
         private readonly IUniquePageService _uniquePageService;
-        private readonly IOrderService _orderService;
+        private readonly IOrderPlacementService _orderPlacementService;
 
-        public CashOnDeliveryUIService(CartModel cart, IUniquePageService uniquePageService, IOrderService orderService)
+        public CashOnDeliveryUIService(CartModel cart, IUniquePageService uniquePageService, IOrderPlacementService orderPlacementService)
         {
             _cart = cart;
             _uniquePageService = uniquePageService;
-            _orderService = orderService;
+            _orderPlacementService = orderPlacementService;
         }
 
         public CashOnDeliveryPlaceOrderResult TryPlaceOrder()
@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CashOnDelivery.Services
                            RedirectResult = _uniquePageService.RedirectTo<PaymentDetails>()
                        };
             }
-            var order = _orderService.PlaceOrder(_cart, o => { o.PaymentStatus = PaymentStatus.Pending; });
+            var order = _orderPlacementService.PlaceOrder(_cart, o => { o.PaymentStatus = PaymentStatus.Pending; });
             return new CashOnDeliveryPlaceOrderResult
                    {
                        RedirectResult = _uniquePageService.RedirectTo<OrderPlaced>(new { id = order.Guid })

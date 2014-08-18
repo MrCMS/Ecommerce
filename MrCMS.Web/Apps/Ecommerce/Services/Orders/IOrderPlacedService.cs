@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using MrCMS.Web.Apps.Core.Models.RegisterAndLogin;
-using MrCMS.Web.Apps.Ecommerce.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
