@@ -8,6 +8,7 @@ using Foolproof;
 using MrCMS.Entities;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Helpers.Validation;
+using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
@@ -203,6 +204,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [DisplayName("Sold Out Message")]
         public virtual string SoldOutMessage { get; set; }
 
+        //Gift Card Options
+        [DisplayName("Is gift card?")]
+        public virtual bool IsGiftCard { get; set; }
+
+        [DisplayName("Gift card type")]
+        public virtual GiftCardType GiftCardType { get; set; }
+
         //Download Options
         [DisplayName("Downloadable?")]
         public virtual bool IsDownloadable { get; set; }
@@ -315,6 +323,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
             return title;
         }
+
+        [DisplayName("Variant Type")]
+        public virtual VariantType VariantType
+        {
+            get
+            {
+                return IsGiftCard
+                    ? VariantType.GiftCard
+                    : IsDownloadable
+                        ? VariantType.Download
+                        : VariantType.Standard;
+            }
+        }
+    }
+
+    public enum VariantType
+    {
+        Standard,
+        GiftCard,
+        Download
     }
 
     public class NoShippingMethodWouldBeAvailable : CanBuyStatus

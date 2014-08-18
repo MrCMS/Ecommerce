@@ -5,7 +5,6 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Helpers.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Models.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Web.Apps.Ecommerce.Settings.Shipping;
 using NHibernate;
@@ -58,20 +57,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             return calculation != null;
         }
 
-        public ShippingAmount GetShippingTotal(CartModel cart)
+        public decimal GetShippingTotal(CartModel cart)
         {
             UKFirstClassShippingCalculation calculation = GetBestAvailableCalculation(cart);
             return calculation == null
-                ? ShippingAmount.NoneAvailable
-                : ShippingAmount.Amount(calculation.Amount(TaxRatePercentage));
+                ? decimal.Zero
+                : calculation.Amount(TaxRatePercentage);
         }
 
-        public ShippingAmount GetShippingTax(CartModel cart)
+        public decimal GetShippingTax(CartModel cart)
         {
             UKFirstClassShippingCalculation calculation = GetBestAvailableCalculation(cart);
             return calculation == null
-                ? ShippingAmount.NoneAvailable
-                : ShippingAmount.Amount(calculation.Tax(TaxRatePercentage));
+                ? decimal.Zero
+                : calculation.Tax(TaxRatePercentage);
         }
 
         public decimal TaxRatePercentage

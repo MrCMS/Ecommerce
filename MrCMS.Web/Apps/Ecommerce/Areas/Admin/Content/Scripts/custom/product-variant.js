@@ -50,4 +50,13 @@
         $('#AllowedNumberOfDaysForDownload').val('0');
         $("#downloadable").toggle(this.checked);
     });
+
+    $(document).on('change', '#VariantType', function (event) {
+        var value = $(event.target).val();
+        var variantType = $('[data-variant-type]');
+        var selector = '[data-variant-type="' + value + '"]';
+        variantType.filter(selector).show();
+        variantType.not(selector).hide();
+    });
+    $('#VariantType').change();
 });

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Website.Binders;
 using Ninject;
@@ -24,17 +25,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders
             {
                 var productVariant = bindModel as ProductVariant;
 
-                var methodKeys =
-                    controllerContext.HttpContext.Request.Params.AllKeys.Where(s => s.StartsWith(ShippingMethodPrefix))
-                        .ToList();
-
-                //var excludedMethods = new List<ShippingMethod>();
-                //foreach (var key in methodKeys)
-                //{
-                //    var method = Session.Get<ShippingMethod>(Convert.ToInt32(key.Replace(ShippingMethodPrefix, "")));
-                //    excludedMethods.Add(method);
-                //}
-                //productVariant.RestrictedShippingMethods = excludedMethods;
+                var fromRequest = controllerContext.GetValueFromRequest("VariantType");
+                var value = Enum.Parse(typeof (VariantType), fromRequest);
+                var valueFromRequest = value is VariantType ? (VariantType) value : VariantType.Standard;
+                switch (valueFromRequest)
+                {
+                    case VariantType.Standard:
+                        productVariant.IsDownloadable = false;
+                        productVariant.IsGiftCard = false;
+                        break;
+                    case VariantType.GiftCard:
+                        productVariant.IsDownloadable = false;
+                        productVariant.IsGiftCard = true;
+                        break;
+                    case VariantType.Download:
+                        productVariant.IsDownloadable = true;
+                        productVariant.IsGiftCard = false;
+                        break;
+                }
             }
             return bindModel;
         }

@@ -22,7 +22,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
             _session = A.Fake<ISession>();
             _orderNoteService = A.Fake<IOrderNoteService>();
             _fileService = A.Fake<IFileService>();
-            _orderService = new OrderService(_session, _orderNoteService, _fileService);
+            _orderService = new OrderService(_session, _orderNoteService);
         }
 
         //TODO PlaceOrder

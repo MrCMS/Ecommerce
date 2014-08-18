@@ -53,7 +53,7 @@
 
                         if (canBuy.OK)
                         {
-                            Html.RenderAction("AddToCart", "Cart", new {model = new AddToCartModel {ProductVariant = Model, Quantity = 1}});
+                            Html.RenderAction("Add", "AddToCart", new {model = new AddToCartModel {ProductVariant = Model, Quantity = 1}});
                         }
                         if (canBuy is OutOfStock)
                         {

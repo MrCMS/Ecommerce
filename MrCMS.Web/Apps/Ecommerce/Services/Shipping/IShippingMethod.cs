@@ -1,5 +1,4 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Models.Shipping;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 {
@@ -11,8 +10,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 
         bool CanBeUsed(CartModel cart);
         bool CanPotentiallyBeUsed(CartModel cart);
-        ShippingAmount GetShippingTotal(CartModel cart);
-        ShippingAmount GetShippingTax(CartModel cart);
+        decimal GetShippingTotal(CartModel cart);
+        decimal GetShippingTax(CartModel cart);
         decimal TaxRatePercentage { get; }
         
         string ConfigureAction { get; }

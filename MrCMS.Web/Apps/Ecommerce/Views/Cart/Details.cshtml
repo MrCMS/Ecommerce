@@ -1,8 +1,12 @@
+@using System.Linq
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers.Cart
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+@{
+}
+
 <div id="details">
     <div class="row margin-bottom-10">
         <div class="col-sm-6">
@@ -139,6 +143,60 @@
                         <strong>@Model.CartPageTotal()</strong>
                     </div>
                 </div>
+                if (SiteSettings<EcommerceSettings>().GiftCardsEnabled)
+                {
+                    <hr />
+                    <div class="row margin-bottom-10">
+                        <div class="col-xs-8 col-sm-6">
+                            <strong>Gift cards</strong>
+                        </div>
+                        <div class="col-xs-4 col-sm-6 text-right">
+                        </div>
+                    </div>
+                    <div class="row margin-bottom-10">
+                        <div class="col-sm-4 line-height-30">
+                            Gift Card Code
+                        </div>
+                        <div class="col-sm-4">
+                            <input class="form-control" type="text" id="gift-card-code" />
+                            <div class="visible-xs" style="padding-top:5px;"></div>
+                        </div>
+                        <div class="col-sm-4">
+                            <button id="apply-gift-card-code" class="btn btn-default btn-block">Apply Gift Card</button>
+                        </div>
+                    </div>
+                    if (Model.AppliedGiftCards.Any())
+                    {
+                        foreach (var card in Model.AppliedGiftCards)
+                        {
+                            <div class="row margin-bottom-10">
+                                <div class="col-xs-8 col-sm-6">
+                                    Code - @card.Code
+                                    <a href="#" data-remove-card="@card.Code">&times;</a>
+                                </div>
+                                <div class="col-xs-4 col-sm-6 text-right">
+                                    @card.AvailableAmount.ToCurrencyFormat()
+                                </div>
+                            </div>
+                        }
+                        <div class="row margin-bottom-10">
+                            <div class="col-xs-8 col-sm-6">
+                                Gift Card Total
+                            </div>
+                            <div class="col-xs-4 col-sm-6 text-right">
+                                @Model.AvailableGiftCardAmount.ToCurrencyFormat()
+                            </div>
+                        </div>
+                        <div class="row margin-bottom-10">
+                            <div class="col-xs-8 col-sm-6">
+                                Total to pay
+                            </div>
+                            <div class="col-xs-4 col-sm-6 text-right">
+                                @Model.CartPageTotalToPay()
+                            </div>
+                        </div>
+                    }
+                }
             }
         </div>
     </div>

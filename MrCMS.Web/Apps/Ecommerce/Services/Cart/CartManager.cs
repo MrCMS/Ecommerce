@@ -3,17 +3,17 @@ using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
+using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Website;
-using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
-    public class CartManager : ICartManager
+    public class CartManager : ICartManager, ICartSessionKeyList
     {
         public const string CurrentCartGuid = "current.cart-guid";
         public const string CurrentShippingAddressKey = "current.shipping-address";
@@ -24,28 +24,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public const string CurrentBillingAddressKey = "current.billing-address";
         public const string CurrentShippingMethodTypeKey = "current.shipping-method-type";
         public const string CurrentOrderEmailKey = "current.order-email";
-        public const string CurrentDiscountCodeKey = "current.discount-code";
         public const string CurrentPaymentMethodKey = "current.payment-method";
         public const string CurrentPayPalExpressToken = "current.paypal-express-token";
         public const string CurrentPayPalExpressPayerId = "current.paypal-express-payer-id";
+        public const string CurrentAppliedGiftCards = "current.applied-gift-cards";
 
         private readonly ICartSessionManager _cartSessionManager;
         private readonly IGetUserGuid _getUserGuid;
         private readonly ICartBuilder _cartBuilder;
-        private readonly ISession _session;
-        private readonly IEnumerable<ICartSessionKeyList> _sessionKeyLists;
 
-        public CartManager(ICartBuilder cartBuilder, ISession session, ICartSessionManager cartSessionManager,
-            IEnumerable<ICartSessionKeyList> sessionKeyLists, IGetUserGuid getUserGuid)
+        public CartManager(ICartBuilder cartBuilder, ICartSessionManager cartSessionManager, IGetUserGuid getUserGuid)
         {
             _cartBuilder = cartBuilder;
-            _session = session;
             _cartSessionManager = cartSessionManager;
-            _sessionKeyLists = sessionKeyLists;
             _getUserGuid = getUserGuid;
         }
 
-        public IEnumerable<string> CartKeys
+        public IEnumerable<string> Keys
         {
             get
             {
@@ -55,69 +50,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 yield return CurrentBillingAddressKey;
                 yield return CurrentShippingMethodTypeKey;
                 yield return CurrentOrderEmailKey;
-                yield return CurrentDiscountCodeKey;
                 yield return CurrentPaymentMethodKey;
                 yield return CurrentPayPalExpressToken;
                 yield return CurrentPayPalExpressPayerId;
-                foreach (string key in _sessionKeyLists.SelectMany(keyList => keyList.Keys))
-                {
-                    yield return key;
-                }
+                yield return CurrentAppliedGiftCards;
             }
-        }
-
-        public void AddToCart(AddToCartModel model)
-        {
-            AddToCart(model.ProductVariant, model.Quantity);
-        }
-
-        public void Delete(CartItem item)
-        {
-            var cart = _cartBuilder.BuildCart();
-            _session.Transact(session => session.Delete(item));
-            cart.Items.Remove(item);
-        }
-
-        public void UpdateQuantity(CartItem item, int quantity)
-        {
-            item.Quantity = quantity;
-
-            _session.Transact(session => session.Update(item));
-        }
-
-        public void UpdateQuantities(List<CartUpdateValue> quantities)
-        {
-            _session.Transact(session =>
-                              {
-                                  var cart = _cartBuilder.BuildCart();
-                                  foreach (CartUpdateValue value in quantities)
-                                  {
-                                      CartItem cartItem = cart.Items.FirstOrDefault(item => item.Id == value.ItemId);
-
-                                      if (cartItem != null)
-                                      {
-                                          if (value.Quantity <= 0)
-                                              session.Delete(cartItem);
-                                          else
-                                          {
-                                              cartItem.Quantity = value.Quantity;
-                                              session.Update(cartItem);
-                                          }
-                                      }
-                                  }
-                              });
-        }
-
-        public void EmptyBasket()
-        {
-            var cart = _cartBuilder.BuildCart();
-            foreach (CartItem item in cart.Items)
-            {
-                CartItem item1 = item;
-                _session.Transact(session => session.Delete(item1));
-            }
-            cart.Items.Clear();
-            CartKeys.ForEach(s => _cartSessionManager.RemoveValue(s, _getUserGuid.UserGuid));
         }
 
         public void SetShippingAddress(Address address)
@@ -149,9 +86,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 value);
         }
 
-        public void SetDiscountCode(string code)
+
+        public void AddGiftCard(string code)
         {
-            _cartSessionManager.SetSessionValue(CurrentDiscountCodeKey, _getUserGuid.UserGuid, code);
+            var userGuid = _getUserGuid.UserGuid;
+            var codes = _cartSessionManager.GetSessionValue(CurrentAppliedGiftCards,userGuid,new List<string>());
+            if (!codes.Contains(code))
+                codes.Add(code);
+            _cartSessionManager.SetSessionValue(CurrentAppliedGiftCards, userGuid, codes);
+        }
+
+        public void RemoveGiftCard(string code)
+        {
+            var userGuid = _getUserGuid.UserGuid;
+            var codes = _cartSessionManager.GetSessionValue(CurrentAppliedGiftCards,userGuid,new List<string>());
+            if (codes.Contains(code))
+                codes.RemoveAll(s => s == code);
+            _cartSessionManager.SetSessionValue(CurrentAppliedGiftCards, userGuid, codes);
         }
 
         public void SetOrderEmail(string email)
@@ -165,33 +116,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             return _cartBuilder.BuildCart().PaymentMethod;
         }
 
-        //public void SetShippingInfo(ShippingCalculation shippingCalculation)
-        //{
-        //    if (shippingCalculation == null) return;
-
-        //    if (shippingCalculation.ShippingMethod != null)
-        //        _cartSessionManager.SetSessionValue(CurrentShippingMethodIdKey, _getUserGuid.UserGuid,
-        //            shippingCalculation.ShippingMethod.Id);
-        //}
-
         public void SetPayPalExpressInfo(string token, string payerId)
         {
             _cartSessionManager.SetSessionValue(CurrentPayPalExpressToken, _getUserGuid.UserGuid, token);
             _cartSessionManager.SetSessionValue(CurrentPayPalExpressPayerId, _getUserGuid.UserGuid, payerId);
         }
 
-        private void AddToCart(ProductVariant item, int quantity)
-        {
-            var cart = _cartBuilder.BuildCart();
-            CartItem existingItem = cart.Items.FirstOrDefault(cartItem => cartItem.Item.SKU == item.SKU);
-            if (existingItem != null)
-                existingItem.Quantity += quantity;
-            else
-            {
-                existingItem = new CartItem { Item = item, Quantity = quantity, UserGuid = CurrentRequestData.UserGuid };
-                cart.Items.Add(existingItem);
-            }
-            _session.Transact(session => session.SaveOrUpdate(existingItem));
-        }
     }
 }

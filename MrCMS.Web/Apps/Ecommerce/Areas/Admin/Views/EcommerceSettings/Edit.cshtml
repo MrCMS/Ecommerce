@@ -33,8 +33,10 @@
                 <div class="form-group">
                     @Html.InlineCheckboxFor(x => x.EnableWishlists, null, null, "Enable wishlists")
                 </div>
-
                 @Html.InfoBlock("Heads up!", " You will also need to add the 'Show wishlist' page in order to fully enable wishlists.")
+                <div class="form-group">
+                    @Html.InlineCheckboxFor(x => x.GiftCardsEnabled)
+                </div>
             </div>
             <div class="col-lg-6">
                 <div class="form-group">

@@ -56,7 +56,7 @@ namespace MrCMS.EcommerceApp.Tests.Builders
 
         public CartModel Build()
         {
-            return new TestableCartModel(_weight, _totalPreShipping, _shippableCalculationTotal)
+            return new TestableCartModel(_weight, _totalPreShipping)
                        {
                            ShippingAddress = new Address { CountryCode = _shippingAddressCountry },
                            Items = _items,
