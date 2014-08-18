@@ -54,6 +54,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
             _session.Transact(session => session.Update(giftCard));
         }
 
+        public void Delete(GiftCard giftCard)
+        {
+            _session.Transact(session => session.Delete(giftCard));
+        }
+
         public string GenerateCode()
         {
             return _generateGiftCardCode.Generate();

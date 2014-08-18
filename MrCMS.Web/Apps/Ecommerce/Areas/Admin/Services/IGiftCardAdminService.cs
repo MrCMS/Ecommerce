@@ -13,6 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         List<SelectListItem> GetStatusOptions();
         void Add(GiftCard giftCard);
         void Update(GiftCard giftCard);
+        void Delete(GiftCard giftCard);
         string GenerateCode();
     }
 }
