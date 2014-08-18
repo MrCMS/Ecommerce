@@ -25,7 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Tax
         {
             return _session.QueryOver<TaxRate>().Cacheable().List().OrderBy(rate => rate.Name)
                 .BuildSelectItemList(rate => rate.Name, rate => rate.Id.ToString(), rate => rate.Id == id,
-                    "Default Tax Rate");
+                    new SelectListItem {Text = "Default Tax Rate", Value = "0"});
         }
     }
 }

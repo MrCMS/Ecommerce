@@ -8,8 +8,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
     public class AssignCartDiscountInfo : IAssignCartDiscountInfo
     {
-        private readonly ISession _session;
         private readonly ICartSessionManager _cartSessionManager;
+        private readonly ISession _session;
 
         public AssignCartDiscountInfo(ISession session, ICartSessionManager cartSessionManager)
         {
@@ -21,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             cart.DiscountCode = GetDiscountCode(userGuid);
             cart.Discount = GetDiscount(userGuid);
-            cart.Items.ForEach(item => item.SetDiscountInfo(cart.Discount, cart.DiscountCode));
+            cart.Items.ForEach(item => item.SetDiscountInfo(cart));
             return cart;
         }
 
@@ -34,9 +34,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                     .SingleOrDefault()
                 : null;
         }
+
         private string GetDiscountCode(Guid userGuid)
         {
-            return _cartSessionManager.GetSessionValue<string>(CartManager.CurrentDiscountCodeKey, userGuid);
+            return _cartSessionManager.GetSessionValue<string>(CartDiscountService.CurrentDiscountCodeKey, userGuid);
         }
     }
 }

@@ -1,9 +1,9 @@
 using System;
+using System.Collections.Specialized;
 using System.Globalization;
 using System.Web;
 using System.Web.Mvc;
 using MrCMS.Entities.Multisite;
-using MrCMS.Web.Apps.Ecommerce.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
@@ -20,24 +20,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
 {
     public class WorldPayPaymentService : IWorldPayPaymentService
     {
-        private readonly WorldPaySettings _worldPaySettings;
         private readonly CartModel _cart;
-        private readonly EcommerceSettings _ecommerceSettings;
         private readonly ICartBuilder _cartBuilder;
+        private readonly EcommerceSettings _ecommerceSettings;
+        private readonly IOrderPlacementService _orderPlacementService;
         private readonly ISession _session;
-        private readonly IOrderService _orderService;
         private readonly Site _site;
+        private readonly WorldPaySettings _worldPaySettings;
 
         public WorldPayPaymentService(WorldPaySettings worldPaySettings, CartModel cart,
             EcommerceSettings ecommerceSettings, ICartBuilder cartBuilder,
-            ISession session, IOrderService orderService, Site site)
+            ISession session, IOrderPlacementService orderPlacementService, Site site)
         {
             _worldPaySettings = worldPaySettings;
             _cart = cart;
             _ecommerceSettings = ecommerceSettings;
             _cartBuilder = cartBuilder;
             _session = session;
-            _orderService = orderService;
+            _orderPlacementService = orderPlacementService;
             _site = site;
         }
 
@@ -83,7 +83,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
             postInfo.postcode = _cart.BillingAddress.PostalCode;
             postInfo.country = _cart.BillingAddress.CountryCode;
 
-            postInfo.address = string.Format("{0}{1}", _cart.BillingAddress.Address1, _cart.BillingAddress.GetCountryName());
+            postInfo.address = string.Format("{0}{1}", _cart.BillingAddress.Address1,
+                _cart.BillingAddress.GetCountryName());
             postInfo.MC_callback = returnUrl;
             postInfo.name = string.Format("{0} {1}", _cart.BillingAddress.FirstName, _cart.BillingAddress.LastName);
 
@@ -108,8 +109,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
 
         public ActionResult HandleNotification(HttpRequestBase request)
         {
-            var form = request.Form;
-            var queryString = request.QueryString;
+            NameValueCollection form = request.Form;
+            NameValueCollection queryString = request.QueryString;
             string transStatus = form["transStatus"] ?? string.Empty;
             string returnedcallbackPw = form["callbackPW"] ?? string.Empty;
             string orderId = form["cartId"] ?? string.Empty;
@@ -120,11 +121,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
             string authCode = queryString["rawAuthMessage"] ?? string.Empty;
             string instanceId = _worldPaySettings.InstanceId;
 
-            var cart = GetCart(orderId);
+            CartModel cart = GetCart(orderId);
             try
             {
                 if (cart == null)
-                    throw new Exception(string.Format("The order ID {0} doesn't exists", orderId));
+                    throw new Exception(string.Format("The order ID {0} doesn't exist", orderId));
 
                 if (string.IsNullOrEmpty(instanceId))
                     throw new Exception("Worldpay Instance ID is not set");
@@ -149,17 +150,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
                         string.Format(
                             "The transaction status received from WorldPay ({0}) for the order {1} was declined.",
                             transStatus, orderId));
-
             }
             catch (Exception exception)
             {
                 CurrentRequestData.ErrorSignal.Raise(exception);
                 return new ContentResult
-                       {
-                           Content = exception.Message
-                       };
+                {
+                    Content = exception.Message
+                };
             }
-            Order order = _orderService.PlaceOrder(cart, o =>
+            Order order = _orderPlacementService.PlaceOrder(cart, o =>
             {
                 o.PaymentStatus = PaymentStatus.Paid;
                 o.ShippingStatus = ShippingStatus.Unshipped;
@@ -167,13 +167,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
                 o.CaptureTransactionId = transId;
             });
 
-            return new ViewResult { ViewName = "RedirectToComplete", ViewData = new ViewDataDictionary(order) };
+            return new ViewResult {ViewName = "RedirectToComplete", ViewData = new ViewDataDictionary(order)};
         }
 
         private CartModel GetCart(string orderId)
         {
-            var serializedTxCode = JsonConvert.SerializeObject(orderId);
-            var sessionData = _session.QueryOver<SessionData>().Where(data => data.Key == CartManager.CurrentCartGuid && data.Data == serializedTxCode).SingleOrDefault();
+            string serializedTxCode = JsonConvert.SerializeObject(orderId);
+            SessionData sessionData =
+                _session.QueryOver<SessionData>()
+                    .Where(data => data.Key == CartManager.CurrentCartGuid && data.Data == serializedTxCode)
+                    .SingleOrDefault();
             if (sessionData != null)
             {
                 CurrentRequestData.UserGuid = sessionData.UserGuid;
@@ -184,8 +187,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
 
         private string GetSchemeAndAuthority()
         {
-            var scheme = _worldPaySettings.RequiresSSL ? "https://" : "http://";
-            var authority = _site.BaseUrl;
+            string scheme = _worldPaySettings.RequiresSSL ? "https://" : "http://";
+            string authority = _site.BaseUrl;
             if (authority.EndsWith("/"))
                 authority = authority.TrimEnd('/');
             return string.Format("{0}{1}", scheme, authority);

@@ -7,9 +7,9 @@ using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
+using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
-using MrCMS.Web.Apps.Ecommerce.Models.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Website;
@@ -23,6 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             Items = new List<CartItem>();
             AvailablePaymentMethods = new List<IPaymentMethod>();
+            AppliedGiftCards = new List<GiftCard>();
         }
 
         // user & items
@@ -58,36 +59,73 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public bool AnyStandardPaymentMethodsAvailable { get; set; }
         public bool PayPalExpressAvailable { get; set; }
 
+        //gift cards
+        public List<GiftCard> AppliedGiftCards { get; set; }
 
-
-        public IEnumerable<CartItem> ShippableItems
-        {
-            get { return Items.Where(item => item.RequiresShipping); }
-        }
-
-        public bool Empty
-        {
-            get { return !Items.Any(); }
-        }
-
+        /// <summary>
+        /// Item total less tax (also factors in discounts)
+        /// </summary>
         public decimal Subtotal
         {
             get { return Items.Sum(item => item.PricePreTax); }
         }
 
-        public decimal TotalPreDiscount
+        /// <summary>
+        /// Item total including tax (also factors in discounts)
+        /// </summary>
+        public virtual decimal TotalPreDiscount
         {
             get { return Items.Sum(item => item.Price); }
         }
 
-        public virtual decimal ShippableTotalPreDiscount
+        /// <summary>
+        /// Item total less order total discount
+        /// </summary>
+        public virtual decimal TotalPreShipping
         {
-            get { return ShippableItems.Sum(item => item.Price); }
+            get { return TotalPreDiscount - OrderTotalDiscount; }
         }
 
-        public virtual decimal ShippableCalculationTotal
+        /// <summary>
+        /// Item total less order total discount plus shipping total
+        /// </summary>
+        public virtual decimal Total
         {
-            get { return ShippableTotalPreDiscount - OrderTotalDiscount; }
+            get { return TotalPreShipping + ShippingTotal; }
+        }
+
+        public virtual decimal GiftCardAmount
+        {
+            get { return AvailableGiftCardAmount > Total ? Total : AvailableGiftCardAmount; }
+        }
+
+        /// <summary>
+        /// Total available amount on applied gift cards
+        /// </summary>
+        public virtual decimal AvailableGiftCardAmount
+        {
+            get { return AppliedGiftCards.Sum(x => x.AvailableAmount); }
+        }
+
+        /// <summary>
+        /// The order total less the applied gift card amount
+        /// </summary>
+        public virtual decimal TotalToPay { get { return Total - GiftCardAmount; } }
+
+        /// <summary>
+        /// Item tax plus shipping tax
+        /// </summary>
+        public decimal Tax
+        {
+            get { return ItemTax + ShippingTax; }
+        }
+
+        /// <summary>
+        /// Item tax 
+        /// </summary>
+        public virtual decimal ItemTax
+        {
+            get { return Items.Sum(item => item.Tax); }
         }
 
         public IDictionary<decimal, decimal> TaxRates
@@ -100,13 +138,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             }
         }
 
+        /// <summary>
+        /// Total discount amount (including item discounts)
+        /// </summary>
         public decimal DiscountAmount
         {
             get
             {
-                decimal discountAmount = OrderTotalDiscount;
-
-                discountAmount += ItemDiscount;
+                decimal discountAmount = OrderTotalDiscount + ItemDiscount;
 
                 return discountAmount > TotalPreDiscount
                     ? TotalPreDiscount
@@ -114,7 +153,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             }
         }
 
-        public decimal OrderTotalDiscount
+        /// <summary>
+        /// Discount from order total
+        /// </summary>
+        public virtual decimal OrderTotalDiscount
         {
             get
             {
@@ -124,35 +166,76 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             }
         }
 
-        public decimal ItemDiscount
+        /// <summary>
+        /// Discount from Items
+        /// </summary>
+        public virtual decimal ItemDiscount
         {
             get
             {
-                return Discount != null && Items.Any()
+                return Discount != null
                     ? Items.Sum(item => item.DiscountAmount)
                     : decimal.Zero;
             }
         }
 
-        public virtual decimal Total
+
+        /// <summary>
+        /// Shipping Total
+        /// </summary>
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
+        public virtual decimal ShippingTotal
         {
-            get { return TotalPreShipping + ShippingTotal.GetValueOrDefault(); }
+            get { return ShippingMethod == null ? decimal.Zero : ShippingMethod.GetShippingTotal(this); }
         }
 
-        public virtual decimal TotalPreShipping
+        /// <summary>
+        /// Shipping Tax
+        /// </summary>
+        public virtual decimal ShippingTax
         {
-            get { return TotalPreDiscount - OrderTotalDiscount; }
+            get { return ShippingMethod == null ? decimal.Zero : ShippingMethod.GetShippingTax(this); }
         }
 
-        public decimal Tax
+        /// <summary>
+        /// Shipping Pre tax
+        /// </summary>
+        public decimal ShippingPreTax
         {
-            get { return ItemTax + ShippingTax.GetValueOrDefault(); }
+            get { return ShippingTotal - ShippingTax; }
         }
 
-        public decimal ItemTax
+        /// <summary>
+        /// Shipping tax percentage
+        /// </summary>
+        public decimal ShippingTaxPercentage
         {
-            get { return Items.Sum(item => item.Tax); }
+            get { return ShippingMethod == null ? decimal.Zero : ShippingMethod.TaxRatePercentage; }
         }
+
+
+
+
+
+
+
+        public bool HasDiscount
+        {
+            get { return Discount != null && OrderTotalDiscount != decimal.Zero; }
+        }
+
+        public int ItemQuantity
+        {
+            get { return Items.Sum(item => item.Quantity); }
+        }
+
+
+
+        public bool Empty
+        {
+            get { return !Items.Any(); }
+        }
+
 
         public CartShippingStatus ShippingStatus
         {
@@ -162,57 +245,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                 {
                     return CartShippingStatus.ShippingNotRequired;
                 }
+                if (ShippingMethod != null)
+                {
+                    return CartShippingStatus.ShippingSet;
+                }
                 if (!PotentiallyAvailableShippingMethods.Any())
                 {
                     return CartShippingStatus.CannotShip;
                 }
-                if (ShippingMethod == null)
-                {
-                    return CartShippingStatus.ShippingNotSet;
-                }
-                return CartShippingStatus.ShippingSet;
+                return CartShippingStatus.ShippingNotSet;
             }
-        }
-
-        [DisplayFormat(DataFormatString = "{0:£0.00}")]
-        public decimal? ShippingTotal
-        {
-            get
-            {
-                if (ShippingMethod == null) return null;
-                ShippingAmount shippingAmount = ShippingMethod.GetShippingTotal(this);
-                return shippingAmount == ShippingAmount.NoneAvailable
-                    ? (decimal?) null
-                    : shippingAmount.Value;
-            }
-        }
-
-        public decimal? ShippingTax
-        {
-            get
-            {
-                if (ShippingMethod == null) return null;
-                ShippingAmount shippingAmount = ShippingMethod.GetShippingTax(this);
-                return shippingAmount == ShippingAmount.NoneAvailable
-                    ? (decimal?) null
-                    : shippingAmount.Value;
-            }
-        }
-
-        public decimal? ShippingPreTax
-        {
-            get { return ShippingTotal - ShippingTax; }
-        }
-
-        public decimal? ShippingTaxPercentage
-        {
-            get { return ShippingMethod == null ? (decimal?) null : ShippingMethod.TaxRatePercentage; }
         }
 
         public virtual decimal Weight
         {
             get { return Items.Sum(item => item.Weight); }
         }
+
+
+
 
         public bool PaymentMethodSet
         {
@@ -234,22 +285,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get { return PaymentMethod == null ? string.Empty : PaymentMethod.ControllerName; }
         }
 
-        public bool NeedToSetBillingAddress
-        {
-            get { return !BillingAddressSameAsShippingAddress && BillingAddress == null; }
-        }
-
-        public bool HasDiscount
-        {
-            get { return Discount != null && OrderTotalDiscount != decimal.Zero; }
-        }
-
-        public decimal ItemQuantity
-        {
-            get { return Items.Sum(item => item.Quantity); }
-        }
-
-
         public bool IsPayPalTransaction
         {
             get
@@ -258,10 +293,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             }
         }
 
-        public bool RequiresShipping
+
+
+
+
+        public virtual bool RequiresShipping
         {
-            get { return ShippableItems.Any(); }
+            get { return Items.Any(item => item.RequiresShipping); }
         }
+
+
+
+
+
 
 
         public bool CanCheckout
@@ -273,7 +317,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get { return CanCheckout && AnyStandardPaymentMethodsAvailable; }
         }
-
 
         public bool CanUsePayPalExpress
         {
@@ -291,12 +334,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             {
                 if (!Items.Any())
                     yield return "You have nothing in your cart";
-                foreach (CartItem item in Items)
+                foreach (var item in Items.Where(item => !item.CanBuy(this)))
                 {
-                    if (!item.CanBuy(this))
-                        yield return item.Error(this);
+                    yield return item.Error(this);
                 }
-                if(ShippingStatus == CartShippingStatus.CannotShip)
+                if (ShippingStatus == CartShippingStatus.CannotShip)
                     yield return "You are currently unable to ship the items in your cart";
             }
         }

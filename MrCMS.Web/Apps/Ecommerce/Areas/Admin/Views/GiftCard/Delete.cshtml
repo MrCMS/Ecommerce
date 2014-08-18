@@ -1,0 +1,18 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.GiftCards.GiftCard
+@{ 
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+}
+@using (Html.BeginForm("Delete", "GiftCard", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Delete Gift Card
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" class="btn btn-danger" value="Delete gift card" />
+            </span>
+        </legend>
+        @Html.HiddenFor(x => x.Id)
+        <p>
+            Are you sure you want to delete the giftcard with the code @Model.Code? Deleting this card can not be undone.
+        </p>
+    </fieldset>
+}

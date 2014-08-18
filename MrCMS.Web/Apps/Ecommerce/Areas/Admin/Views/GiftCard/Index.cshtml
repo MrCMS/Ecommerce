@@ -1,0 +1,65 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.GiftCardSearchQuery
+@{
+    var results = ViewData["results"] as IPagedList<GiftCard> ?? PagedList<GiftCard>.Empty;
+}
+<fieldset>
+    <legend>
+        Gift Cards
+        <span class="btn-group pull-right">
+            @Html.ActionLink("Settings", "Index", "GiftCardSettings", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Add", "Add", "GiftCard", null, new { @class = "btn btn-primary", data_toggle = "fb-modal" })
+        </span>
+    </legend>
+    @if (results.Any())
+    {
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Recipient
+                    </th>
+                    <th>
+                        Code
+                    </th>
+                    <th>
+                        Value
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in results)
+                {
+                    <tr>
+                        <td>
+                            @item.RecipientEmail
+                        </td>
+                        <td>
+                            @item.Code
+                        </td>
+                        <td>
+                            @item.Value.ToCurrencyFormat()
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                @Html.ActionLink("Edit", "Edit", "GiftCard", new { id = item.Id }, new { @class = "btn btn-xs btn-default" })
+                                @Html.ActionLink("Delete", "Delete", "GiftCard", new { id = item.Id }, new { @class = "btn btn-xs btn-danger", data_toggle = "fb-modal" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.Pager(results, "Index", page => new { page })
+    }
+    else
+    {
+        @:No giftcards created.
+    }
+</fieldset>

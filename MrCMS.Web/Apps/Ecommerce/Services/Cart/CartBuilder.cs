@@ -8,6 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private readonly IAssignBasicCartInfo _assignBasicCartInfo;
         private readonly IAssignCartDiscountInfo _assignCartDiscountInfo;
         private readonly IAssignPaymentInfo _assignPaymentInfo;
+        private readonly IAssignGiftCardInfo _assignGiftCardInfo;
         private readonly IAssignShippingInfo _assignShippingInfo;
         private readonly IGetUserGuid _getUserGuid;
 
@@ -15,12 +16,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             IAssignCartDiscountInfo assignCartDiscountInfo,
             IAssignShippingInfo assignShippingInfo,
             IAssignPaymentInfo assignPaymentInfo,
+            IAssignGiftCardInfo assignGiftCardInfo,
             IGetUserGuid getUserGuid)
         {
             _assignBasicCartInfo = assignBasicCartInfo;
             _assignCartDiscountInfo = assignCartDiscountInfo;
             _assignShippingInfo = assignShippingInfo;
             _assignPaymentInfo = assignPaymentInfo;
+            _assignGiftCardInfo = assignGiftCardInfo;
             _getUserGuid = getUserGuid;
         }
 
@@ -37,6 +40,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             cart = _assignCartDiscountInfo.Assign(cart, userGuid);
             cart = _assignShippingInfo.Assign(cart, userGuid);
             cart = _assignPaymentInfo.Assign(cart, userGuid);
+            cart = _assignGiftCardInfo.Assign(cart, userGuid);
             return cart;
         }
     }

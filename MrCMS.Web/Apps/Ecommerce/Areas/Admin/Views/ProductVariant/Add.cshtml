@@ -4,18 +4,20 @@
 @using (Html.BeginForm("Add", "ProductVariant", new { id = "" }, FormMethod.Post))
 {
     <fieldset>
-        <legend>Add Product Variant
+        <legend>
+            Add Product Variant
             <span class="btn-group  display-inline  pull-right">
                 <input type="submit" class="btn-primary btn" value="Add Product Variant" />
             </span>
         </legend>
-         <div id="tabs">
+        <div id="tabs">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
                 <li><a href="#images" data-toggle="tab">Featured Image</a></li>
                 <li><a href="#sold-out" data-toggle="tab">Sold Out Options</a></li>
                 <li><a href="#shipping-options" data-toggle="tab">Shipping Options</a></li>
-                  <li><a href="#download-options" data-toggle="tab">Download Options</a></li>
+                <li><a href="#download-options" data-toggle="tab" style="display:none" data-variant-type="Download">Download Options</a></li>
+                <li><a href="#gift-card-options" data-toggle="tab" style="display:none" data-variant-type="GiftCard">Gift Card Options</a></li>
             </ul>
             <div class="tab-content">
                 @{ Html.RenderPartial("Details", Model); }
@@ -23,6 +25,7 @@
                 @{ Html.RenderPartial("SoldOut", Model); }
                 @{ Html.RenderPartial("ShippingOptions", Model); }
                 @{ Html.RenderPartial("DownloadOptions", Model); }
+                @{ Html.RenderPartial("GiftCardOptions", Model); }
             </div>
         </div>
     </fieldset>

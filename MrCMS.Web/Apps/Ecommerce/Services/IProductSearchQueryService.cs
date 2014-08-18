@@ -7,6 +7,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
     public interface IProductSearchQueryService
     {
         void SetViewData(ProductSearchQuery query, ViewDataDictionary viewData);
-        CachingInfo GetCachingInfo(ProductSearchQuery query);
+        CachingInfo GetCachingInfo(ProductSearchQuery query, string suffix = null);
     }
 }

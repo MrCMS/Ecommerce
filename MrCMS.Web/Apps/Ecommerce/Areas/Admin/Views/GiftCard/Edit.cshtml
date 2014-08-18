@@ -1,0 +1,121 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.GiftCards.GiftCard
+@{
+    var giftCardTypeOptions = ViewData["gift-card-type-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    var activationStatusOptions = ViewData["activation-status-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
+@using (Html.BeginForm("Edit", "GiftCard", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Edit gift card
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" class="btn-primary btn" value="Update" />
+            </span>
+        </legend>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.GiftCardType)
+                    @Html.DropDownListFor(x => x.GiftCardType, giftCardTypeOptions, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.GiftCardType)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(giftCard => giftCard.Value)
+                    @Html.TextBoxFor(giftCard => giftCard.Value, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(giftCard => giftCard.Value)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(giftCard => giftCard.Code)
+                    @Html.TextBoxFor(giftCard => giftCard.Code, new { @class = "form-control" })
+                    @if (!Model.GiftCardUsages.Any())
+                    {
+                        <button data-generate-gift-card-code="Code" type="button" class="btn btn-default btn-block">Generate Code</button>
+                    }
+                    @Html.ValidationMessageFor(giftCard => giftCard.Code)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Status)
+                    @Html.DropDownListFor(x => x.Status, activationStatusOptions, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.Status)
+                </div>
+                <div class="form-group">
+                    @Html.InlineCheckboxFor(card => card.NotificationSent, checkboxAttributes: new { disabled = "disabled" })
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.LabelFor(giftCard => giftCard.SenderName)
+                    @Html.TextBoxFor(giftCard => giftCard.SenderName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(giftCard => giftCard.SenderName)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(giftCard => giftCard.SenderEmail)
+                    @Html.TextBoxFor(giftCard => giftCard.SenderEmail, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(giftCard => giftCard.SenderEmail)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(giftCard => giftCard.RecipientName)
+                    @Html.TextBoxFor(giftCard => giftCard.RecipientName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(giftCard => giftCard.RecipientName)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(giftCard => giftCard.RecipientEmail)
+                    @Html.TextBoxFor(giftCard => giftCard.RecipientEmail, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(giftCard => giftCard.RecipientEmail)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(giftCard => giftCard.Message)
+                    @Html.TextAreaFor(giftCard => giftCard.Message, 5, 20, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(giftCard => giftCard.Message)
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <h3>Usages</h3>
+            @if (Model.GiftCardUsages.Any())
+            {
+                <table class="table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Amount
+                            </th>
+                            <th>
+                                Order
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var usage in Model.GiftCardUsages)
+                        {
+                            <tr>
+                                <td>
+                                    @usage.CreatedOn
+                                </td>
+                                <td>
+                                    @usage.Amount.ToCurrencyFormat()
+                                </td>
+                                <td>
+                                    @Html.ActionLink("View", "Edit", "Order", new { id = usage.Order.Id }, new { @class = "btn btn-xs btn-default" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No usages</p>
+            }
+        </div>
+    </fieldset>
+}
+@{
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/gift-cards.js");
+}

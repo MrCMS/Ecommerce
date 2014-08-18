@@ -29,14 +29,32 @@
             });
         return false;
     });
-    $(document).on('click', "#apply-discount-code", function() {
+    $(document).on('click', "#apply-discount-code", function(event) {
+        event.preventDefault();
         var discountCode = $("#discount-code").val();
         $.post('/Apps/Ecommerce/ApplyDiscountCode',
             { discountCode: discountCode },
             function(response) {
                 reloadCartDetails();
             });
-        return false;
+    });
+    $(document).on('click', "#apply-gift-card-code", function(event) {
+        event.preventDefault();
+        var giftCardCode = $("#gift-card-code").val();
+        $.post('/Apps/Ecommerce/ApplyGiftCardCode',
+            { giftCardCode: giftCardCode },
+            function(response) {
+                reloadCartDetails();
+            });
+    });
+    $(document).on('click', "[data-remove-card]", function(event) {
+        event.preventDefault();
+        var code = $(event.target).data('remove-card');
+        $.post('/Apps/Ecommerce/RemoveGiftCardCode',
+            { giftCardCode: code },
+            function(response) {
+                reloadCartDetails();
+            });
     });
     $(document).on('click', "#remove-discount-code", function () {
         $.post('/Apps/Ecommerce/ApplyDiscountCode',

@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Models.Shipping;
 
 namespace MrCMS.Web.Apps.Ecommerce.Helpers.Cart
 {
@@ -16,12 +15,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Cart
                 case CartShippingStatus.CannotShip:
                     return "Cannot ship";
                 case CartShippingStatus.ShippingNotSet:
-                    IOrderedEnumerable<ShippingAmount> shippingAmounts =
+                    IOrderedEnumerable<decimal> shippingAmounts =
                         cart.PotentiallyAvailableShippingMethods.Select(method => method.GetShippingTotal(cart))
-                            .OrderBy(amount => amount.Value);
-                    return string.Format("From {0}", shippingAmounts.First().Value.ToCurrencyFormat());
+                            .OrderBy(amount => amount);
+                    return string.Format("From {0}", shippingAmounts.First().ToCurrencyFormat());
                 case CartShippingStatus.ShippingSet:
-                    return cart.ShippingMethod.GetShippingTotal(cart).Value.ToCurrencyFormat();
+                    return cart.ShippingMethod.GetShippingTotal(cart).ToCurrencyFormat();
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -37,11 +36,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Cart
                 case CartShippingStatus.CannotShip:
                     return "Cannot complete order";
                 case CartShippingStatus.ShippingNotSet:
-                    IOrderedEnumerable<ShippingAmount> shippingAmounts =
+                    IOrderedEnumerable<decimal> shippingAmounts =
                         cart.PotentiallyAvailableShippingMethods.Select(method => method.GetShippingTotal(cart))
-                            .OrderBy(amount => amount.Value);
-                    decimal value = shippingAmounts.First().Value;
+                            .OrderBy(amount => amount);
+                    decimal value = shippingAmounts.First();
                     return string.Format("From {0}", (cart.TotalPreShipping + value).ToCurrencyFormat());
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        public static string CartPageTotalToPay(this CartModel cart)
+        {
+            switch (cart.ShippingStatus)
+            {
+                case CartShippingStatus.ShippingSet:
+                case CartShippingStatus.ShippingNotRequired:
+                    return cart.TotalToPay.ToCurrencyFormat();
+                case CartShippingStatus.CannotShip:
+                    return "Cannot complete order";
+                case CartShippingStatus.ShippingNotSet:
+                    //IOrderedEnumerable<decimal> shippingAmounts =
+                    //    cart.PotentiallyAvailableShippingMethods.Select(method => method.GetShippingTotal(cart))
+                    //        .OrderBy(amount => amount);
+                    //decimal value = shippingAmounts.First();
+                    return "Calculated during checkout"; //string.Format("From {0}", (cart.TotalPreShipping + value).ToCurrencyFormat());
                 default:
                     throw new ArgumentOutOfRangeException();
             }
