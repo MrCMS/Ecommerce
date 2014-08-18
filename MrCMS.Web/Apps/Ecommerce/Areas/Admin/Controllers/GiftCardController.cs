@@ -59,5 +59,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             TempData.SuccessMessages().Add("Gift card updated");
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public ViewResult Delete(GiftCard giftCard)
+        {
+            return View(giftCard);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        public RedirectToRouteResult Delete_POST(GiftCard giftCard)
+        {
+            _giftCardAdminService.Delete(giftCard);
+            TempData.SuccessMessages().Add("Gift card deleted");
+            return RedirectToAction("Index");
+        }
     }
 }

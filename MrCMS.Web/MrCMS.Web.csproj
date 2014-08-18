@@ -3069,6 +3069,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\GiftCardOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Views\AddToCart\GiftCardInfo.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\GiftCardSettings\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\GiftCard\Delete.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Default\Apps\Core\Web.config">
