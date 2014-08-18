@@ -10,6 +10,7 @@
     <legend>
         Gift Cards
         <span class="btn-group pull-right">
+            @Html.ActionLink("Settings", "Index", "GiftCardSettings", null, new { @class = "btn btn-default" })
             @Html.ActionLink("Add", "Add", "GiftCard", null, new { @class = "btn btn-primary", data_toggle = "fb-modal" })
         </span>
     </legend>

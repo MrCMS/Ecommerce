@@ -40,13 +40,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _giftCardAdminService.Add(giftCard);
             TempData.SuccessMessages().Add("Gift card added");
-            return RedirectToAction("Edit", new {id = giftCard.Id});
+            return RedirectToAction("Edit", new { id = giftCard.Id });
         }
 
         [HttpGet]
         public ViewResult Edit(GiftCard giftCard)
         {
             ViewData["gift-card-type-options"] = _giftCardAdminService.GetTypeOptions();
+            ViewData["activation-status-options"] = _giftCardAdminService.GetStatusOptions();
             return View(giftCard);
         }
 

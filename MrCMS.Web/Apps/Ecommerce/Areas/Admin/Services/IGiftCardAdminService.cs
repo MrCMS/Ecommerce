@@ -10,6 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
     {
         IPagedList<GiftCard> Search(GiftCardSearchQuery query);
         List<SelectListItem> GetTypeOptions();
+        List<SelectListItem> GetStatusOptions();
         void Add(GiftCard giftCard);
         void Update(GiftCard giftCard);
         string GenerateCode();

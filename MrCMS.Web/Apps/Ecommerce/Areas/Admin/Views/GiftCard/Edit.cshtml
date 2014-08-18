@@ -3,6 +3,7 @@
 @model MrCMS.Web.Apps.Ecommerce.Entities.GiftCards.GiftCard
 @{
     var giftCardTypeOptions = ViewData["gift-card-type-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    var activationStatusOptions = ViewData["activation-status-options"] as List<SelectListItem> ?? new List<SelectListItem>();
 }
 @using (Html.BeginForm("Edit", "GiftCard", FormMethod.Post))
 {
@@ -35,10 +36,12 @@
                     @Html.ValidationMessageFor(giftCard => giftCard.Code)
                 </div>
                 <div class="form-group">
-                    @Html.InlineCheckboxFor(card => card.Activated)
+                    @Html.LabelFor(x => x.Status)
+                    @Html.DropDownListFor(x => x.Status, activationStatusOptions, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.Status)
                 </div>
                 <div class="form-group">
-                    @Html.InlineCheckboxFor(card => card.NotificationSent,checkboxAttributes:new{disabled="disabled"})
+                    @Html.InlineCheckboxFor(card => card.NotificationSent, checkboxAttributes: new { disabled = "disabled" })
                 </div>
             </div>
             <div class="col-xs-6">

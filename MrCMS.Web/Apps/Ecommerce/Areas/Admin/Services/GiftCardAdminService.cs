@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Paging;
@@ -14,7 +16,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         private readonly IGetGiftCardTypeOptions _getGiftCardTypeOptions;
         private readonly ISession _session;
 
-        public GiftCardAdminService(ISession session, IGenerateGiftCardCode generateGiftCardCode,IGetGiftCardTypeOptions getGiftCardTypeOptions)
+        public GiftCardAdminService(ISession session, IGenerateGiftCardCode generateGiftCardCode,
+            IGetGiftCardTypeOptions getGiftCardTypeOptions)
         {
             _session = session;
             _generateGiftCardCode = generateGiftCardCode;
@@ -31,6 +34,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         public List<SelectListItem> GetTypeOptions()
         {
             return _getGiftCardTypeOptions.Get();
+        }
+
+        public List<SelectListItem> GetStatusOptions()
+        {
+            return Enum.GetValues(typeof (GiftCardStatus)).Cast<GiftCardStatus>()
+                .BuildSelectItemList(status => status.ToString().BreakUpString(),
+                    status => status.ToString(),
+                    emptyItem: null);
         }
 
         public void Add(GiftCard giftCard)
