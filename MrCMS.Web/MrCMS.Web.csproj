@@ -481,6 +481,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceSearchCacheSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\GiftCardController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\GiftCardSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\GoogleBaseController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ImportExportController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\NewsletterController.cs" />
@@ -527,11 +528,13 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetGiftCardTypeOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetProductVariantTypeOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GiftCardAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GiftCardSettingsAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICategoryAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGenerateGiftCardCode.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetGiftCardTypeOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetProductVariantTypeOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGiftCardAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGiftCardSettingsAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IShippingMethodAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IUKCourierShippingAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IUKCourierShippingCalculationAdminService.cs" />
@@ -662,6 +665,8 @@
     <Compile Include="Apps\Ecommerce\Entities\Users\Address.cs" />
     <Compile Include="Apps\Ecommerce\Events\CopyCartToUser.cs" />
     <Compile Include="Apps\Ecommerce\Events\GenerateGiftCards.cs" />
+    <Compile Include="Apps\Ecommerce\Events\GiftcardAutoActivation.cs" />
+    <Compile Include="Apps\Ecommerce\Events\UpdateIndexesOnOrderPlaced.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\AddressExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\Cart\CartModelExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\CookieHelper.cs" />
@@ -706,6 +711,7 @@
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchSpecificationsDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchUrlsegmentDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchIndex.cs" />
+    <Compile Include="Apps\Ecommerce\MessageTemplates\GiftCardCreatedMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\ProductBackInStockMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderCancelledEmailToCustomerMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderFullyRefundedEmailToCustomerMessageTemplate.cs" />
@@ -1146,6 +1152,7 @@
     <Compile Include="Apps\Ecommerce\Services\Wishlists\WishlistUIService.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSearchCacheSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Settings\GiftCardSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\GoogleBaseSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\ShippingMethodSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\Shipping\UKFirstClassShippingSettings.cs" />
@@ -3061,6 +3068,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Order\OrderGiftCards.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\GiftCardOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Views\AddToCart\GiftCardInfo.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\GiftCardSettings\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Default\Apps\Core\Web.config">

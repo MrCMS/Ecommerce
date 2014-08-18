@@ -1,0 +1,25 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Settings.GiftCardSettings
+
+@{
+    var activationStatusOptions = ViewData["activation-status-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
+@using (Html.BeginForm("Index", "GiftCardSettings", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Gift Card Settings
+            <span class="btn-group pull-right">
+                <button class="btn btn-primary">Save Settings</button>
+            </span>
+        </legend>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ActivateOn)
+                    @Html.DropDownListFor(x => x.ActivateOn, activationStatusOptions, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ActivateOn)
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}
