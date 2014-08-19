@@ -2,7 +2,7 @@
 @using MrCMS.Website
 @model CartModel
 <div class="row">
-    <div class="col-sm-8 padding-left-0 mobile-left-padding">
+    <div class="col-lg-7 col-md-8 col-sm-8 padding-left-0 mobile-left-padding">
         @if (CurrentRequestData.CurrentUser == null)
         {
             Html.RenderPartial("SetOrderEmailAndLogin", new EmailAndLoginModel { OrderEmail = Model.OrderEmail });
@@ -20,7 +20,7 @@
                     <div class="col-sm-8">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                @Html.LabelFor(model => model.OrderEmail, "Enter your Email address *:", new {@class="col-sm-6"})
+                                @Html.LabelFor(model => model.OrderEmail, "Enter your Email address *:", new { @class = "col-sm-6" })
                                 <div class="col-sm-6">
                                     @Html.TextBoxFor(x => x.OrderEmail, new { @class = "form-control" })
                                     @Html.ValidationMessageFor(x => x.OrderEmail)
@@ -34,12 +34,12 @@
                         <input class="btn btn-default btn-block" type="submit" id="continue" name="continue" value="Continue" />
                     </div>
                 </div>
-                
-                
+
+
             }
         }
     </div>
-    <div class="col-sm-4">
+    <div class="col-lg-5 col-md-4 col-sm-4">
         @{Html.RenderAction("Summary", "Checkout");}
     </div>
 </div>

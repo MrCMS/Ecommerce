@@ -7,7 +7,7 @@
 
 <div class="padding-top-bottom-20">
     <div class="row">
-        <div class="col-md-8 col-sm-8 padding-left-0 mobile-left-padding">
+        <div class="col-lg-7 col-md-8 col-sm-8 padding-left-0 mobile-left-padding">
             <div class="block-title">
                 <h1>Billing Address</h1>
             </div>
@@ -15,9 +15,9 @@
             {
                 using (Html.BeginForm("BillingAddressSameAsShippingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
                 {
-                    <div class="control-group">
-                        <label class="checkbox" for="SameAsShipping">
-                            Use Delivery Address @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress)
+                    <div class="checkbox">
+                        <label>
+                            @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress) Use Delivery Address 
                         </label>
                         <div class="controls">
                             @cart.ShippingAddress.GetDescription()
@@ -38,18 +38,18 @@
                     </label>
                     @cart.BillingAddress.GetDescription()
                 </div>
-                
+
                 using (Html.BeginForm("UpdateBillingAddress", "PaymentDetails", FormMethod.Post, new { @class = "form-horizontal" }))
                 {
-                <div class="control-group">
-                    <div class="controls">
-                        <input class="btn btn-info" value="Edit" type="submit" />
+                    <div class="control-group">
+                        <div class="controls">
+                            <input class="btn btn-info" value="Edit" type="submit" />
+                        </div>
                     </div>
-                </div>
                 }
             }
 
-            <br/>
+            <br />
 
             <div class="block-title">
                 <div class="h1style">Payment Details</div>
@@ -69,7 +69,7 @@
                 <p>Select after updating billing address...</p>
             }
         </div>
-        <div class="col-md-4 col-sm-4">
+        <div class="col-lg-5 col-md-4 col-sm-4">
             @{Html.RenderAction("Summary", "Checkout");}
             @{Html.RenderAction("OrderEmail", "Checkout");}
             @if (cart.RequiresShipping)
