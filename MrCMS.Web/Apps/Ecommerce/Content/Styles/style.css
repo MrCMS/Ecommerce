@@ -123,7 +123,7 @@ table.price-break tbody tr td { border-top: 1px dotted #ddd;}
 .padding-top-bottom-9 {padding-top:9px;padding-bottom:9px;}
 .padding-top-bottom-10 {padding-top:10px;padding-bottom:10px;}
 .margin-top-bottom-30 {margin:30px 0;}
-.padding-top-bottom-20 {padding:20px 0;}
+.padding-top-bottom-20 { padding-top: 20px;padding-bottom: 20px;}
 .padding-top-10 {padding:10px 0;}
 .padding-bottom-10 {padding-bottom:10px;}
 .padding-bottom-20 {padding-bottom:20px;}
@@ -135,6 +135,9 @@ table.price-break tbody tr td { border-top: 1px dotted #ddd;}
 .margin-bottom-30 {margin-bottom:30px;}
 .margin-bottom-20 {margin-bottom:20px;}
 .margin-bottom-10 {margin-bottom:10px;}
+.margin-top-30 {margin-top:30px;}
+.margin-top-20 {margin-top:20px;}
+.margin-top-10 {margin-top:10px;}
 .margin-0 {margin-left:0;margin-right:0;}
 .grey-border { border: 1px solid #f0f0f0;}
 .grey-border-right {border-right:1px solid #f0f0f0;}

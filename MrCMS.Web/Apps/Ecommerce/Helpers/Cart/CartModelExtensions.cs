@@ -40,7 +40,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Cart
                         cart.PotentiallyAvailableShippingMethods.Select(method => method.GetShippingTotal(cart))
                             .OrderBy(amount => amount);
                     decimal value = shippingAmounts.First();
-                    return string.Format("From {0}", (cart.TotalPreShipping + value).ToCurrencyFormat());
+                    return (cart.TotalPreShipping + value).ToCurrencyFormat();
                 default:
                     throw new ArgumentOutOfRangeException();
             }

@@ -134,18 +134,10 @@
                         @Model.CartPageShipping()
                     </div>
                 </div>
-                <hr />
-                <div class="row margin-bottom-10">
-                    <div class="col-xs-8 col-sm-6">
-                        <strong>Total</strong>
-                    </div>
-                    <div class="col-xs-4 col-sm-6 text-right" id="cart-total">
-                        <strong>@Model.CartPageTotal()</strong>
-                    </div>
-                </div>
+                
                 if (SiteSettings<EcommerceSettings>().GiftCardsEnabled)
                 {
-                    <hr />
+                    
                     <div class="row margin-bottom-10">
                         <div class="col-xs-8 col-sm-6">
                             <strong>Gift cards</strong>
@@ -187,16 +179,19 @@
                                 @Model.AvailableGiftCardAmount.ToCurrencyFormat()
                             </div>
                         </div>
-                        <div class="row margin-bottom-10">
-                            <div class="col-xs-8 col-sm-6">
-                                Total to pay
-                            </div>
-                            <div class="col-xs-4 col-sm-6 text-right">
-                                @Model.CartPageTotalToPay()
-                            </div>
-                        </div>
                     }
                 }
+
+                <hr />
+                <div class="row margin-bottom-10">
+                    <div class="col-xs-8 col-sm-6">
+                        <strong>Total</strong>
+                    </div>
+                    <div class="col-xs-4 col-sm-6 text-right" id="cart-total">
+                        <strong>@Model.CartPageTotal()</strong>
+                    </div>
+                </div>
+                <hr />
             }
         </div>
     </div>
@@ -204,7 +199,7 @@
         <div class="col-sm-6 col-sm-offset-6">
             @if (Model.CanEnterPaymentFlow)
             {
-                <a class="btn btn-normalgreen btn-block" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay Securely NOW!</a>
+                <a class="btn btn-normalgreen btn-block btn-lg" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay Securely NOW!</a>
             }
             @if (Model.CanUsePayPalExpress)
             {
