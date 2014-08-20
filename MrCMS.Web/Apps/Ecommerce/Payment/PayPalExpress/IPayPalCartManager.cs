@@ -118,7 +118,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                         case PaymentStatus.Pending:
                             break;
                         case PaymentStatus.Paid:
-                            _orderService.MarkAsPaid(order);
                             break;
                         case PaymentStatus.Refunded:
                             _orderRefundService.Add(new OrderRefund
@@ -128,7 +127,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                                                         });
                             break;
                         case PaymentStatus.Voided:
-                            _orderService.MarkAsVoided(order);
                             break;
                         default:
                             break;

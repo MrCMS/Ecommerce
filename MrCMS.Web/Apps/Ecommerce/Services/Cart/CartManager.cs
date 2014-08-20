@@ -67,7 +67,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             if (shippingMethod != null)
             {
                 _cartSessionManager.SetSessionValue(CurrentShippingMethodTypeKey, _getUserGuid.UserGuid,
-                    shippingMethod.GetType().FullName);
+                    shippingMethod.TypeName);
             }
             else
             {

@@ -163,6 +163,7 @@
     <Compile Include="Admin\Controllers\ProductVariantControllerTests.cs" />
     <Compile Include="Admin\Controllers\RegionControllerTests.cs" />
     <Compile Include="Admin\Controllers\TaxRateControllerTests.cs" />
+    <Compile Include="Admin\Services\ProductVariantAdminServiceTests.cs" />
     <Compile Include="Builders\CartItemBuilder.cs" />
     <Compile Include="Builders\CartModelBuilder.cs" />
     <Compile Include="Builders\GiftCardApplierBuilder.cs" />
@@ -232,7 +233,7 @@
     <Compile Include="Services\OrderShippingServiceTests.cs" />
     <Compile Include="Services\OrderRefundServiceTests.cs" />
     <Compile Include="Services\OrderServiceTests.cs" />
-    <Compile Include="Services\InventoryServiceTests.cs" />
+    <Compile Include="Services\StockAdminServiceTests.cs" />
     <Compile Include="Services\GoogleBaseManagerTests.cs" />
     <Compile Include="Services\OptionServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductVariantPriceBreakServiceTests.cs" />
@@ -252,7 +253,6 @@
     <Compile Include="Services\ProductOptionManagerTests\AttributeValueTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\SpecificationAttributeTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\SpecificationValueTests.cs" />
-    <Compile Include="Services\ProductVariantServiceTests.cs" />
     <Compile Include="Services\ProductVariant_CanBuyTests.cs" />
     <Compile Include="Services\RegionServiceTests.cs" />
     <Compile Include="Services\StockReport\StockReportServiceTests.cs" />

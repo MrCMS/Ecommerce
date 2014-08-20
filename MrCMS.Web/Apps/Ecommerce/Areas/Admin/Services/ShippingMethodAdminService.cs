@@ -26,18 +26,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         {
             var shippingMethodSettings = _configurationProvider.GetSiteSettings<ShippingMethodSettings>();
             Dictionary<string, bool> enabledMethods = shippingMethodSettings.EnabledMethods;
-            return _shippingMethods.Select(method =>
+            return _shippingMethods.Select(method => new ShippingMethodInfo
             {
-                string typeName = method.GetType().FullName;
-                return new ShippingMethodInfo
-                {
-                    Name = method.Name,
-                    DisplayName = method.DisplayName,
-                    Description = method.Description,
-                    Type = typeName,
-                    ConfigureUrl = GetConfigureUrl(method),
-                    Enabled = enabledMethods.ContainsKey(typeName) && enabledMethods[typeName]
-                };
+                Name = method.Name,
+                DisplayName = method.DisplayName,
+                Description = method.Description,
+                Type = method.TypeName,
+                ConfigureUrl = GetConfigureUrl(method),
+                Enabled = enabledMethods.ContainsKey(method.TypeName) && enabledMethods[method.TypeName]
             }).OrderBy(info => info.Name).ToList();
         }
 
