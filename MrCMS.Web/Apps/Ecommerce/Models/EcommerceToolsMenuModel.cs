@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                    new ChildMenuItem("Bulk Stock Update",
                                        "/Admin/Apps/Ecommerce/Stock/BulkStockUpdate"),
                                    new ChildMenuItem("Bulk Shipping Update",
-                                       "/Admin/Apps/Ecommerce/Order/BulkShippingUpdate"),
+                                       "/Admin/Apps/Ecommerce/BulkShipping/Update"),
                                }
                            },
                            {

@@ -110,7 +110,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         /// <summary>
         /// The order total less the applied gift card amount
         /// </summary>
-        public virtual decimal TotalToPay { get { return Total - GiftCardAmount; } }
+        public virtual decimal TotalToPay
+        {
+            get { return Total - GiftCardAmount; }
+        }
 
         /// <summary>
         /// Item tax plus shipping tax
@@ -359,7 +362,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     yield return "Order has already been placed";
             }
         }
-
     }
 
     public enum CartShippingStatus

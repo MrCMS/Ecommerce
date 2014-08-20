@@ -36,7 +36,6 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             amazonOrder.Status = order.OrderStatus.GetEnumByValue<AmazonOrderStatus>();
             if (amazonOrder.Status == AmazonOrderStatus.Shipped && amazonOrder.Order != null && amazonOrder.Order.ShippingStatus == ShippingStatus.Unshipped)
             {
-                _orderService.MarkAsShipped(amazonOrder.Order);
             }
         }
 

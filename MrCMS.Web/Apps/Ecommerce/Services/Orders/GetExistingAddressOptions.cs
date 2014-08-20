@@ -36,7 +36,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             addresses = enumerable.Where(a => addressToExclude == null || !AddressComparison.Comparer.Equals(a, addressToExclude)).ToList();
 
             return addresses.Any()
-                ? addresses.BuildSelectItemList(a => AddressExtensions.GetDescription(a), a => AddressExtensions.ToJSON(a),
+                ? addresses.BuildSelectItemList(address => address.GetDescription(), address => address.ToJSON(),
                     emptyItemText: "Select an address...")
                 : new List<SelectListItem>();
         }

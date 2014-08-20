@@ -1,10 +1,28 @@
 ﻿@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
+@{
+    var shippingOptions = ViewData["shipping-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
 
 <div id="shipping-options" class="tab-pane">
     <div class="row">
         <div class="col-xs-12">
             @Html.InlineCheckboxFor(variant => variant.RequiresShipping)
+        </div>
+    </div>
+    <div class="row" data-requires-shipping="true">
+        <div class="col-xs-12">
+            @Html.InlineCheckboxFor(variant => variant.HasRestrictedShipping)
+            <div data-has-restricted-shipping="true">
+                <h4>Is restricted to:</h4>
+                @foreach (var shippingOption in shippingOptions)
+                {
+                    <label class="checkbox-inline">
+                        @Html.CheckBox(string.Format("restricted-shipping-{0}", shippingOption.Value), shippingOption.Selected)
+                        @shippingOption.Text
+                    </label>
+                }
+            </div>
         </div>
     </div>
 </div>

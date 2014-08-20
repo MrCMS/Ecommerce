@@ -28,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 
         public IShippingMethod GetMethodByTypeName(string type)
         {
-            return _enabledShippingMethods.FirstOrDefault(method => method.GetType().FullName == type);
+            return _enabledShippingMethods.FirstOrDefault(method => method.TypeName == type);
         }
     }
 }
