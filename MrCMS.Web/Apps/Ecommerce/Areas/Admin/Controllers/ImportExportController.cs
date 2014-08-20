@@ -1,4 +1,5 @@
 using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
@@ -19,11 +20,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(ImportExportACL), ImportExportACL.View)]
         public ViewResult Products()
         {
             return View();
         }
         [HttpGet]
+        [MrCMSACLRule(typeof(ImportExportACL), ImportExportACL.CanExport)]
         public ActionResult ExportProducts()
         {
             try
@@ -41,6 +44,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [MrCMSACLRule(typeof(ImportExportACL), ImportExportACL.CanImport)]
         public ViewResult ImportProducts(HttpPostedFileBase document)
         {
             if (document != null && document.ContentLength > 0 && document.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")

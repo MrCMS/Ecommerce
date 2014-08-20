@@ -6,6 +6,7 @@ using MrCMS.Entities.People;
 using MrCMS.Paging;
 using MrCMS.Services;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
@@ -41,6 +42,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.List)]
         public ViewResult Index(OrderSearchModel model, int page = 1)
         {
             ViewData["ShippingStatuses"] = GeneralHelper.GetEnumOptionsWithEmpty<ShippingStatus>();
@@ -59,6 +61,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.Edit)]
         public ActionResult Edit(Order order)
         {
             ViewData["ShippingStatuses"] = _optionService.GetEnumOptions<ShippingStatus>();
@@ -71,6 +74,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("Edit")]
         [HttpPost]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.Edit)]
         public RedirectToRouteResult Edit_POST(Order order, int shippingMethodId = 0)
         {
             order.User = CurrentRequestData.CurrentUser;
@@ -79,6 +83,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.Cancel)]
         public PartialViewResult Cancel(Order order)
         {
             return PartialView(order);
@@ -87,6 +92,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("Cancel")]
         [HttpPost]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.Cancel)]
         public RedirectToRouteResult Cancel_POST(Order order)
         {
             _orderService.Cancel(order);
@@ -94,6 +100,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.MarkAsShipped)]
         public PartialViewResult MarkAsShipped(Order order, bool index = false)
         {
             ViewBag.Index = index;
@@ -111,6 +118,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("MarkAsShipped")]
         [HttpPost]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.MarkAsShipped)]
         public RedirectToRouteResult MarkAsShipped_POST(Order order,bool index = false)
         {
             _orderService.MarkAsShipped(order);
@@ -118,6 +126,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.MarkAsPaid)]
         public PartialViewResult MarkAsPaid(Order order, bool index = false)
         {
             ViewBag.Index = index;
@@ -127,6 +136,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("MarkAsPaid")]
         [HttpPost]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.MarkAsPaid)]
         public RedirectToRouteResult MarkAsPaid_POST(Order order, bool index = false)
         {
             _orderService.MarkAsPaid(order);
@@ -134,6 +144,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.MarkAsVoided)]
         public PartialViewResult MarkAsVoided(Order order, bool index = false)
         {
             ViewBag.Index = index;
@@ -143,6 +154,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("MarkAsVoided")]
         [HttpPost]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.MarkAsVoided)]
         public RedirectToRouteResult MarkAsVoided_POST(Order order, bool index = false)
         {
             _orderService.MarkAsVoided(order);
@@ -150,6 +162,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.BulkShippingUpdate)]
         public ViewResult BulkShippingUpdate()
         {
             if (TempData.ContainsKey("messages"))
@@ -162,6 +175,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         [ActionName("BulkShippingUpdate")]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.BulkShippingUpdate)]
         public RedirectToRouteResult BulkShippingUpdate_POST(HttpPostedFileBase document)
         {
             if (document != null && document.ContentLength > 0 && (document.ContentType.ToLower() == "text/csv" || document.ContentType.ToLower().Contains("excel")))
@@ -172,6 +186,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.SetTrackingNumber)]
         public ActionResult SetTrackingNumber(Order order)
         {
             return View(order);
@@ -180,6 +195,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         [ActionName("SetTrackingNumber")]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.SetTrackingNumber)]
         public ActionResult SetTrackingNumber_POST(Order order)
         {
             _orderService.Save(order);
@@ -187,6 +203,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.Delete)]
         public ActionResult Delete(Order order)
         {
             return View(order);
@@ -195,6 +212,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         [ActionName("Delete")]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.Delete)]
         public ActionResult Delete_POST(Order order)
         {
             _orderService.Delete(order);
@@ -202,6 +220,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(OrderACL), OrderACL.ExportOrderToPdf)]
         public ActionResult ExportOrderToPdf(Order order)
         {
             try
