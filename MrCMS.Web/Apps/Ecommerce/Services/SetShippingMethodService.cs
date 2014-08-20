@@ -29,13 +29,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 
         public List<SelectListItem> GetShippingMethodOptions()
         {
-            return _shippingMethodUIService.GetEnabledMethods().FindAll(method => method.CanBeUsed(Cart))
-                .OrderBy(method => method.GetShippingTotal(Cart))
-                .BuildSelectItemList(
-                    method =>
-                        string.Format("{0} ({1})", method.DisplayName,
-                            method.GetShippingTotal(Cart).ToCurrencyFormat()), method => method.GetType().FullName,
-                    method => method == _cart.ShippingMethod, "Please select...");
+            var orderedEnumerable = _shippingMethodUIService.GetEnabledMethods().FindAll(method => method.CanBeUsed(Cart))
+                .OrderBy(method => method.GetShippingTotal(Cart));
+            if(orderedEnumerable.Any())
+            {
+                return orderedEnumerable
+                    .BuildSelectItemList(
+                        method =>
+                            string.Format("{0} ({1})", method.DisplayName,
+                                method.GetShippingTotal(Cart).ToCurrencyFormat()), method => method.TypeName,
+                        method => method == _cart.ShippingMethod, "Please select...");
+            }
+            return new List<SelectListItem>();
         }
 
         public CartModel Cart { get { return _cart; } }

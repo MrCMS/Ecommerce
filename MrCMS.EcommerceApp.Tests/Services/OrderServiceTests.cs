@@ -1,38 +1,34 @@
 ﻿using System;
 using FakeItEasy;
+using MrCMS.Helpers;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
-using NHibernate;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services
 {
-    public class OrderServiceTests : MrCMSTest
+    public class OrderAdminServiceTests : InMemoryDatabaseTest
     {
         private readonly IFileService _fileService;
+        private readonly OrderAdminService _orderAdminService;
         private readonly IOrderNoteService _orderNoteService;
-        private readonly OrderService _orderService;
-        private readonly ISession _session;
 
-        public OrderServiceTests()
+        public OrderAdminServiceTests()
         {
-            _session = A.Fake<ISession>();
-            _orderNoteService = A.Fake<IOrderNoteService>();
-            _fileService = A.Fake<IFileService>();
-            _orderService = new OrderService(_session, _orderNoteService);
+            _orderAdminService = new OrderAdminService(null, Session, null);
         }
 
-        //TODO PlaceOrder
-
         [Fact]
-        public void OrderService_Cancel_ShouldCallOrderCancelled()
+        public void OrderAdminService_Cancel_ShouldCallOrderCancelled()
         {
             var order = new Order {IsCancelled = true};
+            Session.Transact(session => session.Save(order));
 
-            _orderService.Cancel(order);
+            _orderAdminService.Cancel(order);
 
             A.CallTo(
                 () =>
@@ -41,11 +37,12 @@ namespace MrCMS.EcommerceApp.Tests.Services
         }
 
         [Fact]
-        public void OrderService_MarkAsShipped_ShouldCallOrderShipped()
+        public void OrderAdminService_MarkAsShipped_ShouldCallOrderShipped()
         {
             var order = new Order {ShippingStatus = ShippingStatus.Shipped, ShippingDate = DateTime.UtcNow};
+            Session.Transact(session => session.Save(order));
 
-            _orderService.MarkAsShipped(order);
+            _orderAdminService.MarkAsShipped(order);
 
             A.CallTo(
                 () =>

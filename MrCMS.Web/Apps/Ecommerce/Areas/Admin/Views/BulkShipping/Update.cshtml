@@ -20,7 +20,7 @@
         <li>Already shipped orders cannot be re-shipped</li>
         <li>The shipping method name must exist as one of your shipping methods</li>
     </ul>
-    @using (Html.BeginForm("BulkShippingUpdate", "Order", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("Update", "BulkShipping", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         <label>Choose Import File</label>
         <input type="file" name="document" id="document" />

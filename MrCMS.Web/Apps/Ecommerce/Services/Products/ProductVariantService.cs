@@ -26,11 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             return _session.QueryOver<ProductVariant>().Cacheable().List();
         }
-        public IPagedList<ProductVariant> GetAllVariantsWithLowStock(int treshold, int page = 1)
-        {
-            var items = _session.QueryOver<ProductVariant>().Where(item => item.StockRemaining <= treshold && item.TrackingPolicy == TrackingPolicy.Track).OrderBy(x => x.Product.Id).Asc.Cacheable().List();
-            return new PagedList<ProductVariant>(items, page, MrCMSApplication.Get<SiteSettings>().DefaultPageSize);
-        }
+
         public IList<ProductVariant> GetAllVariantsWithLowStock(int treshold)
         {
             return _session.QueryOver<ProductVariant>().Where(item => item.StockRemaining <= treshold
@@ -116,38 +112,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 priceBreak.ProductVariant.PriceBreaks.Remove(priceBreak);
             }
             _session.Transact(session => session.Delete(priceBreak));
-        }
-
-        public void Add(ProductVariant productVariant)
-        {
-            if (productVariant.Product != null)
-            {
-                productVariant.Product.Variants.Add(productVariant);
-
-                foreach (ProductOptionValue t in productVariant.OptionValues)
-                {
-                    t.ProductVariant = productVariant;
-                }
-                _session.Transact(session => session.Save(productVariant));
-            }
-        }
-
-        public void Update(ProductVariant productVariant)
-        {
-            _session.Transact(session => session.SaveOrUpdate(productVariant));
-        }
-
-        public void Delete(ProductVariant productVariant)
-        {
-            var product = productVariant.Product;
-            if (product != null)
-                product.Variants.Remove(productVariant);
-            _session.Transact(session =>
-                                  {
-                                      session.Delete(productVariant);
-                                      if (product != null)
-                                          session.Update(product);
-                                  });
         }
 
         public bool AnyExistingProductVariantWithSKU(string sku, int id)
