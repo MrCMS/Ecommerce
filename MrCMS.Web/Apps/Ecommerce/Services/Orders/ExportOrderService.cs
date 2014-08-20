@@ -11,25 +11,27 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
-using PdfSharp.Charting;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
+using Color = MigraDoc.DocumentObjectModel.Color;
+using Image = System.Drawing.Image;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 {
     public class ExportOrderService : IExportOrdersService
     {
         private readonly EcommerceSettings _ecommerceSettings;
-        public string LogoUrl { get; set; }
+        private readonly IGetLogoUrl _getLogoUrl;
 
-        public ExportOrderService(EcommerceSettings ecommerceSettings)
+        public ExportOrderService(EcommerceSettings ecommerceSettings, IGetLogoUrl getLogoUrl)
         {
             _ecommerceSettings = ecommerceSettings;
+            _getLogoUrl = getLogoUrl;
         }
 
         public byte[] ExportOrderToPdf(Order order)
         {
-            var pdf = SetDocumentInfo(order);
+            Document pdf = SetDocumentInfo(order);
 
             SetDocumentStyles(ref pdf);
 
@@ -54,7 +56,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         private void SetDocumentStyles(ref Document document)
         {
-            var style = document.Styles["Normal"];
+            Style style = document.Styles["Normal"];
             style.Font.Name = "Tahoma";
             style.Font.Size = 10;
 
@@ -66,7 +68,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         private void SetDocument(ref Document document, Order order)
         {
             var tableColor = new Color(0, 0, 0, 0);
-            var section = document.AddSection();
+            Section section = document.AddSection();
 
             //HEADER
             SetHeader(ref section);
@@ -78,7 +80,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             SetInfo(order, ref section);
 
             //TABLE STYLE
-            var table = SetTableStyle(ref section, tableColor);
+            Table table = SetTableStyle(ref section, tableColor);
 
             //HEADERS
             SetTableHeader(ref table, tableColor);
@@ -92,19 +94,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         private void SetHeader(ref Section section)
         {
-            var frame1 = section.Headers.Primary.AddTextFrame();
+            TextFrame frame1 = section.Headers.Primary.AddTextFrame();
             frame1.RelativeVertical = RelativeVertical.Page;
             frame1.Left = ShapePosition.Left;
             frame1.MarginTop = new Unit(1, UnitType.Centimeter);
             frame1.Width = new Unit(10, UnitType.Centimeter);
 
-            var frame2 = section.Headers.Primary.AddTextFrame();
+            TextFrame frame2 = section.Headers.Primary.AddTextFrame();
             frame2.RelativeVertical = RelativeVertical.Page;
             frame2.Left = ShapePosition.Right;
             frame2.MarginTop = new Unit(1, UnitType.Centimeter);
             frame2.Width = new Unit(2, UnitType.Centimeter);
 
-            var p = frame1.AddParagraph();
+            Paragraph p = frame1.AddParagraph();
             p.AddFormattedText(CurrentRequestData.CurrentSite.Name, TextFormat.Bold);
             p = frame2.AddParagraph();
             p.AddDateField("dd/MM/yyyy");
@@ -114,7 +116,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             if (!String.IsNullOrWhiteSpace(_ecommerceSettings.ReportFooterText))
             {
-                var p = section.Footers.Primary.AddParagraph();
+                Paragraph p = section.Footers.Primary.AddParagraph();
                 p.Format.Alignment = ParagraphAlignment.Left;
                 p.Format.Font.Size = 8;
                 p.AddText(_ecommerceSettings.ReportFooterText);
@@ -123,33 +125,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         private void SetInfo(Order order, ref Section section)
         {
-            var frame1 = section.AddTextFrame();
+            TextFrame frame1 = section.AddTextFrame();
             frame1.RelativeVertical = RelativeVertical.Page;
             frame1.Left = ShapePosition.Right;
             frame1.Top = new Unit(1.85, UnitType.Centimeter);
             frame1.Width = new Unit(10, UnitType.Centimeter);
-            var p = frame1.AddParagraph();
+            Paragraph p = frame1.AddParagraph();
             p.Format.Font.Size = 16;
             p.Format.Alignment = ParagraphAlignment.Right;
             p.AddFormattedText("Order #" + order.Id, TextFormat.Bold);
 
             frame1 = section.AddTextFrame();
-            var frame2 = section.AddTextFrame();
+            TextFrame frame2 = section.AddTextFrame();
 
-            if (!String.IsNullOrWhiteSpace(_ecommerceSettings.ReportLogoImage) && !_ecommerceSettings.ReportLogoImage.Contains("http"))
+            if (!String.IsNullOrWhiteSpace(_ecommerceSettings.ReportLogoImage) &&
+                !_ecommerceSettings.ReportLogoImage.Contains("http"))
             {
-                try
+                string logoUrl = _getLogoUrl.Get();
+                if (!String.IsNullOrWhiteSpace(logoUrl))
                 {
-                    LogoUrl = CurrentRequestData.CurrentContext.Server.MapPath(_ecommerceSettings.ReportLogoImage);
-                }
-                catch (Exception ex)
-                {
-                    LogoUrl = string.Empty;
-                    CurrentRequestData.ErrorSignal.Raise(ex);
-                }
-                if (!String.IsNullOrWhiteSpace(LogoUrl))
-                {
-                    var logo = section.AddImage(LogoUrl);
+                    MigraDoc.DocumentObjectModel.Shapes.Image logo = section.AddImage(logoUrl);
                     logo.RelativeVertical = RelativeVertical.Page;
                     logo.Left = ShapePosition.Left;
                     logo.Top = new Unit(1.85, UnitType.Centimeter);
@@ -226,13 +221,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 p = frame2.AddParagraph();
                 p.AddText(order.ShippingAddress.StateProvince);
             }
-            var billingCountryName = order.BillingAddress.GetCountryName();
+            string billingCountryName = order.BillingAddress.GetCountryName();
             if (!string.IsNullOrWhiteSpace(billingCountryName))
             {
                 p = frame1.AddParagraph();
                 p.AddText(billingCountryName);
             }
-            var shippingCountryName = order.ShippingAddress.GetCountryName();
+            string shippingCountryName = order.ShippingAddress.GetCountryName();
             if (!string.IsNullOrWhiteSpace(shippingCountryName))
             {
                 p = frame2.AddParagraph();
@@ -261,18 +256,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         private Table SetTableStyle(ref Section section, Color tableColor)
         {
-            var frame = section.AddTextFrame();
+            TextFrame frame = section.AddTextFrame();
             frame.MarginTop = new Unit(6, UnitType.Centimeter);
             frame.Width = new Unit(16, UnitType.Centimeter);
 
             //TABLE LABEL
-            var p = frame.AddParagraph();
+            Paragraph p = frame.AddParagraph();
             p.AddFormattedText("Purchased goods:", TextFormat.Bold);
 
             frame.AddParagraph("").AddLineBreak();
 
             //TABLE
-            var table = frame.AddTable();
+            Table table = frame.AddTable();
             table.Style = "Table";
             table.Borders.Color = tableColor;
             table.Borders.Width = 0.25;
@@ -284,54 +279,54 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         private void SetTableHeader(ref Table table, Color tableColor)
         {
-            var columns = new Dictionary<string, Dictionary<string, ParagraphAlignment>>()
+            var columns = new Dictionary<string, Dictionary<string, ParagraphAlignment>>
+            {
                 {
+                    "#", new Dictionary<string, ParagraphAlignment>
                     {
-                        "#", new Dictionary<string, ParagraphAlignment>()
-                            {
-                                {"1cm", ParagraphAlignment.Center}
-                            }
-                    },
+                        {"1cm", ParagraphAlignment.Center}
+                    }
+                },
+                {
+                    "Title", new Dictionary<string, ParagraphAlignment>
                     {
-                        "Title", new Dictionary<string, ParagraphAlignment>()
-                            {
-                                {"6cm", ParagraphAlignment.Left}
-                            }
-                    },
+                        {"6cm", ParagraphAlignment.Left}
+                    }
+                },
+                {
+                    "Unit Price", new Dictionary<string, ParagraphAlignment>
                     {
-                        "Unit Price", new Dictionary<string, ParagraphAlignment>()
-                            {
-                                {"3cm", ParagraphAlignment.Right}
-                            }
-                    },
+                        {"3cm", ParagraphAlignment.Right}
+                    }
+                },
+                {
+                    "Qty", new Dictionary<string, ParagraphAlignment>
                     {
-                        "Qty", new Dictionary<string, ParagraphAlignment>()
-                            {
-                                {"3cm", ParagraphAlignment.Center}
-                            }
-                    },
+                        {"3cm", ParagraphAlignment.Center}
+                    }
+                },
+                {
+                    "Total", new Dictionary<string, ParagraphAlignment>
                     {
-                        "Total", new Dictionary<string, ParagraphAlignment>()
-                            {
-                                {"3cm", ParagraphAlignment.Right}
-                            }
-                    },
-                };
+                        {"3cm", ParagraphAlignment.Right}
+                    }
+                },
+            };
 
             foreach (var item in columns)
             {
-                var column = table.AddColumn(item.Value.First().Key);
+                Column column = table.AddColumn(item.Value.First().Key);
                 column.Format.Alignment = item.Value.First().Value;
             }
 
-            var row = table.AddRow();
+            Row row = table.AddRow();
             row.HeadingFormat = true;
             row.Format.Alignment = ParagraphAlignment.Center;
             row.Format.Font.Bold = true;
             row.Shading.Color = tableColor;
             row.TopPadding = 2;
             row.BottomPadding = 2;
-            var rowId = 0;
+            int rowId = 0;
             foreach (var item in columns)
             {
                 row.Cells[rowId].AddParagraph(item.Key);
@@ -344,10 +339,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         private void SetTableData(Order order, ref Table table)
         {
-            for (var i = 0; i < order.OrderLines.Count; i++)
+            for (int i = 0; i < order.OrderLines.Count; i++)
             {
-                var orderLine = order.OrderLines[i];
-                var row = table.AddRow();
+                OrderLine orderLine = order.OrderLines[i];
+                Row row = table.AddRow();
                 row.TopPadding = 2;
                 row.BottomPadding = 2;
 
@@ -363,18 +358,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         private void SetTableSummary(Order order, ref Table table)
         {
-            var summaryData = new Dictionary<string, string>()
-                {
-                    {"Sub-total", order.Subtotal.ToCurrencyFormat()},
-                    {"Shipping", order.ShippingTotal.ToCurrencyFormat()},
-                    {"Tax", order.Tax.ToCurrencyFormat()},
-                    {"Discount", order.DiscountAmount.ToCurrencyFormat()},
-                    {"Total", order.Total.ToCurrencyFormat()},
-                };
+            var summaryData = new Dictionary<string, string>
+            {
+                {"Sub-total", order.Subtotal.ToCurrencyFormat()},
+                {"Shipping", order.ShippingTotal.ToCurrencyFormat()},
+                {"Tax", order.Tax.ToCurrencyFormat()},
+                {"Discount", order.DiscountAmount.ToCurrencyFormat()},
+                {"Total", order.Total.ToCurrencyFormat()},
+            };
 
             foreach (var item in summaryData)
             {
-                var row = table.AddRow();
+                Row row = table.AddRow();
                 row.TopPadding = 2;
                 row.BottomPadding = 2;
                 row.Cells[0].Borders.Visible = false;
@@ -391,14 +386,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         private byte[] GetDocumentToByteArray(ref Document pdf)
         {
-            var renderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Automatic) { Document = pdf };
+            var renderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Automatic) {Document = pdf};
             renderer.RenderDocument();
             var stream = new MemoryStream();
 
-            if (String.IsNullOrWhiteSpace(LogoUrl) && !String.IsNullOrWhiteSpace(_ecommerceSettings.ReportLogoImage))
+            if (String.IsNullOrWhiteSpace(_getLogoUrl.Get()) &&
+                !String.IsNullOrWhiteSpace(_ecommerceSettings.ReportLogoImage))
             {
-                var gfx = XGraphics.FromPdfPage(renderer.PdfDocument.Pages[0]);
-                var image = FromUri(_ecommerceSettings.ReportLogoImage);
+                XGraphics gfx = XGraphics.FromPdfPage(renderer.PdfDocument.Pages[0]);
+                XImage image = FromUri(_ecommerceSettings.ReportLogoImage);
                 if (image != null)
                 {
                     gfx.DrawImage(image, 70, 50, image.PixelWidth, image.PixelHeight);
@@ -414,11 +410,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             try
             {
-                var webRequest = (HttpWebRequest)WebRequest.Create(uri);
+                var webRequest = (HttpWebRequest) WebRequest.Create(uri);
                 webRequest.AllowWriteStreamBuffering = true;
-                var webResponse = webRequest.GetResponse();
-                var image = System.Drawing.Image.FromStream(webResponse.GetResponseStream());
-                var thumbImg = ResizeImage(image, 150, 45);
+                WebResponse webResponse = webRequest.GetResponse();
+                Image image = Image.FromStream(webResponse.GetResponseStream());
+                Image thumbImg = ResizeImage(image, 150, 45);
                 return XImage.FromGdiPlusImage(thumbImg);
             }
             catch (Exception ex)
@@ -428,15 +424,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             return null;
         }
 
-        public System.Drawing.Image ResizeImage(System.Drawing.Image origImg, int width, int maxHeight)
+        public Image ResizeImage(Image origImg, int width, int maxHeight)
         {
-            var newHeight = origImg.Height * width / origImg.Width;
+            int newHeight = origImg.Height*width/origImg.Width;
             if (newHeight > maxHeight)
             {
-                width = origImg.Width * maxHeight / origImg.Height;
+                width = origImg.Width*maxHeight/origImg.Height;
                 newHeight = maxHeight;
             }
-            var newImg = origImg.GetThumbnailImage(width, newHeight, null, IntPtr.Zero);
+            Image newImg = origImg.GetThumbnailImage(width, newHeight, null, IntPtr.Zero);
             origImg.Dispose();
             return newImg;
         }

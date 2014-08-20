@@ -3,6 +3,7 @@ using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
+using MrCMS.Web.Apps.Ecommerce.Helpers.Cart;
 using MrCMS.Web.Apps.Ecommerce.Helpers.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
@@ -40,6 +41,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             get { return _ukFirstClassShippingSettings.Description; }
         }
 
+        public string TypeName { get { return GetType().FullName; } }
+
         public bool CanBeUsed(CartModel cart)
         {
             if (!CanPotentiallyBeUsed(cart))
@@ -51,7 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 
         public bool CanPotentiallyBeUsed(CartModel cart)
         {
-            if (cart == null)
+            if (cart == null || cart.Items.Any(item => item.IsUnableToUseShippingMethod(this)))
                 return false;
             var calculation = GetBestAvailableCalculation(cart);
             return calculation != null;
