@@ -1,39 +1,29 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using Xunit;
-using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
     public class ProductVariantControllerTests
     {
+        private readonly IProductVariantAdminService _productVariantAdminService;
         private readonly ProductVariantController _productVariantController;
-        private readonly IProductVariantService _productVariantService;
-        private readonly IGetTaxRateOptions _getTaxRateOptions;
-        private readonly IOptionService _optionService;
 
         public ProductVariantControllerTests()
         {
-            _productVariantService = A.Fake<IProductVariantService>();
-            _getTaxRateOptions = A.Fake<IGetTaxRateOptions>();
-            _optionService = A.Fake<IOptionService>();
-            _productVariantController = new ProductVariantController(_productVariantService, _optionService,
-                _getTaxRateOptions, A.Fake<IGetGiftCardTypeOptions>(), A.Fake<IGetProductVariantTypeOptions>());
+            _productVariantAdminService = A.Fake<IProductVariantAdminService>();
+            _productVariantController = new ProductVariantController(_productVariantAdminService);
         }
 
         [Fact]
         public void ProductVariantController_Add_ReturnsAPartialViewResult()
         {
-            var add = _productVariantController.Add(new Product());
+            PartialViewResult add = _productVariantController.Add(new Product());
 
             add.Should().BeOfType<PartialViewResult>();
         }
@@ -42,37 +32,37 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         public void ProductVariantController_Add_ReturnsAProductVariantWithPassedProductSet()
         {
             var product = new Product();
-            var add = _productVariantController.Add(product);
+            PartialViewResult add = _productVariantController.Add(product);
 
             add.Model.Should().BeOfType<ProductVariant>();
             add.Model.As<ProductVariant>().Product.Should().Be(product);
         }
 
         [Fact]
-        public void ProductVariantController_Add_ViewDataTaxRatesTaxRateOptions()
+        public void ProductVariantController_Add_CallsIntoAddViewData()
         {
             var product = new Product();
-            var selectListItems = new List<SelectListItem>();
-            A.CallTo(() => _getTaxRateOptions.GetOptions((int?)null)).Returns(selectListItems);
-            var add = _productVariantController.Add(product);
+            PartialViewResult add = _productVariantController.Add(product);
 
-            add.ViewData["tax-rate-options"].Should().Be(selectListItems);
+            A.CallTo(
+                () => _productVariantAdminService.SetViewData(_productVariantController.ViewData, A<ProductVariant>._))
+                .MustHaveHappened();
         }
 
         [Fact]
         public void ProductVariantController_AddPost_CallsAddProductVariantService()
         {
-            var productVariant = GetNewProductVariant();
-            var addPost = _productVariantController.Add_POST(productVariant);
+            ProductVariant productVariant = GetNewProductVariant();
+            ActionResult addPost = _productVariantController.Add_POST(productVariant);
 
-            A.CallTo(() => _productVariantService.Add(productVariant)).MustHaveHappened();
+            A.CallTo(() => _productVariantAdminService.Add(productVariant)).MustHaveHappened();
         }
 
         [Fact]
         public void ProductVariantController_AddPost_ReturnsARedirectToRouteResult()
         {
-            var productVariant = GetNewProductVariant();
-            var addPost = _productVariantController.Add_POST(productVariant);
+            ProductVariant productVariant = GetNewProductVariant();
+            ActionResult addPost = _productVariantController.Add_POST(productVariant);
 
             addPost.Should().BeOfType<RedirectToRouteResult>();
         }
@@ -80,9 +70,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductVariantController_Edit_ReturnsAPartialViewResult()
         {
-            var productVariant = GetNewProductVariant();
+            ProductVariant productVariant = GetNewProductVariant();
 
-            var edit = _productVariantController.Edit(productVariant);
+            PartialViewResult edit = _productVariantController.Edit(productVariant);
 
             edit.Should().BeOfType<PartialViewResult>();
         }
@@ -90,9 +80,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductVariantController_Edit_ShouldReturnThePassedProductVariantAsTheModel()
         {
-            var productVariant = GetNewProductVariant();
+            ProductVariant productVariant = GetNewProductVariant();
 
-            var edit = _productVariantController.Edit(productVariant);
+            PartialViewResult edit = _productVariantController.Edit(productVariant);
 
             edit.Model.Should().Be(productVariant);
         }
@@ -100,30 +90,30 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductVariantController_Edit_ViewDataTaxRatesTaxRateOptions()
         {
-            var productVariant = GetNewProductVariant();
-            var selectListItems = new List<SelectListItem>();
-            A.CallTo(() => _getTaxRateOptions.GetOptions((TaxRate)null)).Returns(selectListItems);
-            var add = _productVariantController.Edit(productVariant);
+            ProductVariant productVariant = GetNewProductVariant();
+            PartialViewResult edit = _productVariantController.Edit(productVariant);
 
-            add.ViewData["tax-rate-options"].Should().Be(selectListItems);
+            A.CallTo(
+                () => _productVariantAdminService.SetViewData(_productVariantController.ViewData, productVariant))
+                .MustHaveHappened();
         }
 
         [Fact]
         public void ProductVariantController_EditPost_ShouldCallUpdateMethodOfService()
         {
-            var productVariant = GetNewProductVariant();
+            ProductVariant productVariant = GetNewProductVariant();
 
-            var edit = _productVariantController.Edit_POST(productVariant);
+            ActionResult edit = _productVariantController.Edit_POST(productVariant);
 
-            A.CallTo(() => _productVariantService.Update(productVariant)).MustHaveHappened();
+            A.CallTo(() => _productVariantAdminService.Update(productVariant)).MustHaveHappened();
         }
 
         [Fact]
         public void ProductVariantController_EditPost_ShouldReturnRedirectToRouteResult()
         {
-            var productVariant = GetNewProductVariant();
+            ProductVariant productVariant = GetNewProductVariant();
 
-            var edit = _productVariantController.Edit_POST(productVariant);
+            ActionResult edit = _productVariantController.Edit_POST(productVariant);
 
             edit.Should().BeOfType<RedirectToRouteResult>();
         }
@@ -131,9 +121,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductVariantController_Delete_ShouldReturnAPartialViewResult()
         {
-            var productVariant = GetNewProductVariant();
+            ProductVariant productVariant = GetNewProductVariant();
 
-            var delete = _productVariantController.Delete(productVariant);
+            PartialViewResult delete = _productVariantController.Delete(productVariant);
 
             delete.Should().BeOfType<PartialViewResult>();
         }
@@ -141,9 +131,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductVariantController_Delete_ShouldReturnThePassedModel()
         {
-            var productVariant = GetNewProductVariant();
+            ProductVariant productVariant = GetNewProductVariant();
 
-            var delete = _productVariantController.Delete(productVariant);
+            PartialViewResult delete = _productVariantController.Delete(productVariant);
 
             delete.Model.Should().Be(productVariant);
         }
@@ -151,9 +141,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductVariantController_DeletePOST_ShouldReturnARedirectToRouteResult()
         {
-            var productVariant = GetNewProductVariant();
+            ProductVariant productVariant = GetNewProductVariant();
 
-            var delete = _productVariantController.Delete_POST(productVariant);
+            RedirectToRouteResult delete = _productVariantController.Delete_POST(productVariant);
 
             delete.Should().BeOfType<RedirectToRouteResult>();
         }
@@ -161,19 +151,19 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductVariantController_DeletePOST_ShouldCallDeleteOnService()
         {
-            var productVariant = GetNewProductVariant();
+            ProductVariant productVariant = GetNewProductVariant();
 
-            var delete = _productVariantController.Delete_POST(productVariant);
+            RedirectToRouteResult delete = _productVariantController.Delete_POST(productVariant);
 
-            A.CallTo(() => _productVariantService.Delete(productVariant)).MustHaveHappened();
+            A.CallTo(() => _productVariantAdminService.Delete(productVariant)).MustHaveHappened();
         }
 
         [Fact]
         public void ProductVariantController_DeletePOST_ShouldRedirectToEditProduct()
         {
-            var productVariant = GetNewProductVariant();
+            ProductVariant productVariant = GetNewProductVariant();
 
-            var delete = _productVariantController.Delete_POST(productVariant);
+            RedirectToRouteResult delete = _productVariantController.Delete_POST(productVariant);
 
             delete.RouteValues["action"].Should().Be("Edit");
             delete.RouteValues["controller"].Should().Be("Webpage");
@@ -182,7 +172,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
         private static ProductVariant GetNewProductVariant()
         {
-            return new ProductVariant { Product = new Product { Id = 123 } };
+            return new ProductVariant {Product = new Product {Id = 123}};
         }
     }
 }

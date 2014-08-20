@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Website.Binders;
 using Ninject;
@@ -11,11 +11,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders
 {
     public class ProductVariantModelBinder : MrCMSDefaultModelBinder
     {
-        private const string ShippingMethodPrefix = "shipping-method-";
+        private readonly ISetVariantTypeProperties _setVariantTypeProperties;
+        private readonly ISetRestrictedShippingMethods _setRestrictedShippingMethods;
 
 
-        public ProductVariantModelBinder(IKernel kernel) : base(kernel)
+        public ProductVariantModelBinder(ISetVariantTypeProperties setVariantTypeProperties, ISetRestrictedShippingMethods setRestrictedShippingMethods, IKernel kernel)
+            : base(kernel)
         {
+            _setVariantTypeProperties = setVariantTypeProperties;
+            _setRestrictedShippingMethods = setRestrictedShippingMethods;
         }
 
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
@@ -25,24 +29,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders
             {
                 var productVariant = bindModel as ProductVariant;
 
-                var fromRequest = controllerContext.GetValueFromRequest("VariantType");
-                var value = Enum.Parse(typeof (VariantType), fromRequest);
-                var valueFromRequest = value is VariantType ? (VariantType) value : VariantType.Standard;
-                switch (valueFromRequest)
-                {
-                    case VariantType.Standard:
-                        productVariant.IsDownloadable = false;
-                        productVariant.IsGiftCard = false;
-                        break;
-                    case VariantType.GiftCard:
-                        productVariant.IsDownloadable = false;
-                        productVariant.IsGiftCard = true;
-                        break;
-                    case VariantType.Download:
-                        productVariant.IsDownloadable = true;
-                        productVariant.IsGiftCard = false;
-                        break;
-                }
+                var variantType = controllerContext.GetValueFromRequest("VariantType");
+                _setVariantTypeProperties.SetProperties(productVariant, variantType);
+                _setRestrictedShippingMethods.SetMethods(productVariant, controllerContext.HttpContext.Request.Params);
             }
             return bindModel;
         }

@@ -3,6 +3,6 @@
     public interface IStockReportService
     {
         byte[] GenerateStockReport();
-        byte[] GenerateLowStockReport(int treshold = 10);
+        byte[] GenerateLowStockReport(int threshold = 10);
     }
 }

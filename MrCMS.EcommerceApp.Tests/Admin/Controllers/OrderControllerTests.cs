@@ -1,10 +1,13 @@
 using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
+using MrCMS.Paging;
 using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Misc;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using Xunit;
@@ -13,49 +16,51 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
     public class OrderControllerTests
     {
-        private readonly IOrderService _orderService;
         private readonly OrderController _orderController;
-        private readonly IOptionService _optionService;
-        private readonly IOrderSearchService _orderSearchService;
-        private readonly IOrderShippingService _orderShippingService;
-        private readonly SiteSettings _ecommerceSettings;
+        private readonly IOrderAdminService _orderAdminService;
 
         public OrderControllerTests()
         {
-            _orderService = A.Fake<IOrderService>();
-            _optionService = A.Fake<IOptionService>();
-            _orderSearchService = A.Fake<IOrderSearchService>();
-            _orderShippingService = A.Fake<IOrderShippingService>();
-            _ecommerceSettings = new SiteSettings() { DefaultPageSize = 10 };
-            _orderController = new OrderController(_orderService,
-                _orderSearchService, _orderShippingService, _optionService, _ecommerceSettings, A.Fake<IExportOrdersService>(), A.Fake<IUserService>());
+            _orderAdminService = A.Fake<IOrderAdminService>();
+            _orderController = new OrderController(_orderAdminService, A.Fake<IUserService>());
         }
 
-        //[Fact]
-        //public void OrderController_Index_ReturnsAViewResult()
-        //{
-        //    var result = _orderController.Index();
+        [Fact]
+        public void OrderController_Index_ReturnsAViewResult()
+        {
+            var result = _orderController.Index(new OrderSearchModel());
 
-        //    result.Should().BeOfType<ViewResult>();
-        //}
+            result.Should().BeOfType<ViewResult>();
+        }
 
-        //[Fact]
-        //public void OrderController_Index_ShouldCallOrderServiceGetAllPagedWithPassedArgument()
-        //{
-        //    var result = _orderController.Index(123);
+        [Fact]
+        public void OrderController_Index_ShouldCallOrderServiceGetAllPagedWithPassedArgument()
+        {
+            var orderSearchModel = new OrderSearchModel();
+            var result = _orderController.Index(orderSearchModel);
 
-        //    A.CallTo(() => _orderService.GetPaged(123, 10)).MustHaveHappened();
-        //}
+            A.CallTo(() => _orderAdminService.Search(orderSearchModel)).MustHaveHappened();
+        }
 
-        //[Fact]
-        //public void OrderController_Index_ShouldReturnResultOfOrderServiceCallAsModel()
-        //{
-        //    var pagedList = A.Fake<IPagedList<Order>>();
-        //    A.CallTo(() => _orderService.GetPaged(123, 10)).Returns(pagedList);
-        //    var result = _orderController.Index(123);
+        [Fact]
+        public void OrderController_Index_ShouldReturnTheSearchModelAsTheModel()
+        {
+            var orderSearchModel = new OrderSearchModel();
+            var result = _orderController.Index(orderSearchModel);
 
-        //    result.Model.Should().Be(pagedList);
-        //}
+            result.Model.Should().Be(orderSearchModel);
+        }
+
+        [Fact]
+        public void OrderController_Index_ShouldReturnTheResultOfTheCallToTheServiceAsViewData()
+        {
+            var orderSearchModel = new OrderSearchModel();
+            var pagedList = PagedList<Order>.Empty;
+            A.CallTo(() => _orderAdminService.Search(orderSearchModel)).Returns(pagedList);
+            var result = _orderController.Index(orderSearchModel);
+
+            result.ViewData["results"].Should().Be(pagedList);
+        }
 
         [Fact]
         public void OrderController_Edit_ReturnsAViewResult()

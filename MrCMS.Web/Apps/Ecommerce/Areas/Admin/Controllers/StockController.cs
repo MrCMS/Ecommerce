@@ -3,7 +3,6 @@ using System.Web;
 using System.Web.Mvc;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Inventory;
 using MrCMS.Website.Filters;
@@ -12,13 +11,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class StockController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly IProductVariantService _productVariantService;
-        private readonly IInventoryService _inventoryService;
+        private readonly IStockAdminService _stockAdminService;
 
-        public StockController(IProductVariantService productVariantService, IInventoryService inventoryService)
+        public StockController(IStockAdminService stockAdminService)
         {
-            _productVariantService = productVariantService;
-            _inventoryService = inventoryService; 
+            _stockAdminService = stockAdminService; 
         }
 
         [HttpGet]
@@ -33,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpGet]
         public PartialViewResult LowStockReportProductVariants(int threshold = 10, int page = 1)
         {
-            var items = _productVariantService.GetAllVariantsWithLowStock(threshold, page);
+            var items = _stockAdminService.GetAllVariantsWithLowStock(threshold, page);
             return PartialView(items);
         }
 
@@ -41,7 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ForceImmediateLuceneUpdate]
         public JsonResult UpdateStock(ProductVariant productVariant)
         {
-            _productVariantService.Update(productVariant);
+            _stockAdminService.Update(productVariant);
             return Json(true);
         }
 
@@ -50,7 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             try
             {
-                var file = _inventoryService.ExportLowStockReport(threshold);
+                var file = _stockAdminService.ExportLowStockReport(threshold);
                 ViewBag.ExportStatus = "Low Stock Report successfully exported.";
                 return File(file, "text/csv", "MrCMS-LowStockReport-"+DateTime.UtcNow+".csv");
             }
@@ -80,7 +77,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectToRouteResult BulkStockUpdate_POST(HttpPostedFileBase document)
         {
             if (document != null && document.ContentLength > 0 && (document.ContentType.ToLower() == "text/csv" || document.ContentType.ToLower().Contains("excel")))
-                TempData["messages"] = _inventoryService.BulkStockUpdate(document.InputStream);
+                TempData["messages"] = _stockAdminService.BulkStockUpdate(document.InputStream);
             else
                 TempData["import-status"] = "Please choose non-empty CSV (.csv) file before uploading.";
             return RedirectToAction("BulkStockUpdate");
@@ -91,7 +88,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             try
             {
-                var file = _inventoryService.ExportStockReport();
+                var file = _stockAdminService.ExportStockReport();
                 TempData["export-status"] = "Stock Report successfully exported.";
                 return File(file, "text/csv", "MrCMS-StockReport-" + DateTime.UtcNow + ".csv");
             }

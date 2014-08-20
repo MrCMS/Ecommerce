@@ -1,25 +1,30 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
 
-@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+    var shippingMethodOptions = ViewData["shipping-method-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
 @using (Html.BeginForm("MarkAsShipped", "Order", FormMethod.Post))
 {
     <fieldset>
-        <legend>Set Order as Shipped
+        <legend>
+            Set Order as Shipped
             <span class="btn-group  display-inline  pull-right">
                 <input type="submit" class="btn-primary btn" value="Set Order as Shipped" />
             </span>
         </legend>
 
         @Html.HiddenFor(x => x.Id)
-        @Html.Hidden("index", (bool) ViewBag.Index)
-        
-        @*<div class="form-group">
-            @Html.LabelFor(x => x.ShippingMethod)
-            @Html.DropDownListFor(x => x.ShippingMethod.Id, ViewData["ShippingMethods"] as IEnumerable<SelectListItem>, new {@class="form-control" })
-        </div>*@
+        @Html.ReturnToReferrer()
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.ShippingMethodName)
+            @Html.DropDownListFor(x => x.ShippingMethodName, shippingMethodOptions, new { @class = "form-control" })
+        </div>
         <div class="form-group">
             @Html.LabelFor(x => x.TrackingNumber, "Tracking number (optional)")
-            @Html.TextBoxFor(x => x.TrackingNumber, new{@class="form-control"})
+            @Html.TextBoxFor(x => x.TrackingNumber, new { @class = "form-control" })
         </div>
     </fieldset>
 }

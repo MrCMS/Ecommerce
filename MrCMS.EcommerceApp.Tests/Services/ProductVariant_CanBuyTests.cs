@@ -90,7 +90,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
 
         public ProductVariantAvailabilityService Build()
         {
-            return new ProductVariantAvailabilityService(_cart, _session);
+            return new ProductVariantAvailabilityService(_cart);
         }
     }
 }

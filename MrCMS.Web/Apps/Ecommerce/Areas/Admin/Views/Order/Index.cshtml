@@ -1,10 +1,16 @@
 ﻿@using MrCMS.Helpers
+@using MrCMS.Paging
 @using MrCMS.Web.Apps.Ecommerce
+@using MrCMS.Web.Apps.Ecommerce.Entities.Orders
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @model OrderSearchModel
 @{
     ViewBag.Title = "Orders";
+    var results = ViewData["results"] as IPagedList<Order> ?? PagedList<Order>.Empty;
+    var paymentStatusOptions = ViewData["payment-status-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    var shippingStatusOptions = ViewData["shipping-status-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/ecommerce-admin.css");
 }
 
 @using (Html.BeginForm("Index", "Order", FormMethod.Get))
@@ -17,50 +23,51 @@
                 <button type="submit" class="btn btn-primary">Search</button>
             </span>
         </legend>
-        @if (!Model.Results.Any())
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.SearchText, "Email or Lastname")
+                    @Html.TextBoxFor(x => x.SearchText, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.OrderId)
+                    @Html.TextBoxFor(x => x.OrderId, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.SalesChannel)
+                    @Html.DropDownListFor(x => x.SalesChannel, Model.SalesChannelOptions, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.DateFrom)
+                    @Html.TextBoxFor(x => x.DateFrom, new { @class = "form-control date-time-picker" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.PaymentStatus)
+                    @Html.DropDownListFor(x => x.PaymentStatus, paymentStatusOptions, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.DateTo)
+                    @Html.TextBoxFor(x => x.DateTo, new { @class = "form-control date-time-picker" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingStatus)
+                    @Html.DropDownListFor(x => x.ShippingStatus, shippingStatusOptions, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <hr />
+        @if (!results.Any())
         {
             @:No orders.
         }
         else
         {
 
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.SearchText, "Email or Lastname")
-                        @Html.TextBoxFor(x => x.SearchText, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.OrderId)
-                        @Html.TextBoxFor(x => x.OrderId, new { @class = "form-control" })
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.SalesChannel)
-                        @Html.DropDownListFor(x => x.SalesChannel, Model.SalesChannelOptions, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.DateFrom)
-                        @Html.TextBoxFor(x => x.DateFrom, new { @class = "form-control date-time-picker" })
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.PaymentStatus)
-                        @Html.DropDownListFor(x => x.PaymentStatus, ViewData["PaymentStatuses"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.DateTo)
-                        @Html.TextBoxFor(x => x.DateTo, new { @class = "form-control date-time-picker" })
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(x => x.ShippingStatus)
-                        @Html.DropDownListFor(x => x.ShippingStatus, ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>
-            <hr />
             <table class="table table-condensed table-striped">
                 <thead>
                     <tr>
@@ -89,7 +96,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.Results)
+                    @foreach (var item in results)
                     {
                         var status = "warning";
                         if (item.ShippingStatus.Equals(ShippingStatus.Shipped) && item.PaymentStatus.Equals(PaymentStatus.Paid))
@@ -172,9 +179,8 @@
                     }
                 </tbody>
             </table>
-            @Html.Pager(Model.Results, "Index", i => new { page = i })
+            @Html.Pager(results, "Index", i => new { page = i })
         }
 
     </fieldset>
 }
-@{ Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/ecommerce-admin.css"); }
