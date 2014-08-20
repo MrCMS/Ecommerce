@@ -1,18 +1,20 @@
 ﻿@using MrCMS.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems.ImageAndText
+@model MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems.ImageLeftAndTextRight
 @{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
 }
 
-@using (Html.BeginForm("EditImageAndText", "Newsletter", FormMethod.Post))
+@using (Html.BeginForm("AddImageLeftAndTextRight", "Newsletter", new { id = "" }, FormMethod.Post))
 {
     <fieldset>
         <legend>
-            Edit Image and Text
+            Add Image Left and Text Right
             <span class="btn-group  display-inline  pull-right">
-                <input type="submit" class="btn btn-primary" value="Edit" />
+                <input type="submit" class="btn btn-primary" value="Add" />
             </span>
         </legend>
+
+        @Html.HiddenFor(x => x.Newsletter.Id)
 
         <div class="form-group">
             @Html.LabelFor(x => x.Name)
@@ -29,7 +31,6 @@
             @Html.TextAreaFor(x => x.Text, new { @class = "newsletter-ck" })
             @Html.ValidationMessageFor(x => x.Text)
         </div>
-
     </fieldset>
 }
 

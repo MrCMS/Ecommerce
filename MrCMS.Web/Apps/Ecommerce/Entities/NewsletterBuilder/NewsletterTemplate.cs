@@ -15,8 +15,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder
         public virtual string Divider { get; set; }
         [DisplayName("Free Text Template")]
         public virtual string FreeTextTemplate { get; set; }
-        [DisplayName("Image and Text Template")]
-        public virtual string ImageAndTextTemplate { get; set; }
+        [DisplayName("Image Right and Text Left Template")]
+        public virtual string ImageRightAndTextLeftTemplate { get; set; }
+        [DisplayName("Image Left and Text Right Template")]
+        public virtual string ImageLeftAndTextRightTemplate { get; set; }
         [DisplayName("Product Grid Template")]
         public virtual string ProductGridTemplate { get; set; }
         [DisplayName("Product Row Template")]

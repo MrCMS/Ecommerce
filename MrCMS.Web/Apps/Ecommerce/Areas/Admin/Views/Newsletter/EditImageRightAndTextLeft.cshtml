@@ -1,0 +1,38 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems.ImageRightAndTextLeft
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+}
+
+@using (Html.BeginForm("EditImageRightAndTextLeft", "Newsletter", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Edit Image Right and Text Left
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn btn-primary" value="Edit" />
+            </span>
+        </legend>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ImageUrl) <br />
+            @Html.TextBoxFor(x => x.ImageUrl, new { @class = "media-selector" })
+            @Html.ValidationMessageFor(x => x.ImageUrl)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Text)
+            @Html.TextAreaFor(x => x.Text, new { @class = "newsletter-ck" })
+            @Html.ValidationMessageFor(x => x.Text)
+        </div>
+
+    </fieldset>
+}
+
+@{
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/newsletter-ck.js");
+}
