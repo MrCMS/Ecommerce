@@ -692,6 +692,7 @@
     <Compile Include="Apps\Ecommerce\Events\GenerateGiftCards.cs" />
     <Compile Include="Apps\Ecommerce\Events\GiftcardAutoActivation.cs" />
     <Compile Include="Apps\Ecommerce\Events\UpdateIndexesOnOrderPlaced.cs" />
+    <Compile Include="Apps\Ecommerce\HealthChecks\CheckGiftCardsEnabledIfAvailable.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\AddressExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\Cart\CartItemExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\Cart\CartModelExtensions.cs" />
