@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
@@ -19,6 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(LowStockReportACL), LowStockReportACL.View)]
         public ViewResult LowStockReport(int threshold = 10)
         {
             if (TempData.ContainsKey("export-status"))
@@ -28,6 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(LowStockReportACL), LowStockReportACL.LowStockReportProductVariants)]
         public PartialViewResult LowStockReportProductVariants(int threshold = 10, int page = 1)
         {
             var items = _stockAdminService.GetAllVariantsWithLowStock(threshold, page);
@@ -36,6 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(LowStockReportACL), LowStockReportACL.Update)]
         public JsonResult UpdateStock(ProductVariant productVariant)
         {
             _stockAdminService.Update(productVariant);
@@ -43,6 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(LowStockReportACL), LowStockReportACL.CanExportLowStockReport)]
         public ActionResult ExportLowStockReport(int threshold = 10)
         {
             try
@@ -60,6 +65,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(BulkStockUpdateACL), BulkStockUpdateACL.BulkStockUpdate)]
         public ViewResult BulkStockUpdate()
         {
             if (TempData.ContainsKey("messages"))
@@ -74,6 +80,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         [ActionName("BulkStockUpdate")]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(BulkStockUpdateACL), BulkStockUpdateACL.BulkStockUpdate)]
         public RedirectToRouteResult BulkStockUpdate_POST(HttpPostedFileBase document)
         {
             if (document != null && document.ContentLength > 0 && (document.ContentType.ToLower() == "text/csv" || document.ContentType.ToLower().Contains("excel")))
@@ -84,6 +91,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(LowStockReportACL), LowStockReportACL.CanExportLowStockReport)]
         public ActionResult ExportStockReport()
         {
             try

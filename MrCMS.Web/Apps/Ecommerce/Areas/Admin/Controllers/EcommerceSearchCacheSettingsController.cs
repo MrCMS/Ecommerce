@@ -4,7 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
@@ -21,6 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(EcommerceSearchCacheSettingsACL), EcommerceSearchCacheSettingsACL.Edit)]
         public ActionResult Edit()
         {
             return View(_ecommerceSearchCacheSettings);
@@ -28,6 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Edit")]
+        [MrCMSACLRule(typeof(EcommerceSearchCacheSettingsACL), EcommerceSearchCacheSettingsACL.Edit)]
         public RedirectToRouteResult Edit_POST(EcommerceSearchCacheSettings ecommerceSearchCacheSettings)
         {
             _configurationProvider.SaveSettings(ecommerceSearchCacheSettings);

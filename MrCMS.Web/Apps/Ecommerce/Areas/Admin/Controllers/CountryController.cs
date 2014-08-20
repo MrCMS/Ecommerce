@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Models;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using System.Collections.Generic;
 using MrCMS.Website.Filters;
@@ -18,6 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _countryService = countryService;
         }
 
+        [MrCMSACLRule(typeof(CountryACL), CountryACL.List)]
         public ViewResult Index()
         {
             var countries = _countryService.GetAllCountries();
@@ -25,6 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(CountryACL), CountryACL.Add)]
         public PartialViewResult Add()
         {
             //ADDING COUNTRIES FROM STATIC LIST
@@ -36,6 +40,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         [ActionName("Add")]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(CountryACL), CountryACL.Add)]
         public RedirectToRouteResult Add_POST(Country country)
         {
             _countryService.AddCountry(country);
@@ -43,6 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(CountryACL), CountryACL.Edit)]
         public PartialViewResult Edit(Country country)
         {
             return PartialView(country);
@@ -51,6 +57,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         [ActionName("Edit")]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(CountryACL), CountryACL.Edit)]
         public RedirectToRouteResult Edit_POST(Country country)
         {
             _countryService.Save(country);
@@ -59,6 +66,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(CountryACL), CountryACL.Delete)]
         public PartialViewResult Delete(Country country)
         {
             return PartialView(country);
@@ -67,6 +75,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         [ActionName("Delete")]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(CountryACL), CountryACL.Delete)]
         public RedirectToRouteResult Delete_POST(Country country)
         {
             _countryService.Delete(country);
