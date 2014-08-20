@@ -7,6 +7,7 @@ using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using NHibernate;
+using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 {
@@ -27,7 +28,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         public IPagedList<GiftCard> Search(GiftCardSearchQuery query)
         {
             IQueryOver<GiftCard, GiftCard> queryOver = _session.QueryOver<GiftCard>();
-
+            if (!string.IsNullOrWhiteSpace(query.Recipient))
+            {
+                queryOver.Where(
+                    x =>
+                        x.RecipientEmail.IsInsensitiveLike(query.Recipient, MatchMode.Anywhere) ||
+                        x.RecipientName.IsInsensitiveLike(query.Recipient, MatchMode.Anywhere));
+            }
+            if (!string.IsNullOrWhiteSpace(query.Sender))
+            {
+                queryOver.Where(
+                    x =>
+                        x.SenderEmail.IsInsensitiveLike(query.Sender, MatchMode.Anywhere) ||
+                        x.SenderName.IsInsensitiveLike(query.Sender, MatchMode.Anywhere));
+            }
+            if (!string.IsNullOrWhiteSpace(query.GiftCode))
+            {
+                queryOver.Where(x => x.Code == query.GiftCode);
+            }
             return queryOver.OrderBy(card => card.CreatedOn).Desc.Paged(query.Page);
         }
 
@@ -38,7 +56,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 
         public List<SelectListItem> GetStatusOptions()
         {
-            return Enum.GetValues(typeof (GiftCardStatus)).Cast<GiftCardStatus>()
+            return Enum.GetValues(typeof(GiftCardStatus)).Cast<GiftCardStatus>()
                 .BuildSelectItemList(status => status.ToString().BreakUpString(),
                     status => status.ToString(),
                     emptyItem: null);
