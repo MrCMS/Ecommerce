@@ -47,9 +47,19 @@
                 </div>
                 <br />
                 <div class="form-group">
-                    @Html.LabelFor(x => x.ImageAndTextTemplate)
-                    @Html.TextAreaFor(x => x.ImageAndTextTemplate, new { @class = "form-control", rows = 6 })
-                    @Html.ValidationMessageFor(x => x.ImageAndTextTemplate)
+                    @Html.LabelFor(x => x.ImageRightAndTextLeftTemplate)
+                    @Html.TextAreaFor(x => x.ImageRightAndTextLeftTemplate, new { @class = "form-control", rows = 6 })
+                    @Html.ValidationMessageFor(x => x.ImageRightAndTextLeftTemplate)
+                </div>
+                <div class="alert alert-info">
+                    <strong>Available Tokens: </strong> [ImageUrl], [Text]
+                </div>
+                
+                <br />
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ImageLeftAndTextRightTemplate)
+                    @Html.TextAreaFor(x => x.ImageLeftAndTextRightTemplate, new { @class = "form-control", rows = 6 })
+                    @Html.ValidationMessageFor(x => x.ImageLeftAndTextRightTemplate)
                 </div>
                 <div class="alert alert-info">
                     <strong>Available Tokens: </strong> [ImageUrl], [Text]

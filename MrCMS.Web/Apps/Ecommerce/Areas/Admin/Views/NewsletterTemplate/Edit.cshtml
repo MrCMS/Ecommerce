@@ -9,7 +9,7 @@
     <fieldset>
         <legend>Edit Newsletter Template
             <span class="btn-group display-inline pull-right">
-                @Html.ActionLink("Return to List", "Index", "NewsletterTemplate", null, new { @class = "btn" })
+                @Html.ActionLink("Return to List", "Index", "NewsletterTemplate", null, new { @class = "btn btn-default" })
                 <a href="@Url.Action("Delete", "NewsletterTemplate", new { id = Model.Id })" class="btn btn-danger" data-toggle="fb-modal">Delete</a>
                 <input type="submit" class="btn btn-primary" value="Save"/>
             </span>
@@ -49,9 +49,18 @@
                 </div>
                 <br />
                 <div class="form-group">
-                    @Html.LabelFor(x => x.ImageAndTextTemplate)
-                    @Html.TextAreaFor(x => x.ImageAndTextTemplate, new { @class = "form-control", rows = 6 })
-                    @Html.ValidationMessageFor(x => x.ImageAndTextTemplate)
+                    @Html.LabelFor(x => x.ImageRightAndTextLeftTemplate)
+                    @Html.TextAreaFor(x => x.ImageRightAndTextLeftTemplate, new { @class = "form-control", rows = 6 })
+                    @Html.ValidationMessageFor(x => x.ImageRightAndTextLeftTemplate)
+                </div>
+                <div class="alert alert-info">
+                    <strong>Available Tokens: </strong> [ImageUrl], [Text]
+                </div>
+                
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ImageLeftAndTextRightTemplate)
+                    @Html.TextAreaFor(x => x.ImageLeftAndTextRightTemplate, new { @class = "form-control", rows = 6 })
+                    @Html.ValidationMessageFor(x => x.ImageLeftAndTextRightTemplate)
                 </div>
                 <div class="alert alert-info">
                     <strong>Available Tokens: </strong> [ImageUrl], [Text]

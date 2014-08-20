@@ -1,14 +1,14 @@
 ﻿@using MrCMS.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems.ImageAndText
+@model MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems.ImageRightAndTextLeft
 @{
     Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
 }
 
-@using (Html.BeginForm("AddImageAndText", "Newsletter", new { id = "" }, FormMethod.Post))
+@using (Html.BeginForm("AddImageRightAndTextLeft", "Newsletter", new { id = "" }, FormMethod.Post))
 {
     <fieldset>
         <legend>
-            Add Image and Text
+            Add Image Right and Text Left
             <span class="btn-group  display-inline  pull-right">
                 <input type="submit" class="btn btn-primary" value="Add" />
             </span>

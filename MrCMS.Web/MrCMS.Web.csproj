@@ -617,7 +617,7 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\GiftCardOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\GiftCardUsageOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\GoogleBaseProductOverride.cs" />
-    <Compile Include="Apps\Ecommerce\DbConfiguration\ImageAndTextOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\ImageRightAndTextLeftOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\Listeners\BackInStockListener.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\NewsletterTemplateOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\NotificationTemplateSettingsOverride.cs" />
@@ -662,7 +662,7 @@
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\Banner.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ContentItem.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\FreeText.cs" />
-    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ImageAndText.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ImageRightAndTextLeft.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\ContentItems\ProductList.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\Newsletter.cs" />
     <Compile Include="Apps\Ecommerce\Entities\NewsletterBuilder\NewsletterTemplate.cs" />
@@ -848,7 +848,7 @@
     <Compile Include="Apps\Ecommerce\Pages\UserOrder.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\BannerItemParser.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\FreeTextItemParser.cs" />
-    <Compile Include="Apps\Ecommerce\Parsing\ImageAndTextItemParser.cs" />
+    <Compile Include="Apps\Ecommerce\Parsing\ImageRightAndTextLeftItemParser.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\INewsletterItemParser.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\ProductListItemParser.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\ProductParser.cs" />
@@ -2816,14 +2816,14 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddBanner.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddFreeText.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddImageAndText.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddImageRightAndTextLeft.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddProductList.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\DeleteContentItem.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditBanner.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditFreeText.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditImageAndText.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditImageRightAndTextLeft.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditProductList.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\SortContentItems.cshtml" />
@@ -3102,6 +3102,8 @@
     <Content Include="Apps\Ecommerce\Views\AddToCart\GiftCardInfo.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\GiftCardSettings\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\GiftCard\Delete.cshtml" />
+    <None Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\EditImageLeftAndTextRight.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Newsletter\AddImageLeftAndTextRight.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Default\Apps\Core\Web.config">

@@ -215,38 +215,72 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return RedirectToAction("Edit", new { id = freeText.Newsletter.Id });
         }
 
-        // Image and Text
+        // Image and Text Left
 
         [HttpGet]
-        public PartialViewResult AddImageAndText(Newsletter newsletter)
+        public PartialViewResult AddImageRightAndTextLeft(Newsletter newsletter)
         {
-            var imageAndText = new ImageAndText { Newsletter = newsletter };
+            var imageAndText = new ImageRightAndTextLeft { Newsletter = newsletter };
             return PartialView(imageAndText);
         }
 
         [HttpPost]
-        public RedirectToRouteResult AddImageAndText(ImageAndText imageAndText)
+        public RedirectToRouteResult AddImageRightAndTextLeft(ImageRightAndTextLeft imageRightAndTextLeft)
         {
-            _contentItemService.Add(imageAndText);
-            var newsletter = imageAndText.Newsletter;
-            newsletter.ContentItems.Add(imageAndText);
+            _contentItemService.Add(imageRightAndTextLeft);
+            var newsletter = imageRightAndTextLeft.Newsletter;
+            newsletter.ContentItems.Add(imageRightAndTextLeft);
             _newsletterService.Edit(newsletter);
 
-            return RedirectToAction("Edit", new { id = imageAndText.Newsletter.Id });
+            return RedirectToAction("Edit", new { id = imageRightAndTextLeft.Newsletter.Id });
         }
 
         [HttpGet]
-        public PartialViewResult EditImageAndText(ImageAndText imageAndText)
+        public PartialViewResult EditImageRightAndTextLeft(ImageRightAndTextLeft imageRightAndTextLeft)
         {
+            return PartialView(imageRightAndTextLeft);
+        }
+
+        [HttpPost]
+        [ActionName("EditImageRightAndTextLeft")]
+        public RedirectToRouteResult EditImageRightAndTextLeft_POST(ImageRightAndTextLeft imageRightAndTextLeft)
+        {
+            _contentItemService.Edit(imageRightAndTextLeft);
+            return RedirectToAction("Edit", new { id = imageRightAndTextLeft.Newsletter.Id });
+        }
+
+        // Image and Text Right
+
+        [HttpGet]
+        public PartialViewResult AddImageLeftAndTextRight(Newsletter newsletter)
+        {
+            var imageAndText = new ImageLeftAndTextRight { Newsletter = newsletter };
             return PartialView(imageAndText);
         }
 
         [HttpPost]
-        [ActionName("EditImageAndText")]
-        public RedirectToRouteResult EditImageAndText_POST(ImageAndText imageAndText)
+        public RedirectToRouteResult AddImageLeftAndTextRight(ImageLeftAndTextRight imageLeftAndTextRight)
         {
-            _contentItemService.Edit(imageAndText);
-            return RedirectToAction("Edit", new { id = imageAndText.Newsletter.Id });
+            _contentItemService.Add(imageLeftAndTextRight);
+            var newsletter = imageLeftAndTextRight.Newsletter;
+            newsletter.ContentItems.Add(imageLeftAndTextRight);
+            _newsletterService.Edit(newsletter);
+
+            return RedirectToAction("Edit", new { id = imageLeftAndTextRight.Newsletter.Id });
+        }
+
+        [HttpGet]
+        public PartialViewResult EditImageLeftAndTextRight(ImageLeftAndTextRight imageLeftAndTextRight)
+        {
+            return PartialView(imageLeftAndTextRight);
+        }
+
+        [HttpPost]
+        [ActionName("EditImageLeftAndTextRight")]
+        public RedirectToRouteResult EditImageLeftAndTextRight_POST(ImageLeftAndTextRight imageLeftAndTextRight)
+        {
+            _contentItemService.Edit(imageLeftAndTextRight);
+            return RedirectToAction("Edit", new { id = imageLeftAndTextRight.Newsletter.Id });
         }
 
         // Product List

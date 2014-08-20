@@ -12,7 +12,8 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
             mapping.Map(template => template.BaseTemplate).CustomType<VarcharMax>().Length(4001);
             mapping.Map(template => template.Divider).CustomType<VarcharMax>().Length(4001);
             mapping.Map(template => template.FreeTextTemplate).CustomType<VarcharMax>().Length(4001);
-            mapping.Map(template => template.ImageAndTextTemplate).CustomType<VarcharMax>().Length(4001);
+            mapping.Map(template => template.ImageRightAndTextLeftTemplate).CustomType<VarcharMax>().Length(4001);
+            mapping.Map(template => template.ImageLeftAndTextRightTemplate).CustomType<VarcharMax>().Length(4001);
             mapping.Map(template => template.ProductGridTemplate).CustomType<VarcharMax>().Length(4001);
             mapping.Map(template => template.ProductRowTemplate).CustomType<VarcharMax>().Length(4001);
             mapping.Map(template => template.ProductTemplate).CustomType<VarcharMax>().Length(4001);
