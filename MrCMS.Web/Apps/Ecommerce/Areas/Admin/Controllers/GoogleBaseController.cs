@@ -1,5 +1,6 @@
 using System.Web.Mvc;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.GoogleBase;
@@ -47,6 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(GoogleBaseACL), GoogleBaseACL.View)]
         public ViewResult Dashboard(GoogleBaseModel model)
         {
             ViewData["settings"] = _googleBaseSettings;
@@ -61,6 +63,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(GoogleBaseACL), GoogleBaseACL.CanExport)]
         public ActionResult ExportProductsToGoogleBase()
         {
             try
@@ -78,6 +81,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [MrCMSACLRule(typeof(GoogleBaseACL), GoogleBaseACL.Save)]
         public ActionResult GoogleBaseSettings(GoogleBaseSettings settings)
         {
             _configurationProvider.SaveSettings(settings);
@@ -85,6 +89,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [MrCMSACLRule(typeof(GoogleBaseACL), GoogleBaseACL.GoogleBaseProducts)]
         public JsonResult UpdateGoogleBaseProduct(GoogleBaseProduct googleBaseProduct)
         {
             try
@@ -100,6 +105,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(GoogleBaseACL), GoogleBaseACL.GoogleBaseProducts)]
         public ActionResult GoogleBaseProduct(GoogleBaseProduct googleBaseProduct)
         {
             if (googleBaseProduct != null)

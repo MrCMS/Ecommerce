@@ -1,7 +1,9 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Payment;
+using MrCMS.Website;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
 using NHibernate;
@@ -20,12 +22,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(PaymentSettingsACL), PaymentSettingsACL.View)]
         public ActionResult Index()
         {
             return View(_paymentSettings);
         }
 
         [HttpPost]
+        [MrCMSACLRule(typeof(PaymentSettingsACL), PaymentSettingsACL.View)]
         public ActionResult Save([IoCModelBinder(typeof(PaymentSettingsModelBinder))] PaymentSettings settings)
         {
             _configurationProvider.SaveSettings(settings);

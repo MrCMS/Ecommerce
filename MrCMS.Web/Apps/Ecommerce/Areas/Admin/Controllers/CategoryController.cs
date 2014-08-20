@@ -4,9 +4,11 @@ using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Paging;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using MrCMS.Website.Filters;
 using NHibernate;
@@ -109,6 +111,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _categoryAdminService = categoryAdminService;
         }
 
+        [MrCMSACLRule(typeof(CategoryACL), CategoryACL.List)]
         public ViewResult Index(string q = null, int p = 1)
         {
             if (!_categoryAdminService.ProductContainerExists())

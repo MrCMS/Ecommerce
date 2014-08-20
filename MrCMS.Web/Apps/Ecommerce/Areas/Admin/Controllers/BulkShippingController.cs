@@ -1,6 +1,8 @@
 using System.Web;
 using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using MrCMS.Website.Filters;
 
@@ -16,6 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(BulkShippingUpdateACL), BulkShippingUpdateACL.Update)]
         public ViewResult Update()
         {
             if (TempData.ContainsKey("messages"))
@@ -28,6 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         [ActionName("Update")]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(BulkShippingUpdateACL), BulkShippingUpdateACL.Update)]
         public RedirectToRouteResult Update_POST(HttpPostedFileBase document)
         {
             if (document != null && document.ContentLength > 0 &&
