@@ -1,6 +1,8 @@
 ﻿using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Services.Currencies;
 using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using System.Web.Mvc;
 using MrCMS.Website.Filters;
@@ -22,6 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(EcommerceSettingsACL), EcommerceSettingsACL.Edit)]
         public ActionResult Edit()
         {
             ViewData["currency-options"] = _currencyService.Options(_ecommerceSettings.CurrencyId);
@@ -31,6 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         [ActionName("Edit")]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(EcommerceSettingsACL), EcommerceSettingsACL.Edit)]
         public RedirectToRouteResult Edit_POST(EcommerceSettings ecommerceSettings)
         {
             _configurationProvider.SaveSettings(ecommerceSettings);

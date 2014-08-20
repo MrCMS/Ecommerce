@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Web.UI.WebControls;
+using MarketplaceWebServiceFeedsClasses;
 using MrCMS.Models;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
@@ -26,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public bool CanShow
         {
-            get { return true; }
+            get { return CurrentRequestData.CurrentUser.CanAccess<CatalogACL>(CatalogACL.Show); }
         }
 
         public SubMenu Children
@@ -35,16 +39,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             {
                 var adminItems = new List<ChildMenuItem>
                 {
-                    new ChildMenuItem("Orders", "/Admin/Apps/Ecommerce/Order"),
-                    new ChildMenuItem("Products", "/Admin/Apps/Ecommerce/Product"),
-                    new ChildMenuItem("Categories", "/Admin/Apps/Ecommerce/Category"),
-                    new ChildMenuItem("Brands", "/Admin/Apps/Ecommerce/Brand"),
-                    new ChildMenuItem("Product Specifications", "/Admin/Apps/Ecommerce/ProductSpecificationAttribute"),
-                    new ChildMenuItem("Discounts", "/Admin/Apps/Ecommerce/Discount"),
+                    new ChildMenuItem("Orders", "/Admin/Apps/Ecommerce/Order", ACLOption.Create(new OrderACL(), OrderACL.List)),
+                    new ChildMenuItem("Products", "/Admin/Apps/Ecommerce/Product", ACLOption.Create(new ProductACL(), ProductACL.List)),
+                    new ChildMenuItem("Categories", "/Admin/Apps/Ecommerce/Category", ACLOption.Create(new CategoryACL(), CategoryACL.List)),
+                    new ChildMenuItem("Brands", "/Admin/Apps/Ecommerce/Brand", ACLOption.Create(new BrandACL(), BrandACL.List)),
+                    new ChildMenuItem("Product Specifications", "/Admin/Apps/Ecommerce/ProductSpecificationAttribute", ACLOption.Create(new ProductSpecificationAttributeACL(), ProductSpecificationAttributeACL.List)),
+                    new ChildMenuItem("Discounts", "/Admin/Apps/Ecommerce/Discount", ACLOption.Create(new DiscountACL(), DiscountACL.List)),
                 };
                 if (_ecommerceSettings.GiftCardsEnabled)
                 {
-                    adminItems.Add(new ChildMenuItem("Gift Cards", "/Admin/Apps/Ecommerce/GiftCard"));
+                    adminItems.Add(new ChildMenuItem("Gift Cards", "/Admin/Apps/Ecommerce/GiftCard", ACLOption.Create(new GiftCardACL(), GiftCardACL.List)));
                 }
                 return new SubMenu
                        {
@@ -56,8 +60,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                "Newsletter Builder",
                                new List<ChildMenuItem>
                                {
-                                   new ChildMenuItem("Templates", "/Admin/Apps/Ecommerce/NewsletterTemplate"),
-                                   new ChildMenuItem("Newsletter", "/Admin/Apps/Ecommerce/Newsletter")
+                                   new ChildMenuItem("Templates", "/Admin/Apps/Ecommerce/NewsletterTemplate", ACLOption.Create(new NewsletterTemplateACL(), NewsletterTemplateACL.List)),
+                                   new ChildMenuItem("Newsletter", "/Admin/Apps/Ecommerce/Newsletter", ACLOption.Create(new NewsletterACL(), NewsletterACL.List))
                                }
                            },
                            {
@@ -69,12 +73,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                        {
                                            "", new List<ChildMenuItem>
                                            {
-                                               new ChildMenuItem("Global Settings", "/Admin/Apps/Ecommerce/EcommerceSettings/Edit"),
-                                               new ChildMenuItem("Search Cache Settings", "/Admin/Apps/Ecommerce/EcommerceSearchCacheSettings/Edit"),
-                                               new ChildMenuItem("Currencies", "/Admin/Apps/Ecommerce/Currency"),
-                                               new ChildMenuItem("Geographic Data", "/Admin/Apps/Ecommerce/Country"),
-                                               new ChildMenuItem("Taxes", "/Admin/Apps/Ecommerce/TaxRate"),
-                                               new ChildMenuItem("Shipping", "#", subMenu: _shippingMethodSubmenuGenerator.Get())
+                                               new ChildMenuItem("Global Settings", "/Admin/Apps/Ecommerce/EcommerceSettings/Edit", ACLOption.Create(new EcommerceSettingsACL(), EcommerceSettingsACL.Edit)),
+                                               new ChildMenuItem("Search Cache Settings", "/Admin/Apps/Ecommerce/EcommerceSearchCacheSettings/Edit", ACLOption.Create(new EcommerceSearchCacheSettingsACL(), EcommerceSearchCacheSettingsACL.Edit)),
+                                               new ChildMenuItem("Currencies", "/Admin/Apps/Ecommerce/Currency", ACLOption.Create(new CurrencyACL(), CurrencyACL.List)),
+                                               new ChildMenuItem("Geographic Data", "/Admin/Apps/Ecommerce/Country", ACLOption.Create(new CountryACL(), CountryACL.List)),
+                                               new ChildMenuItem("Taxes", "/Admin/Apps/Ecommerce/TaxRate", ACLOption.Create(new TaxRateACL(), TaxRateACL.List)),
+                                               new ChildMenuItem("Shipping", "#", ACLOption.Create(new ShippingMethodACL(), ShippingMethodACL.List), subMenu: _shippingMethodSubmenuGenerator.Get())
                                            }
                                        }
                                    }),
@@ -84,15 +88,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                            "", new List<ChildMenuItem>
                                            {
                                                new ChildMenuItem("Payment Settings",
-                                                   "/Admin/Apps/Ecommerce/PaymentSettings"),
+                                                   "/Admin/Apps/Ecommerce/PaymentSettings",  ACLOption.Create(new PaymentSettingsACL(), PaymentSettingsACL.View)),
                                                new ChildMenuItem("Paypoint",
-                                                   "/Admin/Apps/Ecommerce/PaypointSettings"),
+                                                   "/Admin/Apps/Ecommerce/PaypointSettings",  ACLOption.Create(new PaypointSettingsACL(), PaypointSettingsACL.View)),
                                                new ChildMenuItem("PayPal Express Checkout",
-                                                   "/Admin/Apps/Ecommerce/PayPalExpressCheckoutSettings"),
+                                                   "/Admin/Apps/Ecommerce/PayPalExpressCheckoutSettings", ACLOption.Create(new PayPalExpressCheckoutSettingsACL(), PayPalExpressCheckoutSettingsACL.View)),
                                                new ChildMenuItem("SagePay",
-                                                   "/Admin/Apps/Ecommerce/SagePaySettings"),
+                                                   "/Admin/Apps/Ecommerce/SagePaySettings", ACLOption.Create(new SagePaySettingsACL(), SagePaySettingsACL.View)),
                                                new ChildMenuItem("WorldPay",
-                                                   "/Admin/Apps/Ecommerce/WorldPaySettings"),
+                                                   "/Admin/Apps/Ecommerce/WorldPaySettings", ACLOption.Create(new WorldPaySettingsACL(), WorldPaySettingsACL.View)),
                                            }
                                        }
                                    }),
