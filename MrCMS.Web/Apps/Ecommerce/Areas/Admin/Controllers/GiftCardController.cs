@@ -57,7 +57,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _giftCardAdminService.Update(giftCard);
             TempData.SuccessMessages().Add("Gift card updated");
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit", giftCard.Id);
         }
 
         [HttpGet]
