@@ -2,9 +2,11 @@
 using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Models;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using MrCMS.Website.Filters;
 
@@ -19,6 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _productOptionManager = productOptionManager;
         }
 
+        [MrCMSACLRule(typeof(ProductSpecificationAttributeACL), ProductSpecificationAttributeACL.List)]
         public ViewResult Index()
         {
             var options = _productOptionManager.ListSpecificationAttributes();
@@ -26,6 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(ProductSpecificationAttributeACL), ProductSpecificationAttributeACL.Add)]
         public PartialViewResult Add()
         {
             return PartialView();
@@ -33,6 +37,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(ProductSpecificationAttributeACL), ProductSpecificationAttributeACL.Add)]
         public ActionResult Add(ProductSpecificationAttribute option)
         {
             if (ModelState.IsValid)
@@ -47,6 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(ProductSpecificationAttributeACL), ProductSpecificationAttributeACL.Edit)]
         public PartialViewResult Edit(ProductSpecificationAttribute option)
         {
             return PartialView(option);
@@ -55,6 +61,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("Edit")]
         [HttpPost]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(ProductSpecificationAttributeACL), ProductSpecificationAttributeACL.Edit)]
         public ActionResult Edit_POST(ProductSpecificationAttribute option)
         {
             if (ModelState.IsValid)
@@ -69,6 +76,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(ProductSpecificationAttributeACL), ProductSpecificationAttributeACL.Delete)]
         public PartialViewResult Delete(ProductSpecificationAttribute option)
         {
             return PartialView(option);
@@ -77,6 +85,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("Delete")]
         [HttpPost]
         [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(ProductSpecificationAttributeACL), ProductSpecificationAttributeACL.Delete)]
         public RedirectToRouteResult Delete_POST(ProductSpecificationAttribute option)
         {
             _productOptionManager.DeleteSpecificationAttribute(option);

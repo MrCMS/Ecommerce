@@ -1,8 +1,10 @@
 using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Payment.WorldPay;
+using MrCMS.Website;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
 
@@ -17,12 +19,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _configurationProvider = configurationProvider;
         }
 
+        [MrCMSACLRule(typeof(WorldPaySettingsACL), SagePaySettingsACL.View)]
         public ViewResult Index()
         {
             return View(_configurationProvider.GetSiteSettings<WorldPaySettings>());
         }
 
         [HttpPost]
+        [MrCMSACLRule(typeof(WorldPaySettingsACL), WorldPaySettingsACL.View)]
         public RedirectToRouteResult Save([IoCModelBinder(typeof(WorldPaySettingsModelBinder))] WorldPaySettings settings)
         {
             _configurationProvider.SaveSettings(settings);

@@ -7,6 +7,7 @@ using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -29,6 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             _getLogoUrl = getLogoUrl;
         }
 
+        [MrCMSACLRule(typeof(ExportOrderACL), ExportOrderACL.ExportOrderToPdf)]
         public byte[] ExportOrderToPdf(Order order)
         {
             Document pdf = SetDocumentInfo(order);
