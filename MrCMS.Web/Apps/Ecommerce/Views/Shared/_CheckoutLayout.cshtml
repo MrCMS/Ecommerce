@@ -55,7 +55,7 @@
 <div class="navigation">
     <div class="container">
         <div class="row" id="checkout">
-            <div class="col-md-3 col-sm-3 col-xs-3 padding-0 @(activePages.Contains("EnterOrderEmail", StringComparer.OrdinalIgnoreCase) ? "light-green" : "light-grey")">
+            <div class="col-md-3 col-sm-3 col-xs-3 @(activePages.Contains("EnterOrderEmail", StringComparer.OrdinalIgnoreCase) ? "light-green" : "light-grey")">
                 <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">
                     <div class="circle">
                         1
@@ -66,7 +66,7 @@
                     <div class="pointer"></div>
                 </a>
             </div>
-            <div class="col-md-3 col-sm-3 col-xs-3 padding-0 @(activePages.Contains("SetDeliveryDetails", StringComparer.OrdinalIgnoreCase) ? "light-green" : "dark-grey")">
+            <div class="col-md-3 col-sm-3 col-xs-3 @(activePages.Contains("SetShippingDetails", StringComparer.OrdinalIgnoreCase) ? "light-green" : "dark-grey")">
                 <div class="circle">
                     2
                 </div>
@@ -75,7 +75,7 @@
                 </div>
                 <div class="pointer"></div>
             </div>
-            <div class="col-md-3 col-sm-3 col-xs-3 padding-0 @(activePages.Contains("PaymentDetails", StringComparer.OrdinalIgnoreCase) ? "light-green" : "light-grey")">
+            <div class="col-md-3 col-sm-3 col-xs-3  @(activePages.Contains("PaymentDetails", StringComparer.OrdinalIgnoreCase) ? "light-green" : "light-grey")">
                 <div class="circle">
                     3
                 </div>
@@ -84,7 +84,7 @@
                 </div>
                 <div class="pointer"></div>
             </div>
-            <div class="col-md-3 col-sm-3 col-xs-3 padding-0 @(activePages.Contains("OrderPlaced", StringComparer.OrdinalIgnoreCase) ? "light-green" : "dark-grey")">
+            <div class="col-md-3 col-sm-3 col-xs-3 @(activePages.Contains("OrderPlaced", StringComparer.OrdinalIgnoreCase) ? "light-green" : "dark-grey")">
                 <div class="circle">
                     4
                 </div>
@@ -95,31 +95,9 @@
         </div>
     </div>
 </div>
-
-@*<div class="container">
-        <div class="navbar">
-            <div class="navbar-inner">
-                <div class="wizard">
-                    <ul class="steps">
-                        <li class="span2 @(activePages.Contains("EnterOrderEmail", StringComparer.OrdinalIgnoreCase) ? "active" : "")">
-                            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Welcome
-                            </a>
-                            <span class="chevron"></span></li>
-                        <li class="span2 @(activePages.Contains("SetDeliveryDetails", StringComparer.OrdinalIgnoreCase) ? "active" : "")">Delivery
-                                    <span class="chevron"></span></li>
-                        <li class="span2 @(activePages.Contains("PaymentDetails", StringComparer.OrdinalIgnoreCase) ? "active" : "")">Payment
-                                    <span class="chevron"></span></li>
-                        <li class="span2 @(activePages.Contains("OrderPlaced", StringComparer.OrdinalIgnoreCase) ? "active" : "")">Receipt
-                                    <span class="chevron"></span></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>*@
 <div class="container">
     @RenderBody()
 </div>
-
 <footer>
     <div class="container">
         <div class="row">

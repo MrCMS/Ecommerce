@@ -5,24 +5,22 @@
     var cart = ViewData["cart"] as CartModel;
 }
 
-<div class="padding-top-bottom-20">
-    <div class="row">
-        <div class="col-md-8 col-sm-8 padding-left-0 mobile-left-padding">
-            <div id="address-info">
-                @{
-                    Html.RenderAction(cart.ShippingAddress == null ? "ShippingAddress" : "ShowShippingAddress", "SetShippingAddress");
-                }
-            </div>
-            <div id="method-info">
-                @{
-                    Html.RenderAction(cart.ShippingAddress == null ? "AwaitingAddress" : "ShippingOptions", "SetShippingMethod");
-                }
-            </div>
+<div class="row padding-top-bottom-10">
+    <div class="col-lg-7 col-md-8 col-sm-8">
+        <div id="address-info">
+            @{
+                Html.RenderAction(cart.ShippingAddress == null ? "ShippingAddress" : "ShowShippingAddress", "SetShippingAddress");
+            }
         </div>
-        <div class="col-md-4 col-sm-4">
-            @{Html.RenderAction("Summary", "Checkout");}
-            @{Html.RenderAction("OrderEmail", "Checkout");}
+        <div id="method-info">
+            @{
+                Html.RenderAction(cart.ShippingAddress == null ? "AwaitingAddress" : "ShippingOptions", "SetShippingMethod");
+            }
         </div>
+    </div>
+    <div class="col-lg-5 col-md-4 col-sm-4">
+        @{Html.RenderAction("Summary", "Checkout");}
+        @{Html.RenderAction("OrderEmail", "Checkout");}
     </div>
 </div>
 
