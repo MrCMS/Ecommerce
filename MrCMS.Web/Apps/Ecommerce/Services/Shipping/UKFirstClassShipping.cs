@@ -54,7 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 
         public bool CanPotentiallyBeUsed(CartModel cart)
         {
-            if (cart == null || cart.Items.Any(item => item.IsUnableToUseShippingMethod(this)))
+            if (cart == null || cart.Items.Any(item => !item.IsAbleToUseShippingMethod(this)))
                 return false;
             var calculation = GetBestAvailableCalculation(cart);
             return calculation != null;
