@@ -28,6 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             PriceBreaks = new List<PriceBreak>();
             RequiresShipping = true;
             GoogleBaseProducts = new List<GoogleBaseProduct>();
+            RestrictedTo = new HashSet<string>();
         }
 
         public virtual decimal Weight { get; set; }
@@ -102,11 +103,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get { return BasePrice.ProductTax(TaxRatePercentage); }
         }
-
-        //public virtual bool CanBuy(int quantity)
-        //{
-        //    return quantity > 0 && (TrackingPolicy == TrackingPolicy.DontTrack || StockRemaining >= quantity);
-        //}
 
         public virtual ProductAvailability Availability
         {
@@ -262,6 +258,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         [DisplayName("Requires shipping?")]
         public virtual bool RequiresShipping { get; set; }
+
+        [DisplayName("Has restricted shipping?")]
+        public virtual bool HasRestrictedShipping { get; set; }
+
+        [DisplayName("Restricted to?")]
+        public virtual HashSet<string> RestrictedTo { get; set; }
 
         private PriceBreak GetPriceBreak(int quantity)
         {

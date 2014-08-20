@@ -14,13 +14,13 @@ namespace MrCMS.EcommerceApp.Tests.Services
     {
         private readonly GoogleBaseManager _googleBaseManager;
         private readonly IProductVariantService _productVariantService;
-        private readonly IOrderShippingService _orderShippingService;
+        private IGoogleBaseShippingService _googleBaseShippingService;
 
         public GoogleBaseManagerTests()
         {
             _productVariantService = A.Fake<IProductVariantService>();
-            _orderShippingService = A.Fake<IOrderShippingService>();
-            _googleBaseManager = new GoogleBaseManager(Session, _productVariantService, _orderShippingService);
+            _googleBaseShippingService = A.Fake<IGoogleBaseShippingService>();
+            _googleBaseManager = new GoogleBaseManager(Session, _productVariantService, _googleBaseShippingService);
         }
 
         [Fact]

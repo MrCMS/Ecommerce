@@ -8,6 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         string DisplayName { get; }
         string Description { get; }
 
+        string TypeName { get; }
         bool CanBeUsed(CartModel cart);
         bool CanPotentiallyBeUsed(CartModel cart);
         decimal GetShippingTotal(CartModel cart);

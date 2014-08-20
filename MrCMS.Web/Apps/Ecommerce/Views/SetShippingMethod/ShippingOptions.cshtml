@@ -2,7 +2,7 @@
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 @{
-    IEnumerable<SelectListItem> selectListItems = ViewData["shipping-methods"] as IEnumerable<SelectListItem> ?? new List<SelectListItem>();
+    var shippingMethods = ViewData["shipping-methods"] as List<SelectListItem> ?? new List<SelectListItem>();
 }
 <div class="block-title">
     <h1>Select shipping method</h1>
@@ -13,12 +13,26 @@
             <div class="form-group">
                 <label class="col-lg-3 control-label">Postage Selection <span class="red">*</span> :</label>
                 <div class="col-lg-9 col-sm-12">
-                    @Html.DropDownList("ShippingMethod", selectListItems, new { @class = "form-control margin-bottom-10" })
-                    <div id="to-payment-details" style="display:none">
-                        <a class="btn btn-default margin-top-10" href="@(UniquePageHelper.GetUrl<PaymentDetails>())">
-                            To Payment
-                        </a>
-                    </div>
+                    @if (shippingMethods.Any())
+                    {
+                        @Html.DropDownList("ShippingMethod", shippingMethods, new {@class = "form-control margin-bottom-10"})
+                        <div id="to-payment-details" style="display: none">
+                            <a class="btn btn-default margin-top-10" href="@(UniquePageHelper.GetUrl<PaymentDetails>())">
+                                To Payment
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>
+                            There are no available shipping methods for this cart to this address.
+                        </p>
+                        <div>
+                            <a class="btn btn-default margin-top-10" href="@(UniquePageHelper.GetUrl<Cart>())">
+                                To Cart
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

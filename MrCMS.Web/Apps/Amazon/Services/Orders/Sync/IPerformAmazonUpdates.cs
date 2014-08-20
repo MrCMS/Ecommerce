@@ -1,6 +1,7 @@
 ﻿using MarketplaceWebServiceOrders.Model;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Models;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
@@ -13,10 +14,10 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
     public class CancelAmazonOrder : IPerformAmazonUpdates
     {
-        private readonly IOrderService _orderService;
+        private readonly IOrderAdminService _orderService;
         private readonly IAmazonOrderService _amazonOrderService;
 
-        public CancelAmazonOrder(IOrderService orderService, IAmazonOrderService amazonOrderService)
+        public CancelAmazonOrder(IOrderAdminService orderService, IAmazonOrderService amazonOrderService)
         {
             _orderService = orderService;
             _amazonOrderService = amazonOrderService;

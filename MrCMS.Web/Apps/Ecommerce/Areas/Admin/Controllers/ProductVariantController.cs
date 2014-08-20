@@ -3,11 +3,7 @@ using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services.Misc;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
 using MrCMS.Website.Filters;
@@ -16,38 +12,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class ProductVariantController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly IGetGiftCardTypeOptions _getGiftCardTypeOptions;
-        private readonly IGetProductVariantTypeOptions _getProductVariantTypeOptions;
-        private readonly IGetTaxRateOptions _getTaxRateOptions;
-        private readonly IOptionService _optionService;
-        private readonly IProductVariantService _productVariantService;
+        private readonly IProductVariantAdminService _productVariantAdminService;
 
-        public ProductVariantController(IProductVariantService productVariantService,
-            IOptionService optionService, IGetTaxRateOptions getTaxRateOptions,
-            IGetGiftCardTypeOptions getGiftCardTypeOptions,
-            IGetProductVariantTypeOptions getProductVariantTypeOptions)
+        public ProductVariantController(IProductVariantAdminService productVariantAdminService)
         {
-            _productVariantService = productVariantService;
-            _optionService = optionService;
-            _getTaxRateOptions = getTaxRateOptions;
-            _getGiftCardTypeOptions = getGiftCardTypeOptions;
-            _getProductVariantTypeOptions = getProductVariantTypeOptions;
+            _productVariantAdminService = productVariantAdminService;
         }
 
         [HttpGet]
         public PartialViewResult Add(Product product)
         {
-            ViewData["gift-card-type-options"] = _getGiftCardTypeOptions.Get();
-            ViewData["product-variant-type-options"] = _getProductVariantTypeOptions.Get();
-            ViewData["tax-rate-options"] = _getTaxRateOptions.GetOptions();
-            ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
             var productVariant = new ProductVariant
             {
                 Product = product,
                 OptionValues = Enumerable.Range(0, product.Options.Count).Select(i => new ProductOptionValue()).ToList()
             };
-            return
-                PartialView(productVariant);
+            _productVariantAdminService.SetViewData(ViewData, productVariant);
+            return PartialView(productVariant);
         }
 
         [ActionName("Add")]
@@ -57,7 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _productVariantService.Add(productVariant);
+                _productVariantAdminService.Add(productVariant);
                 return RedirectToAction("Edit", "Webpage", new {id = productVariant.Product.Id});
             }
             return RedirectToAction("Add", "ProductVariant", new {id = productVariant.Product.Id});
@@ -67,10 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public PartialViewResult Edit(ProductVariant productVariant)
         {
             ModelState.Clear();
-            ViewData["gift-card-type-options"] = _getGiftCardTypeOptions.Get();
-            ViewData["product-variant-type-options"] = _getProductVariantTypeOptions.Get();
-            ViewData["tax-rate-options"] = _getTaxRateOptions.GetOptions(productVariant.TaxRate);
-            ViewData["tracking-policy"] = _optionService.GetEnumOptions<TrackingPolicy>();
+            _productVariantAdminService.SetViewData(ViewData, productVariant);
             return PartialView(productVariant);
         }
 
@@ -81,7 +59,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _productVariantService.Update(productVariant);
+                _productVariantAdminService.Update(productVariant);
                 return RedirectToAction("Edit", "Webpage", new {id = productVariant.Product.Id});
             }
             return RedirectToAction("Edit", "ProductVariant", new {id = productVariant.Product.Id});
@@ -98,13 +76,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Delete_POST(ProductVariant productVariant)
         {
-            _productVariantService.Delete(productVariant);
+            _productVariantAdminService.Delete(productVariant);
             return RedirectToAction("Edit", "Webpage", new {id = productVariant.Product.Id});
         }
 
-        public JsonResult IsUniqueSKU(string sku, int Id = 0)
+        public JsonResult IsUniqueSKU(string sku, int id = 0)
         {
-            return _productVariantService.AnyExistingProductVariantWithSKU(sku, Id)
+            return _productVariantAdminService.AnyExistingProductVariantWithSKU(sku, id)
                 ? Json("There is already an SKU stored with that value.", JsonRequestBehavior.AllowGet)
                 : Json(true, JsonRequestBehavior.AllowGet);
         }

@@ -14,9 +14,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Inventory.StockReport
             _productVariantService = productVariantService;
         }
 
-        public byte[] GenerateLowStockReport(int treshold=10)
+        public byte[] GenerateLowStockReport(int threshold=10)
         {
-            var items = _productVariantService.GetAllVariantsWithLowStock(treshold);
+            var items = _productVariantService.GetAllVariantsWithLowStock(threshold);
             
             using (var ms = new MemoryStream())
             using (var sw = new StreamWriter(ms))
