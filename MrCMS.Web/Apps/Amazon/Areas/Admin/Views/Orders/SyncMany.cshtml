@@ -43,7 +43,7 @@
         <div class="col-lg-6" id="results">
             @if (result != null && !string.IsNullOrWhiteSpace(result.ErrorMessage))
             {
-                <div class="alert alert-error">
+                <div class="alert alert-danger">
                     @result.ErrorMessage
                 </div>
                 <br />
