@@ -48,6 +48,10 @@
                     @Html.LabelFor(x => x.PaymentStatus)
                     @Html.DropDownListFor(x => x.PaymentStatus, paymentStatusOptions, new { @class = "form-control" })
                 </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.OrderTotalFrom)
+                    @Html.TextBoxFor(x => x.OrderTotalFrom, new { @class = "form-control" })
+                </div>
             </div>
             <div class="col-lg-4">
                 <div class="form-group">
@@ -57,6 +61,10 @@
                 <div class="form-group">
                     @Html.LabelFor(x => x.ShippingStatus)
                     @Html.DropDownListFor(x => x.ShippingStatus, shippingStatusOptions, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.OrderTotalTo)
+                    @Html.TextBoxFor(x => x.OrderTotalTo, new { @class = "form-control" })
                 </div>
             </div>
         </div>
