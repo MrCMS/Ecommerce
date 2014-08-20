@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using MrCMS.Helpers;
-using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -18,15 +17,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly CartModel _cart;
         private readonly ICartItemManager _cartItemManager;
         private readonly ICartValidationService _cartValidationService;
-        private readonly IUniquePageService _uniquePageService;
 
         public CartController(ICartItemManager cartItemManager, ICartValidationService cartValidationService,
-            CartModel cart, IUniquePageService uniquePageService)
+            CartModel cart)
         {
             _cartItemManager = cartItemManager;
             _cartValidationService = cartValidationService;
             _cart = cart;
-            _uniquePageService = uniquePageService;
         }
 
         public ViewResult Show(Cart page)
