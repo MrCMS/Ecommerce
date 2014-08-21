@@ -14,7 +14,7 @@
     <RootNamespace>MrCMS.Web</RootNamespace>
     <AssemblyName>MrCMS.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <FileUpgradeFlags>
@@ -890,6 +890,7 @@
     <Compile Include="Apps\Ecommerce\Payment\PaymentSettings.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaymentType.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\GetExpressCheckoutResponse.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IGetPaypalShippingOptions.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalCartManager.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalExpressService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalInterfaceService.cs" />
@@ -3273,11 +3274,10 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1834</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8850</IISUrl>
+          <IISUrl>http://localhost/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <CustomServerUrl>http://77.95.33.45/</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

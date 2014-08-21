@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress;
 using Xunit;
 
@@ -34,7 +35,8 @@ namespace MrCMS.EcommerceApp.Tests.Payment.PayPalExpress
         [Fact]
         public void PayPalShippingServiceTests_GetNoShipping_ShouldBe2()
         {
-            _payPalShippingService.GetNoShipping().Should().Be("2");
+            throw new Exception();
+            //_payPalShippingService.GetNoShipping().Should().Be("2");
         }
     }
 }
