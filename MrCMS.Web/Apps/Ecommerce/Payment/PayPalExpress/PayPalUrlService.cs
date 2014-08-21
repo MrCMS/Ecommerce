@@ -52,5 +52,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                         ? "https://www.paypal.com/webscr?cmd=_express-checkout&token={0}"
                         : "https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&token={0}", token);
         }
+
+        public string GetCallbackUrl()
+        {
+            return
+                new Uri(new Uri(GetScheme() + _currentSite.BaseUrl), "Apps/Ecommerce/PayPalExpressCheckout/CallbackHandler")
+                    .ToString();
+        }
     }
 }

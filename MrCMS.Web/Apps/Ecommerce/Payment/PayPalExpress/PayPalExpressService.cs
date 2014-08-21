@@ -1,4 +1,5 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using PayPal.PayPalAPIInterfaceService.Model;
 using System.Linq;
 
@@ -9,12 +10,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
         private readonly IPayPalUrlService _payPalUrlService;
         private readonly IPayPalInterfaceService _payPalInterfaceService;
         private readonly IPayPalCartManager _payPalCartManager;
+        private readonly ICartManager _cartManager;
 
-        public PayPalExpressService(IPayPalUrlService payPalUrlService, IPayPalInterfaceService payPalInterfaceService, IPayPalCartManager payPalCartManager)
+        public PayPalExpressService(IPayPalUrlService payPalUrlService, IPayPalInterfaceService payPalInterfaceService, IPayPalCartManager payPalCartManager, ICartManager cartManager)
         {
             _payPalUrlService = payPalUrlService;
             _payPalInterfaceService = payPalInterfaceService;
             _payPalCartManager = payPalCartManager;
+            _cartManager = cartManager;
         }
 
         public SetExpressCheckoutResponse GetSetExpressCheckoutRedirectUrl(CartModel cart)
@@ -23,7 +26,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
             return setExpressCheckoutResponseType
                 .HandleResponse<SetExpressCheckoutResponseType, SetExpressCheckoutResponse>(
-                    (type, response) => { response.Url = _payPalUrlService.GetExpressCheckoutRedirectUrl(type.Token); },
+                    (type, response) =>
+                    {
+                        response.Url = _payPalUrlService.GetExpressCheckoutRedirectUrl(type.Token);
+                        _cartManager.SetPayPalExpressToken(type.Token);
+                    },
                     (type, response) =>
                         {
                             response.Errors.Add("An error occurred");

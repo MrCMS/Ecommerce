@@ -1,10 +1,48 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using PayPal.PayPalAPIInterfaceService.Model;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 {
+    public static class PayPalCartModelExtensionMethods
+    {
+        public static decimal GetShippingTotalForPayPal(this CartModel cart)
+        {
+            if (cart.ShippingMethod != null)
+                return cart.ShippingTotal;
+
+            var cheapestShippingOption = cart.GetCheapestShippingOption();
+            if (cheapestShippingOption == null) return Decimal.Zero;
+
+            return cheapestShippingOption.GetShippingTotal(cart);
+
+        }
+
+        public static IShippingMethod GetCheapestShippingOption(this CartModel cart)
+        {
+            return cart.PotentiallyAvailableShippingMethods.OrderBy(x => x.GetShippingTotal(cart)).FirstOrDefault();
+        }
+
+        public static decimal GetCartTaxForPayPal(this CartModel cart)
+        {
+            return cart.ItemTax;
+        }
+
+        public static decimal GetCartTotalForPayPal(this CartModel cart)
+        {
+            if (cart.ShippingMethod != null)
+                return cart.Total;
+
+            var cheapestShippingOption = cart.GetCheapestShippingOption();
+            if (cheapestShippingOption == null) return Decimal.Zero;
+
+            decimal shippingTotal = cheapestShippingOption.GetShippingTotal(cart);
+            return (cart.Total + shippingTotal);
+        }
+    }
     public class PayPalOrderService : IPayPalOrderService
     {
         private readonly PayPalExpressCheckoutSettings _payPalExpressCheckoutSettings;
@@ -16,17 +54,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public List<PaymentDetailsType> GetPaymentDetails(CartModel cart)
         {
+            var paymentDetailsType = new PaymentDetailsType
+            {
+                ItemTotal = (cart.Subtotal - cart.OrderTotalDiscount).GetAmountType(),
+                PaymentDetailsItem = GetPaymentDetailsItems(cart),
+                PaymentAction = _payPalExpressCheckoutSettings.PaymentAction,
+                OrderTotal = cart.GetCartTotalForPayPal().GetAmountType(),
+                TaxTotal = cart.GetCartTaxForPayPal().GetAmountType(),
+                ShippingTotal = cart.GetShippingTotalForPayPal().GetAmountType()
+            };
+
+
             return new List<PaymentDetailsType>
                        {
-                           new PaymentDetailsType
-                               {
-                                   OrderTotal = cart.Total.GetAmountType(),
-                                   ItemTotal = (cart.Subtotal - cart.OrderTotalDiscount).GetAmountType(),
-                                   TaxTotal = cart.ItemTax.GetAmountType(),
-                                   ShippingTotal = cart.ShippingTotal.GetAmountType(),
-                                   PaymentDetailsItem = GetPaymentDetailsItems(cart),
-                                   PaymentAction = _payPalExpressCheckoutSettings.PaymentAction
-                               }
+                           paymentDetailsType
                        };
         }
 
@@ -60,7 +101,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public BasicAmountType GetMaxAmount(CartModel cart)
         {
-            return cart.Subtotal.GetAmountType();
+            return cart.GetCartTotalForPayPal().GetAmountType();
         }
     }
 }

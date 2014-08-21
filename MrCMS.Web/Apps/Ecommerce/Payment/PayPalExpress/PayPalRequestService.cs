@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using PayPal.PayPalAPIInterfaceService.Model;
 
@@ -24,12 +26,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public SetExpressCheckoutReq GetSetExpressCheckoutRequest(CartModel cart)
         {
+            List<ShippingOptionType> flatRateShippingOptions = cart.PotentiallyAvailableShippingMethods.OrderBy(x=>x.GetShippingTotal(cart)).Select(x=> new ShippingOptionType
+            {
+                ShippingOptionAmount = x.GetShippingTotal(cart).GetAmountType(),
+                ShippingOptionName = x.DisplayName,
+                ShippingOptionIsDefault = "false",
+            }).ToList();
+            if (flatRateShippingOptions.Any())
+            {
+                flatRateShippingOptions[0].ShippingOptionIsDefault = "true";
+            }
             var setExpressCheckoutRequestDetailsType = new SetExpressCheckoutRequestDetailsType
                                                            {
                                                                ReturnURL = _payPalUrlService.GetReturnURL(),
                                                                CancelURL = _payPalUrlService.GetCancelURL(),
                                                                ReqConfirmShipping = _payPalShippingService.GetRequireConfirmedShippingAddress(),
-                                                               NoShipping = _payPalShippingService.GetNoShipping(),
+                                                               NoShipping = _payPalShippingService.GetNoShipping(cart),
                                                                LocaleCode = _payPalExpressCheckoutSettings.LocaleCode,
                                                                cppHeaderImage = _payPalExpressCheckoutSettings.LogoImageURL,
                                                                cppCartBorderColor = _payPalExpressCheckoutSettings.CartBorderColor,
@@ -37,9 +49,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                                                                BuyerEmail = _payPalOrderService.GetBuyerEmail(cart),
                                                                MaxAmount = _payPalOrderService.GetMaxAmount(cart),
                                                                InvoiceID = cart.CartGuid.ToString(),
-                                                               Custom = cart.CartGuid.ToString()
+                                                               Custom = cart.CartGuid.ToString(),
+                                                               CallbackURL = _payPalUrlService.GetCallbackUrl(),
+                                                               CallbackTimeout = "6",
+                                                               FlatRateShippingOptions = flatRateShippingOptions
+                                                               
                                                            };
-
+            //if (cart.ShippingAddress == null)
+            //{
+            //    BasicAmountType shippingOptionAmount = flatRateShippingOptions.First().ShippingOptionAmount;
+            //    setExpressCheckoutRequestDetailsType.PaymentDetails[0].ShippingTotal = shippingOptionAmount;
+            //    setExpressCheckoutRequestDetailsType.PaymentDetails[0].OrderTotal =
+            //        (Convert.ToDecimal(setExpressCheckoutRequestDetailsType.PaymentDetails[0].OrderTotal.value) +
+            //         Convert.ToDecimal(shippingOptionAmount.value)).GetAmountType();
+            //}
             var setExpressCheckoutRequestType = new SetExpressCheckoutRequestType
                                                     {
                                                         SetExpressCheckoutRequestDetails = setExpressCheckoutRequestDetailsType,

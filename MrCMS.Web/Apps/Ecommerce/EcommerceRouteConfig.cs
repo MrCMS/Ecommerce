@@ -108,8 +108,11 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new {controller = "PayPalExpressCheckout", action = "IPN"},
                 new[] {typeof (PayPalExpressCheckoutController).Namespace});
             context.MapRoute("Checkout - PayPal Return Handler", "Apps/Ecommerce/PayPalExpressCheckout/ReturnHandler",
-                new {controller = "PayPalExpressCheckout", action = "Return"},
-                new[] {typeof (PayPalExpressCheckoutController).Namespace});
+                new { controller = "PayPalExpressCheckout", action = "Return" },
+                new[] { typeof(PayPalExpressCheckoutController).Namespace });
+            context.MapRoute("Checkout - PayPal Callback Handler", "Apps/Ecommerce/PayPalExpressCheckout/CallbackHandler",
+                new { controller = "PayPalExpressCallback", action = "Handler" },
+                new[] { typeof(PayPalExpressCallbackController).Namespace });
 
             context.MapRoute("Checkout - Paypoint 3D Secure Redirect", "Apps/Ecommerce/Paypoint/3DSecureRedirect",
                 new {controller = "Paypoint", action = "Redirect3DSecure"},

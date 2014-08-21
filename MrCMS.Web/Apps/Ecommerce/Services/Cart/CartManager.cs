@@ -1,15 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MrCMS.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
-using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+﻿using System;
+using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
-using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
-using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
@@ -57,9 +50,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             }
         }
 
-        public void SetShippingAddress(Address address)
+        public void SetShippingAddress(Address address, Guid? userGuid = null)
         {
-            _cartSessionManager.SetSessionValue(CurrentShippingAddressKey, _getUserGuid.UserGuid, address);
+            _cartSessionManager.SetSessionValue(CurrentShippingAddressKey, userGuid ?? _getUserGuid.UserGuid, address);
         }
 
         public void SetShippingMethod(IShippingMethod shippingMethod)
@@ -116,10 +109,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             return _cartBuilder.BuildCart().PaymentMethod;
         }
 
-        public void SetPayPalExpressInfo(string token, string payerId)
+        public void SetPayPalExpressPayerId(string payerId)
+        {
+            _cartSessionManager.SetSessionValue(CurrentPayPalExpressPayerId, _getUserGuid.UserGuid, payerId);
+        }
+
+        public void SetPayPalExpressToken(string token)
         {
             _cartSessionManager.SetSessionValue(CurrentPayPalExpressToken, _getUserGuid.UserGuid, token);
-            _cartSessionManager.SetSessionValue(CurrentPayPalExpressPayerId, _getUserGuid.UserGuid, payerId);
         }
 
     }
