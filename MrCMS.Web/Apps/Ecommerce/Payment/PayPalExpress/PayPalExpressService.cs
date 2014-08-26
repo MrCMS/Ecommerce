@@ -1,7 +1,7 @@
-﻿using MrCMS.Web.Apps.Ecommerce.Models;
+﻿using System.Linq;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using PayPal.PayPalAPIInterfaceService.Model;
-using System.Linq;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 {
@@ -44,7 +44,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
             return getExpressCheckoutDetailsResponseType
                 .HandleResponse<GetExpressCheckoutDetailsResponseType, GetExpressCheckoutResponse>
-                ((type, response) => _payPalCartManager.UpdateCart(type.GetExpressCheckoutDetailsResponseDetails),
+                ((type, response) =>
+                {
+                    response.AddressAndMethodSet = _payPalCartManager.UpdateCart(type.GetExpressCheckoutDetailsResponseDetails);
+                    
+                },
                  (type, response) =>
                      {
                          response.Errors.Add("An error occurred");
@@ -66,6 +70,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                         {
                             response.Errors.Add("An error occurred");
                             type.RaiseErrors();
+                            if (type.Errors.Any(errorType => errorType.ErrorCode == "10486"))
+                            {
+                                response.RedirectToPayPal = true;
+                            }
                         });
         }
     }

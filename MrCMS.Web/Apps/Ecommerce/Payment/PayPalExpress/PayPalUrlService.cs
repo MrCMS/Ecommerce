@@ -55,9 +55,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public string GetCallbackUrl()
         {
-            return
-                new Uri(new Uri(GetScheme() + _currentSite.BaseUrl), "Apps/Ecommerce/PayPalExpressCheckout/CallbackHandler")
-                    .ToString();
+            var callbackUrl = new Uri(new Uri(GetScheme() + _currentSite.BaseUrl), "Apps/Ecommerce/PayPalExpressCheckout/CallbackHandler")
+                .ToString();
+            return callbackUrl;
         }
     }
 }

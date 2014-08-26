@@ -26,13 +26,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public SetExpressCheckoutReq GetSetExpressCheckoutRequest(CartModel cart)
         {
-            List<ShippingOptionType> flatRateShippingOptions = cart.PotentiallyAvailableShippingMethods.OrderBy(x=>x.GetShippingTotal(cart)).Select(x=> new ShippingOptionType
-            {
-                ShippingOptionAmount = x.GetShippingTotal(cart).GetAmountType(),
-                ShippingOptionName = x.DisplayName,
-                ShippingOptionIsDefault = "false",
-            }).ToList();
-            if (flatRateShippingOptions.Any())
+            List<ShippingOptionType> flatRateShippingOptions =
+                cart.PotentiallyAvailableShippingMethods.OrderBy(x => x.GetShippingTotal(cart))
+                    .Select(x => new ShippingOptionType
+                    {
+                        ShippingOptionAmount = x.GetShippingTotal(cart).GetAmountType(),
+                        ShippingOptionName = x.DisplayName,
+                        ShippingOptionIsDefault = cart.ShippingMethod == x ? "true" : "false",
+                    }).ToList();
+            if (flatRateShippingOptions.Any() && flatRateShippingOptions.All(type => type.ShippingOptionIsDefault != "true"))
             {
                 flatRateShippingOptions[0].ShippingOptionIsDefault = "true";
             }
@@ -53,16 +55,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                                                                CallbackURL = _payPalUrlService.GetCallbackUrl(),
                                                                CallbackTimeout = "6",
                                                                FlatRateShippingOptions = flatRateShippingOptions
-                                                               
                                                            };
-            //if (cart.ShippingAddress == null)
-            //{
-            //    BasicAmountType shippingOptionAmount = flatRateShippingOptions.First().ShippingOptionAmount;
-            //    setExpressCheckoutRequestDetailsType.PaymentDetails[0].ShippingTotal = shippingOptionAmount;
-            //    setExpressCheckoutRequestDetailsType.PaymentDetails[0].OrderTotal =
-            //        (Convert.ToDecimal(setExpressCheckoutRequestDetailsType.PaymentDetails[0].OrderTotal.value) +
-            //         Convert.ToDecimal(shippingOptionAmount.value)).GetAmountType();
-            //}
             var setExpressCheckoutRequestType = new SetExpressCheckoutRequestType
                                                     {
                                                         SetExpressCheckoutRequestDetails = setExpressCheckoutRequestDetailsType,
