@@ -1,48 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
+using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress.Helpers;
 using PayPal.PayPalAPIInterfaceService.Model;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 {
-    public static class PayPalCartModelExtensionMethods
-    {
-        public static decimal GetShippingTotalForPayPal(this CartModel cart)
-        {
-            if (cart.ShippingMethod != null)
-                return cart.ShippingTotal;
-
-            var cheapestShippingOption = cart.GetCheapestShippingOption();
-            if (cheapestShippingOption == null) return Decimal.Zero;
-
-            return cheapestShippingOption.GetShippingTotal(cart);
-
-        }
-
-        public static IShippingMethod GetCheapestShippingOption(this CartModel cart)
-        {
-            return cart.PotentiallyAvailableShippingMethods.OrderBy(x => x.GetShippingTotal(cart)).FirstOrDefault();
-        }
-
-        public static decimal GetCartTaxForPayPal(this CartModel cart)
-        {
-            return cart.ItemTax;
-        }
-
-        public static decimal GetCartTotalForPayPal(this CartModel cart)
-        {
-            if (cart.ShippingMethod != null)
-                return cart.Total;
-
-            var cheapestShippingOption = cart.GetCheapestShippingOption();
-            if (cheapestShippingOption == null) return Decimal.Zero;
-
-            decimal shippingTotal = cheapestShippingOption.GetShippingTotal(cart);
-            return (cart.Total + shippingTotal);
-        }
-    }
     public class PayPalOrderService : IPayPalOrderService
     {
         private readonly PayPalExpressCheckoutSettings _payPalExpressCheckoutSettings;
@@ -74,14 +37,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
         public List<PaymentDetailsItemType> GetPaymentDetailsItems(CartModel cart)
         {
             var paymentDetailsItemTypes = cart.Items.Select(item => new PaymentDetailsItemType
-                                                                        {
-                                                                            Name = item.Name,
-                                                                            Amount =
-                                                                                item.UnitPricePreTax.GetAmountType(),
-                                                                            ItemCategory = ItemCategoryType.PHYSICAL,
-                                                                            Quantity = item.Quantity,
-                                                                            Tax = item.UnitTax.GetAmountType(),
-                                                                        }).ToList();
+            {
+                Name = item.Name,
+                Amount = item.UnitPricePreTax.GetAmountType(),
+                ItemCategory = item.RequiresShipping ? ItemCategoryType.PHYSICAL : ItemCategoryType.DIGITAL,
+                Quantity = item.Quantity,
+                Tax = item.UnitTax.GetAmountType(),
+            }).ToList();
             if (cart.OrderTotalDiscount > 0)
                 paymentDetailsItemTypes.Add(new PaymentDetailsItemType
                                                 {
@@ -101,7 +63,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public BasicAmountType GetMaxAmount(CartModel cart)
         {
-            return cart.GetCartTotalForPayPal().GetAmountType();
+            return cart.GetMaxCartTotalForPayPal().GetAmountType();
         }
     }
 }

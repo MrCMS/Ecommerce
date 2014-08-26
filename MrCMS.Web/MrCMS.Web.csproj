@@ -211,8 +211,9 @@
     <Reference Include="PayPalCoreSDK">
       <HintPath>..\packages\PayPalCoreSDK.1.4.2\lib\net45\PayPalCoreSDK.dll</HintPath>
     </Reference>
-    <Reference Include="PayPalMerchantSDK">
-      <HintPath>..\packages\PayPalMerchantSDK.2.7.109\lib\PayPalMerchantSDK.dll</HintPath>
+    <Reference Include="PayPalMerchantSDK, Version=2.11.117.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\PayPalMerchantSDK.2.11.117\lib\net20\PayPalMerchantSDK.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp">
       <HintPath>..\packages\PDFsharp-MigraDoc-GDI.1.32.4334.0\lib\net20\PdfSharp.dll</HintPath>
@@ -621,7 +622,9 @@
     <Compile Include="Apps\Ecommerce\Controllers\OrderPlacedController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PaymentDetailsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PaymentMethodController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\PayPalExpressCallbackController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PayPalExpressCheckoutController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\PayPalExpressIPNController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\PaypointController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductAddedToCartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductController.cs" />
@@ -837,6 +840,7 @@
     <Compile Include="Apps\Ecommerce\Models\PaymentDetailsModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaymentStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\Payment\CashOnDeliveryPlaceOrderResult.cs" />
+    <Compile Include="Apps\Ecommerce\Models\PaypalShippingOption.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaypointPaymentDetails.cs" />
     <Compile Include="Apps\Ecommerce\Models\PaypointPaymentDetailsModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\PeopleWhoBoughtThisAlsoBoughtViewModel.cs" />
@@ -889,9 +893,12 @@
     <Compile Include="Apps\Ecommerce\Payment\IPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaymentSettings.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PaymentType.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\ActionResults\CallbackResponseResult.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\GetExpressCheckoutResponse.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\Helpers\PayPalCartModelExtensionMethods.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IGetPaypalShippingOptions.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalCartManager.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPaypalExpressCartLoader.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalExpressService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalInterfaceService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalOrderService.cs" />
@@ -899,7 +906,10 @@
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalSecurityService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\IPayPalUrlService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\Models\NVPCodec.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\Models\PaypalShippingInfo.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalCartManager.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PaypalExpressCartLoader.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressCheckoutPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressCheckoutSettings.cs" />
     <Compile Include="Apps\Ecommerce\Payment\PayPalExpress\PayPalExpressService.cs" />

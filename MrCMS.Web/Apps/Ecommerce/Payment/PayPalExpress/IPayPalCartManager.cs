@@ -15,7 +15,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 {
     public interface IPayPalCartManager
     {
-        void UpdateCart(GetExpressCheckoutDetailsResponseDetailsType details);
+        bool UpdateCart(GetExpressCheckoutDetailsResponseDetailsType details);
     }
 
     public interface IPayPalIPNService

@@ -24,6 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             Items = new List<CartItem>();
             AvailablePaymentMethods = new List<IPaymentMethod>();
             AppliedGiftCards = new List<GiftCard>();
+            PotentiallyAvailableShippingMethods = new HashSet<IShippingMethod>();
         }
 
         // user & items
