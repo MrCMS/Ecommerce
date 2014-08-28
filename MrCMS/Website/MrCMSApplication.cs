@@ -10,7 +10,6 @@ using System.Web.Routing;
 using Elmah;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using MrCMS.Apps;
-using MrCMS.DbConfiguration.Configuration;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.IoC;
@@ -27,8 +26,8 @@ using Ninject;
 using Ninject.Web.Common;
 using WebActivatorEx;
 
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof (MrCMSApplication), "Start", Order = 1)]
-[assembly: ApplicationShutdownMethod(typeof (MrCMSApplication), "Stop")]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(MrCMSApplication), "Start", Order = 1)]
+[assembly: ApplicationShutdownMethod(typeof(MrCMSApplication), "Stop")]
 
 namespace MrCMS.Website
 {
@@ -74,6 +73,7 @@ namespace MrCMS.Website
             RegisterServices(bootstrapper.Kernel);
             MrCMSApp.RegisterAllServices(bootstrapper.Kernel);
 
+
             SetModelBinders();
 
             ViewEngines.Engines.Clear();
@@ -89,8 +89,8 @@ namespace MrCMS.Website
         private static void SetModelBinders()
         {
             ModelBinders.Binders.DefaultBinder = new MrCMSDefaultModelBinder(Kernel);
-            ModelBinders.Binders.Add(typeof (DateTime), new CultureAwareDateBinder());
-            ModelBinders.Binders.Add(typeof (DateTime?), new NullableCultureAwareDateBinder());
+            ModelBinders.Binders.Add(typeof(DateTime), new CultureAwareDateBinder());
+            ModelBinders.Binders.Add(typeof(DateTime?), new NullableCultureAwareDateBinder());
         }
 
         private static bool IsFileRequest(Uri uri)
@@ -164,28 +164,28 @@ namespace MrCMS.Website
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("favicon.ico");
 
-            routes.MapRoute("InstallerRoute", "install", new {controller = "Install", action = "Setup"});
+            routes.MapRoute("InstallerRoute", "install", new { controller = "Install", action = "Setup" });
             routes.MapRoute("Task Execution", "execute-pending-tasks",
-                new {controller = "TaskExecution", action = "Execute"});
-            routes.MapRoute("Sitemap", "sitemap.xml", new {controller = "SEO", action = "Sitemap"});
-            routes.MapRoute("robots.txt", "robots.txt", new {controller = "SEO", action = "Robots"});
+                new { controller = "TaskExecution", action = "Execute" });
+            routes.MapRoute("Sitemap", "sitemap.xml", new { controller = "SEO", action = "Sitemap" });
+            routes.MapRoute("robots.txt", "robots.txt", new { controller = "SEO", action = "Robots" });
             routes.MapRoute("ckeditor Config", "Areas/Admin/Content/Editors/ckeditor/config.js",
-                new {controller = "CKEditor", action = "Config"});
+                new { controller = "CKEditor", action = "Config" });
 
-            routes.MapRoute("Logout", "logout", new {controller = "Login", action = "Logout"},
-                new[] {RootNamespace});
+            routes.MapRoute("Logout", "logout", new { controller = "Login", action = "Logout" },
+                new[] { RootNamespace });
 
-            routes.MapRoute("zones", "render-widget", new {controller = "Widget", action = "Show"},
-                new[] {RootNamespace});
+            routes.MapRoute("zones", "render-widget", new { controller = "Widget", action = "Show" },
+                new[] { RootNamespace });
 
             routes.MapRoute("ajax content save", "admintools/savebodycontent",
-                new {controller = "AdminTools", action = "SaveBodyContent"});
+                new { controller = "AdminTools", action = "SaveBodyContent" });
 
-            routes.MapRoute("form save", "save-form/{id}", new {controller = "Form", action = "Save"},
-                new[] {typeof (FormController).Namespace});
+            routes.MapRoute("form save", "save-form/{id}", new { controller = "Form", action = "Save" },
+                new[] { typeof(FormController).Namespace });
 
             routes.Add(new Route("{*data}", new RouteValueDictionary(),
-                new RouteValueDictionary(new {data = @".*\.aspx"}),
+                new RouteValueDictionary(new { data = @".*\.aspx" }),
                 new MrCMSAspxRouteHandler()));
             routes.Add(new Route("{*data}", new RouteValueDictionary(), new RouteValueDictionary(),
                 new MrCMSRouteHandler()));
@@ -196,8 +196,8 @@ namespace MrCMS.Website
         /// </summary>
         public static void Start()
         {
-            DynamicModuleUtility.RegisterModule(typeof (OnePerRequestHttpModule));
-            DynamicModuleUtility.RegisterModule(typeof (NinjectHttpModule));
+            DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
+            DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
 
@@ -215,11 +215,19 @@ namespace MrCMS.Website
         /// <returns>The created kernel.</returns>
         private static IKernel CreateKernel()
         {
-            var kernel = new StandardKernel(new ServiceModule(),
-                new NHibernateModule(DatabaseType.Auto, InDevelopment));
+            var kernel = new StandardKernel(new NinjectSettings { AllowNullInjection = true },
+                new ServiceModule(),
+                new SettingsModule(),
+                new LuceneModule(),
+                new FileSystemModule(),
+                new GenericBindingsModule(),
+                new SystemWebModule(),
+                new SiteModule(),
+                new AuthModule());
             kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
             kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
+            kernel.Load(new NHibernateModule());
             return kernel;
         }
 

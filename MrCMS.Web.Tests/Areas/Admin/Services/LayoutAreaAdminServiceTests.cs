@@ -21,8 +21,8 @@ namespace MrCMS.Web.Tests.Areas.Admin.Services
         public void LayoutAreaAdminService_GetArea_GetsTheAreaByName()
         {
             var layoutAreaService = _layoutAreaAdminService;
-            var layout = new Layout { Name = "Layout" };
-            var layoutArea = new LayoutArea { Layout = layout, AreaName = "Area.Name" };
+            var layout = new Layout {Name = "Layout"};
+            var layoutArea = new LayoutArea {Layout = layout, AreaName = "Area.Name"};
             Session.Transact(session =>
                                  {
                                      session.SaveOrUpdate(layout);
@@ -38,7 +38,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Services
         public void LayoutAreaAdminService_GetAreaWhereItDoesNotExist_ShouldReturnNull()
         {
             var layoutAreaService = _layoutAreaAdminService;
-            var layout = new Layout { Name = "Layout" };
+            var layout = new Layout {Name = "Layout"};
             Session.Transact(session => session.SaveOrUpdate(layout));
 
             var loadedArea = layoutAreaService.GetArea(layout, "Area.Name");
@@ -60,7 +60,7 @@ namespace MrCMS.Web.Tests.Areas.Admin.Services
         public void LayoutAreaAdminService_SaveArea_IfLayoutIsSetAddLayoutAreaToLayoutAreasList()
         {
             var layout = new Layout();
-            var layoutArea = new LayoutArea { Layout = layout };
+            var layoutArea = new LayoutArea{Layout = layout};
 
             _layoutAreaAdminService.SaveArea(layoutArea);
 
