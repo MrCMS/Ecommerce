@@ -15,7 +15,7 @@ using Xunit;
 
 namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 {
-    public class OrdersControllerTests : InMemoryDatabaseTest
+    public class OrdersControllerTests 
     {
         private readonly IAmazonOrderService _amazonOrderService;
         private readonly AmazonAppSettings _amazonAppSettings;

@@ -12,7 +12,7 @@ using Xunit;
 
 namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 {
-    public class ListingControllerTests : InMemoryDatabaseTest
+    public class ListingControllerTests : MrCMSTest
     {
         private readonly IAmazonListingSyncManager _amazonListingSyncManager;
         private readonly IAmazonListingService _amazonListingService;
@@ -26,7 +26,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
             _amazonListingService = A.Fake<IAmazonListingService>();
             _amazonAppSettings = A.Fake<AmazonAppSettings>();
             _prepareForSyncAmazonListingService = A.Fake<IPrepareForSyncAmazonListingService>();
-            _listingController = new ListingController(_amazonListingSyncManager, _amazonListingService, 
+            _listingController = new ListingController(_amazonListingSyncManager, _amazonListingService,
             _amazonAppSettings, _prepareForSyncAmazonListingService);
         }
 
@@ -67,7 +67,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         [Fact]
         public void ListingController_AddOne_ShouldRedirectToIndexIfSkuNotProvided()
         {
-            var result = _listingController.AddOne(null,1);
+            var result = _listingController.AddOne(null, 1);
 
             result.As<RedirectToRouteResult>().RouteValues["action"].Should().Be("Index");
         }
@@ -105,7 +105,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 
             var result = _listingController.AddOne("T1", 1);
 
-            A.CallTo(() => _prepareForSyncAmazonListingService.InitAmazonListingFromProductVariant(null, "T1",1)).MustHaveHappened();
+            A.CallTo(() => _prepareForSyncAmazonListingService.InitAmazonListingFromProductVariant(null, "T1", 1)).MustHaveHappened();
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 
             var result = _listingController.AddMany_POST(model);
 
-            A.CallTo(() => _prepareForSyncAmazonListingService.InitAmazonListingsFromProductVariants(model.AmazonListingGroup,model.ChosenProductVariants)).MustHaveHappened();
+            A.CallTo(() => _prepareForSyncAmazonListingService.InitAmazonListingsFromProductVariants(model.AmazonListingGroup, model.ChosenProductVariants)).MustHaveHappened();
         }
 
         [Fact]
@@ -494,7 +494,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         {
             var model = new AmazonListing()
                 {
-                    AmazonListingGroup = new AmazonListingGroup() {Id = 1}
+                    AmazonListingGroup = new AmazonListingGroup() { Id = 1 }
                 };
 
             var result = _listingController.Delete_POST(model);
