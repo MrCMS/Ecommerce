@@ -32,12 +32,10 @@ namespace MrCMS.EcommerceApp.Tests
             {
                 lock (lockObject)
                 {
-                    var assemblies = new List<Assembly> {typeof (InMemoryDatabaseTest).Assembly};
-                    var nHibernateModule = new NHibernateConfigurator
+                    var assemblies = new List<Assembly> { typeof(InMemoryDatabaseTest).Assembly };
+                    var nHibernateModule = new NHibernateConfigurator(new SqliteInMemoryProvider())
                     {
                         CacheEnabled = true,
-                        DatabaseType = DatabaseType.Sqlite,
-                        InDevelopment = true,
                         ManuallyAddedAssemblies = assemblies
                     };
                     Configuration = nHibernateModule.GetConfiguration();
@@ -55,18 +53,22 @@ namespace MrCMS.EcommerceApp.Tests
 
             CurrentSite = Session.Transact(session =>
             {
-                var site = new Site {Name = "Current Site", BaseUrl = "www.currentsite.com", Id = 1};
+                var site = new Site { Name = "Current Site", BaseUrl = "www.currentsite.com", Id = 1 };
                 CurrentRequestData.CurrentSite = site;
                 session.Save(site);
                 return site;
             });
 
-            CurrentRequestData.SiteSettings = new SiteSettings {TimeZone = TimeZoneInfo.Local.Id};
+            CurrentRequestData.SiteSettings = new SiteSettings { TimeZone = TimeZoneInfo.Local.Id };
 
             CurrentRequestData.ErrorSignal = new ErrorSignal();
 
             Kernel.Unbind<IEventContext>();
-            Kernel.Load(new ServiceModule(true));
+            Kernel.Load(new ServiceModule());
+            Kernel.Load(new SettingsModule(true));
+            Kernel.Load(new FileSystemModule());
+            Kernel.Load(new SiteModule());
+            Kernel.Load(new GenericBindingsModule());
             _eventContext = new TestableEventContext(Kernel.Get<EventContext>());
             Kernel.Rebind<IEventContext>().ToMethod(context => EventContext);
         }
@@ -87,8 +89,8 @@ namespace MrCMS.EcommerceApp.Tests
                 Name = UserRole.Administrator
             };
 
-            user.Roles = new HashedSet<UserRole> {adminUserRole};
-            adminUserRole.Users = new HashedSet<User> {user};
+            user.Roles = new HashedSet<UserRole> { adminUserRole };
+            adminUserRole.Users = new HashedSet<User> { user };
 
             CurrentRequestData.CurrentUser = user;
         }
