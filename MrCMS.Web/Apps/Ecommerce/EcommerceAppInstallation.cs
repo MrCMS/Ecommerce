@@ -5,8 +5,6 @@ using System.Linq;
 using System.Web;
 using MrCMS.Entities.Documents.Layout;
 using MrCMS.Entities.Documents.Media;
-using MrCMS.Entities.Documents.Web;
-using MrCMS.Entities.Multisite;
 using MrCMS.Installation;
 using MrCMS.Services;
 using MrCMS.Settings;
@@ -17,29 +15,47 @@ using MrCMS.Web.Apps.Ecommerce.Services.Currencies;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Web.Apps.Ecommerce.Widgets;
 using MrCMS.Web.Areas.Admin.Services;
-using MrCMS.Website;
-using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce
 {
-    public static class EcommerceInstallation
+    public class EcommerceAppInstallation : IOnInstallation
     {
-        public static void InstallApp(ISession session, InstallModel model, Site site)
+        private readonly IConfigurationProvider _configurationProvider;
+        private readonly SiteSettings _siteSettings;
+        private readonly EcommerceSettings _ecommerceSettings;
+        private readonly IDocumentService _documentService;
+        private readonly ICurrencyService _currencyService;
+        private readonly IWidgetService _widgetService;
+        private readonly MediaSettings _mediaSettings;
+        private readonly IImageProcessor _imageProcessor;
+        private readonly IFileService _fileService;
+        private readonly ILayoutAreaAdminService _layoutAreaAdminService;
+
+        public EcommerceAppInstallation(IConfigurationProvider configurationProvider, SiteSettings siteSettings, EcommerceSettings ecommerceSettings,
+            IDocumentService documentService, ICurrencyService currencyService, IWidgetService widgetService, MediaSettings mediaSettings,
+            IImageProcessor imageProcessor, IFileService fileService, ILayoutAreaAdminService layoutAreaAdminService)
         {
-            var configurationProvider = new ConfigurationProvider(site,new LegacySettingsProvider(session));
-            var siteSettings = configurationProvider.GetSiteSettings<SiteSettings>();
-            var ecommerceSettings = configurationProvider.GetSiteSettings<EcommerceSettings>();
-            var documentService = new DocumentService(session, site);
-            var currencyService = new CurrencyService(session);
-            var widgetService = new WidgetService(session);
-            var defaultMediaCategory = documentService.GetDocumentByUrl<MediaCategory>("default");
+            _configurationProvider = configurationProvider;
+            _siteSettings = siteSettings;
+            _ecommerceSettings = ecommerceSettings;
+            _documentService = documentService;
+            _currencyService = currencyService;
+            _widgetService = widgetService;
+            _mediaSettings = mediaSettings;
+            _imageProcessor = imageProcessor;
+            _fileService = fileService;
+            _layoutAreaAdminService = layoutAreaAdminService;
+        }
 
-            // file
-            var fileSystem = new FileSystem();
-            var mediaSettings = configurationProvider.GetSiteSettings<MediaSettings>();
-            var imageProcessor = new ImageProcessor(session, fileSystem, mediaSettings);
-            var fileService = new FileService(session, fileSystem, imageProcessor, mediaSettings, site, siteSettings);
 
+        public int Priority
+        {
+            get { return -1; }
+        }
+
+        public void Install(InstallModel model)
+        {
+            var defaultMediaCategory = _documentService.GetDocumentByUrl<MediaCategory>("default");
 
             var productSearch = new ProductSearch
             {
@@ -53,10 +69,10 @@ namespace MrCMS.Web.Apps.Ecommerce
                 UrlSegment = "categories",
                 RevealInNavigation = true
             };
-            documentService.AddDocument(productSearch);
-            documentService.PublishNow(productSearch);
-            documentService.AddDocument(categoryContainer);
-            documentService.PublishNow(categoryContainer);
+            _documentService.AddDocument(productSearch);
+            _documentService.PublishNow(productSearch);
+            _documentService.AddDocument(categoryContainer);
+            _documentService.PublishNow(categoryContainer);
 
             //base layout
             var baseLayout = new Layout
@@ -65,7 +81,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 UrlSegment = "~/Apps/Ecommerce/Views/Shared/_BaseLayout.cshtml",
                 LayoutAreas = new List<LayoutArea>()
             };
-            documentService.AddDocument(baseLayout);
+            _documentService.AddDocument(baseLayout);
             //ecommerce main layout
             var eCommerceLayout = new Layout
             {
@@ -85,10 +101,9 @@ namespace MrCMS.Web.Apps.Ecommerce
                                               new LayoutArea {AreaName = "After Content", Layout = eCommerceLayout},
                                               new LayoutArea {AreaName = "Footer", Layout = eCommerceLayout}
                                           };
-            documentService.AddDocument(eCommerceLayout);
-            var layoutAreaService = new LayoutAreaAdminService(session,documentService);
+            _documentService.AddDocument(eCommerceLayout);
             foreach (var area in ecommerceLayoutArea)
-                layoutAreaService.SaveArea(area);
+                _layoutAreaAdminService.SaveArea(area);
             //checkout layout
             var checkoutLayout = new Layout
             {
@@ -104,10 +119,10 @@ namespace MrCMS.Web.Apps.Ecommerce
                     new LayoutArea {AreaName = "Footer Left", Layout = checkoutLayout},
                     new LayoutArea {AreaName = "Footer Right", Layout = checkoutLayout}
                 };
-            documentService.AddDocument(checkoutLayout);
+            _documentService.AddDocument(checkoutLayout);
 
             foreach (var area in checkoutLayoutAreas)
-                layoutAreaService.SaveArea(area);
+                _layoutAreaAdminService.SaveArea(area);
 
             //product layout
             var productLayout = new Layout
@@ -124,9 +139,9 @@ namespace MrCMS.Web.Apps.Ecommerce
                                              new LayoutArea {AreaName = "Below Product Information", Layout = productLayout}
                                          };
 
-            documentService.AddDocument(productLayout);
+            _documentService.AddDocument(productLayout);
             foreach (var area in productLayoutAreas)
-                layoutAreaService.SaveArea(area);
+                _layoutAreaAdminService.SaveArea(area);
 
             //category/search layout
             var searchLayout = new Layout
@@ -142,16 +157,16 @@ namespace MrCMS.Web.Apps.Ecommerce
                                             new LayoutArea {AreaName = "After Filters", Layout = searchLayout}
                                         };
 
-            documentService.AddDocument(searchLayout);
+            _documentService.AddDocument(searchLayout);
             foreach (var area in searchLayoutAreas)
-                layoutAreaService.SaveArea(area);
+                _layoutAreaAdminService.SaveArea(area);
 
             //widgets for main layout
 
             //linked logo
             var mainLogoPath = HttpContext.Current.Server.MapPath("/Apps/Core/Content/images/mrcms-logo.png");
             var stream = new FileStream(mainLogoPath, FileMode.Open);
-            var logoFile = fileService.AddFile(stream, Path.GetFileName(mainLogoPath), "image/png", stream.Length, defaultMediaCategory);
+            var logoFile = _fileService.AddFile(stream, Path.GetFileName(mainLogoPath), "image/png", stream.Length, defaultMediaCategory);
             var linkedImageLogo = new LinkedImage
             {
                 Name = "Logo",
@@ -159,14 +174,14 @@ namespace MrCMS.Web.Apps.Ecommerce
                 Image = logoFile.FileUrl,
                 LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Header Left")
             };
-            widgetService.AddWidget(linkedImageLogo);
+            _widgetService.AddWidget(linkedImageLogo);
             // Search
             var searchBox = new SearchBox
             {
                 Name = "Search",
                 LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Header Middle")
             };
-            widgetService.AddWidget(searchBox);
+            _widgetService.AddWidget(searchBox);
 
             //userlink
             var userLinks = new UserLinks
@@ -174,7 +189,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 Name = "User Links",
                 LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "User Links")
             };
-            widgetService.AddWidget(userLinks);
+            _widgetService.AddWidget(userLinks);
 
             //cart widget
             var cartWidget = new CartWidget
@@ -182,7 +197,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 Name = "Cart Widget",
                 LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Header Right")
             };
-            widgetService.AddWidget(cartWidget);
+            _widgetService.AddWidget(cartWidget);
 
             //nav
             var nav = new EcommerceNavigation
@@ -190,7 +205,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 Name = "Navigation",
                 LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == ("Navigation"))
             };
-            widgetService.AddWidget(nav);
+            _widgetService.AddWidget(nav);
 
             //footer links
             var footerLinksWidget = new TextWidget
@@ -199,23 +214,23 @@ namespace MrCMS.Web.Apps.Ecommerce
                 Name = "Footer links",
                 Text = GetFooterLinksText()
             };
-            widgetService.AddWidget(footerLinksWidget);
+            _widgetService.AddWidget(footerLinksWidget);
 
-            siteSettings.DefaultLayoutId = eCommerceLayout.Id;
-            siteSettings.ThemeName = "Ecommerce";
-            configurationProvider.SaveSettings(siteSettings);
-            ecommerceSettings.SearchProductsPerPage = "12,20,40";
-            ecommerceSettings.PreviousPriceText = "Previous price";
+            _siteSettings.DefaultLayoutId = eCommerceLayout.Id;
+            _siteSettings.ThemeName = "Ecommerce";
+            _configurationProvider.SaveSettings(_siteSettings);
+            _ecommerceSettings.SearchProductsPerPage = "12,20,40";
+            _ecommerceSettings.PreviousPriceText = "Previous price";
 
 
-            
+
             var imgPath = HttpContext.Current.Server.MapPath("/Apps/Ecommerce/Content/Images/awaiting-image.jpg");
             var fileStream = new FileStream(imgPath, FileMode.Open);
-            var dbFile = fileService.AddFile(fileStream, Path.GetFileName(imgPath), "image/jpeg", fileStream.Length, defaultMediaCategory);
+            var dbFile = _fileService.AddFile(fileStream, Path.GetFileName(imgPath), "image/jpeg", fileStream.Length, defaultMediaCategory);
 
-            ecommerceSettings.DefaultNoProductImage = dbFile.FileUrl;
+            _ecommerceSettings.DefaultNoProductImage = dbFile.FileUrl;
 
-            configurationProvider.SaveSettings(ecommerceSettings);
+            _configurationProvider.SaveSettings(_ecommerceSettings);
 
 
             var welcome = new TextPage
@@ -225,7 +240,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = true,
                 PublishOn = DateTime.UtcNow
             };
-            documentService.AddDocument(welcome);
+            _documentService.AddDocument(welcome);
             var yourBasket = new Cart
             {
                 Name = "Your Basket",
@@ -233,7 +248,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = false,
                 PublishOn = DateTime.UtcNow
             };
-            documentService.AddDocument(yourBasket);
+            _documentService.AddDocument(yourBasket);
             var enterOrderEmail = new EnterOrderEmail
             {
                 Name = "Enter Order Email",
@@ -243,7 +258,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 DisplayOrder = 0,
                 PublishOn = DateTime.UtcNow,
             };
-            documentService.AddDocument(enterOrderEmail);
+            _documentService.AddDocument(enterOrderEmail);
             var setPaymentDetails = new PaymentDetails
             {
                 Name = "Set Payment Details",
@@ -253,7 +268,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 DisplayOrder = 1,
                 PublishOn = DateTime.UtcNow,
             };
-            documentService.AddDocument(setPaymentDetails);
+            _documentService.AddDocument(setPaymentDetails);
             var setDeliveryDetails = new SetShippingDetails
             {
                 Name = "Set Delivery Details",
@@ -263,7 +278,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 DisplayOrder = 2,
                 PublishOn = DateTime.UtcNow,
             };
-            documentService.AddDocument(setDeliveryDetails);
+            _documentService.AddDocument(setDeliveryDetails);
             var orderPlaced = new OrderPlaced
             {
                 Name = "Order Placed",
@@ -273,7 +288,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 DisplayOrder = 3,
                 PublishOn = DateTime.UtcNow,
             };
-            documentService.AddDocument(orderPlaced);
+            _documentService.AddDocument(orderPlaced);
 
             //Added to cart
             var addedToCart = new ProductAddedToCart()
@@ -283,16 +298,16 @@ namespace MrCMS.Web.Apps.Ecommerce
                 RevealInNavigation = false,
                 PublishOn = DateTime.UtcNow
             };
-            documentService.AddDocument(addedToCart);
+            _documentService.AddDocument(addedToCart);
 
             //add currency
             var britishCurrency = new Entities.Currencies.Currency
-                                      {
-                                          Name = "British Pound",
-                                          Code = "GBP",
-                                          Format = "£0.00"
-                                      };
-            currencyService.Add(britishCurrency);
+            {
+                Name = "British Pound",
+                Code = "GBP",
+                Format = "£0.00"
+            };
+            _currencyService.Add(britishCurrency);
         }
 
         private static string GetFooterLinksText()

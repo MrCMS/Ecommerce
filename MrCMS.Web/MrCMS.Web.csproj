@@ -173,7 +173,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate, Version=3.3.1.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -288,6 +288,7 @@
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\OrderInfoController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\OrdersController.cs" />
     <Compile Include="Apps\Amazon\Areas\Admin\Controllers\SettingsController.cs" />
+    <Compile Include="Apps\Amazon\AmazonAppInstallation.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonLogEntryOverride.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonOrderOverride.cs" />
     <Compile Include="Apps\Amazon\DbConfiguration\AmazonOrderSyncDataOverride.cs" />
@@ -502,6 +503,7 @@
     <Compile Include="Apps\Ecommerce\ACL\ToolsAndReportsACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\WorldPaySettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\ActionResults\NewsletterActionResult.cs" />
+    <Compile Include="Apps\Ecommerce\EcommerceAppInstallation.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BulkShippingController.cs" />
@@ -671,7 +673,6 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\SessionDataOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\TableNameConvention.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceApp.cs" />
-    <Compile Include="Apps\Ecommerce\EcommerceInstallation.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceRouteConfig.cs" />
     <Compile Include="Apps\Ecommerce\Entities\BackInStockNotification\BackInStockNotificationRequest.cs" />
     <Compile Include="Apps\Ecommerce\Entities\BackInStockNotification\BackInStockProductVariant.cs" />
