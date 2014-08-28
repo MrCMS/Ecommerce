@@ -21,28 +21,20 @@ namespace MrCMS.Web.Apps.Ecommerce
     public class EcommerceAppInstallation : IOnInstallation
     {
         private readonly IConfigurationProvider _configurationProvider;
-        private readonly SiteSettings _siteSettings;
-        private readonly EcommerceSettings _ecommerceSettings;
         private readonly IDocumentService _documentService;
         private readonly ICurrencyService _currencyService;
         private readonly IWidgetService _widgetService;
-        private readonly MediaSettings _mediaSettings;
-        private readonly IImageProcessor _imageProcessor;
         private readonly IFileService _fileService;
         private readonly ILayoutAreaAdminService _layoutAreaAdminService;
 
-        public EcommerceAppInstallation(IConfigurationProvider configurationProvider, SiteSettings siteSettings, EcommerceSettings ecommerceSettings,
-            IDocumentService documentService, ICurrencyService currencyService, IWidgetService widgetService, MediaSettings mediaSettings,
-            IImageProcessor imageProcessor, IFileService fileService, ILayoutAreaAdminService layoutAreaAdminService)
+        public EcommerceAppInstallation(IConfigurationProvider configurationProvider, 
+            IDocumentService documentService, ICurrencyService currencyService, IWidgetService widgetService, 
+            IFileService fileService, ILayoutAreaAdminService layoutAreaAdminService)
         {
             _configurationProvider = configurationProvider;
-            _siteSettings = siteSettings;
-            _ecommerceSettings = ecommerceSettings;
             _documentService = documentService;
             _currencyService = currencyService;
             _widgetService = widgetService;
-            _mediaSettings = mediaSettings;
-            _imageProcessor = imageProcessor;
             _fileService = fileService;
             _layoutAreaAdminService = layoutAreaAdminService;
         }
@@ -216,11 +208,13 @@ namespace MrCMS.Web.Apps.Ecommerce
             };
             _widgetService.AddWidget(footerLinksWidget);
 
-            _siteSettings.DefaultLayoutId = eCommerceLayout.Id;
-            _siteSettings.ThemeName = "Ecommerce";
-            _configurationProvider.SaveSettings(_siteSettings);
-            _ecommerceSettings.SearchProductsPerPage = "12,20,40";
-            _ecommerceSettings.PreviousPriceText = "Previous price";
+            var siteSettings = _configurationProvider.GetSiteSettings<SiteSettings>();
+            siteSettings.DefaultLayoutId = eCommerceLayout.Id;
+            siteSettings.ThemeName = "Ecommerce";
+            _configurationProvider.SaveSettings(siteSettings);
+            var ecommerceSettings = _configurationProvider.GetSiteSettings<EcommerceSettings>();
+            ecommerceSettings.SearchProductsPerPage = "12,20,40";
+            ecommerceSettings.PreviousPriceText = "Previous price";
 
 
 
@@ -228,9 +222,9 @@ namespace MrCMS.Web.Apps.Ecommerce
             var fileStream = new FileStream(imgPath, FileMode.Open);
             var dbFile = _fileService.AddFile(fileStream, Path.GetFileName(imgPath), "image/jpeg", fileStream.Length, defaultMediaCategory);
 
-            _ecommerceSettings.DefaultNoProductImage = dbFile.FileUrl;
+            ecommerceSettings.DefaultNoProductImage = dbFile.FileUrl;
 
-            _configurationProvider.SaveSettings(_ecommerceSettings);
+            _configurationProvider.SaveSettings(ecommerceSettings);
 
 
             var welcome = new TextPage
