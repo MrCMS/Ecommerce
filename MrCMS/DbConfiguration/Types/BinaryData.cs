@@ -6,12 +6,12 @@ using NHibernate.SqlTypes;
 
 namespace MrCMS.DbConfiguration.Types
 {
-    public class BinaryData<T> : BaseImmutableUserType<T> where T : class, new()
+    public class BinaryData<T> : BaseImmutableUserType<T>
     {
         public override object NullSafeGet(IDataReader rs, string[] names, object owner)
         {
             var o = NHibernateUtil.BinaryBlob.NullSafeGet(rs, names[0]) as byte[];
-            return BinaryData.Deserialize<T>(o);
+            return BinaryData.Deserialize(o);
         }
 
         public override void NullSafeSet(IDbCommand cmd, object value, int index)
@@ -43,8 +43,6 @@ namespace MrCMS.DbConfiguration.Types
         }
         public static byte[] Serialize(object value)
         {
-            if (value == null)
-                return null;
             using (var memoryStream = new MemoryStream())
             {
                 BinaryFormatter.Serialize(memoryStream, value);
@@ -52,21 +50,19 @@ namespace MrCMS.DbConfiguration.Types
             }
         }
 
-        public static T Deserialize<T>(byte[] bytes) where T : class,new()
+        public static object Deserialize(byte[] bytes)
         {
-            if (bytes == null)
-                return new T();
-            try
+            using (var memoryStream = new MemoryStream(bytes))
             {
-                using (var memoryStream = new MemoryStream(bytes))
+                try
                 {
                     var deserialize = BinaryFormatter.Deserialize(memoryStream);
-                    return deserialize as T ?? new T();
+                    return deserialize;
                 }
-            }
-            catch
-            {
-                return new T();
+                catch
+                {
+                    return null;
+                }
             }
         }
     }

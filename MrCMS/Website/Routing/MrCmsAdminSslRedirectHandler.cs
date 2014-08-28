@@ -33,7 +33,7 @@ namespace MrCMS.Website.Routing
                 context.HttpContext.Response.Redirect(redirectUrl);
                 return true;
             }
-           return false;
+            return false;
         }
     }
 }

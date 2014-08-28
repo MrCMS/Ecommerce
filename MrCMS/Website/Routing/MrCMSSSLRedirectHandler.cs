@@ -20,7 +20,7 @@ namespace MrCMS.Website.Routing
         {
             var url = context.HttpContext.Request.Url;
             var scheme = url.Scheme;
-         
+
             Webpage webpage = _getWebpageForRequest.Get(context);
             if (webpage == null)
                 return false;

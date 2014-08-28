@@ -27,8 +27,5 @@ namespace MrCMS.Web.Apps.MobileFriendlyNavigation
         {
         }
 
-        protected override void OnInstallation(ISession session, InstallModel model, Site site)
-        {
-        }
     }
 }

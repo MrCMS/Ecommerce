@@ -8,20 +8,18 @@ using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Website;
-using NHibernate;
-using NHibernate.Criterion;
 
 namespace MrCMS.Web.Areas.Admin.Services
 {
     public class WebpageBaseViewDataService : IWebpageBaseViewDataService
     {
-        private readonly ISession _session;
+        private readonly IGetValidPageTemplatesToAdd _getValidPageTemplatesToAdd;
         private readonly IValidWebpageChildrenService _validWebpageChildrenService;
 
-        public WebpageBaseViewDataService(IValidWebpageChildrenService validWebpageChildrenService, ISession session)
+        public WebpageBaseViewDataService(IValidWebpageChildrenService validWebpageChildrenService, IGetValidPageTemplatesToAdd getValidPageTemplatesToAdd)
         {
             _validWebpageChildrenService = validWebpageChildrenService;
-            _session = session;
+            _getValidPageTemplatesToAdd = getValidPageTemplatesToAdd;
         }
 
         public void SetAddPageViewData(ViewDataDictionary viewData, Webpage parent)
@@ -32,11 +30,7 @@ namespace MrCMS.Web.Areas.Admin.Services
                         CurrentRequestData.CurrentUser.CanAccess<TypeACLRule>(TypeACLRule.Add, metadata.Type.FullName))
                 .OrderBy(metadata => metadata.DisplayOrder);
 
-            List<string> typeNames = validWebpageDocumentTypes.Select(metadata => metadata.Type.FullName).ToList();
-
-            IList<PageTemplate> templates =
-                _session.QueryOver<PageTemplate>().Where(template => template.PageType.IsIn(typeNames))
-                    .OrderBy(template => template.Name).Asc.Cacheable().List();
+            var templates = _getValidPageTemplatesToAdd.Get(validWebpageDocumentTypes);
 
             var documentTypeToAdds = new List<DocumentTypeToAdd>();
 
@@ -61,7 +55,7 @@ namespace MrCMS.Web.Areas.Admin.Services
                 }
                 else
                 {
-                    documentTypeToAdds.Add(new DocumentTypeToAdd {Type = type, DisplayName = type.Name});
+                    documentTypeToAdds.Add(new DocumentTypeToAdd { Type = type, DisplayName = type.Name });
                 }
             }
 
