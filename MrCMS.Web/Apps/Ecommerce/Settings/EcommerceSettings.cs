@@ -38,7 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         {
             get
             {
-                return SearchProductsPerPage.Split(',').Where(s =>
+                return (SearchProductsPerPage ?? string.Empty).Split(',').Where(s =>
                 {
                     int result;
                     return int.TryParse(s, out result);
