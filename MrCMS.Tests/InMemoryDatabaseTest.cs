@@ -4,7 +4,6 @@ using System.Reflection;
 using Elmah;
 using Iesi.Collections.Generic;
 using MrCMS.DbConfiguration;
-using MrCMS.DbConfiguration.Configuration;
 using MrCMS.Entities.Multisite;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
@@ -17,7 +16,7 @@ using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using Ninject;
 
-namespace MrCMS.EcommerceApp.Tests
+namespace MrCMS.Tests
 {
     public abstract class InMemoryDatabaseTest : MrCMSTest
     {
@@ -68,7 +67,6 @@ namespace MrCMS.EcommerceApp.Tests
             Kernel.Load(new SettingsModule(true));
             Kernel.Load(new FileSystemModule());
             Kernel.Load(new SiteModule());
-            Kernel.Load(new GenericBindingsModule());
             _eventContext = new TestableEventContext(Kernel.Get<EventContext>());
             Kernel.Rebind<IEventContext>().ToMethod(context => EventContext);
         }
