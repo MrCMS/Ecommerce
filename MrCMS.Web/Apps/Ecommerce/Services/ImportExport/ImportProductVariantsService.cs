@@ -63,10 +63,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 productVariant.TaxRate = (item.TaxRate.HasValue && item.TaxRate.Value != 0) ? _taxRateManager.Get(item.TaxRate.Value) : _taxRateManager.GetDefaultRate();
                 productVariant.Product = product;
 
-                if (!product.Variants.Contains(productVariant))
-                {
-                    product.Variants.Add(productVariant);
-                }
+                //if (!product.Variants.Contains(productVariant))
+                //{
+                //    product.Variants.Add(productVariant);
+                //}
 
 
                 var optionsToAdd =

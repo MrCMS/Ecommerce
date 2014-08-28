@@ -132,14 +132,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                                 if (product != null)
                                 {
                                     var productVariant = GetProductVariant(parseErrors, worksheet, rowId, handle);
+                                    if (productVariant != null)
+                                    {
+                                        //Options
+                                        GetProductVariantOptions(worksheet, rowId, productVariant);
 
-                                    //Options
-                                    GetProductVariantOptions(worksheet, rowId, productVariant);
+                                        //Price Breaks
+                                        GetPriceBreaks(parseErrors, worksheet, rowId, handle, productVariant);
 
-                                    //Price Breaks
-                                    GetPriceBreaks(parseErrors, worksheet, rowId, handle, productVariant);
-
-                                    product.ProductVariants.Add(productVariant);
+                                        product.ProductVariants.Add(productVariant);
+                                    }
                                 }
                             }
                         }
