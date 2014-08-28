@@ -26,14 +26,11 @@ namespace MrCMS.Web.Apps.Ecommerce
         private readonly IDocumentService _documentService;
         private readonly ICurrencyService _currencyService;
         private readonly IWidgetService _widgetService;
-        private readonly MediaSettings _mediaSettings;
-        private readonly IImageProcessor _imageProcessor;
         private readonly IFileService _fileService;
         private readonly ILayoutAreaAdminService _layoutAreaAdminService;
 
         public EcommerceAppInstallation(IConfigurationProvider configurationProvider, SiteSettings siteSettings, EcommerceSettings ecommerceSettings,
-            IDocumentService documentService, ICurrencyService currencyService, IWidgetService widgetService, MediaSettings mediaSettings,
-            IImageProcessor imageProcessor, IFileService fileService, ILayoutAreaAdminService layoutAreaAdminService)
+            IDocumentService documentService, ICurrencyService currencyService, IWidgetService widgetService, IFileService fileService, ILayoutAreaAdminService layoutAreaAdminService)
         {
             _configurationProvider = configurationProvider;
             _siteSettings = siteSettings;
@@ -41,8 +38,6 @@ namespace MrCMS.Web.Apps.Ecommerce
             _documentService = documentService;
             _currencyService = currencyService;
             _widgetService = widgetService;
-            _mediaSettings = mediaSettings;
-            _imageProcessor = imageProcessor;
             _fileService = fileService;
             _layoutAreaAdminService = layoutAreaAdminService;
         }
@@ -50,7 +45,7 @@ namespace MrCMS.Web.Apps.Ecommerce
 
         public int Priority
         {
-            get { return -1; }
+            get { return 100; }
         }
 
         public void Install(InstallModel model)
@@ -219,19 +214,19 @@ namespace MrCMS.Web.Apps.Ecommerce
             _siteSettings.DefaultLayoutId = eCommerceLayout.Id;
             _siteSettings.ThemeName = "Ecommerce";
             _configurationProvider.SaveSettings(_siteSettings);
-            _ecommerceSettings.SearchProductsPerPage = "12,20,40";
-            _ecommerceSettings.PreviousPriceText = "Previous price";
-
 
 
             var imgPath = HttpContext.Current.Server.MapPath("/Apps/Ecommerce/Content/Images/awaiting-image.jpg");
             var fileStream = new FileStream(imgPath, FileMode.Open);
             var dbFile = _fileService.AddFile(fileStream, Path.GetFileName(imgPath), "image/jpeg", fileStream.Length, defaultMediaCategory);
 
+
+
+            _ecommerceSettings.SearchProductsPerPage = "12,20,40";
+            _ecommerceSettings.PreviousPriceText = "Previous price";
             _ecommerceSettings.DefaultNoProductImage = dbFile.FileUrl;
 
             _configurationProvider.SaveSettings(_ecommerceSettings);
-
 
             var welcome = new TextPage
             {
