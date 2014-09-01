@@ -1,12 +1,15 @@
 ﻿using System.Linq;
 using System.Text;
+using MrCMS.Entities.Documents.Web.FormProperties;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Core.Widgets;
 using MrCMS.Web.Apps.Ecommerce.Installation.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Widgets;
+using MrCMS.Web.Areas.Admin.Services;
 
 namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 {
@@ -14,11 +17,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
     {
         private readonly IWidgetService _widgetService;
         private readonly IDocumentService _documentService;
+        private readonly IFormAdminService _formAdminService;
 
-        public SetupEcommerceWidgets(IWidgetService widgetService, IDocumentService documentService)
+        public SetupEcommerceWidgets(IWidgetService widgetService, IDocumentService documentService, IFormAdminService formAdminService)
         {
             _widgetService = widgetService;
             _documentService = documentService;
+            _formAdminService = formAdminService;
         }
 
         public void Setup(PageModel pageModel, MediaModel mediaModel, LayoutModel layoutModel)
@@ -96,6 +101,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Name = "Recently Viewed"
             };
             _widgetService.AddWidget(recentlyViewed);
+
+            GetFormProperties(pageModel.HomePage);
+            //home footer form
+            var footerLinksWidget = new TextWidget
+            {
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 4"),
+                Name = "Footer links",
+                Text = string.Format("[form-{0}]", pageModel.HomePage.Id)
+            };
+            _widgetService.AddWidget(footerLinksWidget);
+        }
+
+        private void GetFormProperties(TextPage home)
+        {
+            home = _documentService.GetDocument<TextPage>(home.Id);
+            var name = new TextBox
+            {
+                Name = "Email",
+                LabelText = "Newsletter Signup",
+                Required = true,
+                DisplayOrder = 1,
+                Webpage = home
+            };
+            _formAdminService.AddFormProperty(name);
+            _documentService.SaveDocument(home);
         }
 
         private string GetFeaturedProducts()

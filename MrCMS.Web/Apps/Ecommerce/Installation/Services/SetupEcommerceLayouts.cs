@@ -58,7 +58,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 new LayoutArea {AreaName = "Navigation", Layout = eCommerceLayout},
                 new LayoutArea {AreaName = "Before Content", Layout = eCommerceLayout},
                 new LayoutArea {AreaName = "After Content", Layout = eCommerceLayout},
-                new LayoutArea {AreaName = "Footer", Layout = eCommerceLayout}
+                new LayoutArea {AreaName = "Footer Area 1", Layout = eCommerceLayout},
+                new LayoutArea {AreaName = "Footer Area 2", Layout = eCommerceLayout},
+                new LayoutArea {AreaName = "Footer Area 3", Layout = eCommerceLayout},
+                new LayoutArea {AreaName = "Footer Area 4", Layout = eCommerceLayout}
             };
             
             _documentService.AddDocument(eCommerceLayout);
@@ -197,13 +200,36 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             //footer links
             var footerLinksWidget = new TextWidget
             {
-                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Footer"),
+                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Footer Area 1"),
                 Name = "Footer links",
-                Text = EcommerceInstalInfo.FooterText
+                Text = EcommerceInstalInfo.FooterText1
             };
             _widgetService.AddWidget(footerLinksWidget);
 
+            footerLinksWidget = new TextWidget
+            {
+                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Footer Area 2"),
+                Name = "Footer links",
+                Text = EcommerceInstalInfo.FooterText2
+            };
+            _widgetService.AddWidget(footerLinksWidget);
 
+            footerLinksWidget = new TextWidget
+            {
+                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Footer Area 3"),
+                Name = "Footer links",
+                Text = EcommerceInstalInfo.FooterText3
+            };
+            _widgetService.AddWidget(footerLinksWidget);
+
+            var afterContentCardsTeaser = new TextWidget
+            {
+                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "After Content"),
+                Name = "Footer links",
+                Text = EcommerceInstalInfo.AfterContentCardsTeaser
+            };
+
+            _widgetService.AddWidget(afterContentCardsTeaser);
             //Page templates
             var homeTemplate = new PageTemplate
             {
