@@ -123,7 +123,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 new LayoutArea {AreaName = "Below Product Price", Layout = productLayout},
                 new LayoutArea {AreaName = "Below Add to cart", Layout = productLayout},
                 new LayoutArea {AreaName = "Below Product Information", Layout = productLayout},
-                new LayoutArea {AreaName = "Before Product Content", Layout = productLayout}
+                new LayoutArea {AreaName = "Before Product Content", Layout = productLayout},
+                new LayoutArea {AreaName = "After Product Content", Layout = productLayout}
             };
 
             _documentService.AddDocument(productLayout);

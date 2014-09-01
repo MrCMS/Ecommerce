@@ -50,6 +50,36 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 CacheLength = 60
             };
             _widgetService.AddWidget(breadcrumbs);
+
+            var relatedProducts = new RelatedProducts
+            {
+                LayoutArea = layoutModel.ProductLayout.LayoutAreas.Single(x => x.AreaName == "After Product Content"),
+                Name = "Related Products",
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+            _widgetService.AddWidget(relatedProducts);
+
+            var peopleAlsoBought = new PeopleWhoBoughtThisAlsoBought
+            {
+                LayoutArea = layoutModel.ProductLayout.LayoutAreas.Single(x => x.AreaName == "After Product Content"),
+                Name = "People who bought this also bought",
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+            _widgetService.AddWidget(peopleAlsoBought);
+
+            var otherCategories = new NotWhatYouWereLookingForWidget
+            {
+                LayoutArea = layoutModel.ProductLayout.LayoutAreas.Single(x => x.AreaName == "Below Product Price"),
+                Name = "Not what you were looking for?",
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+            _widgetService.AddWidget(otherCategories);
         }
 
         private void SetupCheckoutLayoutWidgets(MediaModel mediaModel, LayoutModel layoutModel)
@@ -308,6 +338,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             };
 
             _widgetService.AddWidget(afterContentCardsTeaser);
+
+            var page404 = _documentService.GetDocumentByUrl<TextPage>("404");
+            var notFoundProducts = new On404SearchWidget
+            {
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "After Content"),
+                Name = "What about these?",
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60,
+                Webpage = page404
+            };
+            _widgetService.AddWidget(notFoundProducts);
         }
 
         private void GetFormProperties(TextPage home)
