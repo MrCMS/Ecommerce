@@ -11,36 +11,34 @@
 @Html.HiddenFor(x => x.Id)
 @Html.HiddenFor(x => x.LiveUrlSegment)
 
- <div class="margin-bottom-30 grey-border-top padding-top-10">
-     <div class="container">
-         <div class="row" id="product-search-container">
-             <div class="col-sm-3">
-                 @{ Html.RenderAction("Query", "ProductSearch", new { query });}
-             </div>
-            <div class="col-sm-9">
-                <h1>@Editable(Model, category => category.Name)</h1>
-                @if (Model.ShowSubCategories)
+<div class="margin-bottom-30 grey-border-top padding-top-10">
+    <div class="row" id="product-search-container">
+        <div class="col-sm-3">
+            @{ Html.RenderAction("Query", "ProductSearch", new { query });}
+        </div>
+        <div class="col-sm-9">
+            <h1>@Editable(Model, category => category.Name)</h1>
+            @if (Model.ShowSubCategories)
+            {
+                var categories = ViewData["subcategories"] as IList<Category>;
+                if (categories != null)
                 {
-                    var categories = ViewData["subcategories"] as IList<Category>;
-                    if (categories != null)
+                    foreach (var categoryChunk in categories.Chunk(3))
                     {
-                        foreach (var categoryChunk in categories.Chunk(3))
-                        {
-                             <div class="row">
-                                @foreach (var category in categoryChunk)
-                                {
-                                    Html.RenderPartial("CategoryCard", category);
-                                }
-                            </div>
-                        }
+                        <div class="row">
+                            @foreach (var category in categoryChunk)
+                            {
+                                Html.RenderPartial("CategoryCard", category);
+                            }
+                        </div>
                     }
                 }
+            }
 
-                @{ Html.RenderAction("Results", "ProductSearch", new { query });}
-                @Editable(Model, category => category.BodyContent, true)
-             </div>
-         </div>
-     </div>
+            @{ Html.RenderAction("Results", "ProductSearch", new { query });}
+            @Editable(Model, category => category.BodyContent, true)
+        </div>
+    </div>
 </div>
 
 @{

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Drawing;
+using System.Linq;
 using System.Text;
 using MrCMS.Entities.Documents.Web.FormProperties;
 using MrCMS.Services;
@@ -18,12 +19,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
         private readonly IWidgetService _widgetService;
         private readonly IDocumentService _documentService;
         private readonly IFormAdminService _formAdminService;
+        private readonly IImageProcessor _imageProcessor;
+        private readonly IFileService _fileService;
 
-        public SetupEcommerceWidgets(IWidgetService widgetService, IDocumentService documentService, IFormAdminService formAdminService)
+        public SetupEcommerceWidgets(IWidgetService widgetService, IDocumentService documentService, IFormAdminService formAdminService, IFileService fileService)
         {
             _widgetService = widgetService;
             _documentService = documentService;
             _formAdminService = formAdminService;
+            _fileService = fileService;
         }
 
         public void Setup(PageModel pageModel, MediaModel mediaModel, LayoutModel layoutModel)
@@ -111,6 +115,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Text = string.Format("[form-{0}]", pageModel.HomePage.Id)
             };
             _widgetService.AddWidget(footerLinksWidget);
+
+            //checkout images
+            var checkoutLogo = new LinkedImage
+            {
+                Image = _fileService.GetFileLocation(mediaModel.Logo, new Size {Width = 200, Height = 200}), 
+                Link = "/",
+                LayoutArea = layoutModel.CheckoutLayout.LayoutAreas.Single(x => x.AreaName == "Checkout Header Left")
+            };
+            _widgetService.AddWidget(checkoutLogo);
+
+            var checkoutSecureBadge = new LinkedImage
+            {
+                Image = mediaModel.SecureCheckout.FileUrl,
+                LayoutArea = layoutModel.CheckoutLayout.LayoutAreas.Single(x => x.AreaName == "Checkout Header Middle")
+            };
+            _widgetService.AddWidget(checkoutSecureBadge);
         }
 
         private void GetFormProperties(TextPage home)

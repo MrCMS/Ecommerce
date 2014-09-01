@@ -16,5 +16,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Models
         public MediaFile FeaturedCategory2 { get; set; }
         public MediaFile FeaturedCategory3 { get; set; }
         public MediaFile FeaturedCategory4 { get; set; }
+        public MediaFile SecureCheckout { get; set; }
     }
 }
