@@ -2,6 +2,7 @@ using MrCMS.Entities.Documents.Layout;
 using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Installation.Models;
+using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 
 namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
@@ -20,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
         public void Setup(MediaModel mediaModel)
         {
             var siteSettings = _configurationProvider.GetSiteSettings<SiteSettings>();
-            var documentByUrl = _documentService.GetDocumentByUrl<Layout>("_EcommerceLayout");
+            var documentByUrl = _documentService.GetDocumentByUrl<Layout>("_ContentLayout");
             if (documentByUrl != null)
                 siteSettings.DefaultLayoutId = documentByUrl.Id;
             siteSettings.ThemeName = "Ecommerce";
@@ -28,9 +29,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 
             var ecommerceSettings = _configurationProvider.GetSiteSettings<EcommerceSettings>();
             ecommerceSettings.SearchProductsPerPage = "12,20,40";
-            ecommerceSettings.PreviousPriceText = "Previous price";
+            ecommerceSettings.PreviousPriceText = "Was";
             ecommerceSettings.DefaultNoProductImage = mediaModel.AwatiginImage.FileUrl;
+            ecommerceSettings.EnableWishlists = true;
             _configurationProvider.SaveSettings(ecommerceSettings);
+
+            var paymentSettings = _configurationProvider.GetSiteSettings<PaymentSettings>();
+            paymentSettings.CashOnDeliveryEnabled = true;
+            _configurationProvider.SaveSettings(paymentSettings);
         }
     }
 }

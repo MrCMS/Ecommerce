@@ -1,7 +1,9 @@
-﻿namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
+﻿using MrCMS.Web.Apps.Ecommerce.Installation.Models;
+
+namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 {
     public interface IImportDummyCategories
     {
-        void Import();
+        void Import(MediaModel mediaModel);
     }
 }

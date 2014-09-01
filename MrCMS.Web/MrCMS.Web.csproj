@@ -793,6 +793,7 @@
     <Compile Include="Apps\Ecommerce\Installation\Services\SetupEcommerceLayouts.cs" />
     <Compile Include="Apps\Ecommerce\Installation\Services\SetupEcommerceMedia.cs" />
     <Compile Include="Apps\Ecommerce\Installation\Services\SetupEcommerceSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\SetupEcommerceWidgets.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\GiftCardCreatedMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\ProductBackInStockMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderCancelledEmailToCustomerMessageTemplate.cs" />

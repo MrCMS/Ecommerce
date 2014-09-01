@@ -1,7 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI;
+using MarketplaceWebService.Model;
+using MrCMS.Entities.Documents.Web.FormProperties;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Pages;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Installation.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Areas.Admin.Models;
@@ -13,11 +18,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
     {
         private readonly IDocumentService _documentService;
         private readonly IPageTemplateAdminService _pageTemplateAdminService;
+        private readonly IFormAdminService _formAdminService;
 
-        public SetupBaseDocuments(IDocumentService documentService, IPageTemplateAdminService pageTemplateAdminService)
+        public SetupBaseDocuments(IDocumentService documentService, IPageTemplateAdminService pageTemplateAdminService, IFormAdminService formAdminService)
         {
             _documentService = documentService;
             _pageTemplateAdminService = pageTemplateAdminService;
+            _formAdminService = formAdminService;
         }
 
         public PageModel Setup(MediaModel mediaModel)
@@ -34,21 +41,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 Name = "Products",
                 UrlSegment = "products",
-                RevealInNavigation = true
+                RevealInNavigation = false
             };
             _documentService.AddDocument(productSearch);
             _documentService.PublishNow(productSearch);
             _documentService.AddDocument(categoryContainer);
             _documentService.PublishNow(categoryContainer);
+            pageModel.ProductSearch = productSearch;
 
-            var welcome = new TextPage
-            {
-                Name = "Welcome",
-                UrlSegment = "shop",
-                RevealInNavigation = true,
-                PublishOn = DateTime.UtcNow
-            };
-            _documentService.AddDocument(welcome);
             var yourBasket = new Cart
             {
                 Name = "Your Basket",
@@ -99,7 +99,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             _documentService.AddDocument(orderPlaced);
 
             //Added to cart
-            var addedToCart = new ProductAddedToCart()
+            var addedToCart = new ProductAddedToCart
             {
                 Name = "Added to Basket",
                 UrlSegment = "add-to-basket",
@@ -107,7 +107,35 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 PublishOn = DateTime.UtcNow
             };
             _documentService.AddDocument(addedToCart);
+            pageModel.ProductAddedToCart = addedToCart;
 
+            var wishlist = new ShowWishlist
+            {
+                Name = "Wishlist",
+                UrlSegment = "wishlist",
+                RevealInNavigation = true,
+                PublishOn = DateTime.UtcNow
+            };
+            _documentService.AddDocument(wishlist);
+
+            var newIn = new NewInProducts
+            {
+                Name = "New In",
+                UrlSegment = "new-in",
+                RevealInNavigation = true,
+                PublishOn = DateTime.UtcNow
+            };
+            _documentService.AddDocument(newIn);
+
+            var about = new TextPage()
+            {
+                Name = "About us",
+                UrlSegment = "about-us",
+                RevealInNavigation = true,
+                PublishOn = DateTime.UtcNow,
+                BodyContent = EcommerceInstalInfo.AboutUsText
+            };
+            _documentService.AddDocument(about);
 
             //update core pages
             var homePage = _documentService.GetDocumentByUrl<TextPage>("home");
@@ -138,14 +166,54 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 UrlSegment = "contact-us",
                 RevealInNavigation = true,
                 PublishOn = DateTime.UtcNow,
-                Longitude = 55.01021m,
-                Latitude = -1.44998m,
+                Latitude = 55.01021m,
+                Longitude = -1.44998m,
                 Address = EcommerceInstalInfo.Address,
-                PinImage = mediaModel.Logo.FileUrl
+                PinImage = mediaModel.Logo.FileUrl,
+                BodyContent = "[form]",
+                FormDesign = EcommerceInstalInfo.ContactFormDesign
             };
             _documentService.AddDocument(contactUs);
+            GetFormProperties(contactUs);
 
             return pageModel;
+        }
+
+        private void GetFormProperties(ContactUs contactus)
+        {
+            contactus = _documentService.GetDocument<ContactUs>(contactus.Id);
+            var name = new TextBox
+            {
+                Name = "Email",
+                Required = true,
+                Webpage = contactus,
+                DisplayOrder = 1
+            };
+            _formAdminService.AddFormProperty(name);
+            var email = new TextBox
+            {
+                Name = "Email",
+                Required = true,
+                Webpage = contactus,
+                DisplayOrder = 2
+            };
+            _formAdminService.AddFormProperty(email);
+            var contact = new TextBox
+            {
+                Name = "Telephone Number",
+                Required = true,
+                Webpage = contactus,
+                DisplayOrder = 3
+            };
+            _formAdminService.AddFormProperty(contact);
+            var message = new TextArea
+            {
+                Name = "Message",
+                Required = true,
+                Webpage = contactus,
+                DisplayOrder = 4
+            };
+            _formAdminService.AddFormProperty(message);
         }
     }
 }

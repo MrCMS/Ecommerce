@@ -1,5 +1,7 @@
+using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Services.Currencies;
+using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 
 namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
@@ -8,11 +10,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
     {
         private readonly ICurrencyService _currencyService;
         private readonly ITaxRateManager _taxRateManager;
+        private readonly ICountryService _countryService;
 
-        public SetupCurrency(ICurrencyService currencyService, ITaxRateManager taxRateManager)
+        public SetupCurrency(ICurrencyService currencyService, ITaxRateManager taxRateManager, ICountryService countryService)
         {
             _currencyService = currencyService;
             _taxRateManager = taxRateManager;
+            _countryService = countryService;
         }
 
         public void Setup()
@@ -33,6 +37,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Percentage = 20m
             };
             _taxRateManager.Add(taxRate);
+
+            var uk = new Country
+            {
+                Name = "United Kingdom",
+                ISOTwoLetterCode = "GB"
+            };
+            _countryService.AddCountry(uk);
         }
     }
 }
