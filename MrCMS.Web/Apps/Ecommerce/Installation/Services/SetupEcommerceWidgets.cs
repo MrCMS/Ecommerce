@@ -7,10 +7,9 @@ using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Core.Widgets;
 using MrCMS.Web.Apps.Ecommerce.Installation.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services;
-using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Widgets;
 using MrCMS.Web.Areas.Admin.Services;
+using MrCMS.Website.Caching;
 
 namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 {
@@ -19,7 +18,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
         private readonly IWidgetService _widgetService;
         private readonly IDocumentService _documentService;
         private readonly IFormAdminService _formAdminService;
-        private readonly IImageProcessor _imageProcessor;
         private readonly IFileService _fileService;
 
         public SetupEcommerceWidgets(IWidgetService widgetService, IDocumentService documentService, IFormAdminService formAdminService, IFileService fileService)
@@ -32,6 +30,79 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 
         public void Setup(PageModel pageModel, MediaModel mediaModel, LayoutModel layoutModel)
         {
+
+            SetupEcommerceLayoutWidgets(mediaModel, layoutModel);
+            SetupHomeLayoutWidgets(pageModel, mediaModel, layoutModel);
+            SetupSearchLayoutWidgets(pageModel, layoutModel);
+            SetupCheckoutLayoutWidgets(mediaModel, layoutModel);
+            SetupProductLayoutWidgets(layoutModel, pageModel);
+        }
+
+        private void SetupProductLayoutWidgets(LayoutModel layoutModel, PageModel pageModel)
+        {
+            var breadcrumbs = new BreadCrumb
+            {
+                LayoutArea = layoutModel.ProductLayout.LayoutAreas.Single(x => x.AreaName == "Before Product Content"),
+                Name = "Breadcrumbs",
+                IsRecursive = true,
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+            _widgetService.AddWidget(breadcrumbs);
+        }
+
+        private void SetupCheckoutLayoutWidgets(MediaModel mediaModel, LayoutModel layoutModel)
+        {
+            //checkout images
+            var checkoutLogo = new LinkedImage
+            {
+                Image = _fileService.GetFileLocation(mediaModel.Logo, new Size { Width = 200, Height = 200 }),
+                Link = "/",
+                LayoutArea = layoutModel.CheckoutLayout.LayoutAreas.Single(x => x.AreaName == "Checkout Header Left"),
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+            _widgetService.AddWidget(checkoutLogo);
+
+            var checkoutSecureBadge = new LinkedImage
+            {
+                Image = mediaModel.SecureCheckout.FileUrl,
+                LayoutArea = layoutModel.CheckoutLayout.LayoutAreas.Single(x => x.AreaName == "Checkout Header Middle"),
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+            _widgetService.AddWidget(checkoutSecureBadge);
+        }
+
+        private void SetupSearchLayoutWidgets(PageModel pageModel, LayoutModel layoutModel)
+        {
+            var recentlyViewed = new RecentlyViewedItems
+            {
+                Webpage = pageModel.ProductSearch,
+                LayoutArea = layoutModel.SearchLayout.LayoutAreas.FirstOrDefault(x => x.AreaName == "After Filters"),
+                Name = "Recently Viewed",
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+            _widgetService.AddWidget(recentlyViewed);
+
+            //breadcrumb
+            var breadcrumbs = new BreadCrumb
+            {
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Before Content"),
+                Name = "Breadcrumbs",
+                Webpage = pageModel.ProductSearch,
+                IsRecursive = true,
+            };
+            _widgetService.AddWidget(breadcrumbs);
+        }
+
+        private void SetupHomeLayoutWidgets(PageModel pageModel, MediaModel mediaModel, LayoutModel layoutModel)
+        {
             var layout = layoutModel.HomeLayout;
             var beforeContent = layoutModel.EcommerceLayout.LayoutAreas.FirstOrDefault(x => x.AreaName == "Before Content");
             var teaser1Area = layout.LayoutAreas.FirstOrDefault(x => x.AreaName == "Teaser1");
@@ -39,12 +110,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var teaser3Area = layout.LayoutAreas.FirstOrDefault(x => x.AreaName == "Teaser3");
             var teaser4Area = layout.LayoutAreas.FirstOrDefault(x => x.AreaName == "Teaser4");
 
+
             var slider = new Slider
             {
                 Image = mediaModel.SliderImage1.FileUrl,
                 Image1 = mediaModel.SliderImage2.FileUrl,
                 LayoutArea = beforeContent,
-                Webpage = pageModel.HomePage
+                Webpage = pageModel.HomePage,
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
             };
             _widgetService.AddWidget(slider);
 
@@ -53,7 +128,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 LayoutArea = beforeContent,
                 Webpage = pageModel.HomePage,
                 ListOfFeaturedProducts = GetFeaturedProducts(),
-                Name = "Featured Products"
+                Name = "Featured Products",
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
             };
             _widgetService.AddWidget(featuredProducts);
 
@@ -62,7 +140,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 LayoutArea = beforeContent,
                 Webpage = pageModel.HomePage,
                 ListOfFeaturedCategories = GetFeaturedCategories(),
-                Name = "Featured Categories"
+                Name = "Featured Categories",
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
             };
             _widgetService.AddWidget(featuredCategories);
 
@@ -70,7 +151,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 LayoutArea = teaser1Area,
                 Webpage = pageModel.HomePage,
-                Text = string.Format(@"<div class=""padding-bottom-10""><span><img src=""{0}"" /> </span></div><h3><a href=""#"">FREE delivery on orders over &pound;50. </a></h3><p>Orders placed Monday to Friday before 2pm will generally be picked and packed for immediate despatch. Please note that orders placed over the weekend or on public holidays will be processed on the next working day.</p>", mediaModel.DeliveryIcon.FileUrl)
+                Text = string.Format(@"<div class=""padding-bottom-10""><span><img src=""{0}"" /> </span></div><h3><a href=""#"">FREE delivery on orders over &pound;50. </a></h3><p>Orders placed Monday to Friday before 2pm will generally be picked and packed for immediate despatch. Please note that orders placed over the weekend or on public holidays will be processed on the next working day.</p>", mediaModel.DeliveryIcon.FileUrl),
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
             };
             _widgetService.AddWidget(teaser1);
 
@@ -78,7 +162,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 LayoutArea = teaser2Area,
                 Webpage = pageModel.HomePage,
-                Text = string.Format(@"<div class=""padding-bottom-10""><span><img src=""{0}"" /> </span></div><h3><a href=""#"">7 day no question returns.</a></h3><p>We offer a 28 Day Money Back Guarantee. If for any reason you are not completely delighted with your purchase you may download a Returns Form and return it within 28 days of receipt for a full refund or exchange.</p>", mediaModel.ReturnIcon.FileUrl)
+                Text = string.Format(@"<div class=""padding-bottom-10""><span><img src=""{0}"" /> </span></div><h3><a href=""#"">7 day no question returns.</a></h3><p>We offer a 28 Day Money Back Guarantee. If for any reason you are not completely delighted with your purchase you may download a Returns Form and return it within 28 days of receipt for a full refund or exchange.</p>", mediaModel.ReturnIcon.FileUrl),
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
             };
             _widgetService.AddWidget(teaser2);
 
@@ -86,7 +173,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 LayoutArea = teaser3Area,
                 Webpage = pageModel.HomePage,
-                Text = string.Format(@"<div class=""padding-bottom-10""><span><img src=""{0}"" /> </span></div><h3><a href=""#"">Store locations.</a></h3><p>Use our store locator to find a store near you as well as information like opening times, addresses, maps and a list of facilities available at every store.</p>", mediaModel.LocationIcon.FileUrl)
+                Text = string.Format(@"<div class=""padding-bottom-10""><span><img src=""{0}"" /> </span></div><h3><a href=""#"">Store locations.</a></h3><p>Use our store locator to find a store near you as well as information like opening times, addresses, maps and a list of facilities available at every store.</p>", mediaModel.LocationIcon.FileUrl),
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
             };
             _widgetService.AddWidget(teaser3);
 
@@ -94,43 +184,130 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 LayoutArea = teaser4Area,
                 Webpage = pageModel.HomePage,
-                Text = string.Format(@"<div class=""padding-bottom-10""><span><img src=""{0}"" /> </span></div><h3><a href=""#"">Contact us.</a></h3><p>Our customer service team is always willing to answer your proposal concerning Samsung Service. Your message will be promptly handled under the direct supervision of our executive management.</p>", mediaModel.ContactIcon.FileUrl)
+                Text = string.Format(@"<div class=""padding-bottom-10""><span><img src=""{0}"" /> </span></div><h3><a href=""#"">Contact us.</a></h3><p>Our customer service team is always willing to answer your proposal concerning Samsung Service. Your message will be promptly handled under the direct supervision of our executive management.</p>", mediaModel.ContactIcon.FileUrl),
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
             };
             _widgetService.AddWidget(teaser4);
 
-            var recentlyViewed = new RecentlyViewedItems
-            {
-                Webpage = pageModel.ProductSearch,
-                LayoutArea = layoutModel.SearchLayout.LayoutAreas.FirstOrDefault(x => x.AreaName == "After Filters"),
-                Name = "Recently Viewed"
-            };
-            _widgetService.AddWidget(recentlyViewed);
-
             GetFormProperties(pageModel.HomePage);
             //home footer form
-            var footerLinksWidget = new TextWidget
+            var footerLinksWidgetForm = new TextWidget
             {
                 LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 4"),
                 Name = "Footer links",
-                Text = string.Format("[form-{0}]", pageModel.HomePage.Id)
+                Text = string.Format("[form-{0}]", pageModel.HomePage.Id),
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+            _widgetService.AddWidget(footerLinksWidgetForm);
+        }
+
+        private void SetupEcommerceLayoutWidgets(MediaModel mediaModel, LayoutModel layoutModel)
+        {
+            var linkedImageLogo = new LinkedImage
+            {
+                Name = "Logo",
+                Link = "/",
+                Image = mediaModel.Logo.FileUrl,
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Header Left"),
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+            _widgetService.AddWidget(linkedImageLogo);
+            // Search
+            var searchBox = new SearchBox
+            {
+                Name = "Search",
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Header Middle"),
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+            _widgetService.AddWidget(searchBox);
+
+            //userlink
+            var userLinks = new UserLinks
+            {
+                Name = "User Links",
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "User Links"),
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+            _widgetService.AddWidget(userLinks);
+
+            //cart widget
+            var cartWidget = new CartWidget
+            {
+                Name = "Cart Widget",
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Header Right"),
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+            _widgetService.AddWidget(cartWidget);
+
+            //nav
+            var nav = new MobileFriendlyNavigation.Widgets.MobileFriendlyNavigation
+            {
+                Name = "Navigation",
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == ("Navigation")),
+                IncludeChildren = true,
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+            _widgetService.AddWidget(nav);
+
+            //footer links
+            var footerLinksWidget = new TextWidget
+            {
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 1"),
+                Name = "Footer links",
+                Text = EcommerceInstalInfo.FooterText1,
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
             };
             _widgetService.AddWidget(footerLinksWidget);
 
-            //checkout images
-            var checkoutLogo = new LinkedImage
+            footerLinksWidget = new TextWidget
             {
-                Image = _fileService.GetFileLocation(mediaModel.Logo, new Size {Width = 200, Height = 200}), 
-                Link = "/",
-                LayoutArea = layoutModel.CheckoutLayout.LayoutAreas.Single(x => x.AreaName == "Checkout Header Left")
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 2"),
+                Name = "Footer links",
+                Text = EcommerceInstalInfo.FooterText2,
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
             };
-            _widgetService.AddWidget(checkoutLogo);
+            _widgetService.AddWidget(footerLinksWidget);
 
-            var checkoutSecureBadge = new LinkedImage
+            footerLinksWidget = new TextWidget
             {
-                Image = mediaModel.SecureCheckout.FileUrl,
-                LayoutArea = layoutModel.CheckoutLayout.LayoutAreas.Single(x => x.AreaName == "Checkout Header Middle")
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 3"),
+                Name = "Footer links",
+                Text = EcommerceInstalInfo.FooterText3,
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
             };
-            _widgetService.AddWidget(checkoutSecureBadge);
+            _widgetService.AddWidget(footerLinksWidget);
+
+            var afterContentCardsTeaser = new TextWidget
+            {
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "After Content"),
+                Name = "Footer links",
+                Text = EcommerceInstalInfo.AfterContentCardsTeaser,
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+
+            _widgetService.AddWidget(afterContentCardsTeaser);
         }
 
         private void GetFormProperties(TextPage home)

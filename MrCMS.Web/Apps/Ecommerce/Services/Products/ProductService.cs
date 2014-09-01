@@ -200,14 +200,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public IList<Product> GetNewIn(int numberOfItems = 10)
         {
-            var ids =
+            return
                 _session.QueryOver<Product>()
-                        .Where(x => x.PublishOn <= CurrentRequestData.Now)
-                        .Select(product => product.Id)
-                        .OrderBy(x => x.CreatedOn)
-                        .Desc.Take(numberOfItems)
-                        .List<int>();
-            return ids.Select(i => _session.Get<Product>(i)).ToList();
+                    .Where(x => x.PublishOn <= CurrentRequestData.Now)
+                    .OrderBy(x => x.CreatedOn)
+                    .Desc.Take(numberOfItems)
+                    .List();
         }
     }
 }
