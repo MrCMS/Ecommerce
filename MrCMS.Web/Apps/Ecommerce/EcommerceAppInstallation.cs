@@ -44,7 +44,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             var pageModel = _setupBaseDocuments.Setup(mediaModel);
             _setupEcommerceSettings.Setup(mediaModel);
             _setupCurrency.Setup();
-            _importDummyCategories.Import();
+            _importDummyCategories.Import(mediaModel);
             _importDummyProducts.Import();
             _setupEcommerceWidgets.Setup(pageModel, mediaModel, layoutModel);
         }

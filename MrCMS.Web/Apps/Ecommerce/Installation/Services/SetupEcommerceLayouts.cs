@@ -5,7 +5,9 @@ using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Widgets;
 using MrCMS.Web.Apps.Ecommerce.Installation.Models;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Widgets;
+using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Web.Areas.Admin.Services;
 
 namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
@@ -16,13 +18,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
         private readonly ILayoutAreaAdminService _layoutAreaAdminService;
         private readonly IWidgetService _widgetService;
         private readonly IPageTemplateAdminService _pageTemplateAdminService;
+        private readonly IPageDefaultsAdminService _pageDefaultsAdminService;
 
-        public SetupEcommerceLayouts(IDocumentService documentService, ILayoutAreaAdminService layoutAreaAdminService, IWidgetService widgetService, IPageTemplateAdminService pageTemplateAdminService)
+        public SetupEcommerceLayouts(IDocumentService documentService, ILayoutAreaAdminService layoutAreaAdminService, IWidgetService widgetService, IPageTemplateAdminService pageTemplateAdminService, IPageDefaultsAdminService pageDefaultsAdminService)
         {
             _documentService = documentService;
             _layoutAreaAdminService = layoutAreaAdminService;
             _widgetService = widgetService;
             _pageTemplateAdminService = pageTemplateAdminService;
+            _pageDefaultsAdminService = pageDefaultsAdminService;
         }
 
         public LayoutModel Setup(MediaModel mediaModel)
@@ -139,6 +143,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             foreach (var area in searchLayoutAreas)
                 _layoutAreaAdminService.SaveArea(area);
             layoutModel.SearchLayout = searchLayout;
+
+            var contentLayout = new Layout
+            {
+                Name = "Content Layout",
+                UrlSegment = "_ContentLayout",
+                LayoutAreas = new List<LayoutArea>(),
+                Parent = eCommerceLayout
+            };
+            _documentService.AddDocument(contentLayout);
+            layoutModel.ContentLayout = contentLayout;
             var linkedImageLogo = new LinkedImage
             {
                 Name = "Logo",
@@ -200,7 +214,52 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             };
             _pageTemplateAdminService.Add(homeTemplate);
 
+            SetPageDefaults(layoutModel);
+
             return layoutModel;
+        }
+
+        private void SetPageDefaults(LayoutModel layoutModel)
+        {
+            //product search
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(ProductSearch).FullName,
+                LayoutId = layoutModel.SearchLayout.Id,
+                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+            });
+            //checkout
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(EnterOrderEmail).FullName,
+                LayoutId = layoutModel.CheckoutLayout.Id,
+                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+            });
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(OrderPlaced).FullName,
+                LayoutId = layoutModel.CheckoutLayout.Id,
+                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+            });
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(PaymentDetails).FullName,
+                LayoutId = layoutModel.CheckoutLayout.Id,
+                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+            });
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(SetShippingDetails).FullName,
+                LayoutId = layoutModel.CheckoutLayout.Id,
+                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+            });
+            //product
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(Product).FullName,
+                LayoutId = layoutModel.ProductLayout.Id,
+                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+            });
         }
     }
 }
