@@ -11,7 +11,7 @@
 @Html.HiddenFor(x => x.Id)
 @Html.HiddenFor(x => x.LiveUrlSegment)
 
-<div class="margin-bottom-30 grey-border-top padding-top-10">
+<div class="margin-bottom-30">
     <div class="row" id="product-search-container">
         <div class="col-sm-3">
             @{ Html.RenderAction("Query", "ProductSearch", new { query });}
