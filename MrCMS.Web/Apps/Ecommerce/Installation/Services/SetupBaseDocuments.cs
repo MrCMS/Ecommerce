@@ -1,12 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web.UI;
-using MarketplaceWebService.Model;
 using MrCMS.Entities.Documents.Web.FormProperties;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Pages;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Installation.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Areas.Admin.Models;
@@ -148,6 +144,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 {
                     homePage.PageTemplate = homeTemplate;
                 }
+
+                homePage.SubmitButtonText = "Sign up";
                 _documentService.SaveDocument(homePage);
                 pageModel.HomePage = homePage;
             }

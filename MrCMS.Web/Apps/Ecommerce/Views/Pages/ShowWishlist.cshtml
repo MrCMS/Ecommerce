@@ -6,23 +6,33 @@
     var wishlist = ViewData["wishlist"] as Wishlist ?? new Wishlist();
     var myWishlist = ViewData["my-wishlist"] is bool && (bool)ViewData["my-wishlist"];
 }
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <h1>@Editable(Model, x=>x.Name)</h1>
-            @if (myWishlist)
-            {
-                var url = UniquePageHelper.GetAbsoluteUrl<ShowWishlist>(new { id = wishlist.Guid });
-                <p>
-                    Direct Url: <a href="@url">@url</a>
-                </p>
+<div class="row">
+    <div class="col-sm-12">
+        <h1>@Editable(Model, x => x.Name)</h1>
+        @if (myWishlist)
+        {
+            var url = UniquePageHelper.GetAbsoluteUrl<ShowWishlist>(new { id = wishlist.Guid });
+            <p>
+                Direct Url: <a href="@url">@url</a>
+            </p>
+        }
+        <div id="products">
+            
+            @{
+                IEnumerable<ProductVariant> productVariants = wishlist.WishlistItems.Select(item => item.Item);
             }
-            <div id="products">
-                @foreach (var productVariant in wishlist.WishlistItems.Select(item => item.Item))
+            @if (productVariants.Any())
+            {
+                foreach (var productVariant in productVariants)
                 {
                     Html.RenderPartial("VariantCard", productVariant);
                 }
-            </div>
+            }
+            else
+            {
+                @Resource("No Wishlist Items", "There are no items in your wishlist.")
+            }
+            
         </div>
     </div>
 </div>
