@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Entities.Widget;
+using MrCMS.Website;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.MobileFriendlyNavigation.Widgets

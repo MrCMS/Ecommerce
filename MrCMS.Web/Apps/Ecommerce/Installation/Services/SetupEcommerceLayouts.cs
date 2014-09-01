@@ -122,7 +122,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 new LayoutArea {AreaName = "Below Product Price", Layout = productLayout},
                 new LayoutArea {AreaName = "Below Add to cart", Layout = productLayout},
-                new LayoutArea {AreaName = "Below Product Information", Layout = productLayout}
+                new LayoutArea {AreaName = "Below Product Information", Layout = productLayout},
+                new LayoutArea {AreaName = "Before Product Content", Layout = productLayout}
             };
 
             _documentService.AddDocument(productLayout);
@@ -157,80 +158,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             };
             _documentService.AddDocument(contentLayout);
             layoutModel.ContentLayout = contentLayout;
-            var linkedImageLogo = new LinkedImage
-            {
-                Name = "Logo",
-                Link = "/",
-                Image = mediaModel.Logo.FileUrl,
-                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Header Left")
-            };
-            _widgetService.AddWidget(linkedImageLogo);
-            // Search
-            var searchBox = new SearchBox
-            {
-                Name = "Search",
-                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Header Middle")
-            };
-            _widgetService.AddWidget(searchBox);
-
-            //userlink
-            var userLinks = new UserLinks
-            {
-                Name = "User Links",
-                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "User Links")
-            };
-            _widgetService.AddWidget(userLinks);
-
-            //cart widget
-            var cartWidget = new CartWidget
-            {
-                Name = "Cart Widget",
-                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Header Right")
-            };
-            _widgetService.AddWidget(cartWidget);
-
-            //nav
-            var nav = new MobileFriendlyNavigation.Widgets.MobileFriendlyNavigation
-            {
-                Name = "Navigation",
-                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == ("Navigation")),
-                IncludeChildren = true
-            };
-            _widgetService.AddWidget(nav);
-
-            //footer links
-            var footerLinksWidget = new TextWidget
-            {
-                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Footer Area 1"),
-                Name = "Footer links",
-                Text = EcommerceInstalInfo.FooterText1
-            };
-            _widgetService.AddWidget(footerLinksWidget);
-
-            footerLinksWidget = new TextWidget
-            {
-                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Footer Area 2"),
-                Name = "Footer links",
-                Text = EcommerceInstalInfo.FooterText2
-            };
-            _widgetService.AddWidget(footerLinksWidget);
-
-            footerLinksWidget = new TextWidget
-            {
-                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "Footer Area 3"),
-                Name = "Footer links",
-                Text = EcommerceInstalInfo.FooterText3
-            };
-            _widgetService.AddWidget(footerLinksWidget);
-
-            var afterContentCardsTeaser = new TextWidget
-            {
-                LayoutArea = ecommerceLayoutArea.Single(x => x.AreaName == "After Content"),
-                Name = "Footer links",
-                Text = EcommerceInstalInfo.AfterContentCardsTeaser
-            };
-
-            _widgetService.AddWidget(afterContentCardsTeaser);
+            
             //Page templates
             var homeTemplate = new PageTemplate
             {
