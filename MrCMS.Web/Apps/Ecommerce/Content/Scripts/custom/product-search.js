@@ -143,7 +143,7 @@
         $.get('/search/results', State.data, function (response) {
             $("#loading-message").hide();
             $('#product-results-container').replaceWith(response);
-            var top = $("#product-results-container").offset().top;
+            var top = $("#product-search-container").offset().top;
             $('html,body').animate({
                 scrollTop: top
             }, 350);

@@ -61,6 +61,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 memoryStream = new MemoryStream(EcommerceInstallHelper.GetFileFromUrl(FeaturedCategoriesInfo.Category4ImageUrl));
                 model.FeaturedCategory4 = _fileService.AddFile(memoryStream, "cat4.jpg", "image/jpeg", memoryStream.Length, defaultMediaCategory);
 
+                memoryStream = new MemoryStream(EcommerceInstallHelper.GetFileFromUrl(FeaturedCategoriesInfo.SecureCheckout));
+                model.SecureCheckout = _fileService.AddFile(memoryStream, "secure-checkout.png", "image/png", memoryStream.Length, defaultMediaCategory);
+
             }
             catch (Exception ex) { }
 

@@ -782,6 +782,7 @@
     <Compile Include="Apps\Ecommerce\Installation\Services\IImportDummyCategories.cs" />
     <Compile Include="Apps\Ecommerce\Installation\Services\ImportDummyCategories.cs" />
     <Compile Include="Apps\Ecommerce\Installation\Services\ImportDummyProducts.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\IIndexSetup.cs" />
     <Compile Include="Apps\Ecommerce\Installation\Services\ISetupCurrency.cs" />
     <Compile Include="Apps\Ecommerce\Installation\Services\ISetupEcommerceSettings.cs" />
     <Compile Include="Apps\Ecommerce\Installation\Services\ISetupBaseDocuments.cs" />

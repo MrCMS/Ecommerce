@@ -99,10 +99,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             };
             var checkoutLayoutAreas = new List<LayoutArea>
             {
-                new LayoutArea {AreaName = "Header Left", Layout = checkoutLayout},
-                new LayoutArea {AreaName = "Header Right", Layout = checkoutLayout},
-                new LayoutArea {AreaName = "Footer Left", Layout = checkoutLayout},
-                new LayoutArea {AreaName = "Footer Right", Layout = checkoutLayout}
+                new LayoutArea {AreaName = "Checkout Header Left", Layout = checkoutLayout},
+                new LayoutArea {AreaName = "Checkout Header Middle", Layout = checkoutLayout},
+                new LayoutArea {AreaName = "Checkout Header Right", Layout = checkoutLayout},
+                new LayoutArea {AreaName = "Checkout Footer Left", Layout = checkoutLayout},
+                new LayoutArea {AreaName = "Checkout Footer Right", Layout = checkoutLayout}
             };
             _documentService.AddDocument(checkoutLayout);
 
