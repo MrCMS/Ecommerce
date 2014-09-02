@@ -22,7 +22,7 @@ namespace MrCMS.HealthChecks
         public override HealthCheckResult PerformCheck()
         {
             var tasks = _session.QueryOver<ScheduledTask>().List();
-            var stalledTasks = tasks.Where(x => x.LastComplete <= CurrentRequestData.Now.AddSeconds(-(x.EveryXSeconds + 120))).ToList();
+            var stalledTasks = tasks.Where(x => x.LastComplete <= CurrentRequestData.Now.AddSeconds(-(x.EveryXSeconds + 120)) || x.LastComplete == null).ToList();
 
             if (stalledTasks.Any())
             {

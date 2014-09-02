@@ -19,9 +19,9 @@
                 </div>
                 @foreach (var item in Model.Products)
                 {
-                    <div class="col-md-2 col-sm-2 col-xs-6">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
                         @{
-                            Html.RenderPartial("ProductCardFeatured", item);
+                    Html.RenderPartial("ProductCardFeatured", item);
                         }
                     </div>
                 }
