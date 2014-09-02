@@ -3,6 +3,7 @@ using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models.Payment;
 using MrCMS.Web.Apps.Ecommerce.Payment.CashOnDelivery.Services;
 using MrCMS.Website.Controllers;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {

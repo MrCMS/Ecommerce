@@ -59,7 +59,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                     SalesChannel = EcommerceApp.DefaultSalesChannel,
                     Guid = cartModel.CartGuid
                 };
-
+                session.Save(order);
                 foreach (var orderLine in cartModel.Items.Select(item => _orderLineCreator.GetOrderLine(item)))
                 {
                     orderLine.Order = order;
@@ -80,7 +80,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                     return existingOrders.First();
                 }
 
-                session.Save(order);
+                session.Update(order);
 
                 return order;
             });
