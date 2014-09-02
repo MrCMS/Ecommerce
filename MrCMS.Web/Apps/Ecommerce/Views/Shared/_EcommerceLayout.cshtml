@@ -22,7 +22,7 @@
                         <div class="input-group">
                             <input type="text" placeholder="e.g. Shorts" name="searchTerm" class="form-control" style="margin-bottom: 5px;"/>
                             <span class="input-group-btn">
-                                <button type="submit" class="btn btn-default" style="margin-bottom: 5px;">
+                                <button type="submit" class="btn btn-default btn-default-blue" style="margin-bottom: 5px;">
                                     Search
                                 </button>
                             </span>
@@ -60,29 +60,27 @@
 
 
 <div id="wrapper">
-    <div class="info hidden-xs">
+    <div class="info">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="pull-left">
                         <ul>
                             <li>
-                                <img src="/Apps/Ecommerce/Content/Images/tick-small.png" /> FREE delivery
+                                <i class="glyphicon glyphicon-ok green"></i> FREE delivery
                             </li>
                             <li>
-                                <img src="/Apps/Ecommerce/Content/Images/tick-small.png" /> 100 % Secure shopping
+                                <i class="glyphicon glyphicon-ok green"></i> 100 % Secure shopping
                             </li>
                         </ul>
                     </div>
                     <div class="pull-right margin-right-minus">
                         <ul>
                             <li>
-                                e : <a href="mailto:info@mrcms.co.uk">
-                                        info@mrcms.co.uk
-                                    </a>
+                                e : <a href="@Resource("info@mrcms.co.uk")">@Resource("info@mrcms.co.uk")</a>
                             </li>
                             <li>
-                                t : 0208 444 4545
+                                @Resource("Telephone", "t : 0208 444 4545")
                             </li>
                         </ul>
                     </div>
@@ -95,38 +93,22 @@
     @{ RenderZone("Before Content"); }
     @RenderBody()
     @{ RenderZone("After Content"); }
-
-    <div class="margin-top-bottom-30">
-        
-        <div class="padding-top-bottom-20 payment grey-border-top-bottom">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <img src="/Apps/Ecommerce/Content/Images/payment.gif" class="img-responsive" alt="Our payment methods" />
-                    </div>
-                    <div class="col-md-9">
-                        We accept Visa, Mastercard and Maestro card payments. We also take payments from customers with a Paypal account.
-                    </div>
-                </div>
-            </div>
-                
-        </div>
-    </div>
+    
 
     <div class="margin-top-bottom-30">
         <footer>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3 col-sm-3 col-xs-12">
-                        @{ RenderZone("Footer"); }
+                    <div class="col-md-3 col-sm-3 col-xs-12" id="footer-area-1">
+                        @{ RenderZone("Footer Area 1"); }
                     </div>
-                    <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="col-md-3 col-sm-3 col-xs-12" id="footer-area-2">
                         @{ RenderZone("Footer Area 2"); }
                     </div>
-                    <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="col-md-3 col-sm-3 col-xs-12" id="footer-area-3">
                         @{ RenderZone("Footer Area 3"); }
                     </div>
-                    <div class="col-md-3 col-sm-3 col-xs-12">
+                    <div class="col-md-3 col-sm-3 col-xs-12" id="footer-area-4">
                         @{ RenderZone("Footer Area 4"); }
                     </div>
                 </div>
