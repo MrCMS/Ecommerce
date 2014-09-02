@@ -775,6 +775,26 @@
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchSpecificationsDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchUrlsegmentDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchIndex.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\EcommerceInstalInfo.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Models\PageModel.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Models\MediaModel.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\IImportDummyProducts.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\IImportDummyCategories.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\ImportDummyCategories.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\ImportDummyProducts.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\IIndexSetup.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\ISetupCurrency.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\ISetupEcommerceSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\ISetupBaseDocuments.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\ISetupEcommerceLayouts.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\ISetupEcommerceMedia.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\ISetupEcommerceWidgets.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\SetupBaseDocuments.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\SetupCurrency.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\SetupEcommerceLayouts.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\SetupEcommerceMedia.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\SetupEcommerceSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\Services\SetupEcommerceWidgets.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\GiftCardCreatedMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\ProductBackInStockMessageTemplate.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\SendOrderCancelledEmailToCustomerMessageTemplate.cs" />
@@ -2537,6 +2557,15 @@
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Areas\Admin\Content\Scripts\lib\jquery.signalR-2.0.2.js" />
     <Content Include="Areas\Admin\Content\Scripts\lib\jquery.signalR-2.0.2.min.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\category.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\forgotten-password.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\password-reset.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\product.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\shipping-methods.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-account.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-login.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-registration.js" />
+    <Content Include="Themes\Ecommerce\Content\Scripts\jquery.history.js" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -3148,6 +3177,13 @@
     <Content Include="Themes\Default\Apps\Core\Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_BaseLayout.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Widgets\Slider.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Core\Views\Widgets\UserLinks.cshtml" />
+    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config" />
+    <Content Include="Themes\Ecommerce\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Amazon\Controllers\" />
@@ -3174,6 +3210,14 @@
     <Folder Include="Themes\Default\Content\" />
     <Folder Include="Themes\Default\Views\Pages\" />
     <Folder Include="Themes\Default\Views\Widgets\" />
+    <Folder Include="Themes\Ecommerce\Apps\Core\Views\Pages\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Content\Styles\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Shared\" />
+    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Webpage\" />
+    <Folder Include="Themes\Ecommerce\Shared\" />
+    <Folder Include="Themes\Ecommerce\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

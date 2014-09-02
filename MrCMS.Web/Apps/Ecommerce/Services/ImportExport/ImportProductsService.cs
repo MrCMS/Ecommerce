@@ -25,7 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         private readonly IUniquePageService _uniquePageService;
         private HashSet<Document> _allDocuments;
         private HashSet<Brand> _allBrands;
-        private ProductSearch _uniquePage;
+        private ProductContainer _uniquePage;
         private MediaCategory _productGalleriesCategory;
         private HashSet<ProductOption> _productOptions;
 
@@ -66,7 +66,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
         /// <param name="productsToImport"></param>
         public void ImportProductsFromDTOs(HashSet<ProductImportDataTransferObject> productsToImport)
         {
-            _uniquePage = _uniquePageService.GetUniquePage<ProductSearch>();
+            _uniquePage = _uniquePageService.GetUniquePage<ProductContainer>();
             _productGalleriesCategory = _documentService.GetDocumentByUrl<MediaCategory>("product-galleries");
             if (_productGalleriesCategory == null)
             {
