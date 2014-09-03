@@ -16,12 +16,13 @@ namespace MrCMS.Web.Apps.Ecommerce
         private readonly IImportDummyProducts _importDummyProducts;
         private readonly ISetupEcommerceWidgets _setupEcommerceWidgets;
         private readonly IIndexSetup _indexSetup;
+        private readonly ISetupNewsletterTemplate _setupNewsletterTemplate;
 
         public EcommerceAppInstallation(ISetupEcommerceLayouts setupEcommerceLayouts,
             ISetupEcommerceMedia setupEcommerceMedia, ISetupBaseDocuments setupBaseDocuments,
             ISetupEcommerceSettings setupEcommerceSettings, ISetupCurrency setupCurrency,
             IImportDummyCategories importDummyCategories, IImportDummyProducts importDummyProducts,
-            ISetupEcommerceWidgets setupEcommerceWidgets, IIndexSetup indexSetup)
+            ISetupEcommerceWidgets setupEcommerceWidgets, IIndexSetup indexSetup, ISetupNewsletterTemplate setupNewsletterTemplate)
         {
             _setupEcommerceLayouts = setupEcommerceLayouts;
             _setupEcommerceMedia = setupEcommerceMedia;
@@ -32,6 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             _importDummyProducts = importDummyProducts;
             _setupEcommerceWidgets = setupEcommerceWidgets;
             _indexSetup = indexSetup;
+            _setupNewsletterTemplate = setupNewsletterTemplate;
         }
 
         public int Priority
@@ -49,6 +51,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             _importDummyCategories.Import(mediaModel);
             _importDummyProducts.Import();
             _setupEcommerceWidgets.Setup(pageModel, mediaModel, layoutModel);
+            _setupNewsletterTemplate.Setup();
             _indexSetup.ReIndex();
         }
 

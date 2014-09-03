@@ -364,6 +364,11 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
 .carousel-indicators li { border: 1px solid #0172B7;}
 .carousel-indicators .active {background-color: #0172B7;}
 
+#footer-area-1, #footer-area-2, #footer-area-3, #footer-area-4 {
+    height: 200px;
+}
+#Message { height: 155px;}
+
 @media (max-width: 767px) {
     .navbar-right { float: right !important;}
     .searchbar .container {padding-left:0;padding-right:0;}
@@ -400,6 +405,7 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
     .product-con { margin-bottom: 10px;}
 
     #variant-details .margin-top-bottom-30 { margin: 0;}
+    
 }
 
 @media (min-width: 768px) and (max-width:979px) {

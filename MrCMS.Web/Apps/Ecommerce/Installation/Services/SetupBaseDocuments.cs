@@ -182,10 +182,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             contactus = _documentService.GetDocument<ContactUs>(contactus.Id);
             var name = new TextBox
             {
-                Name = "Email",
+                Name = "Name",
                 Required = true,
                 Webpage = contactus,
-                DisplayOrder = 1
+                DisplayOrder = 1,
+                CssClass = "input-lg form-control"
             };
             _formAdminService.AddFormProperty(name);
             var email = new TextBox
@@ -193,7 +194,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Name = "Email",
                 Required = true,
                 Webpage = contactus,
-                DisplayOrder = 2
+                DisplayOrder = 2,
+                CssClass = "input-lg form-control"
             };
             _formAdminService.AddFormProperty(email);
             var contact = new TextBox
@@ -201,7 +203,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Name = "Telephone Number",
                 Required = true,
                 Webpage = contactus,
-                DisplayOrder = 3
+                DisplayOrder = 3,
+                CssClass = "input-lg form-control"
             };
             _formAdminService.AddFormProperty(contact);
             var message = new TextArea
@@ -209,7 +212,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Name = "Message",
                 Required = true,
                 Webpage = contactus,
-                DisplayOrder = 4
+                DisplayOrder = 4,
+                CssClass = "input-lg form-control"
             };
             _formAdminService.AddFormProperty(message);
         }

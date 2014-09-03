@@ -8,7 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         public void Execute(OnAddingArgs<ProductVariant> args)
         {
             ProductVariant productVariant = args.Item;
-            if (productVariant.Product != null)
+            if (productVariant.Product != null && !productVariant.Product.Variants.Contains(productVariant))
             {
                 productVariant.Product.Variants.Add(productVariant);
 

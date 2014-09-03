@@ -66,6 +66,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 
         private int GetNumberBought(IList<ProductVariant> variants)
         {
+            if (!variants.Any())
+                return 0;
             var values = variants.Select(variant => variant.Id).ToList();
             var numberBoughtCount = new NumberBoughtCount();
             var singleOrDefault = _session.QueryOver<OrderLine>()
