@@ -224,7 +224,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new {controller = "Cart", action = "UpdateBasket"});
 
             context.MapRoute("Cart - Empty Basket", "Apps/Ecommerce/EmptyBasket",
-                new {controller = "EmptyBasket", action = "Empty"});
+                new {controller = "EmptyBasket", action = "Empty"},  new []{typeof(EmptyBasketController).Namespace});
 
             context.MapRoute("Cart - Add to Cart", "Apps/Ecommerce/AddToCart",
                 new {controller = "AddToCart", action = "Add"});

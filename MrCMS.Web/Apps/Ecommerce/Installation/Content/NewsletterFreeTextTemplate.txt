@@ -1,0 +1,32 @@
+﻿<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="padding: 0; margin: 0;">
+    <tbody>
+        <tr>
+            <td class="full_width" align="center" width="100%" bgcolor="#ffffff">
+                <table class="table_scale" bgcolor="#ffffff" width="600" align="center" cellpadding="0" cellspacing="0" border="0" style="border-top: 1px solid #eee;">
+                    <tbody>
+                        <tr>
+                            <td width="100%" height="20">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <!-- START OF RIGHT COLUMN-->
+                                <table class="full" align="left" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
+                                    <tbody>
+                                        <tr>
+                                            <td class="center" align="left" valign="top" style="padding: 0px; mso-line-height-rule: exactly;font-size:15px ; color:#444444; font-family: Arial, serif; line-height: 22px;">
+                                                <span> [Text] </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="" height="20" style="padding:0; line-height: 0;">&nbsp;</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>

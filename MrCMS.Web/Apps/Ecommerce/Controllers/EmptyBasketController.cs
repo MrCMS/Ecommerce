@@ -4,7 +4,7 @@ using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
-    public class EmptyBasketController : MrCMSAppAdminController<EcommerceApp>
+    public class EmptyBasketController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly IEmptyBasket _emptyBasket;
 

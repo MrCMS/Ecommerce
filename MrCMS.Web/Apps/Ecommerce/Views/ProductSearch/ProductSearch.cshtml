@@ -7,12 +7,12 @@
 @Html.HiddenFor(x => x.Id)
 @Html.HiddenFor(x => x.LiveUrlSegment)
 @Html.HiddenFor(x => x.UrlSegment)
-<div class="margin-bottom-30 padding-top-10">
+<div class="margin-bottom-30 grey-border-top padding-top-10">
     <div class="container">
         <div class="row" id="product-search-container">
             <div class="col-sm-3">
                 @{ RenderZone("Before Filters"); }
-                 @{ Html.RenderAction("Query", "ProductSearch", new { query });}
+                @{ Html.RenderAction("Query", "ProductSearch", new { query });}
                 @{ RenderZone("After Filters"); }
             </div>
             <div class="col-sm-9">

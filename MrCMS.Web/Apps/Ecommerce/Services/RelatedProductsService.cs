@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 else
                 {
                     if (product.Categories.Any())
-                        products.AddRange(product.Categories.First()
+                        products.AddRange(product.Categories.Last()
                             .Products.Where(x => x.Id != product.Id && x.Published).Take(4));
                 }
 
