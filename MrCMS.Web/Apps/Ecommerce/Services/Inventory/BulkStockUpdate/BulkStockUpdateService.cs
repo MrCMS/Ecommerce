@@ -1,57 +1,65 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Elmah.ContentSyndication;
+using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Inventory.BulkStockUpdate.DTOs;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Inventory.BulkStockUpdate
 {
     public class BulkStockUpdateService : IBulkStockUpdateService
     {
-        private readonly IProductVariantService _productVariantService;
-        private readonly ISession _session;
-        private IList<ProductVariant> _allVariants;
-        private readonly List<ProductVariant> _variantsToUpdate;
+        private readonly ISessionFactory _sessionFactory;
+        private readonly Site _site;
+        private readonly HashSet<ProductVariant> _variantsToUpdate;
+        private Dictionary<string, ProductVariant> _allVariants;
 
-        public BulkStockUpdateService(IProductVariantService productVariantService, ISession session)
+        public BulkStockUpdateService(ISessionFactory sessionFactory, Site site)
         {
-            _productVariantService = productVariantService;
-            _session = session;
-            _allVariants = new List<ProductVariant>();
-            _variantsToUpdate = new List<ProductVariant>();
+            _sessionFactory = sessionFactory;
+            _site = site;
+            _variantsToUpdate = new HashSet<ProductVariant>();
         }
 
         public int BulkStockUpdateFromDTOs(IEnumerable<BulkStockUpdateDataTransferObject> items)
         {
-            _allVariants = _productVariantService.GetAll();
+            using (IStatelessSession statelessSession = _sessionFactory.OpenStatelessSession())
+            {
+                _allVariants =
+                    statelessSession.QueryOver<ProductVariant>()
+                        .Where(variant => variant.Site.Id == _site.Id && !variant.IsDeleted && variant.SKU != null)
+                        .List().ToDictionary(variant => variant.SKU, variant => variant);
 
-            var noOfUpdatedItems = 0;
-            
-            _session.Transact(session =>
-               {
-                   foreach (var dataTransferObject in items)
-                   {
-                       BulkStockUpdate(dataTransferObject, ref noOfUpdatedItems);
-                   }
-                   _variantsToUpdate.ForEach(session.SaveOrUpdate);
-               });
+                int noOfUpdatedItems = 0;
 
-            return noOfUpdatedItems;
+                using (var transaction = statelessSession.BeginTransaction())
+                {
+
+                    foreach (BulkStockUpdateDataTransferObject dataTransferObject in items)
+                    {
+                        BulkStockUpdate(dataTransferObject, ref noOfUpdatedItems);
+                    }
+                    _variantsToUpdate.ForEach(statelessSession.Update);
+                    transaction.Commit();
+                }
+
+                return noOfUpdatedItems;
+            }
         }
 
         public void BulkStockUpdate(BulkStockUpdateDataTransferObject itemDto, ref int noOfUpdatedItems)
         {
             if (_allVariants == null)
-                _allVariants = new List<ProductVariant>();
+                _allVariants = new Dictionary<string, ProductVariant>();
 
-            var item = _allVariants.SingleOrDefault(x => x.SKU == itemDto.SKU);
+            ProductVariant variant = _allVariants.ContainsKey(itemDto.SKU) ? _allVariants[itemDto.SKU] : null;
 
-            if (item != null && item.StockRemaining != itemDto.StockRemaining)
+            if (variant != null && variant.StockRemaining != itemDto.StockRemaining)
             {
-                item.StockRemaining = itemDto.StockRemaining;
-                _variantsToUpdate.Add(item);
+                variant.StockRemaining = itemDto.StockRemaining;
+                _variantsToUpdate.Add(variant);
                 noOfUpdatedItems++;
             }
         }
