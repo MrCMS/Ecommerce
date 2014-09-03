@@ -60,6 +60,13 @@
                     <td>@Model.TotalAfterRefunds.ToCurrencyFormat()</td>
                 </tr>
             }
+            @if (!string.IsNullOrWhiteSpace(Model.GiftMessage))
+            {
+                <tr>
+                    <td>Gift Message</td>
+                    <td>@Model.GiftMessage</td>
+                </tr>
+            }
         </table>        
         @{Html.RenderPartial("OrderGiftCards", Model);}
     </div>

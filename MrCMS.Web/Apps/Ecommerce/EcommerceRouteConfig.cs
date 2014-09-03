@@ -245,6 +245,10 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Cart - Remove Gift Card Code", "Apps/Ecommerce/RemoveGiftCardCode",
                 new {controller = "GiftCard", action = "Remove"},
                 new []{typeof(GiftCardController).Namespace});
+
+            context.MapRoute("Cart - Save Gift Message", "Apps/Ecommerce/SaveGiftMessage",
+                new {controller = "GiftMessage", action = "Save"},
+                new[] { typeof(GiftMessageController).Namespace });
         }
     }
 }
