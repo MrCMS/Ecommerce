@@ -12,6 +12,7 @@
         </legend>
 
         <div class="form-group">
+            @Html.HiddenFor(x=>x.Id)
             @Html.LabelFor(x => x.Name)
             @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
             @Html.ValidationMessageFor(x => x.Name)
