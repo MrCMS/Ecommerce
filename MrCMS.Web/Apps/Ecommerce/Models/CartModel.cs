@@ -36,6 +36,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         [Required]
         public string OrderEmail { get; set; }
 
+        public string GiftMessage { get; set; }
+
         [DisplayName("Billing Address same as Shipping Address?")]
         public bool BillingAddressSameAsShippingAddress { get; set; }
 

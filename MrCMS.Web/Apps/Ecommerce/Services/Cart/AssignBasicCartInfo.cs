@@ -34,8 +34,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             cart.UserGuid = userGuid;
             cart.Items = cartItems;
             cart.OrderEmail = GetOrderEmail(userGuid);
+            cart.GiftMessage = GetGiftMessage(userGuid);
             cart.BillingAddressSameAsShippingAddress = _billingAddressSameAsShippingAddress.Get(cart, userGuid);
             return cart;
+        }
+
+        private string GetGiftMessage(Guid userGuid)
+        {
+            return _cartSessionManager.GetSessionValue<string>(CartManager.CurrentGiftMessageKey, userGuid);
         }
 
 

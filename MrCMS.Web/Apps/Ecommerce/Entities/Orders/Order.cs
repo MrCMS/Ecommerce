@@ -101,5 +101,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         [DisplayName("Sales Channel")]
         public virtual string SalesChannel { get; set; }
 
+        [DisplayName("Gift Message")]
+        public virtual string GiftMessage { get; set; }
     }
 }

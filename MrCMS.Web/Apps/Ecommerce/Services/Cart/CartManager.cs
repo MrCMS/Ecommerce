@@ -17,6 +17,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public const string CurrentBillingAddressKey = "current.billing-address";
         public const string CurrentShippingMethodTypeKey = "current.shipping-method-type";
         public const string CurrentOrderEmailKey = "current.order-email";
+        public const string CurrentGiftMessageKey = "current.gift-message";
         public const string CurrentPaymentMethodKey = "current.payment-method";
         public const string CurrentPayPalExpressToken = "current.paypal-express-token";
         public const string CurrentPayPalExpressPayerId = "current.paypal-express-payer-id";
@@ -43,6 +44,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 yield return CurrentBillingAddressKey;
                 yield return CurrentShippingMethodTypeKey;
                 yield return CurrentOrderEmailKey;
+                yield return CurrentGiftMessageKey;
                 yield return CurrentPaymentMethodKey;
                 yield return CurrentPayPalExpressToken;
                 yield return CurrentPayPalExpressPayerId;

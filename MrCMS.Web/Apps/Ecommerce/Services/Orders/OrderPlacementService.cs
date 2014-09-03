@@ -51,6 +51,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                     User = cartModel.User,
                     Weight = cartModel.Weight,
                     OrderEmail = cartModel.OrderEmail,
+                    GiftMessage = cartModel.GiftMessage,
                     CustomerIP = RequestHelper.GetIP(),
                     HttpData = RequestHelper.GetRawHttpData(),
                     PaymentMethod = cartModel.PaymentMethodSystemName,
