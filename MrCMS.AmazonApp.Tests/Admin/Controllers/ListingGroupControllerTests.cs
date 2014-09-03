@@ -11,7 +11,7 @@ using Xunit;
 
 namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 {
-    public class ListingGroupControllerTests : InMemoryDatabaseTest
+    public class ListingGroupControllerTests
     {
         private readonly IAmazonListingGroupService _amazonListingGroupService;
         private readonly AmazonAppSettings _amazonAppSettings;
