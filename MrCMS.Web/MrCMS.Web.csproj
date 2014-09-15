@@ -503,6 +503,7 @@
     <Compile Include="Apps\Ecommerce\ACL\ToolsAndReportsACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\WorldPaySettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\ActionResults\NewsletterActionResult.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\GiftMessageController.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceAppInstallation.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
@@ -1048,6 +1049,7 @@
     <Compile Include="Apps\Ecommerce\Services\IGetCountryOptions.cs" />
     <Compile Include="Apps\Ecommerce\Services\IGetProductCardModel.cs" />
     <Compile Include="Apps\Ecommerce\Services\IGetUserGuid.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IGiftMessageUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductImportDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductVariantImportDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\ExportProductsManager.cs" />
