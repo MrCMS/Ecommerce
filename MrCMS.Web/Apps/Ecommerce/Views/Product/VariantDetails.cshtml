@@ -1,12 +1,16 @@
 ﻿@using System.Drawing
+@using System.Linq
 @using MrCMS.Web.Apps.Ecommerce.Entities.Products
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Pages
+@using MrCMS.Web.Apps.Ecommerce.Settings
+@using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
     Product product = Model.Product;
     CanBuyStatus canBuy = Model.CanBuy(1);
+    var mainCategory = product.Categories.OrderBy(x => x.DisplayOrder).Take(1).First();
 }
 
 <div class="margin-bottom-30 grey-border-top" id="variant-details">
@@ -14,7 +18,7 @@
         <div class="margin-top-bottom-30">
             <div class="row">
                 <div class="col-sm-12">
-                    <h1>@Model.Product.Name</h1>
+                    <h1 itemprop="name">@Model.Product.Name</h1>
                 </div>
             </div>
             <div class="row">
@@ -23,19 +27,22 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="price margin-bottom-10">
-                        @Model.Price.ToCurrencyFormat()
-                        @if (canBuy.OK)
-                        {
-                            <span class="instock">in stock</span>
-                        }
-                        @if (Model.ShowPreviousPrice)
-                        {
-                            <span class="previous-price">
-                                <span class="inner">@Model.PreviousPrice.Value.ToCurrencyFormat()</span>
-                            </span>
-                        }
+                        <span itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">
+                            <meta itemprop="priceCurrency" content="@{ Response.Write(MrCMSApplication.Get<EcommerceSettings>().CurrencyCode); }" />
+                            <span itemprop="price">@Model.Price.ToCurrencyFormat()</span>
+                            @if (canBuy.OK)
+                            {
+                                <span class="instock"  itemprop="availability" content="in_stock">@Resource("In stock")</span>
+                            }
+                            @if (Model.ShowPreviousPrice)
+                            {
+                                <span class="previous-price">
+                                    <span class="inner">@Model.PreviousPrice.Value.ToCurrencyFormat()</span>
+                                </span>
+                            }
+                        </span>
                     </div>
-                    
+
                     @if (!Model.SoldOut)
                     {
                         if (product.IsMultiVariant)
@@ -45,7 +52,7 @@
                                     <label class="line-height-30">Options :</label>
                                 </div>
                                 <div class="col-sm-9 col-xs-8 padding-right-0">
-                                    @Html.DropDownList("variant", product.GetVariantOptions(Model), new {@class = "form-control"})
+                                    @Html.DropDownList("variant", product.GetVariantOptions(Model), new { @class = "form-control" })
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -53,11 +60,12 @@
 
                         if (canBuy.OK)
                         {
-                            Html.RenderAction("Add", "AddToCart", new {model = new AddToCartModel {ProductVariant = Model, Quantity = 1}});
+                            Html.RenderAction("Add", "AddToCart", new { model = new AddToCartModel { ProductVariant = Model, Quantity = 1 } });
                         }
                         if (canBuy is OutOfStock)
                         {
-                            Html.RenderAction("BackInStockForm", "Product", new {id = Model.Id});
+                            <span itemprop="availability" content="out_of_stock">Out of stock</span> <br />
+                            Html.RenderAction("BackInStockForm", "Product", new { id = Model.Id });
                         }
                         if (canBuy is CannotOrderQuantity)
                         {
@@ -71,18 +79,26 @@
                                 @canBuy.Message
                             </p>
                         }
-
+                        if (!string.IsNullOrWhiteSpace(Model.SKU))
+                        {
+                            @:SKU: <span itemprop="identifier" content="sku:@Model.SKU">@Model.SKU</span><br />
+                        }
                         if (product.Brand != null)
                         {
                             if (!string.IsNullOrWhiteSpace(product.Brand.Logo))
                             {
                                 <div>
-                                    @RenderImage(product.Brand.Logo, new Size {Width = 120}, product.Brand.Name, product.Brand.Name, new {@class = "img-responsive"})
-                                </div>
+                                    @RenderImage(product.Brand.Logo, new Size { Width = 120 }, product.Brand.Name, product.Brand.Name, new { @class = "img-responsive" })
+                                </div><br />
                             }
+                            @:Brand: <span itemprop="brand">@product.Brand.Name</span><br />
+                        }
+                        if (mainCategory != null)
+                        {
+                            @:Category: <span itemprop="category" content="@mainCategory.NestedName"><a href="/@mainCategory.UrlSegment">@mainCategory.Name</a></span><br />
                         }
 
-                        Html.RenderAction("Add", "Wishlist", new {productVariant = Model});
+                        Html.RenderAction("Add", "Wishlist", new { productVariant = Model });
 
                         Html.RenderPartial("ProductPricebreaks", Model);
                     }
@@ -98,17 +114,19 @@
                         </div>
                     }
 
+
+
                     <div class="padding-bottom-10" id="readFullDescription">
                         <p class="hidden-xs">
                             <a href="#fulldescription" title="Read full description">Read full description</a>
                         </p>
                     </div>
-                    
+
                     @{RenderZone("Below Product Price");}
                 </div>
                 <div class="col-sm-3">
                     <div class="padding-bottom-10 margin-bottom-20 grey-border-bottom hidden-xs">
-                        <img src="/Apps/Ecommerce/Content/Images/secure.jpg" class="img-responsive" alt="Secure payments"/>
+                        <img src="/Apps/Ecommerce/Content/Images/secure.jpg" class="img-responsive" alt="Secure payments" />
                     </div>
                     @{ Html.RenderPartial("SocialLinks"); }
                 </div>
@@ -116,5 +134,4 @@
         </div>
     </div>
 </div>
-
 @{ RenderZone("Below Add to cart"); }
