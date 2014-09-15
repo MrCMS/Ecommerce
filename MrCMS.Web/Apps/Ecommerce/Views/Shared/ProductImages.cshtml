@@ -1,9 +1,10 @@
 ﻿@using System.Drawing
+@using System.Linq
 @using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 
 <div class="grey-border text-center product-image-box">
-    @Html.RenderImage(Model.DisplayImageUrl, new Size { Width = 458, Height = 367 }, Model.Name, Model.Name, new { @class = "img-responsive center-block" })    
+    @Html.RenderImage(Model.DisplayImageUrl, new Size { Width = 458, Height = 367 }, Model.Name, Model.Name, new { @class = "img-responsive center-block", itemprop = "image" })    
     <div class="clearfix"></div>
 
     <div class="row">
