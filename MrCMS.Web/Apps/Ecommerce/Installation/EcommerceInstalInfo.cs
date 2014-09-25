@@ -21,12 +21,12 @@
         
         public const string AwatingImageUrl = "/Apps/Ecommerce/Content/Images/awaiting-image.jpg";
 
-        public const string CategoryExcelUrl = "http://www.mrcms.com/content/ecommerce/categories.xlsx";
+        public const string CategoryExcelUrl = "https://www.mrcms.com/content/ecommerce/categories.xlsx";
 
         public const string Address =
             @"<address><span style=""line-height: 1.42857143;"">Thought Digital Consultancy</span></address><address>Studio 30-32,<br />Baltic 39<br />HighBridge<br />Newcastle upon Tyne<br />NE1 1EW<br />Tyne and Wear<br />United Kingdom</address>";
 
-        public const string ProductsExcelUrl = "http://www.mrcms.com/content/ecommerce/products.xlsx";
+        public const string ProductsExcelUrl = "https://www.mrcms.com/content/ecommerce/products.xlsx";
 
         public const string HomeCopy =
             @"<h1>Home page title</h1><h1><span style=""font-size: 14px; line-height: 1.428571429;"">Lorem ipsum dolor sit amet, viderer noluiss e indoctum te nam, ubique percipit ei duo. Te sed mundi pertinax, ad vel solum sonet. Ut eum quaeque nonumes, ipsum corpora cum ut, nec ut noster laoreet. Mei ei menandri reformidans. Qui primis interesset an, cu audire numquam docendi eos. Nec corrumpit reprehendunt eu.</span></h1><p><a class=""btn btn-default-blue"" href=""/about-us"">About our store</a></p>";
