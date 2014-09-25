@@ -3037,11 +3037,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\SalesByPaymentType.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\SalesByShippingType.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\SagePaySettings\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Add.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Delete.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Edit.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCalculation\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\BulkStockUpdate.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReport.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReportProductVariant.cshtml" />
@@ -3095,8 +3090,6 @@
     <Content Include="Apps\Ecommerce\Views\Cart\DiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\EditDiscountCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\EnterOrderEmail.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Cart\PaymentDetails.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Cart\ShippingMethods.cshtml" />
     <Content Include="Apps\Ecommerce\Views\CashOnDelivery\Form.cshtml" />
     <Content Include="Apps\Ecommerce\Views\CategoryContainer\Categories.cshtml" />
     <Content Include="Apps\Ecommerce\Views\CategoryContainer\CategoryContainer.cshtml" />
@@ -3185,7 +3178,9 @@
     <Content Include="Apps\MobileFriendlyNavigation\Areas\Admin\Views\Widget\MobileFriendlyNavigation.cshtml" />
     <Content Include="Apps\MobileFriendlyNavigation\Views\web.config" />
     <Content Include="Apps\MobileFriendlyNavigation\Views\Widgets\MobileFriendlyNavigation.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
+    <None Include="Properties\PublishProfiles\Ecommerce-Demo.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Default\Apps\Core\Web.config">
       <SubType>Designer</SubType>
@@ -3197,6 +3192,7 @@
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Widgets\UserLinks.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config" />
     <Content Include="Themes\Ecommerce\Views\Web.config" />
+    <None Include="Properties\PublishProfiles\sao.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Apps\Amazon\Controllers\" />
