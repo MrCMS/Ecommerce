@@ -180,6 +180,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                 {
                     list.Add(Name);
                 }
+                if (this.OptionValues.Any())
+                {
+                    list.AddRange(this.AttributeValuesOrdered.Select(option => option.FormattedValue));
+                }
                 return string.Join(" - ", list);
             }
         }

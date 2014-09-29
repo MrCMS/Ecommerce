@@ -7,40 +7,44 @@
     var hasSpecifications = Model.SpecificationValues.Any();
 }
 @Html.HiddenFor(x => x.UrlSegment)
-@{ Html.RenderPartial("VariantDetails", selectedVariant);}
 
-<div class="margin-top-bottom-30">
-    <div class="container">
-        <div class="row" id="fulldescription">
-            <div class="@(hasSpecifications ? "col-sm-6" : "col-sm-12")">
-                @if (!string.IsNullOrWhiteSpace(Model.BodyContent))
-                {
-                    <div class="block-title">
-                        <span>
-                            <img src="/Apps/Ecommerce/Content/Images/description.png" alt="Description" />
+<div itemscope itemtype="http://data-vocabulary.org/Product">
+    @{ Html.RenderPartial("VariantDetails", selectedVariant);}
+    <div class="margin-top-bottom-30">
+        <div class="container">
+            <div class="row" id="fulldescription">
+                <div class="@(hasSpecifications ? "col-sm-6" : "col-sm-12")">
+                    @if (!string.IsNullOrWhiteSpace(Model.BodyContent))
+                    {
+                        <div class="block-title">
+                            <span>
+                                <img src="/Apps/Ecommerce/Content/Images/description.png" alt="Description" />
+                            </span>
+                            Full Description
+                        </div>
+                        <span itemprop="description">
+                            @Editable(Model, product => product.BodyContent, true)
                         </span>
-                        Full Description
-                    </div>
-                    @Editable(Model, product => product.BodyContent, true)
-                }
-                <div class="clearfix"></div>
-                @{ RenderZone("Below Product Description"); }
-            </div>
-            @if (hasSpecifications)
-            {
-
-                <div class="col-sm-6">
-                    <div class="block-title">
-                        <span>
-                            <img src="/Apps/Ecommerce/Content/Images/specification.png" alt="Specifications" />
-                        </span>
-                        Specifications
-                    </div>
-                    @{
-                Html.RenderPartial("ProductSpecifications", Model);
                     }
+                    <div class="clearfix"></div>
+                    @{ RenderZone("Below Product Description"); }
                 </div>
-            }
+                @if (hasSpecifications)
+                {
+
+                    <div class="col-sm-6">
+                        <div class="block-title">
+                            <span>
+                                <img src="/Apps/Ecommerce/Content/Images/specification.png" alt="Specifications" />
+                            </span>
+                            Specifications
+                        </div>
+                        @{
+                            Html.RenderPartial("ProductSpecifications", Model);
+                        }
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
