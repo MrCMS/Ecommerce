@@ -56,14 +56,10 @@ namespace MrCMS.Services.ImportExport
         public static int GetHierarchyDepth(DocumentImportDTO dto, HashSet<DocumentImportDTO> allItems)
         {
             var currentDto = dto;
-            if (currentDto == null)
-                return 0;
             int depth = 0;
-            while (currentDto != null && !string.IsNullOrWhiteSpace(currentDto.ParentUrl))
+            while (!string.IsNullOrWhiteSpace(currentDto.ParentUrl))
             {
-                currentDto = allItems.FirstOrDefault(o => o.UrlSegment == currentDto.ParentUrl);
-                if (currentDto == null)
-                    continue;
+                currentDto = allItems.First(o => o.UrlSegment == currentDto.ParentUrl);
                 depth++;
             }
             return depth;
@@ -72,14 +68,11 @@ namespace MrCMS.Services.ImportExport
         public static string GetRootParentUrl(DocumentImportDTO dto, HashSet<DocumentImportDTO> allItems)
         {
             var currentDto = dto;
-            if (currentDto == null)
-                return "";
-            while (currentDto != null && !string.IsNullOrWhiteSpace(currentDto.ParentUrl))
+            while (!string.IsNullOrWhiteSpace(currentDto.ParentUrl))
             {
-                currentDto = allItems.FirstOrDefault(o => o.UrlSegment == currentDto.ParentUrl);
+                currentDto = allItems.First(o => o.UrlSegment == currentDto.ParentUrl);
             }
-            if (currentDto != null) return currentDto.UrlSegment;
-            return "";
+            return currentDto.UrlSegment;
         }
 
         /// <summary>

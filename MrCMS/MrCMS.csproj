@@ -336,6 +336,7 @@
     <Compile Include="Entities\Documents\Metadata\DocumentMetadataMap.cs" />
     <Compile Include="Entities\Documents\Metadata\IGetDocumentMetadata.cs" />
     <Compile Include="Entities\Documents\Metadata\RedirectMetadata.cs" />
+    <Compile Include="Entities\Documents\Metadata\SitemapPlaceholderMetadata.cs" />
     <Compile Include="Entities\Documents\Web\FormProperties\CheckboxList.cs" />
     <Compile Include="Entities\Documents\Web\FormProperties\DropDownList.cs" />
     <Compile Include="Entities\Documents\Web\FormProperties\FileUpload.cs" />
@@ -345,6 +346,7 @@
     <Compile Include="Entities\Documents\Web\FormProperties\TextArea.cs" />
     <Compile Include="Entities\Documents\Web\FormProperties\TextBox.cs" />
     <Compile Include="Entities\Documents\Web\PageTemplate.cs" />
+    <Compile Include="Entities\Documents\Web\SitemapPlaceholder.cs" />
     <Compile Include="Entities\Documents\Web\UrlHistory.cs" />
     <Compile Include="Entities\Multisite\RedirectedDomain.cs" />
     <Compile Include="Entities\Notifications\Notification.cs" />
@@ -383,6 +385,7 @@
     <Compile Include="Events\OnDeletingWidget.cs" />
     <Compile Include="Events\OnUpdatedArgs.cs" />
     <Compile Include="Events\OnUpdatingArgs.cs" />
+    <Compile Include="Events\Widgets\ClearCacheWidget.cs" />
     <Compile Include="HealthChecks\EmailSenderTaskCheck.cs" />
     <Compile Include="HealthChecks\HealthCheck.cs" />
     <Compile Include="HealthChecks\HealthCheckResult.cs" />
@@ -481,6 +484,7 @@
     <Compile Include="Services\GetWidgetCachingInfo.cs" />
     <Compile Include="Services\HashAlgorithmProvider.cs" />
     <Compile Include="Services\IAppScriptList.cs" />
+    <Compile Include="Services\IAppStylesheetList.cs" />
     <Compile Include="Services\IAuthConfigurationService.cs" />
     <Compile Include="Services\IAzureFileSystem.cs" />
     <Compile Include="Services\ICustomBindingService.cs" />
@@ -821,6 +825,7 @@
     <Compile Include="Tasks\TaskRunner.cs" />
     <Compile Include="Tasks\TaskExecutor.cs" />
     <Compile Include="Website\Controllers\SEOController.cs" />
+    <Compile Include="Website\Controllers\SitemapPlaceholderController.cs" />
     <Compile Include="Website\EnsureDatabaseIsInstalled.cs" />
     <Compile Include="Website\Filters\ForceImmediateLuceneUpdateAttribute.cs" />
     <Compile Include="Website\Filters\HoneypotFilterAttribute.cs" />
@@ -867,15 +872,15 @@
     <Compile Include="Website\Routing\GetErrorPage.cs" />
     <Compile Include="Website\Routing\GetWebpageByUrlHistoryForRequest.cs" />
     <Compile Include="Website\Routing\GetWebpageForRequest.cs" />
+    <Compile Include="Website\Routing\HandleStandardMrCMSPageExecution.cs" />
     <Compile Include="Website\Routing\IControllerManager.cs" />
     <Compile Include="Website\Routing\IGetErrorPage.cs" />
     <Compile Include="Website\Routing\IGetWebpageByUrlHistoryForRequest.cs" />
     <Compile Include="Website\Routing\IGetWebpageForRequest.cs" />
+    <Compile Include="Website\Routing\IHandleStandardMrCMSPageExecution.cs" />
     <Compile Include="Website\Routing\IMrCMSRouteHandler.cs" />
     <Compile Include="Website\Routing\IMrCMSRoutingErrorHandler.cs" />
     <Compile Include="Website\Routing\MrCMSAdminSSLRedirectHandler.cs" />
-    <Compile Include="Website\Routing\MrCMSAspxHttpHandler.cs" />
-    <Compile Include="Website\Routing\MrCMSAspxRouteHandler.cs" />
     <Compile Include="Website\Routing\MrCMSDisallowedHandler.cs" />
     <Compile Include="Website\Routing\MrCMSHomePageRedirectHandler.cs" />
     <Compile Include="Website\Routing\MrCMSHttpHandler.cs" />
