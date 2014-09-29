@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.BackInStockNotification.BackInStockNotificationRequest
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.BackInStockNotification.BackInStockNotificationRequest
 @{
     var backInStock = ViewData["back-in-stock"] is bool && (bool)ViewData["back-in-stock"];
 }
@@ -14,16 +15,16 @@
     {
         using (Html.BeginForm("BackInStock", "Product", FormMethod.Post))
         {
-        @Html.Hidden("ProductVariant.Id", Model.ProductVariant.Id)
-        
-            <div class="col-sm-4 padding-left-0">
-                @Html.TextBoxFor(x=>x.Email,  new { placeholder = "Email address", @class="form-control"})
+            @Html.Honeypot()
+            @Html.Hidden("ProductVariant.Id", Model.ProductVariant.Id)
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Email)
+                @Html.TextBoxFor(x => x.Email, new { placeholder = "Email address", @class = "form-control" }) <br />
+                @Html.ValidationMessageFor(x => x.Email)
             </div>
-            <div class="col-sm-8 padding-right-0">
-                <input type="submit" class="btn btn-default btn-block" value="Email me when back in stock" />
-            </div>
-            <div class="clearfix"></div>
-            @Html.ValidationMessageFor(x=>x.Email)
+            <input type="submit" class="btn btn-primary btn-block" value="Email me when back in stock" />
+
         }
     }
 </div>

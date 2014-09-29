@@ -1,3 +1,4 @@
+@using System.Linq
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Entities.Cart
 @using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards
@@ -31,6 +32,20 @@
             </div>
         </div>
     </div>
+
+    @if (Model.CannotPlaceOrderReasons.Any())
+    {
+        <div class="alert alert-danger">
+            <p>Sorry, we cannot begin checkout because:</p>
+            <ul>
+                @foreach (var reason in Model.CannotCheckoutReasons)
+                {
+                    <li>@reason</li>
+                }
+            </ul>
+        </div>
+    }
+
     <div id="cart-items" class="margin-bottom-20">
         @if (Model.Items.Any())
         {
