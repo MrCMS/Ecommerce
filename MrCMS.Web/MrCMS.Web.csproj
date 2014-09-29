@@ -1603,10 +1603,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\ecommerce-admin.css" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\product-variant.css" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\reports.css" />
-    <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-theme.css" />
-    <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap.css" />
-    <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap.min.css" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\img\glyphicons-halflings-white.png" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\img\glyphicons-halflings.png" />
@@ -3072,7 +3069,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Widget\SpendXMore.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\WorldPaySettings\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap-theme.css.map" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\css\bootstrap.css.map" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.ttf" />
