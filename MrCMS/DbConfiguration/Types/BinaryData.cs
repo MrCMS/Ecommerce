@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using NHibernate;
@@ -6,11 +7,12 @@ using NHibernate.SqlTypes;
 
 namespace MrCMS.DbConfiguration.Types
 {
+    [Serializable]
     public class BinaryData<T> : BaseImmutableUserType<T> where T : class, new()
     {
         public override SqlType[] SqlTypes
         {
-            get { return new[] { NHibernateUtil.BinaryBlob.SqlType }; }
+            get { return new[] {NHibernateUtil.BinaryBlob.SqlType}; }
         }
 
         public override object NullSafeGet(IDataReader rs, string[] names, object owner)
@@ -21,7 +23,7 @@ namespace MrCMS.DbConfiguration.Types
 
         public override void NullSafeSet(IDbCommand cmd, object value, int index)
         {
-            ((IDbDataParameter)cmd.Parameters[index]).Size = int.MaxValue;
+            ((IDbDataParameter) cmd.Parameters[index]).Size = int.MaxValue;
 
             NHibernateUtil.BinaryBlob.NullSafeSet(cmd, BinaryData.Serialize(value), index);
         }
