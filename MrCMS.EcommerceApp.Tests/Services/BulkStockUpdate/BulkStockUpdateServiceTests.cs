@@ -11,34 +11,34 @@ namespace MrCMS.EcommerceApp.Tests.Services.BulkStockUpdate
 {
     public class BulkStockUpdateServiceTests : InMemoryDatabaseTest
     {
-        private readonly BulkStockUpdateService _bulkStockUpdateService;
-        private readonly IProductVariantService _productVariantService;
+        //private readonly BulkStockUpdateService _bulkStockUpdateService;
+        //private readonly IProductVariantService _productVariantService;
 
-        public BulkStockUpdateServiceTests()
-        {
-             _productVariantService = A.Fake<IProductVariantService>();
-            _bulkStockUpdateService = new BulkStockUpdateService(_productVariantService, Session);
-        }
+        //public BulkStockUpdateServiceTests()
+        //{
+        //     _productVariantService = A.Fake<IProductVariantService>();
+        //    _bulkStockUpdateService = new BulkStockUpdateService(_productVariantService, Session);
+        //}
 
-        [Fact]
-        public void BulkStockUpdateService_BulkStockUpdateFromDTOs_ShouldReturnZeroIfNoItemsAreLinedUpForBulkStockUpdate()
-        {
-            var items = new List<BulkStockUpdateDataTransferObject>();
+        //[Fact]
+        //public void BulkStockUpdateService_BulkStockUpdateFromDTOs_ShouldReturnZeroIfNoItemsAreLinedUpForBulkStockUpdate()
+        //{
+        //    var items = new List<BulkStockUpdateDataTransferObject>();
 
-            var result = _bulkStockUpdateService.BulkStockUpdateFromDTOs(items);
+        //    var result = _bulkStockUpdateService.BulkStockUpdateFromDTOs(items);
 
-            result.Should().Be(0);
-        }
+        //    result.Should().Be(0);
+        //}
 
-        [Fact]
-        public void BulkStockUpdateService_BulkStockUpdateFromDTOs_ShouldCallGetAllOfProductVariantService()
-        {
-            var items = new List<BulkStockUpdateDataTransferObject>();
+        //[Fact]
+        //public void BulkStockUpdateService_BulkStockUpdateFromDTOs_ShouldCallGetAllOfProductVariantService()
+        //{
+        //    var items = new List<BulkStockUpdateDataTransferObject>();
 
-            _bulkStockUpdateService.BulkStockUpdateFromDTOs(items);
+        //    _bulkStockUpdateService.BulkStockUpdateFromDTOs(items);
 
-           A.CallTo(()=>_productVariantService.GetAll()).MustHaveHappened();
-        }
+        //   A.CallTo(()=>_productVariantService.GetAll()).MustHaveHappened();
+        //}
 
         //[Fact]
         //public void BulkStockUpdateService_BulkStockUpdate_ShouldReturnProductVariant()

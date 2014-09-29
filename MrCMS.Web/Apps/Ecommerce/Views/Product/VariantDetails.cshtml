@@ -10,7 +10,7 @@
 @{
     Product product = Model.Product;
     CanBuyStatus canBuy = Model.CanBuy(1);
-    var mainCategory = product.Categories.OrderBy(x => x.DisplayOrder).Take(1).First();
+    var mainCategory = product.Categories.OrderBy(x => x.DisplayOrder).FirstOrDefault();
 }
 
 <div class="margin-bottom-30 grey-border-top" id="variant-details">
