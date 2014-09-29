@@ -28,7 +28,7 @@
                 <div class="col-sm-4">
                     <div class="price margin-bottom-10">
                         <span itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">
-                            <meta itemprop="priceCurrency" content="@{ Response.Write(MrCMSApplication.Get<EcommerceSettings>().CurrencyCode); }" />
+                            <meta itemprop="priceCurrency" content="@{ MrCMSApplication.Get<EcommerceSettings>().CurrencyCode.ToString(); }" />
                             <span itemprop="price">@Model.Price.ToCurrencyFormat()</span>
                             @if (canBuy.OK)
                             {
