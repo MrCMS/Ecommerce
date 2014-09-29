@@ -25,7 +25,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public IPagedList<Product> SearchProducts(ProductSearchQuery query)
         {
-            return _productSearcher.Search(query.GetQuery(), query.Page, query.PageSize, query.GetFilter(), query.GetSort());
+            IPagedList<Product> searchProducts = _productSearcher.Search(query.GetQuery(), query.Page, query.PageSize, query.GetFilter(), query.GetSort());
+            return searchProducts;
         }
 
         public double GetMaxPrice(ProductSearchQuery query)

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -13,6 +14,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get { return Products != null && Products.Any(); }
         }
 
-        public IPagedList<Product> Products { get; set; }
+        public List<ProductCardModel> Products { get; set; }
     }
 }

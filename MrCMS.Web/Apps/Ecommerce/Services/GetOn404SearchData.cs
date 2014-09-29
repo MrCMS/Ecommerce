@@ -1,7 +1,10 @@
 using System.Text.RegularExpressions;
 using System.Web;
+using MrCMS.Paging;
 using MrCMS.Services.Widgets;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Widgets;
 
@@ -22,15 +25,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         {
             var path = _request.Url.AbsolutePath;
 
+            IPagedList<Product> searchProducts = _productSearchIndexService.SearchProducts(new ProductSearchQuery
+            {
+                SearchTerm = GetSearchTerm(path),
+                PageSize = widget.MaxProductsToShow,
+                Page = 1
+            });
             return new On404SearchWidgetModel
             {
                 Text = widget.Text,
-                Products = _productSearchIndexService.SearchProducts(new ProductSearchQuery
-                {
-                    SearchTerm = GetSearchTerm(path),
-                    PageSize = widget.MaxProductsToShow,
-                    Page = 1
-                })
+                Products = searchProducts.GetCardModels()
             };
         }
 

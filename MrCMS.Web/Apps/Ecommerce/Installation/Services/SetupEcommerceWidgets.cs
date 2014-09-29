@@ -44,28 +44,40 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 LayoutArea = layoutModel.ProductLayout.LayoutAreas.Single(x => x.AreaName == "Before Product Content"),
                 Name = "Breadcrumbs",
-                IsRecursive = true
+                IsRecursive = true,
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 180
             };
             _widgetService.AddWidget(breadcrumbs);
 
             var relatedProducts = new RelatedProducts
             {
                 LayoutArea = layoutModel.ProductLayout.LayoutAreas.Single(x => x.AreaName == "After Product Content"),
-                Name = "Related Products"
+                Name = "Related Products",
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Absolute,
+                CacheLength = 1800
             };
             _widgetService.AddWidget(relatedProducts);
 
             var peopleAlsoBought = new PeopleWhoBoughtThisAlsoBought
             {
                 LayoutArea = layoutModel.ProductLayout.LayoutAreas.Single(x => x.AreaName == "After Product Content"),
-                Name = "People who bought this also bought"
+                Name = "People who bought this also bought",
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Absolute,
+                CacheLength = 1800
             };
             _widgetService.AddWidget(peopleAlsoBought);
 
             var otherCategories = new NotWhatYouWereLookingForWidget
             {
                 LayoutArea = layoutModel.ProductLayout.LayoutAreas.Single(x => x.AreaName == "Below Product Price"),
-                Name = "Not what you were looking for?"
+                Name = "Not what you were looking for?",
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Absolute,
+                CacheLength = 1800
             };
             _widgetService.AddWidget(otherCategories);
         }
@@ -101,7 +113,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 Webpage = pageModel.ProductSearch,
                 LayoutArea = layoutModel.SearchLayout.LayoutAreas.FirstOrDefault(x => x.AreaName == "After Filters"),
-                Name = "Recently Viewed",
+                Name = "Recently Viewed"
             };
             _widgetService.AddWidget(recentlyViewed);
 
@@ -112,6 +124,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Name = "Breadcrumbs",
                 Webpage = pageModel.ProductSearch,
                 IsRecursive = true,
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 1800
             };
             _widgetService.AddWidget(breadcrumbs);
         }
@@ -131,7 +146,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Image = mediaModel.SliderImage1.FileUrl,
                 Image1 = mediaModel.SliderImage2.FileUrl,
                 LayoutArea = beforeContent,
-                Webpage = pageModel.HomePage
+                Webpage = pageModel.HomePage,
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 1800
             };
             _widgetService.AddWidget(slider);
 
@@ -140,7 +158,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 LayoutArea = beforeContent,
                 Webpage = pageModel.HomePage,
                 ListOfFeaturedProducts = GetFeaturedProducts(),
-                Name = "Featured Products"
+                Name = "Featured Products",
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 1800
             };
             _widgetService.AddWidget(featuredProducts);
 
@@ -149,7 +170,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 LayoutArea = beforeContent,
                 Webpage = pageModel.HomePage,
                 ListOfFeaturedCategories = GetFeaturedCategories(),
-                Name = "Featured Categories"
+                Name = "Featured Categories",
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 1800
             };
             _widgetService.AddWidget(featuredCategories);
 
@@ -158,6 +182,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 LayoutArea = teaser1Area,
                 Webpage = pageModel.HomePage,
                 Text = string.Format(@"<div class=""padding-bottom-10""><span><img src=""{0}"" /> </span></div><h3><a href=""#"">FREE delivery on orders over &pound;50. </a></h3><p>Orders placed Monday to Friday before 2pm will generally be picked and packed for immediate despatch. Please note that orders placed over the weekend or on public holidays will be processed on the next working day.</p>", mediaModel.DeliveryIcon.FileUrl),
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 1800
                 
             };
             _widgetService.AddWidget(teaser1);
@@ -167,6 +194,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 LayoutArea = teaser2Area,
                 Webpage = pageModel.HomePage,
                 Text = string.Format(@"<div class=""padding-bottom-10""><span><img src=""{0}"" /> </span></div><h3><a href=""#"">7 day no question returns.</a></h3><p>We offer a 28 Day Money Back Guarantee. If for any reason you are not completely delighted with your purchase you may download a Returns Form and return it within 28 days of receipt for a full refund or exchange.</p>", mediaModel.ReturnIcon.FileUrl),
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 1800
                 
             };
             _widgetService.AddWidget(teaser2);
@@ -176,6 +206,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 LayoutArea = teaser3Area,
                 Webpage = pageModel.HomePage,
                 Text = string.Format(@"<div class=""padding-bottom-10""><span><img src=""{0}"" /> </span></div><h3><a href=""#"">Store locations.</a></h3><p>Use our store locator to find a store near you as well as information like opening times, addresses, maps and a list of facilities available at every store.</p>", mediaModel.LocationIcon.FileUrl),
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 1800
                 
             };
             _widgetService.AddWidget(teaser3);
