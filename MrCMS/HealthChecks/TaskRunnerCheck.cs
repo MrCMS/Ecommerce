@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 using MrCMS.Tasks;
 using MrCMS.Website;
 using NHibernate;
@@ -26,7 +28,13 @@ namespace MrCMS.HealthChecks
 
             if (stalledTasks.Any())
             {
-                var messages = stalledTasks.Select(task => string.Format("{0} has not been ran since {1}", task.TypeName, task.LastComplete)).ToList();
+                var messages = stalledTasks.Select(task =>
+                {
+                    var lastComplete = task.LastComplete;
+                    return lastComplete.HasValue
+                        ? string.Format("{0} has not been ran since {1}", task.TypeName, lastComplete)
+                        : string.Format("{0} has never been run", task.TypeName);
+                }).ToList();
                 return new HealthCheckResult
                 {
                     Messages = messages,

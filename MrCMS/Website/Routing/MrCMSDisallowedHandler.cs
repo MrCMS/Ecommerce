@@ -19,10 +19,12 @@ namespace MrCMS.Website.Routing
             _userUIPermissionsService = userUIPermissionsService;
         }
 
-        public int Priority { get { return 1010; } }
+        public int Priority { get { return 9650; } }
         public bool Handle(RequestContext context)
         {
             Webpage webpage = _getWebpageForRequest.Get(context);
+            if (webpage == null)
+                return false;
             if (!_userUIPermissionsService.IsCurrentUserAllowed(webpage))
             {
                 string message = string.Format("Not allowed to view {0}", context.RouteData.Values["data"]);
