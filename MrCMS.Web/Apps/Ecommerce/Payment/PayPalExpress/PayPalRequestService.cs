@@ -54,7 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                                                                Custom = cart.CartGuid.ToString(),
                                                                CallbackURL = _payPalUrlService.GetCallbackUrl(),
                                                                CallbackTimeout = "6",
-                                                               FlatRateShippingOptions = flatRateShippingOptions
+                                                               FlatRateShippingOptions = flatRateShippingOptions,
                                                            };
             var setExpressCheckoutRequestType = new SetExpressCheckoutRequestType
                                                     {
@@ -81,7 +81,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                     ItemTotal = (cart.Subtotal - cart.OrderTotalDiscount).GetAmountType(),
                     TaxTotal = cart.ItemTax.GetAmountType(),
                     Custom = cart.CartGuid.ToString(),
-                    ButtonSource = "mrcms-ecommerce",
+                    ButtonSource = "Thought_Cart_MrCMS",
                     InvoiceID = cart.CartGuid.ToString(),
                     PaymentDetailsItem = _payPalOrderService.GetPaymentDetailsItems(cart)
                 };

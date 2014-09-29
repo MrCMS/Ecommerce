@@ -40,11 +40,17 @@
     });
     $(document).on('click', "#apply-gift-card-code", function (event) {
         event.preventDefault();
-        var giftCardCode = $("#gift-card-code").val();
+        var codeInput = $("#gift-card-code");
+        var giftCardCode = codeInput.val();
         $.post('/Apps/Ecommerce/ApplyGiftCardCode',
             { giftCardCode: giftCardCode },
             function (response) {
-                reloadCartDetails();
+                if (response.Success) {
+                    reloadCartDetails();
+                } else {
+                    codeInput.addClass('input-validation-error');
+                    $('[data-gift-card-message]').html(response.Message);
+                }
             });
     });
     $(document).on('click', "[data-remove-card]", function (event) {
