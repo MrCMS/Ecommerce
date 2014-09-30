@@ -14,11 +14,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
     public class GetProductCardModel : IGetProductCardModel
     {
         private readonly ISession _session;
+        private readonly IProductVariantAvailabilityService _productVariantAvailabilityService;
         private readonly EcommerceSettings _settings;
 
-        public GetProductCardModel(ISession session, EcommerceSettings settings)
+        public GetProductCardModel(ISession session, IProductVariantAvailabilityService productVariantAvailabilityService, EcommerceSettings settings)
         {
             _session = session;
+            _productVariantAvailabilityService = productVariantAvailabilityService;
             _settings = settings;
         }
 
@@ -47,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 MediaFile image = mediaFiles.FirstOrDefault(file => file.IsImage && file.MediaCategory.Id == product.Gallery.Id);
                 var productVariants = variants.FindAll(productVariant => productVariant.Product.Id == product.Id);
                 ProductVariant variant = productVariants.Count == 1
-                    ? productVariants.FirstOrDefault(productVariant => productVariant.CanBuy().OK)
+                    ? productVariants.FirstOrDefault(productVariant => _productVariantAvailabilityService.CanBuy(productVariant, 1).OK)
                     : null;
                 var productCardModel = new ProductCardModel
                 {

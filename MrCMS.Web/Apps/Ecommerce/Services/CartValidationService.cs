@@ -1,32 +1,43 @@
-using MrCMS.Web.Apps.Ecommerce.Controllers;
+using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using NHibernate;
+using MrCMS.Web.Apps.Ecommerce.Models.StockAvailability;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services
 {
     public class CartValidationService : ICartValidationService
     {
-        private readonly ISession _session;
+        private readonly IProductVariantAvailabilityService _productVariantAvailabilityService;
+        private readonly CartModel _cart;
 
-        public CartValidationService(ISession session)
+        public CartValidationService(IProductVariantAvailabilityService productVariantAvailabilityService, CartModel cart)
         {
-            _session = session;
+            _productVariantAvailabilityService = productVariantAvailabilityService;
+            _cart = cart;
         }
 
         public CanAddQuantityValidationResult CanAddQuantity(AddToCartModel model)
         {
-            var variant = model.ProductVariant;
+            ProductVariant variant = model.ProductVariant;
 
             if (variant == null)
                 return new CanAddQuantityValidationResult("Cannot find the selected variant");
-            if (model.Quantity <= 0)
+            var quantity = GetRequestedQuantity(variant, model.Quantity);
+            if (quantity <= 0)
                 return new CanAddQuantityValidationResult("Cannot add an amount less than 1");
-            var canBuy = variant.CanBuy(model.Quantity);
+            CanBuyStatus canBuy = _productVariantAvailabilityService.CanBuy(variant, quantity);
             if (!canBuy.OK)
                 return new CanAddQuantityValidationResult(canBuy.Message);
             return CanAddQuantityValidationResult.Successful;
+        }
+
+        public int GetRequestedQuantity(ProductVariant productVariant, int additionalQuantity)
+        {
+            var requestedQuantity = additionalQuantity;
+            var existingItem = _cart.Items.FirstOrDefault(item => item.Item == productVariant);
+            if (existingItem != null)
+                requestedQuantity += existingItem.Quantity;
+            return requestedQuantity;
         }
     }
 }

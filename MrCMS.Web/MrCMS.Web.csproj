@@ -750,6 +750,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationAttributeOption.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Products\VariantType.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\Wishlist.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\WishlistItem.cs" />
     <Compile Include="Apps\Ecommerce\Entities\SessionData.cs" />
@@ -920,6 +921,11 @@
     <Compile Include="Apps\Ecommerce\Models\RelatedProductsViewModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ShippingStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\SpendXMoreModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\StockAvailability\CanBuy.cs" />
+    <Compile Include="Apps\Ecommerce\Models\StockAvailability\CanBuyStatus.cs" />
+    <Compile Include="Apps\Ecommerce\Models\StockAvailability\CannotOrderQuantity.cs" />
+    <Compile Include="Apps\Ecommerce\Models\StockAvailability\NoShippingMethodWouldBeAvailable.cs" />
+    <Compile Include="Apps\Ecommerce\Models\StockAvailability\OutOfStock.cs" />
     <Compile Include="Apps\Ecommerce\Models\StrictKeyEqualityComparer.cs" />
     <Compile Include="Apps\Ecommerce\Models\TrackingPolicy.cs" />
     <Compile Include="Apps\Ecommerce\Models\UserAccountOrdersModel.cs" />
@@ -1140,7 +1146,9 @@
     <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\StockReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IPeopleWhoBoughtThisService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IProductAddedToCartUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IProductStockChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\IProductSearchQueryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IProductShippingChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\IProductVariantAvailabilityService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IRelatedProductsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ISetShippingAddressService.cs" />
@@ -1221,7 +1229,9 @@
     <Compile Include="Apps\Ecommerce\Services\Pricing\ProductPricingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Pricing\ShippingPricingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductAddedToCartUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ProductStockChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductSearchQueryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ProductShippingChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BackInStockNotificationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BrandService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\Download\DownloadOrderedFileService.cs" />
@@ -1292,6 +1302,8 @@
     <Compile Include="Apps\Ecommerce\Settings\Shipping\UKFirstClassShippingSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\UKCourierShippingSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Stock\Entities\Warehouse.cs" />
+    <Compile Include="Apps\Ecommerce\Stock\Entities\WarehouseStock.cs" />
     <Compile Include="Apps\Ecommerce\Tasks\BackInStockNotificationTask.cs" />
     <Compile Include="Apps\Ecommerce\Tasks\ClearExpiredSessionDataTask.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\BreadCrumb.cs" />

@@ -4,6 +4,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Models.StockAvailability;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 {
@@ -15,6 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         public virtual Guid UserGuid { get; set; }
         public virtual int Quantity { get; set; }
         public virtual string Data { get; set; }
+        public virtual CanBuyStatus CanBuyStatus { get; set; }
 
         public virtual decimal Price
         {
@@ -36,11 +38,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
             get { return Item.GetTax(Quantity); }
         }
 
-        public virtual bool CurrentlyAvailable
-        {
-            get { return Item.CanBuy(Quantity).OK; }
-        }
-
         public virtual decimal PricePreTax
         {
             get { return Price - Tax; }
@@ -53,7 +50,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 
         public virtual decimal Weight
         {
-            get { return Item.Weight * Quantity; }
+            get { return Item.Weight*Quantity; }
         }
 
         public virtual string Name
@@ -116,21 +113,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
             get { return DiscountAmount > 0; }
         }
 
+        public virtual bool CanBuy
+        {
+            get { return CanBuyStatus.OK; }
+        }
+
+        public virtual string Error
+        {
+            get { return CanBuyStatus.Message; }
+        }
+
         public virtual void SetDiscountInfo(CartModel cart)
         {
             if (cart == null) return;
             _discount = cart.Discount;
             _discountCode = cart.DiscountCode;
-        }
-
-        public virtual bool CanBuy(CartModel cartModel)
-        {
-            return Item.CanBuy().OK;
-        }
-
-        public virtual string Error(CartModel cartModel)
-        {
-            return Item.CanBuy().Message;
         }
     }
 }
