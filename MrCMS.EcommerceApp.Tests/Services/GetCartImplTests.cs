@@ -5,10 +5,10 @@ using System.Linq;
 using System.Web;
 using FakeItEasy;
 using FluentAssertions;
-using MrCMS.EcommerceApp.Tests.TestableModels;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.Services;
 using MrCMS.Web.Apps.Ecommerce.Services;
@@ -59,7 +59,7 @@ namespace MrCMS.EcommerceApp.Tests.Services
                     new CartItem
                     {
                         UserGuid = newGuid,
-                        Item = new TestableProductVariant(true)
+                        Item = new ProductVariant()
                     }).ToList();
             Session.Transact(session => cartItems.ForEach(item => session.Save(item)));
 

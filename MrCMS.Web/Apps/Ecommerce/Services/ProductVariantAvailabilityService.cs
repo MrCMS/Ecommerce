@@ -1,38 +1,30 @@
-using System;
-using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Models.StockAvailability;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services
 {
     public class ProductVariantAvailabilityService : IProductVariantAvailabilityService
     {
-        private readonly CartModel _cart;
+        private readonly IProductStockChecker _productStockChecker;
+        private readonly IProductShippingChecker _productShippingChecker;
+        //private readonly CartModel _cart;
 
-        public ProductVariantAvailabilityService(CartModel cart)
+        public ProductVariantAvailabilityService(IProductStockChecker productStockChecker,
+            IProductShippingChecker productShippingChecker)
         {
-            _cart = cart;
+            _productStockChecker = productStockChecker;
+            _productShippingChecker = productShippingChecker;
         }
 
-        public CanBuyStatus CanBuy(ProductVariant productVariant, int additionalQuantity = 0)
+        public CanBuyStatus CanBuy(ProductVariant productVariant, int quantity)
         {
-            if (!productVariant.InStock)
+            if (!_productStockChecker.IsInStock(productVariant))
                 return new OutOfStock(productVariant);
-            var requestedQuantity = GetRequestedQuantity(productVariant, additionalQuantity);
-            if (productVariant.TrackingPolicy == TrackingPolicy.Track && requestedQuantity > productVariant.StockRemaining)
-                return new CannotOrderQuantity(productVariant, requestedQuantity);
-            if (productVariant.HasRestrictedShipping && !_cart.PotentiallyAvailableShippingMethods.Any(method => productVariant.RestrictedTo.Contains(method.TypeName)))
+            if (!_productStockChecker.CanOrderQuantity(productVariant, quantity))
+                return new CannotOrderQuantity(productVariant, quantity);
+            if (!_productShippingChecker.CanShip(productVariant))
                 return new NoShippingMethodWouldBeAvailable(productVariant);
             return new CanBuy();
-        }
-
-        private int GetRequestedQuantity(ProductVariant productVariant, int additionalQuantity)
-        {
-            var requestedQuantity = additionalQuantity;
-            var existingItem = _cart.Items.FirstOrDefault(item => item.Item == productVariant);
-            if (existingItem != null)
-                requestedQuantity += existingItem.Quantity;
-            return requestedQuantity;
         }
     }
 }
