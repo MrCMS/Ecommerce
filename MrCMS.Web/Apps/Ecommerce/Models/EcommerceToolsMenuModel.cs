@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Web.Mvc;
 using MrCMS.Models;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Website;
@@ -7,6 +8,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 {
     public class EcommerceToolsMenuModel : IAdminMenuItem
     {
+        private readonly UrlHelper _urlHelper;
+
+        public EcommerceToolsMenuModel(UrlHelper urlHelper)
+        {
+            _urlHelper = urlHelper;
+        }
+
         private SubMenu _children;
         public string Text { get { return "Tools & Reports"; } }
         public string Url { get; private set; }
@@ -23,13 +31,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                new List<ChildMenuItem>
                                {
                                    new ChildMenuItem("Import/Export Products",
-                                       "/Admin/Apps/Ecommerce/ImportExport/Products", ACLOption.Create(new ImportExportACL(), ImportExportACL.View)),
+                                       _urlHelper.Action("Products","ImportExport"),
+                                       ACLOption.Create(new ImportExportACL(), ImportExportACL.View)),
                                    new ChildMenuItem("Google Base Integration",
-                                       "/Admin/Apps/Ecommerce/GoogleBase/Dashboard", ACLOption.Create(new GoogleBaseACL(), GoogleBaseACL.View)),
+                                       _urlHelper.Action("Dashboard","GoogleBase"),
+                                       ACLOption.Create(new GoogleBaseACL(), GoogleBaseACL.View)),
                                    new ChildMenuItem("Low Stock Report",
-                                       "/Admin/Apps/Ecommerce/Stock/LowStockReport", ACLOption.Create(new LowStockReportACL(), LowStockReportACL.View)),
+                                       _urlHelper.Action("Index","LowStockReport"),
+                                       ACLOption.Create(new LowStockReportACL(), LowStockReportACL.View)),
                                    new ChildMenuItem("Bulk Stock Update",
-                                       "/Admin/Apps/Ecommerce/Stock/BulkStockUpdate", ACLOption.Create(new BulkStockUpdateACL(), BulkStockUpdateACL.BulkStockUpdate)),
+                                       _urlHelper.Action("Index","BulkStockUpdate"),
+                                       //"/Admin/Apps/Ecommerce/Stock/BulkStockUpdate",
+                                       ACLOption.Create(new BulkStockUpdateACL(), BulkStockUpdateACL.BulkStockUpdate)),
                                    new ChildMenuItem("Bulk Shipping Update",
                                        "/Admin/Apps/Ecommerce/BulkShipping/Update", ACLOption.Create(new BulkShippingUpdateACL(), BulkShippingUpdateACL.Update)),
                                }

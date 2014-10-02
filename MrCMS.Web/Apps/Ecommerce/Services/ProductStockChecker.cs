@@ -10,37 +10,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 {
     public class ProductStockChecker : IProductStockChecker
     {
-        private readonly ISession _session;
-        private readonly EcommerceSettings _ecommerceSettings;
+        private readonly IGetStockRemainingQuantity _getStockRemainingQuantity;
 
-        public ProductStockChecker(ISession session, EcommerceSettings ecommerceSettings)
+        public ProductStockChecker(IGetStockRemainingQuantity getStockRemainingQuantity)
         {
-            _session = session;
-            _ecommerceSettings = ecommerceSettings;
+            _getStockRemainingQuantity = getStockRemainingQuantity;
         }
 
         public bool IsInStock(ProductVariant productVariant)
         {
             if (productVariant.TrackingPolicy == TrackingPolicy.DontTrack)
                 return true;
-            return _ecommerceSettings.WarehouseStockEnabled
-                ? _session.QueryOver<WarehouseStock>()
-                    .Where(stock => stock.ProductVariant.Id == productVariant.Id && stock.StockLevel > 0)
-                    .Any()
-                : productVariant.StockRemaining > 0;
+            return _getStockRemainingQuantity.Get(productVariant) > 0;
         }
 
-        public bool CanOrderQuantity(ProductVariant productVariant, int quantity)
+        public CanOrderQuantityResult CanOrderQuantity(ProductVariant productVariant, int quantity)
         {
             if (productVariant.TrackingPolicy == TrackingPolicy.DontTrack)
-                return true;
+                return new CanOrderQuantityResult {CanOrder = true};
 
-            return _ecommerceSettings.WarehouseStockEnabled
-                ? _session.QueryOver<WarehouseStock>()
-                    .Where(stock => stock.ProductVariant.Id == productVariant.Id && stock.StockLevel > 0)
-                    .Select(Projections.Sum<WarehouseStock>(warehouseStock => warehouseStock.StockLevel))
-                    .SingleOrDefault<int>() >= quantity
-                : productVariant.StockRemaining >= quantity;
+            var stockRemaining = _getStockRemainingQuantity.Get(productVariant);
+            return new CanOrderQuantityResult
+            {
+                CanOrder = stockRemaining >= quantity,
+                StockRemaining = stockRemaining
+            };
         }
     }
 }

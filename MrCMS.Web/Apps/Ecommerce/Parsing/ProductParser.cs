@@ -14,13 +14,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Parsing
         private static readonly Regex LinkRegex = new Regex(@"\[(?i)ProductUrl\]");
         private static readonly Regex PriceRegex = new Regex(@"\[(?i)ProductPrice\]");
         private static readonly Regex OldPriceRegex = new Regex(@"\[(?i)ProductOldPrice\]");
-        private readonly IUrlHelper _urlHelper;
+        private readonly INewsletterUrlHelper _newsletterUrlHelper;
         private readonly IFileService _fileService;
         private readonly IImageProcessor _imageProcessor;
 
-        public ProductParser(IUrlHelper urlHelper, IFileService fileService, IImageProcessor imageProcessor)
+        public ProductParser(INewsletterUrlHelper newsletterUrlHelper, IFileService fileService, IImageProcessor imageProcessor)
         {
-            _urlHelper = urlHelper;
+            _newsletterUrlHelper = newsletterUrlHelper;
             _fileService = fileService;
             _imageProcessor = imageProcessor;
         }
@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Parsing
             string output = template.ProductTemplate;
             var image = _imageProcessor.GetImage(item.DisplayImageUrl);
             output = ImageRegex.Replace(output,
-                _urlHelper.ToAbsolute(_fileService.GetFileLocation(image, new Size {Width = 150, Height = 150})));
+                _newsletterUrlHelper.ToAbsolute(_fileService.GetFileLocation(image, new Size {Width = 150, Height = 150})));
             output = NameRegex.Replace(output, item.Name ?? string.Empty);
             output = LinkRegex.Replace(output, item.AbsoluteUrl);
             output = PriceRegex.Replace(output, GetPrice(item.DisplayPrice));

@@ -1,0 +1,76 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.WarehouseStockSearchModel
+
+@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Stock.Entities
+@{
+    var warehouseStocks = ViewData["results"] as IPagedList<WarehouseStock> ?? PagedList<WarehouseStock>.Empty;
+    var warehouseOptions = ViewData["warehouse-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
+
+@using (Html.BeginForm("Index", "WarehouseStock", FormMethod.Get))
+{
+    <fieldset>
+        <legend>
+            Warehouse Stock
+            <span class="btn-group display-inline pull-right">
+                @*@Html.ActionLink("Add", "Add", "WarehouseStock", null, new { @class = "btn btn-primary", data_toggle = "fb-modal" })*@
+                <button class="btn btn-primary" type="submit">Search</button>
+            </span>
+        </legend>
+        <div class="row">
+            <div class="col-xs-4">
+                @Html.LabelFor(model => model.Name)
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+            </div>
+            <div class="col-xs-4">
+                @Html.LabelFor(model => model.SKU)
+                @Html.TextBoxFor(model => model.SKU, new { @class = "form-control" })
+            </div>
+            <div class="col-xs-4">
+                @Html.LabelFor(model => model.WarehouseId)
+                @Html.DropDownListFor(model => model.WarehouseId, warehouseOptions, new { @class = "form-control" })
+
+            </div>
+        </div>
+        @if (warehouseStocks.Any())
+        {
+            <table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>Product Variant</th>
+                        <th>Warehouse</th>
+                        <th>Stock Level</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var stock in warehouseStocks)
+                    {
+                        <tr>
+                            <td>
+                                @stock.ProductVariantName
+                            </td>
+                            <td>
+                                @stock.WarehouseName
+                            </td>
+                            <td>
+                                @stock.StockLevel
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    @Html.ActionLink("Edit", "Edit", "WarehouseStock", new { id = stock.Id }, new { @class = "btn btn-xs btn-default", data_toggle="fb-modal" })
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @Html.Pager(warehouseStocks, "Index", page => new { page })
+        }
+        else
+        {
+            <p>No warehouses.</p>
+        }
+    </fieldset>
+}

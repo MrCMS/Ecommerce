@@ -2,7 +2,6 @@
 using MrCMS.EcommerceApp.Tests.Builders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services;
-using MrCMS.Web.Apps.Ecommerce.Stock.Entities;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ProductStockCheckerTest
@@ -18,51 +17,22 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductStockCheckerTest
             productStockChecker.IsInStock(productVariant).Should().BeTrue();
         }
 
-        public class SimpleStockManagementTests
+        [Fact]
+        public void IfStockIsTrackedAVariantWithZeroRemainingStockShouldNotBeInStock()
         {
-            [Fact]
-            public void IfStockIsTrackedAVariantWithZeroRemainingStockShouldNotBeInStock()
-            {
-                ProductVariant productVariant = new ProductVariantBuilder().StockRemaining(0).Build();
-                ProductStockChecker productStockChecker = new ProductStockCheckerBuilder().Build();
+            ProductVariant productVariant = new ProductVariantBuilder().Build();
+            ProductStockChecker productStockChecker = new ProductStockCheckerBuilder().StockRemaining(0).Build();
 
-                productStockChecker.IsInStock(productVariant).Should().BeFalse();
-            }
-
-            [Fact]
-            public void IfStockIsTrackedAVariantWithSomeStockRemainingStockShouldBeInStock()
-            {
-                ProductVariant productVariant = new ProductVariantBuilder().StockRemaining(1).Build();
-                ProductStockChecker productStockChecker = new ProductStockCheckerBuilder().Build();
-
-                productStockChecker.IsInStock(productVariant).Should().BeTrue();
-            }
+            productStockChecker.IsInStock(productVariant).Should().BeFalse();
         }
 
-        public class WarehousedStockManagementTests : InMemoryDatabaseTest
+        [Fact]
+        public void IfStockIsTrackedAVariantWithSomeStockRemainingStockShouldBeInStock()
         {
-            [Fact]
-            public void IfNoStockLevelsExistTheVariantShouldNotBeInStock()
-            {
-                ProductVariant productVariant = new ProductVariantBuilder().BuildAndPersist(Session);
-                ProductStockChecker productStockChecker =
-                    new ProductStockCheckerBuilder().WithSession(Session).WithWarehousesEnabled().Build();
+            ProductVariant productVariant = new ProductVariantBuilder().StockRemaining(1).Build();
+            ProductStockChecker productStockChecker = new ProductStockCheckerBuilder().StockRemaining(1).Build();
 
-                productStockChecker.IsInStock(productVariant).Should().BeFalse();
-            }
-
-            [Fact]
-            public void IfAStockLevelExistsAndHasAValueShouldBeInStock()
-            {
-                ProductVariant productVariant = new ProductVariantBuilder().BuildAndPersist(Session);
-                Warehouse warehouse = new WarehouseBuilder().WithName("Test Warehouse").BuildAndPersist(Session);
-                WarehouseStock warehouseStock =
-                    new WarehouseStockBuilder(productVariant, warehouse).WithStockLevel(1).BuildAndPersist(Session);
-                ProductStockChecker productStockChecker =
-                    new ProductStockCheckerBuilder().WithSession(Session).WithWarehousesEnabled().Build();
-
-                productStockChecker.IsInStock(productVariant).Should().BeTrue();
-            }
+            productStockChecker.IsInStock(productVariant).Should().BeTrue();
         }
     }
 }

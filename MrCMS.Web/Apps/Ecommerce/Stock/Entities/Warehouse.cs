@@ -13,6 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Stock.Entities
         }
 
         [StringLength(255)]
+        [Required]
         public virtual string Name { get; set; }
 
         public virtual IList<WarehouseStock> WarehouseStocks { get; set; }

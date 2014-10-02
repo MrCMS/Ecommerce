@@ -1,0 +1,37 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models
+@using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
+@model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.StockGenerationModel
+@{
+    var warehouseOptions = ViewData["warehouse-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    var stockGenerationTypeOptions = ViewData["stock-generation-type-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
+<hr/>
+@using (Html.BeginForm("GenerateStock", "Warehouse", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.WarehouseId);
+    <fieldset>
+        <legend>
+            Generate stock
+            <span class="display-inline btn-group pull-right">
+                <button class="btn-primary btn" type="submit">Generate</button>
+            </span>
+        </legend>
+        <div class="form-group">
+            @Html.LabelFor(model => model.StockGenerationType)
+            @Html.DropDownListFor(model => model.StockGenerationType, stockGenerationTypeOptions, new { @class = "form-control" })
+        </div>
+        <div class="form-group" data-generation-type="@StockGenerationType.FixedValue">
+            @Html.LabelFor(model => model.FixedValue)
+            @Html.TextBoxFor(model => model.FixedValue, new { @class = "form-control" })
+        </div>
+        @if (warehouseOptions.Any())
+        {
+            <div class="form-group" data-generation-type="@StockGenerationType.CopyFromWarehouse">
+                @Html.LabelFor(model => model.WarehouseToCopyId)
+                @Html.DropDownListFor(model => model.WarehouseToCopyId, warehouseOptions, new { @class = "form-control" })
+            </div>
+        }
+    </fieldset>
+}
+@{Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/generate-warehouse-stock.js");}
