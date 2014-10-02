@@ -21,15 +21,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
     public class GoogleBaseManager : IGoogleBaseManager
     {
         private readonly IGoogleBaseShippingService _googleBaseShippingService;
+        private readonly IGetStockRemainingQuantity _getStockRemainingQuantity;
         private readonly IProductVariantService _productVariantService;
         private readonly ISession _session;
 
         public GoogleBaseManager(ISession session, IProductVariantService productVariantService,
-            IGoogleBaseShippingService googleBaseShippingService)
+            IGoogleBaseShippingService googleBaseShippingService,IGetStockRemainingQuantity getStockRemainingQuantity)
         {
             _session = session;
             _productVariantService = productVariantService;
             _googleBaseShippingService = googleBaseShippingService;
+            _getStockRemainingQuantity = getStockRemainingQuantity;
         }
 
 
@@ -143,7 +145,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
 
             //AVAILABILITY
             string availability = "In Stock";
-            if (productVariant.TrackingPolicy == TrackingPolicy.Track && productVariant.StockRemaining <= 0)
+            if (productVariant.TrackingPolicy == TrackingPolicy.Track && _getStockRemainingQuantity.Get(productVariant) <= 0)
                 availability = "Out of Stock";
             xml.WriteElementString("g", "availability", ns, availability);
 

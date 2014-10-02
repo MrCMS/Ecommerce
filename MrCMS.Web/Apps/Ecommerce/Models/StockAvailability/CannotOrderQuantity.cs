@@ -4,13 +4,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Models.StockAvailability
 {
     public class CannotOrderQuantity : CanBuyStatus
     {
-        private readonly int _requestedQuantity;
+        private readonly int _stockRemaining;
         private readonly ProductVariant _variant;
 
-        public CannotOrderQuantity(ProductVariant variant, int requestedQuantity)
+        public CannotOrderQuantity(ProductVariant variant, int stockRemaining)
         {
             _variant = variant;
-            _requestedQuantity = requestedQuantity;
+            _stockRemaining = stockRemaining;
         }
 
         public override bool OK
@@ -23,7 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models.StockAvailability
             get
             {
                 return string.Format("Sorry, but there are currently only {0} units of {1} in stock",
-                    _variant.StockRemaining, _variant.DisplayName);
+                    _stockRemaining, _variant.DisplayName);
             }
         }
     }

@@ -1,3 +1,4 @@
+using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models.StockAvailability;
 
@@ -7,7 +8,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
     {
         private readonly IProductStockChecker _productStockChecker;
         private readonly IProductShippingChecker _productShippingChecker;
-        //private readonly CartModel _cart;
 
         public ProductVariantAvailabilityService(IProductStockChecker productStockChecker,
             IProductShippingChecker productShippingChecker)
@@ -20,8 +20,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         {
             if (!_productStockChecker.IsInStock(productVariant))
                 return new OutOfStock(productVariant);
-            if (!_productStockChecker.CanOrderQuantity(productVariant, quantity))
-                return new CannotOrderQuantity(productVariant, quantity);
+            var result = _productStockChecker.CanOrderQuantity(productVariant, quantity);
+            if (!result.CanOrder)
+                return new CannotOrderQuantity(productVariant, result.StockRemaining);
             if (!_productShippingChecker.CanShip(productVariant))
                 return new NoShippingMethodWouldBeAvailable(productVariant);
             return new CanBuy();

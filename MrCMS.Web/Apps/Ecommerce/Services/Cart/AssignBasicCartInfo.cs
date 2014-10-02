@@ -13,18 +13,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
     {
         private readonly ICartGuidResetter _cartGuidResetter;
         private readonly IGetBillingAddressSameAsShippingAddress _billingAddressSameAsShippingAddress;
-        private readonly IProductVariantAvailabilityService _productVariantAvailabilityService;
+        private readonly ICartItemAvailablityService _cartItemAvailablityService;
         private readonly ICartSessionManager _cartSessionManager;
         private readonly ISession _session;
 
         public AssignBasicCartInfo(ISession session, ICartSessionManager cartSessionManager,
-            ICartGuidResetter cartGuidResetter, IGetBillingAddressSameAsShippingAddress billingAddressSameAsShippingAddress,IProductVariantAvailabilityService productVariantAvailabilityService)
+            ICartGuidResetter cartGuidResetter,
+            IGetBillingAddressSameAsShippingAddress billingAddressSameAsShippingAddress,
+            ICartItemAvailablityService cartItemAvailablityService)
         {
             _session = session;
             _cartSessionManager = cartSessionManager;
             _cartGuidResetter = cartGuidResetter;
             _billingAddressSameAsShippingAddress = billingAddressSameAsShippingAddress;
-            _productVariantAvailabilityService = productVariantAvailabilityService;
+            _cartItemAvailablityService = cartItemAvailablityService;
         }
 
         public CartModel Assign(CartModel cart, Guid userGuid)
@@ -47,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             foreach (CartItem cartItem in cartItems)
             {
                 CartItem item = cartItem;
-                item.CanBuyStatus = _productVariantAvailabilityService.CanBuy(item.Item, item.Quantity);
+                item.CanBuyStatus = _cartItemAvailablityService.CanBuy(item);
             }
         }
 

@@ -38,6 +38,9 @@ namespace MrCMS.Web.Apps.Ecommerce
         protected override void RegisterServices(IKernel kernel)
         {
             kernel.Rebind<CartModel>().ToMethod(context => context.Kernel.Get<ICartBuilder>().BuildCart()).InRequestScope();
+            kernel.Rebind<IStatelessSession>()
+                .ToMethod(context => context.Kernel.Get<ISessionFactory>().OpenStatelessSession());
+            //HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
         }
 
         public override IEnumerable<Type> BaseTypes

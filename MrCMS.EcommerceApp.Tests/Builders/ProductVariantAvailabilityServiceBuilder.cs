@@ -1,5 +1,6 @@
 using FakeItEasy;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services;
 
 namespace MrCMS.EcommerceApp.Tests.Builders
@@ -8,12 +9,13 @@ namespace MrCMS.EcommerceApp.Tests.Builders
     {
         private readonly IProductShippingChecker _productShippingChecker;
         private readonly IProductStockChecker _productStockChecker;
+        private readonly CanOrderQuantityResult _canOrderQuantityResult = new CanOrderQuantityResult{CanOrder = true};
 
         public ProductVariantAvailabilityServiceBuilder()
         {
             _productStockChecker = A.Fake<IProductStockChecker>();
             A.CallTo(() => _productStockChecker.IsInStock(A<ProductVariant>._)).Returns(true);
-            A.CallTo(() => _productStockChecker.CanOrderQuantity(A<ProductVariant>._, A<int>._)).Returns(true);
+            A.CallTo(() => _productStockChecker.CanOrderQuantity(A<ProductVariant>._, A<int>._)).Returns(_canOrderQuantityResult);
             _productShippingChecker = A.Fake<IProductShippingChecker>();
             A.CallTo(() => _productShippingChecker.CanShip(A<ProductVariant>._)).Returns(true);
         }
@@ -31,7 +33,7 @@ namespace MrCMS.EcommerceApp.Tests.Builders
 
         public ProductVariantAvailabilityServiceBuilder CannotOrderQuantity()
         {
-            A.CallTo(() => _productStockChecker.CanOrderQuantity(A<ProductVariant>._, A<int>._)).Returns(false);
+            _canOrderQuantityResult.CanOrder = false;
             return this;
         }
 

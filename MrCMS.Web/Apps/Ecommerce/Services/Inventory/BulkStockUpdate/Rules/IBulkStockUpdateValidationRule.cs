@@ -5,6 +5,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Inventory.BulkStockUpdate.Rules
 {
     public interface IBulkStockUpdateValidationRule
     {
-        IEnumerable<string> GetErrors(BulkStockUpdateDataTransferObject item);
+        IEnumerable<string> GetErrors(IEnumerable<BulkStockUpdateDataTransferObject> items);
     }
 }

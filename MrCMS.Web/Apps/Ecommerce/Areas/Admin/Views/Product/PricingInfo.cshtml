@@ -1,28 +1,37 @@
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
 <table class="table table-condensed table-striped" id="product-pricing-info">
     <thead>
         <tr>
-              <th>Name
-                 </th>
+            <th>
+                Name
+            </th>
             @foreach (var option in Model.Options)
             {
-                <th>@option.Name
+                <th>
+                    @option.Name
                 </th>
             }
-            <th>Product Type
+            <th>
+                Product Type
             </th>
-            <th>SKU
+            <th>
+                SKU
             </th>
-            <th>Price
+            <th>
+                Price
             </th>
-            <th>Stock Remaining
+            <th>
+                Stock Remaining
             </th>
-            <th>Weight (kg)
+            <th>
+                Weight (kg)
             </th>
-            <th>Actions
+            <th>
+                Actions
             </th>
         </tr>
     </thead>
@@ -77,8 +86,20 @@
                     }
                 </td>
                 <td>
-                    @(variant.TrackingPolicy  == TrackingPolicy.DontTrack ? "Not tracked" : variant.StockRemaining.ToString())
+                    @if (variant.TrackingPolicy == TrackingPolicy.DontTrack)
+                    {
+                        <text>Not tracked</text>
+                    }
+                    else if (SiteSettings<EcommerceSettings>().WarehouseStockEnabled)
+                    {
+                        @variant.GetStockRemaining() <text> </text> @Html.ActionLink("Manage Stock", "Index", "WarehouseStock", new { sku = variant.SKU }, new { @class = "btn btn-xs btn-default" })
+                    }
+                    else
+                    {
+                        @variant.StockRemaining.ToString()
+                    }
                 </td>
+
                 <td>
                     @variant.Weight.ToString("0.0000")
                 </td>

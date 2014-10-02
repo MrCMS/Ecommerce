@@ -1,0 +1,36 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Stock.Entities.WarehouseStock
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
+@using (Html.BeginForm("Edit", "WarehouseStock", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Update warehouse stock level
+            <span class="btn-group display-inline pull-right">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </span>
+        </legend>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.Label("Product Variant")
+                    <div class="form-control-static">@Model.ProductVariantName</div>
+                </div>
+
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    @Html.Label("Warehouse")
+                    <div class="form-control-static">@Model.WarehouseName</div>
+                </div>
+
+            </div>
+        </div>
+        @Html.ReturnToReferrer()
+        <div class="form-group">
+            @Html.LabelFor(warehouse => warehouse.StockLevel)
+            @Html.TextBoxFor(warehouse => warehouse.StockLevel, new { type = "number", @class = "form-control" })
+            @Html.ValidationMessageFor(warehouse => warehouse.StockLevel)
+        </div>
+    </fieldset>
+}

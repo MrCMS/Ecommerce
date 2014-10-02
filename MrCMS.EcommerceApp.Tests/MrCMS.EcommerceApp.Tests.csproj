@@ -145,7 +145,7 @@
     <Compile Include="Admin\Controllers\CategoryControllerTests.cs" />
     <Compile Include="Admin\Controllers\BrandControllerTests.cs" />
     <Compile Include="Admin\Controllers\GoogleBaseControllerTests.cs" />
-    <Compile Include="Admin\Controllers\StockControllerTests.cs" />
+    <Compile Include="Admin\Controllers\BulkStockUpdateControllerTests.cs" />
     <Compile Include="Admin\Controllers\ImportExportControllerTests.cs" />
     <Compile Include="Admin\Controllers\EcommerceSettingsControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductSpecificationAttributeOptionControllerTests.cs" />
@@ -220,7 +220,6 @@
     <Compile Include="Payment\PayPalExpress\PayPalUrlServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BulkStockUpdate\BulkStockUpdateServiceTests.cs" />
-    <Compile Include="Services\BulkStockUpdate\BulkStockUpdateValidationServiceTests.cs" />
     <Compile Include="Services\CartItemManagerTests.cs" />
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateServiceTests.cs" />
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateValidationServiceTests.cs" />
@@ -241,7 +240,6 @@
     <Compile Include="Services\ProductStockCheckerTest\CanOrderQuantityTests.cs" />
     <Compile Include="Services\ProductStockCheckerTest\IsInStockTests.cs" />
     <Compile Include="Services\ProductVariantAvailabilityServiceTests.cs" />
-    <Compile Include="Services\StockAdminServiceTests.cs" />
     <Compile Include="Services\GoogleBaseManagerTests.cs" />
     <Compile Include="Services\OptionServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductVariantPriceBreakServiceTests.cs" />
@@ -262,7 +260,6 @@
     <Compile Include="Services\ProductOptionManagerTests\SpecificationAttributeTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\SpecificationValueTests.cs" />
     <Compile Include="Services\RegionServiceTests.cs" />
-    <Compile Include="Services\StockReport\StockReportServiceTests.cs" />
     <Compile Include="Services\TaxRateManagerTests.cs" />
     <Compile Include="SqliteInMemoryProvider.cs" />
     <Compile Include="Stubs\BasicHttpPostedFileBase.cs" />
@@ -282,6 +279,7 @@
   <ItemGroup>
     <Folder Include="Indexing\" />
     <Folder Include="Services\Payment\" />
+    <Folder Include="Services\StockReport\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MrCMS.Web\MrCMS.Web.csproj">
