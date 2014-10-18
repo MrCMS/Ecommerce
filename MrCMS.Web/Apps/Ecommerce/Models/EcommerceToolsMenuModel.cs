@@ -8,7 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
     public class EcommerceToolsMenuModel : IAdminMenuItem
     {
         private SubMenu _children;
-        public string Text { get { return "Tools & Reports"; } }
+        public string Text { get { return "Tools"; } }
         public string IconClass { get { return "fa fa-wrench"; } }
         public string Url { get; private set; }
         public bool CanShow { get { return CurrentRequestData.CurrentUser.CanAccess<ToolsAndReportsACL>(ToolsAndReportsACL.Show); } }
@@ -32,36 +32,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                        });
             }
         }
-        public int DisplayOrder { get { return 51; } }
-    }
-
-    public class EcommerceReportsMenuModel : IAdminMenuItem
-    {
-        private SubMenu _children;
-        public string Text { get { return "Ecommerce Reports"; } }
-        public string IconClass { get { return "fa fa-line-chart"; } }
-        public string Url { get; private set; }
-        public bool CanShow { get { return CurrentRequestData.CurrentUser.CanAccess<ToolsAndReportsACL>(ToolsAndReportsACL.Show); } }
-        public SubMenu Children
-        {
-            get
-            {
-                return _children ??
-                       (_children = new SubMenu
-                       {
-                          new ChildMenuItem("Sales by day",
-                                       "/Admin/Apps/Ecommerce/Report/SalesByDay", ACLOption.Create(new SalesByDayACL(), SalesByDayACL.View)),
-                                   new ChildMenuItem("Sales by payment type",
-                                       "/Admin/Apps/Ecommerce/Report/SalesByPaymentType", ACLOption.Create(new SalesByPaymentTypeACL(), SalesByPaymentTypeACL.View)),
-                                   new ChildMenuItem("Sales by shipping type",
-                                       "/Admin/Apps/Ecommerce/Report/SalesByShippingType", ACLOption.Create(new SalesByShippingTypeACL(), SalesByShippingTypeACL.View)),
-                                    new ChildMenuItem("Orders by shipping type",
-                                       "/Admin/Apps/Ecommerce/Report/OrdersByShippingType", ACLOption.Create(new OrdersByShippingTypeACL(), OrdersByShippingTypeACL.View)),
-
-                       });
-            }
-        }
-        public int DisplayOrder { get { return 52; } }
+        public int DisplayOrder { get { return 48; } }
     }
 }
 

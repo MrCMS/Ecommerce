@@ -33,23 +33,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
 
         private static IEnumerable<string> GetAddressParts(IAddress address, bool removeName)
         {
-            if (!string.IsNullOrWhiteSpace(address.Name) && !removeName)
-                yield return address.Name;
-            if (!string.IsNullOrWhiteSpace(address.Company))
-                yield return address.Company;
-            if (!string.IsNullOrWhiteSpace(address.Address1))
-                yield return address.Address1;
-            if (!string.IsNullOrWhiteSpace(address.Address2))
-                yield return address.Address2;
-            if (!string.IsNullOrWhiteSpace(address.City))
-                yield return address.City;
-            if (!string.IsNullOrWhiteSpace(address.StateProvince))
-                yield return address.StateProvince;
-            var countryName = address.GetCountryName();
-            if (!string.IsNullOrWhiteSpace(countryName))
-                yield return countryName;
-            if (!string.IsNullOrWhiteSpace(address.PostalCode))
-                yield return address.PostalCode;
+            if (address != null)
+            {
+                if (!string.IsNullOrWhiteSpace(address.Name) && !removeName)
+                    yield return address.Name;
+                if (!string.IsNullOrWhiteSpace(address.Company))
+                    yield return address.Company;
+                if (!string.IsNullOrWhiteSpace(address.Address1))
+                    yield return address.Address1;
+                if (!string.IsNullOrWhiteSpace(address.Address2))
+                    yield return address.Address2;
+                if (!string.IsNullOrWhiteSpace(address.City))
+                    yield return address.City;
+                if (!string.IsNullOrWhiteSpace(address.StateProvince))
+                    yield return address.StateProvince;
+                var countryName = address.GetCountryName();
+                if (!string.IsNullOrWhiteSpace(countryName))
+                    yield return countryName;
+                if (!string.IsNullOrWhiteSpace(address.PostalCode))
+                    yield return address.PostalCode;
+                
+            }
         }
     }
 }
