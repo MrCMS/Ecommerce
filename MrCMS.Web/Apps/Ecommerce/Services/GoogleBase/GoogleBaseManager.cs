@@ -94,6 +94,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             return file;
         }
 
+        public static string XmlCharacterWhitelist(string inString)
+        {
+            if (inString == null) return null;
+
+            var sbOutput = new StringBuilder();
+
+            foreach (var ch in inString.Where(ch => (ch >= 0x0020 && ch <= 0xD7FF) ||
+                                                     (ch >= 0xE000 && ch <= 0xFFFD) ||
+                                                     ch == 0x0009 ||
+                                                     ch == 0x000A ||
+                                                     ch == 0x000D))
+            {
+                sbOutput.Append(ch);
+            }
+            return sbOutput.ToString();
+        }
+
         /// <summary>
         ///     Export Google BaseProduct
         /// </summary>
@@ -120,11 +137,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             xml.WriteStartElement("description");
             string description = String.Empty;
             if (productVariant.Product != null && !String.IsNullOrWhiteSpace(productVariant.DisplayName))
-                description = productVariant.Product.BodyContent;
+                description = productVariant.Product.BodyContent.StripHtml();
             if (productVariant.Product != null && String.IsNullOrEmpty(description))
-                description = productVariant.Product.Abstract;
+                description = productVariant.Product.Abstract.StripHtml();
             if (productVariant.Product != null && String.IsNullOrEmpty(description))
-                description = productVariant.DisplayName;
+                description = productVariant.DisplayName.StripHtml();
+            description = XmlCharacterWhitelist(description);
             byte[] descriptionBytes = Encoding.Default.GetBytes(description);
             description = Encoding.UTF8.GetString(descriptionBytes);
             xml.WriteCData(description);
