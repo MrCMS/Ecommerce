@@ -1,5 +1,5 @@
 ﻿$.ajaxSetup({ cache: false });
-$(document).ready(function () {
+$(function () {
     $(document).ajaxStart(function () {
         $("#loading").show();
     });
@@ -9,7 +9,7 @@ $(document).ready(function () {
     $().dropdown();
     $("[rel='tooltip']").tooltip();
 
-    Globalize.culture($("#UICulture").val());
+    Globalize.culture($("#CurrentUICulture").val());
     $.validator.methods.number = function (value, element) {
         return this.optional(element) ||
             !isNaN(Globalize.parseFloat(value));
@@ -93,7 +93,18 @@ $(document).ready(function () {
     $(document).on('change', '#admin-site-selector', function () {
         location.href = $(this).val();
     });
-
+    
+    //fix ckeditor on scroll
+    $(".main-content").scroll(function (e) {
+        if ($('.body-content #cke_1_contents').height() > 500) {
+            if ($(this).scrollTop() > 110 && $(".body-content #cke_1_top").css('position') != 'fixed') {
+                $(".body-content #cke_1_top").css({ 'position': 'fixed', 'top': '51px' });
+            }
+            if ($(this).scrollTop() < 110 && $(".body-content #cke_1_top").css('position') != 'inherit') {
+                $(".body-content #cke_1_top").css({ 'position': 'inherit', 'top': 'auto;' });
+            }
+        }
+    });
 });
 
 function resizeModal(jqElement) {
@@ -124,52 +135,21 @@ function getRemoteModel(href) {
 
 $(function () {
     admin.initializePlugins();
+
+    var $message = $('.admin-message');
+    $message.show().addClass('fadeIn fast');
+    setTimeout(function () {
+        $message.removeClass('fadeIn').addClass('fadeOut');
+        setTimeout(function () {
+            $message.hide();
+        }, 1000);
+    }, 1500);
 });
 window.admin = {
     initializePlugins: function () {
         CKEDITOR.replaceAll('ckedit-enabled');
         CKEDITOR.on('instanceReady', function (ev) {
             $(window).resize();
-            ev.editor.dataProcessor.htmlFilter.addRules(
-                {
-                    elements:
-                    {
-                        $: function (element) {
-                            // Output dimensions of images as width and height
-                            if (element.name == 'img') {
-                                var style = element.attributes.style;
-
-                                if (style) {
-                                    // Get the width from the style.
-                                    var match = /(?:^|\s)width\s*:\s*(\d+)px/i.exec(style),
-                                        width = match && match[1];
-
-                                    // Get the height from the style.
-                                    match = /(?:^|\s)height\s*:\s*(\d+)px/i.exec(style);
-                                    var height = match && match[1];
-
-                                    if (width) {
-                                        element.attributes.style = element.attributes.style.replace(/(?:^|\s)width\s*:\s*(\d+)px;?/i, '');
-                                        element.attributes.width = width;
-                                    }
-
-                                    if (height) {
-                                        element.attributes.style = element.attributes.style.replace(/(?:^|\s)height\s*:\s*(\d+)px;?/i, '');
-                                        element.attributes.height = height;
-                                    }
-                                }
-
-                                element.attributes.class = "img-responsive";
-                            }
-
-                            if (!element.attributes.style)
-                                delete element.attributes.style;
-
-
-                            return element;
-                        }
-                    }
-                });
         });
         $('[data-type=media-selector], [class=media-selector]').mediaSelector();
         var form = $('form');

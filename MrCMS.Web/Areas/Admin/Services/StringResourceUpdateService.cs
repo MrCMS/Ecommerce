@@ -50,38 +50,46 @@ namespace MrCMS.Web.Areas.Admin.Services
             }
             string result = string.Join(Environment.NewLine, data.Select(list => string.Join(",", list)));
 
-            return new FileContentResult(Encoding.UTF8.GetBytes(result), "text/csv")
-                       {
-                           FileDownloadName =
-                               "MrCMS-ResourceData-" + CurrentRequestData.Now +
-                               ".csv"
-                       };
+            return new FileContentResult(Encoding.Default.GetBytes(result), "text/csv")
+            {
+                FileDownloadName =
+                    "MrCMS-ResourceData-" + CurrentRequestData.Now +
+                    ".csv"
+            };
         }
 
         public void Import(HttpPostedFileBase file)
         {
-            file.InputStream.Position = 0;
-            var reader = new StreamReader(file.InputStream);
+            Stream inputStream = file.InputStream;
+            inputStream.Position = 0;
+            var reader = new StreamReader(inputStream, Encoding.Default);
             string data = reader.ReadToEnd();
-            string[] rows = data.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+            string[] rows = data.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             var resourceData = new List<StringResourceData>();
             foreach (string row in rows.Skip(1)) //skip the header row
             {
-                string[] columns = row.Split(new[] {","}, StringSplitOptions.None);
+                string[] columns = row.Split(new[] { "," }, StringSplitOptions.None);
                 if (columns.Count() != 4)
                     continue;
                 try
                 {
-                    resourceData.Add(new StringResourceData
-                                         {
-                                             Key = ReadData(columns[0]),
-                                             Value = ReadData(columns[1]),
-                                             UICulture = ReadData(columns[2]),
-                                             SiteId = Convert.ToInt32(ReadData(columns[3]))
-                                         });
+                    string resourceKey = ReadData(columns[0]);
+
+                    if (resourceData.All(x => x.Key != resourceKey))
+                    {
+                        resourceData.Add(new StringResourceData
+                        {
+                            Key = resourceKey,
+                            Value = ReadData(columns[1]),
+                            UICulture = ReadData(columns[2]),
+                            SiteId = Convert.ToInt32(ReadData(columns[3]))
+                        });
+                    }
+
                 }
-                catch
+                catch (Exception ex)
                 {
+
                 }
             }
             foreach (StringResourceData stringResourceData in resourceData)
@@ -104,12 +112,12 @@ namespace MrCMS.Web.Areas.Admin.Services
                 else
                 {
                     _provider.Insert(new StringResource
-                                         {
-                                             Key = stringResourceData.Key,
-                                             Value = stringResourceData.Value,
-                                             UICulture = uiCulture,
-                                             Site = _session.Get<Site>(stringResourceData.SiteId)
-                                         });
+                    {
+                        Key = stringResourceData.Key,
+                        Value = stringResourceData.Value,
+                        UICulture = uiCulture,
+                        Site = _session.Get<Site>(stringResourceData.SiteId)
+                    });
                 }
             }
         }
