@@ -19,7 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             var subMenu = new SubMenu();
             var items = shippingMethodInfos.Select(shippingMethodInfo => new ChildMenuItem(shippingMethodInfo.Name, shippingMethodInfo.ConfigureUrl)).ToList();
             items.Insert(0, new ChildMenuItem("Configuration", "/Admin/Apps/Ecommerce/ShippingMethod"));
-            subMenu.Add("", items);
+            subMenu.AddRange(items);
             return subMenu;
         }
     }
