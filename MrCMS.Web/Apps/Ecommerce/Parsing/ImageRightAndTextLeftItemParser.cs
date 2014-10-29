@@ -9,17 +9,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Parsing
     {
         private static readonly Regex ImageRegex = new Regex(@"\[(?i)ImageUrl\]");
         private static readonly Regex TextRegex = new Regex(@"\[(?i)Text\]");
-        private readonly IUrlHelper _urlHelper;
+        private readonly INewsletterUrlHelper _newsletterUrlHelper;
 
-        public ImageRightAndTextLeftItemParser(IUrlHelper urlHelper)
+        public ImageRightAndTextLeftItemParser(INewsletterUrlHelper newsletterUrlHelper)
         {
-            _urlHelper = urlHelper;
+            _newsletterUrlHelper = newsletterUrlHelper;
         }
 
         public string Parse(NewsletterTemplate template, ImageRightAndTextLeft item)
         {
             string output = template.ImageRightAndTextLeftTemplate;
-            output = ImageRegex.Replace(output, _urlHelper.ToAbsolute(item.ImageUrl));
+            output = ImageRegex.Replace(output, _newsletterUrlHelper.ToAbsolute(item.ImageUrl));
             output = TextRegex.Replace(output, item.Text ?? string.Empty);
             return output;
         }
@@ -29,17 +29,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Parsing
     {
         private static readonly Regex ImageRegex = new Regex(@"\[(?i)ImageUrl\]");
         private static readonly Regex TextRegex = new Regex(@"\[(?i)Text\]");
-        private readonly IUrlHelper _urlHelper;
+        private readonly INewsletterUrlHelper _newsletterUrlHelper;
 
-        public ImageLeftAndTextRightParser(IUrlHelper urlHelper)
+        public ImageLeftAndTextRightParser(INewsletterUrlHelper newsletterUrlHelper)
         {
-            _urlHelper = urlHelper;
+            _newsletterUrlHelper = newsletterUrlHelper;
         }
 
         public string Parse(NewsletterTemplate template, ImageLeftAndTextRight item)
         {
             string output = template.ImageLeftAndTextRightTemplate;
-            output = ImageRegex.Replace(output, _urlHelper.ToAbsolute(item.ImageUrl));
+            output = ImageRegex.Replace(output, _newsletterUrlHelper.ToAbsolute(item.ImageUrl));
             output = TextRegex.Replace(output, item.Text ?? string.Empty);
             return output;
         }

@@ -6,9 +6,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
 {
     public static class ProductVariantExtensions
     {
-        public static CanBuyStatus CanBuy(this ProductVariant productVariant, int additionalQuantity = 0)
+        public static int GetStockRemaining(this ProductVariant variant)
         {
-            return MrCMSApplication.Get<IProductVariantAvailabilityService>().CanBuy(productVariant, additionalQuantity);
+            return MrCMSApplication.Get<IGetStockRemainingQuantity>().Get(variant);
         }
     }
 }

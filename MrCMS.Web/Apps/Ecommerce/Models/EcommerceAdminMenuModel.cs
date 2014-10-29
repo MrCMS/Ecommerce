@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Web.UI.WebControls;
-using MarketplaceWebServiceFeedsClasses;
+using System.Linq;
+using System.Web.Mvc;
 using MrCMS.Models;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Services;
@@ -11,14 +11,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 {
     public class EcommerceAdminMenuModel : IAdminMenuItem
     {
-        private readonly IShippingMethodSubmenuGenerator _shippingMethodSubmenuGenerator;
         private readonly EcommerceSettings _ecommerceSettings;
+        private readonly UrlHelper _urlHelper;
+        private readonly IShippingMethodSubmenuGenerator _shippingMethodSubmenuGenerator;
 
         public EcommerceAdminMenuModel(IShippingMethodSubmenuGenerator shippingMethodSubmenuGenerator,
-             EcommerceSettings ecommerceSettings)
+            EcommerceSettings ecommerceSettings, UrlHelper urlHelper)
         {
             _shippingMethodSubmenuGenerator = shippingMethodSubmenuGenerator;
             _ecommerceSettings = ecommerceSettings;
+            _urlHelper = urlHelper;
         }
 
         public string Text
@@ -41,30 +43,38 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             {
                 var adminItems = new List<ChildMenuItem>
                 {
-                    new ChildMenuItem("Orders", "/Admin/Apps/Ecommerce/Order",
+                    new ChildMenuItem("Orders", _urlHelper.Action("Index", "Order"),
                         ACLOption.Create(new OrderACL(), OrderACL.List)),
-                    new ChildMenuItem("Products", "/Admin/Apps/Ecommerce/Product",
+                    new ChildMenuItem("Products", _urlHelper.Action("Index", "Product"),
                         ACLOption.Create(new ProductACL(), ProductACL.List)),
-                    new ChildMenuItem("Categories", "/Admin/Apps/Ecommerce/Category",
+                    new ChildMenuItem("Categories", _urlHelper.Action("Index", "Category"),
                         ACLOption.Create(new CategoryACL(), CategoryACL.List)),
-                    new ChildMenuItem("Brands", "/Admin/Apps/Ecommerce/Brand",
+                    new ChildMenuItem("Brands", _urlHelper.Action("Index", "Brand"),
                         ACLOption.Create(new BrandACL(), BrandACL.List)),
-                    new ChildMenuItem("Product Specifications", "/Admin/Apps/Ecommerce/ProductSpecificationAttribute",
+                    new ChildMenuItem("Product Specifications",
+                        _urlHelper.Action("Index", "ProductSpecificationAttribute"),
                         ACLOption.Create(new ProductSpecificationAttributeACL(), ProductSpecificationAttributeACL.List)),
-                    new ChildMenuItem("Discounts", "/Admin/Apps/Ecommerce/Discount",
+                    new ChildMenuItem("Discounts", _urlHelper.Action("Index", "Discount"),
                         ACLOption.Create(new DiscountACL(), DiscountACL.List)),
                 };
                 if (_ecommerceSettings.GiftCardsEnabled)
                 {
-                    adminItems.Add(new ChildMenuItem("Gift Cards", "/Admin/Apps/Ecommerce/GiftCard",
+                    adminItems.Add(new ChildMenuItem("Gift Cards", _urlHelper.Action("Index", "GiftCard"),
                         ACLOption.Create(new GiftCardACL(), GiftCardACL.List)));
+                }
+                if (_ecommerceSettings.WarehouseStockEnabled)
+                {
+                    adminItems.Add(new ChildMenuItem("Warehouses", _urlHelper.Action("Index", "Warehouse"),
+                        ACLOption.Create(new WarehouseACL(), WarehouseACL.List)));
+                    adminItems.Add(new ChildMenuItem("Warehouse Stock", _urlHelper.Action("Index", "WarehouseStock"),
+                        ACLOption.Create(new WarehouseStockACL(), WarehouseStockACL.List)));
                 }
 
                 var ecommerceMenu = new SubMenu();
                 ecommerceMenu.AddRange(adminItems);
-                ecommerceMenu.Add(new ChildMenuItem("Templates", "/Admin/Apps/Ecommerce/NewsletterTemplate",
+                ecommerceMenu.Add(new ChildMenuItem("Templates", _urlHelper.Action("Index", "NewsletterTemplate"),
                     ACLOption.Create(new NewsletterTemplateACL(), NewsletterTemplateACL.List)));
-                ecommerceMenu.Add(new ChildMenuItem("Newsletter", "/Admin/Apps/Ecommerce/Newsletter",
+                ecommerceMenu.Add(new ChildMenuItem("Newsletter", _urlHelper.Action("Index", "Newsletter"),
                     ACLOption.Create(new NewsletterACL(), NewsletterACL.List)));
                 return ecommerceMenu;
             }

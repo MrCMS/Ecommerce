@@ -9,18 +9,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Parsing
     {
         private static readonly Regex ImageRegex = new Regex(@"\[(?i)ImageUrl\]");
         private static readonly Regex LinkRegex = new Regex(@"\[(?i)LinkUrl\]");
-        private readonly IUrlHelper _urlHelper;
+        private readonly INewsletterUrlHelper _newsletterUrlHelper;
 
-        public BannerItemParser(IUrlHelper urlHelper)
+        public BannerItemParser(INewsletterUrlHelper newsletterUrlHelper)
         {
-            _urlHelper = urlHelper;
+            _newsletterUrlHelper = newsletterUrlHelper;
         }
 
         public string Parse(NewsletterTemplate template, Banner item)
         {
             string output = template.BannerTemplate;
-            output = ImageRegex.Replace(output, _urlHelper.ToAbsolute(item.ImageUrl));
-            output = LinkRegex.Replace(output, _urlHelper.ToAbsolute(item.LinkUrl));
+            output = ImageRegex.Replace(output, _newsletterUrlHelper.ToAbsolute(item.ImageUrl));
+            output = LinkRegex.Replace(output, _newsletterUrlHelper.ToAbsolute(item.LinkUrl));
             return output;
         }
     }

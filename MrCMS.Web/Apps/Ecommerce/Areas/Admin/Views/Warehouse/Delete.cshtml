@@ -1,0 +1,17 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Stock.Entities.Warehouse
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
+@using (Html.BeginForm("Delete", "Warehouse", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Delete warehouse
+            <span class="btn-group display-inline pull-right">
+                <button type="submit" class="btn btn-primary">Delete</button>
+            </span>
+        </legend>
+        <div class="form-group">
+            Are you sure you want to delete the warehouse @Model.Name? This cannot be undone.
+        </div>
+    </fieldset>
+}

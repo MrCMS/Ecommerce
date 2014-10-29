@@ -1,9 +1,9 @@
 using System.Web.Mvc;
-using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Web.Areas.Admin.Helpers;
 using MrCMS.Website;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;

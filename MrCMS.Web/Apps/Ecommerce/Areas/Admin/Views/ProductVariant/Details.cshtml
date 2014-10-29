@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
+﻿@using MrCMS.Web.Apps.Ecommerce.Settings
+@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
     var productVariantTypeOptions = ViewData["product-variant-type-options"] as List<SelectListItem> ?? new List<SelectListItem>();
 }
@@ -77,9 +78,13 @@
     <div class="row">
         <div class="col-xs-6">
             <div class="form-group">
-                @Html.LabelFor(variant => variant.StockRemaining)
-                @Html.TextBoxFor(variant => variant.StockRemaining, new { @class = "form-control" })
-                @Html.ValidationMessageFor(variant => variant.StockRemaining)
+                @if (!SiteSettings<EcommerceSettings>().WarehouseStockEnabled)
+                {
+                    @Html.LabelFor(variant => variant.StockRemaining)
+                    @Html.TextBoxFor(variant => variant.StockRemaining, new {@class = "form-control"})
+                    @Html.ValidationMessageFor(variant => variant.StockRemaining)
+                }
+                
             </div>
         </div>
         <div class="col-xs-6">
