@@ -10,7 +10,7 @@
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
     Product product = Model.Product;
-    CanBuyStatus canBuy = Model.CanBuy(1);
+    CanBuyStatus canBuy = ViewData["can-buy-status"] as CanBuyStatus ?? new CannotOrderQuantity(Model, 0);
     var mainCategory = product.Categories.OrderBy(x => x.DisplayOrder).FirstOrDefault();
 }
 
@@ -29,11 +29,11 @@
                 <div class="col-sm-4">
                     <div class="price margin-bottom-10">
                         <span itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">
-                            <meta itemprop="priceCurrency" content="@{ MrCMSApplication.Get<EcommerceSettings>().CurrencyCode.ToString(); }" />
+                            <meta itemprop="priceCurrency" content="@(MrCMSApplication.Get<EcommerceSettings>().CurrencyCode())" />
                             <span itemprop="price">@Model.Price.ToCurrencyFormat()</span>
                             @if (canBuy.OK)
                             {
-                                <span class="instock"  itemprop="availability" content="in_stock">@Resource("In stock")</span>
+                                <span class="instock" itemprop="availability" content="in_stock">@Resource("In stock")</span>
                             }
                             @if (Model.ShowPreviousPrice)
                             {

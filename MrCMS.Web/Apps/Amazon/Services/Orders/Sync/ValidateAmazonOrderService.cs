@@ -42,6 +42,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         }
         private AmazonOrderItem GetAmazonOrderItem(AmazonOrder amazonOrder, OrderItem rawOrderItem)
         {
+            var currency = _ecommerceSettings.Currency();
             return new AmazonOrderItem
                 {
                     ASIN = !String.IsNullOrWhiteSpace(rawOrderItem.ASIN) ? rawOrderItem.ASIN : String.Empty,
@@ -67,7 +68,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     GiftWrapPriceCurrency =
                         (rawOrderItem.GiftWrapPrice != null && rawOrderItem.GiftWrapPrice.CurrencyCode != null)
                             ? rawOrderItem.GiftWrapPrice.CurrencyCode
-                            : _ecommerceSettings.Currency.Code,
+                            : currency.Code,
                     GiftWrapTaxAmount =
                         (rawOrderItem.GiftWrapTax != null && rawOrderItem.GiftWrapTax.Amount != null)
                             ? Decimal.Parse(rawOrderItem.GiftWrapTax.Amount, new CultureInfo("en-GB", false))
@@ -75,7 +76,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     GiftWrapTaxCurrency =
                         (rawOrderItem.GiftWrapTax != null && rawOrderItem.GiftWrapTax.CurrencyCode != null)
                             ? rawOrderItem.GiftWrapTax.CurrencyCode
-                            : _ecommerceSettings.Currency.Code,
+                            : currency.Code,
 
                     ItemPriceAmount =
                         (rawOrderItem.ItemPrice != null && rawOrderItem.ItemPrice.Amount != null)
@@ -84,7 +85,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     ItemPriceCurrency =
                         (rawOrderItem.ItemPrice != null && rawOrderItem.ItemPrice.CurrencyCode != null)
                             ? rawOrderItem.ItemPrice.CurrencyCode
-                            : _ecommerceSettings.Currency.Code,
+                            : currency.Code,
                     ItemTaxAmount =
                         (rawOrderItem.ItemTax != null && rawOrderItem.ItemTax.Amount != null)
                             ? Decimal.Parse(rawOrderItem.ItemTax.Amount, new CultureInfo("en-GB", false))
@@ -92,7 +93,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     ItemTaxCurrency =
                         (rawOrderItem.ItemTax != null && rawOrderItem.ItemTax.CurrencyCode != null)
                             ? rawOrderItem.ItemTax.CurrencyCode
-                            : _ecommerceSettings.Currency.Code,
+                            : currency.Code,
 
                     PromotionDiscountAmount =
                         (rawOrderItem.PromotionDiscount != null && rawOrderItem.PromotionDiscount.Amount != null)
@@ -101,7 +102,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     PromotionDiscountCurrency =
                         (rawOrderItem.PromotionDiscount != null && rawOrderItem.PromotionDiscount.CurrencyCode != null)
                             ? rawOrderItem.PromotionDiscount.CurrencyCode
-                            : _ecommerceSettings.Currency.Code,
+                            : currency.Code,
 
                     QuantityOrdered = rawOrderItem.QuantityOrdered,
                     QuantityShipped = rawOrderItem.QuantityShipped,
@@ -113,7 +114,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     ShippingDiscountCurrency =
                         (rawOrderItem.ShippingDiscount != null && rawOrderItem.ShippingDiscount.CurrencyCode != null)
                             ? rawOrderItem.ShippingDiscount.CurrencyCode
-                            : _ecommerceSettings.Currency.Code,
+                            : currency.Code,
                     ShippingPriceAmount =
                         (rawOrderItem.ShippingPrice != null && rawOrderItem.ShippingPrice.Amount != null)
                             ? Decimal.Parse(rawOrderItem.ShippingPrice.Amount, new CultureInfo("en-GB", false))
@@ -121,7 +122,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     ShippingPriceCurrency =
                         (rawOrderItem.ShippingPrice != null && rawOrderItem.ShippingPrice.CurrencyCode != null)
                             ? rawOrderItem.ShippingPrice.CurrencyCode
-                            : _ecommerceSettings.Currency.Code,
+                            : currency.Code,
                     ShippingTaxAmount =
                         (rawOrderItem.ShippingTax != null && rawOrderItem.ShippingTax.Amount != null)
                             ? Decimal.Parse(rawOrderItem.ShippingTax.Amount, new CultureInfo("en-GB", false))
@@ -129,7 +130,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                     ShippingTaxCurrency =
                         (rawOrderItem.ShippingTax != null && rawOrderItem.ShippingTax.CurrencyCode != null)
                             ? rawOrderItem.ShippingTax.CurrencyCode
-                            : _ecommerceSettings.Currency.Code,
+                            : currency.Code,
                 };
         }
 

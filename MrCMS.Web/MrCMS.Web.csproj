@@ -792,6 +792,7 @@
     <Compile Include="Apps\Ecommerce\Helpers\Cart\CartModelExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\CookieHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\CurrencyFormattingHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\EcommerceSettingsExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\EnumHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\GeneralHelper.cs" />
@@ -1269,10 +1270,12 @@
     <Compile Include="Apps\Ecommerce\Services\Products\IProductSearchIndexService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IProductVariantService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\IProductVariantUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductOptionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductSearchIndexService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\ProductVariantService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\ProductVariantUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductVariantAvailabilityService.cs" />
     <Compile Include="Apps\Ecommerce\Services\RelatedProductsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\ChartService.cs" />
@@ -3224,7 +3227,7 @@
     <Content Include="Apps\Ecommerce\Views\ProductAddedToCart\RelatedProducts.cshtml" />
     <Content Include="Apps\Ecommerce\Views\ProductSearch\ProductSearch.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Product\Product.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Product\VariantDetails.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductVariant\Details.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SagePayRedirect\Failed.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SagePayRedirect\Success.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SagePay\Form.cshtml" />

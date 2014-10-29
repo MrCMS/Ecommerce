@@ -7,7 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
     {
         public static string ToCurrencyFormat(this decimal price)
         {
-            var currency = MrCMSApplication.Get<EcommerceSettings>().Currency;
+            var currency = MrCMSApplication.Get<EcommerceSettings>().Currency();
 
             return currency != null ? currency.FormatPrice(price) : price.ToString("0.00");
         }
