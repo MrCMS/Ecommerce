@@ -3,6 +3,7 @@ using FluentAssertions;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Services.GoogleBase;
@@ -15,12 +16,14 @@ namespace MrCMS.EcommerceApp.Tests.Services
         private readonly GoogleBaseManager _googleBaseManager;
         private readonly IProductVariantService _productVariantService;
         private IGoogleBaseShippingService _googleBaseShippingService;
+        private IGetStockRemainingQuantity _getStockRemainingQuantity;
 
         public GoogleBaseManagerTests()
         {
             _productVariantService = A.Fake<IProductVariantService>();
             _googleBaseShippingService = A.Fake<IGoogleBaseShippingService>();
-            _googleBaseManager = new GoogleBaseManager(Session, _productVariantService, _googleBaseShippingService);
+            _getStockRemainingQuantity = A.Fake<IGetStockRemainingQuantity>();
+            _googleBaseManager = new GoogleBaseManager(Session, _productVariantService, _googleBaseShippingService,_getStockRemainingQuantity);
         }
 
         [Fact]

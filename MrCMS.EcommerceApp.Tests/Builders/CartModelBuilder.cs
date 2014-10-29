@@ -16,12 +16,10 @@ namespace MrCMS.EcommerceApp.Tests.Builders
         private decimal? _weight;
         private string _shippingAddressCountry;
         private readonly List<CartItem> _items = new List<CartItem>();
-        private readonly HashSet<IShippingMethod> _availableShippingMethods = new HashSet<IShippingMethod>
-                                                                            {
-                                                                                A.Fake<IShippingMethod>()
-                                                                            };
+       
 
         private decimal? _shippableCalculationTotal;
+        private IShippingMethod[] _methods = new IShippingMethod[1];
 
         public CartModelBuilder WithWeight(decimal weight)
         {
@@ -60,8 +58,14 @@ namespace MrCMS.EcommerceApp.Tests.Builders
                        {
                            ShippingAddress = new Address { CountryCode = _shippingAddressCountry },
                            Items = _items,
-                           PotentiallyAvailableShippingMethods = _availableShippingMethods
+                           PotentiallyAvailableShippingMethods = _methods.ToHashSet()
                        };
+        }
+
+        public CartModelBuilder WithShippingOptions(params IShippingMethod[] methods)
+        {
+            _methods = methods;
+            return this;
         }
     }
 }

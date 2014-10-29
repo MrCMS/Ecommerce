@@ -15,7 +15,7 @@ namespace MrCMS.EcommerceApp.Tests.Builders
 
         public CartItem Build()
         {
-            return new TestableCartItem(_canBuy,_pricePreTax,_tax)
+            return new TestableCartItem(_canBuy, _pricePreTax, _tax)
                        {
                            Quantity = _quantity,
                            Item = _variant
@@ -73,9 +73,9 @@ namespace MrCMS.EcommerceApp.Tests.Builders
             _tax = tax;
         }
 
-        public override bool CanBuy(CartModel cartModel)
+        public override bool CanBuy
         {
-            return _canBuy ?? base.CanBuy(cartModel);
+            get { return _canBuy ?? base.CanBuy; }
         }
 
         public override decimal PricePreTax

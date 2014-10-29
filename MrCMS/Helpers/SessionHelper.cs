@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MrCMS.DbConfiguration;
 using MrCMS.Entities;
 using MrCMS.IoC;
@@ -9,6 +10,7 @@ using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Impl;
+using NHibernate.Linq;
 
 namespace MrCMS.Helpers
 {
@@ -67,6 +69,15 @@ namespace MrCMS.Helpers
             int rowCount = queryBase.Cacheable().RowCount();
 
             return new StaticPagedList<TResult>(results, pageNumber, size, rowCount);
+        }
+        public static IPagedList<TResult> Paged<TResult>(this IQueryable<TResult> queryable, int pageNumber, int? pageSize = null)
+            where TResult : SystemEntity
+        {
+            var size = pageSize ?? MrCMSApplication.Get<SiteSettings>().DefaultPageSize;
+
+            var cacheable = queryable.Cacheable();
+
+            return new PagedList<TResult>(cacheable, pageNumber, size);
         }
 
         public static bool Any<T>(this IQueryOver<T> query)

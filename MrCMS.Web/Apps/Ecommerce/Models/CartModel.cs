@@ -340,9 +340,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             {
                 if (!Items.Any())
                     yield return "You have nothing in your cart";
-                foreach (var item in Items.Where(item => !item.CanBuy(this)))
+                foreach (var item in Items.Where(item => !item.CanBuy))
                 {
-                    yield return item.Error(this);
+                    yield return item.Error;
                 }
                 if (ShippingStatus == CartShippingStatus.CannotShip)
                     yield return "You are currently unable to ship the items in your cart";

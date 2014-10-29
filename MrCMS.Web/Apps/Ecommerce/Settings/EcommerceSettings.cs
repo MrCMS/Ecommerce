@@ -37,6 +37,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         [DisplayName("Enable Gift Message")]
         public bool GiftMessageEnabled { get; set; }
 
+        [DisplayName("Enable warehouse-based stock management")]
+        public bool WarehouseStockEnabled { get; set; }
+
         public IEnumerable<int> ProductPerPageOptions
         {
             get

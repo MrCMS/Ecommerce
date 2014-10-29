@@ -145,7 +145,7 @@
     <Compile Include="Admin\Controllers\CategoryControllerTests.cs" />
     <Compile Include="Admin\Controllers\BrandControllerTests.cs" />
     <Compile Include="Admin\Controllers\GoogleBaseControllerTests.cs" />
-    <Compile Include="Admin\Controllers\StockControllerTests.cs" />
+    <Compile Include="Admin\Controllers\BulkStockUpdateControllerTests.cs" />
     <Compile Include="Admin\Controllers\ImportExportControllerTests.cs" />
     <Compile Include="Admin\Controllers\EcommerceSettingsControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductSpecificationAttributeOptionControllerTests.cs" />
@@ -164,11 +164,18 @@
     <Compile Include="Admin\Services\ProductVariantAdminServiceTests.cs" />
     <Compile Include="Builders\CartItemBuilder.cs" />
     <Compile Include="Builders\CartModelBuilder.cs" />
+    <Compile Include="Builders\EntityBuilderExtensions.cs" />
     <Compile Include="Builders\GiftCardApplierBuilder.cs" />
     <Compile Include="Builders\GiftCardBuilder.cs" />
+    <Compile Include="Builders\IEntityBuilder.cs" />
     <Compile Include="Builders\OrderLineBuilder.cs" />
     <Compile Include="Builders\OutOfContextResponseBuilder.cs" />
+    <Compile Include="Builders\ProductShippingCheckerBuilder.cs" />
+    <Compile Include="Builders\ProductStockCheckerBuilder.cs" />
+    <Compile Include="Builders\ProductVariantAvailabilityServiceBuilder.cs" />
     <Compile Include="Builders\ProductVariantBuilder.cs" />
+    <Compile Include="Builders\WarehouseBuilder.cs" />
+    <Compile Include="Builders\WarehouseStockBuilder.cs" />
     <Compile Include="Controllers\ProductContainerControllerTests.cs" />
     <Compile Include="Controllers\DownloadProductControllerTests.cs" />
     <Compile Include="Controllers\ProductSearchControllerTests.cs" />
@@ -176,7 +183,6 @@
     <Compile Include="Entities\Discounts\DiscountTests.cs" />
     <Compile Include="Entities\Products\ProductVariantTests\AvailabilityTests.cs" />
     <Compile Include="Entities\Products\ProductVariantTests\PricingTests.cs" />
-    <Compile Include="Entities\Products\ProductVariantTests\StockLevelTests.cs" />
     <Compile Include="Entities\Shipping\ShippingCalculationTests.cs" />
     <Compile Include="Helpers\InlineDataExtensions.cs" />
     <Compile Include="Helpers\SetTaxSettingsExtensions.cs" />
@@ -214,7 +220,6 @@
     <Compile Include="Payment\PayPalExpress\PayPalUrlServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BulkStockUpdate\BulkStockUpdateServiceTests.cs" />
-    <Compile Include="Services\BulkStockUpdate\BulkStockUpdateValidationServiceTests.cs" />
     <Compile Include="Services\CartItemManagerTests.cs" />
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateServiceTests.cs" />
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateValidationServiceTests.cs" />
@@ -231,7 +236,10 @@
     <Compile Include="Services\OrderShippingServiceTests.cs" />
     <Compile Include="Services\OrderRefundServiceTests.cs" />
     <Compile Include="Services\OrderServiceTests.cs" />
-    <Compile Include="Services\StockAdminServiceTests.cs" />
+    <Compile Include="Services\ProductShippingCheckerTest\CanShipTests.cs" />
+    <Compile Include="Services\ProductStockCheckerTest\CanOrderQuantityTests.cs" />
+    <Compile Include="Services\ProductStockCheckerTest\IsInStockTests.cs" />
+    <Compile Include="Services\ProductVariantAvailabilityServiceTests.cs" />
     <Compile Include="Services\GoogleBaseManagerTests.cs" />
     <Compile Include="Services\OptionServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductVariantPriceBreakServiceTests.cs" />
@@ -251,17 +259,15 @@
     <Compile Include="Services\ProductOptionManagerTests\AttributeValueTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\SpecificationAttributeTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\SpecificationValueTests.cs" />
-    <Compile Include="Services\ProductVariant_CanBuyTests.cs" />
     <Compile Include="Services\RegionServiceTests.cs" />
-    <Compile Include="Services\StockReport\StockReportServiceTests.cs" />
     <Compile Include="Services\TaxRateManagerTests.cs" />
     <Compile Include="SqliteInMemoryProvider.cs" />
     <Compile Include="Stubs\BasicHttpPostedFileBase.cs" />
     <Compile Include="Stubs\BasicHttpPostedFileBaseCSV.cs" />
+    <Compile Include="Stubs\StubShippingMethod1.cs" />
     <Compile Include="TestableEventContext.cs" />
     <Compile Include="TestableModels\TestableCartModel.cs" />
     <Compile Include="TestableModels\TestableGiftCard.cs" />
-    <Compile Include="TestableModels\TestableProductVariant.cs" />
     <Compile Include="TestContextModule.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -273,6 +279,7 @@
   <ItemGroup>
     <Folder Include="Indexing\" />
     <Folder Include="Services\Payment\" />
+    <Folder Include="Services\StockReport\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MrCMS.Web\MrCMS.Web.csproj">

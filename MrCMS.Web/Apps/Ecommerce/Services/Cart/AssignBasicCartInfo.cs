@@ -13,22 +13,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
     {
         private readonly ICartGuidResetter _cartGuidResetter;
         private readonly IGetBillingAddressSameAsShippingAddress _billingAddressSameAsShippingAddress;
+        private readonly ICartItemAvailablityService _cartItemAvailablityService;
         private readonly ICartSessionManager _cartSessionManager;
         private readonly ISession _session;
 
         public AssignBasicCartInfo(ISession session, ICartSessionManager cartSessionManager,
-            ICartGuidResetter cartGuidResetter, IGetBillingAddressSameAsShippingAddress billingAddressSameAsShippingAddress)
+            ICartGuidResetter cartGuidResetter,
+            IGetBillingAddressSameAsShippingAddress billingAddressSameAsShippingAddress,
+            ICartItemAvailablityService cartItemAvailablityService)
         {
             _session = session;
             _cartSessionManager = cartSessionManager;
             _cartGuidResetter = cartGuidResetter;
             _billingAddressSameAsShippingAddress = billingAddressSameAsShippingAddress;
+            _cartItemAvailablityService = cartItemAvailablityService;
         }
 
         public CartModel Assign(CartModel cart, Guid userGuid)
         {
             List<CartItem> cartItems = GetItems(userGuid);
             DeleteNullProducts(cartItems);
+            AssignAvailablity(cartItems);
             cart.CartGuid = GetCartGuid(userGuid);
             cart.User = CurrentRequestData.CurrentUser;
             cart.UserGuid = userGuid;
@@ -37,6 +42,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             cart.GiftMessage = GetGiftMessage(userGuid);
             cart.BillingAddressSameAsShippingAddress = _billingAddressSameAsShippingAddress.Get(cart, userGuid);
             return cart;
+        }
+
+        private void AssignAvailablity(List<CartItem> cartItems)
+        {
+            foreach (CartItem cartItem in cartItems)
+            {
+                CartItem item = cartItem;
+                item.CanBuyStatus = _cartItemAvailablityService.CanBuy(item);
+            }
         }
 
         private string GetGiftMessage(Guid userGuid)

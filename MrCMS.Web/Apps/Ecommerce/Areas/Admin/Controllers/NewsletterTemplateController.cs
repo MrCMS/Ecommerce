@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder;
 using MrCMS.Web.Apps.Ecommerce.Services.NewsletterBuilder;
+using MrCMS.Web.Areas.Admin.Helpers;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers

@@ -68,6 +68,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\FluentNHibernate.1.4.0.0\lib\net35\FluentNHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="HibernatingRhinos.Profiler.Appender">
+      <HintPath>..\packages\NHibernateProfiler.Appender.2.0.2238.0\lib\HibernatingRhinos.Profiler.Appender.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -477,6 +480,8 @@
     <Compile Include="Apps\Core\Services\Installation\SetupCoreWebpages.cs" />
     <Compile Include="Apps\Core\Widgets\Slider.cs" />
     <Compile Include="Apps\Ecommerce\ACL\BrandACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\BulkShippingUpdateACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\BulkStockUpdateACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\CatalogACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\CategoryACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\CountryACL.cs" />
@@ -503,10 +508,56 @@
     <Compile Include="Apps\Ecommerce\ACL\SalesByPaymentTypeACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\SalesByShippingTypeACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\ShippingMethodACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\StockReportACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\TaxRateACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\ToolsAndReportsACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\WarehouseACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\WarehouseStockACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\WorldPaySettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\ActionResults\NewsletterActionResult.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\LowStockReportController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\StockReportController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\WarehouseController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\WarehouseStockController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\BulkStockUpdateResult.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\BulkUpdateResult.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\BulkWarehouseStockUpdateDTO.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ExportStockReportResult.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\GenerateStockResult.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\GetProductVariantsFromFileResult.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\GetWarehouseStockFromFileResult.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\LowStockReportSearchModel.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\StockGenerationModel.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\StockGenerationType.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\WarehousedStockUpdateResult.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\WarehouseSearchModel.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\WarehouseStockSearchModel.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BulkSimpleStockUpdateService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BulkStockUpdateAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BulkWarehousedStockUpdateService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BulkWarehousedStockUpdateValidationService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CSVFileWriter.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetStockReportFile.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBulkSimpleStockUpdateService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBulkStockUpdateAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBulkWarehousedStockUpdateService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBulkWarehousedStockUpdateValidationService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICSVFileWriter.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetLowStockQuery.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetStockReportFile.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ILowStockReportAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IPerformSimpleBulkUpdate.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IPerformWarehousedStockBulkUpdate.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IStockReportAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IUpdateStockAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IWarehouseAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IWarehouseStockAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\LowStockReportAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\PerformWarehousedStockBulkUpdate.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\StockReportAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\UpdateStockAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\WarehouseAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\WarehouseStockAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BulkShippingController.cs" />
@@ -543,7 +594,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ReportController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\SagePaySettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingMethodController.cs" />
-    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\StockController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BulkStockUpdateController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\TaxRateController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\UKCourierShippingCalculationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\UKCourierShippingController.cs" />
@@ -720,6 +771,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationAttributeOption.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductSpecificationValue.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductVariant.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Products\VariantType.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\Wishlist.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\WishlistItem.cs" />
     <Compile Include="Apps\Ecommerce\Entities\SessionData.cs" />
@@ -744,7 +796,7 @@
     <Compile Include="Apps\Ecommerce\Helpers\ExcelWorksheetHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\GeneralHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\GiftCardExtensions.cs" />
-    <Compile Include="Apps\Ecommerce\Helpers\IUrlHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\INewsletterUrlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\MrCMSEcommerceHtmlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\PolymorphicMappingHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\Pricing\ProductPricingExtensions.cs" />
@@ -754,7 +806,7 @@
     <Compile Include="Apps\Ecommerce\Helpers\ProductVariantExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\RequestHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\Shipping\StandardShippingCalculationExtensions.cs" />
-    <Compile Include="Apps\Ecommerce\Helpers\UrlHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\NewsletterUrlHelper.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchCreatedOnDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchEmaillDefinition.cs" />
@@ -839,6 +891,7 @@
     <Compile Include="Apps\Ecommerce\Models\AddToCartModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\AgeGroup.cs" />
     <Compile Include="Apps\Ecommerce\Models\CanAddQuantityValidationResult.cs" />
+    <Compile Include="Apps\Ecommerce\Models\CanOrderQuantityResult.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartUpdateValue.cs" />
     <Compile Include="Apps\Ecommerce\Models\CashOnDeliveryConfirmModel.cs" />
@@ -892,6 +945,11 @@
     <Compile Include="Apps\Ecommerce\Models\RelatedProductsViewModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ShippingStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\SpendXMoreModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\StockAvailability\CanBuy.cs" />
+    <Compile Include="Apps\Ecommerce\Models\StockAvailability\CanBuyStatus.cs" />
+    <Compile Include="Apps\Ecommerce\Models\StockAvailability\CannotOrderQuantity.cs" />
+    <Compile Include="Apps\Ecommerce\Models\StockAvailability\NoShippingMethodWouldBeAvailable.cs" />
+    <Compile Include="Apps\Ecommerce\Models\StockAvailability\OutOfStock.cs" />
     <Compile Include="Apps\Ecommerce\Models\StrictKeyEqualityComparer.cs" />
     <Compile Include="Apps\Ecommerce\Models\TrackingPolicy.cs" />
     <Compile Include="Apps\Ecommerce\Models\UserAccountOrdersModel.cs" />
@@ -981,6 +1039,7 @@
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\RevenueService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Products\ProductAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\TrackingService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\CartItemAvailablityService.cs" />
     <Compile Include="Apps\Ecommerce\Services\CartValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\AssignBasicCartInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\AssignCartDiscountInfo.cs" />
@@ -1043,6 +1102,7 @@
     <Compile Include="Apps\Ecommerce\Services\GetRecentlyViewedItems.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetRelatedProducts.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetSpendXMoreData.cs" />
+    <Compile Include="Apps\Ecommerce\Services\GetStockRemainingQuantity.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetUserGuid.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetUserOrders.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseManager.cs" />
@@ -1051,9 +1111,11 @@
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\IGoogleBaseManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\IGoogleBaseShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IAddToCartUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ICartItemAvailablityService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ICartValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IGetCountryOptions.cs" />
     <Compile Include="Apps\Ecommerce\Services\IGetProductCardModel.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IGetStockRemainingQuantity.cs" />
     <Compile Include="Apps\Ecommerce\Services\IGetUserGuid.cs" />
     <Compile Include="Apps\Ecommerce\Services\IGiftMessageUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\DTOs\ProductImportDataTransferObject.cs" />
@@ -1100,19 +1162,16 @@
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantStockIsValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantTaxRateIdIsValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantWeightEqOrGrThan0.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\BulkStockUpdateService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\BulkStockUpdateValidationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\PerformSimpleBulkUpdate.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\BulkSimpleStockUpdateValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\DTOs\BulkStockUpdateDataTransferObject.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkStockUpdateService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkStockUpdateValidationService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkSimpleStockUpdateValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\IBulkStockUpdateValidationRule.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\IStockAdminService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\StockAdminService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\IStockReportService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Inventory\StockReport\StockReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IPeopleWhoBoughtThisService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IProductAddedToCartUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IProductStockChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\IProductSearchQueryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IProductShippingChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\IProductVariantAvailabilityService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IRelatedProductsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ISetShippingAddressService.cs" />
@@ -1193,7 +1252,9 @@
     <Compile Include="Apps\Ecommerce\Services\Pricing\ProductPricingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Pricing\ShippingPricingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductAddedToCartUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ProductStockChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductSearchQueryService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ProductShippingChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BackInStockNotificationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BrandService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\Download\DownloadOrderedFileService.cs" />
@@ -1264,6 +1325,8 @@
     <Compile Include="Apps\Ecommerce\Settings\Shipping\UKFirstClassShippingSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\UKCourierShippingSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Stock\Entities\Warehouse.cs" />
+    <Compile Include="Apps\Ecommerce\Stock\Entities\WarehouseStock.cs" />
     <Compile Include="Apps\Ecommerce\Tasks\BackInStockNotificationTask.cs" />
     <Compile Include="Apps\Ecommerce\Tasks\ClearExpiredSessionDataTask.cs" />
     <Compile Include="Apps\Ecommerce\UnifiedSearch\GetBrandsSearchItem.cs" />
@@ -1297,6 +1360,7 @@
     <Compile Include="Apps\MobileFriendlyNavigation\Widgets\MobileFriendlyNavigation.cs" />
     <Compile Include="Areas\Admin\ACL\MediaToolsACL.cs" />
     <Compile Include="Areas\Admin\ACL\NotificationACL.cs" />
+    <Compile Include="Areas\Admin\Helpers\AdminMessagingExtensions.cs" />
     <Compile Include="Areas\Admin\ModelBinders\MoveFilesModelBinder.cs" />
     <Compile Include="Areas\Admin\Models\MoveFilesAndFoldersModel.cs" />
     <Compile Include="Areas\Admin\Controllers\NotificationController.cs" />
@@ -1613,6 +1677,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\edit-product.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-categories.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\featured-products.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\generate-warehouse-stock.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\gift-cards.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\google-base.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\hide-specifications.js" />
@@ -3078,10 +3143,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Report\SalesByShippingType.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\SagePaySettings\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\BulkStockUpdate.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReport.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReportProductVariant.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Stock\LowStockReportProductVariants.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\BulkStockUpdate\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Delete.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Edit.cshtml" />
@@ -3218,6 +3280,15 @@
     <Content Include="Apps\MobileFriendlyNavigation\Areas\Admin\Views\Widget\MobileFriendlyNavigation.cshtml" />
     <Content Include="Apps\MobileFriendlyNavigation\Views\web.config" />
     <Content Include="Apps\MobileFriendlyNavigation\Views\Widgets\MobileFriendlyNavigation.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Warehouse\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Warehouse\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Warehouse\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Warehouse\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Warehouse\GenerateStock.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\WarehouseStock\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\LowStockReport\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\WarehouseStock\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Warehouse\Reference.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Default\Apps\Core\Web.config">
       <SubType>Designer</SubType>
@@ -3239,6 +3310,7 @@
     <Folder Include="Apps\Ecommerce\Content\Scripts\charts\" />
     <Folder Include="Apps\Ecommerce\Models\Shipping\" />
     <Folder Include="Apps\Ecommerce\Queries\" />
+    <Folder Include="Apps\Ecommerce\Services\Inventory\StockReport\" />
     <Folder Include="Apps\Ecommerce\Views\PaymentMethod\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Controllers\" />
     <Folder Include="Apps\Galleries\Areas\Admin\Views\Widget\" />
