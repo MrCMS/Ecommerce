@@ -33,11 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             ViewData["cart"] = _cart;
             return View(page);
         }
-        public PartialViewResult VariantDetails(ProductVariant productVariant)
-        {
-            ViewData["cart"] = _cart;
-            return PartialView(productVariant);
-        }
+       
 
         [HttpPost]
         public RedirectResult BackInStock(BackInStockNotificationRequest request)

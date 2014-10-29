@@ -49,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new[] {typeof (DownloadOrderedFileController).Namespace});
 
             context.MapRoute("Product - Get Variant Details", "product/variant-details/{id}",
-                new {controller = "Product", action = "VariantDetails"}, new[] {typeof (ProductController).Namespace});
+                new { controller = "ProductVariant", action = "Details" }, new[] { typeof(ProductVariantController).Namespace });
 
             // Public Routes
             context.MapRoute("Generate Contact Us Map", "get-contact-map",

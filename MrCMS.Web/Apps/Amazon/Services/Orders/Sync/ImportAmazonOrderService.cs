@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using MarketplaceWebServiceOrders.Model;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
@@ -28,7 +29,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
         public bool IsCurrencyValid(Order order)
         {
-            return !(order.OrderTotal != null && order.OrderTotal.CurrencyCode != _ecommerceSettings.Currency.Code);
+            var currency = _ecommerceSettings.Currency();
+            return !(order.OrderTotal != null && order.OrderTotal.CurrencyCode != currency.Code);
         }
     }
 }

@@ -52,7 +52,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             amazonListing.ProductVariant = productVariant;
             amazonListing.Brand = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.Condition = ConditionType.New;
-            amazonListing.Currency = (_ecommerceSettings.Currency!=null && !String.IsNullOrWhiteSpace(_ecommerceSettings.Currency.Code))?_ecommerceSettings.Currency.Code:CurrencyCode.GBP.GetDescription();
+            var currency = _ecommerceSettings.Currency();
+            amazonListing.Currency = (currency!=null && !String.IsNullOrWhiteSpace(currency.Code))?currency.Code:CurrencyCode.GBP.GetDescription();
             amazonListing.Manafacturer = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.MfrPartNumber = productVariant.ManufacturerPartNumber;
             amazonListing.Quantity = productVariant.TrackingPolicy == TrackingPolicy.Track
@@ -104,7 +105,8 @@ namespace MrCMS.Web.Apps.Amazon.Services.Listings.Sync
             amazonListing.ProductVariant = productVariant;
             amazonListing.Brand = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.Condition = ConditionType.New;
-            amazonListing.Currency = (_ecommerceSettings.Currency != null && !String.IsNullOrWhiteSpace(_ecommerceSettings.Currency.Code)) ? _ecommerceSettings.Currency.Code : CurrencyCode.GBP.GetDescription();
+            var currency = _ecommerceSettings.Currency();
+            amazonListing.Currency = (currency != null && !String.IsNullOrWhiteSpace(currency.Code)) ? currency.Code : CurrencyCode.GBP.GetDescription();
             amazonListing.Manafacturer = productVariant.Product.Brand != null ? productVariant.Product.Brand.Name : String.Empty;
             amazonListing.MfrPartNumber = productVariant.ManufacturerPartNumber;
             amazonListing.Quantity = productVariant.TrackingPolicy == TrackingPolicy.Track

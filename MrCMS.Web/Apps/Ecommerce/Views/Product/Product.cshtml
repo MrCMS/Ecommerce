@@ -9,7 +9,7 @@
 @Html.HiddenFor(x => x.UrlSegment)
 
 <div itemscope itemtype="http://data-vocabulary.org/Product">
-    @{ Html.RenderPartial("VariantDetails", selectedVariant);}
+    @{ Html.RenderAction("Details", "ProductVariant", new { productVariant = selectedVariant });}
     <div class="margin-top-bottom-30">
         <div class="container">
             <div class="row" id="fulldescription">

@@ -1,4 +1,5 @@
 ﻿using MrCMS.Entities.Multisite;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.SagePay;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -47,7 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                                                   BillingPostcode = billingAddress.PostCode,
                                                   BillingState = billingAddress.State,
                                                   BillingSurname = billingAddress.Surname,
-                                                  Currency = _ecommerceSettings.CurrencyCode,
+                                                  Currency = _ecommerceSettings.CurrencyCode(),
                                                   CustomerEMail = cartModel.OrderEmail,
                                                   DeliveryAddress1 = deliveryAddress.Address1,
                                                   DeliveryAddress2 = deliveryAddress.Address2,

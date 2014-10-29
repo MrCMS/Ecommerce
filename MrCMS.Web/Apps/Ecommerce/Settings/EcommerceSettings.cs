@@ -5,9 +5,6 @@ using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Settings;
-using MrCMS.Web.Apps.Ecommerce.Entities.Currencies;
-using MrCMS.Website;
-using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Settings
 {
@@ -69,21 +66,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 
         [DisplayName("Site Currency")]
         public int CurrencyId { get; set; }
-
-        public Currency Currency
-        {
-            get
-            {
-                var session = MrCMSApplication.Get<ISession>();
-                return CurrencyId > 0
-                    ? session.Get<Currency>(CurrencyId)
-                    : session.QueryOver<Currency>().Take(1).SingleOrDefault();
-            }
-        }
-
-        public string CurrencyCode
-        {
-            get { return Currency != null ? Currency.Code : null; }
-        }
     }
 }
