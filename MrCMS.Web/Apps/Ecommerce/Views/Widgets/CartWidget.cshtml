@@ -2,18 +2,18 @@
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Pages
-        
-
 <ul class="nav navbar-nav navbar-right">
     <li>
-             <a href="@(UniquePageHelper.GetUrl<Cart>())" class="basket">
-                 <span class="glyphicon glyphicon-shopping-cart"></span>
-             </a>
-             @if (Model.ItemQuantity > 0)
-             {
-                 <a href="@(UniquePageHelper.GetUrl<Cart>())" class="notification">@Model.ItemQuantity</a>
-             }
-         </li><li>
-                  <a class="checkout" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">Checkout</a>
-              </li>
+        <a href="@(UniquePageHelper.GetUrl<Cart>())" class="basket">
+            <span class="glyphicon glyphicon-shopping-cart"></span>
+        </a>
+        @if (Model.ItemQuantity > 0)
+        {
+            <a href="@(UniquePageHelper.GetUrl<Cart>())" class="notification">@Model.ItemQuantity</a>
+        }
+    </li>
+    <li>
+        <a class="checkout" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">Checkout</a>
+    </li>
 </ul>
+

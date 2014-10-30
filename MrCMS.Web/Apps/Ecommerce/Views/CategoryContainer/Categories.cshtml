@@ -1,5 +1,6 @@
-﻿@model IList<MrCMS.Web.Apps.Ecommerce.Pages.Category>
+﻿@model System.Collections.Generic.IList<MrCMS.Web.Apps.Ecommerce.Pages.Category>
 @using System.Drawing
+@using System.Linq
 @using MrCMS.Helpers
 
 <div class="container" data-paging-type="async">
@@ -23,10 +24,6 @@
                                 <a href="/@item.LiveUrlSegment">@item.Name</a>
                             </div>
                         </div>
-                        @*@if (!string.IsNullOrWhiteSpace(item.Abstract))
-                        {
-                            <p>@item.Abstract</p>
-                        }*@
                     </div>
                 }
             </div>

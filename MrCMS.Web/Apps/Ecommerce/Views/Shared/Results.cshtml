@@ -1,4 +1,5 @@
 ﻿@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Ecommerce.Pages.Product>
+@using System.Linq
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @{ var query = ViewData["query"] as ProductSearchQuery;}
@@ -8,23 +9,18 @@
     </div>
     <div id="products-operations" class="grey-border-bottom">
         <div class="row margin-bottom-10">
-            @*<div class="col-sm-4 padding-0">
-                <h1>
-                    
-                </h1>
-            </div>*@
             <div class="col-sm-6 col-md-4">
                 <div class="col-md-3 col-sm-4 col-xs-3 line-height-30 padding-0">
-                    Sort by
+                    @Resource("Sort by")
                 </div>
                 <div class="col-md-9 col-sm-8 col-xs-9 margin-bottom-10 padding-0" id="sorting">
                     @Html.DropDownList("SortBy", query.SortByOptions, new { @class = "form-control" })
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <div class="col-sm-6 col-md-4 padding-0 mobile">
+            <div class="col-sm-6 col-md-4 ">
                 <div class="col-md-3 col-sm-4 col-xs-3 line-height-30 padding-0">
-                    Show
+                    @Resource("Show")
                 </div>
                 <div class="col-md-9 col-sm-8 col-xs-9 margin-bottom-10 padding-0" id="show">
                     @Html.DropDownList("PageSize", query.PerPageOptions, new { @class = "form-control" })
@@ -40,7 +36,7 @@
         {
             <div class="row padding-top-bottom-10">
                 <div class="col-sm-12">
-                    <small>Showing @(Model.PageSize > 1 ? Model.FirstItemOnPage + " - " + Model.LastItemOnPage : Model.PageNumber.ToString()) of @Model.TotalItemCount</small>
+                    <small>@Resource("Showing") @(Model.PageSize > 1 ? Model.FirstItemOnPage + " - " + Model.LastItemOnPage : Model.PageNumber.ToString()) @Resource("of") @Model.TotalItemCount</small>
                 </div>
             </div>
         }
@@ -71,7 +67,7 @@
         }
         else
         {
-            <text>No products to display, please refine your search.</text>
+            @Resource("No products to display, please refine your search.")
         }
     </div>
 </div>
