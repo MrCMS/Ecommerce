@@ -783,6 +783,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Users\Address.cs" />
     <Compile Include="Apps\Ecommerce\Events\CopyCartToUser.cs" />
     <Compile Include="Apps\Ecommerce\Events\GenerateGiftCards.cs" />
+    <Compile Include="Apps\Ecommerce\Events\GenerateWarehouseStock.cs" />
     <Compile Include="Apps\Ecommerce\Events\GiftcardAutoActivation.cs" />
     <Compile Include="Apps\Ecommerce\Events\OrderPlacedNotification.cs" />
     <Compile Include="Apps\Ecommerce\Events\UpdateIndexesOnOrderPlaced.cs" />
