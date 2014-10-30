@@ -59,6 +59,9 @@
                                     Rate
                                 </th>
                                 <th>
+                                    Restricted To
+                                </th>
+                                <th>
                                     Actions
                                 </th>
                             </tr>
@@ -72,6 +75,9 @@
                                     </td>
                                     <td>
                                         @calculation.BaseAmount.ToCurrencyFormat()
+                                    </td>
+                                    <td>
+                                        @calculation.RestrictedTo
                                     </td>
                                     <td>
                                         <div class="btn-group pull-right">
