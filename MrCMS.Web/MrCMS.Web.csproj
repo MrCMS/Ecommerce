@@ -1387,6 +1387,23 @@
     <Compile Include="Apps\MobileFriendlyNavigation\Widgets\MobileFriendlyNavigation.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Apps\Stats\Areas\Admin\Controllers\PageViewsController.cs" />
+    <Compile Include="Apps\Stats\Areas\Admin\Models\PageStatsMenuModel.cs" />
+    <Compile Include="Apps\Stats\Areas\Admin\Models\PageViewResult.cs" />
+    <Compile Include="Apps\Stats\Areas\Admin\Models\PageViewSearchQuery.cs" />
+    <Compile Include="Apps\Stats\Areas\Admin\Models\PageViewSearchType.cs" />
+    <Compile Include="Apps\Stats\Areas\Admin\Services\IPageViewAdminService.cs" />
+    <Compile Include="Apps\Stats\Areas\Admin\Services\PageViewAdminService.cs" />
+    <Compile Include="Apps\Stats\Controllers\AnalyticsController.cs" />
+    <Compile Include="Apps\Stats\Entities\AnalyticsPageView.cs" />
+    <Compile Include="Apps\Stats\Entities\AnalyticsSession.cs" />
+    <Compile Include="Apps\Stats\Entities\AnalyticsUser.cs" />
+    <Compile Include="Apps\Stats\Filters\AnalyticsSessionFilter.cs" />
+    <Compile Include="Apps\Stats\Helpers\PagingHelper.cs" />
+    <Compile Include="Apps\Stats\Services\ILogPageViewService.cs" />
+    <Compile Include="Apps\Stats\Services\LogPageViewService.cs" />
+    <Compile Include="Apps\Stats\Services\StatsUIScripts.cs" />
+    <Compile Include="Apps\Stats\StatsApp.cs" />
     <Compile Include="Areas\Admin\ACL\MediaToolsACL.cs" />
     <Compile Include="Areas\Admin\ACL\NotificationACL.cs" />
     <Compile Include="Areas\Admin\Helpers\AdminMessagingExtensions.cs" />
@@ -1913,6 +1930,8 @@
     <Content Include="Apps\MobileFriendlyNavigation\Content\Styles\mobileFriendlyNavigation.css" />
     <Content Include="Apps\MobileFriendlyNavigation\Views\web.config" />
     <Content Include="Apps\MobileFriendlyNavigation\Views\Widgets\MobileFriendlyNavigation.cshtml" />
+    <Content Include="Apps\Stats\Content\Scripts\analytics.js" />
+    <Content Include="Apps\Stats\Content\Scripts\jquery.cookie.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\build-config.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\ckeditor.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\contents.css" />
@@ -3310,6 +3329,9 @@
     <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Apps\Stats\Areas\Admin\Views\PageViews\Index.cshtml" />
+    <Content Include="Apps\Stats\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Stats\Areas\Admin\Views\_ViewStart.cshtml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
