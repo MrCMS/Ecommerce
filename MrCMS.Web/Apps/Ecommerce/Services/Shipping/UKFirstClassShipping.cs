@@ -109,7 +109,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         private UKFirstClassShippingCalculation GetBestAvailableCalculation(CartModel cart)
         {
             HashSet<UKFirstClassShippingCalculation> calculations =
-                _session.QueryOver<UKFirstClassShippingCalculation>().Cacheable().List().ToHashSet();
+                _session.QueryOver<UKFirstClassShippingCalculation>()
+                    .Cacheable()
+                    .List()
+                    .ToHashSet()
+                    .FilterToAvailable(cart);
             HashSet<UKFirstClassShippingCalculation> potentialCalculations =
                 calculations.FindAll(calculation => calculation.CanBeUsed(cart));
             return potentialCalculations.OrderBy(calculation => calculation.Amount(TaxRatePercentage)).FirstOrDefault();

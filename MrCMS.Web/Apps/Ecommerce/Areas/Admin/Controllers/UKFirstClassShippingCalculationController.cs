@@ -61,10 +61,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             TempData.SuccessMessages().Add("Calculation removed successfully");
             return RedirectToAction("Configure", "UKFirstClassShipping");
         }
-
-        public JsonResult IsValidShippingCalculation(CalculationInfo calculationInfo)
-        {
-            return Json(_adminService.IsCalculationValid(calculationInfo), JsonRequestBehavior.AllowGet);
-        }
     }
 }

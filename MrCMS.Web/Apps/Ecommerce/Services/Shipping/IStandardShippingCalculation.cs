@@ -13,8 +13,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
 
         [DisplayName("Lower Bound")]
         [Required]
-        [Remote("IsValidShippingCalculation", "ShippingCalculation",
-            AdditionalFields = "Id,ShippingMethod.Id,Country.Id,ShippingCriteria,UpperBound")]
         decimal LowerBound { get; set; }
 
         [DisplayName("Upper Bound")]
