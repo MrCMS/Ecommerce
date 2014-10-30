@@ -7,6 +7,7 @@ namespace MrCMS.Web.Apps.MobileFriendlyNavigation.Models.MobileFriendlyNavigatio
 {
     public class MobileFriendlyNavigationRootNode
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string UrlSegment { get; set; }
         public IEnumerable<MobileFriendlyNavigationChildNode> Children { get; set; }

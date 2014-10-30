@@ -23,10 +23,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-5">
+                <div class="col-sm-7">
                     @{ Html.RenderPartial("ProductImages", Model); }
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-5">
                     <div class="price margin-bottom-10">
                         <span itemprop="offerDetails" itemscope itemtype="http://data-vocabulary.org/Offer">
                             <meta itemprop="priceCurrency" content="@(MrCMSApplication.Get<EcommerceSettings>().CurrencyCode())" />
@@ -116,20 +116,18 @@
                     }
 
 
+                    @if (!string.IsNullOrWhiteSpace(Model.Product.BodyContent))
+                    {
+                        <div class="padding-bottom-10" id="readFullDescription">
+                            <p class="hidden-xs">
+                                <a href="#fulldescription" title="Read full description">Read full description</a>
+                            </p>
+                        </div>
+                    }
+                    @{ Html.RenderPartial("SocialLinks"); }
 
-                    <div class="padding-bottom-10" id="readFullDescription">
-                        <p class="hidden-xs">
-                            <a href="#fulldescription" title="Read full description">Read full description</a>
-                        </p>
-                    </div>
 
                     @{RenderZone("Below Product Price");}
-                </div>
-                <div class="col-sm-3">
-                    <div class="padding-bottom-10 margin-bottom-20 grey-border-bottom hidden-xs">
-                        <img src="/Apps/Ecommerce/Content/Images/secure.jpg" class="img-responsive" alt="Secure payments" />
-                    </div>
-                    @{ Html.RenderPartial("SocialLinks"); }
                 </div>
             </div>
         </div>

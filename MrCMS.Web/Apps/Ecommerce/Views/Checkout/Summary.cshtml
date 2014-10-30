@@ -1,4 +1,5 @@
-﻿@using MrCMS.Helpers
+﻿@using System.Linq
+@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
@@ -7,15 +8,15 @@
     {
         <div class="block-title">
             <div class="h1style">
-                Order Summary
+                @Resource("Order Summary")
             </div>
         </div>
 
         <table class="table">
             <thead>
                 <tr>
-                    <th>Description</th>
-                    <th>Amount</th>
+                    <th>@Resource("Description")</th>
+                    <th>@Resource("Amount")</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,8 +26,8 @@
                         <td>
                             <ul class="media-list">
                                 <li>@item.Name</li>
-                                <li>Item Price : @item.UnitPrice.ToCurrencyFormat()</li>
-                                <li>Quantity : @item.Quantity</li>
+                                <li>@Resource("Item Price") : @item.UnitPrice.ToCurrencyFormat()</li>
+                                <li>@Resource("Quantity") : @item.Quantity</li>
                             </ul>
                         </td>
                         <td>@item.Price.ToCurrencyFormat()</td>
@@ -35,32 +36,32 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th>Sub Total :</th>
+                    <th>@Resource("Sub Total") :</th>
                     <td>@Model.TotalPreShipping.ToCurrencyFormat()</td>
                 </tr>
                 @if (Model.ShippingTotal > decimal.Zero)
                 {
                     <tr>
-                        <th>Shipping :</th>
+                        <th>@Resource("Shipping") :</th>
                         <td>@Model.ShippingTotal.ToCurrencyFormat()</td>
                     </tr>
                 }
                 @if (Model.HasDiscount)
                 {
                     <tr>
-                        <th>Discount : </th>
+                        <th>@Resource("Discount") : </th>
                         <td>@((-Model.OrderTotalDiscount).ToCurrencyFormat())</td>
                     </tr>
                 }
                 @if (MrCMS.Website.MrCMSApplication.Get<TaxSettings>().TaxesEnabled)
                 {
                     <tr>
-                        <th>Tax : </th>
+                        <th>@Resource("Tax") : </th>
                         <td>@Model.Tax.ToCurrencyFormat()</td>
                     </tr>
                 }
                 <tr>
-                    <th>Total :</th>
+                    <th>@Resource("Total") :</th>
                     <td><strong>@Model.Total.ToCurrencyFormat()</strong></td>
                 </tr>
                 @if (Model.AppliedGiftCards.Any())
@@ -69,7 +70,7 @@
                     {
                         <tr>
                             <td>
-                                Gift Card @card.Code
+                                @Resource("Gift Card") @card.Code
                             </td>
                             <td>
                                 @card.AvailableAmount.ToCurrencyFormat()
@@ -77,12 +78,12 @@
                         </tr>
                     }
                 <tr>
-                    <th>Total to pay:</th>
+                    <th>@Resource("Total to pay"):</th>
                     <td><strong>@Model.TotalToPay.ToCurrencyFormat()</strong></td>
                 </tr>
                 }
             </tfoot>
         </table>
     }
-    <a class="btn btn-grey" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())">Edit</a>
+    <a class="btn btn-default" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())">@Resource("Edit")</a>
 </div>
