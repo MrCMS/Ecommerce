@@ -783,7 +783,8 @@
     <Compile Include="Apps\Ecommerce\Entities\Users\Address.cs" />
     <Compile Include="Apps\Ecommerce\Events\CopyCartToUser.cs" />
     <Compile Include="Apps\Ecommerce\Events\GenerateGiftCards.cs" />
-    <Compile Include="Apps\Ecommerce\Events\GenerateWarehouseStock.cs" />
+    <Compile Include="Apps\Ecommerce\Events\GenerateWarehouseIfSwitchedToTrack.cs" />
+    <Compile Include="Apps\Ecommerce\Events\GenerateWarehouseStockOnAdd.cs" />
     <Compile Include="Apps\Ecommerce\Events\GiftcardAutoActivation.cs" />
     <Compile Include="Apps\Ecommerce\Events\OrderPlacedNotification.cs" />
     <Compile Include="Apps\Ecommerce\Events\UpdateIndexesOnOrderPlaced.cs" />
@@ -1171,6 +1172,9 @@
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\DTOs\BulkStockUpdateDataTransferObject.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\IBulkSimpleStockUpdateValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Inventory\BulkStockUpdate\Rules\IBulkStockUpdateValidationRule.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\GenerateProductVariantWarehouseStock.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\IGenerateProductVariantWarehouseStock.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Inventory\IRemoveProductVariantWarehouseStock.cs" />
     <Compile Include="Apps\Ecommerce\Services\IPeopleWhoBoughtThisService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IProductAddedToCartUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IProductStockChecker.cs" />
