@@ -17,7 +17,7 @@
             </p>
         }
         <div id="products">
-            
+
             @{
                 IEnumerable<ProductVariant> productVariants = wishlist.WishlistItems.Select(item => item.Item);
             }
@@ -25,14 +25,14 @@
             {
                 foreach (var productVariant in productVariants)
                 {
-                    Html.RenderPartial("VariantCard", productVariant);
+                    Html.RenderAction("ShowVariant", "Wishlist", new {productVariant});
                 }
             }
             else
             {
                 @Resource("No Wishlist Items", "There are no items in your wishlist.")
             }
-            
+
         </div>
     </div>
 </div>

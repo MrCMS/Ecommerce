@@ -3252,7 +3252,7 @@
     <Content Include="Apps\Ecommerce\Views\Shared\SearchOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\SearchSpecifications.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\SocialLinks.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\VariantCard.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Wishlist\ShowVariant.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_CheckoutLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_ContentLayout.cshtml" />
