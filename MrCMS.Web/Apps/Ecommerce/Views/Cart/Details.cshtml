@@ -26,7 +26,7 @@
                 {
                     <div class="visible-xs" style="padding-top: 5px;"></div>
                     <div class="col-sm-6">
-                        <a class="btn btn-normalgreen btn-block" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">@Resource("Pay Securely NOW!")</a>
+                        <a class="btn btn-primary btn-block" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">@Resource("Pay Securely NOW!")</a>
                     </div>
                 }
             </div>
@@ -277,7 +277,7 @@
         <div class="col-sm-6 col-sm-offset-6">
             @if (Model.CanEnterPaymentFlow)
             {
-                <a class="btn btn-normalgreen btn-block btn-lg" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">Pay Securely NOW!</a>
+                <a class="btn btn-primary btn-block btn-lg" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">Pay Securely NOW!</a>
             }
             @if (Model.CanUsePayPalExpress)
             {

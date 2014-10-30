@@ -37,7 +37,7 @@
             {
                 using (Html.BeginForm("Add", "AddToCart", FormMethod.Post))
                 {
-                    <button class="btn btn-green btn-block margin-bottom-10">Add to basket</button>
+                    <button class="btn btn-primary btn-block margin-bottom-10">Add to basket</button>
                     @Html.Hidden("ProductVariant.Id", Model.Id)
                     @Html.Hidden("quantity", 1)
                 }
