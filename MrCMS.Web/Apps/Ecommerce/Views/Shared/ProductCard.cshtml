@@ -1,4 +1,5 @@
 ﻿@using System.Drawing
+@using System.Linq
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
@@ -7,8 +8,7 @@
     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 margin-bottom-30">
         <div class="product-con">
             <div class="product-image">
-                <a href="/@Model.LiveUrlSegment">@RenderImage(Model.DisplayImageUrl, new Size { Width = 200, Height = 200 }, null, null, new { @class = "img-responsive" })</a>
-                @*<img src="/Apps/Ecommerce/Content/Images/topoffer.png" class="offer" />*@
+                <a href="/@Model.LiveUrlSegment">@RenderImage(Model.DisplayImageUrl, new Size { Width = 200, Height = 175 }, null, null, new { @class = "img-responsive" })</a>
             </div>
             <div class="product-info">
                 <div class="product-name">
@@ -31,7 +31,4 @@
             </div>
         </div>
     </div>
-
-
-    
 }

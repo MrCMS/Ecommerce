@@ -1,20 +1,24 @@
-﻿@model List<MrCMS.Web.Apps.Ecommerce.Pages.Product>
+﻿@using System.Linq
+@model System.Collections.Generic.List<MrCMS.Web.Apps.Ecommerce.Pages.Product>
 @if (Model != null && Model.Any())
 {
-    <div class="block-title">
-        <div class="h1style">
-            Recently Viewed Items
+    <div class="clearfix"></div>
+    <div class="hidden-xs">
+        <div class="block-title">
+            <div class="h1style">
+                Recently Viewed Items
+            </div>
         </div>
-    </div>
-    foreach (var item in Model)
-    {
+        @foreach (var item in Model)
+        {
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-xs-3">
                 @RenderImage(item.DisplayImageUrl, attributes: new { @class = "img-responsive" })
             </div>
-            <div class="col-sm-9">
+            <div class="col-xs-9">
                 <a href="/@item.LiveUrlSegment">@item.Name</a>
             </div>
         </div>
-    }
+        }
+    </div>
 }

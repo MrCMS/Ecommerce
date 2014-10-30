@@ -7,9 +7,9 @@
 
 <div class="padding-top-bottom-20">
     <div class="row">
-        <div class="col-lg-7 col-md-8 col-sm-8 padding-left-0 mobile-left-padding">
+        <div class="col-lg-7 col-md-8 col-sm-8 padding-bottom-20">
             <div class="block-title">
-                <h1>Billing Address</h1>
+                <h1>@Resource("Billing Address")</h1>
             </div>
             @if (cart.RequiresShipping && cart.BillingAddressSameAsShippingAddress)
             {
@@ -17,7 +17,7 @@
                 {
                     <div class="checkbox">
                         <label>
-                            @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress) Use Delivery Address 
+                            @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress) @Resource("Use Delivery Address") 
                         </label>
                         <div class="controls">
                             @cart.ShippingAddress.GetDescription()
@@ -34,7 +34,7 @@
             {
                 <div class="margin-bottom-10">
                     <label>
-                        Billing Address :
+                        @Resource("Billing Address") :
                     </label>
                     @cart.BillingAddress.GetDescription()
                 </div>
@@ -52,7 +52,7 @@
             <br />
 
             <div class="block-title">
-                <div class="h1style">Payment Details</div>
+                <div class="h1style">@Resource("Payment Details")</div>
             </div>
             @if (!settingBillingAddress)
             {
@@ -66,9 +66,11 @@
             }
             else
             {
-                <p>Select after updating billing address...</p>
+                <p>@Resource("Select after updating billing address")...</p>
             }
+        
         </div>
+
         <div class="col-lg-5 col-md-4 col-sm-4">
             @{Html.RenderAction("Summary", "Checkout");}
             @{Html.RenderAction("OrderEmail", "Checkout");}

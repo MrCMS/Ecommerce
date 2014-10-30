@@ -1,4 +1,6 @@
-﻿@using MrCMS.Helpers
+﻿@using System.Linq
+@using MrCMS.Helpers
+@using MrCMS.Web.Areas.Admin.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Models.EmailAndLoginModel
 @{
     var errorMessages = TempData.ErrorMessages();
@@ -7,7 +9,7 @@
 {
     <div class="block-title">
         <h1>
-            Email address
+            @Resource("Email Address")
         </h1>
     </div>
     if (errorMessages.Any())
@@ -21,19 +23,19 @@
             </ul>
         </div>
     }
-    
+
     <div class="row">
         <div class="col-sm-8">
             <div class="form-horizontal">
                 <div class="form-group">
-                    <label for="OrderEmail" class="col-sm-6">Enter your Email address<span class="red">*</span>:</label>
-                        <div class="col-sm-12">
-                            @Html.TextBoxFor(x => x.OrderEmail, new { placeholder = "Email address", @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.OrderEmail)
-                        </div>
+                    <label for="OrderEmail" class="col-sm-6">@Resource("Enter your Email address")<span class="red">*</span>:</label>
+                    <div class="col-sm-12">
+                        @Html.TextBoxFor(x => x.OrderEmail, new { placeholder = "Email address", @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.OrderEmail)
+                    </div>
                 </div>
             </div>
-            <p>Do you have a password?</p>    
+            <p>@Resource("Do you have a password?")</p>
             <div class="form-inline margin-bottom-10">
                 <label class="radio padding-right-10">
                     @Html.RadioButtonFor(model => model.HavePassword, true) Yes
@@ -44,12 +46,12 @@
             </div>
             <div id="password-box" style="display: none" class="margin-bottom-10">
                 @Html.PasswordFor(model => model.Password, new { placeholder = "Enter your password here", @class = "form-control" })
-            </div>    
+            </div>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <input class="btn btn-primary btn-block" type="submit" id="continue" name="continue" value="Continue" />
+            <input class="btn btn-primary btn-block" type="submit" id="continue" name="continue" value="@Resource("Continue")" />
         </div>
     </div>
 }

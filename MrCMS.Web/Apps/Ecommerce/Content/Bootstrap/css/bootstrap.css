@@ -263,8 +263,8 @@ th {
 @font-face {
   font-family: 'Glyphicons Halflings';
 
-  src: url('/Apps/Ecommerce/Content/Bootstrap/fonts/glyphicons-halflings-regular.eot');
-  src: url('/Apps/Ecommerce/Content/Bootstrap/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('/Apps/Ecommerce/Content/Bootstrap/fonts/glyphicons-halflings-regular.woff') format('woff'), url('/Apps/Ecommerce/Content/Bootstrap/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('/Apps/Ecommerce/Content/Bootstrap/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  src: url('../fonts/glyphicons-halflings-regular.eot');
+  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 .glyphicon {
   position: relative;
@@ -6200,4 +6200,3 @@ button.close {
     display: none !important;
   }
 }
-/*# sourceMappingURL=bootstrap.css.map */

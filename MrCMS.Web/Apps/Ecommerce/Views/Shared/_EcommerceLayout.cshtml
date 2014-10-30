@@ -5,72 +5,66 @@
     Layout = "_BaseLayout.cshtml";
 }
 
-<div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="fixedHeader">
+<header class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <a href="/" class="pull-left logo">
+                <img alt="" class="img-responsive" src="/content/upload/1/default/logo8.png" title="">
+            </a>
+            @{ RenderZone("Header Right", allowFrontEndEditing:false); }
+            @{ RenderZone("User Links", allowFrontEndEditing:false); }
+            <form method="GET" action="/" id="search-box" class="hidden-xs  pull-right" novalidate="novalidate">
+                <div class="input-group">
+                    <input class="form-control" id="searchTerm" name="searchTerm" placeholder="e.g : Shorts" type="text" value="">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-default-blue" type="button" id="searchButton" name="searchButton"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</header>
+
+<nav class="navbar navbar-inverse" role="navigation" id="site-navigation">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 col-md-12">
-                <div id="sidebarmenu" class="visible-xs visible-sm">
-                    <div class="mobilemenu">
-                        <a id="menu" href="#" data-mfnav="toggleMobileNav"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Menu</a>
-                        <div class="pull-right hidden-sm">
-                            <a data-toggle="collapse" data-target="#mobSearch" style="cursor: pointer;"><span class="glyphicon glyphicon-search"></span></a>
-                        </div>
-                    </div>
-                </div>
-                <div id="mobSearch" class="collapse hidden-md hidden-lg">
-                    <form class="form-inline" method="GET" action="@(UniquePageHelper.GetUrl<ProductSearch>())" id="top-search-mobile">
+                <div class="visible-xs visible-sm mobilemenu">
+                    <a href="#" id="left-menu-toggle"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Menu</a>
+
+                    <form method="GET" action="/" id="search-box" class="pull-right hidden-sm" novalidate="novalidate">
                         <div class="input-group">
-                            <input type="text" placeholder="e.g. Shorts" name="searchTerm" id="searchTerm" class="form-control" style="margin-bottom: 5px;"/>
+                            <input class="form-control" id="searchTerm" name="searchTerm" placeholder="e.g : Shorts" type="text" value="">
                             <span class="input-group-btn">
-                                <button type="submit" class="btn btn-default btn-default-blue" style="margin-bottom: 5px;">
-                                    Search
-                                </button>
+                                <button class="btn btn-default btn-default-blue" type="button" id="searchButton" name="searchButton"><span class="glyphicon glyphicon-search"></span></button>
                             </span>
                         </div>
                     </form>
                 </div>
                 <div class="hidden-sm">
-                    <div class="navbar-collapse collapse">
+                    <nav class="navbar-collapse collapse">
                         @{ RenderZone("Navigation"); }
-                    </div>
+                    </nav>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</nav>
 
-<div class="searchbar" id="search">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-2 col-sm-2 col-xs-4">
-                <div class="padding-top-bottom-9 logo">
-                    @{ RenderZone("Header Left"); }
-                </div>
-            </div>
-            <div class="col-md-5 col-md-offset-3 grey-border-right col-sm-7 col-xs-4 padding-l-r-0 hidden-xs">
-                @{ RenderZone("Header Middle"); }
-            </div>
-            <div class="col-md-2 text-right padding-left-0 col-sm-3 col-xs-8">
-                @{ RenderZone("Header Right"); }
-                @{ RenderZone("User Links"); }
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div id="wrapper">
-    <div class="info">
+<div class="left-menu"></div>
+<div class="right-menu"></div>
+<div class="site-container ">
+    <div class="value-props">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="pull-left">
                         <ul>
                             <li>
-                                <i class="glyphicon glyphicon-ok green"></i> FREE delivery
+                                <i class="glyphicon glyphicon-ok green"></i> @Resource("Value Prop 1", "FREE delivery")
                             </li>
                             <li>
-                                <i class="glyphicon glyphicon-ok green"></i> 100 % Secure shopping
+                                <i class="glyphicon glyphicon-ok green"></i>@Resource("Value Prop 2", "100 % Secure shopping")
                             </li>
                         </ul>
                     </div>
@@ -93,26 +87,23 @@
     @{ RenderZone("Before Content"); }
     @RenderBody()
     @{ RenderZone("After Content"); }
-    
 
-    <div class="margin-top-bottom-30">
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" id="footer-area-1">
-                        @{ RenderZone("Footer Area 1"); }
-                    </div>
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" id="footer-area-2">
-                        @{ RenderZone("Footer Area 2"); }
-                    </div>
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" id="footer-area-3">
-                        @{ RenderZone("Footer Area 3"); }
-                    </div>
-                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" id="footer-area-4">
-                        @{ RenderZone("Footer Area 4"); }
-                    </div>
+    <footer class="margin-top-bottom-30">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="footer-area-1">
+                    @{ RenderZone("Footer Area 1"); }
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="footer-area-2">
+                    @{ RenderZone("Footer Area 2"); }
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="footer-area-3">
+                    @{ RenderZone("Footer Area 3"); }
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="footer-area-4">
+                    @{ RenderZone("Footer Area 4"); }
                 </div>
             </div>
-        </footer>
-    </div>
+        </div>
+    </footer>
 </div>
