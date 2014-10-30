@@ -33,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             ViewData["wishlist"] = wishlist;
             ViewData["my-wishlist"] = string.IsNullOrWhiteSpace(id);
             ViewData["cart"] = _cartModel;
-            
+
             return View(page);
         }
 
@@ -43,6 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             ViewData["wisthlist-enabled"] = MrCMSApplication.Get<EcommerceSettings>().EnableWishlists;
             return PartialView(productVariant);
         }
+
 
         [HttpPost]
         [ActionName("Add")]
@@ -63,6 +64,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public PartialViewResult Summary()
         {
             return PartialView(_wishlistUIService.GetSummary());
+        }
+
+        public PartialViewResult ShowVariant(ProductVariant productVariant)
+        {
+            ViewData["can-buy-status"] = _wishlistUIService.CanBuy(productVariant);
+            return PartialView(productVariant);
         }
     }
 }

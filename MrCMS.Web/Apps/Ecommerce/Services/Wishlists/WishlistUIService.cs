@@ -3,6 +3,7 @@ using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Models.StockAvailability;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Wishlists
@@ -11,11 +12,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Wishlists
     {
         private readonly IGetUserGuid _getUserGuid;
         private readonly ISession _session;
+        private readonly IProductVariantAvailabilityService _productVariantAvailabilityService;
 
-        public WishlistUIService(IGetUserGuid getUserGuid, ISession session)
+        public WishlistUIService(IGetUserGuid getUserGuid, ISession session, IProductVariantAvailabilityService productVariantAvailabilityService)
         {
             _getUserGuid = getUserGuid;
             _session = session;
+            _productVariantAvailabilityService = productVariantAvailabilityService;
         }
 
         public void Add(ProductVariant productVariant)
@@ -71,6 +74,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Wishlists
                                .Where(wishlist => wishlist.Guid == result)
                                .SingleOrDefault();
             return null;
+        }
+
+        public CanBuyStatus CanBuy(ProductVariant productVariant)
+        {
+            return _productVariantAvailabilityService.CanBuy(productVariant, 1);
         }
 
         private Wishlist GetMyWishlist(bool createIfDoesNotExist = false)

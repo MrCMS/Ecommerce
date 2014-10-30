@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Helpers.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -10,24 +7,6 @@ using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
 namespace MrCMS.Web.Apps.Ecommerce.Helpers.Shipping
 {
-    public static class CartModelShippingExtensions
-    {
-        public static IEnumerable<CartItem> ShippableItems(this CartModel cartModel)
-        {
-            return cartModel.Items.Where(item => item.RequiresShipping);
-        }
-
-        public static decimal ShippableTotalPreDiscount(this CartModel cartModel)
-        {
-            return cartModel.ShippableItems().Sum(item => item.Price);
-        }
-
-        public static decimal ShippableCalculationTotal(this CartModel cartModel)
-        {
-            return cartModel.ShippableTotalPreDiscount() - cartModel.OrderTotalDiscount;
-        }
-    }
-
     public static class StandardShippingCalculationExtensions
     {
         public static string GetDescription(this IStandardShippingCalculation calculation)

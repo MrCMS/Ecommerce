@@ -806,8 +806,10 @@
     <Compile Include="Apps\Ecommerce\Helpers\ProductSearchQueryExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\ProductVariantExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\RequestHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\Shipping\CartModelShippingExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\Shipping\StandardShippingCalculationExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\NewsletterUrlHelper.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\Shipping\UKStandardShippingCalculationExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchCreatedOnDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchEmaillDefinition.cs" />
@@ -1308,6 +1310,7 @@
     <Compile Include="Apps\Ecommerce\Services\ShippingMethodUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingMethod.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IStandardShippingCalculation.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Shipping\IUKStandardShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\UKCourierShipping.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\UKFirstClassShipping.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\GetDefaultTaxRate.cs" />
@@ -3265,7 +3268,7 @@
     <Content Include="Apps\Ecommerce\Views\Shared\SearchOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\SearchSpecifications.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\SocialLinks.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\VariantCard.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Wishlist\ShowVariant.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_CheckoutLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_ContentLayout.cshtml" />

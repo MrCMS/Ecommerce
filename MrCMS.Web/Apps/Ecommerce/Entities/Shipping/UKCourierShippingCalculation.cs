@@ -6,7 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 {
-    public class UKCourierShippingCalculation : SiteEntity, IStandardShippingCalculation
+    public class UKCourierShippingCalculation : SiteEntity, IUKStandardShippingCalculation
     {
         [DisplayName("Shipping Criteria")]
         [Required]
@@ -14,8 +14,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
 
         [DisplayName("Lower Bound")]
         [Required]
-        [Remote("IsValidShippingCalculation", "UKCourierShippingCalculation",
-            AdditionalFields = "Id,ShippingCriteria,UpperBound")]
         public virtual decimal LowerBound { get; set; }
 
         [DisplayName("Upper Bound")]
@@ -24,5 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         [DisplayName("Amount")]
         [Required]
         public virtual decimal BaseAmount { get; set; }
+
+        public virtual string RestrictedTo { get; set; }
     }
 }
