@@ -1,4 +1,6 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Users.Address
+﻿@using System.Collections.Generic
+@using System.Linq
+@model MrCMS.Web.Apps.Ecommerce.Entities.Users.Address
 @{
     var otherAddresses = ViewData["other-addresses"] as List<SelectListItem>;
     var countryOptions = ViewData["country-options"] as List<SelectListItem>;
@@ -73,7 +75,7 @@
         </div>
 
         <div class="form-group">
-            <input type="submit" class="btn btn-primary btn-block" id="continue" name="continue" value="Deliver to This Address" />
+            <input type="submit" class="btn btn-primary btn-block" id="continue" name="continue" value="@Resource("Deliver to This Address")" />
         </div>
     }
 </div>
