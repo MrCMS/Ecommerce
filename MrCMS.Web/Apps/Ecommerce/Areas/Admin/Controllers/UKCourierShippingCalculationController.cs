@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Areas.Admin.Helpers;
@@ -59,11 +58,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _adminService.Delete(calculation);
             TempData.SuccessMessages().Add("Calculation removed successfully");
             return RedirectToAction("Configure", "UKCourierShipping");
-        }
-
-        public JsonResult IsValidShippingCalculation(CalculationInfo calculationInfo)
-        {
-            return Json(_adminService.IsCalculationValid(calculationInfo), JsonRequestBehavior.AllowGet);
         }
     }
 }

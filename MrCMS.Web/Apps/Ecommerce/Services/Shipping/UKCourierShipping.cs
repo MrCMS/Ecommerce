@@ -111,6 +111,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
         {
             HashSet<UKCourierShippingCalculation> calculations =
                 _session.QueryOver<UKCourierShippingCalculation>().Cacheable().List().ToHashSet();
+            calculations = calculations.FilterToAvailable(cart);
             HashSet<UKCourierShippingCalculation> potentialCalculations =
                 calculations.FindAll(calculation => calculation.CanBeUsed(cart));
             return potentialCalculations.OrderBy(calculation => calculation.Amount(TaxRatePercentage)).FirstOrDefault();
