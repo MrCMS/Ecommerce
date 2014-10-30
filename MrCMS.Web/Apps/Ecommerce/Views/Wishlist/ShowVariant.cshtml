@@ -1,11 +1,13 @@
 ﻿@using System.Drawing
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Web.Apps.Ecommerce.Models.StockAvailability
 @using MrCMS.Web.Apps.Ecommerce.Services
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
+    CanBuyStatus canBuy = ViewData["can-buy-status"] as CanBuyStatus ?? new CannotOrderQuantity(Model, 0);
     var @abstract = Model.Product != null ? Model.Product.Abstract ?? string.Empty : string.Empty;
 }
 <div class="row" data-wishlist-item="@Model.Id">
@@ -31,7 +33,7 @@
     </div>
     <div class="col-xs-12 col-sm-3 col-md-2">
         <div class="text-right">
-            @if (Model.CanBuy(1).OK)
+            @if (canBuy.OK)
             {
                 using (Html.BeginForm("Add", "AddToCart", FormMethod.Post))
                 {

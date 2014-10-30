@@ -30,6 +30,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
             var country = MrCMSApplication.Get<ICountryService>().GetCountryByCode(address.CountryCode);
             return country != null ? country.Name : string.Empty;
         }
+        public static string FormattedPostcode(this IAddress address)
+        {
+            if (address == null)
+                return null;
+
+            // remove whitespace and force to upper
+            var postalCode = address.PostalCode.ToUpper().Replace(" ", "");
+            // return null if is invalid length
+            var length = postalCode.Length;
+            if (length < 5 || length > 7)
+                return null;
+            // add space in correct place depending on 5, 6 or 7 characters
+            var offset = length - 3;
+            return postalCode.Substring(0, offset) + " " + postalCode.Substring(offset);
+        }
 
         private static IEnumerable<string> GetAddressParts(IAddress address, bool removeName)
         {
@@ -52,7 +67,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
                     yield return countryName;
                 if (!string.IsNullOrWhiteSpace(address.PostalCode))
                     yield return address.PostalCode;
-                
+
             }
         }
     }
