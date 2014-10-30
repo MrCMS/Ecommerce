@@ -8,7 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
     {
         private SubMenu _children;
         public string Text { get { return "Reports"; } }
-        public string IconClass { get { return "fa fa-line-chart"; } }
+        public string IconClass { get { return "fa fa-pie-chart"; } }
         public string Url { get; private set; }
         public bool CanShow { get { return CurrentRequestData.CurrentUser.CanAccess<ToolsAndReportsACL>(ToolsAndReportsACL.Show); } }
         public SubMenu Children

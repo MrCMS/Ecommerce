@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using MrCMS.Entities.Documents.Web;
 using MrCMS.Web.Apps.MobileFriendlyNavigation.Services;
 using MrCMS.Website.Controllers;
 
@@ -15,12 +16,12 @@ namespace MrCMS.Web.Apps.MobileFriendlyNavigation.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetChildNodes(int parentId)
+        public ActionResult GetChildNodes(Webpage parent)
         {
             return new JsonResult
             {
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet,
-                Data = _navigationService.GetChildNodes(parentId).Select(x => x.ToJson())
+                Data = _navigationService.GetChildNodes(parent).Select(x => x.ToJson())
             };
         }
     }

@@ -3,11 +3,11 @@
 <div id="delivery-address-container">
     <div class="block-title">
         <div class="h1style">
-            Delivering to:
+            @Resource("Delivering to"):
         </div>
     </div>
     @Html.Raw(Model.GetDescriptionHtml())
     <div>
-        <button data-edit-address="true" class="btn btn-primary margin-bottom-10">Edit</button>
+        <button data-edit-address="true" class="btn btn-default margin-bottom-10">@Resource("Edit")</button>
     </div>
 </div>

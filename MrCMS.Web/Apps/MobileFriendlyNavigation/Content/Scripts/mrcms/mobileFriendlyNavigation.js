@@ -1,4 +1,4 @@
-﻿(function() {
+﻿(function () {
     'use strict';
 
     var common,
@@ -9,21 +9,21 @@
         subNavSelector = '[data-mfnav="subNav"]',
         navItemSelector = '[data-mfnav="item"]';
 
-    (function() {
-        $(function() {
+    (function () {
+        $(function () {
             var $root = $(rootSelector);
 
             mobile.init($root);
             desktop.init($root);
             setMode($root);
 
-            $(window).resize(function() {
+            $(window).resize(function () {
                 setMode($root);
             });
         });
 
         function setMode($root) {
-            var isReponsiveLayoutDesktop = $root.css('width') !== "767px";
+            var isReponsiveLayoutDesktop = $root.width() > 767;
 
             if (isReponsiveLayoutDesktop) {
                 if ($root.data('mfnav-mode') !== 'desktop') {
@@ -42,12 +42,12 @@
         }
     }());
 
-    common = (function() {
+    common = (function () {
         function loadSubNav($navItem, callback) {
             var url = $navItem.closest(navSelector).data('mfnav-url'),
-                data = { parentId: $navItem.data('mfnav-id') };
+                data = { id: $navItem.data('mfnav-id') };
 
-            $.get(url, data, function(response) {
+            $.get(url, data, function (response) {
                 var $subNav = appendNavFromJson($navItem, response);
 
                 if (typeof (callback) === 'function') {
@@ -67,11 +67,12 @@
                 .data('mfnav-level', level)
                 .hide();
 
-            $.each(data, function() {
-                $link = $('<a href="{url}">{text}</a>'.supplant(this))
-                    .prepend('<span class="glyphicon glyphicon-chevron-left"></span>')
-                    .append('<span class="glyphicon glyphicon-chevron-right"></span>');
+            $.each(data, function () {
+                $link = $('<a href="{url}">{text}</a>'.supplant(this));
 
+                if (this.hasChildren) {
+                    $link = $link.prepend('<span class="glyphicon glyphicon-chevron-left"></span>').append('<span class="glyphicon glyphicon-chevron-right"></span>');
+                }
                 $('<li ' + navItemSelector.replace("[", "").replace("]", "") + '>')
                     .append($link)
                     .data('mfnav-id', this.id)
@@ -90,17 +91,25 @@
         };
     }());
 
-    desktop = (function() {
+    desktop = (function () {
         function init($root) {
             var $nav = $root.children(navSelector);
 
             $nav
-                .on('mouseenter.mfnav', navItemSelector, onMouseEnter)
-                .on('mouseleave.mfnav', navItemSelector, onMouseLeave);
+                .on('click.desktop-mfnav', navItemSelector, onClick);
 
             $nav
                 .find(subNavSelector)
                 .addClass('dropdown-menu');
+
+            $(document).click(function () {
+                if (!$(this).hasClass(".sub-nav")) {
+                    $(".sub-nav.dropdown-menu").hide();
+                }
+            });
+        }
+        function hideOtherNavs(navItem) {
+            $(subNavSelector).not(navItem.parents()).hide();
         }
 
         function activate($root) {
@@ -110,12 +119,13 @@
 
         function deactivate($root) {
             $root.data('mfnav-mode', '');
+            hideOtherNavs($root);
         }
 
         function resize($root) {
             var $nav = $root.children(navSelector);
 
-            $nav.children(navItemSelector).has(subNavSelector).each(function() {
+            $nav.children(navItemSelector).has(subNavSelector).each(function () {
                 var $navItem = $(this),
                     $subNav = $navItem.children(subNavSelector),
                     rightOffset = $(window).width() - ($navItem.offset().left + $navItem.outerWidth()),
@@ -128,9 +138,17 @@
             });
         }
 
-        function onMouseEnter(event) {
-            var $navItem = $(event.currentTarget),
+
+        function onClick(event) {
+            var $navItem = $(event.target).closest(navItemSelector),
                 $subNav = $navItem.children(subNavSelector);
+            if (!$navItem.hasClass("has-sub-nav")) {
+                return;
+            }
+            event.preventDefault();
+            event.stopPropagation();
+
+            hideOtherNavs($navItem);
 
             if ($subNav.length) {
                 showSubNav($subNav);
@@ -138,15 +156,6 @@
             }
 
             tryLoadSubNav($navItem);
-        }
-
-        function onMouseLeave(event) {
-            var $navItem = $(event.currentTarget),
-                $subNav = $navItem.children(subNavSelector);
-
-            if ($subNav.length) {
-                hideSubNav($subNav);
-            }
         }
 
         function showSubNav($subNav) {
@@ -188,83 +197,44 @@
         };
     }());
 
-    mobile = (function() {
-        var sidrSelector = '#mfnav-mobile',
+    mobile = (function () {
+        var mobileNavSelector = '#mfnav-mobile',
             headerSelector = '[data-mfnav="mobileHeader"]',
             crumbsSelector = '[data-mfnav="mobileCrumbs"]';
 
         function init() {
-            $().sidr({
-                name: sidrSelector.replace('#', ''),
-                source: '[data-mfnav="mobile"], ' + rootSelector,
-                renaming: false
-            });
 
-            var $sidr = $(sidrSelector);
+            var mobileNav = $(mobileNavSelector);
 
-            $sidr
+            mobileNav
                 .data('mfnav-route', [])
                 .on('click.mfnav', navItemSelector + ' > A', onClickLink)
                 .on('click.mfnav', '[data-mfnav="mobileBack"]', onClickBack);
 
-            $sidr
+            mobileNav
                 .find(navSelector)
                 .removeClass('nav')
                 .removeClass('navbar-nav');
 
-            $sidr
+            mobileNav
                 .find(subNavSelector)
                 .addClass('sub-nav')
                 .hide();
 
-            $(document)
-                .on('click.mfnav', '[data-mfnav="toggleMobileNav"]', onClicktoggleMobileNav);
-        }
+            var showBreadcrumbs = $(mobileNav).data("show-breadcrumbs");
+            if (showBreadcrumbs == false) {
+                $(crumbsSelector).hide();
+            }
 
+        }
         function activate($root) {
             $root.data('mfnav-mode', 'mobile');
         }
 
         function deactivate($root) {
             $root.data('mfnav-mode', '');
-            $.sidr('close', sidrSelector.replace('#', ''));
         }
 
-        function onClicktoggleMobileNav(event) {
-            event.preventDefault();
-            $.sidr('toggle', sidrSelector.replace('#', ''));
-
-            var className = $("#sidebarmenu").attr("class");
-            var adminBarOn = false;
-            if ($(".mrcms-admin-nav-bar").length > 0) {
-                adminBarOn = true;
-            }
-            
-            if (className.indexOf("o") >= 0) {
-
-                $("#sidebarmenu").removeClass().addClass("visible-xs visible-sm c");
-                if (adminBarOn) {
-                    $("#fixedHeader").attr("style", "left:0;top:30px;");
-                    $("#search").attr("style", "left:0;top:69px;");
-                } else {
-                    $("#fixedHeader").attr("style", "left:0;top:0;");
-                    $("#search").attr("style", "left:0;top:39px;");
-                }
-            }
-            else if (className.indexOf("c") >= 0) {
-
-                $("#sidebarmenu").removeClass().addClass("visible-xs visible-sm o");
-                if (adminBarOn) {
-                    $("#mfnav-mobile").attr("style", "top:30px;display: block; left: 0px;");
-                    $("#fixedHeader").attr("style", "left:260px;top:30px;width:100%;");
-                    $("#search").attr("style", "left:260px;top:69px;width:100%;");
-                } else {
-                    $("#fixedHeader").attr("style", "left:260px;top:0;overflow-x:hidden;width:100%;");
-                    $("#search").attr("style", "left:260px;top:39px;width:100%;");
-                }
-
-            }
-        }
 
         function onClickLink(event) {
             var $navItem = $(event.currentTarget).closest(navItemSelector),
@@ -284,18 +254,19 @@
         function onClickBack(event) {
             event.preventDefault();
 
-            var $sidr = $(event.delegateTarget),
-                $crumbs = $sidr.find(crumbsSelector),
-                $subNav = $sidr.data('mfnav-route').pop(),
+            var mobileNav = $(event.delegateTarget),
+                $subNav = mobileNav.data('mfnav-route').pop(),
+                $crumbs = mobileNav.find(crumbsSelector),
                 $parentNav = $subNav.parent().closest(subNavSelector);
 
             $crumbs.children().last().remove();
-            updateHeader($sidr, $parentNav);
 
-            $subNav.animate({ left: 260 }).promise().done(function() {
+            updateHeader(mobileNav, $parentNav);
+
+            $subNav.animate({ left: "100%" }).promise().done(function () {
                 $subNav.hide();
 
-                $sidr
+                mobileNav
                     .find(navSelector)
                     .height($parentNav.length ? $parentNav.height() : '100%');
             });
@@ -311,15 +282,15 @@
 
         function showSubNav($subNav) {
             var $nav = $subNav.closest(navSelector),
-                $sidr = $nav.closest(sidrSelector);
+                $mobileNav = $nav.closest(mobileNavSelector);
 
-            $sidr.data('mfnav-route').push($subNav);
+            $mobileNav.data('mfnav-route').push($subNav);
 
             $nav.height($subNav.height());
             $subNav.show().animate({ left: 0 });
 
-            addCrumb($sidr, $subNav);
-            updateHeader($sidr, $subNav);
+            addCrumb($mobileNav, $subNav);
+            updateHeader($mobileNav, $subNav);
         }
 
         function updateHeader($sidr, $subNav) {
@@ -368,3 +339,38 @@
         };
     }());
 }());
+
+$(document).ready(function () {
+
+    var leftMenuToggle = '#left-menu-toggle';
+    var slideActive = 'show-menu-left';
+    var togglerRight = '#right-menu-toggle';
+    var slideActiveRight = 'show-menu-right';
+
+    $(leftMenuToggle).on("click", function (e) {
+        e.preventDefault();
+        $("body").removeClass(slideActiveRight);
+        $("body").toggleClass(slideActive);
+
+        var selected = $("body").hasClass(slideActive);
+        if (selected) {
+            $("#mfnav-mobile").appendTo($(".left-menu"));
+        }
+
+    });
+
+    $(togglerRight).on("click", function (e) {
+        e.preventDefault();
+
+        $("body").removeClass(slideActive);
+        $("body").toggleClass(slideActiveRight);
+        var selected = $("body").hasClass(slideActiveRight);
+    });
+
+    $(window).on("resize", function () {
+        if ($(window).width() > 767 && $('.navbar-toggle').is(':hidden')) {
+            $("body").removeClass(slideActive);
+            $("body").removeClass(slideActiveRight);
+        }
+    });
+});

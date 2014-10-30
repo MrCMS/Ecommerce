@@ -20,13 +20,13 @@
         <div class="col-sm-6">
             <div class="row">
                 <div class="@(!Model.CanEnterPaymentFlow ? "col-sm-offset-6" : "") col-sm-6">
-                    <a class="btn btn-default-blue btn-block " href="@(UniquePageHelper.GetUrl<ProductSearch>())">Continue Shopping</a>
+                    <a class="btn btn-default btn-block " href="@(UniquePageHelper.GetUrl<ProductSearch>())">@Resource("Continue Shopping")</a>
                 </div>
                 @if (Model.CanEnterPaymentFlow)
                 {
                     <div class="visible-xs" style="padding-top: 5px;"></div>
                     <div class="col-sm-6">
-                        <a class="btn btn-normalgreen btn-block" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">Pay Securely NOW!</a>
+                        <a class="btn btn-primary btn-block" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">@Resource("Pay Securely NOW!")</a>
                     </div>
                 }
             </div>
@@ -36,7 +36,7 @@
     @if (Model.CannotPlaceOrderReasons.Any())
     {
         <div class="alert alert-danger">
-            <p>Sorry, we cannot begin checkout because:</p>
+            <p>@Resource("Sorry, we cannot begin checkout because"):</p>
             <ul>
                 @foreach (var reason in Model.CannotCheckoutReasons)
                 {
@@ -277,7 +277,7 @@
         <div class="col-sm-6 col-sm-offset-6">
             @if (Model.CanEnterPaymentFlow)
             {
-                <a class="btn btn-normalgreen btn-block btn-lg" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">Pay Securely NOW!</a>
+                <a class="btn btn-primary btn-block btn-lg" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">Pay Securely NOW!</a>
             }
             @if (Model.CanUsePayPalExpress)
             {

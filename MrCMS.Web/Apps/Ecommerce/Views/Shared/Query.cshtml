@@ -1,4 +1,6 @@
-﻿@using MrCMS.Helpers
+﻿@using System.Collections.Generic
+@using System.Linq
+@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Entities.Products
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Pages
@@ -13,17 +15,17 @@
 <div id="product-query-container">
     <div class="margin-bottom-10">
         <h3 class="hidden-xs">
-            Refine results
+            Refine results 
         </h3>
-        <a class="btn btn-primary visible-xs" data-toggle="collapse" data-target="#filter-container">Refine results</a>
+        <a class="btn btn-primary visible-xs" data-toggle="collapse" data-target="#filter-container"><i class="glyphicon glyphicon-filter"></i>&nbsp;@Resource("Refine results")</a>
     </div>
 
-    <div id="filter-container" class="collapse">
+    <div id="filter-container" class="collapsable collapse">
         @if (categories.Any())
         {
             <div class="widget-con">
                 <div class="title-con">
-                    By category
+                    @Resource("By category")
                 </div>
                 <div class="options-con">
                     @Html.HiddenFor(query => query.CategoryId)
@@ -31,7 +33,7 @@
                     @if (categories.Hierarchy.Any())
                     {
                         <div class="option">
-                            <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="@(UniquePageHelper.GetUrl<ProductSearch>())">Products</a>
+                            <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="@(UniquePageHelper.GetUrl<ProductSearch>())">@Resource("Products")</a>
                         </div>
                         depth++;
                     }
@@ -55,7 +57,7 @@
         @{ Html.RenderPartial("SearchOptions", new ViewDataDictionary(options) { { "query", Model } }); }
         <div class="widget-con">
             <div class="title-con">
-                By price
+                @Resource("By price")
             </div>
             <div class="options-con">
                 <div class="option">
