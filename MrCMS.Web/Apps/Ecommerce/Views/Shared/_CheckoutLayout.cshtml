@@ -1,53 +1,36 @@
-﻿@using MrCMS.Helpers
+﻿@using System
+@using System.Linq
+@using MrCMS.Helpers
 @using MrCMS.Website
 @model MrCMS.Entities.Documents.Web.Webpage
 @{
     Layout = "_BaseLayout.cshtml";
     var currentPage = CurrentRequestData.CurrentPage;
     var activePages = currentPage.ActivePages.Select(webpage => webpage.DocumentType).ToList();
+    var percentComplete = 25;
+    if (activePages.Contains("SetShippingDetails", StringComparer.OrdinalIgnoreCase))
+    {
+        percentComplete = 50;
+    }
+    else if (activePages.Contains("PaymentDetails", StringComparer.OrdinalIgnoreCase))
+    {
+        percentComplete = 75;
+    }
+    else if (activePages.Contains("OrderPlaced", StringComparer.OrdinalIgnoreCase))
+    {
+        percentComplete = 100;
+    }
 }
 
-<div class="container padding-top-bottom-20">
-    <div class="row visible-xs">
-        <div class="col-xs-4">
+<div class="container checkout-header">
+    <div class="row">
+        <div class="col-xs-6">
             <div class="padding-top-10">
                 @{ RenderZone("Checkout Header Left"); }
             </div>
         </div>
-        <div class="col-xs-8">
-            <div class="col-xs-6 padding-left-0">
-                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())" class="btn btn-default btn-block">
-                    Basket
-                </a>
-            </div>
-            <div class="col-xs-6 padding-l-r-0">
-                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-default btn-block">
-                    Return to shop
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="row hidden-xs">
-        <div class="col-md-2 col-sm-2 col-xs-2">
-            <div class="padding-top-10">
-                @{ RenderZone("Checkout Header Left"); }
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-3 col-xs-3">
-            @*<img src="../secure.png" class="img-responsive"/>*@
+        <div class="col-xs-6 pull-right">
             @{RenderZone("Checkout Header Middle");}
-        </div>
-        <div class="col-md-4 col-md-offset-3 col-sm-5 col-sm-offset-2 col-xs-7" id="checkout-nav-buttons">
-            <div class="col-md-6 col-sm-6 col-xs-6">
-                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())" class="btn btn-default btn-block">
-                    Basket
-                </a>
-            </div>
-            <div class="col-md-6 col-sm-6 col-xs-6">
-                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-default btn-block">
-                    Return to shop
-                </a>
-            </div>
         </div>
     </div>
 </div>
@@ -55,9 +38,9 @@
 <div class="navigation">
     <div class="container">
         <div class="row" id="checkout">
-            <div class="col-md-3 col-sm-3 col-xs-3 @(activePages.Contains("EnterOrderEmail", StringComparer.OrdinalIgnoreCase) ? "light-green" : "light-grey")">
+            <div class="col-md-3 col-sm-3 col-xs-3 light-green">
                 <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">
-                    <div class="circle">
+                    <div class="circle hidden-xs hidden-sm">
                         1
                     </div>
                     <div class="session">
@@ -66,26 +49,28 @@
                     <div class="pointer"></div>
                 </a>
             </div>
-            <div class="col-md-3 col-sm-3 col-xs-3 @(activePages.Contains("SetShippingDetails", StringComparer.OrdinalIgnoreCase) ? "light-green" : "dark-grey")">
-                <div class="circle">
-                    2
-                </div>
-                <div class="session">
-                    Delivery
-                </div>
-                <div class="pointer"></div>
+            <div class="col-md-3 col-sm-3 col-xs-3 @(percentComplete >= 50 ? "light-green" : "dark-grey")">
+                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.SetShippingDetails>())">
+                    <div class="circle hidden-xs hidden-sm">
+                        2
+                    </div>
+                    <div class="session">
+                        Delivery
+                    </div>
+                    <div class="pointer"></div>
+                </a>
             </div>
-            <div class="col-md-3 col-sm-3 col-xs-3  @(activePages.Contains("PaymentDetails", StringComparer.OrdinalIgnoreCase) ? "light-green" : "light-grey")">
-                <div class="circle">
-                    3
-                </div>
-                <div class="session">
-                    Payment
-                </div>
-                <div class="pointer"></div>
+            <div class="col-md-3 col-sm-3 col-xs-3  @(percentComplete >=75 ? "light-green" : "light-grey")">
+                    <div class="circle hidden-xs hidden-sm">
+                        3
+                    </div>
+                    <div class="session">
+                        Payment
+                    </div>
+                    <div class="pointer"></div>
             </div>
-            <div class="col-md-3 col-sm-3 col-xs-3 @(activePages.Contains("OrderPlaced", StringComparer.OrdinalIgnoreCase) ? "light-green" : "dark-grey")">
-                <div class="circle">
+            <div class="col-md-3 col-sm-3 col-xs-3 @(percentComplete >=100 ? "light-green" : "dark-grey")">
+                <div class="circle hidden-xs hidden-sm">
                     4
                 </div>
                 <div class="session">

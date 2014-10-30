@@ -257,8 +257,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Name = "Search",
                 LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Header Middle"),
                 Cache = true,
-                CacheExpiryType = CacheExpiryType.Sliding,
-                CacheLength = 60
             };
             _widgetService.AddWidget(searchBox);
 
@@ -277,10 +275,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var cartWidget = new CartWidget
             {
                 Name = "Cart Widget",
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Header Right"),
-                Cache = true,
-                CacheExpiryType = CacheExpiryType.Sliding,
-                CacheLength = 60
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Header Right")
             };
             _widgetService.AddWidget(cartWidget);
 

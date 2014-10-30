@@ -1,4 +1,10 @@
-﻿@model MrCMS.Web.Apps.MobileFriendlyNavigation.Widgets.MobileFriendlyNavigation
+﻿@using System.Collections.Generic
+@using MrCMS.Helpers
+@model MrCMS.Web.Apps.MobileFriendlyNavigation.Widgets.MobileFriendlyNavigation
 
-@Html.LabelFor(widget => widget.IncludeChildren)
-@Html.CheckBoxFor(x=>x.IncludeChildren)
+@Html.InlineCheckboxFor(x => x.IncludeChildren)
+
+<div class="form-group">
+    @Html.LabelFor(x => x.RootWebpage, "Choose a root start node (optional):")
+    @Html.DropDownListFor(x => x.RootWebpage.Id, ViewData["rootNotes"] as IEnumerable<SelectListItem>, new{@class="form-control"})
+</div>
