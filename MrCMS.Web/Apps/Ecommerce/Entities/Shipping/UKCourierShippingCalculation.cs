@@ -23,6 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Shipping
         [Required]
         public virtual decimal BaseAmount { get; set; }
 
+        [DisplayName("Restricted To")]
         public virtual string RestrictedTo { get; set; }
     }
 }
