@@ -2730,15 +2730,6 @@
     <Content Include="Content\install\scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Areas\Admin\Content\Scripts\lib\jquery.signalR-2.0.2.js" />
     <Content Include="Areas\Admin\Content\Scripts\lib\jquery.signalR-2.0.2.min.js" />
-    <Content Include="Themes\Ecommerce\Content\Scripts\custom\category.js" />
-    <Content Include="Themes\Ecommerce\Content\Scripts\custom\forgotten-password.js" />
-    <Content Include="Themes\Ecommerce\Content\Scripts\custom\password-reset.js" />
-    <Content Include="Themes\Ecommerce\Content\Scripts\custom\product.js" />
-    <Content Include="Themes\Ecommerce\Content\Scripts\custom\shipping-methods.js" />
-    <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-account.js" />
-    <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-login.js" />
-    <Content Include="Themes\Ecommerce\Content\Scripts\custom\user-registration.js" />
-    <Content Include="Themes\Ecommerce\Content\Scripts\jquery.history.js" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -3375,6 +3366,7 @@
     <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\" />
     <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Shared\" />
     <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Webpage\" />
+    <Folder Include="Themes\Ecommerce\Content\" />
     <Folder Include="Themes\Ecommerce\Shared\" />
     <Folder Include="Themes\Ecommerce\Views\Shared\" />
   </ItemGroup>

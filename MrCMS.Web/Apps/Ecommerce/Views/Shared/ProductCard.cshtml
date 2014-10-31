@@ -1,34 +1,43 @@
 ﻿@using System.Drawing
 @using System.Linq
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Settings
-@model MrCMS.Web.Apps.Ecommerce.Pages.Product
-@if (Model.Variants.Any())
-{
-    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 margin-bottom-30">
-        <div class="product-con">
-            <div class="product-image">
-                <a href="/@Model.LiveUrlSegment">@RenderImage(Model.DisplayImageUrl, new Size { Width = 200, Height = 175 }, null, null, new { @class = "img-responsive" })</a>
-            </div>
-            <div class="product-info">
-                <div class="product-name">
-                    <a href="/@Model.LiveUrlSegment">@Model.Name</a>
-                </div>
-                <div class="product-price">
-                    <span class="current-price">
-                        @(Model.IsMultiVariant ? "From " : "")
-                        @Html.DisplayFor(product => product.DisplayPrice)
-                    </span>
-                    @if (Model.ShowPreviousPrice)
+@model ProductCardModel
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 margin-bottom-30">
+    <div class="product-con">
+        <div class="product-image">
+            <a href="/@Model.Url">@RenderImage(Model.Image, new Size { Width = 200, Height = 175 }, null, null, new { @class = "img-responsive" })</a>
+        </div>
+        <div class="product-info">
+            @if (Model.VariantId.HasValue)
+            {
+                <div class="padding-bottom-10">
+                    @using (Html.BeginForm("Add", "AddToCart", FormMethod.Post))
                     {
-                        <span class="old-price">
-                            <span class="inner">
-                                @(SiteSettings<EcommerceSettings>().PreviousPriceText) : @Html.DisplayFor(product => product.DisplayPreviousPrice)
-                            </span>
-                        </span>
+                        @Html.Hidden("ProductVariant.Id", Model.VariantId)
+                        @Html.Hidden("quantity", 1)
+                        <button class="btn btn-primary" style="margin-left: 0;">Add to basket</button>
                     }
                 </div>
+            }
+            <div class="product-name">
+                <a href="/@Model.Url">@Model.Name</a>
+            </div>
+            <div class="product-price">
+                <span class="current-price">
+                    @Model.Price.ToCurrencyFormat()
+                </span>
+                @if (Model.PreviousPrice.HasValue)
+                {
+                    <span class="old-price">
+                        <span class="inner">
+                            @(SiteSettings<EcommerceSettings>().PreviousPriceText) : @Model.PreviousPrice.ToCurrencyFormat()
+                        </span>
+                    </span>
+                }
             </div>
         </div>
     </div>
-}
+</div>
+

@@ -24,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 return countries.BuildSelectItemList(country => country.Name, country => country.ISOTwoLetterCode,
                     emptyItem: null);
             return countries.BuildSelectItemList(country => country.Name, country => country.ISOTwoLetterCode,
-                emptyItemText: "Please select");
+                emptyItem: null);
         }
     }
 }

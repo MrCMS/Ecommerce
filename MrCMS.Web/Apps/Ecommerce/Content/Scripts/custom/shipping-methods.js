@@ -1,19 +1,31 @@
 ﻿$(function () {
+    function reinitializeValidation() {
+        var form = $('form');
+        form.removeData("validator");
+        form.removeData("unobtrusiveValidation");
+        form.find('input, select').each(function () {
+            $.data(this, "previousValue", null);
+        });
+        $.validator.unobtrusive.parse("form");
+    }
+    function setHtml(selector, content) {
+        $(selector).html(content);
+        reinitializeValidation();
+    }
     function setToEditMethod() {
         $.get('/Apps/Ecommerce/SetShippingAddress/ShowShippingAddress', function (result) {
-            $('#address-info').html(result);
+            setHtml('#address-info', result);
         });
         $.get('/Apps/Ecommerce/SetShippingMethod/ShippingOptions', function (result) {
-            $('#method-info').html(result);
-            showHideToPayment();
+            setHtml('#method-info', result);
         });
     }
     function setToEditAddress() {
         $.get('/Apps/Ecommerce/SetShippingAddress/ShippingAddress', function (result) {
-            $('#address-info').html(result);
+            setHtml('#address-info', result);
         });
         $.get('/Apps/Ecommerce/SetShippingMethod/AwaitingAddress', function (result) {
-            $('#method-info').html(result);
+            setHtml('#method-info', result);
         });
     }
     function updateSummary() {
