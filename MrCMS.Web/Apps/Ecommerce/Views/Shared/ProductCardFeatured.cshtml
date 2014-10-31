@@ -8,6 +8,17 @@
         <a href="/@Model.Url">@RenderImage(Model.Image, new Size { Width = 200, Height = 175 }, attributes: new { @class = "img-responsive" })</a>
     </div>
     <div class="product-info">
+        @if (Model.VariantId.HasValue)
+        {
+            <div class="padding-bottom-10">
+                @using (Html.BeginForm("Add", "AddToCart", FormMethod.Post))
+                {
+                    @Html.Hidden("ProductVariant.Id", Model.VariantId)
+                    @Html.Hidden("quantity", 1)
+                    <button class="btn btn-primary" style="margin-left: 0;">Add to basket</button>
+                }
+            </div>
+        }
         <div class="product-name">
             <a href="/@Model.Url">@Model.Name</a>
         </div>

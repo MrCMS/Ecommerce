@@ -1,4 +1,6 @@
-﻿@using MrCMS.Helpers
+﻿@using System.Collections.Generic
+@using System.Linq
+@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 @{
@@ -15,18 +17,18 @@
         @Html.DropDownList("ShippingMethod", shippingMethods, new { @class = "form-control margin-bottom-10" })
         <div id="to-payment-details" style="display: none">
             <a class="btn btn-primary btn-lg margin-top-10" href="@(UniquePageHelper.GetUrl<PaymentDetails>())">
-                To Payment
+                @Resource("Continue")
             </a>
         </div>
     }
     else
     {
         <p>
-            There are no available shipping methods for this cart to this address.
+            There are no available shipping methods for this cart to this address. 
         </p>
         <div>
             <a class="btn btn-default margin-top-10" href="@(UniquePageHelper.GetUrl<Cart>())">
-                To Cart
+                @Resource("To Cart")
             </a>
         </div>
     }

@@ -21,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.ModelBinders
         {
             var bindModel = base.BindModel(controllerContext, bindingContext);
             var addToCartModel = bindModel as AddToCartModel;
-            if (addToCartModel != null)
+            if (addToCartModel != null && addToCartModel.ProductVariant != null)
             {
                 if (addToCartModel.ProductVariant.IsGiftCard)
                 {
