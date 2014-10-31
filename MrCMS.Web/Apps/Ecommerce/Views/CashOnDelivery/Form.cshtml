@@ -1,7 +1,7 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Models.CashOnDeliveryConfirmModel
 @using (Html.BeginForm("Form", "CashOnDelivery", FormMethod.Post, new { @class = "form-horizontal" }))
 {
-    
-        <input type="submit" class="btn btn-primary btn-lg" value="Confirm Order" />
-    
+
+    <input type="submit" class="btn btn-primary btn-lg" value="@Resource("Confirm Order")" />
+
 }

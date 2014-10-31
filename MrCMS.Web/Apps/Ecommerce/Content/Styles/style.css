@@ -4,8 +4,9 @@ body { font-family: Arial, Verdana, sans-serif; color: #444444; font-size: 14px;
 
 /* Font Styles */
 a { color: #4679C3; }
-h1 { font-size: 20px; line-height: 26px; margin: 0 0 10px 0; padding: 0; color: #333333; }
-h3 { font-size: 20px; line-height: 26px; margin: 0 0 10px 0; padding: 0; font-weight: normal; }
+h1 { font-size: 22px; line-height: 26px; margin: 0 0 10px 0; padding: 0; color: #333333; }
+h2 { font-size: 20px; line-height: 26px; margin: 0 0 10px 0; padding: 0; font-weight: normal; }
+h3 { font-size: 18px; line-height: 26px; margin: 0 0 10px 0; padding: 0; font-weight: normal; }
 h4 { font-size: 15px; line-height: 20px; margin: 0 0 10px 0; padding: 0; font-weight: normal; }
 
 /* Shared */
