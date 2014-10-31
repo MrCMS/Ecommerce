@@ -16,13 +16,10 @@
 
             </span>
         </legend>
-
-        @Html.HiddenFor(x => x.SiteId)
-
         <div class="row">
             <div class="col-lg-6">
                 <div class="checkbox">
-                    <label class="checkbox">@Html.CheckBox("TryCalculateVat", Model.TryCalculateVat) Try calculate VAT?</label>
+                    <label class="checkbox">@Html.CheckBox("TryCalculateVat", Model.TryCalculateVat) Try calculate TAX?</label>
                 </div>
                 <div class="checkbox">
                     <label class="checkbox">@Html.CheckBox("UseDefaultTaxRateForShippingTax", Model.UseDefaultTaxRateForShippingTax) Use default tax rate for calculating shipping tax?</label>

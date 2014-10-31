@@ -1,50 +1,61 @@
-﻿@model List<MrCMS.Web.Apps.Ecommerce.Entities.Discounts.Discount>
+﻿@using System.Linq
+@model System.Collections.Generic.List<MrCMS.Web.Apps.Ecommerce.Entities.Discounts.Discount>
 @{
     ViewBag.Title = "Discounts";
 }
 
-<form>
-    <fieldset>
-        <legend>Discounts
-            <span class="btn-group  display-inline  pull-right">
-                <a href="@Url.Action("Add", "Discount")" class="btn btn-primary"  data-toggle="fb-modal">Add Discount</a>
-            </span>
-        </legend>
-        <table class="table table-condensed table-striped">
-            <thead>
+<h1 class="page-header">
+    Discounts
+    <span class="btn-group  display-inline  pull-right">
+        <a href="@Url.Action("Add", "Discount")" class="btn btn-primary" data-toggle="fb-modal">Add Discount</a>
+    </span>
+</h1>
+
+@if (Model.Any())
+{
+    <table class="table table-condensed table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Code
+                </th>
+                <th>
+                    Time period
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
-                    <th>Name
-                    </th>
-                    <th>Code
-                    </th>
-                    <th>Time period
-                    </th>
-                    <th>Actions
-                    </th>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Code
+                    </td>
+                    <td>
+                        @item.ValidTimePeriod
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            @Html.ActionLink("Edit", "Edit", "Discount", new {id = item.Id}, new {@class = "btn btn-xs btn-default"})
+                            @Html.ActionLink("Delete", "Delete", "Discount", new {id = item.Id}, new {@class = "btn btn-xs btn-danger", data_toggle = "fb-modal"})
+                        </div>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @item.Name
-                        </td>
-                        <td>
-                            @item.Code
-                        </td>
-                        <td>
-                            @item.ValidTimePeriod
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                @Html.ActionLink("Edit", "Edit", "Discount", new { id = item.Id }, new { @class = "btn btn-xs btn-default" })
-                                @Html.ActionLink("Delete", "Delete", "Discount", new { id = item.Id }, new { @class = "btn btn-xs btn-danger", data_toggle = "fb-modal" })
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </fieldset>
-</form>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    @Resource("No discounts available")
+}
+

@@ -264,10 +264,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var userLinks = new UserLinks
             {
                 Name = "User Links",
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "User Links"),
-                Cache = true,
-                CacheExpiryType = CacheExpiryType.Sliding,
-                CacheLength = 60
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "User Links")
             };
             _widgetService.AddWidget(userLinks);
 

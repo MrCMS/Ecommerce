@@ -134,7 +134,7 @@
             <div class="pull-left">
                 @if (order.ShippingAddress != null)
                 {
-                    @order.ShippingAddress.GetDescription()
+                    @Html.Raw(order.ShippingAddress.GetDescriptionHtml())
                 }
             </div>
         </div>
@@ -143,7 +143,7 @@
             <div class="pull-left">
                 @if (order.BillingAddress != null)
                 {
-                    @order.BillingAddress.GetDescription()
+                    @Html.Raw(order.BillingAddress.GetDescriptionHtml())
                 }
             </div>
         </div>

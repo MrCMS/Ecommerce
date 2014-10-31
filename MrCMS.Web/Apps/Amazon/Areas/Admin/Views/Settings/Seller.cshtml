@@ -1,4 +1,6 @@
-﻿@using System.Web.Mvc.Html
+﻿@using System
+@using System.Linq
+@using System.Web.Mvc.Html
 @using MarketplaceWebServiceFeedsClasses
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Amazon.Models
@@ -19,8 +21,6 @@
 
             </span>
         </legend>
-
-        @Html.HiddenFor(x => x.SiteId)
 
         <div class="row">
             <div class="col-lg-6">

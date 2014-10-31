@@ -1,11 +1,4 @@
-﻿$(document).ready(function () {
-    
-    //CSS
-    $("body").css("background-color", "#F2F2F2");
-    $(".left-nav").css("display", "none");
-    $(".container-mrcms").css("padding-left", "0");
-
-});
+﻿
 
 //CHARTS
 google.load('visualization', '1.0', { 'packages': ['corechart'] });
