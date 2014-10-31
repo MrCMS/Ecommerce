@@ -126,15 +126,15 @@
 <hr class="small-margin" />
 <div class="row">
     <div class="col-lg-6">
-        <h4>Payment</h4>
+        <h4>@Resource("Payment")</h4>
 
         <table class="table table-condensed table-striped">
             <tr>
-                <td>Method</td>
+                <td>@Resource("Method")</td>
                 <td>@Html.DisplayFor(x => x.PaymentMethod)</td>
             </tr>
             <tr>
-                <td>Status</td>
+                <td>@Resource("Status")</td>
                 <td>@Html.DisplayFor(x => x.PaymentStatus)</td>
             </tr>
         </table>
@@ -148,24 +148,29 @@
         {
             <a href="@Url.Action("Add", "OrderRefund", new { orderID = Model.Id, index = false })" class="btn btn-xs btn-default" data-toggle="fb-modal">Add Refund</a>
         }
+        @if (Model.PaymentStatus == PaymentStatus.Voided)
+        {
+            @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+            <span></span>
+        }
 
     </div>
     <div class="col-lg-6">
-        <h4>Shipping</h4>
+        <h4>@Resource("Shipping")</h4>
 
         <table class="table table-condensed">
             <tr>
-                <td>Method</td>
+                <td>@Resource("Method")</td>
                 <td>@(!string.IsNullOrWhiteSpace(Model.ShippingMethodName) ? Model.ShippingMethodName : "-")</td>
             </tr>
             <tr>
-                <td>Status</td>
+                <td>@Resource("Status")</td>
                 <td>@Html.DisplayFor(x => x.ShippingStatus)</td>
             </tr>
             @if (Model.ShippingDate.HasValue)
             {
                 <tr>
-                    <td>Shipped On</td>
+                    <td>@Resource("Shipped On")</td>
                     <td>@Html.DisplayFor(x => x.ShippingDate)</td>
                 </tr>
             }
@@ -173,7 +178,7 @@
                 if (!string.IsNullOrEmpty(Model.TrackingNumber))
                 {
                     <tr>
-                        <td>Tracking Number</td>
+                        <td>@Resource("Tracking Number")</td>
                         <td>@Html.DisplayFor(x => x.TrackingNumber)</td>
                     </tr>
                 }

@@ -5,15 +5,18 @@
     ViewBag.Title = "Amazon App Dashboard";
 }
 
-<fieldset>
-    <legend>
-        Amazon App Dashboard
-        <span class="pull-right">
-           
-        </span>
-    </legend>
-    @using (Html.BeginForm("Dashboard", "App", new { id = "" }, FormMethod.Post))
-    {
+@using (Html.BeginForm("Dashboard", "App", new { id = "" }, FormMethod.Post))
+{
+
+    <fieldset>
+        <legend>
+            Amazon App Dashboard
+            <span class="pull-right">
+                <button type="submit" class="btn btn-primary">Filter</button>
+
+            </span>
+        </legend>
+
         <div class="row">
             <div class="col-lg-6">
                 <div class="form-group">
@@ -30,12 +33,12 @@
             </div>
 
         </div>
-        <button type="submit" class="btn btn-default">Filter</button>
 
-    }
-    @{Html.RenderPartial("DashboardContent", Model);}
 
-</fieldset>
+        @{Html.RenderPartial("DashboardContent", Model);}
+
+    </fieldset>
+}
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 @{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/dashboard.js"); }

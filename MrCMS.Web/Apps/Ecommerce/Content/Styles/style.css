@@ -37,6 +37,8 @@ h4 { font-size: 15px; line-height: 20px; margin: 0 0 10px 0; padding: 0; font-we
 .grey-border-bottom { border-bottom: 1px solid #f0f0f0; }
 .line-height-30 { line-height: 30px; }
 .padding-20 { padding: 20px; }
+.carousel-control.left {background-image: none;}
+.carousel-control.right {background-image: none;}
 .btn-primary {
  background-image: -webkit-linear-gradient(top, #99c413 0%, #88A825 100%);
 background-image: -o-linear-gradient(top, #99c413 0%, #88A825 100%);

@@ -1,83 +1,93 @@
-﻿@using MrCMS.Helpers
+﻿@using System.Linq
+@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Core.Pages
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Pages
+@using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Models.UserAccountOrdersModel
-<div class="container">
-    <div data-paging-type="async">
-        <div class="block-title">
-            <div class="h1style">
-                Your Orders
+@{
+    var currentPage = CurrentRequestData.CurrentPage;
+    if (currentPage is UserAccountPage)
+    {
+        <div class="container">
+            <div data-paging-type="async">
+                <div class="block-title">
+                    <div class="h1style">
+                        Your Orders
+                    </div>
+                </div>
+                @if (Model != null && !Model.Items.Any())
+                {
+                    @:You have no orders yet.
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Order Id
+                                    </th>
+                                    <th>
+                                        Payment Status
+                                    </th>
+                                    <th>
+                                        Shipping Status
+                                    </th>
+                                    <th>
+                                        Amount
+                                    </th>
+                                    <th>
+                                        Order Date
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Items)
+                                {
+                                    var status = "warning";
+                                    if (item.ShippingStatus.Equals(ShippingStatus.Shipped) && item.PaymentStatus.Equals(PaymentStatus.Paid))
+                                    {
+                                        status = "success";
+                                    }
+                                    else if (item.IsCancelled)
+                                    {
+                                        status = "error";
+                                    }
+
+                                    <tr class="@status">
+                                        <td>
+                                            @item.Id
+                                        </td>
+                                        <td>
+                                            @((item.IsCancelled) ? "Cancelled" : item.PaymentStatus.ToString())
+                                        </td>
+                                        <td>
+                                            @((item.IsCancelled) ? "Cancelled" : item.ShippingStatus.ToString())
+                                        </td>
+                                        <td>
+                                            @item.Total.ToCurrencyFormat()
+                                        </td>
+                                        <td>
+                                            @item.CreatedOn
+                                        </td>
+                                        <td>
+                                            <a href="@(UniquePageHelper.GetUrl<UserOrder>())?id=@item.Guid" class="btn btn-default btn-block">View Order Details</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    @Html.Pager(Model.Items, "UserAccountOrders", i => new { Model.Id, page = i })
+                }
             </div>
         </div>
-        @if (Model != null && !Model.Items.Any())
-        {
-            @:You have no orders yet.
-        }
-        else
-        {
-            <div class="table-responsive">
-                <table class="table table-condensed table-striped">
-                    <thead>
-                        <tr>
-                            <th>
-                                Order Id
-                            </th>
-                            <th>
-                                Payment Status
-                            </th>
-                            <th>
-                                Shipping Status
-                            </th>
-                            <th>
-                                Amount
-                            </th>
-                            <th>
-                                Order Date
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Items)
-                        {
-                            var status = "warning";
-                            if (item.ShippingStatus.Equals(ShippingStatus.Shipped) && item.PaymentStatus.Equals(PaymentStatus.Paid))
-                            {
-                                status = "success";
-                            }
-                            else if (item.IsCancelled)
-                            {
-                                status = "error";
-                            }
+    }
+}
 
-                            <tr class="@status">
-                                <td>
-                                    @item.Id
-                                </td>
-                                <td>
-                                    @((item.IsCancelled) ? "Cancelled" : item.PaymentStatus.ToString())
-                                </td>
-                                <td>
-                                    @((item.IsCancelled) ? "Cancelled" : item.ShippingStatus.ToString())
-                                </td>
-                                <td>
-                                    @item.Total.ToCurrencyFormat()
-                                </td>
-                                <td>
-                                    @item.CreatedOn
-                                </td>
-                                <td>
-                                    <a href="@(UniquePageHelper.GetUrl<UserOrder>())?id=@item.Guid" class="btn btn-default btn-block">View Order Details</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            
-            @Html.Pager(Model.Items, "UserAccountOrders", i => new { Model.Id, page = i })
-        }
-    </div>
-</div>
 @{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/async-paging.js"); }

@@ -11,14 +11,13 @@
 <div class="padding-top-bottom-20">
     <div class="row">
         <div class="col-sm-12 padding-left-0 mobile-left-padding">
-            <h1>Order Complete</h1>
+            <h1>@Resource("Order Complete")</h1>
 
-            <h3>Your order (ID:@order.Id) was successfully processed.</h3>
-            <p>
-                Thank you for shopping with Mr CMS Ecommerce!
-            </p>
+            <h3>@string.Format(Resource("Your order (ID:{0}) was successfully processed."), order.Id.ToString())</h3>
+            
+            @Editable(Model, placed => placed.BodyContent)
 
-             @switch (emailRegistrationStatus)
+            @switch (emailRegistrationStatus)
             {
                 case EmailRegistrationStatus.EmailInUse:
                     Html.RenderPartial("LoginAndAssociateOrder", new LoginModel { Email = order.OrderEmail });
@@ -29,7 +28,7 @@
             }
 
             <hr />
-            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-default" >Return to shop
+            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-default" >@Resource("Return to shop")
             </a>
         </div>
     </div>

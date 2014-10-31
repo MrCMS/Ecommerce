@@ -104,8 +104,7 @@ input[type="image"] { border: none;-webkit-transition: none;-moz-transition: non
 .pagination>li:last-child>a, .pagination>li:last-child>span {border-bottom-right-radius: 0;border-top-right-radius: 0;}
 /* paging end */
 select {color:#4679C3 !important;}
-.carousel-control.left {background-image: none;}
-.carousel-control.right {background-image: none;}
+
 #product-image-thumbnails {margin:0;}
 #product-image-thumbnails ul {margin:0;padding: 0;}
 #product-image-thumbnails ul li {margin:0;list-style-type: none;padding: 5px;border: 1px solid #f0f0f0;display: inline-block;}

@@ -90,9 +90,13 @@
                             {
                                 <div>
                                     @RenderImage(product.Brand.Logo, new Size { Width = 120 }, product.Brand.Name, product.Brand.Name, new { @class = "img-responsive" })
-                                </div><br />
+                                </div>
+                                <br />
                             }
-                            @:Brand: <span itemprop="brand">@product.Brand.Name</span><br />
+                            else
+                            {
+                                @:Brand: <span itemprop="brand">@product.Brand.Name</span><br />
+                            }
                         }
                         if (mainCategory != null)
                         {

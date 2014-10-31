@@ -1,11 +1,11 @@
-﻿@using MrCMS.Helpers
+﻿@using System.Collections.Generic
+@using MrCMS.Helpers
 @using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Settings.GoogleBaseSettings
 
 <div class="tab-pane" id="settings">   
     @using (Html.BeginForm("GoogleBaseSettings", "GoogleBase", FormMethod.Post, new { id = "Settings" }))
     {
-        @Html.HiddenFor(settings => settings.SiteId)
         <div class="form-group">
             @Html.LabelFor(x => x.GoogleBaseTaxonomyFeedUrl)
             @Html.TextBoxFor(x => x.GoogleBaseTaxonomyFeedUrl, new { @class = "form-control" })
@@ -18,7 +18,7 @@
         @Html.LabelFor(x => x.DefaultCondition)
         @Html.DropDownListFor(x => x.DefaultCondition, ViewData["product-conditions"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
     </div>
-        <button type="submit" class="btn btn-default">Save Settings</button>
+        <button type="submit" class="btn btn-default">@Resource("Save")</button>
     }
     <br />
     @Html.InfoBlock("Heads up", " You can set up Google Base to download directly from this URL: http://" + CurrentRequestData.CurrentSite.BaseUrl + "/export/google-base-feed")
