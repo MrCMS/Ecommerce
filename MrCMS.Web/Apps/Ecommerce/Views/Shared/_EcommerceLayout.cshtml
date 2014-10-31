@@ -13,7 +13,7 @@
             </a>
             @{ RenderZone("Header Right", allowFrontEndEditing:false); }
             @{ RenderZone("User Links", allowFrontEndEditing:false); }
-            <form method="GET" action="/" id="search-box" class="hidden-xs  pull-right" novalidate="novalidate">
+            <form method="GET" action="@(UniquePageHelper.GetUrl<ProductSearch>())" id="search-box" class="hidden-xs  pull-right" novalidate="novalidate">
                 <div class="input-group">
                     <input class="form-control" id="searchTerm" name="searchTerm" placeholder="e.g : Shorts" type="text" value="">
                     <span class="input-group-btn">
@@ -32,7 +32,7 @@
                 <div class="visible-xs visible-sm mobilemenu">
                     <a href="#" id="left-menu-toggle"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Menu</a>
 
-                    <form method="GET" action="/" id="search-box" class="pull-right hidden-sm" novalidate="novalidate">
+                    <form method="GET" action="@(UniquePageHelper.GetUrl<ProductSearch>())" id="search-box" class="pull-right hidden-sm" novalidate="novalidate">
                         <div class="input-group">
                             <input class="form-control" id="searchTerm" name="searchTerm" placeholder="e.g : Shorts" type="text" value="">
                             <span class="input-group-btn">
