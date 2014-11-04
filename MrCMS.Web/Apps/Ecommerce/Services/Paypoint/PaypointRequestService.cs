@@ -37,7 +37,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
                                                                      _cartModel.CartGuid.ToString(),
                                                                      RequestHelper.GetIP(), model.NameOnCard,
                                                                      model.CardNumber,
-                                                                     _paypointHelper.GetTotal(_cartModel.Total),
+                                                                     _paypointHelper.GetTotal(_cartModel.TotalToPay),
                                                                      _paypointHelper.GetDate(model.EndMonth,
                                                                                              model.EndYear),
                                                                      model.CardIssueNumber,
@@ -74,7 +74,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
         {
             _cartModel.CartGuid = _paypoint3DSecureHelper.ResetCartGuid();
             _paypoint3DSecureHelper.SetCartGuid(_cartModel.CartGuid);
-            _paypoint3DSecureHelper.SetOrderAmount(_cartModel.Total);
+            _paypoint3DSecureHelper.SetOrderAmount(_cartModel.TotalToPay);
 
             var threeDSecureEnrolmentRequestResponse =
                 _secvpn.threeDSecureEnrolmentRequest(
@@ -83,7 +83,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
                                                             _cartModel.CartGuid.ToString(),
                                                             RequestHelper.GetIP(),
                                                             model.NameOnCard, model.CardNumber,
-                                                            _paypointHelper.GetTotal(_cartModel.Total),
+                                                            _paypointHelper.GetTotal(_cartModel.TotalToPay),
                                                             _paypointHelper.GetDate(model.EndMonth,
                                                                                     model.EndYear),
                                                             model.CardIssueNumber,

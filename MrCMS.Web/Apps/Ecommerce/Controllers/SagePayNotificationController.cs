@@ -27,7 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (string.IsNullOrEmpty(vendorTxCode))
                 return new ErrorResult();
             var cart = _sagePayCartLoader.GetCart(vendorTxCode);
-            if (cart == null || cart.CartGuid.ToString() != vendorTxCode || _sagePayService.GetCartTotal(cart.UserGuid) != cart.Total)
+            if (cart == null || cart.CartGuid.ToString() != vendorTxCode || _sagePayService.GetCartTotal(cart.UserGuid) != cart.TotalToPay)
             {
                 ResetSessionInfo(cart,
                                  new FailureDetails

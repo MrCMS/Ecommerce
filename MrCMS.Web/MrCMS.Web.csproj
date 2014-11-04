@@ -14,7 +14,7 @@
     <RootNamespace>MrCMS.Web</RootNamespace>
     <AssemblyName>MrCMS.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <FileUpgradeFlags>
@@ -519,6 +519,8 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\StockReportController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\WarehouseController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\WarehouseStockController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CharityClearSettingsController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\CharityClearSettingsModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\BulkStockUpdateResult.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\BulkUpdateResult.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\BulkWarehouseStockUpdateDTO.cs" />
@@ -697,6 +699,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\SetShippingMethodController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\WishlistController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\CharityClearController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\WorldPayController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CategoryOverride.cs" />
@@ -1029,6 +1032,11 @@
     <Compile Include="Apps\Ecommerce\Payment\SagePay\VspServerMode.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Services\IPaymentMethodService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Services\PaymentMethodService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\CharityClear\Models\CharityClearPostModel.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\CharityClear\Services\ICharityClearPaymentService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\CharityClear\Services\CharityClearPaymentService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\CharityClear\CharityClearPaymentMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\CharityClear\CharityClearSettings.cs" />
     <Compile Include="Apps\Ecommerce\Payment\WorldPay\Models\WorldPayPostInfo.cs" />
     <Compile Include="Apps\Ecommerce\Payment\WorldPay\Services\IWorldPayPaymentService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\WorldPay\Services\WorldPayPaymentService.cs" />
@@ -3328,6 +3336,8 @@
     <Content Include="Apps\Stats\Areas\Admin\Views\PageViews\Index.cshtml" />
     <Content Include="Apps\Stats\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Stats\Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\CharityClear\Form.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\CharityClearSettings\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_BaseLayout.cshtml" />
@@ -3446,7 +3456,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1834</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:8813</IISUrl>
+          <IISUrl>http://localhost/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

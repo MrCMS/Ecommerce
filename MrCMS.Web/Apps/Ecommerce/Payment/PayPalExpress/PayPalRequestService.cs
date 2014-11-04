@@ -76,7 +76,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
             // populate payment details
             var paymentDetails = new PaymentDetailsType
                 {
-                    OrderTotal = cart.Total.GetAmountType(),
+                    OrderTotal = cart.TotalToPay.GetAmountType(),
                     ShippingTotal = cart.ShippingTotal.GetAmountType(),
                     ItemTotal = (cart.Subtotal - cart.OrderTotalDiscount).GetAmountType(),
                     TaxTotal = cart.ItemTax.GetAmountType(),

@@ -1,0 +1,18 @@
+﻿@using System.Linq
+@using MrCMS.Web.Areas.Admin.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Payment.CharityClear.Models.CharityClearPostModel
+           
+@if (TempData.ErrorMessages().Any())
+{
+    <div class="alert alert-danger">
+        @Html.Raw(string.Join("<br />", TempData.ErrorMessages()))
+    </div>
+}
+
+<form method="POST" action="https://gateway.charityclear.com/paymentform/">
+    @foreach(var key in Model.Fields)
+    {
+        <input type="hidden" name="@key.Key" value="@key.Value" />
+    }
+    <button class="btn btn-primary btn-lg" type="submit">@Resource("Payments Charity Clear", "Continue")</button>
+</form>

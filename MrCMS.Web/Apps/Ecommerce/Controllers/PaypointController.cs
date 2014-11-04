@@ -90,7 +90,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 return _uniquePageService.RedirectTo<PaymentDetails>();
             }
             if (_cartModel.CartGuid != _paypoint3DSecureHelper.GetCartGuid() ||
-                _cartModel.Total != _paypoint3DSecureHelper.GetOrderAmount())
+                _cartModel.TotalToPay != _paypoint3DSecureHelper.GetOrderAmount())
             {
                 TempData["error-details"] = new FailureDetails
                 {

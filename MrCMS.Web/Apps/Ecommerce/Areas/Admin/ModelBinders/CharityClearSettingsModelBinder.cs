@@ -1,17 +1,17 @@
 using System;
 using System.Web.Mvc;
 using MrCMS.Settings;
-using MrCMS.Web.Apps.Ecommerce.Payment.WorldPay;
+using MrCMS.Web.Apps.Ecommerce.Payment.CharityClear;
 using MrCMS.Website.Binders;
 using Ninject;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders
 {
-    internal class WorldPaySettingsModelBinder : MrCMSDefaultModelBinder
+    internal class CharityClearSettingsModelBinder : MrCMSDefaultModelBinder
     {
         private readonly IConfigurationProvider _configurationProvider;
 
-        public WorldPaySettingsModelBinder(IKernel kernel, IConfigurationProvider configurationProvider)
+        public CharityClearSettingsModelBinder(IKernel kernel, IConfigurationProvider configurationProvider)
             : base(kernel)
         {
             _configurationProvider = configurationProvider;
@@ -19,7 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders
 
         protected override object CreateModel(ControllerContext controllerContext, ModelBindingContext bindingContext, Type modelType)
         {
-            return _configurationProvider.GetSiteSettings<WorldPaySettings>();
+            return _configurationProvider.GetSiteSettings<CharityClearSettings>();
         }
     }
 }

@@ -92,9 +92,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("SagePay - Form", "Apps/Ecommerce/Confirm/SagePay",
                 new {controller = "SagePay", action = "Form"},
                 new[] {typeof (SagePayController).Namespace});
-            context.MapRoute("WorldPay - Form", "Apps/Ecommerce/Confirm/WorldPay",
-                new {controller = "WorldPay", action = "Form"},
-                new[] {typeof (WorldPayController).Namespace});
+            
             context.MapRoute("PayPal Express Checkout - Form", "Apps/Ecommerce/Confirm/PaypalExpressCheckout",
                 new {controller = "PayPalExpressCheckout", action = "Form"},
                 new[] {typeof (PayPalExpressCheckoutController).Namespace});
@@ -108,11 +106,12 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new {controller = "PayPalExpressIPN", action = "Handle"},
                 new[] {typeof (PayPalExpressIPNController).Namespace});
             context.MapRoute("Checkout - PayPal Return Handler", "Apps/Ecommerce/PayPalExpressCheckout/ReturnHandler",
-                new { controller = "PayPalExpressCheckout", action = "Return" },
-                new[] { typeof(PayPalExpressCheckoutController).Namespace });
-            context.MapRoute("Checkout - PayPal Callback Handler", "Apps/Ecommerce/PayPalExpressCheckout/CallbackHandler",
-                new { controller = "PayPalExpressCallback", action = "Handler" },
-                new[] { typeof(PayPalExpressCallbackController).Namespace });
+                new {controller = "PayPalExpressCheckout", action = "Return"},
+                new[] {typeof (PayPalExpressCheckoutController).Namespace});
+            context.MapRoute("Checkout - PayPal Callback Handler",
+                "Apps/Ecommerce/PayPalExpressCheckout/CallbackHandler",
+                new {controller = "PayPalExpressCallback", action = "Handler"},
+                new[] {typeof (PayPalExpressCallbackController).Namespace});
 
             context.MapRoute("Checkout - Paypoint 3D Secure Redirect", "Apps/Ecommerce/Paypoint/3DSecureRedirect",
                 new {controller = "Paypoint", action = "Redirect3DSecure"},
@@ -137,9 +136,22 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Checkout - SagePay Failed POST", "Apps/Ecommerce/SagePay/FailedRedirect",
                 new {controller = "SagePayRedirect", action = "FailedPost"},
                 new[] {typeof (SagePayRedirectController).Namespace});
-
+            context.MapRoute("WorldPay - Form", "Apps/Ecommerce/Confirm/WorldPay",
+                new { controller = "WorldPay", action = "Form" },
+                new[] { typeof(WorldPayController).Namespace });
             context.MapRoute("Checkout - WorldPay Notification Url", "Apps/Ecommerce/WorldPay/Notification",
                 new {controller = "WorldPay", action = "Notification"}, new[] {typeof (WorldPayController).Namespace});
+
+
+
+            //Charity Clear Routes
+            context.MapRoute("CharityClear Form", "Apps/Ecommerce/Confirm/CharityClear",
+                new { controller = "CharityClear", action = "Form" },
+                new[] { typeof(CharityClearController).Namespace });
+            context.MapRoute("CharityClear PaymentInfo Notification",
+                 "Apps/Ecommerce/CharityClear/Notification",
+                 new { controller = "CharityClear", action = "Notification" },  
+                 new[] {typeof (CharityClearController).Namespace});
         }
 
 

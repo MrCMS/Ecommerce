@@ -58,6 +58,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                         new ChildMenuItem("PayPal Express Checkout", "/Admin/Apps/Ecommerce/PayPalExpressCheckoutSettings", ACLOption.Create(new PayPalExpressCheckoutSettingsACL(), PayPalExpressCheckoutSettingsACL.View)),
                         new ChildMenuItem("SagePay", "/Admin/Apps/Ecommerce/SagePaySettings", ACLOption.Create(new SagePaySettingsACL(), SagePaySettingsACL.View)),
                         new ChildMenuItem("WorldPay","/Admin/Apps/Ecommerce/WorldPaySettings", ACLOption.Create(new WorldPaySettingsACL(), WorldPaySettingsACL.View)),                      
+                        new ChildMenuItem("Charity Clear","/Admin/Apps/Ecommerce/CharityClearSettings", ACLOption.Create(new WorldPaySettingsACL(), WorldPaySettingsACL.View)),                      
 
                     }),
                     

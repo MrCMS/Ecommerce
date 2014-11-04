@@ -65,7 +65,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
             postInfo.currency = _ecommerceSettings.CurrencyCode();
             postInfo.email = _cart.OrderEmail;
             postInfo.withDelivery = _cart.RequiresShipping ? "true" : "false";
-            postInfo.amount = _cart.Total.ToString(new CultureInfo("en-US", false).NumberFormat);
+            postInfo.amount = _cart.TotalToPay.ToString(new CultureInfo("en-US", false).NumberFormat);
             postInfo.desc = _site.Name;
             postInfo.M_UserID = _cart.UserGuid.ToString();
             postInfo.M_FirstName = _cart.BillingAddress.FirstName;
