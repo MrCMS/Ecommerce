@@ -1,8 +1,14 @@
 ﻿@using System.Drawing
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Pages
+@using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant 
+           @{
+               var cart = ViewData["cart"] as CartModel;
+               
+           }
 @if (Model != null)
 {
     <div class="col-sm-6">
@@ -34,6 +40,17 @@
                         <div class="visible-xs" style="padding-top: 5px;"></div>
                         <div class="col-sm-6">
                             <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())" class="btn btn-primary btn-block">@Resource("Proceed to Checkout")</a>
+                            
+                            @if (cart.CanUsePayPalExpress)
+                            {
+                                using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
+                                {
+                                    <div class="text-center">
+                                        <p>Or</p>
+                                        <input type="image" src="https://www.paypal-marketing.com/paypal/html/partner/na/portal-v2/img/logos/checkout_logo_medium_170x32.png" />
+                                    </div>
+                                }
+                            }
                         </div>
                     </div>
                 </div>
