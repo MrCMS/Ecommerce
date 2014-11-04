@@ -3,22 +3,17 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Reports;
 using MrCMS.Web.Areas.Admin.Helpers;
 using MrCMS.Website.Controllers;
+using MrCMS.Website.Filters;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class EcommerceDashboardController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly ICurrentSiteLocator _currentSiteLocator;
-        private readonly IUserService _userServices;
-        private readonly ISession _session;
         private readonly IReportService _reportService;
 
-        public EcommerceDashboardController(ICurrentSiteLocator currentSiteLocator, IUserService userServices, ISession session, IReportService reportService)
+        public EcommerceDashboardController(IReportService reportService)
         {
-            _currentSiteLocator = currentSiteLocator;
-            _userServices = userServices;
-            _session = session;
             _reportService = reportService;
         }
 
@@ -31,6 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public JsonResult RevenueToday()
         {
             return Json(_reportService.SalesTodayGroupedByHour());

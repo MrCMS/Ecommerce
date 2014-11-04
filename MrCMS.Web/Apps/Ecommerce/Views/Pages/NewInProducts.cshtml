@@ -1,22 +1,32 @@
-﻿@using MrCMS.Helpers
+﻿@using System.Collections.Generic
+@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @model NewInProducts
-<div class="container">
-    <h1>@Editable(Model, model => model.Name)</h1>
-    @Editable(Model, model => model.BodyContent, true)
-    <div class="row-fluid">
-        @{
-            var products = ViewData["newinproducts"] as IList<Product>;
-            foreach (var chunk in products.Chunk(4))
+    
+<h1>@Editable(Model, model => model.Name)</h1>
+@Editable(Model, model => model.BodyContent, true)
+
+@{
+    var products = ViewData["newinproducts"] as IList<ProductCardModel>;
+    foreach (var chunk in products.Chunk(4))
+    {
+        var i = 0;
+        <div class="row">
+            @foreach (var product in chunk)
             {
-            <div class="row-fluid">
-                @foreach (var product in chunk)
+                i++;
+                <div class="col-md-3 col-sm-3 col-xs-6">
+                    @{
+                        Html.RenderPartial("ProductCardFeatured", product);
+                    }
+                </div>
+                if (i % 2 == 0)
                 {
-                    Html.RenderPartial("ProductCardFeatured", product);
+                    <div class="clearfix visible-xs"></div>
                 }
-            </div>
             }
-        }
-    </div>
-</div>
+        </div>
+    }
+}
+        

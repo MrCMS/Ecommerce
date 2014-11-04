@@ -2,6 +2,7 @@
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Helpers;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
@@ -10,13 +11,14 @@ namespace MrCMS.EcommerceApp.Tests.Services.ProductOptionManagerTests
 {
     public class AttributeValueTests : InMemoryDatabaseTest
     {
-        private readonly IProductSearchService _productSearchService;
+        private readonly IProductSearchIndexService _productSearchIndexService;
         private readonly ProductOptionManager _productOptionManager;
 
         public AttributeValueTests()
         {
-            _productSearchService = A.Fake<IProductSearchService>();
-            _productOptionManager = new ProductOptionManager(Session, _productSearchService);
+            _productSearchIndexService = A.Fake<IProductSearchIndexService>();
+            _productOptionManager = new ProductOptionManager(Session, _productSearchIndexService,
+                A.Fake<IUniquePageService>());
         }
 
         [Fact]

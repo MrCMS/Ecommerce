@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using NHibernate.Criterion;
@@ -11,7 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Products
 {
     public interface IProductAnalyticsService
     {
-        List<Product> GetListOfProductsWhoWhereAlsoBought(Product product);
+        List<ProductCardModel> GetListOfProductsWhoWhereAlsoBought(Product product);
     }
 
     public class ProductAnalyticsService : IProductAnalyticsService
@@ -23,8 +25,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Products
             _session = session;
         }
 
-        public List<Product> GetListOfProductsWhoWhereAlsoBought(Product product)
+        public List<ProductCardModel> GetListOfProductsWhoWhereAlsoBought(Product product)
         {
+            if (product == null)
+                return new List<ProductCardModel>();
             var items = _session.CreateCriteria<Product>()
                .Add(
                           Subqueries.PropertyIn("Id",
@@ -46,7 +50,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Products
                .SetMaxResults(4)
               .List<Product>().ToList();
 
-            return items;
+            return items.GetCardModels();
         }
     }
 }

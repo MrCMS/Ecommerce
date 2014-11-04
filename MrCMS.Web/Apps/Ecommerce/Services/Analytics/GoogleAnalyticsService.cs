@@ -1,5 +1,6 @@
 using System.Text;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics
 {
@@ -23,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics
                 var trackingCodeSb = new StringBuilder();
                 var shippingCity = order.ShippingAddress != null ? order.ShippingAddress.City : "";
                 var shippingCounty = order.ShippingAddress != null ? order.ShippingAddress.StateProvince : "";
-                var shippingCountry = order.ShippingAddress != null ? order.ShippingAddress.Country.Name : "";
+                var shippingCountry = order.ShippingAddress != null ? order.ShippingAddress.GetCountryName() : "";
 
                 trackingCodeSb.Append(string.Format(AddTrans, order.Id, order.Site.Name, order.Total, order.Tax,
                                                     order.ShippingTotal, shippingCity, shippingCounty, shippingCountry));

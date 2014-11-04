@@ -3,6 +3,7 @@ using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Website;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -28,6 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Add")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public ActionResult Add_POST(OrderRefund orderRefund)
         {
             if (orderRefund.Order != null)
@@ -54,6 +56,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Delete")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Delete_POST(OrderRefund orderRefund)
         {
             if (orderRefund.Order != null)

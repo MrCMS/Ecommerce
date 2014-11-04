@@ -1,0 +1,21 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Models.On404SearchWidgetModel
+@if (Model.AnyProducts)
+{
+    <div class="container">
+        <div class="row">
+            @Html.Raw(Model.Text)
+        </div>
+        @foreach (var row in Model.Products.Chunk(4))
+        {
+            <div class="row">
+                @foreach (var product in row)
+                {
+                    <div class="col-md-3">
+                        @{ Html.RenderPartial("ProductCardFeatured", product); }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}

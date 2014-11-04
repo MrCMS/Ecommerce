@@ -1,9 +1,15 @@
-﻿using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+﻿using MrCMS.Events;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.Events
 {
-    public interface IOnOrderFullyRefunded : IOrderEvent
+    public interface IOnOrderFullyRefunded : IEvent<OrderFullyRefundedArgs>
     {
-        void OnOrderFullyRefunded(Order order, OrderRefund refund);
+    }
+
+    public class OrderFullyRefundedArgs
+    {
+        public Order Order { get; set; }
+        public OrderRefund Refund { get; set; }
     }
 }

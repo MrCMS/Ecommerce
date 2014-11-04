@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using NHibernate;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
@@ -13,12 +14,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     public class BrandService : IBrandService
     {
         private readonly ISession _session;
-        private readonly IProductSearchService _productSearchService;
+        private readonly IProductSearchIndexService _productSearchIndexService;
 
-        public BrandService(ISession session, IProductSearchService productSearchService)
+        public BrandService(ISession session, IProductSearchIndexService productSearchIndexService)
         {
             _session = session;
-            _productSearchService = productSearchService;
+            _productSearchIndexService = productSearchIndexService;
         }
 
         public Brand GetBrandByName(string name)
@@ -90,7 +91,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public List<SelectListItem> GetAvailableBrands(ProductSearchQuery query)
         {
-            var brands = _productSearchService.GetBrands(query);
+            var brands = _productSearchIndexService.GetBrands(query);
             var items = GetAll().Where(item => brands.Contains(item.Id));
             return items.BuildSelectItemList(brand => brand.Name, brand => brand.Id.ToString(),
                                              brand => brand.Id == query.BrandId, "All Brands");

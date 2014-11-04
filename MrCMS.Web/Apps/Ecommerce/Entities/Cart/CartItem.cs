@@ -2,7 +2,9 @@
 using MrCMS.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Models.StockAvailability;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 {
@@ -13,10 +15,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         public virtual ProductVariant Item { get; set; }
         public virtual Guid UserGuid { get; set; }
         public virtual int Quantity { get; set; }
+        public virtual string Data { get; set; }
+        public virtual CanBuyStatus CanBuyStatus { get; set; }
 
         public virtual decimal Price
         {
-            get { return Item.GetPrice(Quantity) - DiscountAmount; }
+            get { return PricePreDiscount - DiscountAmount; }
+        }
+
+        public virtual decimal PricePreDiscount
+        {
+            get { return Item.GetPrice(Quantity); }
         }
 
         public virtual decimal Saving
@@ -27,11 +36,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
         public virtual decimal Tax
         {
             get { return Item.GetTax(Quantity); }
-        }
-
-        public virtual bool CurrentlyAvailable
-        {
-            get { return Item.CanBuy(Quantity); }
         }
 
         public virtual decimal PricePreTax
@@ -46,7 +50,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 
         public virtual decimal Weight
         {
-            get { return Item.Weight * Quantity; }
+            get { return Item.Weight*Quantity; }
         }
 
         public virtual string Name
@@ -84,8 +88,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
             get
             {
                 return _discount != null
-                           ? _discount.GetDiscount(this, _discountCode)
-                           : decimal.Zero;
+                    ? _discount.GetDiscount(this, _discountCode)
+                    : decimal.Zero;
             }
         }
 
@@ -104,20 +108,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
             get { return Item.DownloadFileUrl; }
         }
 
-        public virtual void SetDiscountInfo(Discount discount, string discountCode)
+        public virtual bool HasDiscount
         {
-            _discount = discount;
-            _discountCode = discountCode;
+            get { return DiscountAmount > 0; }
         }
 
-        public virtual bool CanBuy(CartModel cartModel)
+        public virtual bool CanBuy
         {
-            return Item.CanBuy(cartModel).OK;
+            get { return CanBuyStatus.OK; }
         }
 
-        public virtual string Error(CartModel cartModel)
+        public virtual string Error
         {
-            return Item.CanBuy(cartModel).Message;
+            get { return CanBuyStatus.Message; }
+        }
+
+        public virtual void SetDiscountInfo(CartModel cart)
+        {
+            if (cart == null) return;
+            _discount = cart.Discount;
+            _discountCode = cart.DiscountCode;
         }
     }
 }

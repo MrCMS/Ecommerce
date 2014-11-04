@@ -1,6 +1,7 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationAttribute
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductSpecificationAttribute
 
-@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 @using (Html.BeginForm("Add", "ProductSpecificationAttribute", FormMethod.Post))
 {
     <fieldset>
@@ -11,9 +12,12 @@
             </span>
         </legend>
 
-        @Html.LabelFor(x => x.Name)
-        @Html.TextBoxFor(x => x.Name)
-        <br />
-        @Html.ValidationMessageFor(x => x.Name)
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+
+        @Html.InlineCheckboxFor(attribute => attribute.HideInSearch)
     </fieldset>
 }

@@ -3,6 +3,7 @@ using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Website;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -28,6 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Add")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Add_POST(OrderNote orderNote)
         {
             if (orderNote.Order != null)
@@ -50,6 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Edit")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Edit_POST(OrderNote orderNote)
         {
             if (orderNote.Order != null)
@@ -72,6 +75,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Delete")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectToRouteResult Delete_POST(OrderNote orderNote)
         {
             if (orderNote.Order != null)

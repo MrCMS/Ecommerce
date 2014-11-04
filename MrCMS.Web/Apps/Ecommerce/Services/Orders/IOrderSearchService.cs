@@ -9,6 +9,7 @@ using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Indexing;
 using MrCMS.Web.Apps.Ecommerce.Indexing.OrderSearchIndexDefinitions;
+using MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website;
 
@@ -28,6 +29,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         public PaymentStatus? PaymentStatus { get; set; }
         public ShippingStatus? ShippingStatus { get; set; }
         public string SalesChannel { get; set; }
+        public double? OrderTotalFrom { get; set; }
+        public double? OrderTotalTo { get; set; }
 
         public OrderSearchQuery(OrderSearchModel orderSearchModel)
         {
@@ -38,12 +41,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             PaymentStatus = orderSearchModel.PaymentStatus;
             ShippingStatus = orderSearchModel.ShippingStatus;
             SalesChannel = orderSearchModel.SalesChannel;
+            OrderTotalFrom = orderSearchModel.OrderTotalFrom;
+            OrderTotalTo = orderSearchModel.OrderTotalTo;
         }
 
         public Query GetQuery()
         {
             if (String.IsNullOrWhiteSpace(SearchText) && String.IsNullOrWhiteSpace(OrderId) && PaymentStatus == null &&
-                ShippingStatus == null && !DateFrom.HasValue && !DateTo.HasValue && string.IsNullOrWhiteSpace(SalesChannel))
+                ShippingStatus == null && !DateFrom.HasValue && !DateTo.HasValue && string.IsNullOrWhiteSpace(SalesChannel) && !OrderTotalFrom.HasValue && !OrderTotalTo.HasValue)
                 return new MatchAllDocsQuery();
 
             var booleanQuery = new BooleanQuery();
@@ -58,6 +63,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                         FieldDefinition.GetFieldName<OrderSearchLastnamelDefinition>(),
                         FieldDefinition.GetFieldName<OrderSearchPaymentStatusDefinition>(),
                         FieldDefinition.GetFieldName<OrderSearchShippingStatusDefinition>(),
+                        FieldDefinition.GetFieldName<OrderSearchTotalDefinition>(),
                     },
                     MrCMSApplication.Get<OrderSearchIndex>().GetAnalyser());
                 var query = q.Parse(fuzzySearchTerm);
@@ -73,8 +79,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 booleanQuery.Add(GetShippingStatusQuery(), Occur.MUST);
             if (!string.IsNullOrWhiteSpace(SalesChannel))
                 booleanQuery.Add(GetSalesChannelQuery(), Occur.MUST);
+            if (OrderTotalFrom > 0 || OrderTotalTo.HasValue)
+                booleanQuery.Add(GetPriceRangeQuery(), Occur.MUST);
+
             return booleanQuery;
         }
+
+        private Query GetPriceRangeQuery()
+        {
+            var booleanQuery = new BooleanQuery
+            {
+                {
+                    NumericRangeQuery.NewDoubleRange(
+                        FieldDefinition.GetFieldName<OrderSearchTotalDefinition>(),
+                        OrderTotalFrom, OrderTotalTo, true, OrderTotalTo.HasValue),
+                    Occur.MUST
+                }
+            };
+            return booleanQuery;
+        }
+
 
         private Query GetDateQuery()
         {

@@ -3,47 +3,47 @@ using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Entities.Documents.Layout;
+using MrCMS.Services.Caching;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using Xunit;
+using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using MrCMS.Web.Apps.Ecommerce.Services.Categories;
+using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Controllers
 {
-    public class ProductSearchControllerTests
+    public class ProductSearchControllerTests : InMemoryDatabaseTest
     {
-        private readonly ICategoryService _categoryService;
         private readonly ProductSearchController _controller;
-        private readonly IProductOptionManager _productOptionManager;
-        private readonly IProductService _productService;
-        private readonly IProductSearchService _productSearchService;
-        private readonly IBrandService _brandService;
+        private readonly IProductSearchIndexService _productSearchIndexService;
+        private readonly IProductSearchQueryService _productSearchQueryService;
         private CartModel _cartModel;
+        private IHtmlCacheService _htmlCacheService;
 
         public ProductSearchControllerTests()
         {
-            _productOptionManager = A.Fake<IProductOptionManager>();
-            _productService = A.Fake<IProductService>();
-            _categoryService = A.Fake<ICategoryService>();
-            _productSearchService = A.Fake<IProductSearchService>();
-            _brandService = A.Fake<IBrandService>();
+            _productSearchIndexService = A.Fake<IProductSearchIndexService>();
             _cartModel = new CartModel();
-            _controller = new ProductSearchController(_categoryService, _productOptionManager, _productSearchService, _brandService, _cartModel) { RequestMock = A.Fake<HttpRequestBase>() };
+            _productSearchQueryService = A.Fake<IProductSearchQueryService>();
+            _htmlCacheService = A.Fake<IHtmlCacheService>();
+            _controller = new ProductSearchController(_productSearchIndexService, _cartModel, _productSearchQueryService, _htmlCacheService)
+            {
+                RequestMock = A.Fake<HttpRequestBase>()
+            };
         }
 
         private ProductSearch GetProductSearch()
         {
-            return new ProductSearch { Layout = new Layout() };
+            return new ProductSearch();
         }
 
         [Fact]
         public void ProductSearchController_Show_ReturnsAViewResult()
         {
-            var productSearch = GetProductSearch();
+            ProductSearch productSearch = GetProductSearch();
 
-            var show = _controller.Show(productSearch, new ProductSearchQuery());
+            ViewResult show = _controller.Show(productSearch, new ProductSearchQuery());
 
             show.Should().BeOfType<ViewResult>();
         }
@@ -51,9 +51,9 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
         [Fact]
         public void ProductSearchController_Show_ReturnsProductSearch()
         {
-            var productSearch = GetProductSearch();
+            ProductSearch productSearch = GetProductSearch();
 
-            var show = _controller.Show(productSearch, new ProductSearchQuery());
+            ViewResult show = _controller.Show(productSearch, new ProductSearchQuery());
 
             show.Model.Should().BeOfType<ProductSearch>();
         }

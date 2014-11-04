@@ -1,0 +1,4 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch
+@{ Html.RenderAction("HiddenSpecifications", "EcommerceSearchablePage", new { id = Model.Id });}
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/edit-category.js"); }

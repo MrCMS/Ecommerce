@@ -29,6 +29,14 @@
         History.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
     });
 
+    $(document).on('click', '#product-query-container a[data-action=remove-option]', function (event) {
+        event.preventDefault();
+        $(this).siblings('input[name=Options]').remove();
+        var data = getData(1);
+
+        History.pushState(data, $('title').html(), location.pathname + buildUpQueryString(data));
+    });
+
     function getData(page) {
         var specifications = $('#product-query-container select[name="Specifications"], #product-query-container input[name="Specifications"]').map(function (index, element) {
             var val = $(element).val();
@@ -36,7 +44,7 @@
                 return null;
             return val;
         }).toArray();
-        var options = $('#product-query-container select[name="Options"]').map(function(index, element) {
+        var options = $('#product-query-container select[name="Options"], #product-query-container input[name="Options"]').map(function (index, element) {
             var val = $(element).val();
             if (val == '' || val == undefined)
                 return null;
@@ -135,7 +143,7 @@
         $.get('/search/results', State.data, function (response) {
             $("#loading-message").hide();
             $('#product-results-container').replaceWith(response);
-            var top = $("#product-results-container").offset().top;
+            var top = $("#product-search-container").offset().top;
             $('html,body').animate({
                 scrollTop: top
             }, 350);

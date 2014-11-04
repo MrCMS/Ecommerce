@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MrCMS.Helpers;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
 using NHibernate;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
@@ -9,12 +10,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
     public class OrderRefundService : IOrderRefundService
     {
         private readonly ISession _session;
-        private readonly IOrderEventService _orderEventService;
 
-        public OrderRefundService(ISession session, IOrderEventService orderEventService)
+        public OrderRefundService(ISession session)
         {
             _session = session;
-            _orderEventService = orderEventService;
         }
 
         public IList<OrderRefund> GetAll()
@@ -28,9 +27,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             _session.Transact(session => session.Save(orderRefund));
 
             if (orderRefund.Amount == orderRefund.Order.Total)
-                _orderEventService.OrderFullyRefunded(orderRefund.Order, orderRefund);
+                EventContext.Instance.Publish<IOnOrderFullyRefunded, OrderFullyRefundedArgs>
+                    (new OrderFullyRefundedArgs {Refund = orderRefund, Order = orderRefund.Order});
             else
-                _orderEventService.OrderPartiallyRefunded(orderRefund.Order, orderRefund);
+                EventContext.Instance.Publish<IOnOrderPartiallyRefunded, OrderPartiallyRefundedArgs>
+                    (new OrderPartiallyRefundedArgs { Refund = orderRefund, Order = orderRefund.Order });
         }
 
         public void Delete(OrderRefund item)

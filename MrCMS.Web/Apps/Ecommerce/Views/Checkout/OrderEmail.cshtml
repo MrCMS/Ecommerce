@@ -3,16 +3,24 @@
 
 @if (Model.CanUsePayPalExpress && string.IsNullOrEmpty(Model.PayPalExpressToken) )
 {
-    <h4>Or Checkout with...</h4>
+    <div class="block-title">
+        <div class="h1style">
+            @Resource("Or Checkout with")...
+        </div>
+    </div>
     using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
     {
-        <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" class="btn-paypal" />
+        <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif"/>
     }
 }
-<hr/>
-<h4>Your Email</h4>
+<div class="block-title">
+    <div class="h1style">
+        @Resource("Your Email")
+    </div>
+</div>
 <p>@Model.OrderEmail</p>
+
 @if (MrCMS.Website.CurrentRequestData.CurrentUser == null)
 {
-    <a class="btn btn-info" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Edit</a>
+    <a class="btn btn-default" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Edit</a>
 }

@@ -1,0 +1,111 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder
+@model Newsletter
+@{
+    ViewBag.Title = "Edit Newsletter";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutWithoutWebTree.cshtml";
+    var templates = ViewData["templates"] as IEnumerable<SelectListItem>;
+    string previewUrl = Url.Action("Preview", "Newsletter", new { id = Model.Id });
+}
+@using (Html.BeginForm("Edit", "Newsletter", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Edit Newsletter
+            <span class="btn-group display-inline pull-right">
+                @Html.ActionLink("Return to List", "Index", "Newsletter", null, new { @class = "btn btn-default" })
+                <a href="@previewUrl" class=" btn btn-default" data-toggle="fb-modal">Preview</a>
+                <a href="#" id="copy-link" data-preview-url="@previewUrl" class="btn btn-default">Copy HTML</a>
+                <a href="@Url.Action("Delete", "Newsletter", new { id = Model.Id })" class="btn btn-danger" data-toggle="fb-modal">Delete</a>
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </span>
+        </legend>
+
+        <div class="alert alert-info" id="data-copied-notice" style="display:none">
+            Data copied
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Name)
+                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.Name)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.NewsletterTemplate)
+                    @Html.DropDownListFor(x => x.NewsletterTemplate.Id, templates, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.NewsletterTemplate)
+                </div>
+                <hr />
+                <div id="content-items">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h4>Content Items</h4>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="btn-group pull-right">
+                                @if (Model.ContentItems.Any())
+                                {
+                                    @Html.ActionLink("Sort", "SortContentItems", "Newsletter", new { id = Model.Id }, new { @class = "btn btn-default", data_toggle = "fb-modal" })
+                                }
+                                <a class="btn btn-success" data-toggle="dropdown"><i class="glyphicon glyphicon-plus"></i> Add Content Item</a>
+                                <a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Banner", "AddBanner", "Newsletter", new { id = Model.Id }, new { data_toggle = "fb-modal" })</li>
+                                    <li>@Html.ActionLink("Free Text", "AddFreeText", "Newsletter", new { id = Model.Id }, new { data_toggle = "fb-modal" })</li>
+                                    <li>@Html.ActionLink("Image Right and Text Left", "AddImageRightAndTextLeft", "Newsletter", new { id = Model.Id }, new { data_toggle = "fb-modal" })</li>
+                                    <li>@Html.ActionLink("Image Left and Text Right", "AddImageLeftAndTextRight", "Newsletter", new { id = Model.Id }, new { data_toggle = "fb-modal" })</li>
+                                    <li>@Html.ActionLink("Product List", "AddProductList", "Newsletter", new { id = Model.Id }, new { data_toggle = "fb-modal" })</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (!Model.ContentItems.Any())
+                    {
+                        <p>No Content Items to display.</p>
+                    }
+                    else
+                    {
+                        <table class="table table-condensed table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var contentItem in Model.ContentItems.OrderBy(x => x.DisplayOrder).ToList())
+                                {
+                                    <tr>
+                                        <td>@contentItem.Name</td>
+                                        <td>@contentItem.GetType().Name</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                @Html.ActionLink("Edit", "Edit" + contentItem.GetType().Name, new { id = contentItem.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                                @Html.ActionLink("Delete", "DeleteContentItem", new { id = contentItem.Id }, new { @class = "btn btn-danger btn-xs", data_toggle = "fb-modal" })
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h4>Preview</h4>
+                <div class="row">
+                    <iframe id="preview" class="col-lg-12" src="@previewUrl" style="height:500px;border: 0;"></iframe>
+                </div>                
+            </div>
+        </div>
+    </fieldset>
+}
+
+@{
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/lib/zero-clipboard/ZeroClipboard.min.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/edit-newsletter.js");
+}

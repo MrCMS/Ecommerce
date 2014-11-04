@@ -1,18 +1,22 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.RelatedProductsViewModel
+﻿@model MrCMS.Web.Apps.Ecommerce.Models.RelatedProductsViewModel
 @if (Model != null && Model.Products.Any())
 {
     ViewData["cart"] = Model.Cart;
     <hr/>
-    <div class="row-fluid">
-        <div class="span12">
+    <div class="row">
+        <div class="col-sm-12">
             @if (!String.IsNullOrEmpty(Model.Title))
             {
-                <h4>Related products</h4>
+                <h3>Related products</h3>
             }
-            <div class="row-fluid">
+            <div class="row">
                 @foreach (var item in Model.Products)
                 {
-                    Html.RenderPartial("ProductCardFeatured", item);
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        @{
+                            Html.RenderPartial("ProductCardFeatured", item);
+                        }
+                    </div>
                 }
             </div>
         </div>

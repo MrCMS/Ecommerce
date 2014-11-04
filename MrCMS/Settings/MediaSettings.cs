@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Web.Mvc;
 using MrCMS.Models;
+using MrCMS.Website.Caching;
 using NHibernate;
 
 namespace MrCMS.Settings
@@ -19,7 +20,10 @@ namespace MrCMS.Settings
         public MediaSettings()
         {
             MaxFileSizeUpload = 5000000; //5mb
-            AllowedFileTypes = "gif|jpeg|jpg|png|rar|zip|pdf|mp3|mp4|wmv|doc|docx|xls|xlsx|ppt|avi|mpg|wav|mov|wma";
+            AllowedFileTypes = "gif|jpeg|jpg|png|rar|zip|pdf|mp3|mp4|wmv|doc|docx|xls|xlsx|ppt|pptx|avi|mpg|wav|mov|wma|webm|ogv|mpeg|flv|7z|txt|csv|html|htm";
+            EnforceMaxImageSize = true;
+            MaxImageSizeHeight = 1200;
+            MaxImageSizeWidth = 1200;
         }
 
         [DisplayName("Thumbnail Image Height")]
@@ -137,8 +141,8 @@ namespace MrCMS.Settings
         {
             get { return AllowedFileTypes.Split('|'); }
         }
-        
-        [DisplayName("Admin max file upload size (Max 50000000 (500 mb)")]
+
+        [DisplayName("Admin max file upload size (Max 50000000 (500 mb))")]
         public int MaxFileSizeUpload { get; set; }
 
         public Size MaxSize
@@ -153,11 +157,15 @@ namespace MrCMS.Settings
             }
         }
 
-        public int? ResizeQuality { get; set; }
+        [DisplayName("Cache image rendering?")]
+        public virtual bool Cache { get; set; }
+        [DisplayName("Cache for how many seconds?")]
+        public virtual int CacheLength { get; set; }
+        [DisplayName("Cache expiry type")]
+        [DropDownSelection("CacheExpiryTypeOptions")]
+        public CacheExpiryType CacheExpiryType { get; set; }
 
-        [DisplayName("Default Category")]
-        [DropDownSelection("DefaultCategoryOptions")]
-        public virtual int DefaultCategory { get; set; }
+        public int? ResizeQuality { get; set; }
 
         public override bool RenderInSettings
         {
@@ -166,8 +174,8 @@ namespace MrCMS.Settings
 
         public override void SetViewData(ISession session, ViewDataDictionary viewDataDictionary)
         {
-            viewDataDictionary["DefaultCategoryOptions"] = _siteSettingsOptionGenerator.GetMediaCategoryOptions(
-                session, Site, DefaultCategory);
+            viewDataDictionary["DefaultCategoryOptions"] = _siteSettingsOptionGenerator.GetMediaCategoryOptions(session, null);
+            viewDataDictionary["CacheExpiryTypeOptions"] = _siteSettingsOptionGenerator.GetCacheExpiryTypeOptions();
         }
     }
 }

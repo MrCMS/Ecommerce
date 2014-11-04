@@ -1,0 +1,19 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Settings
+@using MrCMS.Website
+@model MrCMS.Entities.Documents.Web.Webpage
+@{
+    Layout = "_EcommerceLayout.cshtml";
+}
+
+<div class="margin-bottom-30 grey-border-top">
+    <div class="container">
+        <div class="padding-top-10">
+            <div class="row">
+                <div class="col-sm-12">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

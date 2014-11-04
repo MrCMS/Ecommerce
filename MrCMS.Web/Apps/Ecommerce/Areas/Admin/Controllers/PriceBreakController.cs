@@ -3,6 +3,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Website.Controllers;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -22,6 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public RedirectResult Add(AddPriceBreakModel model)
         {
             var priceBreak = _productVariantService.AddPriceBreak(model);
@@ -46,6 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ActionName("Delete")]
+        [ForceImmediateLuceneUpdate]
         public RedirectResult Delete_POST(PriceBreak priceBreak)
         {
             _productVariantService.DeletePriceBreak(priceBreak);

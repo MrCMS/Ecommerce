@@ -36,13 +36,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                                                LineTotal = item.DiscountAmount,
                                            });
                 }
-                //(item.Quantity, item.Name, item.Price / vatMultiplier,
-                //                                  vatMultiplier));
             }
 
             if (model.HasDiscount)
             {
-                //shoppingBasket.Add(new BasketItem(1, , model.DiscountAmount, 1));
                 shoppingBasket.Add(new BasketItem
                                        {
                                            Description = "Order Discount - " + model.DiscountCode,
@@ -50,7 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                                        });
             }
 
-            if (model.ShippingTotal.GetValueOrDefault() > 0)
+            if (model.ShippingTotal > 0)
             {
                 shoppingBasket.Add(new BasketItem
                 {
@@ -58,11 +55,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                     ItemPrice = model.ShippingPreTax,
                     ItemTax = model.ShippingTax,
                     ItemTotal = model.ShippingTotal,
-                    LineTotal = model.ShippingTotal.GetValueOrDefault(),
+                    LineTotal = model.ShippingTotal,
                 });
-                //shoppingBasket.Add(new BasketItem(1, "Shipping - " + model.ShippingMethod.Name,
-                //                                  model.ShippingTotal.GetValueOrDefault() / multiplier,
-                //                                  multiplier));
             }
 
             return shoppingBasket;
@@ -77,7 +71,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                                  Address1 = address.Address1,
                                  Address2 = address.Address2,
                                  City = address.City,
-                                 Country = address.Country.ISOTwoLetterCode,
+                                 Country = address.CountryCode,
                                  Firstnames = address.FirstName,
                                  Phone = address.PhoneNumber,
                                  PostCode = address.PostalCode,

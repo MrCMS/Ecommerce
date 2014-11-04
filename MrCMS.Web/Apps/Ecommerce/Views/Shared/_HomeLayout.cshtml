@@ -1,0 +1,42 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Settings
+@using MrCMS.Website
+@model MrCMS.Entities.Documents.Web.Webpage
+@{
+    Layout = "_EcommerceLayout.cshtml";
+}
+
+
+<div class="welcome-con">
+    <div class="container">
+        <div class="margin-top-bottom-30">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1 text-center col-sm-10 col-sm-offset-1">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@{ RenderZone("Home After Content"); }
+
+<div class="margin-top-bottom-30">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                @{RenderZone("Teaser1");}
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                @{RenderZone("Teaser2");}
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                @{RenderZone("Teaser3");}
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-12">
+                @{RenderZone("Teaser4");}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,8 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Website
 @model CartModel
-<div class="row-fluid">
-    <div class="span8">
+<div class="row">
+    <div class="col-lg-7 col-md-8 col-sm-8 padding-left-0 mobile-left-padding">
         @if (CurrentRequestData.CurrentUser == null)
         {
             Html.RenderPartial("SetOrderEmailAndLogin", new EmailAndLoginModel { OrderEmail = Model.OrderEmail });
@@ -11,15 +11,35 @@
         {
             using (Html.BeginForm("SetOrderEmail", "EnterOrderEmail", FormMethod.Post))
             {
-            <h4>Email address</h4>
-            @Html.LabelFor(model => model.OrderEmail, "Enter your Email address *:")
-            @Html.TextBoxFor(x => x.OrderEmail, new { @class = "input-xxlarge" })
-            @Html.ValidationMessageFor(x => x.OrderEmail)
-            <input class="btn btn-info" type="submit" id="continue" name="continue" value="Continue" />
+                <div class="block-title">
+                    <h1>
+                        Email address
+                    </h1>
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.OrderEmail, "Enter your Email address *:", new { @class = "col-sm-6" })
+                                <div class="col-sm-6">
+                                    @Html.TextBoxFor(x => x.OrderEmail, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(x => x.OrderEmail)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input class="btn btn-primary btn-block" type="submit" id="continue" name="continue" value="Continue" />
+                    </div>
+                </div>
+
+
             }
         }
     </div>
-    <div class="span4">
+    <div class="col-lg-5 col-md-4 col-sm-4">
         @{Html.RenderAction("Summary", "Checkout");}
     </div>
 </div>

@@ -3,18 +3,21 @@
 @model MrCMS.Web.Apps.Ecommerce.Models.GoogleBaseModel
 
 <div class="tab-pane active" id="search">
-    <br />   
+    <br />
     @using (Html.BeginForm("Dashboard", "GoogleBase", FormMethod.Get, new { id = "Filter" }))
     {
-        @Html.DropDownListFor(x => x.Category, ViewData["categories"] as IEnumerable<SelectListItem>, new {@class = "input-xlarge"})
-        <br/>
-        @Html.TextBoxFor(x => x.Name, new {@class = "input-medium search-query", placeholder="Enter search term..."})
-        <button type="submit" class="btn btn-primary">Search</button>
+        @Html.DropDownListFor(x => x.Category, ViewData["categories"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+        <br />
+        <div class="input-group">@Html.TextBoxFor(x => x.Name, new { @class = "form-control search-query", placeholder = "Enter search term..." })
+            <span class="input-group-btn"><button type="submit" class="btn btn-primary">Search</button>
+            </span>
+        </div>
+        
     }
-    <hr/>
+    <hr />
     @if (Model.Items.Count == 0)
     {
-        <br/>
+        <br />
         <p>
             No products found.
         </p>
@@ -25,12 +28,12 @@
         foreach (var item in Model.Items)
         {
             <div id="google-base-product-variant-@item.Id">
-            @Html.Partial("GoogleBaseProduct", item.GoogleBaseProduct ?? new GoogleBaseProduct{ProductVariant = item})
+                @Html.Partial("GoogleBaseProduct", item.GoogleBaseProducts.FirstOrDefault() ?? new GoogleBaseProduct { ProductVariant = item })
             </div>
         }
     }
-        
-    @Html.Pager(Model.Items, "Dashboard", i => new {page = i})
+
+    @Html.Pager(Model.Items, "Dashboard", i => new { page = i })
 </div>
 
 @{

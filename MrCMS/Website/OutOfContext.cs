@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Principal;
 using System.Web;
+using System.Web.Instrumentation;
+using Elmah.ContentSyndication;
+using UnvalidatedRequestValues = System.Web.Helpers.UnvalidatedRequestValues;
 
 namespace MrCMS.Website
 {
     public class OutOfContext : HttpContextBase
     {
-        private readonly IDictionary _items = new Dictionary<string, object>();
+        private readonly IDictionary _items = new Dictionary<object, object>();
         private readonly OutOfContextServerUtility _outOfContextServerUtility = new OutOfContextServerUtility();
         private readonly OutOfContextSession _outOfContextSession = new OutOfContextSession();
         private readonly HttpCookieCollection _cookies = new HttpCookieCollection();
@@ -27,30 +30,16 @@ namespace MrCMS.Website
 
         public override HttpResponseBase Response { get { return _outOfContextResponse; } }
 
+        public override IPrincipal User { get; set; }
+
         public override HttpRequestBase Request
         {
             get { return _outOfContextRequest; }
         }
-    }
 
-
-    public class OutOfContextRequest : HttpRequestBase
-    {
-        private readonly HttpCookieCollection _cookies;
-
-        public OutOfContextRequest(HttpCookieCollection cookies)
+        public override PageInstrumentationService PageInstrumentation
         {
-            _cookies = cookies;
-        }
-
-        public override Uri Url
-        {
-            get { return new Uri("http://www.example.com"); }
-        }
-
-        public override HttpCookieCollection Cookies
-        {
-            get { return _cookies; }
+            get { return new PageInstrumentationService(); }
         }
     }
 }

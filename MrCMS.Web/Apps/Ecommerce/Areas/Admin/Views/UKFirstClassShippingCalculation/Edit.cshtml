@@ -1,0 +1,47 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Shipping.UKFirstClassShippingCalculation
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+    var criteriaOptions = ViewData["criteria-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
+@using (Html.BeginForm("Edit", "UKFirstClassShippingCalculation", FormMethod.Post, new { id = "add-shipping-calculation" }))
+{
+    <fieldset>
+        <legend>
+            Edit Shipping Calculation
+            <span class="btn-group display-inline pull-right">
+                <button class="btn btn-primary" id="save-add" type="submit"> Save & Close</button>
+            </span>
+        </legend>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                @Html.HiddenFor(calculation => calculation.Id)
+                    @Html.LabelFor(x => x.ShippingCriteria)
+                    @Html.DropDownListFor(x => x.ShippingCriteria, criteriaOptions, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ShippingCriteria)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.LowerBound)
+                    @Html.TextBoxFor(x => x.LowerBound, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.LowerBound)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.UpperBound)
+                    @Html.TextBoxFor(x => x.UpperBound, new { placeholder = "Leave blank if there is no upper bound", @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.UpperBound)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BaseAmount)
+                    @Html.TextBoxFor(x => x.BaseAmount, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.BaseAmount)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.RestrictedTo)
+                    @Html.TextBoxFor(x => x.RestrictedTo, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.RestrictedTo)
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}

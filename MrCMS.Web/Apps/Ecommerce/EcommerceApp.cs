@@ -8,7 +8,9 @@ using MrCMS.PaypointService.API;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration.Listeners;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
+using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using NHibernate;
 using NHibernate.Event;
@@ -30,12 +32,15 @@ namespace MrCMS.Web.Apps.Ecommerce
 
         public override string Version
         {
-            get { return "0.1.1"; }
+            get { return "0.2.2"; }
         }
 
         protected override void RegisterServices(IKernel kernel)
         {
             kernel.Rebind<CartModel>().ToMethod(context => context.Kernel.Get<ICartBuilder>().BuildCart()).InRequestScope();
+            kernel.Rebind<IStatelessSession>()
+                .ToMethod(context => context.Kernel.Get<ISessionFactory>().OpenStatelessSession());
+            //HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
         }
 
         public override IEnumerable<Type> BaseTypes
@@ -44,6 +49,8 @@ namespace MrCMS.Web.Apps.Ecommerce
             {
                 yield return typeof(DiscountLimitation);
                 yield return typeof(DiscountApplication);
+                yield return typeof(EcommerceSearchablePage);
+                yield return typeof(ContentItem);
             }
         }
 
@@ -67,10 +74,10 @@ namespace MrCMS.Web.Apps.Ecommerce
             }
         }
 
-        protected override void OnInstallation(ISession session, InstallModel model, Site site)
-        {
-            EcommerceInstallation.InstallApp(session, model, site);
-        }
+        //protected override void OnInstallation(ISession session, InstallModel model, Site site)
+        //{
+        //    EcommerceInstallation.InstallApp(session, model, site);
+        //}
 
         public override IEnumerable<Type> Conventions
         {

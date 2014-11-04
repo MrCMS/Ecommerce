@@ -16,20 +16,15 @@
             }
         </legend>
     </fieldset>
-
-    <label class="checkbox">@Html.CheckBox("TaxesEnabled", taxSettings.TaxesEnabled) Enable Taxes?</label>
+    <div class="checkbox">
+        <label class="checkbox">@Html.CheckBox("TaxesEnabled", taxSettings.TaxesEnabled) Enable Taxes?</label>
+    </div>
+    
     if (!String.IsNullOrWhiteSpace(ViewBag.Status))
     {
-        <br />
-        <br />
         <div class="alert alert-info">
-            To enable taxes, please first <a href="@Url.Action("Add", "TaxRate", new {source = "settings"})" data-toggle="fb-modal">set up</a> a default tax rate <a class="btn" href="@Url.Action("Add", "TaxRate", new {source = "settings"})" data-toggle="fb-modal">here</a>
+            To enable taxes, please first <a href="@Url.Action("Add", "TaxRate", new {source = "settings"})" data-toggle="fb-modal">set up</a> a default tax rate <a class="btn btn-default" href="@Url.Action("Add", "TaxRate", new {source = "settings"})" data-toggle="fb-modal">here</a>
         </div>
-    }
-    else
-    {
-        <br />
-        <br />
     }
 
     if (taxSettings.TaxesEnabled)
@@ -71,9 +66,9 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    @Html.FormLink("Make Default", "MakeDefault", "TaxRate", new {id = rate.Id}, new {@class = "btn btn-mini"})
-                                    @Html.ActionLink("Edit", "Edit", new {id = rate.Id}, new {@class = "btn btn-mini"})
-                                    @Html.ActionLink("Delete", "Delete", new {id = rate.Id}, new {@class = "btn btn-danger btn-mini", data_toggle = "fb-modal"})
+                                    @Html.FormLink("Make Default", "MakeDefault", "TaxRate", new {id = rate.Id}, new {@class = "btn btn-xs btn-default"})
+                                    @Html.ActionLink("Edit", "Edit", new {id = rate.Id}, new {@class = "btn btn-xs btn-default"})
+                                    @Html.ActionLink("Delete", "Delete", new {id = rate.Id}, new {@class = "btn btn-danger btn-xs", data_toggle = "fb-modal"})
                                 </div>
                             </td>
                         </tr>

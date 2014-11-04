@@ -5,27 +5,30 @@
     ViewBag.Title = "Amazon Sync Settings";
 }
 
-@using (Html.BeginForm("Sync", "Settings", new {id = ""}, FormMethod.Post))
+@using (Html.BeginForm("Sync", "Settings", new { id = "" }, FormMethod.Post))
 {
     <fieldset>
-        <legend>Amazon Sync Settings
+        <legend>
+            Amazon Sync Settings
             <span class="btn-group  display-inline  pull-right">
+                @Html.ActionLink("Logs", "Index", "Logs", new { type = AmazonLogType.SyncSettings }, new { @class = "btn btn-default" })
                 <button class="btn btn-primary">Save</button>
-                @Html.ActionLink("Logs", "Index", "Logs", new {type = AmazonLogType.SyncSettings}, new {@class = "btn btn-success"})
+
             </span>
         </legend>
-        
-        @Html.HiddenFor(x => x.Site.Id)
-
-        <div class="row-fluid">
-            <div class="span6">
-                <label class="checkbox">@Html.CheckBox("TryCalculateVat", Model.TryCalculateVat) Try calculate VAT?</label>
-                <label class="checkbox">@Html.CheckBox("UseDefaultTaxRateForShippingTax", Model.UseDefaultTaxRateForShippingTax) Use default tax rate for calculating shipping tax?</label>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="checkbox">
+                    <label class="checkbox">@Html.CheckBox("TryCalculateVat", Model.TryCalculateVat) Try calculate TAX?</label>
+                </div>
+                <div class="checkbox">
+                    <label class="checkbox">@Html.CheckBox("UseDefaultTaxRateForShippingTax", Model.UseDefaultTaxRateForShippingTax) Use default tax rate for calculating shipping tax?</label>
+                </div>
             </div>
-            <div class="span6">
+            <div class="col-lg-6">
                 @Html.LabelFor(x => x.LastRun)
                 @Html.DisplayTextFor(x => x.LastRun)
-            </div>       
+            </div>
         </div>
     </fieldset>
 }

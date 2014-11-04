@@ -3,6 +3,7 @@ using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.EcommerceApp.Tests;
+using MrCMS.EcommerceApp.Tests.Helpers;
 using MrCMS.Web.Apps.Amazon.Services.Orders.Sync;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
@@ -42,6 +43,8 @@ namespace MrCMS.AmazonApp.Tests.Services.Orders.Sync
         [Fact]
         public void SetTaxDetails_SetOrderLinesTaxes_ShouldSetProperties()
         {
+            Kernel.Rebind<TaxSettings>()
+                .ToConstant(new TaxSettings {TaxesEnabled = true, LoadedPricesIncludeTax = true});
             var orderLine = new OrderLine() { UnitPrice = 6, Price = 12, Quantity = 2 };
             var order = new Order() { Total = 12, ShippingTotal = 0m, OrderLines = new List<OrderLine>() { orderLine } };
 
@@ -64,6 +67,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Orders.Sync
         [Fact]
         public void SetTaxDetails_SetOrderLinesTaxes_TakesIntoAccountRounding()
         {
+            Kernel.SetTaxSettings(true, true);
             var orderLine = new OrderLine() { UnitPrice = 6.51m, Price = 13.02m, Quantity = 2 };
             var order = new Order() { Total = 13.02m,  OrderLines = new List<OrderLine>() { orderLine } };
 
@@ -87,6 +91,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Orders.Sync
         [Fact]
         public void SetTaxDetails_SetShippingTaxes_ShouldSetProperties()
         {
+            Kernel.SetTaxSettings(true, shippingTaxesEnabled: true, shippingPricesIncludeTax: true);
             var order = new Order() { ShippingTotal = 3};
 
             var taxRate = new TaxRate() { Percentage = 50 };

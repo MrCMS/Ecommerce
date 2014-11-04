@@ -1,0 +1,94 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using System.Web.Mvc
+@using System.Web.Mvc.Html
+@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Stats.Areas.Admin.Models
+@model MrCMS.Web.Apps.Stats.Areas.Admin.Models.PageViewSearchQuery
+@{
+    IPagedList<PageViewResult> results = ViewData["results"] as IPagedList<PageViewResult> ?? PagedList<PageViewResult>.Empty;
+    var searchTypeOptions = ViewData["search-type-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
+@using (Html.BeginForm("Index", "PageViews", FormMethod.Get))
+{
+    <fieldset>
+        <legend>
+            Page Views
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" class="btn btn-primary" value="Search" />
+            </span>
+        </legend>
+        <div class="row">
+            <div class="col-xs-4">
+                @Html.LabelFor(query => query.From)
+                @Html.EditorFor(query => query.From)
+            </div>
+            <div class="col-xs-4">
+                @Html.LabelFor(query => query.To)
+                @Html.EditorFor(query => query.To)
+            </div>
+            <div class="col-xs-4">
+                @Html.LabelFor(query => query.SearchType)
+                @Html.DropDownListFor(query => query.SearchType, searchTypeOptions, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+            </div>
+        </div>
+        @if (results.Any())
+        {
+            <table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Page
+                        </th>
+                        <th>
+                            Unique
+                        </th>
+                        <th>
+                            Sessions
+                        </th>
+                        <th>
+                            Total
+                        </th>
+                        <th>
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (PageViewResult result in results)
+                    {
+                        <tr>
+                            <td>
+                                @(result.WebpageName ?? result.Url)
+                            </td>
+                            <td>
+                                @result.Unique
+                            </td>
+                            <td>
+                                @result.Sessions
+                            </td>
+                            <td>
+                                @result.Total
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a href="@result.Url" target="_blank" class="btn-default btn btn-xs">View</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Sorry, there are no page views that match your criteria.</p>
+        }
+        @Html.Pager(results, "Index", page => new { page })
+    </fieldset>
+}

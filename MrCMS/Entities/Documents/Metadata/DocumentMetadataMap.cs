@@ -20,7 +20,7 @@ namespace MrCMS.Entities.Documents.Metadata
         /// <summary>
         /// The icon shown next to the page type in Mr CMS admin. By default icons are taken from bootstrap
         /// </summary>
-        public virtual string IconClass { get { return "icon-file"; } }
+        public virtual string IconClass { get { return "glyphicon glyphicon-file"; } }
 
         /// <summary>
         /// Controller used to render this pagetype when a GET/HEAD request is made. By Default is 'Webpage'
@@ -120,6 +120,11 @@ namespace MrCMS.Entities.Documents.Metadata
         public virtual bool ChildrenMaintainHierarchy { get { return true; } }
 
         /// <summary>
+        /// Specifies whether child pages will have Maintain Hierarchy checked by default
+        /// </summary>
+        public virtual bool RevealInNavigation { get { return true; } }
+
+        /// <summary>
         /// Specifies whether the page type is able to have body content
         /// </summary>
         public virtual bool HasBodyContent { get { return true; } }
@@ -151,6 +156,7 @@ namespace MrCMS.Entities.Documents.Metadata
                                ShowChildrenInAdminNav = ShowChildrenInAdminNav,
                                App = App,
                                ChildrenMaintainHierarchy = ChildrenMaintainHierarchy,
+                               RevealInNavigation = RevealInNavigation,
                                HasBodyContent = HasBodyContent
                            };
             }

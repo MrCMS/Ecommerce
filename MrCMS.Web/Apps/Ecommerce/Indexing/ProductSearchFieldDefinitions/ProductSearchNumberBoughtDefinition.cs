@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Lucene.Net.Documents;
 using MrCMS.Entities;
+using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
 using MrCMS.Indexing;
 using MrCMS.Indexing.Management;
@@ -13,6 +14,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
+using NHibernate.Transform;
 
 namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 {
@@ -31,11 +33,54 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
             yield return GetNumberBought(obj.Variants);
         }
 
+        protected override Dictionary<Product, IEnumerable<int>> GetValues(List<Product> objs)
+        {
+            var numberBoughtCount = new GroupedNumberBoughtCount();
+            var groupedNumberBought = new HashSet<GroupedNumberBoughtCount>(_session.QueryOver<OrderLine>()
+                .SelectList(
+                    builder =>
+                        builder.SelectGroup(line => line.ProductVariant.Id)
+                            .WithAlias(() => numberBoughtCount.VariantId)
+                            .SelectSum(line => line.Quantity)
+                            .WithAlias(() => numberBoughtCount.Count))
+                .TransformUsing(Transformers.AliasToBean<GroupedNumberBoughtCount>())
+                .List<GroupedNumberBoughtCount>());
+
+            HashSet<ProductVariant> variants =
+                new HashSet<ProductVariant>(
+                    _session.QueryOver<ProductVariant>().Fetch(variant => variant.Product).Eager.List());
+
+            return objs.ToDictionary(product => product, product =>
+            {
+                IEnumerable<ProductVariant> productVariants = variants.Where(variant => variant.Product == product);
+
+                return new List<int>
+                {
+                    productVariants.Sum(
+                        variant =>
+                            groupedNumberBought.Where(count => count.VariantId == variant.Id).Sum(count => count.Count))
+
+                }.AsEnumerable();
+            });
+        }
+
         private int GetNumberBought(IList<ProductVariant> variants)
         {
-            var orderLines = _session.QueryOver<OrderLine>().Where(line => line.ProductVariant.IsIn(variants.ToList())).List();
-            return orderLines.Sum(line => line.Quantity);
+            if (!variants.Any())
+                return 0;
+            var values = variants.Select(variant => variant.Id).ToList();
+            var numberBoughtCount = new NumberBoughtCount();
+            var singleOrDefault = _session.QueryOver<OrderLine>()
+                .Where(line => line.ProductVariant.Id.IsIn(values))
+                .SelectList(
+                    builder =>
+                        builder.SelectSum(line => line.Quantity)
+                            .WithAlias(() => numberBoughtCount.Count))
+                .TransformUsing(Transformers.AliasToBean<NumberBoughtCount>())
+                .SingleOrDefault<NumberBoughtCount>();
+            return singleOrDefault != null ? singleOrDefault.Count : 0;
         }
+
         public override Dictionary<Type, Func<SystemEntity, IEnumerable<LuceneAction>>> GetRelatedEntities()
         {
             return new Dictionary<Type, Func<SystemEntity, IEnumerable<LuceneAction>>>
@@ -52,12 +97,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
             var line = entity as OrderLine;
             if (line != null && line.ProductVariant != null && line.ProductVariant.Product != null)
                 yield return new LuceneAction
-                                 {
-                                     Entity = line.ProductVariant.Product.Unproxy(),
-                                     Operation = LuceneOperation.Update,
-                                     IndexDefinition =
-                                         IndexingHelper.Get<ProductSearchIndex>()
-                                 };
+                {
+                    Entity = line.ProductVariant.Product.Unproxy(),
+                    Operation = LuceneOperation.Update,
+                    IndexDefinition =
+                        IndexingHelper.Get<ProductSearchIndex>()
+                };
         }
+    }
+
+    internal class NumberBoughtCount
+    {
+        public int Count { get; set; }
+    }
+
+    internal class GroupedNumberBoughtCount
+    {
+        public int VariantId { get; set; }
+        public int Count { get; set; }
     }
 }

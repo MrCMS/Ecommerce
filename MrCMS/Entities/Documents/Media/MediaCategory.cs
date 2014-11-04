@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Web.Mvc;
-using MrCMS.Services;
+using MrCMS.Helpers;
 using MrCMS.Website;
 using NHibernate;
 
@@ -30,18 +29,17 @@ namespace MrCMS.Entities.Documents.Media
             protected internal set { _files = value; }
         }
 
-        public override bool ShowInAdminNav { get { return !HideInAdminNav; } }
-        
-        public override void OnDeleting(ISession session)
+        public virtual IEnumerable<MediaCategory> BreadCrumbs
         {
-            base.OnDeleting(session);
-            
-            var mediaFiles = Files.ToList();
-
-            var fileService = MrCMSApplication.Get<IFileService>();
-            foreach (var mediaFile in mediaFiles)
-                fileService.DeleteFile(mediaFile);
-            fileService.RemoveFolder(this);
+            get
+            {
+                MediaCategory page = this;
+                while (page != null)
+                {
+                    yield return page;
+                    page = page.Parent.Unproxy() as MediaCategory;
+                }
+            }
         }
     }
 }

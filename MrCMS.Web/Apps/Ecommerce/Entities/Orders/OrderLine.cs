@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using MrCMS.Entities;
+using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using System.ComponentModel;
 
@@ -10,6 +12,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public OrderLine()
         {
             RequiresShipping = true;
+            GiftCards = new List<GiftCard>();
         }
         //product title or product variant name if available
         public virtual string Name { get; set; }
@@ -43,5 +46,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual string DownloadFileName { get; set; }
         public virtual string DownloadMaskedLink { get { return string.Format("http://{0}/digital-download/{1}/{2}", Site.BaseUrl, Order.Guid, Id); } }
 
+        public virtual IList<GiftCard> GiftCards { get; set; }
+        public virtual string Data { get; set; }
     }
 }

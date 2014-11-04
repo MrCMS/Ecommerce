@@ -10,55 +10,49 @@
 {
 
     <fieldset>
-        <legend> 
-            <div class="row-fluid">
-                <div class="span6">
-                    Amazon Orders
-                </div>
-                <div class="span6">
-                     <span class="btn-group  display-inline  pull-right margin-left-10">
-                        <button type="submit" class="btn btn-primary">Search</button>
-                    </span>
-                    <span class="btn-group  display-inline  pull-right margin-left-10">
-                        @Html.ActionLink("Sync", "SyncMany", "Orders", null, new {@class = "btn btn-success"})
-                    </span>
-                    <span class="btn-group  display-inline  pull-right margin-left-10">
-                        @if (!String.IsNullOrWhiteSpace(amazonManageOrdersUrl))
-                        {
-                            <a href='@amazonManageOrdersUrl' target="_blank" class="btn">Manage Orders on Amazon
-                            </a>
-                        }
-                    </span>
-                    <span class="btn-group  display-inline  pull-right">
-                        @Html.ActionLink("Logs", "Index", "Logs", new {type = AmazonLogType.Orders}, new {@class = "btn"})
-                    </span>
-                </div>
-            </div>
-            <span class="btn-group  display-inline  pull-right">
-            
+        <legend>
+            Amazon Orders
+            <span class="btn-group pull-right">
+                @Html.ActionLink("Sync", "SyncMany", "Orders", null, new { @class = "btn btn-success" })
+                @if (!String.IsNullOrWhiteSpace(amazonManageOrdersUrl))
+                {
+                    <a href='@amazonManageOrdersUrl' target="_blank" class="btn btn-default">
+                        Manage Orders on Amazon
+                    </a>
+                }
+                @Html.ActionLink("Logs", "Index", "Logs", new { type = AmazonLogType.Orders }, new { @class = "btn btn-default" })
+                <button type="submit" class="btn btn-primary">Search</button>
             </span>
         </legend>
     </fieldset>
 
 
-    <div class="row-fluid">
-        <div class="span12">
-            @Html.LabelFor(x => x.SearchText, "Search (Order Id, Name or Email)")
-            @Html.TextBoxFor(x => x.SearchText, new {@class = "span12"})
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                @Html.LabelFor(x => x.SearchText, "Search (Order Id, Name or Email)")
+                @Html.TextBoxFor(x => x.SearchText, new { @class = "form-control" })
+            </div>
         </div>
     </div>
-    <div class="row-fluid">
-        <div class="span4">
-            @Html.LabelFor(x => x.DateFrom)
-            @Html.TextBoxFor(x => x.DateFrom, new {@class = "span12 date-time-picker"})
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="form-group">
+                @Html.LabelFor(x => x.DateFrom)
+                @Html.TextBoxFor(x => x.DateFrom, new { @class = "form-control date-time-picker" })
+            </div>
         </div>
-        <div class="span4">
-            @Html.LabelFor(x => x.DateTo)
-            @Html.TextBoxFor(x => x.DateTo, new {@class = "span12 date-time-picker"})
+        <div class="col-lg-4">
+            <div class="form-group">
+                @Html.LabelFor(x => x.DateTo)
+                @Html.TextBoxFor(x => x.DateTo, new { @class = "form-control date-time-picker" })
+            </div>
         </div>
-        <div class="span4">
-            @Html.LabelFor(x => x.ShippingStatus)
-            @Html.DropDownList("ShippingStatus", ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new {@class = "span12"})
+        <div class="col-lg-4">
+            <div class="form-group">
+                @Html.LabelFor(x => x.ShippingStatus)
+                @Html.DropDownList("ShippingStatus", ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+            </div>
         </div>
     </div>
 
@@ -66,8 +60,8 @@
 }
 
 
-<div class="row-fluid">
-    <div class="span12">
+<div class="row">
+    <div class="col-lg-12">
         @{Html.RenderPartial("Orders", Model); }
     </div>
 </div>

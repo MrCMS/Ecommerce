@@ -12,15 +12,16 @@ using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Shortcodes.Forms;
+using MrCMS.Website.Caching;
 using NHibernate;
 
 namespace MrCMS.Settings
 {
     public class SiteSettingsOptionGenerator
     {
-        public virtual List<SelectListItem> GetErrorPageOptions(ISession session, Site site, int pageId)
+        public virtual List<SelectListItem> GetErrorPageOptions(ISession session, int pageId)
         {
-            var list = session.QueryOver<Webpage>().Where(webpage => webpage.Site == site && webpage.Parent == null).Cacheable().List();
+            var list = session.QueryOver<Webpage>().Where(webpage => webpage.Parent == null).Cacheable().List();
             return
                 list.Where(page => page.Published)
                          .BuildSelectItemList(
@@ -29,11 +30,11 @@ namespace MrCMS.Settings
                              page => page.Id == pageId, (string)null);
         }
 
-        public virtual List<SelectListItem> GetMediaCategoryOptions(ISession session, Site site, int categoryId)
+        public virtual List<SelectListItem> GetMediaCategoryOptions(ISession session, int? categoryId)
         {
             var list =
                 session.QueryOver<MediaCategory>()
-                       .Where(category => category.Site == site && category.Parent == null && !category.HideInAdminNav)
+                       .Where(category => category.Parent == null && !category.HideInAdminNav)
                        .Cacheable()
                        .List();
             return
@@ -43,10 +44,9 @@ namespace MrCMS.Settings
                     category => category.Id == categoryId, (string)null);
         }
 
-        public virtual List<SelectListItem> GetLayoutOptions(ISession session, Site site, int? selectedLayoutId)
+        public virtual List<SelectListItem> GetLayoutOptions(ISession session, int? selectedLayoutId)
         {
             return session.QueryOver<Layout>()
-                          .Where(layout => layout.Site == site)
                           .Cacheable()
                           .List()
                           .BuildSelectItemList(
@@ -85,6 +85,14 @@ namespace MrCMS.Settings
                 .BuildSelectItemList(type => type.ToString().BreakUpString(),
                     type => type.ToString(),
                     type => type == defaultFormRendererType,
+                    emptyItem: null);
+        }
+
+        public virtual List<SelectListItem> GetCacheExpiryTypeOptions()
+        {
+            return Enum.GetValues(typeof (CacheExpiryType)).Cast<CacheExpiryType>()
+                .BuildSelectItemList(type => type.ToString().BreakUpString(),
+                    type => type.ToString(),
                     emptyItem: null);
         }
     }

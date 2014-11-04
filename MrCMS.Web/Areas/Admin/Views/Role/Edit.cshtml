@@ -3,13 +3,15 @@
 @using (Html.BeginForm("Edit", "Role", FormMethod.Post))
 {
     <fieldset>
-        <legend>Edit Role
+        <legend>@Resource("Admin User Roles Edit", "Edit Role")
             <span class="btn-group  display-inline  pull-right">
-                <input type="submit" class="btn-primary btn" value="Save" />
+                <input type="submit" class="btn-primary btn" value="@Resource("Save")" />
             </span>
         </legend>
-        @Html.LabelFor(x => x.Name)
-        @Html.TextBoxFor(x => x.Name)
-        @Html.ValidationMessageFor(x => x.Name)
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
     </fieldset>
 }

@@ -28,11 +28,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
             return GetCategories(obj.Categories);
         }
 
+        protected override Dictionary<Product, IEnumerable<string>> GetValues(List<Product> objs)
+        {
+            var categories = new HashSet<Category>(_session.QueryOver<Category>().Fetch(category => category.Products).Eager.List());
+
+            return objs.ToDictionary(product => product, product => GetCategories(product, categories));
+        }
+
+        private IEnumerable<string> GetCategories(Product product, HashSet<Category> categories)
+        {
+            foreach (var category in categories.Where(category => category.Products.Contains(product)))
+            {
+                yield return category.Id.ToString();
+                var parent = categories.FirstOrDefault(c => c.Id == category.ParentId);
+                while (parent != null)
+                {
+                    yield return parent.Id.ToString();
+                    parent = categories.FirstOrDefault(c => c.Id == parent.ParentId);
+                }
+            }
+        }
+
         private static IEnumerable<string> GetCategories(IEnumerable<Category> categories)
         {
             var list = new List<Category>();
             list.AddRange(categories.SelectMany(GetCategoryHierarchy));
-            return list.Distinct().Select(category => category.Id.ToString());
+            var enumerable = list.Distinct().Select(category => category.Id.ToString()).ToList();
+            return enumerable;
         }
 
         private static IEnumerable<Category> GetCategoryHierarchy(Category category)

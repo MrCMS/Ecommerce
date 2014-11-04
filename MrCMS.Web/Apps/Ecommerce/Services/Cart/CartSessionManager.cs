@@ -1,46 +1,57 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
-using NHibernate;
 using Newtonsoft.Json;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
     public class CartSessionManager : ICartSessionManager
     {
+        private const string _passPhrase = "MrCMS Ecommerce's passphrase for session encryption and decryption";
+        private readonly Dictionary<Guid, HashSet<SessionData>> _cache;
         private readonly ISession _session;
         private readonly Site _site;
-        private const string _passPhrase = "MrCMS Ecommerce's passphrase for session encryption and decryption";
 
-        public CartSessionManager(ISession session,  Site site)
+        public CartSessionManager(ISession session, Site site)
         {
             _session = session;
             _site = site;
+            _cache = new Dictionary<Guid, HashSet<SessionData>>();
         }
 
         public T GetSessionValue<T>(string key, Guid userGuid, T defaultValue = default(T), bool encrypted = false)
         {
-            var queryOver = _session.QueryOver<SessionData>().Where(data => data.UserGuid == userGuid && data.Site.Id == _site.Id && data.Key == key);
+            HashSet<SessionData> userData;
+            if (_cache.ContainsKey(userGuid))
+            {
+                userData = _cache[userGuid];
+            }
+            else
+            {
+                userData = new HashSet<SessionData>(
+                    _session.QueryOver<SessionData>().Where(data => data.UserGuid == userGuid).Cacheable().List());
+                _cache[userGuid] = userData;
+            }
+            IEnumerable<SessionData> queryOver = userData.Where(data => data.Key == key);
 
             if (encrypted)
                 queryOver = queryOver.Where(data => data.ExpireOn >= CurrentRequestData.Now);
 
-            var sessionData =
-                queryOver
-                        .Take(1)
-                        .Cacheable()
-                        .SingleOrDefault();
+            SessionData sessionData = queryOver.FirstOrDefault();
+
             if (sessionData == null)
                 return defaultValue;
             try
             {
-                var data = sessionData.Data;
+                string data = sessionData.Data;
                 if (encrypted)
                     data = StringCipher.Decrypt(data, _passPhrase);
                 return JsonConvert.DeserializeObject<T>(data);
@@ -53,15 +64,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public void SetSessionValue<T>(string key, Guid userGuid, T item, bool encrypt = false)
         {
-            var sessionData =
+            if (_cache.ContainsKey(userGuid))
+            {
+                _cache.Remove(userGuid);
+            }
+            SessionData sessionData =
                 _session.QueryOver<SessionData>()
-                        .Where(data => data.UserGuid == userGuid && data.Site.Id == _site.Id && data.Key == key)
-                        .Take(1)
-                        .Cacheable()
-                        .SingleOrDefault() ?? new SessionData { Key = key, UserGuid = userGuid };
+                    .Where(data => data.UserGuid == userGuid && data.Site.Id == _site.Id && data.Key == key)
+                    .Take(1)
+                    .Cacheable()
+                    .SingleOrDefault() ?? new SessionData { Key = key, UserGuid = userGuid };
 
 
-            var obj = JsonConvert.SerializeObject(item);
+            string obj = JsonConvert.SerializeObject(item);
             if (encrypt)
             {
                 obj = StringCipher.Encrypt(obj, _passPhrase);
@@ -73,12 +88,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public void RemoveValue(string key, Guid userGuid)
         {
-            var sessionData =
+            SessionData sessionData =
                 _session.QueryOver<SessionData>()
-                        .Where(data => data.UserGuid == userGuid && data.Site.Id == _site.Id && data.Key == key)
-                        .Take(1)
-                        .Cacheable()
-                        .SingleOrDefault();
+                    .Where(data => data.UserGuid == userGuid && data.Site.Id == _site.Id && data.Key == key)
+                    .Take(1)
+                    .Cacheable()
+                    .SingleOrDefault();
             if (sessionData != null)
                 _session.Transact(session => session.Delete(sessionData));
         }
@@ -99,13 +114,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             byte[] initVectorBytes = Encoding.UTF8.GetBytes(initVector);
             byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
-            PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, null);
+            var password = new PasswordDeriveBytes(passPhrase, null);
             byte[] keyBytes = password.GetBytes(keysize / 8);
-            RijndaelManaged symmetricKey = new RijndaelManaged();
+            var symmetricKey = new RijndaelManaged();
             symmetricKey.Mode = CipherMode.CBC;
             ICryptoTransform encryptor = symmetricKey.CreateEncryptor(keyBytes, initVectorBytes);
-            MemoryStream memoryStream = new MemoryStream();
-            CryptoStream cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
+            var memoryStream = new MemoryStream();
+            var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
             cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
             cryptoStream.FlushFinalBlock();
             byte[] cipherTextBytes = memoryStream.ToArray();
@@ -118,14 +133,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             byte[] initVectorBytes = Encoding.ASCII.GetBytes(initVector);
             byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
-            PasswordDeriveBytes password = new PasswordDeriveBytes(passPhrase, null);
+            var password = new PasswordDeriveBytes(passPhrase, null);
             byte[] keyBytes = password.GetBytes(keysize / 8);
-            RijndaelManaged symmetricKey = new RijndaelManaged();
+            var symmetricKey = new RijndaelManaged();
             symmetricKey.Mode = CipherMode.CBC;
             ICryptoTransform decryptor = symmetricKey.CreateDecryptor(keyBytes, initVectorBytes);
-            MemoryStream memoryStream = new MemoryStream(cipherTextBytes);
-            CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
-            byte[] plainTextBytes = new byte[cipherTextBytes.Length];
+            var memoryStream = new MemoryStream(cipherTextBytes);
+            var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
+            var plainTextBytes = new byte[cipherTextBytes.Length];
             int decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
             memoryStream.Close();
             cryptoStream.Close();

@@ -1,0 +1,7 @@
+﻿@model IList<MrCMS.Web.Apps.Ecommerce.Pages.Category>
+
+@if (Model.Any())
+{
+    <strong>Not what you were looking for? See more: </strong>
+    @Html.Raw(string.Join(", ", Model.Select(category => string.Format("<a href=\"{0}\">{1}</a>", category.AbsoluteUrl, category.Name))))
+}

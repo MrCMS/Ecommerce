@@ -5,17 +5,17 @@
             $('form').submit();
         }
     });
-    $(document).on('click', 'button#close', function () {
-        var name = $('#Name').val();
-        var productId = $('#productId').val();
-        if (name !== "") {
-            $.post('/Admin/Apps/Ecommerce/Product/AddBrand',
-                { name: name },
+    $(document).on('submit', '#add-brand-inline', function (event) {
+        var form = $(event.target);
+        event.preventDefault();
+        var productId = form.find('#productId').val();
+        if (form.valid()) {
+            $.post(form.attr('action'),
+                form.serialize(),
                 function (response) {
                     if (response === false) {
                         alert("Please try again with different name.");
-                    }
-                    else {
+                    } else {
                         parent.$.post('/Admin/Webpage/Edit/' + productId, { "Brand.Id": response }, function (resp) {
                             parent.$.get('/Admin/Apps/Ecommerce/Product/Brands', { Id: productId }, function (brands) {
                                 parent.$('#brands').html(brands);
@@ -25,6 +25,6 @@
                     }
                 });
         }
-        return false;
     });
+
 });

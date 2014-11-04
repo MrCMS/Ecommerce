@@ -1,0 +1,39 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards
+@using MrCMS.Web.Apps.Ecommerce.Entities.Products
+@model MrCMS.Web.Apps.Ecommerce.Models.GiftCardInfo
+@{
+    var productVariant = ViewContext.ParentActionViewContext.ViewData.Model as ProductVariant;
+    var isVirtual = productVariant != null && productVariant.GiftCardType == GiftCardType.Virtual;
+}
+@if (isVirtual)
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.SenderName)
+        @Html.TextBoxFor(model => model.SenderName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.SenderName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SenderEmail)
+        @Html.TextBoxFor(model => model.SenderEmail, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.SenderEmail)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.RecipientName)
+        @Html.TextBoxFor(model => model.RecipientName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.RecipientName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.RecipientEmail)
+        @Html.TextBoxFor(model => model.RecipientEmail, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.SenderName)
+    </div>
+}
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Message)
+    @Html.TextAreaFor(model => model.Message, 5, 20, new { @class = "form-control" })
+    @Html.ValidationMessageFor(model => model.Message)
+</div>

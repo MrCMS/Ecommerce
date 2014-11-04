@@ -1,0 +1,135 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Entities.Products
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Services
+@using MrCMS.Web.Apps.Ecommerce.Settings
+@using MrCMS.Website
+@model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.LowStockReportSearchModel
+@{
+    var results = ViewData["results"] as IPagedList<ProductVariant> ?? PagedList<ProductVariant>.Empty;
+    var updated = ViewData["updated"] is int ? (int)ViewData["updated"] : 0;
+    ViewBag.Title = "Low Stock Report";
+}
+
+<fieldset>
+    <legend>
+        Low Stock Report
+        <span class="btn-group  display-inline  pull-right">
+            @Html.ActionLink("Export Low Stock Report (CSV)", "Export", "LowStockReport", new { threshold = Model.Threshold }, new { @class = "btn btn-primary" })
+        </span>
+    </legend>
+    @using (Html.BeginForm("Index", "LowStockReport", FormMethod.Get))
+    {
+        <div class="input-group">
+            <input type="text" class="search-query form-control" placeholder="Threshold" id="threshold" name="threshold" value="@Model.Threshold" />
+
+            <span class="input-group-btn">
+                <input type="submit" class="btn btn-primary btn-success" value="Generate Report" />
+
+            </span>
+        </div>
+    }
+    <hr />
+    <div id="product-variants">
+        @if (!results.Any())
+        {
+            <text>No products with stock levels below the threshold.</text>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-lg-3">
+                    <strong>Name</strong>
+                </div>
+                <div class="col-lg-2">
+                    <strong>SKU</strong>
+                </div>
+                <div class="col-lg-1">
+                    <strong>Price</strong>
+                </div>
+                <div class="col-lg-2">
+                    <strong>Published</strong>
+                </div>
+                <div class="col-lg-2">
+                    <strong>Stock Remaining</strong>
+                </div>
+                <div class="col-lg-2">
+                    <strong>Actions</strong>
+                </div>
+            </div>
+            foreach (var item in results)
+            {
+                if (SiteSettings<EcommerceSettings>().WarehouseStockEnabled)
+                {
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <a href="@item.EditUrl">@(!String.IsNullOrWhiteSpace(item.Name) ? item.Name : item.Product.Name)</a>
+                        </div>
+                        <div class="col-lg-2">
+                            @item.SKU
+                        </div>
+                        <div class="col-lg-1">
+                            @item.Price
+                        </div>
+                        <div class="col-lg-2">
+                            @Html.CheckBox("Published", item.Product.Published, new { disabled = "disabled" })
+                        </div>
+                        <div class="col-lg-2">
+                            @item.GetStockRemaining()
+                        </div>
+                        <div class="col-lg-2">
+                            @Html.ActionLink("Manage Stock Levels", "Index", "WarehouseStock", new { sku = item.SKU }, new { @class = "btn btn-xs btn-default" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    using (Html.BeginForm("UpdateStock", "LowStockReport", new { id = item.Id }, FormMethod.Post))
+                    {
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <a href="@item.EditUrl">@(!String.IsNullOrWhiteSpace(item.Name) ? item.Name : item.Product.Name)</a>
+                            </div>
+                            <div class="col-lg-2">
+                                @item.SKU
+                            </div>
+                            <div class="col-lg-1">
+                                @item.Price
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.CheckBox("Published", item.Product.Published, new { disabled = "disabled" })
+                            </div>
+                            <div class="col-lg-2">
+                                @Html.TextBox("StockRemaining", item.StockRemaining, new { @class = "form-control" })
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <button type="submit" class="btn btn-default update-stock">
+                                            Update
+                                        </button>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        @if (item.Id == updated)
+                                        {
+                                            <div class="text-success">Updated</div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                <hr />
+            }
+
+            @Html.HiddenFor(model => model.Threshold)
+
+            @Html.Pager(results, "Index", i => new { page = i })
+        }
+
+    </div>
+</fieldset>
+
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/stock.js");}

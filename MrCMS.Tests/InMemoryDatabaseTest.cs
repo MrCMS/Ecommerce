@@ -1,53 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Web;
 using Elmah;
 using Iesi.Collections.Generic;
 using MrCMS.DbConfiguration;
-using MrCMS.DbConfiguration.Configuration;
 using MrCMS.Entities.Multisite;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.IoC;
+using MrCMS.IoC.Modules;
+using MrCMS.Services;
 using MrCMS.Settings;
-using MrCMS.Tests.Stubs;
 using MrCMS.Website;
 using NHibernate;
+using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
 using Ninject;
-using Ninject.MockingKernel;
-using Ninject.Modules;
-using Configuration = NHibernate.Cfg.Configuration;
 
 namespace MrCMS.Tests
 {
-    public class TestContextModule : NinjectModule
-    {
-        public override void Load()
-        {
-            Kernel.Bind<HttpContextBase>().To<OutOfContext>().InThreadScope();
-        }
-    }
-    public abstract class MrCMSTest : IDisposable
-    {
-        private readonly MockingKernel _kernel;
-
-        protected MrCMSTest()
-        {
-            _kernel = new MockingKernel();
-            Kernel.Load(new TestContextModule());
-            MrCMSApplication.OverrideKernel(Kernel);
-            CurrentRequestData.SiteSettings = new SiteSettings();
-        }
-
-        public MockingKernel Kernel { get { return _kernel; } }
-
-        public virtual void Dispose()
-        {
-        }
-    }
-
     public abstract class InMemoryDatabaseTest : MrCMSTest
     {
         private static Configuration Configuration;
@@ -61,12 +32,10 @@ namespace MrCMS.Tests
             {
                 lock (lockObject)
                 {
-                    var assemblies = new List<Assembly> { typeof(BasicMappedWebpage).Assembly };
-                    var nHibernateModule = new NHibernateConfigurator
+                    var assemblies = new List<Assembly> { typeof(InMemoryDatabaseTest).Assembly };
+                    var nHibernateModule = new NHibernateConfigurator(new SqliteInMemoryProvider())
                     {
                         CacheEnabled = true,
-                        DatabaseType = DatabaseType.Sqlite,
-                        InDevelopment = true,
                         ManuallyAddedAssemblies = assemblies
                     };
                     Configuration = nHibernateModule.GetConfiguration();
@@ -74,8 +43,8 @@ namespace MrCMS.Tests
                     SessionFactory = Configuration.BuildSessionFactory();
                 }
             }
-
             Session = SessionFactory.OpenFilteredSession();
+            Kernel.Bind<ISession>().ToMethod(context => Session);
 
             new SchemaExport(Configuration).Execute(false, true, false, Session.Connection, null);
 
@@ -84,19 +53,26 @@ namespace MrCMS.Tests
 
             CurrentSite = Session.Transact(session =>
             {
-                var site = new Site { Name = "Current Site", BaseUrl = "www.currentsite.com" };
+                var site = new Site { Name = "Current Site", BaseUrl = "www.currentsite.com", Id = 1 };
                 CurrentRequestData.CurrentSite = site;
-                session.SaveOrUpdate(site);
+                session.Save(site);
                 return site;
             });
 
             CurrentRequestData.SiteSettings = new SiteSettings { TimeZone = TimeZoneInfo.Local.Id };
 
             CurrentRequestData.ErrorSignal = new ErrorSignal();
+
+            Kernel.Unbind<IEventContext>();
+            Kernel.Load(new ServiceModule());
+            Kernel.Load(new SettingsModule(true));
+            Kernel.Load(new FileSystemModule());
+            Kernel.Load(new SiteModule());
+            _eventContext = new TestableEventContext(Kernel.Get<EventContext>());
+            Kernel.Rebind<IEventContext>().ToMethod(context => EventContext);
         }
 
         protected Site CurrentSite { get; set; }
-
 
 
         private void SetupUser()

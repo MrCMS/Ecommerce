@@ -9,32 +9,38 @@
 
 <fieldset>
     <legend>
-        <div class="row-fluid">
-                <div class="span12">
-                    Sales by payment type
-                <span class="pull-right">
-                    @using (Html.BeginForm("SalesByPaymentType", "Report", new {id = ""}, FormMethod.Get))
-                    {
-                        @Html.ActionLink("Today", "SalesByPaymentType", "Report", new { From = CurrentRequestData.Now.Date.ToString(CurrentRequestData.CultureInfo), To = CurrentRequestData.Now.Date.AddDays(1).ToString(CurrentRequestData.CultureInfo) }, new { @class = "btn" })
-                        @Html.EditorFor(x => x.From)
-                        @Html.EditorFor(x => x.To)
-                        <button type="submit" class="btn">Filter</button>
-                    }
-                </span>
+        Sales by payment type
+
+    </legend>
+    @using (Html.BeginForm("SalesByPaymentType", "Report", new { id = "" }, FormMethod.Get))
+    {
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.From)
+                    @Html.TextBoxFor(x => x.From, new { @class = "form-control" })
                 </div>
             </div>
-    </legend>
 
-    <div class="row-fluid">
-        <div class="span12">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.To)
+                    @Html.TextBoxFor(x => x.To, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-default">Filter</button>
+    }
+    <div class="row">
+        <div class="col-lg-12">
             <div id="chart"></div>
         </div>
     </div>
-    <br/>
-    <div class="row-fluid">
-         <div class="span6">
-             <div id="message"></div>
-        </div> 
+    <br />
+    <div class="row">
+        <div class="col-lg-6">
+            <div id="message"></div>
+        </div>
     </div>
 </fieldset>
 

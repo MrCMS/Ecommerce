@@ -1,0 +1,17 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Web.Apps.Ecommerce.Services.Products
+@model List<SelectListItem>
+@{ var query = ViewData["query"] as ProductSearchQuery;}
+@if (Model.Any())
+{
+    <div class="widget-con">
+        <div class="title-con">
+            By brand
+        </div>
+        <div class="options-con">
+            <div class="option">
+                @Html.DropDownList("BrandId", Model, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+}

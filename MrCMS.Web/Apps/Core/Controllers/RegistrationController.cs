@@ -1,6 +1,7 @@
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using MrCMS.Helpers;
-using MrCMS.Web.Apps.Core.Models;
+using MrCMS.Services.Resources;
 using MrCMS.Web.Apps.Core.Models.RegisterAndLogin;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Core.Services;
@@ -12,10 +13,12 @@ namespace MrCMS.Web.Apps.Core.Controllers
     public class RegistrationController : MrCMSAppUIController<CoreApp>
     {
         private readonly IRegistrationService _registrationService;
+        private readonly IStringResourceProvider _stringResourceProvider;
 
-        public RegistrationController(IRegistrationService registrationService)
+        public RegistrationController(IRegistrationService registrationService, IStringResourceProvider stringResourceProvider)
         {
             _registrationService = registrationService;
+            _stringResourceProvider = stringResourceProvider;
         }
 
         public ActionResult Show(RegisterPage page)
@@ -36,21 +39,21 @@ namespace MrCMS.Web.Apps.Core.Controllers
 
         [HttpPost]
         [ActionName("RegistrationDetails")]
-        public ActionResult RegistrationDetails_POST(RegisterModel model)
+        public async Task<RedirectResult> RegistrationDetails_POST(RegisterModel model)
         {
             if (CurrentRequestData.CurrentUser != null)
             {
-                TempData["already-logged-in"] = "You are already logged in. Please logout to create a new account.";
+                TempData["already-logged-in"] = _stringResourceProvider.GetValue("Register Already Logged in", "You are already logged in. Please logout to create a new account.");
                 return Redirect(UniquePageHelper.GetUrl<RegisterPage>());
             }
 
             if (model != null && ModelState.IsValid && _registrationService.CheckEmailIsNotRegistered(model.Email))
             {
-                _registrationService.RegisterUser(model);
+                await _registrationService.RegisterUser(model);
 
                 return !string.IsNullOrEmpty(model.ReturnUrl)
-                           ? Redirect("~/" + model.ReturnUrl)
-                           : Redirect("~/");
+                    ? Redirect("~/" + model.ReturnUrl)
+                    : Redirect("~/");
             }
             return Redirect(UniquePageHelper.GetUrl<RegisterPage>());
         }

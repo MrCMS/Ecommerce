@@ -1,40 +1,51 @@
 ﻿@using System.Drawing
 @using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Helpers.Cart
 @model MrCMS.Web.Apps.Ecommerce.Entities.Cart.CartItem
-<div class="row-fluid cart-row border-bottom">
-    <div class="span4">
-        <div class="row-fluid">
-            <div class="span4 photo">
-            <a href="/@Model.Item.Product.LiveUrlSegment">
-                @RenderImage(Model.Item.Product.DisplayImageUrl, new Size { Width = 110, Height = 110 })
-            </a>
+<div class="row grey-border-bottom padding-top-10 cart-item-row">
+    <div class="col-xs-6">
+        <div class="row">
+            <div class="col-xs-10 col-sm-3 cart-item-img">
+                <a href="/@Model.Item.Product.LiveUrlSegment">
+                    @RenderImage(Model.Item.Product.DisplayImageUrl, new Size { Width = 110, Height = 110 }, null, null, new { @class = "img-responsive" })
+                </a>
+            </div>
+            <div class="col-xs-12 col-sm-9 cart-item-detail">
+                <a href="/@Model.Item.Product.LiveUrlSegment">@Model.Name</a>
+                @foreach (var option in Model.Item.OptionValues)
+                {
+                    <br />
+                        <strong>
+                            @option.ProductOption.Name
+                        </strong>
+                        <span>:</span>
+                        @option.Value
+                    
+                }
+                @{
+                    var recipientName = Model.GiftCardRecipient();
+                }
+                @if (!string.IsNullOrWhiteSpace(recipientName))
+                {
+                    <div class="display-inline"><strong>@Resource("Recipient"):</strong> @recipientName</div>
+                }
+                <div>
+                    <a data-id="@Model.Id" data-action="delete-cart-item" href="#" class="btn btn-mini btn-danger">@Resource("Remove Cart Item", "Remove")</a>
+                </div>
+            </div>
         </div>
-        <div class="span8 name">
-            <a href="/@Model.Item.Product.LiveUrlSegment">@Model.Name</a>
-        </div>
-        </div>
-        
     </div>
-    <div class="span2">
-        @foreach (var option in Model.Item.OptionValues)
-        {
-            <p>
-                <strong>
-                    @option.ProductOption.Name
-                </strong>
-                <span>:</span>
-                @option.Value
-            </p>
-        }
+    <div class="col-xs-2 text-center cart-item-qty">
+        <input type="text" class="input-mini text-center form-control" name="@Html.Raw("quantity-" + Model.Id)" value="@Model.Quantity" data-cart-id="@Model.Id"/>
     </div>
-    <div class="span2 text-center">
-        <input type="text" class="input-mini text-center" name="@Html.Raw("quantity-" + Model.Id)" value="@Model.Quantity" data-cart-id="@Model.Id"/>
-    </div>
-    <div class="span2 text-right">
+    <div class="col-xs-3 col-sm-2 text-right cart-item-price">
         @Model.UnitPrice.ToCurrencyFormat()
     </div>
-    <div class="span2 text-right padding-right-5">
-        <div class="total">@Model.Price.ToCurrencyFormat()</div>
-        <a data-id="@Model.Id" data-action="delete-cart-item" href="#" class="btn btn-mini btn-danger">Remove</a>
+    <div class="col-xs-3 col-sm-2 text-right">
+        <div class="total cart-item-total">@Model.Price.ToCurrencyFormat()</div>
+        @if (Model.HasDiscount)
+        {
+            <span>(includes @Model.DiscountAmount.ToCurrencyFormat() discount)</span>
+        }
     </div>
 </div>

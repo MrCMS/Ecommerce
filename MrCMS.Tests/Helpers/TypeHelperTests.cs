@@ -4,6 +4,7 @@ using FluentAssertions;
 using MrCMS.Apps;
 using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
+using MrCMS.Indexing.Management;
 using MrCMS.Installation;
 using MrCMS.Models;
 using MrCMS.Website.Controllers;
@@ -55,13 +56,6 @@ namespace MrCMS.Tests.Helpers
             var types = TypeHelper.GetAllConcreteTypesAssignableFrom(typeof(GenericInterface<>));
             
             types.Should().Contain(typeof (ImplementationOfGenericInterface));
-            //typeof(ImplementationOfGenericInterface).GetBaseTypes()
-            //                            .Any(
-            //                                type =>
-            //                                type.IsGenericType &&
-            //                                type.GetGenericTypeDefinition() == typeof(GenericInterface<>))
-            //                            .Should()
-            //                            .BeTrue();
         }
 
         [Fact]
@@ -72,13 +66,13 @@ namespace MrCMS.Tests.Helpers
             types.FirstOrDefault().Should().Be(typeof (MrCMSAppAdminController<TestApp>));
         }
 
-
         private class TestAdminMenuItem : IAdminMenuItem
         {
             public string Text { get; private set; }
+            public string IconClass { get; private set; }
             public string Url { get; private set; }
             public bool CanShow { get; private set; }
-            public IDictionary<string, List<IMenuItem>> Children { get; private set; }
+            public SubMenu Children { get; private set; }
             public int DisplayOrder { get; private set; }
         }
     }
@@ -118,11 +112,6 @@ namespace MrCMS.Tests.Helpers
         protected override void RegisterServices(IKernel kernel)
         {
             
-        }
-
-        protected override void OnInstallation(ISession session, InstallModel model, Site site)
-        {
-            throw new NotImplementedException();
         }
     }
 }

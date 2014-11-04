@@ -5,5 +5,6 @@
         string GetReturnURL();
         string GetCancelURL();
         string GetExpressCheckoutRedirectUrl(string token);
+        string GetCallbackUrl();
     }
 }

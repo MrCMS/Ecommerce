@@ -6,58 +6,59 @@
     ViewBag.Title = "Sync Amazon Orders";
     var result = ViewData["Result"] as GetUpdatedOrdersResult;
 }
-    <fieldset>
-        <legend>
-            Sync Orders from Amazon to MrCMS
-            <span class="btn-group  display-inline  pull-right">
-                @Html.ActionLink("Back to Orders", "Index", "Orders", null, new { @class = "btn btn-primary"})
-                @Html.ActionLink("Logs", "Index", "Logs", new {type=AmazonLogType.Orders}, new { @class = "btn btn-success"})
-            </span>
-        </legend>
+<fieldset>
+    <legend>
+        Sync Orders from Amazon to MrCMS
+        <span class="btn-group  display-inline  pull-right">
+            @Html.ActionLink("Back to Orders", "Index", "Orders", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Logs", "Index", "Logs", new { type = AmazonLogType.Orders }, new { @class = "btn btn-success" })
+        </span>
+    </legend>
 
-        <div class="row-fluid">
-            <div class="span6">
-                 @using (Html.BeginForm("SyncMany", "Orders", new {id = ""}, FormMethod.Post))
-                 {
-                     <p>
-                         Enter up to 50 Amazon Order Ids to be synced (divided by ,):
-                     </p>
-                     @Html.TextArea("Description", new {@class = "span12", placeholder = "e.g:ID1,ID2"})
-                     <br />
-                     <br />
-                     <div>
-                         <strong>IMPORTANT :</strong>
-                         <ul>
-                             <li>After clicking on 'Sync Now' all valid Amazon order ids will be scheduled for sync.</li>
-                             <li>Syncing can take over 10 minutes to complete and it will be handled automatically.</li>
-                             <li>More information can be viewed in the @Html.ActionLink("log", "Index", "Logs", new {type = AmazonLogType.Orders}, null)</li>
-                         </ul>
-                     </div>
-                     <br />
-
-                     <button type="submit" class="btn btn-success" id="pb-start-task">
-                         Sync Now</button>
-                 }
-            </div>
-            <div class="span6" id="results">
-                @if (result!=null && !string.IsNullOrWhiteSpace(result.ErrorMessage))
-                {
-                    <div class="alert alert-error">
-                        @result.ErrorMessage
-                    </div>
-                    <br/>
-                }
-                @if (result != null && result.OrdersScheduledForSync != null && result.OrdersScheduledForSync.Any())
-                {
-                    <strong>Orders scheduled for sync:</strong>
+    <div class="row">
+        <div class="col-lg-6">
+            @using (Html.BeginForm("SyncMany", "Orders", new { id = "" }, FormMethod.Post))
+            {
+                <p>
+                    Enter up to 50 Amazon Order Ids to be synced (divided by ,):
+                </p>
+                @Html.TextArea("Description", new { @class = "form-control", placeholder = "e.g:ID1,ID2" })
+                <br />
+                <br />
+                <div>
+                    <strong>IMPORTANT :</strong>
                     <ul>
-                        @foreach (var item in result.OrdersScheduledForSync)
-                        {
-                            <li>@item.AmazonOrderId</li>
-                        }
+                        <li>After clicking on 'Sync Now' all valid Amazon order ids will be scheduled for sync.</li>
+                        <li>Syncing can take over 10 minutes to complete and it will be handled automatically.</li>
+                        <li>More information can be viewed in the @Html.ActionLink("log", "Index", "Logs", new { type = AmazonLogType.Orders }, null)</li>
                     </ul>
-                }
-            </div>
+                </div>
+                <br />
+
+                <button type="submit" class="btn btn-success" id="pb-start-task">
+                    Sync Now
+                </button>
+            }
         </div>
-       
-    </fieldset>
+        <div class="col-lg-6" id="results">
+            @if (result != null && !string.IsNullOrWhiteSpace(result.ErrorMessage))
+            {
+                <div class="alert alert-danger">
+                    @result.ErrorMessage
+                </div>
+                <br />
+            }
+            @if (result != null && result.OrdersScheduledForSync != null && result.OrdersScheduledForSync.Any())
+            {
+                <strong>Orders scheduled for sync:</strong>
+                <ul>
+                    @foreach (var item in result.OrdersScheduledForSync)
+                    {
+                        <li>@item.AmazonOrderId</li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+
+</fieldset>

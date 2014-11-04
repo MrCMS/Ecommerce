@@ -1,142 +1,292 @@
+@using System.Linq
 @using MrCMS.Helpers
-@using MrCMS.Web.Apps.Ecommerce.Settings
+@using MrCMS.Web.Apps.Ecommerce.Entities.Cart
+@using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards
 @using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Helpers.Cart
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+@{
+    var ecommerceSettings = SiteSettings<EcommerceSettings>();
+    var taxSettings = SiteSettings<TaxSettings>();
+}
+
 <div id="details">
-    <div class="row-fluid">
-        <div class="span6">
+    <div class="row margin-bottom-10">
+        <div class="col-sm-6">
             <h1>Shopping Basket</h1>
         </div>
-        <div class="span6">
-            <div class="row-fluid">
-                <a class="btn offset4 span4" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())">Continue Shopping</a>
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="@(!Model.CanEnterPaymentFlow ? "col-sm-offset-6" : "") col-sm-6">
+                    <a class="btn btn-default btn-block " href="@(UniquePageHelper.GetUrl<ProductSearch>())">@Resource("Continue Shopping")</a>
+                </div>
                 @if (Model.CanEnterPaymentFlow)
                 {
-                    <a class="btn btn-info span4" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay Securely NOW!</a>
+                    <div class="visible-xs" style="padding-top: 5px;"></div>
+                    <div class="col-sm-6">
+                        <a class="btn btn-primary btn-block" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">@Resource("Pay Securely NOW!")</a>
+                    </div>
                 }
             </div>
         </div>
     </div>
-    <div class="row-fluid cart" id="cart-items">
+
+    @if (Model.CannotCheckoutReasons.Any())
+    {
+        <div class="alert alert-danger">
+            <p>@Resource("Sorry, we cannot begin checkout because"):</p>
+            <ul>
+                @foreach (var reason in Model.CannotCheckoutReasons)
+                {
+                    <li>@reason</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <div id="cart-items" class="margin-bottom-20">
         @if (Model.Items.Any())
         {
-            <div class="row-fluid cart-heading-row" id="header">
-                <div class="span4 padding-left-5">
-                    Item Description
+            <div class="row margin-bottom-10 padding-bottom-10 grey-border-bottom" id="header">
+                <div class="col-xs-6">
+                    <strong>Item Description</strong>
                 </div>
-                <div class="span2">
-                    Your Options
+                <div class="col-xs-2 text-center">
+                    <strong class="hidden-xs">Quantity</strong>
+                    <strong class="visible-xs">Qty</strong>
                 </div>
-                <div class="span2 text-center">
-                    Quantity
+                <div class="col-xs-3 col-sm-2 text-right">
+                    <strong>Price</strong>
                 </div>
-                <div class="span2 text-right">
-                    Price
-                </div>
-                <div class="span2 text-right padding-right-5">
-                    Total
+                <div class="col-xs-3 col-sm-2 text-right">
+                    <strong>Total</strong>
                 </div>
             </div>
-            foreach (var item in Model.Items)
+            foreach (CartItem item in Model.Items)
             {
                 Html.RenderPartial("CartItem", item);
             }
         }
         else
         {
-            <span>No items in basket.</span>
+            <p class="red">No items in basket.</p>
         }
     </div>
+
     @if (Model.Items.Any())
     {
-        <div class="row-fluid">
-            <div class="offset6 span6">
-                <button type="button" class="btn offset4 span4" id="update-basket">Update Basket</button>
-                <button type="button" class="btn btn-danger span4" id="empty-basket">Empty Basket</button>
+        <div class="row margin-bottom-20">
+            <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-default btn-block" id="update-basket">Update Basket</button>
+                    </div>
+                    <div class="visible-xs" style="padding-top: 5px;"></div>
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-danger btn-block" id="empty-basket">Empty Basket</button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="row-fluid cart-discount-container" id="cart-discount">
-            <div class="offset6 span6">
+        <div class="row margin-bottom-10" id="cart-discount">
+            <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6">
                 @Html.HiddenFor(x => x.DiscountCode)
-                <div class="row-fluid" id="discount-code-box">
-                    <div class="span4 discount-header">Discount Code</div>
-                    <div class="span4">
-                        <input class="span12" type="text" id="discount-code" />
+                <div class="row" id="discount-code-box">
+                    <div class="col-sm-4 line-height-30">
+                        Discount Code
                     </div>
-                    <div class="span4 padding-right-5">
-                        <button id="apply-discount-code" class="btn span12">Apply Discount Code</button>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" id="discount-code" />
+                        <div class="visible-xs" style="padding-top: 5px;"></div>
+                    </div>
+                    <div class="col-sm-4">
+                        <button id="apply-discount-code" class="btn btn-default btn-block">Apply Discount Code</button>
                     </div>
                 </div>
             </div>
         </div>
     }
-    <div class="row-fluid">
-        <div class="span6">
-        </div>
-        <div class="span6" id="cart-summary">
+
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6" id="cart-summary">
             @if (Model.Items.Any())
             {
-                <div class="row-fluid">
-                    <div class="span6">Subtotal before delivery charges</div>
-                    <div class="span6 text-right">@Model.Subtotal.ToCurrencyFormat()</div>
+                <div class="row margin-bottom-10">
+                    <div class="col-xs-8 col-sm-6">
+                        Subtotal before delivery charges
+                    </div>
+                    <div class="col-xs-4 col-sm-6 text-right" id="cart-subtotal">
+                        @Model.Subtotal.ToCurrencyFormat()
+                    </div>
                 </div>
                 if (Model.HasDiscount)
                 {
-                <div class="row-fluid">
-                    <div class="span6">Discount</div>
-                    <div class="span6 text-right">@((-Model.OrderTotalDiscount).ToCurrencyFormat())
+                    <div class="row margin-bottom-10">
+                        <div class="col-xs-8 col-sm-6">
+                            Discount
+                        </div>
+                        <div class="col-xs-4 col-sm-6 text-right" id="cart-discount-total">
+                            <button id="remove-discount-code" class="btn btn-xs btn-danger">Remove</button>
+                            @((-Model.OrderTotalDiscount).ToCurrencyFormat())
+                        </div>
                     </div>
-                </div>
                 }
-                if (MrCMS.Website.MrCMSApplication.Get<TaxSettings>().TaxesEnabled)
+                if (taxSettings.TaxesEnabled)
                 {
-                <div class="row-fluid">
-                    <div class="span6">VAT</div>
-                    <div class="span6 text-right">@Model.Tax.ToCurrencyFormat()
+                    <div class="row margin-bottom-10">
+                        <div class="col-xs-8 col-sm-6">
+                            VAT
+                        </div>
+                        <div class="col-xs-4 col-sm-6 text-right" id="cart-tax">
+                            @Model.Tax.ToCurrencyFormat()
+                        </div>
+                    </div>
+                }
+                <div class="row margin-bottom-10">
+                    <div class="col-xs-8 col-sm-6">
+                        Shipping
+                    </div>
+                    <div class="col-xs-4 col-sm-6 text-right" id="cart-shipping">
+                        @Model.CartPageShipping()
                     </div>
                 </div>
-                }
-                if (Model.RequiresShipping)
+
+                if (ecommerceSettings.GiftMessageEnabled)
                 {
-                <div class="row-fluid">
-                    <div class="span6">
-                        @Html.DropDownList("ShippingCalculation", ViewData["shipping-calculations"] as IEnumerable<SelectListItem>, new { @class = "input-xlarge" })
+                    <div class="row margin-bottom-10">
+                        <div class="col-xs-8 col-sm-4">
+                            <strong>Gift Message</strong>
+                        </div>
+                        <div class="col-sm-4 hidden-xs">
+                        </div>
+                        <div class="col-sm-4">
+                            <button data-edit-gift-message="true" class="btn btn-default btn-block">
+                                @if (!string.IsNullOrWhiteSpace(Model.GiftMessage))
+                                {
+                                    <text> Edit Message </text>
+                                }
+                                else
+                                {
+                                    <text> Add Message </text>
+                                }
+                            </button>
+                        </div>
                     </div>
-                    <div class="span6 text-right">
-                        @if (Model.ShippingTotal.HasValue)
-                        {
-                            @Model.ShippingTotal.Value.ToCurrencyFormat()
-                        }
-                        else
-                        {
-                            <span>Please choose a shipping method</span>
-                        }
+                    if (!string.IsNullOrWhiteSpace(Model.GiftMessage))
+                    {
+                        <div class="row margin-bottom-10" data-message-display="true">
+                            <div class="col-xs-8">
+                                @Model.GiftMessage
+                            </div>
+                            <div class="col-xs-4">
+                                <button data-remove-gift-message="true" class="btn btn-danger btn-block">
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    }
+                    <div data-message-container="250" data-error-message="Your gift message is more than 250 characters" style="display:none;">
+                        <div class="row margin-bottom-10">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <textarea id="gift-message" class="form-control">@Model.GiftMessage</textarea>
+                                </div>
+                                <span id="message-character-count">
+                                    <span></span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row margin-bottom-10">
+                            <div class="col-xs-8">
+                            </div>
+                            <div class="col-xs-4">
+                                <button data-save-gift-message="true" class="btn btn-default btn-block">
+                                    Save Message
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
+
                 }
-                <div class="total-divider"></div>
-                <div>
-                    <div class="span6">Total</div>
-                    <div class="text-right total">@Model.Total.ToCurrencyFormat()</div>
+                if (ecommerceSettings.GiftCardsEnabled)
+                {
+                    <div class="row margin-bottom-10">
+                        <div class="col-xs-8 col-sm-6">
+                            <strong>Gift cards</strong>
+                        </div>
+                        <div class="col-xs-4 col-sm-6 text-right">
+                        </div>
+                    </div>
+                    <div class="row margin-bottom-10">
+                        <div class="col-sm-4 line-height-30">
+                            Gift Card Code
+                        </div>
+                        <div class="col-sm-4">
+                            <input class="form-control" type="text" id="gift-card-code" />
+                            <div class="visible-xs" style="padding-top: 5px;"></div>
+                        </div>
+                        <div class="col-sm-4">
+                            <button id="apply-gift-card-code" class="btn btn-default btn-block">Apply Gift Card</button>
+                        </div>
+                    </div>
+                    <div data-gift-card-message="true">
+                        
+                    </div>
+                    if (Model.AppliedGiftCards.Any())
+                    {
+                        foreach (GiftCard card in Model.AppliedGiftCards)
+                        {
+                            <div class="row margin-bottom-10">
+                                <div class="col-xs-8 col-sm-6">
+                                    Code - @card.Code
+                                    <a href="#" data-remove-card="@card.Code">&times;</a>
+                                </div>
+                                <div class="col-xs-4 col-sm-6 text-right">
+                                    @card.AvailableAmount.ToCurrencyFormat()
+                                </div>
+                            </div>
+                        }
+                        <div class="row margin-bottom-10">
+                            <div class="col-xs-8 col-sm-6">
+                                Gift Card Total
+                            </div>
+                            <div class="col-xs-4 col-sm-6 text-right">
+                                @Model.AvailableGiftCardAmount.ToCurrencyFormat()
+                            </div>
+                        </div>
+                    }
+                }
+
+                <hr />
+                <div class="row margin-bottom-10">
+                    <div class="col-xs-8 col-sm-6">
+                        <strong>Total</strong>
+                    </div>
+                    <div class="col-xs-4 col-sm-6 text-right" id="cart-total">
+                        <strong>@Model.CartPageTotal()</strong>
+                    </div>
                 </div>
+                <hr />
             }
         </div>
     </div>
-    <div class="row-fluid">
-        <div class="offset6 span6">
+    <div class="row margin-bottom-10">
+        <div class="col-sm-6 col-sm-offset-6">
             @if (Model.CanEnterPaymentFlow)
             {
-                <a class="btn btn-info offset8 span4" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Pay Securely NOW!</a>
+                <a class="btn btn-primary btn-block btn-lg" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">Pay Securely NOW!</a>
             }
             @if (Model.CanUsePayPalExpress)
             {
                 using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
                 {
-                <div class="text-right">
-                    <p>or</p>
-                    <input class="btn-paypal" type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />
-                </div>
+                    <div class="text-center">
+                        <p>Or</p>
+                        <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_xpressCheckout.gif" />
+                    </div>
                 }
             }
         </div>

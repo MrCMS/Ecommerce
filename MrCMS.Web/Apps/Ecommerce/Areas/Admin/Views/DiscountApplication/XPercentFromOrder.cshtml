@@ -1,4 +1,5 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications.XPercentFromOrder
-
-@Html.LabelFor(x => x.DiscountPercent)
-@Html.EditorFor(x => x.DiscountPercent)
+<div class="form-group">
+    @Html.LabelFor(x => x.DiscountPercent)
+    @Html.TextBoxFor(x => x.DiscountPercent, new { @class = "form-control" })
+</div>

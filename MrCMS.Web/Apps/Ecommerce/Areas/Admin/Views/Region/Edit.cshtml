@@ -10,8 +10,11 @@
             </span>
         </legend>
 
-        @Html.LabelFor(region => region.Name)
-        @Html.TextBoxFor(region => region.Name)
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
 
     </fieldset>
 }

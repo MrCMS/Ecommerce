@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -15,7 +17,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void AddSpecificationAttribute(ProductSpecificationAttribute option);
         void UpdateSpecificationAttribute(ProductSpecificationAttribute option);
         void DeleteSpecificationAttribute(ProductSpecificationAttribute option);
-        bool AnyExistingSpecificationAttributesWithName(string name);
+        bool AnyExistingSpecificationAttributesWithName(UniqueAttributeNameModel model);
         void UpdateSpecificationAttributeDisplayOrder(IList<SortItem> options);
 
         IList<ProductSpecificationAttributeOption> ListSpecificationAttributeOptions(int id);
@@ -34,8 +36,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         void AddAttributeOption(ProductOption productOption);
         void UpdateAttributeOptionDisplayOrder(Product product, IList<SortItem> options);
         void DeleteProductAttributeValue(ProductOptionValue value);
-        
-        List<ProductOptionModel> GetSearchAttributeOptions(ProductSearchQuery query);
-        List<ProductOptionModel> GetSearchSpecificationAttributes(ProductSearchQuery query);
+
+        List<ProductOptionModel<string>> GetSearchAttributeOptions(ProductSearchQuery query);
+        List<ProductOptionModel<int>> GetSearchSpecificationAttributes(ProductSearchQuery query);
+        ProductOptionSearchData GetSearchData(ProductSearchQuery query);
+    }
+
+    public class ProductOptionSearchData
+    {
+        public List<ProductOptionModel<string>> AttributeOptions { get; set; }
+        public List<ProductOptionModel<int>> SpecificationOptions { get; set; }
     }
 }

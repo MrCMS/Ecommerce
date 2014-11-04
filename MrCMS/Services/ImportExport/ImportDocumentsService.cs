@@ -5,6 +5,7 @@ using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using MrCMS.Services.ImportExport.DTOs;
+using MrCMS.Services.Notifications;
 using NHibernate;
 
 namespace MrCMS.Services.ImportExport
@@ -34,22 +35,30 @@ namespace MrCMS.Services.ImportExport
         /// <param name="items"></param>
         public void ImportDocumentsFromDTOs(IEnumerable<DocumentImportDTO> items)
         {
-            var dataTransferObjects = new HashSet<DocumentImportDTO>(items);
-            _webpages = new HashSet<Webpage>(_session.QueryOver<Webpage>().Where(webpage => webpage.Site == _site).List());
-            _updateTagsService.Inititalise();
-            _updateUrlHistoryService.Initialise();
-            _urlHistories =
-                new HashSet<UrlHistory>(_session.QueryOver<UrlHistory>().Where(tag => tag.Site == _site).List());
-
-            _session.Transact(session =>
+            var eventContext = EventContext.Instance;
+            using (eventContext.Disable(typeof(IOnPersistentNotificationPublished), typeof(IOnTransientNotificationPublished)))
             {
-                foreach (var dataTransferObject in dataTransferObjects.OrderBy(o => GetHierarchyDepth(o, dataTransferObjects)).ThenBy(o => GetRootParentUrl(o,dataTransferObjects)))
-                    ImportDocument(dataTransferObject);
+                var dataTransferObjects = new HashSet<DocumentImportDTO>(items);
+                _webpages =
+                    new HashSet<Webpage>(_session.QueryOver<Webpage>().Where(webpage => webpage.Site == _site).List());
+                _updateTagsService.Inititalise();
+                _updateUrlHistoryService.Initialise();
+                _urlHistories =
+                    new HashSet<UrlHistory>(_session.QueryOver<UrlHistory>().Where(tag => tag.Site == _site).List());
 
-                _updateTagsService.SaveTags();
-                _updateUrlHistoryService.SaveUrlHistories();
-                _webpages.ForEach(session.SaveOrUpdate);
-            });
+                _session.Transact(session =>
+                {
+                    foreach (
+                        var dataTransferObject in
+                            dataTransferObjects.OrderBy(o => GetHierarchyDepth(o, dataTransferObjects))
+                                .ThenBy(o => GetRootParentUrl(o, dataTransferObjects)))
+                        ImportDocument(dataTransferObject);
+
+                    _updateTagsService.SaveTags();
+                    _updateUrlHistoryService.SaveUrlHistories();
+                    _webpages.ForEach(session.SaveOrUpdate);
+                });
+            }
             _indexService.InitializeAllIndices();
         }
 
@@ -57,9 +66,10 @@ namespace MrCMS.Services.ImportExport
         {
             var currentDto = dto;
             int depth = 0;
-            while (!string.IsNullOrWhiteSpace(currentDto.ParentUrl))
+            while (currentDto!= null && !string.IsNullOrWhiteSpace(currentDto.ParentUrl))
             {
-                currentDto = allItems.First(o => o.UrlSegment == currentDto.ParentUrl);
+                DocumentImportDTO dto1 = currentDto;
+                currentDto = allItems.FirstOrDefault(o => o.UrlSegment == dto1.ParentUrl);
                 depth++;
             }
             return depth;
@@ -68,11 +78,13 @@ namespace MrCMS.Services.ImportExport
         public static string GetRootParentUrl(DocumentImportDTO dto, HashSet<DocumentImportDTO> allItems)
         {
             var currentDto = dto;
-            while (!string.IsNullOrWhiteSpace(currentDto.ParentUrl))
+            while (currentDto != null && !string.IsNullOrWhiteSpace(currentDto.ParentUrl))
             {
-                currentDto = allItems.First(o => o.UrlSegment == currentDto.ParentUrl);
+                DocumentImportDTO dto1 = currentDto;
+                currentDto = allItems.FirstOrDefault(o => o.UrlSegment == dto1.ParentUrl);
             }
-            return currentDto.UrlSegment;
+            if (currentDto != null) return currentDto.UrlSegment;
+            return "";
         }
 
         /// <summary>
@@ -89,7 +101,7 @@ namespace MrCMS.Services.ImportExport
             if (!String.IsNullOrEmpty(dto.ParentUrl))
             {
                 var parent = _webpages.SingleOrDefault(x => x.UrlSegment == dto.ParentUrl);
-                webpage.SetParent(parent);
+                webpage.Parent = parent;
             }
             if (dto.UrlSegment != null)
                 webpage.UrlSegment = dto.UrlSegment;
@@ -105,7 +117,7 @@ namespace MrCMS.Services.ImportExport
 
             _updateTagsService.SetTags(dto, webpage);
             //Url History
-         _updateUrlHistoryService.SetUrlHistory(dto, webpage);
+            _updateUrlHistoryService.SetUrlHistory(dto, webpage);
 
             if (!_webpages.Contains(webpage))
                 _webpages.Add(webpage);
@@ -121,7 +133,7 @@ namespace MrCMS.Services.ImportExport
                 {
                     if (_urlHistories.FirstOrDefault(history => history.UrlSegment == item) == null)
                     {
-                        var urlHistory = new UrlHistory {UrlSegment = item, Webpage = webpage};
+                        var urlHistory = new UrlHistory { UrlSegment = item, Webpage = webpage };
                         webpage.Urls.Add(urlHistory);
                         _urlHistories.Add(urlHistory);
                     }

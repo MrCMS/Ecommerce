@@ -18,10 +18,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.Events
             _messageParser = messageParser;
         }
 
-        public int Order { get { return 2; } }
-        public void OnOrderPartiallyRefunded(Order order, OrderRefund orderRefund)
+        public void Execute(OrderPartiallyRefundedArgs args)
         {
-            var queuedMessage = _messageParser.GetMessage(order);
+            var queuedMessage = _messageParser.GetMessage(args.Order);
             if (queuedMessage != null)
                 _session.Transact(session => session.Save(queuedMessage));
         }

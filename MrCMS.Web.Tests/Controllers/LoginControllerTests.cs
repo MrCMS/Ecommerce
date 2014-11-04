@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
@@ -6,12 +7,12 @@ using MrCMS.Entities.Documents.Layout;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.People;
 using MrCMS.Services;
+using MrCMS.Services.Resources;
 using MrCMS.Web.Apps.Core.Controllers;
 using MrCMS.Web.Apps.Core.Models;
 using MrCMS.Web.Apps.Core.Models.RegisterAndLogin;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Core.Services;
-using MrCMS.Web.Controllers;
 using MrCMS.Website;
 using Xunit;
 
@@ -33,34 +34,48 @@ namespace MrCMS.Web.Tests.Controllers
             _authorisationService = A.Fake<IAuthorisationService>();
             _loginService = A.Fake<ILoginService>();
             _uniquePageService = A.Fake<IUniquePageService>();
-            _loginController = new LoginController(_userService, _resetPasswordService, _authorisationService, _uniquePageService, _loginService);
+            _loginController = new LoginController(_userService, _resetPasswordService, _authorisationService, _uniquePageService, _loginService, A.Fake<IStringResourceProvider>());
+
             // initial setup as this is reused
-            A.CallTo(() => _uniquePageService.GetUniquePage<LoginPage>())
-             .Returns(new LoginPage { UrlSegment = "login-page" });
+            A.CallTo(() => _uniquePageService.RedirectTo<LoginPage>(null)).Returns(new RedirectResult("~/login-page"));
+            A.CallTo(() => _uniquePageService.RedirectTo<ForgottenPasswordPage>(null))
+             .Returns(new RedirectResult("~/forgotten-password"));
         }
 
         [Fact]
         public void LoginController_Show_ShouldReturnLoginPageAsModel()
         {
-            var result = _loginController.Show(new LoginPage { Layout = new Layout() }, new LoginModel());
+            var result = _loginController.Show(new LoginPage(), new LoginModel());
 
             result.Model.Should().BeOfType<LoginPage>();
         }
 
-        //[Fact]
-        //public void LoginController_Get_ShouldReturnPassedModel()
-        //{
-        //    var loginModel = new LoginController.LoginModel();
+        [Fact]
+        public void LoginController_Show_ShouldSetViewDataAsModel()
+        {
+            var loginModel = new LoginModel();
 
-        //    var result = _loginController.Get(loginModel);
+            var result = _loginController.Show(null, loginModel);
 
-        //    result.Model.Should().Be(loginModel);
-        //}
+            result.ViewData["login-model"].Should().Be(loginModel);
+        }
+
+        [Fact]
+        public void LoginController_Show_ShouldUseTempDataModelBeforePassedModel()
+        {
+            var model1 = new LoginModel();
+            var model2 = new LoginModel();
+            _loginController.TempData["login-model"] = model1;
+
+            var result = _loginController.Show(null, model2);
+
+            result.ViewData["login-model"].Should().Be(model1);
+        }
 
         [Fact]
         public void LoginController_Post_IfModelIsNullReturnsRedirectToLoginPage()
         {
-            var actionResult = _loginController.Post(null);
+            var actionResult = _loginController.Post(null).Result;
 
             actionResult.Should().NotBeNull();
             actionResult.Url.Should().Be("~/login-page");
@@ -70,7 +85,7 @@ namespace MrCMS.Web.Tests.Controllers
         public void LoginController_Post_IfModelIsNotNullButModelStateIsInvalidReturnRedirectToLoginPage()
         {
             _loginController.ModelState.AddModelError("test", "error");
-            var actionResult = _loginController.Post(new LoginModel());
+            var actionResult = _loginController.Post(new LoginModel()).Result;
 
             actionResult.Should().NotBeNull();
             actionResult.Url.Should().Be("~/login-page");
@@ -91,9 +106,8 @@ namespace MrCMS.Web.Tests.Controllers
         {
             var loginModel = new LoginModel();
             A.CallTo(() => _loginService.AuthenticateUser(loginModel))
-             .Returns(new LoginResult { Success = true, RedirectUrl = "redirect-url" });
-
-            var redirectResult = _loginController.Post(loginModel);
+             .Returns(Task.Run(() => new LoginResult { Success = true, RedirectUrl = "redirect-url" }));
+            var redirectResult = _loginController.Post(loginModel).Result;
 
             redirectResult.Url.Should().Be("redirect-url");
         }
@@ -103,9 +117,9 @@ namespace MrCMS.Web.Tests.Controllers
         {
             var loginModel = new LoginModel();
             A.CallTo(() => _loginService.AuthenticateUser(loginModel))
-             .Returns(new LoginResult { Success = false });
+             .Returns(Task.Run(() => new LoginResult {Success = false}));
 
-            var redirectResult = _loginController.Post(loginModel);
+            var redirectResult = _loginController.Post(loginModel).Result;
 
             redirectResult.Url.Should().Be("~/login-page");
         }
@@ -115,9 +129,9 @@ namespace MrCMS.Web.Tests.Controllers
         {
             var loginModel = new LoginModel();
             A.CallTo(() => _loginService.AuthenticateUser(loginModel))
-             .Returns(new LoginResult { Success = false, Message = "failure message" });
+             .Returns(Task.Run(() => new LoginResult {Success = false, Message = "failure message"}));
 
-            _loginController.Post(loginModel);
+            RedirectResult redirectResult = _loginController.Post(loginModel).Result;
 
             loginModel.Message.Should().Be("failure message");
         }

@@ -53,7 +53,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 pagedList = _session.Paged(QueryOver.Of<Product>(), page, pageSize);
             }
 
-            var productContainer = _uniquePageService.GetUniquePage<ProductSearch>();
+            var productContainer = _uniquePageService.GetUniquePage<ProductContainer>();
             var productContainerId = productContainer == null ? (int?)null : productContainer.Id;
             return new ProductPagedList(pagedList, productContainerId);
         }
@@ -68,7 +68,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                        : new List<Product>();
         }
 
-        public IPagedList<Product> Search(Product product, string query, int page = 1, int pageSize = 10)
+        public IPagedList<Product> RelatedProductsSearch(Product product, string query, int page = 1)
         {
             var queryOver = QueryOver.Of<Product>();
 
@@ -77,7 +77,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
             queryOver = queryOver.Where(item => !item.Id.IsIn(product.RelatedProducts.Select(c => c.Id).ToArray()) && item.Id != product.Id);
 
-            return _session.Paged(queryOver, page, pageSize);
+            return _session.Paged(queryOver, page);
         }
 
         public void AddCategory(Product product, int categoryId)
@@ -86,10 +86,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             product.Categories.Add(category);
             category.Products.Add(product);
             _session.Transact(session =>
-                                  {
-                                      session.SaveOrUpdate(product);
-                                      session.SaveOrUpdate(category);
-                                  });
+            {
+                session.SaveOrUpdate(product);
+                session.SaveOrUpdate(category);
+            });
         }
 
         public void RemoveCategory(Product product, int categoryId)
@@ -98,10 +98,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             product.Categories.Remove(category);
             category.Products.Remove(product);
             _session.Transact(session =>
-                                  {
-                                      session.SaveOrUpdate(product);
-                                      session.SaveOrUpdate(category);
-                                  });
+            {
+                session.SaveOrUpdate(product);
+                session.SaveOrUpdate(category);
+            });
         }
 
         public void AddRelatedProduct(Product product, int relatedProductId)
@@ -160,18 +160,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public void SetCategoryOrder(Product product, List<SortItem> items)
         {
             _session.Transact(session =>
+            {
+                items.ForEach(item =>
                 {
-                    items.ForEach(item =>
-                        {
-                            var category = session.Get<Category>(item.Id);
-                            if (category != null)
-                            {
-                                product.Categories.Remove(category);
-                                product.Categories.Insert(item.Order, category);
-                            }
-                        });
-                    session.Update(product);
-                }
+                    var category = session.Get<Category>(item.Id);
+                    if (category != null)
+                    {
+                        product.Categories.Remove(category);
+                        product.Categories.Insert(item.Order, category);
+                    }
+                });
+                session.Update(product);
+            }
             );
         }
 
@@ -184,30 +184,28 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public void SetVariantOrders(Product product, List<SortItem> items)
         {
             _session.Transact(session =>
-                                  {
-                                      items.ForEach(item =>
-                                                        {
-                                                            var variant = session.Get<ProductVariant>(item.Id);
-                                                            if (variant != null)
-                                                            {
-                                                                product.Variants.Remove(variant);
-                                                                product.Variants.Insert(item.Order, variant);
-                                                            }
-                                                        });
-                                      session.Update(product);
-                                  });
+            {
+                items.ForEach(item =>
+                {
+                    var variant = session.Get<ProductVariant>(item.Id);
+                    if (variant != null)
+                    {
+                        product.Variants.Remove(variant);
+                        product.Variants.Insert(item.Order, variant);
+                    }
+                });
+                session.Update(product);
+            });
         }
 
         public IList<Product> GetNewIn(int numberOfItems = 10)
         {
-            var ids =
+            return
                 _session.QueryOver<Product>()
-                        .Where(x => x.PublishOn <= CurrentRequestData.Now)
-                        .Select(product => product.Id)
-                        .OrderBy(x => x.CreatedOn)
-                        .Desc.Take(numberOfItems)
-                        .List<int>();
-            return ids.Select(i => _session.Get<Product>(i)).ToList();
+                    .Where(x => x.PublishOn <= CurrentRequestData.Now)
+                    .OrderBy(x => x.CreatedOn)
+                    .Desc.Take(numberOfItems)
+                    .List();
         }
     }
 }

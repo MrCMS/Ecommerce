@@ -1,0 +1,39 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Settings.EcommerceSearchCacheSettings
+@{
+    ViewBag.Title = "Edit Search Cache Settings";
+}
+@using (Html.BeginForm("Edit", "EcommerceSearchCacheSettings", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Search Cache Settings
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Save Settings" />
+            </span>
+        </legend>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.InlineCheckboxFor(x => x.SearchCache)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.SearchCacheExpiryType, new { @class = "control-label" })
+                    @Html.EnumDropDownListFor(x => x.SearchCacheExpiryType, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.SearchCacheExpiryType)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.SearchCacheLength)
+                    @Html.TextBoxFor(x => x.SearchCacheLength, new { @class = "form-control", placeholder = "0" })
+                    @Html.ValidationMessageFor(x => x.SearchCacheLength)
+                </div>
+                <div class="form-group">
+                    @Html.InlineCheckboxFor(x => x.SearchCachePerUser)
+                </div>
+            </div>
+            <div class="col-lg-6">
+
+            </div>
+        </div>
+    </fieldset>
+}

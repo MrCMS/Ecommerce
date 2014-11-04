@@ -3,29 +3,39 @@ using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 {
-    public class PayPalExpressCheckoutPaymentMethod : BasePaymentMethod
+    public class PayPalExpressCheckoutPaymentMethod : IPaymentMethod
     {
-        public override string Name
+        public string Name
         {
             get { return "PayPal Express Checkout"; }
         }
 
-        public override string SystemName
+        public string SystemName
         {
             get { return "PayPalExpressCheckout"; }
         }
 
-        public override PaymentType PaymentType
+        public string ControllerName
+        {
+            get { return "PayPalExpressCheckout"; }
+        }
+
+        public string ActionName
+        {
+            get { return "Form"; }
+        }
+
+        public PaymentType PaymentType
         {
             get { return PaymentType.PayPalExpress; }
         }
 
-        public override bool Enabled
+        public bool Enabled
         {
             get { return MrCMSApplication.Get<PayPalExpressCheckoutSettings>().Enabled; }
         }
 
-        public override bool CanUse(CartModel cart)
+        public bool CanUse(CartModel cart)
         {
             return cart.IsPayPalTransaction;
         }

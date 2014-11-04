@@ -54,9 +54,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         IPagedList<ProductVariant> GetAllVariants(string queryTerm, int categoryId = 0, int page = 1);
         IList<ProductVariant> GetAllVariantsForGoogleBase();
         ProductVariant GetProductVariantBySKU(string sku);
-        void Add(ProductVariant productVariant);
-        void Update(ProductVariant productVariant);
-        void Delete(ProductVariant productVariant);
         bool AnyExistingProductVariantWithSKU(string sku, int id);
         ProductVariant Get(int id);
         List<SelectListItem> GetOptions();
@@ -65,8 +62,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         bool IsPriceBreakQuantityValid(int quantity, ProductVariant productVariant);
         bool IsPriceBreakPriceValid(decimal price, ProductVariant productVariant, int quantity);
         void DeletePriceBreak(PriceBreak priceBreak);
-        IPagedList<ProductVariant> GetAllVariantsWithLowStock(int treshold, int page = 1);
-        IList<ProductVariant> GetAllVariantsWithLowStock(int treshold);
+        IList<ProductVariant> GetAllVariantsWithLowStock(int threshold);
         IList<ProductVariant> GetAllVariantsForStockReport();
     }
 }

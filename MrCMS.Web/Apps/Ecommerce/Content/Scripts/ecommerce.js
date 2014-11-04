@@ -1,25 +1,16 @@
 ﻿$(function() {
     $("#searchTerm").keypress(function(e) {
         if (e.which == 13) {
-            e.preventDefault();
-            redirectToSearch();
+            $("#top-search").submit();
         }
     });
-    $("#searchButton").click(function() {
-        redirectToSearch();
-    });
-
-    function redirectToSearch() {
-        if ($("#searchTerm").val()) {
-            window.location = "/products?SearchTerm=" + $("#searchTerm").val();
-        } else {
-            window.location = "/products";
-        }
-    }
 
     $('[data-add-to-wishlist]').each(function() {
         return new AddToWishlist($(this)).init();
     });
+
+    $(".logo a img").addClass("img-responsive");
+    
 });
 
 

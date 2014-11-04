@@ -1,33 +1,32 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Paging;
-using MrCMS.Services;
-using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services;
-using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
     public class CategoryControllerTests
     {
-        private ICategoryService _categoryService;
-        private IDocumentService _documentService;
-        private CategoryContainer _categoryContainer;
-        private SiteSettings _siteSettings;
-        private IUniquePageService _uniquePageService;
+        private readonly ICategoryAdminService _categoryAdminService;
+        private readonly CategoryController _categoryController;
+
+        public CategoryControllerTests()
+        {
+            _categoryAdminService = A.Fake<ICategoryAdminService>();
+            //use the default of the container existing
+            A.CallTo(() => _categoryAdminService.ProductContainerExists()).Returns(true);
+            _categoryController = new CategoryController(_categoryAdminService);
+        }
 
         [Fact]
         public void CategoryController_Index_ReturnsViewResult()
         {
-            var categoryController = GetCategoryController();
-
-            var index = categoryController.Index();
+            ViewResult index = _categoryController.Index();
 
             index.Should().BeOfType<ViewResult>();
         }
@@ -35,46 +34,30 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void CategoryController_Index_CallsSearchOnTheCategoryService()
         {
-            var categoryController = GetCategoryController();
+            _categoryController.Index("test", 1);
 
-            categoryController.Index("test", 1);
-
-            A.CallTo(() => _categoryService.Search("test", 1,10)).MustHaveHappened();
+            A.CallTo(() => _categoryAdminService.Search("test", 1)).MustHaveHappened();
         }
 
         [Fact]
         public void CategoryController_Index_ReturnsTheResultOfTheCallToSearchAsTheModel()
         {
-            var categoryController = GetCategoryController();
             var categoryPagedList = new CategoryPagedList(new StaticPagedList<Category>(new Category[0], 1, 1, 0), 1);
-            A.CallTo(() => _categoryService.Search("test", 1,10)).Returns(categoryPagedList);
+            A.CallTo(() => _categoryAdminService.Search("test", 1)).Returns(categoryPagedList);
 
-            var index = categoryController.Index("test", 1);
+            ViewResult index = _categoryController.Index("test", 1);
 
             index.Model.Should().Be(categoryPagedList);
         }
 
         [Fact]
-        public void CategoryController_Index_ReturnsNullIfTheCategoryContainerIsNull()
+        public void CategoryController_Index_ModelIsNullIfTheCategoryContainerDoesNotExist()
         {
-            
-            var categoryController = GetCategoryController();
-            A.CallTo(() => _uniquePageService.GetUniquePage<CategoryContainer>()).Returns(null);
+            A.CallTo(() => _categoryAdminService.ProductContainerExists()).Returns(false);
 
-            var index = categoryController.Index("test", 1);
+            ViewResult index = _categoryController.Index("test", 1);
 
             index.Model.Should().BeNull();
         }
-
-        CategoryController GetCategoryController()
-        {
-            _documentService = A.Fake<IDocumentService>();
-            _categoryService = A.Fake<ICategoryService>();
-            _siteSettings = new SiteSettings() { DefaultPageSize = 10 };
-            _uniquePageService = A.Fake<IUniquePageService>();
-            _categoryContainer = new CategoryContainer();
-            A.CallTo(() => _uniquePageService.GetUniquePage<CategoryContainer>()).Returns(_categoryContainer);
-            return new CategoryController(_categoryService, _documentService, _siteSettings, _uniquePageService);
-        } 
     }
 }

@@ -53,7 +53,11 @@
                                     content: el.html()
                                 },
                                 success: function (msg) {
-                                    showLiveForm(el);
+                                    if (msg.success == false) {
+                                        alert(msg.message);
+                                    } else {
+                                        showLiveForm(el);
+                                    }
                                 }
                             });
                         } else {
@@ -77,7 +81,11 @@
                                     content: html
                                 },
                                 success: function (msg) {
-                                    showLiveForm(el);
+                                    if (msg.success == false) {
+                                        alert(msg.message);
+                                    } else {
+                                        showLiveForm(el);
+                                    }
                                 }
                             });
                         }
@@ -97,7 +105,7 @@
                 }
 
             });
-            
+
             $(".edit-indicator-layout", document).fadeIn(800);
             $(".edit-indicator-widget", document).fadeIn(800);
 
@@ -147,9 +155,8 @@
                         container.remove();
                     }
                 });
-                
+
                 $('[data-action=post-link]').on('click', function (e) {
-                    alert("hi");
                     e.preventDefault();
                     var self = $(this);
                     var url = self.attr('href') || self.data('link');
@@ -214,8 +221,8 @@
     function stripHtml(str) {
         return jQuery('<div />', { html: str }).text();
     }
-    
-    
+
+
 })(jQuery);
 
 $(function () {
@@ -239,6 +246,11 @@ $(function () {
     });
 
     $("#unpublish-now").click(function () {
+        if (window.top.location.pathname == '/') {
+            if (!confirm('Are you sure you want to unpublish your home page?')) {
+                return false;
+            }
+        }
         $.post('/admin/webpage/unpublish', { id: $('.mrcms-admin-nav-bar + #Id').val() }, function (response) {
             window.top.location.reload();
         });

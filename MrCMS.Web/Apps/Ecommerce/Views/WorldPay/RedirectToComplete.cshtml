@@ -1,0 +1,15 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
+
+<html>
+<head>
+    <title>Order completed</title>
+    <meta http-equiv="refresh" content="0;url=@(UniquePageHelper.GetAbsoluteUrl<OrderPlaced>(new{id=Model.Guid}))" />
+</head>
+<body>
+    <p>
+        Thanks for your order, you will now be redirected to @(Model.SiteName).
+    </p>
+</body>
+</html>

@@ -1,37 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using MrCMS.Entities;
 using MrCMS.Entities.Multisite;
-using System.Linq;
-using MrCMS.Events;
-using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Website;
-using NHibernate;
-using Ninject;
 
 namespace MrCMS.Indexing.Management
 {
     public static class IndexManager
     {
-        public static void EnsureIndexesExist(IKernel kernel, ISession session, Site site)
-        {
-            var service = new IndexService(kernel, session, site);
-            var mrCMSIndices = service.GetIndexes();
-            foreach (var index in mrCMSIndices.Where(index => !index.DoesIndexExist))
-            {
-                service.Reindex(index.TypeName);
-                service.Optimise(index.TypeName);
-            }
-        }
-        public static void EnsureIndexExists<T1,T2>() where T1 :SystemEntity  where T2 : IndexDefinition<T1>
+        public static void EnsureIndexExists<T1, T2>()
+            where T1 : SystemEntity
+            where T2 : IndexDefinition<T1>
         {
             var service = MrCMSApplication.Get<IIndexService>();
-            var indexManagerBase = service.GetIndexManagerBase(typeof (T2));
+            IIndexManagerBase indexManagerBase = service.GetIndexManagerBase(typeof (T2));
             if (!indexManagerBase.IndexExists)
             {
                 service.Reindex(indexManagerBase.GetIndexDefinitionType().FullName);
@@ -39,20 +27,31 @@ namespace MrCMS.Indexing.Management
         }
     }
 
-    public abstract class IndexManager<TEntity, TDefinition> : IIndexManager<TEntity, TDefinition>
+    public class IndexManager<TEntity, TDefinition> : IIndexManager<TEntity, TDefinition>
         where TEntity : SystemEntity
         where TDefinition : IndexDefinition<TEntity>
     {
         private readonly Site _currentSite;
         private readonly TDefinition _definition;
+        private readonly IGetLuceneDirectory _getLuceneDirectory;
+        private Directory _directory;
 
-        protected IndexManager(Site currentSite, TDefinition definition)
+        public IndexManager(IGetLuceneDirectory getLuceneDirectory, Site currentSite, TDefinition definition)
         {
+            _getLuceneDirectory = getLuceneDirectory;
             _currentSite = currentSite;
             _definition = definition;
         }
 
-        protected abstract Directory GetDirectory(Site site);
+        public string IndexFolderName
+        {
+            get { return Definition.IndexFolderName; }
+        }
+
+        public TDefinition Definition
+        {
+            get { return _definition; }
+        }
 
         public bool IndexExists
         {
@@ -66,7 +65,7 @@ namespace MrCMS.Indexing.Management
                 if (!IndexExists)
                     return null;
 
-                var lastModified = IndexReader.LastModified(GetDirectory(_currentSite));
+                long lastModified = IndexReader.LastModified(GetDirectory(_currentSite));
                 try
                 {
                     return new DateTime(1970, 1, 1).AddMilliseconds(lastModified);
@@ -89,28 +88,15 @@ namespace MrCMS.Indexing.Management
             }
         }
 
-        public string IndexName { get { return Definition.IndexName; } }
-        public string IndexFolderName { get { return Definition.IndexFolderName; } }
-
-        public TDefinition Definition
+        public string IndexName
         {
-            get { return _definition; }
-        }
-
-        private void Write(Action<IndexWriter> writeFunc, bool recreateIndex)
-        {
-            using (
-                var indexWriter = new IndexWriter(GetDirectory(_currentSite), Definition.GetAnalyser(), recreateIndex,
-                                                  IndexWriter.MaxFieldLength.UNLIMITED))
-            {
-                writeFunc(indexWriter);
-            }
+            get { return Definition.IndexName; }
         }
 
         public IndexCreationResult CreateIndex()
         {
-            var fsDirectory = GetDirectory(_currentSite);
-            var indexExists = IndexReader.IndexExists(fsDirectory);
+            Directory fsDirectory = GetDirectory(_currentSite);
+            bool indexExists = IndexReader.IndexExists(fsDirectory);
             if (indexExists)
                 return IndexCreationResult.AlreadyExists;
             try
@@ -126,12 +112,12 @@ namespace MrCMS.Indexing.Management
 
         public Type GetIndexDefinitionType()
         {
-            return typeof(TDefinition);
+            return typeof (TDefinition);
         }
 
         public Type GetEntityType()
         {
-            return typeof(TEntity);
+            return typeof (TEntity);
         }
 
         public void Write(Action<IndexWriter> action)
@@ -142,10 +128,10 @@ namespace MrCMS.Indexing.Management
         public IndexResult Insert(IEnumerable<TEntity> entities)
         {
             return IndexResult.GetResult(() => Write(writer =>
-                                                         {
-                                                             foreach (var entity in entities)
-                                                                 writer.AddDocument(Definition.Convert(entity));
-                                                         }));
+            {
+                foreach (TEntity entity in entities)
+                    writer.AddDocument(Definition.Convert(entity));
+            }));
         }
 
         public IndexResult Insert(TEntity entity)
@@ -178,7 +164,7 @@ namespace MrCMS.Indexing.Management
                 throw new Exception(
                     string.Format(
                         "object {0} is not of correct type for the index {1}",
-                        entity.ToString(),
+                        entity,
                         GetType().Name));
             });
         }
@@ -186,26 +172,26 @@ namespace MrCMS.Indexing.Management
         public IndexResult Update(IEnumerable<TEntity> entities)
         {
             return IndexResult.GetResult(() => Write(writer =>
-                                                         {
-                                                             foreach (var entity in entities)
-                                                                 writer.UpdateDocument(Definition.GetIndex(entity),
-                                                                                       Definition.Convert(entity));
-                                                         }));
+            {
+                foreach (TEntity entity in entities)
+                    writer.UpdateDocument(Definition.GetIndex(entity),
+                        Definition.Convert(entity));
+            }));
         }
 
         public IndexResult Update(TEntity entity)
         {
             return IndexResult.GetResult(() => Write(writer =>
-                                                         {
-                                                             using (var indexSearcher = new IndexSearcher(GetDirectory(_currentSite), true))
-                                                             {
-                                                                 var topDocs = indexSearcher.Search(new TermQuery(Definition.GetIndex(entity)), int.MaxValue);
-                                                                 if (!topDocs.ScoreDocs.Any())
-                                                                     return;
-                                                             }
-                                                             writer.UpdateDocument(Definition.GetIndex(entity),
-                                                                                   Definition.Convert(entity));
-                                                         }));
+            {
+                using (var indexSearcher = new IndexSearcher(GetDirectory(_currentSite), true))
+                {
+                    TopDocs topDocs = indexSearcher.Search(new TermQuery(Definition.GetIndex(entity)), int.MaxValue);
+                    if (!topDocs.ScoreDocs.Any())
+                        return;
+                }
+                writer.UpdateDocument(Definition.GetIndex(entity),
+                    Definition.Convert(entity));
+            }));
         }
 
         public IndexResult Update(object entity)
@@ -224,10 +210,10 @@ namespace MrCMS.Indexing.Management
         public IndexResult Delete(IEnumerable<TEntity> entities)
         {
             return IndexResult.GetResult(() => Write(writer =>
-                                                         {
-                                                             foreach (var entity in entities)
-                                                                 writer.DeleteDocuments(Definition.GetIndex(entity));
-                                                         }));
+            {
+                foreach (TEntity entity in entities)
+                    writer.DeleteDocuments(Definition.GetIndex(entity));
+            }));
         }
 
         public IndexResult Delete(TEntity entity)
@@ -245,18 +231,33 @@ namespace MrCMS.Indexing.Management
             return IndexResult.GetResult(() => Write(writer => writer.Optimize()));
         }
 
-        public IndexResult ReIndex(IEnumerable<TEntity> entities)
+        public IndexResult ReIndex(List<TEntity> entities)
         {
             return IndexResult.GetResult(() =>
-                                             {
-                                                 Write(writer => { }, true);
-                                                 Write(writer =>
-                                                           {
-                                                               foreach (var entity in entities)
-                                                                   writer.AddDocument(Definition.Convert(entity));
-                                                               writer.Optimize();
-                                                           });
-                                             });
+            {
+                Write(writer => { }, true);
+                Write(writer =>
+                {
+                    foreach (Document document in Definition.ConvertAll(entities))
+                        writer.AddDocument(document);
+                    writer.Optimize();
+                });
+            });
+        }
+
+        private Directory GetDirectory(Site site)
+        {
+            return _directory = _directory ?? _getLuceneDirectory.Get(site, IndexFolderName);
+        }
+
+        private void Write(Action<IndexWriter> writeFunc, bool recreateIndex)
+        {
+            using (
+                var indexWriter = new IndexWriter(GetDirectory(_currentSite), Definition.GetAnalyser(), recreateIndex,
+                    IndexWriter.MaxFieldLength.UNLIMITED))
+            {
+                writeFunc(indexWriter);
+            }
         }
     }
 }

@@ -1,13 +1,10 @@
-﻿using System.Web.Mvc;
-using MrCMS.Settings;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Web.Mvc;
 using MrCMS.Helpers;
-using MrCMS.Website;
-using NHibernate;
-using MrCMS.Web.Apps.Ecommerce.Entities.Currencies;
+using MrCMS.Settings;
 
 namespace MrCMS.Web.Apps.Ecommerce.Settings
 {
@@ -15,6 +12,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
     {
         [DisplayName("Search Products per Page")]
         public string SearchProductsPerPage { get; set; }
+
         [DisplayName("Previous Price text")]
         public string PreviousPriceText { get; set; }
 
@@ -30,24 +28,34 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         [DisplayName("Enable Wish Lists")]
         public bool EnableWishlists { get; set; }
 
+        [DisplayName("Enable Gift Cards")]
+        public bool GiftCardsEnabled { get; set; }
+
+        [DisplayName("Enable Gift Message")]
+        public bool GiftMessageEnabled { get; set; }
+
+        [DisplayName("Enable warehouse-based stock management")]
+        public bool WarehouseStockEnabled { get; set; }
+
         public IEnumerable<int> ProductPerPageOptions
         {
             get
             {
-                return SearchProductsPerPage.Split(',').Where(s =>
-                                                                  {
-                                                                      int result;
-                                                                      return int.TryParse(s, out result);
-                                                                  }).Select(s => Convert.ToInt32(s));
+                return (SearchProductsPerPage ?? string.Empty).Split(',').Where(s =>
+                {
+                    int result;
+                    return int.TryParse(s, out result);
+                }).Select(s => Convert.ToInt32(s));
             }
         }
+
         public IEnumerable<SelectListItem> ProductPerPageOptionItems
         {
             get
             {
-                return ProductPerPageOptions.BuildSelectItemList(i => string.Format("{0} products per page", i), i => i.ToString(),
-                                                   emptyItem: null);
-
+                return ProductPerPageOptions.BuildSelectItemList(i => string.Format("{0} products per page", i),
+                    i => i.ToString(),
+                    emptyItem: null);
             }
         }
 
@@ -58,19 +66,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 
         [DisplayName("Site Currency")]
         public int CurrencyId { get; set; }
-
-        public Currency Currency
-        {
-            get
-            {
-                var session = MrCMSApplication.Get<ISession>();
-                return CurrencyId > 0 ? session.Get<Currency>(CurrencyId) : session.QueryOver<Currency>().Take(1).SingleOrDefault();
-            }
-        }
-
-        public string CurrencyCode
-        {
-            get { return Currency != null ? Currency.Code : null; }
-        }
     }
 }

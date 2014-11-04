@@ -4,9 +4,11 @@
     var order = ViewData["order"] as Order;
     var errorMessage = TempData["register-error"] as string;
 }
-<div class="border-grey margin-bottom-20">
-    <div class="sub-header grey-background">
-        Would you like us to remember your details for next time?
+<div class="grey-border margin-bottom-20">
+    <div class="block-title">
+        <div class="h1style padding-left-10">
+            @Resource("Would you like us to remember your details for next time?")
+        </div>
     </div>
     <div class="padding-20">
         @using (Html.BeginForm("RegisterAndAssociateOrder", "OrderPlaced", null, FormMethod.Post, new { @class = "form-horizontal" }))
@@ -15,20 +17,27 @@
             @Html.HiddenFor(model => model.FirstName)
             @Html.HiddenFor(model => model.LastName)
             @Html.Hidden("Id", order.Guid)
-            <div class="row-fluid">
-                @Html.LabelFor(model => model.Password)
-                @Html.PasswordFor(model => model.Password, new { @class = "span6" })
-                @Html.ValidationMessageFor(x=>x.Password)
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="margin-bottom-10">
+                        @Html.LabelFor(model => model.Password)
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.Password)
+                    </div>
+                    <div class="margin-bottom-10">
+                        @Html.LabelFor(model => model.ConfirmPassword)
+                        @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(x => x.ConfirmPassword)
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <input type="submit" class="btn btn-primary btn-block" value="Continue" />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="row-fluid">
-                @Html.LabelFor(model => model.ConfirmPassword)
-                @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "span6" })
-                @Html.ValidationMessageFor(x=>x.ConfirmPassword)
-            </div>
-            <br />
-            <div class="row-fluid">
-                <input type="submit" class="btn red-gradient span4" value="Continue" />
-            </div>
+            
         }
     </div>
 </div>

@@ -23,7 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.SagePay
 
         public SagePaySettings()
         {
-            Enabled = true;
+            Enabled = false;
             Mode = VspServerMode.Test;
             VendorName = "MrCMS Ecommerce";
             Protocol = "3.00";

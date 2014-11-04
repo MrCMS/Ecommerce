@@ -4,29 +4,27 @@ using System.Web.Mvc;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Models;
 using MrCMS.Services;
+using MrCMS.Web.Areas.Admin.Models;
+using MrCMS.Web.Areas.Admin.Services;
+using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
+using NHibernate.Linq;
 
 namespace MrCMS.Web.Areas.Admin.Controllers
 {
     public class FileController : MrCMSAdminController
     {
-        private readonly IFileService _fileService;
+        private readonly IFileAdminService _fileService;
 
-        public FileController(IFileService fileService)
+        public FileController(IFileAdminService fileService)
         {
             _fileService = fileService;
-        }
-
-        [HttpGet]
-        public JsonResult Files(MediaCategory mediaCategory)
-        {
-            return Json(_fileService.GetFiles(mediaCategory), "text/html", System.Text.Encoding.UTF8);
         }
 
 
         [HttpPost]
         [ActionName("Files")]
-        public JsonResult Files_Post(MediaCategory mediaCategory)
+        public JsonResult Files_Post([IoCModelBinder(typeof(NullableEntityModelBinder))]MediaCategory mediaCategory)
         {
             var list = new List<ViewDataUploadFilesResult>();
             foreach (string files in Request.Files)
@@ -42,6 +40,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
             }
             return Json(list.ToArray(), "text/html", System.Text.Encoding.UTF8);
         }
+
 
         [HttpPost]
         [ActionName("Delete")]

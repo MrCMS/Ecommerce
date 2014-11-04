@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using MrCMS.ACL.Rules;
 using MrCMS.Settings;
+using MrCMS.Web.Areas.Admin.ModelBinders;
 using MrCMS.Website;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
@@ -32,7 +33,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         [HttpPost]
         [ActionName("Index")]
         [MrCMSACLRule(typeof(SiteSettingsACL), SiteSettingsACL.Save)]
-        public RedirectToRouteResult Index_Post([ModelBinder(typeof(SiteSettingsModelBinder))]List<SiteSettingsBase> settings)
+        public RedirectToRouteResult Index_Post([IoCModelBinder(typeof(SiteSettingsModelBinder))]List<SiteSettingsBase> settings)
         {
             settings.ForEach(s => _configurationProvider.SaveSettings(s));
             TempData["settings-saved"] = true;
@@ -46,7 +47,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public RedirectToRouteResult FileSystem([ModelBinder(typeof(FileSystemSettingsModelBinder))]FileSystemSettings settings)
+        public RedirectToRouteResult FileSystem([IoCModelBinder(typeof(FileSystemSettingsModelBinder))]FileSystemSettings settings)
         {
             _configurationProvider.SaveSettings(settings);
             return RedirectToAction("FileSystem");

@@ -1,52 +1,53 @@
-﻿using FakeItEasy;
+﻿using System;
+using FakeItEasy;
+using MrCMS.Helpers;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
-using NHibernate;
-using Xunit;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
-using System;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
+using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services
 {
-    public class OrderServiceTests : MrCMSTest
+    public class OrderAdminServiceTests : InMemoryDatabaseTest
     {
-        private readonly ISession _session;
-        private readonly OrderService _orderService;
-        private readonly IOrderEventService _orderEventService;
         private readonly IFileService _fileService;
+        private readonly OrderAdminService _orderAdminService;
         private readonly IOrderNoteService _orderNoteService;
 
-        public OrderServiceTests()
+        public OrderAdminServiceTests()
         {
-            _session = A.Fake<ISession>();
-            _orderEventService = A.Fake<IOrderEventService>();
-            _orderNoteService = A.Fake<IOrderNoteService>();
-            _fileService = A.Fake<IFileService>();
-            _orderService = new OrderService(_session, _orderEventService, _orderNoteService, _fileService);
-        }
-
-        //TODO PlaceOrder
-
-        [Fact]
-        public void OrderService_Cancel_ShouldCallOrderCancelled()
-        {
-            var order = new Order() { IsCancelled = true };
-
-            _orderService.Cancel(order);
-
-            A.CallTo(() => _orderEventService.OrderCancelled(order)).MustHaveHappened();
+            _orderAdminService = new OrderAdminService(null, Session, null);
         }
 
         [Fact]
-        public void OrderService_MarkAsShipped_ShouldCallOrderShipped()
+        public void OrderAdminService_Cancel_ShouldCallOrderCancelled()
         {
-            var order = new Order() { ShippingStatus = ShippingStatus.Shipped, ShippingDate = DateTime.UtcNow };
+            var order = new Order {IsCancelled = true};
+            Session.Transact(session => session.Save(order));
 
-            _orderService.MarkAsShipped(order);
+            _orderAdminService.Cancel(order);
 
-            A.CallTo(() => _orderEventService.OrderShipped(order)).MustHaveHappened();
+            A.CallTo(
+                () =>
+                    EventContext.FakeEventContext.Publish<IOnOrderCancelled, OrderCancelledArgs>(
+                        A<OrderCancelledArgs>.That.Matches(args => args.Order == order))).MustHaveHappened();
+        }
+
+        [Fact]
+        public void OrderAdminService_MarkAsShipped_ShouldCallOrderShipped()
+        {
+            var order = new Order {ShippingStatus = ShippingStatus.Shipped, ShippingDate = DateTime.UtcNow};
+            Session.Transact(session => session.Save(order));
+
+            _orderAdminService.MarkAsShipped(order);
+
+            A.CallTo(
+                () =>
+                    EventContext.FakeEventContext.Publish<IOnOrderShipped, OrderShippedArgs>(
+                        A<OrderShippedArgs>.That.Matches(args => args.Order == order))).MustHaveHappened();
         }
     }
 }

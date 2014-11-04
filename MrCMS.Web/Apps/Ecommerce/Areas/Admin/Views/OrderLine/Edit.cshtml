@@ -7,27 +7,27 @@
 @using (Html.BeginForm("Edit", "OrderLine", FormMethod.Post))
 {
     <fieldset>
-        <legend>Edit Order Line
+        <legend>
+            Edit Order Line
             <span class="btn-group  display-inline  pull-right">
                 <input type="submit" class="btn-primary btn" value="Save Changes" />
             </span>
         </legend>
-
         @Html.HiddenFor(x => x.Id)
-        
-        @Html.LabelFor(x=>x.NumberOfDownloads)
-        @Html.TextBoxFor(x=>x.NumberOfDownloads)
-        @Html.ValidationMessageFor(x=>x.NumberOfDownloads)
-        
-        @Html.LabelFor(x=>x.AllowedNumberOfDownloads)
-        @Html.TextBoxFor(x=>x.AllowedNumberOfDownloads)
-        @Html.ValidationMessageFor(x=>x.AllowedNumberOfDownloads)
-        
-        @Html.LabelFor(x=>x.DownloadExpiresOn)
-        @Html.TextBoxFor(x=>x.DownloadExpiresOn, new {@class="date-time-picker"})
-        @Html.ValidationMessageFor(x=>x.DownloadExpiresOn)
-        
-
-
+        <div class="form-group">
+            @Html.LabelFor(x => x.NumberOfDownloads)
+            @Html.TextBoxFor(x => x.NumberOfDownloads, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.NumberOfDownloads)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.AllowedNumberOfDownloads)
+            @Html.TextBoxFor(x => x.AllowedNumberOfDownloads, new { @class = "form-control" }))
+            @Html.ValidationMessageFor(x => x.AllowedNumberOfDownloads)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.DownloadExpiresOn)
+            @Html.TextBoxFor(x => x.DownloadExpiresOn, new { @class = "date-time-picker" })
+            @Html.ValidationMessageFor(x => x.DownloadExpiresOn)
+        </div>
     </fieldset>
 }

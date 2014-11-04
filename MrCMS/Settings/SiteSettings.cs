@@ -22,6 +22,7 @@ namespace MrCMS.Settings
             DaysToKeepLogs = 30;
             TaskExecutorKey = "executor";
             TaskExecutorPassword = Guid.NewGuid().ToString();
+            PageExtensionsToRoute = ".asp,.php,.aspx";
         }
 
         protected SiteSettingsOptionGenerator SiteSettingsOptionGenerator
@@ -61,6 +62,9 @@ namespace MrCMS.Settings
         [DisplayName("Use SSL in Admin")]
         public bool SSLAdmin { get; set; }
 
+        [DisplayName("Use SSL everywhere")]
+        public bool SSLEverywhere { get; set; }
+
         [DisplayName("Log 404 in admin logs")]
         public bool Log404s { get; set; }
 
@@ -68,13 +72,21 @@ namespace MrCMS.Settings
         [DropDownSelection("UiCultures")]
         public string UICulture { get; set; }
 
+        [DisplayName("Page extensions you want Mr CMS to handle")]
+        public string PageExtensionsToRoute { get; set; }
+
+        public IEnumerable<string> WebExtensionsToRoute
+        {
+            get { return (PageExtensionsToRoute ?? string.Empty).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries); }
+        } 
+
         public CultureInfo CultureInfo
         {
             get
             {
                 return !String.IsNullOrWhiteSpace(UICulture)
-                           ? CultureInfo.GetCultureInfo(UICulture)
-                           : CultureInfo.CurrentCulture;
+                    ? CultureInfo.GetCultureInfo(UICulture)
+                    : CultureInfo.CurrentCulture;
             }
         }
 
@@ -144,14 +156,10 @@ namespace MrCMS.Settings
 
         public override void SetViewData(ISession session, ViewDataDictionary viewDataDictionary)
         {
-            viewDataDictionary["DefaultLayoutOptions"] = SiteSettingsOptionGenerator.GetLayoutOptions(session, Site,
-                                                                                                      DefaultLayoutId);
-            viewDataDictionary["403Options"] = SiteSettingsOptionGenerator.GetErrorPageOptions(session, Site,
-                                                                                               Error403PageId);
-            viewDataDictionary["404Options"] = SiteSettingsOptionGenerator.GetErrorPageOptions(session, Site,
-                                                                                               Error404PageId);
-            viewDataDictionary["500Options"] = SiteSettingsOptionGenerator.GetErrorPageOptions(session, Site,
-                                                                                               Error500PageId);
+            viewDataDictionary["DefaultLayoutOptions"] = SiteSettingsOptionGenerator.GetLayoutOptions(session, DefaultLayoutId);
+            viewDataDictionary["403Options"] = SiteSettingsOptionGenerator.GetErrorPageOptions(session, Error403PageId);
+            viewDataDictionary["404Options"] = SiteSettingsOptionGenerator.GetErrorPageOptions(session, Error404PageId);
+            viewDataDictionary["500Options"] = SiteSettingsOptionGenerator.GetErrorPageOptions(session, Error500PageId);
             viewDataDictionary["Themes"] = SiteSettingsOptionGenerator.GetThemeNames(ThemeName);
 
             viewDataDictionary["UiCultures"] = SiteSettingsOptionGenerator.GetUiCultures(UICulture);

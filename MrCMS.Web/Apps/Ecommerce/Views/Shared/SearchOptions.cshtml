@@ -1,0 +1,49 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Web.Apps.Ecommerce.Services.Products
+@model List<MrCMS.Web.Apps.Ecommerce.Models.ProductOptionModel<string>>
+@{ var query = ViewData["query"] as ProductSearchQuery;}
+@if (Model.Any())
+{
+    <div class="widget-con">
+        <div class="title-con">
+            By options
+        </div>
+        <div class="options-con" id="product-filter-box-options">
+            <div class="option">
+                @if (Model.Any(model => model.Values.Any(valueModel => query.Options.Contains(valueModel.Id))))
+                {
+                    <h5>Selected Filters</h5>
+                    <ul>
+                        @foreach (var optionModel in Model.Where(model => model.Values.Any(valueModel => query.Options.Contains(valueModel.Id))))
+                        {
+                            var productValueModel = optionModel.Values.First(model => query.Options.Contains(model.Id));
+                            <li><strong>@optionModel.Name: </strong>@productValueModel.Name <a href="#" data-action="remove-option"><strong>&times;</strong></a><input name="Options" type="hidden" value="@productValueModel.Id" /></li>
+                        }
+                    </ul>
+                }
+                @foreach (var option in Model.Where(model => !model.Values.Any(valueModel => query.Options.Contains(valueModel.Id))))
+                {
+                    if (option.Values.Any())
+                    {
+                        <div class="padding-0 line-height-30">
+                            <label for="options-@option.Id">@option.Name</label>
+                        </div>
+                        <div class="padding-right-0">
+                            <select name="Options" id="options-@option.Id" class="form-control">
+                                <option value="">All</option>
+                                @foreach (var optionValue in option.Values)
+                                {
+                                    <option value="@optionValue.Id" @(query.Options.Contains(optionValue.Id) ? " selected=\"selected\"" : string.Empty)>
+                                        @optionValue.Name
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                        <div class="clearfix"></div>
+                    }
+                }
+            </div>
+
+        </div>
+    </div>
+}

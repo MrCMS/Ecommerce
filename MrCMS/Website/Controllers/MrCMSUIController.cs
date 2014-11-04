@@ -1,23 +1,23 @@
-﻿using System.Web.Mvc;
-using MrCMS.Entities.Documents.Web;
-using MrCMS.Entities.Widget;
+﻿using MrCMS.Helpers;
 
 namespace MrCMS.Website.Controllers
 {
+    [HandleWebpageViews]
     public abstract class MrCMSUIController : MrCMSController
     {
-        protected override ViewResult View(string viewName, string masterName, object model)
+        public void SetPageTitle(string pageTitle)
         {
-            if (!(model is Webpage) && !(model is Widget))
-                return base.View(viewName, masterName, model);
+            ViewData[MrCMSPageExtensions.PageTitleKey] = pageTitle;
+        }
 
-            if (string.IsNullOrWhiteSpace(viewName))
-                viewName = model.GetType().Name;
+        public void SetPageMetaDescription(string pageDescription)
+        {
+            ViewData[MrCMSPageExtensions.PageDescriptionKey] = pageDescription;
+        }
 
-            if (string.IsNullOrWhiteSpace(masterName) && model is Webpage)
-                masterName = (model as Webpage).CurrentLayout.UrlSegment;
-
-            return base.View(viewName, masterName, model);
+        public void SetPageMetaKeywords(string pageKeywords)
+        {
+            ViewData[MrCMSPageExtensions.PageKeywordsKey] = pageKeywords;
         }
     }
 }

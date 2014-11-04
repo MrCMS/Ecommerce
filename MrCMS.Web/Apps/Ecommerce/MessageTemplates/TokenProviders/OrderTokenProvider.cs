@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
 {
@@ -75,12 +76,27 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
                                                                sb.Append("<td>" + item.Name + " (" + item.SKU + ")" +
                                                                          GetDownloadLink(item) + "</td>");
                                                                sb.Append("<td>" + item.Quantity + "</td>");
-                                                               sb.Append("<td>" + item.UnitPrice + "</td>");
-                                                               sb.Append("<td>" + item.Subtotal + "</td>");
+                                                               sb.Append("<td>" + item.UnitPrice.ToCurrencyFormat() + "</td>");
+                                                               sb.Append("<td>" + item.Subtotal.ToCurrencyFormat() + "</td>");
                                                                sb.Append("</tr>");
                                                            }
 
                                                            sb.Append("</table>");
+                                                           sb.Append("<br />");
+                                                           sb.Append("<p>");
+                                                           sb.AppendFormat("Subtotal: {0}<br />", order.Subtotal.ToCurrencyFormat());
+                                                           sb.AppendFormat("VAT: {0}<br />", order.Tax.ToCurrencyFormat());
+                                                           if (order.ShippingTotal > 0)
+                                                           {
+                                                               sb.AppendFormat("Shipping: {0} <br />",
+                                                                   order.ShippingTotal.ToCurrencyFormat());
+                                                           }
+                                                           if (order.DiscountAmount > 0)
+                                                           {
+                                                               sb.AppendFormat("Discount: {0} (Code: {1})<br />", order.DiscountAmount.ToCurrencyFormat(), order.DiscountAmount);
+                                                           }
+                                                           sb.AppendFormat("<strong>Total: {0}</strong>", order.Total.ToCurrencyFormat());
+                                                           sb.Append("</p>");
                                                            return sb.ToString();
                                                        }
                            }
