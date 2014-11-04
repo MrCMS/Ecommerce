@@ -54,11 +54,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
         {
             var item = baseData.ToList().SingleOrDefault(x => x.Key == salesChannel);
             if (item != null)
-                throw new NotImplementedException();
-                //results.Add(item.Where(x => x.ShippingMethod != null).GroupBy(c => c.ShippingMethod.Name)
-                //                    .Select(k => new { k.Key, Sum = k.Sum(t => t.Total) })
-                //                    .ToDictionary(t => t.Key, t => t.Sum)
-                //                    .ToList());
+                results.Add(item.Where(x => !string.IsNullOrWhiteSpace(x.ShippingMethodName)).GroupBy(c => c.ShippingMethodName)
+                                    .Select(k => new { k.Key, Sum = k.Sum(t => t.Total) })
+                                    .ToDictionary(t => t.Key, t => t.Sum)
+                                    .ToList());
             else
                 results.Add(new List<KeyValuePair<string, decimal>>());
         }
