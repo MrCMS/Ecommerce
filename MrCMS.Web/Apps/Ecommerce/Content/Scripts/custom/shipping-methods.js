@@ -42,7 +42,6 @@
             $("#to-payment-details").hide();
         }
     }
-    showHideToPayment();
     $(document).on('change', "select#ShippingMethod", function () {
         $.post('/Apps/Ecommerce/SetShippingMethod/SetShipping',
         {
