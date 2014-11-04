@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
@@ -18,11 +19,14 @@ namespace MrCMS.Web.Apps.Ecommerce.UnifiedSearch
 
         public override UniversalSearchItem GetSearchItem(Product product)
         {
+            var searchTerms = new List<string> { product.Name, GetVariantNames(product) };
+            searchTerms.AddRange(GetSkus(product));
+
             return new UniversalSearchItem
             {
                 DisplayName = product.Name,
                 Id = product.Id,
-                SearchTerms = new string[] { product.Name, GetSkus(product), GetVariantNames(product) },
+                SearchTerms = searchTerms,
                 SystemType = product.GetType().FullName,
                 ActionUrl = _urlHelper.Action("Edit", "Webpage", new { id = product.Id, area = "admin" }),
             };
@@ -32,23 +36,22 @@ namespace MrCMS.Web.Apps.Ecommerce.UnifiedSearch
         {
             var productVariants = product.Variants;
             var sb = new StringBuilder();
-            foreach (var productVariant in productVariants.Where(x=>!string.IsNullOrWhiteSpace(x.Name)))
+            foreach (var productVariant in productVariants.Where(x => !string.IsNullOrWhiteSpace(x.Name)))
             {
-                sb.Append(productVariant.Name);
+                sb.Append(productVariant.Name + ",");
             }
             return sb.ToString();
         }
 
-        private string GetSkus(Product product)
+        private IEnumerable<string> GetSkus(Product product)
         {
             var productVariants = product.Variants;
             var sb = new StringBuilder();
             foreach (var productVariant in productVariants)
             {
-                sb.Append(productVariant.SKU);
-                sb.Append(productVariant.ManufacturerPartNumber);
+                yield return productVariant.SKU;
+                yield return productVariant.ManufacturerPartNumber;
             }
-            return sb.ToString();
         }
     }
 }

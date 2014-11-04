@@ -164,7 +164,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual string DisplayName
         {
-            get { return !string.IsNullOrWhiteSpace(Name) ? Name : (Product != null ? Product.Name : ""); }
+            get { return FullName; }
         }
 
         public virtual string FullName
@@ -178,7 +178,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                 }
                 if (!string.IsNullOrWhiteSpace(Name))
                 {
-                    list.Add(Name);
+                    if (Product != null && Product.Name != Name)
+                    {
+                        list.Add(Name);
+                    }
                 }
                 if (OptionValues.Any())
                 {
