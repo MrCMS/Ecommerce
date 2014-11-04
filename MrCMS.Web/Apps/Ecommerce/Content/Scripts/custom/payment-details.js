@@ -22,5 +22,19 @@
             });
         });
     });
+
+    pageLoad();
 })
 
+function pageLoad()
+{
+    var checked = $('input[name="PaymentMethodSystemName"]:checked').val();
+    if (checked) {
+        $.post('/Apps/Ecommerce/PaymentDetails/SetPaymentMethod', { paymentMethod: checked }, function (url) {
+            $.get(url, function (response) {
+                $('#payment-confirmation').html(response);
+                $.validator.unobtrusive.parse('form');
+            });
+        });
+    }
+}
