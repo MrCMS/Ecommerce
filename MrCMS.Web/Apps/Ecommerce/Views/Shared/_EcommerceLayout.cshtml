@@ -1,46 +1,109 @@
-﻿@model MrCMS.Entities.Documents.Web.Webpage
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model MrCMS.Entities.Documents.Web.Webpage
 @{
     Layout = "_BaseLayout.cshtml";
 }
-<div class="container">
-    <div class="row-fluid">
-        <div class="span3">
-            @RenderZone("Header Left")
+
+<header class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <a href="/" class="pull-left logo">
+                <img alt="" class="img-responsive" src="/content/upload/1/default/logo8.png" title="">
+            </a>
+            @{ RenderZone("Header Right", allowFrontEndEditing:false); }
+            @{ RenderZone("User Links", allowFrontEndEditing:false); }
+            <form method="GET" action="@(UniquePageHelper.GetUrl<ProductSearch>())" id="search-box" class="hidden-xs  pull-right" novalidate="novalidate">
+                <div class="input-group">
+                    <input class="form-control" id="searchTerm" name="searchTerm" placeholder="e.g : Shorts" type="text" value="">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-default-blue" type="submit" id="searchButton" name="searchButton"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                </div>
+            </form>
         </div>
-        <div class="span6">
-            @RenderZone("Header Middle")
-        </div>
-        <div class="span3">
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="pull-right">
-                        @RenderZone("User Links")
-                    </div>
+    </div>
+</header>
+
+<nav class="navbar navbar-inverse" role="navigation" id="site-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="visible-xs visible-sm mobilemenu">
+                    <a href="#" id="left-menu-toggle"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Menu</a>
+
+                    <form method="GET" action="@(UniquePageHelper.GetUrl<ProductSearch>())" id="search-box" class="pull-right hidden-sm" novalidate="novalidate">
+                        <div class="input-group">
+                            <input class="form-control" id="searchTerm" name="searchTerm" placeholder="e.g : Shorts" type="text" value="">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default btn-default-blue" type="submit" id="searchButton" name="searchButton"><span class="glyphicon glyphicon-search"></span></button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+                <div class="hidden-sm">
+                    <nav class="navbar-collapse collapse">
+                        @{ RenderZone("Navigation"); }
+                    </nav>
                 </div>
             </div>
-            @RenderZone("Header Right")
         </div>
     </div>
-</div>
+</nav>
 
-<div id="navbar-wrapper">
-    <div class="container">
-        <div class="navbar">
-            <div class="navbar-inner">
-                @RenderZone("Navigation")
+<div class="left-menu"></div>
+<div class="right-menu"></div>
+<div class="site-container ">
+    <div class="value-props">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-left">
+                        <ul>
+                            <li>
+                                <i class="glyphicon glyphicon-ok green"></i> @Resource("Value Prop 1", "FREE delivery")
+                            </li>
+                            <li>
+                                <i class="glyphicon glyphicon-ok green"></i>@Resource("Value Prop 2", "100 % Secure shopping")
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pull-right margin-right-minus">
+                        <ul>
+                            <li>
+                                e : <a href="@Resource("info@mrcms.com")">@Resource("info@mrcms.com")</a>
+                            </li>
+                            <li>
+                                @Resource("Telephone", "t : 0191 269 3420")
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="container">
-    @RenderZone("Before Content")
+    @{ RenderZone("Before Content"); }
     @RenderBody()
-    @RenderZone("After Content")
-</div>
+    @{ RenderZone("After Content"); }
 
-<footer>
-    <div class="container">
-        @RenderZone("Footer")
-    </div>
-</footer>
+    <footer class="margin-top-bottom-30">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="footer-area-1">
+                    @{ RenderZone("Footer Area 1"); }
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="footer-area-2">
+                    @{ RenderZone("Footer Area 2"); }
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="footer-area-3">
+                    @{ RenderZone("Footer Area 3"); }
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="footer-area-4">
+                    @{ RenderZone("Footer Area 4"); }
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>

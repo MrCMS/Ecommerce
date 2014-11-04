@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Models;
+using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -13,13 +16,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public class ProductOptionManager : IProductOptionManager
     {
-        private readonly IProductSearchService _productSearchService;
+        private readonly IProductSearchIndexService _productSearchIndexService;
+        private readonly IUniquePageService _uniquePageService;
         private readonly ISession _session;
 
-        public ProductOptionManager(ISession session, IProductSearchService productSearchService)
+        public ProductOptionManager(ISession session, IProductSearchIndexService productSearchIndexService, IUniquePageService uniquePageService)
         {
             _session = session;
-            _productSearchService = productSearchService;
+            _productSearchIndexService = productSearchIndexService;
+            _uniquePageService = uniquePageService;
         }
 
         public IList<ProductSpecificationAttribute> ListSpecificationAttributes()
@@ -62,12 +67,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             _session.Transact(session => session.Delete(option));
         }
 
-        public bool AnyExistingSpecificationAttributesWithName(string name)
+        public bool AnyExistingSpecificationAttributesWithName(UniqueAttributeNameModel model)
         {
             return
                 _session.QueryOver<ProductSpecificationAttribute>()
-                        .Where(specificationOption => specificationOption.Name == name)
-                        .RowCount() > 0;
+                        .Where(specificationOption => specificationOption.Name == model.Name && specificationOption.Id != model.Id)
+                        .Any();
         }
 
         public bool AnyExistingSpecificationAttributeOptionsWithName(string name, int id)
@@ -84,12 +89,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public void UpdateSpecificationAttributeDisplayOrder(IList<SortItem> options)
         {
             _session.Transact(session => options.ForEach(item =>
-                                                             {
-                                                                 var formItem =
-                                                                     session.Get<ProductSpecificationAttribute>(item.Id);
-                                                                 formItem.DisplayOrder = item.Order;
-                                                                 session.Update(formItem);
-                                                             }));
+            {
+                var formItem =
+                    session.Get<ProductSpecificationAttribute>(item.Id);
+                formItem.DisplayOrder = item.Order;
+                session.Update(formItem);
+            }));
         }
 
         public IList<ProductSpecificationAttributeOption> ListSpecificationAttributeOptions(int id)
@@ -117,13 +122,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public void UpdateSpecificationAttributeOptionDisplayOrder(IList<SortItem> options)
         {
             _session.Transact(session => options.ForEach(item =>
-                                                             {
-                                                                 var formItem =
-                                                                     session.Get<ProductSpecificationAttributeOption>(
-                                                                         item.Id);
-                                                                 formItem.DisplayOrder = item.Order;
-                                                                 session.Update(formItem);
-                                                             }));
+            {
+                var formItem =
+                    session.Get<ProductSpecificationAttributeOption>(
+                        item.Id);
+                formItem.DisplayOrder = item.Order;
+                session.Update(formItem);
+            }));
         }
 
         public void DeleteSpecificationAttributeOption(ProductSpecificationAttributeOption option)
@@ -154,10 +159,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (option == null)
             {
                 option = new ProductSpecificationAttributeOption
-                             {
-                                 ProductSpecificationAttribute = productSpecificationAttribute,
-                                 Name = value
-                             };
+                {
+                    ProductSpecificationAttribute = productSpecificationAttribute,
+                    Name = value
+                };
                 _session.Save(option);
             }
 
@@ -169,10 +174,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             else
             {
                 var productSpecificationValue = new ProductSpecificationValue
-                                                    {
-                                                        Product = product,
-                                                        ProductSpecificationAttributeOption = option
-                                                    };
+                {
+                    Product = product,
+                    ProductSpecificationAttributeOption = option
+                };
                 product.SpecificationValues.Add(productSpecificationValue);
                 _session.Transact(session => session.SaveOrUpdate(product));
             }
@@ -192,12 +197,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public void UpdateSpecificationValueDisplayOrder(IList<SortItem> options)
         {
             _session.Transact(session => options.ForEach(item =>
-                                                             {
-                                                                 var formItem =
-                                                                     session.Get<ProductSpecificationValue>(item.Id);
-                                                                 formItem.DisplayOrder = item.Order;
-                                                                 session.Update(formItem);
-                                                             }));
+            {
+                var formItem =
+                    session.Get<ProductSpecificationValue>(item.Id);
+                formItem.DisplayOrder = item.Order;
+                session.Update(formItem);
+            }));
         }
 
         public ProductOption GetAttributeOptionByName(string name)
@@ -218,19 +223,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (product != null && options != null && options.Count > 0)
             {
                 _session.Transact(session =>
-                                      {
-                                          options.ForEach(item =>
-                                                              {
-                                                                  var option = session.Get<ProductOption>(item.Id);
+                {
+                    options.ForEach(item =>
+                    {
+                        var option = session.Get<ProductOption>(item.Id);
 
-                                                                  if (option == null)
-                                                                      return;
+                        if (option == null)
+                            return;
 
-                                                                  product.Options.Remove(option);
-                                                                  product.Options.Insert(item.Order, option);
-                                                              });
-                                          session.Update(product);
-                                      });
+                        product.Options.Remove(option);
+                        product.Options.Insert(item.Order, option);
+                    });
+                    session.Update(product);
+                });
             }
         }
 
@@ -239,78 +244,109 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             _session.Transact(session => session.Delete(value));
         }
 
-        public List<ProductOptionModel> GetSearchAttributeOptions(ProductSearchQuery query)
+        public List<ProductOptionModel<string>> GetSearchAttributeOptions(ProductSearchQuery query)
         {
-            List<int> values = _productSearchService.GetOptions(query);
-            IList<ProductOptionValue> productAttributeValues =
-                _session.QueryOver<ProductOptionValue>()
-                        .Fetch(value => value.ProductOption)
-                        .Eager.Where(value => value.Id.IsIn(values))
-                        .Cacheable()
-                        .List();
-
-            List<ProductOption> productAttributeOptions =
-                productAttributeValues.Select(value => value.ProductOption).Distinct().ToList();
-
-            return productAttributeOptions.Select(option => new ProductOptionModel
-                                                                {
-                                                                    Name = option.Name,
-                                                                    Id = option.Id,
-                                                                    Values =
-                                                                        productAttributeValues.Where(
-                                                                            value =>
-                                                                            value.ProductOption == option)
-                                                                                              .OrderBy(
-                                                                                                  x => x.DisplayOrder)
-                                                                                              .Distinct()
-                                                                                              .Select(
-                                                                                                  value =>
-                                                                                                  new ProductValueModel
-                                                                                                      {
-                                                                                                          Name =
-                                                                                                              value
-                                                                                                              .Value,
-                                                                                                          Id = value.Id
-                                                                                                      }).ToList()
-                                                                }).ToList();
+            List<OptionInfo> values = _productSearchIndexService.GetOptions(query);
+            return GetSearchAttributeOptions(values);
         }
 
-        public List<ProductOptionModel> GetSearchSpecificationAttributes(ProductSearchQuery query)
+        private List<ProductOptionModel<string>> GetSearchAttributeOptions(List<OptionInfo> values)
         {
-            List<int> values = _productSearchService.GetSpecifications(query);
+            var optionIds = values.Select(info => info.OptionId).Distinct().ToList();
+            IList<ProductOption> productAttributeOptions =
+                _session.QueryOver<ProductOption>()
+                    .Where(value => value.Id.IsIn(optionIds)).Cacheable()
+                    .List();
+
+            return productAttributeOptions.Select(option => new ProductOptionModel<string>
+            {
+                Name = option.Name,
+                Id = option.Id,
+                Values =
+                    values.Where(
+                        value =>
+                            value.OptionId == option.Id)
+                        .OrderBy(x => x.Value)
+                        .Distinct()
+                        .Select(
+                            value =>
+                                new ProductValueModel<string>
+                                {
+                                    Name =
+                                        value
+                                            .Value,
+                                    Id = string.Format("{0}[{1}]", option.Id, value.Value)
+                                }).ToList()
+            }).ToList();
+        }
+
+        public List<ProductOptionModel<int>> GetSearchSpecificationAttributes(ProductSearchQuery query)
+        {
+            List<int> values = _productSearchIndexService.GetSpecifications(query);
+            return GetSearchSpecificationAttributes(query, values);
+        }
+
+        private List<ProductOptionModel<int>> GetSearchSpecificationAttributes(ProductSearchQuery query, List<int> values)
+        {
+            ProductSpecificationAttribute attributeAlias = null;
             IList<ProductSpecificationAttributeOption> productSpecificationAttributeOptions =
                 _session.QueryOver<ProductSpecificationAttributeOption>()
-                        .Fetch(value => value.ProductSpecificationAttribute)
-                        .Eager.Where(option => option.Id.IsIn(values))
-                        .Cacheable()
-                        .List();
+                    .JoinAlias(option => option.ProductSpecificationAttribute, () => attributeAlias)
+                    .Where(option => option.Id.IsIn(values) && !attributeAlias.HideInSearch)
+                    .Fetch(option => option.ProductSpecificationAttribute).Eager
+                    .Cacheable()
+                    .List();
             List<ProductSpecificationAttribute> productSpecificationAttributes =
                 productSpecificationAttributeOptions.Select(value => value.ProductSpecificationAttribute)
-                                                    .OrderBy(x => x.DisplayOrder)
-                                                    .Distinct()
-                                                    .ToList();
+                    .OrderBy(x => x.DisplayOrder)
+                    .Distinct()
+                    .ToList();
 
-            return productSpecificationAttributes.Select(attribute => new ProductOptionModel
-                                                                          {
-                                                                              Name = attribute.Name,
-                                                                              Id = attribute.Id,
-                                                                              Values =
-                                                                                  productSpecificationAttributeOptions
-                                                                                  .Where(
-                                                                                      value =>
-                                                                                      value
-                                                                                          .ProductSpecificationAttribute ==
-                                                                                      attribute)
-                                                                                  .OrderBy(x => x.DisplayOrder)
-                                                                                  .Distinct()
-                                                                                  .Select(
-                                                                                      value =>
-                                                                                      new ProductValueModel
-                                                                                          {
-                                                                                              Name = value.Name,
-                                                                                              Id = value.Id
-                                                                                          }).ToList()
-                                                                          }).ToList();
+            RemoveHiddenSearchSpecifications(query, productSpecificationAttributes);
+
+            return productSpecificationAttributes.Select(attribute => new ProductOptionModel<int>
+            {
+                Name = attribute.Name,
+                Id = attribute.Id,
+                Values =
+                    productSpecificationAttributeOptions
+                        .Where(
+                            value =>
+                                value
+                                    .ProductSpecificationAttribute ==
+                                attribute)
+                        .OrderBy(x => x.DisplayOrder)
+                        .Distinct()
+                        .Select(
+                            value =>
+                                new ProductValueModel<int>
+                                {
+                                    Name = value.Name,
+                                    Id = value.Id
+                                }).ToList()
+            }).ToList();
+        }
+
+        public ProductOptionSearchData GetSearchData(ProductSearchQuery query)
+        {
+            var values = _productSearchIndexService.GetOptionSearchData(query);
+            return new ProductOptionSearchData
+            {
+                AttributeOptions = GetSearchAttributeOptions(values.Options),
+                SpecificationOptions = GetSearchSpecificationAttributes(query, values.Specifications)
+            };
+        }
+
+        private void RemoveHiddenSearchSpecifications(ProductSearchQuery query, List<ProductSpecificationAttribute> productSpecificationAttributes)
+        {
+            var category = query.CategoryId.HasValue
+                ? (EcommerceSearchablePage)_session.Get<Category>(query.CategoryId.Value)
+                : _uniquePageService.GetUniquePage<ProductSearch>();
+            if (category != null)
+            {
+                productSpecificationAttributes.RemoveAll(
+                    attribute => category.HiddenSearchSpecifications.Contains(attribute));
+            }
         }
 
         public IList<ProductOption> ListAttributeOptions()
@@ -357,11 +393,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             else
             {
                 _session.Transact(session => session.Save(new ProductOptionValue
-                                                              {
-                                                                  ProductVariant = productVariant,
-                                                                  ProductOption = specificationOption,
-                                                                  Value = value
-                                                              }));
+                {
+                    ProductVariant = productVariant,
+                    ProductOption = specificationOption,
+                    Value = value
+                }));
             }
         }
 

@@ -13,14 +13,19 @@
     <fieldset>
         <legend>Amazon Logs 
             <span class="btn-group  display-inline  pull-right">
-                <button class="btn btn-primary" type="submit">Filter & Update</button>
                 @Html.ActionLink("Delete All Logs", "DeleteAllLogs", "Logs", new {id = ""}, new {@class = "btn btn-danger", data_toggle = "fb-modal"})
+                <button class="btn btn-primary" type="submit">Filter Logs</button>
             </span>
         </legend>
-        @Html.Label("type", "Filter Logs")
-        @Html.DropDownList("type", Enum.GetValues(typeof (AmazonLogType)).OfType<AmazonLogType>().BuildSelectItemList(type => type.GetDescription(), type => type.ToString(), type => type.ToString() == Request["type"], "All"))
     </fieldset>
+
+    <div class="form-group">
+        @Html.Label("type", "Filter Logs")
+        @Html.DropDownList("type", Enum.GetValues(typeof(AmazonLogType)).OfType<AmazonLogType>().BuildSelectItemList(type => type.GetDescription(), type => type.ToString(), type => type.ToString() == Request["type"], "All"), new{@class="form-control"})
+    </div>
 }
+
+
 @if (Model.Count == 0)
 {
     @:No results.

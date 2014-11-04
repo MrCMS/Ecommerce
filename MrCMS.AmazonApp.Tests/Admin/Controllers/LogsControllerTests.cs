@@ -11,7 +11,7 @@ using Xunit;
 
 namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 {
-    public class LogsControllerTests : InMemoryDatabaseTest
+    public class LogsControllerTests 
     {
         private readonly IAmazonLogService _amazonLogService;
         private readonly LogsController _logsController;

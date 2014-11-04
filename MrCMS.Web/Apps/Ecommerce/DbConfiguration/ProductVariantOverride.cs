@@ -1,7 +1,10 @@
-﻿using FluentNHibernate.Automapping;
+﻿using System.Collections.Generic;
+using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
 using FluentNHibernate.Mapping;
+using MrCMS.DbConfiguration.Types;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using NHibernate.Mapping;
 
 namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
 {
@@ -12,16 +15,10 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
             mapping.Map(x => x.BasePrice).Scale(2);
             mapping.Map(x => x.PreviousPrice).Scale(2);
             mapping.HasMany(variant => variant.OptionValues).KeyColumn("ProductVariantId").Cascade.All();
-            mapping.HasOne(variant => variant.GoogleBaseProduct)
-                   .PropertyRef(product => product.ProductVariant)
-                   .Cascade.All().Fetch.Join();
             mapping.HasMany(variant => variant.PriceBreaks).Cascade.All();
 
             mapping.Map(variant => variant.SKU).Index("IX_ProductVariant_SKU");
-
-            mapping.HasManyToMany(variant => variant.RestrictedShippingMethods)
-                .Table("Ecommerce_ProductVariantRestrictedShippingMethods")
-                .Not.Inverse();
+            mapping.Map(variant => variant.RestrictedTo).CustomType<BinaryData<HashSet<string>>>().Length(9999);       
         }
     }
 }

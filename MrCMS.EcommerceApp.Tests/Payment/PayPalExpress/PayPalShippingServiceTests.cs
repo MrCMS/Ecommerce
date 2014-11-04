@@ -1,4 +1,7 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
+using MrCMS.EcommerceApp.Tests.TestableModels;
+using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress;
 using Xunit;
 
@@ -32,9 +35,22 @@ namespace MrCMS.EcommerceApp.Tests.Payment.PayPalExpress
         }
 
         [Fact]
-        public void PayPalShippingServiceTests_GetNoShipping_ShouldBe2()
+        public void PayPalShippingServiceTests_GetNoShipping_ShouldBe2WhenRequiresShipping()
         {
-            _payPalShippingService.GetNoShipping().Should().Be("2");
+            _payPalShippingService.GetNoShipping(new TestableCartModel(requiresShipping: true)).Should().Be("2");
+        }
+
+        [Fact]
+        public void PayPalShippingServiceTests_GetNoShipping_ShouldBe0WhenRequiresShippingAndAddressIsSet()
+        {
+            var testableCartModel = new TestableCartModel(requiresShipping: true) {ShippingAddress = new Address()};
+            _payPalShippingService.GetNoShipping(testableCartModel).Should().Be("0");
+        }
+
+        [Fact]
+        public void PayPalShippingServiceTests_GetNoShipping_ShouldBe1WhenShippingNotRequired()
+        {
+            _payPalShippingService.GetNoShipping(new TestableCartModel(requiresShipping: false)).Should().Be("1");
         }
     }
 }

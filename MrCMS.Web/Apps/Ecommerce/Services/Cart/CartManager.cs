@@ -1,114 +1,73 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using MrCMS.Web.Apps.Ecommerce.Entities;
-using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
-using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
+﻿using System;
+using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
-using MrCMS.Web.Apps.Ecommerce.Models;
-using NHibernate;
-using MrCMS.Helpers;
-using MrCMS.Website;
+using MrCMS.Web.Apps.Ecommerce.Payment;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
-    public class CartManager : ICartManager
+    public class CartManager : ICartManager, ICartSessionKeyList
     {
         public const string CurrentCartGuid = "current.cart-guid";
         public const string CurrentShippingAddressKey = "current.shipping-address";
+
         public const string CurrentBillingAddressSameAsShippingAddressKey =
             "current.billing-address-same-as-shipping-address";
+
         public const string CurrentBillingAddressKey = "current.billing-address";
-        public const string CurrentShippingMethodIdKey = "current.shipping-method-id";
+        public const string CurrentShippingMethodTypeKey = "current.shipping-method-type";
         public const string CurrentOrderEmailKey = "current.order-email";
-        public const string CurrentDiscountCodeKey = "current.discount-code";
+        public const string CurrentGiftMessageKey = "current.gift-message";
         public const string CurrentPaymentMethodKey = "current.payment-method";
-        public const string CurrentCountryIdKey = "current.country-id";
         public const string CurrentPayPalExpressToken = "current.paypal-express-token";
         public const string CurrentPayPalExpressPayerId = "current.paypal-express-payer-id";
+        public const string CurrentAppliedGiftCards = "current.applied-gift-cards";
 
-        private readonly CartModel _cart;
-        private readonly ISession _session;
         private readonly ICartSessionManager _cartSessionManager;
-        private readonly IEnumerable<ICartSessionKeyList> _sessionKeyLists;
         private readonly IGetUserGuid _getUserGuid;
+        private readonly ICartBuilder _cartBuilder;
 
-        public CartManager(CartModel cart, ISession session, ICartSessionManager cartSessionManager, IEnumerable<ICartSessionKeyList> sessionKeyLists, IGetUserGuid getUserGuid)
+        public CartManager(ICartBuilder cartBuilder, ICartSessionManager cartSessionManager, IGetUserGuid getUserGuid)
         {
-            _cart = cart;
-            _session = session;
+            _cartBuilder = cartBuilder;
             _cartSessionManager = cartSessionManager;
-            _sessionKeyLists = sessionKeyLists;
             _getUserGuid = getUserGuid;
         }
 
-        public void AddToCart(AddToCartModel model)
+        public IEnumerable<string> Keys
         {
-            AddToCart(model.ProductVariant, model.Quantity);
+            get
+            {
+                yield return CurrentCartGuid;
+                yield return CurrentShippingAddressKey;
+                yield return CurrentBillingAddressSameAsShippingAddressKey;
+                yield return CurrentBillingAddressKey;
+                yield return CurrentShippingMethodTypeKey;
+                yield return CurrentOrderEmailKey;
+                yield return CurrentGiftMessageKey;
+                yield return CurrentPaymentMethodKey;
+                yield return CurrentPayPalExpressToken;
+                yield return CurrentPayPalExpressPayerId;
+                yield return CurrentAppliedGiftCards;
+            }
         }
 
-        private void AddToCart(ProductVariant item, int quantity)
+        public void SetShippingAddress(Address address, Guid? userGuid = null)
         {
-            var existingItem = _cart.Items.FirstOrDefault(cartItem => cartItem.Item.SKU == item.SKU);
-            if (existingItem != null)
-                existingItem.Quantity += quantity;
+            _cartSessionManager.SetSessionValue(CurrentShippingAddressKey, userGuid ?? _getUserGuid.UserGuid, address);
+        }
+
+        public void SetShippingMethod(IShippingMethod shippingMethod)
+        {
+            if (shippingMethod != null)
+            {
+                _cartSessionManager.SetSessionValue(CurrentShippingMethodTypeKey, _getUserGuid.UserGuid,
+                    shippingMethod.TypeName);
+            }
             else
             {
-                existingItem = new CartItem { Item = item, Quantity = quantity, UserGuid = CurrentRequestData.UserGuid };
-                _cart.Items.Add(existingItem);
+                _cartSessionManager.RemoveValue(CurrentShippingMethodTypeKey, _getUserGuid.UserGuid);
             }
-            _session.Transact(session => session.SaveOrUpdate(existingItem));
-        }
-
-        public void Delete(CartItem item)
-        {
-            _session.Transact(session => session.Delete(item));
-            _cart.Items.Remove(item);
-        }
-
-        public void UpdateQuantity(CartItem item, int quantity)
-        {
-            item.Quantity = quantity;
-
-            _session.Transact(session => session.Update(item));
-        }
-
-        public void UpdateQuantities(List<CartUpdateValue> quantities)
-        {
-            _session.Transact(session =>
-            {
-                foreach (var value in quantities)
-                {
-                    var cartItem = _cart.Items.FirstOrDefault(item => item.Id == value.ItemId);
-
-                    if (cartItem != null)
-                    {
-                        if (value.Quantity <= 0)
-                            session.Delete(cartItem);
-                        else
-                        {
-                            cartItem.Quantity = value.Quantity;
-                            session.Update(cartItem);
-                        }
-                    }
-                }
-            });
-        }
-
-        public void EmptyBasket()
-        {
-            foreach (var item in _cart.Items)
-            {
-                _session.Transact(session => session.Delete(item));
-            }
-            _cart.Items.Clear();
-            CartKeys.ForEach(s => _cartSessionManager.RemoveValue(s, _getUserGuid.UserGuid));
-        }
-
-        public void SetShippingAddress(Address address)
-        {
-            _cartSessionManager.SetSessionValue(CurrentShippingAddressKey, _getUserGuid.UserGuid, address);
         }
 
         public void SetBillingAddress(Address address)
@@ -118,12 +77,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public void SetBillingAddressSameAsShippingAddress(bool value)
         {
-            _cartSessionManager.SetSessionValue(CurrentBillingAddressSameAsShippingAddressKey, _getUserGuid.UserGuid, value);
+            _cartSessionManager.SetSessionValue(CurrentBillingAddressSameAsShippingAddressKey, _getUserGuid.UserGuid,
+                value);
         }
 
-        public void SetDiscountCode(string code)
+
+        public void AddGiftCard(string code)
         {
-            _cartSessionManager.SetSessionValue(CurrentDiscountCodeKey, _getUserGuid.UserGuid, code);
+            var userGuid = _getUserGuid.UserGuid;
+            var codes = _cartSessionManager.GetSessionValue(CurrentAppliedGiftCards,userGuid,new List<string>());
+            if (!codes.Contains(code))
+                codes.Add(code);
+            _cartSessionManager.SetSessionValue(CurrentAppliedGiftCards, userGuid, codes);
+        }
+
+        public void RemoveGiftCard(string code)
+        {
+            var userGuid = _getUserGuid.UserGuid;
+            var codes = _cartSessionManager.GetSessionValue(CurrentAppliedGiftCards,userGuid,new List<string>());
+            if (codes.Contains(code))
+                codes.RemoveAll(s => s == code);
+            _cartSessionManager.SetSessionValue(CurrentAppliedGiftCards, userGuid, codes);
         }
 
         public void SetOrderEmail(string email)
@@ -131,51 +105,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _cartSessionManager.SetSessionValue(CurrentOrderEmailKey, _getUserGuid.UserGuid, email);
         }
 
-        public void SetPaymentMethod(string methodName)
+        public IPaymentMethod SetPaymentMethod(string methodName)
         {
             _cartSessionManager.SetSessionValue(CurrentPaymentMethodKey, _getUserGuid.UserGuid, methodName);
+            return _cartBuilder.BuildCart().PaymentMethod;
         }
 
-        public void SetShippingInfo(ShippingCalculation shippingCalculation)
+        public void SetPayPalExpressPayerId(string payerId)
         {
-            if (shippingCalculation == null) return;
-
-            if (shippingCalculation.ShippingMethod != null)
-                _cartSessionManager.SetSessionValue(CurrentShippingMethodIdKey, _getUserGuid.UserGuid, shippingCalculation.ShippingMethod.Id);
-            if (shippingCalculation.Country != null)
-                SetCountry(shippingCalculation.Country);
-        }
-
-        public void SetCountry(Country country)
-        {
-            if (country != null) _cartSessionManager.SetSessionValue(CurrentCountryIdKey, _getUserGuid.UserGuid, country.Id);
-        }
-
-        public void SetPayPalExpressInfo(string token, string payerId)
-        {
-            _cartSessionManager.SetSessionValue(CurrentPayPalExpressToken, _getUserGuid.UserGuid, token);
             _cartSessionManager.SetSessionValue(CurrentPayPalExpressPayerId, _getUserGuid.UserGuid, payerId);
         }
-        public IEnumerable<string> CartKeys
+
+        public void SetPayPalExpressToken(string token)
         {
-            get
-            {
-                yield return CurrentCartGuid;
-                yield return CurrentShippingAddressKey;
-                yield return CurrentBillingAddressSameAsShippingAddressKey;
-                yield return CurrentBillingAddressKey;
-                yield return CurrentShippingMethodIdKey;
-                yield return CurrentOrderEmailKey;
-                yield return CurrentDiscountCodeKey;
-                yield return CurrentPaymentMethodKey;
-                yield return CurrentCountryIdKey;
-                yield return CurrentPayPalExpressToken;
-                yield return CurrentPayPalExpressPayerId;
-                foreach (var key in _sessionKeyLists.SelectMany(keyList => keyList.Keys))
-                {
-                    yield return key;
-                }
-            }
+            _cartSessionManager.SetSessionValue(CurrentPayPalExpressToken, _getUserGuid.UserGuid, token);
         }
+
     }
 }

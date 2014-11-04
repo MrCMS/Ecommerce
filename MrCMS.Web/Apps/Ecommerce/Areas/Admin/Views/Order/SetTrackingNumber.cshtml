@@ -9,8 +9,9 @@
                 <input type="submit" class="btn-primary btn" value="Save" />
             </span>
         </legend>
-
-        @Html.LabelFor(x=>x.TrackingNumber)
-        @Html.TextBoxFor(x=>x.TrackingNumber)
+        <div class="form-group">
+            @Html.LabelFor(x => x.TrackingNumber)
+            @Html.TextBoxFor(x => x.TrackingNumber, new{@class="form-control"})
+        </div>
     </fieldset>
 }

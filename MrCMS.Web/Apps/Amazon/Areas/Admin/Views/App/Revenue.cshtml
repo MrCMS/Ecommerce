@@ -1,10 +1,11 @@
 ﻿@using System.Web.Mvc.Html
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @using MrCMS.Website
 @model MrCMS.Web.Apps.Amazon.Models.AmazonDashboardModel
 
-<div class="row-fluid">
-    <div class="span12">
+<div class="row">
+    <div class="col-lg-12">
         <div class="dashboard-box">
             <div class="graphics">
                 <div id="orders"></div>
@@ -13,7 +14,7 @@
                 <div class="stats">
                 </div>
                 <div class="stats-description">
-                    Revenue (@(MrCMSApplication.Get<EcommerceSettings>().Currency.Code))
+                    Revenue (@(MrCMSApplication.Get<EcommerceSettings>().Currency().Code))
                 </div>
             </div>
             @Html.ActionLink("All Orders", "Index", "Orders", null, new { @class = "more-info peter-river" })

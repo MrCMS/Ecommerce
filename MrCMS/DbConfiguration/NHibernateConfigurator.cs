@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Web.Configuration;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
@@ -21,32 +21,31 @@ using MrCMS.Entities.Documents.Web.FormProperties;
 using MrCMS.Entities.Messaging;
 using MrCMS.Entities.People;
 using MrCMS.Entities.Widget;
-using MrCMS.Website;
+using MrCMS.Helpers;
+using MrCMS.Settings;
 using NHibernate;
 using NHibernate.Cache;
 using NHibernate.Caches.SysCache2;
-using NHibernate.Dialect;
+using NHibernate.Cfg;
 using NHibernate.Event;
 using NHibernate.Tool.hbm2ddl;
-using Environment = NHibernate.Cfg.Environment;
-using TypeHelper = MrCMS.Helpers.TypeHelper;
 
 namespace MrCMS.DbConfiguration
 {
     public class NHibernateConfigurator
     {
-        private static readonly SaveOrUpdateListener _saveOrUpdateListener = new SaveOrUpdateListener();
-        private static readonly UpdateIndicesListener _updateIndexesListener = new UpdateIndicesListener();
-        private static readonly PostCommitEventListener _postCommitEventListener = new PostCommitEventListener();
-        private static readonly UrlHistoryListener _urlHistoryListener = new UrlHistoryListener();
-        private static SoftDeleteListener _softDeleteListener;
+        private readonly IDatabaseProvider _databaseProvider;
+        private readonly ISystemConfigurationProvider _systemConfigurationProvider;
         private List<Assembly> _manuallyAddedAssemblies = new List<Assembly>();
 
-        public DatabaseType DatabaseType { get; set; }
-        public bool InDevelopment { get; set; }
-        public bool CacheEnabled { get; set; }
+        public NHibernateConfigurator(IDatabaseProvider databaseProvider, ISystemConfigurationProvider systemConfigurationProvider = null)
+        {
+            _databaseProvider = databaseProvider;
+            _systemConfigurationProvider = systemConfigurationProvider;
+            CacheEnabled = true;
+        }
 
-        public IPersistenceConfigurer PersistenceOverride { get; set; }
+        public bool CacheEnabled { get; set; }
 
         public List<Assembly> ManuallyAddedAssemblies
         {
@@ -54,86 +53,13 @@ namespace MrCMS.DbConfiguration
             set { _manuallyAddedAssemblies = value; }
         }
 
-        public static SaveOrUpdateListener SaveOrUpdateListener
-        {
-            get { return _saveOrUpdateListener; }
-        }
-
-        public static UpdateIndicesListener UpdateIndexesListener
-        {
-            get { return _updateIndexesListener; }
-        }
-
-        public static PostCommitEventListener PostCommitEventListener
-        {
-            get { return _postCommitEventListener; }
-        }
-
-        public static UrlHistoryListener UrlHistoryListener
-        {
-            get { return _urlHistoryListener; }
-        }
-
-        public static SoftDeleteListener SoftDeleteListener
-        {
-            get { return _softDeleteListener; }
-        }
-
         public ISessionFactory CreateSessionFactory()
         {
-            NHibernate.Cfg.Configuration configuration = GetConfiguration();
+            var configuration = GetConfiguration();
 
-            return configuration.BuildSessionFactory();
-        }
+            var sessionFactory = configuration.BuildSessionFactory();
 
-        private IPersistenceConfigurer GetPersistenceConfigurer()
-        {
-            if (PersistenceOverride != null)
-                return PersistenceOverride;
-            switch (DatabaseType)
-            {
-                case DatabaseType.Auto:
-                    ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings["mrcms"];
-                    switch (connectionStringSettings.ProviderName)
-                    {
-                        case "System.Data.SQLite":
-                            return InDevelopment
-                                       ? SQLiteConfiguration.Standard.ConnectionString(
-                                           x => x.FromConnectionStringWithKey("mrcms-dev"))
-                                       : SQLiteConfiguration.Standard.ConnectionString(
-                                           x => x.FromConnectionStringWithKey("mrcms"));
-                        case "System.Data.SqlClient":
-                            return InDevelopment
-                                       ? MsSqlConfiguration.MsSql2008.ConnectionString(
-                                           x => x.FromConnectionStringWithKey("mrcms-dev"))
-                                       : MsSqlConfiguration.MsSql2008.ConnectionString(
-                                           x => x.FromConnectionStringWithKey("mrcms"));
-                        case "MySql.Data.MySqlClient":
-                            return InDevelopment
-                                       ? MySQLConfiguration.Standard.ConnectionString(
-                                           x => x.FromConnectionStringWithKey("mrcms-dev"))
-                                       : MySQLConfiguration.Standard.ConnectionString(
-                                           x => x.FromConnectionStringWithKey("mrcms"));
-                    }
-                    throw new DataException("Provider Name not recognised: " + connectionStringSettings.ProviderName);
-                case DatabaseType.MsSql:
-                    return InDevelopment
-                               ? MsSqlConfiguration.MsSql2008.ConnectionString(
-                                   x => x.FromConnectionStringWithKey("mrcms-dev"))
-                               : MsSqlConfiguration.MsSql2008.ConnectionString(
-                                   x => x.FromConnectionStringWithKey("mrcms"));
-                case DatabaseType.MySQL:
-                    return InDevelopment
-                               ? MySQLConfiguration.Standard.ConnectionString(
-                                   x => x.FromConnectionStringWithKey("mrcms-dev"))
-                               : MySQLConfiguration.Standard.ConnectionString(
-                                   x => x.FromConnectionStringWithKey("mrcms"));
-                case DatabaseType.Sqlite:
-                    return SQLiteConfiguration.Standard.Dialect<SQLiteDialect>().InMemory().Raw(
-                        Environment.ReleaseConnections, "on_close");
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            return sessionFactory;
         }
 
         public static void ValidateSchema(NHibernate.Cfg.Configuration config)
@@ -152,82 +78,81 @@ namespace MrCMS.DbConfiguration
 
         public NHibernate.Cfg.Configuration GetConfiguration()
         {
-            List<Assembly> assemblies = TypeHelper.GetAllMrCMSAssemblies();
+            HashSet<Assembly> assemblies = TypeHelper.GetAllMrCMSAssemblies();
             assemblies.AddRange(ManuallyAddedAssemblies);
 
             var finalAssemblies = new List<Assembly>();
 
             assemblies.ForEach(assembly =>
-                                   {
-                                       if (finalAssemblies.All(a => a.FullName != assembly.FullName))
-                                           finalAssemblies.Add(assembly);
-                                   });
+            {
+                if (finalAssemblies.All(a => a.FullName != assembly.FullName))
+                    finalAssemblies.Add(assembly);
+            });
 
-            IPersistenceConfigurer iPersistenceConfigurer = GetPersistenceConfigurer();
-            AutoPersistenceModel addFromAssemblyOf =
+            IPersistenceConfigurer iPersistenceConfigurer = _databaseProvider.GetPersistenceConfigurer();
+            AutoPersistenceModel autoPersistenceModel =
                 AutoMap.Assemblies(new MrCMSMappingConfiguration(), finalAssemblies)
-                       .IgnoreBase<SystemEntity>()
-                       .IgnoreBase<SiteEntity>()
-                       .IncludeBase<Document>()
-                       .IncludeBase<Webpage>()
-                       .IncludeBase<MessageTemplate>()
-                       .IncludeBase<UserProfileData>()
-                       .IncludeBase<Widget>()
-                       .IncludeBase<FormProperty>()
-                       .IncludeBase<FormPropertyWithOptions>()
-                       .IncludeAppBases()
-                       .UseOverridesFromAssemblies(assemblies.Where(assembly => !assembly.GlobalAssemblyCache).ToArray())
-                       .Conventions.AddFromAssemblyOf<CustomForeignKeyConvention>()
-                       .IncludeAppConventions();
-            addFromAssemblyOf.Add(typeof(NotDeletedFilter));
+                    .IgnoreBase<SystemEntity>()
+                    .IgnoreBase<SiteEntity>()
+                    .IncludeBase<Document>()
+                    .IncludeBase<Webpage>()
+                    .IncludeBase<MessageTemplate>()
+                    .IncludeBase<UserProfileData>()
+                    .IncludeBase<Widget>()
+                    .IncludeBase<FormProperty>()
+                    .IncludeBase<FormPropertyWithOptions>()
+                    .IncludeAppBases()
+                    .UseOverridesFromAssemblies(assemblies.Where(assembly => !assembly.GlobalAssemblyCache).ToArray())
+                    .Conventions.AddFromAssemblyOf<CustomForeignKeyConvention>()
+                    .IncludeAppConventions();
+
+            autoPersistenceModel.Add(typeof(NotDeletedFilter));
+            autoPersistenceModel.Add(typeof(SiteFilter));
             NHibernate.Cfg.Configuration config = Fluently.Configure()
-                                                          .Database(iPersistenceConfigurer)
-                                                          .Mappings(m => m.AutoMappings.Add(addFromAssemblyOf))
-                                                          .Cache(builder =>
-                                                                     {
-                                                                         if (CacheEnabled)
-                                                                         {
-                                                                             builder.UseSecondLevelCache()
-                                                                                    .UseQueryCache()
-                                                                                    .QueryCacheFactory
-                                                                                 <StandardQueryCacheFactory>();
-                                                                             var mrCMSSection =
-                                                                                 WebConfigurationManager.GetSection(
-                                                                                     "mrcms") as MrCMSConfigSection;
-                                                                             if (mrCMSSection != null)
-                                                                             {
-                                                                                 builder.ProviderClass(
-                                                                                     mrCMSSection.CacheProvider
-                                                                                                 .AssemblyQualifiedName);
-                                                                                 if (mrCMSSection.MinimizePuts)
-                                                                                     builder.UseMinimalPuts();
-                                                                             }
-                                                                             else
-                                                                                 builder.ProviderClass<SysCacheProvider>
-                                                                                     ();
-                                                                         }
-                                                                     })
-                                                          .ExposeConfiguration(AppendListeners)
-                                                          .ExposeConfiguration(AppSpecificConfiguration)
-                                                          .ExposeConfiguration(c =>
-                                                                                   {
+                .Database(iPersistenceConfigurer)
+                .Mappings(m => m.AutoMappings.Add(autoPersistenceModel))
+                .Cache(builder =>
+                {
+                    if (CacheEnabled)
+                    {
+                        builder.UseSecondLevelCache()
+                            .UseQueryCache()
+                            .QueryCacheFactory<StandardQueryCacheFactory>();
+                        var mrCMSSection = WebConfigurationManager.GetSection("mrcms") as MrCMSConfigSection;
+                        if (mrCMSSection != null)
+                        {
+                            builder.ProviderClass(
+                                mrCMSSection.CacheProvider
+                                    .AssemblyQualifiedName);
+                            if (mrCMSSection.MinimizePuts)
+                                builder.UseMinimalPuts();
+                        }
+                        else
+                            builder.ProviderClass<SysCacheProvider>
+                                ();
+                    }
+                })
+                .ExposeConfiguration(AppendListeners)
+                .ExposeConfiguration(AppSpecificConfiguration)
+                .ExposeConfiguration(c =>
+                {
 #if DEBUG
-                                                                                       c.SetProperty(
-                                                                                           Environment
-                                                                                               .GenerateStatistics,
-                                                                                           "true");
+                    c.SetProperty(
+                        Environment
+                            .GenerateStatistics,
+                        "true");
 #endif
-                                                                                       c.SetProperty(
-                                                                                           Environment.Hbm2ddlKeyWords,
-                                                                                           "auto-quote");
-                                                                                       //c.SetProperty(
-                                                                                       //    Environment
-                                                                                       //        .DefaultBatchFetchSize,
-                                                                                       //    "25");
-                                                                                       c.SetProperty(
-                                                                                           Environment.BatchSize, "25");
-                                                                                   })
-                                                          .BuildConfiguration();
+                    c.SetProperty(
+                        Environment.Hbm2ddlKeyWords,
+                        "auto-quote");
+                    //c.SetProperty(
+                    //    Environment
+                    //        .DefaultBatchFetchSize,
+                    //    "25");
+                    c.SetProperty(
+                        Environment.BatchSize, "25");
+                })
+                .BuildConfiguration();
 
 
             ValidateSchema(config);
@@ -237,6 +162,7 @@ namespace MrCMS.DbConfiguration
             return config;
         }
 
+
         private void AppSpecificConfiguration(NHibernate.Cfg.Configuration configuration)
         {
             MrCMSApp.AppendAllAppConfiguration(configuration);
@@ -244,61 +170,13 @@ namespace MrCMS.DbConfiguration
 
         private void AppendListeners(NHibernate.Cfg.Configuration configuration)
         {
-            configuration.EventListeners.SaveOrUpdateEventListeners =
-                new ISaveOrUpdateEventListener[]
-                    {
-                        SaveOrUpdateListener
-                    };
-
             configuration.AppendListeners(ListenerType.PreInsert,
-                                          new[]
-                                              {
-                                                  SaveOrUpdateListener
-                                              });
-            configuration.AppendListeners(ListenerType.PreUpdate,
-                                          new IPreUpdateEventListener[]
-                                              {
-                                                  SaveOrUpdateListener
-                                              });
-
-            configuration.AppendListeners(ListenerType.PostCommitUpdate, new IPostUpdateEventListener[]
-                                                                             {
-                                                                                 PostCommitEventListener,
-                                                                                 UrlHistoryListener
-                                                                             });
-            _softDeleteListener = new SoftDeleteListener(InDevelopment);
-            configuration.SetListener(ListenerType.Delete, SoftDeleteListener);
-
-            if (!InDevelopment && CurrentRequestData.DatabaseIsInstalled)
-            {
-                configuration.AppendListeners(ListenerType.PostCommitUpdate, new IPostUpdateEventListener[]
-                                                                                 {
-                                                                                     UpdateIndexesListener
-                                                                                 });
-                configuration.AppendListeners(ListenerType.PostCommitInsert, new IPostInsertEventListener[]
-                                                                                 {
-                                                                                     UpdateIndexesListener
-                                                                                 });
-                configuration.AppendListeners(ListenerType.PostCommitDelete, new IPostDeleteEventListener[]
-                                                                                 {
-                                                                                     UpdateIndexesListener
-                                                                                 });
-                configuration.AppendListeners(ListenerType.PostCollectionRecreate,
-                                              new IPostCollectionRecreateEventListener[]
-                                                  {
-                                                      UpdateIndexesListener
-                                                  });
-                configuration.AppendListeners(ListenerType.PostCollectionRemove,
-                                              new IPostCollectionRemoveEventListener[]
-                                                  {
-                                                      UpdateIndexesListener
-                                                  });
-                configuration.AppendListeners(ListenerType.PostCollectionUpdate,
-                                              new IPostCollectionUpdateEventListener[]
-                                                  {
-                                                      UpdateIndexesListener
-                                                  });
-            }
+                new[]
+                {
+                    new SetCoreProperties()
+                });
+            var softDeleteListener = new SoftDeleteListener();
+            configuration.SetListener(ListenerType.Delete, softDeleteListener);
         }
     }
 }

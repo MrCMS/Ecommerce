@@ -1,6 +1,6 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Widgets.RecentlyViewedItems
+<div class="form-group">
+    @Html.LabelFor(widget => widget.NoOfItemsForDisplay)
+    @Html.TextBoxFor(widget => widget.NoOfItemsForDisplay, new { @class = "form-control" })
+</div>
 
-<br />
-
-@Html.LabelFor(widget => widget.NoOfItemsForDisplay)
-@Html.TextBoxFor(widget => widget.NoOfItemsForDisplay)

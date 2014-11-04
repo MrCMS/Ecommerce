@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
+using MrCMS.EcommerceApp.Tests.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using Ninject.MockingKernel;
 using Xunit;
@@ -19,17 +19,9 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         {
             _mockingKernel = new MockingKernel();
             MrCMSApplication.OverrideKernel(_mockingKernel);
-            SetTaxSettings();
+            _mockingKernel.SetTaxSettings();
         }
 
-        private void SetTaxSettings(bool taxesEnabled = false, bool loadedPricesIncludeTax = false)
-        {
-            _mockingKernel.Rebind<TaxSettings>().ToMethod(context => new TaxSettings
-            {
-                TaxesEnabled = taxesEnabled,
-                LoadedPricesIncludeTax = loadedPricesIncludeTax
-            });
-        }
 
 
         [Fact]
@@ -93,7 +85,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         [Fact]
         public void ProductVariant_Price_WithTaxesEnabledAndRateSetShouldBeBasePricePlusTax()
         {
-            SetTaxSettings(true);
+            _mockingKernel.SetTaxSettings(true);
             var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 20 } };
 
             var price = variant.Price;
@@ -104,7 +96,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         [Fact]
         public void ProductVariant_Price_WithTaxesDisabledAndRateSetShouldBeTheSameAsPricePreTax()
         {
-            SetTaxSettings(taxesEnabled: false);
+            _mockingKernel.SetTaxSettings(taxesEnabled: false);
             var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 20 } };
 
             var price = variant.Price;
@@ -115,7 +107,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         [Fact]
         public void ProductVariant_Price_ShouldBeRoundedTo2DecimalPlaces()
         {
-            SetTaxSettings(true);
+            _mockingKernel.SetTaxSettings(true);
             var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 17.5m } };
 
             var price = variant.Price;
@@ -126,7 +118,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         [Fact]
         public void ProductVariant_Tax_IfTaxesAreEnabledShouldBePriceMinusPricePreTax()
         {
-            SetTaxSettings(true);
+            _mockingKernel.SetTaxSettings(true);
             var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 17.5m } };
 
             var tax = variant.Tax;
@@ -137,7 +129,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         [Fact]
         public void ProductVariant_Tax_IfTaxesAreDisabledShouldBeZero()
         {
-            SetTaxSettings(false);
+            _mockingKernel.SetTaxSettings(false);
             var variant = new ProductVariant { BasePrice = 1, TaxRate = new TaxRate { Percentage = 17.5m } };
 
             var tax = variant.Tax;
@@ -149,7 +141,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         [PropertyData("TaxRates")]
         public void ProductVariant_TaxRatePercentage_TaxesEnabledIsTakenFromTheTaxRatesPercentage(TaxRate rate, decimal expected)
         {
-            SetTaxSettings(true);
+            _mockingKernel.SetTaxSettings(true);
             var productVariant = new ProductVariant { TaxRate = rate };
 
             productVariant.TaxRatePercentage.Should().Be(expected);
@@ -159,7 +151,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         [PropertyData("TaxRates")]
         public void ProductVariant_TaxRatePercentage_TaxesDisabledIsZero(TaxRate rate, decimal expected)
         {
-            SetTaxSettings(false);
+            _mockingKernel.SetTaxSettings(false);
             var productVariant = new ProductVariant { TaxRate = rate };
 
             productVariant.TaxRatePercentage.Should().Be(0);
@@ -186,7 +178,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         [Fact]
         public void ProductVariant_PricePreTax_IfStoreSettingsAreNotLoadedPricesIncludeTaxShouldBeSameAsBasePrice()
         {
-            SetTaxSettings(true, false);
+            _mockingKernel.SetTaxSettings(true, false);
             var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
 
             product.PricePreTax.Should().Be(6);
@@ -195,7 +187,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         [Fact]
         public void ProductVariant_PricePreTax_IfStoreSettingsAreLoadedPricesIncludeTaxShouldBeBasePriceLessVat()
         {
-            SetTaxSettings(true, true);
+            _mockingKernel.SetTaxSettings(true, true);
             var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
 
             product.PricePreTax.Should().Be(5);
@@ -204,7 +196,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         [Fact]
         public void ProductVariant_Price_IfStoreSettingsAreNotLoadedPricesIncludeTaxShouldBeBasePricePlusVAT()
         {
-            SetTaxSettings(true, false);
+            _mockingKernel.SetTaxSettings(true, false);
             var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
 
             product.Price.Should().Be(7.2m);
@@ -213,7 +205,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         [Fact]
         public void ProductVariant_Price_IfStoreSettingsAreLoadedPricesIncludeTaxShouldBeSameAsBasePrice()
         {
-            SetTaxSettings(true, true);
+            _mockingKernel.SetTaxSettings(true, true);
             var product = new ProductVariant { BasePrice = 6, TaxRate = new TaxRate { Percentage = 20 } };
 
             product.Price.Should().Be(6);
@@ -222,7 +214,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         [Fact]
         public void ProductVariant_GetUnitPrice_ShouldGetHighestQuantityMatchingPriceBreak()
         {
-            SetTaxSettings(true, true);
+            _mockingKernel.SetTaxSettings(true, true);
             var variant = new ProductVariant
                 {
                     BasePrice = 10,
@@ -240,7 +232,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Products.ProductVariantTests
         [Fact]
         public void ProductVariant_GetPrice_ShouldGetHighestQuantityMatchingPriceBreak()
         {
-            SetTaxSettings(true, true);
+            _mockingKernel.SetTaxSettings(true, true);
             var variant = new ProductVariant
                 {
                     BasePrice = 10,

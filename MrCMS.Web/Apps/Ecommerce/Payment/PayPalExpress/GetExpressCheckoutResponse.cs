@@ -7,10 +7,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 {
     public class GetExpressCheckoutResponse : PayPalResponse
     {
+        public bool AddressAndMethodSet { get; set; }
     }
     public class DoExpressCheckoutPaymentResponse : PayPalResponse
     {
         public DoExpressCheckoutPaymentResponseDetailsType Details { get; set; }
+
+        public bool RedirectToPayPal { get; set; }
 
         public void UpdateOrder(Order order)
         {

@@ -6,6 +6,8 @@ using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Models;
 using MrCMS.Paging;
+using MrCMS.Services.Events;
+using MrCMS.Services.Events.Args;
 using MrCMS.Settings;
 using MrCMS.Website;
 using NHibernate;
@@ -30,6 +32,7 @@ namespace MrCMS.Services
                                   {
                                       session.Save(user);
                                   });
+            EventContext.Instance.Publish<IOnUserAdded, OnUserAddedEventArgs>(new OnUserAddedEventArgs(user));
         }
 
         public void SaveUser(User user)
@@ -49,8 +52,8 @@ namespace MrCMS.Services
 
         public User GetUserByEmail(string email)
         {
-            string trim = email.Trim();
-            return _session.QueryOver<User>().Where(user => user.Email == trim).Take(1).Cacheable().SingleOrDefault();
+            string trimmedEmail = (email ?? string.Empty).Trim();
+            return _session.QueryOver<User>().Where(user => user.Email == trimmedEmail).Take(1).Cacheable().SingleOrDefault();
         }
 
         public User GetUserByResetGuid(Guid resetGuid)
@@ -68,11 +71,7 @@ namespace MrCMS.Services
 
         public void DeleteUser(User user)
         {
-            _session.Transact(session =>
-                                  {
-                                      user.OnDeleting(session);
-                                      session.Delete(user);
-                                  });
+            _session.Transact(session => session.Delete(user));
         }
 
         /// <summary>

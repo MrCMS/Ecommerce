@@ -62,6 +62,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                                PhoneNumber = address.Phone,
                                PostalCode = address.PostalCode,
                                StateProvince = address.StateOrProvince,
+                               CountryCode = address.Country.ToString()
                            };
             }
             return null;

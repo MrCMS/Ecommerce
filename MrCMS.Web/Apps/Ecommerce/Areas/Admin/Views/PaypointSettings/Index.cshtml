@@ -7,35 +7,44 @@
 @using (Html.BeginForm("Save", "PaypointSettings", FormMethod.Post))
 {
     <fieldset>
-        <legend>Paypoint Settings
+        <legend>
+            Paypoint Settings
             <span class="btn-group display-inline pull-right">
                 <input type="submit" class="btn btn-primary" value="Save" />
             </span>
         </legend>
-        @Html.InlineCheckboxFor(settings => settings.Enabled)
-
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.Enabled, null, null)
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.Admin3DSecureDisable)
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.IsLive)
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.LogResponses)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.AccountName)
+            @Html.TextBoxFor(settings => settings.AccountName, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.VPNPassword)
+            @Html.TextBoxFor(settings => settings.VPNPassword, new{@class="form-control"})
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.MPIMerchantName)
+            @Html.TextBoxFor(settings => settings.MPIMerchantName, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.MPIMerchantUrl)
+            @Html.TextBoxFor(settings => settings.MPIMerchantUrl, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.MPIDescription)
+            @Html.TextBoxFor(settings => settings.MPIDescription, new { @class = "form-control" })
+        </div>
         
-        @Html.InlineCheckboxFor(settings => settings.Admin3DSecureDisable)
-
-        @Html.InlineCheckboxFor(settings => settings.ThreeDSecureEnabled)
-
-        @Html.InlineCheckboxFor(settings => settings.IsLive)
-
-        @Html.InlineCheckboxFor(settings => settings.LogResponses)
-
-        @Html.LabelFor(settings => settings.AccountName)
-        @Html.TextBoxFor(settings => settings.AccountName)
-
-        @Html.LabelFor(settings => settings.VPNPassword)
-        @Html.TextBoxFor(settings => settings.VPNPassword)
-
-        @Html.LabelFor(settings => settings.MPIMerchantName)
-        @Html.TextBoxFor(settings => settings.MPIMerchantName)
-
-        @Html.LabelFor(settings => settings.MPIMerchantUrl)
-        @Html.TextBoxFor(settings => settings.MPIMerchantUrl)
-
-        @Html.LabelFor(settings => settings.MPIDescription)
-        @Html.TextBoxFor(settings => settings.MPIDescription)
     </fieldset>
 }

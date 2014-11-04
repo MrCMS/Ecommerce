@@ -1,9 +1,7 @@
 ﻿using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
-using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.DbConfiguration;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
-using MrCMS.Web.Apps.Ecommerce.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
 {
@@ -11,6 +9,8 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
     {
         public void Override(AutoMapping<CartItem> mapping)
         {
+            mapping.Map(item => item.Data).MakeVarCharMax();
+            mapping.IgnoreProperty(item => item.CanBuyStatus);
         }
     }
 }

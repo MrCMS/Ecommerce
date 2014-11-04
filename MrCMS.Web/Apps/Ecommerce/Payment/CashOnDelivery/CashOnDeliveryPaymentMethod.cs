@@ -5,29 +5,39 @@ using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.CashOnDelivery
 {
-    public class CashOnDeliveryPaymentMethod : BasePaymentMethod
+    public class CashOnDeliveryPaymentMethod : IPaymentMethod
     {
-        public override string Name
+        public string Name
         {
             get { return "Cash On Delivery"; }
         }
 
-        public override string SystemName
+        public string SystemName
         {
             get { return "CashOnDelivery"; }
         }
 
-        public override PaymentType PaymentType
+        public string ControllerName
+        {
+            get { return "CashOnDelivery"; }
+        }
+
+        public string ActionName
+        {
+            get { return "Form"; }
+        }
+
+        public PaymentType PaymentType
         {
             get { return PaymentType.ServiceBased; }
         }
 
-        public override bool Enabled
+        public bool Enabled
         {
             get { return MrCMSApplication.Get<PaymentSettings>().CashOnDeliveryEnabled; }
         }
 
-        public override bool CanUse(CartModel cart)
+        public bool CanUse(CartModel cart)
         {
             return !cart.IsPayPalTransaction;
         }

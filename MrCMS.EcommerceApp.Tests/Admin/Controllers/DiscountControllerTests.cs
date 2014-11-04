@@ -74,14 +74,14 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void DiscountController_AddPost_ShouldReturnRedirectToIndex()
+        public void DiscountController_AddPost_ShouldReturnRedirectToEdit()
         {
             var discount = new Discount();
 
             var result = _discountController.Add_POST(discount);
 
             result.Should().BeOfType<RedirectToRouteResult>();
-            result.RouteValues["action"].Should().Be("Index");
+            result.RouteValues["action"].Should().Be("Edit");
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void DiscountController_EditPost_ShouldReturnRedirectToIndex()
+        public void DiscountController_EditPost_ShouldReturnRedirectToEdit()
         {
             var discount = new Discount();
             var discountLimitation = A.Dummy<DiscountLimitation>();
@@ -126,7 +126,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             var result = _discountController.Edit_POST(discount, discountLimitation, discountApplication);
 
             result.Should().BeOfType<RedirectToRouteResult>();
-            result.RouteValues["action"].Should().Be("Index");
+            result.RouteValues["action"].Should().Be("Edit");
         }
 
         [Fact]

@@ -1,6 +1,10 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Entities.Messaging;
+using MrCMS.Helpers;
 using MrCMS.Services;
+using MrCMS.Web.Areas.Admin.Helpers;
+using MrCMS.Web.Areas.Admin.ModelBinders;
+using MrCMS.Web.Areas.Admin.Services;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
 
@@ -8,23 +12,23 @@ namespace MrCMS.Web.Areas.Admin.Controllers
 {
     public class MessageTemplateController : MrCMSAdminController
     {
-        private readonly IMessageTemplateService _messageTemplateService;
+        private readonly IMessageTemplateAdminService _messageTemplateAdminService;
 
-        public MessageTemplateController(IMessageTemplateService messageTemplateService)
+        public MessageTemplateController(IMessageTemplateAdminService messageTemplateAdminService)
         {
-            _messageTemplateService = messageTemplateService;
+            _messageTemplateAdminService = messageTemplateAdminService;
         }
 
         [HttpGet]
         public ActionResult Index()
         {
-            return View(_messageTemplateService.GetAllMessageTemplateTypesWithDetails());
+            return View(_messageTemplateAdminService.GetAllMessageTemplateTypesWithDetails());
         }
 
         [HttpGet]
         public ActionResult Add(string type)
         {
-            var template = _messageTemplateService.GetNew(type);
+            var template = _messageTemplateAdminService.GetNew(type);
             if (template != null)
             {
                 return View(template);
@@ -39,7 +43,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         {
             if (messageTemplate != null)
             {
-                _messageTemplateService.Save(messageTemplate);
+                _messageTemplateAdminService.Save(messageTemplate);
             }
             return RedirectToAction("Index");
         }
@@ -61,7 +65,9 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         {
             if (messageTemplate != null)
             {
-                _messageTemplateService.Save(messageTemplate);
+                _messageTemplateAdminService.Save(messageTemplate);
+                TempData.SuccessMessages().Add(string.Format("{0} successfully edited", messageTemplate.MessageTemplateType.BreakUpString()));
+                return RedirectToAction("Edit", new { id = messageTemplate.Id });
             }
             return RedirectToAction("Index");
         }
@@ -82,8 +88,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         {
             if (messageTemplate != null)
             {
-                _messageTemplateService.Reset(messageTemplate);
-
+                _messageTemplateAdminService.Reset(messageTemplate);
                 return RedirectToAction("Edit", new { id = messageTemplate.Id });
             }
             return RedirectToAction("Index");
@@ -91,7 +96,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
 
         public PartialViewResult Tokens(MessageTemplate messageTemplate)
         {
-            return PartialView(_messageTemplateService.GetTokens(messageTemplate));
+            return PartialView(_messageTemplateAdminService.GetTokens(messageTemplate));
         }
 
         public ActionResult Preview(MessageTemplate messageTemplate)
@@ -101,7 +106,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
 
         public string GetPreview(MessageTemplate messageTemplate, int itemId)
         {
-            return _messageTemplateService.GetPreview(messageTemplate, itemId);
+            return _messageTemplateAdminService.GetPreview(messageTemplate, itemId);
         }
     }
 }

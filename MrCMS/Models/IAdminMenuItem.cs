@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
-
-namespace MrCMS.Models
+﻿namespace MrCMS.Models
 {
-    public interface IAdminMenuItem : IMenuItem
+    public interface IAdminMenuItem 
     {
-        IDictionary<string, List<IMenuItem>> Children { get; }
+        string Text { get; }
+        string IconClass { get; }
+
+        string Url { get; }
+        bool CanShow { get; }
+
+        SubMenu Children { get; }
         int DisplayOrder { get; }
     }
 }

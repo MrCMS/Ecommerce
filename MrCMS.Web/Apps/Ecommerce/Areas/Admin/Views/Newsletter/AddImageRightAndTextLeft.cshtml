@@ -1,0 +1,39 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems.ImageRightAndTextLeft
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+}
+
+@using (Html.BeginForm("AddImageRightAndTextLeft", "Newsletter", new { id = "" }, FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Add Image Right and Text Left
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn btn-primary" value="Add" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Newsletter.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ImageUrl) <br />
+            @Html.TextBoxFor(x => x.ImageUrl, new { @class = "media-selector" })
+            @Html.ValidationMessageFor(x => x.ImageUrl)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Text)
+            @Html.TextAreaFor(x => x.Text, new { @class = "newsletter-ck" })
+            @Html.ValidationMessageFor(x => x.Text)
+        </div>
+    </fieldset>
+}
+
+@{
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/newsletter-ck.js");
+}

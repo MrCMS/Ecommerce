@@ -1,50 +1,46 @@
 ﻿@model MrCMS.Web.Apps.Amazon.Models.AmazonDashboardModel
 
-     <div class="row-fluid">
-                <div class="span4">
-         
-                    <div class="dashboard-box">
-                        <div class="info">
-                            <div class="stats">
-                                @Model.NoOfActiveListings
-                            </div>
-                            <div class="stats-description">                           
-                                <span>Active Listings</span>
-                            </div>
-                        </div>         
-                    </div>
+<div class="row">
+    <div class="col-lg-4">
 
+        <div class="dashboard-box">
+            <div class="info">
+                <div class="stats">
+                    @Model.NoOfActiveListings
                 </div>
-
-                <div class="span4">
-                
-                
-                    <div class="dashboard-box">
-                        <div class="info">
-                            <div class="stats">
-                                @Model.NoOfOrderedProducts.ToString("n0")
-                            </div>
-                            <div class="stats-description">                           
-                                <span>Ordered Products</span>
-                            </div>
-                        </div>      
-                    </div>
-                
-
-                </div>
-    
-                <div class="span4">
-         
-                    <div class="dashboard-box">
-                        <div class="info">
-                            <div class="stats">
-                                @Model.NoOfShippedProducts.ToString("n0")
-                            </div>
-                            <div class="stats-description">                           
-                                <span>Shipped Products</span>
-                            </div>
-                        </div>           
-                    </div>
-
+                <div class="stats-description">
+                    <span>Active Listings</span>
                 </div>
             </div>
+        </div>
+
+    </div>
+
+    <div class="col-lg-4">
+        <div class="dashboard-box">
+            <div class="info">
+                <div class="stats">
+                    @Model.NoOfOrderedProducts.ToString("n0")
+                </div>
+                <div class="stats-description">
+                    <span>Ordered Products</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+
+        <div class="dashboard-box">
+            <div class="info">
+                <div class="stats">
+                    @Model.NoOfShippedProducts.ToString("n0")
+                </div>
+                <div class="stats-description">
+                    <span>Shipped Products</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

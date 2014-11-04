@@ -7,6 +7,7 @@ using MrCMS.Web.Apps.Amazon.Entities.Listings;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Settings;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using Product = MarketplaceWebServiceFeedsClasses.Product;
 
@@ -110,16 +111,18 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Feeds
         }
         public Price GetProductPrice(AmazonListing listing)
         {
+            var currency = _ecommerceSettings.Currency();
             return new Price
             {
                 SKU = listing.SellerSKU,
                 StandardPrice = new OverrideCurrencyAmount()
                     {
-                        Currency = _ecommerceSettings.Currency!=null?_ecommerceSettings.Currency.Code.GetEnumByValue<BaseCurrencyCodeWithDefault>():BaseCurrencyCodeWithDefault.GBP,
+                        Currency = currency!=null?currency.Code.GetEnumByValue<BaseCurrencyCodeWithDefault>():BaseCurrencyCodeWithDefault.GBP,
                         Value = listing.Price
                     }
             };
         }
+
         public Inventory GetProductInventory(AmazonListing listing)
         {
             var inventory=new Inventory

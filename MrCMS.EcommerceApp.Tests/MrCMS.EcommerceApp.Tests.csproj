@@ -35,7 +35,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsvHelper">
+    <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CsvHelper.2.4.1\lib\net40-client\CsvHelper.dll</HintPath>
     </Reference>
     <Reference Include="Elmah, Version=1.2.14706.0, Culture=neutral, processorArchitecture=MSIL">
@@ -70,28 +71,28 @@
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.1.0.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
+    <Reference Include="Microsoft.Web.Infrastructure">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\packages\NHibernate.3.3.3.4001\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Ninject.3.0.1.10\lib\net40\Ninject.dll</HintPath>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="Ninject.MockingKernel, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+    <Reference Include="Ninject.MockingKernel, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Ninject.MockingKernel.3.0.0.5\lib\net40-full\Ninject.MockingKernel.dll</HintPath>
+      <HintPath>..\packages\Ninject.MockingKernel.3.2.0.0\lib\net45-full\Ninject.MockingKernel.dll</HintPath>
     </Reference>
     <Reference Include="PayPalCoreSDK">
       <HintPath>..\packages\PayPalCoreSDK.1.4.2\lib\net45\PayPalCoreSDK.dll</HintPath>
     </Reference>
-    <Reference Include="PayPalMerchantSDK">
+    <Reference Include="PayPalMerchantSDK, Version=2.7.109.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\PayPalMerchantSDK.2.7.109\lib\PayPalMerchantSDK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -104,29 +105,29 @@
       <HintPath>..\packages\System.Data.SQLite.1.0.82.0\lib\net40\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.Helpers.dll</HintPath>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.1\lib\net45\System.Web.Mvc.dll</HintPath>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.1.2\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.1\lib\net45\System.Web.Razor.dll</HintPath>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.1.2\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.dll</HintPath>
+    <Reference Include="System.Web.WebPages">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    <Reference Include="System.Web.WebPages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.1\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    <Reference Include="System.Web.WebPages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.1.2\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -144,7 +145,7 @@
     <Compile Include="Admin\Controllers\CategoryControllerTests.cs" />
     <Compile Include="Admin\Controllers\BrandControllerTests.cs" />
     <Compile Include="Admin\Controllers\GoogleBaseControllerTests.cs" />
-    <Compile Include="Admin\Controllers\StockControllerTests.cs" />
+    <Compile Include="Admin\Controllers\BulkStockUpdateControllerTests.cs" />
     <Compile Include="Admin\Controllers\ImportExportControllerTests.cs" />
     <Compile Include="Admin\Controllers\EcommerceSettingsControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductSpecificationAttributeOptionControllerTests.cs" />
@@ -154,50 +155,62 @@
     <Compile Include="Admin\Controllers\DiscountControllerTests.cs" />
     <Compile Include="Admin\Controllers\DiscountLimitationControllerTests.cs" />
     <Compile Include="Admin\Controllers\OrderControllerTests.cs" />
-    <Compile Include="Admin\Controllers\ShippingCalculationControllerTests.cs" />
-    <Compile Include="Admin\Controllers\ShippingMethodControllerTests.cs" />
     <Compile Include="Admin\Controllers\CountryControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductSpecificationAttributeControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductVariantControllerTests.cs" />
     <Compile Include="Admin\Controllers\RegionControllerTests.cs" />
     <Compile Include="Admin\Controllers\TaxRateControllerTests.cs" />
+    <Compile Include="Admin\Services\ProductVariantAdminServiceTests.cs" />
     <Compile Include="Builders\CartItemBuilder.cs" />
     <Compile Include="Builders\CartModelBuilder.cs" />
+    <Compile Include="Builders\EntityBuilderExtensions.cs" />
+    <Compile Include="Builders\GiftCardApplierBuilder.cs" />
+    <Compile Include="Builders\GiftCardBuilder.cs" />
+    <Compile Include="Builders\IEntityBuilder.cs" />
     <Compile Include="Builders\OrderLineBuilder.cs" />
     <Compile Include="Builders\OutOfContextResponseBuilder.cs" />
+    <Compile Include="Builders\ProductShippingCheckerBuilder.cs" />
+    <Compile Include="Builders\ProductStockCheckerBuilder.cs" />
+    <Compile Include="Builders\ProductVariantAvailabilityServiceBuilder.cs" />
     <Compile Include="Builders\ProductVariantBuilder.cs" />
-    <Compile Include="Builders\ShippingCalculationBuilder.cs" />
-    <Compile Include="Builders\ShippingMethodBuilder.cs" />
-    <Compile Include="Controllers\CategoryContainerControllerTests.cs" />
+    <Compile Include="Builders\WarehouseBuilder.cs" />
+    <Compile Include="Builders\WarehouseStockBuilder.cs" />
+    <Compile Include="Controllers\ProductContainerControllerTests.cs" />
     <Compile Include="Controllers\DownloadProductControllerTests.cs" />
     <Compile Include="Controllers\ProductSearchControllerTests.cs" />
     <Compile Include="EcommerceAppTests.cs" />
     <Compile Include="Entities\Discounts\DiscountTests.cs" />
     <Compile Include="Entities\Products\ProductVariantTests\AvailabilityTests.cs" />
     <Compile Include="Entities\Products\ProductVariantTests\PricingTests.cs" />
-    <Compile Include="Entities\Products\ProductVariantTests\ProductVariant_CanBuyTests.cs" />
-    <Compile Include="Entities\Products\ProductVariantTests\StockLevelTests.cs" />
     <Compile Include="Entities\Shipping\ShippingCalculationTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingCalculation_AmountPreTaxTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingCalculation_AmountTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingCalculation_CanBeUsedTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingCalculation_GetPriceTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingCalculation_GetTaxTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingCalculation_TaxTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingMethod_CanBeUsedTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingMethod_GetPriceTests.cs" />
-    <Compile Include="Entities\Shipping\ShippingMethod_GetTaxTests.cs" />
     <Compile Include="Helpers\InlineDataExtensions.cs" />
+    <Compile Include="Helpers\SetTaxSettingsExtensions.cs" />
     <Compile Include="InMemoryDatabaseTest.cs" />
     <Compile Include="Entities\Cart\CartItemTests.cs" />
-    <Compile Include="Metadata\CategoryContainerMetadataTests.cs" />
-    <Compile Include="Metadata\CategoryMetadataTests.cs" />
     <Compile Include="Metadata\ProductContainerMetadataTests.cs" />
+    <Compile Include="Metadata\CategoryMetadataTests.cs" />
+    <Compile Include="Metadata\ProductSearchMetadataTests.cs" />
     <Compile Include="Metadata\ProductMetadataTests.cs" />
-    <Compile Include="Models\CartModelTests.cs" />
-    <Compile Include="Models\TaxAwareProductPriceTests.cs" />
-    <Compile Include="Models\TaxAwareShippingRateTests.cs" />
+    <Compile Include="Models\CartModelTests\AvailableGiftCardAmountTests.cs" />
+    <Compile Include="Models\CartModelTests\DiscountAmountTests.cs" />
+    <Compile Include="Models\CartModelTests\GiftCardAmountTests.cs" />
+    <Compile Include="Models\CartModelTests\ItemDiscountTests.cs" />
+    <Compile Include="Models\CartModelTests\ItemTaxTests.cs" />
+    <Compile Include="Models\CartModelTests\OrderTotalDiscountTests.cs" />
+    <Compile Include="Models\CartModelTests\ShippingPreTaxTests.cs" />
+    <Compile Include="Models\CartModelTests\ShippingStatusTests.cs" />
+    <Compile Include="Models\CartModelTests\ShippingTaxPercentageTests.cs" />
+    <Compile Include="Models\CartModelTests\ShippingTaxTests.cs" />
+    <Compile Include="Models\CartModelTests\ShippingTotalTests.cs" />
+    <Compile Include="Models\CartModelTests\TaxTests.cs" />
+    <Compile Include="Models\CartModelTests\TotalPreDiscountTests.cs" />
+    <Compile Include="Models\CartModelTests\TotalPreShippingTests.cs" />
+    <Compile Include="Models\CartModelTests\TotalTests.cs" />
+    <Compile Include="Models\CartModelTests\TotalToPayTests.cs" />
+    <Compile Include="Models\OriginalCartModelTests.cs" />
+    <Compile Include="Models\CartModelTests\SubtotalTests.cs" />
+    <Compile Include="MrCMSTest.cs" />
     <Compile Include="Pages\CategoryTests.cs" />
     <Compile Include="Pages\ProductTests\ProductPersistenceTests.cs" />
     <Compile Include="Pages\ProductTests\ProductVariantsTests.cs" />
@@ -207,12 +220,13 @@
     <Compile Include="Payment\PayPalExpress\PayPalUrlServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BulkStockUpdate\BulkStockUpdateServiceTests.cs" />
-    <Compile Include="Services\BulkStockUpdate\BulkStockUpdateValidationServiceTests.cs" />
-    <Compile Include="Services\CartManagerTests.cs" />
-    <Compile Include="Services\CategoryServiceTests.cs" />
+    <Compile Include="Services\CartItemManagerTests.cs" />
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateServiceTests.cs" />
     <Compile Include="Services\BulkShippingUpdate\BulkShippingUpdateValidationServiceTests.cs" />
     <Compile Include="Services\DownloadProductServiceTests.cs" />
+    <Compile Include="Services\EmptyBasketTests.cs" />
+    <Compile Include="Services\GetDefaultTaxRateTests.cs" />
+    <Compile Include="Services\GetTaxRateOptionsTests.cs" />
     <Compile Include="Services\ImportExport\ExportProductsManagerTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductsServiceTests\CategoryBuilder.cs" />
     <Compile Include="Services\ImportExport\ImportProductsServiceTests\ImportProductsServiceBuilder.cs" />
@@ -222,7 +236,10 @@
     <Compile Include="Services\OrderShippingServiceTests.cs" />
     <Compile Include="Services\OrderRefundServiceTests.cs" />
     <Compile Include="Services\OrderServiceTests.cs" />
-    <Compile Include="Services\InventoryServiceTests.cs" />
+    <Compile Include="Services\ProductShippingCheckerTest\CanShipTests.cs" />
+    <Compile Include="Services\ProductStockCheckerTest\CanOrderQuantityTests.cs" />
+    <Compile Include="Services\ProductStockCheckerTest\IsInStockTests.cs" />
+    <Compile Include="Services\ProductVariantAvailabilityServiceTests.cs" />
     <Compile Include="Services\GoogleBaseManagerTests.cs" />
     <Compile Include="Services\OptionServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductVariantPriceBreakServiceTests.cs" />
@@ -233,6 +250,7 @@
     <Compile Include="Services\ImportExport\OldImportProductsServiceTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductsManagerTests.cs" />
     <Compile Include="Services\ImportExport\ImportProductVariantsServiceTests.cs" />
+    <Compile Include="Services\Orders\GiftCardApplierTests.cs" />
     <Compile Include="Services\ProductOrCategoryDeletedTest.cs" />
     <Compile Include="Services\ProductServiceTests.cs" />
     <Compile Include="Services\CountryServiceTests.cs" />
@@ -241,14 +259,16 @@
     <Compile Include="Services\ProductOptionManagerTests\AttributeValueTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\SpecificationAttributeTests.cs" />
     <Compile Include="Services\ProductOptionManagerTests\SpecificationValueTests.cs" />
-    <Compile Include="Services\ProductVariantServiceTests.cs" />
     <Compile Include="Services\RegionServiceTests.cs" />
-    <Compile Include="Services\StockReport\StockReportServiceTests.cs" />
     <Compile Include="Services\TaxRateManagerTests.cs" />
+    <Compile Include="SqliteInMemoryProvider.cs" />
     <Compile Include="Stubs\BasicHttpPostedFileBase.cs" />
     <Compile Include="Stubs\BasicHttpPostedFileBaseCSV.cs" />
+    <Compile Include="Stubs\StubShippingMethod1.cs" />
+    <Compile Include="TestableEventContext.cs" />
     <Compile Include="TestableModels\TestableCartModel.cs" />
-    <Compile Include="TestableModels\TestableProductVariant.cs" />
+    <Compile Include="TestableModels\TestableGiftCard.cs" />
+    <Compile Include="TestContextModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -259,6 +279,7 @@
   <ItemGroup>
     <Folder Include="Indexing\" />
     <Folder Include="Services\Payment\" />
+    <Folder Include="Services\StockReport\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MrCMS.Web\MrCMS.Web.csproj">
@@ -277,6 +298,9 @@
     <Content Include="x86\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

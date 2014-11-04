@@ -50,4 +50,21 @@
         $('#AllowedNumberOfDaysForDownload').val('0');
         $("#downloadable").toggle(this.checked);
     });
+
+    $(document).on('change', '#VariantType', function (event) {
+        var value = $(event.target).val();
+        var variantType = $('[data-variant-type]');
+        var selector = '[data-variant-type="' + value + '"]';
+        variantType.filter(selector).show();
+        variantType.not(selector).hide();
+    });
+    $(document).on('change', '#RequiresShipping', function (event) {
+        event.preventDefault();
+        $("[data-requires-shipping]").toggle(this.checked);
+    });
+    $(document).on('change', '#HasRestrictedShipping', function (event) {
+        event.preventDefault();
+        $("[data-has-restricted-shipping]").toggle(this.checked);
+    });
+    $('#RequiresShipping, #HasRestrictedShipping, #VariantType').change();
 });

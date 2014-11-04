@@ -1,4 +1,5 @@
 ﻿@using System.Drawing
+@using System.Linq
 @model MrCMS.Web.Apps.Core.Widgets.Slider
 @if (Model.Sliders.Any())
 {
@@ -14,12 +15,16 @@
         <div class="carousel-inner">
             @foreach (var slider in sliders)
             {
+                var image = RenderImage(slider.Image);
                 <div class="item @(slider == sliders.First() ? "active" : "")">
-                   
-                    @Html.Raw((!string.IsNullOrWhiteSpace(slider.Link) ? "<a href='" + slider.Link + "'>" : ""))
-                    @RenderImage(slider.Image)
-                    @Html.Raw((!string.IsNullOrWhiteSpace(slider.Link) ? "</a>" : ""))
-
+                    @if (string.IsNullOrWhiteSpace(slider.Link))
+                    {
+                        @image
+                    }
+                    else
+                    {
+                        <a href="@slider.Link">@image</a>
+                    }
                     @if (!string.IsNullOrWhiteSpace(slider.Description))
                     {
                         <div class="carousel-caption">

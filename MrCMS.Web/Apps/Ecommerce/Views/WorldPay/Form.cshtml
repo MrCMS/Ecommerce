@@ -1,0 +1,45 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Models.WorldPayPostInfo
+
+<form method="POST" action="@Model.PostUrl">
+    @Html.HiddenFor(info => info.instId)
+    @Html.HiddenFor(info => info.cartId)
+    @if (Model.HasPaymentType)
+    {
+        @Html.HiddenFor(info => info.paymentType)
+    }
+    @if (Model.HasCSSScheme)
+    {
+        @Html.HiddenFor(info => info.MC_WorldPayCSSName)
+    }
+    @Html.HiddenFor(info => info.currency)
+    @Html.HiddenFor(info => info.email)
+    @Html.HiddenFor(info => info.hideContact)
+    @Html.HiddenFor(info => info.noLanguageMenu)
+    @Html.HiddenFor(info => info.withDelivery)
+    @Html.HiddenFor(info => info.fixContact)
+    @Html.HiddenFor(info => info.amount)
+    @Html.HiddenFor(info => info.desc)
+    @Html.HiddenFor(info => info.M_UserID)
+    @Html.HiddenFor(info => info.name)
+    @Html.HiddenFor(info => info.M_FirstName)
+    @Html.HiddenFor(info => info.M_LastName)
+    @Html.HiddenFor(info => info.M_Addr1)
+    @Html.HiddenFor(info => info.address)
+    @Html.HiddenFor(info => info.tel)
+    @Html.HiddenFor(info => info.M_Addr2)
+    @Html.HiddenFor(info => info.M_Business)
+    @Html.HiddenFor(info => info.lang)
+    @Html.HiddenFor(info => info.M_StateCounty)
+    @Html.HiddenFor(info => info.postcode)
+    @Html.HiddenFor(info => info.country)
+    @Html.HiddenFor(info => info.testMode)
+    @Html.HiddenFor(info => info.MC_callback)
+    @if (!Model.HideShipping)
+    {
+        @Html.HiddenFor(info => info.delvName)
+        @Html.HiddenFor(info => info.delvAddress)
+        @Html.HiddenFor(info => info.delvPostcode)
+        @Html.HiddenFor(info => info.delvCountry)
+    }
+    <button class="btn btn-primary btn-lg" type="submit">Pay with WorldPay</button>
+</form>

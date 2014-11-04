@@ -2,22 +2,22 @@
     var settings = $.extend({
     }, options);
     var self;
+    function getId(node) {
+        var id = node.data.id;
+        if (id == null)
+            id = "";
+        return id;
+    }
     return {
-        init: function () {
+        init: function (tree, url) {
             self = this;
             $(document.body).on('click', '.jstree-anchor', function (event) {
                 location.href = this.href;
             });
-            $(document).on("show", 'a[data-toggle="tab"]', function (e) {
-                self.initTree($(e.target));
-            });
+            self.initTree(tree, url);
             return self;
         },
-        initTree: function (link) {
-            if (link.data('tree-initialized'))
-                return;
-            var tree = link.data('tree');
-            var url = link.data('tree-url');
+        initTree: function (tree, url) {
             $("#" + tree).jstree({
                 "core": {
                     "animation": 0,
@@ -26,7 +26,8 @@
                         'url': url,
                         'data': function (node) {
                             return { 'id': node.id };
-                        }
+                        },
+                        cache: false
                     }
                 },
                 "state": {
@@ -37,42 +38,74 @@
                 },
                 "plugins": ["state", "contextmenu"]
             });
-            link.data('tree-initialized', true);
         },
         menuItems: function (node) {
-            var id = node.data.id;
-            if (id == null)
-                id = "";
             var items = {};
-            if (node.data.canAddChild === "True") {
-                items.addMenuItem = {
-                    label: "Add",
-                    action: function () { return location.href = "/Admin/" + node.data.controller + "/Add/" + id; }
-                };
-            }
-            if (node.data.sortable === "True") {
-                items.sortMenuItem = {
-                    label: "Sort",
-                    action: function () { return location.href = "/Admin/" + node.data.controller + "/Sort/" + node.parent; }
-                };
-            }
-            if (!isNaN(node.id)) {
-                items.editMenuItem = {
-                    label: "Edit",
-                    action: function () { return location.href = "/Admin/" + node.data.controller + "/Edit/" + id; }
-                };
-            }
-            if (node.data.haschildren !== "True") {
-                items.deleteMenuItem = {
-                    label: "Delete",
-                    action: function () { return getRemoteModel("/Admin/" + node.data.controller + "/Delete/" + id); }
-                };
+            for (var i = 0; i < self.rules.length; i++) {
+                self.rules[i](node, items);
             }
             return items;
-        }
+        },
+        rules: [
+            function (node, items) {
+                if (node.data.canAddChild === "True") {
+                    items.addMenuItem = {
+                        label: "Add",
+                        action: function () { return location.href = "/Admin/" + node.data.controller + "/Add/" + getId(node); }
+                    };
+                }
+            },
+            function (node, items) {
+                if (node.data.sortable === "True") {
+                    items.sortMenuItem = {
+                        label: "Sort",
+                        action: function () { return location.href = "/Admin/" + node.data.controller + "/Sort/" + node.parent; }
+                    };
+                }
+            },
+            function (node, items) {
+                if (!isNaN(node.id)) {
+                    items.editMenuItem = {
+                        label: "Edit",
+                        action: function () { return location.href = "/Admin/" + node.data.controller + "/Edit/" + getId(node); }
+                    };
+                }
+            },
+            function (node, items) {
+                if (node.data.candelete === "True") {
+                    items.deleteMenuItem = {
+                        label: "Delete",
+                        action: function () { return getRemoteModel("/Admin/" + node.data.controller + "/Delete/" + getId(node)); }
+                    };
+                }
+            }
+        ]
     };
 };
-var webMenu;
-$(function () {
-    webMenu = new WebMenu().init();
-});
+//left hand nav open/close and persistence.
+(function ($) {
+    var mrcmsOpenMenuItems = "mrcms-open-menu-items";
+    function storeOpenTabs() {
+        var data =  $("li[data-menu].open").map(function () {
+            return $(this).data('menu');
+        }).get().join(",");
+        store.set(mrcmsOpenMenuItems, data);
+    }
+    function openNavItems() {
+        var items = store.get(mrcmsOpenMenuItems) || '';
+        var keys = items.split(",");
+        for (var i = 0; i < keys.length; i++) {
+            $("li[data-menu=" + keys[i] + "]").addClass("open");
+        }
+    }
+    $(document).ready(function () {
+        $('li[data-menu] > [data-toggle=dropdown-mrcms]').on('click', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            $(this).parent().siblings().removeClass('open');
+            $(this).parent().toggleClass('open');
+            storeOpenTabs();
+        });
+        openNavItems();
+    });
+})(jQuery);

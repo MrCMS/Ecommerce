@@ -3,16 +3,21 @@
 @using (Html.BeginForm("Add", "Task", FormMethod.Post))
 {
     <fieldset>
-        <legend>Add Task
+        <legend>@Resource("Admin Tasks", "Add Task")
             <span class="btn-group  display-inline  pull-right">
-                <input type="submit" class="btn-primary btn" value="Add task" />
+                <input type="submit" class="btn-primary btn" value="@Resource("Save")" />
             </span>
         </legend>
-        @Html.LabelFor(task => task.Type)
-        @Html.DropDownListFor(task => task.Type, Model.GetTypeOptions(), new { data_val = "true", data_val_required = "Please select a task type" })
-        @Html.ValidationMessageFor(task => task.Type)
-        @Html.LabelFor(task => task.EveryXSeconds)
-        @Html.TextBoxFor(task => task.EveryXSeconds)
-        @Html.ValidationMessageFor(task => task.EveryXSeconds)
+        <div class="form-group">
+            @Html.LabelFor(task => task.Type)
+            @Html.DropDownListFor(task => task.Type, Model.GetTypeOptions(), new { data_val = "true", data_val_required = "Please select a task type", @class="form-control" })
+            @Html.ValidationMessageFor(task => task.Type)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(task => task.EveryXSeconds)
+            @Html.TextBoxFor(task => task.EveryXSeconds, new { @class = "form-control" })
+            @Html.ValidationMessageFor(task => task.EveryXSeconds)
+        </div>
+        
     </fieldset>
 }

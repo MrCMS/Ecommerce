@@ -12,7 +12,7 @@ using System;
 
 namespace MrCMS.AmazonApp.Tests.Admin.Controllers
 {
-    public class AppControllerTests : InMemoryDatabaseTest
+    public class AppControllerTests : MrCMSTest
     {
         private readonly IAmazonLogService _amazonLogService;
         private readonly IAmazonAnalyticsService _amazonAnalyticsService;

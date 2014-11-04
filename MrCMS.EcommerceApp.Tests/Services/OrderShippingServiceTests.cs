@@ -2,38 +2,38 @@
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate;
 using Xunit;
-using MrCMS.Web.Apps.Ecommerce.Services.Orders;
+
 namespace MrCMS.EcommerceApp.Tests.Services
 {
-    public class OrderShippingServiceTests : InMemoryDatabaseTest
+    public class BulkShippingServiceTests : InMemoryDatabaseTest
     {
-        private readonly IOrderShippingService _orderShippingService;
+        private readonly BulkShippingService _orderShippingService;
         private readonly IBulkShippingUpdateValidationService _bulkShippingUpdateValidationService;
         private readonly IBulkShippingUpdateService _bulkShippingUpdateService;
-        private readonly IUserService _userService;
 
-        public OrderShippingServiceTests()
+        public BulkShippingServiceTests()
         {
             _bulkShippingUpdateValidationService = A.Fake<IBulkShippingUpdateValidationService>();
             _bulkShippingUpdateService = A.Fake<IBulkShippingUpdateService>();
-            _userService = A.Fake<IUserService>();
-            _orderShippingService = new OrderShippingService(Session, _bulkShippingUpdateValidationService, _bulkShippingUpdateService, _userService);
+            _orderShippingService = new BulkShippingService(_bulkShippingUpdateValidationService,_bulkShippingUpdateService);
         }
 
         [Fact]
-        public void OrderShippingService_BulkShippingUpdate_ShouldNotBeNull()
+        public void BulkShippingService_Update_ShouldNotBeNull()
         {
-            var result = _orderShippingService.BulkShippingUpdate(GetDefaultStream());
+            var result = _orderShippingService.Update(GetDefaultStream());
 
             result.Should().NotBeNull();
         }
 
         [Fact]
-        public void OrderShippingService_BulkShippingUpdate_ShouldReturnDictionary()
+        public void BulkShippingService_Update_ShouldReturnDictionary()
         {
-            var result = _orderShippingService.BulkShippingUpdate(GetDefaultStream());
+            var result = _orderShippingService.Update(GetDefaultStream());
 
             result.Should().HaveCount(1);
         }

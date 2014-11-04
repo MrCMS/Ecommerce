@@ -13,9 +13,10 @@
         @Html.HiddenFor(x => x.Id)
         @Html.Hidden("attributeId", Model.ProductSpecificationAttribute.Id)
         @Html.HiddenFor(x => x.ProductSpecificationAttribute.Id)
-        @Html.LabelFor(x => x.Name)
-        @Html.TextBoxFor(x => x.Name)
-        <br />
-        @Html.ValidationMessageFor(x => x.Name)
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
     </fieldset>
 }

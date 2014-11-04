@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using FakeItEasy;
 using MrCMS.EcommerceApp.Tests.TestableModels;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
 namespace MrCMS.EcommerceApp.Tests.Builders
 {
@@ -13,14 +14,12 @@ namespace MrCMS.EcommerceApp.Tests.Builders
     {
         private decimal? _totalPreShipping;
         private decimal? _weight;
-        private Country _shippingAddressCountry;
+        private string _shippingAddressCountry;
         private readonly List<CartItem> _items = new List<CartItem>();
-        private readonly IList<ShippingMethod> _availableShippingMethods = new List<ShippingMethod>
-                                                                            {
-                                                                                new TestableShippingMethod(true)
-                                                                            };
+       
 
         private decimal? _shippableCalculationTotal;
+        private IShippingMethod[] _methods = new IShippingMethod[1];
 
         public CartModelBuilder WithWeight(decimal weight)
         {
@@ -40,9 +39,9 @@ namespace MrCMS.EcommerceApp.Tests.Builders
             return this;
         }
 
-        public CartModelBuilder WithShippingAddressCountry(Country country)
+        public CartModelBuilder WithShippingAddressCountry(string code)
         {
-            _shippingAddressCountry = country;
+            _shippingAddressCountry = code;
             return this;
         }
 
@@ -55,12 +54,18 @@ namespace MrCMS.EcommerceApp.Tests.Builders
 
         public CartModel Build()
         {
-            return new TestableCartModel(_weight, _totalPreShipping,_shippableCalculationTotal)
+            return new TestableCartModel(_weight, _totalPreShipping)
                        {
-                           ShippingAddress = new Address { Country = _shippingAddressCountry },
+                           ShippingAddress = new Address { CountryCode = _shippingAddressCountry },
                            Items = _items,
-                           AvailableShippingMethods = _availableShippingMethods
+                           PotentiallyAvailableShippingMethods = _methods.ToHashSet()
                        };
+        }
+
+        public CartModelBuilder WithShippingOptions(params IShippingMethod[] methods)
+        {
+            _methods = methods;
+            return this;
         }
     }
 }

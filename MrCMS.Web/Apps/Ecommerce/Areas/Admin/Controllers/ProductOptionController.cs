@@ -2,6 +2,7 @@
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Website.Controllers;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -21,6 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public JsonResult Add(ProductOption productOption)
         {
             var option = _productOptionManagementService.Add(productOption);

@@ -9,5 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         [Remote("CanAddQuantity", "Cart", AdditionalFields = "ProductVariant.Id")]
         public int Quantity { get; set; }
+
+        public string Data { get; set; }
     }
 }

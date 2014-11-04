@@ -8,33 +8,50 @@
 @using (Html.BeginForm("Edit", "Discount", FormMethod.Post))
 {
     <fieldset>
-        <legend>Edit Discount
+        <legend>
+            Edit Discount
             <span class="btn-group  display-inline  pull-right">
-                <input type="submit" class="btn-primary btn" value="Update Discount" />
+                <a class="btn-default btn" href="@Url.Action("Index", "Discount")">Back</a>
+                <input type="submit" class="btn-primary btn" value="Save" />
             </span>
         </legend>
 
         @Html.HiddenFor(x => x.Id)
-        @Html.LabelFor(x => x.Name)
-        @Html.TextBoxFor(x => x.Name)
-        @Html.ValidationMessageFor(x => x.Name)
-        <br/>
-        @Html.LabelFor(x => x.Code)
-        @Html.TextBoxFor(x => x.Code)
-        @Html.ValidationMessageFor(x => x.Code)
-        @Html.LabelFor(x => x.ValidFrom)
-        @Html.EditorFor(x => x.ValidFrom)
-        @Html.LabelFor(x => x.ValidUntil)
-        @Html.EditorFor(x => x.ValidUntil)
-        @Html.LabelFor(x => x.Limitation)
-        @Html.DropDownList("LimitationOpt", Model.LimitationOptions, new {data_val_required = "Please select a limitation."})
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Code)
+            @Html.TextBoxFor(x => x.Code, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Code)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.ValidFrom)
+            @Html.TextBoxFor(x => x.ValidFrom, new { @class = "form-control datepicker" })
+            @Html.ValidationMessageFor(x => x.ValidFrom)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ValidUntil)
+            @Html.TextBoxFor(x => x.ValidUntil, new { @class = "form-control datepicker" })
+            @Html.ValidationMessageFor(x => x.ValidUntil)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Limitation)
+            @Html.DropDownList("LimitationOpt", Model.LimitationOptions, new { data_val_required = "Please select a limitation.", @class = "form-control" })
+        </div>
         <div id="limitationValue" style="display: none;">
         </div>
-        @Html.LabelFor(x => x.Application)
-        @Html.DropDownList("ApplicationOpt", Model.ApplicationOptions, new {data_val_required = "Please select application."})
+        <div class="form-group">
+            @Html.LabelFor(x => x.Application)
+            @Html.DropDownList("ApplicationOpt", Model.ApplicationOptions, new { data_val_required = "Please select a application.", @class = "form-control" })
+        </div>
         <div id="applicationValue" style="display: none;">
         </div>
-        <br />
         @Html.InfoBlock("Heads up! ", "Leave Valid From and Until blank to make discount valid forever")
     </fieldset>
 }

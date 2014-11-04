@@ -1,0 +1,13 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.Users.Address
+<div id="delivery-address-container">
+    <div class="block-title">
+        <div class="h1style">
+            @Resource("Delivering to"):
+        </div>
+    </div>
+    @Html.Raw(Model.GetDescriptionHtml())
+    <div>
+        <button data-edit-address="true" class="btn btn-default margin-bottom-10">@Resource("Edit")</button>
+    </div>
+</div>

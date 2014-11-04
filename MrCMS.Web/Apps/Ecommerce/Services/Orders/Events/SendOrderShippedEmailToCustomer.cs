@@ -18,10 +18,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.Events
             _messageParser = messageParser;
         }
 
-        public int Order { get { return 1; } }
-        public void OnOrderShipped(Order order)
+        public void Execute(OrderShippedArgs args)
         {
-            if (order.SalesChannel == EcommerceApp.DefaultSalesChannel) //only send if sold on website. Amazon and thirdparties do not allow email sending
+            Order order = args.Order;
+            if (order != null && order.SalesChannel == EcommerceApp.DefaultSalesChannel) //only send if sold on website. Amazon and thirdparties do not allow email sending
             {
                 var queuedMessage = _messageParser.GetMessage(order);
                 if (queuedMessage != null)

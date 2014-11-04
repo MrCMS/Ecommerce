@@ -1,5 +1,5 @@
+using System.ComponentModel;
 using System.Web.Mvc;
-using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using NHibernate;
 
@@ -7,8 +7,6 @@ namespace MrCMS.Settings
 {
     public abstract class SiteSettingsBase
     {
-        public Site Site { get; set; }
-
         public virtual string TypeName
         {
             get { return GetType().Name.BreakUpString(); }

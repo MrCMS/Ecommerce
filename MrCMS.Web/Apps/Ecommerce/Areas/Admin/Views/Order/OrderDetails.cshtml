@@ -6,8 +6,8 @@
     var orderShipping = Model.ShippingTotal.GetValueOrDefault() - Model.ShippingTax.GetValueOrDefault();
     var nonSystemSalesChannel = Model.SalesChannel != EcommerceApp.DefaultSalesChannel;
 }
-<div class="row-fluid">
-    <div class="@(nonSystemSalesChannel ? "span6" : "span12")">
+<div class="row">
+    <div class="@(nonSystemSalesChannel ? "col-lg-6" : "col-lg-12")">
         <table class="table table-condensed table-striped">
             <tr>
                 <td>Sales Channel</td>
@@ -60,11 +60,19 @@
                     <td>@Model.TotalAfterRefunds.ToCurrencyFormat()</td>
                 </tr>
             }
-        </table>
+            @if (!string.IsNullOrWhiteSpace(Model.GiftMessage))
+            {
+                <tr>
+                    <td>Gift Message</td>
+                    <td>@Model.GiftMessage</td>
+                </tr>
+            }
+        </table>        
+        @{Html.RenderPartial("OrderGiftCards", Model);}
     </div>
     @if (nonSystemSalesChannel)
     {
-        <div class="span6">
+        <div class="col-lg-6">
             @Html.GetSalesChannelInfo()
         </div>
     }
@@ -72,127 +80,137 @@
 @{
     if (Model.OrderRefunds.Count > 0)
     {
-    <div class="row-fluid">
-        <div class="span12">
-            @if (Model.OrderRefunds.Count > 0)
-            {
-                <h4>Refunds</h4>
-                <table class="table table-condensed table-striped">
-                    <thead>
-                        <tr>
-                            <th>Amount
-                            </th>
-                            <th>Note
-                            </th>
-                            <th>Actions
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.OrderRefunds)
-                        {
+        <div class="row">
+            <div class="col-lg-12">
+                @if (Model.OrderRefunds.Count > 0)
+                {
+                    <h4>Refunds</h4>
+                    <table class="table table-condensed table-striped">
+                        <thead>
                             <tr>
-                                <td>
-                                    @item.Amount.ToCurrencyFormat()
-                                </td>
-                                <td>
-                                    @item.Note
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        @Html.ActionLink("Delete", "Delete", "OrderRefund", new { id = item.Id }, new { @class = "btn btn-danger btn-mini", data_toggle = "fb-modal" })
-                                    </div>
-                                </td>
+                                <th>
+                                    Amount
+                                </th>
+                                <th>
+                                    Note
+                                </th>
+                                <th>
+                                    Actions
+                                </th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
-            }
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderRefunds)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.Amount.ToCurrencyFormat()
+                                    </td>
+                                    <td>
+                                        @item.Note
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            @Html.ActionLink("Delete", "Delete", "OrderRefund", new { id = item.Id }, new { @class = "btn btn-danger btn-xs", data_toggle = "fb-modal" })
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
         </div>
-    </div>
     }
 }
 <hr class="small-margin" />
-<div class="row-fluid">
-    <div class="span6">
-        <h4>Payment</h4>
+<div class="row">
+    <div class="col-lg-6">
+        <h4>@Resource("Payment")</h4>
 
         <table class="table table-condensed table-striped">
             <tr>
-                <td>Method</td>
+                <td>@Resource("Method")</td>
                 <td>@Html.DisplayFor(x => x.PaymentMethod)</td>
             </tr>
             <tr>
-                <td>Status</td>
+                <td>@Resource("Status")</td>
                 <td>@Html.DisplayFor(x => x.PaymentStatus)</td>
             </tr>
         </table>
         @if (Model.PaymentStatus == PaymentStatus.Pending)
         {
-            @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+            @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
             <span></span>
-            @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+            @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
         }
         @if (Model.PaymentStatus == PaymentStatus.Paid)
         {
-            <a href="@Url.Action("Add", "OrderRefund", new { orderID = Model.Id, index = false })" class="btn btn-mini" data-toggle="fb-modal">Add Refund</a>
+            <a href="@Url.Action("Add", "OrderRefund", new { orderID = Model.Id, index = false })" class="btn btn-xs btn-default" data-toggle="fb-modal">Add Refund</a>
+        }
+        @if (Model.PaymentStatus == PaymentStatus.Voided)
+        {
+            @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+            <span></span>
         }
 
     </div>
-    <div class="span6">
-        <h4>Shipping</h4>
+    <div class="col-lg-6">
+        <h4>@Resource("Shipping")</h4>
 
         <table class="table table-condensed">
             <tr>
-                <td>Method</td>
-                <td>@(!string.IsNullOrWhiteSpace(Model.ShippingMethodName) ? Model.ShippingMethodName : Model.ShippingMethod != null ? Model.ShippingMethod.Name : "-")</td>
+                <td>@Resource("Method")</td>
+                <td>@(!string.IsNullOrWhiteSpace(Model.ShippingMethodName) ? Model.ShippingMethodName : "-")</td>
             </tr>
             <tr>
-                <td>Status</td>
+                <td>@Resource("Status")</td>
                 <td>@Html.DisplayFor(x => x.ShippingStatus)</td>
             </tr>
             @if (Model.ShippingDate.HasValue)
             {
                 <tr>
-                    <td>Shipped On</td>
+                    <td>@Resource("Shipped On")</td>
                     <td>@Html.DisplayFor(x => x.ShippingDate)</td>
                 </tr>
             }
             @{
                 if (!string.IsNullOrEmpty(Model.TrackingNumber))
                 {
-                <tr>
-                    <td>Tracking Number</td>
-                    <td>@Html.DisplayFor(x => x.TrackingNumber)</td>
-                </tr>
+                    <tr>
+                        <td>@Resource("Tracking Number")</td>
+                        <td>@Html.DisplayFor(x => x.TrackingNumber)</td>
+                    </tr>
                 }
             }
         </table>
         @if (Model.ShippingStatus != ShippingStatus.Shipped)
         {
-            @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+            @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = Model.Id, index = false }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
         }
-        @Html.ActionLink("Set tracking number", "SetTrackingNumber", "Order", new { id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+        @Html.ActionLink("Set tracking number", "SetTrackingNumber", "Order", new { id = Model.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
     </div>
 </div>
 <hr />
-<div class="row-fluid">
-    <div class="span6">
-        <h4>Shipping Address
-                @Html.ActionLink("Edit", "Edit", "Address", new { Id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+<div class="row">
+    <div class="col-lg-6">
+        <h4>
+            Shipping Address
+            @Html.ActionLink("Edit", "Edit", "Address", new { Id = Model.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
         </h4>
         <div class="pull-left">
             @if (Model.ShippingAddress != null)
             {
                 @Html.Raw(Model.ShippingAddress.GetDescriptionHtml())
-                
+
                 <p>@Model.ShippingAddress.PhoneNumber</p>
             }
         </div>
     </div>
-    <div class="span6">
-        <h4>Billing Address
-                @Html.ActionLink("Edit", "Edit", "Address", new { Id = Model.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+    <div class="col-lg-6">
+        <h4>
+            Billing Address
+            @Html.ActionLink("Edit", "Edit", "Address", new { Id = Model.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
         </h4>
         <div class="pull-left">
             @if (Model.BillingAddress != null)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using MrCMS.DbConfiguration;
 using MrCMS.Entities.Multisite;
 using MrCMS.Entities.Settings;
 using MrCMS.Helpers;
@@ -94,32 +95,40 @@ namespace MrCMS.Settings
         /// <param name="value">Value</param>
         public virtual void SetSetting<T>(string key, T value)
         {
-            if (key == null)
-                throw new ArgumentNullException("key");
-            key = key.Trim().ToLowerInvariant();
-
-            Setting setting =
-                _session.QueryOver<Setting>().Where(s => s.Site == _site && s.Name == key).SingleOrDefault();
-            string valueStr = typeof(T).GetCustomTypeConverter().ConvertToInvariantString(value);
-            if (setting != null)
+            lock (SetSettingLockObject)
             {
-                //update
-                setting.Value = valueStr;
-                setting.Site = _site;
-            }
-            else
-            {
-                //insert
-                setting = new Setting
+                using (new SiteFilterDisabler(_session))
                 {
-                    Name = key,
-                    Value = valueStr,
-                    Site = _site
-                };
-                AllSettings.Add(setting);
+                    if (key == null)
+                        throw new ArgumentNullException("key");
+                    key = key.Trim().ToLowerInvariant();
+
+                    Setting setting =
+                        _session.QueryOver<Setting>().Where(s => s.Site == _site && s.Name == key).SingleOrDefault();
+                    string valueStr = typeof(T).GetCustomTypeConverter().ConvertToInvariantString(value);
+                    if (setting != null)
+                    {
+                        //update
+                        setting.Value = valueStr;
+                        setting.Site = _site;
+                    }
+                    else
+                    {
+                        //insert
+                        setting = new Setting
+                        {
+                            Name = key,
+                            Value = valueStr,
+                            Site = _site
+                        };
+                        AllSettings.Add(setting);
+                    }
+                    _session.Transact(session => session.SaveOrUpdate(setting));
+                }
             }
-            _session.Transact(session => session.SaveOrUpdate(setting));
         }
+
+        private static readonly object SetSettingLockObject = new object();
 
         /// <summary>
         /// Deletes a setting
@@ -147,33 +156,78 @@ namespace MrCMS.Settings
             return _allSettingsDictionary ?? (_allSettingsDictionary = GetSettingsDictionary());
         }
 
-        private IDictionary<string, KeyValuePair<int, string>> GetSettingsDictionary()
+        // Trying to make this more robust, as it seems to be occasionally not returning values
+        private bool _retryingDictionary = false;
+        private bool _retryingAllSettings = false;
+
+        private Dictionary<string, KeyValuePair<int, string>> GetSettingsDictionary()
         {
             //format: <name, <id, value>>
             var dictionary = new Dictionary<string, KeyValuePair<int, string>>();
-            foreach (var s in AllSettings.Where(setting => setting.Site.Id == _site.Id))
+            foreach (var s in AllSettings.Where(setting => setting.Site != null && setting.Site.Id == _site.Id))
             {
                 var resourceName = s.Name.ToLowerInvariant();
                 if (!dictionary.ContainsKey(resourceName))
                     dictionary.Add(resourceName, new KeyValuePair<int, string>(s.Id, s.Value));
             }
+            if (!dictionary.Keys.Any())
+            {
+                try
+                {
+                    if (!_retryingDictionary)
+                    {
+                        CurrentRequestData.ErrorSignal.Raise(
+                            new Exception("settings dictionary empty for " + _site.DisplayName));
+                    }
+                }
+                catch
+                {
+
+                } if (!_retryingDictionary)
+                {
+                    _retryingDictionary = true;
+                    ResetSettingCache();
+                    dictionary = GetSettingsDictionary();
+                }
+            }
             return dictionary;
         }
 
+        // retry added to try and help mitigate issues with values not being returned
         private IList<Setting> AllSettings
         {
             get
             {
-                return
-                    _allSettings =
-                    _allSettings ??
-                    GetAllSettingForSite();
+                var allSettings = _allSettings = _allSettings ?? GetAllSettingsFromDb();
+                if (!allSettings.Any())
+                {
+                    try
+                    {
+                        if (!_retryingAllSettings)
+                        {
+                            CurrentRequestData.ErrorSignal.Raise(new Exception("Settings list empty"));
+                        }
+                    }
+                    catch
+                    {
+                    }
+                    if (!_retryingAllSettings)
+                    {
+                        _retryingAllSettings = true;
+                        ResetSettingCache();
+                        return AllSettings;
+                    }
+                }
+                return allSettings;
             }
         }
 
-        private IList<Setting> GetAllSettingForSite()
+        private IList<Setting> GetAllSettingsFromDb()
         {
-            return _session.QueryOver<Setting>().Cacheable().List();
+            using (new SiteFilterDisabler(_session))
+            {
+                return _session.QueryOver<Setting>().List();
+            }
         }
     }
 }

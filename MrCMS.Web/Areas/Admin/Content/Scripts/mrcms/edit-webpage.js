@@ -13,7 +13,7 @@
             $("#PublishOn").val('');
             form.submit();
         } else {
-            $.get('/Admin/Webpage/GetServerDate', function(response) {
+            $.get('/Admin/Webpage/GetServerDate', function (response) {
                 $("#PublishOn").val(response);
                 form.submit();
             });
@@ -53,7 +53,7 @@
     });
 
     //Permissions
-    $.get('/Admin/Role/GetRolesForPermissions', function(data) {
+    $.get('/Admin/Role/GetRolesForPermissions', function (data) {
         $("#FrontEndRoles").tagit({
             autocomplete: { delay: 0, minLength: 0, source: data },
             availableTags: data,
@@ -62,22 +62,48 @@
             placeholderText: "Click to add role."
         });
     });
-    
+
     $("#MetaKeywords").tagit({
         tagLimit: 15,
         allowSpaces: true
     });
-    
+
     $('input[name=InheritFrontEndRolesFromParent]').change(function () {
         $("#edit-document").submit();
     });
 
-    
 
-    $('a[data-toggle="tab"]').on('shown', function (e) {
-        if (e.currentTarget.id === "versions-link") {
-            $.get('/Admin/Webpage/Versions/' + $(this).data('id'), function (data) {
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        if (e.currentTarget.innerHTML === "Versions") {
+            $.get('/Admin/Versions/Show/' + $('#Id').val(), function(data) {
                 $("#versions").html(data);
+            });
+        }
+    });
+
+
+    $(document).on('keypress', function (event) {
+        if (event.which === 13) {
+            if ($('#SEOTargetPhrase:focus').length) {
+                event.preventDefault();
+                $('[data-seo-analyze]').click();
+            }
+            if ($('input#Search:focus').length) {
+                event.preventDefault();
+                $('#search-postings').click();
+            }
+        }
+
+    })
+    $(document).on('click', '[data-seo-analyze]', function (event) {
+        event.preventDefault();
+        var value = $('#SEOTargetPhrase').val();
+        if (value == '') {
+            $('[data-seo-analysis-summary]').html('Please enter a term to analyze.');
+        } else {
+            $('[data-seo-analysis-summary]').html('Analyzing...');
+            $.get('/Admin/SEOAnalysis/Analyze', { id: $('#Id').val(), SEOTargetPhrase: value }, function (response) {
+                $('[data-seo-analysis-summary]').html(response);
             });
         }
     });

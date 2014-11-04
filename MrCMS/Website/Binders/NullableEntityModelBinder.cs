@@ -1,13 +1,17 @@
 using System;
+using System.Linq;
 using System.Web.Mvc;
+using MrCMS.Entities.Widget;
+using MrCMS.Helpers;
 using NHibernate;
+using Ninject;
 
 namespace MrCMS.Website.Binders
 {
     public class NullableEntityModelBinder : MrCMSDefaultModelBinder
     {
-        public NullableEntityModelBinder(ISession session)
-            : base(() => session)
+        public NullableEntityModelBinder(IKernel kernel)
+            : base(kernel)
         {
         }
 
@@ -18,11 +22,12 @@ namespace MrCMS.Website.Binders
                                       controllerContext.HttpContext.Request[baseId]);
 
             int intId;
-            if (!int.TryParse(id, out intId) || intId <=0)
+            if (!int.TryParse(id, out intId) || intId <= 0)
             {
                 return true;
             }
             return false;
         }
     }
+
 }

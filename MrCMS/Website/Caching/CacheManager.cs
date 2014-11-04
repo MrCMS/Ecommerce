@@ -7,16 +7,20 @@ namespace MrCMS.Website.Caching
 {
     public class CacheManager : ICacheManager
     {
-        private readonly Cache _cache;
+        public const string InternalCachePrefix = "MrCMS.Cache.";
+        private readonly ICacheWrapper _cache;
 
-        public CacheManager(Cache cache)
+        public CacheManager(ICacheWrapper cache)
         {
             _cache = cache;
         }
 
-        public T Get<T>(string key, Func<T> func, TimeSpan time)
+        public T Get<T>(string key, Func<T> func, TimeSpan time, CacheExpiryType cacheExpiryType)
         {
-            var o = _cache[key];
+            key = InternalCachePrefix + key;
+            object o = null;
+            if (time > TimeSpan.Zero)
+                o = _cache[key];
 
             if (o != null)
                 return o.To<T>();
@@ -25,19 +29,37 @@ namespace MrCMS.Website.Caching
 
             if (o != null)
             {
-                _cache.Add(key, o, null, DateTime.MaxValue, time, CacheItemPriority.AboveNormal, null);
-
+                if (time > TimeSpan.Zero)
+                {
+                    var absoluteExpiration = cacheExpiryType == CacheExpiryType.Absolute
+                        ? DateTime.UtcNow.Add(time)
+                        : Cache.NoAbsoluteExpiration;
+                    var slidingExpiration = cacheExpiryType == CacheExpiryType.Sliding
+                        ? (time)
+                        : Cache.NoSlidingExpiration;
+                    _cache.Add(key, o, absoluteExpiration, slidingExpiration, CacheItemPriority.AboveNormal);
+                }
                 return o.To<T>();
             }
-            return (T) (object) null;
+            return (T)(object)null;
         }
 
-        public void Clear()
+        public void Clear(string prefix = null)
         {
-            IDictionaryEnumerator enumerator = _cache.GetEnumerator();
-            while (enumerator.MoveNext())
+            if (string.IsNullOrWhiteSpace(prefix))
+                _cache.Clear();
+            else
             {
-                _cache.Remove(enumerator.Key.ToString());
+                IDictionaryEnumerator enumerator = _cache.GetEnumerator();
+                var fullPrefix = InternalCachePrefix + prefix;
+                while (enumerator.MoveNext())
+                {
+                    var key = enumerator.Key.ToString();
+                    if (key.StartsWith(fullPrefix, StringComparison.OrdinalIgnoreCase))
+                    {
+                        _cache.Remove(key);
+                    }
+                }
             }
         }
     }

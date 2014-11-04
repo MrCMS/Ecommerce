@@ -1,0 +1,16 @@
+﻿@using System.Drawing
+@using MrCMS.Web.Apps.Ecommerce.Settings
+@model MrCMS.Web.Apps.Ecommerce.Pages.Category
+
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 margin-bottom-30">
+    <div class="category-con">
+        <a href="/@Model.LiveUrlSegment">
+            <div class="category-name">
+                @Model.Name
+            </div>
+            <div class="category-image">
+                @RenderImage(Model.DisplayImageUrl, new Size { Width = 200, Height = 200 }, null, null, new { @class = "img-responsive" })
+            </div>
+        </a>
+    </div>
+</div>

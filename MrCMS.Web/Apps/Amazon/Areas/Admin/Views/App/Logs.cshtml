@@ -3,91 +3,90 @@
 @using MrCMS.Web.Apps.Amazon.Models
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @model AmazonDashboardModel
-           
-<div class="row-fluid">
-<div class="span12">
-<div data-paging-type="async">
-    @if (Model != null && !Model.Logs.Any())
-    {
-        @:No Logs
-    }
-    else if (Model != null && Model.Logs.Any())
-    {
-        foreach (var item in Model.Logs)
-        {
-            string alerttype;
-            switch (item.LogStatus)
+<div class="row">
+    <div class="col-lg-12">
+        <div data-paging-type="async">
+            @if (Model != null && !Model.Logs.Any())
             {
-                case AmazonLogStatus.Error:
-                    {
-                        alerttype = "error";
-                    }
-                    break;
-                case AmazonLogStatus.Delete:
-                    {
-                        alerttype = "warning";
-                    }
-                    break;
-                case AmazonLogStatus.Initiation:
-                case AmazonLogStatus.Insert:
-                case AmazonLogStatus.Update:
-                case AmazonLogStatus.Stage:
-                    {
-                        alerttype = "info";
-                    }
-                    break;
-                case AmazonLogStatus.Completion:
-                    {
-                        alerttype = "success";
-                    }
-                    break;
-                default:
-                    {
-                        alerttype = "info";
-                    }
-                    break;
-            }
-            <div class="alert dashboard-box-log @alerttype">
-                <small class="pull-right">@item.CreatedOn.ToString("dd/MM/yyyy HH:mm") | @Html.ActionLink("More Details", "Details", "Logs", new {id = item.Id}, null) </small>
-                
-                @switch (item.LogType)
-                {
-                    case AmazonLogType.SellerSettings:
-                        <strong>@Html.ActionLink(@item.LogType.GetDescription(), "Seller", "Settings", null, null)</strong>
-                        break;
-                    case AmazonLogType.AppSettings:
-                        <strong>@Html.ActionLink(@item.LogType.GetDescription(), "App", "Settings", null, null)</strong>
-                        break;
-                    default:
-                        <strong>@item.LogType.GetDescription()</strong>
-                        break;
-                }
-                <br/>
-
-                @(!String.IsNullOrWhiteSpace(item.Message) ? item.Message.ToShortString(50) : item.LogStatus.GetDescription())
-
-                &nbsp;
-
-                @if (item.LogStatus!=AmazonLogStatus.Delete && item.AmazonListing != null)
-                {
-                    @Html.ActionLink("Listing", "Details", "Listing", new {id = item.AmazonListing.Id}, null)
-                }
-                else if (item.LogStatus != AmazonLogStatus.Delete && item.AmazonOrder != null)
-                {
-                    @Html.ActionLink("Order", "Details", "Orders", new {id = item.AmazonOrder.Id}, null)
-                }
-                else if (item.LogStatus != AmazonLogStatus.Delete && item.AmazonListingGroup != null)
-                {
-                    @Html.ActionLink("Listing Group", "Edit", "ListingGroup", new {id = item.AmazonListingGroup.Id}, null)
-                }
-                
-            </div>
-        }
-
-        @Html.Pager(Model.Logs, "Logs", i => new {page = i})
+                @:No Logs
     }
+            else if (Model != null && Model.Logs.Any())
+            {
+                foreach (var item in Model.Logs)
+                {
+                    string alerttype;
+                    switch (item.LogStatus)
+                    {
+                        case AmazonLogStatus.Error:
+                            {
+                                alerttype = "error";
+                            }
+                            break;
+                        case AmazonLogStatus.Delete:
+                            {
+                                alerttype = "warning";
+                            }
+                            break;
+                        case AmazonLogStatus.Initiation:
+                        case AmazonLogStatus.Insert:
+                        case AmazonLogStatus.Update:
+                        case AmazonLogStatus.Stage:
+                            {
+                                alerttype = "info";
+                            }
+                            break;
+                        case AmazonLogStatus.Completion:
+                            {
+                                alerttype = "success";
+                            }
+                            break;
+                        default:
+                            {
+                                alerttype = "info";
+                            }
+                            break;
+                    }
+                    <div class="alert dashboard-box-log @alerttype">
+                        <small class="pull-right">@item.CreatedOn.ToString("dd/MM/yyyy HH:mm") | @Html.ActionLink("More Details", "Details", "Logs", new { id = item.Id }, null) </small>
 
+                        @switch (item.LogType)
+                        {
+                            case AmazonLogType.SellerSettings:
+                                <strong>@Html.ActionLink(@item.LogType.GetDescription(), "Seller", "Settings", null, null)</strong>
+                                break;
+                            case AmazonLogType.AppSettings:
+                            <strong>@Html.ActionLink(@item.LogType.GetDescription(), "App", "Settings", null, null)</strong>
+                                break;
+                            default:
+                            <strong>@item.LogType.GetDescription()</strong>
+                                break;
+                        }
+                        <br />
+
+                        @(!String.IsNullOrWhiteSpace(item.Message) ? item.Message.ToShortString(50) : item.LogStatus.GetDescription())
+
+                        &nbsp;
+
+                        @if (item.LogStatus != AmazonLogStatus.Delete && item.AmazonListing != null)
+                        {
+                            @Html.ActionLink("Listing", "Details", "Listing", new { id = item.AmazonListing.Id }, null)
+                        }
+                        else if (item.LogStatus != AmazonLogStatus.Delete && item.AmazonOrder != null)
+                        {
+                            @Html.ActionLink("Order", "Details", "Orders", new { id = item.AmazonOrder.Id }, null)
+                        }
+                        else if (item.LogStatus != AmazonLogStatus.Delete && item.AmazonListingGroup != null)
+                        {
+                            @Html.ActionLink("Listing Group", "Edit", "ListingGroup", new { id = item.AmazonListingGroup.Id }, null)
+                        }
+
+                    </div>
+                }
+
+                @Html.Pager(Model.Logs, "Logs", i => new { page = i })
+            }
+
+        </div>
+    </div>
 </div>
-</div>
-</div>  
- @{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/async-paging.js"); }
+@{ Html.IncludeScript("~/Apps/Amazon/Areas/Admin/Content/Scripts/custom/async-paging.js"); }

@@ -1,37 +1,83 @@
 using System.Web.Mvc;
+using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Paypoint;
+using MrCMS.Web.Areas.Admin.Helpers;
 using MrCMS.Website.Controllers;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class PaypointController : MrCMSAppUIController<EcommerceApp>
     {
         private readonly IPaypointPaymentService _paypointPaymentService;
-        private readonly IDocumentService _documentService;
         private readonly CartModel _cartModel;
-        private readonly IOrderService _orderService;
+        private readonly IOrderPlacementService _orderPlacementService;
         private readonly IPaypoint3DSecureHelper _paypoint3DSecureHelper;
         private readonly IUniquePageService _uniquePageService;
 
-        public PaypointController(IPaypointPaymentService paypointPaymentService, IDocumentService documentService, CartModel cartModel, IOrderService orderService, IPaypoint3DSecureHelper paypoint3DSecureHelper, IUniquePageService uniquePageService)
+        public PaypointController(IPaypointPaymentService paypointPaymentService, CartModel cartModel,
+            IOrderPlacementService orderPlacementService, IPaypoint3DSecureHelper paypoint3DSecureHelper,
+            IUniquePageService uniquePageService)
         {
             _paypointPaymentService = paypointPaymentService;
-            _documentService = documentService;
             _cartModel = cartModel;
-            _orderService = orderService;
+            _orderPlacementService = orderPlacementService;
             _paypoint3DSecureHelper = paypoint3DSecureHelper;
             _uniquePageService = uniquePageService;
         }
 
-        public PartialViewResult PaymentDetails(PaypointPaymentDetailsModel model)
+
+        [HttpGet]
+        public PartialViewResult Form()
         {
-            return PartialView(model);
+            ViewData["start-months"] = _paypointPaymentService.StartMonths();
+            ViewData["start-years"] = _paypointPaymentService.StartYears();
+            ViewData["expiry-months"] = _paypointPaymentService.ExpiryMonths();
+            ViewData["expiry-years"] = _paypointPaymentService.ExpiryYears();
+            ViewData["card-types"] = _paypointPaymentService.GetCardTypes();
+            return PartialView(_paypointPaymentService.GetModel());
         }
 
+        [HttpPost]
+        [ForceImmediateLuceneUpdate]
+        public ActionResult Form(PaypointPaymentDetailsModel model)
+        {
+            _paypointPaymentService.SetModel(model);
+
+            if (!_cartModel.CanPlaceOrder)
+            {
+                _cartModel.CannotPlaceOrderReasons.ForEach(s => TempData.ErrorMessages().Add(s));
+                return _uniquePageService.RedirectTo<PaymentDetails>();
+            }
+
+            var response = _paypointPaymentService.ProcessDetails(model, Url.Action("Response3DSecure", "Paypoint", null, Request.Url.Scheme));
+            if (response.Requires3DSecure)
+            {
+                TempData["redirect-details"] = response.RedirectDetails;
+                return RedirectToAction("Redirect3DSecure", "Paypoint");
+            }
+
+            if (response.PaymentSucceeded)
+            {
+                var order = _orderPlacementService.PlaceOrder(_cartModel, o =>
+                {
+                    o.PaymentStatus = PaymentStatus.Paid;
+                    o.AuthorisationToken = response.PaypointPaymentDetails.AuthCode;
+                    o.ShippingStatus = ShippingStatus.Unshipped;
+                });
+                return _uniquePageService.RedirectTo<OrderPlaced>(new { id = order.Guid });
+            }
+
+            TempData["error-details"] = response.FailureDetails;
+            TempData["paypoint-model"] = model;
+            return _uniquePageService.RedirectTo<PaymentDetails>();
+        }
+
+        [ForceImmediateLuceneUpdate]
         public ActionResult Response3DSecure(FormCollection formCollection)
         {
             if (!_cartModel.CanPlaceOrder)
@@ -63,7 +109,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
             if (response.PaymentSucceeded)
             {
-                var order = _orderService.PlaceOrder(_cartModel, o =>
+                var order = _orderPlacementService.PlaceOrder(_cartModel, o =>
                 {
                     o.PaymentStatus = PaymentStatus.Paid;
                     o.ShippingStatus = ShippingStatus.Unshipped;

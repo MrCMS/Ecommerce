@@ -1,65 +1,96 @@
-﻿@using MrCMS.Helpers
+﻿@using System
+@using System.Linq
+@using MrCMS.Helpers
 @using MrCMS.Website
 @model MrCMS.Entities.Documents.Web.Webpage
 @{
     Layout = "_BaseLayout.cshtml";
     var currentPage = CurrentRequestData.CurrentPage;
     var activePages = currentPage.ActivePages.Select(webpage => webpage.DocumentType).ToList();
+    var percentComplete = 25;
+    if (activePages.Contains("SetShippingDetails", StringComparer.OrdinalIgnoreCase))
+    {
+        percentComplete = 50;
+    }
+    else if (activePages.Contains("PaymentDetails", StringComparer.OrdinalIgnoreCase))
+    {
+        percentComplete = 75;
+    }
+    else if (activePages.Contains("OrderPlaced", StringComparer.OrdinalIgnoreCase))
+    {
+        percentComplete = 100;
+    }
 }
 
-<div class="container">
-    <div class="row-fluid margin-bottom-10">
-        <div class="span4">
-            @RenderZone("Header Left")
+<div class="container checkout-header">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="padding-top-10">
+                @{ RenderZone("Checkout Header Left"); }
+            </div>
         </div>
-        <div class="span4">
-            @RenderZone("Header Middle")
+        <div class="col-xs-6 pull-right">
+            @{RenderZone("Checkout Header Middle");}
         </div>
-        <div class="span4">
-            <div id="checkout-nav-buttons">
-                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())" class="btn btn-info btn-large span6">Basket</a>
-                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-info btn-large span6">Return to shop</a>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="navigation">
+    <div class="container">
+        <div class="row" id="checkout">
+            <div class="col-md-3 col-sm-3 col-xs-3 light-green">
+                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">
+                    <div class="circle hidden-xs hidden-sm">
+                        1
+                    </div>
+                    <div class="session">
+                        Welcome
+                    </div>
+                    <div class="pointer"></div>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 @(percentComplete >= 50 ? "light-green" : "dark-grey")">
+                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.SetShippingDetails>())">
+                    <div class="circle hidden-xs hidden-sm">
+                        2
+                    </div>
+                    <div class="session">
+                        Delivery
+                    </div>
+                    <div class="pointer"></div>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3  @(percentComplete >=75 ? "light-green" : "light-grey")">
+                    <div class="circle hidden-xs hidden-sm">
+                        3
+                    </div>
+                    <div class="session">
+                        Payment
+                    </div>
+                    <div class="pointer"></div>
+            </div>
+            <div class="col-md-3 col-sm-3 col-xs-3 @(percentComplete >=100 ? "light-green" : "dark-grey")">
+                <div class="circle hidden-xs hidden-sm">
+                    4
+                </div>
+                <div class="session">
+                    Receipt
+                </div>
             </div>
         </div>
     </div>
 </div>
 <div class="container">
-    <div class="navbar">
-        <div class="navbar-inner">
-            <div id="checkout" class="wizard">
-                <ul class="steps">
-                    <li class="span2 @(activePages.Contains("EnterOrderEmail", StringComparer.OrdinalIgnoreCase) ? "active" : "")">
-                        <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Welcome
-                        </a>
-                        <span class="chevron"></span></li>
-                    <li class="span2 @(activePages.Contains("SetDeliveryDetails", StringComparer.OrdinalIgnoreCase) ? "active" : "")">Delivery
-                                <span class="chevron"></span></li>
-                    <li class="span2 @(activePages.Contains("PaymentDetails", StringComparer.OrdinalIgnoreCase) ? "active" : "")">Payment
-                                <span class="chevron"></span></li>
-                    <li class="span2 @(activePages.Contains("OrderPlaced", StringComparer.OrdinalIgnoreCase) ? "active" : "")">Receipt
-                                <span class="chevron"></span></li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    @RenderBody()
 </div>
-<div class="container">
-    <div class="row-fluid">
-        <div class="span12">
-            @RenderBody()
-        </div>
-    </div>
-</div>
-
 <footer>
     <div class="container">
-        <hr />
-        <div class="row-fluid">
-            <div class="span6">
-                @RenderZone("Footer Left")
+        <div class="row">
+            <div class="col-sm-6">
+                @{RenderZone("Checkout Footer Left");}
             </div>
-            <div class="span6">
-                @RenderZone("Footer Right")
+            <div class="col-sm-6">
+                @{RenderZone("Checkout Footer Right");}
             </div>
         </div>
     </div>

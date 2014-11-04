@@ -2,22 +2,18 @@
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Pages
-           
-<div class="row-fluid">
-    <div class="span7">
-        <div id="basket-info-box">
-            <i class="icon-shopping-cart"></i>Your basket has
-            @if (Model.ItemQuantity > 0)
-            {
-                <a href="@(UniquePageHelper.GetUrl<Cart>())">@Model.ItemQuantity</a> <span>items <a href="@(UniquePageHelper.GetUrl<Cart>())">@Model.Total.ToCurrencyFormat()</a></span>
-            }
-            else
-            {
-                <span>0 items</span>
-            }
-        </div>
-    </div>
-    <div class="span5">
-        <a class="btn btn-info span12 checkout-btn" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">Checkout</a>
-    </div>
-</div>
+<ul class="nav navbar-nav navbar-right">
+    <li>
+        <a href="@(UniquePageHelper.GetUrl<Cart>())" class="basket">
+            <span class="glyphicon glyphicon-shopping-cart"></span>
+        </a>
+        @if (Model.ItemQuantity > 0)
+        {
+            <a href="@(UniquePageHelper.GetUrl<Cart>())" class="notification">@Model.ItemQuantity</a>
+        }
+    </li>
+    <li>
+        <a class="checkout" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">Checkout</a>
+    </li>
+</ul>
+

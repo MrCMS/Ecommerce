@@ -1,4 +1,6 @@
-﻿@using System.Web.Mvc.Html
+﻿@using System
+@using System.Linq
+@using System.Web.Mvc.Html
 @using MarketplaceWebServiceFeedsClasses
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Amazon.Models
@@ -8,41 +10,49 @@
     ViewBag.Title = "Amazon Seller Settings";
 }
 
-@using (Html.BeginForm("Seller", "Settings", new {id = ""}, FormMethod.Post))
+@using (Html.BeginForm("Seller", "Settings", new { id = "" }, FormMethod.Post))
 {
     <fieldset>
-        <legend>Amazon Seller Settings
+        <legend>
+            Amazon Seller Settings
             <span class="btn-group  display-inline  pull-right">
+                @Html.ActionLink("Logs", "Index", "Logs", new { type = AmazonLogType.SellerSettings }, new { @class = "btn btn-default" })
                 <button class="btn btn-primary">Save</button>
-                @Html.ActionLink("Logs", "Index", "Logs", new {type = AmazonLogType.SellerSettings}, new {@class = "btn btn-success"})
+
             </span>
         </legend>
-        
-        @Html.HiddenFor(x => x.Site.Id)
 
-        <div class="row-fluid">
-            <div class="span6">
-                @Html.LabelFor(x => x.SellerId)
-                @Html.TextBoxFor(x => x.SellerId, new {@class = "span12"})
-                @Html.ValidationMessageFor(x => x.SellerId)
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.SellerId)
+                    @Html.TextBoxFor(x => x.SellerId, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.SellerId)
+                </div>
             </div>
-            <div class="span6">
-                @Html.LabelFor(x => x.MarketplaceId)
-                @Html.TextBoxFor(x => x.MarketplaceId, new {@class = "span12"})
-                @Html.ValidationMessageFor(x => x.MarketplaceId)
-            </div>       
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.MarketplaceId)
+                    @Html.TextBoxFor(x => x.MarketplaceId, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.MarketplaceId)
+                </div>
+            </div>
         </div>
-        <div class="row-fluid">
-            <div class="span8">
-                @Html.LabelFor(x => x.BarcodeIsOfType)
-                @Html.DropDownList("BarcodeIsOfType",
-                                   Enum.GetValues(typeof (StandardProductIDType)).OfType<StandardProductIDType>().BuildSelectItemList(type => type.GetDescription(), type => type.GetDescription(), null, String.Empty), new {@class="span12"})   
-                @Html.ValidationMessageFor(x => x.BarcodeIsOfType)
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BarcodeIsOfType)
+                    @Html.DropDownList("BarcodeIsOfType",
+                    Enum.GetValues(typeof(StandardProductIDType)).OfType<StandardProductIDType>().BuildSelectItemList(type => type.GetDescription(), type => type.GetDescription(), null, String.Empty), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.BarcodeIsOfType)
+                </div>
             </div>
-             <div class="span4">
-                @Html.LabelFor(x => x.DefaultFulfillmentCenter)
-                @Html.TextBoxFor(x => x.DefaultFulfillmentCenter, new {@class = "span12"})
-                @Html.ValidationMessageFor(x => x.DefaultFulfillmentCenter)
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.DefaultFulfillmentCenter)
+                    @Html.TextBoxFor(x => x.DefaultFulfillmentCenter, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.DefaultFulfillmentCenter)
+                </div>
             </div>
         </div>
     </fieldset>

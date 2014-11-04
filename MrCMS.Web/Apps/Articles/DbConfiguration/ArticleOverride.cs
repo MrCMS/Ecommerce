@@ -7,7 +7,7 @@ namespace MrCMS.Web.Apps.Articles.DbConfiguration
     {
         public void Override(AutoMapping<Pages.Article> mapping)
         {
-            mapping.Map(item => item.Abstract).Length(500);
+            mapping.Map(item => item.Abstract).Length(160);
         }
     }
 }

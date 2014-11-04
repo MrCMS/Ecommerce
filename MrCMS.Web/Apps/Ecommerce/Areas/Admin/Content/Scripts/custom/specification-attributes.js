@@ -23,13 +23,18 @@
     };
     var updateValues = function (event) {
         event.preventDefault();
+        $("#other").hide();
         var saId = $(this).val();
         $.getJSON('/Admin/Apps/Ecommerce/Product/GetSpecificationAttributeOptions',
             { specificationAttributeId: saId },
             function (response) {
                 $("#Value").empty();
-                for (var i = 0, len = response.length; i < len; i++)
+                for (var i = 0, len = response.length; i < len; i++) {
                     $("#Value").append("<option value=" + response[i].Value + ">" + response[i].Text + "</option>");
+                }
+
+                $("#Value").append("<option value='0'>Other</option>");
+
             });
     };
     var showHideOther = function (event) {

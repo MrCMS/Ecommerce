@@ -19,38 +19,37 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             _session = session;
         }
 
-        public int Order { get; private set; }
-        public void OnOrderPlaced(Order order)
+        public void Execute(OrderPlacedArgs args)
         {
             _session.Transact(session =>
-                                  {
-                                      User currentUser = CurrentRequestData.CurrentUser;
-                                      if (currentUser != null)
-                                      {
-                                          var addresses = session.QueryOver<Address>().Where(address => address.User.Id == currentUser.Id).List();
+            {
+                User currentUser = CurrentRequestData.CurrentUser;
+                if (currentUser != null)
+                {
+                    var addresses = session.QueryOver<Address>().Where(address => address.User.Id == currentUser.Id).List();
 
-                                          if (!Enumerable.Contains<IAddress>(addresses, order.BillingAddress, AddressComparison.Comparer))
-                                          {
-                                              var clone = order.BillingAddress.ToAddress(session, currentUser);
-                                              session.Save(clone);
-                                              addresses.Add(clone);
-                                          }
-                                          if (order.ShippingStatus != ShippingStatus.ShippingNotRequired &&
-                                              !Enumerable.Contains<IAddress>(addresses, order.ShippingAddress, AddressComparison.Comparer))
-                                          {
-                                              session.Save(order.ShippingAddress.ToAddress(session, currentUser));
-                                          }
-                                          if (string.IsNullOrEmpty(currentUser.FirstName) &&
-                                              string.IsNullOrEmpty(currentUser.LastName) &&
-                                              order.BillingAddress != null)
-                                          {
-                                              currentUser.FirstName = order.BillingAddress.FirstName;
-                                              currentUser.LastName = order.BillingAddress.LastName;
-                                              session.Save(currentUser);
-                                          }
-                                      }
-                                  });
-
+                    var order = args.Order;
+                    if (!addresses.Contains(order.BillingAddress, AddressComparison.Comparer))
+                    {
+                        var clone = order.BillingAddress.ToAddress(session, currentUser);
+                        session.Save(clone);
+                        addresses.Add(clone);
+                    }
+                    if (order.ShippingStatus != ShippingStatus.ShippingNotRequired &&
+                        !addresses.Contains(order.ShippingAddress, AddressComparison.Comparer))
+                    {
+                        session.Save(order.ShippingAddress.ToAddress(session, currentUser));
+                    }
+                    if (string.IsNullOrEmpty(currentUser.FirstName) &&
+                        string.IsNullOrEmpty(currentUser.LastName) &&
+                        order.BillingAddress != null)
+                    {
+                        currentUser.FirstName = order.BillingAddress.FirstName;
+                        currentUser.LastName = order.BillingAddress.LastName;
+                        session.Save(currentUser);
+                    }
+                }
+            });
         }
     }
 }

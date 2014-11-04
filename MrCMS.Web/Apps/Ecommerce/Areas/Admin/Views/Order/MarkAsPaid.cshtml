@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
 
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
 @using (Html.BeginForm("MarkAsPaid", "Order", FormMethod.Post))
@@ -11,7 +12,8 @@
         </legend>
 
         @Html.HiddenFor(x => x.Id)
-        
+        @Html.ReturnToReferrer()
+
         <p>
             Are you sure you want to mark order as paid?
         </p>

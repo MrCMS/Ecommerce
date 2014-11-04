@@ -2,9 +2,13 @@
 using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Models;
+using MrCMS.Web.Apps.Ecommerce.ACL;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -17,6 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _productOptionManager = productOptionManager;
         }
 
+        [MrCMSACLRule(typeof(ProductSpecificationAttributeACL), ProductSpecificationAttributeACL.List)]
         public ViewResult Index()
         {
             var options = _productOptionManager.ListSpecificationAttributes();
@@ -24,12 +29,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(ProductSpecificationAttributeACL), ProductSpecificationAttributeACL.Add)]
         public PartialViewResult Add()
         {
             return PartialView();
         }
 
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(ProductSpecificationAttributeACL), ProductSpecificationAttributeACL.Add)]
         public ActionResult Add(ProductSpecificationAttribute option)
         {
             if (ModelState.IsValid)
@@ -44,6 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(ProductSpecificationAttributeACL), ProductSpecificationAttributeACL.Edit)]
         public PartialViewResult Edit(ProductSpecificationAttribute option)
         {
             return PartialView(option);
@@ -51,6 +60,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Edit")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(ProductSpecificationAttributeACL), ProductSpecificationAttributeACL.Edit)]
         public ActionResult Edit_POST(ProductSpecificationAttribute option)
         {
             if (ModelState.IsValid)
@@ -65,6 +76,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(ProductSpecificationAttributeACL), ProductSpecificationAttributeACL.Delete)]
         public PartialViewResult Delete(ProductSpecificationAttribute option)
         {
             return PartialView(option);
@@ -72,18 +84,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Delete")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(ProductSpecificationAttributeACL), ProductSpecificationAttributeACL.Delete)]
         public RedirectToRouteResult Delete_POST(ProductSpecificationAttribute option)
         {
             _productOptionManager.DeleteSpecificationAttribute(option);
             return RedirectToAction("Index");
         }
 
-        public JsonResult IsUniqueAttribute(string name)
+        public JsonResult IsUniqueAttribute(UniqueAttributeNameModel model)
         {
-            if (_productOptionManager.AnyExistingSpecificationAttributesWithName(name))
-                    return Json("There is already an attribute stored with that name.", JsonRequestBehavior.AllowGet);
-            else
-                    return Json(true, JsonRequestBehavior.AllowGet);
+            return Json(_productOptionManager.AnyExistingSpecificationAttributesWithName(model)
+                ? (object) "There is already an attribute stored with that name."
+                : true, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -92,12 +105,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             var options = _productOptionManager.ListSpecificationAttributes();
             var sortItems = options.OrderBy(x => x.DisplayOrder)
                                    .Select(
-                                       arg => new SortItem {Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Name})
+                                       arg => new SortItem { Order = arg.DisplayOrder, Id = arg.Id, Name = arg.Name })
                                    .ToList();
             return View(sortItems);
         }
 
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
         public ActionResult Sort(List<SortItem> items)
         {
             if (items != null && items.Count > 0)

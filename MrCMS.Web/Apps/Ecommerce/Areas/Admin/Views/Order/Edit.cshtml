@@ -3,19 +3,19 @@
     ViewBag.Title = "Edit Order Details";
 }
 
-<div class="row-fluid">
-    <div class="span12">
+<div class="row">
+    <div class="col-lg-12">
         <fieldset>
             <legend>Order - #@Model.Id
 
                 <span class="pull-right btn-group">
-                    <a href="/Admin/Apps/Ecommerce/Order" class="btn">Back</a>
+                    <a href="/Admin/Apps/Ecommerce/Order" class="btn btn-default">Back</a>
                     @if (!Model.IsCancelled)
                     {
                         @Html.ActionLink("Cancel Order", "Cancel", "Order", new { id = Model.Id }, new { @class = "btn btn-danger", data_toggle = "fb-modal" })
                     }
                     @Html.ActionLink("Delete", "Delete", "Order", new { id = Model.Id }, new { @class = "btn btn-danger", data_toggle = "fb-modal" })
-                    <a href="@Url.Action("ExportOrderToPdf", "Order", new { id = Model.Id })" class="btn btn-success">Invoice (PDF)</a>
+                    <a href="@Url.Action("ToPDF", "OrderExport", new { id = Model.Id })" class="btn btn-success">Invoice (PDF)</a>
                 </span>
 
             </legend>
@@ -25,7 +25,7 @@
 
 @if (Model.IsCancelled)
 {
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         This order has been cancelled.
     </div>
 }

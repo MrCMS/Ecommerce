@@ -13,6 +13,7 @@ using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Areas.Admin.Services;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
@@ -25,7 +26,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private readonly ProductController _productController;
         private readonly ICategoryService _categoryService;
         private readonly IProductOptionManager _productOptionManager;
-        private readonly IFileService _fileService;
+        private readonly IFileAdminService _fileService;
         private readonly IBrandService _brandService;
         private readonly IProductOptionManagementService _productOptionManagementService;
         private readonly SiteSettings _siteSettings;
@@ -37,7 +38,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _productService = A.Fake<IProductService>();
             _categoryService = A.Fake<ICategoryService>();
             _productOptionManager = A.Fake<IProductOptionManager>();
-            _fileService = A.Fake<IFileService>();
+            _fileService = A.Fake<IFileAdminService>();
             _brandService = A.Fake<IBrandService>();
             _productOptionManagementService = A.Fake<IProductOptionManagementService>();
             _siteSettings = new SiteSettings() { DefaultPageSize = 10 };
@@ -112,7 +113,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 
             var result = _productController.AddCategory(product, "query", 1);
 
-            A.CallTo(() => _categoryService.GetCategories(product, "query", 1,_siteSettings.DefaultPageSize)).MustHaveHappened();
+            A.CallTo(() => _categoryService.GetCategories(product, "query", 1)).MustHaveHappened();
         }
 
         [Fact]
@@ -120,7 +121,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var product = new Product { Id = 123 };
             var pagedList = A.Fake<IPagedList<Category>>();
-            A.CallTo(() => _categoryService.GetCategories(product, "query", 1,_siteSettings.DefaultPageSize)).Returns(pagedList);
+            A.CallTo(() => _categoryService.GetCategories(product, "query", 1)).Returns(pagedList);
 
             var result = _productController.AddCategory(product, "query", 1);
 

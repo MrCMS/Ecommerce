@@ -71,32 +71,6 @@ namespace MrCMS.Web.Apps.Amazon
                                  new[] { typeof(SettingsController).Namespace });
         }
 
-        protected override void OnInstallation(ISession session, InstallModel model, Site site)
-        {
-            var configurationProvider = new ConfigurationProvider(new SettingService(session, site), site);
-
-            var amazonAppSettings = configurationProvider.GetSiteSettings<AmazonAppSettings>();
-            amazonAppSettings.FeedsApiVersion = "2009-01-01";
-            amazonAppSettings.OrdersApiVersion = "2011-01-01";
-            amazonAppSettings.ProductsApiVersion = "2011-10-01";
-            amazonAppSettings.ApiEndpoint = "https://mws.amazonservices.co.uk/";
-            amazonAppSettings.AmazonProductDetailsUrl = "http://www.amazon.co.uk/gp/product/";
-            amazonAppSettings.AmazonOrderDetailsUrl = "https://sellercentral.amazon.co.uk/gp/orders-v2/details/?orderID=";
-            amazonAppSettings.AmazonManageOrdersUrl = "https://sellercentral.amazon.co.uk/gp/orders-v2/list";
-            amazonAppSettings.AmazonManageInventoryUrl = "https://sellercentral.amazon.co.uk/myi/search/ProductSummary";
-
-            configurationProvider.SaveSettings(amazonAppSettings);
-
-            var amazonSellerSettings = configurationProvider.GetSiteSettings<AmazonSellerSettings>();
-            amazonSellerSettings.BarcodeIsOfType = StandardProductIDType.EAN;
-
-            configurationProvider.SaveSettings(amazonSellerSettings);
-
-            var folderLocation = string.Format("{0}/{1}/", CurrentRequestData.CurrentSite.Id, "amazon");
-            var fileSystem = new FileSystem();
-            fileSystem.CreateDirectory(folderLocation);
-        }
-
         public override IEnumerable<Type> Conventions
         {
             get { yield return typeof(AmazonTableNameConvention); }

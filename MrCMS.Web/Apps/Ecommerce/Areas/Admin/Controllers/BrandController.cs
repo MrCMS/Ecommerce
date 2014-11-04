@@ -1,8 +1,11 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.ACL;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
@@ -18,6 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(BrandACL), BrandACL.List)]
         public ViewResult Index(string q, int page = 1)
         {
             ViewData["query"] = q;
@@ -26,6 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(BrandACL), BrandACL.Add)]
         public PartialViewResult Add(int productId=0)
         {
             ViewBag.ProductID = productId;
@@ -34,6 +39,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Add")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(BrandACL), BrandACL.Add)]
         public ActionResult Add_POST(Brand brand, int productId=0)
         {
             if (ModelState.IsValid)
@@ -45,6 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        [MrCMSACLRule(typeof(BrandACL), BrandACL.Edit)]
         public ViewResult Edit(Brand brand)
         {
             return View(brand);
@@ -52,6 +60,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Edit")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(BrandACL), BrandACL.Edit)]
         public ActionResult Edit_POST(Brand brand)
         {
             if (ModelState.IsValid)
@@ -70,6 +80,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [ActionName("Delete")]
         [HttpPost]
+        [ForceImmediateLuceneUpdate]
+        [MrCMSACLRule(typeof(BrandACL), BrandACL.Delete)]
         public RedirectToRouteResult Delete_POST(Brand brand)
         {
             _brandService.Delete(brand);

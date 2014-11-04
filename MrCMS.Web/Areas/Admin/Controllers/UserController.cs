@@ -1,10 +1,12 @@
 ﻿using System.Web.Mvc;
 using MrCMS.ACL.Rules;
 using MrCMS.Entities.People;
-using MrCMS.Helpers;
 using MrCMS.Models;
 using MrCMS.Services;
+using MrCMS.Web.Areas.Admin.Helpers;
+using MrCMS.Web.Areas.Admin.ModelBinders;
 using MrCMS.Web.Areas.Admin.Models;
+using MrCMS.Web.Areas.Admin.Services;
 using MrCMS.Website;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
@@ -17,13 +19,16 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         private readonly IUserSearchService _userSearchService;
         private readonly IRoleService _roleService;
         private readonly IPasswordManagementService _passwordManagementService;
+        private readonly IGetUserCultureOptions _getUserCultureOptions;
 
-        public UserController(IUserService userService, IUserSearchService userSearchService, IRoleService roleService, IPasswordManagementService passwordManagementService)
+
+        public UserController(IUserService userService, IUserSearchService userSearchService, IRoleService roleService, IPasswordManagementService passwordManagementService, IGetUserCultureOptions getUserCultureOptions)
         {
             _userService = userService;
             _userSearchService = userSearchService;
             _roleService = roleService;
             _passwordManagementService = passwordManagementService;
+            _getUserCultureOptions = getUserCultureOptions;
         }
 
         [MrCMSACLRule(typeof(UserACL), UserACL.View)]
@@ -38,7 +43,8 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         [MrCMSACLRule(typeof(UserACL), UserACL.Add)]
         public PartialViewResult Add()
         {
-            var model = new AddUserModel();
+            var model = new AddUserModel(); 
+            ViewData["culture-options"] = _getUserCultureOptions.Get();
             return PartialView(model);
         }
 
@@ -48,7 +54,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         {
             _userService.AddUser(user);
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Edit", new { id = user.Id });
         }
 
         [HttpGet]
@@ -58,7 +64,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         {
             ViewData["AvailableRoles"] = _roleService.GetAllRoles();
             ViewData["OnlyAdmin"] = _roleService.IsOnlyAdmin(user);
-
+            ViewData["culture-options"] = _getUserCultureOptions.Get();
             return user == null
                        ? (ActionResult)RedirectToAction("Index")
                        : View(user);

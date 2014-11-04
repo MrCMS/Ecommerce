@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using MrCMS.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using NHibernate;
 
@@ -15,12 +14,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.Events
             _session = session;
         }
 
-        public int Order { get { return 10; } }
-        public void OnOrderPlaced(Order order)
+        public void Execute(OrderPlacedArgs args)
         {
             _session.Transact(session =>
-                                  {
-                                      foreach (var orderLine in
+                              {
+                                  var order = args.Order;
+                                  foreach (var orderLine in
                                           order.OrderLines.Where(
                                               line => line.ProductVariant.TrackingPolicy == TrackingPolicy.Track))
                                       {
@@ -29,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.Events
                                               productVariant.StockRemaining -= orderLine.Quantity;
                                           session.Update(productVariant);
                                       }
-                                  });
+                              });
         }
     }
 }

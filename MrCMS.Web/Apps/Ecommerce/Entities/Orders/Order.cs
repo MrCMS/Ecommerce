@@ -4,13 +4,11 @@ using MrCMS.Entities;
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
-using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
-using MrCMS.Web.Apps.Ecommerce.Entities.Users;
+using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using System;
 using MrCMS.Entities.People;
 using System.ComponentModel;
-using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 {
@@ -21,30 +19,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
             OrderLines = new List<OrderLine>();
             OrderNotes = new List<OrderNote>();
             OrderRefunds = new List<OrderRefund>();
+            GiftCardUsages = new List<GiftCardUsage>();
             Guid = Guid.NewGuid();
         }
+
 
         public virtual Guid Guid { get; set; }
         public virtual decimal Subtotal { get; set; }
 
         public virtual decimal Tax { get; set; }
         public virtual decimal Total { get; set; }
+        public virtual decimal TotalPaid { get; set; }
 
         [DisplayName("Total after Refunds")]
         public virtual decimal TotalAfterRefunds
         {
-            get
-            {
-                return Total - TotalRefunds;
-            }
+            get { return Total - TotalRefunds; }
         }
 
         public virtual decimal TotalRefunds
         {
-            get
-            {
-                return OrderRefunds.Sum(item => item.Amount);
-            }
+            get { return OrderRefunds.Sum(item => item.Amount); }
         }
 
         public virtual decimal DiscountAmount { get; set; }
@@ -53,8 +48,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual string DiscountCode { get; set; }
 
         public virtual decimal Weight { get; set; }
-        [DisplayName("Shipping Method")]
-        public virtual ShippingMethod ShippingMethod { get; set; }
+        //[DisplayName("Shipping Method")]
+        //public virtual ShippingMethod ShippingMethod { get; set; }
         [DisplayName("Shipping Method Name")]
         public virtual string ShippingMethodName { get; set; }
         [DisplayName("Shipping Total")]
@@ -80,6 +75,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 
         [DisplayName("Customer IP")]
         public virtual string CustomerIP { get; set; }
+
+        [DisplayName("HTTP Data")]
+        public virtual string HttpData { get; set; }
+
         public virtual User User { get; set; }
         [DisplayName("Order Email")]
         public virtual string OrderEmail { get; set; }
@@ -87,6 +86,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual IList<OrderLine> OrderLines { get; set; }
         public virtual IList<OrderNote> OrderNotes { get; set; }
         public virtual IList<OrderRefund> OrderRefunds { get; set; }
+        public virtual IList<GiftCardUsage> GiftCardUsages { get; set; }
 
         public virtual string AuthorisationToken { get; set; }
         public virtual string CaptureTransactionId { get; set; }
@@ -100,78 +100,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 
         [DisplayName("Sales Channel")]
         public virtual string SalesChannel { get; set; }
-    }
 
-    public class AddressData : IAddress
-    {
-        public virtual string Name
-        {
-            get { return string.Format("{0} {1} {2}", Title, FirstName, LastName); }
-        }
-        [DisplayName("First Name")]
-        public string FirstName { get; set; }
-        [DisplayName("Last Name")]
-        public string LastName { get; set; }
-        public string Title { get; set; }
-        public string Company { get; set; }
-        public string Address1 { get; set; }
-        public string Address2 { get; set; }
-        public string City { get; set; }
-        [DisplayName("County")]
-        public string StateProvince { get; set; }
-        public Country Country { get; set; }
-        public string PostalCode { get; set; }
-        public string PhoneNumber { get; set; }
-
-        public string GetDescription(bool removeName = false)
-        {
-            var addressParts = GetAddressParts(removeName);
-            return string.Join(", ", addressParts);
-        }
-
-        public string GetDescriptionHtml(bool removeName = false)
-        {
-            var addressParts = GetAddressParts(removeName);
-            return string.Join("<br />", addressParts);
-        }
-
-        private IEnumerable<string> GetAddressParts(bool removeName)
-        {
-            if (!string.IsNullOrWhiteSpace(Name) && !removeName)
-                yield return Name;
-            if (!string.IsNullOrWhiteSpace(Company))
-                yield return Company;
-            if (!string.IsNullOrWhiteSpace(Address1))
-                yield return Address1;
-            if (!string.IsNullOrWhiteSpace(Address2))
-                yield return Address2;
-            if (!string.IsNullOrWhiteSpace(City))
-                yield return City;
-            if (!string.IsNullOrWhiteSpace(StateProvince))
-                yield return StateProvince;
-            if (Country != null)
-                yield return Country.Name;
-            if (!string.IsNullOrWhiteSpace(PostalCode))
-                yield return PostalCode;
-        }
-
-        public virtual Address ToAddress(ISession session, User user)
-        {
-            return new Address
-            {
-                Address1 = Address1,
-                Address2 = Address2,
-                City = City,
-                Company = Company,
-                Country = Country == null ? null : session.Get<Country>(Country.Id),
-                FirstName = FirstName,
-                LastName = LastName,
-                PhoneNumber = PhoneNumber,
-                PostalCode = PostalCode,
-                StateProvince = StateProvince,
-                Title = Title,
-                User = user
-            };
-        }
+        [DisplayName("Gift Message")]
+        public virtual string GiftMessage { get; set; }
     }
 }

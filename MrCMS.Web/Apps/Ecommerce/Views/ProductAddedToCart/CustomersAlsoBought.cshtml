@@ -1,18 +1,20 @@
 ﻿@using MrCMS.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Widgets.PeopleWhoBoughtThisAlsoBoughtViewModel
+@model MrCMS.Web.Apps.Ecommerce.Models.PeopleWhoBoughtThisAlsoBoughtViewModel
 @if (Model != null && Model.Products.Any())
 {
     <hr/>
-    <div class="row-fluid">
-        <div class="span12">
-            <h4>Frequently bought together with the item you added</h4>
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Frequently bought together with the item you added</h3>
             <div class="row-fluid">
-                <div class="row-fluid">
-                    @foreach (var item in Model.Products)
-                    {
-                        Html.RenderPartial("ProductCardFeatured", item);
-                    }
-                </div>
+                @foreach (var item in Model.Products)
+                {
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        @{
+                            Html.RenderPartial("ProductCardFeatured", item);
+                        }
+                    </div>
+                }
             </div>
         </div>
     </div>

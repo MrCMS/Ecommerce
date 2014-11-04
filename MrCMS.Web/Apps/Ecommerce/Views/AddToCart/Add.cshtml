@@ -1,0 +1,22 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Models
+@model AddToCartModel
+@using (Html.BeginForm("Add", "AddToCart", FormMethod.Post))
+{
+
+    @Html.HiddenFor(model => model.ProductVariant.Id)
+    <div id="product-addtobasket" class="padding-bottom-20 grey-border-bottom">
+        <div class="col-sm-3 col-xs-4 padding-left-0">@Html.LabelFor(model => model.Quantity, new { @class = "line-height-30" })</div>
+        <div class="col-sm-9 col-xs-8">
+            @Html.TextBoxFor(model => model.Quantity, new { @class = "" })
+            <div class="clearfix"></div>
+            @Html.ValidationMessageFor(model => model.Quantity)
+        </div>
+        <div class="clearfix"></div>
+        @if (Model.ProductVariant.IsGiftCard)
+        {
+            Html.RenderPartial("GiftCardInfo", new GiftCardInfo());
+        }
+        <button class="btn btn-primary btn-block" type="submit">Add to basket</button>
+        <div class="clearfix"></div>
+    </div>
+}

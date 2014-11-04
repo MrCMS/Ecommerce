@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Settings;
@@ -8,8 +10,6 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
-using System.Collections.Generic;
-using System.Linq;
 using NHibernate.SqlCommand;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
@@ -22,70 +22,81 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             _session = session;
         }
+
         public IList<ProductVariant> GetAll()
         {
             return _session.QueryOver<ProductVariant>().Cacheable().List();
         }
-        public IPagedList<ProductVariant> GetAllVariantsWithLowStock(int treshold, int page = 1)
+
+        public IList<ProductVariant> GetAllVariantsWithLowStock(int threshold)
         {
-            var items = _session.QueryOver<ProductVariant>().Where(item => item.StockRemaining <= treshold && item.TrackingPolicy == TrackingPolicy.Track).OrderBy(x => x.Product.Id).Asc.Cacheable().List();
-            return new PagedList<ProductVariant>(items, page, MrCMSApplication.Get<SiteSettings>().DefaultPageSize);
+            var queryOver =
+                _session.QueryOver<ProductVariant>().Where(item => item.TrackingPolicy == TrackingPolicy.Track);
+
+
+            return queryOver
+                .OrderBy(x => x.Product.Id).Asc.Cacheable().List();
         }
-        public IList<ProductVariant> GetAllVariantsWithLowStock(int treshold)
-        {
-            return _session.QueryOver<ProductVariant>().Where(item => item.StockRemaining <= treshold
-                && item.TrackingPolicy == TrackingPolicy.Track).OrderBy(x => x.Product.Id).Asc.Cacheable().List();
-        }
+
         public IList<ProductVariant> GetAllVariantsForStockReport()
         {
             return _session.QueryOver<ProductVariant>().OrderBy(x => x.Product.Id).Asc.Cacheable().List();
         }
+
         public IPagedList<ProductVariant> GetAllVariants(string queryTerm, int categoryId = 0, int page = 1)
         {
             if (string.IsNullOrWhiteSpace(queryTerm) && categoryId == 0)
-                return _session.Paged(QueryOver.Of<ProductVariant>().Cacheable(), page, MrCMSApplication.Get<SiteSettings>().DefaultPageSize);
+                return _session.Paged(QueryOver.Of<ProductVariant>().Cacheable(), page,
+                    MrCMSApplication.Get<SiteSettings>().DefaultPageSize);
 
             Category categoryAlias = null;
             Product productAlias = null;
             ProductVariant productVariantAlias = null;
             return _session.QueryOver(() => productVariantAlias)
-                                .JoinAlias(() => productVariantAlias.Product, () => productAlias, JoinType.InnerJoin)
-                                .JoinAlias(() => productAlias.Categories, () => categoryAlias, JoinType.LeftOuterJoin)
-                                .Where(
-                                    () => (productVariantAlias.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)
-                                        || productVariantAlias.SKU.IsInsensitiveLike(queryTerm, MatchMode.Anywhere))
-                                    && (categoryId == 0 || categoryAlias.Id == categoryId))
-                                .Paged(page, MrCMSApplication.Get<SiteSettings>().DefaultPageSize);
+                .JoinAlias(() => productVariantAlias.Product, () => productAlias, JoinType.InnerJoin)
+                .JoinAlias(() => productAlias.Categories, () => categoryAlias, JoinType.LeftOuterJoin)
+                .Where(
+                    () => (productVariantAlias.Name.IsInsensitiveLike(queryTerm, MatchMode.Anywhere)
+                           || productVariantAlias.SKU.IsInsensitiveLike(queryTerm, MatchMode.Anywhere))
+                          && (categoryId == 0 || categoryAlias.Id == categoryId))
+                .Paged(page, MrCMSApplication.Get<SiteSettings>().DefaultPageSize);
         }
+
         public IList<ProductVariant> GetAllVariantsForGoogleBase()
         {
-            return _session.QueryOver<ProductVariant>().JoinQueryOver(x => x.Product, JoinType.LeftOuterJoin).Where(variant => variant.PublishOn != null).Cacheable().List();
+            return
+                _session.QueryOver<ProductVariant>()
+                    .JoinQueryOver(x => x.Product, JoinType.LeftOuterJoin)
+                    .Where(variant => variant.PublishOn != null)
+                    .Cacheable()
+                    .List();
         }
+
         public ProductVariant GetProductVariantBySKU(string sku)
         {
-            var trim = sku.Trim();
+            string trim = sku.Trim();
             return _session.QueryOver<ProductVariant>()
-                           .Where(
-                               variant =>
-                               variant.SKU == trim).Take(1).Cacheable().SingleOrDefault();
+                .Where(
+                    variant =>
+                        variant.SKU == trim).Take(1).Cacheable().SingleOrDefault();
         }
 
         public ProductVariant Get(int id)
         {
             return _session.QueryOver<ProductVariant>()
-                            .Where(
-                                variant =>
-                                variant.Id == id).Cacheable().SingleOrDefault();
+                .Where(
+                    variant =>
+                        variant.Id == id).Cacheable().SingleOrDefault();
         }
 
         public List<SelectListItem> GetOptions()
         {
             return _session.QueryOver<ProductVariant>()
-                           .Cacheable()
-                           .List()
-                           .BuildSelectItemList(item => item.Name,
-                                                item => item.Id.ToString(),
-                                                emptyItemText: null);
+                .Cacheable()
+                .List()
+                .BuildSelectItemList(item => item.Name,
+                    item => item.Id.ToString(),
+                    emptyItemText: null);
         }
 
         public PriceBreak AddPriceBreak(AddPriceBreakModel model)
@@ -111,49 +122,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public void DeletePriceBreak(PriceBreak priceBreak)
         {
-            _session.Transact(session => session.Delete(priceBreak));
-        }
-
-        public void Add(ProductVariant productVariant)
-        {
-            if (productVariant.Product != null)
+            if (priceBreak.ProductVariant != null)
             {
-                productVariant.Product.Variants.Add(productVariant);
-
-                foreach (ProductOptionValue t in productVariant.OptionValues)
-                {
-                    t.ProductVariant = productVariant;
-                }
-                _session.Transact(session => session.Save(productVariant));
+                priceBreak.ProductVariant.PriceBreaks.Remove(priceBreak);
             }
-        }
-
-        public void Update(ProductVariant productVariant)
-        {
-            _session.Transact(session => session.SaveOrUpdate(productVariant));
-        }
-
-        public void Delete(ProductVariant productVariant)
-        {
-            var product = productVariant.Product;
-            if (product != null)
-                product.Variants.Remove(productVariant);
-            _session.Transact(session =>
-                                  {
-                                      session.Delete(productVariant);
-                                      if (product != null)
-                                          session.Update(product);
-                                  });
+            _session.Transact(session => session.Delete(priceBreak));
         }
 
         public bool AnyExistingProductVariantWithSKU(string sku, int id)
         {
-            var trim = sku.Trim();
+            string trim = sku.Trim();
             return _session.QueryOver<ProductVariant>()
-                           .Where(
-                               variant =>
-                               variant.SKU == trim && variant.Id != id)
-                           .RowCount() > 0;
+                .Where(
+                    variant =>
+                        variant.SKU == trim && variant.Id != id)
+                .RowCount() > 0;
         }
 
         public bool IsPriceBreakQuantityValid(int quantity, ProductVariant productVariant)
@@ -163,7 +146,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public bool IsPriceBreakPriceValid(decimal price, ProductVariant productVariant, int quantity)
         {
-            var priceBreaks = productVariant.PriceBreaks;
+            IList<PriceBreak> priceBreaks = productVariant.PriceBreaks;
             return price < productVariant.BasePrice && price > 0
                    && priceBreaks.Where(@break => @break.Quantity < quantity).All(@break => @break.Price > price)
                    && priceBreaks.Where(@break => @break.Quantity > quantity).All(@break => @break.Price < price);

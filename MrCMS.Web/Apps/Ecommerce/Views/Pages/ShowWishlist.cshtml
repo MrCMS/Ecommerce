@@ -1,4 +1,6 @@
-﻿@using MrCMS.Helpers
+﻿@using System.Collections.Generic
+@using System.Linq
+@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Entities.Products
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @model MrCMS.Web.Apps.Ecommerce.Pages.ShowWishlist
@@ -6,8 +8,9 @@
     var wishlist = ViewData["wishlist"] as Wishlist ?? new Wishlist();
     var myWishlist = ViewData["my-wishlist"] is bool && (bool)ViewData["my-wishlist"];
 }
-<div class="row-fluid">
-    <div class="span12">
+<div class="row">
+    <div class="col-sm-12">
+        <h1>@Editable(Model, x => x.Name)</h1>
         @if (myWishlist)
         {
             var url = UniquePageHelper.GetAbsoluteUrl<ShowWishlist>(new { id = wishlist.Guid });
@@ -16,10 +19,23 @@
             </p>
         }
         <div id="products">
-            @foreach (var productVariant in wishlist.WishlistItems.Select(item => item.Item))
-            {
-                Html.RenderPartial("VariantCard", productVariant);
+
+            @{
+                IEnumerable<ProductVariant> productVariants = wishlist.WishlistItems.Select(item => item.Item);
             }
+            @if (productVariants.Any())
+            {
+                foreach (var productVariant in productVariants)
+                {
+                    Html.RenderAction("ShowVariant", "Wishlist", new {productVariant});
+                }
+            }
+            else
+            {
+                @Resource("No Wishlist Items", "There are no items in your wishlist.")
+            }
+
         </div>
     </div>
 </div>
+

@@ -6,6 +6,8 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
+using MrCMS.Entities.Multisite;
+using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Settings;
 
@@ -14,10 +16,12 @@ namespace MrCMS.Website.Optimization
     public class ResourceBundler : IResourceBundler
     {
         private readonly SEOSettings _seoSettings;
+        private readonly Site _site;
 
-        public ResourceBundler(SEOSettings seoSettings)
+        public ResourceBundler(SEOSettings seoSettings,Site site)
         {
             _seoSettings = seoSettings;
+            _site = site;
         }
 
         private Dictionary<string, List<ResourceData>> CssData
@@ -65,10 +69,9 @@ namespace MrCMS.Website.Optimization
         }
 
         private static readonly object s_lock = new object();
-        public MvcHtmlString GetScripts()
+        public void GetScripts(ViewContext viewContext)
         {
 
-            var result = new StringBuilder();
             if (_seoSettings.EnableJsBundling)
             {
                 foreach (var key in ScriptData.Keys)
@@ -88,32 +91,33 @@ namespace MrCMS.Website.Optimization
                             if (bundleFor == null)
                             {
                                 var bundle = new ScriptBundle(bundleVirtualPath)
-                                                 {
-                                                     Orderer = new AsIsBundleOrderer(),
-                                                     EnableFileExtensionReplacements = false
-                                                 };
+                                {
+                                    Orderer = new AsIsBundleOrderer(),
+                                    EnableFileExtensionReplacements = false
+                                };
                                 bundle.Include(partsToBundle);
                                 BundleTable.Bundles.Add(bundle);
                                 BundleTable.Bundles.IgnoreList.Clear();
                             }
                         }
 
-                        result.AppendLine(string.Format("<script src=\"{0}\" type=\"text/javascript\"></script>",
-                                                        bundleVirtualPath.Substring(1)));
+                        viewContext.Writer.Write("<script src=\"{0}\" type=\"text/javascript\"></script>",
+                            bundleVirtualPath.Substring(1));
                     }
 
                     foreach (var path in partsToNotBundle)
-                        result.AppendLine(string.Format("<script src=\"{0}\" type=\"text/javascript\"></script>", path));
+                        viewContext.Writer.Write("<script src=\"{0}\" type=\"text/javascript\"></script>", path);
                 }
-                return MvcHtmlString.Create(result.ToString());
 
             }
-            foreach (var path in ScriptData.Values.SelectMany(x => x).Select(data => data.Url).Distinct())
+            else
             {
-                result.AppendLine(string.Format("<script src=\"{0}\" type=\"text/javascript\"></script>",
-                                                path.StartsWith("~") ? path.Substring(1) : path));
+                foreach (var path in ScriptData.Values.SelectMany(x => x).Select(data => data.Url).Distinct())
+                {
+                    viewContext.Writer.Write("<script src=\"{0}\" type=\"text/javascript\"></script>",
+                        path.StartsWith("~") ? path.Substring(1) : path);
+                }
             }
-            return MvcHtmlString.Create(result.ToString());
         }
 
         public MvcHtmlString GetCss()
@@ -155,7 +159,7 @@ namespace MrCMS.Website.Optimization
                 }
                 return MvcHtmlString.Create(result.ToString());
             }
-
+            
             foreach (var path in CssData.Values.SelectMany(x => x).Select(x => x.Url).Distinct())
                 result.AppendLine(string.Format("<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />",
                                                 path.StartsWith("~") ? path.Substring(1) : path));
@@ -183,9 +187,10 @@ namespace MrCMS.Website.Optimization
                 hash = HttpServerUtility.UrlTokenEncode(input);
             }
             //ensure only valid chars
-            hash = FileService.RemoveInvalidUrlCharacters(hash);
+            hash = hash.RemoveInvalidUrlCharacters();
 
             var sb = new StringBuilder(prefix);
+            sb.Append(_site.Id);
             sb.Append(hash);
             sb.Append(postfix);
             return sb.ToString();

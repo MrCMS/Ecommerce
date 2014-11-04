@@ -1,25 +1,37 @@
+@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Pages.Product
 <table class="table table-condensed table-striped" id="product-pricing-info">
     <thead>
         <tr>
-              <th>Name
-                 </th>
+            <th>
+                Name
+            </th>
             @foreach (var option in Model.Options)
             {
-                <th>@option.Name
+                <th>
+                    @option.Name
                 </th>
             }
-            <th>SKU
+            <th>
+                Product Type
             </th>
-            <th>Price
+            <th>
+                SKU
             </th>
-            <th>Stock Remaining
+            <th>
+                Price
             </th>
-            <th>Weight (kg)
+            <th>
+                Stock Remaining
             </th>
-            <th>Actions
+            <th>
+                Weight (kg)
+            </th>
+            <th>
+                Actions
             </th>
         </tr>
     </thead>
@@ -45,10 +57,13 @@
                     </td>
                 }
                 <td>
+                    @variant.VariantType.GetDescription().BreakUpString()
+                </td>
+                <td>
                     @variant.SKU
                 </td>
                 <td>
-                    @variant.BasePrice.ToCurrencyFormat() @Html.ActionLink("Add price break", "Add", "PriceBreak", new { id = variant.Id, type = "ProductVariant" }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                    @variant.BasePrice.ToCurrencyFormat() @Html.ActionLink("Add price break", "Add", "PriceBreak", new { id = variant.Id, type = "ProductVariant" }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
                     @if (variant.PriceBreaks.Any())
                     {
                         <h5>Price Breaks</h5>
@@ -63,26 +78,37 @@
                                 <tr>
                                     <td>@priceBreak.Quantity</td>
                                     <td>@priceBreak.Price.ToCurrencyFormat()</td>
-                                    <td>@Html.ActionLink("Delete", "Delete", "PriceBreak", new { id = priceBreak.Id }, new { @class = "btn btn-danger btn-mini pull-right", data_toggle = "fb-modal" })</td>
+                                    <td>@Html.ActionLink("Delete", "Delete", "PriceBreak", new { id = priceBreak.Id }, new { @class = "btn btn-danger btn-xs pull-right", data_toggle = "fb-modal" })</td>
                                 </tr>
                             }
 
                         </table>
-    
                     }
                 </td>
                 <td>
-                    @(variant.TrackingPolicy  == TrackingPolicy.DontTrack ? "Not tracked" : variant.StockRemaining.ToString())
+                    @if (variant.TrackingPolicy == TrackingPolicy.DontTrack)
+                    {
+                        <text>Not tracked</text>
+                    }
+                    else if (SiteSettings<EcommerceSettings>().WarehouseStockEnabled)
+                    {
+                        @variant.GetStockRemaining() <text> </text> @Html.ActionLink("Manage Stock", "Index", "WarehouseStock", new { sku = variant.SKU }, new { @class = "btn btn-xs btn-default" })
+                    }
+                    else
+                    {
+                        @variant.StockRemaining.ToString()
+                    }
                 </td>
+
                 <td>
                     @variant.Weight.ToString("0.0000")
                 </td>
                 <td>
                     <div class="btn-group">
-                        @Html.ActionLink("Edit", "Edit", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                        @Html.ActionLink("Edit", "Edit", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
                         @if (Model.Variants.Count > 1)
                         {
-                            @Html.ActionLink("Delete", "Delete", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-mini btn-danger", data_toggle = "fb-modal" })
+                            @Html.ActionLink("Delete", "Delete", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-xs btn-default btn-danger", data_toggle = "fb-modal" })
                         }
                     </div>
                 </td>

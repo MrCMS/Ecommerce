@@ -1,78 +1,110 @@
 ﻿@using MrCMS.Helpers
+@using MrCMS.Paging
 @using MrCMS.Web.Apps.Ecommerce
+@using MrCMS.Web.Apps.Ecommerce.Entities.Orders
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @model OrderSearchModel
 @{
     ViewBag.Title = "Orders";
+    var results = ViewData["results"] as IPagedList<Order> ?? PagedList<Order>.Empty;
+    var paymentStatusOptions = ViewData["payment-status-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    var shippingStatusOptions = ViewData["shipping-status-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/ecommerce-admin.css");
 }
 
 @using (Html.BeginForm("Index", "Order", FormMethod.Get))
 {
 
     <fieldset>
-        <legend>Orders
+        <legend>
+            Orders
             <span class="btn-group  display-inline  pull-right">
                 <button type="submit" class="btn btn-primary">Search</button>
             </span>
         </legend>
-        @if (!Model.Results.Any())
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.SearchText, "Email or Lastname")
+                    @Html.TextBoxFor(x => x.SearchText, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.OrderId)
+                    @Html.TextBoxFor(x => x.OrderId, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.SalesChannel)
+                    @Html.DropDownListFor(x => x.SalesChannel, Model.SalesChannelOptions, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.DateFrom)
+                    @Html.TextBoxFor(x => x.DateFrom, new { @class = "form-control date-time-picker" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.PaymentStatus)
+                    @Html.DropDownListFor(x => x.PaymentStatus, paymentStatusOptions, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.OrderTotalFrom)
+                    @Html.TextBoxFor(x => x.OrderTotalFrom, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.DateTo)
+                    @Html.TextBoxFor(x => x.DateTo, new { @class = "form-control date-time-picker" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingStatus)
+                    @Html.DropDownListFor(x => x.ShippingStatus, shippingStatusOptions, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.OrderTotalTo)
+                    @Html.TextBoxFor(x => x.OrderTotalTo, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <hr />
+        @if (!results.Any())
         {
             @:No orders.
         }
         else
         {
 
-            <div class="row-fluid">
-                <div class="span4">
-                    @Html.LabelFor(x => x.SearchText, "Email or Lastname")
-                    @Html.TextBoxFor(x => x.SearchText, new { @class = "span12" })
-
-                    @Html.LabelFor(x => x.OrderId)
-                    @Html.TextBoxFor(x => x.OrderId, new { @class = "span12" })
-
-                    @Html.LabelFor(x => x.SalesChannel)
-                    @Html.DropDownListFor(x => x.SalesChannel, Model.SalesChannelOptions, new { @class = "span12" })
-                </div>
-                <div class="span4">
-                    @Html.LabelFor(x => x.DateFrom)
-                    @Html.TextBoxFor(x => x.DateFrom, new { @class = "span12 date-time-picker" })
-
-                    @Html.LabelFor(x => x.PaymentStatus)
-                    @Html.DropDownListFor(x => x.PaymentStatus, ViewData["PaymentStatuses"] as IEnumerable<SelectListItem>, new { @class = "span12" })
-                </div>
-                <div class="span4">
-
-                    @Html.LabelFor(x => x.DateTo)
-                    @Html.TextBoxFor(x => x.DateTo, new { @class = "span12 date-time-picker" })
-
-                    @Html.LabelFor(x => x.ShippingStatus)
-                    @Html.DropDownListFor(x => x.ShippingStatus, ViewData["ShippingStatuses"] as IEnumerable<SelectListItem>, new { @class = "span12" })
-                </div>
-            </div>
-            <hr />
             <table class="table table-condensed table-striped">
                 <thead>
                     <tr>
-                        <th>Sales Channel
+                        <th>
+                            Channel
                         </th>
-                        <th>Order Id
+                        <th>
+                            Order Id
                         </th>
-                        <th>Email
+                        <th>
+                            Email
                         </th>
-                        <th>Payment Info
+                        <th>
+                            Payment Info
                         </th>
-                        <th>Shipping Info
+                        <th>
+                            Shipping Info
                         </th>
-                        <th>Amount
+                        <th>
+                            Amount
                         </th>
-                        <th>Created On
+                        <th>
+                            Created On
                         </th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.Results)
+                    @foreach (var item in results)
                     {
                         var status = "warning";
                         if (item.ShippingStatus.Equals(ShippingStatus.Shipped) && item.PaymentStatus.Equals(PaymentStatus.Paid))
@@ -81,7 +113,7 @@
                         }
                         else if (item.IsCancelled)
                         {
-                            status = "error";
+                            status = "danger";
                         }
                         <tr class="@status">
                             <td>
@@ -96,14 +128,14 @@
                             <td>
                                 @if (!item.IsCancelled)
                                 {
-                                    @item.PaymentStatus 
-                                        
+                                    @item.PaymentStatus
+
                                     if (item.PaymentStatus == PaymentStatus.Pending)
                                     {
-                                    <span></span>
-                                    @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
-                                    <span></span>
-                                    @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                        <span></span>
+                                        @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                        <span></span>
+                                        @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
                                     }
                                     <br />
                                     @item.PaymentMethod
@@ -119,23 +151,19 @@
                                     <span></span>
                                     if (item.ShippingStatus == ShippingStatus.ShippingNotRequired)
                                     {
-                                    @item.ShippingMethodName
+                                        @item.ShippingMethodName
                                     }
                                     else
                                     {
-                                    @item.ShippingStatus
+                                        @item.ShippingStatus
                                         if (item.ShippingStatus != ShippingStatus.Shipped)
                                         {
-                                    @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-mini", data_toggle = "fb-modal" })
+                                            @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
                                         }
-                                    <br />
+                                        <br />
                                         if (!string.IsNullOrWhiteSpace(item.ShippingMethodName))
                                         {
-                                    @item.ShippingMethodName
-                                        }
-                                        else if (item.ShippingMethod != null)
-                                        {
-                                    @item.ShippingMethod.Name
+                                            @item.ShippingMethodName
                                         }
                                     }
                                 }
@@ -144,23 +172,23 @@
                                     @:Cancelled
                                 }
                             </td>
-                            <td>@item.Total.ToCurrencyFormat()
+                            <td>
+                                @item.Total.ToCurrencyFormat()
                             </td>
                             <td>
                                 @item.CreatedOn
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    @Html.ActionLink("Details", "Edit", "Order", new { id = item.Id }, new { @class = "btn btn-mini" })
+                                    @Html.ActionLink("Details", "Edit", "Order", new { id = item.Id }, new { @class = "btn btn-xs btn-default" })
                                 </div>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
-            @Html.Pager(Model.Results, "Index", i => new { page = i })
+            @Html.Pager(results, "Index", i => new { page = i })
         }
 
     </fieldset>
 }
-@{ Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/ecommerce-admin.css"); }

@@ -1,6 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System.Threading.Tasks;
+using System.Web.Mvc;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
+using MrCMS.Services.Resources;
 using MrCMS.Web.Apps.Core.Models;
 using MrCMS.Web.Apps.Core.Models.RegisterAndLogin;
 using MrCMS.Web.Apps.Core.Pages;
@@ -14,13 +16,15 @@ namespace MrCMS.Web.Apps.Core.Controllers
     {
         private readonly IUserService _userService;
         private readonly IAuthorisationService _authorisationService;
+        private readonly IStringResourceProvider _stringResourceProvider;
         private IPasswordManagementService _passwordManagementService;
 
-        public UserAccountController(IUserService userService, IPasswordManagementService passwordManagementService,IAuthorisationService authorisationService)
+        public UserAccountController(IUserService userService, IPasswordManagementService passwordManagementService,IAuthorisationService authorisationService, IStringResourceProvider stringResourceProvider)
         {
             _userService = userService;
             _passwordManagementService = passwordManagementService;
             _authorisationService = authorisationService;
+            _stringResourceProvider = stringResourceProvider;
         }
 
         public ActionResult Show(UserAccountPage page)
@@ -52,7 +56,7 @@ namespace MrCMS.Web.Apps.Core.Controllers
 
         [HttpPost]
         [ActionName("UserAccountDetails")]
-        public ActionResult UserAccountDetails_POST(UserAccountModel model)
+        public async Task<RedirectResult> UserAccountDetails_POST(UserAccountModel model)
         {
             if (model != null && ModelState.IsValid)
             {
@@ -63,7 +67,7 @@ namespace MrCMS.Web.Apps.Core.Controllers
                     user.LastName = model.LastName;
                     user.Email = model.Email;
                     _userService.SaveUser(user);
-                    _authorisationService.SetAuthCookie(user, false);
+                    await _authorisationService.SetAuthCookie(user, false);
 
                     return Redirect(UniquePageHelper.GetUrl<UserAccountPage>());
                 }
@@ -76,7 +80,7 @@ namespace MrCMS.Web.Apps.Core.Controllers
             if (_userService.IsUniqueEmail(email, CurrentRequestData.CurrentUser.Id))
                 return Json(true, JsonRequestBehavior.AllowGet);
 
-            return Json("Email already registered.", JsonRequestBehavior.AllowGet);
+            return Json(_stringResourceProvider.GetValue("Register Email Already Registered", "Email already registered."), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
@@ -94,12 +98,12 @@ namespace MrCMS.Web.Apps.Core.Controllers
             {
                 var user = CurrentRequestData.CurrentUser;
                 _passwordManagementService.SetPassword(user, model.Password, model.ConfirmPassword);
-                model.Message = "Password updated.";
+                model.Message = _stringResourceProvider.GetValue("Login Password Updated","Password updated.");
 
             }
             else
             {
-                model.Message = "Please ensure both fields are filled out and valid";
+                model.Message = _stringResourceProvider.GetValue("Login Invalid","Please ensure both fields are filled out and valid");
             }
 
             TempData["message"] = model.Message;

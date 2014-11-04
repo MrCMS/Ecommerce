@@ -1,19 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate.DTOs;
-using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate
 {
     public class BulkShippingUpdateService : IBulkShippingUpdateService
     {
-        private readonly IOrderService _orderService;
-        private readonly IShippingMethodManager _shippingMethodManager;
+        private readonly IOrderAdminService _orderService;
+        private readonly IShippingMethodAdminService _shippingMethodAdminService;
 
-        public BulkShippingUpdateService(IOrderService orderService, IShippingMethodManager shippingMethodManager)
+        public BulkShippingUpdateService(IOrderAdminService orderService,IShippingMethodAdminService shippingMethodAdminService)
         {
             _orderService = orderService;
-            _shippingMethodManager = shippingMethodManager;
+            _shippingMethodAdminService = shippingMethodAdminService;
         }
 
         public int BulkShippingUpdateFromDTOs(IEnumerable<BulkShippingUpdateDataTransferObject> items)
@@ -27,23 +29,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate
             return noOfUpdatedItems;
         }
 
-        public Order BulkShippingUpdate(BulkShippingUpdateDataTransferObject itemDto, ref int noOfUpdatedItems)
+        public void BulkShippingUpdate(BulkShippingUpdateDataTransferObject itemDto, ref int noOfUpdatedItems)
         {
-            var item = _orderService.Get(itemDto.OrderId);
+            var order = _orderService.Get(itemDto.OrderId);
 
-            if (item != null && !string.IsNullOrWhiteSpace(itemDto.ShippingMethod))
+            if (order != null && !string.IsNullOrWhiteSpace(itemDto.ShippingMethod))
             {
-                var shippingMethod=_shippingMethodManager.GetByName(itemDto.ShippingMethod);
+                var shippingMethod =
+                    _shippingMethodAdminService.GetAll().FirstOrDefault(info => info.Name == itemDto.ShippingMethod);
                 if (shippingMethod != null)
                 {
-                    item.ShippingMethod = shippingMethod;
-                    item.TrackingNumber = itemDto.TrackingNumber;
-                    _orderService.MarkAsShipped(item);
+                    order.ShippingMethodName = shippingMethod.Name;
+                    order.TrackingNumber = itemDto.TrackingNumber;
+                    _orderService.MarkAsShipped(order);
                     noOfUpdatedItems++;
                 }
-                return item;
             }
-            return new Order();
         }
     }
 }

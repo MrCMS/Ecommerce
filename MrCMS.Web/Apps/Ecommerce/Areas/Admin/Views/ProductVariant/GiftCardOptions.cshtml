@@ -1,0 +1,16 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
+@{
+    var giftCardTypeOptions = ViewData["gift-card-type-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
+
+<div id="gift-card-options" class="tab-pane">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                @Html.LabelFor(variant => variant.GiftCardType)
+                @Html.DropDownListFor(variant => variant.GiftCardType, giftCardTypeOptions, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+</div>

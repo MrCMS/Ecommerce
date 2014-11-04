@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations
 
         public override void CopyValues(DiscountLimitation limitation)
         {
-            this.NumberOfItems = ((CartHasAtLeastXItems)limitation).NumberOfItems;
+            NumberOfItems = ((CartHasAtLeastXItems)limitation).NumberOfItems;
         }
     }
 }

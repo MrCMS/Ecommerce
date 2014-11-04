@@ -5,17 +5,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.Events
 {
     public class EmptyBasket : IOnOrderPlaced
     {
-        private readonly ICartManager _cartManager;
+        private readonly IEmptyBasket _emptyBasket;
 
-        public EmptyBasket(ICartManager cartManager)
+        public EmptyBasket(IEmptyBasket emptyBasket)
         {
-            _cartManager = cartManager;
+            _emptyBasket = emptyBasket;
         }
 
-        public int Order { get { return 10; } }
-        public void OnOrderPlaced(Order order)
+        public void Execute(OrderPlacedArgs args)
         {
-            _cartManager.EmptyBasket();
+            _emptyBasket.Empty();
         }
     }
 }

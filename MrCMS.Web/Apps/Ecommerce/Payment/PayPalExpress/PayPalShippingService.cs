@@ -1,4 +1,6 @@
-﻿namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
+﻿using MrCMS.Web.Apps.Ecommerce.Models;
+
+namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 {
     public class PayPalShippingService : IPayPalShippingService
     {
@@ -14,9 +16,9 @@
             return _payPalExpressCheckoutSettings.RequireConfirmedShippingAddress ? "1" : "0";
         }
 
-        public string GetNoShipping()
+        public string GetNoShipping(CartModel cart)
         {
-            return "2";
+            return !cart.RequiresShipping ? "1" : (cart.ShippingAddress != null ? "0" : "2");
         }
     }
 }
