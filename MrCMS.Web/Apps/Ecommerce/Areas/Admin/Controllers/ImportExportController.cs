@@ -1,6 +1,7 @@
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using System.Web;
@@ -11,24 +12,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class ImportExportController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly IExportProductsManager _exportProductsManager;
+        private readonly EcommerceSettings _ecommerceSettings;
         private readonly IImportProductsManager _importExportManager;
 
-        public ImportExportController(IImportProductsManager importExportManager, IExportProductsManager exportProductsManager)
+        public ImportExportController(IImportProductsManager importExportManager, IExportProductsManager exportProductsManager, EcommerceSettings ecommerceSettings)
         {
             _importExportManager = importExportManager;
             _exportProductsManager = exportProductsManager;
+            _ecommerceSettings = ecommerceSettings;
         }
 
         [HttpGet]
         [MrCMSACLRule(typeof(ImportExportACL), ImportExportACL.View)]
         public ViewResult Products()
         {
+            ViewData["warehousestockenabled"] = _ecommerceSettings.WarehouseStockEnabled;
             return View();
         }
         [HttpGet]
         [MrCMSACLRule(typeof(ImportExportACL), ImportExportACL.CanExport)]
         public ActionResult ExportProducts()
         {
+            ViewData["warehousestockenabled"] = _ecommerceSettings.WarehouseStockEnabled;
+
             try
             {
                 var file = _exportProductsManager.ExportProductsToExcel();
@@ -47,6 +53,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [MrCMSACLRule(typeof(ImportExportACL), ImportExportACL.CanImport)]
         public ViewResult ImportProducts(HttpPostedFileBase document)
         {
+            ViewData["warehousestockenabled"] = _ecommerceSettings.WarehouseStockEnabled;
+
             if (document != null && document.ContentLength > 0 && document.ContentType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             {
                 Server.ScriptTimeout = 8000;
