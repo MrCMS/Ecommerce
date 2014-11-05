@@ -58,7 +58,7 @@ box-shadow: inset 0 1px 0 rgba(255, 255, 255, .15), 0 1px 1px rgba(0, 0, 0, .075
 /*Header*/
 header { height: 50px; }
     header .logo { max-width: 200px; padding-top: 5px; }
-    header #search-box { width: 400px; padding-top: 8px; padding-right: 10px; }
+    header .search-box { width: 400px; padding-top: 8px; padding-right: 10px; }
     header .navbar-right > li { position: relative; display: inline-block; }
         header .navbar-right > li a:hover { background-color: inherit; }
         header .navbar-right > li a.checkout { background-color: #88A825; color: #fff; padding-left: 13px !important; padding-right: 13px !important; }
@@ -207,7 +207,7 @@ li a.notification {position:absolute;top:3px;right:3px;background:url(/Apps/Ecom
 }
 /*tablet*/
 @media (min-width: 768px) and (max-width:992px) {
-    header #search-box { width: 240px; }
+    header .search-box { width: 240px; }
     .navigation .session {text-align: center;font-size:14px;line-height:37px;color: #ffffff;padding: 0;}
     .navigation .col-md-3:first-child .session {padding-left:0;}
     .product-con .product-image {text-align:center;position:relative;height:160px;}
@@ -229,12 +229,12 @@ li a.notification {position:absolute;top:3px;right:3px;background:url(/Apps/Ecom
 
     .navbar-nav .open .dropdown-menu { position: absolute; float: left; right: 0; left: auto; width: auto; margin: 0 0 0; background-color: white; border: 0; -webkit-background-clip: padding-box; background-clip: padding-box; border: 1px solid #ccc; border: 1px solid rgba(0, 0, 0, .15); border-radius: 4px; -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175); box-shadow: 0 6px 12px rgba(0, 0, 0, .175); border-top-left-radius: 0; border-top-right-radius: 0; }
 
-    header .logo { padding-top: 10px; }
-        header .logo img { max-width: 110px; }
+    header .logo a { padding-top: 10px; }
+        header .logo a img { max-width: 110px; }
 
     .value-props .pull-right { display: none; }
 
-    #search-box { width: 70%; margin-top: 2px; }
+    .search-box { width: 70%; margin-top: 2px; }
     #filter-container.collapse { display: none;}
     #filter-container.collapse.in { display: block;}
 

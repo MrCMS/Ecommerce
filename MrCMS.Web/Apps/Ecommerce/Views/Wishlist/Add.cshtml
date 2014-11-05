@@ -11,14 +11,14 @@
         {
             using (Html.BeginForm("Add", "Wishlist", new { Model.Id }, FormMethod.Post, new { data_wishlist_action = "add", @class = "margin-bottom-5" }))
             {
-            <input type="submit" class="btn btn-link padding-left-0" value="Add to wishlist" />
+                <input type="submit" class="btn btn-default btn-sm" value="@Resource("Add to wishlist")" />
             }
         }
         else
         {
             using (Html.BeginForm("Remove", "Wishlist", new { Model.Id }, FormMethod.Post, new { data_wishlist_action = "remove", @class = "margin-bottom-5" }))
             {
-            <input type="submit" class="btn btn-link padding-left-0" value="Remove from wishlist" />
+                <input type="submit" class="btn btn-warning btn-sm" value="@Resource("Remove from wishlist")" />
             }
         }
     </div>
