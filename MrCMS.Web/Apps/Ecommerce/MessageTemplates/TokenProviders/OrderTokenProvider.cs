@@ -93,7 +93,7 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
                                                            }
                                                            if (order.DiscountAmount > 0)
                                                            {
-                                                               sb.AppendFormat("Discount: {0} (Code: {1})<br />", order.DiscountAmount.ToCurrencyFormat(), order.DiscountAmount);
+                                                               sb.AppendFormat("Discount: {0} (Code: {1})<br />", order.DiscountAmount.ToCurrencyFormat(), order.DiscountCode);
                                                            }
                                                            sb.AppendFormat("<strong>Total: {0}</strong>", order.Total.ToCurrencyFormat());
                                                            sb.Append("</p>");
