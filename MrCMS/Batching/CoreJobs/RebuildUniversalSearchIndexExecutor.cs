@@ -1,6 +1,5 @@
 ﻿using System;
 using MrCMS.Search;
-using MrCMS.Services;
 
 namespace MrCMS.Batching.CoreJobs
 {
@@ -19,29 +18,6 @@ namespace MrCMS.Batching.CoreJobs
             try
             {
                 _universalSearchIndexManager.ReindexAll();
-                return BatchJobExecutionResult.Success();
-            }
-            catch (Exception exception)
-            {
-                return BatchJobExecutionResult.Success(exception.Message);
-            }
-        }
-    }
-    public class RebuildLuceneIndexExecutor : BaseBatchJobExecutor<RebuildLuceneIndex>
-    {
-        private readonly IIndexService _indexService;
-
-        public RebuildLuceneIndexExecutor(ISetBatchJobExecutionStatus setBatchJobJobExecutionStatus, IIndexService indexService)
-            : base(setBatchJobJobExecutionStatus)
-        {
-            _indexService = indexService;
-        }
-
-        protected override BatchJobExecutionResult OnExecute(RebuildLuceneIndex batchJob)
-        {
-            try
-            {
-                _indexService.Reindex(batchJob.IndexName);
                 return BatchJobExecutionResult.Success();
             }
             catch (Exception exception)
