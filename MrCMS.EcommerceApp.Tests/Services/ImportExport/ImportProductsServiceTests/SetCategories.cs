@@ -1,17 +1,18 @@
 ﻿using System.Data.Common;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using Xunit;
 using FluentAssertions;
 using System.Linq;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ImportExport.ImportProductsServiceTests
 {
-    public class SetCategories
+    public class SetCategories :InMemoryDatabaseTest
     {
         [Fact]
         public void IfDTOHasNewCategoryWhichExistsInSystemItIsAddedToTheProduct()
         {
-            var category = new CategoryBuilder().WithUrlSegment("test-category").Build();
-            var importProductsService = new ImportProductsServiceBuilder().WithExistingDocuments(category).Build();
+            new CategoryBuilder().WithUrlSegment("test-category").Build().PersistTo(Session);
+            var importProductsService = new ImportProductsServiceBuilder(Session).Build();
             var dataTransferObject = new ProductImportDTOBuilder().WithCategories("test-category").Build();
             var product = new ProductBuilder().Build();
             product.Categories.Where(c => c.UrlSegment == "test-category").Should().HaveCount(0);
@@ -24,8 +25,8 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport.ImportProductsServiceTe
         [Fact]
         public void IfDTOHasNoCategoriesThenNoCategoriesAreAdded()
         {
-            var category = new CategoryBuilder().WithUrlSegment("test-category").Build();
-            var importProductsService = new ImportProductsServiceBuilder().WithExistingDocuments(category).Build();
+            var category = new CategoryBuilder().WithUrlSegment("test-category").Build().PersistTo(Session);
+            var importProductsService = new ImportProductsServiceBuilder(Session).Build();
             var dataTransferObject = new ProductImportDTOBuilder().WithNoCategories().Build();
             var product = new ProductBuilder().Build();
             product.Categories.Where(c => c.UrlSegment == "test-category").Should().HaveCount(0);
@@ -38,8 +39,8 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport.ImportProductsServiceTe
         [Fact]
         public void IfDTOHasNoCategoriesAndOneExistsOnTheProductRemoveCategoryFromProduct()
         {
-            var category = new CategoryBuilder().WithUrlSegment("test-category").Build();
-            var importProductsService = new ImportProductsServiceBuilder().WithExistingDocuments(category).Build();
+            var category = new CategoryBuilder().WithUrlSegment("test-category").Build().PersistTo(Session);
+            var importProductsService = new ImportProductsServiceBuilder(Session).Build();
             var dataTransferObject = new ProductImportDTOBuilder().WithNoCategories().Build();
             var product = new ProductBuilder().WithCategories(category).Build();
             product.Categories.Where(c => c.UrlSegment == "test-category").Should().HaveCount(1);
@@ -52,8 +53,8 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport.ImportProductsServiceTe
         [Fact]
         public void IfDTOHasNoCategoriesAndOneExistsOnTheProductRemoveProductFromCategory()
         {
-            var category = new CategoryBuilder().WithUrlSegment("test-category").Build();
-            var importProductsService = new ImportProductsServiceBuilder().WithExistingDocuments(category).Build();
+            var category = new CategoryBuilder().WithUrlSegment("test-category").Build().PersistTo(Session);
+            var importProductsService = new ImportProductsServiceBuilder(Session).Build();
             var dataTransferObject = new ProductImportDTOBuilder().WithNoCategories().Build();
             var product = new ProductBuilder().WithCategories(category).Build();
             category.Products.Add(product);
