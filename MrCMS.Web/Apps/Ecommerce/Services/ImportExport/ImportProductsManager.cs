@@ -18,20 +18,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _importProductsService = importProductsService;
         }
 
-        public Dictionary<string, List<string>> ImportProductsFromExcel(Stream file)
+        public List<string> ImportProductsFromExcel(Stream file)
         {
             var spreadsheet = new ExcelPackage(file);
 
             Dictionary<string, List<string>> parseErrors;
             var productsToImport = GetProductsFromSpreadSheet(spreadsheet, out parseErrors);
             if (parseErrors.Any())
-                return parseErrors;
+                return GetErrors(parseErrors);
             var businessLogicErrors = _importProductsValidationService.ValidateBusinessLogic(productsToImport);
             if (businessLogicErrors.Any())
-                return businessLogicErrors;
-            _importProductsService.Initialize();
-            _importProductsService.ImportProductsFromDTOs(productsToImport);
-            return new Dictionary<string, List<string>>();
+                return GetErrors(businessLogicErrors);
+            _importProductsService.CreateBatch(productsToImport);
+            //_importProductsService.Initialize();
+            //_importProductsService.ImportProductsFromDTOs(productsToImport);
+            return new List<string>();
+        }
+
+        private static List<string> GetErrors(Dictionary<string, List<string>> parseErrors)
+        {
+            return parseErrors.SelectMany(pair =>  pair.Value.Select(value=> pair.Key + ": " +value)).ToList();
         }
 
         private HashSet<ProductImportDataTransferObject> GetProductsFromSpreadSheet(ExcelPackage spreadsheet,

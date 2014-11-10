@@ -1,12 +1,13 @@
+using System;
 using System.Web.Mvc;
-using System.Xml;
+using System.Xml.Linq;
 using MrCMS.Helpers;
-using MrCMS.Services;
+using MrCMS.Services.Sitemaps;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services
 {
-    public class CustomCategorySitemapData:CustomSiteMapBase<Category>
+    public class CustomCategorySitemapData : SitemapGenerationInfo<Category>
     {
         private readonly UrlHelper _urlHelper;
 
@@ -15,14 +16,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             _urlHelper = urlHelper;
         }
 
-        public override void AddCustomSiteMapData(Category webpage, XmlNode mainNode, XmlDocument document)
+        public override bool ShouldAppend(Category webpage)
         {
-            if (!string.IsNullOrEmpty(webpage.FeatureImage))
-            {
-                var image = mainNode.AppendChild(document.CreateElement("image:image"));
-                var imageLoc = image.AppendChild(document.CreateElement("image:loc"));
-                imageLoc.InnerText = _urlHelper.AbsoluteContent(webpage.FeatureImage);
-            }
+            return webpage.Published;
+        }
+
+        public override void Append(Category webpage, XElement urlset, XDocument xmlDocument)
+        {
+            DateTime? publishOn = webpage.PublishOn;
+            if (!publishOn.HasValue)
+                return;
+            var urlNode = new XElement(SitemapService.RootNamespace + "url",
+                new XElement(SitemapService.RootNamespace + "loc", webpage.AbsoluteUrl),
+                new XElement(SitemapService.RootNamespace + "lastmod", webpage.PublishOn.Value.ToString("O"))
+                );
+
+            if (!string.IsNullOrWhiteSpace(webpage.FeatureImage))
+                urlNode.Add(new XElement(SitemapService.ImageNameSpace + "image",
+                    new XElement(SitemapService.ImageNameSpace + "loc", _urlHelper.AbsoluteContent(webpage.FeatureImage))));
+
+            urlset.Add(urlNode);
         }
     }
 }

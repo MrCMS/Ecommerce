@@ -20,18 +20,14 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
     {
         private readonly IImportProductVariantPriceBreaksService _importProductVariantPriceBreaksService;
         private readonly ITaxRateManager _taxRateManager;
-        private readonly IProductOptionManager _productOptionManager;
         private readonly ImportProductVariantsService _importProductVariantsService;
-        private readonly IImportProductOptionsService _importProductOptionsService;
 
         public ImportProductVariantsServiceTests()
         {
             _importProductVariantPriceBreaksService = A.Fake<IImportProductVariantPriceBreaksService>();
             _taxRateManager = A.Fake<ITaxRateManager>();
-            _productOptionManager = A.Fake<IProductOptionManager>();
-            _importProductOptionsService = A.Fake<IImportProductOptionsService>();
-            _importProductVariantsService = new ImportProductVariantsService(_importProductVariantPriceBreaksService,_importProductOptionsService,
-                                                                              _taxRateManager, _productOptionManager, A.Fake<ISession>());
+            _importProductVariantsService = new ImportProductVariantsService(_importProductVariantPriceBreaksService,
+                                                                              _taxRateManager,  A.Fake<ISession>());
         }
 
         [Fact(Skip = "To be refactored")]
@@ -92,28 +88,6 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             result.First().StockRemaining.ShouldBeEquivalentTo(5);
         }
 
-        [Fact(Skip = "To be refactored")]
-        public void ImportProductVariantsService_ImportVariants_ShouldCallImportVariantSpecifications()
-        {
-            var productVariantDTO = new ProductVariantImportDataTransferObject
-                                        {
-                                            SKU = "123",
-                                            Options = new Dictionary<string, string>() { { "Storage", "16GB" } }
-                                        };
-            var productDTO = new ProductImportDataTransferObject
-                                 {
-                                     UrlSegment = "test-url",
-                                     ProductVariants = new List<ProductVariantImportDataTransferObject>() { productVariantDTO }
-                                 };
-
-            var product = new Product() { Name = "Test Product" };
-
-            var productVariant = new ProductVariant() { Name = "Test Product Variant", SKU = "123" };
-
-            _importProductVariantsService.ImportVariants(productDTO, product);
-
-            A.CallTo(() => _importProductOptionsService.ImportVariantSpecifications(productVariantDTO, product, productVariant)).MustHaveHappened();
-        }
 
         [Fact(Skip = "To be refactored")]
         public void ImportProductVariantsService_ImportVariants_ShouldAddVariantsToProduct()
