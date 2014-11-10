@@ -2,33 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Entities.Documents;
+using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using NHibernate;
+using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public class ImportProductSpecificationsService : IImportProductSpecificationsService
     {
         private readonly ISession _session;
-        private HashSet<ProductSpecificationAttribute> _productSpecificationAttributes;
 
         public ImportProductSpecificationsService(ISession session)
         {
             _session = session;
-        }
-
-        public HashSet<ProductSpecificationAttribute> ProductSpecificationAttributes
-        {
-            get { return _productSpecificationAttributes; }
-        }
-
-        public IImportProductSpecificationsService Initialize()
-        {
-            _productSpecificationAttributes = new HashSet<ProductSpecificationAttribute>(_session.QueryOver<ProductSpecificationAttribute>().List());
-            return this;
         }
 
         public IEnumerable<ProductSpecificationValue> ImportSpecifications(ProductImportDataTransferObject dataTransferObject, Product product)
@@ -48,11 +38,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 product.SpecificationValues.Where(value => !specificationsToRemove.Contains(value)).ToList();
             foreach (var item in specificationsToAdd)
             {
-                var attribute = ProductSpecificationAttributes.FirstOrDefault(t => t.Name.Equals(item.Key, StringComparison.InvariantCultureIgnoreCase));
+                var attribute =
+                    _session.QueryOver<ProductSpecificationAttribute>()
+                        .Where(
+                            specificationAttribute =>
+                                specificationAttribute.Name.IsInsensitiveLike(item.Key, MatchMode.Exact))
+                        .Take(1)
+                        .SingleOrDefault();
                 if (attribute == null)
                 {
                     attribute = new ProductSpecificationAttribute { Name = item.Key };
-                    ProductSpecificationAttributes.Add(attribute);
+                    _session.Transact(session => session.Save(attribute));
                 }
 
                 SetValue(product, attribute, item.Value);

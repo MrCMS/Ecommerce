@@ -141,18 +141,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var teaser4Area = layout.LayoutAreas.FirstOrDefault(x => x.AreaName == "Teaser4");
 
 
-            var slider = new Slider
-            {
-                Image = mediaModel.SliderImage1.FileUrl,
-                Image1 = mediaModel.SliderImage2.FileUrl,
-                LayoutArea = beforeContent,
-                Webpage = pageModel.HomePage,
-                Cache = true,
-                CacheExpiryType = CacheExpiryType.Sliding,
-                CacheLength = 1800
-            };
-            _widgetService.AddWidget(slider);
-
             var featuredProducts = new FeaturedProducts
             {
                 LayoutArea = beforeContent,
