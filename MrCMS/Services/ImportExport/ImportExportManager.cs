@@ -1,6 +1,10 @@
 ﻿using System.IO;
+using MrCMS.Helpers;
 using MrCMS.Services.ImportExport.DTOs;
+using MrCMS.Website;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Entities.Documents.Web;
@@ -35,7 +39,8 @@ namespace MrCMS.Services.ImportExport
             var businessLogicErrors = _importDocumentsValidationService.ValidateBusinessLogic(items);
             if (businessLogicErrors.Any())
                 return businessLogicErrors;
-            _importDocumentService.ImportDocumentsFromDTOs(items);
+            _importDocumentService.CreateBatch(items);
+            //_importDocumentService.ImportDocumentsFromDTOs(items);
             return new Dictionary<string, List<string>>();
         }
 

@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.BackInStockNotification;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -16,19 +18,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IProductUiService _productUiService;
         private readonly IBackInStockNotificationService _backInStockNotificationService;
         private readonly CartModel _cart;
+        private readonly IDocumentService _documentService;
 
-        public ProductController(ITrackingService trackingService, IProductUiService productUiService, IBackInStockNotificationService backInStockNotificationService, CartModel cart)
+        public ProductController(ITrackingService trackingService, IProductUiService productUiService, IBackInStockNotificationService backInStockNotificationService, CartModel cart, IDocumentService documentService)
         {
             _trackingService = trackingService;
             _productUiService = productUiService;
             _backInStockNotificationService = backInStockNotificationService;
             _cart = cart;
+            _documentService = documentService;
         }
 
-        public ViewResult Show(Product page, int? variant)
+        public ActionResult Show(Product page, int? variant)
         {
             _trackingService.AddItemToRecentlyViewedItemsCookie(page.Id);
             var variantToShow = _productUiService.GetVariantToShow(page, variant);
+            if (!page.Variants.Any())
+            {
+                _documentService.Unpublish(page);
+                return Redirect("/");
+            }
             ViewData["selected-variant"] = variantToShow;
             ViewData["cart"] = _cart;
             return View(page);

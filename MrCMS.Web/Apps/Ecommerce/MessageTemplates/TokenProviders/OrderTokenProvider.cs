@@ -62,7 +62,7 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
                                                        {
                                                            var sb = new StringBuilder();
                                                            sb.Append(
-                                                               "<table cellpadding=2 cellspacing=2 border=0 style='border: 1px solid grey;'>");
+                                                               "<table cellpadding=2 cellspacing=2 style='border: 1px solid grey;' border='1'>");
                                                            sb.Append("<tr>");
                                                            sb.Append("<td>Product</td>");
                                                            sb.Append("<td>Quantity</td>");
@@ -93,7 +93,7 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
                                                            }
                                                            if (order.DiscountAmount > 0)
                                                            {
-                                                               sb.AppendFormat("Discount: {0} (Code: {1})<br />", order.DiscountAmount.ToCurrencyFormat(), order.DiscountAmount);
+                                                               sb.AppendFormat("Discount: {0} (Code: {1})<br />", order.DiscountAmount.ToCurrencyFormat(), order.DiscountCode);
                                                            }
                                                            sb.AppendFormat("<strong>Total: {0}</strong>", order.Total.ToCurrencyFormat());
                                                            sb.Append("</p>");
