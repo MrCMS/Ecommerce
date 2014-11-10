@@ -36,7 +36,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
                 return null;
 
             // remove whitespace and force to upper
-            var postalCode = address.PostalCode.ToUpper().Replace(" ", "");
+            var postalCode = (address.PostalCode ?? string.Empty).ToUpper().Replace(" ", "");
             // return null if is invalid length
             var length = postalCode.Length;
             if (length < 5 || length > 7)
