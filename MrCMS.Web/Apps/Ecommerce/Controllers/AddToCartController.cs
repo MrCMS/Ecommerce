@@ -16,7 +16,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _addToCartUIService = addToCartUIService;
         }
 
-        [HttpGet]
         public PartialViewResult Add(AddToCartModel model)
         {
             return PartialView(model);

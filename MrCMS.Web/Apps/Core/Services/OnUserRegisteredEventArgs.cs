@@ -5,7 +5,7 @@ namespace MrCMS.Web.Apps.Core.Services
 {
     public class OnUserRegisteredEventArgs
     {
-        public OnUserRegisteredEventArgs(User user, Guid previousSession)
+       public OnUserRegisteredEventArgs(User user, Guid previousSession)
         {
             User = user;
             PreviousSession = previousSession;

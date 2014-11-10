@@ -36,10 +36,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate
             if (order != null && !string.IsNullOrWhiteSpace(itemDto.ShippingMethod))
             {
                 var shippingMethod =
-                    _shippingMethodAdminService.GetAll().FirstOrDefault(info => info.Name == itemDto.ShippingMethod);
+                    _shippingMethodAdminService.GetAll().FirstOrDefault(info => info.DisplayName == itemDto.ShippingMethod);
                 if (shippingMethod != null)
                 {
-                    order.ShippingMethodName = shippingMethod.Name;
+                    order.ShippingMethodName = shippingMethod.DisplayName;
                     order.TrackingNumber = itemDto.TrackingNumber;
                     _orderService.MarkAsShipped(order);
                     noOfUpdatedItems++;
