@@ -9,5 +9,7 @@ namespace MrCMS.Web.Areas.Admin.Services.Batching
         int? Start(BatchRun run);
         int? ExecuteNextTask(BatchRun run);
         bool Pause(BatchRun run);
+        BatchCompletionStatus GetCompletionStatus(BatchRun batchRun);
+        void ExecuteRequestForNextTask(BatchRun run);
     }
 }

@@ -1464,6 +1464,7 @@
     <Compile Include="Areas\Admin\Controllers\ACLController.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseDocumentController.cs" />
     <Compile Include="Areas\Admin\Controllers\BatchController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BatchExecutionController.cs" />
     <Compile Include="Areas\Admin\Controllers\BatchJobController.cs" />
     <Compile Include="Areas\Admin\Controllers\BatchRunController.cs" />
     <Compile Include="Areas\Admin\Controllers\BatchRunResultController.cs" />
@@ -1515,10 +1516,12 @@
     <Compile Include="Areas\Admin\Controllers\WebpageUrlController.cs" />
     <Compile Include="Areas\Admin\Controllers\WebpageWidgetController.cs" />
     <Compile Include="Areas\Admin\Controllers\WidgetController.cs" />
+    <Compile Include="Areas\Admin\Events\RefreshUIOnBatchRunComplete.cs" />
     <Compile Include="Areas\Admin\Events\UpdateBatchJob.cs" />
     <Compile Include="Areas\Admin\Events\UpdateBatchRun.cs" />
     <Compile Include="Areas\Admin\Events\UpdateBatchRunResult.cs" />
     <Compile Include="Areas\Admin\Helpers\AdminMessagingExtensions.cs" />
+    <Compile Include="Areas\Admin\Helpers\BatchEntityHelper.cs" />
     <Compile Include="Areas\Admin\Helpers\BatchExtensions.cs" />
     <Compile Include="Areas\Admin\Helpers\ChildNodeHelper.cs" />
     <Compile Include="Areas\Admin\Helpers\DashboardRenderer.cs" />
@@ -1535,6 +1538,7 @@
     <Compile Include="Areas\Admin\ModelBinders\AddWebpageModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\AddWidgetModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\AddWidgetPropertiesModelBinder.cs" />
+    <Compile Include="Areas\Admin\ModelBinders\BatchRunGuidModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\EditUserModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\EditWebpageModelBinder.cs" />
     <Compile Include="Areas\Admin\ModelBinders\FileSystemSettingsModelBinder.cs" />
@@ -1606,6 +1610,7 @@
     <Compile Include="Areas\Admin\Services\BaseAssignWebpageAdminViewData.cs" />
     <Compile Include="Areas\Admin\Services\BaseAssignWidgetAdminViewData.cs" />
     <Compile Include="Areas\Admin\Services\BatchAdminService.cs" />
+    <Compile Include="Areas\Admin\Services\Batching\BatchCompletionStatus.cs" />
     <Compile Include="Areas\Admin\Services\Batching\BatchRunUIService.cs" />
     <Compile Include="Areas\Admin\Services\Batching\BatchStatus.cs" />
     <Compile Include="Areas\Admin\Services\Batching\GetBatchItemCount.cs" />
@@ -3411,14 +3416,6 @@
     <Content Include="Apps\Stats\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Stats\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.js.orig" />
-    <Content Include="Areas\Admin\Views\BatchJob\Row.cshtml" />
-    <Content Include="Areas\Admin\Views\BatchRunResult\Show.cshtml" />
-    <Content Include="Areas\Admin\Views\BatchRun\ROw.cshtml" />
-    <Content Include="Areas\Admin\Views\BatchRun\Show.cshtml" />
-    <Content Include="Areas\Admin\Views\BatchRun\ShowButton.cshtml" />
-    <Content Include="Areas\Admin\Views\BatchRun\Status.cshtml" />
-    <Content Include="Areas\Admin\Views\Batch\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Batch\Show.cshtml" />
     <Content Include="Apps\Core\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Core\Areas\Admin\Views\Webpage\ForgottenPasswordPage.cshtml" />
     <Content Include="Apps\Core\Areas\Admin\Views\Webpage\LoginPage.cshtml" />
@@ -3481,6 +3478,14 @@
     <Content Include="Apps\Ecommerce\Models\EcommerceToolsMenuModel.cs.orig" />
     <Content Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\ShippingMethodExists.cs.orig" />
     <Content Include="Apps\Ecommerce\Views\SetShippingMethod\ShippingOptions.cshtml.orig" />
+    <Content Include="Areas\Admin\Views\BatchJob\Row.cshtml" />
+    <Content Include="Areas\Admin\Views\BatchRunResult\Show.cshtml" />
+    <Content Include="Areas\Admin\Views\BatchRun\Row.cshtml" />
+    <Content Include="Areas\Admin\Views\BatchRun\Show.cshtml" />
+    <Content Include="Areas\Admin\Views\BatchRun\ShowButton.cshtml" />
+    <Content Include="Areas\Admin\Views\BatchRun\Status.cshtml" />
+    <Content Include="Areas\Admin\Views\Batch\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Batch\Show.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_BaseLayout.cshtml" />
