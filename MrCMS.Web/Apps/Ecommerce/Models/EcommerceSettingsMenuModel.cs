@@ -1,4 +1,5 @@
-﻿using MrCMS.Models;
+﻿using System.Web.Mvc;
+using MrCMS.Models;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -10,12 +11,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
     {
         private readonly IShippingMethodSubmenuGenerator _shippingMethodSubmenuGenerator;
         private readonly EcommerceSettings _ecommerceSettings;
+        private readonly UrlHelper _urlHelper;
 
         public EcommerceSettingsMenuModel(IShippingMethodSubmenuGenerator shippingMethodSubmenuGenerator,
-            EcommerceSettings ecommerceSettings)
+            EcommerceSettings ecommerceSettings, UrlHelper urlHelper)
         {
             _shippingMethodSubmenuGenerator = shippingMethodSubmenuGenerator;
             _ecommerceSettings = ecommerceSettings;
+            _urlHelper = urlHelper;
         }
 
         public string Text
@@ -36,33 +39,47 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get
             {
-                return new SubMenu
+                var subMenu = new SubMenu();
+                subMenu.Add(new ChildMenuItem("Global Settings", _urlHelper.Action("Edit", "EcommerceSettings"),
+                    ACLOption.Create(new EcommerceSettingsACL(), EcommerceSettingsACL.Edit)));
+                subMenu.Add(
+                    new ChildMenuItem("Search Cache Settings", _urlHelper.Action("Edit", "EcommerceSearchCacheSettings"),
+                        ACLOption.Create(new EcommerceSearchCacheSettingsACL(), EcommerceSearchCacheSettingsACL.Edit)));
+                subMenu.Add(new ChildMenuItem("Currencies", _urlHelper.Action("Index", "Currency"),
+                    ACLOption.Create(new CurrencyACL(), CurrencyACL.List)));
+                subMenu.Add(new ChildMenuItem("Geographic Data", _urlHelper.Action("Index", "Country"),
+                    ACLOption.Create(new CountryACL(), CountryACL.List)));
+                subMenu.Add(new ChildMenuItem("Taxes", _urlHelper.Action("Index","TaxRate"),
+                    ACLOption.Create(new TaxRateACL(), TaxRateACL.List)));
+                if (_ecommerceSettings.RewardPointsEnabled)
                 {
-                    new ChildMenuItem("Global Settings", "/Admin/Apps/Ecommerce/EcommerceSettings/Edit",
-                        ACLOption.Create(new EcommerceSettingsACL(), EcommerceSettingsACL.Edit)),
-                    new ChildMenuItem("Search Cache Settings", "/Admin/Apps/Ecommerce/EcommerceSearchCacheSettings/Edit",
-                        ACLOption.Create(new EcommerceSearchCacheSettingsACL(), EcommerceSearchCacheSettingsACL.Edit)),
-                    new ChildMenuItem("Currencies", "/Admin/Apps/Ecommerce/Currency",
-                        ACLOption.Create(new CurrencyACL(), CurrencyACL.List)),
-                    new ChildMenuItem("Geographic Data", "/Admin/Apps/Ecommerce/Country",
-                        ACLOption.Create(new CountryACL(), CountryACL.List)),
-                    new ChildMenuItem("Taxes", "/Admin/Apps/Ecommerce/TaxRate",
-                        ACLOption.Create(new TaxRateACL(), TaxRateACL.List)),
-                    new ChildMenuItem("Shipping", "#", ACLOption.Create(new ShippingMethodACL(), ShippingMethodACL.List),
-                        subMenu: _shippingMethodSubmenuGenerator.Get()),
-                    new ChildMenuItem("Payment Settings", "#", subMenu: new SubMenu
-                    {
-                        new ChildMenuItem("Payment Settings",
-                            "/Admin/Apps/Ecommerce/PaymentSettings",  ACLOption.Create(new PaymentSettingsACL(), PaymentSettingsACL.View)),
-                        new ChildMenuItem("Paypoint", "/Admin/Apps/Ecommerce/PaypointSettings",  ACLOption.Create(new PaypointSettingsACL(), PaypointSettingsACL.View)),
-                        new ChildMenuItem("PayPal Express Checkout", "/Admin/Apps/Ecommerce/PayPalExpressCheckoutSettings", ACLOption.Create(new PayPalExpressCheckoutSettingsACL(), PayPalExpressCheckoutSettingsACL.View)),
-                        new ChildMenuItem("SagePay", "/Admin/Apps/Ecommerce/SagePaySettings", ACLOption.Create(new SagePaySettingsACL(), SagePaySettingsACL.View)),
-                        new ChildMenuItem("WorldPay","/Admin/Apps/Ecommerce/WorldPaySettings", ACLOption.Create(new WorldPaySettingsACL(), WorldPaySettingsACL.View)),                      
-                        new ChildMenuItem("Charity Clear","/Admin/Apps/Ecommerce/CharityClearSettings", ACLOption.Create(new WorldPaySettingsACL(), WorldPaySettingsACL.View)),                      
+                    subMenu.Add(new ChildMenuItem("Reward Points", _urlHelper.Action("Index", "RewardPointSettings"),
+                        ACLOption.Create(new RewardPointACL(), RewardPointACL.Settings)));
+                }
+                subMenu.Add(
+                    new ChildMenuItem("Shipping", "#",
+                        ACLOption.Create(new ShippingMethodACL(), ShippingMethodACL.List), _shippingMethodSubmenuGenerator.Get()));
+                subMenu.Add(new ChildMenuItem("Payment Settings", "#", subMenu: new SubMenu
+                {
+                    new ChildMenuItem("Payment Settings",
+                        _urlHelper.Action("Index","PaymentSettings"),
+                        ACLOption.Create(new PaymentSettingsACL(), PaymentSettingsACL.View)),
+                    new ChildMenuItem("Paypoint",_urlHelper.Action("Index","PaypointSettings"),
+                        ACLOption.Create(new PaypointSettingsACL(), PaypointSettingsACL.View)),
+                    new ChildMenuItem("PayPal Express Checkout",
+                        _urlHelper.Action("Index","PayPalExpressCheckoutSettings"),
+                        ACLOption.Create(new PayPalExpressCheckoutSettingsACL(),
+                            PayPalExpressCheckoutSettingsACL.View)),
+                    new ChildMenuItem("SagePay",_urlHelper.Action("Index","SagePaySettings"),
+                        ACLOption.Create(new SagePaySettingsACL(), SagePaySettingsACL.View)),
+                    new ChildMenuItem("WorldPay", _urlHelper.Action("Index","WorldPaySettings"),
+                        ACLOption.Create(new WorldPaySettingsACL(), WorldPaySettingsACL.View)),
+                    new ChildMenuItem("Charity Clear", _urlHelper.Action("Index","CharityClearSettings"),
+                        ACLOption.Create(new WorldPaySettingsACL(), WorldPaySettingsACL.View)),
+                }));
+                return subMenu;
 
-                    }),
-                    
-                };
+
             }
         }
 

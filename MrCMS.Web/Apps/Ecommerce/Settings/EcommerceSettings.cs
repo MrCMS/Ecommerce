@@ -31,6 +31,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         [DisplayName("Enable Gift Cards")]
         public bool GiftCardsEnabled { get; set; }
 
+        [DisplayName("Enable Reward Points")]
+        public bool RewardPointsEnabled { get; set; }
+
         [DisplayName("Enable Gift Message")]
         public bool GiftMessageEnabled { get; set; }
 
