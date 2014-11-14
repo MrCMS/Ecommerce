@@ -4,7 +4,7 @@ using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Widgets
 {
-    [OutputCacheable]
+    [OutputCacheable(PerPage = true)]
     public class CategoriesOnlyNavigation : Widget
     {
         [DisplayName("Max. number of levels for display in menu")]
