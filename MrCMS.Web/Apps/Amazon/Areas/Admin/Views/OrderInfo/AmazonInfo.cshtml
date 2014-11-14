@@ -1,9 +1,11 @@
 ﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.Amazon.Entities.Orders.AmazonOrder
+
 <table class="table table-condensed table-striped">
     <tr>
         <td>Amazon Order Id</td>
-        <td>@Model.AmazonOrderId</td>
+        <td>
+            <a href="https://sellercentral-europe.amazon.com/gp/orders-v2/details?ie=UTF8&orderID=@Model.AmazonOrderId" target="_blank">@Model.AmazonOrderId</a>
     </tr>
     <tr>
         <td>Buyer Name</td>

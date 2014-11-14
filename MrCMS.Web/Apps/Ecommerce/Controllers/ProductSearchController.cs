@@ -54,7 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return PartialView("Query", query);
         }
 
-        [HttpGet]
+        [AcceptVerbs(new[] { "GET", "HEAD" })]
         public ActionResult Results([IoCModelBinder(typeof(ProductSearchQueryModelBinder))] ProductSearchQuery query)
         {
             return _htmlCacheService.GetContent(this, _productSearchQueryService.GetCachingInfo(query, "-results"),

@@ -1,17 +1,23 @@
 ﻿@using System.Collections.Generic
 @using System.Linq
+@using MrCMS.Helpers
 @model dynamic
 @{
     ViewBag.Title = "Import / Export Products";
+    var warehouseStockEnabled = (bool)ViewData["warehousestockenabled"];
 }
 <fieldset>
     <legend>
         Import / Export Products
     </legend>
 
-    <span class="btn-group display-inline">
-        <a href="@Url.Action("ExportProducts", "ImportExport")" class="btn btn-primary">Export to Excel</a>
-    </span>
+    <a href="@Url.Action("ExportProducts", "ImportExport")" class="btn btn-primary">Export to Excel</a>
+
+    @if (warehouseStockEnabled)
+    {
+        <p class="clearfix" />
+        @Html.InfoBlock(Resource("Heads up!"), Resource("Ecommerce Product Export Warehouse Enabled", "You have warehouse stock enabled. The stock column in this export will be a sum of all available stock. When importing, the stock levels will not be effected."), AlertType.warning)
+    }
     <div class="clearfix"></div>
 
     @if (ViewBag.ExportStatus != null)
@@ -21,10 +27,10 @@
         <div class="clearfix"></div>
     }
     <hr />
-    <div class="alert alert-info">
-        Import File must be in .xslx format. After clicking on "Import Products" any new products inside file
-        will be added to database and existing ones will be updated with provided values in file.
-    </div>
+
+    @Html.InfoBlock(Resource("Heads up!"), Resource("Ecommerce Product Import Info", "Import File must be in .xslx format. After clicking on \"Import Products\" any new products inside file will be added to database and existing ones will be updated with provided values in file."))
+
+
     <div class="clearfix"></div>
     @using (Html.BeginForm("ImportProducts", "ImportExport", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {

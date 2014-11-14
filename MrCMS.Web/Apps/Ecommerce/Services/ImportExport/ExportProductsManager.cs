@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
@@ -13,10 +15,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     public class ExportProductsManager : IExportProductsManager
     {
         private readonly IProductVariantService _productVariantService;
+        private readonly IGetStockRemainingQuantity _getStockRemainingQuantity;
 
-        public ExportProductsManager(IProductVariantService productVariantService)
+        public ExportProductsManager(IProductVariantService productVariantService, IGetStockRemainingQuantity getStockRemainingQuantity)
         {
             _productVariantService = productVariantService;
+            _getStockRemainingQuantity = getStockRemainingQuantity;
         }
 
         public byte[] ExportProductsToExcel()
@@ -29,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 AddHeader(wsItems);
 
-                var productVariants = _productVariantService.GetAll().Where(variant => variant.Product != null).OrderBy(x=>x.Product.Id).ToList();
+                var productVariants = _productVariantService.GetAll().Where(variant => variant.Product != null).OrderBy(x => x.Product.Id).ToList();
 
                 for (var i = 0; i < productVariants.Count; i++)
                 {
@@ -56,7 +60,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             AddBrand(i, wsItems, productVariants, rowId);
             AddCategories(i, wsItems, productVariants, rowId);
             AddSpecifications(i, wsItems, productVariants, rowId);
-            AddVariantInfo(i, wsItems, productVariants, rowId);
+            AddVariantInfo(i, wsItems, productVariants, rowId, _getStockRemainingQuantity);
 
             AddOptions(i, wsItems, productVariants, rowId);
 
@@ -150,7 +154,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             }
         }
 
-        private static void AddVariantInfo(int i, ExcelWorksheet wsItems, IList<ProductVariant> productVariants, int rowId)
+        private static void AddVariantInfo(int i, ExcelWorksheet wsItems, IList<ProductVariant> productVariants, int rowId, IGetStockRemainingQuantity getStockRemainingQuantity)
         {
             wsItems.Cells["K" + rowId].Value = productVariants[i].Name ?? String.Empty;
             wsItems.Cells["L" + rowId].Value = productVariants[i].BasePrice;
@@ -158,7 +162,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             if (productVariants[i].TaxRate != null)
                 wsItems.Cells["N" + rowId].Value = productVariants[i].TaxRate.Id;
             wsItems.Cells["O" + rowId].Value = productVariants[i].Weight;
-            wsItems.Cells["P" + rowId].Value = productVariants[i].StockRemaining;
+            wsItems.Cells["P" + rowId].Value = getStockRemainingQuantity.Get(productVariants[i]);
             wsItems.Cells["Q" + rowId].Value = productVariants[i].TrackingPolicy;
             wsItems.Cells["R" + rowId].Value = productVariants[i].SKU;
             wsItems.Cells["S" + rowId].Value = productVariants[i].Barcode;
