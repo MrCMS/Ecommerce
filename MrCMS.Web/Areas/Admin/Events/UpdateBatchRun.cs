@@ -21,7 +21,7 @@ namespace MrCMS.Web.Areas.Admin.Events
             var hubContext = GlobalHost.ConnectionManager.GetHubContext<BatchProcessingHub>();
             var batchRun = args.Item;
             hubContext.Clients.All.updateRun(batchRun.ToSimpleJson(_batchRunUIService.GetCompletionStatus(batchRun)));
-
+            
         }
     }
 }
