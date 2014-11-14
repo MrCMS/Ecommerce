@@ -62,6 +62,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     adminItems.Add(new ChildMenuItem("Gift Cards", _urlHelper.Action("Index", "GiftCard"),
                         ACLOption.Create(new GiftCardACL(), GiftCardACL.List)));
                 }
+              
                 if (_ecommerceSettings.WarehouseStockEnabled)
                 {
                     adminItems.Add(new ChildMenuItem("Warehouses", _urlHelper.Action("Index", "Warehouse"),
