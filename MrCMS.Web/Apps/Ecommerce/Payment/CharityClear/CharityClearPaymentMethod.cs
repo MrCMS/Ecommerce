@@ -42,7 +42,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CharityClear
             get { return _charityClearSettings.Enabled; }
         }
 
-        protected override bool CanUseLogic(CartModel cart)
+        protected override bool StandardCanUseLogic(CartModel cart)
         {
             return !cart.IsPayPalTransaction;
         }

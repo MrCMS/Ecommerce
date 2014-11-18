@@ -41,7 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Paypoint
             get { return _paypointSettings.Enabled; }
         }
 
-        protected override bool CanUseLogic(CartModel cart)
+        protected override bool StandardCanUseLogic(CartModel cart)
         {
             return cart.IsPayPalTransaction;
         }

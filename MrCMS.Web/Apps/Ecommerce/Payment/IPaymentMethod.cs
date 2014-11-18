@@ -11,28 +11,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment
         public abstract string ActionName { get; }
         public abstract PaymentType PaymentType { get; }
         public abstract bool Enabled { get; }
-        protected abstract bool CanUseLogic(CartModel cart);
+        protected abstract bool StandardCanUseLogic(CartModel cart);
 
         public bool CanUse(CartModel cart)
         {
             var anythingToPay = cart.AnythingToPay();
             if (anythingToPay)
             {
-                return CanUseLogic(cart);
+                return StandardCanUseLogic(cart);
             }
             return IsPaymentNotRequired;
         }
 
         public bool IsPaymentNotRequired { get; protected set; }
     }
-    //public interface IPaymentMethod
-    //{
-    //    string Name { get; }
-    //    string SystemName { get; }
-    //    string ControllerName { get; }
-    //    string ActionName { get; }
-    //    PaymentType PaymentType { get; }
-    //    bool Enabled { get; }
-    //    bool CanUse(CartModel cart);
-    //}
 }
