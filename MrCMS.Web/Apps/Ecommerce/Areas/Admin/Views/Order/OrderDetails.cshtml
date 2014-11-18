@@ -30,6 +30,10 @@
                 <td>@Model.CreatedOn</td>
             </tr>
             <tr>
+                <td>Status</td>
+                <td>@Model.OrderStatus</td>
+            </tr>
+            <tr>
                 <td>Order Subtotal (ex Tax)</td>
                 <td>@Model.Subtotal.ToCurrencyFormat()</td>
             </tr>
@@ -49,6 +53,20 @@
                 <td>Order Total</td>
                 <td>@Model.Total.ToCurrencyFormat()</td>
             </tr>
+            @if (Model.TotalPaid != Model.Total)
+            {
+                <tr>
+                    <td>Total Paid</td>
+                    <td>@Model.TotalPaid.ToCurrencyFormat()</td>
+                </tr>
+            }
+            @if (Model.RewardPointsAppliedAmount > 0)
+            {
+                <tr>
+                    <td>Reward Point Contribution</td>
+                    <td>@Model.RewardPointsAppliedAmount.ToCurrencyFormat()</td>
+                </tr>
+            }
             @if (Model.TotalRefunds > 0)
             {
                 <tr>

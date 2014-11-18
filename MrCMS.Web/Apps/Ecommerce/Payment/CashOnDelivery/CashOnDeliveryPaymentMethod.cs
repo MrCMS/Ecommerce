@@ -1,43 +1,47 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress;
-using MrCMS.Web.Apps.Ecommerce.Settings;
-using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.CashOnDelivery
 {
-    public class CashOnDeliveryPaymentMethod : IPaymentMethod
+    public class CashOnDeliveryPaymentMethod : BasePaymentMethod
     {
-        public string Name
+        private readonly PaymentSettings _paymentSettings;
+
+        public CashOnDeliveryPaymentMethod(PaymentSettings paymentSettings)
+        {
+            _paymentSettings = paymentSettings;
+        }
+
+        public override string Name
         {
             get { return "Cash On Delivery"; }
         }
 
-        public string SystemName
+        public override string SystemName
         {
             get { return "CashOnDelivery"; }
         }
 
-        public string ControllerName
+        public override string ControllerName
         {
             get { return "CashOnDelivery"; }
         }
 
-        public string ActionName
+        public override string ActionName
         {
             get { return "Form"; }
         }
 
-        public PaymentType PaymentType
+        public override PaymentType PaymentType
         {
             get { return PaymentType.ServiceBased; }
         }
 
-        public bool Enabled
+        public override bool Enabled
         {
-            get { return MrCMSApplication.Get<PaymentSettings>().CashOnDeliveryEnabled; }
+            get { return _paymentSettings.CashOnDeliveryEnabled; }
         }
 
-        public bool CanUse(CartModel cart)
+        protected override bool StandardCanUseLogic(CartModel cart)
         {
             return !cart.IsPayPalTransaction;
         }

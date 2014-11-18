@@ -35,20 +35,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             cart.PayPalExpressPayerId = GetPayPalExpressPayerId(userGuid);
             cart.PayPalExpressToken = GetPayPalExpressToken(userGuid);
             cart.BillingAddress = GetBillingAddress(cart, userGuid);
-            List<IPaymentMethod> availablePaymentMethods = _paymentMethodService.GetAllAvailableMethods(cart);
+            List<BasePaymentMethod> availablePaymentMethods = _paymentMethodService.GetAllAvailableMethods(cart);
             cart.AvailablePaymentMethods = availablePaymentMethods;
             cart.PaymentMethod = GetPaymentMethodInfo(userGuid, availablePaymentMethods, cart);
             return cart;
         }
 
-        private IPaymentMethod GetPaymentMethodInfo(Guid userGuid, List<IPaymentMethod> availablePaymentMethods,
+        private BasePaymentMethod GetPaymentMethodInfo(Guid userGuid, List<BasePaymentMethod> availablePaymentMethods,
             CartModel cart)
         {
             string paymentMethodName = GetPaymentMethod(userGuid) ??
                                        (availablePaymentMethods.Count() == 1
                                            ? availablePaymentMethods.First().SystemName
                                            : null);
-            IPaymentMethod paymentMethodInfo = _paymentMethodService.GetMethodForCart(paymentMethodName, cart);
+            BasePaymentMethod paymentMethodInfo = _paymentMethodService.GetMethodForCart(paymentMethodName, cart);
 
             return paymentMethodInfo;
         }

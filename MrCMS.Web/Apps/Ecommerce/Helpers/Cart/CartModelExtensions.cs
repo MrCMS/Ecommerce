@@ -34,7 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Cart
                 case CartShippingStatus.ShippingNotRequired:
                     return cart.Total.ToCurrencyFormat();
                 case CartShippingStatus.CannotShip:
-                    return "Cannot complete order - no shipping options abailable.";
+                    return "Cannot complete order - no shipping options available.";
                 case CartShippingStatus.ShippingNotSet:
                     IOrderedEnumerable<decimal> shippingAmounts =
                         cart.PotentiallyAvailableShippingMethods.Select(method => method.GetShippingTotal(cart))
@@ -53,7 +53,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Cart
                 case CartShippingStatus.ShippingNotRequired:
                     return cart.TotalToPay.ToCurrencyFormat();
                 case CartShippingStatus.CannotShip:
-                    return "Cannot complete order - no shipping options abailable.";
+                    return "Cannot complete order - no shipping options available.";
                 case CartShippingStatus.ShippingNotSet:
                     //IOrderedEnumerable<decimal> shippingAmounts =
                     //    cart.PotentiallyAvailableShippingMethods.Select(method => method.GetShippingTotal(cart))
@@ -63,6 +63,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Cart
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public static bool AnythingToPay(this CartModel cart)
+        {
+            return cart.TotalToPay > decimal.Zero;
         }
     }
 }
