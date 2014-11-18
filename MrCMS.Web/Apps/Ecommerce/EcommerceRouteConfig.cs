@@ -86,6 +86,11 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Cash On Delivery - Form", "Apps/Ecommerce/Confirm/CashOnDelivery",
                 new {controller = "CashOnDelivery", action = "Form"},
                 new[] {typeof (CashOnDeliveryController).Namespace});
+
+            context.MapRoute("Payment Not Required - Form", "Apps/Ecommerce/Confirm/PaymentNotRequired",
+                new { controller = "PaymentNotRequired", action = "Form" },
+                new[] { typeof(PaymentNotRequiredController).Namespace });
+
             context.MapRoute("Paypoint - Form", "Apps/Ecommerce/Confirm/Paypoint",
                 new {controller = "Paypoint", action = "Form"},
                 new[] {typeof (PaypointController).Namespace});
@@ -261,6 +266,10 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Cart - Save Gift Message", "Apps/Ecommerce/SaveGiftMessage",
                 new {controller = "GiftMessage", action = "Save"},
                 new[] { typeof(GiftMessageController).Namespace });
+
+            context.MapRoute("Cart - Use Reward Points", "Apps/Ecommerce/UseRewardPoints",
+                new { controller = "CartRewardPoints", action = "Save" },
+                new[] { typeof(CartRewardPointsController).Namespace });
         }
     }
 }

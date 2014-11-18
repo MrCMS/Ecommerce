@@ -211,6 +211,33 @@
                     </div>
 
                 }
+                if (ecommerceSettings.RewardPointsEnabled && Model.AvailablePoints > 0)
+                {
+                    <div class="row margin-bottom-10">
+                        <div class="col-sm-12 line-height-30">
+                            @Html.InlineCheckboxFor(x => x.UseRewardPoints, checkboxAttributes: new { @class = "checkbox" })
+                            @if (!Model.UseRewardPoints)
+                            {
+                                <span>
+                                    Available balance: @Model.AvailablePoints (@Model.AvailablePointsValue.ToCurrencyFormat())
+                                </span>
+                            }
+                        </div>
+                        <div class="col-sm-4 text-right">
+                        </div>
+                    </div>
+                    if (Model.AppliedRewardPointsAmount > 0)
+                    {
+                        <div class="row margin-bottom-10">
+                            <div class="col-sm-8 line-height-30">
+                                Applied reward points
+                            </div>
+                            <div class="col-sm-4 text-right">
+                                @((-Model.AppliedRewardPointsAmount).ToCurrencyFormat())
+                            </div>
+                        </div>
+                    }
+                }
                 if (ecommerceSettings.GiftCardsEnabled)
                 {
                     <div class="row margin-bottom-10">
@@ -233,7 +260,7 @@
                         </div>
                     </div>
                     <div data-gift-card-message="true">
-                        
+
                     </div>
                     if (Model.AppliedGiftCards.Any())
                     {
@@ -269,6 +296,18 @@
                         <strong>@Model.CartPageTotal()</strong>
                     </div>
                 </div>
+                if (Model.TotalToPay != Model.Total)
+                {
+                    <hr />
+                    <div class="row margin-bottom-10">
+                        <div class="col-xs-8 col-sm-6">
+                            <strong>Total to pay</strong>
+                        </div>
+                        <div class="col-xs-4 col-sm-6 text-right" id="cart-total">
+                            <strong>@Model.CartPageTotalToPay()</strong>
+                        </div>
+                    </div>
+                }
                 <hr />
             }
         </div>

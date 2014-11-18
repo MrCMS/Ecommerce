@@ -5,23 +5,31 @@ using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress;
+using Ninject;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.Services
 {
     public class PaymentMethodService : IPaymentMethodService
     {
-        private List<IPaymentMethod> _paymentMethods;
+        private readonly IKernel _kernel;
 
-        public List<IPaymentMethod> PaymentMethods
+        public PaymentMethodService(IKernel kernel)
+        {
+            _kernel = kernel;
+        }
+
+        private List<BasePaymentMethod> _paymentMethods;
+
+        public List<BasePaymentMethod> PaymentMethods
         {
             get
             {
                 return
                     _paymentMethods =
                         _paymentMethods ??
-                        TypeHelper.GetAllConcreteTypesAssignableFrom<IPaymentMethod>()
-                            .Select(Activator.CreateInstance)
-                            .Cast<IPaymentMethod>()
+                        TypeHelper.GetAllConcreteTypesAssignableFrom<BasePaymentMethod>()
+                            .Select(type => _kernel.Get(type))
+                            .Cast<BasePaymentMethod>()
                             .ToList();
             }
         }
@@ -36,12 +44,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Services
             return PaymentMethods.OfType<PayPalExpressCheckoutPaymentMethod>().First().Enabled;
         }
 
-        public List<IPaymentMethod> GetAllAvailableMethods(CartModel cart)
+        public List<BasePaymentMethod> GetAllAvailableMethods(CartModel cart)
         {
             return PaymentMethods.FindAll(method => method.Enabled && method.CanUse(cart));
         }
 
-        public IPaymentMethod GetMethodForCart(string systemName, CartModel cart)
+        public BasePaymentMethod GetMethodForCart(string systemName, CartModel cart)
         {
             return GetAllAvailableMethods(cart).Find(method => method.SystemName == systemName);
         }

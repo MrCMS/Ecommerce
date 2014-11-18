@@ -30,7 +30,8 @@ namespace MrCMS.EcommerceApp.Tests.Services
             CurrentRequestData.CurrentUser = currentUser;
             _getUserGuid = A.Fake<IGetUserGuid>();
             _cartBuilder = new CartBuilder(A.Fake<IAssignBasicCartInfo>(), A.Fake<IAssignCartDiscountInfo>(),
-                A.Fake<IAssignShippingInfo>(), A.Fake<IAssignPaymentInfo>(), A.Fake<IAssignGiftCardInfo>(), _getUserGuid);
+                A.Fake<IAssignShippingInfo>(), A.Fake<IAssignGiftCardInfo>(),
+                A.Fake<IAssignRewardPointInfo>(), A.Fake<IAssignPaymentInfo>(), _getUserGuid);
         }
 
         [Fact(Skip = "Refactoring")]

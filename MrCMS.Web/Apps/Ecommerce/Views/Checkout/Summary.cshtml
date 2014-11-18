@@ -1,4 +1,5 @@
 ﻿@using System.Linq
+@using System.Net.Configuration
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Settings
@@ -64,7 +65,7 @@
                     <th>@Resource("Total") :</th>
                     <td><strong>@Model.Total.ToCurrencyFormat()</strong></td>
                 </tr>
-                @if (Model.AppliedGiftCards.Any())
+                @if (Model.AppliedGiftCards.Any() || Model.UseRewardPoints)
                 {
                     foreach (var card in Model.AppliedGiftCards)
                     {
@@ -77,10 +78,22 @@
                             </td>
                         </tr>
                     }
-                <tr>
-                    <th>@Resource("Total to pay"):</th>
-                    <td><strong>@Model.TotalToPay.ToCurrencyFormat()</strong></td>
-                </tr>
+                    if (Model.UseRewardPoints)
+                    {
+                        <tr>
+                            <td>
+                                Reward points applied (@Model.AppliedRewardPoints)
+                            </td>
+                            <td>
+                                @((-Model.AppliedRewardPointsAmount).ToCurrencyFormat())
+                            </td>
+                        </tr>
+                        
+                    }
+                    <tr>
+                        <th>@Resource("Total to pay"):</th>
+                        <td><strong>@Model.TotalToPay.ToCurrencyFormat()</strong></td>
+                    </tr>
                 }
             </tfoot>
         </table>
