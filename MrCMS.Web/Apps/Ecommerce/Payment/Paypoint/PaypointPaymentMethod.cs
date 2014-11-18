@@ -1,43 +1,49 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.Paypoint
 {
-    public class PaypointPaymentMethod : IPaymentMethod
+    public class PaypointPaymentMethod : BasePaymentMethod
     {
-        public string Name
+        private readonly PaypointSettings _paypointSettings;
+
+        public PaypointPaymentMethod(PaypointSettings paypointSettings)
+        {
+            _paypointSettings = paypointSettings;
+        }
+
+        public override string Name
         {
             get { return "Pay by card"; }
         }
 
-        public string SystemName
+        public override string SystemName
         {
             get { return "Paypoint"; }
         }
 
-        public string ControllerName
+        public override string ControllerName
         {
             get { return "Paypoint"; }
         }
 
-        public string ActionName
+        public override string ActionName
         {
             get { return "Form"; }
         }
 
-        public PaymentType PaymentType
+        public override PaymentType PaymentType
         {
             get { return PaymentType.ServiceBased; }
         }
 
-        public bool Enabled
+        public override bool Enabled
         {
-            get { return MrCMSApplication.Get<PaypointSettings>().Enabled; }
+            get { return _paypointSettings.Enabled; }
         }
 
-        public bool CanUse(CartModel cart)
+        protected override bool CanUseLogic(CartModel cart)
         {
-            return !cart.IsPayPalTransaction;
+            return cart.IsPayPalTransaction;
         }
     }
 }

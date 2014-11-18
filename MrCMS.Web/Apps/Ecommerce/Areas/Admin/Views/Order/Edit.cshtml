@@ -32,4 +32,5 @@
 
 @{Html.RenderPartial("OrderDetails", Model); }
 @{Html.RenderPartial("OrderLines", Model);}
+@{Html.RenderAction("Details","OrderRewardPoints", new{order=Model});}
 @{Html.RenderPartial("OrderNotes", Model);}

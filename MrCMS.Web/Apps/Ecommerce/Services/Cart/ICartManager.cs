@@ -14,7 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         void SetBillingAddressSameAsShippingAddress(bool value);
         void AddGiftCard(string code);
         void RemoveGiftCard(string code);
-        IPaymentMethod SetPaymentMethod(string methodName);
+        BasePaymentMethod SetPaymentMethod(string methodName);
         void SetPayPalExpressPayerId(string payerId);
         void SetPayPalExpressToken(string token);
     }

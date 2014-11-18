@@ -9,6 +9,7 @@ using MrCMS.Web.Apps.Ecommerce.DbConfiguration;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration.Listeners;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems;
+using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
@@ -51,6 +52,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 yield return typeof(DiscountApplication);
                 yield return typeof(EcommerceSearchablePage);
                 yield return typeof(ContentItem);
+                yield return typeof(RewardPointsHistory);
+                yield return typeof(OrderRewardPointsHistory);
             }
         }
 

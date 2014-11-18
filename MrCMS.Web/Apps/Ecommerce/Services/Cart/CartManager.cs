@@ -105,7 +105,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _cartSessionManager.SetSessionValue(CurrentOrderEmailKey, _getUserGuid.UserGuid, email);
         }
 
-        public IPaymentMethod SetPaymentMethod(string methodName)
+        public BasePaymentMethod SetPaymentMethod(string methodName)
         {
             _cartSessionManager.SetSessionValue(CurrentPaymentMethodKey, _getUserGuid.UserGuid, methodName);
             return _cartBuilder.BuildCart().PaymentMethod;
