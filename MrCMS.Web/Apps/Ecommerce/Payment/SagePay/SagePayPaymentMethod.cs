@@ -42,7 +42,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.SagePay
             get { return _sagePaySettings.Enabled; }
         }
 
-        protected override bool CanUseLogic(CartModel cart)
+        protected override bool StandardCanUseLogic(CartModel cart)
         {
             return !cart.IsPayPalTransaction;
         }

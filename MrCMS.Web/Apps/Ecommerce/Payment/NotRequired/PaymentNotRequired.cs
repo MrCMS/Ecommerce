@@ -39,9 +39,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.NotRequired
             get { return true; }
         }
 
-        protected override bool CanUseLogic(CartModel cart)
+        protected override bool StandardCanUseLogic(CartModel cart)
         {
-            return true;
+            return false;
         }
     }
 }
