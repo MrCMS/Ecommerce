@@ -117,6 +117,13 @@
             });
         return false;
     });
+    $(document).on('change', "#UseRewardPoints", function (event) {
+        $.post('/Apps/Ecommerce/UseRewardPoints',
+            { useRewardPoints: $(event.target).is(':checked') },
+            reloadCartDetails
+        );
+        return false;
+    });
     $(document).on('click', "a[data-action=delete-cart-item]", function () {
         var id = $(this).data('id');
         $.post('/Apps/Ecommerce/DeleteCartItem', { id: id }, function (response) {

@@ -1,41 +1,47 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay
 {
-    public class WorldPayPaymentMethod : IPaymentMethod
+    public class WorldPayPaymentMethod : BasePaymentMethod
     {
-        public string Name
+        private readonly WorldPaySettings _worldPaySettings;
+
+        public WorldPayPaymentMethod(WorldPaySettings worldPaySettings)
+        {
+            _worldPaySettings = worldPaySettings;
+        }
+
+        public override string Name
         {
             get { return "WorldPay"; }
         }
 
-        public string SystemName
+        public override string SystemName
         {
             get { return "WorldPay"; }
         }
 
-        public string ControllerName
+        public override string ControllerName
         {
             get { return "WorldPay"; }
         }
 
-        public string ActionName
+        public override string ActionName
         {
             get { return "Form"; }
         }
 
-        public PaymentType PaymentType
+        public override PaymentType PaymentType
         {
             get { return PaymentType.Redirection; }
         }
 
-        public bool Enabled
+        public override bool Enabled
         {
-            get { return MrCMSApplication.Get<WorldPaySettings>().Enabled; }
+            get { return _worldPaySettings.Enabled; }
         }
 
-        public bool CanUse(CartModel cart)
+        protected override bool CanUseLogic(CartModel cart)
         {
             return !cart.IsPayPalTransaction;
         }

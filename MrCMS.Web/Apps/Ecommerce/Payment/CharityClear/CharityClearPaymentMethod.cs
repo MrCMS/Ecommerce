@@ -3,39 +3,46 @@ using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.CharityClear
 {
-    public class CharityClearPaymentMethod : IPaymentMethod
+    public class CharityClearPaymentMethod : BasePaymentMethod
     {
-        public string Name
+        private readonly CharityClearSettings _charityClearSettings;
+
+        public CharityClearPaymentMethod(CharityClearSettings charityClearSettings)
+        {
+            _charityClearSettings = charityClearSettings;
+        }
+
+        public override string Name
         {
             get { return "Charity Clear"; }
         }
 
-        public string SystemName
+        public override string SystemName
         {
             get { return "CharityClear"; }
         }
 
-        public string ControllerName
+        public override string ControllerName
         {
             get { return "CharityClear"; }
         }
 
-        public string ActionName
+        public override string ActionName
         {
             get { return "Form"; }
         }
 
-        public PaymentType PaymentType
+        public override PaymentType PaymentType
         {
             get { return PaymentType.Redirection; }
         }
 
-        public bool Enabled
+        public override bool Enabled
         {
-            get { return MrCMSApplication.Get<CharityClearSettings>().Enabled; }
+            get { return _charityClearSettings.Enabled; }
         }
 
-        public bool CanUse(CartModel cart)
+        protected override bool CanUseLogic(CartModel cart)
         {
             return !cart.IsPayPalTransaction;
         }

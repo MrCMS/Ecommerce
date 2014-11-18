@@ -47,6 +47,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         [DisplayName("Discount Code")]
         public virtual string DiscountCode { get; set; }
 
+        public virtual decimal RewardPointsAppliedAmount { get; set; }
+
         public virtual decimal Weight { get; set; }
         //[DisplayName("Shipping Method")]
         //public virtual ShippingMethod ShippingMethod { get; set; }
@@ -135,6 +137,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         }
 
         public virtual User User { get; set; }
+
     }
 
     public enum OrderStatus
