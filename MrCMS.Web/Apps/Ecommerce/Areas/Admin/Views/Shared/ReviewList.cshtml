@@ -1,0 +1,92 @@
+﻿@model IList<MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.Review>
+
+    @using (Html.BeginForm())
+    {
+        <div>
+            <span class="btn-group display-inline pull-right">
+                <input class="btn btn-primary" type="submit" name="Approve" value="Approve" />
+                <input class="btn btn-warning" type="submit" name="Reject" value="Reject" />
+                <input class="btn btn-danger" type="submit" name="Delete" value="Delete" />
+            </span>
+        </div>
+        <br />
+        <br />
+
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Bulk Action
+                    </th>
+                    <th>
+                        Product
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var status = "";
+                    switch (item.Approved)
+                    {
+                        case true:
+                            status = "Approved";
+                            break;
+                        case false:
+                            status = "Rejected";
+                            break;
+                        default:
+                            status = "Requires Approval";
+                            break;
+                    }
+
+                    <tr>
+                        <td>
+                            @Html.CheckBox(string.Format("review-{0}", item.Id), item.Approved)
+                        </td>
+                        <td>
+                            @item.ProductVariant.Name
+                        </td>
+                        <td>
+                            @*@if (item.User != null)
+                            {
+                                <a href="@Url.Action("Edit", "User", new { Id = item.User.Id })">
+                                    @item.User.Email
+                                </a>
+                            }
+                            else
+                            {
+                                @item.Email
+                            }*@
+                            @item.Email
+                        </td>
+                        <td>
+                            @item.Title
+                        </td>
+                        <td>
+                            @status
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                @Html.ActionLink("Show", "Show", "Review", new { id = item.Id }, new { @class = "btn btn-default btn-xs", data_toggle = "fb-modal" })
+                                @Html.ActionLink("Edit", "Edit", "Review", new { id = item.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                @Html.ActionLink("Delete", "Delete", "Review", new { id = item.Id }, new { @class = "btn btn-xs btn-danger", data_toggle = "fb-modal" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }

@@ -61,7 +61,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                         new ChildMenuItem("Charity Clear","/Admin/Apps/Ecommerce/CharityClearSettings", ACLOption.Create(new WorldPaySettingsACL(), WorldPaySettingsACL.View)),                      
 
                     }),
-                    
+                    new ChildMenuItem("Product Review Settings", "/Admin/Apps/Ecommerce/ProductReviewSettings/Edit",
+                        ACLOption.Create(new ProductReviewSettingsAcl(), ProductReviewSettingsAcl.Edit)),
                 };
             }
         }

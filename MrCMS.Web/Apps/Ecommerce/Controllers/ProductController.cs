@@ -4,6 +4,8 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.BackInStockNotification;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Services.ProductReviews;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -19,14 +21,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IBackInStockNotificationService _backInStockNotificationService;
         private readonly CartModel _cart;
         private readonly IDocumentService _documentService;
+        private readonly IReviewService _reviewService;
 
-        public ProductController(ITrackingService trackingService, IProductUiService productUiService, IBackInStockNotificationService backInStockNotificationService, CartModel cart, IDocumentService documentService)
+        public ProductController(ITrackingService trackingService, IProductUiService productUiService, IBackInStockNotificationService backInStockNotificationService, CartModel cart, IDocumentService documentService, IReviewService reviewService)
         {
             _trackingService = trackingService;
             _productUiService = productUiService;
             _backInStockNotificationService = backInStockNotificationService;
             _cart = cart;
             _documentService = documentService;
+            _reviewService = reviewService;
         }
 
         public ActionResult Show(Product page, int? variant)
@@ -40,6 +44,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             }
             ViewData["selected-variant"] = variantToShow;
             ViewData["cart"] = _cart;
+            
+            ViewData["productreviews-enabled"] = MrCMSApplication.Get<ProductReviewSettings>().EnableProductReviews;
+            
             return View(page);
         }
        

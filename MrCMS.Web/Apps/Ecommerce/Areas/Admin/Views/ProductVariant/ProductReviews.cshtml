@@ -1,0 +1,77 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
+@{
+    var reviews = ViewData["reviews"] as IPagedList<Review> ?? PagedList<Review>.Empty;
+}
+
+<div id="product-reviews" class="tab-pane">
+    <div class="row">
+        <div class="col-xs-12">
+            @using (Html.BeginForm("ProductReviews", "ProductVariant", FormMethod.Get))
+            {
+                <div class="input-group">
+                    @Html.TextBox("q", ViewData["q"], new { @class = "search-query form-control" })
+                    <span class="input-group-btn">
+                        <input type="submit" value="Search" class="btn btn-default" />
+                    </span>
+                </div>
+            }
+
+            <div data-paging-type="async">
+                @if (reviews.Any())
+                {
+                    <table class="table table-condensed table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+                                    Title
+                                </th>
+                                <th>
+                                    Rating
+                                </th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var review in reviews)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (review.User != null)
+                                        {
+                                            @review.User.Name
+                                        }
+                                        else
+                                        {
+                                            @review.Email
+                                        }
+                                    </td>
+                                    <td>
+                                        @review.Title
+                                    </td>
+                                    <td>
+                                        @review.Rating
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            @Html.ActionLink("Edit", "Edit", "Review", new { id = review.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                            @Html.ActionLink("Delete", "Delete", "Review", new { id = review.Id }, new { @class = "btn btn-xs btn-danger", data_toggle = "fb-modal" })
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                
+                @Html.Pager(reviews, "ProductReviews", i => new { Model.Id, reviewPage = i })
+            </div>
+        </div>
+    </div>
+</div>
+
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/async-paging.js"); }

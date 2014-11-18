@@ -1,0 +1,40 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.HelpfulnessVote
+           
+@{
+    var unhelpfulcount = ViewData["unhelpful-count"] is int ? (int) ViewData["unhelpful-count"] : 0;
+    var helpfulcount = ViewData["helpful-count"] is int ? (int)ViewData["helpful-count"] : 0;
+    
+}
+
+<div class="margin-top-10">
+    <div class="pull-left">
+        <strong>Is this helpful?</strong>
+    </div>
+    <div class="pull-right">
+        <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+        @helpfulcount
+        |
+        <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+        @unhelpfulcount
+    </div>
+    <div class="clearfix">
+    </div>
+</div>
+
+<div class="pull-left">
+    @using (Html.BeginForm("HelpfulnessVotes", "Review", new { id = "" }, FormMethod.Post))
+    {
+        @Html.HiddenFor(x => x.Review.Id)
+        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
+    }
+</div>
+<div class="pull-left">
+    @using (Html.BeginForm("UnhelpfulnessVotes", "Review", new { id = "" }, FormMethod.Post))
+    {
+        @Html.HiddenFor(x => x.Review.Id)
+        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
+    }
+</div>
+<div class="clearfix">
+</div>
+
