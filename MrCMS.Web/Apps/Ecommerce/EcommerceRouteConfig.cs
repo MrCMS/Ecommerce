@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Apps;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce
@@ -50,6 +51,22 @@ namespace MrCMS.Web.Apps.Ecommerce
 
             context.MapRoute("Product - Get Variant Details", "product/variant-details/{id}",
                 new { controller = "ProductVariant", action = "Details" }, new[] { typeof(ProductVariantController).Namespace });
+
+            //Product Reviews
+            context.MapRoute("Product Review", "Apps/Ecommerce/Review/Add",
+                new { controller = "Review", action = "Add" },
+                new[] { typeof(ReviewController).Namespace });
+
+            context.MapRoute("Product Reviews Paging", "Apps/Ecommerce/ProductVariant/ProductReviews",
+                new { controller = "ProductVariant", action = "ProductReviews" });
+
+            context.MapRoute("Product Review Helpfulness Vote Yes", "Apps/Ecommerce/Review/HelpfulnessVotes",
+                new { controller = "Review", action = "HelpfulnessVotes" },
+                new[] { typeof(ReviewController).Namespace });
+
+            context.MapRoute("Product Review Helpfulness Vote No", "Apps/Ecommerce/Review/UnhelpfulnessVotes",
+                new { controller = "Review", action = "UnhelpfulnessVotes" },
+                new[] { typeof(ReviewController).Namespace });
 
             // Public Routes
             context.MapRoute("Generate Contact Us Map", "get-contact-map",

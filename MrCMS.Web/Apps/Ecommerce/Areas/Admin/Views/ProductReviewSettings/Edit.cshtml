@@ -1,0 +1,37 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Settings.ProductReviewSettings
+@{
+    ViewBag.Title = "Edit Product Review Settings";
+}
+@using (Html.BeginForm("Edit", "ProductReviewSettings", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Product Review Settings
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Save Settings" />
+            </span>
+        </legend>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-inline">
+                    @Html.InlineCheckboxFor(x => x.EnableProductReviews)
+                </div>
+                <br/>
+                <div class="form-inline">
+                    @Html.InlineCheckboxFor(x => x.GuestReviews)
+                </div>
+                <br />
+                <div class="form-inline">
+                    @Html.InlineCheckboxFor(x => x.HelpfulnessVotes)
+                </div>
+                <br />
+                <div class="form-group">
+                    @Html.LabelFor(x => x.PageSize)
+                    @Html.TextBoxFor(x => x.PageSize, new{@class="form-control"})
+                    @Html.ValidationMessageFor(x => x.PageSize)
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}
