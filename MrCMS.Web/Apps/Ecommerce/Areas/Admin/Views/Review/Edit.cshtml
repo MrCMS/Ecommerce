@@ -1,0 +1,34 @@
+﻿@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
+@using System.Web.Razor.Parser
+@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.Review
+@using (Html.BeginForm("Edit", "Review", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Edit Product Review
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Save Changes" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+
+        <p>
+            <strong>Rating: </strong>@Model.Rating
+        </p>
+        <p>
+            <strong>Email: </strong>@Model.Email
+        </p>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Title)
+            @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Title)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Text)
+            @Html.TextAreaFor(x => x.Text, new { @class = "form-control", rows = "5" })
+            @Html.ValidationMessageFor(x => x.Text)
+        </div>
+    </fieldset>
+}

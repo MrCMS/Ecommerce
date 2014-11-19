@@ -14,7 +14,7 @@
     <RootNamespace>MrCMS.Web</RootNamespace>
     <AssemblyName>MrCMS.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <FileUpgradeFlags>
@@ -22,8 +22,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
-    <IISExpressSSLPort>
-    </IISExpressSSLPort>
+    <IISExpressSSLPort>44300</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
@@ -535,6 +534,8 @@
     <Compile Include="Apps\Ecommerce\ACL\PayPalExpressCheckoutSettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\PaypointSettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\ProductACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\ProductReviewACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\ProductReviewSettingsAcl.cs" />
     <Compile Include="Apps\Ecommerce\ACL\ProductSpecificationAttributeACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\RewardPointACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\SagePaySettingsACL.cs" />
@@ -588,6 +589,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\RegionController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ReportController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\RewardPointSettingsController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ReviewController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\SagePaySettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingMethodController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\StockReportController.cs" />
@@ -607,6 +609,8 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\PayPalExpressCheckoutSettingsModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\PaypointSettingsModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\ProductOptionModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\ProductReviewApprovalModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\ProductReviewUpdateModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\ProductVariantModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\SagePaySettingsModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\ShippingMethodSettingsModelBinder.cs" />
@@ -621,6 +625,8 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\GetWarehouseStockFromFileResult.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\GiftCardSearchQuery.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\LowStockReportSearchModel.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ProductReviewSearchQuery.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ReviewUpdateModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ShippingMethodInfo.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\StockGenerationModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\StockGenerationType.cs" />
@@ -740,6 +746,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\ProductController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductSearchController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\ProductVariantController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\ReviewController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SagePayController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SagePayNotificationController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SagePayRedirectController.cs" />
@@ -777,6 +784,7 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductSpecificationAttributeOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ProductVariantOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\RewardPointsHistoryOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\ReviewOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\SessionDataOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\TableNameConvention.cs" />
     <Compile Include="Apps\Ecommerce\EcommerceApp.cs" />
@@ -815,6 +823,8 @@
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderLine.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderNote.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Orders\OrderRefund.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\ProductReviews\HelpfulnessVote.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\ProductReviews\Review.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\Brand.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\PriceBreak.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Products\ProductOption.cs" />
@@ -1024,6 +1034,7 @@
     <Compile Include="Apps\Ecommerce\Models\StrictKeyEqualityComparer.cs" />
     <Compile Include="Apps\Ecommerce\Models\TrackingPolicy.cs" />
     <Compile Include="Apps\Ecommerce\Models\UserAccountOrdersModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\UserAccountReviewsModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ValidationResult.cs" />
     <Compile Include="Apps\Ecommerce\Models\WishlistSummary.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Cart.cs" />
@@ -1340,6 +1351,10 @@
     <Compile Include="Apps\Ecommerce\Services\Pricing\ProductPricingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Pricing\ShippingPricingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductAddedToCartUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ProductReviews\HelpfulnessVoteService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ProductReviews\IHelpfulnessVoteService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ProductReviews\IReviewService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ProductReviews\ReviewService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductSearchQueryService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductShippingChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductStockChecker.cs" />
@@ -1415,6 +1430,7 @@
     <Compile Include="Apps\Ecommerce\Settings\GiftCardSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\GoogleBaseSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\RewardPointSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Settings\ProductReviewSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\ShippingMethodSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\Shipping\UKFirstClassShippingSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
@@ -1601,6 +1617,7 @@
     <Compile Include="Areas\Admin\Models\AddWidgetModel.cs" />
     <Compile Include="Areas\Admin\Models\AdminTree.cs" />
     <Compile Include="Areas\Admin\Models\AdminTreeNode.cs" />
+    <Compile Include="Areas\Admin\Models\ApprovalStatus.cs" />
     <Compile Include="Areas\Admin\Models\AsyncListModel.cs" />
     <Compile Include="Areas\Admin\Models\BatchSearchModel.cs" />
     <Compile Include="Areas\Admin\Models\Dashboard.cs" />
@@ -3536,6 +3553,17 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\UserRewardPoints\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PaymentNotRequired\Form.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderRewardPoints\Details.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductReviewSettings\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Review\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\UserAccount\UserAccountReviews.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Review\HelpfulnessVotes.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\ProductVariant\ProductReviews.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\ProductReviews.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Review\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Review\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Review\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Review\Show.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\ReviewList.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_BaseLayout.cshtml" />
@@ -3552,7 +3580,6 @@
     <Folder Include="Apps\Core\Entities\" />
     <Folder Include="Apps\Core\Settings\" />
     <Folder Include="Apps\Core\Tasks\" />
-    <Folder Include="Apps\Ecommerce\Areas\Admin\Views\Shared\" />
     <Folder Include="Apps\Ecommerce\Content\Scripts\charts\" />
     <Folder Include="Apps\Ecommerce\Models\Shipping\" />
     <Folder Include="Apps\Ecommerce\Queries\" />
