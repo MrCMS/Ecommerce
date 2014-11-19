@@ -20,7 +20,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         private readonly IRoleService _roleService;
         private readonly IPasswordManagementService _passwordManagementService;
         private readonly IGetUserCultureOptions _getUserCultureOptions;
-        private IGetUserEditTabsService _getUserEditTabsService;
+        private readonly IGetUserEditTabsService _getUserEditTabsService;
 
 
         public UserController(IUserService userService, IUserSearchService userSearchService, IRoleService roleService, IPasswordManagementService passwordManagementService, IGetUserCultureOptions getUserCultureOptions, IGetUserEditTabsService getUserEditTabsService)

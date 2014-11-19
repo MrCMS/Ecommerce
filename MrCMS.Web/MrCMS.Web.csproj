@@ -226,7 +226,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Data.SQLite, Version=1.0.82.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\System.Data.SQLite.1.0.82.0\lib\net40\System.Data.SQLite.dll</HintPath>
@@ -1527,6 +1527,7 @@
     <Compile Include="Areas\Admin\Controllers\MessageTemplateController.cs" />
     <Compile Include="Areas\Admin\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Admin\Controllers\NavLinksController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NopProductImportController.cs" />
     <Compile Include="Areas\Admin\Controllers\NotificationController.cs" />
     <Compile Include="Areas\Admin\Controllers\PageDefaultsController.cs" />
     <Compile Include="Areas\Admin\Controllers\PageStatsController.cs" />
@@ -1607,6 +1608,7 @@
     <Compile Include="Areas\Admin\Models\DefaultGeneratorInfo.cs" />
     <Compile Include="Areas\Admin\Models\DocumentTypeToAdd.cs" />
     <Compile Include="Areas\Admin\Models\GetPropertyData.cs" />
+    <Compile Include="Areas\Admin\Models\ImporterDetails.cs" />
     <Compile Include="Areas\Admin\Models\MediaCategorySearchModel.cs" />
     <Compile Include="Areas\Admin\Models\MediaSelectorSearchQuery.cs" />
     <Compile Include="Areas\Admin\Models\MessageTemplateInfo.cs" />
@@ -1733,6 +1735,23 @@
     <Compile Include="Areas\Admin\Services\MediaSelectorService.cs" />
     <Compile Include="Areas\Admin\Services\MessageQueueAdminService.cs" />
     <Compile Include="Areas\Admin\Services\MessageTemplateAdminService.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\Nop280\Nop280.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Nop280.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\Admin\Services\NopImport\Nop280\NopCommerce280ProductReader.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\BrandData.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\CategoryData.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\INopCommerceProductReader.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\INopProductImportAdminService.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\NopProductImportAdminService.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\ProductData.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\ProductOptionData.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\ProductOptionValueData.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\ProductSpecificationData.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\ProductSpecificationValueData.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\ProductVariantData.cs" />
     <Compile Include="Areas\Admin\Services\NotificationAdminService.cs" />
     <Compile Include="Areas\Admin\Services\PageDefaultsAdminService.cs" />
     <Compile Include="Areas\Admin\Services\PageTemplateAdminService.cs" />
@@ -3536,6 +3555,11 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\UserRewardPoints\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Views\PaymentNotRequired\Form.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderRewardPoints\Details.cshtml" />
+    <Content Include="Areas\Admin\Services\NopImport\Nop280\Nop280.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>Nop280.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_BaseLayout.cshtml" />
@@ -3598,6 +3622,15 @@
       <Project>{9d6ecc0f-cda1-43e2-b88b-bc01299eb9ce}</Project>
       <Name>MrCMS</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Areas\Admin\Services\NopImport\Nop280\Nop280.dbml.layout">
+      <DependentUpon>Nop280.dbml</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
