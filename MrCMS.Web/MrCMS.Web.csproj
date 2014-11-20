@@ -543,6 +543,7 @@
     <Compile Include="Apps\Ecommerce\ACL\SalesByDayACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\SalesByPaymentTypeACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\SalesByShippingTypeACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\SearchLogACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\ShippingMethodACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\StockReportACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\TaxRateACL.cs" />
@@ -594,6 +595,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\RewardPointSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ReviewController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\SagePaySettingsController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\SearchLogController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ShippingMethodController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\StockReportController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\TaxRateController.cs" />
@@ -850,6 +852,7 @@
     <Compile Include="Apps\Ecommerce\Entities\RewardPoints\PointsSpent.cs" />
     <Compile Include="Apps\Ecommerce\Entities\RewardPoints\RegistrationPoints.cs" />
     <Compile Include="Apps\Ecommerce\Entities\RewardPoints\RewardPointsHistory.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Search\SearchLog.cs" />
     <Compile Include="Apps\Ecommerce\Entities\SessionData.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\UKCourierShippingCalculation.cs" />
@@ -1411,6 +1414,8 @@
     <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionRegistrationBuilder.cs" />
     <Compile Include="Apps\Ecommerce\Services\SagePay\TransactionRegistrationResponse.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Search\ISearchLogService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Search\SearchLogService.cs" />
     <Compile Include="Apps\Ecommerce\Services\SetShippingAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\SetShippingDetailsUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\SetShippingMethodService.cs" />
@@ -3574,6 +3579,9 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\DashBoardRevenueSettings\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\ProductList.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\DiscountList.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\SearchLog\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\SearchLog\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\SearchLog\Delete.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_BaseLayout.cshtml" />
@@ -3616,6 +3624,7 @@
     <Folder Include="Themes\Ecommerce\Content\" />
     <Folder Include="Themes\Ecommerce\Shared\" />
     <Folder Include="Themes\Ecommerce\Views\Shared\" />
+    <Folder Include="Views\SearchLog\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

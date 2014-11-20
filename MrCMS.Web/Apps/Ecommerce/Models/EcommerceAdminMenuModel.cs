@@ -56,6 +56,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                         ACLOption.Create(new ProductSpecificationAttributeACL(), ProductSpecificationAttributeACL.List)),
                     new ChildMenuItem("Discounts", _urlHelper.Action("Index", "Discount"),
                         ACLOption.Create(new DiscountACL(), DiscountACL.List)),
+                    new ChildMenuItem("Search Logs", _urlHelper.Action("Index", "SearchLog"),
+                        ACLOption.Create(new SearchLogACL(), SearchLogACL.List)),
                 };
                 if (_ecommerceSettings.GiftCardsEnabled)
                 {
