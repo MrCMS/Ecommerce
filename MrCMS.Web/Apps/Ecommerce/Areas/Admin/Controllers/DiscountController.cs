@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Services.Discounts;
@@ -21,10 +22,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [MrCMSACLRule(typeof(DiscountACL), DiscountACL.List)]
-        public ViewResult Index()
+        public ViewResult Index(DiscountSearchQuery searchQuery)
         {
-            var discounts = _discountManager.GetAll();
-            return View(discounts);
+            ViewData["results"] = _discountManager.Search(searchQuery);
+            return View(searchQuery);
         }
 
         [HttpGet]

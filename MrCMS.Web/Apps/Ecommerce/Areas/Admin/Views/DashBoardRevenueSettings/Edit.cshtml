@@ -1,0 +1,25 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Settings.DashBoardRevenueSettings
+@{
+    ViewBag.Title = "Edit DashBoard Revenue Settings";
+}
+@using (Html.BeginForm("Edit", "DashBoardRevenueSettings", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            DashBoard Revenue Settings
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Save Settings" />
+            </span>
+        </legend>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Days)
+                    @Html.TextBoxFor(x => x.Days, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.Days)
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}

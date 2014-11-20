@@ -35,7 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [HttpPost]
         public JsonResult RevenueThisWeek()
         {
-            return Json(_reportService.SalesLastWeekGroupedByDay());
+            return Json(_reportService.SalesXDays());
         }
     }
 }

@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using MrCMS.Helpers;
+using MrCMS.Paging;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
+using MrCMS.Website;
 using NHibernate;
 using System.Linq;
 using NHibernate.Criterion;
+using NHibernate.Linq;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Discounts
 {
@@ -146,6 +150,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Discounts
                 return _session.QueryOver<Discount>().Where(d => d.Code == code && d.Id != id.Value).RowCount() == 0;
             }
             return _session.QueryOver<Discount>().Where(d => d.Code == code).RowCount() == 0;
+        }
+
+        public IPagedList<Discount> Search(DiscountSearchQuery query)
+        {
+            var queryOver = _session.QueryOver<Discount>();
+
+            if (!string.IsNullOrWhiteSpace(query.DiscountCode))
+                queryOver = queryOver.Where(discount => discount.Code.IsInsensitiveLike(query.DiscountCode, MatchMode.Anywhere));
+
+            if (!string.IsNullOrWhiteSpace(query.Name))
+                queryOver = queryOver.Where(discount => discount.Name.IsInsensitiveLike(query.Name, MatchMode.Anywhere));
+
+            if (query.ShowExpired)
+                queryOver = queryOver.Where(discount => discount.ValidUntil < CurrentRequestData.Now || discount.ValidUntil >= CurrentRequestData.Now);
+            else
+                queryOver = queryOver.Where(discount => discount.ValidUntil >= CurrentRequestData.Now);
+
+            return queryOver.OrderBy(discount => discount.Name).Asc.Paged(query.Page);
         }
     }
 }
