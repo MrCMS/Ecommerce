@@ -7,6 +7,7 @@ using MrCMS.Paging;
 using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
@@ -52,7 +53,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductController_Index_ShouldReturnAViewResult()
         {
-            var index = _productController.Index();
+            var index = _productController.Index(A.Fake<ProductAdminSearchQuery>());
 
             index.Should().BeOfType<ViewResult>();
         }
@@ -60,7 +61,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductController_Index_ShouldCallProductServiceSearch()
         {
-            _productController.Index("q", 1);
+            _productController.Index(A.Fake<ProductAdminSearchQuery>());
 
             A.CallTo(() => _productService.Search("q", 1)).MustHaveHappened();
         }
@@ -71,7 +72,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             var pagedList = new ProductPagedList(new StaticPagedList<Product>(new List<Product>(), 1, 1, 0), 1);
             A.CallTo(() => _productService.Search("q", 1)).Returns(pagedList);
 
-            var viewResult = _productController.Index("q", 1);
+            var viewResult = _productController.Index(A.Fake<ProductAdminSearchQuery>());
 
             viewResult.Model.Should().Be(pagedList);
         }
@@ -81,7 +82,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             A.CallTo(() => _uniquePageService.GetUniquePage<ProductSearch>()).Returns(null);
 
-            var viewResult = _productController.Index();
+            var viewResult = _productController.Index(A.Fake<ProductAdminSearchQuery>());
 
             viewResult.Model.Should().BeNull();
         }

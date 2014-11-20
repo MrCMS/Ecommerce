@@ -163,11 +163,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
             if (!string.IsNullOrWhiteSpace(query.Title))
                 queryOver = queryOver.Where(review => review.Title.IsLike(query.Title, MatchMode.Anywhere));
             if (query.DateFrom.HasValue)
-                queryOver = queryOver.Where(comment => comment.CreatedOn >= query.DateFrom);
+                queryOver = queryOver.Where(review => review.CreatedOn >= query.DateFrom);
             if (query.DateTo.HasValue)
-                queryOver = queryOver.Where(comment => comment.CreatedOn < query.DateTo);
+                queryOver = queryOver.Where(review => review.CreatedOn < query.DateTo);
 
-            return queryOver.OrderBy(comment => comment.CreatedOn).Asc.Paged(query.Page);
+            return queryOver.OrderBy(review => review.CreatedOn).Asc.Paged(query.Page);
         }
 
         public List<SelectListItem> GetApprovalOptions()

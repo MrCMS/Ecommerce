@@ -8,6 +8,7 @@ using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -56,16 +57,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         /// <param name="q">query string to filter by</param>
         /// <param name="p">page number</param>
         /// <returns></returns>
+        /// [MrCMSACLRule(typeof(ProductACL), ProductACL.List)]
         [MrCMSACLRule(typeof(ProductACL), ProductACL.List)]
-        public ViewResult Index(string q = null, int p = 1)
+        public ViewResult Index(ProductAdminSearchQuery searchQuery)
         {
-            ViewData["q"] = q;
-            if (_uniquePageService.GetUniquePage<ProductSearch>() == null)
-                return View();
-            ProductPagedList searchResult = _productService.Search(q, p);
-            return View(searchResult);
-        }
+            ViewData["publish-status"] = _productService.GetPublishStatusOptions();
+            ViewData["results"] = _productService.Search(searchQuery);
+            var productContainer = _uniquePageService.GetUniquePage<ProductContainer>();
+            ViewData["product-containerId"] = productContainer == null ? (int?)null : productContainer.Id;
 
+            return View(searchQuery);
+        }
+        
         [HttpGet]
         public PartialViewResult Categories(Product product)
         {

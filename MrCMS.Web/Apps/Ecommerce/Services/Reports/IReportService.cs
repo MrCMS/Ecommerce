@@ -10,5 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
         ChartModel SalesTodayGroupedByHour();
         ChartModel SalesLastWeekGroupedByDay();
         ChartModel OrdersByShippingType(ChartModel model);
+
+        ChartModel SalesXDays();
     }
 }

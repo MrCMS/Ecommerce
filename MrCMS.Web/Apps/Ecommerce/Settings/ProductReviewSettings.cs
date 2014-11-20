@@ -15,5 +15,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 
         [DisplayName("Page Size")]
         public virtual int PageSize { get; set; }
+
+        public ProductReviewSettings()
+        {
+            PageSize = 10;
+        }
     }
 }
