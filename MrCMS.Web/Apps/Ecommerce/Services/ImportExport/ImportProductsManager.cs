@@ -18,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _importProductsService = importProductsService;
         }
 
-        public List<string> ImportProductsFromExcel(Stream file)
+        public List<string> ImportProductsFromExcel(Stream file, bool autoStart)
         {
             var spreadsheet = new ExcelPackage(file);
 

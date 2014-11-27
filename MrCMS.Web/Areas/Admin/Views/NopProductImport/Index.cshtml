@@ -1,0 +1,46 @@
+﻿@using MrCMS.Web.Areas.Admin.Services.NopImport
+@model MrCMS.Web.Areas.Admin.Services.NopImport.ImportParams
+
+@{
+    var options = ViewData["importer-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    var result = ViewData["result"] as ImportResult;
+}
+@using (Html.BeginForm("Import", "NopProductImport", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            @Resource("NopCommerce Product Import")
+            <span class="btn-group display-inline pull-right">
+                <button type="submit" class="btn btn-primary">@Resource("Import")</button>
+            </span>
+        </legend>
+        @if (result != null)
+        {
+            <div class="alert alert-@(result.Success ?"success":"danger")">
+                <ul>
+                    @foreach (var message in result.Messages)
+                    {
+                        <li>
+                            @message
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(importParams => importParams.ImporterType)
+                    @Html.DropDownListFor(importParams => importParams.ImporterType, options, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(query => query.ConnectionString)
+                    @Html.TextBoxFor(query => query.ConnectionString, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}

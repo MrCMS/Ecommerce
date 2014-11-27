@@ -8,6 +8,6 @@ namespace MrCMS.Services.ImportExport
     {
         //void ImportDocumentsFromDTOs(IEnumerable<DocumentImportDTO> items);
         //Webpage ImportDocument(DocumentImportDTO dto);
-        void CreateBatch(List<DocumentImportDTO> items);
+        void CreateBatch(List<DocumentImportDTO> items, bool autoStart = true);
     }
 }

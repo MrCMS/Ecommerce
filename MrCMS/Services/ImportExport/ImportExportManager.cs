@@ -28,7 +28,7 @@ namespace MrCMS.Services.ImportExport
         }
 
         #region Import Documents
-        public Dictionary<string, List<string>> ImportDocumentsFromExcel(Stream file)
+        public Dictionary<string, List<string>> ImportDocumentsFromExcel(Stream file, bool autoStart = true)
         {
             var spreadsheet = new ExcelPackage(file);
 
@@ -39,7 +39,7 @@ namespace MrCMS.Services.ImportExport
             var businessLogicErrors = _importDocumentsValidationService.ValidateBusinessLogic(items);
             if (businessLogicErrors.Any())
                 return businessLogicErrors;
-            _importDocumentService.CreateBatch(items);
+            _importDocumentService.CreateBatch(items, autoStart);
             //_importDocumentService.ImportDocumentsFromDTOs(items);
             return new Dictionary<string, List<string>>();
         }

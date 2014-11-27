@@ -1,4 +1,4 @@
-namespace MrCMS.Web.Areas.Admin.Services.NopImport
+namespace MrCMS.Web.Areas.Admin.Services.NopImport.Models
 {
     public class ProductOptionData
     {
