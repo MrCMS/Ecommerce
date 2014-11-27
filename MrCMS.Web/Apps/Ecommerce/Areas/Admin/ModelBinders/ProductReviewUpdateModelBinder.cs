@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using MarketplaceWebServiceFeedsClasses;
 using MrCMS.Paging;
@@ -11,41 +12,53 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders
 {
     public class ProductReviewUpdateModelBinder : MrCMSDefaultModelBinder
     {
-        public ProductReviewUpdateModelBinder(IKernel kernel) : base(kernel)
+        public ProductReviewUpdateModelBinder(IKernel kernel)
+            : base(kernel)
         {
         }
 
         public override object BindModel(System.Web.Mvc.ControllerContext controllerContext, System.Web.Mvc.ModelBindingContext bindingContext)
         {
-            var currentOperation = "";
+            ProductReviewOperation currentOperation;
 
             if (controllerContext.HttpContext.Request.Form["Approve"] != null)
             {
-                currentOperation = "Approve";
+                currentOperation = ProductReviewOperation.Approve;
             }
-            if (controllerContext.HttpContext.Request.Form["Reject"] != null)
+            else if (controllerContext.HttpContext.Request.Form["Reject"] != null)
             {
-                currentOperation = "Reject";
+                currentOperation = ProductReviewOperation.Reject;
             }
-            if (controllerContext.HttpContext.Request.Form["Delete"] != null)
+            else if (controllerContext.HttpContext.Request.Form["Delete"] != null)
             {
-                currentOperation = "Delete";
+                currentOperation = ProductReviewOperation.Delete;
+            }
+            else
+            {
+                return new ReviewUpdateModel();
             }
 
             var nameValueCollection = controllerContext.HttpContext.Request.Form;
 
             var keys = nameValueCollection.AllKeys.Where(s => s.StartsWith("review-"));
-
-            return keys.Select(s =>
+            var reviewUpdateModel = new ReviewUpdateModel
             {
-                var substring = s.Substring(7);
-                return new ReviewUpdateModel
+                CurrentOperation = currentOperation,
+                Reviews = new List<Review>()
+            };
+            foreach (var key in keys)
+            {
+                var substring = key.Substring(7);
+                int id;
+                if (Int32.TryParse(substring, out id) && nameValueCollection[key].Contains("true"))
                 {
-                    ReviewId = Convert.ToInt32(substring),
-                    Approved = nameValueCollection[s].Contains("true"),
-                    CurrentOperation = currentOperation
-                };
-            }).ToList();
+                    var review = Session.Get<Review>(id);
+                    if (review != null)
+                        reviewUpdateModel.Reviews.Add(review);
+                }
+
+            }
+            return reviewUpdateModel;
         }
     }
 }

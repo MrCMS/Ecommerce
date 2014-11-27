@@ -1,5 +1,6 @@
 ﻿using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
@@ -50,6 +51,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
         {
             var model = new ChartModel() { From = CurrentRequestData.Now.Date.AddDays(-6), To = CurrentRequestData.Now.Date.AddDays(1) };
             var data = _orderAnalyticsService.GetRevenueGroupedByDate(model.From,model.To);
+            _chartService.SetLineChartData(ref model, data);
+            _chartService.SetLineChartLabels(ref model);
+            return model;
+        }
+
+        public ChartModel SalesXDays()
+        {
+            var days = MrCMSApplication.Get<DashBoardRevenueSettings>().Days;
+            if (days == 0)
+                days = 7;
+
+            var model = new ChartModel() { From = CurrentRequestData.Now.Date.AddDays(-(days - 1)), To = CurrentRequestData.Now.Date.AddDays(1) };
+            var data = _orderAnalyticsService.GetRevenueGroupedByDate(model.From, model.To);
             _chartService.SetLineChartData(ref model, data);
             _chartService.SetLineChartLabels(ref model);
             return model;

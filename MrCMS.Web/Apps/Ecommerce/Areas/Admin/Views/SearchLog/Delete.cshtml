@@ -1,0 +1,19 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Search.SearchLog
+
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Delete", "SearchLog", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Delete Search Log
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Delete Search Log" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+        <p>
+            Are you sure you want to delete the search log ? Deleting this item can not be undone.
+        </p>
+    </fieldset>
+}
