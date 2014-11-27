@@ -1,4 +1,4 @@
-namespace MrCMS.Web.Areas.Admin.Services.NopImport
+namespace MrCMS.Web.Areas.Admin.Services.NopImport.Models
 {
     public class CategoryData
     {
@@ -8,5 +8,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
         public string Url { get; set; }
 
         public string Abstract { get; set; }
+
+        public bool Published { get; set; }
     }
 }

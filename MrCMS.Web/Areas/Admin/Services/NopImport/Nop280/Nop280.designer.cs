@@ -81,6 +81,24 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
     partial void InsertSpecificationAttribute(SpecificationAttribute instance);
     partial void UpdateSpecificationAttribute(SpecificationAttribute instance);
     partial void DeleteSpecificationAttribute(SpecificationAttribute instance);
+    partial void InsertTaxCategory(TaxCategory instance);
+    partial void UpdateTaxCategory(TaxCategory instance);
+    partial void DeleteTaxCategory(TaxCategory instance);
+    partial void InsertTaxRate(TaxRate instance);
+    partial void UpdateTaxRate(TaxRate instance);
+    partial void DeleteTaxRate(TaxRate instance);
+    partial void InsertCountry(Country instance);
+    partial void UpdateCountry(Country instance);
+    partial void DeleteCountry(Country instance);
+    partial void InsertStateProvince(StateProvince instance);
+    partial void UpdateStateProvince(StateProvince instance);
+    partial void DeleteStateProvince(StateProvince instance);
+    partial void InsertTierPrice(TierPrice instance);
+    partial void UpdateTierPrice(TierPrice instance);
+    partial void DeleteTierPrice(TierPrice instance);
+    partial void InsertDownload(Download instance);
+    partial void UpdateDownload(Download instance);
+    partial void DeleteDownload(Download instance);
     #endregion
 		
 		public Nop280DataContext() : 
@@ -246,6 +264,54 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
 			get
 			{
 				return this.GetTable<SpecificationAttribute>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TaxCategory> TaxCategories
+		{
+			get
+			{
+				return this.GetTable<TaxCategory>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TaxRate> TaxRates
+		{
+			get
+			{
+				return this.GetTable<TaxRate>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Country> Countries
+		{
+			get
+			{
+				return this.GetTable<Country>();
+			}
+		}
+		
+		public System.Data.Linq.Table<StateProvince> StateProvinces
+		{
+			get
+			{
+				return this.GetTable<StateProvince>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TierPrice> TierPrices
+		{
+			get
+			{
+				return this.GetTable<TierPrice>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Download> Downloads
+		{
+			get
+			{
+				return this.GetTable<Download>();
 			}
 		}
 	}
@@ -2564,7 +2630,13 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
 		
 		private EntitySet<ProductVariantAttributeCombination> _ProductVariantAttributeCombinations;
 		
+		private EntitySet<TierPrice> _TierPrices;
+		
 		private EntityRef<Product> _Product;
+		
+		private EntityRef<TaxCategory> _TaxCategory;
+		
+		private EntityRef<Download> _Download;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2718,7 +2790,10 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
 		{
 			this._ProductVariant_ProductAttribute_Mappings = new EntitySet<ProductVariant_ProductAttribute_Mapping>(new Action<ProductVariant_ProductAttribute_Mapping>(this.attach_ProductVariant_ProductAttribute_Mappings), new Action<ProductVariant_ProductAttribute_Mapping>(this.detach_ProductVariant_ProductAttribute_Mappings));
 			this._ProductVariantAttributeCombinations = new EntitySet<ProductVariantAttributeCombination>(new Action<ProductVariantAttributeCombination>(this.attach_ProductVariantAttributeCombinations), new Action<ProductVariantAttributeCombination>(this.detach_ProductVariantAttributeCombinations));
+			this._TierPrices = new EntitySet<TierPrice>(new Action<TierPrice>(this.attach_TierPrices), new Action<TierPrice>(this.detach_TierPrices));
 			this._Product = default(EntityRef<Product>);
+			this._TaxCategory = default(EntityRef<TaxCategory>);
+			this._Download = default(EntityRef<Download>);
 			OnCreated();
 		}
 		
@@ -3017,6 +3092,10 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
 			{
 				if ((this._DownloadId != value))
 				{
+					if (this._Download.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnDownloadIdChanging(value);
 					this.SendPropertyChanging();
 					this._DownloadId = value;
@@ -3357,6 +3436,10 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
 			{
 				if ((this._TaxCategoryId != value))
 				{
+					if (this._TaxCategory.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnTaxCategoryIdChanging(value);
 					this.SendPropertyChanging();
 					this._TaxCategoryId = value;
@@ -4172,6 +4255,19 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductVariant_TierPrice", Storage="_TierPrices", ThisKey="Id", OtherKey="ProductVariantId")]
+		public EntitySet<TierPrice> TierPrices
+		{
+			get
+			{
+				return this._TierPrices;
+			}
+			set
+			{
+				this._TierPrices.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_ProductVariant", Storage="_Product", ThisKey="ProductId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public Product Product
 		{
@@ -4202,6 +4298,74 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
 						this._ProductId = default(int);
 					}
 					this.SendPropertyChanged("Product");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TaxCategory_ProductVariant", Storage="_TaxCategory", ThisKey="TaxCategoryId", OtherKey="Id", IsForeignKey=true)]
+		public TaxCategory TaxCategory
+		{
+			get
+			{
+				return this._TaxCategory.Entity;
+			}
+			set
+			{
+				TaxCategory previousValue = this._TaxCategory.Entity;
+				if (((previousValue != value) 
+							|| (this._TaxCategory.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TaxCategory.Entity = null;
+						previousValue.ProductVariants.Remove(this);
+					}
+					this._TaxCategory.Entity = value;
+					if ((value != null))
+					{
+						value.ProductVariants.Add(this);
+						this._TaxCategoryId = value.Id;
+					}
+					else
+					{
+						this._TaxCategoryId = default(int);
+					}
+					this.SendPropertyChanged("TaxCategory");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Download_ProductVariant", Storage="_Download", ThisKey="DownloadId", OtherKey="Id", IsForeignKey=true)]
+		public Download Download
+		{
+			get
+			{
+				return this._Download.Entity;
+			}
+			set
+			{
+				Download previousValue = this._Download.Entity;
+				if (((previousValue != value) 
+							|| (this._Download.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Download.Entity = null;
+						previousValue.ProductVariants.Remove(this);
+					}
+					this._Download.Entity = value;
+					if ((value != null))
+					{
+						value.ProductVariants.Add(this);
+						this._DownloadId = value.Id;
+					}
+					else
+					{
+						this._DownloadId = default(int);
+					}
+					this.SendPropertyChanged("Download");
 				}
 			}
 		}
@@ -4245,6 +4409,18 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		private void detach_ProductVariantAttributeCombinations(ProductVariantAttributeCombination entity)
+		{
+			this.SendPropertyChanging();
+			entity.ProductVariant = null;
+		}
+		
+		private void attach_TierPrices(TierPrice entity)
+		{
+			this.SendPropertyChanging();
+			entity.ProductVariant = this;
+		}
+		
+		private void detach_TierPrices(TierPrice entity)
 		{
 			this.SendPropertyChanging();
 			entity.ProductVariant = null;
@@ -6653,6 +6829,1474 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
 		{
 			this.SendPropertyChanging();
 			entity.SpecificationAttribute = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TaxCategory")]
+	public partial class TaxCategory : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _Name;
+		
+		private int _DisplayOrder;
+		
+		private EntitySet<ProductVariant> _ProductVariants;
+		
+		private EntityRef<TaxRate> _TaxRate;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnDisplayOrderChanging(int value);
+    partial void OnDisplayOrderChanged();
+    #endregion
+		
+		public TaxCategory()
+		{
+			this._ProductVariants = new EntitySet<ProductVariant>(new Action<ProductVariant>(this.attach_ProductVariants), new Action<ProductVariant>(this.detach_ProductVariants));
+			this._TaxRate = default(EntityRef<TaxRate>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					if (this._TaxRate.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(400) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayOrder", DbType="Int NOT NULL")]
+		public int DisplayOrder
+		{
+			get
+			{
+				return this._DisplayOrder;
+			}
+			set
+			{
+				if ((this._DisplayOrder != value))
+				{
+					this.OnDisplayOrderChanging(value);
+					this.SendPropertyChanging();
+					this._DisplayOrder = value;
+					this.SendPropertyChanged("DisplayOrder");
+					this.OnDisplayOrderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TaxCategory_ProductVariant", Storage="_ProductVariants", ThisKey="Id", OtherKey="TaxCategoryId")]
+		public EntitySet<ProductVariant> ProductVariants
+		{
+			get
+			{
+				return this._ProductVariants;
+			}
+			set
+			{
+				this._ProductVariants.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TaxRate_TaxCategory", Storage="_TaxRate", ThisKey="Id", OtherKey="TaxCategoryId", IsForeignKey=true)]
+		public TaxRate TaxRate
+		{
+			get
+			{
+				return this._TaxRate.Entity;
+			}
+			set
+			{
+				TaxRate previousValue = this._TaxRate.Entity;
+				if (((previousValue != value) 
+							|| (this._TaxRate.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TaxRate.Entity = null;
+						previousValue.TaxCategories.Remove(this);
+					}
+					this._TaxRate.Entity = value;
+					if ((value != null))
+					{
+						value.TaxCategories.Add(this);
+						this._Id = value.TaxCategoryId;
+					}
+					else
+					{
+						this._Id = default(int);
+					}
+					this.SendPropertyChanged("TaxRate");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ProductVariants(ProductVariant entity)
+		{
+			this.SendPropertyChanging();
+			entity.TaxCategory = this;
+		}
+		
+		private void detach_ProductVariants(ProductVariant entity)
+		{
+			this.SendPropertyChanging();
+			entity.TaxCategory = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TaxRate")]
+	public partial class TaxRate : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _TaxCategoryId;
+		
+		private int _CountryId;
+		
+		private int _StateProvinceId;
+		
+		private string _Zip;
+		
+		private decimal _Percentage;
+		
+		private EntitySet<TaxCategory> _TaxCategories;
+		
+		private EntityRef<StateProvince> _StateProvince;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnTaxCategoryIdChanging(int value);
+    partial void OnTaxCategoryIdChanged();
+    partial void OnCountryIdChanging(int value);
+    partial void OnCountryIdChanged();
+    partial void OnStateProvinceIdChanging(int value);
+    partial void OnStateProvinceIdChanged();
+    partial void OnZipChanging(string value);
+    partial void OnZipChanged();
+    partial void OnPercentageChanging(decimal value);
+    partial void OnPercentageChanged();
+    #endregion
+		
+		public TaxRate()
+		{
+			this._TaxCategories = new EntitySet<TaxCategory>(new Action<TaxCategory>(this.attach_TaxCategories), new Action<TaxCategory>(this.detach_TaxCategories));
+			this._StateProvince = default(EntityRef<StateProvince>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TaxCategoryId", DbType="Int NOT NULL")]
+		public int TaxCategoryId
+		{
+			get
+			{
+				return this._TaxCategoryId;
+			}
+			set
+			{
+				if ((this._TaxCategoryId != value))
+				{
+					this.OnTaxCategoryIdChanging(value);
+					this.SendPropertyChanging();
+					this._TaxCategoryId = value;
+					this.SendPropertyChanged("TaxCategoryId");
+					this.OnTaxCategoryIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CountryId", DbType="Int NOT NULL")]
+		public int CountryId
+		{
+			get
+			{
+				return this._CountryId;
+			}
+			set
+			{
+				if ((this._CountryId != value))
+				{
+					this.OnCountryIdChanging(value);
+					this.SendPropertyChanging();
+					this._CountryId = value;
+					this.SendPropertyChanged("CountryId");
+					this.OnCountryIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StateProvinceId", DbType="Int NOT NULL")]
+		public int StateProvinceId
+		{
+			get
+			{
+				return this._StateProvinceId;
+			}
+			set
+			{
+				if ((this._StateProvinceId != value))
+				{
+					if (this._StateProvince.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnStateProvinceIdChanging(value);
+					this.SendPropertyChanging();
+					this._StateProvinceId = value;
+					this.SendPropertyChanged("StateProvinceId");
+					this.OnStateProvinceIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Zip", DbType="NVarChar(MAX)")]
+		public string Zip
+		{
+			get
+			{
+				return this._Zip;
+			}
+			set
+			{
+				if ((this._Zip != value))
+				{
+					this.OnZipChanging(value);
+					this.SendPropertyChanging();
+					this._Zip = value;
+					this.SendPropertyChanged("Zip");
+					this.OnZipChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Percentage", DbType="Decimal(18,4) NOT NULL")]
+		public decimal Percentage
+		{
+			get
+			{
+				return this._Percentage;
+			}
+			set
+			{
+				if ((this._Percentage != value))
+				{
+					this.OnPercentageChanging(value);
+					this.SendPropertyChanging();
+					this._Percentage = value;
+					this.SendPropertyChanged("Percentage");
+					this.OnPercentageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TaxRate_TaxCategory", Storage="_TaxCategories", ThisKey="TaxCategoryId", OtherKey="Id")]
+		public EntitySet<TaxCategory> TaxCategories
+		{
+			get
+			{
+				return this._TaxCategories;
+			}
+			set
+			{
+				this._TaxCategories.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="StateProvince_TaxRate", Storage="_StateProvince", ThisKey="StateProvinceId", OtherKey="Id", IsForeignKey=true)]
+		public StateProvince StateProvince
+		{
+			get
+			{
+				return this._StateProvince.Entity;
+			}
+			set
+			{
+				StateProvince previousValue = this._StateProvince.Entity;
+				if (((previousValue != value) 
+							|| (this._StateProvince.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._StateProvince.Entity = null;
+						previousValue.TaxRates.Remove(this);
+					}
+					this._StateProvince.Entity = value;
+					if ((value != null))
+					{
+						value.TaxRates.Add(this);
+						this._StateProvinceId = value.Id;
+					}
+					else
+					{
+						this._StateProvinceId = default(int);
+					}
+					this.SendPropertyChanged("StateProvince");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_TaxCategories(TaxCategory entity)
+		{
+			this.SendPropertyChanging();
+			entity.TaxRate = this;
+		}
+		
+		private void detach_TaxCategories(TaxCategory entity)
+		{
+			this.SendPropertyChanging();
+			entity.TaxRate = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Country")]
+	public partial class Country : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _Name;
+		
+		private bool _AllowsBilling;
+		
+		private bool _AllowsShipping;
+		
+		private string _TwoLetterIsoCode;
+		
+		private string _ThreeLetterIsoCode;
+		
+		private int _NumericIsoCode;
+		
+		private bool _SubjectToVat;
+		
+		private bool _Published;
+		
+		private int _DisplayOrder;
+		
+		private EntitySet<StateProvince> _StateProvinces;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnAllowsBillingChanging(bool value);
+    partial void OnAllowsBillingChanged();
+    partial void OnAllowsShippingChanging(bool value);
+    partial void OnAllowsShippingChanged();
+    partial void OnTwoLetterIsoCodeChanging(string value);
+    partial void OnTwoLetterIsoCodeChanged();
+    partial void OnThreeLetterIsoCodeChanging(string value);
+    partial void OnThreeLetterIsoCodeChanged();
+    partial void OnNumericIsoCodeChanging(int value);
+    partial void OnNumericIsoCodeChanged();
+    partial void OnSubjectToVatChanging(bool value);
+    partial void OnSubjectToVatChanged();
+    partial void OnPublishedChanging(bool value);
+    partial void OnPublishedChanged();
+    partial void OnDisplayOrderChanging(int value);
+    partial void OnDisplayOrderChanged();
+    #endregion
+		
+		public Country()
+		{
+			this._StateProvinces = new EntitySet<StateProvince>(new Action<StateProvince>(this.attach_StateProvinces), new Action<StateProvince>(this.detach_StateProvinces));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AllowsBilling", DbType="Bit NOT NULL")]
+		public bool AllowsBilling
+		{
+			get
+			{
+				return this._AllowsBilling;
+			}
+			set
+			{
+				if ((this._AllowsBilling != value))
+				{
+					this.OnAllowsBillingChanging(value);
+					this.SendPropertyChanging();
+					this._AllowsBilling = value;
+					this.SendPropertyChanged("AllowsBilling");
+					this.OnAllowsBillingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AllowsShipping", DbType="Bit NOT NULL")]
+		public bool AllowsShipping
+		{
+			get
+			{
+				return this._AllowsShipping;
+			}
+			set
+			{
+				if ((this._AllowsShipping != value))
+				{
+					this.OnAllowsShippingChanging(value);
+					this.SendPropertyChanging();
+					this._AllowsShipping = value;
+					this.SendPropertyChanged("AllowsShipping");
+					this.OnAllowsShippingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TwoLetterIsoCode", DbType="NVarChar(2)")]
+		public string TwoLetterIsoCode
+		{
+			get
+			{
+				return this._TwoLetterIsoCode;
+			}
+			set
+			{
+				if ((this._TwoLetterIsoCode != value))
+				{
+					this.OnTwoLetterIsoCodeChanging(value);
+					this.SendPropertyChanging();
+					this._TwoLetterIsoCode = value;
+					this.SendPropertyChanged("TwoLetterIsoCode");
+					this.OnTwoLetterIsoCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ThreeLetterIsoCode", DbType="NVarChar(3)")]
+		public string ThreeLetterIsoCode
+		{
+			get
+			{
+				return this._ThreeLetterIsoCode;
+			}
+			set
+			{
+				if ((this._ThreeLetterIsoCode != value))
+				{
+					this.OnThreeLetterIsoCodeChanging(value);
+					this.SendPropertyChanging();
+					this._ThreeLetterIsoCode = value;
+					this.SendPropertyChanged("ThreeLetterIsoCode");
+					this.OnThreeLetterIsoCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumericIsoCode", DbType="Int NOT NULL")]
+		public int NumericIsoCode
+		{
+			get
+			{
+				return this._NumericIsoCode;
+			}
+			set
+			{
+				if ((this._NumericIsoCode != value))
+				{
+					this.OnNumericIsoCodeChanging(value);
+					this.SendPropertyChanging();
+					this._NumericIsoCode = value;
+					this.SendPropertyChanged("NumericIsoCode");
+					this.OnNumericIsoCodeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SubjectToVat", DbType="Bit NOT NULL")]
+		public bool SubjectToVat
+		{
+			get
+			{
+				return this._SubjectToVat;
+			}
+			set
+			{
+				if ((this._SubjectToVat != value))
+				{
+					this.OnSubjectToVatChanging(value);
+					this.SendPropertyChanging();
+					this._SubjectToVat = value;
+					this.SendPropertyChanged("SubjectToVat");
+					this.OnSubjectToVatChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Published", DbType="Bit NOT NULL")]
+		public bool Published
+		{
+			get
+			{
+				return this._Published;
+			}
+			set
+			{
+				if ((this._Published != value))
+				{
+					this.OnPublishedChanging(value);
+					this.SendPropertyChanging();
+					this._Published = value;
+					this.SendPropertyChanged("Published");
+					this.OnPublishedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayOrder", DbType="Int NOT NULL")]
+		public int DisplayOrder
+		{
+			get
+			{
+				return this._DisplayOrder;
+			}
+			set
+			{
+				if ((this._DisplayOrder != value))
+				{
+					this.OnDisplayOrderChanging(value);
+					this.SendPropertyChanging();
+					this._DisplayOrder = value;
+					this.SendPropertyChanged("DisplayOrder");
+					this.OnDisplayOrderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Country_StateProvince", Storage="_StateProvinces", ThisKey="Id", OtherKey="CountryId")]
+		public EntitySet<StateProvince> StateProvinces
+		{
+			get
+			{
+				return this._StateProvinces;
+			}
+			set
+			{
+				this._StateProvinces.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_StateProvinces(StateProvince entity)
+		{
+			this.SendPropertyChanging();
+			entity.Country = this;
+		}
+		
+		private void detach_StateProvinces(StateProvince entity)
+		{
+			this.SendPropertyChanging();
+			entity.Country = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.StateProvince")]
+	public partial class StateProvince : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _CountryId;
+		
+		private string _Name;
+		
+		private string _Abbreviation;
+		
+		private bool _Published;
+		
+		private int _DisplayOrder;
+		
+		private EntitySet<TaxRate> _TaxRates;
+		
+		private EntityRef<Country> _Country;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCountryIdChanging(int value);
+    partial void OnCountryIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnAbbreviationChanging(string value);
+    partial void OnAbbreviationChanged();
+    partial void OnPublishedChanging(bool value);
+    partial void OnPublishedChanged();
+    partial void OnDisplayOrderChanging(int value);
+    partial void OnDisplayOrderChanged();
+    #endregion
+		
+		public StateProvince()
+		{
+			this._TaxRates = new EntitySet<TaxRate>(new Action<TaxRate>(this.attach_TaxRates), new Action<TaxRate>(this.detach_TaxRates));
+			this._Country = default(EntityRef<Country>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CountryId", DbType="Int NOT NULL")]
+		public int CountryId
+		{
+			get
+			{
+				return this._CountryId;
+			}
+			set
+			{
+				if ((this._CountryId != value))
+				{
+					if (this._Country.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCountryIdChanging(value);
+					this.SendPropertyChanging();
+					this._CountryId = value;
+					this.SendPropertyChanged("CountryId");
+					this.OnCountryIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Abbreviation", DbType="NVarChar(100)")]
+		public string Abbreviation
+		{
+			get
+			{
+				return this._Abbreviation;
+			}
+			set
+			{
+				if ((this._Abbreviation != value))
+				{
+					this.OnAbbreviationChanging(value);
+					this.SendPropertyChanging();
+					this._Abbreviation = value;
+					this.SendPropertyChanged("Abbreviation");
+					this.OnAbbreviationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Published", DbType="Bit NOT NULL")]
+		public bool Published
+		{
+			get
+			{
+				return this._Published;
+			}
+			set
+			{
+				if ((this._Published != value))
+				{
+					this.OnPublishedChanging(value);
+					this.SendPropertyChanging();
+					this._Published = value;
+					this.SendPropertyChanged("Published");
+					this.OnPublishedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayOrder", DbType="Int NOT NULL")]
+		public int DisplayOrder
+		{
+			get
+			{
+				return this._DisplayOrder;
+			}
+			set
+			{
+				if ((this._DisplayOrder != value))
+				{
+					this.OnDisplayOrderChanging(value);
+					this.SendPropertyChanging();
+					this._DisplayOrder = value;
+					this.SendPropertyChanged("DisplayOrder");
+					this.OnDisplayOrderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="StateProvince_TaxRate", Storage="_TaxRates", ThisKey="Id", OtherKey="StateProvinceId")]
+		public EntitySet<TaxRate> TaxRates
+		{
+			get
+			{
+				return this._TaxRates;
+			}
+			set
+			{
+				this._TaxRates.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Country_StateProvince", Storage="_Country", ThisKey="CountryId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Country Country
+		{
+			get
+			{
+				return this._Country.Entity;
+			}
+			set
+			{
+				Country previousValue = this._Country.Entity;
+				if (((previousValue != value) 
+							|| (this._Country.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Country.Entity = null;
+						previousValue.StateProvinces.Remove(this);
+					}
+					this._Country.Entity = value;
+					if ((value != null))
+					{
+						value.StateProvinces.Add(this);
+						this._CountryId = value.Id;
+					}
+					else
+					{
+						this._CountryId = default(int);
+					}
+					this.SendPropertyChanged("Country");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_TaxRates(TaxRate entity)
+		{
+			this.SendPropertyChanging();
+			entity.StateProvince = this;
+		}
+		
+		private void detach_TaxRates(TaxRate entity)
+		{
+			this.SendPropertyChanging();
+			entity.StateProvince = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TierPrice")]
+	public partial class TierPrice : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _ProductVariantId;
+		
+		private System.Nullable<int> _CustomerRoleId;
+		
+		private int _Quantity;
+		
+		private decimal _Price;
+		
+		private EntityRef<ProductVariant> _ProductVariant;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnProductVariantIdChanging(int value);
+    partial void OnProductVariantIdChanged();
+    partial void OnCustomerRoleIdChanging(System.Nullable<int> value);
+    partial void OnCustomerRoleIdChanged();
+    partial void OnQuantityChanging(int value);
+    partial void OnQuantityChanged();
+    partial void OnPriceChanging(decimal value);
+    partial void OnPriceChanged();
+    #endregion
+		
+		public TierPrice()
+		{
+			this._ProductVariant = default(EntityRef<ProductVariant>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProductVariantId", DbType="Int NOT NULL")]
+		public int ProductVariantId
+		{
+			get
+			{
+				return this._ProductVariantId;
+			}
+			set
+			{
+				if ((this._ProductVariantId != value))
+				{
+					if (this._ProductVariant.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnProductVariantIdChanging(value);
+					this.SendPropertyChanging();
+					this._ProductVariantId = value;
+					this.SendPropertyChanged("ProductVariantId");
+					this.OnProductVariantIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerRoleId", DbType="Int")]
+		public System.Nullable<int> CustomerRoleId
+		{
+			get
+			{
+				return this._CustomerRoleId;
+			}
+			set
+			{
+				if ((this._CustomerRoleId != value))
+				{
+					this.OnCustomerRoleIdChanging(value);
+					this.SendPropertyChanging();
+					this._CustomerRoleId = value;
+					this.SendPropertyChanged("CustomerRoleId");
+					this.OnCustomerRoleIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Quantity", DbType="Int NOT NULL")]
+		public int Quantity
+		{
+			get
+			{
+				return this._Quantity;
+			}
+			set
+			{
+				if ((this._Quantity != value))
+				{
+					this.OnQuantityChanging(value);
+					this.SendPropertyChanging();
+					this._Quantity = value;
+					this.SendPropertyChanged("Quantity");
+					this.OnQuantityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Decimal(18,4) NOT NULL")]
+		public decimal Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this.OnPriceChanging(value);
+					this.SendPropertyChanging();
+					this._Price = value;
+					this.SendPropertyChanged("Price");
+					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductVariant_TierPrice", Storage="_ProductVariant", ThisKey="ProductVariantId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public ProductVariant ProductVariant
+		{
+			get
+			{
+				return this._ProductVariant.Entity;
+			}
+			set
+			{
+				ProductVariant previousValue = this._ProductVariant.Entity;
+				if (((previousValue != value) 
+							|| (this._ProductVariant.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ProductVariant.Entity = null;
+						previousValue.TierPrices.Remove(this);
+					}
+					this._ProductVariant.Entity = value;
+					if ((value != null))
+					{
+						value.TierPrices.Add(this);
+						this._ProductVariantId = value.Id;
+					}
+					else
+					{
+						this._ProductVariantId = default(int);
+					}
+					this.SendPropertyChanged("ProductVariant");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Download")]
+	public partial class Download : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private System.Guid _DownloadGuid;
+		
+		private bool _UseDownloadUrl;
+		
+		private string _DownloadUrl;
+		
+		private System.Data.Linq.Binary _DownloadBinary;
+		
+		private string _ContentType;
+		
+		private string _Filename;
+		
+		private string _Extension;
+		
+		private bool _IsNew;
+		
+		private EntitySet<ProductVariant> _ProductVariants;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnDownloadGuidChanging(System.Guid value);
+    partial void OnDownloadGuidChanged();
+    partial void OnUseDownloadUrlChanging(bool value);
+    partial void OnUseDownloadUrlChanged();
+    partial void OnDownloadUrlChanging(string value);
+    partial void OnDownloadUrlChanged();
+    partial void OnDownloadBinaryChanging(System.Data.Linq.Binary value);
+    partial void OnDownloadBinaryChanged();
+    partial void OnContentTypeChanging(string value);
+    partial void OnContentTypeChanged();
+    partial void OnFilenameChanging(string value);
+    partial void OnFilenameChanged();
+    partial void OnExtensionChanging(string value);
+    partial void OnExtensionChanged();
+    partial void OnIsNewChanging(bool value);
+    partial void OnIsNewChanged();
+    #endregion
+		
+		public Download()
+		{
+			this._ProductVariants = new EntitySet<ProductVariant>(new Action<ProductVariant>(this.attach_ProductVariants), new Action<ProductVariant>(this.detach_ProductVariants));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DownloadGuid", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid DownloadGuid
+		{
+			get
+			{
+				return this._DownloadGuid;
+			}
+			set
+			{
+				if ((this._DownloadGuid != value))
+				{
+					this.OnDownloadGuidChanging(value);
+					this.SendPropertyChanging();
+					this._DownloadGuid = value;
+					this.SendPropertyChanged("DownloadGuid");
+					this.OnDownloadGuidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UseDownloadUrl", DbType="Bit NOT NULL")]
+		public bool UseDownloadUrl
+		{
+			get
+			{
+				return this._UseDownloadUrl;
+			}
+			set
+			{
+				if ((this._UseDownloadUrl != value))
+				{
+					this.OnUseDownloadUrlChanging(value);
+					this.SendPropertyChanging();
+					this._UseDownloadUrl = value;
+					this.SendPropertyChanged("UseDownloadUrl");
+					this.OnUseDownloadUrlChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DownloadUrl", DbType="NVarChar(MAX)")]
+		public string DownloadUrl
+		{
+			get
+			{
+				return this._DownloadUrl;
+			}
+			set
+			{
+				if ((this._DownloadUrl != value))
+				{
+					this.OnDownloadUrlChanging(value);
+					this.SendPropertyChanging();
+					this._DownloadUrl = value;
+					this.SendPropertyChanged("DownloadUrl");
+					this.OnDownloadUrlChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DownloadBinary", DbType="VarBinary(MAX)", UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary DownloadBinary
+		{
+			get
+			{
+				return this._DownloadBinary;
+			}
+			set
+			{
+				if ((this._DownloadBinary != value))
+				{
+					this.OnDownloadBinaryChanging(value);
+					this.SendPropertyChanging();
+					this._DownloadBinary = value;
+					this.SendPropertyChanged("DownloadBinary");
+					this.OnDownloadBinaryChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContentType", DbType="NVarChar(MAX)")]
+		public string ContentType
+		{
+			get
+			{
+				return this._ContentType;
+			}
+			set
+			{
+				if ((this._ContentType != value))
+				{
+					this.OnContentTypeChanging(value);
+					this.SendPropertyChanging();
+					this._ContentType = value;
+					this.SendPropertyChanged("ContentType");
+					this.OnContentTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Filename", DbType="NVarChar(MAX)")]
+		public string Filename
+		{
+			get
+			{
+				return this._Filename;
+			}
+			set
+			{
+				if ((this._Filename != value))
+				{
+					this.OnFilenameChanging(value);
+					this.SendPropertyChanging();
+					this._Filename = value;
+					this.SendPropertyChanged("Filename");
+					this.OnFilenameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Extension", DbType="NVarChar(MAX)")]
+		public string Extension
+		{
+			get
+			{
+				return this._Extension;
+			}
+			set
+			{
+				if ((this._Extension != value))
+				{
+					this.OnExtensionChanging(value);
+					this.SendPropertyChanging();
+					this._Extension = value;
+					this.SendPropertyChanged("Extension");
+					this.OnExtensionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsNew", DbType="Bit NOT NULL")]
+		public bool IsNew
+		{
+			get
+			{
+				return this._IsNew;
+			}
+			set
+			{
+				if ((this._IsNew != value))
+				{
+					this.OnIsNewChanging(value);
+					this.SendPropertyChanging();
+					this._IsNew = value;
+					this.SendPropertyChanged("IsNew");
+					this.OnIsNewChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Download_ProductVariant", Storage="_ProductVariants", ThisKey="Id", OtherKey="DownloadId")]
+		public EntitySet<ProductVariant> ProductVariants
+		{
+			get
+			{
+				return this._ProductVariants;
+			}
+			set
+			{
+				this._ProductVariants.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_ProductVariants(ProductVariant entity)
+		{
+			this.SendPropertyChanging();
+			entity.Download = this;
+		}
+		
+		private void detach_ProductVariants(ProductVariant entity)
+		{
+			this.SendPropertyChanging();
+			entity.Download = null;
 		}
 	}
 }

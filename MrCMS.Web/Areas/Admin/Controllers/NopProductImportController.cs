@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce;
-using MrCMS.Web.Areas.Admin.Services;
 using MrCMS.Web.Areas.Admin.Services.NopImport;
 using MrCMS.Website.Controllers;
 
@@ -18,7 +17,15 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         public ViewResult Index()
         {
             ViewData["importer-options"] = _nopProductImportAdminService.GetImporterOptions();
-            return View();
+            ViewData["result"] = TempData["result"];
+            return View(new ImportParams());
+        }
+
+        [HttpPost]
+        public RedirectToRouteResult Import(ImportParams importParams)
+        {
+            TempData["result"] = _nopProductImportAdminService.Import(importParams);
+            return RedirectToAction("Index");
         }
     }
 }
