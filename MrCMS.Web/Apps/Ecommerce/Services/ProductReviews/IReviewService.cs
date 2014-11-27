@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 using MrCMS.Entities.People;
 using MrCMS.Paging;
-using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 
@@ -24,16 +23,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
 
         IPagedList<Review> GetReviewsByProductVariantId(ProductVariant productVariant, int page, int pageSize = 10);
 
-        IList<Review> GetReviewsByProductVariantId(ProductVariant productVariant);
-
         decimal GetAverageRatingsByProductVariant(ProductVariant productVariant);
         IPagedList<Review> GetReviewsByUser(User user, int page, int pageSize = 10);
 
         IPagedList<Review> GetPaged(int pageNum, string search, int pageSize = 10);
 
-        void UpdateReviews(List<Review> model);
-
-        IPagedList<Review> Search(ProductReviewSearchQuery query);
-        List<SelectListItem> GetApprovalOptions();
     }
 }

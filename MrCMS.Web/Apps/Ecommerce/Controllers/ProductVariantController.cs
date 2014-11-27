@@ -16,12 +16,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly CartModel _cart;
         private readonly IProductVariantUIService _productVariantUIService;
         private readonly IReviewService _reviewService;
+        private readonly ProductReviewSettings _productReviewSettings;
+        private readonly ProductVariantService _productVariantService;
 
-        public ProductVariantController(CartModel cart, IProductVariantUIService productVariantUIService, IReviewService reviewService)
+        public ProductVariantController(CartModel cart, IProductVariantUIService productVariantUIService, IReviewService reviewService, ProductReviewSettings productReviewSettings, ProductVariantService productVariantService)
         {
             _cart = cart;
             _productVariantUIService = productVariantUIService;
             _reviewService = reviewService;
+            _productReviewSettings = productReviewSettings;
+            _productVariantService = productVariantService;
         }
 
         [HttpGet]
@@ -41,11 +45,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return PartialView(productVariant);
         }
 
-        public ActionResult ProductReviews(ProductVariant productVariant, int reviewPage = 1)
+        [HttpGet]
+        public ActionResult ProductReviews(int productVariantId = 0, int reviewPage = 1)
         {
-            var reviewsPageSize = MrCMSApplication.Get<ProductReviewSettings>().PageSize;
-            ViewData["guest-reviews"] = MrCMSApplication.Get<ProductReviewSettings>().GuestReviews;
-            ViewData["helpfulness-votes"] = MrCMSApplication.Get<ProductReviewSettings>().HelpfulnessVotes;
+            var reviewsPageSize = _productReviewSettings.PageSize;
+            ViewData["guest-reviews"] = _productReviewSettings.GuestReviews;
+            ViewData["helpfulness-votes"] = _productReviewSettings.HelpfulnessVotes;
+            var productVariant = _productVariantService.Get(productVariantId);
             ViewData["reviews"] = _reviewService.GetReviewsByProductVariantId(productVariant, reviewPage, reviewsPageSize);
             ViewData["average-ratings"] = _reviewService.GetAverageRatingsByProductVariant(productVariant);
 

@@ -1,7 +1,9 @@
-﻿@model IList<MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.Review>
+﻿@using MrCMS.Helpers
+@model IList<MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.Review>
 
     @using (Html.BeginForm())
     {
+        @Html.ReturnToThis()
         <div>
             <span class="btn-group display-inline pull-right">
                 <input class="btn btn-primary" type="submit" name="Approve" value="Approve" />

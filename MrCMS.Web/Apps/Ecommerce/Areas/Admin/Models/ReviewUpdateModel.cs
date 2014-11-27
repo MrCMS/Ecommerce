@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models
 {
     public class ReviewUpdateModel
     {
-        public int ReviewId { get; set; }
+        public List<Review> Reviews { get; set; }
 
-        public string CurrentOperation { get; set; }
+        public ProductReviewOperation CurrentOperation { get; set; }
+    }
 
-        public bool Approved { get; set; }
+    public enum ProductReviewOperation
+    {
+        Approve,
+        Reject,
+        Delete
     }
 }
