@@ -41,12 +41,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
 
         public int GetAllHelpfulVotesCount(Review review)
         {
-            return _session.QueryOver<HelpfulnessVote>().Where(a => a.IsHelpful && a.Review == review).List().Count;
+            return _session.QueryOver<HelpfulnessVote>().Where(a => a.IsHelpful && a.Review.Id == review.Id).Cacheable().RowCount();
         }
 
         public int GetAllUnhelpfulVotesCount(Review review)
         {
-            return _session.QueryOver<HelpfulnessVote>().Where(a => !a.IsHelpful && a.Review == review).List().Count;
+            return _session.QueryOver<HelpfulnessVote>().Where(a => !a.IsHelpful && a.Review.Id == review.Id).Cacheable().RowCount();
         }
     }
 }

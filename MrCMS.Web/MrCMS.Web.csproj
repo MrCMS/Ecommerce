@@ -687,6 +687,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IPerformWarehousedStockBulkUpdate.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IProductVariantAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IProductVariantAdminViewDataService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IReviewAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IRewardPointSettingsAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ISetRestrictedShippingMethods.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ISetVariantTypeProperties.cs" />
@@ -706,6 +707,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\PerformWarehousedStockBulkUpdate.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ProductVariantAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ProductVariantAdminViewDataService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ReviewAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\RewardPointSettingsAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\SetRestrictedShippingMethods.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\SetupProductVariant.cs" />

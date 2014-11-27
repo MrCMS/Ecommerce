@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 using MrCMS.Web.Apps.Ecommerce.Services.ProductReviews;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -19,10 +20,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class ReviewController : MrCMSAppAdminController<EcommerceApp>
     {
+        private readonly IReviewAdminService _reviewAdminService;
         private readonly IReviewService _reviewService;
 
-        public ReviewController(IReviewService reviewService)
+        public ReviewController(IReviewAdminService reviewAdminService, IReviewService reviewService)
         {
+            _reviewAdminService = reviewAdminService;
             _reviewService = reviewService;
         }
 
@@ -30,45 +33,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [MrCMSACLRule(typeof(ProductReviewACL), ProductReviewACL.List)]
         public ViewResult Index(ProductReviewSearchQuery searchQuery)
         {
-            ViewData["approval-options"] = _reviewService.GetApprovalOptions();
-            ViewData["results"] = _reviewService.Search(searchQuery);
+            ViewData["approval-options"] = _reviewAdminService.GetApprovalOptions();
+            ViewData["results"] = _reviewAdminService.Search(searchQuery);
             return View(searchQuery);
         }
 
         [HttpPost]
         [MrCMSACLRule(typeof(ProductReviewACL), ProductReviewACL.Edit)]
-        public RedirectToRouteResult Index([IoCModelBinder(typeof(ProductReviewUpdateModelBinder))] List<ReviewUpdateModel> model)
+        public RedirectToRouteResult Index([IoCModelBinder(typeof(ProductReviewUpdateModelBinder))] ReviewUpdateModel model)
         {
-            var currentOperation = model.First().CurrentOperation;
-
-            var reviewsToBeProcessed = model.Where(item => item.Approved).ToList();
-
-            if (currentOperation == "Approve")
-            {
-                foreach (var item in reviewsToBeProcessed)
-                {
-                    var review = _reviewService.GetById(item.ReviewId);
-                    review.Approved = true;
-                    _reviewService.Update(review);
-                }
-            }
-            else if (currentOperation == "Reject")
-            {
-                foreach (var item in reviewsToBeProcessed)
-                {
-                    var review = _reviewService.GetById(item.ReviewId);
-                    review.Approved = false;
-                    _reviewService.Update(review);
-                }
-            }
-            else
-            {
-                foreach (var item in reviewsToBeProcessed)
-                {
-                    var review = _reviewService.GetById(item.ReviewId);
-                    _reviewService.Delete(review);
-                }
-            }
+            _reviewAdminService.BulkAction(model);
 
             return RedirectToAction("Index");
         }
