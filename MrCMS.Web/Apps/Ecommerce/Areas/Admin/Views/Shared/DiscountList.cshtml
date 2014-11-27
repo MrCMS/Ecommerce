@@ -1,0 +1,41 @@
+﻿@model IList<MrCMS.Web.Apps.Ecommerce.Entities.Discounts.Discount>
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Code
+            </th>
+            <th>
+                Time period
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Code
+                </td>
+                <td>
+                    @item.ValidTimePeriod
+                </td>
+                <td>
+                    <div class="btn-group">
+                        @Html.ActionLink("Edit", "Edit", "Discount", new { id = item.Id }, new { @class = "btn btn-xs btn-default" })
+                        @Html.ActionLink("Delete", "Delete", "Discount", new { id = item.Id }, new { @class = "btn btn-xs btn-danger", data_toggle = "fb-modal" })
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

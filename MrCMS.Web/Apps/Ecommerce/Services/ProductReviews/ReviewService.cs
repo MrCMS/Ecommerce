@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Paging;
-using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Areas.Admin.Models;
 using NHibernate;
 using NHibernate.Criterion;
-using NHibernate.Linq;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
 {
@@ -66,35 +62,31 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
             //    .OrderBy(() => helpfulnessVoteAlias.IsHelpful).Desc
             //    .ThenBy(review => review.CreatedOn).Asc.Paged(pageNum, pageSize);
 
+            Review reviewAlias = null;
             return
-                _session.QueryOver<Review>()
-                    .Where(review => review.ProductVariant == productVariant && review.Approved == true)
-                    .OrderBy(a => a.CreatedOn)
-                    .Desc.Paged(pageNum, pageSize);
+                GetBaseProductVariantReviewsQuery(_session.QueryOver(() => reviewAlias), productVariant)
+                    //.OrderBy(a => a.CreatedOn).Desc
+                    .OrderBy(
+                        Projections.SubQuery(
+                            QueryOver.Of<HelpfulnessVote>()
+                                .Where(vote => vote.Review.Id == reviewAlias.Id && vote.IsHelpful)
+                                .Select(Projections.Count<HelpfulnessVote>(x => x.Id)))).Desc
+                    .Paged(pageNum, pageSize);
         }
 
-        public IList<Review> GetReviewsByProductVariantId(ProductVariant productVariant)
-        {
-            return
-                _session.QueryOver<Review>()
-                    .Where(review => review.ProductVariant == productVariant)
-                    .OrderBy(a => a.CreatedOn)
-                    .Asc.Cacheable().List();
-        }
-
+        //Ask gary for averaging
         public decimal GetAverageRatingsByProductVariant(ProductVariant productVariant)
         {
-            var allRatings = GetReviewsByProductVariantId(productVariant);
+            if (!GetBaseProductVariantReviewsQuery(_session.QueryOver<Review>(), productVariant).Cacheable().Any()) 
+                return decimal.Zero;
+            return GetBaseProductVariantReviewsQuery(_session.QueryOver<Review>(),productVariant)
+                .Select(x => x.Rating).Cacheable()
+                .List<int>().Select(Convert.ToDecimal).Average();
+        }
 
-            if (allRatings.Any())
-            {
-                var totalRatings = allRatings.Aggregate(decimal.Zero, (current, rating) => current + rating.Rating);
-                var totalRatingsCount = GetReviewsByProductVariantId(productVariant).Count;
-
-                return totalRatings / totalRatingsCount;
-            }
-
-            return decimal.Zero;
+        private IQueryOver<Review, Review> GetBaseProductVariantReviewsQuery(IQueryOver<Review,Review> query, ProductVariant productVariant)
+        {
+            return query.Where(review => review.ProductVariant.Id == productVariant.Id && review.Approved == true);
         }
 
         public IPagedList<Review> GetReviewsByUser(User user, int pageNum, int pageSize = 10)
@@ -124,57 +116,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
                 .JoinAlias(() => reviewAlias.ProductVariant, () => productVariantAlias)
                 .Where(() => productVariantAlias.Name.IsInsensitiveLike(search, MatchMode.Anywhere))
                 .OrderBy(entry => entry.CreatedOn).Desc;
-        }
-
-        public void UpdateReviews(List<Review> model)
-        {
-            foreach (var review in model)
-            {
-                _session.Transact(session => session.Update(review));
-            }
-        }
-
-        public IPagedList<Review> Search(ProductReviewSearchQuery query)
-        {
-            var queryOver = _session.QueryOver<Review>();
-
-            switch (query.ApprovalStatus)
-            {
-                case ApprovalStatus.Pending:
-                    queryOver = queryOver.Where(review => review.Approved == null);
-                    break;
-                case ApprovalStatus.Rejected:
-                    queryOver = queryOver.Where(review => review.Approved == false);
-                    break;
-                case ApprovalStatus.Approved:
-                    queryOver = queryOver.Where(review => review.Approved == true);
-                    break;
-            }
-
-            if (!string.IsNullOrWhiteSpace(query.ProductName))
-            {
-                ProductVariant productVariantAlias = null;
-
-                queryOver = queryOver.JoinAlias(review => review.ProductVariant, () => productVariantAlias)
-                    .Where(() => productVariantAlias.Name.IsInsensitiveLike(query.ProductName, MatchMode.Anywhere));
-            }
-            if (!string.IsNullOrWhiteSpace(query.Email))
-                queryOver = queryOver.Where(review => review.Email.IsLike(query.Email, MatchMode.Anywhere));
-            if (!string.IsNullOrWhiteSpace(query.Title))
-                queryOver = queryOver.Where(review => review.Title.IsLike(query.Title, MatchMode.Anywhere));
-            if (query.DateFrom.HasValue)
-                queryOver = queryOver.Where(comment => comment.CreatedOn >= query.DateFrom);
-            if (query.DateTo.HasValue)
-                queryOver = queryOver.Where(comment => comment.CreatedOn < query.DateTo);
-
-            return queryOver.OrderBy(comment => comment.CreatedOn).Asc.Paged(query.Page);
-        }
-
-        public List<SelectListItem> GetApprovalOptions()
-        {
-            return Enum.GetValues(typeof(ApprovalStatus))
-                .Cast<ApprovalStatus>()
-                .BuildSelectItemList(status => status.ToString(), emptyItem: null);
         }
     }
 }

@@ -84,7 +84,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Wishlists
         private Wishlist GetMyWishlist(bool createIfDoesNotExist = false)
         {
             return _session.QueryOver<Wishlist>()
-                           .Where(wishlist => wishlist.UserGuid == _getUserGuid.UserGuid)
+                           .Where(wishlist => wishlist.UserGuid == _getUserGuid.UserGuid).Cacheable()
                            .SingleOrDefault()
                    ?? (createIfDoesNotExist ? CreateWishlist() : null);
         }

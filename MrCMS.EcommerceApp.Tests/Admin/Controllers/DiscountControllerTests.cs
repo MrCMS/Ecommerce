@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Services.Discounts;
 using Xunit;
@@ -23,7 +24,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void DiscountController_Index_ShouldReturnAViewResult()
         {
-            var result = _discountController.Index();
+            var result = _discountController.Index(A.Fake<DiscountSearchQuery>());
 
             result.Should().BeOfType<ViewResult>();
         }
@@ -31,7 +32,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void DiscountController_Index_ShouldCallGetAllOfDiscountManager()
         {
-            var result = _discountController.Index();
+            var result = _discountController.Index(A.Fake<DiscountSearchQuery>());
 
             A.CallTo(() => _discountManager.GetAll()).MustHaveHappened();
         }
@@ -42,7 +43,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             var discounts = new List<Discount>();
             A.CallTo(() => _discountManager.GetAll()).Returns(discounts);
 
-            var result = _discountController.Index();
+            var result = _discountController.Index(A.Fake<DiscountSearchQuery>());
 
             result.Model.Should().Be(discounts);
         }

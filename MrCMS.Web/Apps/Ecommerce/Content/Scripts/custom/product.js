@@ -29,8 +29,18 @@ var Product = new function () {
                 Product.onChangeVariant();
                 resetValidation();
             });
+            //reload product reviews
+            reloadProductReviews();
         });
     };
+
+    function reloadProductReviews() {
+        var state = History.getState();
+        $.get('Apps/Ecommerce/ProductVariant/ProductReviews', { productVariantId: state.data.variant }, function (response) {
+            $('[data-product-review]').replaceWith(response);
+            resetValidation();
+        });
+    }
 
     this.onChangeVariant = function () {
     };

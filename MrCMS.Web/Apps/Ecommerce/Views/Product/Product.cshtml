@@ -56,7 +56,7 @@
 
     @if (productReviewsEnabled)
     {
-        Html.RenderAction("ProductReviews", "ProductVariant", new {productVariant = selectedVariant});
+        Html.RenderAction("ProductReviews", "ProductVariant", new { productVariantId = selectedVariant.Id });
     }
 </div>
 
