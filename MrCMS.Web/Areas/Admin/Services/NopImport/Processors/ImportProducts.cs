@@ -7,7 +7,6 @@ using MrCMS.Helpers;
 using MrCMS.Models;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Areas.Admin.Services.NopImport.Models;
 using MrCMS.Website;
@@ -17,12 +16,13 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
 {
     public class ImportProducts : IImportProducts
     {
-        private readonly IUniquePageService _uniquePageService;
-        private readonly ISession _session;
-        private readonly IWebpageUrlService _webpageUrlService;
         private readonly IImportProductVariants _importProductVariants;
+        private readonly ISession _session;
+        private readonly IUniquePageService _uniquePageService;
+        private readonly IWebpageUrlService _webpageUrlService;
 
-        public ImportProducts(IUniquePageService uniquePageService, ISession session, IWebpageUrlService webpageUrlService, IImportProductVariants importProductVariants)
+        public ImportProducts(IUniquePageService uniquePageService, ISession session,
+            IWebpageUrlService webpageUrlService, IImportProductVariants importProductVariants)
         {
             _uniquePageService = uniquePageService;
             _session = session;
@@ -30,13 +30,12 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
             _importProductVariants = importProductVariants;
         }
 
-        public string ProcessProducts(INopCommerceProductReader nopCommerceProductReader, string connectionString,
+        public string ProcessProducts(NopCommerceDataReader dataReader,
             NopImportContext nopImportContext)
         {
-            List<ProductData> productDatas = nopCommerceProductReader.GetProducts(connectionString);
-            List<ProductOptionValueData> optionValues = nopCommerceProductReader.GetProductOptionValues(connectionString);
-            List<ProductSpecificationValueData> specificationValues =
-                nopCommerceProductReader.GetProductSpecificationValues(connectionString);
+            HashSet<ProductData> productDatas = dataReader.GetProducts();
+            HashSet<ProductOptionValueData> optionValues = dataReader.GetProductOptionValues();
+            HashSet<ProductSpecificationValueData> specificationValues = dataReader.GetProductSpecificationValues();
 
             var productContainer = _uniquePageService.GetUniquePage<ProductContainer>();
             _session.Transact(session =>
@@ -54,19 +53,25 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
                         Name = productData.Name,
                         Abstract = productData.Abstract,
                         BodyContent = productData.Description,
-                        UrlSegment = _webpageUrlService.Suggest(productContainer, suggestParams),
+                        Parent = productContainer,
+                        UrlSegment =
+                            string.IsNullOrWhiteSpace(productData.Url)
+                                ? _webpageUrlService.Suggest(productContainer, suggestParams)
+                                : productData.Url,
                         Brand =
                             productData.BrandId.HasValue
                                 ? nopImportContext.FindNew<Brand>(productData.BrandId.Value)
                                 : null,
                         Categories = productData.Categories.Select(nopImportContext.FindNew<Category>).ToList(),
                         Tags = new HashedSet<Tag>(productData.Tags.Select(nopImportContext.FindNew<Tag>).ToList()),
-                        PublishOn = productData.Published ? CurrentRequestData.Now.Date : (DateTime?)null
+                        PublishOn = productData.Published ? CurrentRequestData.Now.Date : (DateTime?) null
                     };
 
-                    SetSpecificationValues(nopImportContext, specificationValues.FindAll(data => data.ProductId == productData.Id), product);
+                    SetSpecificationValues(nopImportContext,
+                        specificationValues.FindAll(data => data.ProductId == productData.Id), product);
 
-                    _importProductVariants.CreateProductVariants(nopImportContext, productData.ProductVariants, optionValues, product);
+                    _importProductVariants.CreateProductVariants(nopImportContext, productData.ProductVariants,
+                        optionValues, product);
                     session.Save(product);
                 }
             });
@@ -74,9 +79,8 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
         }
 
         private static void SetSpecificationValues(NopImportContext nopImportContext,
-            List<ProductSpecificationValueData> specificationValues, Product product)
+            HashSet<ProductSpecificationValueData> specificationValues, Product product)
         {
-
             foreach (
                 ProductSpecificationValueData valueData in
                     specificationValues)
@@ -92,6 +96,5 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
                 nopImportContext.AddEntry(valueData.Id, specificationValue);
             }
         }
-
     }
 }

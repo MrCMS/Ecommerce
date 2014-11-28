@@ -15,10 +15,10 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
             _session = session;
         }
 
-        public string ProcessCountries(INopCommerceProductReader nopCommerceProductReader, string connectionString,
+        public string ProcessCountries(NopCommerceDataReader dataReader, 
             NopImportContext nopImportContext)
         {
-            List<CountryData> countryDatas = nopCommerceProductReader.GetCountryData(connectionString);
+            var countryDatas = dataReader.GetCountryData();
             _session.Transact(session =>
             {
                 foreach (CountryData countryData in countryDatas)

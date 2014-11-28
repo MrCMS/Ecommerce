@@ -1737,18 +1737,22 @@
     <Compile Include="Areas\Admin\Services\MessageTemplateAdminService.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\IImportCategories.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\ImportCategories.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\ImportParams.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\ImportResult.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\Models\AddressData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Models\CountryData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\IPerformNopImport.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Models\PriceBreakInfo.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\Models\UserData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Nop280\Nop280.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Nop280.dbml</DependentUpon>
     </Compile>
-    <Compile Include="Areas\Admin\Services\NopImport\Nop280\NopCommerce280ProductReader.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\Nop280\NopCommerce280DataReader.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Models\BrandData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Models\CategoryData.cs" />
-    <Compile Include="Areas\Admin\Services\NopImport\INopCommerceProductReader.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\NopCommerceDataReader.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\INopProductImportAdminService.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\NopImportContext.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\NopImportContextEntry.cs" />
@@ -1774,6 +1778,7 @@
     <Compile Include="Areas\Admin\Services\NopImport\Processors\IImportSpecifications.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\IImportTags.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\IImportTaxRates.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\Processors\IImportUsers.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\ImportBrands.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\ImportCountryData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\ImportOptions.cs" />

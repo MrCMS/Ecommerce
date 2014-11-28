@@ -25,10 +25,9 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
             _webpageUrlService = webpageUrlService;
         }
 
-        public string ProcessCategories(INopCommerceProductReader nopCommerceProductReader, string connectionString,
-            NopImportContext nopImportContext)
+        public string ProcessCategories(NopCommerceDataReader dataReader, NopImportContext nopImportContext)
         {
-            List<CategoryData> categoryDatas = nopCommerceProductReader.GetCategoryData(connectionString);
+            var categoryDatas = dataReader.GetCategoryData();
 
             IEnumerable<CategoryData> parentCategories = categoryDatas.Where(data => !data.ParentId.HasValue);
 
@@ -40,7 +39,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
             return string.Format("{0} categories processed.", categoryDatas.Count);
         }
 
-        private void UpdateCategory(CategoryData categoryData, Webpage parent, List<CategoryData> allData,
+        private void UpdateCategory(CategoryData categoryData, Webpage parent, HashSet<CategoryData> allData,
             NopImportContext nopImportContext)
         {
             CategoryData data = categoryData;
@@ -61,7 +60,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
                     category = new Category
                     {
                         Name = data.Name,
-                        UrlSegment = _webpageUrlService.Suggest(parent, suggestParams),
+                        UrlSegment = string.IsNullOrWhiteSpace(data.Url) ? _webpageUrlService.Suggest(parent, suggestParams) : data.Url,
                         Parent = parent
                     };
                     session.Save(category);

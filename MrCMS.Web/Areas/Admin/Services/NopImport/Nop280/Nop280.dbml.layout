@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 18.25, 37" name="Nop280">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 18.75, 37" name="Nop280">
   <DataContextMoniker Name="/Nop280DataContext" />
   <nestedChildShapes>
     <classShape Id="bd981b15-29ee-4b0f-b641-fc5476890727" absoluteBounds="7.375, 15.625, 2, 4.6554182942708326">
@@ -134,35 +134,35 @@
         <classShapeMoniker Id="78f41a96-eeff-4499-82f2-9decd92df35f" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(16 : 16.9142976888021); (13.375 : 16.9142976888021)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(16 : 17.2396468098958); (13.375 : 17.2396468098958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/Nop280DataContext/Picture/Picture_Product_Picture_Mapping" />
       <nodes>
         <classShapeMoniker Id="d6b0d179-1e60-49c8-b0de-864a7459f264" />
         <classShapeMoniker Id="78f41a96-eeff-4499-82f2-9decd92df35f" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(7.375 : 18.3934554036458); (3.28125 : 18.3934554036458); (3.28125 : 21.125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(7.375 : 18.3934554036458); (3.28125 : 18.3934554036458); (3.28125 : 21.125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Nop280DataContext/Product/Product_ProductVariant" />
       <nodes>
         <classShapeMoniker Id="bd981b15-29ee-4b0f-b641-fc5476890727" />
         <classShapeMoniker Id="8e85dcc5-381a-427b-8f6a-d018b5d469b3" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.125 : 24.8277498372396); (6.375 : 24.8277498372396)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.125 : 24.8277498372396); (6.375 : 24.8277498372396)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Nop280DataContext/ProductVariant/ProductVariant_ProductVariant_ProductAttribute_Mapping" />
       <nodes>
         <classShapeMoniker Id="8e85dcc5-381a-427b-8f6a-d018b5d469b3" />
         <classShapeMoniker Id="a1e2c234-00ae-41fc-8ded-e2e564380b98" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.125 : 34.9813956705729); (6.375 : 34.9813956705729)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.125 : 34.9813956705729); (6.375 : 34.9813956705729)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Nop280DataContext/ProductVariant/ProductVariant_ProductVariantAttributeCombination" />
       <nodes>
         <classShapeMoniker Id="8e85dcc5-381a-427b-8f6a-d018b5d469b3" />
         <classShapeMoniker Id="5d9c291f-d485-4deb-a2fc-809b13c72932" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(8.375 : 25.9054996744792); (8.375 : 27.125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.375 : 25.9054996744792); (8.375 : 27.125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Nop280DataContext/ProductVariant_ProductAttribute_Mapping/ProductVariant_ProductAttribute_Mapping_ProductVariantAttributeValue" />
       <nodes>
         <classShapeMoniker Id="a1e2c234-00ae-41fc-8ded-e2e564380b98" />
@@ -228,14 +228,14 @@
         <elementListCompartment Id="92d1a378-aabb-45b9-a1da-f3aba4981f58" absoluteBounds="9.015, 31.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(5.75 : 31.8181469726563); (5.125 : 31.8181469726563)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.75 : 31.8181469726563); (5.125 : 31.8181469726563)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Nop280DataContext/TaxCategory/TaxCategory_ProductVariant" />
       <nodes>
         <classShapeMoniker Id="823615ef-4192-484a-9f6a-777184a36a70" />
         <classShapeMoniker Id="8e85dcc5-381a-427b-8f6a-d018b5d469b3" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(9 : 31.8181469726563); (7.75 : 31.8181469726563)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(9 : 31.8181469726563); (7.75 : 31.8181469726563)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Nop280DataContext/TaxRate/TaxRate_TaxCategory" />
       <nodes>
         <classShapeMoniker Id="6294d3b7-23ce-4d62-88d8-345ce8079ef6" />
@@ -254,14 +254,14 @@
         <elementListCompartment Id="b3f4ddad-837e-44a0-b7a9-c8998324b9d8" absoluteBounds="12.14, 33.335, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(13.4375 : 32.2324039713542); (13.4375 : 32.875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(13.4375 : 32.2324039713542); (13.4375 : 32.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Nop280DataContext/Country/Country_StateProvince" />
       <nodes>
         <classShapeMoniker Id="3d2badee-7eaa-449d-b7f8-8eb64d928c47" />
         <classShapeMoniker Id="0b45ea8b-44f5-4956-bbfc-9150da42b439" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(12.125 : 33.59375); (10.09375 : 33.59375); (10.09375 : 32.7131982421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(12.125 : 33.59375); (10.09375 : 33.59375); (10.09375 : 32.7131982421875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Nop280DataContext/StateProvince/StateProvince_TaxRate" />
       <nodes>
         <classShapeMoniker Id="0b45ea8b-44f5-4956-bbfc-9150da42b439" />
@@ -274,7 +274,7 @@
         <elementListCompartment Id="6fcb64ad-c5d2-46c0-8bce-dcb158d02bf3" absoluteBounds="0.64, 32.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(3.125 : 32.6354484049479); (2.625 : 32.6354484049479)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(3.125 : 32.6354484049479); (2.625 : 32.6354484049479)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Nop280DataContext/ProductVariant/ProductVariant_TierPrice" />
       <nodes>
         <classShapeMoniker Id="8e85dcc5-381a-427b-8f6a-d018b5d469b3" />
@@ -287,12 +287,84 @@
         <elementListCompartment Id="a5993c24-411e-40ca-8955-f76d73f3001d" absoluteBounds="0.765, 26.585, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.75 : 27.3950512695313); (3.125 : 27.3950512695313)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 27.3950512695313); (3.125 : 27.3950512695313)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/Nop280DataContext/Download/Download_ProductVariant" />
       <nodes>
         <classShapeMoniker Id="a1d850c0-6fe7-4f17-aa46-435b5bd748a9" />
         <classShapeMoniker Id="8e85dcc5-381a-427b-8f6a-d018b5d469b3" />
       </nodes>
     </associationConnector>
+    <classShape Id="8ebf81eb-5667-4074-8692-176bfb6818ec" absoluteBounds="13.25, 12.125, 2, 1.193992513020834">
+      <DataClassMoniker Name="/Nop280DataContext/CustomerAddress" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7bab3151-3b1b-44de-ab99-af5fe39355e6" absoluteBounds="13.265, 12.585, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5ddcc1ae-174f-4796-81f3-5db900de49e8" absoluteBounds="10.25, 8.375, 2, 6.7707340494791666">
+      <DataClassMoniker Name="/Nop280DataContext/Customer" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c3d7f389-fa77-4eba-ae50-730a765b4e65" absoluteBounds="10.265, 8.835, 1.9700000000000002, 6.2107340494791661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="7322e90c-61ee-4d43-8f96-c7ef9f29e8ab" absoluteBounds="13.375, 8.75, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/Nop280DataContext/GenericAttribute" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4f250b8a-e096-41a7-85cd-e4038f7dfa3e" absoluteBounds="13.39, 9.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(12.25 : 12.7219962565104); (13.25 : 12.7219962565104)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/Nop280DataContext/Customer/Customer_CustomerAddress" />
+      <nodes>
+        <classShapeMoniker Id="5ddcc1ae-174f-4796-81f3-5db900de49e8" />
+        <classShapeMoniker Id="8ebf81eb-5667-4074-8692-176bfb6818ec" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="4d792fc0-2ffc-4db7-b457-f0f3edb65cd5" absoluteBounds="16.375, 9.875, 2, 3.5016097005208326">
+      <DataClassMoniker Name="/Nop280DataContext/Address" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a6727472-b35d-4f57-891b-492006d476d1" absoluteBounds="16.39, 10.335, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(16.375 : 12.7219962565104); (15.25 : 12.7219962565104)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/Nop280DataContext/Address/Address_CustomerAddress" />
+      <nodes>
+        <classShapeMoniker Id="4d792fc0-2ffc-4db7-b457-f0f3edb65cd5" />
+        <classShapeMoniker Id="8ebf81eb-5667-4074-8692-176bfb6818ec" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(16.375 : 11.6979484049479); (12.25 : 11.6979484049479)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/Nop280DataContext/Address/Address_Customer" />
+      <nodes>
+        <classShapeMoniker Id="4d792fc0-2ffc-4db7-b457-f0f3edb65cd5" />
+        <classShapeMoniker Id="5ddcc1ae-174f-4796-81f3-5db900de49e8" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(16.375 : 11.0781726074219); (12.25 : 11.0781726074219)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/Nop280DataContext/Address/Address_Customer1" />
+      <nodes>
+        <classShapeMoniker Id="4d792fc0-2ffc-4db7-b457-f0f3edb65cd5" />
+        <classShapeMoniker Id="5ddcc1ae-174f-4796-81f3-5db900de49e8" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(14.75 : 30.8662019856771); (18.0260391666667 : 30.8662019856771 : JumpStart); (18.1927058333333 : 30.8662019856771 : JumpEnd); (18.21875 : 30.8662019856771); (18.21875 : 13.3766097005208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/Nop280DataContext/Country/Country_Address" />
+      <nodes>
+        <classShapeMoniker Id="3d2badee-7eaa-449d-b7f8-8eb64d928c47" />
+        <classShapeMoniker Id="4d792fc0-2ffc-4db7-b457-f0f3edb65cd5" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(14.125 : 33.8565991210938); (18.1093725 : 33.8565991210938); (18.1093725 : 13.3766097005208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/Nop280DataContext/StateProvince/StateProvince_Address" />
+      <nodes>
+        <classShapeMoniker Id="0b45ea8b-44f5-4956-bbfc-9150da42b439" />
+        <classShapeMoniker Id="4d792fc0-2ffc-4db7-b457-f0f3edb65cd5" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="2165984f-f7ea-4ae8-98b4-bb4d4b7acc8c" absoluteBounds="13.625, 14.125, 2, 1.9631982421875">
+      <DataClassMoniker Name="/Nop280DataContext/UrlRecord" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5beb3821-384c-426f-adb6-a0eed8b39d64" absoluteBounds="13.64, 14.585, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

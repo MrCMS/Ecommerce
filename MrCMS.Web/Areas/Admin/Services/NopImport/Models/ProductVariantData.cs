@@ -35,7 +35,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Models
 
         public int? DownloadDays { get; set; }
 
-        public List<PriceBreakInfo> PriceBreaks { get; set; }
+        public HashSet<PriceBreakInfo> PriceBreaks { get; set; }
 
         public string DownloadUrl { get; set; }
     }

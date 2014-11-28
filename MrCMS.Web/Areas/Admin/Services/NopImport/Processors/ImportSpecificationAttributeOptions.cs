@@ -15,11 +15,9 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
             _session = session;
         }
 
-        public string ProcessSpecificationAttributeOptions(INopCommerceProductReader nopCommerceProductReader, string connectionString,
-            NopImportContext nopImportContext)
+        public string ProcessSpecificationAttributeOptions(NopCommerceDataReader dataReader, NopImportContext nopImportContext)
         {
-            List<ProductSpecificationAttributeOptionData> optionDatas =
-                nopCommerceProductReader.GetProductSpecificationOptions(connectionString);
+            var optionDatas = dataReader.GetProductSpecificationOptions();
 
             _session.Transact(session =>
             {

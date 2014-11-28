@@ -10,12 +10,12 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
 {
     public interface IImportProductVariants
     {
-        void CreateProductVariants(NopImportContext nopImportContext, List<ProductVariantData> productVariants, List<ProductOptionValueData> optionValues, Product product);
+        void CreateProductVariants(NopImportContext nopImportContext, HashSet<ProductVariantData> productVariants, HashSet<ProductOptionValueData> optionValues, Product product);
     }
 
     public class ImportProductVariants : IImportProductVariants
     {
-        public void CreateProductVariants(NopImportContext nopImportContext, List<ProductVariantData> productVariants, List<ProductOptionValueData> optionValues, Product product)
+        public void CreateProductVariants(NopImportContext nopImportContext, HashSet<ProductVariantData> productVariants, HashSet<ProductOptionValueData> optionValues, Product product)
         {
             foreach (ProductVariantData variantData in productVariants)
             {

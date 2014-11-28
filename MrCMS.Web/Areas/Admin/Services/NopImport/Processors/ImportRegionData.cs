@@ -15,11 +15,10 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
             _session = session;
         }
 
-        public string ProcessRegions(INopCommerceProductReader nopCommerceProductReader, string connectionString,
-            NopImportContext nopImportContext)
+        public string ProcessRegions(NopCommerceDataReader dataReader, NopImportContext nopImportContext)
         {
-            
-            List<RegionData> regionDatas = nopCommerceProductReader.GetRegionData(connectionString);
+
+            HashSet<RegionData> regionDatas = dataReader.GetRegionData();
             _session.Transact(session =>
             {
                 foreach (RegionData regionData in regionDatas)

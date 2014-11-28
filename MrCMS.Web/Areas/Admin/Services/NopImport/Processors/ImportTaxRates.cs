@@ -15,10 +15,9 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
             _session = session;
         }
 
-        public string ProcessTaxRates(INopCommerceProductReader nopCommerceProductReader, string connectionString,
-            NopImportContext nopImportContext)
+        public string ProcessTaxRates(NopCommerceDataReader dataReader, NopImportContext nopImportContext)
         {
-            List<TaxData> taxDatas = nopCommerceProductReader.GetTaxData(connectionString);
+            HashSet<TaxData> taxDatas = dataReader.GetTaxData();
 
             _session.Transact(session =>
             {

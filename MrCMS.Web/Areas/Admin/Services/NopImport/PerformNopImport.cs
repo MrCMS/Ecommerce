@@ -13,6 +13,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
         private readonly IImportOptions _importOptions;
         private readonly IImportProducts _importProducts;
         private readonly IImportRegionData _importRegionData;
+        private readonly IImportUsers _importUsers;
         private readonly IImportSpecificationAttributeOptions _importSpecificationAttributeOptions;
         private readonly IImportSpecifications _importSpecifications;
         private readonly IImportTags _importTags;
@@ -23,6 +24,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
         public PerformNopImport(
             IImportCountryData importCountryData,
             IImportRegionData importRegionData,
+            IImportUsers importUsers,
             IImportTaxRates importTaxRates,
             IImportBrands importBrands,
             IImportSpecifications importSpecifications,
@@ -35,6 +37,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
         {
             _importCountryData = importCountryData;
             _importRegionData = importRegionData;
+            _importUsers = importUsers;
             _importTaxRates = importTaxRates;
             _importBrands = importBrands;
             _importSpecifications = importSpecifications;
@@ -46,23 +49,24 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
             _indexService = indexService;
         }
 
-        public ImportResult Execute(INopCommerceProductReader nopCommerceProductReader, string connectionString)
+        public ImportResult Execute(NopCommerceDataReader dataReader)
         {
             using (new NotificationDisabler())
             {
                 var nopImportContext = new NopImportContext();
                 var messages = new List<string>
                 {
-                    _importCountryData.ProcessCountries(nopCommerceProductReader, connectionString, nopImportContext),
-                    _importRegionData.ProcessRegions(nopCommerceProductReader, connectionString, nopImportContext),
-                    _importTaxRates.ProcessTaxRates(nopCommerceProductReader, connectionString, nopImportContext),
-                    _importBrands.ProcessBrands(nopCommerceProductReader, connectionString, nopImportContext),
-                    _importSpecifications.ProcessSpecifications(nopCommerceProductReader, connectionString, nopImportContext),
-                    _importSpecificationAttributeOptions.ProcessSpecificationAttributeOptions( nopCommerceProductReader, connectionString, nopImportContext),
-                    _importOptions.ProcessOptions(nopCommerceProductReader, connectionString, nopImportContext),
-                    _importTags.ProcessTags(nopCommerceProductReader, connectionString, nopImportContext),
-                    _importCategories.ProcessCategories(nopCommerceProductReader, connectionString, nopImportContext),
-                    _importProducts.ProcessProducts(nopCommerceProductReader, connectionString, nopImportContext)
+                    _importCountryData.ProcessCountries(dataReader, nopImportContext),
+                    _importRegionData.ProcessRegions(dataReader, nopImportContext),
+                    _importUsers.ProcessUsers(dataReader, nopImportContext),
+                    _importTaxRates.ProcessTaxRates(dataReader, nopImportContext),
+                    _importBrands.ProcessBrands(dataReader, nopImportContext),
+                    _importSpecifications.ProcessSpecifications(dataReader, nopImportContext),
+                    _importSpecificationAttributeOptions.ProcessSpecificationAttributeOptions(dataReader, nopImportContext),
+                    _importOptions.ProcessOptions(dataReader, nopImportContext),
+                    _importTags.ProcessTags(dataReader, nopImportContext),
+                    _importCategories.ProcessCategories(dataReader, nopImportContext),
+                    _importProducts.ProcessProducts(dataReader, nopImportContext)
                 };
 
                 _indexService.InitializeAllIndices();
