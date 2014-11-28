@@ -17,10 +17,9 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
             _session = session;
         }
 
-        public string ProcessTags(INopCommerceProductReader nopCommerceProductReader, string connectionString,
-            NopImportContext nopImportContext)
+        public string ProcessTags(NopCommerceDataReader dataReader, NopImportContext nopImportContext)
         {
-            List<TagData> tagDatas = nopCommerceProductReader.GetTags(connectionString);
+            HashSet<TagData> tagDatas = dataReader.GetTags();
             foreach (TagData tagData in tagDatas)
             {
                 string name = tagData.Name.Trim();

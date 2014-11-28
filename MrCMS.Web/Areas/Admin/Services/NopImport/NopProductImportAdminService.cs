@@ -19,26 +19,26 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
 
         public List<SelectListItem> GetImporterOptions()
         {
-            IEnumerable<INopCommerceProductReader> nopCommerceProductReaders = GetNopCommerceProductReaders();
+            IEnumerable<NopCommerceDataReader> nopCommerceDataReaders = GetNopCommerceDataReaders();
 
-            return nopCommerceProductReaders.BuildSelectItemList(reader => reader.Name,
+            return nopCommerceDataReaders.BuildSelectItemList(reader => reader.Name,
                 reader => reader.GetType().FullName, emptyItem: null);
         }
 
         public ImportResult Import(ImportParams importParams)
         {
-            INopCommerceProductReader nopCommerceProductReader =
-                GetNopCommerceProductReaders().FirstOrDefault(x => x.GetType().FullName == importParams.ImporterType);
+            var reader = GetNopCommerceDataReaders().FirstOrDefault(x => x.GetType().FullName == importParams.ImporterType);
 
-            if (nopCommerceProductReader == null)
-                return new ImportResult {Messages = new List<string> {"Could not find the requested importer"}};
+            if (reader== null)
+                return new ImportResult { Messages = new List<string> { "Could not find the requested importer" } };
 
-            return _performNopImport.Execute(nopCommerceProductReader, importParams.ConnectionString);
+            reader.SetConnectionString(importParams.ConnectionString);
+            return _performNopImport.Execute(reader);
         }
 
-        private IEnumerable<INopCommerceProductReader> GetNopCommerceProductReaders()
+        private IEnumerable<NopCommerceDataReader> GetNopCommerceDataReaders()
         {
-            return _kernel.GetAll<INopCommerceProductReader>();
+            return _kernel.GetAll<INopCommerceDataReader>().OfType<NopCommerceDataReader>();
         }
     }
 }

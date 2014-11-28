@@ -15,11 +15,10 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
             _session = session;
         }
 
-        public string ProcessSpecifications(INopCommerceProductReader nopCommerceProductReader, string connectionString,
+        public string ProcessSpecifications(NopCommerceDataReader dataReader,
             NopImportContext nopImportContext)
         {
-            List<ProductSpecificationData> productSpecificationDatas =
-                nopCommerceProductReader.GetProductSpecifications(connectionString);
+            var productSpecificationDatas = dataReader.GetProductSpecifications();
 
             _session.Transact(session =>
             {

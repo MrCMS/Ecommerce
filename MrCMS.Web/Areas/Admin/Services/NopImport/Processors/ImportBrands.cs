@@ -17,10 +17,9 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
             _session = session;
         }
 
-        public string ProcessBrands(INopCommerceProductReader nopCommerceProductReader, string connectionString,
-            NopImportContext nopImportContext)
+        public string ProcessBrands(NopCommerceDataReader dataReader, NopImportContext nopImportContext)
         {
-            List<BrandData> brandDatas = nopCommerceProductReader.GetBrands(connectionString);
+            var brandDatas = dataReader.GetBrands();
             foreach (BrandData brandData in brandDatas)
             {
                 string name = brandData.Name.Trim();
