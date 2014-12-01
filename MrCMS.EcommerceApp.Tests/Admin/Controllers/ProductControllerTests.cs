@@ -47,7 +47,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _productSearch = new ProductSearch();
             A.CallTo(() => _uniquePageService.GetUniquePage<ProductSearch>()).Returns(_productSearch);
             _productController = new ProductController(_productService, _documentService, _categoryService, _productOptionManager,
-                _fileService, _brandService, _productOptionManagementService, _siteSettings,_uniquePageService);
+                _fileService, _brandService, _productOptionManagementService, _siteSettings, _uniquePageService);
         }
 
         [Fact]
@@ -61,30 +61,33 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void ProductController_Index_ShouldCallProductServiceSearch()
         {
-            _productController.Index(A.Fake<ProductAdminSearchQuery>());
+            var productAdminSearchQuery = new ProductAdminSearchQuery();
 
-            A.CallTo(() => _productService.Search("q", 1)).MustHaveHappened();
+            _productController.Index(productAdminSearchQuery);
+
+            A.CallTo(() => _productService.Search(productAdminSearchQuery)).MustHaveHappened();
         }
 
         [Fact]
-        public void ProductController_Index_ShouldReturnTheResultOfTheProductSearchCallAsTheModel()
+        public void ProductController_Index_ShouldReturnTheSearchQueryAsTheModel()
+        {
+            var productAdminSearchQuery = new ProductAdminSearchQuery();
+
+            var viewResult = _productController.Index(productAdminSearchQuery);
+
+            viewResult.Model.Should().Be(productAdminSearchQuery);
+        }
+
+        [Fact]
+        public void ProductController_Index_ShouldReturnTheSearchResultInViewData()
         {
             var pagedList = new ProductPagedList(new StaticPagedList<Product>(new List<Product>(), 1, 1, 0), 1);
-            A.CallTo(() => _productService.Search("q", 1)).Returns(pagedList);
+            var productAdminSearchQuery = new ProductAdminSearchQuery();
+            A.CallTo(() => _productService.Search(productAdminSearchQuery)).Returns(pagedList);
 
-            var viewResult = _productController.Index(A.Fake<ProductAdminSearchQuery>());
+            var viewResult = _productController.Index(productAdminSearchQuery);
 
-            viewResult.Model.Should().Be(pagedList);
-        }
-
-        [Fact]
-        public void ProductController_Index_ShouldReturnNullModelIfProductContainerIsNull()
-        {
-            A.CallTo(() => _uniquePageService.GetUniquePage<ProductSearch>()).Returns(null);
-
-            var viewResult = _productController.Index(A.Fake<ProductAdminSearchQuery>());
-
-            viewResult.Model.Should().BeNull();
+            viewResult.ViewData["results"].Should().Be(pagedList);
         }
 
         [Fact]

@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
+using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
@@ -32,20 +33,34 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         [Fact]
         public void DiscountController_Index_ShouldCallGetAllOfDiscountManager()
         {
-            var result = _discountController.Index(A.Fake<DiscountSearchQuery>());
+            var discountSearchQuery = new DiscountSearchQuery();
 
-            A.CallTo(() => _discountManager.GetAll()).MustHaveHappened();
+            var result = _discountController.Index(discountSearchQuery);
+
+            A.CallTo(() => _discountManager.Search(discountSearchQuery)).MustHaveHappened();
         }
 
         [Fact]
-        public void DiscountController_Index_ShouldReturnTheResultOfGetAllAsTheModel()
+        public void DiscountController_Index_ShouldReturnTheSearchQueryAsTheModel()
         {
             var discounts = new List<Discount>();
-            A.CallTo(() => _discountManager.GetAll()).Returns(discounts);
+            var discountSearchQuery = new DiscountSearchQuery();
 
-            var result = _discountController.Index(A.Fake<DiscountSearchQuery>());
+            var result = _discountController.Index(discountSearchQuery);
 
-            result.Model.Should().Be(discounts);
+            result.Model.Should().Be(discountSearchQuery);
+        }
+
+        [Fact]
+        public void DiscountController_Index_ShouldReturnTheResultsAsViewData()
+        {
+            var discounts = BasePagedList<Discount>.Empty;
+            var discountSearchQuery = new DiscountSearchQuery();
+            A.CallTo(() => _discountManager.Search(discountSearchQuery)).Returns(discounts);
+
+            var result = _discountController.Index(discountSearchQuery);
+
+            result.ViewData["results"].Should().Be(discounts);
         }
 
         [Fact]
@@ -166,7 +181,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             var discount = new Discount();
 
             var result = _discountController.Delete_POST(discount);
-            
+
             result.Should().BeOfType<RedirectToRouteResult>();
             result.RouteValues["action"].Should().Be("Index");
         }
