@@ -5,9 +5,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 {
     public class ImportDummyProducts : IImportDummyProducts
     {
-        private readonly ImportProductsManager _importExportManager;
+        private readonly IImportProductsManager _importExportManager;
 
-        public ImportDummyProducts(ImportProductsManager importExportManager)
+        public ImportDummyProducts(IImportProductsManager importExportManager)
         {
             _importExportManager = importExportManager;
         }
@@ -15,7 +15,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
         public void Import()
         {
             var memoryStream = new MemoryStream(EcommerceInstallHelper.GetFileFromUrl(EcommerceInstalInfo.ProductsExcelUrl));
-            var output = _importExportManager.ImportProductsFromExcel(memoryStream);
+            var output = _importExportManager.ImportProductsFromExcel(memoryStream, false);
         }
     }
 }

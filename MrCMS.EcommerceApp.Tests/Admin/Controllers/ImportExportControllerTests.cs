@@ -59,7 +59,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             var file = new BasicHttpPostedFileBase();
             _importExportController.ServerMock = A.Fake<HttpServerUtilityBase>();
             var value = Enumerable.Range(1,3).Select(i => i.ToString()).ToList();
-            A.CallTo(() => _importExportManager.ImportProductsFromExcel(file.InputStream))
+            A.CallTo(() => _importExportManager.ImportProductsFromExcel(file.InputStream, true))
              .Returns(value);
 
             var result = _importExportController.ImportProducts(file);
