@@ -1527,7 +1527,7 @@
     <Compile Include="Areas\Admin\Controllers\MessageTemplateController.cs" />
     <Compile Include="Areas\Admin\Controllers\NavigationController.cs" />
     <Compile Include="Areas\Admin\Controllers\NavLinksController.cs" />
-    <Compile Include="Areas\Admin\Controllers\NopProductImportController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NopDataImportController.cs" />
     <Compile Include="Areas\Admin\Controllers\NotificationController.cs" />
     <Compile Include="Areas\Admin\Controllers\PageDefaultsController.cs" />
     <Compile Include="Areas\Admin\Controllers\PageStatsController.cs" />
@@ -1739,9 +1739,11 @@
     <Compile Include="Areas\Admin\Services\NopImport\ImportCategories.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\ImportParams.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\ImportResult.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\INopCommerceDataReader.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Models\AddressData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Models\CountryData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\IPerformNopImport.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\Models\PictureData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Models\PriceBreakInfo.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Models\UserData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Nop280\Nop280.designer.cs">
@@ -1753,10 +1755,10 @@
     <Compile Include="Areas\Admin\Services\NopImport\Models\BrandData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Models\CategoryData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\NopCommerceDataReader.cs" />
-    <Compile Include="Areas\Admin\Services\NopImport\INopProductImportAdminService.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\INopDataImportAdminService.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\NopImportContext.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\NopImportContextEntry.cs" />
-    <Compile Include="Areas\Admin\Services\NopImport\NopProductImportAdminService.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\NopDataImportAdminService.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\PerformNopImport.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Models\ProductData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Models\ProductOptionData.cs" />
@@ -1768,9 +1770,12 @@
     <Compile Include="Areas\Admin\Services\NopImport\Models\RegionData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Models\TagData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Models\TaxData.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\PictureInfo.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\PictureLocation.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\IImportBrands.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\IImportCountryData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\IImportOptions.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\Processors\IImportPictureData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\IImportProducts.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\IImportProductVariants.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\IImportRegionData.cs" />
@@ -1782,6 +1787,7 @@
     <Compile Include="Areas\Admin\Services\NopImport\Processors\ImportBrands.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\ImportCountryData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\ImportOptions.cs" />
+    <Compile Include="Areas\Admin\Services\NopImport\Processors\ImportPictureData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\ImportProducts.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\ImportRegionData.cs" />
     <Compile Include="Areas\Admin\Services\NopImport\Processors\ImportSpecificationAttributeOptions.cs" />
@@ -3596,7 +3602,7 @@
       <LastGenOutput>Nop280.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Areas\Admin\Views\NopProductImport\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\NopDataImport\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_BaseLayout.cshtml" />

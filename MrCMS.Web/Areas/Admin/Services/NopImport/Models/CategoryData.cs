@@ -10,5 +10,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Models
         public string Abstract { get; set; }
 
         public bool Published { get; set; }
+
+        public int PictureId { get; set; }
     }
 }

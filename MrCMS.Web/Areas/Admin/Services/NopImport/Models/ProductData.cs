@@ -15,5 +15,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Models
         public int? BrandId { get; set; }
         public HashSet<int> Tags { get; set; }
         public HashSet<int> Categories { get; set; }
+
+        public HashSet<int> Pictures { get; set; }
     }
 }

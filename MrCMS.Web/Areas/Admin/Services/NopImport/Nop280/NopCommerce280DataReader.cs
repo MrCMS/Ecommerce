@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -17,12 +20,80 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
             get { return "NopCommerce 2.80"; }
         }
 
+        public override HashSet<PictureData> GetPictureData()
+        {
+            using (Nop280DataContext context = GetContext())
+            {
+                HashSet<Picture> pictures = context.Pictures.ToHashSet();
+
+                return pictures.Select(picture => new PictureData
+                {
+                    Id = picture.Id,
+                    ContentType = picture.MimeType,
+                    FileName = GetFileName(picture),
+                    GetData = () => GetData(picture, PictureInfo)
+                }).ToHashSet();
+            }
+        }
+
+        private Stream GetData(Picture picture, PictureInfo pictureInfo)
+        {
+            string fileName = picture.Id.ToString().PadLeft(7, '0') + "_0" + GetExtension(picture);
+            switch (pictureInfo.PictureLocation)
+            {
+                case PictureLocation.OnDisc:
+                    string discFolderLocation = GetOnDiscFolderLocation(pictureInfo.LocationData);
+                    return File.OpenRead(discFolderLocation + fileName);
+                case PictureLocation.Url:
+                    string webFolder = GetWebFolderLocation(pictureInfo.LocationData);
+                    return WebRequest.Create(webFolder + fileName).GetResponse().GetResponseStream();
+                case PictureLocation.Database:
+                    return new MemoryStream(picture.PictureBinary.ToArray());
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private string GetWebFolderLocation(string locationData)
+        {
+            return locationData.EndsWith("/") ? locationData : string.Concat(locationData, "/");
+        }
+
+        private string GetOnDiscFolderLocation(string locationData)
+        {
+            return locationData.EndsWith("\\") ? locationData : string.Concat(locationData, "\\");
+        }
+
+        private string GetFileName(Picture picture)
+        {
+            string extension = GetExtension(picture);
+            string fileName = string.IsNullOrWhiteSpace(picture.SeoFilename)
+                ? picture.Id.ToString()
+                : picture.SeoFilename;
+            return string.Concat(fileName, extension);
+        }
+
+        private static string GetExtension(Picture picture)
+        {
+            switch (picture.MimeType)
+            {
+                case "image/png":
+                    return ".png";
+                case "image/gif":
+                    return ".gif";
+                case "image/pjpeg":
+                    return ".jpg";
+                default:
+                    return ".jpeg";
+            }
+        }
+
         public override HashSet<CategoryData> GetCategoryData()
         {
             using (Nop280DataContext context = GetContext())
             {
                 HashSet<Category> categories = context.Categories.Where(x => !x.Deleted).ToHashSet();
-                var urlRecords =
+                Dictionary<int, UrlRecord> urlRecords =
                     context.UrlRecords.Where(x => x.EntityName == "Category")
                         .ToHashSet()
                         .GroupBy(x => x.EntityId).ToDictionary(x => x.Key, x => x.First());
@@ -34,7 +105,8 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
                     ParentId = category.ParentCategoryId == 0 ? (int?)null : category.ParentCategoryId,
                     Abstract = category.Description,
                     Published = category.Published,
-                    Url = urlRecords.ContainsKey(category.Id) ? urlRecords[category.Id].Slug : null
+                    Url = urlRecords.ContainsKey(category.Id) ? urlRecords[category.Id].Slug : null,
+                    PictureId= category.PictureId
                 }).ToHashSet();
             }
         }
@@ -195,14 +267,16 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
             using (Nop280DataContext context = GetContext())
             {
                 HashSet<Product> products = context.Products.Where(x => !x.Deleted).ToHashSet();
-                var urlRecords =
+                Dictionary<int, UrlRecord> urlRecords =
                     context.UrlRecords.Where(x => x.EntityName == "Product")
                         .ToHashSet().GroupBy(x => x.EntityId)
                         .ToDictionary(x => x.Key, x => x.First());
 
                 return products.Select(product =>
                 {
-                    int? brandId = product.Product_Manufacturer_Mappings.Select(mapping => (int?)mapping.ManufacturerId) .FirstOrDefault();
+                    int? brandId =
+                        product.Product_Manufacturer_Mappings.Select(mapping => (int?)mapping.ManufacturerId)
+                            .FirstOrDefault();
                     var productData = new ProductData
                     {
                         Name = product.Name,
@@ -212,8 +286,9 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
                         BrandId = brandId,
                         Tags = product.Product_ProductTag_Mappings.Select(mapping => mapping.ProductTag_Id).ToHashSet(),
                         Categories = product.Product_Category_Mappings.Select(mapping => mapping.CategoryId).ToHashSet(),
+                        Pictures = product.Product_Picture_Mappings.Select(mapping => mapping.PictureId).ToHashSet(),
                         Published = product.Published,
-                        Url= urlRecords.ContainsKey(product.Id) ? urlRecords[product.Id].Slug : null
+                        Url = urlRecords.ContainsKey(product.Id) ? urlRecords[product.Id].Slug : null
                     };
                     productData.ProductVariants =
                         context.ProductVariants.Where(x => !x.Deleted)

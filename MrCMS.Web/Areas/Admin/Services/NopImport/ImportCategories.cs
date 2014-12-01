@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
 using MrCMS.Models;
@@ -67,6 +68,12 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
                 }
                 category.Abstract = data.Abstract;
                 category.PublishOn = data.Published ? CurrentRequestData.Now.Date : (DateTime?)null;
+                category.RevealInNavigation = true;
+                var mediaFile = nopImportContext.FindNew<MediaFile>(data.PictureId);
+                if (mediaFile != null)
+                {
+                    category.FeatureImage = mediaFile.FileUrl;
+                }
                 session.Update(category);
             });
             nopImportContext.AddEntry(data.Id, category);

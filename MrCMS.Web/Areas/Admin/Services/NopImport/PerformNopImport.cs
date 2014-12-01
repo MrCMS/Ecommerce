@@ -9,6 +9,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
     {
         private readonly IImportBrands _importBrands;
         private readonly IImportCategories _importCategories;
+        private readonly IImportPictureData _importPictureData;
         private readonly IImportCountryData _importCountryData;
         private readonly IImportOptions _importOptions;
         private readonly IImportProducts _importProducts;
@@ -22,6 +23,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
         private readonly IIndexService _indexService;
 
         public PerformNopImport(
+            IImportPictureData importPictureData,
             IImportCountryData importCountryData,
             IImportRegionData importRegionData,
             IImportUsers importUsers,
@@ -35,6 +37,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
             IImportProducts importProducts,
             IIndexService indexService)
         {
+            _importPictureData = importPictureData;
             _importCountryData = importCountryData;
             _importRegionData = importRegionData;
             _importUsers = importUsers;
@@ -56,6 +59,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
                 var nopImportContext = new NopImportContext();
                 var messages = new List<string>
                 {
+                    _importPictureData.ImportPictures(dataReader,nopImportContext),
                     _importCountryData.ProcessCountries(dataReader, nopImportContext),
                     _importRegionData.ProcessRegions(dataReader, nopImportContext),
                     _importUsers.ProcessUsers(dataReader, nopImportContext),

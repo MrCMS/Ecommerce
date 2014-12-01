@@ -209,7 +209,7 @@
         <classShapeMoniker Id="528b2888-ee8e-43b9-9aea-93bf93961961" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(15.7500005 : 26.625); (15.7500005 : 24.6642976888021); (14.875 : 24.6642976888021)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(15.4062505 : 26.625); (15.4062505 : 25.0136946614583); (14.875 : 25.0136946614583)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/Nop280DataContext/SpecificationAttribute/SpecificationAttribute_SpecificationAttributeOption" />
       <nodes>
         <classShapeMoniker Id="55355934-a60c-4b88-8045-969f4ea6aac6" />
@@ -364,6 +364,12 @@
       <DataClassMoniker Name="/Nop280DataContext/UrlRecord" />
       <nestedChildShapes>
         <elementListCompartment Id="5beb3821-384c-426f-adb6-a0eed8b39d64" absoluteBounds="13.64, 14.585, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="cf87fa08-0545-44a3-abcd-344ef6d2b89f" absoluteBounds="16, 23.125, 2, 1.3862939453125">
+      <DataClassMoniker Name="/Nop280DataContext/Setting" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7373bf9d-d617-4869-a961-528d1f0030bc" absoluteBounds="16.015, 23.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>
