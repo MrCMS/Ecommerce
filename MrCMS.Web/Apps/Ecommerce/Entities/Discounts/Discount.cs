@@ -8,6 +8,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using System.ComponentModel.DataAnnotations;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
 {
@@ -26,21 +27,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
         public virtual string Code { get; set; }
         public virtual IList<Order> Orders { get; set; }
 
-        public virtual string ValidTimePeriod
-        {
-            get
-            {
-                if (ValidFrom == null && ValidUntil == null)
-                    return "Forever";
-                else if (ValidFrom != null && ValidUntil == null)
-                    return "From " + ValidFrom;
-                else if (ValidFrom == null && ValidUntil != null)
-                    return "Until " + ValidUntil;
-                else
-                    return ValidFrom + " - " + ValidUntil;
-            }
-        }
-
         [DisplayName("Valid From")]
         public virtual DateTime? ValidFrom { get; set; }
         [DisplayName("Valid Until")]
@@ -48,29 +34,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
 
         public virtual DiscountLimitation Limitation { get; set; }
         public virtual DiscountApplication Application { get; set; }
-
-        public virtual List<SelectListItem> LimitationOptions
-        {
-            get
-            {
-                return TypeHelper.GetAllConcreteMappedClassesAssignableFrom<DiscountLimitation>()
-                                 .BuildSelectItemList(type => type.Name.BreakUpString(), type => type.FullName,
-                                                      type =>
-                                                      Limitation != null && Limitation.Unproxy().GetType() == type,
-                                                      "No limitations");
-            }
-        }
-        public virtual List<SelectListItem> ApplicationOptions
-        {
-            get
-            {
-                return TypeHelper.GetAllConcreteMappedClassesAssignableFrom<DiscountApplication>()
-                                 .BuildSelectItemList(type => type.Name.BreakUpString(), type => type.FullName,
-                                                      type =>
-                                                      Application != null && Application.Unproxy().GetType() == type,
-                                                      emptyItemText: null);
-            }
-        }
 
         public virtual decimal GetDiscount(CartModel cartModel)
         {
@@ -101,10 +64,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Discounts
             if (!string.Equals(Code, discountCode, StringComparison.OrdinalIgnoreCase))
                 return false;
 
-            if (ValidFrom.HasValue && ValidFrom > DateTime.UtcNow)
+            if (ValidFrom.HasValue && ValidFrom > CurrentRequestData.Now)
                 return false;
 
-            if (ValidUntil.HasValue && ValidUntil < DateTime.UtcNow)
+            if (ValidUntil.HasValue && ValidUntil < CurrentRequestData.Now)
                 return false;
 
             return true;

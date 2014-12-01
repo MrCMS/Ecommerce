@@ -1,5 +1,7 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Discounts.Discount
 @using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Entities.Discounts
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @{
     ViewBag.Title = "Edit Discount";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -42,13 +44,13 @@
 
         <div class="form-group">
             @Html.LabelFor(x => x.Limitation)
-            @Html.DropDownList("LimitationOpt", Model.LimitationOptions, new { data_val_required = "Please select a limitation.", @class = "form-control" })
+            @Html.DropDownList("LimitationOpt", Model.GetLimitationOptions(), new { data_val_required = "Please select a limitation.", @class = "form-control" })
         </div>
         <div id="limitationValue" style="display: none;">
         </div>
         <div class="form-group">
             @Html.LabelFor(x => x.Application)
-            @Html.DropDownList("ApplicationOpt", Model.ApplicationOptions, new { data_val_required = "Please select a application.", @class = "form-control" })
+            @Html.DropDownList("ApplicationOpt", Model.GetApplicationOptions(), new { data_val_required = "Please select a application.", @class = "form-control" })
         </div>
         <div id="applicationValue" style="display: none;">
         </div>
