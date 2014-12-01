@@ -9,7 +9,7 @@ using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Entities.Discounts
 {
-    public class DiscountTests
+    public class DiscountTests : MrCMSTest
     {
         [Fact]
         public void Discount_IsCodeValid_IfCodeDoesNotMatchReturnsFalse()
@@ -116,7 +116,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Discounts
         [Fact]
         public void Discount_GetDiscountForModel_IfApplicationIsNullReturnZero()
         {
-            var discount = new TestableDiscount {OverridenValidity = true};
+            var discount = new TestableDiscount { OverridenValidity = true };
             var cartModel = new CartModel();
 
             var amount = discount.GetDiscount(cartModel);
@@ -127,7 +127,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Discounts
         [Fact]
         public void Discount_GetDiscountForItem_IfApplicationIsNullReturnZero()
         {
-            var discount = new TestableDiscount {OverridenValidity = true};
+            var discount = new TestableDiscount { OverridenValidity = true };
             var cartItem = new CartItem();
 
             var amount = discount.GetDiscount(cartItem, "code");
@@ -139,7 +139,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Discounts
         public void Discount_GetDiscountForModel_IfApplicationIsSetAndIsValidReturnTheResultOfGetDiscountAmount()
         {
             var discountApplication = A.Fake<DiscountApplication>();
-            var discount = new TestableDiscount {OverridenValidity = true,Application = discountApplication};
+            var discount = new TestableDiscount { OverridenValidity = true, Application = discountApplication };
             var cartModel = new CartModel();
             A.CallTo(() => discountApplication.GetDiscount(cartModel)).Returns(123);
 
@@ -152,7 +152,7 @@ namespace MrCMS.EcommerceApp.Tests.Entities.Discounts
         public void Discount_GetDiscountForItem_IfApplicationIsSetAndIsValidReturnTheResultOfGetDiscountAmount()
         {
             var discountApplication = A.Fake<DiscountApplication>();
-            var discount = new TestableDiscount {OverridenValidity = true,Application = discountApplication};
+            var discount = new TestableDiscount { OverridenValidity = true, Application = discountApplication };
             var cartItem = new CartItem();
             A.CallTo(() => discountApplication.GetDiscount(cartItem)).Returns(123);
 
