@@ -5,7 +5,7 @@
     var options = ViewData["importer-options"] as List<SelectListItem> ?? new List<SelectListItem>();
     var result = ViewData["result"] as ImportResult;
 }
-@using (Html.BeginForm("Import", "NopProductImport", FormMethod.Post))
+@using (Html.BeginForm("Import", "NopDataImport", FormMethod.Post))
 {
     <fieldset>
         <legend>
@@ -39,6 +39,18 @@
                 <div class="form-group">
                     @Html.LabelFor(query => query.ConnectionString)
                     @Html.TextBoxFor(query => query.ConnectionString, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(importParams => importParams.PictureLocation)
+                    @Html.EnumDropDownListFor(importParams => importParams.PictureLocation, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(query => query.LocationData)
+                    @Html.TextBoxFor(query => query.LocationData, new { @class = "form-control" })
                 </div>
             </div>
         </div>

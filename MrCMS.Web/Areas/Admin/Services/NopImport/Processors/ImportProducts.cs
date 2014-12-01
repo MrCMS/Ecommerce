@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Iesi.Collections.Generic;
 using MrCMS.Entities.Documents;
+using MrCMS.Entities.Documents.Media;
 using MrCMS.Helpers;
 using MrCMS.Models;
 using MrCMS.Services;
@@ -73,6 +74,16 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
                     _importProductVariants.CreateProductVariants(nopImportContext, productData.ProductVariants,
                         optionValues, product);
                     session.Save(product);
+                    var pictureIds = productData.Pictures;
+                    foreach (var pictureId in pictureIds)
+                    {
+                        var mediaFile = nopImportContext.FindNew<MediaFile>(pictureId);
+                        if (mediaFile != null)
+                        {
+                            mediaFile.MediaCategory = product.Gallery;
+                            session.Update(mediaFile);
+                        }
+                    }
                 }
             });
             return string.Format("{0} products processed.", productDatas.Count);

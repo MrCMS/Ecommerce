@@ -5,18 +5,18 @@ using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Areas.Admin.Controllers
 {
-    public class NopProductImportController : MrCMSAppAdminController<EcommerceApp>
+    public class NopDataImportController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly INopProductImportAdminService _nopProductImportAdminService;
+        private readonly INopDataImportAdminService _nopDataImportAdminService;
 
-        public NopProductImportController(INopProductImportAdminService nopProductImportAdminService)
+        public NopDataImportController(INopDataImportAdminService nopDataImportAdminService)
         {
-            _nopProductImportAdminService = nopProductImportAdminService;
+            _nopDataImportAdminService = nopDataImportAdminService;
         }
 
         public ViewResult Index()
         {
-            ViewData["importer-options"] = _nopProductImportAdminService.GetImporterOptions();
+            ViewData["importer-options"] = _nopDataImportAdminService.GetImporterOptions();
             ViewData["result"] = TempData["result"];
             return View(new ImportParams());
         }
@@ -24,7 +24,7 @@ namespace MrCMS.Web.Areas.Admin.Controllers
         [HttpPost]
         public RedirectToRouteResult Import(ImportParams importParams)
         {
-            TempData["result"] = _nopProductImportAdminService.Import(importParams);
+            TempData["result"] = _nopDataImportAdminService.Import(importParams);
             return RedirectToAction("Index");
         }
     }

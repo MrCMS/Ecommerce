@@ -3,28 +3,10 @@ using MrCMS.Web.Areas.Admin.Services.NopImport.Models;
 
 namespace MrCMS.Web.Areas.Admin.Services.NopImport
 {
-    public interface INopCommerceDataReader
-    {
-        string Name { get; }
-        void SetConnectionString(string connectionString);
-        HashSet<CategoryData> GetCategoryData();
-        HashSet<ProductOptionData> GetProductOptions();
-        HashSet<ProductOptionValueData> GetProductOptionValues();
-        HashSet<ProductSpecificationData> GetProductSpecifications();
-        HashSet<ProductSpecificationAttributeOptionData> GetProductSpecificationOptions();
-        HashSet<ProductSpecificationValueData> GetProductSpecificationValues();
-        HashSet<BrandData> GetBrands();
-        HashSet<TagData> GetTags();
-        HashSet<TaxData> GetTaxData();
-        HashSet<CountryData> GetCountryData();
-        HashSet<RegionData> GetRegionData();
-        HashSet<ProductData> GetProducts();
-        HashSet<UserData> GetUserData();
-    }
-
     public abstract class NopCommerceDataReader : INopCommerceDataReader
     {
         protected string ConnectionString { get; set; }
+        protected PictureInfo PictureInfo { get; set; }
 
         public abstract string Name { get; }
 
@@ -32,6 +14,13 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
         {
             ConnectionString = connectionString;
         }
+
+        public void SetPictureInfo(PictureInfo pictureInfo)
+        {
+            PictureInfo = pictureInfo;
+        }
+
+        public abstract HashSet<PictureData> GetPictureData();
 
         public abstract HashSet<CategoryData> GetCategoryData();
         public abstract HashSet<ProductOptionData> GetProductOptions();

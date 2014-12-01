@@ -31,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                                _urlHelper.Action("Products", "ImportExport"),
                                ACLOption.Create(new ImportExportACL(), ImportExportACL.View)),
                            new ChildMenuItem("NopCommerce Import",
-                               _urlHelper.Action("Index", "NopProductImport"),
+                               _urlHelper.Action("Index", "NopDataImport"),
                                ACLOption.Create(new ImportExportACL(), ImportExportACL.View)),
                            new ChildMenuItem("Google Base Integration",
                                _urlHelper.Action("Dashboard", "GoogleBase"),

@@ -6,12 +6,12 @@ using Ninject;
 
 namespace MrCMS.Web.Areas.Admin.Services.NopImport
 {
-    public class NopProductImportAdminService : INopProductImportAdminService
+    public class NopDataImportAdminService : INopDataImportAdminService
     {
         private readonly IKernel _kernel;
         private readonly IPerformNopImport _performNopImport;
 
-        public NopProductImportAdminService(IKernel kernel, IPerformNopImport performNopImport)
+        public NopDataImportAdminService(IKernel kernel, IPerformNopImport performNopImport)
         {
             _kernel = kernel;
             _performNopImport = performNopImport;
@@ -33,6 +33,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport
                 return new ImportResult { Messages = new List<string> { "Could not find the requested importer" } };
 
             reader.SetConnectionString(importParams.ConnectionString);
+            reader.SetPictureInfo(importParams.PictureInfo);
             return _performNopImport.Execute(reader);
         }
 

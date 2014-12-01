@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace MrCMS.Web.Areas.Admin.Services.NopImport
 {
-    public interface INopProductImportAdminService
+    public interface INopDataImportAdminService
     {
         List<SelectListItem> GetImporterOptions();
 
