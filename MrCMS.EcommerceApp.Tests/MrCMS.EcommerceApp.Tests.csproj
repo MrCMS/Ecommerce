@@ -151,9 +151,6 @@
     <Compile Include="Admin\Controllers\ProductSpecificationAttributeOptionControllerTests.cs" />
     <Compile Include="Admin\Controllers\OrderRefundControllerTests.cs" />
     <Compile Include="Admin\Controllers\OrderNoteControllerTests.cs" />
-    <Compile Include="Admin\Controllers\DiscountApplicationControllerTests.cs" />
-    <Compile Include="Admin\Controllers\DiscountControllerTests.cs" />
-    <Compile Include="Admin\Controllers\DiscountLimitationControllerTests.cs" />
     <Compile Include="Admin\Controllers\OrderControllerTests.cs" />
     <Compile Include="Admin\Controllers\CountryControllerTests.cs" />
     <Compile Include="Admin\Controllers\ProductControllerTests.cs" />
@@ -180,7 +177,6 @@
     <Compile Include="Controllers\DownloadProductControllerTests.cs" />
     <Compile Include="Controllers\ProductSearchControllerTests.cs" />
     <Compile Include="EcommerceAppTests.cs" />
-    <Compile Include="Entities\Discounts\DiscountTests.cs" />
     <Compile Include="Entities\Products\ProductVariantTests\AvailabilityTests.cs" />
     <Compile Include="Entities\Products\ProductVariantTests\PricingTests.cs" />
     <Compile Include="Entities\Shipping\ShippingCalculationTests.cs" />
@@ -195,9 +191,7 @@
     <Compile Include="Models\CartModelTests\AvailableGiftCardAmountTests.cs" />
     <Compile Include="Models\CartModelTests\DiscountAmountTests.cs" />
     <Compile Include="Models\CartModelTests\GiftCardAmountTests.cs" />
-    <Compile Include="Models\CartModelTests\ItemDiscountTests.cs" />
     <Compile Include="Models\CartModelTests\ItemTaxTests.cs" />
-    <Compile Include="Models\CartModelTests\OrderTotalDiscountTests.cs" />
     <Compile Include="Models\CartModelTests\ShippingPreTaxTests.cs" />
     <Compile Include="Models\CartModelTests\ShippingStatusTests.cs" />
     <Compile Include="Models\CartModelTests\ShippingTaxPercentageTests.cs" />
@@ -277,6 +271,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Entities\Discounts\" />
     <Folder Include="Indexing\" />
     <Folder Include="Services\Payment\" />
     <Folder Include="Services\StockReport\" />

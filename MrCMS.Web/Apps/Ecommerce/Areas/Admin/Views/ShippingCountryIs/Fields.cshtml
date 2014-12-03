@@ -1,0 +1,9 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations.ShippingCountryIs
+@{
+    var options = ViewData["shipping-country-options"] as List<SelectListItem>;
+}
+<div class="form-group">
+    @Html.LabelFor(x => x.ShippingCountryCode)
+    @Html.DropDownListFor(x => x.ShippingCountryCode, options, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.ShippingCountryCode)
+</div>

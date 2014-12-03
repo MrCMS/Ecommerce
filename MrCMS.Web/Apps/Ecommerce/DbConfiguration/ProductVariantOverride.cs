@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using FluentNHibernate.Automapping;
 using FluentNHibernate.Automapping.Alterations;
-using FluentNHibernate.Mapping;
 using MrCMS.DbConfiguration.Types;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using NHibernate.Mapping;
 
 namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
 {
@@ -18,7 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
             mapping.HasMany(variant => variant.PriceBreaks).Cascade.All();
 
             mapping.Map(variant => variant.SKU).Index("IX_ProductVariant_SKU");
-            mapping.Map(variant => variant.RestrictedTo).CustomType<BinaryData<HashSet<string>>>().Length(9999);       
+            mapping.Map(variant => variant.RestrictedTo).CustomType<BinaryData<HashSet<string>>>().Length(9999);
         }
     }
 }

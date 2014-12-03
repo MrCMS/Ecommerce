@@ -2,6 +2,8 @@
 @using System.Net.Configuration
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Helpers.Cart
+@using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 <div id="basic-details" class="margin-bottom-20">
@@ -47,7 +49,7 @@
                         <td>@Model.ShippingTotal.ToCurrencyFormat()</td>
                     </tr>
                 }
-                @if (Model.HasDiscount)
+                @if (Model.HasOrderTotalDiscount())
                 {
                     <tr>
                         <th>@Resource("Discount") : </th>

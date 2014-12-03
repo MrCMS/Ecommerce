@@ -13,12 +13,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _getUserGuid = getUserGuid;
         }
 
-        public const string CurrentDiscountCodeKey = "current.discount-code";
+        public const string CurrentDiscountCodesKey = "current.discount-codes";
         public void SetDiscountCode(string code)
         {
-            _cartSessionManager.SetSessionValue(CurrentDiscountCodeKey, _getUserGuid.UserGuid, code);
+            _cartSessionManager.SetSessionValue(CurrentDiscountCodesKey, _getUserGuid.UserGuid, code);
         }
 
-        public IEnumerable<string> Keys { get { yield return CurrentDiscountCodeKey; } }
+        public IEnumerable<string> Keys { get { yield return CurrentDiscountCodesKey; } }
     }
 }
