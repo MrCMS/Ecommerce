@@ -47,7 +47,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
             if (cart.OrderTotalDiscount > 0)
                 paymentDetailsItemTypes.Add(new PaymentDetailsItemType
                                                 {
-                                                    Name = "Discount - " + cart.DiscountCode,
+                                                    Name = "Discount - " + cart.DiscountCodes,
                                                     Amount = (-cart.OrderTotalDiscount).GetAmountType(),
                                                     ItemCategory = ItemCategoryType.PHYSICAL,
                                                     Quantity = 1,

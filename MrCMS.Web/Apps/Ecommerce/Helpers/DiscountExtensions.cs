@@ -23,15 +23,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
         {
             return TypeHelper.GetAllConcreteMappedClassesAssignableFrom<DiscountLimitation>()
                 .BuildSelectItemList(type => type.Name.BreakUpString(), type => type.FullName,
-                    type => discount.Limitation != null && discount.Limitation.Unproxy().GetType() == type,
-                    "No limitations");
+                    emptyItemText: "No limitations");
         }
 
         public static List<SelectListItem> GetApplicationOptions(this Discount discount)
         {
             return TypeHelper.GetAllConcreteMappedClassesAssignableFrom<DiscountApplication>()
                 .BuildSelectItemList(type => type.Name.BreakUpString(), type => type.FullName,
-                    type => discount.Application != null && discount.Application.Unproxy().GetType() == type,
                     emptyItemText: null);
         }
     }

@@ -1,0 +1,7 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations.ItemIsInCategory
+
+<div class="form-group">
+    @Html.LabelFor(x => x.CategoryIds)
+    @Html.TextBoxFor(x => x.CategoryIds, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.CategoryIds)
+</div>
