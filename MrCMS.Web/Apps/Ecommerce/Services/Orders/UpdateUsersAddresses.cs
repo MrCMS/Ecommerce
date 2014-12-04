@@ -35,7 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                         session.Save(clone);
                         addresses.Add(clone);
                     }
-                    if (order.ShippingStatus != ShippingStatus.ShippingNotRequired &&
+                    if (order.ShippingAddress != null && order.ShippingStatus != ShippingStatus.ShippingNotRequired &&
                         !addresses.Contains(order.ShippingAddress, AddressComparison.Comparer))
                     {
                         session.Save(order.ShippingAddress.ToAddress(session, currentUser));
