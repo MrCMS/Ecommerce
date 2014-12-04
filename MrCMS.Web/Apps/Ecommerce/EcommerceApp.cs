@@ -7,6 +7,7 @@ using MrCMS.Installation;
 using MrCMS.PaypointService.API;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration.Listeners;
+using MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems;
 using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints;
@@ -50,6 +51,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             {
                 yield return typeof(DiscountLimitation);
                 yield return typeof(DiscountApplication);
+                yield return typeof(CartItemBasedDiscountApplication);
                 yield return typeof(EcommerceSearchablePage);
                 yield return typeof(ContentItem);
                 yield return typeof(RewardPointsHistory);
