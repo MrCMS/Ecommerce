@@ -29,8 +29,8 @@
                         <td>
                             <ul class="media-list">
                                 <li>@item.Name</li>
-                                <li>@Resource("Item Price") : @item.UnitPrice.ToCurrencyFormat()</li>
-                                <li>@Resource("Quantity") : @item.Quantity</li>
+                                <li>@Resource("Item Price"): @item.UnitPrice.ToCurrencyFormat()</li>
+                                <li>@Resource("Quantity"): @item.Quantity</li>
                             </ul>
                         </td>
                         <td>@item.Price.ToCurrencyFormat()</td>
@@ -39,32 +39,39 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th>@Resource("Sub Total") :</th>
+                    <th>@Resource("Sub Total"):</th>
                     <td>@Model.TotalPreShipping.ToCurrencyFormat()</td>
                 </tr>
-                @if (Model.ShippingTotal > decimal.Zero)
+                @if (Model.ShippingTotalPreDiscount > decimal.Zero)
                 {
                     <tr>
-                        <th>@Resource("Shipping") :</th>
-                        <td>@Model.ShippingTotal.ToCurrencyFormat()</td>
+                        <th>@Resource("Shipping"):</th>
+                        <td>@Model.ShippingTotalPreDiscount.ToCurrencyFormat()</td>
+                    </tr>
+                }
+                @if (Model.ShippingDiscount > decimal.Zero)
+                {
+                    <tr>
+                        <th>@Resource("Shipping Discount"):</th>
+                        <td>@((-Model.ShippingDiscount).ToCurrencyFormat())</td>
                     </tr>
                 }
                 @if (Model.HasOrderTotalDiscount())
                 {
                     <tr>
-                        <th>@Resource("Discount") : </th>
+                        <th>@Resource("Discount"): </th>
                         <td>@((-Model.OrderTotalDiscount).ToCurrencyFormat())</td>
                     </tr>
                 }
                 @if (MrCMS.Website.MrCMSApplication.Get<TaxSettings>().TaxesEnabled)
                 {
                     <tr>
-                        <th>@Resource("Tax") : </th>
+                        <th>@Resource("Tax"): </th>
                         <td>@Model.Tax.ToCurrencyFormat()</td>
                     </tr>
                 }
                 <tr>
-                    <th>@Resource("Total") :</th>
+                    <th>@Resource("Total"):</th>
                     <td><strong>@Model.Total.ToCurrencyFormat()</strong></td>
                 </tr>
                 @if (Model.AppliedGiftCards.Any() || Model.UseRewardPoints)
