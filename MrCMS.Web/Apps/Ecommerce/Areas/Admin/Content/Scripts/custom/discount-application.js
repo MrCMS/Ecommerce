@@ -1,12 +1,17 @@
 ﻿(function ($) {
     var ddlSelector = '#ApplicationType',
+        fromLimitationSelector = '#CartItemsFromLimitations',
         fieldsSelector = '[data-application-fields]',
         formSelector = '[data-discount-application]';
 
+    function updateFancyBox() {
+        parent.$.fancybox.update();
+    }
     function setFields(html) {
         var fieldsContainer = $(fieldsSelector);
         fieldsContainer.html(html);
-        parent.$.fancybox.update();
+        $(fromLimitationSelector).change();
+        updateFancyBox();
     }
 
     function submitForm(event) {
@@ -35,9 +40,20 @@
             setFields('');
         }
     }
+    function showHideProductFields(event) {
+        var checkbox = $(event.target);
+        var fields = $('[data-from-limitations]');
+        if (checkbox.is(':checked'))
+            fields.hide({ duration: 0, complete: updateFancyBox });
+        else
+            fields.show({ duration: 0, complete: updateFancyBox });
+    }
 
     $(function () {
         $(document).on('change', ddlSelector, updateFields);
+        $(document).on('change', fromLimitationSelector, showHideProductFields);
         $(document).on('submit', formSelector, submitForm);
+
+        $(fromLimitationSelector).change();
     });
 })(jQuery);

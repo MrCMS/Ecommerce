@@ -10,13 +10,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
     public abstract class DiscountApplicationApplier<T> : DiscountApplicationApplier where T : DiscountApplication
     {
-        public abstract DiscountApplicationInfo Apply(T application, CartModel cart);
+        public abstract DiscountApplicationInfo Apply(T application, CartModel cart, CheckLimitationsResult checkLimitationsResult);
 
         public override sealed DiscountApplicationInfo Apply(DiscountApplication application, CartModel cart, CheckLimitationsResult checkLimitationsResult)
         {
             var typedApplication = application as T;
             return typedApplication != null
-                ? Apply(typedApplication, cart)
+                ? Apply(typedApplication, cart,checkLimitationsResult)
                 : new DiscountApplicationInfo();
         }
     }

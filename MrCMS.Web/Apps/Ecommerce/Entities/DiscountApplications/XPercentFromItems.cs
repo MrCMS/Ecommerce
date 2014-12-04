@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications
 {
-    public class XPercentFromItems : DiscountApplication
+    public class XPercentFromItems : CartItemBasedDiscountApplication
     {
         [DisplayName("Discount % (e.g: 15)")]
         [Range(0, 100)]
         public virtual decimal DiscountPercent { get; set; }
+
 
         public override string DisplayName
         {

@@ -3,4 +3,6 @@
     @Html.LabelFor(x => x.DiscountPercent)
     @Html.TextBoxFor(x => x.DiscountPercent, new { @class = "form-control" })
     @Html.ValidationMessageFor(x => x.DiscountPercent)
+
+    @{ Html.RenderAction("Fields", "CartItemBasedDiscountApplication", new { application = Model }); }
 </div>
