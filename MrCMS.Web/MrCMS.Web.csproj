@@ -1208,6 +1208,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartItemBasedApplicationProducts.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartItemsByCategoryIdList.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartItemsBySKUList.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\GetDiscountCodes.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetGiftCardDataFromContext.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetShippingAddress.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IAssignBasicCartInfo.cs" />
@@ -1229,6 +1230,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetCartItemBasedApplicationProducts.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetCartItemsByCategoryIdList.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetCartItemsBySKUList.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\IGetDiscountCodes.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetGiftCardDataFromContext.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetShippingAddress.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ItemHasSKUChecker.cs" />

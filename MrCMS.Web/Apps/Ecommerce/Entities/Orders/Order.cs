@@ -44,6 +44,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
 
         public virtual decimal DiscountAmount { get; set; }
 
+
         //[DisplayName("Discount Code")]
         //public virtual string DiscountCode { get; set; }
 
@@ -56,10 +57,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual string ShippingMethodName { get; set; }
 
         [DisplayName("Shipping Total")]
-        public virtual decimal? ShippingTotal { get; set; }
+        public virtual decimal? ShippingSubtotal { get; set; }
 
         [DisplayName("Shipping Tax")]
         public virtual decimal? ShippingTax { get; set; }
+
+        public virtual decimal ShippingDiscountAmount { get; set; }
+
+        [DisplayName("Shipping Total")]
+        public virtual decimal? ShippingTotal { get; set; }
+
 
         [DisplayName("Shipping Tax Percentage")]
         public virtual decimal? ShippingTaxPercentage { get; set; }

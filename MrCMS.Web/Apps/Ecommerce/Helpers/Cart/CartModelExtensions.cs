@@ -72,12 +72,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Cart
 
         public static bool HasOrderTotalDiscount(this CartModel cartModel)
         {
-            return cartModel.OrderTotalDiscount >= Decimal.Zero;
+            return cartModel.OrderTotalDiscount > Decimal.Zero;
         }
 
         public static bool HasShippingDiscount(this CartModel cartModel)
         {
-            return cartModel.ShippingDiscount >= Decimal.Zero;
+            return cartModel.ShippingDiscount > Decimal.Zero;
         }
     }
 }
