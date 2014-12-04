@@ -557,6 +557,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BulkShippingController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BulkStockUpdateController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BuyXGetYFreeController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CartHasAtLeastXItemsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CartItemBasedDiscountApplicationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CartSubtotalGreaterThanXController.cs" />
@@ -830,6 +831,7 @@
     <Compile Include="Apps\Ecommerce\Entities\BackInStockNotification\BackInStockProductVariant.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Cart\CartItem.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Currencies\Currency.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\BuyXGetY.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\CartItemBasedDiscountApplication.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\OrderTotalFixedAmount.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountApplications\FreeShipping.cs" />
@@ -1047,6 +1049,7 @@
     <Compile Include="Apps\Ecommerce\Models\GoogleBaseModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\IAddress.cs" />
     <Compile Include="Apps\Ecommerce\Models\IGiftCardUserDetails.cs" />
+    <Compile Include="Apps\Ecommerce\Models\ItemPrice.cs" />
     <Compile Include="Apps\Ecommerce\Models\KeyEqualityComparer.cs" />
     <Compile Include="Apps\Ecommerce\Models\LoginAndAssociateOrderResult.cs" />
     <Compile Include="Apps\Ecommerce\Models\On404SearchWidgetModel.cs" />
@@ -1186,6 +1189,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\AssignPaymentInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\AssignRewardPointInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\AssignShippingInfo.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\BuyXGetYFreeApplier.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartBuilder.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartDiscountApplicationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartDiscountService.cs" />
@@ -3733,6 +3737,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\XPercentFromOrder\Fields.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\XPercentFromItems\Fields.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\CartItemBasedDiscountApplication\Fields.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\BuyXGetYFree\Fields.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_BaseLayout.cshtml" />
