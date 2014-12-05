@@ -93,9 +93,9 @@
                 </div>
             </div>
 
-            <div class="row margin-bottom-10" id="cart-discount">
+            <div class="row" id="cart-discount">
                 <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6">
-                    <div class="row" id="discount-code-box">
+                    <div class="row margin-bottom-10" id="discount-code-box">
                         <div class="col-sm-4 line-height-30">
                             Discount Code
                         </div>
@@ -109,22 +109,22 @@
                     </div>
                     @if (Model.Discounts.Any())
                     {
-                        <div class="row" id="discount-code-box">
-                            <div class="col-sm-8 line-height-30">
-                                Discounts
+                        <div class="row margin-bottom-10">
+                            <div class="col-xs-8 col-sm-6 line-height-30">
+                                Discount@(Model.Discounts.Count > 1 ? "s" : "")
                             </div>
-                            <div class="col-sm-4">
-                                <ul class="list-unstyled">
+                            <div class="col-xs-4 col-sm-6 text-right">
+                                <ul class="list-unstyled margin-bottom-0">
                                     @foreach (var discount in Model.Discounts.Select(x => x.Discount))
-                                    {
-                                        <li>
-                                            @discount.Name
-                                            @if (discount.RequiresCode)
-                                            {
-                                                @:(Remove)
-                                            }
-                                        </li>
-                                    }
+{
+    <li class="line-height-30">
+        @discount.Name
+        @if (discount.RequiresCode)
+        {
+            <span>(<a class="remove-discount-code" data-id="@discount.Id" data-code="@discount.Code" href="#">Remove</a>)</span>
+        }
+    </li>
+}
                                 </ul>
                             </div>
                         </div>

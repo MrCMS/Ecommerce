@@ -2,7 +2,7 @@
 
 <hr/>
 <h4>Discount</h4>
-@if(!String.IsNullOrWhiteSpace(Model.DiscountCodes))
+@if(Model.DiscountCodes.Any())
 {
     <div>
         <div class="span6">Discount Code</div>
