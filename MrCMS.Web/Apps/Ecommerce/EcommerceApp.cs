@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MrCMS.Apps;
-using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
-using MrCMS.Installation;
-using MrCMS.PaypointService.API;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration.Listeners;
 using MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications;

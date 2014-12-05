@@ -1,5 +1,5 @@
 ﻿$(function () {
-    
+
     $.ajaxSetup({ cache: false });
     $(document).on('click', "#empty-basket", function () {
         var response = confirm("Are you sure you want to empty your basket? You can not undo this action.");
@@ -39,6 +39,17 @@
                 reloadCartDetails();
             });
     });
+
+    $(document).on('click', '.remove-discount-code', function (e) {
+        e.preventDefault();
+        var discountCode = $(this).data('code');
+        $.post('/Apps/Ecommerce/RemoveDiscountCode',
+            { discountCode: discountCode },
+            function (response) {
+                reloadCartDetails();
+            });
+    });
+
     $(document).on('click', "#apply-gift-card-code", function (event) {
         event.preventDefault();
         var codeInput = $("#gift-card-code");
@@ -72,14 +83,17 @@
         console.log(number);
         return number - length;
     }
-    $(document).on('click', "#remove-discount-code", function () {
-        $.post('/Apps/Ecommerce/ApplyDiscountCode',
-            { discountCode: null },
-            function (response) {
-                reloadCartDetails();
-            });
-        return false;
-    });
+    //$(document).on('click', "#remove-discount-code", function () {
+    //    $.post('/Apps/Ecommerce/ApplyDiscountCode',
+    //        { discountCode: null },
+    //        function (response) {
+    //            reloadCartDetails();
+    //        });
+    //    return false;
+    //});
+
+
+
     $(document).on('change', "#UseRewardPoints", function (event) {
         $.post('/Apps/Ecommerce/UseRewardPoints',
             { useRewardPoints: $(event.target).is(':checked') },
@@ -139,7 +153,7 @@
         );
     };
 
-    var showRemaining = function() {
+    var showRemaining = function () {
         var remaining = getRemaining();
         var characterCountMessage = $('#message-character-count');
         characterCountMessage.html($('<span>').html(remaining + ' characters remaining'));
