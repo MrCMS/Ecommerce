@@ -20,7 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             return cart.TotalPreDiscount > limitation.CartTotalGreaterThanValue
                 ? CheckLimitationsResult.Successful(Enumerable.Empty<CartItem>())
-                : CheckLimitationsResult.Failure(
+                : CheckLimitationsResult.CurrentlyInvalid(
                     _stringResourceProvider.GetValue("Order total does not reach the threshold of " +
                                                      limitation.CartTotalGreaterThanValue.ToCurrencyFormat()));
         }

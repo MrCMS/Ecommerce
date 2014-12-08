@@ -48,6 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [MrCMSACLRule(typeof (DiscountACL), DiscountACL.Edit)]
         public ViewResult Edit(Discount discount)
         {
+            ViewData["usages"] = _discountAdminService.GetUsages(discount);
             return View(discount);
         }
 

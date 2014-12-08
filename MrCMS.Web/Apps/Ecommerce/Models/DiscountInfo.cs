@@ -4,8 +4,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 {
     public class DiscountInfo
     {
-        private readonly Discount _discount;
         private readonly CheckLimitationsResult _checkLimitationsResult;
+        private readonly Discount _discount;
 
         public DiscountInfo(Discount discount, CheckLimitationsResult checkLimitationsResult)
         {
@@ -22,11 +22,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get
             {
-                return CheckLimitationsResult.Success
-                    ? DiscountStatus.ToApply
-                    : Discount.RequiresCode
-                        ? DiscountStatus.ExplicitAndInvalid
-                        : DiscountStatus.AutomaticAndInvalid;
+                return
+                    CheckLimitationsResult.Status == CheckLimitationsResultStatus.NeverValid
+                        ? DiscountStatus.NeverValid
+                        : CheckLimitationsResult.Success
+                            ? DiscountStatus.ToApply
+                            : Discount.RequiresCode
+                                ? DiscountStatus.ExplicitAndInvalid
+                                : DiscountStatus.AutomaticAndInvalid;
             }
         }
 

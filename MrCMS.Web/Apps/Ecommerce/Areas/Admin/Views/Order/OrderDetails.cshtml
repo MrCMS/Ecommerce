@@ -64,6 +64,13 @@
                 <td>Order Tax</td>
                 <td>@Model.Tax.ToCurrencyFormat()</td>
             </tr>
+            @if (Model.DiscountAmount != 0)
+            {
+                <tr>
+                    <td>Order Discount</td>
+                    <td>@Model.DiscountAmount.ToCurrencyFormat()</td>
+                </tr>
+            }
             <tr>
                 <td>Order Total</td>
                 <td>@Model.Total.ToCurrencyFormat()</td>

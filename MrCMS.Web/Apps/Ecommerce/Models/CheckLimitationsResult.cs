@@ -14,13 +14,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public List<CartItem> CartItems { get; set; }
         public string[] Messages { get; private set; }
 
-        public bool Success { get; private set; }
+        public CheckLimitationsResultStatus Status { get; private set; }
 
-        public static CheckLimitationsResult Failure(params string[] messages)
+        public bool Success { get { return Status == CheckLimitationsResultStatus.Success; } }
+
+        public static CheckLimitationsResult NeverValid(params string[] messages)
         {
             return new CheckLimitationsResult
             {
-                Success = false,
+                Status = CheckLimitationsResultStatus.NeverValid,
+                Messages = messages
+            };
+        }
+
+        public static CheckLimitationsResult CurrentlyInvalid(params string[] messages)
+        {
+            return new CheckLimitationsResult
+            {
+                Status = CheckLimitationsResultStatus.CurrentlyInvalid,
                 Messages = messages
             };
         }
@@ -29,7 +40,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             var checkLimitationsResult = new CheckLimitationsResult
             {
-                Success = true,
+                Status = CheckLimitationsResultStatus.Success,
                 Messages = messages
             };
             if (applicableItems != null)
@@ -41,10 +52,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             return new CheckLimitationsResult
             {
-                Success = results.All(x => x.Success),
+                Status = results.Any(x => x.Status == CheckLimitationsResultStatus.NeverValid)
+                    ? CheckLimitationsResultStatus.NeverValid
+                    : results.Any(x => x.Status == CheckLimitationsResultStatus.CurrentlyInvalid)
+                        ? CheckLimitationsResultStatus.CurrentlyInvalid
+                        : CheckLimitationsResultStatus.Success,
                 Messages = results.SelectMany(x => x.Messages).ToArray(),
                 CartItems = results.SelectMany(x => x.CartItems).Distinct().ToList()
             };
         }
+    }
+
+    public enum CheckLimitationsResultStatus
+    {
+        Success,
+        CurrentlyInvalid,
+        NeverValid
     }
 }
