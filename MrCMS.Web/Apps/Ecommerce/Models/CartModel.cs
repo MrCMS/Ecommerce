@@ -6,7 +6,6 @@ using System.Linq;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
-using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
@@ -19,6 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 {
     public class CartModel
     {
+
         public CartModel()
         {
             Items = new List<CartItem>();
@@ -33,6 +33,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public User User { get; set; }
         public Guid UserGuid { get; set; }
 
+        /// <summary>
+        ///     Discount from order total
+        /// </summary>
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
+        public virtual decimal OrderTotalDiscount { get; set; }
+
+        /// <summary>
+        ///     Shipping Total
+        /// </summary>
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
+        public virtual decimal ShippingDiscount { get; set; }
+
         [Required]
         public string OrderEmail { get; set; }
 
@@ -42,11 +54,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public bool BillingAddressSameAsShippingAddress { get; set; }
 
         // discounts
-        public Discount Discount { get; set; }
+        public List<DiscountInfo> Discounts { get; set; }
 
         [Required]
-        [DisplayName("Discount Code")]
-        public string DiscountCode { get; set; }
+        [DisplayName("Discount Codes")]
+        public List<string> DiscountCodes { get; set; }
 
         // shipping
         public Address ShippingAddress { get; set; }
@@ -130,7 +142,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             {
                 if (!UseRewardPoints || AppliedRewardPointsAmount == decimal.Zero)
                     return 0;
-                return (int) Math.Ceiling(AppliedRewardPointsAmount/RewardPointsExchangeRate);
+                return (int)Math.Ceiling(AppliedRewardPointsAmount / RewardPointsExchangeRate);
             }
         }
 
@@ -179,24 +191,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get
             {
-                decimal discountAmount = OrderTotalDiscount + ItemDiscount;
+                decimal discountAmount = OrderTotalDiscount + ShippingDiscount + ItemDiscount;
 
                 return discountAmount > TotalPreDiscount
                     ? TotalPreDiscount
                     : discountAmount;
-            }
-        }
-
-        /// <summary>
-        ///     Discount from order total
-        /// </summary>
-        public virtual decimal OrderTotalDiscount
-        {
-            get
-            {
-                return Discount == null
-                    ? decimal.Zero
-                    : Discount.GetDiscount(this);
             }
         }
 
@@ -207,12 +206,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get
             {
-                return Discount != null
+                return Items.Any()
                     ? Items.Sum(item => item.DiscountAmount)
                     : decimal.Zero;
             }
         }
 
+        /// <summary>
+        ///     Shipping Total
+        /// </summary>
+        [DisplayFormat(DataFormatString = "{0:£0.00}")]
+        public virtual decimal ShippingTotalPreDiscount
+        {
+            get
+            {
+                return ShippingMethod == null
+                    ? decimal.Zero
+                    : ShippingMethod.GetShippingTotal(this);
+            }
+        }
 
         /// <summary>
         ///     Shipping Total
@@ -220,7 +232,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         [DisplayFormat(DataFormatString = "{0:£0.00}")]
         public virtual decimal ShippingTotal
         {
-            get { return ShippingMethod == null ? decimal.Zero : ShippingMethod.GetShippingTotal(this); }
+            get
+            {
+                return ShippingDiscount >= ShippingTotalPreDiscount
+                    ? decimal.Zero
+                    : ShippingTotalPreDiscount - ShippingDiscount;
+            }
         }
 
         /// <summary>
@@ -228,7 +245,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         /// </summary>
         public virtual decimal ShippingTax
         {
-            get { return ShippingMethod == null ? decimal.Zero : ShippingMethod.GetShippingTax(this); }
+            get
+            {
+                return ShippingMethod == null
+                    ? decimal.Zero
+                    : ShippingMethod.GetShippingTax(this);
+            }
         }
 
         /// <summary>
@@ -244,14 +266,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         /// </summary>
         public decimal ShippingTaxPercentage
         {
-            get { return ShippingMethod == null ? decimal.Zero : ShippingMethod.TaxRatePercentage; }
+            get
+            {
+                return ShippingMethod == null
+                    ? decimal.Zero
+                    : ShippingMethod.TaxRatePercentage;
+            }
         }
 
-
-        public bool HasDiscount
-        {
-            get { return Discount != null && OrderTotalDiscount != decimal.Zero; }
-        }
 
         public int ItemQuantity
         {
@@ -298,17 +320,32 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public string PaymentMethodSystemName
         {
-            get { return PaymentMethod == null ? string.Empty : PaymentMethod.SystemName; }
+            get
+            {
+                return PaymentMethod == null
+                    ? string.Empty
+                    : PaymentMethod.SystemName;
+            }
         }
 
         public string PaymentMethodAction
         {
-            get { return PaymentMethod == null ? string.Empty : PaymentMethod.ActionName; }
+            get
+            {
+                return PaymentMethod == null
+                    ? string.Empty
+                    : PaymentMethod.ActionName;
+            }
         }
 
         public string PaymentMethodController
         {
-            get { return PaymentMethod == null ? string.Empty : PaymentMethod.ControllerName; }
+            get
+            {
+                return PaymentMethod == null
+                    ? string.Empty
+                    : PaymentMethod.ControllerName;
+            }
         }
 
         public bool IsPayPalTransaction
@@ -388,5 +425,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public decimal AvailablePointsValue { get; set; }
 
         public decimal RewardPointsExchangeRate { get; set; }
+
+        public void SetDiscountApplication(DiscountApplicationInfo discountApplicationInfo)
+        {
+            OrderTotalDiscount = discountApplicationInfo.OrderDiscount;
+            ShippingDiscount = discountApplicationInfo.ShippingDiscount;
+            foreach (var key in discountApplicationInfo.ItemDiscounts.Keys)
+            {
+                var cartItem = Items.FirstOrDefault(x => x.Id == key);
+                if (cartItem != null)
+                    cartItem.SetDiscountInfo(discountApplicationInfo.ItemDiscounts[key]);
+            }
+        }
     }
 }

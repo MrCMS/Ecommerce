@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lucene.Net.Index;
-using Lucene.Net.Search;
 using MrCMS.Indexing.Management;
 using MrCMS.Indexing.Querying;
 using MrCMS.Indexing.Utils;
@@ -17,10 +15,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     public class ProductSearchIndexService : IProductSearchIndexService
     {
         private readonly ISearcher<Product, ProductSearchIndex> _productSearcher;
+        private readonly IGetProductCategories _getProductCategories;
 
-        public ProductSearchIndexService(ISearcher<Product, ProductSearchIndex> productSearcher)
+        public ProductSearchIndexService(ISearcher<Product, ProductSearchIndex> productSearcher,IGetProductCategories getProductCategories)
         {
             _productSearcher = productSearcher;
+            _getProductCategories = getProductCategories;
         }
 
         public IPagedList<Product> SearchProducts(ProductSearchQuery query)
@@ -133,53 +133,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             var clone = query.Clone() as ProductSearchQuery;
             clone.CategoryId = null;
-            var indexSearcher = _productSearcher.IndexSearcher;
-            var name = FieldDefinition.GetFieldName<ProductSearchCategoriesDefinition>();
-            var valueCollector = new ValueCollector(indexSearcher, name);
-            var query1 = clone.GetQuery();
-            indexSearcher.Search(query1, clone.GetFilter(), valueCollector);
-            return valueCollector.Values[name].Select(s => Convert.ToInt32(s)).Distinct().ToList();
-        }
-    }
-
-    public struct OptionInfo
-    {
-        public int OptionId { get; set; }
-        public string Value { get; set; }
-    }
-
-    public class ValueCollector : Collector
-    {
-        private readonly IndexSearcher _indexSearcher;
-        private readonly Dictionary<string, List<string>> _values;
-
-        public ValueCollector(IndexSearcher indexSearcher, params string[] fieldNames)
-        {
-            _indexSearcher = indexSearcher;
-            _values = new Dictionary<string, List<string>>();
-            foreach (var fieldName in fieldNames)
-            {
-                _values[fieldName] = new List<string>();
-            }
-        }
-
-        public override void SetScorer(Scorer scorer) { }
-        public override void Collect(int doc)
-        {
-            var document = _indexSearcher.Doc(doc);
-            foreach (var key in Values.Keys)
-            {
-                Values[key].AddRange(document.GetValues(key));
-            }
-        }
-
-        public override void SetNextReader(IndexReader reader, int docBase) { }
-
-        public override bool AcceptsDocsOutOfOrder { get { return true; } }
-
-        public Dictionary<string, List<string>> Values
-        {
-            get { return _values; }
+            var searchQuery = clone.GetQuery();
+            var filter = clone.GetFilter();
+            return _getProductCategories.Get(searchQuery, filter);
         }
     }
 }

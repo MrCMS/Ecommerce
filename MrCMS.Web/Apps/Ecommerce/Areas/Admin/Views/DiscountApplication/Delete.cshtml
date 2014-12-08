@@ -1,0 +1,23 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.Discounts.DiscountApplication
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/discount-application.js");
+}	   
+@using (Html.BeginForm("Delete", "DiscountApplication", FormMethod.Post, new { data_discount_application = "true" }))
+{
+    <fieldset>
+        <legend>
+            Delete Application
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Delete" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+        <p>
+            Are you sure you want to delete this application? Deleting can not be undone.
+        </p>
+    </fieldset>
+}

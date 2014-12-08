@@ -35,8 +35,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
             if (address == null)
                 return null;
 
+            return FormattedPostcode(address.PostalCode);
+        }
+
+        public static string FormattedPostcode(string postcode)
+        {
             // remove whitespace and force to upper
-            var postalCode = (address.PostalCode ?? string.Empty).ToUpper().Replace(" ", "");
+            var postalCode = (postcode ?? string.Empty).ToUpper().Replace(" ", "");
             // return null if is invalid length
             var length = postalCode.Length;
             if (length < 5 || length > 7)

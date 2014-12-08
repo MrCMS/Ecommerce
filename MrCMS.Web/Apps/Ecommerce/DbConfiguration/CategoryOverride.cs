@@ -12,12 +12,4 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
             mapping.HasManyToMany(category => category.Products).Table("Ecommerce_ProductCategories").Inverse();
         }
     }
-    public class EcommerceSearchablePageOverride:IAutoMappingOverride<EcommerceSearchablePage>
-    {
-        public void Override(AutoMapping<EcommerceSearchablePage> mapping)
-        {
-            mapping.HasManyToMany(category => category.HiddenSearchSpecifications)
-                .Table("Ecommerce_SearchablePageHiddenSearchSpecifications");
-        }
-    }
 }

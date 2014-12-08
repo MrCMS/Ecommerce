@@ -1,24 +1,73 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ActionFilters;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
-using MrCMS.Web.Apps.Ecommerce.Services.Discounts;
+using MrCMS.Web.Apps.Ecommerce.ModelBinders;
+using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class DiscountApplicationController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly IDiscountManager _discountManager;
+        private readonly IDiscountApplicationAdminService _discountApplicationAdminService;
 
-        public DiscountApplicationController(IDiscountManager discountManager)
+        public DiscountApplicationController(IDiscountApplicationAdminService discountApplicationAdminService)
         {
-            _discountManager = discountManager;
+            _discountApplicationAdminService = discountApplicationAdminService;
         }
 
         [HttpGet]
-        public PartialViewResult LoadDiscountApplicationProperties(Discount discount, string applicationType)
+        public ViewResult Add(Discount discount)
         {
-            var application = _discountManager.GetApplication(discount, applicationType);
-            return PartialView(application.GetType().Name, application);
+            ViewData["discount"] = discount;
+            ViewData["application-type-options"] = _discountApplicationAdminService.GetTypeOptions();
+            return View();
+        }
+
+        [HttpPost]
+        [ReturnJsonTrueIfAjaxPost]
+        public RedirectToRouteResult Add(
+            [IoCModelBinder(typeof (AddDiscountApplicationModelBinder))] DiscountApplication application)
+        {
+            _discountApplicationAdminService.Add(application);
+            return RedirectToAction("Edit", "Discount", new {id = application.Discount.Id});
+        }
+
+        public PartialViewResult List(Discount discount)
+        {
+            ViewData["discount"] = discount;
+            return PartialView(_discountApplicationAdminService.GetApplications(discount));
+        }
+
+        [HttpGet]
+        public ViewResult Edit(DiscountApplication application)
+        {
+            return View(application);
+        }
+
+        [HttpPost]
+        [ActionName("Edit")]
+        [ReturnJsonTrueIfAjaxPost]
+        public RedirectToRouteResult Edit_POST(DiscountApplication application)
+        {
+            _discountApplicationAdminService.Update(application);
+            return RedirectToAction("Edit", "Discount", new { id = application.Discount.Id });
+        }
+
+        [HttpGet]
+        public ActionResult Delete(DiscountApplication discountApplication)
+        {
+            return View(discountApplication);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        [ReturnJsonTrueIfAjaxPost]
+        public ActionResult Delete_POST(DiscountApplication application)
+        {
+            _discountApplicationAdminService.Delete(application);
+            return RedirectToAction("Edit", "Discount", new {id = application.Discount.Id});
         }
     }
 }

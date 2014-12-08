@@ -1,0 +1,15 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+@{
+    string cartUrl = UniquePageHelper.GetUrl<Cart>();
+}
+<li data-cart-info="@Url.Action("HeaderSummary", "Cart")">
+    <a href="@cartUrl" class="basket">
+        <span class="glyphicon glyphicon-shopping-cart"></span>
+    </a>
+    @if (Model.ItemQuantity > 0)
+    {
+        <a href="@cartUrl" class="notification">@Model.ItemQuantity</a>
+    }
+</li>
