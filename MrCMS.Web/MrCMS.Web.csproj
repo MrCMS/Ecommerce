@@ -2283,6 +2283,8 @@
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\cart.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\category.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\checkout.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\discount.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\enter-order-email.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\payment-details.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\product-gallery.js" />
@@ -3742,6 +3744,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\XPercentFromItems\Fields.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\CartItemBasedDiscountApplication\Fields.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BuyXGetYFree\Fields.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Cart\HeaderSummary.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_BaseLayout.cshtml" />

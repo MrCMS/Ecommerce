@@ -106,5 +106,49 @@
             </tfoot>
         </table>
     }
-    <a class="btn btn-default" id="edit" href="@(UniquePageHelper.GetUrl<Cart>())">@Resource("Edit")</a>
+    <a class="btn btn-default margin-bottom-20" id="edit" href="@(UniquePageHelper.GetUrl<Cart>())">@Resource("Edit")</a>
+    <div class="margin-bottom-20">
+        <div class="block-title">
+            <div class="h1style">
+                @Resource("Discounts")
+            </div>
+        </div>
+        @using (Html.BeginForm("Apply", "Discount", FormMethod.Post, new { data_apply_discount = true }))
+        {
+            <div class="row margin-bottom-10" id="discount-code-box">
+                <div class="col-sm-4 line-height-30">
+                    Discount Code
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control" type="text" name="discountCode" />
+                    <div class="visible-xs" style="padding-top: 5px;"></div>
+                </div>
+                <div class="col-sm-4">
+                    <button type="submit" id="apply-discount-code" class="btn btn-default btn-block">Apply Code</button>
+                </div>
+            </div>
+        }
+        @if (Model.Discounts.Any())
+        {
+            <div class="row margin-bottom-10">
+                <div class="col-xs-4 line-height-30">
+                    Discount@(Model.Discounts.Count > 1 ? "s" : "")
+                </div>
+                <div class="col-xs-8 text-right">
+                    <ul class="list-unstyled margin-bottom-0">
+                        @foreach (var discount in Model.Discounts.Select(x => x.Discount))
+                        {
+                            <li class="line-height-30">
+                                @discount.Name
+                                @if (discount.RequiresCode)
+                                {
+                                    <span>(<a data-remove-discount-code="@Url.Action("Remove", "Discount", new {discountCode = discount.Code})" href="#">Remove</a>)</span>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
 </div>

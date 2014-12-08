@@ -1,13 +1,13 @@
-﻿@using System
-@using System.Linq
+﻿@using MrCMS.Entities.Documents.Web
 @using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Pages
 @using MrCMS.Website
 @model MrCMS.Entities.Documents.Web.Webpage
 @{
     Layout = "_BaseLayout.cshtml";
-    var currentPage = CurrentRequestData.CurrentPage;
-    var activePages = currentPage.ActivePages.Select(webpage => webpage.DocumentType).ToList();
-    var percentComplete = 25;
+    Webpage currentPage = CurrentRequestData.CurrentPage;
+    List<string> activePages = currentPage.ActivePages.Select(webpage => webpage.DocumentType).ToList();
+    int percentComplete = 25;
     if (activePages.Contains("SetShippingDetails", StringComparer.OrdinalIgnoreCase))
     {
         percentComplete = 50;
@@ -20,6 +20,8 @@
     {
         percentComplete = 100;
     }
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/checkout.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/discount.js");
 }
 
 <div class="container checkout-header">
@@ -30,7 +32,7 @@
             </div>
         </div>
         <div class="col-xs-6 pull-right">
-            @{RenderZone("Checkout Header Middle");}
+            @{ RenderZone("Checkout Header Middle"); }
         </div>
     </div>
 </div>
@@ -39,7 +41,7 @@
     <div class="container">
         <div class="row" id="checkout">
             <div class="col-md-3 col-sm-3 col-xs-3 light-green">
-                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">
+                <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">
                     <div class="circle hidden-xs hidden-sm">
                         1
                     </div>
@@ -50,7 +52,7 @@
                 </a>
             </div>
             <div class="col-md-3 col-sm-3 col-xs-3 @(percentComplete >= 50 ? "light-green" : "dark-grey")">
-                <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.SetShippingDetails>())">
+                <a href="@(UniquePageHelper.GetUrl<SetShippingDetails>())">
                     <div class="circle hidden-xs hidden-sm">
                         2
                     </div>
@@ -60,16 +62,16 @@
                     <div class="pointer"></div>
                 </a>
             </div>
-            <div class="col-md-3 col-sm-3 col-xs-3  @(percentComplete >=75 ? "light-green" : "light-grey")">
-                    <div class="circle hidden-xs hidden-sm">
-                        3
-                    </div>
-                    <div class="session">
-                        Payment
-                    </div>
-                    <div class="pointer"></div>
+            <div class="col-md-3 col-sm-3 col-xs-3  @(percentComplete >= 75 ? "light-green" : "light-grey")">
+                <div class="circle hidden-xs hidden-sm">
+                    3
+                </div>
+                <div class="session">
+                    Payment
+                </div>
+                <div class="pointer"></div>
             </div>
-            <div class="col-md-3 col-sm-3 col-xs-3 @(percentComplete >=100 ? "light-green" : "dark-grey")">
+            <div class="col-md-3 col-sm-3 col-xs-3 @(percentComplete >= 100 ? "light-green" : "dark-grey")">
                 <div class="circle hidden-xs hidden-sm">
                     4
                 </div>
@@ -87,10 +89,10 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-6">
-                @{RenderZone("Checkout Footer Left");}
+                @{ RenderZone("Checkout Footer Left"); }
             </div>
             <div class="col-sm-6">
-                @{RenderZone("Checkout Footer Right");}
+                @{ RenderZone("Checkout Footer Right"); }
             </div>
         </div>
     </div>
