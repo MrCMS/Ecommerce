@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             if (cart.ShippingAddress == null)
                 return
-                    CheckLimitationsResult.Failure(_stringResourceProvider.GetValue("Shipping address is not yet set"));
+                    CheckLimitationsResult.CurrentlyInvalid(_stringResourceProvider.GetValue("Shipping address is not yet set"));
             var postcodes =
                 (limitation.ShippingPostcode ?? string.Empty).Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(s => s.Trim().ToUpper())
@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             var postcode = cart.ShippingAddress.FormattedPostcode();
             return postcodes.Any(postcode.StartsWith)
                 ? CheckLimitationsResult.Successful(Enumerable.Empty<CartItem>())
-                : CheckLimitationsResult.Failure(
+                : CheckLimitationsResult.CurrentlyInvalid(
                     _stringResourceProvider.GetValue("Shipping postcode is not valid for this discount"));
 
         }

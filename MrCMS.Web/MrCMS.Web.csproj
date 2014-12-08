@@ -844,6 +844,8 @@
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\OrderTotalGreaterThanX.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ShippingCountryIs.cs" />
     <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\ShippingPostcodeStartsWith.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\SingleUsage.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\DiscountLimitations\SingleUsagePerCustomer.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Discounts\Discount.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Discounts\DiscountApplication.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Discounts\DiscountLimitation.cs" />
@@ -1240,6 +1242,8 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\OrderTotalFixedAmountApplier.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ShippingCountryIsChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ShippingPostcodeStartsWithChecker.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\SingleUsageChecker.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\SingleUsagePerCustomerChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\XPercentFromItemsApplier.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\XPercentFromOrderApplier.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\CategoryService.cs" />

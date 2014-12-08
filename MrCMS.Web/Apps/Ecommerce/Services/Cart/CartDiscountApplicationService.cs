@@ -79,7 +79,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                         continue;
                     }
                 }
-                results[i] = CheckLimitationsResult.Failure("Limitation cannot be checked");
+                results[i] = CheckLimitationsResult.CurrentlyInvalid("Limitation cannot be checked");
             }
             return CheckLimitationsResult.Combine(results);
         }
