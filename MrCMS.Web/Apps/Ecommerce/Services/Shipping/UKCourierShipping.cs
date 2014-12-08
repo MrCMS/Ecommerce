@@ -83,7 +83,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Shipping
             {
                 int? taxRateId = _ukCourierShippingSettings.TaxRateId;
                 TaxRate taxRate = null;
-                if (taxRateId.HasValue)
+                if (taxRateId.GetValueOrDefault() > 0)
                 {
                     taxRate = _session.Get<TaxRate>(taxRateId);
                 }
