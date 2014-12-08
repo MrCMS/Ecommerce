@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
@@ -21,15 +21,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 
         public IPagedList<Discount> Search(DiscountSearchQuery query)
         {
-            var queryOver = _session.QueryOver<Discount>();
+            IQueryOver<Discount, Discount> queryOver = _session.QueryOver<Discount>();
 
             if (!string.IsNullOrWhiteSpace(query.DiscountCode))
-                queryOver = queryOver.Where(discount => discount.Code.IsInsensitiveLike(query.DiscountCode, MatchMode.Anywhere));
+                queryOver =
+                    queryOver.Where(discount => discount.Code.IsInsensitiveLike(query.DiscountCode, MatchMode.Anywhere));
 
             if (!string.IsNullOrWhiteSpace(query.Name))
                 queryOver = queryOver.Where(discount => discount.Name.IsInsensitiveLike(query.Name, MatchMode.Anywhere));
 
-            var now = CurrentRequestData.Now;
+            DateTime now = CurrentRequestData.Now;
             if (!query.ShowExpired)
                 queryOver = queryOver.Where(discount => discount.ValidUntil == null || discount.ValidUntil >= now);
 
