@@ -76,11 +76,6 @@ namespace MrCMS.Web.Apps.Ecommerce
             }
         }
 
-        //protected override void OnInstallation(ISession session, InstallModel model, Site site)
-        //{
-        //    EcommerceInstallation.InstallApp(session, model, site);
-        //}
-
         public override IEnumerable<Type> Conventions
         {
             get { yield return typeof(TableNameConvention); }

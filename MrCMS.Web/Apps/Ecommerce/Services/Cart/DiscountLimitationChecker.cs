@@ -17,7 +17,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             var typedLimitation = limitation as T;
             return typedLimitation != null
                 ? CheckLimitations(typedLimitation, cart)
-                : CheckLimitationsResult.Failure("Passed limitation is of invalid type");
+                : CheckLimitationsResult.CurrentlyInvalid("Passed limitation is of invalid type");
         }
     }
 }

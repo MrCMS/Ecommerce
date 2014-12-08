@@ -54,8 +54,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 .Cacheable().List();
 
             var discountInfos = (from discount in discounts
-                                 let result = _cartDiscountApplicationService.CheckLimitations(discount, cart)
-                                 select new DiscountInfo(discount, result)).Where(x => x.Status != DiscountStatus.AutomaticAndInvalid)
+                let result = _cartDiscountApplicationService.CheckLimitations(discount, cart)
+                select new DiscountInfo(discount, result)).Where(
+                    info =>
+                        info.Status != DiscountStatus.AutomaticAndInvalid && info.Status != DiscountStatus.NeverValid)
                 .ToList();
 
             return discountInfos;

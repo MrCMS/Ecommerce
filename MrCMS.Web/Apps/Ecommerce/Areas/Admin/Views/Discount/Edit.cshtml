@@ -6,6 +6,7 @@
     ViewBag.Title = "Edit Discount";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
     Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/discount.js");
+    var discountUsages = ViewData["usages"] as IList<DiscountUsage> ?? new List<DiscountUsage>();
 }
 @using (Html.BeginForm("Edit", "Discount", FormMethod.Post))
 {
@@ -29,6 +30,9 @@
             </li>
             <li>
                 <a href="#application" data-toggle="tab">Application</a>
+            </li>
+            <li>
+                <a href="#usages" data-toggle="tab">Usages (@discountUsages.Count)</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -79,6 +83,53 @@
                         </span>
                     </legend>
                     @{Html.RenderAction("List", "DiscountApplication", new { id = Model.Id });}
+                </fieldset>
+            </div>
+            <div class="tab-pane" id="usages">
+                <fieldset>
+                    <legend>
+                        Usages
+                    </legend>
+                    @if (discountUsages.Any())
+                    {
+                        <table class="table table-striped table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Order #
+                                    </th>
+                                    <th>
+                                        Order Email
+                                    </th>
+                                    <th>
+                                        Created On
+                                    </th>
+                                    <th>
+                                        Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var usage in discountUsages)
+                                {
+                                    <tr>
+                                        <td>
+                                            @usage.Id
+                                        </td>
+                                        <td>
+                                            @usage.Order.OrderEmail
+                                        </td>
+                                        <td>
+                                            @usage.CreatedOn
+                                        </td>
+                                        <td>
+                                            @Html.ActionLink("View", "Edit", "Order", new { id = usage.Order.Id }, new { @class = "btn btn-default btn-xs" })
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
                 </fieldset>
             </div>
         </div>
