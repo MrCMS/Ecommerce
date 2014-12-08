@@ -252,19 +252,23 @@ namespace MrCMS.Web.Apps.Ecommerce
         private static void MapCartRoutes(MrCMSAppRegistrationContext context)
         {
             context.MapRoute("Cart - Details", "Apps/Ecommerce/CartDetails",
-                new {controller = "Cart", action = "Details"});
+                new { controller = "Cart", action = "Details" },
+                new[] { typeof(CartController).Namespace });
+
+            context.MapRoute("Cart - Header Summary", "Apps/Ecommerce/CartHeader",
+                new {controller = "Cart", action = "HeaderSummary"},
+                new[] {typeof (CartController).Namespace});
 
             context.MapRoute("Cart - Update Basket", "Apps/Ecommerce/UpdateBasket",
-                new {controller = "Cart", action = "UpdateBasket"});
+                new { controller = "Cart", action = "UpdateBasket" },
+                new[] { typeof(CartController).Namespace });
 
             context.MapRoute("Cart - Empty Basket", "Apps/Ecommerce/EmptyBasket",
-                new {controller = "EmptyBasket", action = "Empty"},  new []{typeof(EmptyBasketController).Namespace});
+                new {controller = "EmptyBasket", action = "Empty"},
+                new[] {typeof (EmptyBasketController).Namespace});
 
             context.MapRoute("Cart - Add to Cart", "Apps/Ecommerce/AddToCart",
                 new {controller = "AddToCart", action = "Add"});
-
-            context.MapRoute("Cart - Edit Cart Item", "Apps/Ecommerce/EditCartItem",
-                new {controller = "Cart", action = "EditCartItem"});
 
             context.MapRoute("Cart - Delete Cart Item", "Apps/Ecommerce/DeleteCartItem",
                 new {controller = "Cart", action = "DeleteCartItem"});
