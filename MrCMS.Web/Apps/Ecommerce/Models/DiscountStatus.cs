@@ -5,5 +5,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         ToApply,
         ExplicitAndInvalid,
         AutomaticAndInvalid,
+        NeverValid
     }
 }

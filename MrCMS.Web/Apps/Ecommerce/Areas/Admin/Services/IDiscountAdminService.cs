@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
@@ -10,5 +11,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         void Add(Discount discount);
         void Update(Discount discount);
         void Delete(Discount discount);
+        IList<DiscountUsage> GetUsages(Discount discount);
     }
 }

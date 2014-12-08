@@ -50,5 +50,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         {
             _session.Transact(session => session.Delete(discount));
         }
+
+        public IList<DiscountUsage> GetUsages(Discount discount)
+        {
+            return _session.QueryOver<DiscountUsage>()
+                .Where(usage => usage.Discount.Id == discount.Id)
+                .Fetch(usage => usage.Order).Eager
+                .OrderBy(x => x.CreatedOn).Desc
+                .Cacheable().List();
+        }
     }
 }
