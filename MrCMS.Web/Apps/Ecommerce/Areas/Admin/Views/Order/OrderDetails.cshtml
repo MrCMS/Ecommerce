@@ -42,6 +42,21 @@
                 <td>@orderShipping.ToCurrencyFormat()</td>
             </tr>
             <tr>
+                <td>Order Shipping Tax</td>
+                <td>@Model.ShippingTax.ToCurrencyFormat()</td>
+            </tr>
+            @if (Model.ShippingDiscountAmount > decimal.Zero)
+            {
+                <tr>
+                    <td>Order Shipping Subtotal</td>
+                    <td>@Model.ShippingSubtotal.ToCurrencyFormat()</td>
+                </tr>
+                <tr>
+                    <td>Order Shipping Discount</td>
+                    <td>@Model.ShippingDiscountAmount.ToCurrencyFormat()</td>
+                </tr>
+            }
+            <tr>
                 <td>Order Shipping Total</td>
                 <td>@Model.ShippingTotal.ToCurrencyFormat()</td>
             </tr>
@@ -85,7 +100,7 @@
                     <td>@Model.GiftMessage</td>
                 </tr>
             }
-        </table>        
+        </table>
         @{Html.RenderPartial("OrderGiftCards", Model);}
     </div>
     @if (nonSystemSalesChannel)

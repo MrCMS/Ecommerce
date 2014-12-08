@@ -1,0 +1,7 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations.CartHasAtLeastXItems
+
+<div class="form-group">
+    @Html.LabelFor(x => x.NumberOfItems)
+    @Html.TextBoxFor(x => x.NumberOfItems, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.NumberOfItems)
+</div>

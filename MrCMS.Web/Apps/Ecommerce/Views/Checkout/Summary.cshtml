@@ -1,7 +1,9 @@
-﻿@using System.Linq
-@using System.Net.Configuration
-@using MrCMS.Helpers
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Entities.Cart
+@using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards
 @using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Helpers.Cart
+@using MrCMS.Web.Apps.Ecommerce.Pages
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 <div id="basic-details" class="margin-bottom-20">
@@ -21,14 +23,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Items)
+                @foreach (CartItem item in Model.Items)
                 {
                     <tr>
                         <td>
                             <ul class="media-list">
                                 <li>@item.Name</li>
-                                <li>@Resource("Item Price") : @item.UnitPrice.ToCurrencyFormat()</li>
-                                <li>@Resource("Quantity") : @item.Quantity</li>
+                                <li>@Resource("Item Price"): @item.UnitPrice.ToCurrencyFormat()</li>
+                                <li>@Resource("Quantity"): @item.Quantity</li>
                             </ul>
                         </td>
                         <td>@item.Price.ToCurrencyFormat()</td>
@@ -37,37 +39,44 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th>@Resource("Sub Total") :</th>
+                    <th>@Resource("Sub Total"):</th>
                     <td>@Model.TotalPreShipping.ToCurrencyFormat()</td>
                 </tr>
-                @if (Model.ShippingTotal > decimal.Zero)
+                @if (Model.ShippingTotalPreDiscount > decimal.Zero)
                 {
                     <tr>
-                        <th>@Resource("Shipping") :</th>
-                        <td>@Model.ShippingTotal.ToCurrencyFormat()</td>
+                        <th>@Resource("Shipping"):</th>
+                        <td>@Model.ShippingTotalPreDiscount.ToCurrencyFormat()</td>
                     </tr>
                 }
-                @if (Model.HasDiscount)
+                @if (Model.ShippingDiscount > decimal.Zero)
                 {
                     <tr>
-                        <th>@Resource("Discount") : </th>
+                        <th>@Resource("Shipping Discount"):</th>
+                        <td>@((-Model.ShippingDiscount).ToCurrencyFormat())</td>
+                    </tr>
+                }
+                @if (Model.HasOrderTotalDiscount())
+                {
+                    <tr>
+                        <th>@Resource("Discount"): </th>
                         <td>@((-Model.OrderTotalDiscount).ToCurrencyFormat())</td>
                     </tr>
                 }
-                @if (MrCMS.Website.MrCMSApplication.Get<TaxSettings>().TaxesEnabled)
+                @if (SiteSettings<TaxSettings>().TaxesEnabled)
                 {
                     <tr>
-                        <th>@Resource("Tax") : </th>
+                        <th>@Resource("Tax"): </th>
                         <td>@Model.Tax.ToCurrencyFormat()</td>
                     </tr>
                 }
                 <tr>
-                    <th>@Resource("Total") :</th>
+                    <th>@Resource("Total"):</th>
                     <td><strong>@Model.Total.ToCurrencyFormat()</strong></td>
                 </tr>
                 @if (Model.AppliedGiftCards.Any() || Model.UseRewardPoints)
                 {
-                    foreach (var card in Model.AppliedGiftCards)
+                    foreach (GiftCard card in Model.AppliedGiftCards)
                     {
                         <tr>
                             <td>
@@ -88,7 +97,6 @@
                                 @((-Model.AppliedRewardPointsAmount).ToCurrencyFormat())
                             </td>
                         </tr>
-                        
                     }
                     <tr>
                         <th>@Resource("Total to pay"):</th>
@@ -98,5 +106,49 @@
             </tfoot>
         </table>
     }
-    <a class="btn btn-default" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())">@Resource("Edit")</a>
+    <a class="btn btn-default margin-bottom-20" id="edit" href="@(UniquePageHelper.GetUrl<Cart>())">@Resource("Edit")</a>
+    <div class="margin-bottom-20">
+        <div class="block-title">
+            <div class="h1style">
+                @Resource("Discounts")
+            </div>
+        </div>
+        @using (Html.BeginForm("Apply", "Discount", FormMethod.Post, new { data_apply_discount = true }))
+        {
+            <div class="row margin-bottom-10" id="discount-code-box">
+                <div class="col-sm-4 line-height-30">
+                    Discount Code
+                </div>
+                <div class="col-sm-4">
+                    <input class="form-control" type="text" name="discountCode" />
+                    <div class="visible-xs" style="padding-top: 5px;"></div>
+                </div>
+                <div class="col-sm-4">
+                    <button type="submit" id="apply-discount-code" class="btn btn-default btn-block">Apply Code</button>
+                </div>
+            </div>
+        }
+        @if (Model.Discounts.Any())
+        {
+            <div class="row margin-bottom-10">
+                <div class="col-xs-4 line-height-30">
+                    Discount@(Model.Discounts.Count > 1 ? "s" : "")
+                </div>
+                <div class="col-xs-8 text-right">
+                    <ul class="list-unstyled margin-bottom-0">
+                        @foreach (var discount in Model.Discounts.Select(x => x.Discount))
+                        {
+                            <li class="line-height-30">
+                                @discount.Name
+                                @if (discount.RequiresCode)
+                                {
+                                    <span>(<a data-remove-discount-code="@Url.Action("Remove", "Discount", new {discountCode = discount.Code})" href="#">Remove</a>)</span>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
 </div>

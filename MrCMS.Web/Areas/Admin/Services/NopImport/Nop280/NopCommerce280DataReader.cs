@@ -316,7 +316,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Nop280
                                     GiftCard = variant.IsGiftCard,
                                     GiftCardType =
                                         variant.GiftCardTypeId == 0 ? GiftCardType.Virtual : GiftCardType.Physicial,
-                                    RequiresShipping = !variant.IsShipEnabled,
+                                    RequiresShipping = variant.IsShipEnabled,
                                     MaxDownloads = variant.MaxNumberOfDownloads,
                                     DownloadDays = variant.DownloadExpirationDays,
                                     DownloadUrl = variant.Download == null ? null : variant.Download.DownloadUrl,

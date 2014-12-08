@@ -93,7 +93,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Analytics
         }
 
         [Fact]
-        public void AmazonAnalyticsService_GetAverageOrderAmount_ShouldReturnAvgAmound()
+        public void AmazonAnalyticsService_GetAverageOrderAmount_ShouldReturnAvgAmount()
         {
             var items = Enumerable.Range(0, 10).Select(i => new AmazonOrder()
             {

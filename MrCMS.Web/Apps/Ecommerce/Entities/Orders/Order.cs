@@ -19,6 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
             OrderNotes = new List<OrderNote>();
             OrderRefunds = new List<OrderRefund>();
             GiftCardUsages = new List<GiftCardUsage>();
+            DiscountUsages = new List<DiscountUsage>();
             Guid = Guid.NewGuid();
         }
 
@@ -42,10 +43,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         }
 
         public virtual decimal DiscountAmount { get; set; }
-        public virtual Discount Discount { get; set; }
 
-        [DisplayName("Discount Code")]
-        public virtual string DiscountCode { get; set; }
+
+        //[DisplayName("Discount Code")]
+        //public virtual string DiscountCode { get; set; }
 
         public virtual decimal RewardPointsAppliedAmount { get; set; }
 
@@ -56,10 +57,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual string ShippingMethodName { get; set; }
 
         [DisplayName("Shipping Total")]
-        public virtual decimal? ShippingTotal { get; set; }
+        public virtual decimal? ShippingSubtotal { get; set; }
 
         [DisplayName("Shipping Tax")]
         public virtual decimal? ShippingTax { get; set; }
+
+        public virtual decimal ShippingDiscountAmount { get; set; }
+
+        [DisplayName("Shipping Total")]
+        public virtual decimal? ShippingTotal { get; set; }
+
 
         [DisplayName("Shipping Tax Percentage")]
         public virtual decimal? ShippingTaxPercentage { get; set; }
@@ -95,6 +102,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual IList<OrderNote> OrderNotes { get; set; }
         public virtual IList<OrderRefund> OrderRefunds { get; set; }
         public virtual IList<GiftCardUsage> GiftCardUsages { get; set; }
+        public virtual IList<DiscountUsage> DiscountUsages { get; set; }
 
         public virtual string AuthorisationToken { get; set; }
         public virtual string CaptureTransactionId { get; set; }
