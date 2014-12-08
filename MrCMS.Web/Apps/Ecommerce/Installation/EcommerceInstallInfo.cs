@@ -1,6 +1,6 @@
 ﻿namespace MrCMS.Web.Apps.Ecommerce.Installation
 {
-    public static class EcommerceInstalInfo
+    public static class EcommerceInstallInfo
     {
         public const string LogoImageUrl =
             "http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/newsletter/logo.jpg";
@@ -16,9 +16,9 @@
 
         public const string FooterText2 =
             @"<h3> Customer Service </h3> <ul class=""list-unstyled""><li><a href=""#"">Customer Support</a></li><li><a href=""#"">Delivery Details</a></li><li><a href=""#"">Returns Policy</a></li><li><a href=""#"">Privacy Policy & Cookie Info</a></li><li><a href=""#"">Recycling & WEE Information </a></li></ul>";
-        
+
         public const string FooterText3 = @"<h3> Buying guides</h3><ul class=""list-unstyled""><li><a href=""#"">Choosing Energy Saving Light Bulbs</a></li><li><a href=""#"">Choosing Fluorescent Tubes</a></li><li><a href=""#"">Choosing Halogen Bulbs</a></li><li><a href=""#"">Choosing LED Bulbs</a></li><li><a href=""#"">EU Banned Bulbs Info</a></li><li><a href=""#"">LED GU10 Bulb FAQ</a></li></ul>";
-        
+
         public const string AwatingImageUrl = "/Apps/Ecommerce/Content/Images/awaiting-image.jpg";
 
         public const string CategoryExcelUrl = "https://www.mrcms.com/content/ecommerce/categories.xlsx";
@@ -48,28 +48,6 @@
 
         public const string ContactFormDesign = @"{submitted-message}<div class=""row""><div class=""col-xs-12 col-sm-6 col-md-6 col-lg-6""><div class=""form-group"">{label:Name}{input:Name}{validation:Name}</div><div class=""form-group"">{label:Email}{input:Email}{validation:Email}</div><div class=""form-group"">{label:Telephone Number}{input:Telephone Number}{validation:Telephone Number}</div></div><div class=""col-xs-12 col-sm-6 col-md-6 col-lg-6""><div class=""form-group"">{label:Message}{input:Message}{validation:Message}</div><div class=""form-group""><input type=""submit"" value=""Contact us"" class=""btn btn-lg btn-block btn-default-blue"" /></div></div></div>";
 
-        public const string AfterContentCardsTeaser = @"<div class=""margin-top-bottom-30""><div class=""padding-top-bottom-20 payment grey-border-top-bottom""><div class=""container""><div class=""row""><div class=""col-md-3""><img src=""/Apps/Ecommerce/Content/Images/payment.gif"" class=""img-responsive"" alt=""Our payment methods"" /></div><div class=""col-md-9"">We accept Visa, Mastercard and Maestro card payments. We also take payments from customers with a Paypal account.</div></div></div></div></div>";}
-
-    public static class FeaturedCategoriesInfo
-    {
-        public const string Category1Url = "clothing/womens";
-        public const string Category2Url = "electronics/tablets";
-        public const string Category3Url = "electronics/phones";
-        public const string Category4Url = "electronics/video-games";
-
-        public const string Category1ImageUrl = "http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/product-galleries/italy-home-shirt/italy_w200_h200.jpg";
-        public const string Category2ImageUrl = "http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/default/tablets_w184_h184.jpg";
-        public const string Category3ImageUrl = "http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/product-galleries/apple-iphone-5c-sim-free-smartphone/41trzunrdyl_w200_h200.jpg";
-        public const string Category4ImageUrl = "http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/product-galleries/xbox-one-console/xboxone_w200_h200.jpg";
-
-        public const string SecureCheckout = "http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/default/secure.png";
-    }
-
-    public static class FeaturedProductsInfo
-    {
-        public const string Product1Url = "canon-eos-1100d-digital-slr-camera";
-        public const string Product2Url = "apple-iphone-5c-sim-free-smartphone";
-        public const string Product3Url = "xbox-one-console";
-        public const string Product4Url = "wilson-ultra-distance-24-ball-value-pack";
+        public const string AfterContentCardsTeaser = @"<div class=""margin-top-bottom-30""><div class=""padding-top-bottom-20 payment grey-border-top-bottom""><div class=""container""><div class=""row""><div class=""col-md-3""><img src=""/Apps/Ecommerce/Content/Images/payment.gif"" class=""img-responsive"" alt=""Our payment methods"" /></div><div class=""col-md-9"">We accept Visa, Mastercard and Maestro card payments. We also take payments from customers with a Paypal account.</div></div></div></div></div>";
     }
 }

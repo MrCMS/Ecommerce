@@ -10,7 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications
 
         public override string DisplayName
         {
-            get { return string.Format("{0:00} from order total", DiscountAmount); }
+            get { return string.Format("{0:0.00} from order total", DiscountAmount); }
         }
     }
 }

@@ -7,7 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations
     {
         public override string DisplayName
         {
-            get { return string.Format("Cart Total is greater than {0:00}", CartTotalGreaterThanValue); }
+            get { return string.Format("Cart Total is greater than {0:0.00}", CartTotalGreaterThanValue); }
         }
 
         [DisplayName("Value")]
