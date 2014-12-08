@@ -961,7 +961,9 @@
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchSpecificationsDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchUrlsegmentDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchIndex.cs" />
-    <Compile Include="Apps\Ecommerce\Installation\EcommerceInstalInfo.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\EcommerceInstallInfo.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\FeaturedCategoriesInfo.cs" />
+    <Compile Include="Apps\Ecommerce\Installation\FeaturedProductsInfo.cs" />
     <Compile Include="Apps\Ecommerce\Installation\Models\MediaModel.cs" />
     <Compile Include="Apps\Ecommerce\Installation\Models\PageModel.cs" />
     <Compile Include="Apps\Ecommerce\Installation\Services\IImportDummyCategories.cs" />

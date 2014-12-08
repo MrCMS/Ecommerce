@@ -1,9 +1,9 @@
-﻿@using System.Linq
-@using System.Net.Configuration
-@using MrCMS.Helpers
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Entities.Cart
+@using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers.Cart
-@using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Web.Apps.Ecommerce.Pages
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 <div id="basic-details" class="margin-bottom-20">
@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Items)
+                @foreach (CartItem item in Model.Items)
                 {
                     <tr>
                         <td>
@@ -63,7 +63,7 @@
                         <td>@((-Model.OrderTotalDiscount).ToCurrencyFormat())</td>
                     </tr>
                 }
-                @if (MrCMS.Website.MrCMSApplication.Get<TaxSettings>().TaxesEnabled)
+                @if (SiteSettings<TaxSettings>().TaxesEnabled)
                 {
                     <tr>
                         <th>@Resource("Tax"): </th>
@@ -76,7 +76,7 @@
                 </tr>
                 @if (Model.AppliedGiftCards.Any() || Model.UseRewardPoints)
                 {
-                    foreach (var card in Model.AppliedGiftCards)
+                    foreach (GiftCard card in Model.AppliedGiftCards)
                     {
                         <tr>
                             <td>
@@ -97,7 +97,6 @@
                                 @((-Model.AppliedRewardPointsAmount).ToCurrencyFormat())
                             </td>
                         </tr>
-                        
                     }
                     <tr>
                         <th>@Resource("Total to pay"):</th>
@@ -107,5 +106,5 @@
             </tfoot>
         </table>
     }
-    <a class="btn btn-default" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.Cart>())">@Resource("Edit")</a>
+    <a class="btn btn-default" id="edit" href="@(UniquePageHelper.GetUrl<Cart>())">@Resource("Edit")</a>
 </div>
