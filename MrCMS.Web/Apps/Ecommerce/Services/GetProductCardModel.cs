@@ -55,7 +55,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 {
                     Name = product.Name,
                     Url = product.LiveUrlSegment,
-                    Abstract = product.Abstract,
+                    Abstract = product.ProductAbstract,
                     Image = image == null ? null : image.FileUrl,
                     PreviousPriceText = _settings.PreviousPriceText
                 };

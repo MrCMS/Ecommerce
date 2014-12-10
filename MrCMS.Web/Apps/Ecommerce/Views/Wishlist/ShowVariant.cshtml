@@ -9,7 +9,7 @@
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
     CanBuyStatus canBuy = ViewData["can-buy-status"] as CanBuyStatus ?? new CannotOrderQuantity(Model, 0);
-    var @abstract = Model.Product != null ? Model.Product.Abstract ?? string.Empty : string.Empty;
+    var @abstract = Model.Product != null ? Model.Product.ProductAbstract ?? string.Empty : string.Empty;
 }
 <div class="row" data-wishlist-item="@Model.Id">
     <div class="hidden-xs col-sm-2 col-md-2">

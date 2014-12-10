@@ -8,11 +8,13 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
     {
         public void Override(AutoMapping<Product> mapping)
         {
-            mapping.Map(product => product.Abstract).Length(500);
+            mapping.Map(product => product.ProductAbstract).Length(500);
+
             mapping.HasManyToMany(product => product.Categories)
                    .Table("Ecommerce_ProductCategories")
                    .AsList(part => part.Column("DisplayOrder"))
                    .Not.Inverse();
+
             mapping.HasManyToMany(product => product.Options).Table("Ecommerce_ProductOptions")
                    .AsList(part => part.Column("DisplayOrder"))
                    .Not.Inverse();
