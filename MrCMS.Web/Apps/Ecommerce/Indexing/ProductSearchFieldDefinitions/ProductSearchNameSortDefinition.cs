@@ -8,7 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
     public class ProductSearchNameSortDefinition : StringFieldDefinition<ProductSearchIndex, Product>
     {
         public ProductSearchNameSortDefinition(ILuceneSettingsService luceneSettingsService)
-            : base(luceneSettingsService, "namesort", index: Field.Index.NOT_ANALYZED)
+            : base(luceneSettingsService, "nameSort", index: Field.Index.NOT_ANALYZED)
         {
         }
 
