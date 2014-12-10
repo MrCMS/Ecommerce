@@ -14,7 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 
         public void Import()
         {
-            var memoryStream = new MemoryStream(EcommerceInstallHelper.GetFileFromUrl(EcommerceInstalInfo.ProductsExcelUrl));
+            var memoryStream = new MemoryStream(EcommerceInstallHelper.GetFileFromUrl(EcommerceInstallInfo.ProductsExcelUrl));
             var output = _importExportManager.ImportProductsFromExcel(memoryStream, false);
         }
     }

@@ -30,13 +30,13 @@
                     <div class="display-inline"><strong>@Resource("Recipient"):</strong> @recipientName</div>
                 }
                 <div>
-                    <a data-id="@Model.Id" data-action="delete-cart-item" href="#" class="btn btn-mini btn-danger">@Resource("Remove Cart Item", "Remove")</a>
+                    <a data-id="@Model.Id" data-action="delete-cart-item" href="#" class="btn btn-xs btn-danger">@Resource("Remove Cart Item", "Remove")</a>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-xs-2 text-center cart-item-qty">
-        <input type="text" class="input-mini text-center form-control" name="@Html.Raw("quantity-" + Model.Id)" value="@Model.Quantity" data-cart-id="@Model.Id"/>
+        <input type="text" class="text-center form-control input-sm" name="@Html.Raw("quantity-" + Model.Id)" value="@Model.Quantity" data-cart-id="@Model.Id"/>
     </div>
     <div class="col-xs-3 col-sm-2 text-right cart-item-price">
         @Model.UnitPrice.ToCurrencyFormat()

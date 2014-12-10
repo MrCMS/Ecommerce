@@ -18,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Cart
                     IOrderedEnumerable<decimal> shippingAmounts =
                         cart.PotentiallyAvailableShippingMethods.Select(method => method.GetShippingTotal(cart))
                             .OrderBy(amount => amount);
-                    return string.Format("From {0}", shippingAmounts.First().ToCurrencyFormat());
+                    return String.Format("From {0}", shippingAmounts.First().ToCurrencyFormat());
                 case CartShippingStatus.ShippingSet:
                     return cart.ShippingMethod.GetShippingTotal(cart).ToCurrencyFormat();
                 default:
@@ -67,7 +67,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Cart
 
         public static bool AnythingToPay(this CartModel cart)
         {
-            return cart.TotalToPay > decimal.Zero;
+            return cart.TotalToPay > Decimal.Zero;
+        }
+
+        public static bool HasOrderTotalDiscount(this CartModel cartModel)
+        {
+            return cartModel.OrderTotalDiscount > Decimal.Zero;
+        }
+
+        public static bool HasShippingDiscount(this CartModel cartModel)
+        {
+            return cartModel.ShippingDiscount > Decimal.Zero;
         }
     }
 }

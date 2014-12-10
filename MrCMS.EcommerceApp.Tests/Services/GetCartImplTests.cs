@@ -10,7 +10,6 @@ using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Payment.Services;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website;
@@ -29,8 +28,8 @@ namespace MrCMS.EcommerceApp.Tests.Services
             Session.Transact(session => session.Save(currentUser));
             CurrentRequestData.CurrentUser = currentUser;
             _getUserGuid = A.Fake<IGetUserGuid>();
-            _cartBuilder = new CartBuilder(A.Fake<IAssignBasicCartInfo>(), A.Fake<IAssignCartDiscountInfo>(),
-                A.Fake<IAssignShippingInfo>(), A.Fake<IAssignGiftCardInfo>(),
+            _cartBuilder = new CartBuilder(A.Fake<IAssignBasicCartInfo>(), A.Fake<IAssignShippingInfo>(),
+                A.Fake<IAssignCartDiscountInfo>(), A.Fake<IAssignGiftCardInfo>(),
                 A.Fake<IAssignRewardPointInfo>(), A.Fake<IAssignPaymentInfo>(), _getUserGuid);
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using MrCMS.Entities.Multisite;
+using MrCMS.Web.Apps.Ecommerce.Helpers.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
@@ -38,12 +39,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                 }
             }
 
-            if (model.HasDiscount)
+            if (model.HasOrderTotalDiscount())
             {
                 shoppingBasket.Add(new BasketItem
                                        {
-                                           Description = "Order Discount - " + model.DiscountCode,
-                                           LineTotal = model.DiscountAmount,
+                                           Description = "Order Discount - " + model.DiscountCodes,
+                                           LineTotal = model.OrderTotalDiscount,
                                        });
             }
 
