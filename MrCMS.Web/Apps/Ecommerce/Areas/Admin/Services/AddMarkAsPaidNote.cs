@@ -18,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         public void Execute(OrderPaidArgs args)
         {
             var currentUser = _getCurrentUser.Get();
-            _orderNoteService.AddOrderNoteAudit(string.Format("Order marked as shipped by {0}.",
+            _orderNoteService.AddOrderNoteAudit(string.Format("Order marked as paid by {0}.",
                 currentUser != null ? currentUser.Name : "System"), args.Order);
         }
     }
