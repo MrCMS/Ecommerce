@@ -11,7 +11,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Discounts
         Discount Get(int discountId);
         Discount GetByCode(string code);
         void Add(Discount discount);
-        void Save(Discount discount, DiscountLimitation discountLimitation, DiscountApplication discountApplication);
+        void Save(Discount discount);
         void Delete(Discount discount);
         DiscountApplication GetApplication(Discount discount, string applicationType);
         DiscountLimitation GetLimitation(Discount discount, string limitationType);

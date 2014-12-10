@@ -1,4 +1,5 @@
-﻿@model IList<MrCMS.Web.Apps.Ecommerce.Entities.Discounts.Discount>
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model IList<MrCMS.Web.Apps.Ecommerce.Entities.Discounts.Discount>
 <table class="table table-condensed table-striped">
     <thead>
         <tr>
@@ -24,10 +25,17 @@
                     @item.Name
                 </td>
                 <td>
-                    @item.Code
+                    @if (item.RequiresCode)
+                    {
+                        @item.Code
+                    }
+                    else
+                    {
+                        <span>Not required</span>
+                    }
                 </td>
                 <td>
-                    @item.ValidTimePeriod
+                    @item.ValidTimePeriod()
                 </td>
                 <td>
                     <div class="btn-group">

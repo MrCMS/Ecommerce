@@ -20,7 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 
         public void Import(MediaModel model)
         {
-            var memoryStream = new MemoryStream(EcommerceInstallHelper.GetFileFromUrl(EcommerceInstalInfo.CategoryExcelUrl));
+            var memoryStream = new MemoryStream(EcommerceInstallHelper.GetFileFromUrl(EcommerceInstallInfo.CategoryExcelUrl));
             var output = _importExportManager.ImportDocumentsFromExcel(memoryStream,false);
             SetFeaturedProducts(model);
         }

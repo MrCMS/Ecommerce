@@ -1,0 +1,29 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Entities.Discounts
+@model MrCMS.Web.Apps.Ecommerce.Entities.Discounts.DiscountLimitation
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/discount-limitation.js");
+    var discount = ViewData["discount"] as Discount;
+    var limitationTypeOptions = ViewData["limitation-type-options"] as List<SelectListItem>;
+}
+@using (Html.BeginForm("Add", "DiscountLimitation", new { id = "" }, FormMethod.Post, new { data_discount_limitation = "true" }))
+{
+    @Html.Hidden("Discount.Id", discount.Id)
+    <fieldset>
+        <legend>
+            Add Limitation
+            <span class="pull-right display-inline btn-group">
+                <button type="submit" class="btn btn-primary">Add</button>
+            </span>
+        </legend>
+        <div class="form-group">
+            @Html.Label("LimitationType", "Limitation Type")
+            @Html.DropDownList("LimitationType", limitationTypeOptions, new { @class = "form-control", data_val = "true", data_val_required = "Please select a type" })
+            @Html.ValidationMessage("LimitationType")
+        </div>
+        <div data-limitation-fields>
+
+        </div>
+    </fieldset>
+}

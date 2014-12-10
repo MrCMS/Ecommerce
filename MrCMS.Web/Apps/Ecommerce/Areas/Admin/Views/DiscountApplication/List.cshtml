@@ -1,0 +1,23 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Entities.Discounts
+@model IList<MrCMS.Web.Apps.Ecommerce.Entities.Discounts.DiscountApplication>
+@{
+    var discount = ViewData["discount"] as Discount;
+}
+
+<div data-discount-applications="@Url.Action("List", "DiscountApplication", new { id = discount.Id })">
+    @foreach (var application in Model)
+    {
+        <div class="row">
+            <div class="col-xs-8">
+                @application.DisplayName
+            </div>
+            <div class="col-xs-4">
+                <div class="btn-group">
+                    @Html.ActionLink("Edit", "Edit", "DiscountApplication", new { id = application.Id }, new { @class = "btn btn-default btn-xs", data_toggle = "fb-modal" })
+                    @Html.ActionLink("Delete", "Delete", "DiscountApplication", new { id = application.Id }, new { @class = "btn btn-danger btn-xs", data_toggle = "fb-modal" })
+                </div>
+            </div>
+        </div>
+        <hr/>
+    }
+</div>

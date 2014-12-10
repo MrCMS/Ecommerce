@@ -1,0 +1,14 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications.BuyXGetYFree
+<div class="form-group">
+    @Html.LabelFor(x => x.BuyAmount)
+    @Html.TextBoxFor(x => x.BuyAmount, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.BuyAmount)
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(x => x.FreeAmount)
+    @Html.TextBoxFor(x => x.FreeAmount, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.FreeAmount)
+</div>
+
+@{ Html.RenderAction("Fields", "CartItemBasedDiscountApplication", new { application = Model }); }

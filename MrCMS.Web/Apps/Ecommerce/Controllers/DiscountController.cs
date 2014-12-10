@@ -16,12 +16,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [HttpPost]
         public JsonResult Apply(string discountCode)
         {
-            if (string.IsNullOrWhiteSpace(discountCode))
-            {
-                _cartDiscountService.SetDiscountCode(discountCode);
-                return Json("Removed");
-            }
-            _cartDiscountService.SetDiscountCode(discountCode);
+            _cartDiscountService.AddDiscountCode(discountCode);
+            return Json(discountCode);
+        }
+        [HttpPost]
+        public JsonResult Remove(string discountCode)
+        {
+            _cartDiscountService.RemoveDiscountCode(discountCode);
             return Json(discountCode);
         }
     }
