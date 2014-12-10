@@ -2,6 +2,7 @@
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Services.Currencies;
 using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Web.Areas.Admin.Helpers;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using System.Web.Mvc;
@@ -38,6 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectToRouteResult Edit_POST(EcommerceSettings ecommerceSettings)
         {
             _configurationProvider.SaveSettings(ecommerceSettings);
+            TempData.SuccessMessages().Add("Ecommerce Settings Saved");
             return RedirectToAction("Edit");
         }
     }

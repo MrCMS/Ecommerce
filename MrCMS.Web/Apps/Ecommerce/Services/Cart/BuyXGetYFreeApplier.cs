@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using MarketplaceWebServiceFeedsClasses;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications;
 using MrCMS.Web.Apps.Ecommerce.Models;

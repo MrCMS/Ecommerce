@@ -40,7 +40,7 @@
             <tfoot>
                 <tr>
                     <th>@Resource("Sub Total"):</th>
-                    <td>@Model.TotalPreShipping.ToCurrencyFormat()</td>
+                    <td>@Model.Subtotal.ToCurrencyFormat()</td>
                 </tr>
                 @if (Model.ShippingTotalPreDiscount > decimal.Zero)
                 {

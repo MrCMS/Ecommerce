@@ -2,6 +2,7 @@ using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Web.Areas.Admin.Helpers;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
@@ -13,18 +14,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class ImportExportController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly IExportProductsManager _exportProductsManager;
+        private readonly EcommerceSettings _ecommerceSettings;
         private readonly IImportProductsManager _importExportManager;
 
-        public ImportExportController(IImportProductsManager importExportManager, IExportProductsManager exportProductsManager)
+        public ImportExportController(IImportProductsManager importExportManager, IExportProductsManager exportProductsManager, EcommerceSettings ecommerceSettings)
         {
             _importExportManager = importExportManager;
             _exportProductsManager = exportProductsManager;
+            _ecommerceSettings = ecommerceSettings;
         }
 
         [HttpGet]
         [MrCMSACLRule(typeof(ImportExportACL), ImportExportACL.View)]
         public ViewResult Products()
         {
+            ViewData["warehousestockenabled"] = _ecommerceSettings.WarehouseStockEnabled;
             return View();
         }
         [HttpGet]
