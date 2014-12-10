@@ -1978,6 +1978,7 @@
     <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.svg" />
     <Content Include="Apps\Core\Content\SocialButtons\zocial.css" />
     <Content Include="Apps\Core\Content\Styles\style.css" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\abstract.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\content-item-product-list.js" />

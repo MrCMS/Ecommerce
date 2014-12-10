@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
@@ -39,8 +40,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual Brand Brand { get; set; }
 
-        [StringLength(500)]
-        public virtual string Abstract { get; set; }
+        [DisplayName("Abstract")]
+        [StringLength(500, ErrorMessage = "Abstract cannot be longer than 500 characters.")]
+        public virtual string ProductAbstract { get; set; }
 
         public virtual IEnumerable<MediaFile> Images
         {
