@@ -52,7 +52,7 @@ namespace MrCMS.Web.Areas.Admin.Services.NopImport.Processors
                     var product = new Product
                     {
                         Name = productData.Name,
-                        Abstract = productData.Abstract,
+                        ProductAbstract = productData.Abstract,
                         BodyContent = productData.Description,
                         Parent = productContainer,
                         UrlSegment =
