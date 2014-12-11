@@ -31,12 +31,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public void AddOrderNoteAudit(string note, Order order)
         {
-            _session.Transact(session => session.SaveOrUpdate(new OrderNote
-                {
-                    Note = note,
-                    ShowToClient = false,
-                    Order = order
-                }));
+            var orderNote = new OrderNote
+            {
+                Note = note,
+                ShowToClient = false,
+                Order = order
+            };
+            order.OrderNotes.Add(orderNote);
+            _session.Transact(session => session.SaveOrUpdate(orderNote));
         }
     }
 }

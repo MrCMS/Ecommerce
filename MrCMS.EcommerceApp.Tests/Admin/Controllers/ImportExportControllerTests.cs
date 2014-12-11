@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FakeItEasy;
 using MrCMS.EcommerceApp.Tests.Stubs;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
-using MrCMS.Web.Apps.Ecommerce.Services.Orders;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Web.Areas.Admin.Helpers;
 using Xunit;
 using FluentAssertions;
@@ -18,13 +17,15 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private readonly IImportProductsManager _importExportManager;
         private readonly IExportProductsManager _exportProductsManager;
         private readonly ImportExportController _importExportController;
+        private readonly EcommerceSettings _ecommerceSettings;
 
         public ImportExportControllerTests()
         {
             _exportProductsManager = A.Fake<IExportProductsManager>();
             _importExportManager = A.Fake<IImportProductsManager>();
+            _ecommerceSettings = new EcommerceSettings();
 
-            _importExportController = new ImportExportController(_importExportManager, _exportProductsManager);
+            _importExportController = new ImportExportController(_importExportManager, _exportProductsManager, _ecommerceSettings);
         }
 
         [Fact]

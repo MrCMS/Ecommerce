@@ -22,10 +22,14 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
-    <IISExpressSSLPort>44300</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <TargetFrameworkProfile />
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
   </PropertyGroup>
@@ -1975,6 +1979,7 @@
     <Content Include="Apps\Core\Content\SocialButtons\zocial-regular-webfont.svg" />
     <Content Include="Apps\Core\Content\SocialButtons\zocial.css" />
     <Content Include="Apps\Core\Content\Styles\style.css" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\abstract.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\content-item-product-list.js" />
@@ -3631,7 +3636,6 @@
     <Content Include="Apps\Stats\Areas\Admin\Views\PageViews\Index.cshtml" />
     <Content Include="Apps\Stats\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Stats\Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Admin\Content\Styles\bootstrap\js\bootstrap.js.orig" />
     <Content Include="Apps\Core\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Core\Areas\Admin\Views\Webpage\ForgottenPasswordPage.cshtml" />
     <Content Include="Apps\Core\Areas\Admin\Views\Webpage\LoginPage.cshtml" />
@@ -3689,9 +3693,6 @@
     <Content Include="Apps\Core\Views\Widgets\Slider.cshtml" />
     <Content Include="Apps\Core\Views\Widgets\TextWidget.cshtml" />
     <Content Include="Apps\Core\Views\Widgets\UserLinks.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Index.cshtml.orig" />
-    <Content Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\ShippingMethodExists.cs.orig" />
-    <Content Include="Apps\Ecommerce\Views\SetShippingMethod\ShippingOptions.cshtml.orig" />
     <Content Include="Areas\Admin\Views\BatchJob\Row.cshtml" />
     <Content Include="Areas\Admin\Views\BatchRunResult\Show.cshtml" />
     <Content Include="Areas\Admin\Views\BatchRun\Row.cshtml" />
@@ -3751,6 +3752,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BuyXGetYFree\Fields.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\HeaderSummary.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
+    <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
