@@ -1036,6 +1036,7 @@
     <Compile Include="Apps\Ecommerce\Models\CountryToAdd.cs" />
     <Compile Include="Apps\Ecommerce\Models\DeliveryStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\DiscountApplicationInfo.cs" />
+    <Compile Include="Apps\Ecommerce\Models\DiscountApplicationResult.cs" />
     <Compile Include="Apps\Ecommerce\Models\DiscountInfo.cs" />
     <Compile Include="Apps\Ecommerce\Models\DiscountStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\EcommerceAdminMenuModel.cs" />
