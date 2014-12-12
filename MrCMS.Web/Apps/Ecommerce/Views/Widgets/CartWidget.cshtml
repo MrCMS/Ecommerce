@@ -2,18 +2,13 @@
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Pages
+@{
+    var checkoutUrl = UniquePageHelper.GetUrl<EnterOrderEmail>();
+}
 <ul class="nav navbar-nav navbar-right">
+    @{Html.RenderAction("HeaderSummary", "Cart");}
     <li>
-        <a href="@(UniquePageHelper.GetUrl<Cart>())" class="basket">
-            <span class="glyphicon glyphicon-shopping-cart"></span>
-        </a>
-        @if (Model.ItemQuantity > 0)
-        {
-            <a href="@(UniquePageHelper.GetUrl<Cart>())" class="notification">@Model.ItemQuantity</a>
-        }
-    </li>
-    <li>
-        <a class="checkout" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">Checkout</a>
+        <a class="checkout" href="@(checkoutUrl)">Checkout</a>
     </li>
 </ul>
 

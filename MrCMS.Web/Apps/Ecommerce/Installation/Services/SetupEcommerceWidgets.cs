@@ -281,7 +281,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 1"),
                 Name = "Footer links",
-                Text = EcommerceInstalInfo.FooterText1,
+                Text = EcommerceInstallInfo.FooterText1,
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Sliding,
                 CacheLength = 60
@@ -292,7 +292,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 2"),
                 Name = "Footer links",
-                Text = EcommerceInstalInfo.FooterText2,
+                Text = EcommerceInstallInfo.FooterText2,
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Sliding,
                 CacheLength = 60
@@ -303,7 +303,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 3"),
                 Name = "Footer links",
-                Text = EcommerceInstalInfo.FooterText3,
+                Text = EcommerceInstallInfo.FooterText3,
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Sliding,
                 CacheLength = 60
@@ -314,7 +314,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "After Content"),
                 Name = "Footer links",
-                Text = EcommerceInstalInfo.AfterContentCardsTeaser,
+                Text = EcommerceInstallInfo.AfterContentCardsTeaser,
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Sliding,
                 CacheLength = 60

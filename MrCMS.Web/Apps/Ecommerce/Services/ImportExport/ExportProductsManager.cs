@@ -210,7 +210,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             wsItems.Cells["E" + rowId].Value = productVariants[i].Product.MetaDescription;
             wsItems.Cells["E" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
             wsItems.Cells["F" + rowId].Value = productVariants[i].Product.MetaKeywords;
-            wsItems.Cells["G" + rowId].Value = productVariants[i].Product.Abstract;
+            wsItems.Cells["G" + rowId].Value = productVariants[i].Product.ProductAbstract;
             wsItems.Cells["G" + rowId].Style.HorizontalAlignment = ExcelHorizontalAlignment.Fill;
         }
 

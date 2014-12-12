@@ -9,6 +9,7 @@ using Iesi.Collections.Generic;
 using MrCMS.Entities;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Helpers.Validation;
+using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;

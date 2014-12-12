@@ -1,0 +1,121 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
+@using MrCMS.Website
+@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
+@{
+    var reviews = ViewData["reviews"] as IPagedList<Review>;
+    var averageReviews = ViewData["average-ratings"] is decimal ? (decimal)ViewData["average-ratings"] : 0;
+    var helpfulnessVotes = (bool)ViewData["helpfulness-votes"];
+    var guestReviews = (bool)ViewData["guest-reviews"];
+}
+<div data-paging-type="async" data-product-review="true">
+    <div class="margin-top-bottom-30">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="block-title">
+                        Product Reviews
+                    </div>
+                    @if (CurrentRequestData.CurrentUser == null && !guestReviews)
+                    {
+                        <div class="alert alert-danger">
+                            Guest reviews currently unavailable, please login to post review.
+                        </div>
+                    }
+                    else
+                    {
+                        Html.RenderAction("Add", "Review", new { productVariant = Model });
+                    }
+                </div>
+            </div>
+
+
+            @if (reviews.Any())
+            {
+                <div class="margin-top-20">
+                    <div class="block-title">
+                        <div class="pull-left">
+                            Reviews & Ratings
+                        </div>
+                        <div class="pull-right">
+                            @if (averageReviews > decimal.Zero)
+                            {
+                                <span>Average Rating: @averageReviews.ToString("#.##") out of 5</span>
+                            }
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+
+                    @foreach (var item in reviews)
+                    {
+                        if (item.Rating == 1)
+                        {
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                        }
+                        else if (item.Rating == 2)
+                        {
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                        }
+                        else if (item.Rating == 3)
+                        {
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                        }
+                        else if (item.Rating == 4)
+                        {
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                        }
+                        else if (item.Rating == 5)
+                        {
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                        }
+
+                        <div itemprop="review" itemscope itemtype="http://schema.org/Review">
+                            <span itemprop="name"><strong>@item.Title</strong></span> -
+                            by <span itemprop="author">
+                                   @if (item.User != null)
+                                   {
+                                       <span>@item.User.Name</span>
+                                   }
+                                   else
+                                   {
+                                       <span>@item.Email</span>
+                                   }
+                               </span>,
+                            <meta itemprop="datePublished" content="2011-04-01">@item.CreatedOn.ToString("MMM dd, yyyy")
+                            <div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                                <meta itemprop="worstRating" content="1">
+                                <span itemprop="ratingValue">@item.Rating</span>/
+                                <span itemprop="bestRating">5</span> stars
+                            </div>
+                            <span itemprop="description">
+                                @item.Text
+                            </span>
+                        </div>
+
+                        if (helpfulnessVotes)
+                        {
+                            Html.RenderAction("HelpfulnessVotes", "Review", new {review = item});
+                        }
+                        <hr />
+                    }
+                </div>
+
+                @Html.Pager(reviews, "ProductReviews", i => new {Model.Id, reviewPage = i})
+            }
+        </div>
+    </div>
+</div>
+
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/async-paging.js"); }

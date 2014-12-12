@@ -1,7 +1,12 @@
 ﻿@using MrCMS.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Models.ProductPagedList
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.ProductAdminSearchQuery
 @{
     ViewBag.Title = "Products";
+    var products = ViewData["results"] as IPagedList<Product> ?? PagedList<Product>.Empty;
+    var publishStatusOptions = ViewData["publish-status"] as List<SelectListItem> ?? new List<SelectListItem>();
+    var productContainerId = ViewData["product-containerId"] is int ? (int) ViewData["product-containerId"] : 0;
 }
 
 @if (Model != null)
@@ -11,59 +16,69 @@
             <legend>
                 Products
                 <span class="btn-group  display-inline  pull-right">
-                    <a href="@Url.Action("Add", "Webpage", new { id = Model.ProductContainerId })" class="btn btn-primary">Add Product</a>
+                    <a href="@Url.Action("Add", "Webpage", new { id = productContainerId })" class="btn btn-primary">Add Product</a>
                 </span>
             </legend>
 
             @using (Html.BeginForm("Index", "Product", FormMethod.Get))
             {
-                <div class="input-group">
+                <div class="row">
+                    <div class="col-xs-6">
+                        @Html.LabelFor(query => query.PublishStatus)
+                        <div class="form-group">
+                            @Html.DropDownListFor(query => query.PublishStatus, publishStatusOptions, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.LabelFor(query => query.Brand)
+                        <div class="form-group">
+                            @Html.TextBoxFor(query => query.Brand, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        @Html.LabelFor(query => query.CategoryName)
+                        <div class="form-group">
+                            @Html.TextBoxFor(query => query.CategoryName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        @Html.LabelFor(query => query.SKU)
+                        <div class="form-group">
+                            @Html.TextBoxFor(query => query.SKU, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <input type="submit" class="btn btn-primary btn-success" value="Search" />
+                    </div>
+                </div>
+
+
+                @*<div class="input-group">
                     @Html.TextBox("q", ViewData["q"], new { @class = "search-query form-control" })
                     <span class="input-group-btn">
 
                         <input type="submit" value="Search" class="btn btn-default" />
                     </span>
-                </div><br />
+                </div><br />*@
             }
-            @if (Model.Any())
-            {
-                <table class="table table-condensed table-striped">
-                    <thead>
-                        <tr>
-                            <th>
-                                Name
-                            </th>
-                            <th>
-                                # of variants
-                            </th>
-                            <th>
-                                Published
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var product in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @Html.ActionLink(product.Name, "Edit", "Webpage", new { id = product.Id }, null)
-                                </td>
-                                <td>
-                                    @product.Variants.Count
-                                </td>
-                                <td>
-                                    @product.Published
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-                @Html.Pager(Model, "Index", p => new { p, q = ViewData["q"] }, PagedListRenderOptions.PageNumbersOnly)
-            }
-            else
-            {
-                <p>No products.</p>
-            }
+        
+            <br/>
+            
+            @if (products.Any())
+           {
+               Html.RenderPartial("ProductList", products.ToList());
+               @Html.Pager(products, "Index", page => new {page})
+           }
+           else
+           {
+               <p>
+                   There are currently no products that match your search criteria.
+               </p>
+           }
         </fieldset>
     </form>
 }

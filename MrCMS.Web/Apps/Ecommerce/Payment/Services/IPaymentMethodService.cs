@@ -7,7 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Services
     {
         bool AnyStandardMethodsEnabled();
         bool PayPalExpressCheckoutIsEnabled();
-        List<IPaymentMethod> GetAllAvailableMethods(CartModel cart);
-        IPaymentMethod GetMethodForCart(string systemName, CartModel cart);
+        List<BasePaymentMethod> GetAllAvailableMethods(CartModel cart);
+        BasePaymentMethod GetMethodForCart(string systemName, CartModel cart);
     }
 }

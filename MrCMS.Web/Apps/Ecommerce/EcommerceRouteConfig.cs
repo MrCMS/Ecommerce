@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Apps;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
+using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce
@@ -51,6 +52,22 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Product - Get Variant Details", "product/variant-details/{id}",
                 new { controller = "ProductVariant", action = "Details" }, new[] { typeof(ProductVariantController).Namespace });
 
+            //Product Reviews
+            context.MapRoute("Product Review", "Apps/Ecommerce/Review/Add",
+                new { controller = "Review", action = "Add" },
+                new[] { typeof(ReviewController).Namespace });
+
+            context.MapRoute("Product Reviews Paging", "Apps/Ecommerce/ProductVariant/ProductReviews",
+                new { controller = "ProductVariant", action = "ProductReviews" });
+
+            context.MapRoute("Product Review Helpfulness Vote Yes", "Apps/Ecommerce/Review/HelpfulnessVotes",
+                new { controller = "Review", action = "HelpfulnessVotes" },
+                new[] { typeof(ReviewController).Namespace });
+
+            context.MapRoute("Product Review Helpfulness Vote No", "Apps/Ecommerce/Review/UnhelpfulnessVotes",
+                new { controller = "Review", action = "UnhelpfulnessVotes" },
+                new[] { typeof(ReviewController).Namespace });
+
             // Public Routes
             context.MapRoute("Generate Contact Us Map", "get-contact-map",
                 new
@@ -86,6 +103,11 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Cash On Delivery - Form", "Apps/Ecommerce/Confirm/CashOnDelivery",
                 new {controller = "CashOnDelivery", action = "Form"},
                 new[] {typeof (CashOnDeliveryController).Namespace});
+
+            context.MapRoute("Payment Not Required - Form", "Apps/Ecommerce/Confirm/PaymentNotRequired",
+                new { controller = "PaymentNotRequired", action = "Form" },
+                new[] { typeof(PaymentNotRequiredController).Namespace });
+
             context.MapRoute("Paypoint - Form", "Apps/Ecommerce/Confirm/Paypoint",
                 new {controller = "Paypoint", action = "Form"},
                 new[] {typeof (PaypointController).Namespace});
@@ -230,25 +252,32 @@ namespace MrCMS.Web.Apps.Ecommerce
         private static void MapCartRoutes(MrCMSAppRegistrationContext context)
         {
             context.MapRoute("Cart - Details", "Apps/Ecommerce/CartDetails",
-                new {controller = "Cart", action = "Details"});
+                new { controller = "Cart", action = "Details" },
+                new[] { typeof(CartController).Namespace });
+
+            context.MapRoute("Cart - Header Summary", "Apps/Ecommerce/CartHeader",
+                new {controller = "Cart", action = "HeaderSummary"},
+                new[] {typeof (CartController).Namespace});
 
             context.MapRoute("Cart - Update Basket", "Apps/Ecommerce/UpdateBasket",
-                new {controller = "Cart", action = "UpdateBasket"});
+                new { controller = "Cart", action = "UpdateBasket" },
+                new[] { typeof(CartController).Namespace });
 
             context.MapRoute("Cart - Empty Basket", "Apps/Ecommerce/EmptyBasket",
-                new {controller = "EmptyBasket", action = "Empty"},  new []{typeof(EmptyBasketController).Namespace});
+                new {controller = "EmptyBasket", action = "Empty"},
+                new[] {typeof (EmptyBasketController).Namespace});
 
             context.MapRoute("Cart - Add to Cart", "Apps/Ecommerce/AddToCart",
                 new {controller = "AddToCart", action = "Add"});
-
-            context.MapRoute("Cart - Edit Cart Item", "Apps/Ecommerce/EditCartItem",
-                new {controller = "Cart", action = "EditCartItem"});
 
             context.MapRoute("Cart - Delete Cart Item", "Apps/Ecommerce/DeleteCartItem",
                 new {controller = "Cart", action = "DeleteCartItem"});
 
             context.MapRoute("Cart - Apply Discount Code", "Apps/Ecommerce/ApplyDiscountCode",
                 new {controller = "Discount", action = "Apply"});
+
+            context.MapRoute("Cart - Remove Discount Code", "Apps/Ecommerce/RemoveDiscountCode",
+                new {controller = "Discount", action = "Remove"});
 
             context.MapRoute("Cart - Apply Gift Card Code", "Apps/Ecommerce/ApplyGiftCardCode",
                 new {controller = "GiftCard", action = "Apply"},
@@ -261,6 +290,10 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Cart - Save Gift Message", "Apps/Ecommerce/SaveGiftMessage",
                 new {controller = "GiftMessage", action = "Save"},
                 new[] { typeof(GiftMessageController).Namespace });
+
+            context.MapRoute("Cart - Use Reward Points", "Apps/Ecommerce/UseRewardPoints",
+                new { controller = "CartRewardPoints", action = "Save" },
+                new[] { typeof(CartRewardPointsController).Namespace });
         }
     }
 }

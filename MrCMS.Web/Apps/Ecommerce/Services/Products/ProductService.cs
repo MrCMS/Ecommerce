@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using MrCMS.Models;
 using MrCMS.Paging;
 using MrCMS.Services;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -13,6 +15,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using NHibernate.Criterion;
 using NHibernate.SqlCommand;
+using ProductSearchQuery = MrCMS.Web.Apps.Ecommerce.Models.ProductSearchQuery;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
@@ -196,6 +199,69 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 });
                 session.Update(product);
             });
+        }
+
+        public List<SelectListItem> GetPublishStatusOptions()
+        {
+            return Enum.GetValues(typeof(PublishStatus))
+                .Cast<PublishStatus>()
+                .BuildSelectItemList(status => status.ToString(), emptyItem: null);
+        }
+
+        public IPagedList<Product> Search(ProductAdminSearchQuery query)
+        {
+            Product productAlias = null;
+
+            var queryOver = _session.QueryOver(()=> productAlias);
+
+            switch (query.PublishStatus)
+            {
+                case PublishStatus.Unpublished:
+                    queryOver = queryOver.Where(product => product.PublishOn == null || product.PublishOn > CurrentRequestData.Now);
+                    break;
+                case PublishStatus.Published:
+                    queryOver = queryOver.Where(product => product.PublishOn != null && product.PublishOn <= CurrentRequestData.Now);
+                    break;
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.Brand))
+            {
+                Brand brandAlias = null;
+                queryOver = queryOver.JoinAlias(product => product.Brand, () => brandAlias)
+                    .Where(() => brandAlias.Name.IsInsensitiveLike(query.Brand, MatchMode.Anywhere));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.CategoryName))
+            {
+                Product categoryProductAlias = null;
+                queryOver =
+                    queryOver.WithSubquery.WhereExists(
+                        QueryOver.Of<Category>()
+                            .JoinAlias(category => category.Products, () => categoryProductAlias)
+                            .Where(
+                                x =>
+                                    x.Name.IsInsensitiveLike(query.CategoryName, MatchMode.Anywhere) &&
+                                    categoryProductAlias.Id == productAlias.Id)
+                            .Select(x => x.Id));
+                //queryOver = queryOver.JoinAlias(product => product.Categories, () => categoryAlias)
+                //    .Where(() => categoryAlias.Name.IsInsensitiveLike(query.CategoryName, MatchMode.Anywhere));
+            }
+
+            if (!string.IsNullOrWhiteSpace(query.SKU))
+            {
+                ProductVariant productVariantAlias = null;
+                queryOver =
+                    queryOver.WithSubquery.WhereExists(
+                        QueryOver.Of<ProductVariant>()
+                            .Where(
+                                x =>
+                                    x.Product.Id == productAlias.Id &&
+                                    x.SKU.IsInsensitiveLike(query.SKU, MatchMode.Anywhere)).Select(x => x.Id));
+                //queryOver = queryOver.JoinAlias(product => product.Variants, () => productVariantAlias)
+                //    .Where(() => productVariantAlias.SKU.IsInsensitiveLike(query.SKU, MatchMode.Anywhere));
+            }
+
+            return queryOver.OrderBy(product => product.Name).Asc.Paged(query.Page);
         }
 
         public IList<Product> GetNewIn(int numberOfItems = 10)

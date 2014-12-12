@@ -4,23 +4,28 @@ using System.Text;
 using System.Web.Mvc;
 using MrCMS.Search;
 using MrCMS.Search.Models;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.UnifiedSearch
 {
     public class GetProductSearchItem : GetUniversalSearchItemBase<Product>
     {
         private readonly UrlHelper _urlHelper;
+        private readonly ISession _session;
 
-        public GetProductSearchItem(UrlHelper urlHelper)
+        public GetProductSearchItem(UrlHelper urlHelper, ISession session)
         {
             _urlHelper = urlHelper;
+            _session = session;
         }
 
         public override UniversalSearchItem GetSearchItem(Product product)
         {
-            var searchTerms = new List<string> { product.Name, GetVariantNames(product) };
-            searchTerms.AddRange(GetSkus(product));
+            var productVariants = _session.QueryOver<ProductVariant>().Where(x => x.Product.Id == product.Id).Cacheable().List();
+            var searchTerms = new List<string> { product.Name, GetVariantNames(productVariants) };
+            searchTerms.AddRange(GetSkus(productVariants));
 
             return new UniversalSearchItem
             {
@@ -32,9 +37,8 @@ namespace MrCMS.Web.Apps.Ecommerce.UnifiedSearch
             };
         }
 
-        private string GetVariantNames(Product product)
+        private string GetVariantNames(IList<ProductVariant> productVariants)
         {
-            var productVariants = product.Variants;
             var sb = new StringBuilder();
             foreach (var productVariant in productVariants.Where(x => !string.IsNullOrWhiteSpace(x.Name)))
             {
@@ -43,10 +47,8 @@ namespace MrCMS.Web.Apps.Ecommerce.UnifiedSearch
             return sb.ToString();
         }
 
-        private IEnumerable<string> GetSkus(Product product)
+        private IEnumerable<string> GetSkus(IList<ProductVariant> productVariants)
         {
-            var productVariants = product.Variants;
-            var sb = new StringBuilder();
             foreach (var productVariant in productVariants)
             {
                 yield return productVariant.SKU;

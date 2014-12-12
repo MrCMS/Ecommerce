@@ -10,16 +10,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
     {
         private readonly ICartManager _cartManager;
         private readonly IShippingMethodUIService _shippingMethodUiService;
+        private readonly PayPalExpressCheckoutPaymentMethod _payPalExpressCheckoutPaymentMethod;
 
-        public PayPalCartManager(ICartManager cartManager, IShippingMethodUIService shippingMethodUiService)
+        public PayPalCartManager(ICartManager cartManager, IShippingMethodUIService shippingMethodUiService,
+            PayPalExpressCheckoutPaymentMethod payPalExpressCheckoutPaymentMethod)
         {
             _cartManager = cartManager;
             _shippingMethodUiService = shippingMethodUiService;
+            _payPalExpressCheckoutPaymentMethod = payPalExpressCheckoutPaymentMethod;
         }
 
         public bool UpdateCart(GetExpressCheckoutDetailsResponseDetailsType details)
         {
-            _cartManager.SetPaymentMethod(new PayPalExpressCheckoutPaymentMethod().SystemName);
+            _cartManager.SetPaymentMethod(_payPalExpressCheckoutPaymentMethod.SystemName);
             _cartManager.SetPayPalExpressPayerId(details.PayerInfo.PayerID);
 
             _cartManager.SetBillingAddress(details.BillingAddress.GetAddress());

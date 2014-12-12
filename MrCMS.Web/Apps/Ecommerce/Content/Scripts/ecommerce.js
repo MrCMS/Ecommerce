@@ -1,17 +1,18 @@
-﻿$(function() {
-    $("#searchTerm").keypress(function(e) {
-        if (e.which == 13) {
-            $("#top-search").submit();
-        }
-    });
+﻿(function ($) {
+    $(function () {
+        $("#searchTerm").keypress(function (e) {
+            if (e.which == 13) {
+                $("#top-search").submit();
+            }
+        });
 
-    $('[data-add-to-wishlist]').each(function() {
-        return new AddToWishlist($(this)).init();
-    });
+        $('[data-add-to-wishlist]').each(function () {
+            return new AddToWishlist($(this)).init();
+        });
 
-    $(".logo a img").addClass("img-responsive");
-    
-});
+        $(".logo a img").addClass("img-responsive");
+    });
+})(jQuery);
 
 
 var AddToWishlist = function (el, options) {

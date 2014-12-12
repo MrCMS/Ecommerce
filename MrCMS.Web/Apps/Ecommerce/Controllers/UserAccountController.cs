@@ -7,7 +7,9 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Models;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Services.ProductReviews;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
@@ -21,16 +23,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IUserService _userService;
         private readonly IPasswordManagementService _passwordManagementService;
         private readonly IAuthorisationService _authorisationService;
+        private readonly IReviewService _reviewService;
 
         public UserAccountController(IOrderService orderService,
             IUserService userService, 
             IPasswordManagementService passwordManagementService, 
-            IAuthorisationService authorisationService)
+            IAuthorisationService authorisationService, IReviewService reviewService)
         {
             _orderService = orderService;
             _userService = userService;
             _passwordManagementService = passwordManagementService;
             _authorisationService = authorisationService;
+            _reviewService = reviewService;
         }
 
         public ActionResult UserAccountOrders(int page = 1)
@@ -58,6 +62,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 }
                 ViewData["Order"] = order;
                 return View(page);
+            }
+            return Redirect(UniquePageHelper.GetUrl<LoginPage>());
+        }
+
+        public ActionResult UserAccountReviews(int page = 1)
+        {
+            var user = CurrentRequestData.CurrentUser;
+            if (user != null)
+            {
+                var reviewsByUser = _reviewService.GetReviewsByUser(user, page);
+
+                var model = new UserAccountReviewsModel(new PagedList<Review>(reviewsByUser, reviewsByUser.PageNumber, reviewsByUser.PageSize), user.Id);
+                return View(model);
             }
             return Redirect(UniquePageHelper.GetUrl<LoginPage>());
         }

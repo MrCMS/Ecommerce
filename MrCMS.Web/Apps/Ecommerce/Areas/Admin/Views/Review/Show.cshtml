@@ -1,0 +1,50 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.Review
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
+<fieldset>
+
+    @using (Html.BeginForm("Approval", "Review", new { id = Model.Id }, FormMethod.Post))
+    {
+        <legend>
+            View review
+            <span class="btn-group display-inline pull-right">
+                @if (Model.Approved != true)
+                {
+                    <input type="submit" class="btn btn-success" name="Approve" value="Approve" />
+                }
+                @if (Model.Approved != false)
+                {
+                    <input type="submit" class="btn btn-danger" name="Reject" value="Reject" />
+                }
+            </span>
+        </legend>
+    }
+    <div class="row">
+        <div class="col-sm-12">
+            <p>
+                <b>Product: </b>
+                @Model.ProductVariant.Name
+            </p>
+            <p>
+                <b>Review posted by: </b>
+                @if (Model.User != null)
+                {
+                    @Html.ActionLink(Model.User.Name, "Edit", "User", new { id = Model.User.Id }, new { target = "_blank" })
+                }
+                else
+                {
+                    <text>
+                        @Model.Email
+                    </text>
+                }
+            </p>
+            <p>
+                <b>Title: </b>
+                @Model.Title
+            </p>
+            <p>
+                <b>Text: </b>
+                @Model.Text
+            </p>
+        </div>
+    </div>
+</fieldset>

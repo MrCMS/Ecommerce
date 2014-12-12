@@ -124,7 +124,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             product.MetaTitle = dataTransferObject.SEOTitle;
             product.MetaDescription = dataTransferObject.SEODescription;
             product.MetaKeywords = dataTransferObject.SEOKeywords;
-            product.Abstract = dataTransferObject.Abstract;
+            product.ProductAbstract = dataTransferObject.Abstract;
             product.PublishOn = dataTransferObject.PublishDate;
 
             bool isNew = false;
