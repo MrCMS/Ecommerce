@@ -49,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             return
                 cart.Items.FirstOrDefault(
-                    cartItem => cartItem.Item.SKU == item.SKU && cartItem.Data == data);
+                    cartItem => cartItem.Item.Id == item.Id && cartItem.Data == data);
         }
 
         public void Delete(CartItem item)

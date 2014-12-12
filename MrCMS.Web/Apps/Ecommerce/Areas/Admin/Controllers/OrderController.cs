@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Entities.People;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
@@ -16,7 +15,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         private readonly IOrderAdminService _orderAdminService;
         private readonly IUserService _userService;
 
-        public OrderController(IOrderAdminService orderAdminService,IUserService userService)
+        public OrderController(IOrderAdminService orderAdminService, IUserService userService)
         {
             _orderAdminService = orderAdminService;
             _userService = userService;
@@ -39,7 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public ActionResult Edit(Order order)
         {
             return order != null
-                ? (ActionResult) View(order)
+                ? (ActionResult)View(order)
                 : RedirectToAction("Index");
         }
 
@@ -57,7 +56,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectToRouteResult Cancel_POST(Order order)
         {
             _orderAdminService.Cancel(order);
-            return RedirectToAction("Edit", "Order", new {id = order.Id});
+            return RedirectToAction("Edit", "Order", new { id = order.Id });
         }
 
         [HttpGet]
@@ -75,7 +74,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectToRouteResult MarkAsShipped_POST(Order order)
         {
             _orderAdminService.MarkAsShipped(order);
-            return RedirectToAction("Edit", "Order", new {id = order.Id});
+            return RedirectToAction("Edit", "Order", new { id = order.Id });
         }
 
         [HttpGet]
@@ -92,7 +91,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectToRouteResult MarkAsPaid_POST(Order order)
         {
             _orderAdminService.MarkAsPaid(order);
-            return RedirectToAction("Edit", "Order", new {id = order.Id});
+            return RedirectToAction("Edit", "Order", new { id = order.Id });
         }
 
         [HttpGet]
@@ -109,7 +108,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public RedirectToRouteResult MarkAsVoided_POST(Order order)
         {
             _orderAdminService.MarkAsVoided(order);
-            return RedirectToAction("Edit", "Order", new {id = order.Id});
+            return RedirectToAction("Edit", "Order", new { id = order.Id });
         }
 
         [HttpGet]
@@ -126,7 +125,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public ActionResult SetTrackingNumber_POST(Order order)
         {
             _orderAdminService.SetTrackingNumber(order);
-            return RedirectToAction("Edit", "Order", new {id = order.Id});
+            return RedirectToAction("Edit", "Order", new { id = order.Id });
         }
 
         [HttpGet]
@@ -144,13 +143,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             _orderAdminService.Delete(order);
             return RedirectToAction("Index", "Order");
-        }
-
-        [ChildActionOnly]
-        public PartialViewResult ForUser(User user)
-        {
-            var orders = _userService.GetAll<Order>(user);
-            return PartialView(orders);
         }
     }
 }

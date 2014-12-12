@@ -31,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
         {
             var shoppingBasket = _sagePayItemCreator.GetShoppingBasket(cartModel);
             var billingAddress = _sagePayItemCreator.GetAddress(cartModel.BillingAddress);
-            var deliveryAddress = _sagePayItemCreator.GetAddress(cartModel.ShippingAddress);
+            var deliveryAddress = _sagePayItemCreator.GetAddress(cartModel.ShippingAddress ?? cartModel.BillingAddress);
             var transactionRegistration = new TransactionRegistration
                                               {
                                                   AllowGiftAid = _sagePaySettings.AllowGiftAidString,

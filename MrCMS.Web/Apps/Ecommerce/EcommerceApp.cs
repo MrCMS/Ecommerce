@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using MrCMS.Apps;
-using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
-using MrCMS.Installation;
-using MrCMS.PaypointService.API;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration.Listeners;
+using MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems;
+using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
@@ -49,8 +48,11 @@ namespace MrCMS.Web.Apps.Ecommerce
             {
                 yield return typeof(DiscountLimitation);
                 yield return typeof(DiscountApplication);
+                yield return typeof(CartItemBasedDiscountApplication);
                 yield return typeof(EcommerceSearchablePage);
                 yield return typeof(ContentItem);
+                yield return typeof(RewardPointsHistory);
+                yield return typeof(OrderRewardPointsHistory);
             }
         }
 
@@ -73,11 +75,6 @@ namespace MrCMS.Web.Apps.Ecommerce
                         _salesChannelApps[salesChannel] = ecommerceApp.AppName;
             }
         }
-
-        //protected override void OnInstallation(ISession session, InstallModel model, Site site)
-        //{
-        //    EcommerceInstallation.InstallApp(session, model, site);
-        //}
 
         public override IEnumerable<Type> Conventions
         {

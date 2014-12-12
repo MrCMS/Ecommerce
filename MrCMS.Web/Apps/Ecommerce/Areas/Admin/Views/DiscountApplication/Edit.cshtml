@@ -1,0 +1,21 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.Discounts.DiscountApplication
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/discount-application.js");
+}
+
+@using (Html.BeginForm("Edit", "DiscountApplication",  FormMethod.Post, new { data_discount_application = "true" }))
+{
+    <fieldset>
+        <legend>
+            Edit @Model.DisplayName
+            <span class="pull-right display-inline btn-group">
+                <button type="submit" class="btn btn-primary">Edit</button>
+            </span>
+        </legend>
+        <div data-application-fields>
+            @{ Html.RenderAction("Fields", Model.GetType().Name, new {id = Model.Id}); }
+        </div>
+    </fieldset>
+}

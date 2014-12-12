@@ -1,0 +1,82 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
+@model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.ProductReviewSearchQuery
+@{
+    ViewBag.Title = "Reviews";
+    var reviews = ViewData["results"] as IPagedList<Review> ?? PagedList<Review>.Empty;
+    var approvalOptions = ViewData["approval-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
+
+    <fieldset>
+        <legend>
+            Reviews
+        </legend>
+        
+        @using (Html.BeginForm("Index", "Review", FormMethod.Get))
+        {
+            <div class="row">
+                <div class="col-xs-4">
+                    @Html.LabelFor(query => query.ApprovalStatus)
+                    <div class="form-group">
+                        @Html.DropDownListFor(query => query.ApprovalStatus, approvalOptions, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    @Html.LabelFor(query => query.ProductName)
+                    <div class="form-group">
+                        @Html.TextBoxFor(query => query.ProductName, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    @Html.LabelFor(query => query.Email)
+                    <div class="form-group">
+                        @Html.TextBoxFor(query => query.Email, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    @Html.LabelFor(query => query.Title)
+                    <div class="form-group">
+                        @Html.TextBoxFor(query => query.Title, new { @class = "form-control" })
+                    </div>
+                    
+                </div>
+                <div class="col-xs-4">
+                    @Html.LabelFor(query => query.DateFrom)
+                    <div class="form-group">
+                        @Html.TextBoxFor(query => query.DateFrom, new { @class = "date-time-picker form-control" })
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    @Html.LabelFor(query => query.DateTo)
+                    <div class="form-group">
+                        @Html.TextBoxFor(query => query.DateTo, new { @class = "date-time-picker form-control" })
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-xs-4">
+                    <input type="submit" class="btn btn-primary btn-success" value="Search" />
+                </div>
+            </div>
+        }
+        <hr />
+        
+        @if (reviews.Any())
+        {
+            Html.RenderPartial("ReviewList", reviews.ToList());
+            @Html.Pager(reviews, "Index", page => new {page})
+        }
+        else
+        {
+            <p>
+                There are currently no reviews that match your search criteria.
+            </p>
+        }
+    </fieldset>
+
+    
+

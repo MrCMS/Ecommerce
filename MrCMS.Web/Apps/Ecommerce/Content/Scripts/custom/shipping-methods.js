@@ -28,12 +28,7 @@
             setHtml('#method-info', result);
         });
     }
-    function updateSummary() {
-        $.get('/Apps/Ecommerce/Checkout/Summary', function (result) {
-            $('#basic-details').replaceWith(result);
-        });
-
-    }
+   
     function showHideToPayment() {
         var value = $("select#ShippingMethod").val();
         if (value) {
@@ -47,7 +42,7 @@
         {
             method: $(this).val()
         }, function () {
-            updateSummary();
+            $(document).trigger('update-summary');
             showHideToPayment();
         });
     });

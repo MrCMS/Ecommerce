@@ -1,0 +1,16 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications.CartItemBasedDiscountApplication
+<hr />
+<div class="form-group">
+    @Html.InlineCheckboxFor(application => application.CartItemsFromLimitations)
+</div>
+<div class="form-group" data-from-limitations>
+    @Html.LabelFor(application => application.SKUs)
+    @Html.TextBoxFor(application => application.SKUs, new { @class = "form-control" })
+    @Html.ValidationMessageFor(application => application.SKUs)
+</div>
+<div class="form-group" data-from-limitations>
+    @Html.LabelFor(application => application.CategoryIds)
+    @Html.TextBoxFor(application => application.CategoryIds, new { @class = "form-control" })
+    @Html.ValidationMessageFor(application => application.CategoryIds)
+</div>

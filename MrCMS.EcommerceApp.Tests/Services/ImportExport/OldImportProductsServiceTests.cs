@@ -92,7 +92,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 
             result.UrlSegment.ShouldBeEquivalentTo("test-url");
             result.Name.ShouldBeEquivalentTo("Test Product");
-            result.Abstract.ShouldBeEquivalentTo("Test Abstract");
+            result.ProductAbstract.ShouldBeEquivalentTo("Test Abstract");
             result.BodyContent.ShouldBeEquivalentTo("Test Description");
             result.MetaDescription.ShouldBeEquivalentTo("Test SEO Description");
             result.MetaKeywords.ShouldBeEquivalentTo("Test, Thought");

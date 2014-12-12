@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Pages.Product
 <div class="row">
     <div class="col-lg-3">
         <div id="brands">
@@ -6,8 +7,11 @@
         </div>
     </div>
     <div class="col-lg-9">
-        @Html.LabelFor(product => product.Abstract)
-        @Html.TextAreaFor(product => product.Abstract, new { rows = 4, @class = "form-control" })
+        @Html.LabelFor(product => product.ProductAbstract)
+        @Html.TextAreaFor(product => product.ProductAbstract, new { rows = 4, @class = "form-control", data_characters = "500" })
+        <span id="abstract-character-count">
+            <span>@((500 - (Model.ProductAbstract ?? string.Empty).Length) + " characters remaining")</span>
+        </span>
     </div>
 </div>
 <hr />
@@ -33,3 +37,5 @@
 @{ Html.RenderAction("Images", "Product", new { id = Model.Id }); }
 <hr />
 @{ Html.RenderAction("RelatedProducts", "Product", new { id = Model.Id }); }
+
+@{Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/abstract.js");}

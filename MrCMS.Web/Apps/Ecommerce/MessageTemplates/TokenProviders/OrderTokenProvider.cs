@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
@@ -93,7 +94,7 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
                                                            }
                                                            if (order.DiscountAmount > 0)
                                                            {
-                                                               sb.AppendFormat("Discount: {0} (Code: {1})<br />", order.DiscountAmount.ToCurrencyFormat(), order.DiscountCode);
+                                                               sb.AppendFormat("Discount: {0}<br />", order.DiscountAmount.ToCurrencyFormat());
                                                            }
                                                            sb.AppendFormat("<strong>Total: {0}</strong>", order.Total.ToCurrencyFormat());
                                                            sb.Append("</p>");

@@ -45,12 +45,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             _documentService.PublishNow(categoryContainer);
             pageModel.ProductSearch = productSearch;
 
+            var now = DateTime.UtcNow;
             var yourBasket = new Cart
             {
                 Name = "Your Basket",
                 UrlSegment = "basket",
                 RevealInNavigation = false,
-                PublishOn = DateTime.UtcNow
+                PublishOn = now
             };
             _documentService.AddDocument(yourBasket);
             var enterOrderEmail = new EnterOrderEmail
@@ -60,7 +61,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 RevealInNavigation = false,
                 Parent = yourBasket,
                 DisplayOrder = 0,
-                PublishOn = DateTime.UtcNow,
+                PublishOn = now,
             };
             _documentService.AddDocument(enterOrderEmail);
             var setPaymentDetails = new PaymentDetails
@@ -70,17 +71,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 RevealInNavigation = false,
                 Parent = yourBasket,
                 DisplayOrder = 1,
-                PublishOn = DateTime.UtcNow,
+                PublishOn = now,
             };
             _documentService.AddDocument(setPaymentDetails);
             var setDeliveryDetails = new SetShippingDetails
             {
-                Name = "Set Delivery Details",
-                UrlSegment = "set-delivery-details",
+                Name = "Set Shipping Details",
+                UrlSegment = "set-shipping-details",
                 RevealInNavigation = false,
                 Parent = yourBasket,
                 DisplayOrder = 2,
-                PublishOn = DateTime.UtcNow,
+                PublishOn = now,
             };
             _documentService.AddDocument(setDeliveryDetails);
             var orderPlaced = new OrderPlaced
@@ -90,7 +91,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 RevealInNavigation = false,
                 Parent = yourBasket,
                 DisplayOrder = 3,
-                PublishOn = DateTime.UtcNow,
+                PublishOn = now,
             };
             _documentService.AddDocument(orderPlaced);
 
@@ -100,7 +101,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Name = "Added to Basket",
                 UrlSegment = "add-to-basket",
                 RevealInNavigation = false,
-                PublishOn = DateTime.UtcNow
+                PublishOn = now
             };
             _documentService.AddDocument(addedToCart);
             pageModel.ProductAddedToCart = addedToCart;
@@ -110,7 +111,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Name = "Wishlist",
                 UrlSegment = "wishlist",
                 RevealInNavigation = true,
-                PublishOn = DateTime.UtcNow
+                PublishOn = now
             };
             _documentService.AddDocument(wishlist);
 
@@ -119,7 +120,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Name = "New In",
                 UrlSegment = "new-in",
                 RevealInNavigation = true,
-                PublishOn = DateTime.UtcNow
+                PublishOn = now
             };
             _documentService.AddDocument(newIn);
 
@@ -128,8 +129,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Name = "About us",
                 UrlSegment = "about-us",
                 RevealInNavigation = true,
-                PublishOn = DateTime.UtcNow,
-                BodyContent = EcommerceInstalInfo.AboutUsText
+                PublishOn = now,
+                BodyContent = EcommerceInstallInfo.AboutUsText
             };
             _documentService.AddDocument(about);
 
@@ -137,7 +138,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var homePage = _documentService.GetDocumentByUrl<TextPage>("home");
             if (homePage != null)
             {
-                homePage.BodyContent = EcommerceInstalInfo.HomeCopy;
+                homePage.BodyContent = EcommerceInstallInfo.HomeCopy;
                 var templates = _pageTemplateAdminService.Search(new PageTemplateSearchQuery());
                 var homeTemplate = templates.FirstOrDefault(x => x.Name == "Home Page");
                 if (homeTemplate != null)
@@ -163,13 +164,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Name = "Contact Us",
                 UrlSegment = "contact-us",
                 RevealInNavigation = true,
-                PublishOn = DateTime.UtcNow,
+                PublishOn = now,
                 Latitude = 55.01021m,
                 Longitude = -1.44998m,
-                Address = EcommerceInstalInfo.Address,
+                Address = EcommerceInstallInfo.Address,
                 PinImage = mediaModel.Logo.FileUrl,
                 BodyContent = "[form]",
-                FormDesign = EcommerceInstalInfo.ContactFormDesign
+                FormDesign = EcommerceInstallInfo.ContactFormDesign
             };
             _documentService.AddDocument(contactUs);
             GetFormProperties(contactUs);

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -41,11 +42,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                     ShippingMethodName = cartModel.RequiresShipping ? cartModel.ShippingMethod.Name : "No shipping required",
                     Subtotal = cartModel.Subtotal,
                     DiscountAmount = cartModel.OrderTotalDiscount,
-                    Discount = cartModel.Discount,
-                    DiscountCode = cartModel.DiscountCode,
+                    ShippingDiscountAmount = cartModel.ShippingDiscount,
+                    //DiscountCode = cartModel.DiscountCodes,
+                    RewardPointsAppliedAmount = cartModel.AppliedRewardPointsAmount,
                     Tax = cartModel.Tax,
                     Total = cartModel.Total,
                     TotalPaid = cartModel.TotalToPay,
+                    ShippingSubtotal = cartModel.ShippingTotalPreDiscount,
                     ShippingTotal = cartModel.ShippingTotal,
                     ShippingTax = cartModel.ShippingTax,
                     User = cartModel.User,
@@ -58,9 +61,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                     ShippingStatus = cartModel.RequiresShipping ? ShippingStatus.Pending : ShippingStatus.ShippingNotRequired,
                     ShippingTaxPercentage = cartModel.ShippingTaxPercentage,
                     SalesChannel = EcommerceApp.DefaultSalesChannel,
-                    Guid = cartModel.CartGuid
+                    Guid = cartModel.CartGuid,
                 };
                 session.Save(order);
+                foreach (var discount in cartModel.Discounts)
+                {
+                    var discountUsage = new DiscountUsage
+                    {
+                        Discount = discount.Discount,
+                        Order = order
+                    };
+                    session.Save(discountUsage);
+                    order.DiscountUsages.Add(discountUsage);
+                }
+
                 foreach (var orderLine in cartModel.Items.Select(item => _orderLineCreator.GetOrderLine(item)))
                 {
                     orderLine.Order = order;

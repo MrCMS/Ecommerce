@@ -56,12 +56,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                         ACLOption.Create(new ProductSpecificationAttributeACL(), ProductSpecificationAttributeACL.List)),
                     new ChildMenuItem("Discounts", _urlHelper.Action("Index", "Discount"),
                         ACLOption.Create(new DiscountACL(), DiscountACL.List)),
+                    new ChildMenuItem("Search Logs", _urlHelper.Action("Index", "SearchLog"),
+                        ACLOption.Create(new SearchLogACL(), SearchLogACL.List)),
                 };
                 if (_ecommerceSettings.GiftCardsEnabled)
                 {
                     adminItems.Add(new ChildMenuItem("Gift Cards", _urlHelper.Action("Index", "GiftCard"),
                         ACLOption.Create(new GiftCardACL(), GiftCardACL.List)));
                 }
+              
                 if (_ecommerceSettings.WarehouseStockEnabled)
                 {
                     adminItems.Add(new ChildMenuItem("Warehouses", _urlHelper.Action("Index", "Warehouse"),
@@ -76,6 +79,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     ACLOption.Create(new NewsletterTemplateACL(), NewsletterTemplateACL.List)));
                 ecommerceMenu.Add(new ChildMenuItem("Newsletter", _urlHelper.Action("Index", "Newsletter"),
                     ACLOption.Create(new NewsletterACL(), NewsletterACL.List)));
+                ecommerceMenu.Add(new ChildMenuItem("Product Reviews", _urlHelper.Action("Index", "Review"),
+                    ACLOption.Create(new ProductReviewACL(), ProductReviewACL.List)));
                 return ecommerceMenu;
             }
         }

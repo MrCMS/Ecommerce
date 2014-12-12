@@ -1,0 +1,107 @@
+﻿@using MrCMS.Entities.People
+@using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints
+@model IList<MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints.RewardPointsHistory>
+@{
+    var user = ViewData["user"] as User;
+}
+<div class="row">
+    <div class="col-sm-8">
+
+        @if (!Model.Any())
+        {
+            <span>
+                No reward points awarded.
+            </span>
+        }
+        else
+        {
+            <dl>
+                <dt>
+                    Balance
+                </dt>
+                <dd>
+                    @Model.Sum(x => x.Points)
+                </dd>
+            </dl>
+            <table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Points
+                        </th>
+                        <th>
+                            Message
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Order
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (RewardPointsHistory item in Model)
+                    {
+                        var orderHistory = item as OrderRewardPointsHistory;
+                        var order = orderHistory == null ? null : orderHistory.Order;
+                        <tr class="@GetRowStatus(item)">
+                            <td>
+                                @item.DisplayName
+                            </td>
+                            <td>
+                                @item.Points
+                            </td>
+                            <td>
+                                @item.Message
+                            </td>
+                            <td>
+                                @item.CreatedOn
+                            </td>
+                            <td>
+                                @if (order == null)
+                                {
+                                    <span>
+                                        -
+                                    </span>
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Order #" + order.Id, "Edit", "Order", new { id = order.Id }, new { @class = "btn btn-default btn-mini" })
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+    <div class="col-sm-4">
+        @{ Html.RenderAction("Add", "UserRewardPoints", new { user });}
+    </div>
+</div>
+@functions {
+
+    private static string GetRowStatus(RewardPointsHistory item)
+    {
+        string status = "warning";
+        if (item.Points > 0)
+        {
+            status = "success";
+        }
+        else if (item.Points < 0)
+        {
+            status = "error";
+        }
+        return status;
+    }
+
+}

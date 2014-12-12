@@ -10,286 +10,328 @@
 @{
     var ecommerceSettings = SiteSettings<EcommerceSettings>();
     var taxSettings = SiteSettings<TaxSettings>();
+    var enterOrderEmailUrl = UniquePageHelper.GetUrl<EnterOrderEmail>();
+
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/discount.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/cart.js");
 }
-
-<div id="details">
-    <div class="row margin-bottom-10">
-        <div class="col-sm-6">
-            <h1>Shopping Basket</h1>
-        </div>
-        <div class="col-sm-6">
-            <div class="row">
-                <div class="@(!Model.CanEnterPaymentFlow ? "col-sm-offset-6" : "") col-sm-6">
-                    <a class="btn btn-default btn-block " href="@(UniquePageHelper.GetUrl<ProductSearch>())">@Resource("Continue Shopping")</a>
-                </div>
-                @if (Model.CanEnterPaymentFlow)
-                {
-                    <div class="visible-xs" style="padding-top: 5px;"></div>
-                    <div class="col-sm-6">
-                        <a class="btn btn-primary btn-block" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">@Resource("Pay Securely NOW!")</a>
-                    </div>
-                }
+<div data-cart-info="@Url.Action("Details", "Cart")">
+    <div class="container">
+        <div class="row margin-bottom-10">
+            <div class="col-sm-6">
+                <h1>Shopping Basket</h1>
             </div>
-        </div>
-    </div>
-
-    @if (Model.CannotCheckoutReasons.Any())
-    {
-        <div class="alert alert-danger">
-            <p>@Resource("Sorry, we cannot begin checkout because"):</p>
-            <ul>
-                @foreach (var reason in Model.CannotCheckoutReasons)
-                {
-                    <li>@reason</li>
-                }
-            </ul>
-        </div>
-    }
-
-    <div id="cart-items" class="margin-bottom-20">
-        @if (Model.Items.Any())
-        {
-            <div class="row margin-bottom-10 padding-bottom-10 grey-border-bottom" id="header">
-                <div class="col-xs-6">
-                    <strong>Item Description</strong>
-                </div>
-                <div class="col-xs-2 text-center">
-                    <strong class="hidden-xs">Quantity</strong>
-                    <strong class="visible-xs">Qty</strong>
-                </div>
-                <div class="col-xs-3 col-sm-2 text-right">
-                    <strong>Price</strong>
-                </div>
-                <div class="col-xs-3 col-sm-2 text-right">
-                    <strong>Total</strong>
-                </div>
-            </div>
-            foreach (CartItem item in Model.Items)
-            {
-                Html.RenderPartial("CartItem", item);
-            }
-        }
-        else
-        {
-            <p class="red">No items in basket.</p>
-        }
-    </div>
-
-    @if (Model.Items.Any())
-    {
-        <div class="row margin-bottom-20">
-            <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6">
+            <div class="col-sm-6">
                 <div class="row">
-                    <div class="col-sm-6">
-                        <button type="button" class="btn btn-default btn-block" id="update-basket">Update Basket</button>
+                    <div class="@(!Model.CanEnterPaymentFlow ? "col-sm-offset-6" : "") col-sm-6">
+                        <a class="btn btn-default btn-block " href="@(UniquePageHelper.GetUrl<ProductSearch>())">@Resource("Continue Shopping")</a>
                     </div>
-                    <div class="visible-xs" style="padding-top: 5px;"></div>
-                    <div class="col-sm-6">
-                        <button type="button" class="btn btn-danger btn-block" id="empty-basket">Empty Basket</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row margin-bottom-10" id="cart-discount">
-            <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6">
-                @Html.HiddenFor(x => x.DiscountCode)
-                <div class="row" id="discount-code-box">
-                    <div class="col-sm-4 line-height-30">
-                        Discount Code
-                    </div>
-                    <div class="col-sm-4">
-                        <input class="form-control" type="text" id="discount-code" />
+                    @if (Model.CanEnterPaymentFlow)
+                    {
                         <div class="visible-xs" style="padding-top: 5px;"></div>
-                    </div>
-                    <div class="col-sm-4">
-                        <button id="apply-discount-code" class="btn btn-default btn-block">Apply Discount Code</button>
-                    </div>
+                        <div class="col-sm-6">
+                            <a class="btn btn-primary btn-block" href="@enterOrderEmailUrl">@Resource("Pay Securely NOW!")</a>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
-    }
 
-    <div class="row">
-        <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6" id="cart-summary">
+        @if (Model.CannotCheckoutReasons.Any())
+        {
+            <div class="alert alert-danger">
+                <p>@Resource("Sorry, we cannot begin checkout because"):</p>
+                <ul>
+                    @foreach (var reason in Model.CannotCheckoutReasons)
+                    {
+                        <li>@reason</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <div id="cart-items" class="margin-bottom-20">
             @if (Model.Items.Any())
             {
-                <div class="row margin-bottom-10">
-                    <div class="col-xs-8 col-sm-6">
-                        Subtotal before delivery charges
+                <div class="row margin-bottom-10 padding-bottom-10 grey-border-bottom" id="header">
+                    <div class="col-xs-6">
+                        <strong>Item Description</strong>
                     </div>
-                    <div class="col-xs-4 col-sm-6 text-right" id="cart-subtotal">
-                        @Model.Subtotal.ToCurrencyFormat()
+                    <div class="col-xs-2 text-center">
+                        <strong class="hidden-xs">Quantity</strong>
+                        <strong class="visible-xs">Qty</strong>
                     </div>
-                </div>
-                if (Model.HasDiscount)
-                {
-                    <div class="row margin-bottom-10">
-                        <div class="col-xs-8 col-sm-6">
-                            Discount
-                        </div>
-                        <div class="col-xs-4 col-sm-6 text-right" id="cart-discount-total">
-                            <button id="remove-discount-code" class="btn btn-xs btn-danger">Remove</button>
-                            @((-Model.OrderTotalDiscount).ToCurrencyFormat())
-                        </div>
+                    <div class="col-xs-3 col-sm-2 text-right">
+                        <strong>Price</strong>
                     </div>
-                }
-                if (taxSettings.TaxesEnabled)
-                {
-                    <div class="row margin-bottom-10">
-                        <div class="col-xs-8 col-sm-6">
-                            VAT
-                        </div>
-                        <div class="col-xs-4 col-sm-6 text-right" id="cart-tax">
-                            @Model.Tax.ToCurrencyFormat()
-                        </div>
-                    </div>
-                }
-                <div class="row margin-bottom-10">
-                    <div class="col-xs-8 col-sm-6">
-                        Shipping
-                    </div>
-                    <div class="col-xs-4 col-sm-6 text-right" id="cart-shipping">
-                        @Model.CartPageShipping()
+                    <div class="col-xs-3 col-sm-2 text-right">
+                        <strong>Total</strong>
                     </div>
                 </div>
+                foreach (CartItem item in Model.Items)
+                {
+                    Html.RenderPartial("CartItem", item);
+                }
+            }
+            else
+            {
+                <p class="red">No items in basket.</p>
+            }
+        </div>
 
-                if (ecommerceSettings.GiftMessageEnabled)
-                {
-                    <div class="row margin-bottom-10">
-                        <div class="col-xs-8 col-sm-4">
-                            <strong>Gift Message</strong>
+        @if (Model.Items.Any())
+        {
+            <div class="row margin-bottom-20">
+                <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-default btn-block" id="update-basket">Update Basket</button>
                         </div>
-                        <div class="col-sm-4 hidden-xs">
-                        </div>
-                        <div class="col-sm-4">
-                            <button data-edit-gift-message="true" class="btn btn-default btn-block">
-                                @if (!string.IsNullOrWhiteSpace(Model.GiftMessage))
-                                {
-                                    <text> Edit Message </text>
-                                }
-                                else
-                                {
-                                    <text> Add Message </text>
-                                }
-                            </button>
+                        <div class="visible-xs" style="padding-top: 5px;"></div>
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn-danger btn-block" id="empty-basket">Empty Basket</button>
                         </div>
                     </div>
-                    if (!string.IsNullOrWhiteSpace(Model.GiftMessage))
+                </div>
+            </div>
+
+            <div class="row" id="cart-discount">
+                <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6">
+                    @using (Html.BeginForm("Apply", "Discount", FormMethod.Post, new { data_apply_discount = true }))
                     {
-                        <div class="row margin-bottom-10" data-message-display="true">
-                            <div class="col-xs-8">
-                                @Model.GiftMessage
+                        <div class="row margin-bottom-10" id="discount-code-box">
+                            <div class="col-sm-4 line-height-30">
+                                Discount Code
                             </div>
-                            <div class="col-xs-4">
-                                <button data-remove-gift-message="true" class="btn btn-danger btn-block">
-                                    Remove
-                                </button>
+                            <div class="col-sm-4">
+                                <input class="form-control" type="text" name="discountCode" />
+                                <div class="visible-xs" style="padding-top: 5px;"></div>
+                            </div>
+                            <div class="col-sm-4">
+                                <button type="submit" id="apply-discount-code" class="btn btn-default btn-block">Apply Discount Code</button>
                             </div>
                         </div>
                     }
-                    <div data-message-container="250" data-error-message="Your gift message is more than 250 characters" style="display:none;">
+                    @if (Model.Discounts.Any())
+                    {
                         <div class="row margin-bottom-10">
-                            <div class="col-xs-12">
-                                <div class="form-group">
-                                    <textarea id="gift-message" class="form-control">@Model.GiftMessage</textarea>
-                                </div>
-                                <span id="message-character-count">
-                                    <span></span>
-                                </span>
+                            <div class="col-xs-8 col-sm-6 line-height-30">
+                                Discount@(Model.Discounts.Count > 1 ? "s" : "")
+                            </div>
+                            <div class="col-xs-4 col-sm-6 text-right">
+                                <ul class="list-unstyled margin-bottom-0">
+                                    @foreach (var discount in Model.Discounts.Select(x => x.Discount))
+                                    {
+                                        <li class="line-height-30">
+                                            @discount.Name
+                                            @if (discount.RequiresCode)
+                                            {
+                                                <span>(<a data-remove-discount-code="@Url.Action("Remove", "Discount", new {discountCode = discount.Code})" href="#">Remove</a>)</span>
+                                            }
+                                        </li>
+                                    }
+                                </ul>
                             </div>
                         </div>
-                        <div class="row margin-bottom-10">
-                            <div class="col-xs-8">
-                            </div>
-                            <div class="col-xs-4">
-                                <button data-save-gift-message="true" class="btn btn-default btn-block">
-                                    Save Message
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    }
+                </div>
 
-                }
-                if (ecommerceSettings.GiftCardsEnabled)
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6" id="cart-summary">
+                @if (Model.Items.Any())
                 {
                     <div class="row margin-bottom-10">
                         <div class="col-xs-8 col-sm-6">
-                            <strong>Gift cards</strong>
+                            Subtotal before delivery charges
                         </div>
-                        <div class="col-xs-4 col-sm-6 text-right">
-                        </div>
-                    </div>
-                    <div class="row margin-bottom-10">
-                        <div class="col-sm-4 line-height-30">
-                            Gift Card Code
-                        </div>
-                        <div class="col-sm-4">
-                            <input class="form-control" type="text" id="gift-card-code" />
-                            <div class="visible-xs" style="padding-top: 5px;"></div>
-                        </div>
-                        <div class="col-sm-4">
-                            <button id="apply-gift-card-code" class="btn btn-default btn-block">Apply Gift Card</button>
+                        <div class="col-xs-4 col-sm-6 text-right" id="cart-subtotal">
+                            @Model.Subtotal.ToCurrencyFormat()
                         </div>
                     </div>
-                    <div data-gift-card-message="true">
-                        
-                    </div>
-                    if (Model.AppliedGiftCards.Any())
+                    if (Model.HasOrderTotalDiscount())
                     {
-                        foreach (GiftCard card in Model.AppliedGiftCards)
+                        <div class="row margin-bottom-10">
+                            <div class="col-xs-8 col-sm-6">
+                                Order Discount
+                            </div>
+                            <div class="col-xs-4 col-sm-6 text-right" id="cart-discount-total">
+                                @((-Model.OrderTotalDiscount).ToCurrencyFormat())
+                            </div>
+                        </div>
+                    }
+                    if (taxSettings.TaxesEnabled)
+                    {
+                        <div class="row margin-bottom-10">
+                            <div class="col-xs-8 col-sm-6">
+                                VAT
+                            </div>
+                            <div class="col-xs-4 col-sm-6 text-right" id="cart-tax">
+                                @Model.Tax.ToCurrencyFormat()
+                            </div>
+                        </div>
+                    }
+                    <div class="row margin-bottom-10">
+                        <div class="col-xs-8 col-sm-6">
+                            Shipping
+                        </div>
+                        <div class="col-xs-4 col-sm-6 text-right" id="cart-shipping">
+                            @Model.CartPageShipping()
+                        </div>
+                    </div>
+                    if (Model.HasShippingDiscount())
+                    {
+                        <div class="row margin-bottom-10">
+                            <div class="col-xs-8 col-sm-6">
+                                Shipping Discount
+                            </div>
+                            <div class="col-xs-4 col-sm-6 text-right" id="cart-discount-total">
+                                @((-Model.ShippingDiscount).ToCurrencyFormat())
+                            </div>
+                        </div>
+                    }
+
+                    if (ecommerceSettings.GiftMessageEnabled)
+                    {
+
+                        <div class="row margin-bottom-10">
+                            <div class="col-xs-12">
+                                <strong>Gift Message</strong>
+                            </div>
+                        </div>
+                        <div data-message-container="250" data-error-message="Your gift message is more than 250 characters">
+                            <div class="row margin-bottom-10">
+                                <div class="col-xs-12">
+                                    <div class="form-group">
+                                        <textarea id="gift-message" class="form-control">@Model.GiftMessage</textarea>
+                                    </div>
+                                    <span id="message-character-count">
+                                        <span></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    if (ecommerceSettings.RewardPointsEnabled && Model.AvailablePoints > 0)
+                    {
+                        <div class="row margin-bottom-10">
+                            <div class="col-sm-12 line-height-30">
+                                @Html.InlineCheckboxFor(x => x.UseRewardPoints, checkboxAttributes: new { @class = "checkbox" })
+                                @if (!Model.UseRewardPoints)
+                                {
+                                    <span>
+                                        Available balance: @Model.AvailablePoints (@Model.AvailablePointsValue.ToCurrencyFormat())
+                                    </span>
+                                }
+                            </div>
+                            <div class="col-sm-4 text-right">
+                            </div>
+                        </div>
+                        if (Model.AppliedRewardPointsAmount > 0)
                         {
                             <div class="row margin-bottom-10">
-                                <div class="col-xs-8 col-sm-6">
-                                    Code - @card.Code
-                                    <a href="#" data-remove-card="@card.Code">&times;</a>
+                                <div class="col-sm-8 line-height-30">
+                                    Applied reward points
                                 </div>
-                                <div class="col-xs-4 col-sm-6 text-right">
-                                    @card.AvailableAmount.ToCurrencyFormat()
+                                <div class="col-sm-4 text-right">
+                                    @((-Model.AppliedRewardPointsAmount).ToCurrencyFormat())
                                 </div>
                             </div>
                         }
+                    }
+                    if (ecommerceSettings.GiftCardsEnabled)
+                    {
                         <div class="row margin-bottom-10">
                             <div class="col-xs-8 col-sm-6">
-                                Gift Card Total
+                                <strong>Gift cards</strong>
                             </div>
                             <div class="col-xs-4 col-sm-6 text-right">
-                                @Model.AvailableGiftCardAmount.ToCurrencyFormat()
+                            </div>
+                        </div>
+                        <div class="row margin-bottom-10">
+                            <div class="col-sm-4 line-height-30">
+                                Gift Card Code
+                            </div>
+                            <div class="col-sm-4">
+                                <input class="form-control" type="text" id="gift-card-code" />
+                                <div class="visible-xs" style="padding-top: 5px;"></div>
+                            </div>
+                            <div class="col-sm-4">
+                                <button id="apply-gift-card-code" class="btn btn-default btn-block">Apply Gift Card</button>
+                            </div>
+                        </div>
+                        <div data-gift-card-message="true">
+
+                        </div>
+                        if (Model.AppliedGiftCards.Any())
+                        {
+                            foreach (GiftCard card in Model.AppliedGiftCards)
+                            {
+                                <div class="row margin-bottom-10">
+                                    <div class="col-xs-8 col-sm-6">
+                                        Code - @card.Code
+                                        <a href="#" data-remove-card="@card.Code">&times;</a>
+                                    </div>
+                                    <div class="col-xs-4 col-sm-6 text-right">
+                                        @card.AvailableAmount.ToCurrencyFormat()
+                                    </div>
+                                </div>
+                            }
+                            <div class="row margin-bottom-10">
+                                <div class="col-xs-8 col-sm-6">
+                                    Gift Card Total
+                                </div>
+                                <div class="col-xs-4 col-sm-6 text-right">
+                                    @Model.AvailableGiftCardAmount.ToCurrencyFormat()
+                                </div>
+                            </div>
+                        }
+                    }
+
+                    <hr />
+                    <div class="row margin-bottom-10">
+                        <div class="col-xs-8 col-sm-6">
+                            <strong>Total</strong>
+                        </div>
+                        <div class="col-xs-4 col-sm-6 text-right" id="cart-total">
+                            <strong>@Model.CartPageTotal()</strong>
+                        </div>
+                    </div>
+                    if (Model.TotalToPay != Model.Total)
+                    {
+                        <hr />
+                        <div class="row margin-bottom-10">
+                            <div class="col-xs-8 col-sm-6">
+                                <strong>Total to pay</strong>
+                            </div>
+                            <div class="col-xs-4 col-sm-6 text-right" id="cart-total">
+                                <strong>@Model.CartPageTotalToPay()</strong>
                             </div>
                         </div>
                     }
+                    <hr />
                 }
-
-                <hr />
-                <div class="row margin-bottom-10">
-                    <div class="col-xs-8 col-sm-6">
-                        <strong>Total</strong>
-                    </div>
-                    <div class="col-xs-4 col-sm-6 text-right" id="cart-total">
-                        <strong>@Model.CartPageTotal()</strong>
-                    </div>
-                </div>
-                <hr />
-            }
+            </div>
         </div>
-    </div>
-    <div class="row margin-bottom-10">
-        <div class="col-sm-6 col-sm-offset-6">
-            @if (Model.CanEnterPaymentFlow)
-            {
-                <a class="btn btn-primary btn-block btn-lg" href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">Pay Securely NOW!</a>
-            }
-            @if (Model.CanUsePayPalExpress)
-            {
-                using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
+        <div class="row margin-bottom-10">
+            <div class="col-sm-6 col-sm-offset-6">
+                @if (Model.CanEnterPaymentFlow)
                 {
-                    <div class="text-center">
-                        <p>Or</p>
-                        <input type="image" src="https://www.paypal-marketing.com/paypal/html/partner/na/portal-v2/img/logos/checkout_logo_medium_170x32.png" />
-                    </div>
+                    <a class="btn btn-primary btn-block btn-lg" href="@enterOrderEmailUrl">Pay Securely NOW!</a>
                 }
-            }
+                @if (Model.CanUsePayPalExpress)
+                {
+                    using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
+                    {
+                        <div class="text-center">
+                            <p>Or</p>
+                            <input type="image" src="https://www.paypal-marketing.com/paypal/html/partner/na/portal-v2/img/logos/checkout_logo_medium_170x32.png" />
+                        </div>
+                    }
+                }
+            </div>
         </div>
     </div>
 </div>
-@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/cart.js"); }
