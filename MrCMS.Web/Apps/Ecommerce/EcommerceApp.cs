@@ -23,6 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce
         private static Dictionary<string, string> _salesChannelApps;
         public const string EcommerceAppName = "Ecommerce";
         public const string DefaultSalesChannel = "MrCMS";
+        public const string NopCommerceSalesChannel = "NopCommerce";
 
         public override string AppName
         {
@@ -67,6 +68,7 @@ namespace MrCMS.Web.Apps.Ecommerce
         {
             _salesChannelApps = new Dictionary<string, string>();
             _salesChannelApps[DefaultSalesChannel] = EcommerceAppName;
+            _salesChannelApps[NopCommerceSalesChannel] = EcommerceAppName;
             foreach (var appName in TypeHelper.GetAllConcreteTypesAssignableFrom<IEcommerceApp>())
             {
                 var ecommerceApp = Activator.CreateInstance(appName) as IEcommerceApp;
