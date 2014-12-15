@@ -37,8 +37,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             {
                 var order = new Order
                 {
-                    ShippingAddress = cartModel.RequiresShipping ? cartModel.ShippingAddress.ToAddressData(_session) : null,
-                    BillingAddress = cartModel.BillingAddress.ToAddressData(_session),
+                    ShippingAddress = cartModel.RequiresShipping ? cartModel.ShippingAddress.ToAddressData() : null,
+                    BillingAddress = cartModel.BillingAddress.ToAddressData(),
                     ShippingMethodName = cartModel.RequiresShipping ? cartModel.ShippingMethod.Name : "No shipping required",
                     Subtotal = cartModel.Subtotal,
                     DiscountAmount = cartModel.OrderTotalDiscount,
