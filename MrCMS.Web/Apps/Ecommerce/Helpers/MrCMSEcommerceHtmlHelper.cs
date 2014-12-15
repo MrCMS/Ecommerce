@@ -37,7 +37,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
         public static MvcHtmlString GetSalesChannelInfo(this HtmlHelper<Order> htmlHelper)
         {
             var order = htmlHelper.ViewData.Model;
-            if (order == null)
+            if (order == null || order.SalesChannel == null)
                 return MvcHtmlString.Empty;
             if (EcommerceApp.SalesChannelApps.ContainsKey(order.SalesChannel))
                 htmlHelper.ViewContext.RouteData.DataTokens["app"] = EcommerceApp.SalesChannelApps[order.SalesChannel];

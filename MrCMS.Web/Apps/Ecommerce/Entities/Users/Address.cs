@@ -71,7 +71,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Users
             };
         }
 
-        public virtual AddressData ToAddressData(ISession session)
+        public virtual AddressData ToAddressData()
         {
             return new AddressData
             {

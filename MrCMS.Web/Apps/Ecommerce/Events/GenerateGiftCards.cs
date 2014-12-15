@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using MrCMS.DbConfiguration;
 using MrCMS.Events;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website;
 using Newtonsoft.Json;
@@ -15,8 +15,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
 {
     public class GenerateGiftCards : IOnAdded<OrderLine>
     {
-        private readonly ISession _session;
         private readonly IGenerateGiftCardCode _generateGiftCardCode;
+        private readonly ISession _session;
 
         public GenerateGiftCards(ISession session, IGenerateGiftCardCode generateGiftCardCode)
         {
@@ -24,11 +24,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
             _generateGiftCardCode = generateGiftCardCode;
         }
 
+        public void Execute(OnAddedArgs<OrderLine> args)
+        {
+            _session.Transact(session => Execute(args.Item));
+        }
+
         public void Execute(OrderLine orderLine)
         {
             if (orderLine == null || orderLine.ProductVariant == null || string.IsNullOrWhiteSpace(orderLine.Data))
                 return;
-            var productVariant = orderLine.ProductVariant;
+            ProductVariant productVariant = orderLine.ProductVariant;
             if (productVariant.IsGiftCard)
             {
                 // ensure that duplicate cards aren't generated
@@ -58,11 +63,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
                     CurrentRequestData.ErrorSignal.Raise(exception);
                 }
             }
-        }
-
-        public void Execute(OnAddedArgs<OrderLine> args)
-        {
-            _session.Transact(session => Execute(args.Item));
         }
     }
 }
