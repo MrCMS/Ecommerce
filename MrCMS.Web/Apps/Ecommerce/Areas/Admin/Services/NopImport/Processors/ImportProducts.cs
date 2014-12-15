@@ -52,7 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                     var product = new Product
                     {
                         Name = productData.Name,
-                        ProductAbstract = productData.Abstract,
+                        ProductAbstract = productData.Abstract.LimitCharacters(500),
                         BodyContent = productData.Description,
                         Parent = productContainer,
                         UrlSegment =
@@ -106,6 +106,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                 product.SpecificationValues.Add(specificationValue);
                 nopImportContext.AddEntry(valueData.Id, specificationValue);
             }
+        }
+    }
+
+    public static class ImportHelper
+    {
+        public static string LimitCharacters(this string value, int characters)
+        {
+            value = value ?? string.Empty;
+            return value.Length <= characters
+                ? value
+                : value.Substring(0, characters);
         }
     }
 }

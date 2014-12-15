@@ -108,7 +108,7 @@
                         @Html.ActionLink("Edit", "Edit", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
                         @if (Model.Variants.Count > 1)
                         {
-                            @Html.ActionLink("Delete", "Delete", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-xs btn-default btn-danger", data_toggle = "fb-modal" })
+                            @Html.ActionLink("Delete", "Delete", "ProductVariant", new { id = variant.Id }, new { @class = "btn btn-xs btn-danger", data_toggle = "fb-modal" })
                         }
                     </div>
                 </td>
