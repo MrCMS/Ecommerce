@@ -1,22 +1,27 @@
 ﻿@using System.Linq
+@using Elmah
 @using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Settings
+@using MrCMS.Web.Areas.Admin.Helpers
 @model dynamic
 @{
     ViewBag.Title = "Import / Export Products";
-    var warehouseStockEnabled = (bool)ViewData["warehousestockenabled"];
+    var warehouseStockEnabled = SiteSettings<EcommerceSettings>().WarehouseStockEnabled;
 }
 <fieldset>
     <legend>
         Import / Export Products
     </legend>
 
-    <a href="@Url.Action("ExportProducts", "ImportExport")" class="btn btn-primary">Export to Excel</a>
-
+    <span class="btn-group display-inline">
+        <a href="@Url.Action("ExportProducts", "ImportExport")" class="btn btn-primary">Export to Excel</a>
+    </span>
     @if (warehouseStockEnabled)
     {
         <p class="clearfix" />
         @Html.InfoBlock(Resource("Heads up!"), Resource("Ecommerce Product Export Warehouse Enabled", "You have warehouse stock enabled. The stock column in this export will be a sum of all available stock. When importing, the stock levels will not be effected."), AlertType.warning)
     }
+
     <div class="clearfix"></div>
 
     @if (ViewBag.ExportStatus != null)
@@ -26,10 +31,10 @@
         <div class="clearfix"></div>
     }
     <hr />
-
-    @Html.InfoBlock(Resource("Heads up!"), Resource("Ecommerce Product Import Info", "Import File must be in .xslx format. After clicking on \"Import Products\" any new products inside file will be added to database and existing ones will be updated with provided values in file."))
-
-
+    <div class="alert alert-info">
+        Import File must be in .xslx format. After clicking on "Import Products" any new products inside file
+        will be added to database and existing ones will be updated with provided values in file.
+    </div>
     <div class="clearfix"></div>
     @using (Html.BeginForm("ImportProducts", "ImportExport", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
@@ -37,33 +42,28 @@
         <input type="file" name="document" id="document" />
         <div class="clearfix"></div>
         <br />
-        if (ViewBag.Messages != null)
+        List<string> errorMessages = TempData.ErrorMessages();
+        if (errorMessages.Any())
         {
-            foreach (var item in (Dictionary<string, List<string>>)ViewBag.Messages)
+            <span>
+                <strong>The import has the following errors:</strong>
+            </span>
+            foreach (var item in errorMessages)
             {
-                <span>
-                    <strong>@item.Key</strong> has the following errors:
-                </span>
                 <ul>
-                    @foreach (string error in (List<string>)item.Value)
-                    {
-                        <li>
-                            @error
-                        </li>
-                    }
+
+                    <li>
+                        @item
+                    </li>
+
                 </ul>
             }
-            if (!((Dictionary<string, List<string>>)ViewBag.Messages).Any())
-            {
-                <div class="alert alert-success">
-                    All products and variants were successfully imported.
-                </div>
-            }
         }
-        if (ViewBag.ImportStatus != null)
+        else if (TempData.SuccessMessages().Any())
         {
-            <div class="alert alert-warning">@ViewBag.ImportStatus</div>
-            <div class="clearfix"></div>
+            <div class="alert alert-success">
+                Products have been scheduled for import. Please @Html.ActionLink("click Here", "Index", "Batch") to see the batch process.
+            </div>
         }
 
         <input type="submit" class="btn btn-primary" value="Import" />
