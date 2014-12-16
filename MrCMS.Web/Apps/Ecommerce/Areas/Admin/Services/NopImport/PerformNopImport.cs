@@ -69,15 +69,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport
                     _importRegionData.ProcessRegions(dataReader, nopImportContext),
                     _importAddresses.ProcessAddresses(dataReader, nopImportContext),
                     _importUsers.ProcessUsers(dataReader, nopImportContext),
-                    _importTaxRates.ProcessTaxRates(dataReader, nopImportContext),
-                    _importBrands.ProcessBrands(dataReader, nopImportContext),
-                    _importSpecifications.ProcessSpecifications(dataReader, nopImportContext),
-                    _importSpecificationAttributeOptions.ProcessSpecificationAttributeOptions(dataReader, nopImportContext),
-                    _importOptions.ProcessOptions(dataReader, nopImportContext),
-                    _importTags.ProcessTags(dataReader, nopImportContext),
-                    _importCategories.ProcessCategories(dataReader, nopImportContext),
-                    _importProducts.ProcessProducts(dataReader, nopImportContext),
-                    _importOrders.ProcessOrders(dataReader,nopImportContext)
+                    //_importTaxRates.ProcessTaxRates(dataReader, nopImportContext),
+                    //_importBrands.ProcessBrands(dataReader, nopImportContext),
+                    //_importSpecifications.ProcessSpecifications(dataReader, nopImportContext),
+                    //_importSpecificationAttributeOptions.ProcessSpecificationAttributeOptions(dataReader, nopImportContext),
+                    //_importOptions.ProcessOptions(dataReader, nopImportContext),
+                    //_importTags.ProcessTags(dataReader, nopImportContext),
+                    //_importCategories.ProcessCategories(dataReader, nopImportContext),
+                    //_importProducts.ProcessProducts(dataReader, nopImportContext),
+                    //_importOrders.ProcessOrders(dataReader,nopImportContext)
                 };
 
                 _indexService.InitializeAllIndices();

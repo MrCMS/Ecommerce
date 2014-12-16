@@ -48,7 +48,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
         public virtual bool ShowSubCategories { get; set; }
 
         [StringLength(500)]
-        public virtual string Abstract { get; set; }
+        public virtual string CategoryAbstract { get; set; }
 
         [DisplayName("Default Product Search Sort")]
         public virtual ProductSearchSort? DefaultProductSearchSort { get; set; }

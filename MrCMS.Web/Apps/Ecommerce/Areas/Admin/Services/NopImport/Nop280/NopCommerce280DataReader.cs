@@ -451,7 +451,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                         Salt = thisCustomer.PasswordSalt,
                         Hash = thisCustomer.Password,
                         Active = thisCustomer.Active,
-                        Format = "SHA1",
+                        Format = "NopSHA1",
                         Guid = thisCustomer.CustomerGuid,
                         FirstName =
                             customerAttributes.ContainsKey(FirstNameKey)
