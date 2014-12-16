@@ -4,7 +4,7 @@
 @if (TempData["review-submitted"] != null)
 {
     <div class="alert alert-success">
-        Review successfully submitted. It will be shown once it has been approved.
+        @(Resource("Product Review submitted", "Your product review has been successfully submitted. It will be shown once it has been approved."))
     </div>
 }
 
@@ -35,11 +35,11 @@
     {
         <div class="form-group">
             @Html.LabelFor(x => x.Name) @Html.ValidationMessageFor(x => x.Name)
-            @Html.TextBoxFor(x => x.Name, new {@class = "form-control"})
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
         </div>
         <div class="form-group">
             @Html.LabelFor(x => x.Email) @Html.ValidationMessageFor(x => x.Email)
-            @Html.TextBoxFor(x => x.Email, new {@class = "form-control"})
+            @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
         </div>
     }
     <div class="form-group">

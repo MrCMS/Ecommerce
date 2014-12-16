@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Paging;
@@ -25,16 +23,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
             _getCurrentUser = getCurrentUser;
         }
 
-        public ProductReview GetById(int id)
-        {
-            return _session.QueryOver<ProductReview>().Where(x => x.Id == id).SingleOrDefault();
-        }
-
-        public IList<ProductReview> GetAll()
-        {
-            return _session.QueryOver<ProductReview>().OrderBy(x => x.CreatedOn).Desc.Cacheable().List();
-        }
-
         public void Add(ProductReview productReview)
         {
             var user = _getCurrentUser.Get();
@@ -53,13 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
             _session.Transact(session => session.Delete(productReview));
         }
 
-        public List<SelectListItem> GetRatingOptions()
-        {
-            return Enumerable.Range(1, 5)
-                .BuildSelectItemList(i => i.ToString(), emptyItemText: "Please select");
-        }
-
-        public IPagedList<ProductReview> GetReviewsByProductVariantId(ProductVariant productVariant, int pageNum, int pageSize = 10)
+        public IPagedList<ProductReview> GetReviewsForVariant(ProductVariant productVariant, int pageNum, int pageSize = 10)
         {
             ProductReview productReviewAlias = null;
             return
@@ -73,7 +55,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
         }
 
         //Ask gary for averaging
-        public decimal GetAverageRatingsByProductVariant(ProductVariant productVariant)
+        public decimal GetAverageRatingForProductVariant(ProductVariant productVariant)
         {
             if (!GetBaseProductVariantReviewsQuery(_session.QueryOver<ProductReview>(), productVariant).Cacheable().Any()) 
                 return decimal.Zero;
@@ -94,11 +76,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
                 .Where(x => x.User.Id == id)
                 .OrderBy(x => x.CreatedOn)
                 .Desc.Paged(pageNum, pageSize);
-        }
-
-        public IPagedList<ProductReview> GetPaged(int pageNum, string search, int pageSize = 10)
-        {
-            return BaseQuery(search).Paged(pageNum, pageSize);
         }
 
         private IQueryOver<ProductReview, ProductReview> BaseQuery(string search)

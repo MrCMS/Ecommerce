@@ -97,7 +97,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public ActionResult ProductReviews(ProductVariant productVariant, int reviewPage = 1, string q = "")
         {
             var reviewsPageSize = MrCMSApplication.Get<ProductReviewSettings>().PageSize;
-            ViewData["reviews"] = _productReviewUIService.GetReviewsByProductVariantId(productVariant, reviewPage, reviewsPageSize);
+            ViewData["reviews"] = _productReviewUIService.GetReviewsForVariant(productVariant, reviewPage, reviewsPageSize);
 
             return PartialView(productVariant);
         }
