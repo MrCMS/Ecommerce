@@ -14,13 +14,13 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
     {
         private readonly IProductVariantAdminService _productVariantAdminService;
         private readonly ProductVariantController _productVariantController;
-        private readonly IReviewService _reviewService;
+        private readonly IProductReviewUIService _productReviewUIService;
 
         public ProductVariantControllerTests()
         {
             _productVariantAdminService = A.Fake<IProductVariantAdminService>();
-            _reviewService = A.Fake<IReviewService>();
-            _productVariantController = new ProductVariantController(_productVariantAdminService, _reviewService);
+            _productReviewUIService = A.Fake<IProductReviewUIService>();
+            _productVariantController = new ProductVariantController(_productVariantAdminService, _productReviewUIService);
         }
 
         [Fact]

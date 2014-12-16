@@ -12,6 +12,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 
         List<SelectListItem> GetApprovalOptions();
 
-        IPagedList<Review> Search(ProductReviewSearchQuery query);
+        IPagedList<ProductReview> Search(ProductReviewSearchQuery query);
     }
 }

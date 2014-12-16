@@ -55,18 +55,18 @@ namespace MrCMS.Web.Apps.Ecommerce
             //Product Reviews
             context.MapRoute("Product Review", "Apps/Ecommerce/Review/Add",
                 new { controller = "Review", action = "Add" },
-                new[] { typeof(ReviewController).Namespace });
+                new[] { typeof(ProductReviewController).Namespace });
 
             context.MapRoute("Product Reviews Paging", "Apps/Ecommerce/ProductVariant/ProductReviews",
                 new { controller = "ProductVariant", action = "ProductReviews" });
 
             context.MapRoute("Product Review Helpfulness Vote Yes", "Apps/Ecommerce/Review/HelpfulnessVotes",
                 new { controller = "Review", action = "HelpfulnessVotes" },
-                new[] { typeof(ReviewController).Namespace });
+                new[] { typeof(ProductReviewController).Namespace });
 
             context.MapRoute("Product Review Helpfulness Vote No", "Apps/Ecommerce/Review/UnhelpfulnessVotes",
                 new { controller = "Review", action = "UnhelpfulnessVotes" },
-                new[] { typeof(ReviewController).Namespace });
+                new[] { typeof(ProductReviewController).Namespace });
 
             // Public Routes
             context.MapRoute("Generate Contact Us Map", "get-contact-map",

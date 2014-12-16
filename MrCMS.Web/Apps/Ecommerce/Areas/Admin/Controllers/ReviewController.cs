@@ -21,12 +21,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class ReviewController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly IReviewAdminService _reviewAdminService;
-        private readonly IReviewService _reviewService;
+        private readonly IProductReviewUIService _productReviewUIService;
 
-        public ReviewController(IReviewAdminService reviewAdminService, IReviewService reviewService)
+        public ReviewController(IReviewAdminService reviewAdminService, IProductReviewUIService productReviewUIService)
         {
             _reviewAdminService = reviewAdminService;
-            _reviewService = reviewService;
+            _productReviewUIService = productReviewUIService;
         }
 
         [HttpGet]
@@ -49,52 +49,52 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpGet]
         [MrCMSACLRule(typeof(ProductReviewACL), ProductReviewACL.Edit)]
-        public ViewResult Edit(Review review)
+        public ViewResult Edit(ProductReview productReview)
         {
-            return View(review);
+            return View(productReview);
         }
 
         [ActionName("Edit")]
         [HttpPost]
         [ForceImmediateLuceneUpdate]
         [MrCMSACLRule(typeof(ProductReviewACL), ProductReviewACL.Edit)]
-        public ActionResult Edit_POST(Review review)
+        public ActionResult Edit_POST(ProductReview productReview)
         {
             if (ModelState.IsValid)
             {
-                _reviewService.Update(review);
+                _productReviewUIService.Update(productReview);
 
                 return RedirectToAction("Index");
             }
 
-            return View(review);
+            return View(productReview);
         }
 
         [HttpGet]
-        public PartialViewResult Delete(Review review)
+        public PartialViewResult Delete(ProductReview productReview)
         {
-            return PartialView(review);
+            return PartialView(productReview);
         }
 
         [ActionName("Delete")]
         [HttpPost]
         [ForceImmediateLuceneUpdate]
         [MrCMSACLRule(typeof(ProductReviewACL), ProductReviewACL.Delete)]
-        public RedirectToRouteResult Delete_POST(Review review)
+        public RedirectToRouteResult Delete_POST(ProductReview productReview)
         {
-            _reviewService.Delete(review);
+            _productReviewUIService.Delete(productReview);
             return RedirectToAction("Index");
         }
 
-        public ViewResult Show(Review review)
+        public ViewResult Show(ProductReview productReview)
         {
-            return View(review);
+            return View(productReview);
         }
 
         [HttpPost]
-        public RedirectToRouteResult Approval([IoCModelBinder(typeof(ProductReviewApprovalModelBinder))]Review review)
+        public RedirectToRouteResult Approval([IoCModelBinder(typeof(ProductReviewApprovalModelBinder))]ProductReview productReview)
         {
-            _reviewService.Update(review);
+            _productReviewUIService.Update(productReview);
             return RedirectToAction("Index");
         }
     }

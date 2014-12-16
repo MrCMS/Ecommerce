@@ -1,5 +1,5 @@
 ﻿@using MrCMS.Helpers
-@model IList<MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.Review>
+@model IList<MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.ProductReview>
 
     @using (Html.BeginForm())
     {
@@ -82,9 +82,9 @@
                         </td>
                         <td>
                             <div class="btn-group">
-                                @Html.ActionLink("Show", "Show", "Review", new { id = item.Id }, new { @class = "btn btn-default btn-xs", data_toggle = "fb-modal" })
-                                @Html.ActionLink("Edit", "Edit", "Review", new { id = item.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
-                                @Html.ActionLink("Delete", "Delete", "Review", new { id = item.Id }, new { @class = "btn btn-xs btn-danger", data_toggle = "fb-modal" })
+                                @Html.ActionLink("Show", "Show", "ProductReview", new { id = item.Id }, new { @class = "btn btn-default btn-xs", data_toggle = "fb-modal" })
+                                @Html.ActionLink("Edit", "Edit", "ProductReview", new { id = item.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                @Html.ActionLink("Delete", "Delete", "ProductReview", new { id = item.Id }, new { @class = "btn btn-xs btn-danger", data_toggle = "fb-modal" })
                             </div>
                         </td>
                     </tr>

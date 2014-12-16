@@ -44,7 +44,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders
             var reviewUpdateModel = new ReviewUpdateModel
             {
                 CurrentOperation = currentOperation,
-                Reviews = new List<Review>()
+                Reviews = new List<ProductReview>()
             };
             foreach (var key in keys)
             {
@@ -52,7 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders
                 int id;
                 if (Int32.TryParse(substring, out id) && nameValueCollection[key].Contains("true"))
                 {
-                    var review = Session.Get<Review>(id);
+                    var review = Session.Get<ProductReview>(id);
                     if (review != null)
                         reviewUpdateModel.Reviews.Add(review);
                 }

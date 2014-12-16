@@ -8,7 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models
 {
     public class ReviewUpdateModel
     {
-        public List<Review> Reviews { get; set; }
+        public List<ProductReview> Reviews { get; set; }
 
         public ProductReviewOperation CurrentOperation { get; set; }
     }

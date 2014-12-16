@@ -12,38 +12,38 @@ using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
 {
-    public class ReviewService : IReviewService
+    public class ProductReviewUIService : IProductReviewUIService
     {
         private readonly ISession _session;
 
-        public ReviewService(ISession session)
+        public ProductReviewUIService(ISession session)
         {
             _session = session;
         }
 
-        public Review GetById(int id)
+        public ProductReview GetById(int id)
         {
-            return _session.QueryOver<Review>().Where(x => x.Id == id).SingleOrDefault();
+            return _session.QueryOver<ProductReview>().Where(x => x.Id == id).SingleOrDefault();
         }
 
-        public IList<Review> GetAll()
+        public IList<ProductReview> GetAll()
         {
-            return _session.QueryOver<Review>().OrderBy(x => x.CreatedOn).Desc.Cacheable().List();
+            return _session.QueryOver<ProductReview>().OrderBy(x => x.CreatedOn).Desc.Cacheable().List();
         }
 
-        public void Add(Review review)
+        public void Add(ProductReview productReview)
         {
-            _session.Transact(session => session.Save(review));
+            _session.Transact(session => session.Save(productReview));
         }
 
-        public void Update(Review review)
+        public void Update(ProductReview productReview)
         {
-            _session.Transact(session => session.Update(review));
+            _session.Transact(session => session.Update(productReview));
         }
 
-        public void Delete(Review review)
+        public void Delete(ProductReview productReview)
         {
-            _session.Transact(session => session.Delete(review));
+            _session.Transact(session => session.Delete(productReview));
         }
 
         public List<SelectListItem> GetRatingOptions()
@@ -52,7 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
                 .BuildSelectItemList(i => i.ToString(), emptyItemText: "Please select");
         }
 
-        public IPagedList<Review> GetReviewsByProductVariantId(ProductVariant productVariant, int pageNum, int pageSize = 10)
+        public IPagedList<ProductReview> GetReviewsByProductVariantId(ProductVariant productVariant, int pageNum, int pageSize = 10)
         {
             //HelpfulnessVote helpfulnessVoteAlias = null;
 
@@ -62,14 +62,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
             //    .OrderBy(() => helpfulnessVoteAlias.IsHelpful).Desc
             //    .ThenBy(review => review.CreatedOn).Asc.Paged(pageNum, pageSize);
 
-            Review reviewAlias = null;
+            ProductReview productReviewAlias = null;
             return
-                GetBaseProductVariantReviewsQuery(_session.QueryOver(() => reviewAlias), productVariant)
+                GetBaseProductVariantReviewsQuery(_session.QueryOver(() => productReviewAlias), productVariant)
                     //.OrderBy(a => a.CreatedOn).Desc
                     .OrderBy(
                         Projections.SubQuery(
                             QueryOver.Of<HelpfulnessVote>()
-                                .Where(vote => vote.Review.Id == reviewAlias.Id && vote.IsHelpful)
+                                .Where(vote => vote.ProductReview.Id == productReviewAlias.Id && vote.IsHelpful)
                                 .Select(Projections.Count<HelpfulnessVote>(x => x.Id)))).Desc
                     .Paged(pageNum, pageSize);
         }
@@ -77,43 +77,43 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
         //Ask gary for averaging
         public decimal GetAverageRatingsByProductVariant(ProductVariant productVariant)
         {
-            if (!GetBaseProductVariantReviewsQuery(_session.QueryOver<Review>(), productVariant).Cacheable().Any()) 
+            if (!GetBaseProductVariantReviewsQuery(_session.QueryOver<ProductReview>(), productVariant).Cacheable().Any()) 
                 return decimal.Zero;
-            return GetBaseProductVariantReviewsQuery(_session.QueryOver<Review>(),productVariant)
+            return GetBaseProductVariantReviewsQuery(_session.QueryOver<ProductReview>(),productVariant)
                 .Select(x => x.Rating).Cacheable()
                 .List<int>().Select(Convert.ToDecimal).Average();
         }
 
-        private IQueryOver<Review, Review> GetBaseProductVariantReviewsQuery(IQueryOver<Review,Review> query, ProductVariant productVariant)
+        private IQueryOver<ProductReview, ProductReview> GetBaseProductVariantReviewsQuery(IQueryOver<ProductReview,ProductReview> query, ProductVariant productVariant)
         {
             return query.Where(review => review.ProductVariant.Id == productVariant.Id && review.Approved == true);
         }
 
-        public IPagedList<Review> GetReviewsByUser(User user, int pageNum, int pageSize = 10)
+        public IPagedList<ProductReview> GetReviewsByUser(User user, int pageNum, int pageSize = 10)
         {
             int id = user.Id;
-            return _session.QueryOver<Review>()
+            return _session.QueryOver<ProductReview>()
                 .Where(x => x.User.Id == id)
                 .OrderBy(x => x.CreatedOn)
                 .Desc.Paged(pageNum, pageSize);
         }
 
-        public IPagedList<Review> GetPaged(int pageNum, string search, int pageSize = 10)
+        public IPagedList<ProductReview> GetPaged(int pageNum, string search, int pageSize = 10)
         {
             return BaseQuery(search).Paged(pageNum, pageSize);
         }
 
-        private IQueryOver<Review, Review> BaseQuery(string search)
+        private IQueryOver<ProductReview, ProductReview> BaseQuery(string search)
         {
             ProductVariant productVariantAlias = null;
-            Review reviewAlias = null;
+            ProductReview productReviewAlias = null;
 
             if (String.IsNullOrWhiteSpace(search))
                 return
-                _session.QueryOver<Review>()
+                _session.QueryOver<ProductReview>()
                         .OrderBy(entry => entry.CreatedOn).Desc;
-            return _session.QueryOver(() => reviewAlias)
-                .JoinAlias(() => reviewAlias.ProductVariant, () => productVariantAlias)
+            return _session.QueryOver(() => productReviewAlias)
+                .JoinAlias(() => productReviewAlias.ProductVariant, () => productVariantAlias)
                 .Where(() => productVariantAlias.Name.IsInsensitiveLike(search, MatchMode.Anywhere))
                 .OrderBy(entry => entry.CreatedOn).Desc;
         }

@@ -2,7 +2,7 @@
 @using MrCMS.Paging
 @using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
 @{
-    var reviews = ViewData["reviews"] as IPagedList<Review> ?? PagedList<Review>.Empty;
+    var reviews = ViewData["reviews"] as IPagedList<ProductReview> ?? PagedList<ProductReview>.Empty;
 }
 
 <div id="product-reviews" class="tab-pane">
@@ -58,8 +58,8 @@
                                     </td>
                                     <td>
                                         <div class="btn-group">
-                                            @Html.ActionLink("Edit", "Edit", "Review", new { id = review.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
-                                            @Html.ActionLink("Delete", "Delete", "Review", new { id = review.Id }, new { @class = "btn btn-xs btn-danger", data_toggle = "fb-modal" })
+                                            @Html.ActionLink("Edit", "Edit", "ProductReview", new { id = review.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                            @Html.ActionLink("Delete", "Delete", "ProductReview", new { id = review.Id }, new { @class = "btn btn-xs btn-danger", data_toggle = "fb-modal" })
                                         </div>
                                     </td>
                                 </tr>

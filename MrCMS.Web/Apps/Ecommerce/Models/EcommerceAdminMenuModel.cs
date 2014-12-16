@@ -77,7 +77,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     ACLOption.Create(new NewsletterTemplateACL(), NewsletterTemplateACL.List)));
                 ecommerceMenu.Add(new ChildMenuItem("Newsletter", _urlHelper.Action("Index", "Newsletter"),
                     ACLOption.Create(new NewsletterACL(), NewsletterACL.List)));
-                ecommerceMenu.Add(new ChildMenuItem("Product Reviews", _urlHelper.Action("Index", "Review"),
+                ecommerceMenu.Add(new ChildMenuItem("Product Reviews", _urlHelper.Action("Index", "ProductReview"),
                     ACLOption.Create(new ProductReviewACL(), ProductReviewACL.List)));
                 return ecommerceMenu;
             }

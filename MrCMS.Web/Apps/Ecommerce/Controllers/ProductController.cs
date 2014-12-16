@@ -21,16 +21,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IBackInStockNotificationService _backInStockNotificationService;
         private readonly CartModel _cart;
         private readonly IDocumentService _documentService;
-        private readonly IReviewService _reviewService;
+        private readonly IProductReviewUIService _productReviewUIService;
 
-        public ProductController(ITrackingService trackingService, IProductUiService productUiService, IBackInStockNotificationService backInStockNotificationService, CartModel cart, IDocumentService documentService, IReviewService reviewService)
+        public ProductController(ITrackingService trackingService, IProductUiService productUiService, IBackInStockNotificationService backInStockNotificationService, CartModel cart, IDocumentService documentService, IProductReviewUIService productReviewUIService)
         {
             _trackingService = trackingService;
             _productUiService = productUiService;
             _backInStockNotificationService = backInStockNotificationService;
             _cart = cart;
             _documentService = documentService;
-            _reviewService = reviewService;
+            _productReviewUIService = productReviewUIService;
         }
 
         public ActionResult Show(Product page, int? variant)
