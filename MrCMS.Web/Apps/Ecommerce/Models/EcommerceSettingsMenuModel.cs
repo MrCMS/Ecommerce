@@ -79,8 +79,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                 }));
                 subMenu.Add(new ChildMenuItem("Product Review Settings", "/Admin/Apps/Ecommerce/ProductReviewSettings/Edit",
                         ACLOption.Create(new ProductReviewSettingsAcl(), ProductReviewSettingsAcl.Edit)));
-                subMenu.Add(new ChildMenuItem("Dashboard Revenue Settings", "/Admin/Apps/Ecommerce/DashBoardRevenueSettings/Edit",
-                        ACLOption.Create(new DashBoardRevenueSettingsAcl(), DashBoardRevenueSettingsAcl.Edit)));
                 return subMenu;
 
 

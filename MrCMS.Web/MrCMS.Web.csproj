@@ -519,7 +519,6 @@
     <Compile Include="Apps\Ecommerce\ACL\CategoryACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\CountryACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\CurrencyACL.cs" />
-    <Compile Include="Apps\Ecommerce\ACL\DashBoardRevenueSettingsAcl.cs" />
     <Compile Include="Apps\Ecommerce\ACL\DiscountACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\EcommerceSearchCacheSettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\EcommerceSettingsACL.cs" />
@@ -567,7 +566,6 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CharityClearSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CurrencyController.cs" />
-    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DashBoardRevenueSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountApplicationController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountLimitationController.cs" />
@@ -1531,7 +1529,6 @@
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Wishlists\IWishlistUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Wishlists\WishlistUIService.cs" />
-    <Compile Include="Apps\Ecommerce\Settings\DashBoardRevenueSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSearchCacheSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\GiftCardSettings.cs" />
@@ -3735,7 +3732,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Review\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Review\Show.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\ReviewList.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\DashBoardRevenueSettings\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\ProductList.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\DiscountList.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\SearchLog\Index.cshtml" />

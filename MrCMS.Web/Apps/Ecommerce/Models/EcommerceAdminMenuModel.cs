@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Models;
 using MrCMS.Web.Apps.Ecommerce.ACL;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 
@@ -13,12 +11,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
     {
         private readonly EcommerceSettings _ecommerceSettings;
         private readonly UrlHelper _urlHelper;
-        private readonly IShippingMethodSubmenuGenerator _shippingMethodSubmenuGenerator;
 
-        public EcommerceAdminMenuModel(IShippingMethodSubmenuGenerator shippingMethodSubmenuGenerator,
-            EcommerceSettings ecommerceSettings, UrlHelper urlHelper)
+        public EcommerceAdminMenuModel( EcommerceSettings ecommerceSettings, UrlHelper urlHelper)
         {
-            _shippingMethodSubmenuGenerator = shippingMethodSubmenuGenerator;
             _ecommerceSettings = ecommerceSettings;
             _urlHelper = urlHelper;
         }
@@ -28,7 +23,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
             get { return "Catalog"; }
         }
 
-        public string IconClass { get { return "fa fa-shopping-cart"; } }
+        public string IconClass
+        {
+            get { return "fa fa-shopping-cart"; }
+        }
 
         public string Url { get; private set; }
 
@@ -64,7 +62,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     adminItems.Add(new ChildMenuItem("Gift Cards", _urlHelper.Action("Index", "GiftCard"),
                         ACLOption.Create(new GiftCardACL(), GiftCardACL.List)));
                 }
-              
+
                 if (_ecommerceSettings.WarehouseStockEnabled)
                 {
                     adminItems.Add(new ChildMenuItem("Warehouses", _urlHelper.Action("Index", "Warehouse"),
