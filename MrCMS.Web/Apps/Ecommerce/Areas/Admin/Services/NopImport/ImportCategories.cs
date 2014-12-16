@@ -7,6 +7,7 @@ using MrCMS.Helpers;
 using MrCMS.Models;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website;
 using NHibernate;
@@ -37,53 +38,41 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport
             {
                 foreach (CategoryData categoryData in parentCategories)
                 {
-                    UpdateCategory(categoryData, productSearch, categoryDatas, nopImportContext);
+                    UpdateCategory(session, categoryData, productSearch, categoryDatas, nopImportContext);
                 }
             });
             return string.Format("{0} categories processed.", categoryDatas.Count);
         }
 
-        private void UpdateCategory(CategoryData categoryData, Webpage parent, HashSet<CategoryData> allData,
-            NopImportContext nopImportContext)
+        private void UpdateCategory(ISession session, CategoryData categoryData, Webpage parent, HashSet<CategoryData> allData, NopImportContext nopImportContext)
         {
             CategoryData data = categoryData;
-            Category category = _session.QueryOver<Category>()
-                .Where(c => c.Parent == parent && c.Name == data.Name)
-                .List()
-                .FirstOrDefault();
-            _session.Transact(session =>
+            var suggestParams = new SuggestParams
             {
-                if (category == null)
-                {
-                    var suggestParams = new SuggestParams
-                    {
-                        DocumentType = typeof(Category).FullName,
-                        PageName = data.Name,
-                        UseHierarchy = true
-                    };
-                    category = new Category
-                    {
-                        Name = data.Name,
-                        UrlSegment = string.IsNullOrWhiteSpace(data.Url) ? _webpageUrlService.Suggest(parent, suggestParams) : data.Url,
-                        Parent = parent
-                    };
-                    session.Save(category);
-                }
-                category.Abstract = data.Abstract;
-                category.PublishOn = data.Published ? CurrentRequestData.Now.Date : (DateTime?)null;
-                category.RevealInNavigation = true;
-                var mediaFile = nopImportContext.FindNew<MediaFile>(data.PictureId);
-                if (mediaFile != null)
-                {
-                    category.FeatureImage = mediaFile.FileUrl;
-                }
-                session.Update(category);
-            });
+                DocumentType = typeof(Category).FullName,
+                PageName = data.Name,
+                UseHierarchy = true
+            };
+            var category = new Category
+            {
+                Name = data.Name,
+                UrlSegment = string.IsNullOrWhiteSpace(data.Url) ? _webpageUrlService.Suggest(parent, suggestParams) : data.Url,
+                Parent = parent,
+                CategoryAbstract = data.Abstract.LimitCharacters(500),
+                PublishOn = data.Published ? CurrentRequestData.Now.Date : (DateTime?)null,
+                RevealInNavigation = true
+            };
+            var mediaFile = nopImportContext.FindNew<MediaFile>(data.PictureId);
+            if (mediaFile != null)
+            {
+                category.FeatureImage = mediaFile.FileUrl;
+            }
+            session.Save(category);
             nopImportContext.AddEntry(data.Id, category);
             List<CategoryData> children = allData.Where(d => d.ParentId == data.Id).ToList();
             foreach (CategoryData child in children)
             {
-                UpdateCategory(child, category, allData, nopImportContext);
+                UpdateCategory(session, child, category, allData, nopImportContext);
             }
         }
     }

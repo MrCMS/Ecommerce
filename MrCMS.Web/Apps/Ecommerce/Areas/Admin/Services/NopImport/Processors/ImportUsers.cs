@@ -27,10 +27,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                     var user = new User
                     {
                         CurrentEncryption = userData.Format,
-                        PasswordHash = Encoding.UTF8.GetBytes(userData.Hash),
-                        PasswordSalt = Encoding.UTF8.GetBytes(userData.Salt),
-                        FirstName = userData.FirstName,
-                        LastName = userData.LastName,
+                        PasswordHash = Encoding.Default.GetBytes(userData.Hash),
+                        PasswordSalt = Encoding.Default.GetBytes(userData.Salt),
+                        FirstName = userData.FirstName.LimitCharacters(255),
+                        LastName = userData.LastName.LimitCharacters(255),
                         Email = userData.Email,
                         IsActive = userData.Active,
                         Guid = userData.Guid
