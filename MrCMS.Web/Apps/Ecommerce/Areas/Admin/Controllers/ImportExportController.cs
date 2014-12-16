@@ -58,8 +58,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             {
                 Server.ScriptTimeout = 8000;
                 var result = _importExportManager.ImportProductsFromExcel(document.InputStream);
-                if (result.Any())
-                    TempData.ErrorMessages().AddRange(result);
+                if (!result.Success)
+                    TempData.ErrorMessages().AddRange(result.Errors);
                 else
                     TempData.SuccessMessages().Add("The file was parsed and a batch has been generated.");
             }

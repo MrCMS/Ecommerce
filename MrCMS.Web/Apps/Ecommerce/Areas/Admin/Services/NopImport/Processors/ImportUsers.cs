@@ -1,7 +1,8 @@
+using System.Collections.Generic;
 using System.Text;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Entities.Geographic;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using NHibernate;
 
@@ -18,12 +19,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
 
         public string ProcessUsers(NopCommerceDataReader dataReader, NopImportContext nopImportContext)
         {
-            var userDatas = dataReader.GetUserData();
+            HashSet<UserData> userDatas = dataReader.GetUserData();
             _session.Transact(session =>
             {
-
-                foreach (var userData in userDatas)
+                foreach (UserData userData in userDatas)
                 {
+                    var guid = userData.Guid;
+                    if (session.QueryOver<User>().Where(u => u.Guid == guid).Any())
+                        continue;
+
                     var user = new User
                     {
                         CurrentEncryption = userData.Format,
@@ -36,7 +40,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                         Guid = userData.Guid
                     };
                     session.Save(user);
-                    foreach (var addressData in userData.AddressData)
+                    foreach (AddressData addressData in userData.AddressData)
                     {
                         var address = nopImportContext.FindNew<Address>(addressData.Id);
                         if (address != null)
