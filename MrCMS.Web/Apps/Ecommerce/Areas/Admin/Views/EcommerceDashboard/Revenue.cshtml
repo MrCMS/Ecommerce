@@ -1,14 +1,16 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Settings
-@model dynamic 
+@model dynamic
 
 <div class="row">
     <div class="col-lg-6">
-        <h4 class="chart-title">Revenue today</h4>
+        <h4 class="chart-title">@Resource("Revenue today")</h4>
         <div id="revenue-today"></div>
     </div>
     <div class="col-lg-6">
-        <h4 class="chart-title">Revenue in last @(SiteSettings<EcommerceSettings>().DashboardRevenueDays) days</h4>
+        <h4 class="chart-title">
+            @string.Format(Resource("Revenue in last {0} days"), (SiteSettings<EcommerceSettings>().DashboardRevenueDays))
+        </h4>
         <div id="revenue-this-week"></div>
     </div>
 </div>

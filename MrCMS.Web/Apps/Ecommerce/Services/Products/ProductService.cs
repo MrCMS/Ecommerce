@@ -249,7 +249,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
             if (!string.IsNullOrWhiteSpace(query.SKU))
             {
-                ProductVariant productVariantAlias = null;
                 queryOver =
                     queryOver.WithSubquery.WhereExists(
                         QueryOver.Of<ProductVariant>()
