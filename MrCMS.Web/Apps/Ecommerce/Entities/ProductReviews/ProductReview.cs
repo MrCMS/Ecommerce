@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using MrCMS.Entities;
 using MrCMS.Entities.People;
 using MrCMS.Helpers.Validation;
@@ -19,8 +20,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
         public virtual string Email { get; set; }
 
         [Required]
+        [DisplayName("Review Title")]
         public virtual string Title { get; set; }
 
+        [DisplayName("Review")]
         public virtual string Text { get; set; }
 
         public virtual ProductVariant ProductVariant { get; set; }
