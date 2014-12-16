@@ -5,8 +5,10 @@ using System.Web.Mvc;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Paging;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
 
@@ -15,10 +17,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
     public class ProductReviewUIService : IProductReviewUIService
     {
         private readonly ISession _session;
+        private readonly IGetCurrentUser _getCurrentUser;
 
-        public ProductReviewUIService(ISession session)
+        public ProductReviewUIService(ISession session,IGetCurrentUser getCurrentUser)
         {
             _session = session;
+            _getCurrentUser = getCurrentUser;
         }
 
         public ProductReview GetById(int id)
@@ -33,6 +37,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
 
         public void Add(ProductReview productReview)
         {
+            var user = _getCurrentUser.Get();
+            if (user!= null)
+                productReview.User = user;
             _session.Transact(session => session.Save(productReview));
         }
 
@@ -54,18 +61,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
 
         public IPagedList<ProductReview> GetReviewsByProductVariantId(ProductVariant productVariant, int pageNum, int pageSize = 10)
         {
-            //HelpfulnessVote helpfulnessVoteAlias = null;
-
-            //return _session.QueryOver<Review>()
-            //    .JoinAlias(review => review, () => helpfulnessVoteAlias.Review)
-            //    .Where(review => review.ProductVariant == productVariant)
-            //    .OrderBy(() => helpfulnessVoteAlias.IsHelpful).Desc
-            //    .ThenBy(review => review.CreatedOn).Asc.Paged(pageNum, pageSize);
-
             ProductReview productReviewAlias = null;
             return
                 GetBaseProductVariantReviewsQuery(_session.QueryOver(() => productReviewAlias), productVariant)
-                    //.OrderBy(a => a.CreatedOn).Desc
                     .OrderBy(
                         Projections.SubQuery(
                             QueryOver.Of<HelpfulnessVote>()

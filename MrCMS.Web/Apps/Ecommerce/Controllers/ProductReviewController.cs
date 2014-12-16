@@ -35,9 +35,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [ActionName("Add")]
         public RedirectResult Add_POST(ProductReview productReview)
         {
-            if (CurrentRequestData.CurrentUser != null)
-                productReview.User = CurrentRequestData.CurrentUser;
-
             _productReviewUIService.Add(productReview);
 
             TempData["review-submitted"] = true;

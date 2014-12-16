@@ -21,7 +21,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
         [Required]
         public virtual string Title { get; set; }
 
-        [Required]
         public virtual string Text { get; set; }
 
         public virtual ProductVariant ProductVariant { get; set; }
