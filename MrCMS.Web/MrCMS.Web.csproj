@@ -796,6 +796,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\SagePayNotificationController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SagePayRedirectController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SetShippingAddressController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\SetShippingDateController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SetShippingDetailsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SetShippingMethodController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
@@ -1250,9 +1251,11 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetDiscountCodes.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetGiftCardDataFromContext.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetShippingAddress.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\ISetShippingMethodDateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ItemHasSKUChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ItemIsInCategoryChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\OrderTotalFixedAmountApplier.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\SetShippingMethodDateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ShippingCountryIsChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ShippingPostcodeStartsWithChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\SingleUsageChecker.cs" />

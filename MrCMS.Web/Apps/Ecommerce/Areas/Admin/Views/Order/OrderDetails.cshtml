@@ -207,6 +207,21 @@
                 <td>@Resource("Status")</td>
                 <td>@Html.DisplayFor(x => x.ShippingStatus)</td>
             </tr>
+            <tr>
+                <td>@Resource("Requested Shipping Date")</td>
+                <td>
+                    @if (Model.RequestedShippingDate.HasValue)
+                    {
+                        @Model.RequestedShippingDate.Value.ToString("dd/MM/yyyy")
+                    }
+                    else
+                    {
+                        <span>
+                            ASAP
+                        </span>
+                    }
+                </td>
+            </tr>
             @if (Model.ShippingDate.HasValue)
             {
                 <tr>

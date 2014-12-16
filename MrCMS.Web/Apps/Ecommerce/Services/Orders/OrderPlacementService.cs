@@ -51,6 +51,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                     ShippingSubtotal = cartModel.ShippingTotalPreDiscount,
                     ShippingTotal = cartModel.ShippingTotal,
                     ShippingTax = cartModel.ShippingTax,
+                    RequestedShippingDate = cartModel.RequestedShippingDate,
                     User = cartModel.User,
                     Weight = cartModel.Weight,
                     OrderEmail = cartModel.OrderEmail,

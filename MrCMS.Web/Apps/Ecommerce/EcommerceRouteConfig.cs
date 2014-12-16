@@ -209,6 +209,11 @@ namespace MrCMS.Web.Apps.Ecommerce
                 "Apps/Ecommerce/SetShippingMethod/SetShipping",
                 new {controller = "SetShippingMethod", action = "SetShipping"},
                 new[] {typeof (SetShippingMethodController).Namespace});
+            
+            context.MapRoute("Set Shipping Details - Set Shipping Date",
+                "Apps/Ecommerce/SetShippingDate",
+                new { controller = "SetShippingDate", action = "SetDate" },
+                new[] {typeof (SetShippingDateController).Namespace});
 
 
             context.MapRoute("Enter Order Email - Set Order Email", "Apps/Ecommerce/SetOrderEmail",
