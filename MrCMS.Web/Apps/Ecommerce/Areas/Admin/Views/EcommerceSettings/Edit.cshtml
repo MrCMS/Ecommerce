@@ -46,6 +46,11 @@
                 <div class="form-group">
                     @Html.InlineCheckboxFor(x => x.WarehouseStockEnabled)
                 </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.DashboardRevenueDays)
+                    @Html.TextBoxFor(x => x.DashboardRevenueDays, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.DashboardRevenueDays)
+                </div>
             </div>
             <div class="col-lg-6">
                 <div class="form-group">
