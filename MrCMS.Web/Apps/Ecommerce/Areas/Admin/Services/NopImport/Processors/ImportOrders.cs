@@ -35,6 +35,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                 {
                     foreach (var data in orders)
                     {
+                        var guid = data.Guid;
+                        if (session.QueryOver<Order>().Where(o => o.Guid == guid).Any())
+                            continue;
+
                         var billingAddress = nopImportContext.FindNew<Address>(data.BillingAddressId);
                         var shippingAddress =
                             nopImportContext.FindNew<Address>(data.ShippingAddressId.GetValueOrDefault());

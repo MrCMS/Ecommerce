@@ -50,23 +50,23 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _createBatchRun = createBatchRun;
         }
 
-        public void CreateBatch(HashSet<ProductImportDataTransferObject> productsToImport)
+        public Batch CreateBatch(HashSet<ProductImportDataTransferObject> productsToImport)
         {
-            var batch = new Batch { BatchJobs = new List<BatchJob>() };
+            var batch = new Batch { BatchJobs = new List<BatchJob>(),BatchRuns = new List<BatchRun>()};
             _session.Transact(session => session.Save(batch));
             _session.Transact(session =>
             {
                 foreach (ProductImportDataTransferObject item in productsToImport)
                 {
-                    var importDocumentBatchJob = new ImportProductBatchJob
+                    var importProductBatchJob = new ImportProductBatchJob
                     {
                         Batch = batch,
                         Data = JsonConvert.SerializeObject(item),
                         ProductName = item.Name,
                         UrlSegment = item.UrlSegment
                     };
-                    batch.BatchJobs.Add(importDocumentBatchJob);
-                    session.Save(importDocumentBatchJob);
+                    batch.BatchJobs.Add(importProductBatchJob);
+                    session.Save(importProductBatchJob);
                 }
                 // Reindex Universal search when done
                 var universalIndexRebuilder = new RebuildUniversalSearchIndex
@@ -88,7 +88,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     session.Save(luceneIndex);
                 }
             });
-            _createBatchRun.Create(batch);
+            var batchRun = _createBatchRun.Create(batch);
+            batch.BatchRuns.Add(batchRun);
+
+            return batch;
         }
 
         /// <summary>

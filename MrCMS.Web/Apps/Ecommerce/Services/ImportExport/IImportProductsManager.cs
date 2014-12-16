@@ -5,6 +5,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public interface IImportProductsManager
     {
-        List<string> ImportProductsFromExcel(Stream file, bool autoStartBatch = true);
+        ImportProductsResult ImportProductsFromExcel(Stream file, bool autoStartBatch = true);
     }
 }

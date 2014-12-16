@@ -23,7 +23,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         [Fact]
         public void ImportExportManager_ImportProductsFromExcel_ShouldNotBeNull()
         {
-            var result = _importExportManager.ImportProductsFromExcel(GetDefaultStream(), true);
+            var result = _importExportManager.ImportProductsFromExcel(GetDefaultStream(), false);
 
             result.Should().NotBeNull();
         }
@@ -31,9 +31,9 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         [Fact]
         public void ImportExportManager_ImportProductsFromExcel_ShouldReturnDictionary()
         {
-            var result = _importExportManager.ImportProductsFromExcel(GetDefaultStream(), true);
+            var result = _importExportManager.ImportProductsFromExcel(GetDefaultStream(), false);
 
-            result.Should().HaveCount(0);
+            result.Errors.Should().HaveCount(0);
         }
 
         private static Stream GetDefaultStream()

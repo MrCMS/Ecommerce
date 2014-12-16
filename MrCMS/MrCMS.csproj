@@ -278,7 +278,9 @@
     <Compile Include="Batching\Services\IExecuteNextBatchJob.cs" />
     <Compile Include="Batching\Services\IGetNextJobToRun.cs" />
     <Compile Include="Batching\Services\ISetRunStatus.cs" />
+    <Compile Include="Batching\Services\ISynchronousBatchRunExecution.cs" />
     <Compile Include="Batching\Services\SetRunStatus.cs" />
+    <Compile Include="Batching\Services\SynchronousBatchRunExecution.cs" />
     <Compile Include="Batching\SetBatchJobExecutionStatus.cs" />
     <Compile Include="Config\MrCMSConfigSection.cs" />
     <Compile Include="DbConfiguration\Caches\Azure\AzureCacheAdapter.cs" />
