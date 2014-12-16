@@ -15,15 +15,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly CartModel _cart;
         private readonly IProductVariantUIService _productVariantUIService;
-        private readonly IReviewService _reviewService;
+        private readonly IProductReviewUIService _productReviewUIService;
         private readonly ProductReviewSettings _productReviewSettings;
         private readonly ProductVariantService _productVariantService;
 
-        public ProductVariantController(CartModel cart, IProductVariantUIService productVariantUIService, IReviewService reviewService, ProductReviewSettings productReviewSettings, ProductVariantService productVariantService)
+        public ProductVariantController(CartModel cart, IProductVariantUIService productVariantUIService, IProductReviewUIService productReviewUIService, ProductReviewSettings productReviewSettings, ProductVariantService productVariantService)
         {
             _cart = cart;
             _productVariantUIService = productVariantUIService;
-            _reviewService = reviewService;
+            _productReviewUIService = productReviewUIService;
             _productReviewSettings = productReviewSettings;
             _productVariantService = productVariantService;
         }
@@ -52,8 +52,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             ViewData["guest-reviews"] = _productReviewSettings.GuestReviews;
             ViewData["helpfulness-votes"] = _productReviewSettings.HelpfulnessVotes;
             var productVariant = _productVariantService.Get(productVariantId);
-            ViewData["reviews"] = _reviewService.GetReviewsByProductVariantId(productVariant, reviewPage, reviewsPageSize);
-            ViewData["average-ratings"] = _reviewService.GetAverageRatingsByProductVariant(productVariant);
+            ViewData["reviews"] = _productReviewUIService.GetReviewsByProductVariantId(productVariant, reviewPage, reviewsPageSize);
+            ViewData["average-ratings"] = _productReviewUIService.GetAverageRatingsByProductVariant(productVariant);
 
             return PartialView(productVariant);
         }

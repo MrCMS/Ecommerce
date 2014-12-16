@@ -22,16 +22,16 @@
 </div>
 
 <div class="pull-left">
-    @using (Html.BeginForm("HelpfulnessVotes", "Review", new { id = "" }, FormMethod.Post))
+    @using (Html.BeginForm("HelpfulnessVotes", "ProductReview", new { id = "" }, FormMethod.Post))
     {
-        @Html.HiddenFor(x => x.Review.Id)
+        @Html.HiddenFor(x => x.ProductReview.Id)
         <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>
     }
 </div>
 <div class="pull-left">
-    @using (Html.BeginForm("UnhelpfulnessVotes", "Review", new { id = "" }, FormMethod.Post))
+    @using (Html.BeginForm("UnhelpfulnessVotes", "ProductReview", new { id = "" }, FormMethod.Post))
     {
-        @Html.HiddenFor(x => x.Review.Id)
+        @Html.HiddenFor(x => x.ProductReview.Id)
         <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>
     }
 </div>

@@ -5,7 +5,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
 {
     public class HelpfulnessVote : SiteEntity
     {
-        public virtual Review Review { get; set; }
+        public virtual ProductReview ProductReview { get; set; }
 
         public virtual User User { get; set; }
 

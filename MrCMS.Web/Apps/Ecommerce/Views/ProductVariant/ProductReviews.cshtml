@@ -4,7 +4,7 @@
 @using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
-    var reviews = ViewData["reviews"] as IPagedList<Review>;
+    var reviews = ViewData["reviews"] as IPagedList<ProductReview>;
     var averageReviews = ViewData["average-ratings"] is decimal ? (decimal)ViewData["average-ratings"] : 0;
     var helpfulnessVotes = (bool)ViewData["helpfulness-votes"];
     var guestReviews = (bool)ViewData["guest-reviews"];
@@ -26,7 +26,7 @@
                     }
                     else
                     {
-                        Html.RenderAction("Add", "Review", new { productVariant = Model });
+                        Html.RenderAction("Add", "ProductReview", new { productVariant = Model });
                     }
                 </div>
             </div>
@@ -106,7 +106,7 @@
 
                         if (helpfulnessVotes)
                         {
-                            Html.RenderAction("HelpfulnessVotes", "Review", new {review = item});
+                            Html.RenderAction("HelpfulnessVotes", "ProductReview", new {review = item});
                         }
                         <hr />
                     }

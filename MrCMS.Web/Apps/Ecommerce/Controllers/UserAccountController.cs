@@ -23,18 +23,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IUserService _userService;
         private readonly IPasswordManagementService _passwordManagementService;
         private readonly IAuthorisationService _authorisationService;
-        private readonly IReviewService _reviewService;
+        private readonly IProductReviewUIService _productReviewUIService;
 
         public UserAccountController(IOrderService orderService,
             IUserService userService, 
             IPasswordManagementService passwordManagementService, 
-            IAuthorisationService authorisationService, IReviewService reviewService)
+            IAuthorisationService authorisationService, IProductReviewUIService productReviewUIService)
         {
             _orderService = orderService;
             _userService = userService;
             _passwordManagementService = passwordManagementService;
             _authorisationService = authorisationService;
-            _reviewService = reviewService;
+            _productReviewUIService = productReviewUIService;
         }
 
         public ActionResult UserAccountOrders(int page = 1)
@@ -71,9 +71,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             var user = CurrentRequestData.CurrentUser;
             if (user != null)
             {
-                var reviewsByUser = _reviewService.GetReviewsByUser(user, page);
+                var reviewsByUser = _productReviewUIService.GetReviewsByUser(user, page);
 
-                var model = new UserAccountReviewsModel(new PagedList<Review>(reviewsByUser, reviewsByUser.PageNumber, reviewsByUser.PageSize), user.Id);
+                var model = new UserAccountReviewsModel(new PagedList<ProductReview>(reviewsByUser, reviewsByUser.PageNumber, reviewsByUser.PageSize), user.Id);
                 return View(model);
             }
             return Redirect(UniquePageHelper.GetUrl<LoginPage>());

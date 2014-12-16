@@ -14,15 +14,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
             var model = base.BindModel(controllerContext, bindingContext);
-            if (model is Review)
+            if (model is ProductReview)
             {
                 if (controllerContext.HttpContext.Request.Form["Approve"] != null)
                 {
-                    (model as Review).Approved = true;
+                    (model as ProductReview).Approved = true;
                 }
                 if (controllerContext.HttpContext.Request.Form["Reject"] != null)
                 {
-                    (model as Review).Approved = false;
+                    (model as ProductReview).Approved = false;
                 }
             }
             return model;

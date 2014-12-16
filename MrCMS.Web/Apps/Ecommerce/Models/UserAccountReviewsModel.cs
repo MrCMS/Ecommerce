@@ -4,9 +4,9 @@ using MrCMS.Web.Areas.Admin.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
 {
-    public class UserAccountReviewsModel : AsyncListModel<Review>
+    public class UserAccountReviewsModel : AsyncListModel<ProductReview>
     {
-        public UserAccountReviewsModel(PagedList<Review> items, int id)
+        public UserAccountReviewsModel(PagedList<ProductReview> items, int id)
             : base(items, id)
         {
         }

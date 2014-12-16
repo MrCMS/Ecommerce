@@ -5,9 +5,9 @@ using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 
 namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
 {
-    public class ReviewOverride : IAutoMappingOverride<Review>
+    public class ReviewOverride : IAutoMappingOverride<ProductReview>
     {
-        public void Override(AutoMapping<Review> mapping)
+        public void Override(AutoMapping<ProductReview> mapping)
         {
             mapping.Map(x => x.Text).CustomType<VarcharMax>().Length(4001);
         }
