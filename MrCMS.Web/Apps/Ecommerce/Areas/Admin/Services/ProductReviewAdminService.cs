@@ -15,12 +15,12 @@ using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 {
-    public class ReviewAdminService : IReviewAdminService
+    public class ProductReviewAdminService : IProductReviewAdminService
     {
         private readonly IProductReviewUIService _productReviewUIService;
         private readonly ISession _session;
 
-        public ReviewAdminService(IProductReviewUIService productReviewUIService, ISession session)
+        public ProductReviewAdminService(IProductReviewUIService productReviewUIService, ISession session)
         {
             _productReviewUIService = productReviewUIService;
             _session = session;
