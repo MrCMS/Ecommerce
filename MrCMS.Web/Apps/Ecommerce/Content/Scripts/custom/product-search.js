@@ -135,12 +135,13 @@
     // Bind to StateChange Event
     History.Adapter.bind(window, 'statechange', function () { // Note: We are using statechange instead of popstate
         var State = History.getState();
-        $.get('/search/query', State.data, function (response) {
+        var data = State.data;
+        $.get('/search/query', data, function (response) {
             $('#product-query-container').replaceWith(response);
             initializeSlider();
         });
         $("#loading-message").show();
-        $.get('/search/results', State.data, function (response) {
+        $.get('/search/results', data, function (response) {
             $("#loading-message").hide();
             $('#product-results-container').replaceWith(response);
             var top = $("#product-search-container").offset().top;
@@ -149,6 +150,7 @@
             }, 350);
         });
     });
+
     function initializeSlider() {
         $("#slider-range").slider({
             range: true,

@@ -4,11 +4,15 @@ using System.Linq;
 using MrCMS.Indexing.Management;
 using MrCMS.Indexing.Querying;
 using MrCMS.Indexing.Utils;
+using MrCMS.Models;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Indexing;
+using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
+using Newtonsoft.Json;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
@@ -16,11 +20,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     {
         private readonly ISearcher<Product, ProductSearchIndex> _productSearcher;
         private readonly IGetProductCategories _getProductCategories;
+        private readonly EcommerceSearchCacheSettings _ecommerceSearchCacheSettings;
 
-        public ProductSearchIndexService(ISearcher<Product, ProductSearchIndex> productSearcher,IGetProductCategories getProductCategories)
+        public ProductSearchIndexService(ISearcher<Product, ProductSearchIndex> productSearcher,
+            IGetProductCategories getProductCategories, EcommerceSearchCacheSettings ecommerceSearchCacheSettings)
         {
             _productSearcher = productSearcher;
             _getProductCategories = getProductCategories;
+            _ecommerceSearchCacheSettings = ecommerceSearchCacheSettings;
         }
 
         public IPagedList<Product> SearchProducts(ProductSearchQuery query)
@@ -136,6 +143,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var searchQuery = clone.GetQuery();
             var filter = clone.GetFilter();
             return _getProductCategories.Get(searchQuery, filter);
+        }
+
+        public CachingInfo GetCachingInfo(ProductSearchQuery query, string suffix = null)
+        {
+            return new CachingInfo(_ecommerceSearchCacheSettings.SearchCache, GetCacheKey(query) + suffix,
+                TimeSpan.FromSeconds(_ecommerceSearchCacheSettings.SearchCacheLength), _ecommerceSearchCacheSettings.SearchCacheExpiryType);
+        }
+
+        private string GetCacheKey(ProductSearchQuery query)
+        {
+            return _ecommerceSearchCacheSettings.SearchCachePerUser
+                ? JsonConvert.SerializeObject(new { CurrentRequestData.UserGuid, query })
+                : JsonConvert.SerializeObject(query);
         }
     }
 }
