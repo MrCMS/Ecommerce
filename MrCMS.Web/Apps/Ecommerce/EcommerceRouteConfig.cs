@@ -53,19 +53,19 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new { controller = "ProductVariant", action = "Details" }, new[] { typeof(ProductVariantController).Namespace });
 
             //Product Reviews
-            context.MapRoute("Product Review", "Apps/Ecommerce/Review/Add",
-                new { controller = "Review", action = "Add" },
+            context.MapRoute("Product Review", "Apps/Ecommerce/ProductReview/Add",
+                new { controller = "ProductReview", action = "Add" },
                 new[] { typeof(ProductReviewController).Namespace });
 
             context.MapRoute("Product Reviews Paging", "Apps/Ecommerce/ProductVariant/ProductReviews",
                 new { controller = "ProductVariant", action = "ProductReviews" });
 
-            context.MapRoute("Product Review Helpfulness Vote Yes", "Apps/Ecommerce/Review/HelpfulnessVotes",
-                new { controller = "Review", action = "HelpfulnessVotes" },
+            context.MapRoute("Product Review Helpfulness Vote Yes", "Apps/Ecommerce/ProductReview/HelpfulnessVotes",
+                new { controller = "ProductReview", action = "HelpfulnessVotes" },
                 new[] { typeof(ProductReviewController).Namespace });
 
-            context.MapRoute("Product Review Helpfulness Vote No", "Apps/Ecommerce/Review/UnhelpfulnessVotes",
-                new { controller = "Review", action = "UnhelpfulnessVotes" },
+            context.MapRoute("Product Review Helpfulness Vote No", "Apps/Ecommerce/ProductReview/UnhelpfulnessVotes",
+                new { controller = "ProductReview", action = "UnhelpfulnessVotes" },
                 new[] { typeof(ProductReviewController).Namespace });
 
             // Public Routes

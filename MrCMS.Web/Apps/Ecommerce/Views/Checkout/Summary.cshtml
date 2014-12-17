@@ -6,6 +6,10 @@
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+@{
+    var ecommerceSettings = SiteSettings<EcommerceSettings>();
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/cart.js");
+}
 <div id="basic-details" class="margin-bottom-20">
     @if (Model.Items.Any())
     {
@@ -107,6 +111,33 @@
         </table>
     }
     <a class="btn btn-default margin-bottom-20" id="edit" href="@(UniquePageHelper.GetUrl<Cart>())">@Resource("Edit")</a>
+    
+    
+    @if (ecommerceSettings.GiftMessageEnabled)
+    {
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="block-title">
+                    <div class="h1style">
+                        Gift Message
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-message-container="250" data-error-message="Your gift message is more than 250 characters">
+            <div class="row margin-bottom-10">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <textarea id="gift-message" class="form-control">@Model.GiftMessage</textarea>
+                    </div>
+                    <span id="message-character-count">
+                        <span></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    }
+
     <div class="margin-bottom-20">
         <div class="block-title">
             <div class="h1style">
