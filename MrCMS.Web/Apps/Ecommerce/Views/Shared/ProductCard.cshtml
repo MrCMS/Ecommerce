@@ -9,7 +9,7 @@
         <div class="product-image">
             <a href="/@Model.Url">@RenderImage(Model.Image ?? SiteSettings<EcommerceSettings>().DefaultNoProductImage, new Size { Width = 200, Height = 175 }, null, null, new { @class = "img-responsive" })</a>
         </div>
-        <div class="product-info">
+        <div class="product-info margin-top-10">
             @if (Model.VariantId.HasValue)
             {
                 <div class="padding-bottom-10">
