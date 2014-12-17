@@ -1223,9 +1223,10 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartItemBasedApplicationProducts.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartItemsByCategoryIdList.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartItemsBySKUList.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Cart\GetDiscountCodes.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\CartDiscountCodeService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetGiftCardDataFromContext.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetShippingAddress.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\GetValidDiscounts.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IAssignBasicCartInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IAssignCartDiscountInfo.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IAssignGiftCardInfo.cs" />
@@ -1245,9 +1246,10 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetCartItemBasedApplicationProducts.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetCartItemsByCategoryIdList.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetCartItemsBySKUList.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Cart\IGetDiscountCodes.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\ICartDiscountCodeService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetGiftCardDataFromContext.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetShippingAddress.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\IGetValidDiscounts.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ISetShippingMethodDateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ItemHasSKUChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ItemIsInCategoryChecker.cs" />
@@ -3754,6 +3756,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\CartItemBasedDiscountApplication\Fields.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BuyXGetYFree\Fields.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\HeaderSummary.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Discount\Error.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />

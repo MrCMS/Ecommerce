@@ -6,6 +6,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
     {
         private readonly CheckLimitationsResult _checkLimitationsResult;
         private readonly Discount _discount;
+        private bool _applied;
 
         public DiscountInfo(Discount discount, CheckLimitationsResult checkLimitationsResult)
         {
@@ -26,11 +27,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     CheckLimitationsResult.Status == CheckLimitationsResultStatus.NeverValid
                         ? DiscountStatus.NeverValid
                         : CheckLimitationsResult.Success
-                            ? DiscountStatus.ToApply
+                            ? _applied
+                                ? DiscountStatus.Applied
+                                : DiscountStatus.ValidButNotApplied
                             : Discount.RequiresCode
                                 ? DiscountStatus.ExplicitAndInvalid
                                 : DiscountStatus.AutomaticAndInvalid;
             }
+        }
+
+        public void MarkAsApplied()
+        {
+            _applied = true;
         }
 
         public string[] Messages
