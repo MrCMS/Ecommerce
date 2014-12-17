@@ -9,6 +9,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
+using MrCMS.Web.Apps.Ecommerce.Helpers.Cart;
 using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 using MrCMS.Website;
@@ -32,6 +33,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public List<CartItem> Items { get; set; }
         public User User { get; set; }
         public Guid UserGuid { get; set; }
+        public bool TermsAndConditionsRequired { get; set; }
+        public bool TermsAndConditionsAccepted { get; set; }
 
         /// <summary>
         ///     Discount from order total
@@ -314,10 +317,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         }
 
 
-        public bool PaymentMethodSet
-        {
-            get { return PaymentMethod != null; }
-        }
 
         public string PaymentMethodSystemName
         {
@@ -413,6 +412,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     yield return "Billing address is not set";
                 if (MrCMSApplication.Get<ISession>().QueryOver<Order>().Where(order => order.Guid == CartGuid).Any())
                     yield return "Order has already been placed";
+                if (!this.TermsAcceptanceIsValid())
+                    yield return "You have not accepted the terms and conditions";
+
             }
         }
 
@@ -426,6 +428,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public decimal AvailablePointsValue { get; set; }
 
         public decimal RewardPointsExchangeRate { get; set; }
+
 
 
         public void SetDiscountApplication(DiscountApplicationInfo discountApplicationInfo)

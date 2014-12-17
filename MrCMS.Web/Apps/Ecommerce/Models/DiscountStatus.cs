@@ -2,7 +2,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 {
     public enum DiscountStatus
     {
-        ToApply,
+        Applied,
+        ValidButNotApplied,
         ExplicitAndInvalid,
         AutomaticAndInvalid,
         NeverValid

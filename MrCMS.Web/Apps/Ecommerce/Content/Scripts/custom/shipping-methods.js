@@ -28,7 +28,7 @@
             setHtml('#method-info', result);
         });
     }
-   
+
     function showHideToPayment() {
         var value = $("select#ShippingMethod").val();
         if (value) {
@@ -50,13 +50,14 @@
         event.preventDefault();
         setToEditAddress();
     });
-    $(document).on('#shipping-address').submit(function (event) {
+    $(document).on('submit', '#shipping-address', function (event) {
         event.preventDefault();
         var form = $(event.target);
         $.post(form.attr('action'), form.serialize(), function (data) {
             if (data) {
                 setToEditMethod();
             }
+            $(document).trigger('update-summary');
         });
     });
     $(document).on('change', "select#existing-addresses", function () {

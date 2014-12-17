@@ -4,6 +4,7 @@ using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using NHibernate;
 
@@ -14,19 +15,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private readonly ICartGuidResetter _cartGuidResetter;
         private readonly IGetBillingAddressSameAsShippingAddress _billingAddressSameAsShippingAddress;
         private readonly ICartItemAvailablityService _cartItemAvailablityService;
+        private readonly EcommerceSettings _ecommerceSettings;
         private readonly ICartSessionManager _cartSessionManager;
         private readonly ISession _session;
 
         public AssignBasicCartInfo(ISession session, ICartSessionManager cartSessionManager,
             ICartGuidResetter cartGuidResetter,
             IGetBillingAddressSameAsShippingAddress billingAddressSameAsShippingAddress,
-            ICartItemAvailablityService cartItemAvailablityService)
+            ICartItemAvailablityService cartItemAvailablityService,EcommerceSettings ecommerceSettings)
         {
             _session = session;
             _cartSessionManager = cartSessionManager;
             _cartGuidResetter = cartGuidResetter;
             _billingAddressSameAsShippingAddress = billingAddressSameAsShippingAddress;
             _cartItemAvailablityService = cartItemAvailablityService;
+            _ecommerceSettings = ecommerceSettings;
         }
 
         public CartModel Assign(CartModel cart, Guid userGuid)
@@ -41,7 +44,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             cart.OrderEmail = GetOrderEmail(userGuid);
             cart.GiftMessage = GetGiftMessage(userGuid);
             cart.BillingAddressSameAsShippingAddress = _billingAddressSameAsShippingAddress.Get(cart, userGuid);
+            cart.TermsAndConditionsRequired = _ecommerceSettings.TermsAndConditionsRequired;
+            cart.TermsAndConditionsAccepted = GetTermsAndConditionsAccepted(userGuid);
             return cart;
+        }
+
+        private bool GetTermsAndConditionsAccepted(Guid userGuid)
+        {
+            return _cartSessionManager.GetSessionValue<bool>(CartManager.TermsAndConditionsAcceptedKey, userGuid);
         }
 
         private void AssignAvailablity(List<CartItem> cartItems)
