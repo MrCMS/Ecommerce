@@ -3,6 +3,7 @@
 @using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers.Cart
+@using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @using MrCMS.Web.Apps.Ecommerce.Settings
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
@@ -144,18 +145,19 @@
                 @Resource("Discounts")
             </div>
         </div>
+        @{ Html.RenderAction("Error", "Discount");}
         @using (Html.BeginForm("Apply", "Discount", FormMethod.Post, new { data_apply_discount = true }))
         {
             <div class="row margin-bottom-10" id="discount-code-box">
                 <div class="col-sm-4 line-height-30">
-                    Discount Code
+                    @Resource("Cart Discount - Discount Code", "Discount Code")
                 </div>
                 <div class="col-sm-4">
                     <input class="form-control" type="text" name="discountCode" />
                     <div class="visible-xs" style="padding-top: 5px;"></div>
                 </div>
                 <div class="col-sm-4">
-                    <button type="submit" id="apply-discount-code" class="btn btn-default btn-block">Apply Code</button>
+                    <button type="submit" id="apply-discount-code" class="btn btn-default btn-block">@Resource("Cart Discount - Apply Code","Apply Code")</button>
                 </div>
             </div>
         }
@@ -163,14 +165,35 @@
         {
             <div class="row margin-bottom-10">
                 <div class="col-xs-4 line-height-30">
-                    Discount@(Model.Discounts.Count > 1 ? "s" : "")
+                    @(Resource(Model.Discounts.Count == 1 ? "Discount" : "Discounts"))
                 </div>
                 <div class="col-xs-8 text-right">
                     <ul class="list-unstyled margin-bottom-0">
-                        @foreach (var discount in Model.Discounts.Select(x => x.Discount))
+                        @foreach (var discountInfo in Model.Discounts)
                         {
+                            var discount = discountInfo.Discount;
+                            var messages = discountInfo.Messages;
                             <li class="line-height-30">
                                 @discount.Name
+                                @if (discountInfo.Status == DiscountStatus.ExplicitAndInvalid)
+                                {
+                                    <span class="error">Invalid for current cart</span>
+                                }
+                                @if (discountInfo.Status == DiscountStatus.ValidButNotApplied)
+                                {
+                                    <span class="error">Valid, but unable to be applied to current cart</span>
+                                }
+                                @if (messages.Any())
+                                {
+                                    <ul class="list-unstyled">
+
+                                        @foreach (var message in messages)
+                                        {
+                                            <li>@message</li>
+                                        }
+                                    </ul>
+                                }
+
                                 @if (discount.RequiresCode)
                                 {
                                     <span>(<a data-remove-discount-code="@Url.Action("Remove", "Discount", new {discountCode = discount.Code})" href="#">Remove</a>)</span>
@@ -178,6 +201,7 @@
                             </li>
                         }
                     </ul>
+
                 </div>
             </div>
         }

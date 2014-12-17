@@ -13,6 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         public EcommerceSettings()
         {
             DashboardRevenueDays = 7;
+            TermsAndConditionsRequired = true;
         }
 
         [DisplayName("Search Products per Page")]
@@ -44,6 +45,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 
         [DisplayName("Enable warehouse-based stock management")]
         public bool WarehouseStockEnabled { get; set; }
+
+        [DisplayName("Enable terms and conditions acceptance")]
+        public bool TermsAndConditionsRequired { get; set; }
 
         public IEnumerable<int> ProductPerPageOptions
         {

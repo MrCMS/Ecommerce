@@ -1,6 +1,7 @@
 ﻿@using MrCMS.Entities.Documents.Web
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Pages
+@using MrCMS.Web.Areas.Admin.Helpers
 @using MrCMS.Website
 @model MrCMS.Entities.Documents.Web.Webpage
 @{
@@ -20,6 +21,7 @@
     {
         percentComplete = 100;
     }
+    var errorMessages = TempData.ErrorMessages();
     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/checkout.js");
     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/discount.js");
 }
@@ -83,6 +85,20 @@
     </div>
 </div>
 <div class="container">
+    @if (errorMessages.Any())
+    {
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <ul class="list-unstyled">
+                @foreach (var message in errorMessages)
+                {
+                    <li>
+                        @message
+                    </li>
+                }
+            </ul>
+        </div>
+    }
     @RenderBody()
 </div>
 <footer>

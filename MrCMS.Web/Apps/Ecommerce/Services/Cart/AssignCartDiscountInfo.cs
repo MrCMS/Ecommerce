@@ -3,24 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Website;
-using NHibernate;
-using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
     public class AssignCartDiscountInfo : IAssignCartDiscountInfo
     {
         private readonly ICartDiscountApplicationService _cartDiscountApplicationService;
-        private readonly IGetDiscountCodes _getDiscountCodes;
-        private readonly ISession _session;
+        private readonly ICartDiscountCodeService _cartDiscountCodeService;
+        private readonly IGetValidDiscounts _getValidDiscounts;
 
-        public AssignCartDiscountInfo(ISession session,
-            ICartDiscountApplicationService cartDiscountApplicationService, IGetDiscountCodes getDiscountCodes)
+        public AssignCartDiscountInfo(ICartDiscountApplicationService cartDiscountApplicationService,
+            ICartDiscountCodeService cartDiscountCodeService, IGetValidDiscounts getValidDiscounts)
         {
-            _session = session;
             _cartDiscountApplicationService = cartDiscountApplicationService;
-            _getDiscountCodes = getDiscountCodes;
+            _cartDiscountCodeService = cartDiscountCodeService;
+            _getValidDiscounts = getValidDiscounts;
         }
 
         public CartModel Assign(CartModel cart, Guid userGuid)
@@ -29,7 +26,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             var discounts = GetDiscounts(userGuid, cart);
             var result = GetDiscountApplication(discounts, cart);
             cart.SetDiscountApplication(result.Info);
-            cart.Discounts = discounts.FindAll(info => result.AppliedDiscounts.Contains(info.Discount));
+            foreach (var info in discounts.Where(info => result.AppliedDiscounts.Contains(info.Discount)))
+            {
+                info.MarkAsApplied();
+            }
+            cart.Discounts = discounts;
             return cart;
         }
 
@@ -37,7 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             var discountApplicationInfo = new DiscountApplicationInfo();
             var hashSet = new List<Discount>();
-            foreach (var discountInfo in discounts.FindAll(x => x.Status == DiscountStatus.ToApply))
+            foreach (var discountInfo in discounts.FindAll(x => x.Status == DiscountStatus.ValidButNotApplied))
             {
                 var applicationInfo = _cartDiscountApplicationService.ApplyDiscount(discountInfo, cart);
                 if (!applicationInfo.IsApplied)
@@ -56,14 +57,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private List<DiscountInfo> GetDiscounts(Guid userGuid, CartModel cart)
         {
             List<string> discountCodes = GetDiscountCodes(userGuid);
-            DateTime now = CurrentRequestData.Now;
-            IList<Discount> discounts = _session.QueryOver<Discount>()
-                .Where(
-                    discount =>
-                        (discount.Code.IsIn(discountCodes) || !discount.RequiresCode) &&
-                        (discount.ValidFrom == null || discount.ValidFrom <= now) &&
-                        (discount.ValidUntil == null || discount.ValidUntil >= now))
-                .Cacheable().List();
+            IList<Discount> discounts = _getValidDiscounts.Get(cart, discountCodes);
 
             var discountInfos = (from discount in discounts
                                  let result = _cartDiscountApplicationService.CheckLimitations(discount, cart)
@@ -77,7 +71,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         private List<string> GetDiscountCodes(Guid userGuid)
         {
-            return _getDiscountCodes.Get(userGuid);
+            return _cartDiscountCodeService.Get(userGuid).ToList();
         }
     }
 }

@@ -1,35 +1,39 @@
 using System.Collections.Generic;
+using System.Linq;
+using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
-    public class CartDiscountService : ICartDiscountService, ICartSessionKeyList
+    public class CartDiscountService : ICartDiscountService
     {
-        private readonly ICartSessionManager _cartSessionManager;
-        private readonly IGetDiscountCodes _getDiscountCodes;
-        private readonly IGetUserGuid _getUserGuid;
+        private readonly ICartDiscountCodeService _cartDiscountCodeService;
+        private readonly IGetValidDiscounts _getValidDiscounts;
+        private readonly CartModel _cart;
 
-        public CartDiscountService(ICartSessionManager cartSessionManager, IGetDiscountCodes getDiscountCodes, IGetUserGuid getUserGuid)
+        public CartDiscountService(ICartDiscountCodeService cartDiscountCodeService, IGetValidDiscounts getValidDiscounts, CartModel cart)
         {
-            _cartSessionManager = cartSessionManager;
-            _getDiscountCodes = getDiscountCodes;
-            _getUserGuid = getUserGuid;
+            _cartDiscountCodeService = cartDiscountCodeService;
+            _getValidDiscounts = getValidDiscounts;
+            _cart = cart;
         }
 
-        public const string CurrentDiscountCodesKey = "current.discount-codes";
-        public void AddDiscountCode(string code)
+
+        public bool AddDiscountCode(string code)
         {
-            var codes = _getDiscountCodes.Get(_getUserGuid.UserGuid);
-            codes.Add(code);
-            _cartSessionManager.SetSessionValue(CurrentDiscountCodesKey, _getUserGuid.UserGuid, codes);
+            var codes = _cartDiscountCodeService.Get();
+            var discounts = _getValidDiscounts.Get(_cart, new List<string> { code });
+            if (!discounts.Any())
+                return false;
+            var result = codes.Add(code);
+            _cartDiscountCodeService.SaveDiscounts(codes);
+            return result;
         }
 
         public void RemoveDiscountCode(string discountCode)
         {
-            var codes = _getDiscountCodes.Get(_getUserGuid.UserGuid);
+            var codes = _cartDiscountCodeService.Get();
             codes.Remove(discountCode);
-            _cartSessionManager.SetSessionValue(CurrentDiscountCodesKey, _getUserGuid.UserGuid, codes);
+            _cartDiscountCodeService.SaveDiscounts(codes);
         }
-
-        public IEnumerable<string> Keys { get { yield return CurrentDiscountCodesKey; } }
     }
 }

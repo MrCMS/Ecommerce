@@ -14,6 +14,7 @@
     <label>Postage Selection <span class="red">*</span> :</label>
     @if (shippingMethods.Any())
     {
+        
         @Html.DropDownList("ShippingMethod", shippingMethods, new { @class = "form-control margin-bottom-10" })
         <div id="to-payment-details" style="display: none">
             <a class="btn btn-primary btn-lg margin-top-10" href="@(UniquePageHelper.GetUrl<PaymentDetails>())">

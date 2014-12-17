@@ -43,7 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Paypoint
 
         protected override bool StandardCanUseLogic(CartModel cart)
         {
-            return cart.IsPayPalTransaction;
+            return !cart.IsPayPalTransaction;
         }
     }
 }
