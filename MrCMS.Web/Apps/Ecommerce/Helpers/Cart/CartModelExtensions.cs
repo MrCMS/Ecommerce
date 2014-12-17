@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Helpers.Cart
 {
@@ -78,6 +80,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers.Cart
         public static bool HasShippingDiscount(this CartModel cartModel)
         {
             return cartModel.ShippingDiscount > Decimal.Zero;
+        }
+
+        public static bool CanShowPaymentMethod(this CartModel cartModel)
+        {
+            return cartModel.PaymentMethod != null && cartModel.TermsAcceptanceIsValid();
+        }
+
+        public static bool TermsAcceptanceIsValid(this CartModel cartModel)
+        {
+            return !cartModel.TermsAndConditionsRequired || cartModel.TermsAndConditionsAccepted;
         }
     }
 }

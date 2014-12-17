@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
+using MrCMS.Web.Apps.Ecommerce.Helpers.Cart;
 using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
@@ -19,6 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public const string CurrentShippingDateKey = "current.shipping-date";
         public const string CurrentOrderEmailKey = "current.order-email";
         public const string CurrentGiftMessageKey = "current.gift-message";
+        public const string TermsAndConditionsAcceptedKey = "current.terms-and-conditions-accepted";
         public const string CurrentPaymentMethodKey = "current.payment-method";
         public const string CurrentPayPalExpressToken = "current.paypal-express-token";
         public const string CurrentPayPalExpressPayerId = "current.paypal-express-payer-id";
@@ -51,6 +53,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 yield return CurrentPayPalExpressToken;
                 yield return CurrentPayPalExpressPayerId;
                 yield return CurrentAppliedGiftCards;
+                yield return TermsAndConditionsAcceptedKey;
             }
         }
 
@@ -110,7 +113,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public BasePaymentMethod SetPaymentMethod(string methodName)
         {
             _cartSessionManager.SetSessionValue(CurrentPaymentMethodKey, _getUserGuid.UserGuid, methodName);
-            return _cartBuilder.BuildCart().PaymentMethod;
+            var cart = _cartBuilder.BuildCart();
+            if (cart.CanShowPaymentMethod())
+                return cart.PaymentMethod;
+            return null;
         }
 
         public void SetPayPalExpressPayerId(string payerId)

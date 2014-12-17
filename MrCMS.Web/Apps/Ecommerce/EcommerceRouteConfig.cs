@@ -157,7 +157,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new { controller = "WorldPay", action = "Form" },
                 new[] { typeof(WorldPayController).Namespace });
             context.MapRoute("Checkout - WorldPay Notification Url", "Apps/Ecommerce/WorldPay/Notification",
-                new { controller = "WorldPay", action = "Notification" }, new[] { typeof(WorldPayController).Namespace });
+                new {controller = "WorldPay", action = "Notification"},
+                new[] {typeof (WorldPayController).Namespace});
 
 
 
@@ -235,6 +236,10 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Checkout - Save Billing Address", "Apps/Ecommerce/PaymentDetails/SaveBillingAddress",
                 new { controller = "PaymentDetails", action = "SaveBillingAddress" },
                 new[] { typeof(PaymentDetailsController).Namespace });
+
+            context.MapRoute("Checkout - Accept Terms And Conditions", "Apps/Ecommerce/terms-and-conditions/set",
+                new { controller = "TermsAndConditions", action = "Set" },
+                new[] { typeof(TermsAndConditionsController).Namespace });
 
             context.MapRoute("Checkout - Set Payment Method", "Apps/Ecommerce/PaymentDetails/SetPaymentMethod",
                 new { controller = "PaymentDetails", action = "SetPaymentMethod" },

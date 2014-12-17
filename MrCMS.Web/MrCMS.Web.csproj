@@ -795,6 +795,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\SetShippingDateController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SetShippingDetailsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\SetShippingMethodController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\TermsAndConditionsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\WishlistController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\WorldPayController.cs" />
@@ -1250,12 +1251,14 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\ISetShippingMethodDateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ItemHasSKUChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ItemIsInCategoryChecker.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\ITermsAndConditionsUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\OrderTotalFixedAmountApplier.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\SetShippingMethodDateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ShippingCountryIsChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ShippingPostcodeStartsWithChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\SingleUsageChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\SingleUsagePerCustomerChecker.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\TermsAndConditionsUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\XPercentFromItemsApplier.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\XPercentFromOrderApplier.cs" />
     <Compile Include="Apps\Ecommerce\Services\Categories\CategoryService.cs" />

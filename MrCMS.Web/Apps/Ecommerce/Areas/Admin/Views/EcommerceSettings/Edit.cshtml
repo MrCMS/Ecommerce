@@ -35,6 +35,9 @@
                 </div>
                 @Html.InfoBlock("Heads up!", " You will also need to add the 'Show wishlist' page in order to fully enable wishlists.")
                 <div class="form-group">
+                    @Html.InlineCheckboxFor(x => x.TermsAndConditionsRequired)
+                </div>
+                <div class="form-group">
                     @Html.InlineCheckboxFor(x => x.GiftCardsEnabled)
                 </div>
                 <div class="form-group">
