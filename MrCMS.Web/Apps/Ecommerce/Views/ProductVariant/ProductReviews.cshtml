@@ -1,6 +1,7 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Paging
 @using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
+@using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
@@ -8,6 +9,7 @@
     var averageReviews = ViewData["average-ratings"] is decimal ? (decimal)ViewData["average-ratings"] : 0;
     var helpfulnessVotes = (bool)ViewData["helpfulness-votes"];
     var guestReviews = (bool)ViewData["guest-reviews"];
+    var response = TempData["productreview-response-info"] as IProductReviewResponseInfo;
 }
 <div data-paging-type="async" data-product-review="true">
     <div class="margin-top-bottom-30">
@@ -47,6 +49,17 @@
                         </div>
                         <div class="clearfix"></div>
                     </div>
+                    
+                    
+                    @if (response != null && !string.IsNullOrWhiteSpace(response.Message))
+                    {
+                        <div class="margin-bottom-10">
+                            <div role="alert" class="alert @(response.Type == ProductReviewResponseType.Info ? "alert-info" : response.Type == ProductReviewResponseType.Error ? "alert-danger" : "alert-success")">
+                                @response.Message
+                            </div>
+                        </div>
+                    }
+
 
                     @foreach (var item in reviews)
                     {
@@ -106,13 +119,13 @@
 
                         if (helpfulnessVotes)
                         {
-                            Html.RenderAction("HelpfulnessVotes", "ProductReview", new { review = item });
+                            Html.RenderAction("HelpfulnessVotes", "ProductReview", new { productReview = item });
                         }
                         <hr />
                     }
                 </div>
 
-                @Html.Pager(reviews, "ProductReviews", i => new { Model.Id, reviewPage = i })
+                @Html.Pager(reviews, "ProductReviews", i => new { productVariantId = Model.Id, reviewPage = i })
             }
         </div>
     </div>
