@@ -1,6 +1,6 @@
 using MrCMS.Models;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Helpers
@@ -9,7 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
     {
         public static CachingInfo GetCachingInfo(this ProductSearchQuery query)
         {
-            return MrCMSApplication.Get<IProductSearchQueryService>().GetCachingInfo(query);
+            return MrCMSApplication.Get<IProductSearchIndexService>().GetCachingInfo(query);
         }
     }
 }
