@@ -26,7 +26,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             ViewData["shipping-methods"] = _setShippingMethodService.GetShippingMethodOptions();
             return PartialView();
         }
-        public ActionResult SetShipping([IoCModelBinder(typeof(ShippingMethodModelBinder))]IShippingMethod shippingMethod)
+
+        public ActionResult SetShipping(
+            [IoCModelBinder(typeof (ShippingMethodModelBinder))] IShippingMethod shippingMethod)
         {
             _setShippingMethodService.SetShippingMethod(shippingMethod);
             if (Request.IsAjaxRequest())

@@ -12,18 +12,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         private readonly IGetTaxRateOptions _getTaxRateOptions;
         private readonly IGetTrackingPolicyOptions _getTrackingPolicyOptions;
         private readonly IGetShippingOptions _getShippingOptions;
-        private readonly IReviewService _reviewService;
+        private readonly IProductReviewUIService _productReviewUIService;
 
         public ProductVariantAdminViewDataService(IGetGiftCardTypeOptions getGiftCardTypeOptions,
             IGetProductVariantTypeOptions getProductVariantTypeOptions, IGetTaxRateOptions getTaxRateOptions,
-            IGetTrackingPolicyOptions getTrackingPolicyOptions, IGetShippingOptions getShippingOptions, IReviewService reviewService)
+            IGetTrackingPolicyOptions getTrackingPolicyOptions, IGetShippingOptions getShippingOptions, IProductReviewUIService productReviewUIService)
         {
             _getGiftCardTypeOptions = getGiftCardTypeOptions;
             _getProductVariantTypeOptions = getProductVariantTypeOptions;
             _getTaxRateOptions = getTaxRateOptions;
             _getTrackingPolicyOptions = getTrackingPolicyOptions;
             _getShippingOptions = getShippingOptions;
-            _reviewService = reviewService;
+            _productReviewUIService = productReviewUIService;
         }
 
         public void SetViewData(ViewDataDictionary viewData, ProductVariant productVariant)

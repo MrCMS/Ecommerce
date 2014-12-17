@@ -64,6 +64,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public Address ShippingAddress { get; set; }
         public IShippingMethod ShippingMethod { get; set; }
         public HashSet<IShippingMethod> PotentiallyAvailableShippingMethods { get; set; }
+        public DateTime? RequestedShippingDate { get; set; }
 
         // billing
         public Address BillingAddress { get; set; }
@@ -425,6 +426,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public decimal AvailablePointsValue { get; set; }
 
         public decimal RewardPointsExchangeRate { get; set; }
+
 
         public void SetDiscountApplication(DiscountApplicationInfo discountApplicationInfo)
         {

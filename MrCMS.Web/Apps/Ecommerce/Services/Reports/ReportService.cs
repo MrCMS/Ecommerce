@@ -9,11 +9,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
     {
         private readonly IChartService _chartService;
         private readonly IOrderAnalyticsService _orderAnalyticsService;
+        private readonly EcommerceSettings _ecommerceSettings;
 
-        public ReportService(IChartService chartService, IOrderAnalyticsService orderAnalyticsService)
+        public ReportService(IChartService chartService, IOrderAnalyticsService orderAnalyticsService,EcommerceSettings ecommerceSettings)
         {
             _chartService = chartService;
             _orderAnalyticsService = orderAnalyticsService;
+            _ecommerceSettings = ecommerceSettings;
         }
 
         public ChartModel SalesByDay(ChartModel model)
@@ -58,8 +60,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
 
         public ChartModel SalesXDays()
         {
-            var days = MrCMSApplication.Get<DashBoardRevenueSettings>().Days;
-            if (days == 0)
+            var days = _ecommerceSettings.DashboardRevenueDays;
+            if (days <= 0)
                 days = 7;
 
             var model = new ChartModel() { From = CurrentRequestData.Now.Date.AddDays(-(days - 1)), To = CurrentRequestData.Now.Date.AddDays(1) };

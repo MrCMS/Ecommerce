@@ -17,12 +17,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class ProductVariantController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly IProductVariantAdminService _productVariantAdminService;
-        private readonly IReviewService _reviewService;
+        private readonly IProductReviewUIService _productReviewUIService;
 
-        public ProductVariantController(IProductVariantAdminService productVariantAdminService, IReviewService reviewService)
+        public ProductVariantController(IProductVariantAdminService productVariantAdminService, IProductReviewUIService productReviewUIService)
         {
             _productVariantAdminService = productVariantAdminService;
-            _reviewService = reviewService;
+            _productReviewUIService = productReviewUIService;
         }
 
         [HttpGet]
@@ -97,7 +97,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public ActionResult ProductReviews(ProductVariant productVariant, int reviewPage = 1, string q = "")
         {
             var reviewsPageSize = MrCMSApplication.Get<ProductReviewSettings>().PageSize;
-            ViewData["reviews"] = _reviewService.GetReviewsByProductVariantId(productVariant, reviewPage, reviewsPageSize);
+            ViewData["reviews"] = _productReviewUIService.GetReviewsForVariant(productVariant, reviewPage, reviewsPageSize);
 
             return PartialView(productVariant);
         }

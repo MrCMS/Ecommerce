@@ -14,8 +14,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
         void Update(HelpfulnessVote review);
 
         void Delete(HelpfulnessVote review);
-        int GetAllHelpfulVotesCount(Review review);
+        int GetAllHelpfulVotesCount(ProductReview productReview);
 
-        int GetAllUnhelpfulVotesCount(Review review);
+        int GetAllUnhelpfulVotesCount(ProductReview productReview);
     }
 }

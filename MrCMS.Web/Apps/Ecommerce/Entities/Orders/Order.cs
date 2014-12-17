@@ -74,6 +74,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         [DisplayName("Shipping Status")]
         public virtual ShippingStatus ShippingStatus { get; set; }
 
+        [DisplayName("Requested Shipping Date")]
+        public virtual DateTime? RequestedShippingDate { get; set; }
+
         [DisplayName("Shipping Date")]
         public virtual DateTime? ShippingDate { get; set; }
 

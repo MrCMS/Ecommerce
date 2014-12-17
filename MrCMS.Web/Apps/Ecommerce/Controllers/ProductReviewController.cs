@@ -11,20 +11,20 @@ using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
-    public class ReviewController : MrCMSAppUIController<EcommerceApp>
+    public class ProductReviewController : MrCMSAppUIController<EcommerceApp>
     {
-        private readonly IReviewService _reviewService;
+        private readonly IProductReviewUIService _productReviewUIService;
         private readonly IHelpfulnessVoteService _helpfulnessVoteService;
 
-        public ReviewController(IReviewService reviewService, IHelpfulnessVoteService helpfulnessVoteService)
+        public ProductReviewController(IProductReviewUIService productReviewUIService, IHelpfulnessVoteService helpfulnessVoteService)
         {
-            _reviewService = reviewService;
+            _productReviewUIService = productReviewUIService;
             _helpfulnessVoteService = helpfulnessVoteService;
         }
 
         public PartialViewResult Add(ProductVariant productVariant)
         {
-            var model = new Review
+            var model = new ProductReview
             {
                 ProductVariant = productVariant
             };
@@ -33,28 +33,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         [HttpPost]
         [ActionName("Add")]
-        public RedirectResult Add_POST(Review review)
+        public RedirectResult Add_POST(ProductReview productReview)
         {
-            if (CurrentRequestData.CurrentUser != null)
-                review.User = CurrentRequestData.CurrentUser;
-
-            _reviewService.Add(review);
+            _productReviewUIService.Add(productReview);
 
             TempData["review-submitted"] = true;
             
-
             return Redirect(Referrer.ToString());
         }
 
-        public PartialViewResult HelpfulnessVotes(Review review)
+        public PartialViewResult HelpfulnessVotes(ProductReview productReview)
         {
             var model = new HelpfulnessVote
             {
-                Review = review
+                ProductReview = productReview
             };
 
-            ViewData["helpful-count"] = _helpfulnessVoteService.GetAllHelpfulVotesCount(review);
-            ViewData["unhelpful-count"] = _helpfulnessVoteService.GetAllUnhelpfulVotesCount(review);
+            ViewData["helpful-count"] = _helpfulnessVoteService.GetAllHelpfulVotesCount(productReview);
+            ViewData["unhelpful-count"] = _helpfulnessVoteService.GetAllUnhelpfulVotesCount(productReview);
 
             return PartialView(model);
         }

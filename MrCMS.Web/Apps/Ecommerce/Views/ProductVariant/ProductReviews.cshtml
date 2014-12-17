@@ -4,7 +4,7 @@
 @using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
-    var reviews = ViewData["reviews"] as IPagedList<Review>;
+    var reviews = ViewData["reviews"] as IPagedList<ProductReview>;
     var averageReviews = ViewData["average-ratings"] is decimal ? (decimal)ViewData["average-ratings"] : 0;
     var helpfulnessVotes = (bool)ViewData["helpfulness-votes"];
     var guestReviews = (bool)ViewData["guest-reviews"];
@@ -20,13 +20,13 @@
                     </div>
                     @if (CurrentRequestData.CurrentUser == null && !guestReviews)
                     {
-                        <div class="alert alert-danger">
-                            Guest reviews currently unavailable, please login to post review.
+                        <div class="alert alert-info">
+                            @Resource("Product Reviews - Guest Reviews unavailable", "Guest reviews currently unavailable, please login to post review.")
                         </div>
                     }
                     else
                     {
-                        Html.RenderAction("Add", "Review", new { productVariant = Model });
+                        Html.RenderAction("Add", "ProductReview", new { productVariant = Model });
                     }
                 </div>
             </div>
@@ -84,15 +84,15 @@
                         <div itemprop="review" itemscope itemtype="http://schema.org/Review">
                             <span itemprop="name"><strong>@item.Title</strong></span> -
                             by <span itemprop="author">
-                                   @if (item.User != null)
-                                   {
-                                       <span>@item.User.Name</span>
-                                   }
-                                   else
-                                   {
-                                       <span>@item.Email</span>
-                                   }
-                               </span>,
+                                @if (item.User != null)
+                                {
+                                    <span>@item.User.Name</span>
+                                }
+                                else
+                                {
+                                    <span>@item.Email</span>
+                                }
+                            </span>,
                             <meta itemprop="datePublished" content="2011-04-01">@item.CreatedOn.ToString("MMM dd, yyyy")
                             <div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
                                 <meta itemprop="worstRating" content="1">
@@ -106,13 +106,13 @@
 
                         if (helpfulnessVotes)
                         {
-                            Html.RenderAction("HelpfulnessVotes", "Review", new {review = item});
+                            Html.RenderAction("HelpfulnessVotes", "ProductReview", new { review = item });
                         }
                         <hr />
                     }
                 </div>
 
-                @Html.Pager(reviews, "ProductReviews", i => new {Model.Id, reviewPage = i})
+                @Html.Pager(reviews, "ProductReviews", i => new { Model.Id, reviewPage = i })
             }
         </div>
     </div>

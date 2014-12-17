@@ -15,14 +15,14 @@ using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 {
-    public class ReviewAdminService : IReviewAdminService
+    public class ProductReviewAdminService : IProductReviewAdminService
     {
-        private readonly IReviewService _reviewService;
+        private readonly IProductReviewUIService _productReviewUIService;
         private readonly ISession _session;
 
-        public ReviewAdminService(IReviewService reviewService, ISession session)
+        public ProductReviewAdminService(IProductReviewUIService productReviewUIService, ISession session)
         {
-            _reviewService = reviewService;
+            _productReviewUIService = productReviewUIService;
             _session = session;
         }
 
@@ -36,20 +36,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                     foreach (var item in model.Reviews)
                     {
                         item.Approved = true;
-                        _reviewService.Update(item);
+                        _productReviewUIService.Update(item);
                     }
                     break;
                 case ProductReviewOperation.Reject:
                     foreach (var item in model.Reviews)
                     {
                         item.Approved = false;
-                        _reviewService.Update(item);
+                        _productReviewUIService.Update(item);
                     }
                     break;
                 case ProductReviewOperation.Delete:
                     foreach (var item in model.Reviews)
                     {
-                        _reviewService.Delete(item);
+                        _productReviewUIService.Delete(item);
                     }
                     break;
                 default:
@@ -64,9 +64,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                 .BuildSelectItemList(status => status.ToString(), emptyItem: null);
         }
 
-        public IPagedList<Review> Search(ProductReviewSearchQuery query)
+        public IPagedList<ProductReview> Search(ProductReviewSearchQuery query)
         {
-            var queryOver = _session.QueryOver<Review>();
+            var queryOver = _session.QueryOver<ProductReview>();
 
             switch (query.ApprovalStatus)
             {

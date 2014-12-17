@@ -10,6 +10,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 {
     public class EcommerceSettings : SiteSettingsBase
     {
+        public EcommerceSettings()
+        {
+            DashboardRevenueDays = 7;
+        }
+
         [DisplayName("Search Products per Page")]
         public string SearchProductsPerPage { get; set; }
 
@@ -69,5 +74,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 
         [DisplayName("Site Currency")]
         public int CurrencyId { get; set; }
+
+        [DisplayName("X Days to be shown in Dashboard Revenue")]
+        public int DashboardRevenueDays { get; set; }
     }
 }

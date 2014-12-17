@@ -1,8 +1,8 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.Review
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.ProductReview
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 <fieldset>
 
-    @using (Html.BeginForm("Approval", "Review", new { id = Model.Id }, FormMethod.Post))
+    @using (Html.BeginForm("Approval", "ProductReview", new { id = Model.Id }, FormMethod.Post))
     {
         <legend>
             View review

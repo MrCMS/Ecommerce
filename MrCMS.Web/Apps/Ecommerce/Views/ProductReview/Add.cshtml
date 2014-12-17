@@ -1,21 +1,22 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.Review
+﻿@using MrCMS.Website
+@model MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.ProductReview
 
 @if (TempData["review-submitted"] != null)
 {
     <div class="alert alert-success">
-        Review successfully submitted. It will be shown once it has been approved.
+        @(Resource("Product Review submitted", "Your product review has been successfully submitted. It will be shown once it has been approved."))
     </div>
 }
 
-@using (Html.BeginForm("Add", "Review", new { id = "" }, FormMethod.Post))
+@using (Html.BeginForm("Add", "ProductReview", new { id = "" }, FormMethod.Post))
 {
     @Html.HiddenFor(x => x.ProductVariant.Id);
     @Html.LabelFor(x => x.Rating)
-    <br/>
+    <br />
     <label class="radio-inline">
-        @Html.RadioButtonFor(x => x.Rating, 1) 1 
+        @Html.RadioButtonFor(x => x.Rating, 1) 1
     </label>
-        
+
     <label class="radio-inline">
         @Html.RadioButtonFor(x => x.Rating, 2) 2
     </label>
@@ -29,19 +30,25 @@
         @Html.RadioButtonFor(x => x.Rating, 5) 5
     </label>
     @Html.ValidationMessageFor(x => x.Rating)
-    <br/>
-    <div class="form-group">
-        @Html.LabelFor(x => x.Email) @Html.ValidationMessageFor(x => x.Email)
-        @Html.TextBoxFor(x => x.Email, new{@class="form-control"})
-        
-    </div>
+    <br />
+    if (CurrentRequestData.CurrentUser == null)
+    {
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name) @Html.ValidationMessageFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Email) @Html.ValidationMessageFor(x => x.Email)
+            @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+        </div>
+    }
     <div class="form-group">
         @Html.LabelFor(x => x.Title) @Html.ValidationMessageFor(x => x.Title)
         @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
     </div>
     <div class="form-group">
         @Html.LabelFor(x => x.Text) @Html.ValidationMessageFor(x => x.Text)
-        @Html.TextAreaFor(x => x.Text, new {@class="form-control", row="5"})
+        @Html.TextAreaFor(x => x.Text, new { @class = "form-control", row = "5" })
     </div>
     <input type="submit" class="btn btn-default" value="Submit" />
 }
