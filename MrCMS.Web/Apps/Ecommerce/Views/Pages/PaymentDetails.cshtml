@@ -1,5 +1,6 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Helpers.Cart
 @using MrCMS.Web.Apps.Ecommerce.Models
 @model MrCMS.Web.Apps.Ecommerce.Pages.PaymentDetails
 @{ var cart = ViewData["cart"] as CartModel;}
@@ -17,7 +18,7 @@
                 {
                     <div class="checkbox">
                         <label>
-                            @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress) @Resource("Use Delivery Address") 
+                            @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress) @Resource("Use Delivery Address")
                         </label>
                         <div class="controls">
                             @cart.ShippingAddress.GetDescription()
@@ -50,6 +51,17 @@
             }
 
             <br />
+            @if (cart.TermsAndConditionsRequired)
+            {
+                <div class="block-title">
+                    <div class="h1style">@Resource("Payment Details Page - Terms and Conditions", "Terms and Conditions")</div>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        @Html.CheckBox("TermsAndConditionsAccepted", cart.TermsAndConditionsAccepted) @Html.Raw(Resource("I accept the terms and conditions"))
+                    </label>
+                </div>
+            }
 
             <div class="block-title">
                 <div class="h1style">@Resource("Payment Details")</div>
@@ -58,7 +70,7 @@
             {
                 Html.RenderPartial("SelectMethod", cart);
                 <div id="payment-confirmation">
-                    @if (cart.PaymentMethodSet)
+                    @if (cart.CanShowPaymentMethod())
                     {
                         Html.RenderAction(cart.PaymentMethodAction, cart.PaymentMethodController);
                     }
@@ -68,7 +80,7 @@
             {
                 <p>@Resource("Select after updating billing address")...</p>
             }
-        
+
         </div>
 
         <div class="col-lg-5 col-md-4 col-sm-4">
