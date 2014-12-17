@@ -4,7 +4,7 @@
 @model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.ProductReviewSearchQuery
 @{
     ViewBag.Title = "Reviews";
-    var reviews = ViewData["results"] as IPagedList<Review> ?? PagedList<Review>.Empty;
+    var reviews = ViewData["results"] as IPagedList<ProductReview> ?? PagedList<ProductReview>.Empty;
     var approvalOptions = ViewData["approval-options"] as List<SelectListItem> ?? new List<SelectListItem>();
 }
 
@@ -13,7 +13,7 @@
             Reviews
         </legend>
         
-        @using (Html.BeginForm("Index", "Review", FormMethod.Get))
+        @using (Html.BeginForm("Index", "ProductReview", FormMethod.Get))
         {
             <div class="row">
                 <div class="col-xs-4">

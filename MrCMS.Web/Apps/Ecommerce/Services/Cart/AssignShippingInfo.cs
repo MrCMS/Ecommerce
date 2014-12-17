@@ -29,6 +29,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 cart.PotentiallyAvailableShippingMethods =
                     _shippingMethodUIService.GetEnabledMethods().FindAll(method => method.CanPotentiallyBeUsed(cart));
                 cart.ShippingMethod = GetShippingMethod(cart, userGuid);
+                cart.RequestedShippingDate =
+                    _cartSessionManager.GetSessionValue<DateTime?>(CartManager.CurrentShippingDateKey, userGuid);
             }
             return cart;
         }

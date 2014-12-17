@@ -6,12 +6,12 @@ using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 {
-    public interface IReviewAdminService
+    public interface IProductReviewAdminService
     {
         void BulkAction(ReviewUpdateModel model);
 
         List<SelectListItem> GetApprovalOptions();
 
-        IPagedList<Review> Search(ProductReviewSearchQuery query);
+        IPagedList<ProductReview> Search(ProductReviewSearchQuery query);
     }
 }

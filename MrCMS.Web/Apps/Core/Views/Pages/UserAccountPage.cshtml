@@ -1,6 +1,4 @@
-﻿@using MrCMS.Helpers
-@using MrCMS.Web.Apps.Core.Models
-@model MrCMS.Web.Apps.Core.Pages.UserAccountPage
+﻿@model MrCMS.Web.Apps.Core.Pages.UserAccountPage
 
 
 <div class="container">
@@ -34,7 +32,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="padding-top-bottom-10">
-                                    @{Html.RenderAction("UserAccountDetails", "UserAccount");}
+                                    @{ Html.RenderAction("UserAccountDetails", "UserAccount"); }
                                 </div>
                             </div>
                         </div>
@@ -43,14 +41,14 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="padding-top-bottom-10">
-                                    @{Html.RenderAction("ChangePassword", "UserAccount");}
+                                    @{ Html.RenderAction("ChangePassword", "UserAccount"); }
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="reviews">
                         <div class="padding-top-bottom-10">
-                            @{Html.RenderAction("UserAccountReviews", "UserAccount");}
+                            @{ Html.RenderAction("UserAccountReviews", "UserAccount"); }
                         </div>
                     </div>
                 </div>

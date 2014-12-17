@@ -39,14 +39,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
             _session.Transact(session => session.Delete(helpfulnessVote));
         }
 
-        public int GetAllHelpfulVotesCount(Review review)
+        public int GetAllHelpfulVotesCount(ProductReview productReview)
         {
-            return _session.QueryOver<HelpfulnessVote>().Where(a => a.IsHelpful && a.Review.Id == review.Id).Cacheable().RowCount();
+            return _session.QueryOver<HelpfulnessVote>().Where(a => a.IsHelpful && a.ProductReview.Id == productReview.Id).Cacheable().RowCount();
         }
 
-        public int GetAllUnhelpfulVotesCount(Review review)
+        public int GetAllUnhelpfulVotesCount(ProductReview productReview)
         {
-            return _session.QueryOver<HelpfulnessVote>().Where(a => !a.IsHelpful && a.Review.Id == review.Id).Cacheable().RowCount();
+            return _session.QueryOver<HelpfulnessVote>().Where(a => !a.IsHelpful && a.ProductReview.Id == productReview.Id).Cacheable().RowCount();
         }
     }
 }
