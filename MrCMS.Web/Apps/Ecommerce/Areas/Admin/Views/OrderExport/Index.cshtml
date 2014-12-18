@@ -1,0 +1,25 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers.OrderExportQuery
+
+@using (Html.BeginForm("ToExcel", "OrderExport", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Order Export
+            <span class="btn-group display-inline pull-right">
+                <button type="submit" class="btn btn-primary">Export</button>
+            </span>
+        </legend>
+        <div class="row">
+            <div class="col-sm-6">
+                @Html.LabelFor(query => query.From)   
+                @Html.EditorFor(query => query.From)   
+                @Html.ValidationMessageFor(query => query.From)   
+            </div>
+            <div class="col-sm-6">
+                @Html.LabelFor(query => query.To)   
+                @Html.EditorFor(query => query.To)   
+                @Html.ValidationMessageFor(query => query.To)   
+            </div>
+        </div>
+    </fieldset>
+}

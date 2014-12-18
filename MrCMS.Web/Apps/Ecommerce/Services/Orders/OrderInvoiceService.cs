@@ -19,19 +19,19 @@ using Image = System.Drawing.Image;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 {
-    public class ExportOrderService : IExportOrdersService
+    public class OrderInvoiceService : IOrderInvoiceService
     {
         private readonly EcommerceSettings _ecommerceSettings;
         private readonly IGetLogoUrl _getLogoUrl;
 
-        public ExportOrderService(EcommerceSettings ecommerceSettings, IGetLogoUrl getLogoUrl)
+        public OrderInvoiceService(EcommerceSettings ecommerceSettings, IGetLogoUrl getLogoUrl)
         {
             _ecommerceSettings = ecommerceSettings;
-            _getLogoUrl = getLogoUrl;
+            _getLogoUrl = getLogoUrl;   
         }
 
         [MrCMSACLRule(typeof(ExportOrderACL), ExportOrderACL.ExportOrderToPdf)]
-        public byte[] ExportOrderToPdf(Order order)
+        public byte[] GeneratePDF(Order order)
         {
             Document pdf = SetDocumentInfo(order);
 
