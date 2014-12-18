@@ -645,6 +645,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\GetWarehouseStockFromFileResult.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\GiftCardSearchQuery.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\LowStockReportSearchModel.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\OrderExportQuery.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ProductReviewSearchQuery.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ProductAdminSearchQuery.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\PublishStatus.cs" />
@@ -702,6 +703,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGiftCardSettingsAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ILowStockReportAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IOrderAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IOrderExportService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IOrderRewardAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IPerformSimpleBulkUpdate.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IPerformWarehousedStockBulkUpdate.cs" />
@@ -734,6 +736,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Processors\ImportOrders.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Processors\ImportUsers.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\OrderAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\OrderExportService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\OrderRewardAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\PerformWarehousedStockBulkUpdate.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ProductVariantAdminService.cs" />
