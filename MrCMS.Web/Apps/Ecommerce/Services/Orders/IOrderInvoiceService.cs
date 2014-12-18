@@ -2,8 +2,8 @@
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 {
-    public interface IExportOrdersService
+    public interface IOrderInvoiceService
     {
-        byte[] ExportOrderToPdf(Order order);
+        byte[] GeneratePDF(Order order);
     }
 }

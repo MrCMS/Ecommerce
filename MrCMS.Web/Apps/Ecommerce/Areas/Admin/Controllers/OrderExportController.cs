@@ -1,35 +1,27 @@
-using System;
 using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Web.Apps.Ecommerce.Services.Orders;
-using MrCMS.Website;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class OrderExportController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly IExportOrdersService _exportOrdersService;
+        private readonly IOrderExportService _orderExportService;
 
-        public OrderExportController(IExportOrdersService exportOrdersService)
+        public OrderExportController(IOrderExportService orderExportService)
         {
-            _exportOrdersService = exportOrdersService;
+            _orderExportService = orderExportService;
         }
 
-        [HttpGet]
-        public ActionResult ToPDF(Order order)
+        public ViewResult Index()
         {
-            try
-            {
-                var file = _exportOrdersService.ExportOrderToPdf(order);
-                return File(file, "application/pdf",
-                    "Order-" + order.Id + "-[" + CurrentRequestData.Now.ToString("dd-MM-yyyy hh-mm") + "].pdf");
-            }
-            catch (Exception ex)
-            {
-                CurrentRequestData.ErrorSignal.Raise(ex);
-                return RedirectToAction("Edit", "Order", new { id = order.Id });
-            }
+            return View(_orderExportService.GetDefaultQuery());
+        }
+
+        public FileResult ToExcel(OrderExportQuery exportQuery)
+        {
+            return _orderExportService.ExportOrdersToExcel(exportQuery);
         }
     }
 }
