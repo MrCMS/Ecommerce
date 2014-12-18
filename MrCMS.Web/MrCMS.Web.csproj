@@ -584,6 +584,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\NopDataImportController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderExportController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderInvoiceController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderLineController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderNoteController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\OrderRefundController.cs" />
@@ -1410,10 +1411,10 @@
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\SendOrderPlacedEmailToStoreOwner.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\SendOrderShippedEmailToCustomer.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\Events\UpdateStock.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\ExportOrderService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\OrderInvoiceService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\GetExistingAddressOptions.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\GetLogoUrl.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Orders\IExportOrdersService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Orders\IOrderInvoiceService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IGetExistingAddressOptions.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IGetLogoUrl.cs" />
     <Compile Include="Apps\Ecommerce\Services\Orders\IGiftCardApplier.cs" />
@@ -3757,6 +3758,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BuyXGetYFree\Fields.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\HeaderSummary.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Discount\Error.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderExport\Index.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
