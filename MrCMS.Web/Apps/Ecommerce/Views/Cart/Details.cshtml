@@ -217,27 +217,7 @@
                         </div>
                     }
 
-                    if (ecommerceSettings.GiftMessageEnabled)
-                    {
-
-                        <div class="row margin-bottom-10">
-                            <div class="col-xs-12">
-                                <strong>Gift Message</strong>
-                            </div>
-                        </div>
-                        <div data-message-container="250" data-error-message="Your gift message is more than 250 characters">
-                            <div class="row margin-bottom-10">
-                                <div class="col-xs-12">
-                                    <div class="form-group">
-                                        <textarea id="gift-message" class="form-control">@Model.GiftMessage</textarea>
-                                    </div>
-                                    <span id="message-character-count">
-                                        <span></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    }
+                    
                     if (ecommerceSettings.RewardPointsEnabled && Model.AvailablePoints > 0)
                     {
                         <div class="row margin-bottom-10">
