@@ -5,9 +5,13 @@ using System.Web;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.ModelBinders;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.ProductReviews;
 using MrCMS.Website;
+using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
+using MrCMS.Website.Filters;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
@@ -33,6 +37,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         [HttpPost]
         [ActionName("Add")]
+        [AntiForgeryValidation]
+        [HoneypotFilter]
         public RedirectResult Add_POST(ProductReview productReview)
         {
             _productReviewUIService.Add(productReview);
@@ -42,49 +48,69 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return Redirect(Referrer.ToString());
         }
 
-        public PartialViewResult HelpfulnessVotes(ProductReview productReview)
+        public ActionResult HelpfulnessVotes(ProductReview productReview)
         {
-            var model = new HelpfulnessVote
-            {
-                ProductReview = productReview
-            };
-
-            ViewData["helpful-count"] = _helpfulnessVoteService.GetAllHelpfulVotesCount(productReview);
-            ViewData["unhelpful-count"] = _helpfulnessVoteService.GetAllUnhelpfulVotesCount(productReview);
-
-            return PartialView(model);
+            return PartialView(productReview);
         }
 
         [HttpPost]
         [ActionName("HelpfulnessVotes")]
-        public RedirectResult HelpfulnessVotes_POST(HelpfulnessVote vote)
+        public ActionResult HelpfulnessVotes_POST([IoCModelBinder(typeof(SetIPAddressModelBinder))]HelpfulnessVoteModel voteModel)
         {
-            if (CurrentRequestData.CurrentUser != null)
-                vote.User = CurrentRequestData.CurrentUser;
+            var response = _helpfulnessVoteService.Upvote(voteModel);
+            if (Request.IsAjaxRequest())
+            {
+                return Json(response.IsSuccess());
+            }
 
-            vote.IsHelpful = true;
+            TempData["productreview-response-info"] = response;
+            return
+                Redirect(string.IsNullOrWhiteSpace(response.RedirectUrl)
+                    ? Referrer != null
+                        ? Referrer.ToString()
+                        : "~/"
+                    : response.RedirectUrl);
 
-            _helpfulnessVoteService.Add(vote);
+            //if (CurrentRequestData.CurrentUser != null)
+            //    vote.User = CurrentRequestData.CurrentUser;
 
-            TempData["vote-submitted"] = true;
+            //vote.IsHelpful = true;
 
-            return Redirect(Referrer.ToString());
+            //_helpfulnessVoteService.Add(vote);
+
+            //TempData["vote-submitted"] = true;
+
+            //return Redirect(Referrer.ToString());
         }
 
         [HttpPost]
         [ActionName("UnhelpfulnessVotes")]
-        public RedirectResult UnhelpfulnessVotes(HelpfulnessVote vote)
+        public ActionResult UnhelpfulnessVotes([IoCModelBinder(typeof(SetIPAddressModelBinder))]HelpfulnessVoteModel voteModel)
         {
-            if (CurrentRequestData.CurrentUser != null)
-                vote.User = CurrentRequestData.CurrentUser;
+            var response = _helpfulnessVoteService.Downvote(voteModel);
+            if (Request.IsAjaxRequest())
+            {
+                return Json(response.IsSuccess());
+            }
 
-            vote.IsHelpful = false;
+            TempData["productreview-response-info"] = response;
+            return
+                Redirect(string.IsNullOrWhiteSpace(response.RedirectUrl)
+                    ? Referrer != null
+                        ? Referrer.ToString()
+                        : "~/"
+                    : response.RedirectUrl);
 
-            _helpfulnessVoteService.Add(vote);
+            //if (CurrentRequestData.CurrentUser != null)
+            //    vote.User = CurrentRequestData.CurrentUser;
 
-            TempData["vote-submitted"] = true;
+            //vote.IsHelpful = false;
 
-            return Redirect(Referrer.ToString());
+            //_helpfulnessVoteService.Add(vote);
+
+            //TempData["vote-submitted"] = true;
+
+            //return Redirect(Referrer.ToString());
         }
     }
 }

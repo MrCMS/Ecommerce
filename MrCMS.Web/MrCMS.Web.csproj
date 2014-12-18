@@ -1031,6 +1031,7 @@
     <Compile Include="Apps\Ecommerce\ModelBinders\DownloadOrderedFileOrderByGuidModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\OrderByGuidModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\ProductSearchQueryModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\ModelBinders\SetIPAddressModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\ShippingMethodModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\UpdateBasketModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddPriceBreakModel.cs" />
@@ -1066,6 +1067,7 @@
     <Compile Include="Apps\Ecommerce\Models\GiftCardInfo.cs" />
     <Compile Include="Apps\Ecommerce\Models\GoogleBaseCalculationInfo.cs" />
     <Compile Include="Apps\Ecommerce\Models\GoogleBaseModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\HelpfulnessVoteModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\IAddress.cs" />
     <Compile Include="Apps\Ecommerce\Models\IGiftCardUserDetails.cs" />
     <Compile Include="Apps\Ecommerce\Models\ItemPrice.cs" />

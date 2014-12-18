@@ -1,4 +1,5 @@
-﻿@using MrCMS.Website
+﻿@using MrCMS.Helpers
+@using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.ProductReview
 
 @if (TempData["review-submitted"] != null)
@@ -12,6 +13,8 @@
 {
     @Html.HiddenFor(x => x.ProductVariant.Id);
     @Html.LabelFor(x => x.Rating)
+    @Html.AntiForgeryToken()
+    @Html.Honeypot()
     <br />
     <label class="radio-inline">
         @Html.RadioButtonFor(x => x.Rating, 1) 1

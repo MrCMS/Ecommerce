@@ -99,7 +99,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
             if (query.DateTo.HasValue)
                 queryOver = queryOver.Where(review => review.CreatedOn < query.DateTo);
 
-            return queryOver.OrderBy(review => review.CreatedOn).Asc.Paged(query.Page);
+            return queryOver.OrderBy(review => review.Approved).Asc.ThenBy(review => review.CreatedOn).Desc.Paged(query.Page);
         }
     }
 }

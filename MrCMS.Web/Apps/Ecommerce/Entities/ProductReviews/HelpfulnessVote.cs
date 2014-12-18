@@ -10,5 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
         public virtual User User { get; set; }
 
         public virtual bool IsHelpful { get; set; }
+
+        public virtual string IPAddress { get; set; }
     }
 }
