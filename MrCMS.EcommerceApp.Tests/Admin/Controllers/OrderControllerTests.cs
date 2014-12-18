@@ -2,7 +2,6 @@ using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Paging;
-using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
@@ -22,7 +21,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         public OrderControllerTests()
         {
             _orderAdminService = A.Fake<IOrderAdminService>();
-            _orderController = new OrderController(_orderAdminService, A.Fake<IUserService>());
+            _orderController = new OrderController(_orderAdminService);
         }
 
         [Fact]
