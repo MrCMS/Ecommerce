@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.ACL;
@@ -13,12 +12,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class OrderController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly IOrderAdminService _orderAdminService;
-        private readonly IUserService _userService;
 
-        public OrderController(IOrderAdminService orderAdminService, IUserService userService)
+        public OrderController(IOrderAdminService orderAdminService)
         {
             _orderAdminService = orderAdminService;
-            _userService = userService;
         }
 
         [HttpGet]
