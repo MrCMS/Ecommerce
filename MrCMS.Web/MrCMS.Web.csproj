@@ -3757,6 +3757,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BuyXGetYFree\Fields.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\HeaderSummary.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Discount\Error.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Cart\DiscountUseSummary.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />

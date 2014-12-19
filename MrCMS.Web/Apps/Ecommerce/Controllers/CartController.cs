@@ -50,6 +50,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return PartialView(_cart);
         }
 
+        [HttpGet]
+        public PartialViewResult DiscountUseSummary()
+        {
+            return PartialView(_cart);
+        }
+
         public JsonResult CanAddQuantity(AddToCartModel model)
         {
             CanAddQuantityValidationResult result = _cartValidationService.CanAddQuantity(model);
