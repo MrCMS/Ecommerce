@@ -25,7 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [MrCMSACLRule(typeof (ProductReviewACL), ProductReviewACL.List)]
+        [MrCMSACLRule(typeof(ProductReviewACL), ProductReviewACL.List)]
         public ViewResult Index(ProductReviewSearchQuery searchQuery)
         {
             ViewData["approval-options"] = _productReviewAdminService.GetApprovalOptions();
@@ -34,9 +34,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [MrCMSACLRule(typeof (ProductReviewACL), ProductReviewACL.Edit)]
-        public RedirectToRouteResult Index(
-            [IoCModelBinder(typeof (ProductReviewUpdateModelBinder))] ReviewUpdateModel model)
+        [MrCMSACLRule(typeof(ProductReviewACL), ProductReviewACL.Edit)]
+        public RedirectToRouteResult Index([IoCModelBinder(typeof(ProductReviewUpdateModelBinder))] ReviewUpdateModel model)
         {
             _productReviewAdminService.BulkAction(model);
 
@@ -44,7 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [MrCMSACLRule(typeof (ProductReviewACL), ProductReviewACL.Edit)]
+        [MrCMSACLRule(typeof(ProductReviewACL), ProductReviewACL.Edit)]
         public ViewResult Edit(ProductReview productReview)
         {
             return View(productReview);
@@ -53,17 +52,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("Edit")]
         [HttpPost]
         [ForceImmediateLuceneUpdate]
-        [MrCMSACLRule(typeof (ProductReviewACL), ProductReviewACL.Edit)]
+        [MrCMSACLRule(typeof(ProductReviewACL), ProductReviewACL.Edit)]
         public ActionResult Edit_POST(ProductReview productReview)
         {
-            if (ModelState.IsValid)
-            {
-                _productReviewUIService.Update(productReview);
-
-                return RedirectToAction("Index");
-            }
-
-            return View(productReview);
+            _productReviewUIService.Update(productReview);
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -75,7 +68,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("Delete")]
         [HttpPost]
         [ForceImmediateLuceneUpdate]
-        [MrCMSACLRule(typeof (ProductReviewACL), ProductReviewACL.Delete)]
+        [MrCMSACLRule(typeof(ProductReviewACL), ProductReviewACL.Delete)]
         public RedirectToRouteResult Delete_POST(ProductReview productReview)
         {
             _productReviewUIService.Delete(productReview);
@@ -89,7 +82,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         [HttpPost]
         public RedirectToRouteResult Approval(
-            [IoCModelBinder(typeof (ProductReviewApprovalModelBinder))] ProductReview productReview)
+            [IoCModelBinder(typeof(ProductReviewApprovalModelBinder))] ProductReview productReview)
         {
             _productReviewUIService.Update(productReview);
             return RedirectToAction("Index");

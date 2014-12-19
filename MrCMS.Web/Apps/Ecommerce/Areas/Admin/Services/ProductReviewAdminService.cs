@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
@@ -12,6 +13,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.ProductReviews;
 using MrCMS.Web.Areas.Admin.Models;
 using NHibernate;
 using NHibernate.Criterion;
+using NHibernate.SqlCommand;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 {
@@ -91,7 +93,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                     .Where(() => productVariantAlias.Name.IsInsensitiveLike(query.ProductName, MatchMode.Anywhere) || productAlias.Name.IsInsensitiveLike(query.ProductName, MatchMode.Anywhere));
             }
             if (!string.IsNullOrWhiteSpace(query.Email))
-                queryOver = queryOver.Where(review => review.Email.IsLike(query.Email, MatchMode.Anywhere));
+            {
+                User userAlias = null;
+                queryOver =
+                    queryOver.JoinAlias(review => review.User, () => userAlias, JoinType.LeftOuterJoin)
+                        .Where(
+                            review =>
+                                (review.Email.IsInsensitiveLike(query.Email, MatchMode.Anywhere)) ||
+                                (userAlias.Email.IsInsensitiveLike(query.Email, MatchMode.Anywhere)));
+            }
             if (!string.IsNullOrWhiteSpace(query.Title))
                 queryOver = queryOver.Where(review => review.Title.IsLike(query.Title, MatchMode.Anywhere));
             if (query.DateFrom.HasValue)

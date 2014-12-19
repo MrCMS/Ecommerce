@@ -1,4 +1,5 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.ProductReview
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.ProductReview
 @{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
 <fieldset>
 
@@ -43,7 +44,7 @@
             </p>
             <p>
                 <b>Text: </b>
-                @Model.Text
+                @Model.Text.PlainTextToParagraphs()
             </p>
         </div>
     </div>
