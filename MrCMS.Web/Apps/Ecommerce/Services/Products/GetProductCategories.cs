@@ -56,13 +56,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var webpageValueCollector = new ValueCollector(webpageSearcher, idFieldName);
             webpageSearcher.Search(mainQuery, null, webpageValueCollector);
 
-            var list = webpageValueCollector.Values[idFieldName].Select(s => Convert.ToInt32(s))
+            return webpageValueCollector.Values[idFieldName].Select(s => Convert.ToInt32(s))
                 .Intersect(categoryIds)
                 .ToList();
-            return
-                list;
-
-            return categoryIds;
         }
     }
 }
