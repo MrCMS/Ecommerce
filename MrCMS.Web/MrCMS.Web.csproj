@@ -952,6 +952,7 @@
     <Compile Include="Apps\Ecommerce\Helpers\Shipping\CartModelShippingExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\Shipping\StandardShippingCalculationExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\Shipping\UKStandardShippingCalculationExtensions.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\TextHelper.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndex.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchCreatedOnDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchEmaillDefinition.cs" />
