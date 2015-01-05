@@ -8,5 +8,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
     {
         ProductCardModel Get(Product product);
         List<ProductCardModel> Get(List<Product> products);
+        List<ProductCardModel> Get(List<int> productIds);
     }
 }

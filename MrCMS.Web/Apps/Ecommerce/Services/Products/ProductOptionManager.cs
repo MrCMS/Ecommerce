@@ -4,7 +4,6 @@ using System.Linq;
 using MrCMS.Helpers;
 using MrCMS.Models;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -17,10 +16,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     public class ProductOptionManager : IProductOptionManager
     {
         private readonly IProductSearchIndexService _productSearchIndexService;
-        private readonly IUniquePageService _uniquePageService;
         private readonly ISession _session;
+        private readonly IUniquePageService _uniquePageService;
 
-        public ProductOptionManager(ISession session, IProductSearchIndexService productSearchIndexService, IUniquePageService uniquePageService)
+        public ProductOptionManager(ISession session, IProductSearchIndexService productSearchIndexService,
+            IUniquePageService uniquePageService)
         {
             _session = session;
             _productSearchIndexService = productSearchIndexService;
@@ -31,10 +31,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             return
                 _session.QueryOver<ProductSpecificationAttribute>()
-                        .Cacheable()
-                        .List()
-                        .OrderBy(x => x.DisplayOrder)
-                        .ToList();
+                    .Cacheable()
+                    .List()
+                    .OrderBy(x => x.DisplayOrder)
+                    .ToList();
         }
 
         public ProductSpecificationAttribute GetSpecificationAttribute(int id)
@@ -46,8 +46,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             return
                 _session.QueryOver<ProductSpecificationAttribute>()
-                        .Where(specificationOption => specificationOption.Name == name)
-                        .SingleOrDefault();
+                    .Where(specificationOption => specificationOption.Name == name)
+                    .SingleOrDefault();
         }
 
         public void AddSpecificationAttribute(ProductSpecificationAttribute option)
@@ -71,19 +71,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             return
                 _session.QueryOver<ProductSpecificationAttribute>()
-                        .Where(specificationOption => specificationOption.Name == model.Name && specificationOption.Id != model.Id)
-                        .Any();
+                    .Where(
+                        specificationOption =>
+                            specificationOption.Name == model.Name && specificationOption.Id != model.Id)
+                    .Any();
         }
 
         public bool AnyExistingSpecificationAttributeOptionsWithName(string name, int id)
         {
             return
                 _session.QueryOver<ProductSpecificationAttributeOption>()
-                        .Where(
-                            specificationOption =>
+                    .Where(
+                        specificationOption =>
                             specificationOption.Name == name &&
                             specificationOption.ProductSpecificationAttribute.Id == id)
-                        .RowCount() > 0;
+                    .RowCount() > 0;
         }
 
         public void UpdateSpecificationAttributeDisplayOrder(IList<SortItem> options)
@@ -101,9 +103,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             return
                 _session.QueryOver<ProductSpecificationAttributeOption>()
-                        .Where(x => x.ProductSpecificationAttribute.Id == id)
-                        .Cacheable()
-                        .List();
+                    .Where(x => x.ProductSpecificationAttribute.Id == id)
+                    .Cacheable()
+                    .List();
         }
 
         public void AddSpecificationAttributeOption(ProductSpecificationAttributeOption option)
@@ -137,25 +139,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         }
 
         public void SetSpecificationValue(Product product, ProductSpecificationAttribute productSpecificationAttribute,
-                                          string value)
+            string value)
         {
             ProductSpecificationValue valueAlias = null;
             ProductSpecificationAttributeOption optionAlias = null;
             ProductSpecificationValue specificationValue = _session.QueryOver(() => valueAlias)
-                                                                   .JoinAlias(
-                                                                       () =>
-                                                                       valueAlias.ProductSpecificationAttributeOption,
-                                                                       () => optionAlias)
-                                                                   .Where(
-                                                                       () => valueAlias.Product == product &&
-                                                                             optionAlias.ProductSpecificationAttribute ==
-                                                                             productSpecificationAttribute
+                .JoinAlias(
+                    () =>
+                        valueAlias.ProductSpecificationAttributeOption,
+                    () => optionAlias)
+                .Where(
+                    () => valueAlias.Product == product &&
+                          optionAlias.ProductSpecificationAttribute ==
+                          productSpecificationAttribute
                 ).Cacheable().SingleOrDefault();
 
             ProductSpecificationAttributeOption option =
                 productSpecificationAttribute.Options.FirstOrDefault(
                     attributeOption =>
-                    string.Equals(attributeOption.Name, value, StringComparison.InvariantCultureIgnoreCase));
+                        string.Equals(attributeOption.Name, value, StringComparison.InvariantCultureIgnoreCase));
             if (option == null)
             {
                 option = new ProductSpecificationAttributeOption
@@ -250,9 +252,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             return GetSearchAttributeOptions(values);
         }
 
+        public List<ProductOptionModel<int>> GetSearchSpecificationAttributes(ProductSearchQuery query)
+        {
+            List<int> values = _productSearchIndexService.GetSpecifications(query);
+            return GetSearchSpecificationAttributes(query, values);
+        }
+
+        public ProductOptionSearchData GetSearchData(ProductSearchQuery query)
+        {
+            OptionSearchData values = _productSearchIndexService.GetOptionSearchData(query);
+            return new ProductOptionSearchData
+            {
+                AttributeOptions = GetSearchAttributeOptions(values.Options),
+                SpecificationOptions = GetSearchSpecificationAttributes(query, values.Specifications)
+            };
+        }
+
         private List<ProductOptionModel<string>> GetSearchAttributeOptions(List<OptionInfo> values)
         {
-            var optionIds = values.Select(info => info.OptionId).Distinct().ToList();
+            List<int> optionIds = values.Select(info => info.OptionId).Distinct().ToList();
             IList<ProductOption> productAttributeOptions =
                 _session.QueryOver<ProductOption>()
                     .Where(value => value.Id.IsIn(optionIds)).Cacheable()
@@ -280,13 +298,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             }).ToList();
         }
 
-        public List<ProductOptionModel<int>> GetSearchSpecificationAttributes(ProductSearchQuery query)
-        {
-            List<int> values = _productSearchIndexService.GetSpecifications(query);
-            return GetSearchSpecificationAttributes(query, values);
-        }
-
-        private List<ProductOptionModel<int>> GetSearchSpecificationAttributes(ProductSearchQuery query, List<int> values)
+        private List<ProductOptionModel<int>> GetSearchSpecificationAttributes(ProductSearchQuery query,
+            List<int> values)
         {
             ProductSpecificationAttribute attributeAlias = null;
             IList<ProductSpecificationAttributeOption> productSpecificationAttributeOptions =
@@ -327,20 +340,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             }).ToList();
         }
 
-        public ProductOptionSearchData GetSearchData(ProductSearchQuery query)
+        private void RemoveHiddenSearchSpecifications(ProductSearchQuery query,
+            List<ProductSpecificationAttribute> productSpecificationAttributes)
         {
-            var values = _productSearchIndexService.GetOptionSearchData(query);
-            return new ProductOptionSearchData
-            {
-                AttributeOptions = GetSearchAttributeOptions(values.Options),
-                SpecificationOptions = GetSearchSpecificationAttributes(query, values.Specifications)
-            };
-        }
-
-        private void RemoveHiddenSearchSpecifications(ProductSearchQuery query, List<ProductSpecificationAttribute> productSpecificationAttributes)
-        {
-            var category = query.CategoryId.HasValue
-                ? (EcommerceSearchablePage)_session.Get<Category>(query.CategoryId.Value)
+            EcommerceSearchablePage category = query.CategoryId.HasValue
+                ? (EcommerceSearchablePage) _session.Get<Category>(query.CategoryId.Value)
                 : _uniquePageService.GetUniquePage<ProductSearch>();
             if (category != null)
             {
@@ -372,18 +376,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             ProductOption specificationOption =
                 _session.QueryOver<ProductOption>()
-                        .Where(option => option.Name == attributeName)
-                        .Take(1)
-                        .SingleOrDefault();
+                    .Where(option => option.Name == attributeName)
+                    .Take(1)
+                    .SingleOrDefault();
             if (specificationOption == null)
                 return;
             IList<ProductOptionValue> values =
                 _session.QueryOver<ProductOptionValue>()
-                        .Where(
-                            specificationValue => specificationValue.ProductOption == specificationOption &&
-                                                  specificationValue.ProductVariant == productVariant)
-                        .Cacheable()
-                        .List();
+                    .Where(
+                        specificationValue => specificationValue.ProductOption == specificationOption &&
+                                              specificationValue.ProductVariant == productVariant)
+                    .Cacheable()
+                    .List();
             if (values.Any())
             {
                 ProductOptionValue specificationValue = values.First();
@@ -404,10 +408,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public bool AnyExistingAttributeOptionsWithName(ProductOption option)
         {
             return _session.QueryOver<ProductOption>()
-                           .Where(
-                               specificationOption =>
-                               specificationOption.Name.IsInsensitiveLike(option.Name, MatchMode.Exact))
-                           .RowCount() > 0;
+                .Where(
+                    specificationOption =>
+                        specificationOption.Name.IsInsensitiveLike(option.Name, MatchMode.Exact))
+                .RowCount() > 0;
         }
     }
 }

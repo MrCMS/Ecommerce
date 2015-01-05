@@ -18,9 +18,21 @@
         </div>
     </div>
 </div>
-<div class="form-group">
-    @Html.LabelFor(webpage => webpage.DefaultProductSearchSort)
-    @Html.DropDownListFor(webpage => webpage.DefaultProductSearchSort, ViewData["product-search-sort-options"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+<div class="row">
+    <div class="col-xs-11">
+        @Html.LabelFor(webpage => webpage.DefaultProductSearchSort)
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-11">
+        <div class="form-group">
+            @Html.DropDownListFor(webpage => webpage.DefaultProductSearchSort, ViewData["product-search-sort-options"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+        </div>
+
+    </div>
+    <div class="col-xs-1">
+        @Html.ActionLink(Resource("Sort products"), "Sort", "CategoryProducts", new { id = Model.Id }, new { @class = "btn btn-default" })
+    </div>
 </div>
 @{ Html.RenderAction("HiddenSpecifications", "EcommerceSearchablePage", new { id = Model.Id });}
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/edit-category.js"); }

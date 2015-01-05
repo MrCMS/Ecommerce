@@ -73,5 +73,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             }
             return productCardModels;
         }
+
+        public List<ProductCardModel> Get(List<int> productIds)
+        {
+            var products = _session.QueryOver<Product>().Where(product => product.Id.IsIn(productIds)).Cacheable().List();
+
+            return Get(products.OrderBy(product => productIds.IndexOf(product.Id)).ToList());
+        }
     }
 }
