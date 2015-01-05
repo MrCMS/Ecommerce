@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Settings
 {
@@ -14,6 +15,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         {
             DashboardRevenueDays = 7;
             TermsAndConditionsRequired = true;
+            DefaultProductSearchSort = ProductSearchSort.MostPopular;
         }
 
         [DisplayName("Search Products per Page")]
@@ -81,5 +83,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 
         [DisplayName("X Days to be shown in Dashboard Revenue")]
         public int DashboardRevenueDays { get; set; }
+
+        [DisplayName("Default Product Search Sort")]
+        public ProductSearchSort DefaultProductSearchSort { get; set; }
     }
 }

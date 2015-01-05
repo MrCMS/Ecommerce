@@ -1,35 +1,24 @@
 using System;
-using System.Collections.Generic;
-using MrCMS.DbConfiguration.Configuration;
-using MrCMS.Events.Documents;
-using MrCMS.Search;
+using MrCMS.Website;
 
 namespace MrCMS.Services.Notifications
 {
-    public class NotificationDisabler : IDisposable
+    public class NotificationDisabler :IDisposable
     {
-        private List<IDisposable> _disposables;
+        private readonly bool _enableOnDispose;
 
         public NotificationDisabler()
         {
-            _disposables = new List<IDisposable>
+            if (!CurrentRequestData.CurrentContext.AreNotificationsDisabled())
             {
-                EventContext.Instance.Disable<IOnTransientNotificationPublished>(),
-                EventContext.Instance.Disable<IOnPersistentNotificationPublished>(),
-                EventContext.Instance.Disable<UpdateIndicesListener>(),
-                EventContext.Instance.Disable<UpdateUniversalSearch>(),
-                EventContext.Instance.Disable<WebpageUpdatedNotification>(),
-                EventContext.Instance.Disable<DocumentAddedNotification>(),
-                EventContext.Instance.Disable<MediaCategoryUpdatedNotification>()
-            };
-
+                _enableOnDispose = true;
+                CurrentRequestData.CurrentContext.DisableNotifications();
+            }
         }
         public void Dispose()
         {
-            foreach (var disposable in _disposables)
-            {
-                disposable.Dispose();
-            }
+            if(_enableOnDispose)
+                CurrentRequestData.CurrentContext.EnableNotifications();
         }
     }
 }

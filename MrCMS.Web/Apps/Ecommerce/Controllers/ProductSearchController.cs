@@ -52,6 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 helper => helper.Action("ResultsInternal", new {query}));
         }
 
+        [SetProductResultsViewData]
         public PartialViewResult ResultsInternal(ProductSearchQuery query)
         {
             ViewData["query"] = query;

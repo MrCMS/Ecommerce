@@ -1,0 +1,92 @@
+﻿@using System.Drawing
+@using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Settings
+@model MrCMS.Web.Apps.Ecommerce.Pages.Category
+@{
+    var sortData = ViewData["category-products"] as List<ProductSortData> ?? new List<ProductSortData>();
+    var isSorted = ViewData["is-sorted"] is bool && (bool)ViewData["is-sorted"];
+    var cardModels = sortData.Select(data => data.Id).GetCardModels();
+}
+@section JavaScriptBlock
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#sortable").sortable({
+                update: function (event, ui) {
+                    $('#sortable li').each(function (index, domElement) {
+                        $(domElement).find('[name|="order"]').val(index);
+                    });
+                }
+            });
+        });
+    </script>
+}
+@using (Html.BeginForm("Sort", "CategoryProducts", new { id = Model.Id }, FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Sort products for @Model.NestedName @if (!isSorted)
+            {
+                <span class="small">
+                    (Unsorted)
+                </span>
+            }
+            <span class="btn-group pull-right">
+                @Html.ActionLink(Resource("Back to category"), "Edit", "Webpage", new { id = Model.Id }, new { @class = "btn btn-default" })
+                @if (isSorted)
+                {
+                    @Html.ActionLink(Resource("Clear sorting"), "Clear", "CategoryProducts", new { id = Model.Id }, new { @class = "btn btn-default", data_toggle = "fb-modal" })
+                }
+                <button class="btn btn-primary" type="submit">Save</button>
+            </span>
+        </legend>
+        <ul id="sortable">
+            @for (int i = 0; i < sortData.Count; i++)
+            {
+                var data = sortData[i];
+                var cardModel = cardModels[i];
+                <li>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <i class="glyphicon glyphicon-resize-full"></i>&nbsp;&nbsp;
+                        </div>
+                        <div class="col-xs-1">
+                            @RenderImage(cardModel.Image ?? SiteSettings<EcommerceSettings>().DefaultNoProductImage, new Size { Width = 100, Height = 80 }, null, null, new { @class = "img-responsive" })
+                        </div>
+                        <div class="col-xs-10">
+                            @Html.Hidden("id-" + i, data.Id)
+                            @Html.Hidden("order-" + i, data.DisplayOrder)
+                            @data.Name (@Html.ActionLink("View", "Edit", "Webpage", new { id = data.Id }, new { target = "_blank" }))
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+        @*<table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Display Order
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var data in sortData)
+                    {
+                        <tr>
+                            <td>
+                                @data.Name
+                            </td>
+                            <td>
+                                @data.DisplayOrder
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>*@
+    </fieldset>
+}

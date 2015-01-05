@@ -19,6 +19,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
         {
             return MrCMSApplication.Get<IGetProductCardModel>().Get(product.ToList());
         }
+        public static List<ProductCardModel> GetCardModels(this IEnumerable<int> productIds)
+        {
+            return MrCMSApplication.Get<IGetProductCardModel>().Get(productIds.ToList());
+        }
         public static int GetVariantCount(this Product product)
         {
             if (product == null)
