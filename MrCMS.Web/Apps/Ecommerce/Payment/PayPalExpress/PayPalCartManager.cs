@@ -24,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public bool UpdateCart(GetExpressCheckoutDetailsResponseDetailsType details)
         {
-            _cartManager.SetPaymentMethod(new PayPalExpressCheckoutPaymentMethod().SystemName);
+            _cartManager.SetPaymentMethod(PayPalExpressCheckoutPaymentMethod.MethodSystemName);
             _cartManager.SetPayPalExpressPayerId(details.PayerInfo.PayerID);
             _cartManager.SetBillingAddress(details.BillingAddress.GetAddress());
 
