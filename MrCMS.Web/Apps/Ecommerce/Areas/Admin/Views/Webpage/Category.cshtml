@@ -1,4 +1,5 @@
-﻿@using MrCMS.Helpers
+﻿@using System.Collections.Generic
+@using MrCMS.Helpers
 @model MrCMS.Web.Apps.Ecommerce.Pages.Category
 <div class="row">
     <div class="col-lg-3">
@@ -24,13 +25,12 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-xs-11">
+    <div class="col-xs-6">
         <div class="form-group">
             @Html.DropDownListFor(webpage => webpage.DefaultProductSearchSort, ViewData["product-search-sort-options"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
         </div>
-
     </div>
-    <div class="col-xs-1">
+    <div class="col-xs-6">
         @Html.ActionLink(Resource("Sort products"), "Sort", "CategoryProducts", new { id = Model.Id }, new { @class = "btn btn-default" })
     </div>
 </div>
