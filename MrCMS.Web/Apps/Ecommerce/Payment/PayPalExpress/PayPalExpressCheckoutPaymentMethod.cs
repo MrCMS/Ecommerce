@@ -4,6 +4,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 {
     public class PayPalExpressCheckoutPaymentMethod : BasePaymentMethod
     {
+        public const string MethodSystemName = "PayPalExpressCheckout";
         private readonly PayPalExpressCheckoutSettings _payPalExpressCheckoutSettings;
 
         public PayPalExpressCheckoutPaymentMethod(PayPalExpressCheckoutSettings payPalExpressCheckoutSettings)
@@ -18,12 +19,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public override string SystemName
         {
-            get { return "PayPalExpressCheckout"; }
+            get { return MethodSystemName; }
         }
 
         public override string ControllerName
         {
-            get { return "PayPalExpressCheckout"; }
+            get { return MethodSystemName; }
         }
 
         public override string ActionName

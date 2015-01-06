@@ -1,21 +1,21 @@
 using System.Collections.Generic;
 using Lucene.Net.Index;
 using Lucene.Net.Search;
+using MrCMS.Helpers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public class ValueCollector : Collector
     {
         private readonly IndexSearcher _indexSearcher;
-        private readonly Dictionary<string, List<string>> _values;
+        private readonly Dictionary<string, HashSet<string>> _values = new Dictionary<string, HashSet<string>>();
 
         public ValueCollector(IndexSearcher indexSearcher, params string[] fieldNames)
         {
             _indexSearcher = indexSearcher;
-            _values = new Dictionary<string, List<string>>();
             foreach (var fieldName in fieldNames)
             {
-                _values[fieldName] = new List<string>();
+                _values[fieldName] = new HashSet<string>();
             }
         }
 
@@ -33,7 +33,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
         public override bool AcceptsDocsOutOfOrder { get { return true; } }
 
-        public Dictionary<string, List<string>> Values
+        public Dictionary<string, HashSet<string>> Values
         {
             get { return _values; }
         }

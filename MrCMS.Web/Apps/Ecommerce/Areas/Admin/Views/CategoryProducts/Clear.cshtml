@@ -1,0 +1,18 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Category
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}	   
+@using (Html.BeginForm("Clear", "CategoryProducts", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Clear Category Sorting
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" class="btn-primary btn" value="Clear sorting" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+        <p>
+            Are you sure you want to clear the category sorting? This will remove any custom sorting on the front end and default to the inbuilt sorting operations.
+        </p>
+    </fieldset>
+}
