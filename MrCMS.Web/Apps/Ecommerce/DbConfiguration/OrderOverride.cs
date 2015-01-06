@@ -38,6 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.DbConfiguration
                                                                      part.Map(data => data.Title).Column("ShippingTitle");
                                                                  });
             mapping.Map(order => order.HttpData).MakeVarCharMax();
+            mapping.Map(order => order.GiftMessage).MakeVarCharMax();
         }
     }
 }

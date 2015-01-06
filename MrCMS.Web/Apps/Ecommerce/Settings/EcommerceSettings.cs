@@ -16,6 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
             DashboardRevenueDays = 7;
             TermsAndConditionsRequired = true;
             DefaultProductSearchSort = ProductSearchSort.MostPopular;
+            GiftMessageMaxLength = 250;
         }
 
         [DisplayName("Search Products per Page")]
@@ -44,6 +45,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 
         [DisplayName("Enable Gift Message")]
         public bool GiftMessageEnabled { get; set; }
+
+        [DisplayName("Max Gift Message Length")]
+        public int GiftMessageMaxLength { get; set; }
 
         [DisplayName("Enable warehouse-based stock management")]
         public bool WarehouseStockEnabled { get; set; }
@@ -86,5 +90,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 
         [DisplayName("Default Product Search Sort")]
         public ProductSearchSort DefaultProductSearchSort { get; set; }
+
     }
 }
