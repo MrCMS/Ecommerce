@@ -10,7 +10,6 @@
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 @{
     var ecommerceSettings = SiteSettings<EcommerceSettings>();
-    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/cart.js");
 }
 <div id="basic-details" class="margin-bottom-20">
     @if (Model.Items.Any())
@@ -130,9 +129,9 @@
             <div class="row margin-bottom-10">
                 <div class="col-xs-12">
                     <div class="form-group">
-                        <textarea id="gift-message" class="form-control">@Model.GiftMessage</textarea>
+                        <textarea data-gift-message id="summary-gift-message" class="form-control">@Model.GiftMessage</textarea>
                     </div>
-                    <span id="message-character-count">
+                    <span id="message-character-count" data-gift-message-remaining="summary-gift-message">
                         <span></span>
                     </span>
                 </div>

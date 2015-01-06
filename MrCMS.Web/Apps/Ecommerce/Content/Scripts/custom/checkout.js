@@ -8,5 +8,7 @@
         $(document).on('add-discount', updateSummary);
         $(document).on('remove-discount', updateSummary);
         $(document).on('update-summary', updateSummary);
+        $(document).on('gift-card-applied', updateSummary);
+        $(document).on('gift-card-removed', updateSummary);
     });
 })(jQuery);
