@@ -1,0 +1,25 @@
+@using System.Linq
+@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+<div class="margin-bottom-20">
+    @{ Html.RenderAction("Error", "Discount");}
+    @using (Html.BeginForm("Apply", "Discount", FormMethod.Post, new { data_apply_discount = true }))
+    {
+        <div class="row margin-bottom-10" id="discount-code-box">
+            <div class="col-sm-12">
+                <label>
+                    @Resource("Cart Discount - Discount Code", "Discounts")
+                </label>
+                <div class="input-group">
+                    <input class="form-control" type="text" name="discountCode" placeholder="@Resource("Enter discount code")" />
+                    <span class="input-group-btn">
+                        <button type="submit" id="apply-discount-code" class="btn btn-default btn-block">@Resource("Cart Discount - Apply Code", "Apply Discount")</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    }
+    @if (Model.Discounts.Any())
+    {
+        Html.RenderAction("DiscountUseSummary", "Cart");
+    }
+</div>
