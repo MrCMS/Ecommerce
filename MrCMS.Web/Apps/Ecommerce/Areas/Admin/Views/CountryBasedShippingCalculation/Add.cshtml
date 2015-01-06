@@ -1,0 +1,85 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.Shipping.CountryBasedShippingCalculation
+@{
+    var criteriaOptions = ViewData["criteria-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    var countryOptions = ViewData["country-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/country-based-shipping-calculation.js");
+}
+@using (Html.BeginForm("Add", "CountryBasedShippingCalculation", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Add Shipping Calculation
+            <span class="display-inline pull-right btn-group">
+                <button type="submit" class="btn btn-primary">Add</button>
+            </span>
+        </legend>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.ShippingCriteria)
+                    @Html.DropDownListFor(x => x.ShippingCriteria, criteriaOptions, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ShippingCriteria)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.LowerBound)
+                    @Html.TextBoxFor(x => x.LowerBound, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.LowerBound)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.UpperBound)
+                    @Html.TextBoxFor(x => x.UpperBound, new { placeholder = "Leave blank if there is no upper bound", @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.UpperBound)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.BaseAmount)
+                    @Html.TextBoxFor(x => x.BaseAmount, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.BaseAmount)
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <table class="table table-striped table-condensed" data-country-not-included>
+                            <thead>
+                                <tr>
+                                    <th>Not Included</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var country in countryOptions)
+                                {
+                                    <tr>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label>
+                                                    @Html.CheckBox("countrySelect", new { data_country_select = true, @class = "checkbox" })
+                                                    <span data-country-name>@country.Text</span>
+                                                </label>
+                                                @Html.Hidden("country-" + country.Value, false,new{data_country_value=true})
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-2">
+                        <button class="btn btn-block btn-success btn-xs" type="button" data-add-selected-countries>Add &gt;</button>
+                        <button class="btn btn-block btn-danger btn-xs" type="button" data-remove-selected-countries>&lt; Remove</button>
+                    </div>
+                    <div class="col-sm-5">
+                        <table class="table table-striped table-condensed" data-country-included>
+                            <thead>
+                                <tr>
+                                    <th>Included</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}
