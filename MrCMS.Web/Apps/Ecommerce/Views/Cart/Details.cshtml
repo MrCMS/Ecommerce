@@ -202,15 +202,18 @@
                             <strong>@Model.CartPageTotal()</strong>
                         </div>
                     </div>
-                    <hr />
-                    <div class="row margin-bottom-10">
-                        <div class="col-xs-8 col-sm-6">
-                            <strong>@Resource("Gift Card Total")</strong>
+                    if (Model.AppliedGiftCards.Any())
+                    {
+                        <hr />
+                        <div class="row margin-bottom-10">
+                            <div class="col-xs-8 col-sm-6">
+                                <strong>@Resource("Gift Card Total")</strong>
+                            </div>
+                            <div class="col-xs-4 col-sm-6 text-right">
+                                <strong>-@Model.GiftCardAmount.ToCurrencyFormat()</strong>
+                            </div>
                         </div>
-                        <div class="col-xs-4 col-sm-6 text-right">
-                            <strong>-@Model.AvailableGiftCardAmount.ToCurrencyFormat()</strong>
-                        </div>
-                    </div>
+                    }
                     if (Model.TotalToPay != Model.Total)
                     {
                         <hr />

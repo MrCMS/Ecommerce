@@ -1,4 +1,5 @@
-﻿@using MrCMS.Helpers
+﻿@using System.Linq
+@using MrCMS.Helpers
 @using MrCMS.Paging
 @using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
 @using MrCMS.Web.Apps.Ecommerce.Helpers
@@ -57,7 +58,7 @@
                 }
                 @if (canAddReview)
                 {
-                    <button class="btn btn-sm btn-info pull-right" type="button" data-toggle="collapse" data-target="#add-a-review">Add a review</button>
+                    <button class="btn btn-sm btn-info pull-right" type="button" data-toggle="collapse" data-target="#add-a-review">@Resource("Add a review")</button>
                     <div class="collapse" id="add-a-review">
                         @{ Html.RenderAction("Add", "ProductReview", new {productVariant = Model}); }
                     </div>
@@ -65,6 +66,10 @@
                 @foreach (ProductReview item in reviews)
                 {
                     foreach (int i in Enumerable.Range(1, item.Rating))
+                    {
+                        <span class="glyphicon glyphicon-star"></span>
+                    }
+                    foreach (int i in Enumerable.Range(1, 5-item.Rating))
                     {
                         <span class="glyphicon glyphicon-star-empty"></span>
                     }
