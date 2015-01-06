@@ -21,8 +21,8 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
                 ToName = "{RecipientName}",
                 Bcc = String.Empty,
                 Cc = String.Empty,
-                Subject = String.Format("{0} - Your Gift Card", fromName),
-                Body = "<p>You have purchased a gift card with the code {Code}</p>",
+                Subject = String.Format("Someone has given you a Gift Card for {0}", fromName),
+                Body = "<p>{SenderName} has send you a gift card for {SiteName}. To use this gift card, please enter code: {Code} at the checkout.</p>",
                 IsHtml = true
             };
         }
