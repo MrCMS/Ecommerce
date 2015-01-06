@@ -1,28 +1,25 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Shipping;
-using MrCMS.Web.Apps.Ecommerce.Helpers;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 {
     public class UKFirstClassShippingCalculationAdminService : IUKFirstClassShippingCalculationAdminService
     {
+        private readonly IGetShippingCriteriaOptions _getShippingCriteriaOptions;
         private readonly ISession _session;
 
-        public UKFirstClassShippingCalculationAdminService(ISession session)
+        public UKFirstClassShippingCalculationAdminService(ISession session, IGetShippingCriteriaOptions getShippingCriteriaOptions)
         {
             _session = session;
+            _getShippingCriteriaOptions = getShippingCriteriaOptions;
         }
 
         public List<SelectListItem> GetCriteriaOptions()
         {
-            return Enum.GetValues(typeof (ShippingCriteria)).Cast<ShippingCriteria>()
-                .BuildSelectItemList(criteria => criteria.GetDescription(),
-                    criteria => criteria.ToString(), emptyItem: null);
+            return _getShippingCriteriaOptions.Get();
         }
 
         public void Add(UKFirstClassShippingCalculation calculation)
