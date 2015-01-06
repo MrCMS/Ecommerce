@@ -30,102 +30,102 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertProduct(Product instance);
-    partial void UpdateProduct(Product instance);
-    partial void DeleteProduct(Product instance);
-    partial void InsertProduct_SpecificationAttribute_Mapping(Product_SpecificationAttribute_Mapping instance);
-    partial void UpdateProduct_SpecificationAttribute_Mapping(Product_SpecificationAttribute_Mapping instance);
-    partial void DeleteProduct_SpecificationAttribute_Mapping(Product_SpecificationAttribute_Mapping instance);
-    partial void InsertProduct_Category_Mapping(Product_Category_Mapping instance);
-    partial void UpdateProduct_Category_Mapping(Product_Category_Mapping instance);
-    partial void DeleteProduct_Category_Mapping(Product_Category_Mapping instance);
-    partial void InsertProduct_Manufacturer_Mapping(Product_Manufacturer_Mapping instance);
-    partial void UpdateProduct_Manufacturer_Mapping(Product_Manufacturer_Mapping instance);
-    partial void DeleteProduct_Manufacturer_Mapping(Product_Manufacturer_Mapping instance);
-    partial void InsertProduct_ProductTag_Mapping(Product_ProductTag_Mapping instance);
-    partial void UpdateProduct_ProductTag_Mapping(Product_ProductTag_Mapping instance);
-    partial void DeleteProduct_ProductTag_Mapping(Product_ProductTag_Mapping instance);
-    partial void InsertProductTag(ProductTag instance);
-    partial void UpdateProductTag(ProductTag instance);
-    partial void DeleteProductTag(ProductTag instance);
-    partial void InsertProduct_Picture_Mapping(Product_Picture_Mapping instance);
-    partial void UpdateProduct_Picture_Mapping(Product_Picture_Mapping instance);
-    partial void DeleteProduct_Picture_Mapping(Product_Picture_Mapping instance);
-    partial void InsertPicture(Picture instance);
-    partial void UpdatePicture(Picture instance);
-    partial void DeletePicture(Picture instance);
-    partial void InsertProductVariant(ProductVariant instance);
-    partial void UpdateProductVariant(ProductVariant instance);
-    partial void DeleteProductVariant(ProductVariant instance);
-    partial void InsertProductVariant_ProductAttribute_Mapping(ProductVariant_ProductAttribute_Mapping instance);
-    partial void UpdateProductVariant_ProductAttribute_Mapping(ProductVariant_ProductAttribute_Mapping instance);
-    partial void DeleteProductVariant_ProductAttribute_Mapping(ProductVariant_ProductAttribute_Mapping instance);
-    partial void InsertProductVariantAttributeCombination(ProductVariantAttributeCombination instance);
-    partial void UpdateProductVariantAttributeCombination(ProductVariantAttributeCombination instance);
-    partial void DeleteProductVariantAttributeCombination(ProductVariantAttributeCombination instance);
-    partial void InsertProductVariantAttributeValue(ProductVariantAttributeValue instance);
-    partial void UpdateProductVariantAttributeValue(ProductVariantAttributeValue instance);
-    partial void DeleteProductVariantAttributeValue(ProductVariantAttributeValue instance);
-    partial void InsertProductAttribute(ProductAttribute instance);
-    partial void UpdateProductAttribute(ProductAttribute instance);
-    partial void DeleteProductAttribute(ProductAttribute instance);
-    partial void InsertManufacturer(Manufacturer instance);
-    partial void UpdateManufacturer(Manufacturer instance);
-    partial void DeleteManufacturer(Manufacturer instance);
-    partial void InsertCategory(Category instance);
-    partial void UpdateCategory(Category instance);
-    partial void DeleteCategory(Category instance);
-    partial void InsertSpecificationAttributeOption(SpecificationAttributeOption instance);
-    partial void UpdateSpecificationAttributeOption(SpecificationAttributeOption instance);
-    partial void DeleteSpecificationAttributeOption(SpecificationAttributeOption instance);
-    partial void InsertSpecificationAttribute(SpecificationAttribute instance);
-    partial void UpdateSpecificationAttribute(SpecificationAttribute instance);
-    partial void DeleteSpecificationAttribute(SpecificationAttribute instance);
-    partial void InsertTaxCategory(TaxCategory instance);
-    partial void UpdateTaxCategory(TaxCategory instance);
-    partial void DeleteTaxCategory(TaxCategory instance);
-    partial void InsertTaxRate(TaxRate instance);
-    partial void UpdateTaxRate(TaxRate instance);
-    partial void DeleteTaxRate(TaxRate instance);
-    partial void InsertCountry(Country instance);
-    partial void UpdateCountry(Country instance);
-    partial void DeleteCountry(Country instance);
-    partial void InsertStateProvince(StateProvince instance);
-    partial void UpdateStateProvince(StateProvince instance);
-    partial void DeleteStateProvince(StateProvince instance);
-    partial void InsertTierPrice(TierPrice instance);
-    partial void UpdateTierPrice(TierPrice instance);
-    partial void DeleteTierPrice(TierPrice instance);
-    partial void InsertDownload(Download instance);
-    partial void UpdateDownload(Download instance);
-    partial void DeleteDownload(Download instance);
-    partial void InsertCustomerAddress(CustomerAddress instance);
-    partial void UpdateCustomerAddress(CustomerAddress instance);
-    partial void DeleteCustomerAddress(CustomerAddress instance);
-    partial void InsertCustomer(Customer instance);
-    partial void UpdateCustomer(Customer instance);
-    partial void DeleteCustomer(Customer instance);
-    partial void InsertGenericAttribute(GenericAttribute instance);
-    partial void UpdateGenericAttribute(GenericAttribute instance);
-    partial void DeleteGenericAttribute(GenericAttribute instance);
-    partial void InsertAddress(Address instance);
-    partial void UpdateAddress(Address instance);
-    partial void DeleteAddress(Address instance);
-    partial void InsertUrlRecord(UrlRecord instance);
-    partial void UpdateUrlRecord(UrlRecord instance);
-    partial void DeleteUrlRecord(UrlRecord instance);
-    partial void InsertSetting(Setting instance);
-    partial void UpdateSetting(Setting instance);
-    partial void DeleteSetting(Setting instance);
-    partial void InsertOrder(Order instance);
-    partial void UpdateOrder(Order instance);
-    partial void DeleteOrder(Order instance);
-    partial void InsertOrderProductVariant(OrderProductVariant instance);
-    partial void UpdateOrderProductVariant(OrderProductVariant instance);
-    partial void DeleteOrderProductVariant(OrderProductVariant instance);
-    partial void InsertOrderNote(OrderNote instance);
-    partial void UpdateOrderNote(OrderNote instance);
-    partial void DeleteOrderNote(OrderNote instance);
+    partial void InsertNop280_Product(Nop280_Product instance);
+    partial void UpdateNop280_Product(Nop280_Product instance);
+    partial void DeleteNop280_Product(Nop280_Product instance);
+    partial void InsertNop280_Product_SpecificationAttribute_Mapping(Nop280_Product_SpecificationAttribute_Mapping instance);
+    partial void UpdateNop280_Product_SpecificationAttribute_Mapping(Nop280_Product_SpecificationAttribute_Mapping instance);
+    partial void DeleteNop280_Product_SpecificationAttribute_Mapping(Nop280_Product_SpecificationAttribute_Mapping instance);
+    partial void InsertNop280_Product_Category_Mapping(Nop280_Product_Category_Mapping instance);
+    partial void UpdateNop280_Product_Category_Mapping(Nop280_Product_Category_Mapping instance);
+    partial void DeleteNop280_Product_Category_Mapping(Nop280_Product_Category_Mapping instance);
+    partial void InsertNop280_Product_Manufacturer_Mapping(Nop280_Product_Manufacturer_Mapping instance);
+    partial void UpdateNop280_Product_Manufacturer_Mapping(Nop280_Product_Manufacturer_Mapping instance);
+    partial void DeleteNop280_Product_Manufacturer_Mapping(Nop280_Product_Manufacturer_Mapping instance);
+    partial void InsertNop280_Product_ProductTag_Mapping(Nop280_Product_ProductTag_Mapping instance);
+    partial void UpdateNop280_Product_ProductTag_Mapping(Nop280_Product_ProductTag_Mapping instance);
+    partial void DeleteNop280_Product_ProductTag_Mapping(Nop280_Product_ProductTag_Mapping instance);
+    partial void InsertNop280_ProductTag(Nop280_ProductTag instance);
+    partial void UpdateNop280_ProductTag(Nop280_ProductTag instance);
+    partial void DeleteNop280_ProductTag(Nop280_ProductTag instance);
+    partial void InsertNop280_Product_Picture_Mapping(Nop280_Product_Picture_Mapping instance);
+    partial void UpdateNop280_Product_Picture_Mapping(Nop280_Product_Picture_Mapping instance);
+    partial void DeleteNop280_Product_Picture_Mapping(Nop280_Product_Picture_Mapping instance);
+    partial void InsertNop280_Picture(Nop280_Picture instance);
+    partial void UpdateNop280_Picture(Nop280_Picture instance);
+    partial void DeleteNop280_Picture(Nop280_Picture instance);
+    partial void InsertNop280_ProductVariant(Nop280_ProductVariant instance);
+    partial void UpdateNop280_ProductVariant(Nop280_ProductVariant instance);
+    partial void DeleteNop280_ProductVariant(Nop280_ProductVariant instance);
+    partial void InsertNop280_ProductVariant_ProductAttribute_Mapping(Nop280_ProductVariant_ProductAttribute_Mapping instance);
+    partial void UpdateNop280_ProductVariant_ProductAttribute_Mapping(Nop280_ProductVariant_ProductAttribute_Mapping instance);
+    partial void DeleteNop280_ProductVariant_ProductAttribute_Mapping(Nop280_ProductVariant_ProductAttribute_Mapping instance);
+    partial void InsertNop280_ProductVariantAttributeCombination(Nop280_ProductVariantAttributeCombination instance);
+    partial void UpdateNop280_ProductVariantAttributeCombination(Nop280_ProductVariantAttributeCombination instance);
+    partial void DeleteNop280_ProductVariantAttributeCombination(Nop280_ProductVariantAttributeCombination instance);
+    partial void InsertNop280_ProductVariantAttributeValue(Nop280_ProductVariantAttributeValue instance);
+    partial void UpdateNop280_ProductVariantAttributeValue(Nop280_ProductVariantAttributeValue instance);
+    partial void DeleteNop280_ProductVariantAttributeValue(Nop280_ProductVariantAttributeValue instance);
+    partial void InsertNop280_ProductAttribute(Nop280_ProductAttribute instance);
+    partial void UpdateNop280_ProductAttribute(Nop280_ProductAttribute instance);
+    partial void DeleteNop280_ProductAttribute(Nop280_ProductAttribute instance);
+    partial void InsertNop280_Manufacturer(Nop280_Manufacturer instance);
+    partial void UpdateNop280_Manufacturer(Nop280_Manufacturer instance);
+    partial void DeleteNop280_Manufacturer(Nop280_Manufacturer instance);
+    partial void InsertNop280_Category(Nop280_Category instance);
+    partial void UpdateNop280_Category(Nop280_Category instance);
+    partial void DeleteNop280_Category(Nop280_Category instance);
+    partial void InsertNop280_SpecificationAttributeOption(Nop280_SpecificationAttributeOption instance);
+    partial void UpdateNop280_SpecificationAttributeOption(Nop280_SpecificationAttributeOption instance);
+    partial void DeleteNop280_SpecificationAttributeOption(Nop280_SpecificationAttributeOption instance);
+    partial void InsertNop280_SpecificationAttribute(Nop280_SpecificationAttribute instance);
+    partial void UpdateNop280_SpecificationAttribute(Nop280_SpecificationAttribute instance);
+    partial void DeleteNop280_SpecificationAttribute(Nop280_SpecificationAttribute instance);
+    partial void InsertNop280_TaxCategory(Nop280_TaxCategory instance);
+    partial void UpdateNop280_TaxCategory(Nop280_TaxCategory instance);
+    partial void DeleteNop280_TaxCategory(Nop280_TaxCategory instance);
+    partial void InsertNop280_TaxRate(Nop280_TaxRate instance);
+    partial void UpdateNop280_TaxRate(Nop280_TaxRate instance);
+    partial void DeleteNop280_TaxRate(Nop280_TaxRate instance);
+    partial void InsertNop280_Country(Nop280_Country instance);
+    partial void UpdateNop280_Country(Nop280_Country instance);
+    partial void DeleteNop280_Country(Nop280_Country instance);
+    partial void InsertNop280_StateProvince(Nop280_StateProvince instance);
+    partial void UpdateNop280_StateProvince(Nop280_StateProvince instance);
+    partial void DeleteNop280_StateProvince(Nop280_StateProvince instance);
+    partial void InsertNop280_TierPrice(Nop280_TierPrice instance);
+    partial void UpdateNop280_TierPrice(Nop280_TierPrice instance);
+    partial void DeleteNop280_TierPrice(Nop280_TierPrice instance);
+    partial void InsertNop280_Download(Nop280_Download instance);
+    partial void UpdateNop280_Download(Nop280_Download instance);
+    partial void DeleteNop280_Download(Nop280_Download instance);
+    partial void InsertNop280_CustomerAddress(Nop280_CustomerAddress instance);
+    partial void UpdateNop280_CustomerAddress(Nop280_CustomerAddress instance);
+    partial void DeleteNop280_CustomerAddress(Nop280_CustomerAddress instance);
+    partial void InsertNop280_Customer(Nop280_Customer instance);
+    partial void UpdateNop280_Customer(Nop280_Customer instance);
+    partial void DeleteNop280_Customer(Nop280_Customer instance);
+    partial void InsertNop280_GenericAttribute(Nop280_GenericAttribute instance);
+    partial void UpdateNop280_GenericAttribute(Nop280_GenericAttribute instance);
+    partial void DeleteNop280_GenericAttribute(Nop280_GenericAttribute instance);
+    partial void InsertNop280_Address(Nop280_Address instance);
+    partial void UpdateNop280_Address(Nop280_Address instance);
+    partial void DeleteNop280_Address(Nop280_Address instance);
+    partial void InsertNop280_UrlRecord(Nop280_UrlRecord instance);
+    partial void UpdateNop280_UrlRecord(Nop280_UrlRecord instance);
+    partial void DeleteNop280_UrlRecord(Nop280_UrlRecord instance);
+    partial void InsertNop280_Setting(Nop280_Setting instance);
+    partial void UpdateNop280_Setting(Nop280_Setting instance);
+    partial void DeleteNop280_Setting(Nop280_Setting instance);
+    partial void InsertNop280_Order(Nop280_Order instance);
+    partial void UpdateNop280_Order(Nop280_Order instance);
+    partial void DeleteNop280_Order(Nop280_Order instance);
+    partial void InsertNop280_OrderProductVariant(Nop280_OrderProductVariant instance);
+    partial void UpdateNop280_OrderProductVariant(Nop280_OrderProductVariant instance);
+    partial void DeleteNop280_OrderProductVariant(Nop280_OrderProductVariant instance);
+    partial void InsertNop280_OrderNote(Nop280_OrderNote instance);
+    partial void UpdateNop280_OrderNote(Nop280_OrderNote instance);
+    partial void DeleteNop280_OrderNote(Nop280_OrderNote instance);
     #endregion
 		
 		public Nop280DataContext() : 
@@ -158,265 +158,265 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Product> Products
+		public System.Data.Linq.Table<Nop280_Product> Nop280_Products
 		{
 			get
 			{
-				return this.GetTable<Product>();
+				return this.GetTable<Nop280_Product>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Product_SpecificationAttribute_Mapping> Product_SpecificationAttribute_Mappings
+		public System.Data.Linq.Table<Nop280_Product_SpecificationAttribute_Mapping> Nop280_Product_SpecificationAttribute_Mappings
 		{
 			get
 			{
-				return this.GetTable<Product_SpecificationAttribute_Mapping>();
+				return this.GetTable<Nop280_Product_SpecificationAttribute_Mapping>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Product_Category_Mapping> Product_Category_Mappings
+		public System.Data.Linq.Table<Nop280_Product_Category_Mapping> Nop280_Product_Category_Mappings
 		{
 			get
 			{
-				return this.GetTable<Product_Category_Mapping>();
+				return this.GetTable<Nop280_Product_Category_Mapping>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Product_Manufacturer_Mapping> Product_Manufacturer_Mappings
+		public System.Data.Linq.Table<Nop280_Product_Manufacturer_Mapping> Nop280_Product_Manufacturer_Mappings
 		{
 			get
 			{
-				return this.GetTable<Product_Manufacturer_Mapping>();
+				return this.GetTable<Nop280_Product_Manufacturer_Mapping>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Product_ProductTag_Mapping> Product_ProductTag_Mappings
+		public System.Data.Linq.Table<Nop280_Product_ProductTag_Mapping> Nop280_Product_ProductTag_Mappings
 		{
 			get
 			{
-				return this.GetTable<Product_ProductTag_Mapping>();
+				return this.GetTable<Nop280_Product_ProductTag_Mapping>();
 			}
 		}
 		
-		public System.Data.Linq.Table<ProductTag> ProductTags
+		public System.Data.Linq.Table<Nop280_ProductTag> Nop280_ProductTags
 		{
 			get
 			{
-				return this.GetTable<ProductTag>();
+				return this.GetTable<Nop280_ProductTag>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Product_Picture_Mapping> Product_Picture_Mappings
+		public System.Data.Linq.Table<Nop280_Product_Picture_Mapping> Nop280_Product_Picture_Mappings
 		{
 			get
 			{
-				return this.GetTable<Product_Picture_Mapping>();
+				return this.GetTable<Nop280_Product_Picture_Mapping>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Picture> Pictures
+		public System.Data.Linq.Table<Nop280_Picture> Nop280_Pictures
 		{
 			get
 			{
-				return this.GetTable<Picture>();
+				return this.GetTable<Nop280_Picture>();
 			}
 		}
 		
-		public System.Data.Linq.Table<ProductVariant> ProductVariants
+		public System.Data.Linq.Table<Nop280_ProductVariant> Nop280_ProductVariants
 		{
 			get
 			{
-				return this.GetTable<ProductVariant>();
+				return this.GetTable<Nop280_ProductVariant>();
 			}
 		}
 		
-		public System.Data.Linq.Table<ProductVariant_ProductAttribute_Mapping> ProductVariant_ProductAttribute_Mappings
+		public System.Data.Linq.Table<Nop280_ProductVariant_ProductAttribute_Mapping> Nop280_ProductVariant_ProductAttribute_Mappings
 		{
 			get
 			{
-				return this.GetTable<ProductVariant_ProductAttribute_Mapping>();
+				return this.GetTable<Nop280_ProductVariant_ProductAttribute_Mapping>();
 			}
 		}
 		
-		public System.Data.Linq.Table<ProductVariantAttributeCombination> ProductVariantAttributeCombinations
+		public System.Data.Linq.Table<Nop280_ProductVariantAttributeCombination> Nop280_ProductVariantAttributeCombinations
 		{
 			get
 			{
-				return this.GetTable<ProductVariantAttributeCombination>();
+				return this.GetTable<Nop280_ProductVariantAttributeCombination>();
 			}
 		}
 		
-		public System.Data.Linq.Table<ProductVariantAttributeValue> ProductVariantAttributeValues
+		public System.Data.Linq.Table<Nop280_ProductVariantAttributeValue> Nop280_ProductVariantAttributeValues
 		{
 			get
 			{
-				return this.GetTable<ProductVariantAttributeValue>();
+				return this.GetTable<Nop280_ProductVariantAttributeValue>();
 			}
 		}
 		
-		public System.Data.Linq.Table<ProductAttribute> ProductAttributes
+		public System.Data.Linq.Table<Nop280_ProductAttribute> Nop280_ProductAttributes
 		{
 			get
 			{
-				return this.GetTable<ProductAttribute>();
+				return this.GetTable<Nop280_ProductAttribute>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Manufacturer> Manufacturers
+		public System.Data.Linq.Table<Nop280_Manufacturer> Nop280_Manufacturers
 		{
 			get
 			{
-				return this.GetTable<Manufacturer>();
+				return this.GetTable<Nop280_Manufacturer>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Category> Categories
+		public System.Data.Linq.Table<Nop280_Category> Nop280_Categories
 		{
 			get
 			{
-				return this.GetTable<Category>();
+				return this.GetTable<Nop280_Category>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SpecificationAttributeOption> SpecificationAttributeOptions
+		public System.Data.Linq.Table<Nop280_SpecificationAttributeOption> Nop280_SpecificationAttributeOptions
 		{
 			get
 			{
-				return this.GetTable<SpecificationAttributeOption>();
+				return this.GetTable<Nop280_SpecificationAttributeOption>();
 			}
 		}
 		
-		public System.Data.Linq.Table<SpecificationAttribute> SpecificationAttributes
+		public System.Data.Linq.Table<Nop280_SpecificationAttribute> Nop280_SpecificationAttributes
 		{
 			get
 			{
-				return this.GetTable<SpecificationAttribute>();
+				return this.GetTable<Nop280_SpecificationAttribute>();
 			}
 		}
 		
-		public System.Data.Linq.Table<TaxCategory> TaxCategories
+		public System.Data.Linq.Table<Nop280_TaxCategory> Nop280_TaxCategories
 		{
 			get
 			{
-				return this.GetTable<TaxCategory>();
+				return this.GetTable<Nop280_TaxCategory>();
 			}
 		}
 		
-		public System.Data.Linq.Table<TaxRate> TaxRates
+		public System.Data.Linq.Table<Nop280_TaxRate> Nop280_TaxRates
 		{
 			get
 			{
-				return this.GetTable<TaxRate>();
+				return this.GetTable<Nop280_TaxRate>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Country> Countries
+		public System.Data.Linq.Table<Nop280_Country> Nop280_Countries
 		{
 			get
 			{
-				return this.GetTable<Country>();
+				return this.GetTable<Nop280_Country>();
 			}
 		}
 		
-		public System.Data.Linq.Table<StateProvince> StateProvinces
+		public System.Data.Linq.Table<Nop280_StateProvince> Nop280_StateProvinces
 		{
 			get
 			{
-				return this.GetTable<StateProvince>();
+				return this.GetTable<Nop280_StateProvince>();
 			}
 		}
 		
-		public System.Data.Linq.Table<TierPrice> TierPrices
+		public System.Data.Linq.Table<Nop280_TierPrice> Nop280_TierPrices
 		{
 			get
 			{
-				return this.GetTable<TierPrice>();
+				return this.GetTable<Nop280_TierPrice>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Download> Downloads
+		public System.Data.Linq.Table<Nop280_Download> Nop280_Downloads
 		{
 			get
 			{
-				return this.GetTable<Download>();
+				return this.GetTable<Nop280_Download>();
 			}
 		}
 		
-		public System.Data.Linq.Table<CustomerAddress> CustomerAddresses
+		public System.Data.Linq.Table<Nop280_CustomerAddress> Nop280_CustomerAddresses
 		{
 			get
 			{
-				return this.GetTable<CustomerAddress>();
+				return this.GetTable<Nop280_CustomerAddress>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Customer> Customers
+		public System.Data.Linq.Table<Nop280_Customer> Nop280_Customers
 		{
 			get
 			{
-				return this.GetTable<Customer>();
+				return this.GetTable<Nop280_Customer>();
 			}
 		}
 		
-		public System.Data.Linq.Table<GenericAttribute> GenericAttributes
+		public System.Data.Linq.Table<Nop280_GenericAttribute> Nop280_GenericAttributes
 		{
 			get
 			{
-				return this.GetTable<GenericAttribute>();
+				return this.GetTable<Nop280_GenericAttribute>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Address> Addresses
+		public System.Data.Linq.Table<Nop280_Address> Nop280_Addresses
 		{
 			get
 			{
-				return this.GetTable<Address>();
+				return this.GetTable<Nop280_Address>();
 			}
 		}
 		
-		public System.Data.Linq.Table<UrlRecord> UrlRecords
+		public System.Data.Linq.Table<Nop280_UrlRecord> Nop280_UrlRecords
 		{
 			get
 			{
-				return this.GetTable<UrlRecord>();
+				return this.GetTable<Nop280_UrlRecord>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Setting> Settings
+		public System.Data.Linq.Table<Nop280_Setting> Nop280_Settings
 		{
 			get
 			{
-				return this.GetTable<Setting>();
+				return this.GetTable<Nop280_Setting>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Order> Orders
+		public System.Data.Linq.Table<Nop280_Order> Nop280_Orders
 		{
 			get
 			{
-				return this.GetTable<Order>();
+				return this.GetTable<Nop280_Order>();
 			}
 		}
 		
-		public System.Data.Linq.Table<OrderProductVariant> OrderProductVariants
+		public System.Data.Linq.Table<Nop280_OrderProductVariant> Nop280_OrderProductVariants
 		{
 			get
 			{
-				return this.GetTable<OrderProductVariant>();
+				return this.GetTable<Nop280_OrderProductVariant>();
 			}
 		}
 		
-		public System.Data.Linq.Table<OrderNote> OrderNotes
+		public System.Data.Linq.Table<Nop280_OrderNote> Nop280_OrderNotes
 		{
 			get
 			{
-				return this.GetTable<OrderNote>();
+				return this.GetTable<Nop280_OrderNote>();
 			}
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Product")]
-	public partial class Product : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Product : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -461,17 +461,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private System.DateTime _UpdatedOnUtc;
 		
-		private EntitySet<Product_SpecificationAttribute_Mapping> _Product_SpecificationAttribute_Mappings;
+		private EntitySet<Nop280_Product_SpecificationAttribute_Mapping> _Product_SpecificationAttribute_Mappings;
 		
-		private EntitySet<Product_Category_Mapping> _Product_Category_Mappings;
+		private EntitySet<Nop280_Product_Category_Mapping> _Product_Category_Mappings;
 		
-		private EntitySet<Product_Manufacturer_Mapping> _Product_Manufacturer_Mappings;
+		private EntitySet<Nop280_Product_Manufacturer_Mapping> _Product_Manufacturer_Mappings;
 		
-		private EntitySet<Product_ProductTag_Mapping> _Product_ProductTag_Mappings;
+		private EntitySet<Nop280_Product_ProductTag_Mapping> _Product_ProductTag_Mappings;
 		
-		private EntitySet<Product_Picture_Mapping> _Product_Picture_Mappings;
+		private EntitySet<Nop280_Product_Picture_Mapping> _Product_Picture_Mappings;
 		
-		private EntitySet<ProductVariant> _ProductVariants;
+		private EntitySet<Nop280_ProductVariant> _ProductVariants;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -519,14 +519,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnUpdatedOnUtcChanged();
     #endregion
 		
-		public Product()
+		public Nop280_Product()
 		{
-			this._Product_SpecificationAttribute_Mappings = new EntitySet<Product_SpecificationAttribute_Mapping>(new Action<Product_SpecificationAttribute_Mapping>(this.attach_Product_SpecificationAttribute_Mappings), new Action<Product_SpecificationAttribute_Mapping>(this.detach_Product_SpecificationAttribute_Mappings));
-			this._Product_Category_Mappings = new EntitySet<Product_Category_Mapping>(new Action<Product_Category_Mapping>(this.attach_Product_Category_Mappings), new Action<Product_Category_Mapping>(this.detach_Product_Category_Mappings));
-			this._Product_Manufacturer_Mappings = new EntitySet<Product_Manufacturer_Mapping>(new Action<Product_Manufacturer_Mapping>(this.attach_Product_Manufacturer_Mappings), new Action<Product_Manufacturer_Mapping>(this.detach_Product_Manufacturer_Mappings));
-			this._Product_ProductTag_Mappings = new EntitySet<Product_ProductTag_Mapping>(new Action<Product_ProductTag_Mapping>(this.attach_Product_ProductTag_Mappings), new Action<Product_ProductTag_Mapping>(this.detach_Product_ProductTag_Mappings));
-			this._Product_Picture_Mappings = new EntitySet<Product_Picture_Mapping>(new Action<Product_Picture_Mapping>(this.attach_Product_Picture_Mappings), new Action<Product_Picture_Mapping>(this.detach_Product_Picture_Mappings));
-			this._ProductVariants = new EntitySet<ProductVariant>(new Action<ProductVariant>(this.attach_ProductVariants), new Action<ProductVariant>(this.detach_ProductVariants));
+			this._Product_SpecificationAttribute_Mappings = new EntitySet<Nop280_Product_SpecificationAttribute_Mapping>(new Action<Nop280_Product_SpecificationAttribute_Mapping>(this.attach_Product_SpecificationAttribute_Mappings), new Action<Nop280_Product_SpecificationAttribute_Mapping>(this.detach_Product_SpecificationAttribute_Mappings));
+			this._Product_Category_Mappings = new EntitySet<Nop280_Product_Category_Mapping>(new Action<Nop280_Product_Category_Mapping>(this.attach_Product_Category_Mappings), new Action<Nop280_Product_Category_Mapping>(this.detach_Product_Category_Mappings));
+			this._Product_Manufacturer_Mappings = new EntitySet<Nop280_Product_Manufacturer_Mapping>(new Action<Nop280_Product_Manufacturer_Mapping>(this.attach_Product_Manufacturer_Mappings), new Action<Nop280_Product_Manufacturer_Mapping>(this.detach_Product_Manufacturer_Mappings));
+			this._Product_ProductTag_Mappings = new EntitySet<Nop280_Product_ProductTag_Mapping>(new Action<Nop280_Product_ProductTag_Mapping>(this.attach_Product_ProductTag_Mappings), new Action<Nop280_Product_ProductTag_Mapping>(this.detach_Product_ProductTag_Mappings));
+			this._Product_Picture_Mappings = new EntitySet<Nop280_Product_Picture_Mapping>(new Action<Nop280_Product_Picture_Mapping>(this.attach_Product_Picture_Mappings), new Action<Nop280_Product_Picture_Mapping>(this.detach_Product_Picture_Mappings));
+			this._ProductVariants = new EntitySet<Nop280_ProductVariant>(new Action<Nop280_ProductVariant>(this.attach_ProductVariants), new Action<Nop280_ProductVariant>(this.detach_ProductVariants));
 			OnCreated();
 		}
 		
@@ -930,8 +930,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_Product_SpecificationAttribute_Mapping", Storage="_Product_SpecificationAttribute_Mappings", ThisKey="Id", OtherKey="ProductId")]
-		public EntitySet<Product_SpecificationAttribute_Mapping> Product_SpecificationAttribute_Mappings
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Product_Nop280_Product_SpecificationAttribute_Mapping", Storage="_Product_SpecificationAttribute_Mappings", ThisKey="Id", OtherKey="ProductId")]
+		public EntitySet<Nop280_Product_SpecificationAttribute_Mapping> Nop280_Product_SpecificationAttribute_Mappings
 		{
 			get
 			{
@@ -943,8 +943,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_Product_Category_Mapping", Storage="_Product_Category_Mappings", ThisKey="Id", OtherKey="ProductId")]
-		public EntitySet<Product_Category_Mapping> Product_Category_Mappings
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Product_Nop280_Product_Category_Mapping", Storage="_Product_Category_Mappings", ThisKey="Id", OtherKey="ProductId")]
+		public EntitySet<Nop280_Product_Category_Mapping> Nop280_Product_Category_Mappings
 		{
 			get
 			{
@@ -956,8 +956,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_Product_Manufacturer_Mapping", Storage="_Product_Manufacturer_Mappings", ThisKey="Id", OtherKey="ProductId")]
-		public EntitySet<Product_Manufacturer_Mapping> Product_Manufacturer_Mappings
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Product_Nop280_Product_Manufacturer_Mapping", Storage="_Product_Manufacturer_Mappings", ThisKey="Id", OtherKey="ProductId")]
+		public EntitySet<Nop280_Product_Manufacturer_Mapping> Nop280_Product_Manufacturer_Mappings
 		{
 			get
 			{
@@ -969,8 +969,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_Product_ProductTag_Mapping", Storage="_Product_ProductTag_Mappings", ThisKey="Id", OtherKey="Product_Id")]
-		public EntitySet<Product_ProductTag_Mapping> Product_ProductTag_Mappings
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Product_Nop280_Product_ProductTag_Mapping", Storage="_Product_ProductTag_Mappings", ThisKey="Id", OtherKey="Product_Id")]
+		public EntitySet<Nop280_Product_ProductTag_Mapping> Nop280_Product_ProductTag_Mappings
 		{
 			get
 			{
@@ -982,8 +982,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_Product_Picture_Mapping", Storage="_Product_Picture_Mappings", ThisKey="Id", OtherKey="ProductId")]
-		public EntitySet<Product_Picture_Mapping> Product_Picture_Mappings
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Product_Nop280_Product_Picture_Mapping", Storage="_Product_Picture_Mappings", ThisKey="Id", OtherKey="ProductId")]
+		public EntitySet<Nop280_Product_Picture_Mapping> Nop280_Product_Picture_Mappings
 		{
 			get
 			{
@@ -995,8 +995,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_ProductVariant", Storage="_ProductVariants", ThisKey="Id", OtherKey="ProductId")]
-		public EntitySet<ProductVariant> ProductVariants
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Product_ProductVariant", Storage="_ProductVariants", ThisKey="Id", OtherKey="ProductId")]
+		public EntitySet<Nop280_ProductVariant> Nop280_ProductVariants
 		{
 			get
 			{
@@ -1028,81 +1028,81 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_Product_SpecificationAttribute_Mappings(Product_SpecificationAttribute_Mapping entity)
+		private void attach_Product_SpecificationAttribute_Mappings(Nop280_Product_SpecificationAttribute_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Product = this;
+			entity.Nop280_Product = this;
 		}
 		
-		private void detach_Product_SpecificationAttribute_Mappings(Product_SpecificationAttribute_Mapping entity)
+		private void detach_Product_SpecificationAttribute_Mappings(Nop280_Product_SpecificationAttribute_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Product = null;
+			entity.Nop280_Product = null;
 		}
 		
-		private void attach_Product_Category_Mappings(Product_Category_Mapping entity)
+		private void attach_Product_Category_Mappings(Nop280_Product_Category_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Product = this;
+			entity.Nop280_Product = this;
 		}
 		
-		private void detach_Product_Category_Mappings(Product_Category_Mapping entity)
+		private void detach_Product_Category_Mappings(Nop280_Product_Category_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Product = null;
+			entity.Nop280_Product = null;
 		}
 		
-		private void attach_Product_Manufacturer_Mappings(Product_Manufacturer_Mapping entity)
+		private void attach_Product_Manufacturer_Mappings(Nop280_Product_Manufacturer_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Product = this;
+			entity.Nop280_Product = this;
 		}
 		
-		private void detach_Product_Manufacturer_Mappings(Product_Manufacturer_Mapping entity)
+		private void detach_Product_Manufacturer_Mappings(Nop280_Product_Manufacturer_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Product = null;
+			entity.Nop280_Product = null;
 		}
 		
-		private void attach_Product_ProductTag_Mappings(Product_ProductTag_Mapping entity)
+		private void attach_Product_ProductTag_Mappings(Nop280_Product_ProductTag_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Product = this;
+			entity.Nop280_Product = this;
 		}
 		
-		private void detach_Product_ProductTag_Mappings(Product_ProductTag_Mapping entity)
+		private void detach_Product_ProductTag_Mappings(Nop280_Product_ProductTag_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Product = null;
+			entity.Nop280_Product = null;
 		}
 		
-		private void attach_Product_Picture_Mappings(Product_Picture_Mapping entity)
+		private void attach_Product_Picture_Mappings(Nop280_Product_Picture_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Product = this;
+			entity.Nop280_Product = this;
 		}
 		
-		private void detach_Product_Picture_Mappings(Product_Picture_Mapping entity)
+		private void detach_Product_Picture_Mappings(Nop280_Product_Picture_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Product = null;
+			entity.Nop280_Product = null;
 		}
 		
-		private void attach_ProductVariants(ProductVariant entity)
+		private void attach_ProductVariants(Nop280_ProductVariant entity)
 		{
 			this.SendPropertyChanging();
-			entity.Product = this;
+			entity.Nop280_Product = this;
 		}
 		
-		private void detach_ProductVariants(ProductVariant entity)
+		private void detach_ProductVariants(Nop280_ProductVariant entity)
 		{
 			this.SendPropertyChanging();
-			entity.Product = null;
+			entity.Nop280_Product = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Product_SpecificationAttribute_Mapping")]
-	public partial class Product_SpecificationAttribute_Mapping : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Product_SpecificationAttribute_Mapping : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -1121,9 +1121,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private int _DisplayOrder;
 		
-		private EntityRef<Product> _Product;
+		private EntityRef<Nop280_Product> _Product;
 		
-		private EntityRef<SpecificationAttributeOption> _SpecificationAttributeOption;
+		private EntityRef<Nop280_SpecificationAttributeOption> _SpecificationAttributeOption;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1145,10 +1145,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnDisplayOrderChanged();
     #endregion
 		
-		public Product_SpecificationAttribute_Mapping()
+		public Nop280_Product_SpecificationAttribute_Mapping()
 		{
-			this._Product = default(EntityRef<Product>);
-			this._SpecificationAttributeOption = default(EntityRef<SpecificationAttributeOption>);
+			this._Product = default(EntityRef<Nop280_Product>);
+			this._SpecificationAttributeOption = default(EntityRef<Nop280_SpecificationAttributeOption>);
 			OnCreated();
 		}
 		
@@ -1300,8 +1300,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_Product_SpecificationAttribute_Mapping", Storage="_Product", ThisKey="ProductId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Product Product
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Product_Nop280_Product_SpecificationAttribute_Mapping", Storage="_Product", ThisKey="ProductId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_Product Nop280_Product
 		{
 			get
 			{
@@ -1309,7 +1309,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Product previousValue = this._Product.Entity;
+				Nop280_Product previousValue = this._Product.Entity;
 				if (((previousValue != value) 
 							|| (this._Product.HasLoadedOrAssignedValue == false)))
 				{
@@ -1317,25 +1317,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Product.Entity = null;
-						previousValue.Product_SpecificationAttribute_Mappings.Remove(this);
+						previousValue.Nop280_Product_SpecificationAttribute_Mappings.Remove(this);
 					}
 					this._Product.Entity = value;
 					if ((value != null))
 					{
-						value.Product_SpecificationAttribute_Mappings.Add(this);
+						value.Nop280_Product_SpecificationAttribute_Mappings.Add(this);
 						this._ProductId = value.Id;
 					}
 					else
 					{
 						this._ProductId = default(int);
 					}
-					this.SendPropertyChanged("Product");
+					this.SendPropertyChanged("Nop280_Product");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SpecificationAttributeOption_Product_SpecificationAttribute_Mapping", Storage="_SpecificationAttributeOption", ThisKey="SpecificationAttributeOptionId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public SpecificationAttributeOption SpecificationAttributeOption
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_SpecificationAttributeOption_Nop280_Product_SpecificationAttribute_Mapping" +
+			"", Storage="_SpecificationAttributeOption", ThisKey="SpecificationAttributeOptionId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_SpecificationAttributeOption Nop280_SpecificationAttributeOption
 		{
 			get
 			{
@@ -1343,7 +1344,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				SpecificationAttributeOption previousValue = this._SpecificationAttributeOption.Entity;
+				Nop280_SpecificationAttributeOption previousValue = this._SpecificationAttributeOption.Entity;
 				if (((previousValue != value) 
 							|| (this._SpecificationAttributeOption.HasLoadedOrAssignedValue == false)))
 				{
@@ -1351,19 +1352,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._SpecificationAttributeOption.Entity = null;
-						previousValue.Product_SpecificationAttribute_Mappings.Remove(this);
+						previousValue.Nop280_Product_SpecificationAttribute_Mappings.Remove(this);
 					}
 					this._SpecificationAttributeOption.Entity = value;
 					if ((value != null))
 					{
-						value.Product_SpecificationAttribute_Mappings.Add(this);
+						value.Nop280_Product_SpecificationAttribute_Mappings.Add(this);
 						this._SpecificationAttributeOptionId = value.Id;
 					}
 					else
 					{
 						this._SpecificationAttributeOptionId = default(int);
 					}
-					this.SendPropertyChanged("SpecificationAttributeOption");
+					this.SendPropertyChanged("Nop280_SpecificationAttributeOption");
 				}
 			}
 		}
@@ -1390,7 +1391,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Product_Category_Mapping")]
-	public partial class Product_Category_Mapping : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Product_Category_Mapping : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -1405,9 +1406,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private int _DisplayOrder;
 		
-		private EntityRef<Product> _Product;
+		private EntityRef<Nop280_Product> _Product;
 		
-		private EntityRef<Category> _Category;
+		private EntityRef<Nop280_Category> _Category;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1425,10 +1426,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnDisplayOrderChanged();
     #endregion
 		
-		public Product_Category_Mapping()
+		public Nop280_Product_Category_Mapping()
 		{
-			this._Product = default(EntityRef<Product>);
-			this._Category = default(EntityRef<Category>);
+			this._Product = default(EntityRef<Nop280_Product>);
+			this._Category = default(EntityRef<Nop280_Category>);
 			OnCreated();
 		}
 		
@@ -1540,8 +1541,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_Product_Category_Mapping", Storage="_Product", ThisKey="ProductId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Product Product
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Product_Nop280_Product_Category_Mapping", Storage="_Product", ThisKey="ProductId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_Product Nop280_Product
 		{
 			get
 			{
@@ -1549,7 +1550,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Product previousValue = this._Product.Entity;
+				Nop280_Product previousValue = this._Product.Entity;
 				if (((previousValue != value) 
 							|| (this._Product.HasLoadedOrAssignedValue == false)))
 				{
@@ -1557,25 +1558,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Product.Entity = null;
-						previousValue.Product_Category_Mappings.Remove(this);
+						previousValue.Nop280_Product_Category_Mappings.Remove(this);
 					}
 					this._Product.Entity = value;
 					if ((value != null))
 					{
-						value.Product_Category_Mappings.Add(this);
+						value.Nop280_Product_Category_Mappings.Add(this);
 						this._ProductId = value.Id;
 					}
 					else
 					{
 						this._ProductId = default(int);
 					}
-					this.SendPropertyChanged("Product");
+					this.SendPropertyChanged("Nop280_Product");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Category_Product_Category_Mapping", Storage="_Category", ThisKey="CategoryId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Category Category
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Category_Nop280_Product_Category_Mapping", Storage="_Category", ThisKey="CategoryId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_Category Nop280_Category
 		{
 			get
 			{
@@ -1583,7 +1584,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Category previousValue = this._Category.Entity;
+				Nop280_Category previousValue = this._Category.Entity;
 				if (((previousValue != value) 
 							|| (this._Category.HasLoadedOrAssignedValue == false)))
 				{
@@ -1591,19 +1592,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Category.Entity = null;
-						previousValue.Product_Category_Mappings.Remove(this);
+						previousValue.Nop280_Product_Category_Mappings.Remove(this);
 					}
 					this._Category.Entity = value;
 					if ((value != null))
 					{
-						value.Product_Category_Mappings.Add(this);
+						value.Nop280_Product_Category_Mappings.Add(this);
 						this._CategoryId = value.Id;
 					}
 					else
 					{
 						this._CategoryId = default(int);
 					}
-					this.SendPropertyChanged("Category");
+					this.SendPropertyChanged("Nop280_Category");
 				}
 			}
 		}
@@ -1630,7 +1631,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Product_Manufacturer_Mapping")]
-	public partial class Product_Manufacturer_Mapping : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Product_Manufacturer_Mapping : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -1645,9 +1646,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private int _DisplayOrder;
 		
-		private EntityRef<Product> _Product;
+		private EntityRef<Nop280_Product> _Product;
 		
-		private EntityRef<Manufacturer> _Manufacturer;
+		private EntityRef<Nop280_Manufacturer> _Manufacturer;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1665,10 +1666,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnDisplayOrderChanged();
     #endregion
 		
-		public Product_Manufacturer_Mapping()
+		public Nop280_Product_Manufacturer_Mapping()
 		{
-			this._Product = default(EntityRef<Product>);
-			this._Manufacturer = default(EntityRef<Manufacturer>);
+			this._Product = default(EntityRef<Nop280_Product>);
+			this._Manufacturer = default(EntityRef<Nop280_Manufacturer>);
 			OnCreated();
 		}
 		
@@ -1780,8 +1781,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_Product_Manufacturer_Mapping", Storage="_Product", ThisKey="ProductId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Product Product
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Product_Nop280_Product_Manufacturer_Mapping", Storage="_Product", ThisKey="ProductId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_Product Nop280_Product
 		{
 			get
 			{
@@ -1789,7 +1790,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Product previousValue = this._Product.Entity;
+				Nop280_Product previousValue = this._Product.Entity;
 				if (((previousValue != value) 
 							|| (this._Product.HasLoadedOrAssignedValue == false)))
 				{
@@ -1797,25 +1798,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Product.Entity = null;
-						previousValue.Product_Manufacturer_Mappings.Remove(this);
+						previousValue.Nop280_Product_Manufacturer_Mappings.Remove(this);
 					}
 					this._Product.Entity = value;
 					if ((value != null))
 					{
-						value.Product_Manufacturer_Mappings.Add(this);
+						value.Nop280_Product_Manufacturer_Mappings.Add(this);
 						this._ProductId = value.Id;
 					}
 					else
 					{
 						this._ProductId = default(int);
 					}
-					this.SendPropertyChanged("Product");
+					this.SendPropertyChanged("Nop280_Product");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Manufacturer_Product_Manufacturer_Mapping", Storage="_Manufacturer", ThisKey="ManufacturerId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Manufacturer Manufacturer
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Manufacturer_Nop280_Product_Manufacturer_Mapping", Storage="_Manufacturer", ThisKey="ManufacturerId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_Manufacturer Nop280_Manufacturer
 		{
 			get
 			{
@@ -1823,7 +1824,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Manufacturer previousValue = this._Manufacturer.Entity;
+				Nop280_Manufacturer previousValue = this._Manufacturer.Entity;
 				if (((previousValue != value) 
 							|| (this._Manufacturer.HasLoadedOrAssignedValue == false)))
 				{
@@ -1831,19 +1832,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Manufacturer.Entity = null;
-						previousValue.Product_Manufacturer_Mappings.Remove(this);
+						previousValue.Nop280_Product_Manufacturer_Mappings.Remove(this);
 					}
 					this._Manufacturer.Entity = value;
 					if ((value != null))
 					{
-						value.Product_Manufacturer_Mappings.Add(this);
+						value.Nop280_Product_Manufacturer_Mappings.Add(this);
 						this._ManufacturerId = value.Id;
 					}
 					else
 					{
 						this._ManufacturerId = default(int);
 					}
-					this.SendPropertyChanged("Manufacturer");
+					this.SendPropertyChanged("Nop280_Manufacturer");
 				}
 			}
 		}
@@ -1870,7 +1871,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Product_ProductTag_Mapping")]
-	public partial class Product_ProductTag_Mapping : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Product_ProductTag_Mapping : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -1879,9 +1880,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private int _Product_Id;
 		
-		private EntityRef<Product> _Product;
+		private EntityRef<Nop280_Product> _Product;
 		
-		private EntityRef<ProductTag> _ProductTag;
+		private EntityRef<Nop280_ProductTag> _ProductTag;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1893,10 +1894,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnProduct_IdChanged();
     #endregion
 		
-		public Product_ProductTag_Mapping()
+		public Nop280_Product_ProductTag_Mapping()
 		{
-			this._Product = default(EntityRef<Product>);
-			this._ProductTag = default(EntityRef<ProductTag>);
+			this._Product = default(EntityRef<Nop280_Product>);
+			this._ProductTag = default(EntityRef<Nop280_ProductTag>);
 			OnCreated();
 		}
 		
@@ -1948,8 +1949,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_Product_ProductTag_Mapping", Storage="_Product", ThisKey="Product_Id", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Product Product
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Product_Nop280_Product_ProductTag_Mapping", Storage="_Product", ThisKey="Product_Id", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_Product Nop280_Product
 		{
 			get
 			{
@@ -1957,7 +1958,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Product previousValue = this._Product.Entity;
+				Nop280_Product previousValue = this._Product.Entity;
 				if (((previousValue != value) 
 							|| (this._Product.HasLoadedOrAssignedValue == false)))
 				{
@@ -1965,25 +1966,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Product.Entity = null;
-						previousValue.Product_ProductTag_Mappings.Remove(this);
+						previousValue.Nop280_Product_ProductTag_Mappings.Remove(this);
 					}
 					this._Product.Entity = value;
 					if ((value != null))
 					{
-						value.Product_ProductTag_Mappings.Add(this);
+						value.Nop280_Product_ProductTag_Mappings.Add(this);
 						this._Product_Id = value.Id;
 					}
 					else
 					{
 						this._Product_Id = default(int);
 					}
-					this.SendPropertyChanged("Product");
+					this.SendPropertyChanged("Nop280_Product");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductTag_Product_ProductTag_Mapping", Storage="_ProductTag", ThisKey="ProductTag_Id", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public ProductTag ProductTag
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_ProductTag_Nop280_Product_ProductTag_Mapping", Storage="_ProductTag", ThisKey="ProductTag_Id", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_ProductTag Nop280_ProductTag
 		{
 			get
 			{
@@ -1991,7 +1992,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				ProductTag previousValue = this._ProductTag.Entity;
+				Nop280_ProductTag previousValue = this._ProductTag.Entity;
 				if (((previousValue != value) 
 							|| (this._ProductTag.HasLoadedOrAssignedValue == false)))
 				{
@@ -1999,19 +2000,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._ProductTag.Entity = null;
-						previousValue.Product_ProductTag_Mappings.Remove(this);
+						previousValue.Nop280_Product_ProductTag_Mappings.Remove(this);
 					}
 					this._ProductTag.Entity = value;
 					if ((value != null))
 					{
-						value.Product_ProductTag_Mappings.Add(this);
+						value.Nop280_Product_ProductTag_Mappings.Add(this);
 						this._ProductTag_Id = value.Id;
 					}
 					else
 					{
 						this._ProductTag_Id = default(int);
 					}
-					this.SendPropertyChanged("ProductTag");
+					this.SendPropertyChanged("Nop280_ProductTag");
 				}
 			}
 		}
@@ -2038,7 +2039,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProductTag")]
-	public partial class ProductTag : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_ProductTag : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -2049,7 +2050,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private int _ProductCount;
 		
-		private EntitySet<Product_ProductTag_Mapping> _Product_ProductTag_Mappings;
+		private EntitySet<Nop280_Product_ProductTag_Mapping> _Product_ProductTag_Mappings;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2063,9 +2064,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnProductCountChanged();
     #endregion
 		
-		public ProductTag()
+		public Nop280_ProductTag()
 		{
-			this._Product_ProductTag_Mappings = new EntitySet<Product_ProductTag_Mapping>(new Action<Product_ProductTag_Mapping>(this.attach_Product_ProductTag_Mappings), new Action<Product_ProductTag_Mapping>(this.detach_Product_ProductTag_Mappings));
+			this._Product_ProductTag_Mappings = new EntitySet<Nop280_Product_ProductTag_Mapping>(new Action<Nop280_Product_ProductTag_Mapping>(this.attach_Product_ProductTag_Mappings), new Action<Nop280_Product_ProductTag_Mapping>(this.detach_Product_ProductTag_Mappings));
 			OnCreated();
 		}
 		
@@ -2129,8 +2130,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductTag_Product_ProductTag_Mapping", Storage="_Product_ProductTag_Mappings", ThisKey="Id", OtherKey="ProductTag_Id")]
-		public EntitySet<Product_ProductTag_Mapping> Product_ProductTag_Mappings
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_ProductTag_Nop280_Product_ProductTag_Mapping", Storage="_Product_ProductTag_Mappings", ThisKey="Id", OtherKey="ProductTag_Id")]
+		public EntitySet<Nop280_Product_ProductTag_Mapping> Nop280_Product_ProductTag_Mappings
 		{
 			get
 			{
@@ -2162,21 +2163,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_Product_ProductTag_Mappings(Product_ProductTag_Mapping entity)
+		private void attach_Product_ProductTag_Mappings(Nop280_Product_ProductTag_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.ProductTag = this;
+			entity.Nop280_ProductTag = this;
 		}
 		
-		private void detach_Product_ProductTag_Mappings(Product_ProductTag_Mapping entity)
+		private void detach_Product_ProductTag_Mappings(Nop280_Product_ProductTag_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.ProductTag = null;
+			entity.Nop280_ProductTag = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Product_Picture_Mapping")]
-	public partial class Product_Picture_Mapping : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Product_Picture_Mapping : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -2189,9 +2190,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private int _DisplayOrder;
 		
-		private EntityRef<Product> _Product;
+		private EntityRef<Nop280_Product> _Product;
 		
-		private EntityRef<Picture> _Picture;
+		private EntityRef<Nop280_Picture> _Picture;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2207,10 +2208,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnDisplayOrderChanged();
     #endregion
 		
-		public Product_Picture_Mapping()
+		public Nop280_Product_Picture_Mapping()
 		{
-			this._Product = default(EntityRef<Product>);
-			this._Picture = default(EntityRef<Picture>);
+			this._Product = default(EntityRef<Nop280_Product>);
+			this._Picture = default(EntityRef<Nop280_Picture>);
 			OnCreated();
 		}
 		
@@ -2302,8 +2303,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_Product_Picture_Mapping", Storage="_Product", ThisKey="ProductId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Product Product
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Product_Nop280_Product_Picture_Mapping", Storage="_Product", ThisKey="ProductId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_Product Nop280_Product
 		{
 			get
 			{
@@ -2311,7 +2312,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Product previousValue = this._Product.Entity;
+				Nop280_Product previousValue = this._Product.Entity;
 				if (((previousValue != value) 
 							|| (this._Product.HasLoadedOrAssignedValue == false)))
 				{
@@ -2319,25 +2320,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Product.Entity = null;
-						previousValue.Product_Picture_Mappings.Remove(this);
+						previousValue.Nop280_Product_Picture_Mappings.Remove(this);
 					}
 					this._Product.Entity = value;
 					if ((value != null))
 					{
-						value.Product_Picture_Mappings.Add(this);
+						value.Nop280_Product_Picture_Mappings.Add(this);
 						this._ProductId = value.Id;
 					}
 					else
 					{
 						this._ProductId = default(int);
 					}
-					this.SendPropertyChanged("Product");
+					this.SendPropertyChanged("Nop280_Product");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Picture_Product_Picture_Mapping", Storage="_Picture", ThisKey="PictureId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Picture Picture
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Picture_Nop280_Product_Picture_Mapping", Storage="_Picture", ThisKey="PictureId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_Picture Nop280_Picture
 		{
 			get
 			{
@@ -2345,7 +2346,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Picture previousValue = this._Picture.Entity;
+				Nop280_Picture previousValue = this._Picture.Entity;
 				if (((previousValue != value) 
 							|| (this._Picture.HasLoadedOrAssignedValue == false)))
 				{
@@ -2353,19 +2354,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Picture.Entity = null;
-						previousValue.Product_Picture_Mappings.Remove(this);
+						previousValue.Nop280_Product_Picture_Mappings.Remove(this);
 					}
 					this._Picture.Entity = value;
 					if ((value != null))
 					{
-						value.Product_Picture_Mappings.Add(this);
+						value.Nop280_Product_Picture_Mappings.Add(this);
 						this._PictureId = value.Id;
 					}
 					else
 					{
 						this._PictureId = default(int);
 					}
-					this.SendPropertyChanged("Picture");
+					this.SendPropertyChanged("Nop280_Picture");
 				}
 			}
 		}
@@ -2392,7 +2393,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Picture")]
-	public partial class Picture : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Picture : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -2407,7 +2408,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private bool _IsNew;
 		
-		private EntitySet<Product_Picture_Mapping> _Product_Picture_Mappings;
+		private EntitySet<Nop280_Product_Picture_Mapping> _Product_Picture_Mappings;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2425,9 +2426,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnIsNewChanged();
     #endregion
 		
-		public Picture()
+		public Nop280_Picture()
 		{
-			this._Product_Picture_Mappings = new EntitySet<Product_Picture_Mapping>(new Action<Product_Picture_Mapping>(this.attach_Product_Picture_Mappings), new Action<Product_Picture_Mapping>(this.detach_Product_Picture_Mappings));
+			this._Product_Picture_Mappings = new EntitySet<Nop280_Product_Picture_Mapping>(new Action<Nop280_Product_Picture_Mapping>(this.attach_Product_Picture_Mappings), new Action<Nop280_Product_Picture_Mapping>(this.detach_Product_Picture_Mappings));
 			OnCreated();
 		}
 		
@@ -2531,8 +2532,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Picture_Product_Picture_Mapping", Storage="_Product_Picture_Mappings", ThisKey="Id", OtherKey="PictureId")]
-		public EntitySet<Product_Picture_Mapping> Product_Picture_Mappings
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Picture_Nop280_Product_Picture_Mapping", Storage="_Product_Picture_Mappings", ThisKey="Id", OtherKey="PictureId")]
+		public EntitySet<Nop280_Product_Picture_Mapping> Nop280_Product_Picture_Mappings
 		{
 			get
 			{
@@ -2564,21 +2565,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_Product_Picture_Mappings(Product_Picture_Mapping entity)
+		private void attach_Product_Picture_Mappings(Nop280_Product_Picture_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Picture = this;
+			entity.Nop280_Picture = this;
 		}
 		
-		private void detach_Product_Picture_Mappings(Product_Picture_Mapping entity)
+		private void detach_Product_Picture_Mappings(Nop280_Product_Picture_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Picture = null;
+			entity.Nop280_Picture = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProductVariant")]
-	public partial class ProductVariant : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_ProductVariant : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -2725,19 +2726,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private System.DateTime _UpdatedOnUtc;
 		
-		private EntitySet<ProductVariant_ProductAttribute_Mapping> _ProductVariant_ProductAttribute_Mappings;
+		private EntitySet<Nop280_ProductVariant_ProductAttribute_Mapping> _ProductVariant_ProductAttribute_Mappings;
 		
-		private EntitySet<ProductVariantAttributeCombination> _ProductVariantAttributeCombinations;
+		private EntitySet<Nop280_ProductVariantAttributeCombination> _ProductVariantAttributeCombinations;
 		
-		private EntitySet<TierPrice> _TierPrices;
+		private EntitySet<Nop280_TierPrice> _TierPrices;
 		
-		private EntitySet<OrderProductVariant> _OrderProductVariants;
+		private EntitySet<Nop280_OrderProductVariant> _OrderProductVariants;
 		
-		private EntityRef<Product> _Product;
+		private EntityRef<Nop280_Product> _Product;
 		
-		private EntityRef<TaxCategory> _TaxCategory;
+		private EntityRef<Nop280_TaxCategory> _TaxCategory;
 		
-		private EntityRef<Download> _Download;
+		private EntityRef<Nop280_Download> _Download;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2887,15 +2888,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnUpdatedOnUtcChanged();
     #endregion
 		
-		public ProductVariant()
+		public Nop280_ProductVariant()
 		{
-			this._ProductVariant_ProductAttribute_Mappings = new EntitySet<ProductVariant_ProductAttribute_Mapping>(new Action<ProductVariant_ProductAttribute_Mapping>(this.attach_ProductVariant_ProductAttribute_Mappings), new Action<ProductVariant_ProductAttribute_Mapping>(this.detach_ProductVariant_ProductAttribute_Mappings));
-			this._ProductVariantAttributeCombinations = new EntitySet<ProductVariantAttributeCombination>(new Action<ProductVariantAttributeCombination>(this.attach_ProductVariantAttributeCombinations), new Action<ProductVariantAttributeCombination>(this.detach_ProductVariantAttributeCombinations));
-			this._TierPrices = new EntitySet<TierPrice>(new Action<TierPrice>(this.attach_TierPrices), new Action<TierPrice>(this.detach_TierPrices));
-			this._OrderProductVariants = new EntitySet<OrderProductVariant>(new Action<OrderProductVariant>(this.attach_OrderProductVariants), new Action<OrderProductVariant>(this.detach_OrderProductVariants));
-			this._Product = default(EntityRef<Product>);
-			this._TaxCategory = default(EntityRef<TaxCategory>);
-			this._Download = default(EntityRef<Download>);
+			this._ProductVariant_ProductAttribute_Mappings = new EntitySet<Nop280_ProductVariant_ProductAttribute_Mapping>(new Action<Nop280_ProductVariant_ProductAttribute_Mapping>(this.attach_ProductVariant_ProductAttribute_Mappings), new Action<Nop280_ProductVariant_ProductAttribute_Mapping>(this.detach_ProductVariant_ProductAttribute_Mappings));
+			this._ProductVariantAttributeCombinations = new EntitySet<Nop280_ProductVariantAttributeCombination>(new Action<Nop280_ProductVariantAttributeCombination>(this.attach_ProductVariantAttributeCombinations), new Action<Nop280_ProductVariantAttributeCombination>(this.detach_ProductVariantAttributeCombinations));
+			this._TierPrices = new EntitySet<Nop280_TierPrice>(new Action<Nop280_TierPrice>(this.attach_TierPrices), new Action<Nop280_TierPrice>(this.detach_TierPrices));
+			this._OrderProductVariants = new EntitySet<Nop280_OrderProductVariant>(new Action<Nop280_OrderProductVariant>(this.attach_OrderProductVariants), new Action<Nop280_OrderProductVariant>(this.detach_OrderProductVariants));
+			this._Product = default(EntityRef<Nop280_Product>);
+			this._TaxCategory = default(EntityRef<Nop280_TaxCategory>);
+			this._Download = default(EntityRef<Nop280_Download>);
 			OnCreated();
 		}
 		
@@ -4332,7 +4333,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductVariant_ProductVariant_ProductAttribute_Mapping", Storage="_ProductVariant_ProductAttribute_Mappings", ThisKey="Id", OtherKey="ProductVariantId")]
-		public EntitySet<ProductVariant_ProductAttribute_Mapping> ProductVariant_ProductAttribute_Mappings
+		public EntitySet<Nop280_ProductVariant_ProductAttribute_Mapping> Nop280_ProductVariant_ProductAttribute_Mappings
 		{
 			get
 			{
@@ -4345,7 +4346,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductVariant_ProductVariantAttributeCombination", Storage="_ProductVariantAttributeCombinations", ThisKey="Id", OtherKey="ProductVariantId")]
-		public EntitySet<ProductVariantAttributeCombination> ProductVariantAttributeCombinations
+		public EntitySet<Nop280_ProductVariantAttributeCombination> Nop280_ProductVariantAttributeCombinations
 		{
 			get
 			{
@@ -4358,7 +4359,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductVariant_TierPrice", Storage="_TierPrices", ThisKey="Id", OtherKey="ProductVariantId")]
-		public EntitySet<TierPrice> TierPrices
+		public EntitySet<Nop280_TierPrice> Nop280_TierPrices
 		{
 			get
 			{
@@ -4370,8 +4371,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductVariant_OrderProductVariant", Storage="_OrderProductVariants", ThisKey="Id", OtherKey="ProductVariantId")]
-		public EntitySet<OrderProductVariant> OrderProductVariants
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductVariant_Nop280_OrderProductVariant", Storage="_OrderProductVariants", ThisKey="Id", OtherKey="ProductVariantId")]
+		public EntitySet<Nop280_OrderProductVariant> Nop280_OrderProductVariants
 		{
 			get
 			{
@@ -4383,8 +4384,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Product_ProductVariant", Storage="_Product", ThisKey="ProductId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Product Product
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Product_ProductVariant", Storage="_Product", ThisKey="ProductId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_Product Nop280_Product
 		{
 			get
 			{
@@ -4392,7 +4393,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Product previousValue = this._Product.Entity;
+				Nop280_Product previousValue = this._Product.Entity;
 				if (((previousValue != value) 
 							|| (this._Product.HasLoadedOrAssignedValue == false)))
 				{
@@ -4400,25 +4401,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Product.Entity = null;
-						previousValue.ProductVariants.Remove(this);
+						previousValue.Nop280_ProductVariants.Remove(this);
 					}
 					this._Product.Entity = value;
 					if ((value != null))
 					{
-						value.ProductVariants.Add(this);
+						value.Nop280_ProductVariants.Add(this);
 						this._ProductId = value.Id;
 					}
 					else
 					{
 						this._ProductId = default(int);
 					}
-					this.SendPropertyChanged("Product");
+					this.SendPropertyChanged("Nop280_Product");
 				}
 			}
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TaxCategory_ProductVariant", Storage="_TaxCategory", ThisKey="TaxCategoryId", OtherKey="Id", IsForeignKey=true)]
-		public TaxCategory TaxCategory
+		public Nop280_TaxCategory Nop280_TaxCategory
 		{
 			get
 			{
@@ -4426,7 +4427,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				TaxCategory previousValue = this._TaxCategory.Entity;
+				Nop280_TaxCategory previousValue = this._TaxCategory.Entity;
 				if (((previousValue != value) 
 							|| (this._TaxCategory.HasLoadedOrAssignedValue == false)))
 				{
@@ -4434,25 +4435,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._TaxCategory.Entity = null;
-						previousValue.ProductVariants.Remove(this);
+						previousValue.Nop280_ProductVariants.Remove(this);
 					}
 					this._TaxCategory.Entity = value;
 					if ((value != null))
 					{
-						value.ProductVariants.Add(this);
+						value.Nop280_ProductVariants.Add(this);
 						this._TaxCategoryId = value.Id;
 					}
 					else
 					{
 						this._TaxCategoryId = default(int);
 					}
-					this.SendPropertyChanged("TaxCategory");
+					this.SendPropertyChanged("Nop280_TaxCategory");
 				}
 			}
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Download_ProductVariant", Storage="_Download", ThisKey="DownloadId", OtherKey="Id", IsForeignKey=true)]
-		public Download Download
+		public Nop280_Download Nop280_Download
 		{
 			get
 			{
@@ -4460,7 +4461,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Download previousValue = this._Download.Entity;
+				Nop280_Download previousValue = this._Download.Entity;
 				if (((previousValue != value) 
 							|| (this._Download.HasLoadedOrAssignedValue == false)))
 				{
@@ -4468,19 +4469,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Download.Entity = null;
-						previousValue.ProductVariants.Remove(this);
+						previousValue.Nop280_ProductVariants.Remove(this);
 					}
 					this._Download.Entity = value;
 					if ((value != null))
 					{
-						value.ProductVariants.Add(this);
+						value.Nop280_ProductVariants.Add(this);
 						this._DownloadId = value.Id;
 					}
 					else
 					{
 						this._DownloadId = default(int);
 					}
-					this.SendPropertyChanged("Download");
+					this.SendPropertyChanged("Nop280_Download");
 				}
 			}
 		}
@@ -4505,57 +4506,57 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_ProductVariant_ProductAttribute_Mappings(ProductVariant_ProductAttribute_Mapping entity)
+		private void attach_ProductVariant_ProductAttribute_Mappings(Nop280_ProductVariant_ProductAttribute_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.ProductVariant = this;
+			entity.Nop280_ProductVariant = this;
 		}
 		
-		private void detach_ProductVariant_ProductAttribute_Mappings(ProductVariant_ProductAttribute_Mapping entity)
+		private void detach_ProductVariant_ProductAttribute_Mappings(Nop280_ProductVariant_ProductAttribute_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.ProductVariant = null;
+			entity.Nop280_ProductVariant = null;
 		}
 		
-		private void attach_ProductVariantAttributeCombinations(ProductVariantAttributeCombination entity)
+		private void attach_ProductVariantAttributeCombinations(Nop280_ProductVariantAttributeCombination entity)
 		{
 			this.SendPropertyChanging();
-			entity.ProductVariant = this;
+			entity.Nop280_ProductVariant = this;
 		}
 		
-		private void detach_ProductVariantAttributeCombinations(ProductVariantAttributeCombination entity)
+		private void detach_ProductVariantAttributeCombinations(Nop280_ProductVariantAttributeCombination entity)
 		{
 			this.SendPropertyChanging();
-			entity.ProductVariant = null;
+			entity.Nop280_ProductVariant = null;
 		}
 		
-		private void attach_TierPrices(TierPrice entity)
+		private void attach_TierPrices(Nop280_TierPrice entity)
 		{
 			this.SendPropertyChanging();
-			entity.ProductVariant = this;
+			entity.Nop280_ProductVariant = this;
 		}
 		
-		private void detach_TierPrices(TierPrice entity)
+		private void detach_TierPrices(Nop280_TierPrice entity)
 		{
 			this.SendPropertyChanging();
-			entity.ProductVariant = null;
+			entity.Nop280_ProductVariant = null;
 		}
 		
-		private void attach_OrderProductVariants(OrderProductVariant entity)
+		private void attach_OrderProductVariants(Nop280_OrderProductVariant entity)
 		{
 			this.SendPropertyChanging();
-			entity.ProductVariant = this;
+			entity.Nop280_ProductVariant = this;
 		}
 		
-		private void detach_OrderProductVariants(OrderProductVariant entity)
+		private void detach_OrderProductVariants(Nop280_OrderProductVariant entity)
 		{
 			this.SendPropertyChanging();
-			entity.ProductVariant = null;
+			entity.Nop280_ProductVariant = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProductVariant_ProductAttribute_Mapping")]
-	public partial class ProductVariant_ProductAttribute_Mapping : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_ProductVariant_ProductAttribute_Mapping : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -4574,11 +4575,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private int _DisplayOrder;
 		
-		private EntitySet<ProductVariantAttributeValue> _ProductVariantAttributeValues;
+		private EntitySet<Nop280_ProductVariantAttributeValue> _ProductVariantAttributeValues;
 		
-		private EntityRef<ProductVariant> _ProductVariant;
+		private EntityRef<Nop280_ProductVariant> _ProductVariant;
 		
-		private EntityRef<ProductAttribute> _ProductAttribute;
+		private EntityRef<Nop280_ProductAttribute> _ProductAttribute;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -4600,11 +4601,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnDisplayOrderChanged();
     #endregion
 		
-		public ProductVariant_ProductAttribute_Mapping()
+		public Nop280_ProductVariant_ProductAttribute_Mapping()
 		{
-			this._ProductVariantAttributeValues = new EntitySet<ProductVariantAttributeValue>(new Action<ProductVariantAttributeValue>(this.attach_ProductVariantAttributeValues), new Action<ProductVariantAttributeValue>(this.detach_ProductVariantAttributeValues));
-			this._ProductVariant = default(EntityRef<ProductVariant>);
-			this._ProductAttribute = default(EntityRef<ProductAttribute>);
+			this._ProductVariantAttributeValues = new EntitySet<Nop280_ProductVariantAttributeValue>(new Action<Nop280_ProductVariantAttributeValue>(this.attach_ProductVariantAttributeValues), new Action<Nop280_ProductVariantAttributeValue>(this.detach_ProductVariantAttributeValues));
+			this._ProductVariant = default(EntityRef<Nop280_ProductVariant>);
+			this._ProductAttribute = default(EntityRef<Nop280_ProductAttribute>);
 			OnCreated();
 		}
 		
@@ -4757,7 +4758,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductVariant_ProductAttribute_Mapping_ProductVariantAttributeValue", Storage="_ProductVariantAttributeValues", ThisKey="Id", OtherKey="ProductVariantAttributeId")]
-		public EntitySet<ProductVariantAttributeValue> ProductVariantAttributeValues
+		public EntitySet<Nop280_ProductVariantAttributeValue> Nop280_ProductVariantAttributeValues
 		{
 			get
 			{
@@ -4770,7 +4771,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductVariant_ProductVariant_ProductAttribute_Mapping", Storage="_ProductVariant", ThisKey="ProductVariantId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public ProductVariant ProductVariant
+		public Nop280_ProductVariant Nop280_ProductVariant
 		{
 			get
 			{
@@ -4778,7 +4779,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				ProductVariant previousValue = this._ProductVariant.Entity;
+				Nop280_ProductVariant previousValue = this._ProductVariant.Entity;
 				if (((previousValue != value) 
 							|| (this._ProductVariant.HasLoadedOrAssignedValue == false)))
 				{
@@ -4786,25 +4787,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._ProductVariant.Entity = null;
-						previousValue.ProductVariant_ProductAttribute_Mappings.Remove(this);
+						previousValue.Nop280_ProductVariant_ProductAttribute_Mappings.Remove(this);
 					}
 					this._ProductVariant.Entity = value;
 					if ((value != null))
 					{
-						value.ProductVariant_ProductAttribute_Mappings.Add(this);
+						value.Nop280_ProductVariant_ProductAttribute_Mappings.Add(this);
 						this._ProductVariantId = value.Id;
 					}
 					else
 					{
 						this._ProductVariantId = default(int);
 					}
-					this.SendPropertyChanged("ProductVariant");
+					this.SendPropertyChanged("Nop280_ProductVariant");
 				}
 			}
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductAttribute_ProductVariant_ProductAttribute_Mapping", Storage="_ProductAttribute", ThisKey="ProductAttributeId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public ProductAttribute ProductAttribute
+		public Nop280_ProductAttribute Nop280_ProductAttribute
 		{
 			get
 			{
@@ -4812,7 +4813,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				ProductAttribute previousValue = this._ProductAttribute.Entity;
+				Nop280_ProductAttribute previousValue = this._ProductAttribute.Entity;
 				if (((previousValue != value) 
 							|| (this._ProductAttribute.HasLoadedOrAssignedValue == false)))
 				{
@@ -4820,19 +4821,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._ProductAttribute.Entity = null;
-						previousValue.ProductVariant_ProductAttribute_Mappings.Remove(this);
+						previousValue.Nop280_ProductVariant_ProductAttribute_Mappings.Remove(this);
 					}
 					this._ProductAttribute.Entity = value;
 					if ((value != null))
 					{
-						value.ProductVariant_ProductAttribute_Mappings.Add(this);
+						value.Nop280_ProductVariant_ProductAttribute_Mappings.Add(this);
 						this._ProductAttributeId = value.Id;
 					}
 					else
 					{
 						this._ProductAttributeId = default(int);
 					}
-					this.SendPropertyChanged("ProductAttribute");
+					this.SendPropertyChanged("Nop280_ProductAttribute");
 				}
 			}
 		}
@@ -4857,21 +4858,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_ProductVariantAttributeValues(ProductVariantAttributeValue entity)
+		private void attach_ProductVariantAttributeValues(Nop280_ProductVariantAttributeValue entity)
 		{
 			this.SendPropertyChanging();
-			entity.ProductVariant_ProductAttribute_Mapping = this;
+			entity.Nop280_ProductVariant_ProductAttribute_Mapping = this;
 		}
 		
-		private void detach_ProductVariantAttributeValues(ProductVariantAttributeValue entity)
+		private void detach_ProductVariantAttributeValues(Nop280_ProductVariantAttributeValue entity)
 		{
 			this.SendPropertyChanging();
-			entity.ProductVariant_ProductAttribute_Mapping = null;
+			entity.Nop280_ProductVariant_ProductAttribute_Mapping = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProductVariantAttributeCombination")]
-	public partial class ProductVariantAttributeCombination : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_ProductVariantAttributeCombination : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -4892,7 +4893,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private string _Gtin;
 		
-		private EntityRef<ProductVariant> _ProductVariant;
+		private EntityRef<Nop280_ProductVariant> _ProductVariant;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -4916,9 +4917,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnGtinChanged();
     #endregion
 		
-		public ProductVariantAttributeCombination()
+		public Nop280_ProductVariantAttributeCombination()
 		{
-			this._ProductVariant = default(EntityRef<ProductVariant>);
+			this._ProductVariant = default(EntityRef<Nop280_ProductVariant>);
 			OnCreated();
 		}
 		
@@ -5087,7 +5088,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductVariant_ProductVariantAttributeCombination", Storage="_ProductVariant", ThisKey="ProductVariantId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public ProductVariant ProductVariant
+		public Nop280_ProductVariant Nop280_ProductVariant
 		{
 			get
 			{
@@ -5095,7 +5096,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				ProductVariant previousValue = this._ProductVariant.Entity;
+				Nop280_ProductVariant previousValue = this._ProductVariant.Entity;
 				if (((previousValue != value) 
 							|| (this._ProductVariant.HasLoadedOrAssignedValue == false)))
 				{
@@ -5103,19 +5104,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._ProductVariant.Entity = null;
-						previousValue.ProductVariantAttributeCombinations.Remove(this);
+						previousValue.Nop280_ProductVariantAttributeCombinations.Remove(this);
 					}
 					this._ProductVariant.Entity = value;
 					if ((value != null))
 					{
-						value.ProductVariantAttributeCombinations.Add(this);
+						value.Nop280_ProductVariantAttributeCombinations.Add(this);
 						this._ProductVariantId = value.Id;
 					}
 					else
 					{
 						this._ProductVariantId = default(int);
 					}
-					this.SendPropertyChanged("ProductVariant");
+					this.SendPropertyChanged("Nop280_ProductVariant");
 				}
 			}
 		}
@@ -5142,7 +5143,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProductVariantAttributeValue")]
-	public partial class ProductVariantAttributeValue : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_ProductVariantAttributeValue : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -5163,7 +5164,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private int _DisplayOrder;
 		
-		private EntityRef<ProductVariant_ProductAttribute_Mapping> _ProductVariant_ProductAttribute_Mapping;
+		private EntityRef<Nop280_ProductVariant_ProductAttribute_Mapping> _ProductVariant_ProductAttribute_Mapping;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -5187,9 +5188,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnDisplayOrderChanged();
     #endregion
 		
-		public ProductVariantAttributeValue()
+		public Nop280_ProductVariantAttributeValue()
 		{
-			this._ProductVariant_ProductAttribute_Mapping = default(EntityRef<ProductVariant_ProductAttribute_Mapping>);
+			this._ProductVariant_ProductAttribute_Mapping = default(EntityRef<Nop280_ProductVariant_ProductAttribute_Mapping>);
 			OnCreated();
 		}
 		
@@ -5358,7 +5359,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductVariant_ProductAttribute_Mapping_ProductVariantAttributeValue", Storage="_ProductVariant_ProductAttribute_Mapping", ThisKey="ProductVariantAttributeId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public ProductVariant_ProductAttribute_Mapping ProductVariant_ProductAttribute_Mapping
+		public Nop280_ProductVariant_ProductAttribute_Mapping Nop280_ProductVariant_ProductAttribute_Mapping
 		{
 			get
 			{
@@ -5366,7 +5367,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				ProductVariant_ProductAttribute_Mapping previousValue = this._ProductVariant_ProductAttribute_Mapping.Entity;
+				Nop280_ProductVariant_ProductAttribute_Mapping previousValue = this._ProductVariant_ProductAttribute_Mapping.Entity;
 				if (((previousValue != value) 
 							|| (this._ProductVariant_ProductAttribute_Mapping.HasLoadedOrAssignedValue == false)))
 				{
@@ -5374,19 +5375,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._ProductVariant_ProductAttribute_Mapping.Entity = null;
-						previousValue.ProductVariantAttributeValues.Remove(this);
+						previousValue.Nop280_ProductVariantAttributeValues.Remove(this);
 					}
 					this._ProductVariant_ProductAttribute_Mapping.Entity = value;
 					if ((value != null))
 					{
-						value.ProductVariantAttributeValues.Add(this);
+						value.Nop280_ProductVariantAttributeValues.Add(this);
 						this._ProductVariantAttributeId = value.Id;
 					}
 					else
 					{
 						this._ProductVariantAttributeId = default(int);
 					}
-					this.SendPropertyChanged("ProductVariant_ProductAttribute_Mapping");
+					this.SendPropertyChanged("Nop280_ProductVariant_ProductAttribute_Mapping");
 				}
 			}
 		}
@@ -5413,7 +5414,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ProductAttribute")]
-	public partial class ProductAttribute : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_ProductAttribute : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -5424,7 +5425,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private string _Description;
 		
-		private EntitySet<ProductVariant_ProductAttribute_Mapping> _ProductVariant_ProductAttribute_Mappings;
+		private EntitySet<Nop280_ProductVariant_ProductAttribute_Mapping> _ProductVariant_ProductAttribute_Mappings;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -5438,9 +5439,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnDescriptionChanged();
     #endregion
 		
-		public ProductAttribute()
+		public Nop280_ProductAttribute()
 		{
-			this._ProductVariant_ProductAttribute_Mappings = new EntitySet<ProductVariant_ProductAttribute_Mapping>(new Action<ProductVariant_ProductAttribute_Mapping>(this.attach_ProductVariant_ProductAttribute_Mappings), new Action<ProductVariant_ProductAttribute_Mapping>(this.detach_ProductVariant_ProductAttribute_Mappings));
+			this._ProductVariant_ProductAttribute_Mappings = new EntitySet<Nop280_ProductVariant_ProductAttribute_Mapping>(new Action<Nop280_ProductVariant_ProductAttribute_Mapping>(this.attach_ProductVariant_ProductAttribute_Mappings), new Action<Nop280_ProductVariant_ProductAttribute_Mapping>(this.detach_ProductVariant_ProductAttribute_Mappings));
 			OnCreated();
 		}
 		
@@ -5505,7 +5506,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductAttribute_ProductVariant_ProductAttribute_Mapping", Storage="_ProductVariant_ProductAttribute_Mappings", ThisKey="Id", OtherKey="ProductAttributeId")]
-		public EntitySet<ProductVariant_ProductAttribute_Mapping> ProductVariant_ProductAttribute_Mappings
+		public EntitySet<Nop280_ProductVariant_ProductAttribute_Mapping> Nop280_ProductVariant_ProductAttribute_Mappings
 		{
 			get
 			{
@@ -5537,21 +5538,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_ProductVariant_ProductAttribute_Mappings(ProductVariant_ProductAttribute_Mapping entity)
+		private void attach_ProductVariant_ProductAttribute_Mappings(Nop280_ProductVariant_ProductAttribute_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.ProductAttribute = this;
+			entity.Nop280_ProductAttribute = this;
 		}
 		
-		private void detach_ProductVariant_ProductAttribute_Mappings(ProductVariant_ProductAttribute_Mapping entity)
+		private void detach_ProductVariant_ProductAttribute_Mappings(Nop280_ProductVariant_ProductAttribute_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.ProductAttribute = null;
+			entity.Nop280_ProductAttribute = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Manufacturer")]
-	public partial class Manufacturer : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Manufacturer : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -5592,7 +5593,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private System.DateTime _UpdatedOnUtc;
 		
-		private EntitySet<Product_Manufacturer_Mapping> _Product_Manufacturer_Mappings;
+		private EntitySet<Nop280_Product_Manufacturer_Mapping> _Product_Manufacturer_Mappings;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -5636,9 +5637,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnUpdatedOnUtcChanged();
     #endregion
 		
-		public Manufacturer()
+		public Nop280_Manufacturer()
 		{
-			this._Product_Manufacturer_Mappings = new EntitySet<Product_Manufacturer_Mapping>(new Action<Product_Manufacturer_Mapping>(this.attach_Product_Manufacturer_Mappings), new Action<Product_Manufacturer_Mapping>(this.detach_Product_Manufacturer_Mappings));
+			this._Product_Manufacturer_Mappings = new EntitySet<Nop280_Product_Manufacturer_Mapping>(new Action<Nop280_Product_Manufacturer_Mapping>(this.attach_Product_Manufacturer_Mappings), new Action<Nop280_Product_Manufacturer_Mapping>(this.detach_Product_Manufacturer_Mappings));
 			OnCreated();
 		}
 		
@@ -6002,8 +6003,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Manufacturer_Product_Manufacturer_Mapping", Storage="_Product_Manufacturer_Mappings", ThisKey="Id", OtherKey="ManufacturerId")]
-		public EntitySet<Product_Manufacturer_Mapping> Product_Manufacturer_Mappings
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Manufacturer_Nop280_Product_Manufacturer_Mapping", Storage="_Product_Manufacturer_Mappings", ThisKey="Id", OtherKey="ManufacturerId")]
+		public EntitySet<Nop280_Product_Manufacturer_Mapping> Nop280_Product_Manufacturer_Mappings
 		{
 			get
 			{
@@ -6035,21 +6036,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_Product_Manufacturer_Mappings(Product_Manufacturer_Mapping entity)
+		private void attach_Product_Manufacturer_Mappings(Nop280_Product_Manufacturer_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Manufacturer = this;
+			entity.Nop280_Manufacturer = this;
 		}
 		
-		private void detach_Product_Manufacturer_Mappings(Product_Manufacturer_Mapping entity)
+		private void detach_Product_Manufacturer_Mappings(Nop280_Product_Manufacturer_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Manufacturer = null;
+			entity.Nop280_Manufacturer = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Category")]
-	public partial class Category : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Category : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -6096,7 +6097,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private System.DateTime _UpdatedOnUtc;
 		
-		private EntitySet<Product_Category_Mapping> _Product_Category_Mappings;
+		private EntitySet<Nop280_Product_Category_Mapping> _Product_Category_Mappings;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -6146,9 +6147,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnUpdatedOnUtcChanged();
     #endregion
 		
-		public Category()
+		public Nop280_Category()
 		{
-			this._Product_Category_Mappings = new EntitySet<Product_Category_Mapping>(new Action<Product_Category_Mapping>(this.attach_Product_Category_Mappings), new Action<Product_Category_Mapping>(this.detach_Product_Category_Mappings));
+			this._Product_Category_Mappings = new EntitySet<Nop280_Product_Category_Mapping>(new Action<Nop280_Product_Category_Mapping>(this.attach_Product_Category_Mappings), new Action<Nop280_Product_Category_Mapping>(this.detach_Product_Category_Mappings));
 			OnCreated();
 		}
 		
@@ -6572,8 +6573,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Category_Product_Category_Mapping", Storage="_Product_Category_Mappings", ThisKey="Id", OtherKey="CategoryId")]
-		public EntitySet<Product_Category_Mapping> Product_Category_Mappings
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Category_Nop280_Product_Category_Mapping", Storage="_Product_Category_Mappings", ThisKey="Id", OtherKey="CategoryId")]
+		public EntitySet<Nop280_Product_Category_Mapping> Nop280_Product_Category_Mappings
 		{
 			get
 			{
@@ -6605,21 +6606,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_Product_Category_Mappings(Product_Category_Mapping entity)
+		private void attach_Product_Category_Mappings(Nop280_Product_Category_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Category = this;
+			entity.Nop280_Category = this;
 		}
 		
-		private void detach_Product_Category_Mappings(Product_Category_Mapping entity)
+		private void detach_Product_Category_Mappings(Nop280_Product_Category_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.Category = null;
+			entity.Nop280_Category = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SpecificationAttributeOption")]
-	public partial class SpecificationAttributeOption : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_SpecificationAttributeOption : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -6632,9 +6633,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private int _DisplayOrder;
 		
-		private EntitySet<Product_SpecificationAttribute_Mapping> _Product_SpecificationAttribute_Mappings;
+		private EntitySet<Nop280_Product_SpecificationAttribute_Mapping> _Product_SpecificationAttribute_Mappings;
 		
-		private EntityRef<SpecificationAttribute> _SpecificationAttribute;
+		private EntityRef<Nop280_SpecificationAttribute> _SpecificationAttribute;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -6650,10 +6651,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnDisplayOrderChanged();
     #endregion
 		
-		public SpecificationAttributeOption()
+		public Nop280_SpecificationAttributeOption()
 		{
-			this._Product_SpecificationAttribute_Mappings = new EntitySet<Product_SpecificationAttribute_Mapping>(new Action<Product_SpecificationAttribute_Mapping>(this.attach_Product_SpecificationAttribute_Mappings), new Action<Product_SpecificationAttribute_Mapping>(this.detach_Product_SpecificationAttribute_Mappings));
-			this._SpecificationAttribute = default(EntityRef<SpecificationAttribute>);
+			this._Product_SpecificationAttribute_Mappings = new EntitySet<Nop280_Product_SpecificationAttribute_Mapping>(new Action<Nop280_Product_SpecificationAttribute_Mapping>(this.attach_Product_SpecificationAttribute_Mappings), new Action<Nop280_Product_SpecificationAttribute_Mapping>(this.detach_Product_SpecificationAttribute_Mappings));
+			this._SpecificationAttribute = default(EntityRef<Nop280_SpecificationAttribute>);
 			OnCreated();
 		}
 		
@@ -6741,8 +6742,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SpecificationAttributeOption_Product_SpecificationAttribute_Mapping", Storage="_Product_SpecificationAttribute_Mappings", ThisKey="Id", OtherKey="SpecificationAttributeOptionId")]
-		public EntitySet<Product_SpecificationAttribute_Mapping> Product_SpecificationAttribute_Mappings
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_SpecificationAttributeOption_Nop280_Product_SpecificationAttribute_Mapping" +
+			"", Storage="_Product_SpecificationAttribute_Mappings", ThisKey="Id", OtherKey="SpecificationAttributeOptionId")]
+		public EntitySet<Nop280_Product_SpecificationAttribute_Mapping> Nop280_Product_SpecificationAttribute_Mappings
 		{
 			get
 			{
@@ -6754,8 +6756,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SpecificationAttribute_SpecificationAttributeOption", Storage="_SpecificationAttribute", ThisKey="SpecificationAttributeId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public SpecificationAttribute SpecificationAttribute
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_SpecificationAttribute_Nop280_SpecificationAttributeOption", Storage="_SpecificationAttribute", ThisKey="SpecificationAttributeId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_SpecificationAttribute Nop280_SpecificationAttribute
 		{
 			get
 			{
@@ -6763,7 +6765,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				SpecificationAttribute previousValue = this._SpecificationAttribute.Entity;
+				Nop280_SpecificationAttribute previousValue = this._SpecificationAttribute.Entity;
 				if (((previousValue != value) 
 							|| (this._SpecificationAttribute.HasLoadedOrAssignedValue == false)))
 				{
@@ -6771,19 +6773,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._SpecificationAttribute.Entity = null;
-						previousValue.SpecificationAttributeOptions.Remove(this);
+						previousValue.Nop280_SpecificationAttributeOptions.Remove(this);
 					}
 					this._SpecificationAttribute.Entity = value;
 					if ((value != null))
 					{
-						value.SpecificationAttributeOptions.Add(this);
+						value.Nop280_SpecificationAttributeOptions.Add(this);
 						this._SpecificationAttributeId = value.Id;
 					}
 					else
 					{
 						this._SpecificationAttributeId = default(int);
 					}
-					this.SendPropertyChanged("SpecificationAttribute");
+					this.SendPropertyChanged("Nop280_SpecificationAttribute");
 				}
 			}
 		}
@@ -6808,21 +6810,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_Product_SpecificationAttribute_Mappings(Product_SpecificationAttribute_Mapping entity)
+		private void attach_Product_SpecificationAttribute_Mappings(Nop280_Product_SpecificationAttribute_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.SpecificationAttributeOption = this;
+			entity.Nop280_SpecificationAttributeOption = this;
 		}
 		
-		private void detach_Product_SpecificationAttribute_Mappings(Product_SpecificationAttribute_Mapping entity)
+		private void detach_Product_SpecificationAttribute_Mappings(Nop280_Product_SpecificationAttribute_Mapping entity)
 		{
 			this.SendPropertyChanging();
-			entity.SpecificationAttributeOption = null;
+			entity.Nop280_SpecificationAttributeOption = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SpecificationAttribute")]
-	public partial class SpecificationAttribute : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_SpecificationAttribute : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -6833,7 +6835,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private int _DisplayOrder;
 		
-		private EntitySet<SpecificationAttributeOption> _SpecificationAttributeOptions;
+		private EntitySet<Nop280_SpecificationAttributeOption> _SpecificationAttributeOptions;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -6847,9 +6849,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnDisplayOrderChanged();
     #endregion
 		
-		public SpecificationAttribute()
+		public Nop280_SpecificationAttribute()
 		{
-			this._SpecificationAttributeOptions = new EntitySet<SpecificationAttributeOption>(new Action<SpecificationAttributeOption>(this.attach_SpecificationAttributeOptions), new Action<SpecificationAttributeOption>(this.detach_SpecificationAttributeOptions));
+			this._SpecificationAttributeOptions = new EntitySet<Nop280_SpecificationAttributeOption>(new Action<Nop280_SpecificationAttributeOption>(this.attach_SpecificationAttributeOptions), new Action<Nop280_SpecificationAttributeOption>(this.detach_SpecificationAttributeOptions));
 			OnCreated();
 		}
 		
@@ -6913,8 +6915,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SpecificationAttribute_SpecificationAttributeOption", Storage="_SpecificationAttributeOptions", ThisKey="Id", OtherKey="SpecificationAttributeId")]
-		public EntitySet<SpecificationAttributeOption> SpecificationAttributeOptions
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_SpecificationAttribute_Nop280_SpecificationAttributeOption", Storage="_SpecificationAttributeOptions", ThisKey="Id", OtherKey="SpecificationAttributeId")]
+		public EntitySet<Nop280_SpecificationAttributeOption> Nop280_SpecificationAttributeOptions
 		{
 			get
 			{
@@ -6946,21 +6948,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_SpecificationAttributeOptions(SpecificationAttributeOption entity)
+		private void attach_SpecificationAttributeOptions(Nop280_SpecificationAttributeOption entity)
 		{
 			this.SendPropertyChanging();
-			entity.SpecificationAttribute = this;
+			entity.Nop280_SpecificationAttribute = this;
 		}
 		
-		private void detach_SpecificationAttributeOptions(SpecificationAttributeOption entity)
+		private void detach_SpecificationAttributeOptions(Nop280_SpecificationAttributeOption entity)
 		{
 			this.SendPropertyChanging();
-			entity.SpecificationAttribute = null;
+			entity.Nop280_SpecificationAttribute = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TaxCategory")]
-	public partial class TaxCategory : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_TaxCategory : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -6971,9 +6973,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private int _DisplayOrder;
 		
-		private EntitySet<ProductVariant> _ProductVariants;
+		private EntitySet<Nop280_ProductVariant> _ProductVariants;
 		
-		private EntityRef<TaxRate> _TaxRate;
+		private EntityRef<Nop280_TaxRate> _TaxRate;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -6987,10 +6989,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnDisplayOrderChanged();
     #endregion
 		
-		public TaxCategory()
+		public Nop280_TaxCategory()
 		{
-			this._ProductVariants = new EntitySet<ProductVariant>(new Action<ProductVariant>(this.attach_ProductVariants), new Action<ProductVariant>(this.detach_ProductVariants));
-			this._TaxRate = default(EntityRef<TaxRate>);
+			this._ProductVariants = new EntitySet<Nop280_ProductVariant>(new Action<Nop280_ProductVariant>(this.attach_ProductVariants), new Action<Nop280_ProductVariant>(this.detach_ProductVariants));
+			this._TaxRate = default(EntityRef<Nop280_TaxRate>);
 			OnCreated();
 		}
 		
@@ -7059,7 +7061,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TaxCategory_ProductVariant", Storage="_ProductVariants", ThisKey="Id", OtherKey="TaxCategoryId")]
-		public EntitySet<ProductVariant> ProductVariants
+		public EntitySet<Nop280_ProductVariant> Nop280_ProductVariants
 		{
 			get
 			{
@@ -7072,7 +7074,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TaxRate_TaxCategory", Storage="_TaxRate", ThisKey="Id", OtherKey="TaxCategoryId", IsForeignKey=true)]
-		public TaxRate TaxRate
+		public Nop280_TaxRate Nop280_TaxRate
 		{
 			get
 			{
@@ -7080,7 +7082,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				TaxRate previousValue = this._TaxRate.Entity;
+				Nop280_TaxRate previousValue = this._TaxRate.Entity;
 				if (((previousValue != value) 
 							|| (this._TaxRate.HasLoadedOrAssignedValue == false)))
 				{
@@ -7088,19 +7090,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._TaxRate.Entity = null;
-						previousValue.TaxCategories.Remove(this);
+						previousValue.Nop280_TaxCategories.Remove(this);
 					}
 					this._TaxRate.Entity = value;
 					if ((value != null))
 					{
-						value.TaxCategories.Add(this);
+						value.Nop280_TaxCategories.Add(this);
 						this._Id = value.TaxCategoryId;
 					}
 					else
 					{
 						this._Id = default(int);
 					}
-					this.SendPropertyChanged("TaxRate");
+					this.SendPropertyChanged("Nop280_TaxRate");
 				}
 			}
 		}
@@ -7125,21 +7127,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_ProductVariants(ProductVariant entity)
+		private void attach_ProductVariants(Nop280_ProductVariant entity)
 		{
 			this.SendPropertyChanging();
-			entity.TaxCategory = this;
+			entity.Nop280_TaxCategory = this;
 		}
 		
-		private void detach_ProductVariants(ProductVariant entity)
+		private void detach_ProductVariants(Nop280_ProductVariant entity)
 		{
 			this.SendPropertyChanging();
-			entity.TaxCategory = null;
+			entity.Nop280_TaxCategory = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TaxRate")]
-	public partial class TaxRate : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_TaxRate : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -7156,9 +7158,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private decimal _Percentage;
 		
-		private EntitySet<TaxCategory> _TaxCategories;
+		private EntitySet<Nop280_TaxCategory> _TaxCategories;
 		
-		private EntityRef<StateProvince> _StateProvince;
+		private EntityRef<Nop280_StateProvince> _StateProvince;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -7178,10 +7180,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnPercentageChanged();
     #endregion
 		
-		public TaxRate()
+		public Nop280_TaxRate()
 		{
-			this._TaxCategories = new EntitySet<TaxCategory>(new Action<TaxCategory>(this.attach_TaxCategories), new Action<TaxCategory>(this.detach_TaxCategories));
-			this._StateProvince = default(EntityRef<StateProvince>);
+			this._TaxCategories = new EntitySet<Nop280_TaxCategory>(new Action<Nop280_TaxCategory>(this.attach_TaxCategories), new Action<Nop280_TaxCategory>(this.detach_TaxCategories));
+			this._StateProvince = default(EntityRef<Nop280_StateProvince>);
 			OnCreated();
 		}
 		
@@ -7310,7 +7312,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TaxRate_TaxCategory", Storage="_TaxCategories", ThisKey="TaxCategoryId", OtherKey="Id")]
-		public EntitySet<TaxCategory> TaxCategories
+		public EntitySet<Nop280_TaxCategory> Nop280_TaxCategories
 		{
 			get
 			{
@@ -7323,7 +7325,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="StateProvince_TaxRate", Storage="_StateProvince", ThisKey="StateProvinceId", OtherKey="Id", IsForeignKey=true)]
-		public StateProvince StateProvince
+		public Nop280_StateProvince Nop280_StateProvince
 		{
 			get
 			{
@@ -7331,7 +7333,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				StateProvince previousValue = this._StateProvince.Entity;
+				Nop280_StateProvince previousValue = this._StateProvince.Entity;
 				if (((previousValue != value) 
 							|| (this._StateProvince.HasLoadedOrAssignedValue == false)))
 				{
@@ -7339,19 +7341,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._StateProvince.Entity = null;
-						previousValue.TaxRates.Remove(this);
+						previousValue.Nop280_TaxRates.Remove(this);
 					}
 					this._StateProvince.Entity = value;
 					if ((value != null))
 					{
-						value.TaxRates.Add(this);
+						value.Nop280_TaxRates.Add(this);
 						this._StateProvinceId = value.Id;
 					}
 					else
 					{
 						this._StateProvinceId = default(int);
 					}
-					this.SendPropertyChanged("StateProvince");
+					this.SendPropertyChanged("Nop280_StateProvince");
 				}
 			}
 		}
@@ -7376,21 +7378,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_TaxCategories(TaxCategory entity)
+		private void attach_TaxCategories(Nop280_TaxCategory entity)
 		{
 			this.SendPropertyChanging();
-			entity.TaxRate = this;
+			entity.Nop280_TaxRate = this;
 		}
 		
-		private void detach_TaxCategories(TaxCategory entity)
+		private void detach_TaxCategories(Nop280_TaxCategory entity)
 		{
 			this.SendPropertyChanging();
-			entity.TaxRate = null;
+			entity.Nop280_TaxRate = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Country")]
-	public partial class Country : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Country : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -7415,9 +7417,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private int _DisplayOrder;
 		
-		private EntitySet<StateProvince> _StateProvinces;
+		private EntitySet<Nop280_StateProvince> _StateProvinces;
 		
-		private EntitySet<Address> _Addresses;
+		private EntitySet<Nop280_Address> _Addresses;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -7445,10 +7447,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnDisplayOrderChanged();
     #endregion
 		
-		public Country()
+		public Nop280_Country()
 		{
-			this._StateProvinces = new EntitySet<StateProvince>(new Action<StateProvince>(this.attach_StateProvinces), new Action<StateProvince>(this.detach_StateProvinces));
-			this._Addresses = new EntitySet<Address>(new Action<Address>(this.attach_Addresses), new Action<Address>(this.detach_Addresses));
+			this._StateProvinces = new EntitySet<Nop280_StateProvince>(new Action<Nop280_StateProvince>(this.attach_StateProvinces), new Action<Nop280_StateProvince>(this.detach_StateProvinces));
+			this._Addresses = new EntitySet<Nop280_Address>(new Action<Nop280_Address>(this.attach_Addresses), new Action<Nop280_Address>(this.detach_Addresses));
 			OnCreated();
 		}
 		
@@ -7653,7 +7655,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Country_StateProvince", Storage="_StateProvinces", ThisKey="Id", OtherKey="CountryId")]
-		public EntitySet<StateProvince> StateProvinces
+		public EntitySet<Nop280_StateProvince> Nop280_StateProvinces
 		{
 			get
 			{
@@ -7665,8 +7667,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Country_Address", Storage="_Addresses", ThisKey="Id", OtherKey="CountryId")]
-		public EntitySet<Address> Addresses
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Country_Nop280_Address", Storage="_Addresses", ThisKey="Id", OtherKey="CountryId")]
+		public EntitySet<Nop280_Address> Nop280_Addresses
 		{
 			get
 			{
@@ -7698,33 +7700,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_StateProvinces(StateProvince entity)
+		private void attach_StateProvinces(Nop280_StateProvince entity)
 		{
 			this.SendPropertyChanging();
-			entity.Country = this;
+			entity.Nop280_Country = this;
 		}
 		
-		private void detach_StateProvinces(StateProvince entity)
+		private void detach_StateProvinces(Nop280_StateProvince entity)
 		{
 			this.SendPropertyChanging();
-			entity.Country = null;
+			entity.Nop280_Country = null;
 		}
 		
-		private void attach_Addresses(Address entity)
+		private void attach_Addresses(Nop280_Address entity)
 		{
 			this.SendPropertyChanging();
-			entity.Country = this;
+			entity.Nop280_Country = this;
 		}
 		
-		private void detach_Addresses(Address entity)
+		private void detach_Addresses(Nop280_Address entity)
 		{
 			this.SendPropertyChanging();
-			entity.Country = null;
+			entity.Nop280_Country = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.StateProvince")]
-	public partial class StateProvince : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_StateProvince : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -7741,11 +7743,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private int _DisplayOrder;
 		
-		private EntitySet<TaxRate> _TaxRates;
+		private EntitySet<Nop280_TaxRate> _TaxRates;
 		
-		private EntitySet<Address> _Addresses;
+		private EntitySet<Nop280_Address> _Addresses;
 		
-		private EntityRef<Country> _Country;
+		private EntityRef<Nop280_Country> _Country;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -7765,11 +7767,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnDisplayOrderChanged();
     #endregion
 		
-		public StateProvince()
+		public Nop280_StateProvince()
 		{
-			this._TaxRates = new EntitySet<TaxRate>(new Action<TaxRate>(this.attach_TaxRates), new Action<TaxRate>(this.detach_TaxRates));
-			this._Addresses = new EntitySet<Address>(new Action<Address>(this.attach_Addresses), new Action<Address>(this.detach_Addresses));
-			this._Country = default(EntityRef<Country>);
+			this._TaxRates = new EntitySet<Nop280_TaxRate>(new Action<Nop280_TaxRate>(this.attach_TaxRates), new Action<Nop280_TaxRate>(this.detach_TaxRates));
+			this._Addresses = new EntitySet<Nop280_Address>(new Action<Nop280_Address>(this.attach_Addresses), new Action<Nop280_Address>(this.detach_Addresses));
+			this._Country = default(EntityRef<Nop280_Country>);
 			OnCreated();
 		}
 		
@@ -7898,7 +7900,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="StateProvince_TaxRate", Storage="_TaxRates", ThisKey="Id", OtherKey="StateProvinceId")]
-		public EntitySet<TaxRate> TaxRates
+		public EntitySet<Nop280_TaxRate> Nop280_TaxRates
 		{
 			get
 			{
@@ -7910,8 +7912,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="StateProvince_Address", Storage="_Addresses", ThisKey="Id", OtherKey="StateProvinceId")]
-		public EntitySet<Address> Addresses
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="StateProvince_Nop280_Address", Storage="_Addresses", ThisKey="Id", OtherKey="StateProvinceId")]
+		public EntitySet<Nop280_Address> Nop280_Addresses
 		{
 			get
 			{
@@ -7924,7 +7926,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Country_StateProvince", Storage="_Country", ThisKey="CountryId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Country Country
+		public Nop280_Country Nop280_Country
 		{
 			get
 			{
@@ -7932,7 +7934,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Country previousValue = this._Country.Entity;
+				Nop280_Country previousValue = this._Country.Entity;
 				if (((previousValue != value) 
 							|| (this._Country.HasLoadedOrAssignedValue == false)))
 				{
@@ -7940,19 +7942,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Country.Entity = null;
-						previousValue.StateProvinces.Remove(this);
+						previousValue.Nop280_StateProvinces.Remove(this);
 					}
 					this._Country.Entity = value;
 					if ((value != null))
 					{
-						value.StateProvinces.Add(this);
+						value.Nop280_StateProvinces.Add(this);
 						this._CountryId = value.Id;
 					}
 					else
 					{
 						this._CountryId = default(int);
 					}
-					this.SendPropertyChanged("Country");
+					this.SendPropertyChanged("Nop280_Country");
 				}
 			}
 		}
@@ -7977,33 +7979,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_TaxRates(TaxRate entity)
+		private void attach_TaxRates(Nop280_TaxRate entity)
 		{
 			this.SendPropertyChanging();
-			entity.StateProvince = this;
+			entity.Nop280_StateProvince = this;
 		}
 		
-		private void detach_TaxRates(TaxRate entity)
+		private void detach_TaxRates(Nop280_TaxRate entity)
 		{
 			this.SendPropertyChanging();
-			entity.StateProvince = null;
+			entity.Nop280_StateProvince = null;
 		}
 		
-		private void attach_Addresses(Address entity)
+		private void attach_Addresses(Nop280_Address entity)
 		{
 			this.SendPropertyChanging();
-			entity.StateProvince = this;
+			entity.Nop280_StateProvince = this;
 		}
 		
-		private void detach_Addresses(Address entity)
+		private void detach_Addresses(Nop280_Address entity)
 		{
 			this.SendPropertyChanging();
-			entity.StateProvince = null;
+			entity.Nop280_StateProvince = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TierPrice")]
-	public partial class TierPrice : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_TierPrice : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -8018,7 +8020,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private decimal _Price;
 		
-		private EntityRef<ProductVariant> _ProductVariant;
+		private EntityRef<Nop280_ProductVariant> _ProductVariant;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -8036,9 +8038,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnPriceChanged();
     #endregion
 		
-		public TierPrice()
+		public Nop280_TierPrice()
 		{
-			this._ProductVariant = default(EntityRef<ProductVariant>);
+			this._ProductVariant = default(EntityRef<Nop280_ProductVariant>);
 			OnCreated();
 		}
 		
@@ -8147,7 +8149,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductVariant_TierPrice", Storage="_ProductVariant", ThisKey="ProductVariantId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public ProductVariant ProductVariant
+		public Nop280_ProductVariant Nop280_ProductVariant
 		{
 			get
 			{
@@ -8155,7 +8157,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				ProductVariant previousValue = this._ProductVariant.Entity;
+				Nop280_ProductVariant previousValue = this._ProductVariant.Entity;
 				if (((previousValue != value) 
 							|| (this._ProductVariant.HasLoadedOrAssignedValue == false)))
 				{
@@ -8163,19 +8165,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._ProductVariant.Entity = null;
-						previousValue.TierPrices.Remove(this);
+						previousValue.Nop280_TierPrices.Remove(this);
 					}
 					this._ProductVariant.Entity = value;
 					if ((value != null))
 					{
-						value.TierPrices.Add(this);
+						value.Nop280_TierPrices.Add(this);
 						this._ProductVariantId = value.Id;
 					}
 					else
 					{
 						this._ProductVariantId = default(int);
 					}
-					this.SendPropertyChanged("ProductVariant");
+					this.SendPropertyChanged("Nop280_ProductVariant");
 				}
 			}
 		}
@@ -8202,7 +8204,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Download")]
-	public partial class Download : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Download : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -8225,7 +8227,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private bool _IsNew;
 		
-		private EntitySet<ProductVariant> _ProductVariants;
+		private EntitySet<Nop280_ProductVariant> _ProductVariants;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -8251,9 +8253,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnIsNewChanged();
     #endregion
 		
-		public Download()
+		public Nop280_Download()
 		{
-			this._ProductVariants = new EntitySet<ProductVariant>(new Action<ProductVariant>(this.attach_ProductVariants), new Action<ProductVariant>(this.detach_ProductVariants));
+			this._ProductVariants = new EntitySet<Nop280_ProductVariant>(new Action<Nop280_ProductVariant>(this.attach_ProductVariants), new Action<Nop280_ProductVariant>(this.detach_ProductVariants));
 			OnCreated();
 		}
 		
@@ -8438,7 +8440,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Download_ProductVariant", Storage="_ProductVariants", ThisKey="Id", OtherKey="DownloadId")]
-		public EntitySet<ProductVariant> ProductVariants
+		public EntitySet<Nop280_ProductVariant> Nop280_ProductVariants
 		{
 			get
 			{
@@ -8470,21 +8472,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_ProductVariants(ProductVariant entity)
+		private void attach_ProductVariants(Nop280_ProductVariant entity)
 		{
 			this.SendPropertyChanging();
-			entity.Download = this;
+			entity.Nop280_Download = this;
 		}
 		
-		private void detach_ProductVariants(ProductVariant entity)
+		private void detach_ProductVariants(Nop280_ProductVariant entity)
 		{
 			this.SendPropertyChanging();
-			entity.Download = null;
+			entity.Nop280_Download = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CustomerAddresses")]
-	public partial class CustomerAddress : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_CustomerAddress : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -8493,9 +8495,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private int _Address_Id;
 		
-		private EntityRef<Customer> _Customer;
+		private EntityRef<Nop280_Customer> _Customer;
 		
-		private EntityRef<Address> _Address;
+		private EntityRef<Nop280_Address> _Address;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -8507,10 +8509,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnAddress_IdChanged();
     #endregion
 		
-		public CustomerAddress()
+		public Nop280_CustomerAddress()
 		{
-			this._Customer = default(EntityRef<Customer>);
-			this._Address = default(EntityRef<Address>);
+			this._Customer = default(EntityRef<Nop280_Customer>);
+			this._Address = default(EntityRef<Nop280_Address>);
 			OnCreated();
 		}
 		
@@ -8562,8 +8564,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_CustomerAddress", Storage="_Customer", ThisKey="Customer_Id", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Customer Customer
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Customer_Nop280_CustomerAddress", Storage="_Customer", ThisKey="Customer_Id", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_Customer Nop280_Customer
 		{
 			get
 			{
@@ -8571,7 +8573,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Customer previousValue = this._Customer.Entity;
+				Nop280_Customer previousValue = this._Customer.Entity;
 				if (((previousValue != value) 
 							|| (this._Customer.HasLoadedOrAssignedValue == false)))
 				{
@@ -8579,25 +8581,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Customer.Entity = null;
-						previousValue.CustomerAddresses.Remove(this);
+						previousValue.Nop280_CustomerAddresses.Remove(this);
 					}
 					this._Customer.Entity = value;
 					if ((value != null))
 					{
-						value.CustomerAddresses.Add(this);
+						value.Nop280_CustomerAddresses.Add(this);
 						this._Customer_Id = value.Id;
 					}
 					else
 					{
 						this._Customer_Id = default(int);
 					}
-					this.SendPropertyChanged("Customer");
+					this.SendPropertyChanged("Nop280_Customer");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Address_CustomerAddress", Storage="_Address", ThisKey="Address_Id", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Address Address
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Address_Nop280_CustomerAddress", Storage="_Address", ThisKey="Address_Id", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_Address Nop280_Address
 		{
 			get
 			{
@@ -8605,7 +8607,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Address previousValue = this._Address.Entity;
+				Nop280_Address previousValue = this._Address.Entity;
 				if (((previousValue != value) 
 							|| (this._Address.HasLoadedOrAssignedValue == false)))
 				{
@@ -8613,19 +8615,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Address.Entity = null;
-						previousValue.CustomerAddresses.Remove(this);
+						previousValue.Nop280_CustomerAddresses.Remove(this);
 					}
 					this._Address.Entity = value;
 					if ((value != null))
 					{
-						value.CustomerAddresses.Add(this);
+						value.Nop280_CustomerAddresses.Add(this);
 						this._Address_Id = value.Id;
 					}
 					else
 					{
 						this._Address_Id = default(int);
 					}
-					this.SendPropertyChanged("Address");
+					this.SendPropertyChanged("Nop280_Address");
 				}
 			}
 		}
@@ -8652,7 +8654,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Customer")]
-	public partial class Customer : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Customer : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -8719,13 +8721,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private System.Nullable<int> _ShippingAddress_Id;
 		
-		private EntitySet<CustomerAddress> _CustomerAddresses;
+		private EntitySet<Nop280_CustomerAddress> _CustomerAddresses;
 		
-		private EntitySet<Order> _Orders;
+		private EntitySet<Nop280_Order> _Orders;
 		
-		private EntityRef<Address> _Address;
+		private EntityRef<Nop280_Address> _Address;
 		
-		private EntityRef<Address> _Address1;
+		private EntityRef<Nop280_Address> _Address1;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -8795,12 +8797,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnShippingAddress_IdChanged();
     #endregion
 		
-		public Customer()
+		public Nop280_Customer()
 		{
-			this._CustomerAddresses = new EntitySet<CustomerAddress>(new Action<CustomerAddress>(this.attach_CustomerAddresses), new Action<CustomerAddress>(this.detach_CustomerAddresses));
-			this._Orders = new EntitySet<Order>(new Action<Order>(this.attach_Orders), new Action<Order>(this.detach_Orders));
-			this._Address = default(EntityRef<Address>);
-			this._Address1 = default(EntityRef<Address>);
+			this._CustomerAddresses = new EntitySet<Nop280_CustomerAddress>(new Action<Nop280_CustomerAddress>(this.attach_CustomerAddresses), new Action<Nop280_CustomerAddress>(this.detach_CustomerAddresses));
+			this._Orders = new EntitySet<Nop280_Order>(new Action<Nop280_Order>(this.attach_Orders), new Action<Nop280_Order>(this.detach_Orders));
+			this._Address = default(EntityRef<Nop280_Address>);
+			this._Address1 = default(EntityRef<Nop280_Address>);
 			OnCreated();
 		}
 		
@@ -9432,8 +9434,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_CustomerAddress", Storage="_CustomerAddresses", ThisKey="Id", OtherKey="Customer_Id")]
-		public EntitySet<CustomerAddress> CustomerAddresses
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Customer_Nop280_CustomerAddress", Storage="_CustomerAddresses", ThisKey="Id", OtherKey="Customer_Id")]
+		public EntitySet<Nop280_CustomerAddress> Nop280_CustomerAddresses
 		{
 			get
 			{
@@ -9445,8 +9447,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_Order", Storage="_Orders", ThisKey="Id", OtherKey="CustomerId")]
-		public EntitySet<Order> Orders
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Customer_Nop280_Order", Storage="_Orders", ThisKey="Id", OtherKey="CustomerId")]
+		public EntitySet<Nop280_Order> Nop280_Orders
 		{
 			get
 			{
@@ -9458,8 +9460,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Address_Customer", Storage="_Address", ThisKey="BillingAddress_Id", OtherKey="Id", IsForeignKey=true)]
-		public Address Address
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Address_Nop280_Customer", Storage="_Address", ThisKey="BillingAddress_Id", OtherKey="Id", IsForeignKey=true)]
+		public Nop280_Address Address
 		{
 			get
 			{
@@ -9467,7 +9469,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Address previousValue = this._Address.Entity;
+				Nop280_Address previousValue = this._Address.Entity;
 				if (((previousValue != value) 
 							|| (this._Address.HasLoadedOrAssignedValue == false)))
 				{
@@ -9492,8 +9494,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Address_Customer1", Storage="_Address1", ThisKey="ShippingAddress_Id", OtherKey="Id", IsForeignKey=true)]
-		public Address Address1
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Address_Nop280_Customer1", Storage="_Address1", ThisKey="ShippingAddress_Id", OtherKey="Id", IsForeignKey=true)]
+		public Nop280_Address Nop280_Address
 		{
 			get
 			{
@@ -9501,7 +9503,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Address previousValue = this._Address1.Entity;
+				Nop280_Address previousValue = this._Address1.Entity;
 				if (((previousValue != value) 
 							|| (this._Address1.HasLoadedOrAssignedValue == false)))
 				{
@@ -9509,19 +9511,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Address1.Entity = null;
-						previousValue.Customers1.Remove(this);
+						previousValue.Nop280_Customers.Remove(this);
 					}
 					this._Address1.Entity = value;
 					if ((value != null))
 					{
-						value.Customers1.Add(this);
+						value.Nop280_Customers.Add(this);
 						this._ShippingAddress_Id = value.Id;
 					}
 					else
 					{
 						this._ShippingAddress_Id = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("Address1");
+					this.SendPropertyChanged("Nop280_Address");
 				}
 			}
 		}
@@ -9546,33 +9548,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_CustomerAddresses(CustomerAddress entity)
+		private void attach_CustomerAddresses(Nop280_CustomerAddress entity)
 		{
 			this.SendPropertyChanging();
-			entity.Customer = this;
+			entity.Nop280_Customer = this;
 		}
 		
-		private void detach_CustomerAddresses(CustomerAddress entity)
+		private void detach_CustomerAddresses(Nop280_CustomerAddress entity)
 		{
 			this.SendPropertyChanging();
-			entity.Customer = null;
+			entity.Nop280_Customer = null;
 		}
 		
-		private void attach_Orders(Order entity)
+		private void attach_Orders(Nop280_Order entity)
 		{
 			this.SendPropertyChanging();
-			entity.Customer = this;
+			entity.Nop280_Customer = this;
 		}
 		
-		private void detach_Orders(Order entity)
+		private void detach_Orders(Nop280_Order entity)
 		{
 			this.SendPropertyChanging();
-			entity.Customer = null;
+			entity.Nop280_Customer = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.GenericAttribute")]
-	public partial class GenericAttribute : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_GenericAttribute : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -9603,7 +9605,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnValueChanged();
     #endregion
 		
-		public GenericAttribute()
+		public Nop280_GenericAttribute()
 		{
 			OnCreated();
 		}
@@ -9730,7 +9732,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Address")]
-	public partial class Address : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Address : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -9763,19 +9765,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private System.DateTime _CreatedOnUtc;
 		
-		private EntitySet<CustomerAddress> _CustomerAddresses;
+		private EntitySet<Nop280_CustomerAddress> _CustomerAddresses;
 		
-		private EntitySet<Customer> _Customers;
+		private EntitySet<Nop280_Customer> _Customers;
 		
-		private EntitySet<Customer> _Customers1;
+		private EntitySet<Nop280_Customer> _Customers1;
 		
-		private EntitySet<Order> _Orders;
+		private EntitySet<Nop280_Order> _Orders;
 		
-		private EntitySet<Order> _Orders1;
+		private EntitySet<Nop280_Order> _Orders1;
 		
-		private EntityRef<Country> _Country;
+		private EntityRef<Nop280_Country> _Country;
 		
-		private EntityRef<StateProvince> _StateProvince;
+		private EntityRef<Nop280_StateProvince> _StateProvince;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -9811,15 +9813,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnCreatedOnUtcChanged();
     #endregion
 		
-		public Address()
+		public Nop280_Address()
 		{
-			this._CustomerAddresses = new EntitySet<CustomerAddress>(new Action<CustomerAddress>(this.attach_CustomerAddresses), new Action<CustomerAddress>(this.detach_CustomerAddresses));
-			this._Customers = new EntitySet<Customer>(new Action<Customer>(this.attach_Customers), new Action<Customer>(this.detach_Customers));
-			this._Customers1 = new EntitySet<Customer>(new Action<Customer>(this.attach_Customers1), new Action<Customer>(this.detach_Customers1));
-			this._Orders = new EntitySet<Order>(new Action<Order>(this.attach_Orders), new Action<Order>(this.detach_Orders));
-			this._Orders1 = new EntitySet<Order>(new Action<Order>(this.attach_Orders1), new Action<Order>(this.detach_Orders1));
-			this._Country = default(EntityRef<Country>);
-			this._StateProvince = default(EntityRef<StateProvince>);
+			this._CustomerAddresses = new EntitySet<Nop280_CustomerAddress>(new Action<Nop280_CustomerAddress>(this.attach_CustomerAddresses), new Action<Nop280_CustomerAddress>(this.detach_CustomerAddresses));
+			this._Customers = new EntitySet<Nop280_Customer>(new Action<Nop280_Customer>(this.attach_Customers), new Action<Nop280_Customer>(this.detach_Customers));
+			this._Customers1 = new EntitySet<Nop280_Customer>(new Action<Nop280_Customer>(this.attach_Customers1), new Action<Nop280_Customer>(this.detach_Customers1));
+			this._Orders = new EntitySet<Nop280_Order>(new Action<Nop280_Order>(this.attach_Orders), new Action<Nop280_Order>(this.detach_Orders));
+			this._Orders1 = new EntitySet<Nop280_Order>(new Action<Nop280_Order>(this.attach_Orders1), new Action<Nop280_Order>(this.detach_Orders1));
+			this._Country = default(EntityRef<Nop280_Country>);
+			this._StateProvince = default(EntityRef<Nop280_StateProvince>);
 			OnCreated();
 		}
 		
@@ -10111,8 +10113,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Address_CustomerAddress", Storage="_CustomerAddresses", ThisKey="Id", OtherKey="Address_Id")]
-		public EntitySet<CustomerAddress> CustomerAddresses
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Address_Nop280_CustomerAddress", Storage="_CustomerAddresses", ThisKey="Id", OtherKey="Address_Id")]
+		public EntitySet<Nop280_CustomerAddress> Nop280_CustomerAddresses
 		{
 			get
 			{
@@ -10124,8 +10126,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Address_Customer", Storage="_Customers", ThisKey="Id", OtherKey="BillingAddress_Id")]
-		public EntitySet<Customer> Customers
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Address_Nop280_Customer", Storage="_Customers", ThisKey="Id", OtherKey="BillingAddress_Id")]
+		public EntitySet<Nop280_Customer> Customers
 		{
 			get
 			{
@@ -10137,8 +10139,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Address_Customer1", Storage="_Customers1", ThisKey="Id", OtherKey="ShippingAddress_Id")]
-		public EntitySet<Customer> Customers1
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Address_Nop280_Customer1", Storage="_Customers1", ThisKey="Id", OtherKey="ShippingAddress_Id")]
+		public EntitySet<Nop280_Customer> Nop280_Customers
 		{
 			get
 			{
@@ -10150,8 +10152,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Address_Order", Storage="_Orders", ThisKey="Id", OtherKey="BillingAddressId")]
-		public EntitySet<Order> Orders
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Address_Nop280_Order", Storage="_Orders", ThisKey="Id", OtherKey="BillingAddressId")]
+		public EntitySet<Nop280_Order> Orders
 		{
 			get
 			{
@@ -10163,8 +10165,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Address_Order1", Storage="_Orders1", ThisKey="Id", OtherKey="ShippingAddressId")]
-		public EntitySet<Order> Orders1
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Address_Nop280_Order1", Storage="_Orders1", ThisKey="Id", OtherKey="ShippingAddressId")]
+		public EntitySet<Nop280_Order> Nop280_Orders
 		{
 			get
 			{
@@ -10176,8 +10178,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Country_Address", Storage="_Country", ThisKey="CountryId", OtherKey="Id", IsForeignKey=true)]
-		public Country Country
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Country_Nop280_Address", Storage="_Country", ThisKey="CountryId", OtherKey="Id", IsForeignKey=true)]
+		public Nop280_Country Nop280_Country
 		{
 			get
 			{
@@ -10185,7 +10187,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Country previousValue = this._Country.Entity;
+				Nop280_Country previousValue = this._Country.Entity;
 				if (((previousValue != value) 
 							|| (this._Country.HasLoadedOrAssignedValue == false)))
 				{
@@ -10193,25 +10195,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Country.Entity = null;
-						previousValue.Addresses.Remove(this);
+						previousValue.Nop280_Addresses.Remove(this);
 					}
 					this._Country.Entity = value;
 					if ((value != null))
 					{
-						value.Addresses.Add(this);
+						value.Nop280_Addresses.Add(this);
 						this._CountryId = value.Id;
 					}
 					else
 					{
 						this._CountryId = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("Country");
+					this.SendPropertyChanged("Nop280_Country");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="StateProvince_Address", Storage="_StateProvince", ThisKey="StateProvinceId", OtherKey="Id", IsForeignKey=true)]
-		public StateProvince StateProvince
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="StateProvince_Nop280_Address", Storage="_StateProvince", ThisKey="StateProvinceId", OtherKey="Id", IsForeignKey=true)]
+		public Nop280_StateProvince Nop280_StateProvince
 		{
 			get
 			{
@@ -10219,7 +10221,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				StateProvince previousValue = this._StateProvince.Entity;
+				Nop280_StateProvince previousValue = this._StateProvince.Entity;
 				if (((previousValue != value) 
 							|| (this._StateProvince.HasLoadedOrAssignedValue == false)))
 				{
@@ -10227,19 +10229,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._StateProvince.Entity = null;
-						previousValue.Addresses.Remove(this);
+						previousValue.Nop280_Addresses.Remove(this);
 					}
 					this._StateProvince.Entity = value;
 					if ((value != null))
 					{
-						value.Addresses.Add(this);
+						value.Nop280_Addresses.Add(this);
 						this._StateProvinceId = value.Id;
 					}
 					else
 					{
 						this._StateProvinceId = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("StateProvince");
+					this.SendPropertyChanged("Nop280_StateProvince");
 				}
 			}
 		}
@@ -10264,69 +10266,69 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_CustomerAddresses(CustomerAddress entity)
+		private void attach_CustomerAddresses(Nop280_CustomerAddress entity)
+		{
+			this.SendPropertyChanging();
+			entity.Nop280_Address = this;
+		}
+		
+		private void detach_CustomerAddresses(Nop280_CustomerAddress entity)
+		{
+			this.SendPropertyChanging();
+			entity.Nop280_Address = null;
+		}
+		
+		private void attach_Customers(Nop280_Customer entity)
 		{
 			this.SendPropertyChanging();
 			entity.Address = this;
 		}
 		
-		private void detach_CustomerAddresses(CustomerAddress entity)
+		private void detach_Customers(Nop280_Customer entity)
 		{
 			this.SendPropertyChanging();
 			entity.Address = null;
 		}
 		
-		private void attach_Customers(Customer entity)
+		private void attach_Customers1(Nop280_Customer entity)
+		{
+			this.SendPropertyChanging();
+			entity.Nop280_Address = this;
+		}
+		
+		private void detach_Customers1(Nop280_Customer entity)
+		{
+			this.SendPropertyChanging();
+			entity.Nop280_Address = null;
+		}
+		
+		private void attach_Orders(Nop280_Order entity)
 		{
 			this.SendPropertyChanging();
 			entity.Address = this;
 		}
 		
-		private void detach_Customers(Customer entity)
+		private void detach_Orders(Nop280_Order entity)
 		{
 			this.SendPropertyChanging();
 			entity.Address = null;
 		}
 		
-		private void attach_Customers1(Customer entity)
+		private void attach_Orders1(Nop280_Order entity)
 		{
 			this.SendPropertyChanging();
-			entity.Address1 = this;
+			entity.Nop280_Address = this;
 		}
 		
-		private void detach_Customers1(Customer entity)
+		private void detach_Orders1(Nop280_Order entity)
 		{
 			this.SendPropertyChanging();
-			entity.Address1 = null;
-		}
-		
-		private void attach_Orders(Order entity)
-		{
-			this.SendPropertyChanging();
-			entity.Address = this;
-		}
-		
-		private void detach_Orders(Order entity)
-		{
-			this.SendPropertyChanging();
-			entity.Address = null;
-		}
-		
-		private void attach_Orders1(Order entity)
-		{
-			this.SendPropertyChanging();
-			entity.Address1 = this;
-		}
-		
-		private void detach_Orders1(Order entity)
-		{
-			this.SendPropertyChanging();
-			entity.Address1 = null;
+			entity.Nop280_Address = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UrlRecord")]
-	public partial class UrlRecord : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_UrlRecord : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -10361,7 +10363,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnLanguageIdChanged();
     #endregion
 		
-		public UrlRecord()
+		public Nop280_UrlRecord()
 		{
 			OnCreated();
 		}
@@ -10508,7 +10510,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Setting")]
-	public partial class Setting : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Setting : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -10531,7 +10533,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnValueChanged();
     #endregion
 		
-		public Setting()
+		public Nop280_Setting()
 		{
 			OnCreated();
 		}
@@ -10618,7 +10620,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.[Order]")]
-	public partial class Order : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_Order : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -10727,15 +10729,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private System.DateTime _CreatedOnUtc;
 		
-		private EntitySet<OrderProductVariant> _OrderProductVariants;
+		private EntitySet<Nop280_OrderProductVariant> _OrderProductVariants;
 		
-		private EntitySet<OrderNote> _OrderNotes;
+		private EntitySet<Nop280_OrderNote> _OrderNotes;
 		
-		private EntityRef<Address> _Address;
+		private EntityRef<Nop280_Address> _Address;
 		
-		private EntityRef<Customer> _Customer;
+		private EntityRef<Nop280_Customer> _Customer;
 		
-		private EntityRef<Address> _Address1;
+		private EntityRef<Nop280_Address> _Address1;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -10847,13 +10849,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnCreatedOnUtcChanged();
     #endregion
 		
-		public Order()
+		public Nop280_Order()
 		{
-			this._OrderProductVariants = new EntitySet<OrderProductVariant>(new Action<OrderProductVariant>(this.attach_OrderProductVariants), new Action<OrderProductVariant>(this.detach_OrderProductVariants));
-			this._OrderNotes = new EntitySet<OrderNote>(new Action<OrderNote>(this.attach_OrderNotes), new Action<OrderNote>(this.detach_OrderNotes));
-			this._Address = default(EntityRef<Address>);
-			this._Customer = default(EntityRef<Customer>);
-			this._Address1 = default(EntityRef<Address>);
+			this._OrderProductVariants = new EntitySet<Nop280_OrderProductVariant>(new Action<Nop280_OrderProductVariant>(this.attach_OrderProductVariants), new Action<Nop280_OrderProductVariant>(this.detach_OrderProductVariants));
+			this._OrderNotes = new EntitySet<Nop280_OrderNote>(new Action<Nop280_OrderNote>(this.attach_OrderNotes), new Action<Nop280_OrderNote>(this.detach_OrderNotes));
+			this._Address = default(EntityRef<Nop280_Address>);
+			this._Customer = default(EntityRef<Nop280_Customer>);
+			this._Address1 = default(EntityRef<Nop280_Address>);
 			OnCreated();
 		}
 		
@@ -11909,8 +11911,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Order_OrderProductVariant", Storage="_OrderProductVariants", ThisKey="Id", OtherKey="OrderId")]
-		public EntitySet<OrderProductVariant> OrderProductVariants
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Order_Nop280_OrderProductVariant", Storage="_OrderProductVariants", ThisKey="Id", OtherKey="OrderId")]
+		public EntitySet<Nop280_OrderProductVariant> Nop280_OrderProductVariants
 		{
 			get
 			{
@@ -11922,8 +11924,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Order_OrderNote", Storage="_OrderNotes", ThisKey="Id", OtherKey="OrderId")]
-		public EntitySet<OrderNote> OrderNotes
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Order_Nop280_OrderNote", Storage="_OrderNotes", ThisKey="Id", OtherKey="OrderId")]
+		public EntitySet<Nop280_OrderNote> Nop280_OrderNotes
 		{
 			get
 			{
@@ -11935,8 +11937,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Address_Order", Storage="_Address", ThisKey="BillingAddressId", OtherKey="Id", IsForeignKey=true)]
-		public Address Address
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Address_Nop280_Order", Storage="_Address", ThisKey="BillingAddressId", OtherKey="Id", IsForeignKey=true)]
+		public Nop280_Address Address
 		{
 			get
 			{
@@ -11944,7 +11946,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Address previousValue = this._Address.Entity;
+				Nop280_Address previousValue = this._Address.Entity;
 				if (((previousValue != value) 
 							|| (this._Address.HasLoadedOrAssignedValue == false)))
 				{
@@ -11969,8 +11971,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Customer_Order", Storage="_Customer", ThisKey="CustomerId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Customer Customer
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Customer_Nop280_Order", Storage="_Customer", ThisKey="CustomerId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_Customer Nop280_Customer
 		{
 			get
 			{
@@ -11978,7 +11980,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Customer previousValue = this._Customer.Entity;
+				Nop280_Customer previousValue = this._Customer.Entity;
 				if (((previousValue != value) 
 							|| (this._Customer.HasLoadedOrAssignedValue == false)))
 				{
@@ -11986,25 +11988,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Customer.Entity = null;
-						previousValue.Orders.Remove(this);
+						previousValue.Nop280_Orders.Remove(this);
 					}
 					this._Customer.Entity = value;
 					if ((value != null))
 					{
-						value.Orders.Add(this);
+						value.Nop280_Orders.Add(this);
 						this._CustomerId = value.Id;
 					}
 					else
 					{
 						this._CustomerId = default(int);
 					}
-					this.SendPropertyChanged("Customer");
+					this.SendPropertyChanged("Nop280_Customer");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Address_Order1", Storage="_Address1", ThisKey="ShippingAddressId", OtherKey="Id", IsForeignKey=true)]
-		public Address Address1
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Address_Nop280_Order1", Storage="_Address1", ThisKey="ShippingAddressId", OtherKey="Id", IsForeignKey=true)]
+		public Nop280_Address Nop280_Address
 		{
 			get
 			{
@@ -12012,7 +12014,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Address previousValue = this._Address1.Entity;
+				Nop280_Address previousValue = this._Address1.Entity;
 				if (((previousValue != value) 
 							|| (this._Address1.HasLoadedOrAssignedValue == false)))
 				{
@@ -12020,19 +12022,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Address1.Entity = null;
-						previousValue.Orders1.Remove(this);
+						previousValue.Nop280_Orders.Remove(this);
 					}
 					this._Address1.Entity = value;
 					if ((value != null))
 					{
-						value.Orders1.Add(this);
+						value.Nop280_Orders.Add(this);
 						this._ShippingAddressId = value.Id;
 					}
 					else
 					{
 						this._ShippingAddressId = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("Address1");
+					this.SendPropertyChanged("Nop280_Address");
 				}
 			}
 		}
@@ -12057,33 +12059,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		private void attach_OrderProductVariants(OrderProductVariant entity)
+		private void attach_OrderProductVariants(Nop280_OrderProductVariant entity)
 		{
 			this.SendPropertyChanging();
-			entity.Order = this;
+			entity.Nop280_Order = this;
 		}
 		
-		private void detach_OrderProductVariants(OrderProductVariant entity)
+		private void detach_OrderProductVariants(Nop280_OrderProductVariant entity)
 		{
 			this.SendPropertyChanging();
-			entity.Order = null;
+			entity.Nop280_Order = null;
 		}
 		
-		private void attach_OrderNotes(OrderNote entity)
+		private void attach_OrderNotes(Nop280_OrderNote entity)
 		{
 			this.SendPropertyChanging();
-			entity.Order = this;
+			entity.Nop280_Order = this;
 		}
 		
-		private void detach_OrderNotes(OrderNote entity)
+		private void detach_OrderNotes(Nop280_OrderNote entity)
 		{
 			this.SendPropertyChanging();
-			entity.Order = null;
+			entity.Nop280_Order = null;
 		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.OrderProductVariant")]
-	public partial class OrderProductVariant : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_OrderProductVariant : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -12122,9 +12124,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private System.Nullable<decimal> _ItemWeight;
 		
-		private EntityRef<Order> _Order;
+		private EntityRef<Nop280_Order> _Order;
 		
-		private EntityRef<ProductVariant> _ProductVariant;
+		private EntityRef<Nop280_ProductVariant> _ProductVariant;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -12166,10 +12168,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnItemWeightChanged();
     #endregion
 		
-		public OrderProductVariant()
+		public Nop280_OrderProductVariant()
 		{
-			this._Order = default(EntityRef<Order>);
-			this._ProductVariant = default(EntityRef<ProductVariant>);
+			this._Order = default(EntityRef<Nop280_Order>);
+			this._ProductVariant = default(EntityRef<Nop280_ProductVariant>);
 			OnCreated();
 		}
 		
@@ -12521,8 +12523,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Order_OrderProductVariant", Storage="_Order", ThisKey="OrderId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Order Order
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Order_Nop280_OrderProductVariant", Storage="_Order", ThisKey="OrderId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_Order Nop280_Order
 		{
 			get
 			{
@@ -12530,7 +12532,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Order previousValue = this._Order.Entity;
+				Nop280_Order previousValue = this._Order.Entity;
 				if (((previousValue != value) 
 							|| (this._Order.HasLoadedOrAssignedValue == false)))
 				{
@@ -12538,25 +12540,25 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Order.Entity = null;
-						previousValue.OrderProductVariants.Remove(this);
+						previousValue.Nop280_OrderProductVariants.Remove(this);
 					}
 					this._Order.Entity = value;
 					if ((value != null))
 					{
-						value.OrderProductVariants.Add(this);
+						value.Nop280_OrderProductVariants.Add(this);
 						this._OrderId = value.Id;
 					}
 					else
 					{
 						this._OrderId = default(int);
 					}
-					this.SendPropertyChanged("Order");
+					this.SendPropertyChanged("Nop280_Order");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductVariant_OrderProductVariant", Storage="_ProductVariant", ThisKey="ProductVariantId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public ProductVariant ProductVariant
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ProductVariant_Nop280_OrderProductVariant", Storage="_ProductVariant", ThisKey="ProductVariantId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_ProductVariant Nop280_ProductVariant
 		{
 			get
 			{
@@ -12564,7 +12566,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				ProductVariant previousValue = this._ProductVariant.Entity;
+				Nop280_ProductVariant previousValue = this._ProductVariant.Entity;
 				if (((previousValue != value) 
 							|| (this._ProductVariant.HasLoadedOrAssignedValue == false)))
 				{
@@ -12572,19 +12574,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._ProductVariant.Entity = null;
-						previousValue.OrderProductVariants.Remove(this);
+						previousValue.Nop280_OrderProductVariants.Remove(this);
 					}
 					this._ProductVariant.Entity = value;
 					if ((value != null))
 					{
-						value.OrderProductVariants.Add(this);
+						value.Nop280_OrderProductVariants.Add(this);
 						this._ProductVariantId = value.Id;
 					}
 					else
 					{
 						this._ProductVariantId = default(int);
 					}
-					this.SendPropertyChanged("ProductVariant");
+					this.SendPropertyChanged("Nop280_ProductVariant");
 				}
 			}
 		}
@@ -12611,7 +12613,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.OrderNote")]
-	public partial class OrderNote : INotifyPropertyChanging, INotifyPropertyChanged
+	public partial class Nop280_OrderNote : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -12626,7 +12628,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 		
 		private System.DateTime _CreatedOnUtc;
 		
-		private EntityRef<Order> _Order;
+		private EntityRef<Nop280_Order> _Order;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -12644,9 +12646,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
     partial void OnCreatedOnUtcChanged();
     #endregion
 		
-		public OrderNote()
+		public Nop280_OrderNote()
 		{
-			this._Order = default(EntityRef<Order>);
+			this._Order = default(EntityRef<Nop280_Order>);
 			OnCreated();
 		}
 		
@@ -12754,8 +12756,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Order_OrderNote", Storage="_Order", ThisKey="OrderId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Order Order
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Nop280_Order_Nop280_OrderNote", Storage="_Order", ThisKey="OrderId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Nop280_Order Nop280_Order
 		{
 			get
 			{
@@ -12763,7 +12765,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 			}
 			set
 			{
-				Order previousValue = this._Order.Entity;
+				Nop280_Order previousValue = this._Order.Entity;
 				if (((previousValue != value) 
 							|| (this._Order.HasLoadedOrAssignedValue == false)))
 				{
@@ -12771,19 +12773,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 					if ((previousValue != null))
 					{
 						this._Order.Entity = null;
-						previousValue.OrderNotes.Remove(this);
+						previousValue.Nop280_OrderNotes.Remove(this);
 					}
 					this._Order.Entity = value;
 					if ((value != null))
 					{
-						value.OrderNotes.Add(this);
+						value.Nop280_OrderNotes.Add(this);
 						this._OrderId = value.Id;
 					}
 					else
 					{
 						this._OrderId = default(int);
 					}
-					this.SendPropertyChanged("Order");
+					this.SendPropertyChanged("Nop280_Order");
 				}
 			}
 		}
