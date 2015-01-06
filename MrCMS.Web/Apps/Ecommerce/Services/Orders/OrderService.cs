@@ -39,7 +39,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             int id = user.Id;
             return _session.QueryOver<Order>()
                 .Where(x => x.User.Id == id)
-                .OrderBy(x => x.CreatedOn)
+                .OrderBy(x => x.OrderDate)
                 .Desc.Paged(pageNum, pageSize);
         }
 
@@ -49,7 +49,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             string email = user.Email;
             return _session.QueryOver<Order>().Where(x => x.User.Id == id ||
                                                           x.OrderEmail.IsInsensitiveLike(email, MatchMode.Exact))
-                .OrderBy(x => x.CreatedOn)
+                .OrderBy(x => x.OrderDate)
                 .Desc.Cacheable()
                 .List();
         }
@@ -74,7 +74,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             return
                 _session.QueryOver<Order>()
-                    .OrderBy(entry => entry.CreatedOn)
+                    .OrderBy(entry => entry.OrderDate)
                     .Desc;
         }
     }

@@ -358,6 +358,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                 {
                     Id = order.Id,
                     Guid = order.OrderGuid,
+                    OrderDate = order.CreatedOnUtc,
                     BillingAddressId = order.BillingAddressId,
                     ShippingAddressId = order.ShippingAddressId,
                     CustomerId = order.CustomerId,

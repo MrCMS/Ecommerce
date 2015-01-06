@@ -23,22 +23,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.OrderNotes)
+                    @foreach (var note in Model.OrderNotes)
                     {
                         <tr>
                             <td>
-                                @item.Note
+                                @note.Note
                             </td>
                             <td>
-                                @item.ShowToClient
+                                @note.ShowToClient
                             </td>
                             <td>
-                                @item.CreatedOn
+                                @note.CreatedOn
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    @Html.ActionLink("Edit", "Edit", "OrderNote", new { id = item.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
-                                    @Html.ActionLink("Delete", "Delete", "OrderNote", new { id = item.Id }, new { @class = "btn btn-danger btn-xs", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Edit", "Edit", "OrderNote", new { id = note.Id }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                    @Html.ActionLink("Delete", "Delete", "OrderNote", new { id = note.Id }, new { @class = "btn btn-danger btn-xs", data_toggle = "fb-modal" })
                                 </div>
                             </td>
                         </tr>

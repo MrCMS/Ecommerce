@@ -1,13 +1,14 @@
-﻿@using System.Linq
+﻿@using MrCMS.Entities.Documents.Web
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Core.Pages
+@using MrCMS.Web.Apps.Ecommerce.Entities.Orders
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @using MrCMS.Website
 @model MrCMS.Web.Apps.Ecommerce.Models.UserAccountOrdersModel
 @{
-    var currentPage = CurrentRequestData.CurrentPage;
+    Webpage currentPage = CurrentRequestData.CurrentPage;
     if (currentPage is UserAccountPage)
     {
         <div class="container">
@@ -46,36 +47,36 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model.Items)
+                                @foreach (Order order in Model.Items)
                                 {
-                                    var status = "warning";
-                                    if (item.ShippingStatus.Equals(ShippingStatus.Shipped) && item.PaymentStatus.Equals(PaymentStatus.Paid))
+                                    string status = "warning";
+                                    if (order.ShippingStatus.Equals(ShippingStatus.Shipped) && order.PaymentStatus.Equals(PaymentStatus.Paid))
                                     {
                                         status = "success";
                                     }
-                                    else if (item.IsCancelled)
+                                    else if (order.IsCancelled)
                                     {
                                         status = "error";
                                     }
 
                                     <tr class="@status">
                                         <td>
-                                            @item.Id
+                                            @order.Id
                                         </td>
                                         <td>
-                                            @((item.IsCancelled) ? "Cancelled" : item.PaymentStatus.ToString())
+                                            @((order.IsCancelled) ? "Cancelled" : order.PaymentStatus.ToString())
                                         </td>
                                         <td>
-                                            @((item.IsCancelled) ? "Cancelled" : item.ShippingStatus.ToString())
+                                            @((order.IsCancelled) ? "Cancelled" : order.ShippingStatus.ToString())
                                         </td>
                                         <td>
-                                            @item.Total.ToCurrencyFormat()
+                                            @order.Total.ToCurrencyFormat()
                                         </td>
                                         <td>
-                                            @item.CreatedOn
+                                            @order.OrderDate.GetValueOrDefault(order.CreatedOn)
                                         </td>
                                         <td>
-                                            <a href="@(UniquePageHelper.GetUrl<UserOrder>())?id=@item.Guid" class="btn btn-default btn-block">View Order Details</a>
+                                            <a href="@(UniquePageHelper.GetUrl<UserOrder>(new {id = order.Guid}))" class="btn btn-default btn-block">View Order Details</a>
                                         </td>
                                     </tr>
                                 }
@@ -83,7 +84,7 @@
                         </table>
                     </div>
 
-                    @Html.Pager(Model.Items, "UserAccountOrders", i => new { Model.Id, page = i })
+                    @Html.Pager(Model.Items, "UserAccountOrders", i => new {Model.Id, page = i})
                 }
             </div>
         </div>

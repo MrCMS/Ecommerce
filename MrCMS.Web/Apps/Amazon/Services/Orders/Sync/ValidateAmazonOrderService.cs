@@ -244,9 +244,12 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
         public Order GetOrder(AmazonOrder amazonOrder)
         {
-            var order = amazonOrder.Order ?? new Order();
-
-            if (order.Id == 0)
+            Order order;
+            if (amazonOrder.Order != null)
+            {
+                order = amazonOrder.Order;
+            }
+            else
             {
                 order = GetOrderDetails(amazonOrder);
                 Order order1 = order;
@@ -255,6 +258,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
                 _setTax.SetTax(ref order, amazonOrder.Tax);
             }
+
 
             order.ShippingStatus = amazonOrder.Status.GetEnumByValue<ShippingStatus>();
 
@@ -278,7 +282,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                            IsCancelled = false,
                            SalesChannel = AmazonApp.SalesChannel,
                            PaymentStatus = PaymentStatus.Paid,
-                           CreatedOn = amazonOrder.PurchaseDate.HasValue ? (DateTime)amazonOrder.PurchaseDate : CurrentRequestData.Now
+                           OrderDate = amazonOrder.PurchaseDate.GetValueOrDefault(CurrentRequestData.Now),
                        };
         }
         private void GetOrderLines(AmazonOrder amazonOrder, ref Order order)
