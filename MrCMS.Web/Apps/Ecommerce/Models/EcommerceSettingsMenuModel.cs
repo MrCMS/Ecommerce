@@ -23,7 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public string Text
         {
-            get { return "Settings"; }
+            get { return "Ecommerce Settings"; }
         }
 
         public string IconClass { get { return "fa fa-cogs"; } }

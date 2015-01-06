@@ -3765,6 +3765,8 @@
     <Content Include="Apps\Ecommerce\Views\Discount\Error.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\DiscountUseSummary.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\OrderExport\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Cart\GiftCards.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Cart\Discounts.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />

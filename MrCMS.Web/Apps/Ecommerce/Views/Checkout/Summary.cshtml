@@ -113,8 +113,8 @@
         </table>
     }
     <a class="btn btn-default margin-bottom-20" id="edit" href="@(UniquePageHelper.GetUrl<Cart>())">@Resource("Edit")</a>
-    
-    
+
+
     @if (ecommerceSettings.GiftMessageEnabled)
     {
         <div class="row">
@@ -140,31 +140,11 @@
         </div>
     }
 
-    <div class="margin-bottom-20">
-        <div class="block-title">
-            <div class="h1style">
-                @Resource("Discounts")
-            </div>
-        </div>
-        @{ Html.RenderAction("Error", "Discount");}
-        @using (Html.BeginForm("Apply", "Discount", FormMethod.Post, new { data_apply_discount = true }))
-        {
-            <div class="row margin-bottom-10" id="discount-code-box">
-                <div class="col-sm-4 line-height-30">
-                    @Resource("Cart Discount - Discount Code", "Discount Code")
-                </div>
-                <div class="col-sm-4">
-                    <input class="form-control" type="text" name="discountCode" />
-                    <div class="visible-xs" style="padding-top: 5px;"></div>
-                </div>
-                <div class="col-sm-4">
-                    <button type="submit" id="apply-discount-code" class="btn btn-default btn-block">@Resource("Cart Discount - Apply Code","Apply Code")</button>
-                </div>
-            </div>
-        }
-        @if (Model.Discounts.Any())
-        {
-            Html.RenderAction("DiscountUseSummary", "Cart");
-        }
-    </div>
+    @if (ecommerceSettings.GiftCardsEnabled)
+    {
+        Html.RenderAction("GiftCards", "Cart");
+    }
+    
+    @{ Html.RenderAction("Discounts", "Cart"); }
+    
 </div>
