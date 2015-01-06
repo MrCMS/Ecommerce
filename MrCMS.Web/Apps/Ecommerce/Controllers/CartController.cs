@@ -51,7 +51,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         }
 
         [HttpGet]
+        [ChildActionOnly]
         public PartialViewResult DiscountUseSummary()
+        {
+            return PartialView(_cart);
+        }
+
+        [HttpGet]
+        [ChildActionOnly]
+        public PartialViewResult GiftCards()
+        {
+            return PartialView(_cart);
+        }
+
+        [HttpGet]
+        [ChildActionOnly]
+        public PartialViewResult Discounts()
         {
             return PartialView(_cart);
         }

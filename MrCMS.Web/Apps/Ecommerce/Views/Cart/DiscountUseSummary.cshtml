@@ -2,24 +2,21 @@
 @using MrCMS.Web.Apps.Ecommerce.Models
 @model CartModel
 <div class="row margin-bottom-10">
-    <div class="col-xs-4 line-height-30">
-        @(Resource(Model.Discounts.Count == 1 ? "Discount" : "Discounts"))
-    </div>
-    <div class="col-xs-8">
+    <div class="col-xs-12">
         <ul class="list-unstyled margin-bottom-0">
             @foreach (var discountInfo in Model.Discounts)
             {
                 var discount = discountInfo.Discount;
                 var messages = discountInfo.Messages;
                 <li class="line-height-30">
-                    @discount.Name
+                    @discount.Name (@discount.Code)
                     @if (discountInfo.Status == DiscountStatus.ExplicitAndInvalid)
                     {
                         <span class="error">@Resource("Invalid for current basket")</span>
                     }
                     @if (discountInfo.Status == DiscountStatus.ValidButNotApplied)
                     {
-                        <span class="error">@Resource("Unable to be applied to current basket")</span>
+                        <span class="error">@Resource("Discount applied during checkout.")</span>
                     }
                     @if (messages.Any())
                     {
@@ -34,7 +31,7 @@
 
                     @if (discount.RequiresCode)
                     {
-                        <span>(<a data-remove-discount-code="@Url.Action("Remove", "Discount", new {discountCode = discount.Code})" href="#">Remove</a>)</span>
+                        <a data-remove-discount-code="@Url.Action("Remove", "Discount", new {discountCode = discount.Code})" href="#" class="btn btn-warning btn-xs">@Resource("Remove")</a>
                     }
                 </li>
             }
