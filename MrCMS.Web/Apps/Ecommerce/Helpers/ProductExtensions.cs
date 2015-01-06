@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280;
+using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Website;
 using NHibernate;
-using Product = MrCMS.Web.Apps.Ecommerce.Pages.Product;
 
 namespace MrCMS.Web.Apps.Ecommerce.Helpers
 {
@@ -15,14 +15,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
         {
             return MrCMSApplication.Get<IGetProductCardModel>().Get(product);
         }
+
         public static List<ProductCardModel> GetCardModels(this IEnumerable<Product> product)
         {
             return MrCMSApplication.Get<IGetProductCardModel>().Get(product.ToList());
         }
+
         public static List<ProductCardModel> GetCardModels(this IEnumerable<int> productIds)
         {
             return MrCMSApplication.Get<IGetProductCardModel>().Get(productIds.ToList());
         }
+
         public static int GetVariantCount(this Product product)
         {
             if (product == null)
