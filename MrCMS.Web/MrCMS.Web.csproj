@@ -564,6 +564,8 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CategoryProductsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CharityClearSettingsController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryBasedShippingCalculationController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryBasedShippingController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CountryController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\CurrencyController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\DiscountApplicationController.cs" />
@@ -626,6 +628,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\AddDiscountLimitationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\AddDiscountModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\CharityClearSettingsModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\CountryBasedShippingCalculationModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\PaymentSettingsModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\PayPalExpressCheckoutSettingsModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\PaypointSettingsModelBinder.cs" />
@@ -676,6 +679,8 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BulkWarehousedStockUpdateValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CategoryAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CategoryProductsAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CountryBasedShippingAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CountryBasedShippingCalculationAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\CSVFileWriter.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\DiscountAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\DiscountApplicationAdminService.cs" />
@@ -684,7 +689,9 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\EcommerceSettingsAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GenerateGiftCardCode.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetGiftCardTypeOptions.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetLowStockQuery.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetProductVariantTypeOptions.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetShippingCriteriaOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetShippingOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetStockReportFile.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetTrackingPolicyOptions.cs" />
@@ -697,6 +704,8 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBulkWarehousedStockUpdateValidationService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICategoryAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICategoryProductsAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICountryBasedShippingAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICountryBasedShippingCalculationAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ICSVFileWriter.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IDiscountAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IDiscountApplicationAdminService.cs" />
@@ -704,6 +713,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IEcommerceSearchablePageAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IEcommerceSettingsAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGenerateGiftCardCode.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetShippingCriteriaOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetGiftCardTypeOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetLowStockQuery.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetProductVariantTypeOptions.cs" />
@@ -817,6 +827,7 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemBasedDiscountApplicationOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CategoryOverride.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\CountryBasedShippingCalculationOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CountryOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountApplicationOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\DiscountLimitationOverride.cs" />
@@ -916,6 +927,7 @@
     <Compile Include="Apps\Ecommerce\Entities\RewardPoints\RegistrationPoints.cs" />
     <Compile Include="Apps\Ecommerce\Entities\RewardPoints\RewardPointsHistory.cs" />
     <Compile Include="Apps\Ecommerce\Entities\SessionData.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\Shipping\CountryBasedShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\ShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\UKCourierShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Shipping\UKFirstClassShippingCalculation.cs" />
@@ -964,6 +976,7 @@
     <Compile Include="Apps\Ecommerce\Helpers\ProductVariantExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\RequestHelper.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\Shipping\CartModelShippingExtensions.cs" />
+    <Compile Include="Apps\Ecommerce\Helpers\Shipping\CountryBasedShippingCalculationExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\Shipping\StandardShippingCalculationExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\Shipping\UKStandardShippingCalculationExtensions.cs" />
     <Compile Include="Apps\Ecommerce\Helpers\TextHelper.cs" />
@@ -1544,6 +1557,7 @@
     <Compile Include="Apps\Ecommerce\Services\SetShippingMethodService.cs" />
     <Compile Include="Apps\Ecommerce\Services\ShippingMethodSubmenuGenerator.cs" />
     <Compile Include="Apps\Ecommerce\Services\ShippingMethodUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Shipping\CountryBasedShipping.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IShippingMethod.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IStandardShippingCalculation.cs" />
     <Compile Include="Apps\Ecommerce\Services\Shipping\IUKStandardShippingCalculation.cs" />
@@ -1566,6 +1580,7 @@
     <Compile Include="Apps\Ecommerce\Settings\RewardPointSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\ProductReviewSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\ShippingMethodSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Settings\Shipping\CountryBasedShippingSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\Shipping\UKFirstClassShippingSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\TaxSettings.cs" />
     <Compile Include="Apps\Ecommerce\Settings\UKCourierShippingSettings.cs" />
@@ -2017,6 +2032,7 @@
     <Content Include="Apps\Core\Content\SocialButtons\zocial.css" />
     <Content Include="Apps\Core\Content\Styles\style.css" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\abstract.js" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\country-based-shipping-calculation.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\brands.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\content-item-product-list.js" />
@@ -3791,6 +3807,9 @@
     <Content Include="Apps\Ecommerce\Views\Cart\Discounts.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\CategoryProducts\Sort.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\CategoryProducts\Clear.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\CountryBasedShipping\Configure.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\CountryBasedShippingCalculation\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\CountryBasedShippingCalculation\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
