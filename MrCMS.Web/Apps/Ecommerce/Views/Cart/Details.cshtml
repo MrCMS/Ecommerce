@@ -21,7 +21,7 @@
     <div class="container">
         <div class="row margin-bottom-10">
             <div class="col-sm-6">
-                <h1>Shopping Basket</h1>
+                <h1>@Resource("Shopping Basket")</h1>
             </div>
             <div class="col-sm-6">
                 <div class="row">
@@ -97,30 +97,16 @@
                 </div>
             </div>
 
-            <div class="row" id="cart-discount">
+            <div class="row margin-bottom-20" id="cart-discount">
                 <div class="col-sm-8 col-sm-offset-4 col-lg-6 col-lg-offset-6">
-                    @{ Html.RenderAction("Error", "Discount");}
-                    @using (Html.BeginForm("Apply", "Discount", FormMethod.Post, new { data_apply_discount = true }))
+
+                    @{ Html.RenderAction("Discounts", "Cart"); }
+
+                    @if (ecommerceSettings.GiftCardsEnabled)
                     {
-                        <div class="row margin-bottom-10" id="discount-code-box">
-                            <div class="col-sm-4 line-height-30">
-                                @Resource("Cart Discount - Discount Code", "Discount Code")
-                            </div>
-                            <div class="col-sm-4">
-                                <input class="form-control" type="text" name="discountCode" />
-                                <div class="visible-xs" style="padding-top: 5px;"></div>
-                            </div>
-                            <div class="col-sm-4">
-                                <button type="submit" id="apply-discount-code" class="btn btn-default btn-block">@Resource("Cart Discount - Apply Code", "Apply Code")</button>
-                            </div>
-                        </div>
-                    }
-                    @if (Model.Discounts.Any())
-                    {
-                        Html.RenderAction("DiscountUseSummary", "Cart");
+                        Html.RenderAction("GiftCards", "Cart");
                     }
                 </div>
-
             </div>
         }
 
@@ -178,7 +164,7 @@
                         </div>
                     }
 
-                    
+
                     if (ecommerceSettings.RewardPointsEnabled && Model.AvailablePoints > 0)
                     {
                         <div class="row margin-bottom-10">
@@ -206,62 +192,23 @@
                             </div>
                         }
                     }
-                    if (ecommerceSettings.GiftCardsEnabled)
-                    {
-                        <div class="row margin-bottom-10">
-                            <div class="col-xs-8 col-sm-6">
-                                <strong>Gift cards</strong>
-                            </div>
-                            <div class="col-xs-4 col-sm-6 text-right">
-                            </div>
-                        </div>
-                        <div class="row margin-bottom-10">
-                            <div class="col-sm-4 line-height-30">
-                                Gift Card Code
-                            </div>
-                            <div class="col-sm-4">
-                                <input class="form-control" type="text" id="gift-card-code" />
-                                <div class="visible-xs" style="padding-top: 5px;"></div>
-                            </div>
-                            <div class="col-sm-4">
-                                <button id="apply-gift-card-code" class="btn btn-default btn-block">Apply Gift Card</button>
-                            </div>
-                        </div>
-                        <div data-gift-card-message="true">
-
-                        </div>
-                        if (Model.AppliedGiftCards.Any())
-                        {
-                            foreach (GiftCard card in Model.AppliedGiftCards)
-                            {
-                                <div class="row margin-bottom-10">
-                                    <div class="col-xs-8 col-sm-6">
-                                        Code - @card.Code
-                                        <a href="#" data-remove-card="@card.Code">&times;</a>
-                                    </div>
-                                    <div class="col-xs-4 col-sm-6 text-right">
-                                        @card.AvailableAmount.ToCurrencyFormat()
-                                    </div>
-                                </div>
-                            }
-                            <div class="row margin-bottom-10">
-                                <div class="col-xs-8 col-sm-6">
-                                    Gift Card Total
-                                </div>
-                                <div class="col-xs-4 col-sm-6 text-right">
-                                    @Model.AvailableGiftCardAmount.ToCurrencyFormat()
-                                </div>
-                            </div>
-                        }
-                    }
 
                     <hr />
                     <div class="row margin-bottom-10">
                         <div class="col-xs-8 col-sm-6">
-                            <strong>Total</strong>
+                            <strong>@Resource("Total")</strong>
                         </div>
                         <div class="col-xs-4 col-sm-6 text-right" id="cart-total">
                             <strong>@Model.CartPageTotal()</strong>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row margin-bottom-10">
+                        <div class="col-xs-8 col-sm-6">
+                            <strong>@Resource("Gift Card Total")</strong>
+                        </div>
+                        <div class="col-xs-4 col-sm-6 text-right">
+                            <strong>-@Model.AvailableGiftCardAmount.ToCurrencyFormat()</strong>
                         </div>
                     </div>
                     if (Model.TotalToPay != Model.Total)
@@ -284,7 +231,7 @@
             <div class="col-sm-6 col-sm-offset-6">
                 @if (Model.CanEnterPaymentFlow)
                 {
-                    <a class="btn btn-primary btn-block btn-lg" href="@enterOrderEmailUrl">Pay Securely NOW!</a>
+                    <a class="btn btn-primary btn-block btn-lg" href="@enterOrderEmailUrl">@Resource("Pay Securely NOW!")</a>
                 }
                 @if (Model.CanUsePayPalExpress)
                 {

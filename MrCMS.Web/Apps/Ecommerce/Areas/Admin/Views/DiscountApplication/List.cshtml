@@ -1,23 +1,30 @@
-﻿@using MrCMS.Web.Apps.Ecommerce.Entities.Discounts
-@model IList<MrCMS.Web.Apps.Ecommerce.Entities.Discounts.DiscountApplication>
+﻿@using System.Linq
+@using MrCMS.Web.Apps.Ecommerce.Entities.Discounts
+@model System.Collections.Generic.IList<MrCMS.Web.Apps.Ecommerce.Entities.Discounts.DiscountApplication>
 @{
     var discount = ViewData["discount"] as Discount;
 }
-
 <div data-discount-applications="@Url.Action("List", "DiscountApplication", new { id = discount.Id })">
-    @foreach (var application in Model)
+    @if (Model.Any())
     {
-        <div class="row">
-            <div class="col-xs-8">
-                @application.DisplayName
-            </div>
-            <div class="col-xs-4">
-                <div class="btn-group">
-                    @Html.ActionLink("Edit", "Edit", "DiscountApplication", new { id = application.Id }, new { @class = "btn btn-default btn-xs", data_toggle = "fb-modal" })
-                    @Html.ActionLink("Delete", "Delete", "DiscountApplication", new { id = application.Id }, new { @class = "btn btn-danger btn-xs", data_toggle = "fb-modal" })
+        foreach (var application in Model)
+        {
+            <div class="row">
+                <div class="col-xs-8">
+                    @application.DisplayName
+                </div>
+                <div class="col-xs-4">
+                    <div class="btn-group">
+                        @Html.ActionLink("Edit", "Edit", "DiscountApplication", new { id = application.Id }, new { @class = "btn btn-default btn-xs", data_toggle = "fb-modal" })
+                        @Html.ActionLink("Delete", "Delete", "DiscountApplication", new { id = application.Id }, new { @class = "btn btn-danger btn-xs", data_toggle = "fb-modal" })
+                    </div>
                 </div>
             </div>
-        </div>
-        <hr/>
+            <hr />
+        }
+    }
+    else
+    {
+        @Resource("Ecommerce - Discount - No Application Set", "No application currently set.")
     }
 </div>
