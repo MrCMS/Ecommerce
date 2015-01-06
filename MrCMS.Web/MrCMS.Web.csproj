@@ -2349,6 +2349,8 @@
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\checkout.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\discount.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\enter-order-email.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\gift-cards.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\custom\gift-message.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\payment-details.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\product-gallery.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\product-search.js" />
