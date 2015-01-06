@@ -89,6 +89,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         [DisplayName("Payment Status")]
         public virtual PaymentStatus PaymentStatus { get; set; }
 
+        [DisplayName("Order Date")]
+        public virtual DateTime? OrderDate { get; set; }
+
         [DisplayName("Payment Date")]
         public virtual DateTime? PaidDate { get; set; }
 

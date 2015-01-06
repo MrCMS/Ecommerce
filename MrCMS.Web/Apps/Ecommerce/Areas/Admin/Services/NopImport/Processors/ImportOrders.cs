@@ -64,7 +64,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                             TotalPaid = data.OrderTotal,
                             User = nopImportContext.FindNew<User>(data.CustomerId),
                             SalesChannel = EcommerceApp.NopCommerceSalesChannel,
-                            PaymentMethod = data.PaymentMethod
+                            PaymentMethod = data.PaymentMethod,
+                            OrderDate = data.OrderDate
                         };
                         session.Save(order);
 

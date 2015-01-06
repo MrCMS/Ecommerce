@@ -10,6 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models
         public Guid Guid { get; set; }
 
         public decimal OrderTotal { get; set; }
+        public DateTime OrderDate { get; set; }
 
         public int BillingAddressId { get; set; }
         public int? ShippingAddressId { get; set; }

@@ -60,11 +60,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
             return queryOver.GetExecutableQueryOver(_session).Cacheable().List();
         }
 
-        private NHibernate.Criterion.QueryOver<Order, Order> GetOrderQuery(OrderExportQuery exportQuery)
+        private QueryOver<Order, Order> GetOrderQuery(OrderExportQuery exportQuery)
         {
             return QueryOver.Of<Order>()
-                .Where(order => order.CreatedOn >= exportQuery.From &&
-                                order.CreatedOn <= exportQuery.To);
+                .Where(order => order.OrderDate >= exportQuery.From &&
+                                order.OrderDate <= exportQuery.To);
         }
 
         private IList<OrderLine> GetOrderLines(OrderExportQuery exportQuery)
@@ -180,7 +180,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
             {
                 {"Id", order => order.Id},
                 {"Guid", order => order.Guid},
-                {"Date", order => order.CreatedOn},
+                {"Date", order => order.OrderDate.GetValueOrDefault(order.CreatedOn)},
                 {"Email", order => order.OrderEmail},
                 {"Subtotal", order => order.Subtotal},
                 {"Tax", order => order.Tax},

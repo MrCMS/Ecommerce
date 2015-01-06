@@ -7,6 +7,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
+using MrCMS.Website;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
@@ -63,6 +64,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                     ShippingTaxPercentage = cartModel.ShippingTaxPercentage,
                     SalesChannel = EcommerceApp.DefaultSalesChannel,
                     Guid = cartModel.CartGuid,
+                    OrderDate = CurrentRequestData.Now
                 };
                 session.Save(order);
                 foreach (var discount in cartModel.Discounts)
