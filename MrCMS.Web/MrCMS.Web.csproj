@@ -1284,12 +1284,12 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetGiftCardDataFromContext.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetShippingAddress.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetValidDiscounts.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Cart\ISetShippingMethodDateService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\ISetShippingDateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ItemHasSKUChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ItemIsInCategoryChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ITermsAndConditionsUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\OrderTotalFixedAmountApplier.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Cart\SetShippingMethodDateService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\SetShippingDateService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ShippingCountryIsChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ShippingPostcodeStartsWithChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\SingleUsageChecker.cs" />
