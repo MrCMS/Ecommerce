@@ -54,7 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                             ShippingStatus = GetShippingStatus(data.ShippingStatus),
                             ShippingMethodName = data.ShippingMethodName,
                             ShippingSubtotal = data.OrderShippingExclTax,
-                            ShippingTax = data.OrderShippingInclTax - data.OrderSubTotalDiscountExclTax,
+                            ShippingTax = data.OrderShippingInclTax - data.OrderShippingExclTax,
                             ShippingTotal = data.OrderShippingInclTax,
                             Subtotal = data.OrderSubtotalInclTax,
                             Tax = data.OrderTax,
