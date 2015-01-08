@@ -5,7 +5,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CharityClear
 {
     public class CharityClearSettings : SiteSettingsBase
     {
-       
         public bool Enabled { get; set; }
         [DisplayName("CharityClear Merchant ID ")]
         public string MerchantId { get; set; }
@@ -18,5 +17,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CharityClear
 
         [DisplayName("ISO Country Code see http://en.wikipedia.org/wiki/ISO_3166-1_numeric")]
         public string ISOCountryCode { get; set; }
+
+        [DisplayName("Display Name")]
+        public string DisplayName { get; set; }
     }
 }
