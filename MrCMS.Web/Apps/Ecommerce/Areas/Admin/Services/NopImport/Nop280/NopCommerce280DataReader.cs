@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using MrCMS.Helpers;
-using MrCMS.Indexing.Management;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -105,7 +104,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                 {
                     Id = category.Id,
                     Name = category.Name,
-                    ParentId = category.ParentCategoryId == 0 ? (int?)null : category.ParentCategoryId,
+                    ParentId = category.ParentCategoryId == 0 ? (int?) null : category.ParentCategoryId,
                     Abstract = category.Description,
                     Published = category.Published,
                     Url = urlRecords.ContainsKey(category.Id) ? urlRecords[category.Id].Slug : null,
@@ -132,7 +131,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
         {
             using (Nop280DataContext context = GetContext())
             {
-                HashSet<Nop280_ProductVariantAttributeValue> values = context.Nop280_ProductVariantAttributeValues.ToHashSet();
+                HashSet<Nop280_ProductVariantAttributeValue> values =
+                    context.Nop280_ProductVariantAttributeValues.ToHashSet();
 
                 return values.Select(value => new ProductOptionValueData
                 {
@@ -195,7 +195,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
         {
             using (Nop280DataContext context = GetContext())
             {
-                HashSet<Nop280_Manufacturer> manufacturers = context.Nop280_Manufacturers.Where(x => !x.Deleted).ToHashSet();
+                HashSet<Nop280_Manufacturer> manufacturers =
+                    context.Nop280_Manufacturers.Where(x => !x.Deleted).ToHashSet();
 
                 return manufacturers.Select(x => new BrandData
                 {
@@ -227,14 +228,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 
                 return taxCategories.Select(taxCategory =>
                 {
-                    var nop280TaxRate = taxCategory.Nop280_TaxRate;
+                    Nop280_TaxRate nop280TaxRate = taxCategory.Nop280_TaxRate;
                     return new TaxData
-                                                               {
-                                                                   Name = taxCategory.Name,
-                                                                   Rate = nop280TaxRate == null ? 0m : nop280TaxRate.Percentage,
-                                                                   Id = taxCategory.Id,
-                                                                   RegionId = nop280TaxRate == null ? (int?)null : nop280TaxRate.StateProvinceId
-                                                               };
+                    {
+                        Name = taxCategory.Name,
+                        Rate = nop280TaxRate == null ? 0m : nop280TaxRate.Percentage,
+                        Id = taxCategory.Id,
+                        RegionId = nop280TaxRate == null ? (int?) null : nop280TaxRate.StateProvinceId
+                    };
                 }).ToHashSet();
             }
         }
@@ -278,12 +279,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                     context.Nop280_UrlRecords.Where(x => x.EntityName == "Product")
                         .ToHashSet().GroupBy(x => x.EntityId)
                         .ToDictionary(x => x.Key, x => x.First());
-                var productVariants = context.Nop280_ProductVariants.Where(x => !x.Deleted).ToHashSet();
+                HashSet<Nop280_ProductVariant> productVariants =
+                    context.Nop280_ProductVariants.Where(x => !x.Deleted).ToHashSet();
 
                 return products.Select(product =>
                 {
                     int? brandId =
-                        product.Nop280_Product_Manufacturer_Mappings.Select(mapping => (int?)mapping.ManufacturerId)
+                        product.Nop280_Product_Manufacturer_Mappings.Select(mapping => (int?) mapping.ManufacturerId)
                             .FirstOrDefault();
                     var productData = new ProductData
                     {
@@ -292,16 +294,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                         Abstract = product.ShortDescription,
                         Description = product.FullDescription,
                         BrandId = brandId,
-                        Tags = product.Nop280_Product_ProductTag_Mappings.Select(mapping => mapping.ProductTag_Id).ToHashSet(),
-                        Categories = product.Nop280_Product_Category_Mappings.Select(mapping => mapping.CategoryId).ToHashSet(),
-                        Pictures = product.Nop280_Product_Picture_Mappings.Select(mapping => mapping.PictureId).ToHashSet(),
+                        Tags =
+                            product.Nop280_Product_ProductTag_Mappings.Select(mapping => mapping.ProductTag_Id)
+                                .ToHashSet(),
+                        Categories =
+                            product.Nop280_Product_Category_Mappings.Select(mapping => mapping.CategoryId).ToHashSet(),
+                        Pictures =
+                            product.Nop280_Product_Picture_Mappings.Select(mapping => mapping.PictureId).ToHashSet(),
                         Published = product.Published,
                         Url = urlRecords.ContainsKey(product.Id) ? urlRecords[product.Id].Slug : null
                     };
                     productData.ProductVariants =
-                       productVariants
+                        productVariants
                             .Where(variant => variant.ProductId == product.Id)
-
                             .Select(variant =>
                             {
                                 var productVariantData = new ProductVariantData
@@ -327,7 +332,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                                     RequiresShipping = variant.IsShipEnabled,
                                     MaxDownloads = variant.MaxNumberOfDownloads,
                                     DownloadDays = variant.DownloadExpirationDays,
-                                    DownloadUrl = variant.Nop280_Download == null ? null : variant.Nop280_Download.DownloadUrl,
+                                    DownloadUrl =
+                                        variant.Nop280_Download == null ? null : variant.Nop280_Download.DownloadUrl,
                                     PriceBreaks = variant.Nop280_TierPrices.Select(price => new PriceBreakInfo
                                     {
                                         Price = price.Price,
@@ -344,14 +350,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 
         public override HashSet<OrderData> GetOrderData()
         {
-            using (var context = GetContext())
+            using (Nop280DataContext context = GetContext())
             {
-                var orders = context.Nop280_Orders.Where(order => !order.Deleted && order.OrderStatusId != 40).ToHashSet();
-                var orderNotes =
+                HashSet<Nop280_Order> orders =
+                    context.Nop280_Orders.Where(order => !order.Deleted && order.OrderStatusId != 40).ToHashSet();
+                Dictionary<int, HashSet<Nop280_OrderNote>> orderNotes =
                     context.Nop280_OrderNotes.ToHashSet()
                         .GroupBy(note => note.OrderId)
                         .ToDictionary(notes => notes.Key, notes => notes.ToHashSet());
-                var addresses = context.Nop280_Addresses.ToDictionary(address => address.Id, address => address);
+                Dictionary<int, Nop280_Address> addresses = context.Nop280_Addresses.ToDictionary(
+                    address => address.Id, address => address);
 
 
                 return orders.Select(order => new OrderData
@@ -363,9 +371,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                     ShippingAddressId = order.ShippingAddressId,
                     CustomerId = order.CustomerId,
                     Email = addresses[order.BillingAddressId].Email,
-                    OrderStatus = (OrderStatus)order.OrderStatusId,
-                    PaymentStatus = (PaymentStatus)order.PaymentStatusId,
-                    ShippingStatus = (ShippingStatus)order.ShippingStatusId,
+                    OrderStatus = (OrderStatus) order.OrderStatusId,
+                    PaymentStatus = (PaymentStatus) order.PaymentStatusId,
+                    ShippingStatus = (ShippingStatus) order.ShippingStatusId,
                     OrderSubtotalInclTax = order.OrderSubtotalInclTax,
                     OrderSubtotalExclTax = order.OrderSubtotalExclTax,
                     OrderSubTotalDiscountInclTax = order.OrderSubTotalDiscountInclTax,
@@ -394,9 +402,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
 
         public override HashSet<OrderLineData> GetOrderLineData()
         {
-            using (var context = GetContext())
+            using (Nop280DataContext context = GetContext())
             {
-                var orderProductVariants = context.Nop280_OrderProductVariants.ToHashSet();
+                HashSet<Nop280_OrderProductVariant> orderProductVariants =
+                    context.Nop280_OrderProductVariants.ToHashSet();
                 return orderProductVariants.Select(line => new OrderLineData
                 {
                     Id = line.Id,
@@ -411,17 +420,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                     DownloadCount = line.DownloadCount,
                     ItemWeight = line.ItemWeight,
                     RequiresShipping = line.Nop280_ProductVariant.IsShipEnabled,
-                    SKU = string.IsNullOrWhiteSpace(line.Nop280_ProductVariant.Sku) ? line.Nop280_ProductVariant.Id.ToString() : line.Nop280_ProductVariant.Sku,
-                    ProductName = string.Format("{0} - {1}", line.Nop280_ProductVariant.Nop280_Product.Name, line.AttributeDescription)
+                    SKU =
+                        string.IsNullOrWhiteSpace(line.Nop280_ProductVariant.Sku)
+                            ? line.Nop280_ProductVariant.Id.ToString()
+                            : line.Nop280_ProductVariant.Sku,
+                    ProductName =
+                        string.Format("{0} - {1}", line.Nop280_ProductVariant.Nop280_Product.Name,
+                            line.AttributeDescription)
                 }).ToHashSet();
             }
         }
 
         public override HashSet<AddressData> GetAddressData()
         {
-            using (var context = GetContext())
+            using (Nop280DataContext context = GetContext())
             {
-                var addresses = context.Nop280_Addresses.ToHashSet();
+                HashSet<Nop280_Address> addresses = context.Nop280_Addresses.ToHashSet();
                 return addresses.Select(GetAddressDataObject).ToHashSet();
             }
         }
@@ -434,6 +448,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                     context.Nop280_Customers.Where(x => !x.Deleted && x.Email != null && x.Password != null).ToHashSet();
                 HashSet<Nop280_GenericAttribute> attributes =
                     context.Nop280_GenericAttributes.Where(attribute => attribute.KeyGroup == "Customer").ToHashSet();
+                Dictionary<int, HashSet<Nop280_GenericAttribute>> attributeUserDictionary = attributes.GroupBy(
+                    x => x.EntityId)
+                    .ToDictionary(grouping => grouping.Key, grouping => grouping.ToHashSet());
                 HashSet<Nop280_CustomerAddress> addresses = context.Nop280_CustomerAddresses.ToHashSet();
 
                 var userDatas = new HashSet<UserData>();
@@ -441,9 +458,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Nop280
                 {
                     Nop280_Customer thisCustomer = customer;
                     Dictionary<string, string> customerAttributes =
-                        attributes.FindAll(x => x.EntityId == thisCustomer.Id)
-                            .GroupBy(attribute => attribute.Key)
-                            .ToDictionary(grouping => grouping.Key, attribute => attribute.First().Value);
+                        attributeUserDictionary.ContainsKey(customer.Id)
+                            ? attributeUserDictionary[customer.Id]
+                                .GroupBy(attribute => attribute.Key)
+                                .ToDictionary(grouping => grouping.Key, attribute => attribute.First().Value)
+                            : new Dictionary<string, string>();
                     HashSet<Nop280_Address> customerAddresses =
                         addresses.FindAll(x => x.Customer_Id == thisCustomer.Id)
                             .Select(address => address.Nop280_Address)
