@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -27,8 +28,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders
 
             List<string> codes =
                 (from key in countryKeys
-                    where controllerContext.GetValueFromRequest(key).Contains("true")
-                    select key.Split('-')[1]).ToList();
+                 where controllerContext.GetValueFromRequest(key).Contains("true", StringComparison.InvariantCultureIgnoreCase)
+                 select key.Split('-')[1]).ToList();
 
             calculation.Countries = string.Join(",", codes);
             return calculation;
