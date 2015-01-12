@@ -1,0 +1,41 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
+@using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models
+@model MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models.ProductOptionSortingSearchQuery
+@{
+    List<ProductOptionSortingData> results = ViewData["results"] as List<ProductOptionSortingData> ?? new List<ProductOptionSortingData>();
+}
+
+@using (Html.BeginForm("Index", "ProductOptionSorting", FormMethod.Get))
+{
+    <fieldset>
+        <legend>
+            Product Option Sorting
+        </legend>
+
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ProductOptionSortingData result in results)
+                {
+                    <tr>
+                        <td>
+                            @result.Name
+                        </td>
+                        <td>
+                            @Html.ActionLink("Sort Options", "Sort", "ProductOptionSorting", new { result.Id }, new { @class = "btn btn-xs btn-default" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </fieldset>
+}

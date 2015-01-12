@@ -14,10 +14,10 @@
         });
     }
     function setValuesInTables() {
-        includedTable.find('[data-country-value]').each(function (index, element) {
+        includedTable.find('[data-country-value]').each(function(index, element) {
             $(element).val('true');
         });
-        notIncludedTable.find('[data-country-value]').each(function (index, element) {
+        notIncludedTable.find('[data-country-value]').each(function(index, element) {
             $(element).val('false');
         });
     }

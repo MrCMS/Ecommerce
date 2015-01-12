@@ -275,6 +275,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                 _session.QueryOver<ProductOption>()
                     .Where(value => value.Id.IsIn(optionIds)).Cacheable()
                     .List();
+            var sorts =
+                _session.QueryOver<ProductOptionValueSort>()
+                    .Where(sort => sort.ProductOption.Id.IsIn(optionIds))
+                    .Cacheable()
+                    .List().ToHashSet();
 
             return productAttributeOptions.Select(option => new ProductOptionModel<string>
             {
@@ -284,7 +289,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     values.Where(
                         value =>
                             value.OptionId == option.Id)
-                        .OrderBy(x => x.Value)
+                        .OrderBy(x => GetOptionSortValue(x,sorts, option, values))
+                        .ThenBy(x => x.Value)
                         .Distinct()
                         .Select(
                             value =>
@@ -296,6 +302,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                                     Id = string.Format("{0}[{1}]", option.Id, value.Value)
                                 }).ToList()
             }).ToList();
+        }
+
+        private int GetOptionSortValue(OptionInfo optionInfo, HashSet<ProductOptionValueSort> sorts, ProductOption option, List<OptionInfo> values)
+        {
+            var productOptionValueSort =
+                sorts.FirstOrDefault(sort => sort.ProductOption == option && sort.Value == optionInfo.Value);
+            return productOptionValueSort != null
+                ? productOptionValueSort.DisplayOrder
+                : values.Count;
         }
 
         private List<ProductOptionModel<int>> GetSearchSpecificationAttributes(ProductSearchQuery query,

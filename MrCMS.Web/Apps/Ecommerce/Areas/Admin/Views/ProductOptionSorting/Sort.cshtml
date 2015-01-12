@@ -1,0 +1,55 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
+@using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models
+@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductOption
+@{
+    var sortData = ViewData["options"] as List<ProductOptionValueSortingData> ?? new List<ProductOptionValueSortingData>();
+}
+@section JavaScriptBlock
+{
+    <script type="text/javascript">
+        (function ($) {
+            function updateOrders() {
+                $('#sortable li').each(function (index, domElement) {
+                    $(domElement).find('[name|="order"]').val(index);
+                });
+            }
+            $(function () {
+                $("#sortable").sortable({
+                    update: updateOrders
+                });
+                updateOrders();
+            });
+        }(jQuery));
+    </script>
+}
+@using (Html.BeginForm("Sort", "ProductOptionSorting", new { Model.Id }, FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Sort products for @Model.Name
+            <span class="btn-group pull-right">
+                @Html.ActionLink(Resource("Back to list"), "Index", "ProductOptionSorting", new { }, new { @class = "btn btn-default" })
+                <button class="btn btn-primary" type="submit">Save</button>
+            </span>
+        </legend>
+        <ul id="sortable">
+            @for (int i = 0; i < sortData.Count; i++)
+            {
+                var data = sortData[i];
+                <li>
+                    <div class="row">
+                        <div class="col-xs-1">
+                            <i class="glyphicon glyphicon-resize-full"></i>&nbsp;&nbsp;
+                        </div>
+                        <div class="col-xs-11">
+                            @Html.Hidden("value-" + i, data.Value)
+                            @Html.Hidden("order-" + i, data.DisplayOrder)
+                            @data.Value
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </fieldset>
+}
+
