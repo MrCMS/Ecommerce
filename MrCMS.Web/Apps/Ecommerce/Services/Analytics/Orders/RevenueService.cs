@@ -25,7 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
         public IEnumerable<IGrouping<string, Order>> GetBaseDataGroupedBySalesChannel(DateTime from, DateTime to)
         {
             return _session.QueryOver<Order>()
-                        .Where(item => item.CreatedOn >= from.Date && item.CreatedOn <= to.Date)
+                        .Where(item => item.OrderDate >= from.Date && item.OrderDate <= to.Date)
                         .Cacheable()
                         .List()
                         .GroupBy(x => x.SalesChannel);
@@ -34,7 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
         public IEnumerable<IGrouping<string, Order>> GetBaseDataGroupedBySalesChannel()
         {
             return _session.QueryOver<Order>()
-                        .Where(item => item.CreatedOn >= CurrentRequestData.Now.Date && item.CreatedOn <= CurrentRequestData.Now.Date.AddHours(24))
+                        .Where(item => item.OrderDate >= CurrentRequestData.Now.Date && item.OrderDate <= CurrentRequestData.Now.Date.AddHours(24))
                         .Cacheable()
                         .List()
                         .GroupBy(x => x.SalesChannel);
