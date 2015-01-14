@@ -3086,6 +3086,7 @@
     <Content Include="Areas\Admin\Content\Scripts\mrcms\media-uploader.js" />
     <Content Include="Areas\Admin\Content\Scripts\mrcms\media.js" />
     <Content Include="Areas\Admin\Content\Scripts\mrcms\menu.js" />
+    <Content Include="Areas\Admin\Content\Scripts\mrcms\message-template.js" />
     <Content Include="Areas\Admin\Content\Scripts\mrcms\move-webpage.js" />
     <Content Include="Areas\Admin\Content\Scripts\mrcms\mrcms-media-selector.js" />
     <Content Include="Areas\Admin\Content\Scripts\mrcms\pages.js" />
