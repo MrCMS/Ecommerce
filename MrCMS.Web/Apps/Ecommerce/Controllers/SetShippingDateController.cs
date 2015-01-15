@@ -7,20 +7,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class SetShippingDateController : MrCMSAppUIController<EcommerceApp>
     {
-        private readonly ISetShippingMethodDateService _setShippingMethodDateService;
+        private readonly ISetShippingDateService _setShippingDateService;
 
-        public SetShippingDateController(ISetShippingMethodDateService setShippingMethodDateService)
+        public SetShippingDateController(ISetShippingDateService setShippingDateService)
         {
-            _setShippingMethodDateService = setShippingMethodDateService;
+            _setShippingDateService = setShippingDateService;
         }
 
         [HttpPost]
         public ActionResult SetDate(DateTime date)
         {
-            _setShippingMethodDateService.SetDate(date);
+            _setShippingDateService.SetDate(date);
             return Request.IsAjaxRequest()
                 ? Json(true)
-                : _setShippingMethodDateService.RedirectToSetShippingDetails();
+                : _setShippingDateService.RedirectToSetShippingDetails();
         }
     }
 }

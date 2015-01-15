@@ -14,7 +14,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CharityClear
 
         public override string Name
         {
-            get { return "Charity Clear"; }
+            get { return _charityClearSettings.DisplayName; }
         }
 
         public override string SystemName

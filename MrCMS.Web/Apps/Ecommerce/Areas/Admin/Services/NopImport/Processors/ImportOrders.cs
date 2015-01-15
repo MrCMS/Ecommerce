@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using MrCMS.Entities.People;
 using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Events;
 using NHibernate;
@@ -26,16 +24,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
 
         public string ProcessOrders(NopCommerceDataReader dataReader, NopImportContext nopImportContext)
         {
-            var orders = dataReader.GetOrderData();
-            var orderLines = dataReader.GetOrderLineData();
+            HashSet<OrderData> orders = dataReader.GetOrderData();
+            HashSet<OrderLineData> orderLines = dataReader.GetOrderLineData();
 
             using (EventContext.Instance.Disable<GenerateGiftCards>())
             {
                 _session.Transact(session =>
                 {
-                    foreach (var data in orders)
+                    foreach (OrderData data in orders)
                     {
-                        var guid = data.Guid;
+                        Guid guid = data.Guid;
                         if (session.QueryOver<Order>().Where(o => o.Guid == guid).Any())
                             continue;
 
@@ -56,7 +54,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                             ShippingStatus = GetShippingStatus(data.ShippingStatus),
                             ShippingMethodName = data.ShippingMethodName,
                             ShippingSubtotal = data.OrderShippingExclTax,
-                            ShippingTax = data.OrderShippingInclTax - data.OrderSubTotalDiscountExclTax,
+                            ShippingTax = data.OrderShippingInclTax - data.OrderShippingExclTax,
                             ShippingTotal = data.OrderShippingInclTax,
                             Subtotal = data.OrderSubtotalInclTax,
                             Tax = data.OrderTax,
@@ -76,7 +74,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                             Note = "Previous order id: " + data.Id,
                             ShowToCustomer = false
                         });
-                        foreach (var note in data.Notes)
+                        foreach (OrderNoteData note in data.Notes)
                         {
                             var orderNote = new OrderNote
                             {
@@ -89,9 +87,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                             order.OrderNotes.Add(orderNote);
                             session.Save(orderNote);
                         }
-                        var orderId = data.Id;
-                        var lineDatas = orderLines.FindAll(x => x.OrderId == orderId);
-                        foreach (var lineData in lineDatas)
+                        int orderId = data.Id;
+                        HashSet<OrderLineData> lineDatas = orderLines.FindAll(x => x.OrderId == orderId);
+                        foreach (OrderLineData lineData in lineDatas)
                         {
                             var orderLine = new OrderLine
                             {

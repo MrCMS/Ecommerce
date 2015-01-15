@@ -86,7 +86,7 @@
                                                     @Html.CheckBox("countrySelect", new { data_country_select = true, @class = "checkbox" })
                                                     <span data-country-name>@country.Text</span>
                                                 </label>
-                                                @Html.Hidden("country-" + country.Value, false,new{data_country_value=true})
+                                                @Html.Hidden("country-" + country.Value, true,new{data_country_value=true})
                                             </div>
                                         </td>
                                     </tr>
