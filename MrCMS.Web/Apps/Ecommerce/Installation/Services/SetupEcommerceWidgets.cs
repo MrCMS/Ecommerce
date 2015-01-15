@@ -264,18 +264,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             };
             _widgetService.AddWidget(cartWidget);
 
-            //nav
-            var nav = new MobileFriendlyNavigation.Widgets.MobileFriendlyNavigation
-            {
-                Name = "Navigation",
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == ("Navigation")),
-                IncludeChildren = true,
-                Cache = true,
-                CacheExpiryType = CacheExpiryType.Sliding,
-                CacheLength = 60
-            };
-            _widgetService.AddWidget(nav);
-
             //footer links
             var footerLinksWidget = new TextWidget
             {

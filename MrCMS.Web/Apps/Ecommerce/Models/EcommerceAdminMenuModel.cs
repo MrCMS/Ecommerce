@@ -12,7 +12,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         private readonly EcommerceSettings _ecommerceSettings;
         private readonly UrlHelper _urlHelper;
 
-        public EcommerceAdminMenuModel( EcommerceSettings ecommerceSettings, UrlHelper urlHelper)
+        public EcommerceAdminMenuModel(EcommerceSettings ecommerceSettings, UrlHelper urlHelper)
         {
             _ecommerceSettings = ecommerceSettings;
             _urlHelper = urlHelper;
@@ -52,6 +52,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                     new ChildMenuItem("Product Specifications",
                         _urlHelper.Action("Index", "ProductSpecificationAttribute"),
                         ACLOption.Create(new ProductSpecificationAttributeACL(), ProductSpecificationAttributeACL.List)),
+                    new ChildMenuItem("Sort Option Values",
+                        _urlHelper.Action("Index", "ProductOptionSorting"),
+                        ACLOption.Create(new ProductOptionSortingACL(), ProductOptionSortingACL.List)),
                     new ChildMenuItem("Discounts", _urlHelper.Action("Index", "Discount"),
                         ACLOption.Create(new DiscountACL(), DiscountACL.List)),
                 };

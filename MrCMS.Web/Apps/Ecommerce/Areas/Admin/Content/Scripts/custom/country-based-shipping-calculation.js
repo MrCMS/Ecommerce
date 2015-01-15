@@ -7,7 +7,7 @@
             var keyA = $(a).find('[data-country-name]').text();
             var keyB = $(b).find('[data-country-name]').text();
 
-            return (keyA > keyB) ? 1 : 0;
+            return (keyA > keyB) ? 1 : (keyA < keyB) ? -1 : 0;
         });
         rows.each(function (index, row) {
             table.append(row);                  // append rows after sort

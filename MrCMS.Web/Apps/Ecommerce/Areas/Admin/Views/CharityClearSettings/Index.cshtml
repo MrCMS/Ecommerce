@@ -1,5 +1,5 @@
 ﻿@using MrCMS.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Payment.CharityClear.CharityClearSettings 
+@model MrCMS.Web.Apps.Ecommerce.Payment.CharityClear.CharityClearSettings
 @{
     ViewBag.Title = "Charity Clear Settings";
 }
@@ -34,6 +34,11 @@
             @Html.LabelFor(settings => settings.ISOCountryCode)
             @Html.TextBoxFor(settings => settings.ISOCountryCode, new { @class = "form-control" })
             @Html.ValidationMessageFor(settings => settings.ISOCountryCode)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.DisplayName)
+            @Html.TextBoxFor(settings => settings.DisplayName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.DisplayName)
         </div>
     </fieldset>
 }
