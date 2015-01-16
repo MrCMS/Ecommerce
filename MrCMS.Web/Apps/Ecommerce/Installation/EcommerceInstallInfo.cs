@@ -3,13 +3,13 @@
     public static class EcommerceInstallInfo
     {
         public const string LogoImageUrl =
-            "http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/newsletter/logo.jpg";
+            "http://www.mrcms.com/Content/Ecommerce/logo.jpg";
 
         public const string Slide1ImageUrl =
-            "http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/default/slide1.jpg";
+            "http://www.mrcms.com/Content/Ecommerce/slide1.jpg";
 
         public const string Slide2ImageUrl =
-            "http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/default/slide2.jpg";
+            "http://www.mrcms.com/Content/Ecommerce/slide2.jpg";
 
         public const string FooterText1 =
             @"<h3>Info</h3><ul class=""list-unstyled""><li><a href=""#"">About Us</a></li><li><a href=""#"">Contact Us</a></li><li><a href=""#"">Shop Locations</a></li><li><a href=""#"">Press</a></li><li><a href=""#"">Trade Website</a></li><li><a href=""#"">New Lines </a></li></ul>";
@@ -32,16 +32,16 @@
             @"<h1>Home page title</h1><h1><span style=""font-size: 14px; line-height: 1.428571429;"">Lorem ipsum dolor sit amet, viderer noluiss e indoctum te nam, ubique percipit ei duo. Te sed mundi pertinax, ad vel solum sonet. Ut eum quaeque nonumes, ipsum corpora cum ut, nec ut noster laoreet. Mei ei menandri reformidans. Qui primis interesset an, cu audire numquam docendi eos. Nec corrumpit reprehendunt eu.</span></h1><p><a class=""btn btn-default-blue"" href=""/about-us"">About our store</a></p>";
 
         public const string DeliveryIcon =
-            "http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/default/delivery.gif";
+            "http://www.mrcms.com/Content/Ecommerce/delivery.gif";
 
         public const string ReturnIcon =
-            "http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/default/return.gif";
+            "http://www.mrcms.com/Content/Ecommerce/return.gif";
 
         public const string LocationIcon =
-            "http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/default/location.gif";
+            "http://www.mrcms.com/Content/Ecommerce/location.gif";
 
         public const string ContactIcon =
-            "http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/default/contact.gif";
+            "http://www.mrcms.com/Content/Ecommerce/contact.gif";
 
         public const string AboutUsText =
             "<h1>About us</h1> <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ultrices erat a tempus egestas. Etiam posuere augue et odio facilisis auctor. Vivamus non erat eget ligula molestie varius. Maecenas ut libero mollis, fringilla nisi nec, interdum orci. In consectetur et nisl non porta. Vestibulum mattis varius magna, vel sagittis metus vehicula vitae. Nunc pretium elit at justo auctor laoreet. Etiam consectetur tortor et nisl rhoncus, ac pharetra neque molestie. Curabitur sit amet tellus id diam ornare vulputate. Nunc facilisis porta eros, eget bibendum elit euismod eget.</p><p>Proin quis justo lorem. Nullam neque libero, scelerisque at nunc a, consectetur auctor nisl. Vivamus sit amet mi nunc. Integer vitae lectus massa. Aliquam quis volutpat massa, ut auctor nibh. Curabitur sollicitudin ut tellus non ultricies. Fusce sem eros, fermentum in mollis sed, laoreet id justo. Donec consectetur justo eu lorem porta dapibus. Proin ultrices, ipsum quis imperdiet varius, metus lorem ultrices tortor, sit amet faucibus libero libero sed sem.</p><p>Aenean porttitor semper mollis. Duis semper ligula ac placerat consectetur. Nullam id velit nunc. Quisque a placerat orci. Duis orci turpis, varius quis ipsum quis, lobortis imperdiet elit. Nam et cursus est. Nam lacinia ligula a lacus iaculis, et congue tellus dictum. Vestibulum sit amet tortor at lorem cursus auctor eu ut leo. Quisque tristique id libero et pharetra. Nunc varius erat et libero dictum porttitor. Etiam eget faucibus dolor.</p><p>Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque in lectus id mi convallis aliquam. Quisque sed luctus risus. Mauris dictum consectetur arcu, sit amet congue urna rutrum eu. Aliquam porttitor erat id dui tempus, fermentum scelerisque arcu imperdiet. Vestibulum rutrum ipsum ac mi tempor aliquam ut ac nibh. Donec sagittis tellus nulla, a venenatis tellus auctor eget. Nulla eleifend semper libero ac consequat. Fusce eu risus et nunc venenatis semper sit amet in ante. In dignissim condimentum nisl, id vehicula justo semper id. Pellentesque faucibus nunc neque, in sollicitudin nulla mollis nec. Sed at eros at urna sodales tincidunt et eleifend ligula. Integer vitae mollis velit. Nunc auctor, nunc non convallis ultricies, dolor tellus scelerisque sem, quis congue magna nisi at turpis.</p>";

@@ -3670,7 +3670,6 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\ReviewList.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingCountryIs\Fields.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Index.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingMethod\Index.cshtml.orig" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ShippingPostcodeStartsWith\Fields.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\TaxRate\Delete.cshtml" />
@@ -3719,7 +3718,6 @@
     <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Apps\Ecommerce\Services\Orders\BulkShippingUpdate\Rules\ShippingMethodExists.cs.orig" />
     <Content Include="Apps\Ecommerce\Views\AddToCart\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Views\AddToCart\GiftCardInfo.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Cart\AddDiscountCode.cshtml" />
@@ -3780,7 +3778,6 @@
     <Content Include="Apps\Ecommerce\Views\SetShippingAddress\ShowShippingAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SetShippingMethod\AwaitingAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Views\SetShippingMethod\ShippingOptions.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\SetShippingMethod\ShippingOptions.cshtml.orig" />
     <Content Include="Apps\Ecommerce\Views\Shared\AnalyticsCode.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\BackInStockForm.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\CategoryCard.cshtml" />
