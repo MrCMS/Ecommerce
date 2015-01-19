@@ -17,7 +17,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.BulkShippingUpdate
         {
             _orderAdminService = A.Fake<IOrderAdminService>();
             _bulkShippingUpdateService = new BulkShippingUpdateService(_orderAdminService,
-                A.Fake<IShippingMethodAdminService>());
+                A.Fake<IShippingMethodAdminService>(), Session);
         }
 
         [Fact]
@@ -27,7 +27,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.BulkShippingUpdate
         {
             var items = new List<BulkShippingUpdateDataTransferObject>();
 
-            int result = _bulkShippingUpdateService.BulkShippingUpdateFromDTOs(items);
+            int result = _bulkShippingUpdateService.BulkShippingUpdateFromDTOs(items, false);
 
             result.Should().Be(0);
         }

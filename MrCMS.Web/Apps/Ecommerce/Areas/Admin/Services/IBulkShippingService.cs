@@ -5,6 +5,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 {
     public interface IBulkShippingService
     {
-        Dictionary<string, List<string>> Update(Stream file);
+        Dictionary<string, List<string>> Update(Stream file, bool sendEmails);
     }
 }
