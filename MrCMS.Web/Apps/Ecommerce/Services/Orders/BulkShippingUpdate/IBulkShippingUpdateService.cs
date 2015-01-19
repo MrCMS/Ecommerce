@@ -5,6 +5,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate
 {
     public interface IBulkShippingUpdateService
     {
-        int BulkShippingUpdateFromDTOs(IEnumerable<BulkShippingUpdateDataTransferObject> items);
+        int BulkShippingUpdateFromDTOs(IEnumerable<BulkShippingUpdateDataTransferObject> items, bool sendEmails);
     }
 }

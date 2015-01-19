@@ -32,11 +32,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [ActionName("Update")]
         [ForceImmediateLuceneUpdate]
         [MrCMSACLRule(typeof(BulkShippingUpdateACL), BulkShippingUpdateACL.Update)]
-        public RedirectToRouteResult Update_POST(HttpPostedFileBase document)
+        public RedirectToRouteResult Update_POST(HttpPostedFileBase document, bool disableEmails = false)
         {
             if (document != null && document.ContentLength > 0 &&
                 (document.ContentType.ToLower() == "text/csv" || document.ContentType.ToLower().Contains("excel")))
-                TempData["messages"] = _bulkShippingService.Update(document.InputStream);
+                TempData["messages"] = _bulkShippingService.Update(document.InputStream, !disableEmails);
             else
                 TempData["import-status"] = "Please choose non-empty CSV (.csv) file before uploading.";
             return RedirectToAction("Update");

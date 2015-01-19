@@ -24,7 +24,16 @@
     {
         <label>Choose Import File</label>
         <input type="file" name="document" id="document" />
+
+        <br />
+        <div class="form-group">
+            <label>
+                @Html.CheckBox("disableEmails")
+                Disable Emails?
+            </label>
+        </div>
         <div class="clearfix"></div>
+
         <br />
         if (ViewBag.Messages != null)
         {
