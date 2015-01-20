@@ -5,7 +5,7 @@
     Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/discount-application.js");
 }
 
-@using (Html.BeginForm("Edit", "DiscountApplication",  FormMethod.Post, new { data_discount_application = "true" }))
+@using (Html.BeginForm("Edit", "DiscountApplication", FormMethod.Post, new { data_discount_application = "true" }))
 {
     <fieldset>
         <legend>
@@ -15,7 +15,15 @@
             </span>
         </legend>
         <div data-application-fields>
-            @{ Html.RenderAction("Fields", Model.GetType().Name, new {id = Model.Id}); }
+            @{
+                try
+                {
+                    Html.RenderAction("Fields", Model.GetType().Name, new {id = Model.Id});
+                }
+                catch
+                {
+                }
+            }
         </div>
     </fieldset>
 }

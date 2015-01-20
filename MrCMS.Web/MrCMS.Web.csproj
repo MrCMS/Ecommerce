@@ -1143,7 +1143,9 @@
     <Compile Include="Apps\Ecommerce\Models\CategoryPagedList.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategorySearchModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ChartModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\CheckCodeResult.cs" />
     <Compile Include="Apps\Ecommerce\Models\CheckLimitationsResult.cs" />
+    <Compile Include="Apps\Ecommerce\Models\CheckLimitationsResultStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\CountryToAdd.cs" />
     <Compile Include="Apps\Ecommerce\Models\DeliveryStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\DiscountApplicationInfo.cs" />
