@@ -7,5 +7,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
     public interface IGetValidDiscounts
     {
         IList<Discount> Get(CartModel cart, List<string> discountCodes);
+        CheckCodeResult CheckCode(CartModel cart, string discountCode);
     }
 }
