@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Website.Controllers;
 
@@ -17,26 +18,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [ChildActionOnly]
         public ActionResult Error()
         {
-            if (ShowError())
+            var error = TempData[DiscountInvalid] as CheckCodeResult;
+            if (error != null && !error.Success)
             {
-                return PartialView();
+                return PartialView(error);
             }
             return new EmptyResult();
-        }
-
-        private bool ShowError()
-        {
-            var o = TempData[DiscountInvalid];
-            return o is bool && (bool) o;
         }
 
         [HttpPost]
         public JsonResult Apply(string discountCode)
         {
-            var success = _cartDiscountService.AddDiscountCode(discountCode);
-            if (!success)
+            var result = _cartDiscountService.AddDiscountCode(discountCode);
+            if (!result.Success)
             {
-                TempData[DiscountInvalid] = true;
+                TempData[DiscountInvalid] = result;
             }
             return Json(discountCode);
         }

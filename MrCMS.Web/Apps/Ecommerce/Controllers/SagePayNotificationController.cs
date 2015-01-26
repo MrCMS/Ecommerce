@@ -49,17 +49,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 return new InvalidSignatureResult(vendorTxCode);
             }
 
-            if (!response.IsSignatureValid(_sagePayService.GetSecurityKey(cart.UserGuid), _sagePaySettings.VendorName))
-            {
-                ResetSessionInfo(cart,
-                                 new FailureDetails
-                                 {
-                                     Message =
-                                         "There was an error communicating with SagePay. No funds have been transferred. Please try again, and if you continue to have errors please contact support"
-                                 });
-                return new InvalidSignatureResult(vendorTxCode);
-            }
-
             if (!response.WasTransactionSuccessful)
             {
                 ResetSessionInfo(cart, new FailureDetails

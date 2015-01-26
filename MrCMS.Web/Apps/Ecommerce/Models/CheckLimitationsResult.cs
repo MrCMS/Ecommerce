@@ -13,6 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public List<CartItem> CartItems { get; set; }
         public string[] Messages { get; private set; }
+        public string FormattedMessage { get { return string.Join(", ", Messages); } }
 
         public CheckLimitationsResultStatus Status { get; private set; }
 
@@ -61,12 +62,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                 CartItems = results.SelectMany(x => x.CartItems).Distinct().ToList()
             };
         }
-    }
-
-    public enum CheckLimitationsResultStatus
-    {
-        Success,
-        CurrentlyInvalid,
-        NeverValid
     }
 }
