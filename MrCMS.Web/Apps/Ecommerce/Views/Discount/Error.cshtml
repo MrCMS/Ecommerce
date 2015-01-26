@@ -1,8 +1,17 @@
-﻿@model dynamic
+﻿@model MrCMS.Web.Apps.Ecommerce.Models.CheckCodeResult
 
 <div class="alert alert-danger">
     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
     <span>
-        @Resource("Discount invalid", "The discount you entered is invalid or is already applied to the basket")
+        @if (string.IsNullOrWhiteSpace(Model.Message))
+        {
+            @Resource("Discount invalid", "The discount you entered is invalid or is already applied to the basket")
+        }
+        else
+        {
+            <text>
+                @Model.Message
+            </text>
+        }
     </span>
 </div>
