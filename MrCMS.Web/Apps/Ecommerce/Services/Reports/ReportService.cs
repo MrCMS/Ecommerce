@@ -11,7 +11,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
         private readonly IOrderAnalyticsService _orderAnalyticsService;
         private readonly EcommerceSettings _ecommerceSettings;
 
-        public ReportService(IChartService chartService, IOrderAnalyticsService orderAnalyticsService,EcommerceSettings ecommerceSettings)
+        public ReportService(IChartService chartService, IOrderAnalyticsService orderAnalyticsService, EcommerceSettings ecommerceSettings)
         {
             _chartService = chartService;
             _orderAnalyticsService = orderAnalyticsService;
@@ -20,22 +20,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
 
         public ChartModel SalesByDay(ChartModel model)
         {
-            var data = _orderAnalyticsService.GetRevenueGroupedByDate(model.From,model.To);
-            _chartService.SetLineChartData(ref model,data);
+            var data = _orderAnalyticsService.GetRevenueGroupedByDate(model.From, model.To);
+            _chartService.SetLineChartData(ref model, data);
             _chartService.SetLineChartLabels(ref model);
             return model;
         }
 
         public ChartModel SalesByPaymentType(ChartModel model)
         {
-            var data = _orderAnalyticsService.GetRevenueGrouped("PaymentMethod",model.From, model.To);
+            var data = _orderAnalyticsService.GetRevenueByPaymentMethod(model.From, model.To);
             _chartService.SetBarChartLabelsAndData(ref model, data);
             return model;
         }
 
         public ChartModel SalesByShippingType(ChartModel model)
         {
-            var data = _orderAnalyticsService.GetRevenueGrouped("ShippingMethod", model.From, model.To);
+            var data = _orderAnalyticsService.GetRevenueByShippingMethod(model.From, model.To);
             _chartService.SetBarChartLabelsAndData(ref model, data);
             return model;
         }
@@ -43,7 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
         public ChartModel SalesTodayGroupedByHour()
         {
             var data = _orderAnalyticsService.GetRevenueForTodayGroupedByHour();
-            var model=new ChartModel(){From = CurrentRequestData.Now.Date,To = CurrentRequestData.Now.Date.AddDays(1)};
+            var model = new ChartModel { From = CurrentRequestData.Now.Date, To = CurrentRequestData.Now.Date.AddDays(1) };
             _chartService.SetLineChartData(ref model, data);
             _chartService.SetLineChartLabels(ref model);
             return model;
@@ -52,7 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Reports
         public ChartModel SalesLastWeekGroupedByDay()
         {
             var model = new ChartModel() { From = CurrentRequestData.Now.Date.AddDays(-6), To = CurrentRequestData.Now.Date.AddDays(1) };
-            var data = _orderAnalyticsService.GetRevenueGroupedByDate(model.From,model.To);
+            var data = _orderAnalyticsService.GetRevenueGroupedByDate(model.From, model.To);
             _chartService.SetLineChartData(ref model, data);
             _chartService.SetLineChartLabels(ref model);
             return model;

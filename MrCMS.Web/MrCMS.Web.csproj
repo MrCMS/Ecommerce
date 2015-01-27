@@ -1296,6 +1296,9 @@
     <Compile Include="Apps\Ecommerce\Services\Analytics\ITrackingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupOrdersService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupRevenueService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\IGroupOrdersService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\IGroupRevenueService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\IOrderAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\OrderAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\RevenueService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Products\ProductAnalyticsService.cs" />
@@ -1598,6 +1601,7 @@
     <Compile Include="Apps\Ecommerce\Services\ProductVariantAvailabilityService.cs" />
     <Compile Include="Apps\Ecommerce\Services\RelatedProductsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\ChartService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Reports\IChartService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\IReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\ReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\RewardPoints\GetUserRewardPointsBalance.cs" />
