@@ -112,7 +112,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public BasePaymentMethod SetPaymentMethod(string methodName)
         {
-            _cartSessionManager.SetSessionValue(CurrentPaymentMethodKey, _getUserGuid.UserGuid, methodName);
+            _cartSessionManager.SetSessionValue(CurrentPaymentMethodKey, _getUserGuid.UserGuid, methodName,
+                SessionDataTimeoutDefaults.PaymentInfo);
             var cart = _cartBuilder.BuildCart();
             if (cart.CanShowPaymentMethod())
                 return cart.PaymentMethod;
@@ -121,13 +122,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public void SetPayPalExpressPayerId(string payerId)
         {
-            _cartSessionManager.SetSessionValue(CurrentPayPalExpressPayerId, _getUserGuid.UserGuid, payerId);
+            _cartSessionManager.SetSessionValue(CurrentPayPalExpressPayerId, _getUserGuid.UserGuid, payerId, SessionDataTimeoutDefaults.PaymentInfo);
         }
 
         public void SetPayPalExpressToken(string token)
         {
-            _cartSessionManager.SetSessionValue(CurrentPayPalExpressToken, _getUserGuid.UserGuid, token);
+            _cartSessionManager.SetSessionValue(CurrentPayPalExpressToken, _getUserGuid.UserGuid, token, SessionDataTimeoutDefaults.PaymentInfo);
         }
+    }
 
+    public static class SessionDataTimeoutDefaults
+    {
+        public static readonly TimeSpan PaymentInfo = TimeSpan.FromMinutes(20);
     }
 }

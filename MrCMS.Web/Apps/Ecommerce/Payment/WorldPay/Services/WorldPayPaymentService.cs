@@ -119,6 +119,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
             string transId = form["transId"] ?? string.Empty;
             string transResult = queryString["msg"] ?? string.Empty;
             string authCode = queryString["rawAuthMessage"] ?? string.Empty;
+            decimal amount;
+            decimal.TryParse(queryString["authAmount"], out amount);
             string instanceId = _worldPaySettings.InstanceId;
 
             CartModel cart = GetCart(orderId);
@@ -150,6 +152,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
                         string.Format(
                             "The transaction status received from WorldPay ({0}) for the order {1} was declined.",
                             transStatus, orderId));
+                if (cart.TotalToPay != amount)
+                {
+                    throw new Exception(
+                        string.Format("The paid amount {0} does not match the amount to pay {1}", amount,
+                            cart.TotalToPay));
+                }
             }
             catch (Exception exception)
             {

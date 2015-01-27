@@ -7,6 +7,7 @@ using System.Text;
 using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using Newtonsoft.Json;
 using NHibernate;
@@ -15,15 +16,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
     public class CartSessionManager : ICartSessionManager
     {
-        private const string _passPhrase = "MrCMS Ecommerce's passphrase for session encryption and decryption";
         private readonly Dictionary<Guid, HashSet<SessionData>> _cache;
         private readonly ISession _session;
         private readonly Site _site;
+        private readonly EcommerceSettings _ecommerceSettings;
 
-        public CartSessionManager(ISession session, Site site)
+        public CartSessionManager(ISession session, Site site, EcommerceSettings ecommerceSettings)
         {
             _session = session;
             _site = site;
+            _ecommerceSettings = ecommerceSettings;
             _cache = new Dictionary<Guid, HashSet<SessionData>>();
         }
 
@@ -40,10 +42,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                     _session.QueryOver<SessionData>().Where(data => data.UserGuid == userGuid).Cacheable().List());
                 _cache[userGuid] = userData;
             }
-            IEnumerable<SessionData> queryOver = userData.Where(data => data.Key == key);
-
-            if (encrypted)
-                queryOver = queryOver.Where(data => data.ExpireOn >= CurrentRequestData.Now);
+            IEnumerable<SessionData> queryOver = userData.Where(data => (data.ExpireOn == null || data.ExpireOn >= CurrentRequestData.Now) && data.Key == key);
 
             SessionData sessionData = queryOver.FirstOrDefault();
 
@@ -53,7 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             {
                 string data = sessionData.Data;
                 if (encrypted)
-                    data = StringCipher.Decrypt(data, _passPhrase);
+                    data = StringCipher.Decrypt(data, _ecommerceSettings.EncryptionPassPhrase, sessionData.Salt);
                 return JsonConvert.DeserializeObject<T>(data);
             }
             catch
@@ -62,8 +61,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             }
         }
 
-        public void SetSessionValue<T>(string key, Guid userGuid, T item, bool encrypt = false)
+        public void SetSessionValue<T>(string key, Guid userGuid, T item, TimeSpan? expireIn, bool encrypt = false)
         {
+            var expiry = expireIn.GetValueOrDefault(TimeSpan.FromDays(_ecommerceSettings.DefaultSessionExpiryDays));
             if (_cache.ContainsKey(userGuid))
             {
                 _cache.Remove(userGuid);
@@ -79,10 +79,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             string obj = JsonConvert.SerializeObject(item);
             if (encrypt)
             {
-                obj = StringCipher.Encrypt(obj, _passPhrase);
-                sessionData.ExpireOn = CurrentRequestData.Now.AddMinutes(5);
+                var salt = new byte[32];
+                new Random().NextBytes(salt);
+                obj = StringCipher.Encrypt(obj, _ecommerceSettings.EncryptionPassPhrase, salt);
+                sessionData.Salt = salt;
             }
+
             sessionData.Data = obj;
+            var now = CurrentRequestData.Now;
+            sessionData.ExpireOn = now.Add(expiry);
             _session.Transact(session => session.SaveOrUpdate(sessionData));
         }
 
@@ -104,21 +109,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         // This constant string is used as a "salt" value for the PasswordDeriveBytes function calls.
         // This size of the IV (in bytes) must = (keysize / 8).  Default keysize is 256, so the IV must be
         // 32 bytes long.  Using a 16 character string here gives us 32 bytes when converted to a byte array.
-        private const string initVector = "ha78f2435l97asyx";
+        //private const string initVector = "ha78f2435l97asyx";
 
 
         // This constant is used to determine the keysize of the encryption algorithm.
         private const int keysize = 256;
 
-        public static string Encrypt(string plainText, string passPhrase)
+        public static string Encrypt(string plainText, string passPhrase, byte[] salt)
         {
-            byte[] initVectorBytes = Encoding.UTF8.GetBytes(initVector);
             byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
             var password = new PasswordDeriveBytes(passPhrase, null);
             byte[] keyBytes = password.GetBytes(keysize / 8);
             var symmetricKey = new RijndaelManaged();
             symmetricKey.Mode = CipherMode.CBC;
-            ICryptoTransform encryptor = symmetricKey.CreateEncryptor(keyBytes, initVectorBytes);
+            ICryptoTransform encryptor = symmetricKey.CreateEncryptor(keyBytes, salt);
             var memoryStream = new MemoryStream();
             var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
             cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
@@ -129,15 +133,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             return Convert.ToBase64String(cipherTextBytes);
         }
 
-        public static string Decrypt(string cipherText, string passPhrase)
+        public static string Decrypt(string cipherText, string passPhrase, byte[] salt)
         {
-            byte[] initVectorBytes = Encoding.ASCII.GetBytes(initVector);
             byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
             var password = new PasswordDeriveBytes(passPhrase, null);
             byte[] keyBytes = password.GetBytes(keysize / 8);
             var symmetricKey = new RijndaelManaged();
             symmetricKey.Mode = CipherMode.CBC;
-            ICryptoTransform decryptor = symmetricKey.CreateDecryptor(keyBytes, initVectorBytes);
+            ICryptoTransform decryptor = symmetricKey.CreateDecryptor(keyBytes, salt);
             var memoryStream = new MemoryStream(cipherTextBytes);
             var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
             var plainTextBytes = new byte[cipherTextBytes.Length];
