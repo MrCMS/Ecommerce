@@ -5,25 +5,17 @@ using System.Linq;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
 {
-    public interface IGroupOrdersService
-    {
-        void AddOrdersGroupedByShippmentType(IEnumerable<IGrouping<string, Order>> baseData,
-            ref List<IList<KeyValuePair<string, decimal>>> results, string salesChannel);
-    }
-
     public class GroupOrdersService : IGroupOrdersService
     {
-        public void AddOrdersGroupedByShippmentType(IEnumerable<IGrouping<string, Order>> baseData,
-            ref List<IList<KeyValuePair<string, decimal>>> results, string salesChannel)
+        public IList<KeyValuePair<string, decimal>> GetOrdersGroupedByShipmentType(IEnumerable<IGrouping<string, Order>> baseData, string salesChannel)
         {
             var item = baseData.ToList().SingleOrDefault(x => x.Key == salesChannel);
             if (item != null)
-                results.Add(item.Where(x => !string.IsNullOrWhiteSpace(x.ShippingMethodName)).GroupBy(c => c.ShippingMethodName)
-                                    .Select(k => new { k.Key, Sum = k.Count() })
-                                    .ToDictionary(t => t.Key, t => decimal.Parse(t.Sum.ToString()))
-                                    .ToList());
-            else
-                results.Add(new List<KeyValuePair<string, decimal>>());
+                return item.Where(x => !string.IsNullOrWhiteSpace(x.ShippingMethodName)).GroupBy(c => c.ShippingMethodName)
+                    .Select(k => new { k.Key, Sum = k.Count() })
+                    .ToDictionary(t => t.Key, t => decimal.Parse(t.Sum.ToString()))
+                    .ToList();
+            return null;
         }
     }
 }
