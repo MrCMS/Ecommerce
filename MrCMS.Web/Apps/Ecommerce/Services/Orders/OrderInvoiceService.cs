@@ -299,13 +299,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             {
                 {columnWidth, ParagraphAlignment.Center}
             });
-            columns.Add("Price" + (taxesEnabled ? " (ex TAX)" : ""), new Dictionary<string, ParagraphAlignment>
+            columns.Add("Unit Price" + (taxesEnabled ? " (ex TAX)" : ""), new Dictionary<string, ParagraphAlignment>
             {
                 {columnWidth, ParagraphAlignment.Right}
             });
             if (taxesEnabled)
             {
-                columns.Add("Tax", new Dictionary<string, ParagraphAlignment>
+                columns.Add("Tax Rate", new Dictionary<string, ParagraphAlignment>
                 {
                     {columnWidth, ParagraphAlignment.Right}
                 });
@@ -350,14 +350,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 var counter = 0;
                 row.Cells[counter++].AddParagraph((i + 1).ToString());
                 row.Cells[counter++].AddParagraph(orderLine.Name);
-                row.Cells[counter++].AddParagraph(orderLine.Quantity.ToString());
+                
+                var quantity = orderLine.Quantity;
+                row.Cells[counter++].AddParagraph(quantity.ToString());
+                
                 var taxesEnabled = _taxSettings.TaxesEnabled;
-                row.Cells[counter++].AddParagraph((taxesEnabled ? orderLine.UnitPricePreTax : orderLine.UnitPrice).ToCurrencyFormat());
+                var unitPrice = (taxesEnabled ? orderLine.UnitPricePreTax : orderLine.UnitPrice);
+                row.Cells[counter++].AddParagraph(unitPrice.ToCurrencyFormat());
+                
                 if (taxesEnabled)
                 {
-                    row.Cells[counter++].AddParagraph((orderLine.UnitPrice - orderLine.UnitPricePreTax).ToCurrencyFormat());
+                    row.Cells[counter++].AddParagraph((orderLine.TaxRate) + "%");
                 }
-                row.Cells[counter++].AddParagraph(orderLine.Price.ToCurrencyFormat());
+                row.Cells[counter++].AddParagraph((unitPrice * quantity).ToCurrencyFormat());
 
                 table.SetEdge(0, table.Rows.Count - 2, 5, 2, Edge.Box, BorderStyle.Single, 0.75);
             }
@@ -365,14 +370,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         private void SetTableSummary(Order order, ref Table table)
         {
-            var summaryData = new Dictionary<string, string>
+            var summaryData = new Dictionary<string, string>();
+            var subtotal = _taxSettings.TaxesEnabled ? order.Subtotal : order.Total - order.ShippingTotal;
+            summaryData.Add("Sub-total", subtotal.ToCurrencyFormat());
+            var shipping = _taxSettings.TaxesEnabled && _taxSettings.ShippingRateTaxesEnabled
+                ? (order.ShippingSubtotal - order.ShippingTax)
+                : order.ShippingSubtotal;
+            summaryData.Add("Shipping", shipping.ToCurrencyFormat());
+            if (_taxSettings.TaxesEnabled)
             {
-                {"Sub-total", order.Subtotal.ToCurrencyFormat()},
-                {"Shipping", order.ShippingTotal.ToCurrencyFormat()},
-                {"Tax", order.Tax.ToCurrencyFormat()},
-                {"Discount", order.DiscountAmount.ToCurrencyFormat()},
-                {"Total", order.Total.ToCurrencyFormat()},
-            };
+                summaryData.Add("Tax", order.Tax.ToCurrencyFormat());
+            }
+            summaryData.Add("Discount", order.DiscountAmount.ToCurrencyFormat());
+            summaryData.Add("Total", order.Total.ToCurrencyFormat());
 
             var startIndex = _taxSettings.TaxesEnabled ? 5 : 4;
             foreach (var item in summaryData)
