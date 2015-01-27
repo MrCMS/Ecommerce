@@ -3,18 +3,21 @@
 @using MrCMS.Web.Apps.Core.Models.RegisterAndLogin
 @using MrCMS.Web.Apps.Ecommerce.Controllers
 @using MrCMS.Web.Apps.Ecommerce.Entities.Orders
+@using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Web.Apps.Ecommerce.Settings
 @{
     var order = ViewData["order"] as Order;
     var emailRegistrationStatus = ViewData["user-can-register"] is EmailRegistrationStatus ? (EmailRegistrationStatus)ViewData["user-can-register"] : EmailRegistrationStatus.Available;
 }
 <div class="padding-top-bottom-20">
     <div class="row">
-        <div class="col-sm-12 padding-left-0 mobile-left-padding">
+        <div class="col-lg-7 col-md-8 col-sm-8 padding-bottom-20">
             <h1>@Resource("Order Complete")</h1>
 
             <h3>@string.Format(Resource("Your order (ID:{0}) was successfully processed."), order.Id.ToString())</h3>
-            
+
             @Editable(Model, placed => placed.BodyContent)
 
             @switch (emailRegistrationStatus)
@@ -28,8 +31,153 @@
             }
 
             <hr />
-            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-default" >@Resource("Return to shop")
+            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-default">
+                @Resource("Return to shop")
             </a>
+        </div>
+        <div class="col-lg-5 col-md-4 col-sm-4">
+            @if (order.OrderLines.Any())
+            {
+                <div class="block-title">
+                    <div class="h1style">
+                        @Resource("Order Summary")
+                    </div>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>@Resource("Description")</th>
+                            <th>@Resource("Amount")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (OrderLine item in order.OrderLines)
+                        {
+                            <tr>
+                                <td>
+                                    <ul class="media-list">
+                                        <li>@item.Name</li>
+                                        <li>@Resource("Item Price"): @item.UnitPrice.ToCurrencyFormat()</li>
+                                        <li>@Resource("Quantity"): @item.Quantity</li>
+                                    </ul>
+                                </td>
+                                <td>@item.Price.ToCurrencyFormat()</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>@Resource("Sub Total"):</th>
+                            <td>@order.Subtotal.ToCurrencyFormat()</td>
+                        </tr>
+                        @if (order.ShippingTotal > decimal.Zero)
+                        {
+                            <tr>
+                                <th>@Resource("Shipping"):</th>
+                                <td>@order.ShippingTotal.ToCurrencyFormat()</td>
+                            </tr>
+                        }
+                        @if (order.ShippingDiscountAmount > decimal.Zero)
+                        {
+                            <tr>
+                                <th>@Resource("Shipping Discount"):</th>
+                                <td>@((-order.ShippingDiscountAmount).ToCurrencyFormat())</td>
+                            </tr>
+                        }
+                        @if (order.DiscountAmount > 0)
+                        {
+                            <tr>
+                                <th>@Resource("Discount"): </th>
+                                <td>@((-order.DiscountAmount).ToCurrencyFormat())</td>
+                            </tr>
+                        }
+                        @if (SiteSettings<TaxSettings>().TaxesEnabled)
+                        {
+                            <tr>
+                                <th>@Resource("Tax"): </th>
+                                <td>@order.Tax.ToCurrencyFormat()</td>
+                            </tr>
+                        }
+                        <tr>
+                            <th>@Resource("Total"):</th>
+                            <td><strong>@order.Total.ToCurrencyFormat()</strong></td>
+                        </tr>
+                        @if (order.GiftCardUsages.Any() || order.OrderRewardPointsHistories.OfType<PointsSpent>().Any())
+                        {
+                            foreach (var card in order.GiftCardUsages)
+                            {
+                                <tr>
+                                    <td>
+                                        @Resource("Gift Card") @card.GiftCard.Code
+                                    </td>
+                                    <td>
+                                        @card.Amount.ToCurrencyFormat()
+                                    </td>
+                                </tr>
+                            }
+                            if (order.OrderRewardPointsHistories.OfType<PointsSpent>().Any())
+                            {
+                                var pointsSpent = order.OrderRewardPointsHistories.OfType<PointsSpent>().First();
+                                <tr>
+                                    <td>
+                                        Reward points applied (@pointsSpent.Points)
+                                    </td>
+                                    <td>
+                                        @((-order.RewardPointsAppliedAmount).ToCurrencyFormat())
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                                <th>@Resource("Total paid"):</th>
+                                <td><strong>@order.TotalPaid.ToCurrencyFormat()</strong></td>
+                            </tr>
+                        }
+                    </tfoot>
+                </table>
+            }
+            <div class="block-title">
+                <div class="h1style">
+                    @Resource("Your Email")
+                </div>
+            </div>
+            <p>@order.OrderEmail</p>
+            <div class="block-title">
+                <div class="h1style">
+                    @Resource("Delivery Details")
+                </div>
+            </div>
+            <ul class="media-list">
+                <li>@(order.ShippingAddress.Name ?? String.Empty)</li>
+                <li>@(order.ShippingAddress.PhoneNumber ?? String.Empty)</li>
+                <li>@(order.ShippingAddress.Company ?? String.Empty)</li>
+                <li>@(order.ShippingAddress.Address1 ?? String.Empty)</li>
+                <li>@(order.ShippingAddress.Address2 ?? String.Empty)</li>
+                <li>@(order.ShippingAddress.City ?? String.Empty)</li>
+                <li>@(order.ShippingAddress.PostalCode ?? String.Empty)</li>
+                <li>@(order.ShippingAddress.GetCountryName())</li>
+            </ul>
+            <div class="block-title">
+                <div class="h1style">
+                    @Resource("Billing Details")
+                </div>
+            </div>
+            <ul class="media-list">
+                <li>@(order.BillingAddress.Name ?? String.Empty)</li>
+                <li>@(order.BillingAddress.PhoneNumber ?? String.Empty)</li>
+                <li>@(order.BillingAddress.Company ?? String.Empty)</li>
+                <li>@(order.BillingAddress.Address1 ?? String.Empty)</li>
+                <li>@(order.BillingAddress.Address2 ?? String.Empty)</li>
+                <li>@(order.BillingAddress.City ?? String.Empty)</li>
+                <li>@(order.BillingAddress.PostalCode ?? String.Empty)</li>
+                <li>@(order.BillingAddress.GetCountryName())</li>
+            </ul>
+            @*@{Html.RenderAction("Summary", "Checkout");}
+                @{Html.RenderAction("OrderEmail", "Checkout");}
+                @if (cart.RequiresShipping)
+                {
+                    Html.RenderAction("DeliveryDetails", "Checkout");
+                }*@
         </div>
     </div>
 </div>
