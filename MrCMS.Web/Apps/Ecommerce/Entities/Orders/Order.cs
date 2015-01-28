@@ -7,6 +7,7 @@ using MrCMS.Entities;
 using MrCMS.Entities.People;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
+using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
@@ -20,6 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
             OrderRefunds = new List<OrderRefund>();
             GiftCardUsages = new List<GiftCardUsage>();
             DiscountUsages = new List<DiscountUsage>();
+            OrderRewardPointsHistories = new List<OrderRewardPointsHistory>();
             Guid = Guid.NewGuid();
         }
 
@@ -109,6 +111,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Orders
         public virtual IList<OrderRefund> OrderRefunds { get; set; }
         public virtual IList<GiftCardUsage> GiftCardUsages { get; set; }
         public virtual IList<DiscountUsage> DiscountUsages { get; set; }
+        public virtual IList<OrderRewardPointsHistory> OrderRewardPointsHistories { get; set; }
 
         public virtual string AuthorisationToken { get; set; }
         public virtual string CaptureTransactionId { get; set; }

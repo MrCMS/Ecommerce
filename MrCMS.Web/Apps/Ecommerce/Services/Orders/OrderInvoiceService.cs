@@ -7,6 +7,7 @@ using MigraDoc.DocumentObjectModel;
 using MigraDoc.DocumentObjectModel.Shapes;
 using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.Rendering;
+using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
@@ -23,11 +24,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
     {
         private readonly EcommerceSettings _ecommerceSettings;
         private readonly IGetLogoUrl _getLogoUrl;
+        private readonly TaxSettings _taxSettings;
 
-        public OrderInvoiceService(EcommerceSettings ecommerceSettings, IGetLogoUrl getLogoUrl)
+        public OrderInvoiceService(EcommerceSettings ecommerceSettings, IGetLogoUrl getLogoUrl, TaxSettings taxSettings)
         {
             _ecommerceSettings = ecommerceSettings;
-            _getLogoUrl = getLogoUrl;   
+            _getLogoUrl = getLogoUrl;
+            _taxSettings = taxSettings;
         }
 
         [MrCMSACLRule(typeof(ExportOrderACL), ExportOrderACL.ExportOrderToPdf)]
@@ -251,7 +254,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
             //PAYMENT AND SHIPPING METHODS
             p = frame1.AddParagraph();
-            p.AddText(string.Format("Payment method: {0}", order.PaymentMethod));
+            p.AddText(string.Format("Payment method: {0}", order.PaymentMethod.BreakUpString()));
             p = frame2.AddParagraph();
             p.AddText(string.Format("Shipping method: {0}", order.ShippingMethodName));
         }
@@ -281,39 +284,36 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         private void SetTableHeader(ref Table table, Color tableColor)
         {
-            var columns = new Dictionary<string, Dictionary<string, ParagraphAlignment>>
+            var columns = new Dictionary<string, Dictionary<string, ParagraphAlignment>>();
+            columns.Add("#", new Dictionary<string, ParagraphAlignment>
             {
+                {"1cm", ParagraphAlignment.Center}
+            });
+            columns.Add("Title", new Dictionary<string, ParagraphAlignment>
+            {
+                {"6cm", ParagraphAlignment.Left}
+            });
+            var taxesEnabled = _taxSettings.TaxesEnabled;
+            var columnWidth = taxesEnabled ? "2cm" : "3cm";
+            columns.Add("Qty", new Dictionary<string, ParagraphAlignment>
+            {
+                {columnWidth, ParagraphAlignment.Center}
+            });
+            columns.Add("Unit Price" + (taxesEnabled ? " (ex TAX)" : ""), new Dictionary<string, ParagraphAlignment>
+            {
+                {columnWidth, ParagraphAlignment.Right}
+            });
+            if (taxesEnabled)
+            {
+                columns.Add("Tax Rate", new Dictionary<string, ParagraphAlignment>
                 {
-                    "#", new Dictionary<string, ParagraphAlignment>
-                    {
-                        {"1cm", ParagraphAlignment.Center}
-                    }
-                },
-                {
-                    "Title", new Dictionary<string, ParagraphAlignment>
-                    {
-                        {"6cm", ParagraphAlignment.Left}
-                    }
-                },
-                {
-                    "Unit Price", new Dictionary<string, ParagraphAlignment>
-                    {
-                        {"3cm", ParagraphAlignment.Right}
-                    }
-                },
-                {
-                    "Qty", new Dictionary<string, ParagraphAlignment>
-                    {
-                        {"3cm", ParagraphAlignment.Center}
-                    }
-                },
-                {
-                    "Total", new Dictionary<string, ParagraphAlignment>
-                    {
-                        {"3cm", ParagraphAlignment.Right}
-                    }
-                },
-            };
+                    {columnWidth, ParagraphAlignment.Right}
+                });
+            }
+            columns.Add("Net Sub Total", new Dictionary<string, ParagraphAlignment>
+            {
+                {"3cm", ParagraphAlignment.Right}
+            });
 
             foreach (var item in columns)
             {
@@ -347,12 +347,22 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 Row row = table.AddRow();
                 row.TopPadding = 2;
                 row.BottomPadding = 2;
-
-                row.Cells[0].AddParagraph((i + 1).ToString());
-                row.Cells[1].AddParagraph(orderLine.Name);
-                row.Cells[2].AddParagraph(orderLine.UnitPrice.ToCurrencyFormat());
-                row.Cells[3].AddParagraph(orderLine.Quantity.ToString());
-                row.Cells[4].AddParagraph(orderLine.Price.ToCurrencyFormat());
+                var counter = 0;
+                row.Cells[counter++].AddParagraph((i + 1).ToString());
+                row.Cells[counter++].AddParagraph(orderLine.Name);
+                
+                var quantity = orderLine.Quantity;
+                row.Cells[counter++].AddParagraph(quantity.ToString());
+                
+                var taxesEnabled = _taxSettings.TaxesEnabled;
+                var unitPrice = (taxesEnabled ? orderLine.UnitPricePreTax : orderLine.UnitPrice);
+                row.Cells[counter++].AddParagraph(unitPrice.ToCurrencyFormat());
+                
+                if (taxesEnabled)
+                {
+                    row.Cells[counter++].AddParagraph((orderLine.TaxRate) + "%");
+                }
+                row.Cells[counter++].AddParagraph((unitPrice * quantity).ToCurrencyFormat());
 
                 table.SetEdge(0, table.Rows.Count - 2, 5, 2, Edge.Box, BorderStyle.Single, 0.75);
             }
@@ -360,15 +370,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         private void SetTableSummary(Order order, ref Table table)
         {
-            var summaryData = new Dictionary<string, string>
+            var summaryData = new Dictionary<string, string>();
+            var subtotal = _taxSettings.TaxesEnabled ? order.Subtotal : order.Total - order.ShippingTotal;
+            summaryData.Add("Sub-total", subtotal.ToCurrencyFormat());
+            var shipping = _taxSettings.TaxesEnabled && _taxSettings.ShippingRateTaxesEnabled
+                ? (order.ShippingSubtotal - order.ShippingTax)
+                : order.ShippingSubtotal;
+            summaryData.Add("Shipping", shipping.ToCurrencyFormat());
+            if (_taxSettings.TaxesEnabled)
             {
-                {"Sub-total", order.Subtotal.ToCurrencyFormat()},
-                {"Shipping", order.ShippingTotal.ToCurrencyFormat()},
-                {"Tax", order.Tax.ToCurrencyFormat()},
-                {"Discount", order.DiscountAmount.ToCurrencyFormat()},
-                {"Total", order.Total.ToCurrencyFormat()},
-            };
+                summaryData.Add("Tax", order.Tax.ToCurrencyFormat());
+            }
+            summaryData.Add("Discount", order.DiscountAmount.ToCurrencyFormat());
+            summaryData.Add("Total", order.Total.ToCurrencyFormat());
 
+            var startIndex = _taxSettings.TaxesEnabled ? 5 : 4;
             foreach (var item in summaryData)
             {
                 Row row = table.AddRow();
@@ -377,18 +393,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 row.Cells[0].Borders.Visible = false;
                 row.Cells[0].AddParagraph(item.Key + ":");
                 row.Cells[0].Format.Alignment = ParagraphAlignment.Right;
-                row.Cells[0].MergeRight = 3;
+                row.Cells[0].MergeRight = startIndex - 1;
                 if (item.Key == "Total")
-                    row.Cells[4].Format.Font.Bold = true;
-                row.Cells[4].AddParagraph(item.Value);
+                    row.Cells[startIndex].Format.Font.Bold = true;
+                row.Cells[startIndex].AddParagraph(item.Value);
             }
 
-            table.SetEdge(4, table.Rows.Count - 3, 1, 3, Edge.Box, BorderStyle.Single, 0.75);
+            table.SetEdge(startIndex, table.Rows.Count - 3, 1, 3, Edge.Box, BorderStyle.Single, 0.75);
         }
 
         private byte[] GetDocumentToByteArray(ref Document pdf)
         {
-            var renderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Automatic) {Document = pdf};
+            var renderer = new PdfDocumentRenderer(true, PdfFontEmbedding.Automatic) { Document = pdf };
             renderer.RenderDocument();
             var stream = new MemoryStream();
 
@@ -412,7 +428,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
         {
             try
             {
-                var webRequest = (HttpWebRequest) WebRequest.Create(uri);
+                var webRequest = (HttpWebRequest)WebRequest.Create(uri);
                 webRequest.AllowWriteStreamBuffering = true;
                 WebResponse webResponse = webRequest.GetResponse();
                 Image image = Image.FromStream(webResponse.GetResponseStream());
@@ -428,10 +444,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         public Image ResizeImage(Image origImg, int width, int maxHeight)
         {
-            int newHeight = origImg.Height*width/origImg.Width;
+            int newHeight = origImg.Height * width / origImg.Width;
             if (newHeight > maxHeight)
             {
-                width = origImg.Width*maxHeight/origImg.Height;
+                width = origImg.Width * maxHeight / origImg.Height;
                 newHeight = maxHeight;
             }
             Image newImg = origImg.GetThumbnailImage(width, newHeight, null, IntPtr.Zero);
