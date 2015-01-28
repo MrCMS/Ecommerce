@@ -1296,6 +1296,9 @@
     <Compile Include="Apps\Ecommerce\Services\Analytics\ITrackingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupOrdersService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\GroupRevenueService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\IGroupOrdersService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\IGroupRevenueService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\IOrderAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\OrderAnalyticsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Orders\RevenueService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Analytics\Products\ProductAnalyticsService.cs" />
@@ -1313,6 +1316,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\CartDiscountApplicationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartDiscountCodeService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartDiscountService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\CartGuidResetter.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartItemBasedDiscountApplicationApplier.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartItemManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
@@ -1341,6 +1345,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartDiscountApplicationService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartDiscountCodeService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartDiscountService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\ICartGuidResetter.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartItemManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartRewardPointsUIService.cs" />
@@ -1402,6 +1407,7 @@
     <Compile Include="Apps\Ecommerce\Services\GetStockRemainingQuantity.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetUserGuid.cs" />
     <Compile Include="Apps\Ecommerce\Services\GetUserOrders.cs" />
+    <Compile Include="Apps\Ecommerce\Services\GiftMessageUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Services\GoogleBase\GoogleBaseTaxonomyData.cs" />
@@ -1598,6 +1604,7 @@
     <Compile Include="Apps\Ecommerce\Services\ProductVariantAvailabilityService.cs" />
     <Compile Include="Apps\Ecommerce\Services\RelatedProductsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\ChartService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Reports\IChartService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\IReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Reports\ReportService.cs" />
     <Compile Include="Apps\Ecommerce\Services\RewardPoints\GetUserRewardPointsBalance.cs" />

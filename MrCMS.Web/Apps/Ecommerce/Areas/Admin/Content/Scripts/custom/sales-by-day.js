@@ -1,67 +1,67 @@
-﻿//CHARTS
-google.load('visualization', '1.0', { 'packages': ['corechart'] });
-google.setOnLoadCallback(generateChart);
-window.onresize = function () {
-    generateChart();
-};
-var options = {
-    'width': '100%',
-    'titlePosition': 'top',
-    'legend': { position: 'bottom' },
-    'colors': ['#3498db', '#e74c3c', '#8e44ad', '#f39c12', '#27ae60'],
-    'chartArea': { left: 30, top: 20, width: "95%", height: "65%" },
-    'vAxis': { gridlines: { color: 'transparent' } },
-};
+﻿(function ($, google, window) {
+    //CHARTS
+    google.load('visualization', '1.0', { 'packages': ['corechart'] });
+    google.setOnLoadCallback(generateSalesByDayChart);
+    $(function () {
+        $(window).resize(generateSalesByDayChart);
+    });
+    var options = {
+        'width': '100%',
+        'titlePosition': 'top',
+        'legend': { position: 'bottom' },
+        'colors': ['#3498db', '#e74c3c', '#8e44ad', '#f39c12', '#27ae60'],
+        'chartArea': { left: 80, top: 20, width: "95%", height: "65%" },
+        'vAxis': { gridlines: { color: 'transparent' } },
+    };
+    var salesByDay = null;
 
-function generateChart() {
-    $.post('/Admin/Apps/Ecommerce/Report/SalesByDay', {
-        from: $("#From").val(),
-        to: $("#To").val()
-    }, function (result) {
-    var data = new google.visualization.DataTable();
-    var col = 0;
-    data.insertColumn(col, 'string', 'Days', 0);
-    var m, a, e;
-    if (result.MultipleData[0] != null && result.MultipleData[0].length > 0) {
-        col += 1;
-        data.insertColumn(col, 'number', 'MrCMS', 1);
-        m = true;
-    }
-    if (result.MultipleData[1] != null && result.MultipleData[1].length > 0) {
-        col += 1;
-        data.insertColumn(col, 'number', 'Amazon', 2);
-        a = true;
-    }
-    if (result.MultipleData[2] != null && result.MultipleData[2].length > 0) {
-        col += 1;
-        data.insertColumn(col, 'number', 'eBay', 3);
-        e = true;
+    function generateSalesByDayChart() {
+        if (salesByDay) {
+            generateChart(salesByDay, 'line-chart');
+        } else {
+            $.post('/Admin/Apps/Ecommerce/Report/SalesByDay', {
+                from: $("#From").val(),
+                to: $("#To").val()
+            }, function (result) {
+                salesByDay = result;
+                generateSalesByDayChart();
+            });
+        }
+    };
+
+    function hasKeys(data) {
+        for (var key in data) {
+            return true;
+        }
+        return false;
     }
 
-    $.each(result.Labels, function (index, value) {
+    function generateChart(result, container) {
+        var data = new google.visualization.DataTable();
         var col = 0;
-        data.addRows(1);
-        data.setCell(index, 0, value);
-        if (m == true) {
-            col += 1;
-            data.setCell(index, col, result.MultipleData[0][index]);
-        }
-        if (a == true) {
-            col += 1;
-            data.setCell(index, col, result.MultipleData[1][index]);
-        }
-        if (e == true) {
-            col += 1;
-            data.setCell(index, col, result.MultipleData[2][index]);
-        }
-    });
+        data.insertColumn(col++, 'string', 'Days', 0);
 
-    if (m != true && a != true && e != true) {
-        $('#line-chart').html('<br/><p>No results were found with current filters, please refine and try again.</p>');
-    } else {
-        $('#line-chart').html('');
-        var chart = new google.visualization.LineChart(document.getElementById('line-chart'));
-        chart.draw(data, options);
+        for (var key in result.MultipleData) {
+            data.insertColumn(col++, 'number', key, 1);
+        }
+
+        $.each(result.Labels, function (index, value) {
+            col = 0;
+            data.addRows(1);
+            data.setCell(index, 0, value);
+            for (var key in result.MultipleData) {
+                col++;
+                data.setCell(index, col, result.MultipleData[key][index]);
+            }
+        });
+
+        if (hasKeys(result.MultipleData)) {
+            $('#' + container).html('');
+            var chart = new google.visualization.LineChart(document.getElementById(container));
+            chart.draw(data, options);
+        } else {
+            $('#' + container).html('<br/><p style="text-align:center">Not enough data found for this chart.</p>');
+        }
     }
-    });
-}
+
+})(jQuery, google, window);

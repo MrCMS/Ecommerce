@@ -5,7 +5,7 @@ using MrCMS.Web.Apps.Ecommerce.Services.RewardPoints;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
-    public class AssignRewardPointInfo : IAssignRewardPointInfo,ICartSessionKeyList
+    public class AssignRewardPointInfo : IAssignRewardPointInfo, ICartSessionKeyList
     {
         public const string UseRewardPoints = "current.use-reward-points";
         private readonly ICartSessionManager _cartSessionManager;

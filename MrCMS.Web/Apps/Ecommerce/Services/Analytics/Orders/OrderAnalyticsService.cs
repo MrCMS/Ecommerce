@@ -1,77 +1,117 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
+
 namespace MrCMS.Web.Apps.Ecommerce.Services.Analytics.Orders
 {
-    public interface IOrderAnalyticsService
-    {
-        IEnumerable<IList<KeyValuePair<DateTime, decimal>>> GetRevenueGroupedByDate(DateTime from, DateTime to);
-        IEnumerable<IList<KeyValuePair<string, decimal>>> GetRevenueGrouped(string groupBy,DateTime from, DateTime to);
-        IEnumerable<IList<KeyValuePair<DateTime, decimal>>> GetRevenueForTodayGroupedByHour();
-        IEnumerable<IList<KeyValuePair<string, decimal>>> GetOrdersGrouped(DateTime from, DateTime to);
-    }
-
     public class OrderAnalyticsService : IOrderAnalyticsService
     {
+        private readonly IGroupOrdersService _groupOrdersService;
         private readonly IGroupRevenueService _groupRevenueService;
         private readonly IRevenueService _revenueService;
-        private readonly IGroupOrdersService _groupOrdersService;
 
-        public OrderAnalyticsService(IGroupRevenueService groupRevenueService, IRevenueService revenueService, IGroupOrdersService groupOrdersService)
+        public OrderAnalyticsService(IGroupRevenueService groupRevenueService, IRevenueService revenueService,
+            IGroupOrdersService groupOrdersService)
         {
             _groupRevenueService = groupRevenueService;
             _revenueService = revenueService;
             _groupOrdersService = groupOrdersService;
         }
 
-        public IEnumerable<IList<KeyValuePair<DateTime, decimal>>> GetRevenueGroupedByDate(DateTime from, DateTime to)
+        public Dictionary<string, IList<KeyValuePair<DateTime, decimal>>> GetRevenueGroupedByDate(DateTime from,
+            DateTime to)
         {
-            var results = new List<IList<KeyValuePair<DateTime, decimal>>>();
-            var baseData = _revenueService.GetBaseDataGroupedBySalesChannel(from, to);
-            foreach (var salesChannel in EcommerceApp.SalesChannels)
+            var revenueGroupedByDate = new Dictionary<string, IList<KeyValuePair<DateTime, decimal>>>();
+            IEnumerable<IGrouping<string, Order>> baseData = _revenueService.GetBaseDataGroupedBySalesChannel(from, to).ToList();
+            foreach (string salesChannel in EcommerceApp.SalesChannels)
             {
-                _groupRevenueService.AddRevenueGroupedByDateCreated(baseData, ref results, salesChannel);
+                IList<KeyValuePair<DateTime, decimal>> data =
+                    _groupRevenueService.GetRevenueGroupedByDateCreated(baseData, salesChannel);
+                if (data != null)
+                    revenueGroupedByDate[salesChannel] = data;
+            }
+            return revenueGroupedByDate;
+        }
+
+        public Dictionary<string, IList<KeyValuePair<string, decimal>>> GetRevenueByPaymentMethod(DateTime @from, DateTime to)
+        {
+            var results = new Dictionary<string, IList<KeyValuePair<string, decimal>>>();
+            IEnumerable<IGrouping<string, Order>> baseData = _revenueService.GetBaseDataGroupedBySalesChannel(from, to).ToList();
+            foreach (string salesChannel in EcommerceApp.SalesChannels)
+            {
+                IList<KeyValuePair<string, decimal>> list;
+                list = _groupRevenueService.GetRevenueGroupedByPaymentType(baseData, salesChannel);
+                if (list != null)
+                    results[salesChannel] = list;
             }
             return results;
         }
 
-        public IEnumerable<IList<KeyValuePair<string, decimal>>> GetRevenueGrouped(string groupBy,DateTime from, DateTime to)
+        public Dictionary<string, IList<KeyValuePair<string, decimal>>> GetRevenueByShippingMethod(DateTime @from, DateTime to)
         {
-            var results = new List<IList<KeyValuePair<string, decimal>>>();
-            var baseData = _revenueService.GetBaseDataGroupedBySalesChannel(from, to);
-            foreach (var salesChannel in EcommerceApp.SalesChannels)
+            var results = new Dictionary<string, IList<KeyValuePair<string, decimal>>>();
+            IEnumerable<IGrouping<string, Order>> baseData = _revenueService.GetBaseDataGroupedBySalesChannel(from, to).ToList();
+            foreach (string salesChannel in EcommerceApp.SalesChannels)
             {
+                IList<KeyValuePair<string, decimal>> list;
+                list = _groupRevenueService.GetRevenueGroupedByShipmentType(baseData, salesChannel);
+                if (list != null)
+                    results[salesChannel] = list;
+            }
+            return results;
+        }
+
+        public Dictionary<string, IList<KeyValuePair<string, decimal>>> GetRevenueGrouped(string groupBy, DateTime from,
+            DateTime to)
+        {
+            var results = new Dictionary<string, IList<KeyValuePair<string, decimal>>>();
+            IEnumerable<IGrouping<string, Order>> baseData = _revenueService.GetBaseDataGroupedBySalesChannel(from, to).ToList();
+            foreach (string salesChannel in EcommerceApp.SalesChannels)
+            {
+                IList<KeyValuePair<string, decimal>> list;
                 switch (groupBy)
                 {
                     case "PaymentMethod":
-                        _groupRevenueService.AddRevenueGroupedByPaymentType(baseData, ref results, salesChannel);
+                        list = _groupRevenueService.GetRevenueGroupedByPaymentType(baseData, salesChannel);
+                        if (list != null)
+                            results[salesChannel] = list;
                         break;
                     case "ShippingMethod":
-                        _groupRevenueService.AddRevenueGroupedByShippmentType(baseData, ref results, salesChannel);
+                        list = _groupRevenueService.GetRevenueGroupedByShipmentType(baseData, salesChannel);
+                        if (list != null)
+                            results[salesChannel] = list;
                         break;
                 }
-               
             }
             return results;
         }
 
-        public IEnumerable<IList<KeyValuePair<DateTime, decimal>>> GetRevenueForTodayGroupedByHour()
+        public Dictionary<string, IList<KeyValuePair<DateTime, decimal>>> GetRevenueForTodayGroupedByHour()
         {
-            var results = new List<IList<KeyValuePair<DateTime, decimal>>>();
-            var baseData = _revenueService.GetBaseDataGroupedBySalesChannel();
-            foreach (var salesChannel in EcommerceApp.SalesChannels)
+            var results = new Dictionary<string, IList<KeyValuePair<DateTime, decimal>>>();
+            IEnumerable<IGrouping<string, Order>> baseData = _revenueService.GetBaseDataGroupedBySalesChannel().ToList();
+            foreach (string salesChannel in EcommerceApp.SalesChannels)
             {
-                _groupRevenueService.AddRevenueGroupedByHour(baseData, ref results, salesChannel);
+                IList<KeyValuePair<DateTime, decimal>> list = _groupRevenueService.GetRevenueGroupedByHour(baseData,
+                    salesChannel);
+                if (list != null)
+                    results[salesChannel] = list;
             }
             return results;
         }
 
-        public IEnumerable<IList<KeyValuePair<string, decimal>>> GetOrdersGrouped(DateTime from, DateTime to)
+        public Dictionary<string, IList<KeyValuePair<string, decimal>>> GetOrdersGrouped(DateTime from, DateTime to)
         {
-            var results = new List<IList<KeyValuePair<string, decimal>>>();
-            var baseData = _revenueService.GetBaseDataGroupedBySalesChannel(from, to);
-            foreach (var salesChannel in EcommerceApp.SalesChannels)
-                _groupOrdersService.AddOrdersGroupedByShippmentType(baseData, ref results, salesChannel);
+            var results = new Dictionary<string, IList<KeyValuePair<string, decimal>>>();
+            IEnumerable<IGrouping<string, Order>> baseData = _revenueService.GetBaseDataGroupedBySalesChannel(from, to).ToList();
+            foreach (string salesChannel in EcommerceApp.SalesChannels)
+            {
+                IList<KeyValuePair<string, decimal>> list = _groupOrdersService.GetOrdersGroupedByShipmentType(
+                    baseData, salesChannel);
+                if (list != null)
+                    results[salesChannel] = list;
+            }
             return results;
         }
     }
