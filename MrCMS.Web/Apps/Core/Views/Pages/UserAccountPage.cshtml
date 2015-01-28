@@ -24,7 +24,6 @@
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#details" aria-controls="home" role="tab" data-toggle="tab">Your details</a></li>
                     <li role="presentation"><a href="#password" aria-controls="profile" role="tab" data-toggle="tab">Password</a></li>
-                    <li role="presentation"><a href="#reviews" aria-controls="messages" role="tab" data-toggle="tab">Product Reviews</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -44,11 +43,6 @@
                                     @{ Html.RenderAction("ChangePassword", "UserAccount"); }
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="reviews">
-                        <div class="padding-top-bottom-10">
-                            @{ Html.RenderAction("UserAccountReviews", "UserAccount"); }
                         </div>
                     </div>
                 </div>
