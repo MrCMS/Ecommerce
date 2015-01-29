@@ -1,26 +1,25 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 @using MrCMS.Helpers
 
-@if (Model.CanUsePayPalExpress && string.IsNullOrEmpty(Model.PayPalExpressToken) )
+@if (Model.CanUsePayPalExpress && string.IsNullOrEmpty(Model.PayPalExpressToken))
 {
-    <div class="block-title">
-        <div class="h1style">
-            @Resource("Or Checkout with")...
-        </div>
+    <div class="sub-header">
+        @Resource("Or Checkout with")...
     </div>
-    using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
-    {
-        <input type="image" src="https://www.paypal-marketing.com/paypal/html/partner/na/portal-v2/img/logos/checkout_logo_medium_170x32.png" />
-    }
+    <div class="grey-background padding-20 margin-bottom-20">
+        @using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
+        {
+            <input type="image" src="https://www.paypal-marketing.com/paypal/html/partner/na/portal-v2/img/logos/checkout_logo_medium_170x32.png" />
+        }
+    </div>
 }
-<div class="block-title">
-    <div class="h1style">
-        @Resource("Your Email")
-    </div>
+<div class="sub-header">
+    @Resource("Your Email")
 </div>
-<p>@Model.OrderEmail</p>
-
-@if (MrCMS.Website.CurrentRequestData.CurrentUser == null)
-{
-    <a class="btn btn-default" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Edit</a>
-}
+<div class="grey-background padding-20 margin-bottom-20">
+    <p>@Model.OrderEmail</p>
+    @if (MrCMS.Website.CurrentRequestData.CurrentUser == null)
+    {
+        <a class="btn btn-default" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.EnterOrderEmail>())">Edit</a>
+    }
+</div>

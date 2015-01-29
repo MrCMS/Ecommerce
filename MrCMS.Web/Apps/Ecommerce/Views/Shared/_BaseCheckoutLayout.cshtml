@@ -1,0 +1,46 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Settings
+@using MrCMS.Website
+@model MrCMS.Entities.Documents.Web.Webpage
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@Model.GetPageTitle()</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="@Model.MetaDescription" />
+    <meta name="keywords" content="@Model.MetaKeywords" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    @{
+        Html.IncludeCss("~/Apps/Ecommerce/Content/bootstrap/css/bootstrap.css");
+        Html.IncludeCss("~/Apps/Ecommerce/Content/bootstrap/css/bootstrap-theme.css");
+        Html.IncludeCss("~/Apps/Ecommerce/Content/Styles/jquery-ui-bootstrap/jquery-ui-1.9.2.custom.css");
+        Html.IncludeCss("~/Apps/Ecommerce/Content/Styles/checkout.css");
+        Html.AddAppUIStylesheets();
+    }
+    @Html.RenderCss()
+    @Html.Raw(Model.CustomHeaderScripts)
+</head>
+<body>
+    @RenderBody()
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    @{ Html.IncludeScript("~/Apps/Ecommerce/Content/bootstrap/js/bootstrap.min.js");
+     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.min.js");
+     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.unobtrusive.min.js");
+     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/ecommerce.js");
+     Html.AddAppUIScripts();
+    }
+    @{ Html.RenderScripts(); }
+    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><script src="/Apps/Core/Content/Scripts/respond.min.js"></script><![endif]-->
+    @{ Html.RenderAction("GetEcommerceTrackingCode", "GoogleAnalytics", new { page = this.Page }); }
+    @if (CurrentRequestData.CurrentUserIsAdmin && SiteSettings<SiteSettings>().EnableInlineEditing)
+    {
+        Html.RenderAction("InPageEditor", "InPageAdmin", new { id = Model.Id, area = "Admin" });
+    }
+    @if (IsSectionDefined("JavascriptBlockInclude"))
+    {
+        @RenderSection("JavascriptBlockInclude")
+    }
+    @Html.Raw(Model.CustomFooterScripts)
+</body>
+</html>

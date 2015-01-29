@@ -12,126 +12,120 @@
 <div id="basic-details" class="margin-bottom-20">
     @if (Model.Items.Any())
     {
-        <div class="block-title">
-            <div class="h1style">
-                @Resource("Order Summary")
-            </div>
+        <div class="sub-header border-top">
+            @Resource("Checkout - Order Summary", "Order Summary")
         </div>
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>@Resource("Description")</th>
-                    <th>@Resource("Amount")</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (CartItem item in Model.Items)
-                {
+        <div class="grey-background padding-20 margin-bottom-20">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>
-                            <ul class="media-list">
-                                <li>@item.Name</li>
-                                <li>@Resource("Item Price"): @item.UnitPrice.ToCurrencyFormat()</li>
-                                <li>@Resource("Quantity"): @item.Quantity</li>
-                            </ul>
-                        </td>
-                        <td>@item.Price.ToCurrencyFormat()</td>
+                        <th>@Resource("Description")</th>
+                        <th>@Resource("Amount")</th>
                     </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>@Resource("Sub Total"):</th>
-                    <td>@Model.Subtotal.ToCurrencyFormat()</td>
-                </tr>
-                @if (Model.ShippingTotalPreDiscount > decimal.Zero)
-                {
-                    <tr>
-                        <th>@Resource("Shipping"):</th>
-                        <td>@Model.ShippingTotalPreDiscount.ToCurrencyFormat()</td>
-                    </tr>
-                }
-                @if (Model.ShippingDiscount > decimal.Zero)
-                {
-                    <tr>
-                        <th>@Resource("Shipping Discount"):</th>
-                        <td>@((-Model.ShippingDiscount).ToCurrencyFormat())</td>
-                    </tr>
-                }
-                @if (Model.HasOrderTotalDiscount())
-                {
-                    <tr>
-                        <th>@Resource("Discount"): </th>
-                        <td>@((-Model.OrderTotalDiscount).ToCurrencyFormat())</td>
-                    </tr>
-                }
-                @if (SiteSettings<TaxSettings>().TaxesEnabled)
-                {
-                    <tr>
-                        <th>@Resource("Tax"): </th>
-                        <td>@Model.Tax.ToCurrencyFormat()</td>
-                    </tr>
-                }
-                <tr>
-                    <th>@Resource("Total"):</th>
-                    <td><strong>@Model.Total.ToCurrencyFormat()</strong></td>
-                </tr>
-                @if (Model.AppliedGiftCards.Any() || Model.UseRewardPoints)
-                {
-                    foreach (GiftCard card in Model.AppliedGiftCards)
+                </thead>
+                <tbody>
+                    @foreach (CartItem item in Model.Items)
                     {
                         <tr>
                             <td>
-                                @Resource("Gift Card") @card.Code
+                                <ul class="media-list">
+                                    <li>@item.Name</li>
+                                    <li>@Resource("Item Price"): @item.UnitPrice.ToCurrencyFormat()</li>
+                                    <li>@Resource("Quantity"): @item.Quantity</li>
+                                </ul>
                             </td>
-                            <td>
-                                @card.AvailableAmount.ToCurrencyFormat()
-                            </td>
+                            <td>@item.Price.ToCurrencyFormat()</td>
                         </tr>
                     }
-                    if (Model.UseRewardPoints)
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>@Resource("Sub Total"):</th>
+                        <td>@Model.Subtotal.ToCurrencyFormat()</td>
+                    </tr>
+                    @if (Model.ShippingTotalPreDiscount > decimal.Zero)
                     {
                         <tr>
-                            <td>
-                                Reward points applied (@Model.AppliedRewardPoints)
-                            </td>
-                            <td>
-                                @((-Model.AppliedRewardPointsAmount).ToCurrencyFormat())
-                            </td>
+                            <th>@Resource("Shipping"):</th>
+                            <td>@Model.ShippingTotalPreDiscount.ToCurrencyFormat()</td>
+                        </tr>
+                    }
+                    @if (Model.ShippingDiscount > decimal.Zero)
+                    {
+                        <tr>
+                            <th>@Resource("Shipping Discount"):</th>
+                            <td>@((-Model.ShippingDiscount).ToCurrencyFormat())</td>
+                        </tr>
+                    }
+                    @if (Model.HasOrderTotalDiscount())
+                    {
+                        <tr>
+                            <th>@Resource("Discount"): </th>
+                            <td>@((-Model.OrderTotalDiscount).ToCurrencyFormat())</td>
+                        </tr>
+                    }
+                    @if (SiteSettings<TaxSettings>().TaxesEnabled)
+                    {
+                        <tr>
+                            <th>@Resource("Tax"): </th>
+                            <td>@Model.Tax.ToCurrencyFormat()</td>
                         </tr>
                     }
                     <tr>
-                        <th>@Resource("Total to pay"):</th>
-                        <td><strong>@Model.TotalToPay.ToCurrencyFormat()</strong></td>
+                        <th>@Resource("Total"):</th>
+                        <td class="green"><strong>@Model.Total.ToCurrencyFormat()</strong></td>
                     </tr>
-                }
-            </tfoot>
-        </table>
+                    @if (Model.AppliedGiftCards.Any() || Model.UseRewardPoints)
+                    {
+                        foreach (GiftCard card in Model.AppliedGiftCards)
+                        {
+                            <tr>
+                                <td>
+                                    @Resource("Gift Card") @card.Code
+                                </td>
+                                <td>
+                                    @card.AvailableAmount.ToCurrencyFormat()
+                                </td>
+                            </tr>
+                        }
+                        if (Model.UseRewardPoints)
+                        {
+                            <tr>
+                                <td>
+                                    Reward points applied (@Model.AppliedRewardPoints)
+                                </td>
+                                <td>
+                                    @((-Model.AppliedRewardPointsAmount).ToCurrencyFormat())
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <th>@Resource("Total to pay"):</th>
+                            <td><strong>@Model.TotalToPay.ToCurrencyFormat()</strong></td>
+                        </tr>
+                    }
+                </tfoot>
+            </table>
+            <a class="btn btn-default margin-bottom-20" id="edit" href="@(UniquePageHelper.GetUrl<Cart>())">@Resource("Edit")</a>
+        </div>
     }
-    <a class="btn btn-default margin-bottom-20" id="edit" href="@(UniquePageHelper.GetUrl<Cart>())">@Resource("Edit")</a>
-
-
+    
     @if (ecommerceSettings.GiftMessageEnabled)
     {
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="block-title">
-                    <div class="h1style">
-                        Gift Message
-                    </div>
-                </div>
-            </div>
+        <div class="sub-header">
+            @Resource("Checkout - Gift Message", "Gift Message")
         </div>
-        <div data-message-container="@ecommerceSettings.GiftMessageMaxLength" data-error-message="@string.Format(Resource("Your gift message is more than {0} characters"), ecommerceSettings.GiftMessageMaxLength)">
-            <div class="row margin-bottom-10">
-                <div class="col-xs-12">
-                    <div class="form-group">
-                        <textarea data-gift-message id="summary-gift-message" class="form-control">@Model.GiftMessage</textarea>
+        <div class="grey-background padding-20 margin-bottom-20">
+            <div data-message-container="@ecommerceSettings.GiftMessageMaxLength" data-error-message="@string.Format(Resource("Your gift message is more than {0} characters"), ecommerceSettings.GiftMessageMaxLength)">
+                <div class="row margin-bottom-10">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <textarea data-gift-message id="summary-gift-message" class="form-control">@Model.GiftMessage</textarea>
+                        </div>
+                        <span id="message-character-count" data-gift-message-remaining="summary-gift-message">
+                            <span></span>
+                        </span>
                     </div>
-                    <span id="message-character-count" data-gift-message-remaining="summary-gift-message">
-                        <span></span>
-                    </span>
                 </div>
             </div>
         </div>
@@ -139,9 +133,13 @@
 
     @if (ecommerceSettings.GiftCardsEnabled)
     {
-        Html.RenderAction("GiftCards", "Cart");
+        <div class="grey-background padding-20 margin-bottom-20">
+            @{ Html.RenderAction("GiftCards", "Cart"); }    
+        </div>
     }
-
-    @{ Html.RenderAction("Discounts", "Cart"); }
+    
+    <div class="grey-background padding-20 margin-bottom-20">
+        @{ Html.RenderAction("Discounts", "Cart"); }
+    </div>
 
 </div>
