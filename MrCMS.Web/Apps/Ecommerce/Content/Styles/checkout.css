@@ -64,4 +64,5 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
 
     .light-green .pointer { background: none;}
     .light-grey .pointer { background: none;}
+    .dark-grey .pointer { background: none;}
 }
