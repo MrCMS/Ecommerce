@@ -7,14 +7,9 @@
 }
 @using (Html.BeginForm("SetOrderEmailAndLogin", "EnterOrderEmail", FormMethod.Post))
 {
-    <div class="block-title">
-        <h1>
-            @Resource("Email Address")
-        </h1>
-    </div>
     if (errorMessages.Any())
     {
-        <div class="alert alert-danger">
+        <div class="alert alert-danger" role="alert">
             <ul>
                 @foreach (var message in errorMessages)
                 {
@@ -24,34 +19,42 @@
         </div>
     }
 
-    <div class="row">
-        <div class="col-sm-8">
-            <div class="form-horizontal">
-                <div class="form-group">
-                    <label for="OrderEmail" class="col-sm-6">@Resource("Enter your Email address")<span class="red">*</span>:</label>
-                    <div class="col-sm-12">
+    <div class="border-all">
+        <div class="sub-header grey-background">
+            <h1>@Resource("Checkout Enter Order Email - Title", "Email Address")</h1>
+        </div>
+        <div class="padding-20">
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.OrderEmail, Resource("Enter your Email address")) <span class="red">*</span>
                         @Html.TextBoxFor(x => x.OrderEmail, new { placeholder = "Email address", @class = "form-control" })
                         @Html.ValidationMessageFor(x => x.OrderEmail)
                     </div>
+
+                    <label>@Resource("Checkout Enter Order Email - Have Password", "Do you have a password?")</label>
+                    <div class="margin-bottom-10">
+                        <div class="radio">
+                            <label>
+                                @Html.RadioButtonFor(model => model.HavePassword, false) @Resource("Checkout Enter Order Email - Have Password False", "No (Checkout as guest - you can create an account later)")
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                @Html.RadioButtonFor(model => model.HavePassword, true) @Resource("Checkout Enter Order Email - Have Password True", "Yes")
+                            </label>
+                        </div>
+                    </div>
+                    <div id="password-box" style="display: none" class="margin-bottom-10">
+                        @Html.PasswordFor(model => model.Password, new { placeholder = "Enter your password here", @class = "form-control" })
+                    </div>
                 </div>
             </div>
-            <p>@Resource("Do you have a password?")</p>
-            <div class="form-inline margin-bottom-10">
-                <label class="radio padding-right-10">
-                    @Html.RadioButtonFor(model => model.HavePassword, true) Yes
-                </label>
-                <label class="radio">
-                    @Html.RadioButtonFor(model => model.HavePassword, false) No
-                </label>
+            <div class="row">
+                <div class="col-sm-4">
+                    <input class="btn btn-primary btn-block" type="submit" id="continue" name="continue" value="@Resource("Continue")" />
+                </div>
             </div>
-            <div id="password-box" style="display: none" class="margin-bottom-10">
-                @Html.PasswordFor(model => model.Password, new { placeholder = "Enter your password here", @class = "form-control" })
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-4">
-            <input class="btn btn-primary btn-block" type="submit" id="continue" name="continue" value="@Resource("Continue")" />
         </div>
     </div>
 }
