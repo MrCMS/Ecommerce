@@ -2,10 +2,11 @@
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @model MrCMS.Web.Apps.Ecommerce.Models.CartModel
-<div class="sub-header">
-    @Resource("Delivery Details")
-</div>
 <div class="grey-background padding-20 margin-bottom-20">
+    <p>
+        <strong>@Resource("Delivery Details")</strong>
+        <span class="pull-right"><img src="~/Apps/Ecommerce/Content/Images/tick-sm.png" alt="tick" /></span>
+    </p>
     <ul class="list-unstyled">
         <li>@(Model.ShippingAddress.Name ?? String.Empty)</li>
         <li>@(Model.ShippingAddress.PhoneNumber ?? String.Empty)</li>

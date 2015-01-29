@@ -7,7 +7,7 @@
 }
 <div class="border-all margin-bottom-20">
     <div class="sub-header grey-background">
-        @Resource("Select shipping method")
+        @Resource("Choose a delivery option")
     </div>
     <div class="padding-20">
         <div class="form-horizontal">
@@ -21,7 +21,7 @@
                         @Html.DropDownList("ShippingMethod", shippingMethods, new { @class = "form-control margin-bottom-10" })
                         <div id="to-payment-details" style="display: none">
                             <a class="btn btn-primary btn-block" href="@(UniquePageHelper.GetUrl<PaymentDetails>())">
-                                @Resource("Continue")
+                                @Resource("Continue to Payment")
                             </a>
                         </div>
                     }

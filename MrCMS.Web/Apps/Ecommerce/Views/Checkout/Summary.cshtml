@@ -112,10 +112,8 @@
     
     @if (ecommerceSettings.GiftMessageEnabled)
     {
-        <div class="sub-header">
-            @Resource("Checkout - Gift Message", "Gift Message")
-        </div>
         <div class="grey-background padding-20 margin-bottom-20">
+            <p><strong>@Resource("Checkout - Gift Message", "Gift Message")</strong></p>
             <div data-message-container="@ecommerceSettings.GiftMessageMaxLength" data-error-message="@string.Format(Resource("Your gift message is more than {0} characters"), ecommerceSettings.GiftMessageMaxLength)">
                 <div class="row margin-bottom-10">
                     <div class="col-xs-12">

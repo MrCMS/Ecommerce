@@ -52,7 +52,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <MvcBuildViews>true</MvcBuildViews>
+    <MvcBuildViews>false</MvcBuildViews>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime">
@@ -2175,6 +2175,7 @@
     <Content Include="Apps\Ecommerce\Content\Images\sliderbg2.jpg" />
     <Content Include="Apps\Ecommerce\Content\Images\sliderbg3.jpg" />
     <Content Include="Apps\Ecommerce\Content\Images\specification.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\tick-sm.png" />
     <Content Include="Apps\Ecommerce\Content\Images\tick-small.png" />
     <Content Include="Apps\Ecommerce\Content\Images\tick.png" />
     <Content Include="Apps\Ecommerce\Content\Images\topoffer.png" />

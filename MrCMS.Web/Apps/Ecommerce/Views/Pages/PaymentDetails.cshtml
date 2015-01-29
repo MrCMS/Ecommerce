@@ -22,7 +22,7 @@
                                 <label>
                                     @Html.CheckBox("SameAsShipping", cart.BillingAddressSameAsShippingAddress) @Resource("Use Delivery Address")
                                 </label>
-                                <div class="controls">
+                                <div class="">
                                     @cart.ShippingAddress.GetDescription()
                                 </div>
                             </div>
@@ -78,13 +78,21 @@
                 <div class="padding-20">
                     @if (!settingBillingAddress)
                     {
-                        Html.RenderPartial("SelectMethod", cart);
-                        <div id="payment-confirmation">
-                            @if (cart.CanShowPaymentMethod())
-                            {
-                                Html.RenderAction(cart.PaymentMethodAction, cart.PaymentMethodController);
-                            }
+                        <div data-payment-methods="true">
+                            <div id="loading-message" style="display: none;"><img src="~/Apps/Ecommerce/Content/Images/ajax-loader.gif" alt="Loading" title="Loading" /></div>
+                            @{ Html.RenderPartial("SelectMethod", cart); }
+                            <div id="payment-confirmation">
+                                @if (cart.CanShowPaymentMethod())
+                                {
+                                    Html.RenderAction(cart.PaymentMethodAction, cart.PaymentMethodController);
+                                }
+                            </div>
                         </div>
+                        <div data-please-accept="true">
+                            @Resource("Please accept the terms and conditions to proceed to payment")
+                        </div>
+                        
+
                     }
                     else
                     {
