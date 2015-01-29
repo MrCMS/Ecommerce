@@ -1,7 +1,6 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.OrderPlaced
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Core.Models.RegisterAndLogin
-@using MrCMS.Web.Apps.Ecommerce.Controllers
 @using MrCMS.Web.Apps.Ecommerce.Entities.Orders
 @using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints
 @using MrCMS.Web.Apps.Ecommerce.Helpers
@@ -16,26 +15,47 @@
         <div class="col-sm-8">
             <div class="border-all margin-bottom-20">
                 <div class="sub-header grey-background">
-                    <h1>@Resource("Order Complete")</h1>
+                    <h1>@Resource("Order Placed - Title", "Thank you your order has been received")</h1>
                 </div>
                 <div class="padding-20">
-                    <h3>@string.Format(Resource("Your order (ID:{0}) was successfully processed."), order.Id.ToString())</h3>
+                    <p>Order ID: @order.Id.ToString()</p>
+                    <p>
+                        @(string.Format(Resource("Order Placed - Details sent to", "Your order details have been sent to {0}"), order.OrderEmail))
+                    </p>
                     @Editable(Model, placed => placed.BodyContent)
-                    @switch (emailRegistrationStatus)
-                    {
-                        case EmailRegistrationStatus.EmailInUse:
-                            Html.RenderPartial("LoginAndAssociateOrder", new LoginModel { Email = order.OrderEmail });
-                            break;
-                        case EmailRegistrationStatus.Available:
-                            Html.RenderPartial("RegisterAndAssociateOrder", new RegisterModel { Email = order.OrderEmail, FirstName = order.BillingAddress.FirstName, LastName = order.BillingAddress.LastName });
-                            break;
-                    }
-                    <hr />
-                    <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-default">
-                        @Resource("Return to shop")
-                    </a>
+                    
+                    <h3 class="margin-0">@Resource("Your order is complete") <img src="~/Apps/Ecommerce/Content/Images/tick.png" alt="tick"/> </h3>
                 </div>
             </div>
+            
+            
+            @switch (emailRegistrationStatus)
+            {
+                case EmailRegistrationStatus.EmailInUse:
+                    Html.RenderPartial("LoginAndAssociateOrder", new LoginModel { Email = order.OrderEmail });
+                    break;
+                case EmailRegistrationStatus.Available:
+                    Html.RenderPartial("RegisterAndAssociateOrder", new RegisterModel { Email = order.OrderEmail, FirstName = order.BillingAddress.FirstName, LastName = order.BillingAddress.LastName });
+                    break;
+            }
+           
+            <div class="border-all margin-bottom-20">
+                <div class="padding-20">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-4">
+                            <a href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.ProductSearch>())" class="btn btn-default btn-block">
+                                @Resource("Return to shop")
+                            </a>
+                        </div>
+                        <div class="col-xs-6 col-sm-4">
+                            <a href="/delivery-and-returns-info" class="btn btn-default btn-block">
+                                @Resource("Delivery and returns info")
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <div class="col-sm-4">
             @if (order.OrderLines.Any())
@@ -140,17 +160,19 @@
 
             }
             
-            <div class="sub-header">
-                @Resource("Your Email")
-            </div>
             <div class="grey-background padding-20 margin-bottom-20">
+                <p>
+                    <strong>@Resource("Your Email")</strong>
+                    <span class="pull-right"><img src="~/Apps/Ecommerce/Content/Images/tick-sm.png" alt="tick" /></span>
+                </p>
                 <p>@order.OrderEmail</p>
             </div>
 
-            <div class="sub-header">
-                @Resource("Delivery Details")
-            </div>
             <div class="grey-background padding-20 margin-bottom-20">
+                <p>
+                    <strong>@Resource("Delivery Details")</strong>
+                    <span class="pull-right"><img src="~/Apps/Ecommerce/Content/Images/tick-sm.png" alt="tick" /></span>
+                </p>
                 <ul class="media-list">
                     <li>@(order.ShippingAddress.Name ?? String.Empty)</li>
                     <li>@(order.ShippingAddress.PhoneNumber ?? String.Empty)</li>
@@ -163,10 +185,11 @@
                 </ul>
             </div>
                 
-            <div class="sub-header">
-                @Resource("Billing Details")
-            </div>
             <div class="grey-background padding-20 margin-bottom-20">
+                <p>
+                    <strong>@Resource("Billing Details")</strong>
+                    <span class="pull-right"><img src="~/Apps/Ecommerce/Content/Images/tick-sm.png" alt="tick" /></span>
+                </p>
                 <ul class="media-list">
                     <li>@(order.BillingAddress.Name ?? String.Empty)</li>
                     <li>@(order.BillingAddress.PhoneNumber ?? String.Empty)</li>

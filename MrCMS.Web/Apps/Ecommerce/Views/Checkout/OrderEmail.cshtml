@@ -3,20 +3,20 @@
 
 @if (Model.CanUsePayPalExpress && string.IsNullOrEmpty(Model.PayPalExpressToken))
 {
-    <div class="sub-header">
-        @Resource("Or Checkout with")...
-    </div>
     <div class="grey-background padding-20 margin-bottom-20">
+        <p><strong>@Resource("Or Checkout with")...</strong></p>
+
         @using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
         {
             <input type="image" src="https://www.paypal-marketing.com/paypal/html/partner/na/portal-v2/img/logos/checkout_logo_medium_170x32.png" />
         }
     </div>
 }
-<div class="sub-header">
-    @Resource("Your Email")
-</div>
 <div class="grey-background padding-20 margin-bottom-20">
+    <p>
+        <strong>@Resource("Your Email")</strong>
+        <span class="pull-right"><img src="~/Apps/Ecommerce/Content/Images/tick-sm.png" alt="tick"/></span>
+    </p>
     <p>@Model.OrderEmail</p>
     @if (MrCMS.Website.CurrentRequestData.CurrentUser == null)
     {

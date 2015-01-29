@@ -4,20 +4,21 @@
     var order = ViewData["order"] as Order;
     var errorMessage = TempData["register-error"] as string;
 }
-<div class="margin-bottom-10">
-    @Resource("Order Placed - Login to remember your order", "Login to remember your order")
+<div class="border-all margin-bottom-20">
+    <div class="sub-header grey-background">
+        @Resource("Order Placed - Login to remember your order", "Login to remember your order")
+    </div>
+    <div class="padding-20">
+        @using (Html.BeginForm("LoginAndAssociateOrder", "OrderPlaced", null, FormMethod.Post, new { @class = "" }))
+        {
+            @Html.HiddenFor(model => model.Email)
+            @Html.Hidden("Id", order.Guid)
+            <div class="form-group">
+                @Html.LabelFor(x => x.Password, Resource("Enter your password:"))
+                @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Password)
+            </div>
+            <input type="submit" class="btn btn-primary" value="@Resource("Continue")" />
+        }
+    </div>
 </div>
-<div>
-    @using (Html.BeginForm("LoginAndAssociateOrder", "OrderPlaced", null, FormMethod.Post, new { @class = "" }))
-    {
-        @Html.HiddenFor(model => model.Email)
-        @Html.Hidden("Id", order.Guid)
-        <div class="form-group">
-            @Html.LabelFor(x => x.Password, Resource("Enter your password:"))
-            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-            @Html.ValidationMessageFor(x => x.Password)
-        </div>
-        <input type="submit" class="btn btn-primary" value="@Resource("Continue")" />
-    }
-</div>
-

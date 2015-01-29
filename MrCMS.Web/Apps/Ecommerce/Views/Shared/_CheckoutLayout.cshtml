@@ -32,23 +32,23 @@
     <header>
         <div class="border-bottom padding-top-20 padding-bottom-20">
             <div class="row">
-                <div class="col-xs-8">
+                <div class="col-sm-8">
                     <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-sm-6 header-left">
                             @{ RenderZone("Checkout Header Left"); }
                         </div>
-                        <div class="col-xs-6">
+                        <div class="col-sm-6 header-middle">
                             @{ RenderZone("Checkout Header Middle"); }
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-sm-4 top-btns">
                     <div class="row">
-                        <div class="col-xs-6">
-                            <a href="@(UniquePageHelper.GetUrl<Cart>())" class="btn btn-primary btn-lg btn-block">Cart</a>
+                        <div class="col-sm-6">
+                            <a href="@(UniquePageHelper.GetUrl<Cart>())" class="btn btn-primary btn-lg btn-block margin-bottom-10">Cart</a>
                         </div>
-                        <div class="col-xs-6">
-                            <a href="@(UniquePageHelper.GetUrl<ProductSearch>())" class="btn btn-primary btn-lg btn-block">Return to shop</a>
+                        <div class="col-sm-6">
+                            <a href="@(UniquePageHelper.GetUrl<ProductSearch>())" class="btn btn-primary btn-lg btn-block margin-bottom-10">Return to shop</a>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,9 @@
                 <div class="col-md-3 col-sm-3 col-xs-3 light-green">
                     <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">
                         <div class="circle hidden-xs hidden-sm">1</div>
-                        <div class="session">Welcome</div>
+                        <div class="session">
+                            @Resource("Checkout Step - Welcome", "Welcome")
+                        </div>
                         <div class="pointer"></div>
                     </a>
                 </div>
@@ -72,7 +74,7 @@
                             2
                         </div>
                         <div class="session">
-                            Delivery
+                            @Resource("Checkout Step - Delivery", "Delivery")
                         </div>
                         <div class="pointer"></div>
                     </a>
@@ -82,7 +84,7 @@
                         3
                     </div>
                     <div class="session">
-                        Payment
+                        @Resource("Checkout Step - Payment", "Payment")
                     </div>
                     <div class="pointer"></div>
                 </div>
@@ -91,7 +93,7 @@
                         4
                     </div>
                     <div class="session">
-                        Receipt
+                        @Resource("Checkout Step - Receipt", "Receipt")
                     </div>
                 </div>
             </div>
