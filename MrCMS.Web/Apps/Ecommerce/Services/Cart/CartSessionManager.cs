@@ -52,7 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             {
                 string data = sessionData.Data;
                 if (encrypted)
-                    data = StringCipher.Decrypt(data, _ecommerceSettings.EncryptionPassPhrase, sessionData.Salt);
+                    data = StringCipher.Decrypt(data, _ecommerceSettings.EncryptionPassPhrase);
                 return JsonConvert.DeserializeObject<T>(data);
             }
             catch
@@ -79,10 +79,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             string obj = JsonConvert.SerializeObject(item);
             if (encrypt)
             {
-                var salt = new byte[32];
-                new Random().NextBytes(salt);
-                obj = StringCipher.Encrypt(obj, _ecommerceSettings.EncryptionPassPhrase, salt);
-                sessionData.Salt = salt;
+                obj = StringCipher.Encrypt(obj, _ecommerceSettings.EncryptionPassPhrase);
             }
 
             sessionData.Data = obj;
@@ -109,20 +106,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         // This constant string is used as a "salt" value for the PasswordDeriveBytes function calls.
         // This size of the IV (in bytes) must = (keysize / 8).  Default keysize is 256, so the IV must be
         // 32 bytes long.  Using a 16 character string here gives us 32 bytes when converted to a byte array.
-        //private const string initVector = "ha78f2435l97asyx";
+        private const string initVector = "ha78f2435l97asyx";
 
 
         // This constant is used to determine the keysize of the encryption algorithm.
         private const int keysize = 256;
 
-        public static string Encrypt(string plainText, string passPhrase, byte[] salt)
+        public static string Encrypt(string plainText, string passPhrase)
         {
+            byte[] initVectorBytes = Encoding.UTF8.GetBytes(initVector);
             byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
             var password = new PasswordDeriveBytes(passPhrase, null);
             byte[] keyBytes = password.GetBytes(keysize / 8);
             var symmetricKey = new RijndaelManaged();
             symmetricKey.Mode = CipherMode.CBC;
-            ICryptoTransform encryptor = symmetricKey.CreateEncryptor(keyBytes, salt);
+            ICryptoTransform encryptor = symmetricKey.CreateEncryptor(keyBytes, initVectorBytes);
             var memoryStream = new MemoryStream();
             var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write);
             cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
@@ -133,14 +131,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             return Convert.ToBase64String(cipherTextBytes);
         }
 
-        public static string Decrypt(string cipherText, string passPhrase, byte[] salt)
+        public static string Decrypt(string cipherText, string passPhrase)
         {
+            byte[] initVectorBytes = Encoding.ASCII.GetBytes(initVector);
             byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
             var password = new PasswordDeriveBytes(passPhrase, null);
             byte[] keyBytes = password.GetBytes(keysize / 8);
             var symmetricKey = new RijndaelManaged();
             symmetricKey.Mode = CipherMode.CBC;
-            ICryptoTransform decryptor = symmetricKey.CreateDecryptor(keyBytes, salt);
+            ICryptoTransform decryptor = symmetricKey.CreateDecryptor(keyBytes, initVectorBytes);
             var memoryStream = new MemoryStream(cipherTextBytes);
             var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
             var plainTextBytes = new byte[cipherTextBytes.Length];
