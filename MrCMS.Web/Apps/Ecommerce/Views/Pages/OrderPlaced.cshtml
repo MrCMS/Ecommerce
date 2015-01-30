@@ -23,12 +23,12 @@
                         @(string.Format(Resource("Order Placed - Details sent to", "Your order details have been sent to {0}"), order.OrderEmail))
                     </p>
                     @Editable(Model, placed => placed.BodyContent)
-                    
-                    <h3 class="margin-0">@Resource("Your order is complete") <img src="~/Apps/Ecommerce/Content/Images/tick.png" alt="tick"/> </h3>
+
+                    <h3 class="margin-0">@Resource("Your order is complete") <img src="~/Apps/Ecommerce/Content/Images/tick.png" alt="tick" /> </h3>
                 </div>
             </div>
-            
-            
+
+
             @switch (emailRegistrationStatus)
             {
                 case EmailRegistrationStatus.EmailInUse:
@@ -38,7 +38,7 @@
                     Html.RenderPartial("RegisterAndAssociateOrder", new RegisterModel { Email = order.OrderEmail, FirstName = order.BillingAddress.FirstName, LastName = order.BillingAddress.LastName });
                     break;
             }
-           
+
             <div class="border-all margin-bottom-20">
                 <div class="padding-20">
                     <div class="row">
@@ -159,7 +159,7 @@
 
 
             }
-            
+
             <div class="grey-background padding-20 margin-bottom-20">
                 <p>
                     <strong>@Resource("Your Email")</strong>
@@ -168,23 +168,26 @@
                 <p>@order.OrderEmail</p>
             </div>
 
-            <div class="grey-background padding-20 margin-bottom-20">
-                <p>
-                    <strong>@Resource("Delivery Details")</strong>
-                    <span class="pull-right"><img src="~/Apps/Ecommerce/Content/Images/tick-sm.png" alt="tick" /></span>
-                </p>
-                <ul class="media-list">
-                    <li>@(order.ShippingAddress.Name ?? String.Empty)</li>
-                    <li>@(order.ShippingAddress.PhoneNumber ?? String.Empty)</li>
-                    <li>@(order.ShippingAddress.Company ?? String.Empty)</li>
-                    <li>@(order.ShippingAddress.Address1 ?? String.Empty)</li>
-                    <li>@(order.ShippingAddress.Address2 ?? String.Empty)</li>
-                    <li>@(order.ShippingAddress.City ?? String.Empty)</li>
-                    <li>@(order.ShippingAddress.PostalCode ?? String.Empty)</li>
-                    <li>@(order.ShippingAddress.GetCountryName())</li>
-                </ul>
-            </div>
-                
+            @if (order.ShippingAddress != null)
+            {
+                <div class="grey-background padding-20 margin-bottom-20">
+                    <p>
+                        <strong>@Resource("Delivery Details")</strong>
+                        <span class="pull-right"><img src="~/Apps/Ecommerce/Content/Images/tick-sm.png" alt="tick" /></span>
+                    </p>
+                    <ul class="media-list">
+                        <li>@(order.ShippingAddress.Name ?? String.Empty)</li>
+                        <li>@(order.ShippingAddress.PhoneNumber ?? String.Empty)</li>
+                        <li>@(order.ShippingAddress.Company ?? String.Empty)</li>
+                        <li>@(order.ShippingAddress.Address1 ?? String.Empty)</li>
+                        <li>@(order.ShippingAddress.Address2 ?? String.Empty)</li>
+                        <li>@(order.ShippingAddress.City ?? String.Empty)</li>
+                        <li>@(order.ShippingAddress.PostalCode ?? String.Empty)</li>
+                        <li>@(order.ShippingAddress.GetCountryName())</li>
+                    </ul>
+                </div>
+            }
+
             <div class="grey-background padding-20 margin-bottom-20">
                 <p>
                     <strong>@Resource("Billing Details")</strong>
