@@ -1,5 +1,5 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
-<label>Select Payment Method <span class="red">*</span></label>
+<label>@Resource("Select Payment Method") <span class="red">*</span></label>
 <div class="margin-bottom-20">
     @foreach (var paymentMethod in Model.AvailablePaymentMethods)
     {
