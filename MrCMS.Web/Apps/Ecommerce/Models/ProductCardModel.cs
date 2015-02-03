@@ -10,5 +10,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public string Image { get; set; }
         public int? VariantId { get; set; }
         public string PreviousPriceText { get; set; }
+        public bool IsMultiVariant { get; set; }
     }
 }

@@ -1,0 +1,68 @@
+﻿html {}
+body { font-size: 13px;}
+h1, .h1,h2, .h2,h3, .h3,h4, .h4,h5, .h5{ margin: 0 0 10px 0;}
+h1, .h1{}
+h2, .h2{}
+h3, .h3{}
+h4, .h4{}
+h5, .h5{}
+
+.margin-0 { margin: 0;}
+.padding-right-10 { padding-right: 10px;}
+.margin-bottom-10 { margin-bottom: 10px;}
+.margin-bottom-20{ margin-bottom: 20px;}
+.padding-20 {padding: 20px;}
+.padding-top-20 { padding-top: 20px;}
+.padding-bottom-20{ padding-bottom: 20px;}
+.padding-top-bottom-20{ padding-top: 20px;padding-bottom: 20px;}
+.border-top {border-top: 1px solid #ddd;}
+.border-bottom {border-bottom: 1px solid #ddd;}
+.border-all {border: 1px solid #ddd;}
+.grey-background {background: #F9F9F9;}
+.sub-header {font-size: 21px;line-height: 28px;font-weight: normal;margin: 0;color: #000000;padding: 10px 20px;}
+.sub-header h1 { font-size: 21px;margin: 0;}
+.page-content { padding: 20px 0;}
+.red { color: red;}
+.green { color: #73C01A;}
+.navigation { margin: 20px 0;}
+.navigation a:hover { text-decoration: none;}
+.navigation .col-md-3:first-child {border-radius:3px 0 0 3px;}
+.navigation .col-md-3:last-child {border-radius:0 3px 3px 0;}
+.light-grey {background:url(/Apps/Ecommerce/Content/Images/light-grey.jpg) repeat;padding:0 10px;position:relative;}
+.dark-grey {background:url(/Apps/Ecommerce/Content/Images/dark-grey.jpg) repeat;padding:0 10px;position:relative;}
+.light-green {background:url(/Apps/Ecommerce/Content/Images/light-green.jpg) repeat;padding:0 10px;position:relative;}
+.dark-green {background:url(/Apps/Ecommerce/Content/Images/dark-green.jpg) repeat;padding:0 10px;position:relative;}
+.circle {position:absolute;background:url(/Apps/Ecommerce/Content/Images/circle.png) no-repeat 0 0;top:-5px;left:30px;width:48px;height:47px;text-align:center;line-height:47px;font-family:arial,serif;font-size:21px;font-weight:bold;}
+.navigation .col-md-3:first-child .circle {left:10px;}
+.dark-green .circle, .light-green .circle {color:#71AC1F;}
+.light-grey .circle, .dark-grey .circle {color:#999999;}
+.pointer {position:absolute;right:-17px;top:0;height:37px;width:17px;z-index:2;}
+.light-grey .pointer {background:url(/Apps/Ecommerce/Content/Images/light-grey-right.png) no-repeat 0 0;}
+.dark-grey .pointer {background:url(/Apps/Ecommerce/Content/Images/dark-grey-right.png) no-repeat 0 0;}
+.light-green .pointer {background:url(/Apps/Ecommerce/Content/Images/light-green-right.png) no-repeat 0 0;}
+.dark-green .pointer {background:url(/Apps/Ecommerce/Content/Images/dark-green-right.png) no-repeat 0 0;}
+.navigation .session {padding-left:80px;font-size:20px;line-height:37px;color: #ffffff;}
+.navigation .col-md-3:first-child .session {padding-left:60px;}
+input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .uneditable-input {border-radius: 0;}
+.form-control { border-radius: 0;}
+.btn { border-radius: 0;}
+.field-validation-error{color: red;}
+
+
+
+@media (max-width:768px) {
+    /*checkout*/
+    /*.navigation { padding-top: 0;}
+
+    #checkout-nav-buttons .btn-group{ padding-top: 10px; }*/
+
+    .navigation .session {text-align: center;font-size:12px;line-height:37px;color: #ffffff;padding: 0;}
+    .navigation .col-md-3:first-child .session {padding-left:0;}
+    .form-group .text-right { text-align: left;}
+
+    .top-btns .btn { font-size: 14px;}
+
+    .light-green .pointer { background: none;}
+    .light-grey .pointer { background: none;}
+    .dark-grey .pointer { background: none;}
+}

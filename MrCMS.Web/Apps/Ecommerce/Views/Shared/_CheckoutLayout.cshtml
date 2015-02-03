@@ -3,9 +3,9 @@
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @using MrCMS.Web.Areas.Admin.Helpers
 @using MrCMS.Website
-@model MrCMS.Entities.Documents.Web.Webpage
+@model Webpage
 @{
-    Layout = "_BaseLayout.cshtml";
+    Layout = "_BaseCheckoutLayout.cshtml";
     Webpage currentPage = CurrentRequestData.CurrentPage;
     List<string> activePages = currentPage.ActivePages.Select(webpage => webpage.DocumentType).ToList();
     int percentComplete = 25;
@@ -28,65 +28,79 @@
     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/gift-cards.js");
 }
 
-<div class="container checkout-header">
-    <div class="row">
-        <div class="col-xs-6">
-            <div class="padding-top-10">
-                @{ RenderZone("Checkout Header Left"); }
-            </div>
-        </div>
-        <div class="col-xs-6 pull-right">
-            @{ RenderZone("Checkout Header Middle"); }
-        </div>
-    </div>
-</div>
-<div class="clearfix"></div>
-<div class="navigation">
-    <div class="container">
-        <div class="row" id="checkout">
-            <div class="col-md-3 col-sm-3 col-xs-3 light-green">
-                <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">
-                    <div class="circle hidden-xs hidden-sm">
-                        1
-                    </div>
-                    <div class="session">
-                        Welcome
-                    </div>
-                    <div class="pointer"></div>
-                </a>
-            </div>
-            <div class="col-md-3 col-sm-3 col-xs-3 @(percentComplete >= 50 ? "light-green" : "dark-grey")">
-                <a href="@(UniquePageHelper.GetUrl<SetShippingDetails>())">
-                    <div class="circle hidden-xs hidden-sm">
-                        2
-                    </div>
-                    <div class="session">
-                        Delivery
-                    </div>
-                    <div class="pointer"></div>
-                </a>
-            </div>
-            <div class="col-md-3 col-sm-3 col-xs-3  @(percentComplete >= 75 ? "light-green" : "light-grey")">
-                <div class="circle hidden-xs hidden-sm">
-                    3
-                </div>
-                <div class="session">
-                    Payment
-                </div>
-                <div class="pointer"></div>
-            </div>
-            <div class="col-md-3 col-sm-3 col-xs-3 @(percentComplete >= 100 ? "light-green" : "dark-grey")">
-                <div class="circle hidden-xs hidden-sm">
-                    4
-                </div>
-                <div class="session">
-                    Receipt
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="container">
+    <header>
+        <div class="border-bottom padding-top-20 padding-bottom-20">
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="row">
+                        <div class="col-sm-6 header-left">
+                            @{ RenderZone("Checkout Header Left"); }
+                        </div>
+                        <div class="col-sm-6 header-middle">
+                            @{ RenderZone("Checkout Header Middle"); }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 top-btns">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <a href="@(UniquePageHelper.GetUrl<Cart>())" class="btn btn-primary btn-lg btn-block margin-bottom-10">Cart</a>
+                        </div>
+                        <div class="col-sm-6">
+                            <a href="@(UniquePageHelper.GetUrl<ProductSearch>())" class="btn btn-primary btn-lg btn-block margin-bottom-10">Return to shop</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section>
+        <div class="navigation">
+            <div class="row margin-0" id="checkout">
+                <div class="col-md-3 col-sm-3 col-xs-3 light-green">
+                    <a href="@(UniquePageHelper.GetUrl<EnterOrderEmail>())">
+                        <div class="circle hidden-xs hidden-sm">1</div>
+                        <div class="session">
+                            @Resource("Checkout Step - Welcome", "Welcome")
+                        </div>
+                        <div class="pointer"></div>
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3 @(percentComplete >= 50 ? "light-green" : "dark-grey")">
+                    <a href="@(UniquePageHelper.GetUrl<SetShippingDetails>())">
+                        <div class="circle hidden-xs hidden-sm">
+                            2
+                        </div>
+                        <div class="session">
+                            @Resource("Checkout Step - Delivery", "Delivery")
+                        </div>
+                        <div class="pointer"></div>
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3  @(percentComplete >= 75 ? "light-green" : "light-grey")">
+                    <div class="circle hidden-xs hidden-sm">
+                        3
+                    </div>
+                    <div class="session">
+                        @Resource("Checkout Step - Payment", "Payment")
+                    </div>
+                    <div class="pointer"></div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3 @(percentComplete >= 100 ? "light-green" : "dark-grey")">
+                    <div class="circle hidden-xs hidden-sm">
+                        4
+                    </div>
+                    <div class="session">
+                        @Resource("Checkout Step - Receipt", "Receipt")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="clearfix"></div>
+    
     @if (errorMessages.Any())
     {
         <div class="alert alert-danger">
@@ -101,17 +115,14 @@
             </ul>
         </div>
     }
-    @RenderBody()
-</div>
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                @{ RenderZone("Checkout Footer Left"); }
-            </div>
-            <div class="col-sm-6">
-                @{ RenderZone("Checkout Footer Right"); }
-            </div>
-        </div>
+    
+    <div class="page-content border-top">
+        @RenderBody()
     </div>
-</footer>
+
+    <footer>
+        <div class="border-top border-bottom padding-top-bottom-20">
+            @{RenderZone("Footer");}
+        </div>
+    </footer>
+</div>
