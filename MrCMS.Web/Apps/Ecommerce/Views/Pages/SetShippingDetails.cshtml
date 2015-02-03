@@ -5,8 +5,8 @@
     var cart = ViewData["cart"] as CartModel;
 }
 
-<div class="row padding-top-bottom-10">
-    <div class="col-lg-7 col-md-8 col-sm-8">
+<div class="row">
+    <div class="col-sm-8">
         <div id="address-info">
             @{
                 Html.RenderAction(cart.ShippingAddress == null ? "ShippingAddress" : "ShowShippingAddress", "SetShippingAddress");
@@ -18,7 +18,7 @@
             }
         </div>
     </div>
-    <div class="col-lg-5 col-md-4 col-sm-4">
+    <div class="col-sm-4">
         @{Html.RenderAction("Summary", "Checkout");}
         @{Html.RenderAction("OrderEmail", "Checkout");}
     </div>

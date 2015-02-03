@@ -22,10 +22,14 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
-    <IISExpressSSLPort>44300</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <TargetFrameworkProfile />
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
     <AutoParameterizationWebConfigConnectionStrings>false</AutoParameterizationWebConfigConnectionStrings>
@@ -48,7 +52,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <MvcBuildViews>true</MvcBuildViews>
+    <MvcBuildViews>false</MvcBuildViews>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime">
@@ -2171,6 +2175,7 @@
     <Content Include="Apps\Ecommerce\Content\Images\sliderbg2.jpg" />
     <Content Include="Apps\Ecommerce\Content\Images\sliderbg3.jpg" />
     <Content Include="Apps\Ecommerce\Content\Images\specification.png" />
+    <Content Include="Apps\Ecommerce\Content\Images\tick-sm.png" />
     <Content Include="Apps\Ecommerce\Content\Images\tick-small.png" />
     <Content Include="Apps\Ecommerce\Content\Images\tick.png" />
     <Content Include="Apps\Ecommerce\Content\Images\topoffer.png" />
@@ -2220,6 +2225,7 @@
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\jquery.ui.1.10.0.ie.css" />
     <Content Include="Apps\Ecommerce\Content\Styles\jquery-ui-bootstrap\jquery.ui.1.9.2.ie.css" />
     <Content Include="Apps\Ecommerce\Content\Styles\prettyPhoto.css" />
+    <Content Include="Apps\Ecommerce\Content\Styles\checkout.css" />
     <Content Include="Apps\Ecommerce\Content\Styles\style.css" />
     <Content Include="Apps\Ecommerce\Content\Styles\style.old.css" />
     <Content Include="Apps\Ecommerce\Content\Styles\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -3892,6 +3898,7 @@
     <Content Include="Apps\Ecommerce\Views\WorldPay\Form.cshtml" />
     <Content Include="Apps\Ecommerce\Views\WorldPay\RedirectToComplete.cshtml" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\CHANGES.md" />
+    <Content Include="Apps\Ecommerce\Views\Shared\_BaseCheckoutLayout.cshtml" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\LICENSE.md" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\plugins\scayt\LICENSE.md" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\plugins\scayt\README.md" />

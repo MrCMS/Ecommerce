@@ -181,72 +181,112 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 p = frame1.AddParagraph();
                 p.AddText(order.BillingAddress.Company);
             }
-            p = frame2.AddParagraph();
-            p.AddText(order.ShippingAddress.Name);
-            if (!string.IsNullOrEmpty(order.ShippingAddress.Company))
+
+            if (order.ShippingAddress != null)
             {
                 p = frame2.AddParagraph();
-                p.AddText(order.ShippingAddress.Company);
+                p.AddText(order.ShippingAddress.Name);
+
+                if (!string.IsNullOrEmpty(order.ShippingAddress.Company))
+                {
+                    p = frame2.AddParagraph();
+                    p.AddText(order.ShippingAddress.Company);
+                }
             }
+
             p = frame1.AddParagraph();
             p.AddText(order.BillingAddress.PhoneNumber);
-            p = frame2.AddParagraph();
-            p.AddText(order.ShippingAddress.PhoneNumber);
+
+            if (order.ShippingAddress != null)
+            {
+                p = frame2.AddParagraph();
+                p.AddText(order.ShippingAddress.PhoneNumber);
+            }
+
             p = frame1.AddParagraph();
             p.AddText(order.BillingAddress.Address1);
-            p = frame2.AddParagraph();
-            p.AddText(order.ShippingAddress.Address1);
+
+            if (order.ShippingAddress != null)
+            {
+                p = frame2.AddParagraph();
+                p.AddText(order.ShippingAddress.Address1);
+            }
+
             if (!String.IsNullOrWhiteSpace(order.BillingAddress.Address2))
             {
                 p = frame1.AddParagraph();
                 p.AddText(order.BillingAddress.Address2);
             }
-            if (!String.IsNullOrWhiteSpace(order.ShippingAddress.Address2))
+
+            if (order.ShippingAddress != null)
             {
-                p = frame2.AddParagraph();
-                p.AddText(order.ShippingAddress.Address2);
+                if (!String.IsNullOrWhiteSpace(order.ShippingAddress.Address2))
+                {
+                    p = frame2.AddParagraph();
+                    p.AddText(order.ShippingAddress.Address2);
+                }
             }
+
             if (!String.IsNullOrWhiteSpace(order.BillingAddress.City))
             {
                 p = frame1.AddParagraph();
                 p.AddText(order.BillingAddress.City);
             }
-            if (!String.IsNullOrWhiteSpace(order.ShippingAddress.City))
+
+            if (order.ShippingAddress != null)
             {
-                p = frame2.AddParagraph();
-                p.AddText(order.ShippingAddress.City);
+                if (!String.IsNullOrWhiteSpace(order.ShippingAddress.City))
+                {
+                    p = frame2.AddParagraph();
+                    p.AddText(order.ShippingAddress.City);
+                }
             }
+
             if (!String.IsNullOrWhiteSpace(order.BillingAddress.StateProvince))
             {
                 p = frame1.AddParagraph();
                 p.AddText(order.BillingAddress.StateProvince);
             }
-            if (!String.IsNullOrWhiteSpace(order.ShippingAddress.StateProvince))
+
+            if (order.ShippingAddress != null)
             {
-                p = frame2.AddParagraph();
-                p.AddText(order.ShippingAddress.StateProvince);
+                if (!String.IsNullOrWhiteSpace(order.ShippingAddress.StateProvince))
+                {
+                    p = frame2.AddParagraph();
+                    p.AddText(order.ShippingAddress.StateProvince);
+                }
             }
+
             string billingCountryName = order.BillingAddress.GetCountryName();
             if (!string.IsNullOrWhiteSpace(billingCountryName))
             {
                 p = frame1.AddParagraph();
                 p.AddText(billingCountryName);
             }
-            string shippingCountryName = order.ShippingAddress.GetCountryName();
-            if (!string.IsNullOrWhiteSpace(shippingCountryName))
+
+            if (order.ShippingAddress != null)
             {
-                p = frame2.AddParagraph();
-                p.AddText(shippingCountryName);
+                string shippingCountryName = order.ShippingAddress.GetCountryName();
+                if (!string.IsNullOrWhiteSpace(shippingCountryName))
+                {
+                    p = frame2.AddParagraph();
+                    p.AddText(shippingCountryName);
+                }
             }
+
             if (!String.IsNullOrWhiteSpace(order.BillingAddress.PostalCode))
             {
                 p = frame1.AddParagraph();
                 p.AddText(order.BillingAddress.PostalCode);
             }
-            if (!String.IsNullOrWhiteSpace(order.ShippingAddress.PostalCode))
+
+            if (order.ShippingAddress != null)
             {
-                p = frame2.AddParagraph();
-                p.AddText(order.ShippingAddress.PostalCode);
+                if (!String.IsNullOrWhiteSpace(order.ShippingAddress.PostalCode))
+                {
+                    p = frame2.AddParagraph();
+                    p.AddText(order.ShippingAddress.PostalCode);
+                }
             }
 
             frame1.AddParagraph("").AddLineBreak();
@@ -350,14 +390,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
                 var counter = 0;
                 row.Cells[counter++].AddParagraph((i + 1).ToString());
                 row.Cells[counter++].AddParagraph(orderLine.Name);
-                
+
                 var quantity = orderLine.Quantity;
                 row.Cells[counter++].AddParagraph(quantity.ToString());
-                
+
                 var taxesEnabled = _taxSettings.TaxesEnabled;
                 var unitPrice = (taxesEnabled ? orderLine.UnitPricePreTax : orderLine.UnitPrice);
                 row.Cells[counter++].AddParagraph(unitPrice.ToCurrencyFormat());
-                
+
                 if (taxesEnabled)
                 {
                     row.Cells[counter++].AddParagraph((orderLine.TaxRate) + "%");

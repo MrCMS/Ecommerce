@@ -57,7 +57,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                     Url = product.LiveUrlSegment,
                     Abstract = product.ProductAbstract,
                     Image = image == null ? null : image.FileUrl,
-                    PreviousPriceText = _settings.PreviousPriceText
+                    PreviousPriceText = _settings.PreviousPriceText,
+                    IsMultiVariant = product.IsMultiVariant
                 };
                 if (variant != null)
                 {
