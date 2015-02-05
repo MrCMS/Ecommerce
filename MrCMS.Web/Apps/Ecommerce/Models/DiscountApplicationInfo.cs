@@ -7,7 +7,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
     {
         public void Add(DiscountApplicationInfo info)
         {
-            OrderDiscount += info.OrderDiscount;
+            OrderTotalDiscount += info.OrderTotalDiscount;
             ShippingDiscount += info.ShippingDiscount;
             foreach (var key in info.ItemDiscounts.Keys)
             {
@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             ItemDiscounts = new Dictionary<int, decimal>();
         }
-        public decimal OrderDiscount { get; set; }
+        public decimal OrderTotalDiscount { get; set; }
         public decimal ShippingDiscount { get; set; }
         public Dictionary<int, decimal> ItemDiscounts { get; set; }
 
@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         {
             get
             {
-                return OrderDiscount > decimal.Zero
+                return OrderTotalDiscount > decimal.Zero
                        || ShippingDiscount > decimal.Zero
                        || ItemDiscounts.Keys.Any(x => ItemDiscounts[x] > decimal.Zero);
             }

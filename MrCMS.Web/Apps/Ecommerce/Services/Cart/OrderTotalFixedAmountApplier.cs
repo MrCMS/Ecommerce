@@ -9,7 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             return new DiscountApplicationInfo
             {
-                OrderDiscount = application.DiscountAmount
+                OrderTotalDiscount = application.DiscountAmount
             };
         }
     }
