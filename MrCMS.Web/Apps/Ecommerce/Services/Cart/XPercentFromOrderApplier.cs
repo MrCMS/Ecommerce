@@ -10,7 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         {
             return new DiscountApplicationInfo
             {
-                OrderDiscount =
+                OrderTotalDiscount =
                     Math.Round(cart.TotalPreDiscount*(application.DiscountPercent/100m), 2,
                         MidpointRounding.AwayFromZero)
             };

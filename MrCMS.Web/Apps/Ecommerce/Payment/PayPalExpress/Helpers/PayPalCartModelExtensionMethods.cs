@@ -10,7 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress.Helpers
         public static decimal GetShippingTotalForPayPal(this CartModel cart)
         {
             if (cart.ShippingMethod != null)
-                return cart.ShippingTotal;
+                return cart.ShippingTotalPreDiscount;
 
             var cheapestShippingOption = cart.GetCheapestShippingOption();
             if (cheapestShippingOption == null) return Decimal.Zero;

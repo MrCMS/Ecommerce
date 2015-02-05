@@ -433,7 +433,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
         public void SetDiscountApplication(DiscountApplicationInfo discountApplicationInfo)
         {
-            OrderTotalDiscount = discountApplicationInfo.OrderDiscount;
+            OrderTotalDiscount = discountApplicationInfo.OrderTotalDiscount;
             ShippingDiscount = discountApplicationInfo.ShippingDiscount;
             foreach (var key in discountApplicationInfo.ItemDiscounts.Keys)
             {
