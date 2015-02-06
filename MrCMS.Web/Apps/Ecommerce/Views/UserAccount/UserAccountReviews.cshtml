@@ -1,0 +1,54 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
+@model UserAccountReviewsModel
+
+@if (Model != null && !Model.Items.Any())
+{
+    @:You have no orders yet.
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Product
+                    </th>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        Text
+                    </th>
+                    <th>
+                        Rating
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            @item.ProductVariant.Name
+                        </td>
+                        <td>
+                            @item.Title
+                        </td>
+                        <td>
+                            @item.Text
+                        </td>
+                        <td>
+                            @item.Rating
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @Html.Pager(Model.Items, "UserAccountReviews", i => new { Model.Id, page = i })
+}
+
+
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/async-paging.js"); }

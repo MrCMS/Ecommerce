@@ -10,7 +10,7 @@ using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Events
 {
-    public class CopyCartToUser : IOnUserLoggedIn
+    public class CopyCartToUser : IOnUserLoggedIn, IOnUserRegistered
     {
         private readonly ISession _session;
         private readonly ICartBuilder _cartBuilder;
@@ -27,32 +27,37 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
 
             var cart = _cartBuilder.BuildCart();
             _session.Transact(session =>
+            {
+                foreach (var item in itemsToCopy)
                 {
-                    foreach (var item in itemsToCopy)
+                    var existingItem =
+                        cart.Items.FirstOrDefault(
+                            cartItem => cartItem.Item.SKU == item.Item.SKU);
+                    if (existingItem != null)
+                        existingItem.Quantity += item.Quantity;
+                    else
                     {
-                        var existingItem =
-                            cart.Items.FirstOrDefault(
-                                cartItem => cartItem.Item.SKU == item.Item.SKU);
-                        if (existingItem != null)
-                            existingItem.Quantity += item.Quantity;
-                        else
+                        existingItem = new CartItem
                         {
-                            existingItem = new CartItem
-                                {
-                                    Item = item.Item,
-                                    Quantity = item.Quantity,
-                                    UserGuid = CurrentRequestData.UserGuid
-                                };
-                            cart.Items.Add(existingItem);
-                        }
-                        session.SaveOrUpdate(existingItem);
-                        session.Delete(item);
+                            Item = item.Item,
+                            Quantity = item.Quantity,
+                            UserGuid = CurrentRequestData.UserGuid
+                        };
+                        cart.Items.Add(existingItem);
                     }
+                    session.SaveOrUpdate(existingItem);
+                    session.Delete(item);
+                }
 
-                });
+            });
         }
 
         public void Execute(UserLoggedInEventArgs args)
+        {
+            UserLoggedIn(args.User, args.PreviousSession);
+        }
+
+        public void Execute(OnUserRegisteredEventArgs args)
         {
             UserLoggedIn(args.User, args.PreviousSession);
         }

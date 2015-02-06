@@ -12,7 +12,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Helpers
             var session = MrCMSApplication.Get<ISession>();
             return settings.CurrencyId > 0
                 ? session.Get<Currency>(settings.CurrencyId)
-                : session.QueryOver<Currency>().Take(1).SingleOrDefault();
+                : session.QueryOver<Currency>().Take(1).Cacheable().SingleOrDefault();
         }
         
         public static string CurrencyCode(this EcommerceSettings settings)

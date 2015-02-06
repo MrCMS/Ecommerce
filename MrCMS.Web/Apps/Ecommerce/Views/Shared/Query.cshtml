@@ -1,21 +1,18 @@
-﻿@using System.Collections.Generic
-@using System.Linq
-@using MrCMS.Helpers
-@using MrCMS.Web.Apps.Ecommerce.Entities.Products
+﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Pages
-@using MrCMS.Web.Apps.Ecommerce.Services.Products
-@model ProductSearchQuery
+@model MrCMS.Web.Apps.Ecommerce.Models.ProductSearchQuery
 @{
-    var categories = ViewData["categories"] as CategorySearchModel;
-    var options = ViewData["product-options"] as List<ProductOptionModel<string>>;
-    var specifications = ViewData["product-specifications"] as List<ProductOptionModel<int>>;
-    var brands = ViewData["product-brands"] as List<SelectListItem>;
+    var categories = ViewData["categories"] as CategorySearchModel ?? new CategorySearchModel();
+    var options = ViewData["product-options"] as List<ProductOptionModel<string>> ?? new List<ProductOptionModel<string>>();
+    var specifications = ViewData["product-specifications"] as List<ProductOptionModel<int>> ?? new List<ProductOptionModel<int>>();
+    var brands = ViewData["product-brands"] as List<SelectListItem> ?? new List<SelectListItem>();
+    double maxPrice = ViewData["max-price"] is double ? (double)ViewData["max-price"] : 0;
 }
 <div id="product-query-container">
     <div class="margin-bottom-10">
         <h3 class="hidden-xs">
-            Refine results 
+            Refine results
         </h3>
         <a class="btn btn-primary visible-xs" data-toggle="collapse" data-target="#filter-container"><i class="glyphicon glyphicon-filter"></i>&nbsp;@Resource("Refine results")</a>
     </div>
@@ -29,7 +26,7 @@
                 </div>
                 <div class="options-con">
                     @Html.HiddenFor(query => query.CategoryId)
-                    @{ var depth = 0; }
+                    @{ int depth = 0; }
                     @if (categories.Hierarchy.Any())
                     {
                         <div class="option">
@@ -37,14 +34,14 @@
                         </div>
                         depth++;
                     }
-                    @foreach (var parent in categories.Hierarchy)
+                    @foreach (Category parent in categories.Hierarchy)
                     {
                         <div class="option">
                             <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="/@parent.LiveUrlSegment">@string.Format("{0} {1}", new string('-', depth), parent.Name)</a>
                         </div>
                         depth++;
                     }
-                    @foreach (var item in categories.Children)
+                    @foreach (Category item in categories.Children)
                     {
                         <div class="option">
                             <img src="/Apps/Ecommerce/Content/Images/indicator.png" /> <a href="/@item.LiveUrlSegment">@string.Format("{0} {1}", new string('-', depth), item.Name)</a>
@@ -62,10 +59,10 @@
             <div class="options-con">
                 <div class="option">
                     @Html.HiddenFor(query => query.PriceFrom)
-                    @Html.Hidden("PriceTo", Model.PriceTo ?? Model.MaxPrice)
-                    @Html.HiddenFor(query => query.MaxPrice)
+                    @Html.Hidden("PriceTo", Model.PriceTo ?? maxPrice)
+                    @Html.Hidden("MaxPrice", maxPrice)
                     <span class="price-range" id="amount">
-                        &#163;0.00 - &#163;250
+                        @*&#163;0.00 - &#163;250*@
                     </span>
                     <div class="padding-right-10">
                         <div id="slider-range"></div>

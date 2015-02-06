@@ -8,14 +8,14 @@
 <header class="container">
     <div class="row">
         <div class="col-xs-12">
-            <a href="/" class="pull-left logo">
-                <img alt="" class="img-responsive" src="/content/upload/1/default/logo8.png" title="">
-            </a>
+            <div class="pull-left logo">
+                @{ RenderZone("Header Left"); }
+            </div>
             @{ RenderZone("Header Right", allowFrontEndEditing:false); }
             @{ RenderZone("User Links", allowFrontEndEditing:false); }
-            <form method="GET" action="@(UniquePageHelper.GetUrl<ProductSearch>())" id="search-box" class="hidden-xs  pull-right" novalidate="novalidate">
+            <form method="GET" action="@(UniquePageHelper.GetUrl<ProductSearch>())" class="hidden-xs  pull-right search-box" novalidate="novalidate">
                 <div class="input-group">
-                    <input class="form-control" id="searchTerm" name="searchTerm" placeholder="e.g : Shorts" type="text" value="">
+                    <input class="form-control" id="searchTerm" name="searchTerm" placeholder="e.g : Shorts" type="text" value="@Request.QueryString["searchTerm"]">
                     <span class="input-group-btn">
                         <button class="btn btn-default btn-default-blue" type="submit" id="searchButton" name="searchButton"><span class="glyphicon glyphicon-search"></span></button>
                     </span>
@@ -32,9 +32,9 @@
                 <div class="visible-xs visible-sm mobilemenu">
                     <a href="#" id="left-menu-toggle"><span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Menu</a>
 
-                    <form method="GET" action="@(UniquePageHelper.GetUrl<ProductSearch>())" id="search-box" class="pull-right hidden-sm" novalidate="novalidate">
+                    <form method="GET" action="@(UniquePageHelper.GetUrl<ProductSearch>())" class="pull-right hidden-sm search-box" novalidate="novalidate">
                         <div class="input-group">
-                            <input class="form-control" id="searchTerm" name="searchTerm" placeholder="e.g : Shorts" type="text" value="">
+                            <input class="form-control" id="searchTerm" name="searchTerm" placeholder="e.g : Shorts" type="text" value="@Request.QueryString["searchTerm"]">
                             <span class="input-group-btn">
                                 <button class="btn btn-default btn-default-blue" type="submit" id="searchButton" name="searchButton"><span class="glyphicon glyphicon-search"></span></button>
                             </span>

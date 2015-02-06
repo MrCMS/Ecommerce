@@ -1,0 +1,7 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.DiscountLimitations.CartSubtotalGreaterThanX
+
+<div class="form-group">
+    @Html.LabelFor(x => x.CartSubtotalGreaterThanValue)
+    @Html.TextBoxFor(x => x.CartSubtotalGreaterThanValue, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.CartSubtotalGreaterThanValue)
+</div>

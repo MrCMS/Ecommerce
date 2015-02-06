@@ -98,47 +98,47 @@
                             Amount
                         </th>
                         <th>
-                            Created On
+                            Order Date
                         </th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in results)
+                    @foreach (var order in results)
                     {
                         var status = "warning";
-                        if (item.ShippingStatus.Equals(ShippingStatus.Shipped) && item.PaymentStatus.Equals(PaymentStatus.Paid))
+                        if (order.ShippingStatus.Equals(ShippingStatus.Shipped) && order.PaymentStatus.Equals(PaymentStatus.Paid))
                         {
                             status = "success";
                         }
-                        else if (item.IsCancelled)
+                        else if (order.IsCancelled)
                         {
                             status = "danger";
                         }
                         <tr class="@status">
                             <td>
-                                @(item.SalesChannel ?? EcommerceApp.DefaultSalesChannel)
+                                @(order.SalesChannel ?? EcommerceApp.DefaultSalesChannel)
                             </td>
                             <td>
-                                @item.Id
+                                @order.Id
                             </td>
                             <td style="word-break: break-all">
-                                @item.OrderEmail
+                                @order.OrderEmail
                             </td>
                             <td>
-                                @if (!item.IsCancelled)
+                                @if (!order.IsCancelled)
                                 {
-                                    @item.PaymentStatus
+                                    @order.PaymentStatus
 
-                                    if (item.PaymentStatus == PaymentStatus.Pending)
+                                    if (order.PaymentStatus == PaymentStatus.Pending)
                                     {
                                         <span></span>
-                                        @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                        @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = order.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
                                         <span></span>
-                                        @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                        @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = order.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
                                     }
                                     <br />
-                                    @item.PaymentMethod
+                                    @order.PaymentMethod
                                 }
                                 else
                                 {
@@ -146,24 +146,24 @@
                                 }
                             </td>
                             <td>
-                                @if (!item.IsCancelled)
+                                @if (!order.IsCancelled)
                                 {
                                     <span></span>
-                                    if (item.ShippingStatus == ShippingStatus.ShippingNotRequired)
+                                    if (order.ShippingStatus == ShippingStatus.ShippingNotRequired)
                                     {
-                                        @item.ShippingMethodName
+                                        @order.ShippingMethodName
                                     }
                                     else
                                     {
-                                        @item.ShippingStatus
-                                        if (item.ShippingStatus != ShippingStatus.Shipped)
+                                        @order.ShippingStatus
+                                        if (order.ShippingStatus != ShippingStatus.Shipped)
                                         {
-                                            @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = item.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                            @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = order.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
                                         }
                                         <br />
-                                        if (!string.IsNullOrWhiteSpace(item.ShippingMethodName))
+                                        if (!string.IsNullOrWhiteSpace(order.ShippingMethodName))
                                         {
-                                            @item.ShippingMethodName
+                                            @order.ShippingMethodName
                                         }
                                     }
                                 }
@@ -173,14 +173,14 @@
                                 }
                             </td>
                             <td>
-                                @item.Total.ToCurrencyFormat()
+                                @order.Total.ToCurrencyFormat()
                             </td>
                             <td>
-                                @item.CreatedOn
+                                @order.OrderDate.GetValueOrDefault(order.CreatedOn)
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    @Html.ActionLink("Details", "Edit", "Order", new { id = item.Id }, new { @class = "btn btn-xs btn-default" })
+                                    @Html.ActionLink("Details", "Edit", "Order", new { id = order.Id }, new { @class = "btn btn-xs btn-default" })
                                 </div>
                             </td>
                         </tr>

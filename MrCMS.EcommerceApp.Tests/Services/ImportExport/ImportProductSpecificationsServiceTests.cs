@@ -7,6 +7,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using NHibernate.Linq;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
@@ -34,11 +35,10 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                                  };
 
             var product = new Product() { Name = "Test Product" };
-            _importSpecificationsService.Initialize();
 
             _importSpecificationsService.ImportSpecifications(productDTO, product);
 
-            _importSpecificationsService.ProductSpecificationAttributes.Should().HaveCount(1);
+            Session.Query<ProductSpecificationAttribute>().Should().HaveCount(1);
         }
 
         [Fact]
@@ -54,11 +54,10 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                                  };
 
             var product = new Product() { Name = "Test Product" };
-            _importSpecificationsService.Initialize();
 
             _importSpecificationsService.ImportSpecifications(productDTO, product);
 
-            _importSpecificationsService.ProductSpecificationAttributes.First().Options.Should().HaveCount(1);
+            Session.Query<ProductSpecificationAttribute>().First().Options.Should().HaveCount(1);
         }
 
 
@@ -117,11 +116,10 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                                  };
 
             var product = new Product();
-            _importSpecificationsService.Initialize();
 
             _importSpecificationsService.ImportSpecifications(productDTO, product);
 
-            _importSpecificationsService.ProductSpecificationAttributes.First().Name.Should().Be("Storage");
+            Session.Query<ProductSpecificationAttribute>().First().Name.Should().Be("Storage");
         }
 
         [Fact]
@@ -134,11 +132,10 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                                  };
 
             var product = new Product();
-            _importSpecificationsService.Initialize();
 
             _importSpecificationsService.ImportSpecifications(productDTO, product);
 
-            _importSpecificationsService.ProductSpecificationAttributes.First().Options.First().Name.Should().Be("16GB");
+            Session.Query<ProductSpecificationAttribute>().First().Options.First().Name.Should().Be("16GB");
         }
 
         [Fact]
@@ -154,7 +151,6 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                                  };
 
             var product = new Product() { Name = "Test Product" };
-            _importSpecificationsService.Initialize();
 
             _importSpecificationsService.ImportSpecifications(productDTO, product);
 

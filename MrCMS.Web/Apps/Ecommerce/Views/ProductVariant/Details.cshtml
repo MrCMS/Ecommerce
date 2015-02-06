@@ -112,10 +112,10 @@
                         @Html.Raw(Model.SoldOutMessage)
                     }
 
-                    @if (!string.IsNullOrWhiteSpace(product.Abstract))
+                    @if (!string.IsNullOrWhiteSpace(product.ProductAbstract))
                     {
-                        <div class="padding-bottom-10">
-                            @Editable(product, p => p.Abstract, true)
+                        <div class="padding-bottom-10" itemprop="description">
+                            @Editable(product, p => p.ProductAbstract, true)
                         </div>
                     }
 

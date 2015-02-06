@@ -25,7 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.SagePay
         {
             Enabled = false;
             Mode = VspServerMode.Test;
-            VendorName = "MrCMS Ecommerce";
+            VendorName = "MrCMSEcommerce";
             Protocol = "3.00";
             PaymentFormProfile = PaymentFormProfile.Low;
         }

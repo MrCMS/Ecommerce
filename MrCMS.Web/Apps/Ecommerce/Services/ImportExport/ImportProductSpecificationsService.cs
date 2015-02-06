@@ -1,72 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MrCMS.Entities.Documents;
+using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using NHibernate;
+using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public class ImportProductSpecificationsService : IImportProductSpecificationsService
     {
         private readonly ISession _session;
-        private HashSet<ProductSpecificationAttribute> _productSpecificationAttributes;
 
         public ImportProductSpecificationsService(ISession session)
         {
             _session = session;
         }
 
-        public HashSet<ProductSpecificationAttribute> ProductSpecificationAttributes
+        public IEnumerable<ProductSpecificationValue> ImportSpecifications(
+            ProductImportDataTransferObject dataTransferObject, Product product)
         {
-            get { return _productSpecificationAttributes; }
-        }
-
-        public IImportProductSpecificationsService Initialize()
-        {
-            _productSpecificationAttributes = new HashSet<ProductSpecificationAttribute>(_session.QueryOver<ProductSpecificationAttribute>().List());
-            return this;
-        }
-
-        public IEnumerable<ProductSpecificationValue> ImportSpecifications(ProductImportDataTransferObject dataTransferObject, Product product)
-        {
-            var specificationsToAdd =
+            List<KeyValuePair<string, string>> specificationsToAdd =
                 dataTransferObject.Specifications.Where(
                     s =>
-                    !product.SpecificationValues.Select(value => value.SpecificationName)
+                        !product.SpecificationValues.Select(value => value.SpecificationName)
                             .Contains(s.Key, StringComparer.InvariantCultureIgnoreCase)).ToList();
-            var specificationsToRemove =
+            List<ProductSpecificationValue> specificationsToRemove =
                 product.SpecificationValues.Where(
                     value =>
-                    !dataTransferObject.Specifications.Keys.Contains(value.SpecificationName,
-                                                                     StringComparer.InvariantCultureIgnoreCase))
-                       .ToList();
-            var specificationsToUpdate =
+                        !dataTransferObject.Specifications.Keys.Contains(value.SpecificationName,
+                            StringComparer.InvariantCultureIgnoreCase))
+                    .ToList();
+            List<ProductSpecificationValue> specificationsToUpdate =
                 product.SpecificationValues.Where(value => !specificationsToRemove.Contains(value)).ToList();
             foreach (var item in specificationsToAdd)
             {
-                var attribute = ProductSpecificationAttributes.FirstOrDefault(t => t.Name.Equals(item.Key, StringComparison.InvariantCultureIgnoreCase));
+                ProductSpecificationAttribute attribute =
+                    _session.QueryOver<ProductSpecificationAttribute>()
+                        .Where(
+                            specificationAttribute =>
+                                specificationAttribute.Name.IsInsensitiveLike(item.Key, MatchMode.Exact))
+                        .Take(1)
+                        .SingleOrDefault();
                 if (attribute == null)
                 {
-                    attribute = new ProductSpecificationAttribute { Name = item.Key };
-                    ProductSpecificationAttributes.Add(attribute);
+                    attribute = new ProductSpecificationAttribute {Name = item.Key};
+                    _session.Transact(session => session.Save(attribute));
                 }
 
                 SetValue(product, attribute, item.Value);
             }
 
-            foreach (var value in specificationsToRemove)
+            foreach (ProductSpecificationValue value in specificationsToRemove)
             {
                 RemoveValue(product, value);
             }
-            foreach (var value in specificationsToUpdate)
+            foreach (ProductSpecificationValue value in specificationsToUpdate)
             {
-                var attribute = value.ProductSpecificationAttributeOption.ProductSpecificationAttribute;
+                ProductSpecificationAttribute attribute =
+                    value.ProductSpecificationAttributeOption.ProductSpecificationAttribute;
                 RemoveValue(product, value);
-                
+
                 SetValue(product, attribute, dataTransferObject.Specifications[value.SpecificationName]);
             }
 
@@ -81,21 +77,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
         private static void SetValue(Product product, ProductSpecificationAttribute attribute, string value)
         {
-            var option = attribute.Options.FirstOrDefault(o => o.Name == value);
+            ProductSpecificationAttributeOption option = attribute.Options.FirstOrDefault(o => o.Name == value);
             if (option == null)
             {
                 option = new ProductSpecificationAttributeOption
-                             {
-                                 Name = value,
-                                 ProductSpecificationAttribute = attribute
-                             };
+                {
+                    Name = value,
+                    ProductSpecificationAttribute = attribute
+                };
                 attribute.Options.Add(option);
             }
             product.SpecificationValues.Add(new ProductSpecificationValue
-                                                {
-                                                    ProductSpecificationAttributeOption = option,
-                                                    Product = product
-                                                });
+            {
+                ProductSpecificationAttributeOption = option,
+                Product = product
+            });
         }
     }
 }

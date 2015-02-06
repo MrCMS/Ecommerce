@@ -11,7 +11,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders
     {
         private readonly IConfigurationProvider _configurationProvider;
 
-        public WorldPaySettingsModelBinder(IKernel kernel, IConfigurationProvider configurationProvider) : base(kernel)
+        public WorldPaySettingsModelBinder(IKernel kernel, IConfigurationProvider configurationProvider)
+            : base(kernel)
         {
             _configurationProvider = configurationProvider;
         }

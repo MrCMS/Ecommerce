@@ -87,7 +87,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
 
         public void SetModel(PaypointPaymentDetailsModel model)
         {
-            _cartSessionManager.SetSessionValue(PaypointPaymentModelKey, _getUserGuid.UserGuid, model, true);
+            _cartSessionManager.SetSessionValue(PaypointPaymentModelKey, _getUserGuid.UserGuid, model, SessionDataTimeoutDefaults.PaymentInfo, true);
         }
 
         public PaypointPaymentDetailsModel GetModel()

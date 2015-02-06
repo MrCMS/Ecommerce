@@ -30,9 +30,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
             card.Status = GiftCardStatus.Activated;
             _session.Transact(session =>
             {
+                if (card.GiftCardType == GiftCardType.Virtual)
+                {
+                    var message = _messageParser.GetMessage(card);
+                    _messageParser.QueueMessage(message);
+                }
+                card.NotificationSent = true;
                 session.Update(card);
-                var message = _messageParser.GetMessage(card);
-                _messageParser.QueueMessage(message);
             });
         }
 

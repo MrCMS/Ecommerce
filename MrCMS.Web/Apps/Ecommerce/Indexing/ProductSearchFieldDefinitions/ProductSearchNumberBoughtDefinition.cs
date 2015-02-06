@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Lucene.Net.Documents;
 using MrCMS.Entities;
-using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
 using MrCMS.Indexing;
 using MrCMS.Indexing.Management;
@@ -11,7 +10,6 @@ using MrCMS.Tasks;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Transform;
@@ -36,7 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
         protected override Dictionary<Product, IEnumerable<int>> GetValues(List<Product> objs)
         {
             var numberBoughtCount = new GroupedNumberBoughtCount();
-            var groupedNumberBought = new HashSet<GroupedNumberBoughtCount>(_session.QueryOver<OrderLine>()
+            HashSet<GroupedNumberBoughtCount> groupedNumberBought = _session.QueryOver<OrderLine>()
                 .SelectList(
                     builder =>
                         builder.SelectGroup(line => line.ProductVariant.Id)
@@ -44,11 +42,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                             .SelectSum(line => line.Quantity)
                             .WithAlias(() => numberBoughtCount.Count))
                 .TransformUsing(Transformers.AliasToBean<GroupedNumberBoughtCount>())
-                .List<GroupedNumberBoughtCount>());
+                .List<GroupedNumberBoughtCount>().ToHashSet();
 
             HashSet<ProductVariant> variants =
-                new HashSet<ProductVariant>(
-                    _session.QueryOver<ProductVariant>().Fetch(variant => variant.Product).Eager.List());
+                _session.QueryOver<ProductVariant>().Fetch(variant => variant.Product).Eager.List().ToHashSet();
 
             return objs.ToDictionary(product => product, product =>
             {
@@ -59,7 +56,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                     productVariants.Sum(
                         variant =>
                             groupedNumberBought.Where(count => count.VariantId == variant.Id).Sum(count => count.Count))
-
                 }.AsEnumerable();
             });
         }
@@ -68,7 +64,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
         {
             if (!variants.Any())
                 return 0;
-            var values = variants.Select(variant => variant.Id).ToList();
+            List<int> values = variants.Select(variant => variant.Id).ToList();
             var numberBoughtCount = new NumberBoughtCount();
             var singleOrDefault = _session.QueryOver<OrderLine>()
                 .Where(line => line.ProductVariant.Id.IsIn(values))
@@ -84,12 +80,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
         public override Dictionary<Type, Func<SystemEntity, IEnumerable<LuceneAction>>> GetRelatedEntities()
         {
             return new Dictionary<Type, Func<SystemEntity, IEnumerable<LuceneAction>>>
-                       {
-                           {
-                               typeof (OrderLine),
-                               GetActions
-                           }
-                       };
+            {
+                {
+                    typeof (OrderLine),
+                    GetActions
+                }
+            };
         }
 
         private static IEnumerable<LuceneAction> GetActions(SystemEntity entity)

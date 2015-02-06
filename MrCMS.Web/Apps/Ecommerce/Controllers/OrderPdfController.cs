@@ -12,11 +12,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 {
     public class OrderPdfController : MrCMSAppUIController<EcommerceApp>
     {
-        private readonly IExportOrdersService _exportOrdersService;
+        private readonly IOrderInvoiceService _orderInvoiceService;
 
-        public OrderPdfController(IExportOrdersService exportOrdersService)
+        public OrderPdfController(IOrderInvoiceService orderInvoiceService)
         {
-            _exportOrdersService = exportOrdersService;
+            _orderInvoiceService = orderInvoiceService;
         }
 
         public ActionResult ExportOrderToPdf(Order order)
@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             if (order.User.Id != currentUser.Id)
                 return null;
 
-            var file = _exportOrdersService.ExportOrderToPdf(order);
+            var file = _orderInvoiceService.GeneratePDF(order);
             return File(file, "application/pdf", "Order-" + order.Id + "-[" + CurrentRequestData.Now.ToString("dd-MM-yyyy hh-mm") + "].pdf");
         }
 

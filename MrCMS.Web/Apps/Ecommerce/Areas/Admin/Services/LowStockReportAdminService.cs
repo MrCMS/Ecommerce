@@ -7,6 +7,7 @@ using MrCMS.Paging;
 using MrCMS.Services.Resources;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services

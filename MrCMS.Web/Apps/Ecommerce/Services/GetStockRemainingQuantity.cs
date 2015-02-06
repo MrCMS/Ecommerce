@@ -23,6 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 ? _session.QueryOver<WarehouseStock>()
                     .Where(stock => stock.ProductVariant.Id == productVariant.Id && stock.StockLevel > 0)
                     .Select(Projections.Sum<WarehouseStock>(warehouseStock => warehouseStock.StockLevel))
+                    .Cacheable()
                     .SingleOrDefault<int>()
                 : productVariant.StockRemaining;
         }

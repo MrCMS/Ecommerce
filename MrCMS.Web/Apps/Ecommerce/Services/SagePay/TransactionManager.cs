@@ -34,7 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
             if (registrationResponse.StatusDetail.StartsWith("4042"))
                 registrationResponse.Status = ResponseType.Invalid;
             registrationResponse.VendorTxCode = registration.VendorTxCode;
-            registrationResponse.CartTotal = cartModel.Total;
+            registrationResponse.CartTotal = cartModel.TotalToPay;
             return registrationResponse;
         }
     }

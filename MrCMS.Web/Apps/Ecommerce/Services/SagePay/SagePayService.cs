@@ -34,7 +34,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
                 if (transactionRegistrationResponse.Status == ResponseType.Ok)
                 {
                     _cartSessionManager.SetSessionValue(SagePayEnrolledResponseKey, _getUserGuid.UserGuid,
-                                                        transactionRegistrationResponse);
+                                                        transactionRegistrationResponse, SessionDataTimeoutDefaults.PaymentInfo);
                     return transactionRegistrationResponse;
                 }
                 model.CartGuid = _cartGuidResetter.ResetCartGuid(_getUserGuid.UserGuid);
@@ -56,7 +56,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
 
         public void SetResponse(Guid userGuid, SagePayResponse response)
         {
-            _cartSessionManager.SetSessionValue(SagePayTransactionResponseKey, userGuid, response, true);
+            _cartSessionManager.SetSessionValue(SagePayTransactionResponseKey, userGuid, response, SessionDataTimeoutDefaults.PaymentInfo, true);
         }
 
         public SagePayResponse GetResponse(Guid userGuid)
@@ -74,7 +74,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
 
         public void SetFailureDetails(Guid userGuid, FailureDetails failureDetails)
         {
-            _cartSessionManager.SetSessionValue(SagePayFailureDetailsKey, userGuid, failureDetails);
+            _cartSessionManager.SetSessionValue(SagePayFailureDetailsKey, userGuid, failureDetails, SessionDataTimeoutDefaults.PaymentInfo);
         }
 
         public FailureDetails GetFailureDetails(Guid userGuid)

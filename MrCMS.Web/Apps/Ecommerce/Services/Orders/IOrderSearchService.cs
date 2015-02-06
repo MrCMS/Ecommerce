@@ -9,9 +9,9 @@ using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Indexing;
 using MrCMS.Web.Apps.Ecommerce.Indexing.OrderSearchIndexDefinitions;
-using MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Website;
+using Version = Lucene.Net.Util.Version;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 {
@@ -22,16 +22,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
     public class OrderSearchQuery
     {
-        public string SearchText { get; set; }
-        public string OrderId { get; set; }
-        public DateTime? DateFrom { get; set; }
-        public DateTime? DateTo { get; set; }
-        public PaymentStatus? PaymentStatus { get; set; }
-        public ShippingStatus? ShippingStatus { get; set; }
-        public string SalesChannel { get; set; }
-        public double? OrderTotalFrom { get; set; }
-        public double? OrderTotalTo { get; set; }
-
         public OrderSearchQuery(OrderSearchModel orderSearchModel)
         {
             SearchText = orderSearchModel.SearchText;
@@ -45,28 +35,39 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
             OrderTotalTo = orderSearchModel.OrderTotalTo;
         }
 
+        public string SearchText { get; set; }
+        public string OrderId { get; set; }
+        public DateTime? DateFrom { get; set; }
+        public DateTime? DateTo { get; set; }
+        public PaymentStatus? PaymentStatus { get; set; }
+        public ShippingStatus? ShippingStatus { get; set; }
+        public string SalesChannel { get; set; }
+        public double? OrderTotalFrom { get; set; }
+        public double? OrderTotalTo { get; set; }
+
         public Query GetQuery()
         {
             if (String.IsNullOrWhiteSpace(SearchText) && String.IsNullOrWhiteSpace(OrderId) && PaymentStatus == null &&
-                ShippingStatus == null && !DateFrom.HasValue && !DateTo.HasValue && string.IsNullOrWhiteSpace(SalesChannel) && !OrderTotalFrom.HasValue && !OrderTotalTo.HasValue)
+                ShippingStatus == null && !DateFrom.HasValue && !DateTo.HasValue &&
+                string.IsNullOrWhiteSpace(SalesChannel) && !OrderTotalFrom.HasValue && !OrderTotalTo.HasValue)
                 return new MatchAllDocsQuery();
 
             var booleanQuery = new BooleanQuery();
             if (!String.IsNullOrWhiteSpace(SearchText))
             {
-                var fuzzySearchTerm = MakeFuzzy(SearchText);
-                var q = new MultiFieldQueryParser(Lucene.Net.Util.Version.LUCENE_30,
+                string fuzzySearchTerm = MakeFuzzy(SearchText);
+                var q = new MultiFieldQueryParser(Version.LUCENE_30,
                     new[]
                     {
-                        FieldDefinition.GetFieldName<OrderSearchCreatedOnDefinition>(),
+                        FieldDefinition.GetFieldName<OrderSearchOrderDateDefinition>(),
                         FieldDefinition.GetFieldName<OrderSearchEmaillDefinition>(),
                         FieldDefinition.GetFieldName<OrderSearchLastnamelDefinition>(),
                         FieldDefinition.GetFieldName<OrderSearchPaymentStatusDefinition>(),
                         FieldDefinition.GetFieldName<OrderSearchShippingStatusDefinition>(),
-                        FieldDefinition.GetFieldName<OrderSearchTotalDefinition>(),
+                        FieldDefinition.GetFieldName<OrderSearchTotalDefinition>()
                     },
                     MrCMSApplication.Get<OrderSearchIndex>().GetAnalyser());
-                var query = q.Parse(fuzzySearchTerm);
+                Query query = q.Parse(fuzzySearchTerm);
                 booleanQuery.Add(query, Occur.SHOULD);
             }
             if (DateFrom.HasValue || DateTo.HasValue)
@@ -102,51 +103,63 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders
 
         private Query GetDateQuery()
         {
-            return new TermRangeQuery(FieldDefinition.GetFieldName<OrderSearchCreatedOnDefinition>(),
-                                      DateFrom.HasValue
-                                          ? DateTools.DateToString(DateFrom.Value, DateTools.Resolution.SECOND)
-                                          : null,
-                                      DateTo.HasValue
-                                          ? DateTools.DateToString(DateTo.Value, DateTools.Resolution.SECOND)
-                                          : null, DateFrom.HasValue, DateTo.HasValue);
+            return new TermRangeQuery(FieldDefinition.GetFieldName<OrderSearchOrderDateDefinition>(),
+                DateFrom.HasValue
+                    ? DateTools.DateToString(DateFrom.Value, DateTools.Resolution.SECOND)
+                    : null,
+                DateTo.HasValue
+                    ? DateTools.DateToString(DateTo.Value, DateTools.Resolution.SECOND)
+                    : null, DateFrom.HasValue, DateTo.HasValue);
         }
 
         private string MakeFuzzy(string keywords)
         {
-            var split = keywords.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] split = keywords.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
             return string.Join(" ", split.Select(s => s + "~"));
         }
 
         private Query GetSalesChannelQuery()
         {
             return new BooleanQuery
+            {
                 {
-                    {new TermQuery(new Term(FieldDefinition.GetFieldName<OrderSearchSalesChannelDefinition>(), SalesChannel)), Occur.MUST}
-                };
+                    new TermQuery(new Term(FieldDefinition.GetFieldName<OrderSearchSalesChannelDefinition>(),
+                        SalesChannel)),
+                    Occur.MUST
+                }
+            };
         }
 
         private Query GetShippingStatusQuery()
         {
             return new BooleanQuery
+            {
                 {
-                    {new TermQuery(new Term(FieldDefinition.GetFieldName<OrderSearchShippingStatusDefinition>(), ShippingStatus.ToString())), Occur.MUST}
-                };
+                    new TermQuery(new Term(FieldDefinition.GetFieldName<OrderSearchShippingStatusDefinition>(),
+                        ShippingStatus.ToString())),
+                    Occur.MUST
+                }
+            };
         }
 
         private Query GetPaymentStatusQuery()
         {
             return new BooleanQuery
+            {
                 {
-                    {new TermQuery(new Term(FieldDefinition.GetFieldName<OrderSearchPaymentStatusDefinition>(), PaymentStatus.ToString())), Occur.MUST}
-                };
+                    new TermQuery(new Term(FieldDefinition.GetFieldName<OrderSearchPaymentStatusDefinition>(),
+                        PaymentStatus.ToString())),
+                    Occur.MUST
+                }
+            };
         }
 
         private Query GetOrderIdQuery()
         {
             return new BooleanQuery
-                {
-                    {new TermQuery(new Term(OrderSearchIndex.Id.FieldName, OrderId)), Occur.MUST}
-                };
+            {
+                {new TermQuery(new Term(OrderSearchIndex.Id.FieldName, OrderId)), Occur.MUST}
+            };
         }
 
         public Filter GetFilter()

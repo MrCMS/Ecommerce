@@ -1,54 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
-using MrCMS.Services;
 using NHibernate;
+using NHibernate.Criterion;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
     public class ImportProductVariantsService : IImportProductVariantsService
     {
         private readonly IImportProductVariantPriceBreaksService _importProductVariantPriceBreaksService;
-        private readonly IImportProductOptionsService _importProductOptionsService;
-        private readonly ITaxRateManager _taxRateManager;
-        private readonly IProductOptionManager _productOptionManager;
         private readonly ISession _session;
+        private readonly ITaxRateManager _taxRateManager;
 
-        private HashSet<ProductVariant> _allVariants;
-
-        public ImportProductVariantsService(IImportProductVariantPriceBreaksService importPriceBreaksService, IImportProductOptionsService importProductOptionsService,
-             ITaxRateManager taxRateManager, IProductOptionManager productOptionManager, ISession session)
+        public ImportProductVariantsService(IImportProductVariantPriceBreaksService importPriceBreaksService,
+            ITaxRateManager taxRateManager, ISession session)
         {
             _taxRateManager = taxRateManager;
-            _productOptionManager = productOptionManager;
             _session = session;
             _importProductVariantPriceBreaksService = importPriceBreaksService;
-            _importProductOptionsService = importProductOptionsService;
         }
 
-        public IImportProductVariantsService Initialize()
+        public IEnumerable<ProductVariant> ImportVariants(ProductImportDataTransferObject dataTransferObject,
+            Product product)
         {
-            _allVariants = new HashSet<ProductVariant>(_session.QueryOver<ProductVariant>().List());
-            _importProductOptionsService.Initialize();
-            return this;
-        }
-
-        public IEnumerable<ProductVariant> ImportVariants(ProductImportDataTransferObject dataTransferObject, Product product)
-        {
-            foreach (var item in dataTransferObject.ProductVariants)
+            foreach (ProductVariantImportDataTransferObject item in dataTransferObject.ProductVariants)
             {
-                ProductVariant productVariant;
-                if (_allVariants.SingleOrDefault(x => x.SKU == item.SKU) != null)
-                    productVariant = _allVariants.SingleOrDefault(x => x.SKU == item.SKU);
-                else
+                ProductVariant productVariant =
+                    _session.QueryOver<ProductVariant>()
+                        .Where(variant => variant.SKU.IsInsensitiveLike(item.SKU, MatchMode.Exact))
+                        .Take(1)
+                        .SingleOrDefault();
+
+                if (productVariant == null)
                 {
                     productVariant = new ProductVariant();
-                    _allVariants.Add(productVariant);
+                    product.Variants.Add(productVariant);
+                    _session.Transact(session => session.Save(productVariant));
                 }
 
                 productVariant.Name = item.Name;
@@ -60,52 +52,50 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 productVariant.StockRemaining = item.Stock.HasValue ? item.Stock.Value : 0;
                 productVariant.Weight = item.Weight.HasValue ? item.Weight.Value : 0;
                 productVariant.TrackingPolicy = item.TrackingPolicy;
-                productVariant.TaxRate = (item.TaxRate.HasValue && item.TaxRate.Value != 0) ? _taxRateManager.Get(item.TaxRate.Value) : _taxRateManager.GetDefaultRate();
+                productVariant.TaxRate = (item.TaxRate.HasValue && item.TaxRate.Value != 0)
+                    ? _taxRateManager.Get(item.TaxRate.Value)
+                    : _taxRateManager.GetDefaultRate();
                 productVariant.Product = product;
 
-                //if (!product.Variants.Contains(productVariant))
-                //{
-                //    product.Variants.Add(productVariant);
-                //}
-
-
-                var optionsToAdd =
+            
+                List<KeyValuePair<string, string>> optionsToAdd =
                     item.Options.Where(
                         s =>
-                        !productVariant.OptionValues.Select(value => value.ProductOption.Name)
-                                        .Contains(s.Key, StringComparer.OrdinalIgnoreCase)).ToList();
-                var optionsToRemove =
+                            !productVariant.OptionValues.Select(value => value.ProductOption.Name)
+                                .Contains(s.Key, StringComparer.OrdinalIgnoreCase)).ToList();
+                List<ProductOptionValue> optionsToRemove =
                     productVariant.OptionValues.Where(
                         value => !item.Options.Keys.Contains(value.ProductOption.Name, StringComparer.OrdinalIgnoreCase))
-                                  .ToList();
-                var optionsToUpdate =
+                        .ToList();
+                List<ProductOptionValue> optionsToUpdate =
                     productVariant.OptionValues.Where(value => !optionsToRemove.Contains(value)).ToList();
 
                 foreach (var option in optionsToAdd)
                 {
-                    var productOption = product.Options.FirstOrDefault(po => po.Name == option.Key);
+                    ProductOption productOption = product.Options.FirstOrDefault(po => po.Name == option.Key);
                     if (productOption != null)
                     {
                         var productOptionValue = new ProductOptionValue
-                                                     {
-                                                         ProductOption = productOption,
-                                                         ProductVariant = productVariant,
-                                                         Value = option.Value
-                                                     };
+                        {
+                            ProductOption = productOption,
+                            ProductVariant = productVariant,
+                            Value = option.Value
+                        };
                         productVariant.OptionValues.Add(productOptionValue);
                         productOption.Values.Add(productOptionValue);
                     }
                 }
-                foreach (var value in optionsToRemove)
+                foreach (ProductOptionValue value in optionsToRemove)
                 {
-                    var productOption = value.ProductOption;
+                    ProductOption productOption = value.ProductOption;
                     productVariant.OptionValues.Remove(value);
                     productOption.Values.Remove(value);
-                    _session.Delete(value);
+                    ProductOptionValue closureValue = value;
+                    _session.Transact(session => session.Delete(closureValue));
                 }
-                foreach (var value in optionsToUpdate)
+                foreach (ProductOptionValue value in optionsToUpdate)
                 {
-                    var key =
+                    string key =
                         item.Options.Keys.FirstOrDefault(
                             s => s.Equals(value.ProductOption.Name, StringComparison.OrdinalIgnoreCase));
                     if (key != null) value.Value = item.Options[key];
@@ -116,71 +106,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
                 _session.SaveOrUpdate(productVariant);
             }
-            var variantsToRemove =
+            List<ProductVariant> variantsToRemove =
                 product.Variants.Where(
                     variant => !dataTransferObject.ProductVariants.Select(o => o.SKU).Contains(variant.SKU)).ToList();
-            foreach (var variant in variantsToRemove)
+            foreach (ProductVariant variant in variantsToRemove)
             {
-                _allVariants.Remove(variant);
                 product.Variants.Remove(variant);
-                _session.Delete(variant);
+                ProductVariant closureVariant = variant;
+                _session.Transact(session => session.Delete(closureVariant));
             }
 
             return dataTransferObject.ProductVariants.Any() ? product.Variants : null;
-        }
-    }
-
-    public interface IImportProductOptionsService
-    {
-        IImportProductOptionsService Initialize();
-        void ImportVariantSpecifications(ProductVariantImportDataTransferObject dataTransferObject, Product product,
-                                         ProductVariant productVariant);
-    }
-
-    public class ImportProductOptionsService : IImportProductOptionsService
-    {
-        private readonly ISession _session;
-        private HashSet<ProductOption> _productOptions;
-
-        public ImportProductOptionsService(ISession session)
-        {
-            _session = session;
-        }
-
-
-        public IImportProductOptionsService Initialize()
-        {
-            _productOptions = new HashSet<ProductOption>(_session.QueryOver<ProductOption>().List());
-            return this;
-        }
-
-        public void ImportVariantSpecifications(ProductVariantImportDataTransferObject item, Product product, ProductVariant productVariant)
-        {
-            productVariant.OptionValues.Clear();
-            foreach (var opt in item.Options)
-            {
-                var option =
-                    _productOptions.FirstOrDefault(
-                        productOption => productOption.Name.Equals(opt.Key, StringComparison.InvariantCultureIgnoreCase)) ??
-                    new ProductOption { Name = opt.Key };
-                if (!product.Options.Contains(option))
-                    product.Options.Add(option);
-
-                var productOptionValue = productVariant.OptionValues.FirstOrDefault(x => x.ProductOption.Id == option.Id);
-                if (productOptionValue == null)
-                {
-                    productVariant.OptionValues.Add(new ProductOptionValue
-                    {
-                        ProductOption = option,
-                        ProductVariant = productVariant,
-                        Value = opt.Value
-                    });
-                }
-                else
-                {
-                    productOptionValue.Value = opt.Value;
-                }
-            }
         }
     }
 }

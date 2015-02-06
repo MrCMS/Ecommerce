@@ -2,12 +2,10 @@
 using System.Web.Mvc;
 using FakeItEasy;
 using FluentAssertions;
-using MrCMS.Entities.Documents.Layout;
 using MrCMS.Services.Caching;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using Xunit;
 
@@ -17,7 +15,6 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
     {
         private readonly ProductSearchController _controller;
         private readonly IProductSearchIndexService _productSearchIndexService;
-        private readonly IProductSearchQueryService _productSearchQueryService;
         private CartModel _cartModel;
         private IHtmlCacheService _htmlCacheService;
 
@@ -25,9 +22,9 @@ namespace MrCMS.EcommerceApp.Tests.Controllers
         {
             _productSearchIndexService = A.Fake<IProductSearchIndexService>();
             _cartModel = new CartModel();
-            _productSearchQueryService = A.Fake<IProductSearchQueryService>();
             _htmlCacheService = A.Fake<IHtmlCacheService>();
-            _controller = new ProductSearchController(_productSearchIndexService, _cartModel, _productSearchQueryService, _htmlCacheService)
+            _controller = new ProductSearchController(_productSearchIndexService, _cartModel,
+                _htmlCacheService)
             {
                 RequestMock = A.Fake<HttpRequestBase>()
             };

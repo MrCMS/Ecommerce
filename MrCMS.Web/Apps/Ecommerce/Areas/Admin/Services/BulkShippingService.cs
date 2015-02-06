@@ -18,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
             _bulkShippingUpdateService = bulkShippingUpdateService;
         }
 
-        public Dictionary<string, List<string>> Update(Stream file)
+        public Dictionary<string, List<string>> Update(Stream file, bool sendEmails)
         {
             Dictionary<string, List<string>> parseErrors;
             List<BulkShippingUpdateDataTransferObject> items = GetOrdersFromFile(file, out parseErrors);
@@ -28,7 +28,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                 _bulkShippingUpdateValidationService.ValidateBusinessLogic(items);
             if (businessLogicErrors.Any())
                 return businessLogicErrors;
-            int noOfUpdatedItems = _bulkShippingUpdateService.BulkShippingUpdateFromDTOs(items);
+            int noOfUpdatedItems = _bulkShippingUpdateService.BulkShippingUpdateFromDTOs(items, sendEmails);
             return new Dictionary<string, List<string>>
             {
                 {

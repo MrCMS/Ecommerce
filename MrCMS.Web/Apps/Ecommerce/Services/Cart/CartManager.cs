@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
+using MrCMS.Web.Apps.Ecommerce.Helpers.Cart;
 using MrCMS.Web.Apps.Ecommerce.Payment;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
@@ -16,8 +17,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 
         public const string CurrentBillingAddressKey = "current.billing-address";
         public const string CurrentShippingMethodTypeKey = "current.shipping-method-type";
+        public const string CurrentShippingDateKey = "current.shipping-date";
         public const string CurrentOrderEmailKey = "current.order-email";
         public const string CurrentGiftMessageKey = "current.gift-message";
+        public const string TermsAndConditionsAcceptedKey = "current.terms-and-conditions-accepted";
         public const string CurrentPaymentMethodKey = "current.payment-method";
         public const string CurrentPayPalExpressToken = "current.paypal-express-token";
         public const string CurrentPayPalExpressPayerId = "current.paypal-express-payer-id";
@@ -43,12 +46,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 yield return CurrentBillingAddressSameAsShippingAddressKey;
                 yield return CurrentBillingAddressKey;
                 yield return CurrentShippingMethodTypeKey;
+                yield return CurrentShippingDateKey;
                 yield return CurrentOrderEmailKey;
                 yield return CurrentGiftMessageKey;
                 yield return CurrentPaymentMethodKey;
                 yield return CurrentPayPalExpressToken;
                 yield return CurrentPayPalExpressPayerId;
                 yield return CurrentAppliedGiftCards;
+                yield return TermsAndConditionsAcceptedKey;
             }
         }
 
@@ -105,21 +110,29 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             _cartSessionManager.SetSessionValue(CurrentOrderEmailKey, _getUserGuid.UserGuid, email);
         }
 
-        public IPaymentMethod SetPaymentMethod(string methodName)
+        public BasePaymentMethod SetPaymentMethod(string methodName)
         {
-            _cartSessionManager.SetSessionValue(CurrentPaymentMethodKey, _getUserGuid.UserGuid, methodName);
-            return _cartBuilder.BuildCart().PaymentMethod;
+            _cartSessionManager.SetSessionValue(CurrentPaymentMethodKey, _getUserGuid.UserGuid, methodName,
+                SessionDataTimeoutDefaults.PaymentInfo);
+            var cart = _cartBuilder.BuildCart();
+            if (cart.CanShowPaymentMethod())
+                return cart.PaymentMethod;
+            return null;
         }
 
         public void SetPayPalExpressPayerId(string payerId)
         {
-            _cartSessionManager.SetSessionValue(CurrentPayPalExpressPayerId, _getUserGuid.UserGuid, payerId);
+            _cartSessionManager.SetSessionValue(CurrentPayPalExpressPayerId, _getUserGuid.UserGuid, payerId, SessionDataTimeoutDefaults.PaymentInfo);
         }
 
         public void SetPayPalExpressToken(string token)
         {
-            _cartSessionManager.SetSessionValue(CurrentPayPalExpressToken, _getUserGuid.UserGuid, token);
+            _cartSessionManager.SetSessionValue(CurrentPayPalExpressToken, _getUserGuid.UserGuid, token, SessionDataTimeoutDefaults.PaymentInfo);
         }
+    }
 
+    public static class SessionDataTimeoutDefaults
+    {
+        public static readonly TimeSpan PaymentInfo = TimeSpan.FromMinutes(20);
     }
 }

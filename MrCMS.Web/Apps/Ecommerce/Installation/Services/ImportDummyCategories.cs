@@ -1,5 +1,8 @@
 ﻿using System.IO;
+using System.Linq;
 using Iesi.Collections;
+using MrCMS.Batching.Entities;
+using MrCMS.Batching.Services;
 using MrCMS.Services;
 using MrCMS.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Installation.Models;
@@ -11,17 +14,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
     {
         private readonly ImportExportManager _importExportManager;
         private readonly IDocumentService _documentService;
+        private readonly ISynchronousBatchRunExecution _synchronousBatchRunExecution;
 
-        public ImportDummyCategories(ImportExportManager importExportManager, IDocumentService documentService)
+        public ImportDummyCategories(ImportExportManager importExportManager, IDocumentService documentService, ISynchronousBatchRunExecution synchronousBatchRunExecution)
         {
             _importExportManager = importExportManager;
             _documentService = documentService;
+            _synchronousBatchRunExecution = synchronousBatchRunExecution;
         }
 
         public void Import(MediaModel model)
         {
-            var memoryStream = new MemoryStream(EcommerceInstallHelper.GetFileFromUrl(EcommerceInstalInfo.CategoryExcelUrl));
-            var output = _importExportManager.ImportDocumentsFromExcel(memoryStream);
+            var memoryStream = new MemoryStream(EcommerceInstallHelper.GetFileFromUrl(EcommerceInstallInfo.CategoryExcelUrl));
+            var result = _importExportManager.ImportDocumentsFromExcel(memoryStream, false);
+            
+            var batchRun = result.Batch.BatchRuns.First();
+            batchRun.Status = BatchRunStatus.Executing;
+            _synchronousBatchRunExecution.Execute(batchRun);
+
             SetFeaturedProducts(model);
         }
 

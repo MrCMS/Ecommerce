@@ -1,0 +1,34 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@model IList<MrCMS.Web.Apps.Ecommerce.Pages.Product>
+
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                # of variants
+            </th>
+            <th>
+                Published
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(product.Name, "Edit", "Webpage", new { id = product.Id }, null)
+                </td>
+                <td>
+                    @product.GetVariantCount()
+                </td>
+                <td>
+                    @product.Published
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

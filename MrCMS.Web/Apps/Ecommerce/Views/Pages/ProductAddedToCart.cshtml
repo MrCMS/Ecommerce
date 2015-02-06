@@ -1,11 +1,12 @@
 ﻿@using System.Linq
 @using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Entities.Products
+@using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Pages
 @model ProductAddedToCart
 @{
     var productvariant = ViewData["productvariant"] as ProductVariant;
-    var quantity = ViewData["quantity"] is int ? (int) ViewData["quantity"] : 1;
+    var quantity = ViewData["quantity"] is int ? (int) ViewData["quantity"] : 1;    
 }
 <div class="margin-bottom-20">
     <div class="row">

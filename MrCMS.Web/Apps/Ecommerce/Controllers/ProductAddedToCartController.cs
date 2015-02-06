@@ -31,6 +31,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public PartialViewResult ItemDetails(ProductVariant productVariant)
         {
+            ViewData["cart"] = _productAddedToCartUIService.Cart;
+
             return PartialView(productVariant);
         }
 

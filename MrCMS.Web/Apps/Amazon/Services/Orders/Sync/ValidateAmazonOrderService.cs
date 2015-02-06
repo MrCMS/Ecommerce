@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using MarketplaceWebServiceOrders.Model;
+using MrCMS.Helpers;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Helpers;
 using MrCMS.Web.Apps.Amazon.Models;
@@ -11,6 +12,7 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Geographic;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
+using NHibernate;
 using Order = MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
@@ -20,13 +22,15 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
         private readonly ICountryService _countryService;
         private readonly EcommerceSettings _ecommerceSettings;
         private readonly ISetTaxes _setTax;
+        private readonly ISession _session;
 
         public ValidateAmazonOrderService(ICountryService countryService,
-            EcommerceSettings ecommerceSettings, ISetTaxes setTax)
+            EcommerceSettings ecommerceSettings, ISetTaxes setTax, ISession session)
         {
             _countryService = countryService;
             _ecommerceSettings = ecommerceSettings;
             _setTax = setTax;
+            _session = session;
         }
 
         public void SetAmazonOrderItem(ref AmazonOrder amazonOrder, OrderItem rawOrderItem)
@@ -240,16 +244,21 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
         public Order GetOrder(AmazonOrder amazonOrder)
         {
-            var order = amazonOrder.Order ?? new Order();
-
-            if (order.Id == 0)
+            Order order;
+            if (amazonOrder.Order != null)
+            {
+                order = amazonOrder.Order;
+            }
+            else
             {
                 order = GetOrderDetails(amazonOrder);
-
+                Order order1 = order;
+                _session.Transact(session => session.Save(order1));
                 GetOrderLines(amazonOrder, ref order);
 
                 _setTax.SetTax(ref order, amazonOrder.Tax);
             }
+
 
             order.ShippingStatus = amazonOrder.Status.GetEnumByValue<ShippingStatus>();
 
@@ -273,24 +282,26 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
                            IsCancelled = false,
                            SalesChannel = AmazonApp.SalesChannel,
                            PaymentStatus = PaymentStatus.Paid,
-                           CreatedOn = amazonOrder.PurchaseDate.HasValue ? (DateTime)amazonOrder.PurchaseDate : CurrentRequestData.Now
+                           OrderDate = amazonOrder.PurchaseDate.GetValueOrDefault(CurrentRequestData.Now),
                        };
         }
         private void GetOrderLines(AmazonOrder amazonOrder, ref Order order)
         {
             foreach (var amazonOrderItem in amazonOrder.Items)
             {
-                order.OrderLines.Add(new OrderLine()
-                    {
-                        Order = order,
-                        UnitPrice = amazonOrderItem.QuantityOrdered > 0 ? (amazonOrderItem.ItemPriceAmount / amazonOrderItem.QuantityOrdered) : 0,
-                        Price = amazonOrderItem.ItemPriceAmount,
-                        Name = amazonOrderItem.Title,
-                        Tax = amazonOrderItem.ItemTaxAmount,
-                        Discount = amazonOrderItem.PromotionDiscountAmount,
-                        Quantity = Decimal.ToInt32(amazonOrderItem.QuantityOrdered),
-                        SKU = amazonOrderItem.SellerSKU
-                    });
+                var orderLine = new OrderLine()
+                {
+                    Order = order,
+                    UnitPrice = amazonOrderItem.QuantityOrdered > 0 ? (amazonOrderItem.ItemPriceAmount / amazonOrderItem.QuantityOrdered) : 0,
+                    Price = amazonOrderItem.ItemPriceAmount,
+                    Name = amazonOrderItem.Title,
+                    Tax = amazonOrderItem.ItemTaxAmount,
+                    Discount = amazonOrderItem.PromotionDiscountAmount,
+                    Quantity = Decimal.ToInt32(amazonOrderItem.QuantityOrdered),
+                    SKU = amazonOrderItem.SellerSKU
+                };
+                order.OrderLines.Add(orderLine);
+                _session.Transact(session => session.Save(orderLine));
             }
         }
     }

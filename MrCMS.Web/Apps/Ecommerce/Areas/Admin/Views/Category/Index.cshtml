@@ -42,6 +42,7 @@
                                     <div class="btn-group">
                                         <a href="@Url.Action("Add", "Webpage", new { id = category.Id })" class="btn btn-xs btn-success">Add Child Category</a>
                                         <a href="@Url.Action("Edit", "Webpage", new { id = category.Id })" class="btn btn-xs btn-default">Edit</a>
+                                        <a href="@Url.Action("Sort", "CategoryProducts", new { id = category.Id })" class="btn btn-xs btn-default">Set Product Display Order</a>
                                         <a href="@Url.Action("Delete", "Webpage", new { id = category.Id })" class="btn btn-xs btn-danger" data-toggle="fb-modal">Delete</a>
                                     </div>
                                 </td>

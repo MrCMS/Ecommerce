@@ -1,9 +1,13 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services.ProductReviews;
+using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
 using MrCMS.Website.Filters;
@@ -13,10 +17,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class ProductVariantController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly IProductVariantAdminService _productVariantAdminService;
+        private readonly IProductReviewUIService _productReviewUIService;
 
-        public ProductVariantController(IProductVariantAdminService productVariantAdminService)
+        public ProductVariantController(IProductVariantAdminService productVariantAdminService, IProductReviewUIService productReviewUIService)
         {
             _productVariantAdminService = productVariantAdminService;
+            _productReviewUIService = productReviewUIService;
         }
 
         [HttpGet]
@@ -85,6 +91,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             return _productVariantAdminService.AnyExistingProductVariantWithSKU(sku, id)
                 ? Json("There is already an SKU stored with that value.", JsonRequestBehavior.AllowGet)
                 : Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        [MrCMSACLRule(typeof(ProductReviewACL), ProductReviewACL.List)]
+        public ActionResult ProductReviews(ProductVariant productVariant, int reviewPage = 1, string q = "")
+        {
+            var reviewsPageSize = MrCMSApplication.Get<ProductReviewSettings>().PageSize;
+            ViewData["reviews"] = _productReviewUIService.GetReviewsForVariant(productVariant, reviewPage, reviewsPageSize);
+
+            return PartialView(productVariant);
         }
     }
 }
