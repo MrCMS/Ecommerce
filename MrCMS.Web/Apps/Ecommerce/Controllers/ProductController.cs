@@ -1,7 +1,11 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
+using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.BackInStockNotification;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Services.ProductReviews;
+using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -16,21 +20,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IProductUiService _productUiService;
         private readonly IBackInStockNotificationService _backInStockNotificationService;
         private readonly CartModel _cart;
+        private readonly IDocumentService _documentService;
+        private readonly IProductReviewUIService _productReviewUIService;
 
-        public ProductController(ITrackingService trackingService, IProductUiService productUiService, IBackInStockNotificationService backInStockNotificationService, CartModel cart)
+        public ProductController(ITrackingService trackingService, IProductUiService productUiService, IBackInStockNotificationService backInStockNotificationService, CartModel cart, IDocumentService documentService, IProductReviewUIService productReviewUIService)
         {
             _trackingService = trackingService;
             _productUiService = productUiService;
             _backInStockNotificationService = backInStockNotificationService;
             _cart = cart;
+            _documentService = documentService;
+            _productReviewUIService = productReviewUIService;
         }
 
-        public ViewResult Show(Product page, int? variant)
+        public ActionResult Show(Product page, int? variant)
         {
             _trackingService.AddItemToRecentlyViewedItemsCookie(page.Id);
             var variantToShow = _productUiService.GetVariantToShow(page, variant);
+            if (!page.Variants.Any())
+            {
+                _documentService.Unpublish(page);
+                return Redirect("/");
+            }
             ViewData["selected-variant"] = variantToShow;
             ViewData["cart"] = _cart;
+            
+            ViewData["productreviews-enabled"] = MrCMSApplication.Get<ProductReviewSettings>().EnableProductReviews;
+            
             return View(page);
         }
        

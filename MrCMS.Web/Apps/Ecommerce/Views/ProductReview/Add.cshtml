@@ -1,0 +1,51 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Website
+@model MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews.ProductReview
+
+@using (Html.BeginForm("Add", "ProductReview", new { id = "" }, FormMethod.Post))
+{
+    <h4>
+        @Resource(string.Format("Your review for {0}", @Model.ProductVariant.DisplayName))
+    </h4>
+    @Html.HiddenFor(x => x.ProductVariant.Id);
+    @Html.LabelFor(x => x.Rating)
+    @Html.AntiForgeryToken()
+    @Html.Honeypot()
+    <br />
+    foreach (var rating in Enumerable.Range(1, 5))
+    {
+        <label class="radio-inline">
+            @Html.RadioButtonFor(x => x.Rating, rating) @rating
+        </label>
+    }
+    @Html.ValidationMessageFor(x => x.Rating)
+    <br />
+    if (CurrentRequestData.CurrentUser == null)
+    {
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Name) @Html.ValidationMessageFor(x => x.Name)
+                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Email) @Html.ValidationMessageFor(x => x.Email)
+                    @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+    }
+    <div class="form-group">
+        @Html.LabelFor(x => x.Title) @Html.ValidationMessageFor(x => x.Title)
+        @Html.TextBoxFor(x => x.Title, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Text) @Html.ValidationMessageFor(x => x.Text)
+        @Html.TextAreaFor(x => x.Text, 10, 20, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-default">@Resource("Submit your review")</button>
+}
+<hr />

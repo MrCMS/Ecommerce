@@ -1,9 +1,29 @@
-﻿$(function () {
-    $('#SameAsShipping').change(function () {
-        var parents = $(this).parents('form');
-        parents.submit();
-    });
-    $(document).on('change', "select#existing-addresses", function () {
+﻿(function ($) {
+    function setPaymentMethod(event) {
+        var checked = $('input[name="PaymentMethodSystemName"]:checked').val();
+        if (checked) {
+            var termsAndConditionsAccepted = $('#TermsAndConditionsAccepted:checked').length > 0;
+            var data = {
+                paymentMethod: checked,
+                termsAndConditionsAccepted: termsAndConditionsAccepted
+            };
+            $.post('/Apps/Ecommerce/PaymentDetails/SetPaymentMethod', data, function (url) {
+                if (!url) {
+                    $('#payment-confirmation').html('');
+                } else {
+                    $.get(url, function(response) {
+                        $('#payment-confirmation').html(response);
+                        $.validator.unobtrusive.parse('form');
+                    });
+                }
+            });
+        }
+    }
+    function submitSetAsShippingForm(event) {
+        var form = $(event.target).parents('form');
+        form.submit();
+    }
+    function setAddress(event) {
         var address = $.parseJSON($(this).val());
         if (address != null) {
             for (var key in address) {
@@ -12,15 +32,33 @@
                 }
             }
         }
-    });
-    $(document).on('change', 'input[name="PaymentMethodSystemName"]', function () {
-        var checked = $('input[name="PaymentMethodSystemName"]:checked').val();
-        $.post('/Apps/Ecommerce/PaymentDetails/SetPaymentMethod', { paymentMethod: checked }, function (url) {
-            $.get(url, function (response) {
-                $('#payment-confirmation').html(response);
-                $.validator.unobtrusive.parse('form');
-            });
-        });
-    });
-})
+    }
+    function setTermsAndConditions(event) {
+        var accept = $('#TermsAndConditionsAccepted:checked').length > 0;
+        $.post('/Apps/Ecommerce/terms-and-conditions/set', { accept: accept }, setPaymentMethod);
+    }
 
+    function showHidePaymentOptions(event) {
+        var isChecked = $(event.currentTarget).is(':checked');
+        if (isChecked) {
+            $('[data-payment-methods]').show();
+            $('[data-please-accept]').hide();
+        } else {
+            $('[data-payment-methods]').hide();
+            $('[data-please-accept]').show();
+        }
+    }
+
+    $(function () {
+        $(document).on('change', '#SameAsShipping', submitSetAsShippingForm);
+        $(document).on('change', "select#existing-addresses", setAddress);
+        $(document).on('change', 'input[name="PaymentMethodSystemName"]', setPaymentMethod);
+        $(document).on('change', 'input[name="TermsAndConditionsAccepted"]', setTermsAndConditions);
+        $(document).on('change', 'input[name="TermsAndConditionsAccepted"]', showHidePaymentOptions);
+        $(document).on('add-discount', setPaymentMethod);
+        $(document).on('remove-discount', setPaymentMethod);
+        setPaymentMethod();
+
+        $('input[type=checkbox][name="TermsAndConditionsAccepted"]').change();
+    });
+})(jQuery);

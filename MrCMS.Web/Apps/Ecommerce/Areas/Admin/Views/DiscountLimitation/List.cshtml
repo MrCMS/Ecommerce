@@ -1,0 +1,32 @@
+﻿@using System.Linq
+@using MrCMS.Web.Apps.Ecommerce.Entities.Discounts
+@model System.Collections.Generic.IList<MrCMS.Web.Apps.Ecommerce.Entities.Discounts.DiscountLimitation>
+@{
+    var discount = ViewData["discount"] as Discount;
+}
+<div data-discount-limitations="@Url.Action("List", "DiscountLimitation", new { id = discount.Id })">
+
+    @if (Model.Any())
+    {
+        foreach (var limitation in Model)
+        {
+            <div class="row">
+                <div class="col-xs-8">
+                    @limitation.DisplayName
+                </div>
+                <div class="col-xs-4">
+                    <div class="btn-group">
+                        @Html.ActionLink("Edit", "Edit", "DiscountLimitation", new { id = limitation.Id }, new { @class = "btn btn-default btn-xs", data_toggle = "fb-modal" })
+                        @Html.ActionLink("Delete", "Delete", "DiscountLimitation", new { id = limitation.Id }, new { @class = "btn btn-danger btn-xs", data_toggle = "fb-modal" })
+                    </div>
+                </div>
+            </div>
+            <hr />
+        }
+    }
+    else
+    {
+        @Resource("Ecommerce - Discount - No Limitations Set", "No limitations currently set.")
+    }
+</div>
+

@@ -1,10 +1,16 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+@using System.Web.UI.WebControls
 @using MrCMS.Helpers
 @using System.Linq
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
 @using MrCMS.Web.Apps.Ecommerce.Entities.Products
+@using MrCMS.Website
 @{
     var selectedVariant = ViewData["selected-variant"] as ProductVariant ?? Model.Variants.First();
+    var productReviewsEnabled = (bool)ViewData["productreviews-enabled"];
     var hasSpecifications = Model.SpecificationValues.Any();
+    
 }
 @Html.HiddenFor(x => x.UrlSegment)
 
@@ -40,14 +46,20 @@
                             @Resource("Specifications")
                         </div>
                         @{
-                            Html.RenderPartial("ProductSpecifications", Model);
+                    Html.RenderPartial("ProductSpecifications", Model);
                         }
                     </div>
                 }
             </div>
         </div>
     </div>
+
+    @if (productReviewsEnabled)
+    {
+        Html.RenderAction("ProductReviews", "ProductVariant", new { productVariantId = selectedVariant.Id });
+    }
 </div>
+
 @{ RenderZone("Below Product Information"); }
 @{
     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.history.js");

@@ -1,5 +1,6 @@
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Services.ProductReviews;
 using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
@@ -11,16 +12,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         private readonly IGetTaxRateOptions _getTaxRateOptions;
         private readonly IGetTrackingPolicyOptions _getTrackingPolicyOptions;
         private readonly IGetShippingOptions _getShippingOptions;
+        private readonly IProductReviewUIService _productReviewUIService;
 
         public ProductVariantAdminViewDataService(IGetGiftCardTypeOptions getGiftCardTypeOptions,
             IGetProductVariantTypeOptions getProductVariantTypeOptions, IGetTaxRateOptions getTaxRateOptions,
-            IGetTrackingPolicyOptions getTrackingPolicyOptions, IGetShippingOptions getShippingOptions)
+            IGetTrackingPolicyOptions getTrackingPolicyOptions, IGetShippingOptions getShippingOptions, IProductReviewUIService productReviewUIService)
         {
             _getGiftCardTypeOptions = getGiftCardTypeOptions;
             _getProductVariantTypeOptions = getProductVariantTypeOptions;
             _getTaxRateOptions = getTaxRateOptions;
             _getTrackingPolicyOptions = getTrackingPolicyOptions;
             _getShippingOptions = getShippingOptions;
+            _productReviewUIService = productReviewUIService;
         }
 
         public void SetViewData(ViewDataDictionary viewData, ProductVariant productVariant)

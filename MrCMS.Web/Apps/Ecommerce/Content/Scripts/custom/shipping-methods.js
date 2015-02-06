@@ -28,12 +28,7 @@
             setHtml('#method-info', result);
         });
     }
-    function updateSummary() {
-        $.get('/Apps/Ecommerce/Checkout/Summary', function (result) {
-            $('#basic-details').replaceWith(result);
-        });
 
-    }
     function showHideToPayment() {
         var value = $("select#ShippingMethod").val();
         if (value) {
@@ -42,13 +37,12 @@
             $("#to-payment-details").hide();
         }
     }
-    showHideToPayment();
     $(document).on('change', "select#ShippingMethod", function () {
         $.post('/Apps/Ecommerce/SetShippingMethod/SetShipping',
         {
             method: $(this).val()
         }, function () {
-            updateSummary();
+            $(document).trigger('update-summary');
             showHideToPayment();
         });
     });
@@ -56,13 +50,14 @@
         event.preventDefault();
         setToEditAddress();
     });
-    $(document).on('#shipping-address').submit(function (event) {
+    $(document).on('submit', '#shipping-address', function (event) {
         event.preventDefault();
         var form = $(event.target);
         $.post(form.attr('action'), form.serialize(), function (data) {
             if (data) {
                 setToEditMethod();
             }
+            $(document).trigger('update-summary');
         });
     });
     $(document).on('change', "select#existing-addresses", function () {
@@ -75,4 +70,5 @@
             }
         }
     });
+    showHideToPayment();
 });

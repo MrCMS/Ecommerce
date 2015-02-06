@@ -1,6 +1,11 @@
 ﻿using System.IO;
+using MrCMS.Batching.Entities;
+using MrCMS.Helpers;
 using MrCMS.Services.ImportExport.DTOs;
+using MrCMS.Website;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Entities.Documents.Web;
@@ -24,19 +29,20 @@ namespace MrCMS.Services.ImportExport
         }
 
         #region Import Documents
-        public Dictionary<string, List<string>> ImportDocumentsFromExcel(Stream file)
+        public ImportDocumentsResult ImportDocumentsFromExcel(Stream file, bool autoStart = true)
         {
             var spreadsheet = new ExcelPackage(file);
 
             Dictionary<string, List<string>> parseErrors;
             var items = GetDocumentsFromSpreadSheet(spreadsheet, out parseErrors);
             if (parseErrors.Any())
-                return parseErrors;
+                return ImportDocumentsResult.Failure(parseErrors);
             var businessLogicErrors = _importDocumentsValidationService.ValidateBusinessLogic(items);
             if (businessLogicErrors.Any())
-                return businessLogicErrors;
-            _importDocumentService.ImportDocumentsFromDTOs(items);
-            return new Dictionary<string, List<string>>();
+                return ImportDocumentsResult.Failure(businessLogicErrors);
+            var batch = _importDocumentService.CreateBatch(items, autoStart);
+            //_importDocumentService.ImportDocumentsFromDTOs(items);
+            return ImportDocumentsResult.Successful(batch);
         }
 
         /// <summary>
@@ -63,5 +69,25 @@ namespace MrCMS.Services.ImportExport
             return _exportDocumentsService.ConvertPackageToByteArray(package);
         }
         #endregion
+    }
+
+    public class ImportDocumentsResult
+    {
+        private ImportDocumentsResult()
+        {
+            Errors = new Dictionary<string, List<string>>();
+        }
+        public Batch Batch { get; private set; }
+        public Dictionary<string, List<string>> Errors { get; private set; }
+        public bool Success { get { return Batch != null; } }
+
+        public static ImportDocumentsResult Successful(Batch batch)
+        {
+            return new ImportDocumentsResult { Batch = batch };
+        }
+        public static ImportDocumentsResult Failure(Dictionary<string, List<string>> errors)
+        {
+            return new ImportDocumentsResult { Errors = errors };
+        }
     }
 }

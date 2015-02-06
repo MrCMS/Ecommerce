@@ -1,0 +1,114 @@
+﻿@using System.Linq
+@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Website
+@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
+@{
+    IPagedList<ProductReview> reviews = ViewData["reviews"] as IPagedList<ProductReview> ?? PagedList<ProductReview>.Empty;
+    decimal averageReviews = ViewData["average-ratings"] is decimal ? (decimal) ViewData["average-ratings"] : 0;
+    var helpfulnessVotes = (bool) ViewData["helpfulness-votes"];
+    var guestReviews = (bool) ViewData["guest-reviews"];
+    var response = TempData["productreview-response-info"] as IProductReviewResponseInfo;
+    bool canAddReview = CurrentRequestData.CurrentUser != null || guestReviews;
+}
+<div data-paging-type="async" data-product-review="true">
+    <div class="margin-top-bottom-30">
+        <div class="container">
+            <div class="margin-top-20">
+                <div class="block-title">
+                    <div class="pull-left">
+                        Product Reviews
+                    </div>
+                    <div class="pull-right">
+                        @if (averageReviews > decimal.Zero)
+                        {
+                            <span>Average Rating: @averageReviews.ToString("#.##") out of 5</span>
+                        }
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+
+                @if (response != null && !string.IsNullOrWhiteSpace(response.Message))
+                {
+                    <div class="margin-bottom-10">
+                        <div role="alert" class="alert @(response.Type == ProductReviewResponseType.Info ? "alert-info" : response.Type == ProductReviewResponseType.Error ? "alert-danger" : "alert-success")">
+                            @response.Message
+                        </div>
+                    </div>
+                }
+
+                @if (TempData["review-submitted"] != null)
+                {
+                    <div class="alert alert-success">
+                        @(Resource("Product Review submitted", "Your product review has been successfully submitted. It will be shown once it has been approved."))
+                    </div>
+                }
+
+
+
+                @if (!canAddReview)
+                {
+                    <div class="alert alert-info">
+                        @Resource("Product Reviews - Guest Reviews unavailable", "Guest reviews currently unavailable, please login to post review.")
+                    </div>
+                }
+                @if (canAddReview)
+                {
+                    <button class="btn btn-sm btn-info pull-right" type="button" data-toggle="collapse" data-target="#add-a-review">@Resource("Add a review")</button>
+                    <div class="collapse" id="add-a-review">
+                        @{ Html.RenderAction("Add", "ProductReview", new {productVariant = Model}); }
+                    </div>
+                }
+                @foreach (ProductReview item in reviews)
+                {
+                    foreach (int i in Enumerable.Range(1, item.Rating))
+                    {
+                        <span class="glyphicon glyphicon-star"></span>
+                    }
+                    foreach (int i in Enumerable.Range(1, 5-item.Rating))
+                    {
+                        <span class="glyphicon glyphicon-star-empty"></span>
+                    }
+                    <div itemprop="review" itemscope itemtype="http://schema.org/Review">
+                        <span itemprop="name"><strong>@item.Title</strong></span> -
+                        by <span itemprop="author">
+                               @if (item.User != null)
+                               {
+                                   <span>@item.User.Name</span>
+                               }
+                               else
+                               {
+                                   <span>@item.Email</span>
+                               }
+                           </span>,
+                        <meta itemprop="datePublished" content="2011-04-01" />@item.CreatedOn.ToString("MMM dd, yyyy")
+                        <div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+                            <meta itemprop="worstRating" content="1" />
+                            <span itemprop="ratingValue">@item.Rating</span>/<span itemprop="bestRating">5</span> stars
+                        </div>
+                        <div itemprop="description">
+                            @item.Text.PlainTextToParagraphs()
+                        </div>
+                    </div>
+
+                    if (helpfulnessVotes)
+                    {
+                        Html.RenderAction("HelpfulnessVotes", "ProductReview", new {productReview = item});
+                    }
+                    if (item != reviews.Last())
+                    {
+                        <hr />
+                    }
+                }
+            </div>
+
+            @Html.Pager(reviews, "ProductReviews", i => new {productVariantId = Model.Id, reviewPage = i})
+        </div>
+    </div>
+</div>
+
+@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/async-paging.js"); }

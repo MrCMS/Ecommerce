@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FakeItEasy;
 using MrCMS.EcommerceApp.Tests.Stubs;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
-using MrCMS.Web.Apps.Ecommerce.Services.Orders;
+using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Web.Areas.Admin.Helpers;
 using Xunit;
 using FluentAssertions;
 
@@ -16,13 +17,15 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private readonly IImportProductsManager _importExportManager;
         private readonly IExportProductsManager _exportProductsManager;
         private readonly ImportExportController _importExportController;
+        private readonly EcommerceSettings _ecommerceSettings;
 
         public ImportExportControllerTests()
         {
             _exportProductsManager = A.Fake<IExportProductsManager>();
             _importExportManager = A.Fake<IImportProductsManager>();
+            _ecommerceSettings = new EcommerceSettings();
 
-            _importExportController = new ImportExportController(_importExportManager, _exportProductsManager);
+            _importExportController = new ImportExportController(_importExportManager, _exportProductsManager, _ecommerceSettings);
         }
 
         [Fact]
@@ -42,13 +45,13 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         }
 
         [Fact]
-        public void ImportExportController_ImportProducts_ShouldReturnViewResult()
+        public void ImportExportController_ImportProducts_ShouldReturnRedirectToRouteResult()
         {
             var file = A.Fake<HttpPostedFileBase>();
 
             var result = _importExportController.ImportProducts(file);
 
-            result.Should().BeOfType<ViewResult>();
+            result.Should().BeOfType<RedirectToRouteResult>();
         }
 
         [Fact]
@@ -56,12 +59,13 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var file = new BasicHttpPostedFileBase();
             _importExportController.ServerMock = A.Fake<HttpServerUtilityBase>();
-            A.CallTo(() => _importExportManager.ImportProductsFromExcel(file.InputStream))
-             .Returns(new Dictionary<string, List<string>>());
+            var value = Enumerable.Range(1,3).Select(i => i.ToString()).ToList();
+            A.CallTo(() => _importExportManager.ImportProductsFromExcel(file.InputStream, true))
+             .Returns(ImportProductsResult.Failure(value));
 
             var result = _importExportController.ImportProducts(file);
 
-            AssertionExtensions.Should((object)AssertionExtensions.As<Dictionary<string, List<string>>>(result.ViewBag.Messages)).NotBeNull();
+            _importExportController.TempData.ErrorMessages().Should().BeEquivalentTo(value);
         }
 
     }

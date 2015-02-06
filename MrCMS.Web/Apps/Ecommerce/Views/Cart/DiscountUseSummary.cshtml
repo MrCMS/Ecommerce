@@ -1,0 +1,41 @@
+﻿@using System.Linq
+@using MrCMS.Web.Apps.Ecommerce.Models
+@model CartModel
+<div class="row margin-bottom-10">
+    <div class="col-xs-12">
+        <ul class="list-unstyled margin-bottom-0">
+            @foreach (var discountInfo in Model.Discounts)
+            {
+                var discount = discountInfo.Discount;
+                var messages = discountInfo.Messages;
+                <li class="line-height-30">
+                    @discount.Name (@discount.Code)
+                    @if (discountInfo.Status == DiscountStatus.ExplicitAndInvalid)
+                    {
+                        <span class="error">@Resource("Invalid for current basket")</span>
+                    }
+                    @if (discountInfo.Status == DiscountStatus.ValidButNotApplied)
+                    {
+                        <span class="error">@Resource("Discount applied during checkout.")</span>
+                    }
+                    @if (messages.Any())
+                    {
+                        <ul>
+
+                            @foreach (var message in messages)
+                            {
+                                <li>@message</li>
+                            }
+                        </ul>
+                    }
+
+                    @if (discount.RequiresCode)
+                    {
+                        <a data-remove-discount-code="@Url.Action("Remove", "Discount", new {discountCode = discount.Code})" href="#" class="btn btn-warning btn-xs">@Resource("Remove")</a>
+                    }
+                </li>
+            }
+        </ul>
+
+    </div>
+</div>

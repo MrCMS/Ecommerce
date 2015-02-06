@@ -1,34 +1,33 @@
 ﻿using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.ACL;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Currencies;
 using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Web.Areas.Admin.Helpers;
 using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using System.Web.Mvc;
 using MrCMS.Website.Filters;
+using NHibernate.Mapping;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class EcommerceSettingsController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly IConfigurationProvider _configurationProvider;
-        private readonly EcommerceSettings _ecommerceSettings;
-        private readonly ICurrencyService _currencyService;
+        private readonly IEcommerceSettingsAdminService _ecommerceSettingsAdminService;
 
-        public EcommerceSettingsController(IConfigurationProvider configurationProvider, EcommerceSettings ecommerceSettings,
-             ICurrencyService currencyService)
-        {
-            _configurationProvider = configurationProvider;
-            _ecommerceSettings = ecommerceSettings;
-            _currencyService = currencyService;
+        public EcommerceSettingsController( IEcommerceSettingsAdminService ecommerceSettingsAdminService)
+       {
+            _ecommerceSettingsAdminService = ecommerceSettingsAdminService;
         }
 
         [HttpGet]
         [MrCMSACLRule(typeof(EcommerceSettingsACL), EcommerceSettingsACL.Edit)]
         public ActionResult Edit()
         {
-            ViewData["currency-options"] = _currencyService.Options(_ecommerceSettings.CurrencyId);
-            return View(_ecommerceSettings);
+            ViewData["currency-options"] = _ecommerceSettingsAdminService.GetCurrencyOptions();
+            ViewData["default-sort-options"] = _ecommerceSettingsAdminService.GetDefaultSortOptions();
+            return View(_ecommerceSettingsAdminService.GetSettings());
         }
 
         [HttpPost]
@@ -37,7 +36,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         [MrCMSACLRule(typeof(EcommerceSettingsACL), EcommerceSettingsACL.Edit)]
         public RedirectToRouteResult Edit_POST(EcommerceSettings ecommerceSettings)
         {
-            _configurationProvider.SaveSettings(ecommerceSettings);
+            _ecommerceSettingsAdminService.SaveSettings(ecommerceSettings);
+            TempData.SuccessMessages().Add("Ecommerce Settings Saved");
             return RedirectToAction("Edit");
         }
     }

@@ -26,7 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Tasks
             IStatelessSession statelessSession = _sessionFactory.OpenStatelessSession();
             IList<SessionData> sessionDatas =
                 statelessSession.QueryOver<SessionData>()
-                    .Where(data => data.ExpireOn <= CurrentRequestData.Now || data.CreatedOn < CurrentRequestData.Now.AddDays(-90)).List();
+                    .Where(data => data.ExpireOn <= CurrentRequestData.Now).List();
 
             using (ITransaction transaction = statelessSession.BeginTransaction())
             {

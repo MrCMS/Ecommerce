@@ -1,7 +1,5 @@
 using System;
-using System.Linq;
 using MrCMS.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Helpers.Cart;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Shipping;
 
@@ -28,6 +26,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             {
                 cart.PotentiallyAvailableShippingMethods =
                     _shippingMethodUIService.GetEnabledMethods().FindAll(method => method.CanPotentiallyBeUsed(cart));
+                cart.RequestedShippingDate =
+                    _cartSessionManager.GetSessionValue<DateTime?>(CartManager.CurrentShippingDateKey, userGuid);
                 cart.ShippingMethod = GetShippingMethod(cart, userGuid);
             }
             return cart;
@@ -36,7 +36,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         private IShippingMethod GetShippingMethod(CartModel cart, Guid userGuid)
         {
             var type = _cartSessionManager.GetSessionValue<string>(CartManager.CurrentShippingMethodTypeKey, userGuid);
-            var shippingMethod = _shippingMethodUIService.GetMethodByTypeName(type);
+            IShippingMethod shippingMethod = _shippingMethodUIService.GetMethodByTypeName(type);
             if (shippingMethod != null)
                 return shippingMethod.CanBeUsed(cart) ? shippingMethod : null;
             return null;

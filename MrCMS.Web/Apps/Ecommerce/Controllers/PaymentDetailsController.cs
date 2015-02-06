@@ -98,7 +98,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         public JsonResult SetPaymentMethod(string paymentMethod)
         {
             var method = _cartManager.SetPaymentMethod(paymentMethod);
-            return Json(method.GetUrl(Url));
+            if (method != null) 
+                return Json(method.GetUrl(Url));
+            return Json(false);
         }
     }
 }

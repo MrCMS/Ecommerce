@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using MrCMS.DbConfiguration;
 using MrCMS.Entities;
-using MrCMS.IoC;
 using MrCMS.Paging;
 using MrCMS.Settings;
 using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
-using NHibernate.Impl;
 using NHibernate.Linq;
 
 namespace MrCMS.Helpers
@@ -40,42 +38,48 @@ namespace MrCMS.Helpers
             // Don't wrap;
             return func.Invoke(session);
         }
+
         public static void Transact(this ISession session, Action<ISession> action)
         {
             Transact(session, ses =>
-                                  {
-                                      action.Invoke(ses);
-                                      return false;
-                                  });
+            {
+                action.Invoke(ses);
+                return false;
+            });
         }
 
-        public static IPagedList<T> Paged<T>(this ISession session, QueryOver<T> query, int pageNumber, int? pageSize = null)
+        public static IPagedList<T> Paged<T>(this ISession session, QueryOver<T> query, int pageNumber,
+            int? pageSize = null)
             where T : SystemEntity
         {
-            var size = pageSize ?? MrCMSApplication.Get<SiteSettings>().DefaultPageSize;
-            IEnumerable<T> values = query.GetExecutableQueryOver(session).Skip((pageNumber - 1) * size).Take(size).Cacheable().List<T>();
+            int size = pageSize ?? MrCMSApplication.Get<SiteSettings>().DefaultPageSize;
+            IEnumerable<T> values =
+                query.GetExecutableQueryOver(session).Skip((pageNumber - 1)*size).Take(size).Cacheable().List<T>();
 
             var rowCount = query.GetExecutableQueryOver(session).ToRowCountQuery().SingleOrDefault<int>();
 
             return new StaticPagedList<T>(values, pageNumber, size, rowCount);
         }
 
-        public static IPagedList<TResult> Paged<TResult>(this IQueryOver<TResult, TResult> queryBase, int pageNumber, int? pageSize = null)
+        public static IPagedList<TResult> Paged<TResult>(this IQueryOver<TResult, TResult> queryBase, int pageNumber,
+            int? pageSize = null)
             where TResult : SystemEntity
         {
-            var size = pageSize ?? MrCMSApplication.Get<SiteSettings>().DefaultPageSize;
-            IEnumerable<TResult> results = queryBase.Skip((pageNumber - 1) * size).Take(size).Cacheable().List();
+            int size = pageSize ?? MrCMSApplication.Get<SiteSettings>().DefaultPageSize;
+            IEnumerable<TResult> results = queryBase.Skip((pageNumber - 1)*size).Take(size).Cacheable().List();
 
             int rowCount = queryBase.Cacheable().RowCount();
 
             return new StaticPagedList<TResult>(results, pageNumber, size, rowCount);
         }
-        public static IPagedList<TResult> Paged<TResult>(this IQueryable<TResult> queryable, int pageNumber, int? pageSize = null)
+
+        public static IPagedList<TResult> Paged<TResult>(this IQueryable<TResult> queryable, int pageNumber,
+            int? pageSize = null)
             where TResult : SystemEntity
         {
-            var size = pageSize ?? MrCMSApplication.Get<SiteSettings>().DefaultPageSize;
+            int size = pageSize ?? MrCMSApplication.Get<SiteSettings>().DefaultPageSize;
 
-            var cacheable = queryable.Cacheable();
+            IQueryable<TResult> cacheable = queryable.Cacheable();
 
             return new PagedList<TResult>(cacheable, pageNumber, size);
         }

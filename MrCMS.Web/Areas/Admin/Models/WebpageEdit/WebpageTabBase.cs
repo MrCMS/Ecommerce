@@ -12,4 +12,5 @@ namespace MrCMS.Web.Areas.Admin.Models.WebpageEdit
 
         public abstract Type ParentType { get; }
     }
+
 }

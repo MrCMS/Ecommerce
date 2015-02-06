@@ -1,5 +1,6 @@
 using System;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
+using PayPal.OpenIdConnect;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
 {
@@ -30,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
 
         public void SetOrderAmount(decimal total)
         {
-            _cartSessionManager.SetSessionValue(CurrentPaypointOrderAmount, _getUserGuid.UserGuid, total);
+            _cartSessionManager.SetSessionValue(CurrentPaypointOrderAmount, _getUserGuid.UserGuid, total,SessionDataTimeoutDefaults.PaymentInfo);
         }
 
         public Guid GetCartGuid()
@@ -40,7 +41,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
 
         public void SetCartGuid(Guid cartGuid)
         {
-            _cartSessionManager.SetSessionValue(CurrentPaypointOrderGuid, _getUserGuid.UserGuid, cartGuid);
+            _cartSessionManager.SetSessionValue(CurrentPaypointOrderGuid, _getUserGuid.UserGuid, cartGuid, SessionDataTimeoutDefaults.PaymentInfo);
         }
     }
 }

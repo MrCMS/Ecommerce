@@ -10,5 +10,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities
         public virtual string Data { get; set; }
 
         public virtual DateTime? ExpireOn { get; set; }
+        public virtual byte[] Salt { get; set; }
     }
 }

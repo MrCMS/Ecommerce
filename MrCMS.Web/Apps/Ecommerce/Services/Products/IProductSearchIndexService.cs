@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Web.Mvc;
+using MrCMS.Models;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -14,5 +16,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         OptionSearchData GetOptionSearchData(ProductSearchQuery query);
         List<int> GetBrands(ProductSearchQuery query);
         List<int> GetCategories(ProductSearchQuery query);
+
+        CachingInfo GetCachingInfo(ProductSearchQuery query, string suffix = null);
     }
 }

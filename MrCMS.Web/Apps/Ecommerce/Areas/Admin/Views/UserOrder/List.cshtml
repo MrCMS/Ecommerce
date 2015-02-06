@@ -1,0 +1,113 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
+@model IList<MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order>
+@if (!Model.Any())
+{
+    @:No orders.
+        }
+else
+{
+    <table class="table table-condensed table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Sales Channel
+                </th>
+                <th>
+                    Order Id
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Payment Status
+                </th>
+                <th>
+                    Shipping Status
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    Order Date
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                var status = "warning";
+                if (order.ShippingStatus.Equals(ShippingStatus.Shipped) && order.PaymentStatus.Equals(PaymentStatus.Paid))
+                {
+                    status = "success";
+                }
+                else if (order.IsCancelled)
+                {
+                    status = "error";
+                }
+                <tr class="@status">
+                    <td>
+                        @order.SalesChannel
+                    </td>
+                    <td>
+                        @order.Id
+                    </td>
+                    <td style="word-break: break-all">
+                        @order.OrderEmail
+                    </td>
+                    <td>
+                        @if (!order.IsCancelled)
+                        {
+                            <div class="pull-left">
+                                @order.PaymentStatus &nbsp;
+                            </div>
+                            <div class="pull-left">
+                                @if (order.PaymentStatus == PaymentStatus.Pending)
+                                {
+                                    @Html.ActionLink("Mark as Paid", "MarkAsPaid", "Order", new { id = order.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                    <span></span>
+                                    @Html.ActionLink("Void", "MarkAsVoided", "Order", new { id = order.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            @:Cancelled
+                                }
+                    </td>
+                    <td>
+                        @if (!order.IsCancelled)
+                        {
+                            <div class="pull-left">
+                                @order.ShippingStatus &nbsp;
+                            </div>
+                            <div class="pull-left">
+                                @if (order.ShippingStatus != ShippingStatus.Shipped)
+                                {
+                                    @Html.ActionLink("Mark as Shipped", "MarkAsShipped", "Order", new { id = order.Id, index = true }, new { @class = "btn btn-xs btn-default", data_toggle = "fb-modal" })
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            @:Cancelled
+                                }
+                    </td>
+                    <td>
+                        @order.Total.ToCurrencyFormat()
+                    </td>
+                    <td>
+                        @order.OrderDate.GetValueOrDefault(order.CreatedOn)
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            @Html.ActionLink("Details", "Edit", "Order", new { id = order.Id }, new { @class = "btn btn-xs btn-default" })
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

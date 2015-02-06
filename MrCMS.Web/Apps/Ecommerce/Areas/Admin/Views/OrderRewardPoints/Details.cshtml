@@ -1,0 +1,65 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints
+@model IList<MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints.OrderRewardPointsHistory>
+
+@if (Model != null && Model.Any())
+{
+    <hr />
+    <h4>Reward Point Usage</h4>
+    <table class="table table-condensed table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Points
+                </th>
+                <th>
+                    Message
+                </th>
+                <th>
+                    Date
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="@GetRowStatus(item)">
+                    <td>
+                        @item.DisplayName
+                    </td>
+                    <td>
+                        @item.Points
+                    </td>
+                    <td>
+                        @item.Message
+                    </td>
+                    <td>
+                        @item.CreatedOn
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@functions {
+    private static string GetRowStatus(RewardPointsHistory item)
+    {
+        string status = "warning";
+        if (item.Points > 0)
+        {
+            status = "success";
+        }
+        else if (item.Points < 0)
+        {
+            status = "error";
+        }
+        return status;
+    }
+}

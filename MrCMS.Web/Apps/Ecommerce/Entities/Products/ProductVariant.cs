@@ -9,6 +9,7 @@ using Iesi.Collections.Generic;
 using MrCMS.Entities;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Helpers.Validation;
+using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
@@ -164,7 +165,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         public virtual string DisplayName
         {
-            get { return !string.IsNullOrWhiteSpace(Name) ? Name : (Product != null ? Product.Name : ""); }
+            get { return FullName; }
         }
 
         public virtual string FullName
@@ -178,7 +179,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                 }
                 if (!string.IsNullOrWhiteSpace(Name))
                 {
-                    list.Add(Name);
+                    if (Product != null && Product.Name != Name)
+                    {
+                        list.Add(Name);
+                    }
                 }
                 if (OptionValues.Any())
                 {

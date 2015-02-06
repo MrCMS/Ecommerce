@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MrCMS.Helpers;
+using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate.DTOs;
+using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
+using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate
 {
@@ -11,40 +16,58 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Orders.BulkShippingUpdate
     {
         private readonly IOrderAdminService _orderService;
         private readonly IShippingMethodAdminService _shippingMethodAdminService;
+        private readonly ISession _session;
 
-        public BulkShippingUpdateService(IOrderAdminService orderService,IShippingMethodAdminService shippingMethodAdminService)
+        public BulkShippingUpdateService(IOrderAdminService orderService,
+            IShippingMethodAdminService shippingMethodAdminService, ISession session)
         {
             _orderService = orderService;
             _shippingMethodAdminService = shippingMethodAdminService;
+            _session = session;
         }
 
-        public int BulkShippingUpdateFromDTOs(IEnumerable<BulkShippingUpdateDataTransferObject> items)
+        public int BulkShippingUpdateFromDTOs(IEnumerable<BulkShippingUpdateDataTransferObject> items, bool sendEmails)
         {
-            var noOfUpdatedItems = 0;
-            foreach (var dataTransferObject in items)
+            int noOfUpdatedItems = 0;
+            _session.Transact(session =>
             {
-                BulkShippingUpdate(dataTransferObject, ref noOfUpdatedItems);
-            }
+                var shippingMethodInfos = _shippingMethodAdminService.GetAll();
+                using (new BulkShippingUpdateEmailDisabler(sendEmails))
+                {
+                    foreach (BulkShippingUpdateDataTransferObject dataTransferObject in items)
+                    {
+                        Order order = _orderService.Get(dataTransferObject.OrderId);
+
+                        if (order == null || string.IsNullOrWhiteSpace(dataTransferObject.ShippingMethod))
+                            continue;
+                        ShippingMethodInfo shippingMethod = shippingMethodInfos.FirstOrDefault(info => info.DisplayName == dataTransferObject.ShippingMethod);
+                        if (shippingMethod == null)
+                            continue;
+                        order.ShippingMethodName = shippingMethod.DisplayName;
+                        order.TrackingNumber = dataTransferObject.TrackingNumber;
+                        _orderService.MarkAsShipped(order);
+                        noOfUpdatedItems++;
+                    }
+                }
+            });
 
             return noOfUpdatedItems;
         }
+    }
 
-        public void BulkShippingUpdate(BulkShippingUpdateDataTransferObject itemDto, ref int noOfUpdatedItems)
+    public class BulkShippingUpdateEmailDisabler : IDisposable
+    {
+        private readonly IDisposable _emailDisabler;
+        public BulkShippingUpdateEmailDisabler(bool sendEmails)
         {
-            var order = _orderService.Get(itemDto.OrderId);
+            if (!sendEmails)
+                _emailDisabler = EventContext.Instance.Disable<SendOrderShippedEmailToCustomer>();
+        }
 
-            if (order != null && !string.IsNullOrWhiteSpace(itemDto.ShippingMethod))
-            {
-                var shippingMethod =
-                    _shippingMethodAdminService.GetAll().FirstOrDefault(info => info.Name == itemDto.ShippingMethod);
-                if (shippingMethod != null)
-                {
-                    order.ShippingMethodName = shippingMethod.Name;
-                    order.TrackingNumber = itemDto.TrackingNumber;
-                    _orderService.MarkAsShipped(order);
-                    noOfUpdatedItems++;
-                }
-            }
+        public void Dispose()
+        {
+            if (_emailDisabler != null)
+                _emailDisabler.Dispose();
         }
     }
 }

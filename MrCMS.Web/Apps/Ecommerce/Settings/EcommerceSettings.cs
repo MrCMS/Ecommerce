@@ -5,11 +5,24 @@ using System.Linq;
 using System.Web.Mvc;
 using MrCMS.Helpers;
 using MrCMS.Settings;
+using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Settings
 {
     public class EcommerceSettings : SiteSettingsBase
     {
+        public EcommerceSettings()
+        {
+            DashboardRevenueDays = 7;
+            TermsAndConditionsRequired = true;
+            DefaultProductSearchSort = ProductSearchSort.MostPopular;
+            GiftMessageMaxLength = 250;
+
+            EncryptionPassPhrase = "MrCMS Ecommerce's passphrase for session encryption and decryption";
+            DefaultSessionExpiryDays = 28;
+        }
+
+
         [DisplayName("Search Products per Page")]
         public string SearchProductsPerPage { get; set; }
 
@@ -31,11 +44,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         [DisplayName("Enable Gift Cards")]
         public bool GiftCardsEnabled { get; set; }
 
+        [DisplayName("Enable Reward Points")]
+        public bool RewardPointsEnabled { get; set; }
+
         [DisplayName("Enable Gift Message")]
         public bool GiftMessageEnabled { get; set; }
 
+        [DisplayName("Max Gift Message Length")]
+        public int GiftMessageMaxLength { get; set; }
+
         [DisplayName("Enable warehouse-based stock management")]
         public bool WarehouseStockEnabled { get; set; }
+
+        [DisplayName("Enable terms and conditions acceptance")]
+        public bool TermsAndConditionsRequired { get; set; }
 
         public IEnumerable<int> ProductPerPageOptions
         {
@@ -66,5 +88,14 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
 
         [DisplayName("Site Currency")]
         public int CurrencyId { get; set; }
+
+        [DisplayName("X Days to be shown in Dashboard Revenue")]
+        public int DashboardRevenueDays { get; set; }
+
+        [DisplayName("Default Product Search Sort")]
+        public ProductSearchSort DefaultProductSearchSort { get; set; }
+
+        public string EncryptionPassPhrase { get; set; }
+        public int DefaultSessionExpiryDays { get; set; }
     }
 }

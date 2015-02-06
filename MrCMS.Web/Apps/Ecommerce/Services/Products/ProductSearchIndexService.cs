@@ -1,31 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Lucene.Net.Index;
+using Lucene.Net.Documents;
 using Lucene.Net.Search;
 using MrCMS.Indexing.Management;
 using MrCMS.Indexing.Querying;
 using MrCMS.Indexing.Utils;
+using MrCMS.Models;
 using MrCMS.Paging;
+using MrCMS.Web.Apps.Ecommerce.Indexing;
 using MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Indexing;
+using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Website;
+using Newtonsoft.Json;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
     public class ProductSearchIndexService : IProductSearchIndexService
     {
+        private readonly EcommerceSearchCacheSettings _ecommerceSearchCacheSettings;
+        private readonly IGetProductCategories _getProductCategories;
+        private readonly IGetProductSearchQueryObjects _getProductSearchQueryObjects;
         private readonly ISearcher<Product, ProductSearchIndex> _productSearcher;
 
-        public ProductSearchIndexService(ISearcher<Product, ProductSearchIndex> productSearcher)
+        public ProductSearchIndexService(ISearcher<Product, ProductSearchIndex> productSearcher,
+            IGetProductCategories getProductCategories, EcommerceSearchCacheSettings ecommerceSearchCacheSettings,
+            IGetProductSearchQueryObjects getProductSearchQueryObjects)
         {
             _productSearcher = productSearcher;
+            _getProductCategories = getProductCategories;
+            _ecommerceSearchCacheSettings = ecommerceSearchCacheSettings;
+            _getProductSearchQueryObjects = getProductSearchQueryObjects;
         }
 
         public IPagedList<Product> SearchProducts(ProductSearchQuery query)
         {
-            IPagedList<Product> searchProducts = _productSearcher.Search(query.GetQuery(), query.Page, query.PageSize, query.GetFilter(), query.GetSort());
+            IPagedList<Product> searchProducts = _productSearcher.Search(GetQuery(query), query.Page, query.PageSize,
+                GetFilter(query), GetSort(query));
             return searchProducts;
         }
 
@@ -33,64 +46,47 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             var clone = query.Clone() as ProductSearchQuery;
             clone.PriceTo = null;
-            var search = _productSearcher.IndexSearcher.Search(clone.GetQuery(), clone.GetFilter(), int.MaxValue);
-            var documents = search.ScoreDocs.Select(doc => _productSearcher.IndexSearcher.Doc(doc.Doc)).ToList();
-            var max = documents.Count > 0
-                          ? documents.Select(document => document.GetValue<decimal>(FieldDefinition.GetFieldName<ProductSearchPriceDefinition>())).Max()
-                          : 0;
+            TopDocs search = _productSearcher.IndexSearcher.Search(GetQuery(clone), GetFilter(clone), int.MaxValue);
+            List<Document> documents =
+                search.ScoreDocs.Select(doc => _productSearcher.IndexSearcher.Doc(doc.Doc)).ToList();
+            decimal max = documents.Count > 0
+                ? documents.Select(
+                    document => document.GetValue<decimal>(FieldDefinition.GetFieldName<ProductSearchPriceDefinition>()))
+                    .Max()
+                : 0;
             if (documents.Any())
-                max = documents.Select(document => document.GetValue<decimal>(FieldDefinition.GetFieldName<ProductSearchPriceDefinition>())).Max();
-            return Convert.ToDouble(Math.Ceiling(max / 5.0m) * 5m);
+                max =
+                    documents.Select(
+                        document =>
+                            document.GetValue<decimal>(FieldDefinition.GetFieldName<ProductSearchPriceDefinition>()))
+                        .Max();
+            return Convert.ToDouble(Math.Ceiling(max/5.0m)*5m);
         }
 
         public List<int> GetSpecifications(ProductSearchQuery query)
         {
             var clone = query.Clone() as ProductSearchQuery;
 
-            var indexSearcher = _productSearcher.IndexSearcher;
-            var valueCollector = new ValueCollector(indexSearcher, FieldDefinition.GetFieldName<ProductSearchSpecificationsDefinition>());
-            indexSearcher.Search(clone.GetQuery(), clone.GetFilter(), valueCollector);
+            IndexSearcher indexSearcher = _productSearcher.IndexSearcher;
+            var valueCollector = new ValueCollector(indexSearcher,
+                FieldDefinition.GetFieldName<ProductSearchSpecificationsDefinition>());
+            indexSearcher.Search(GetQuery(clone), GetFilter(clone), valueCollector);
             return GetSpecifications(valueCollector);
-        }
-
-        private static List<int> GetSpecifications(ValueCollector valueCollector)
-        {
-            return valueCollector.Values[FieldDefinition.GetFieldName<ProductSearchSpecificationsDefinition>()].Select(s => Convert.ToInt32(s)).Distinct().ToList();
         }
 
         public List<OptionInfo> GetOptions(ProductSearchQuery query)
         {
             var clone = query.Clone() as ProductSearchQuery;
-            //clone.Options = new List<string>();
-            var indexSearcher = _productSearcher.IndexSearcher;
-            var valueCollector = new ValueCollector(indexSearcher, FieldDefinition.GetFieldName<ProductSearchOptionsDefinition>());
-            indexSearcher.Search(clone.GetQuery(), clone.GetFilter(), valueCollector);
-            return GetOptionInfo(valueCollector);
-        }
-
-        private List<OptionInfo> GetOptionInfo(ValueCollector valueCollector)
-        {
-            return valueCollector.Values[FieldDefinition.GetFieldName<ProductSearchOptionsDefinition>()].Select(GetOptionInfo)
-                .Where(info => !info.Equals(default(OptionInfo)))
-                .Distinct()
-                .ToList();
-        }
-
-        private ValueCollector GetOptionValueCollector(ProductSearchQuery query)
-        {
-            var clone = query.Clone() as ProductSearchQuery;
-            //clone.Options = new List<string>();
-            var indexSearcher = _productSearcher.IndexSearcher;
+            IndexSearcher indexSearcher = _productSearcher.IndexSearcher;
             var valueCollector = new ValueCollector(indexSearcher,
-                FieldDefinition.GetFieldName<ProductSearchSpecificationsDefinition>(),
                 FieldDefinition.GetFieldName<ProductSearchOptionsDefinition>());
-            indexSearcher.Search(clone.GetQuery(), clone.GetFilter(), valueCollector);
-            return valueCollector;
+            indexSearcher.Search(GetQuery(clone), GetFilter(clone), valueCollector);
+            return GetOptionInfo(valueCollector);
         }
 
         public OptionSearchData GetOptionSearchData(ProductSearchQuery query)
         {
-            var optionValueCollector = GetOptionValueCollector(query);
+            ValueCollector optionValueCollector = GetOptionValueCollector(query);
 
             return new OptionSearchData
             {
@@ -99,87 +95,105 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             };
         }
 
-        private OptionInfo GetOptionInfo(string value)
-        {
-            if (!value.Contains("["))
-                return default(OptionInfo);
-
-            int bracketsOpened = value.IndexOf('[');
-            var optionIdString = value.Substring(0, bracketsOpened);
-
-            int startIndex = bracketsOpened + 1;
-            var valueData = value.Substring(startIndex, value.Length - startIndex - 1);
-
-
-            int optionId;
-            if (!int.TryParse(optionIdString, out optionId))
-                return default(OptionInfo);
-
-            return new OptionInfo { OptionId = optionId, Value = valueData };
-        }
-
         public List<int> GetBrands(ProductSearchQuery query)
         {
             var clone = query.Clone() as ProductSearchQuery;
             clone.BrandId = null;
-            var indexSearcher = _productSearcher.IndexSearcher;
-            var name = FieldDefinition.GetFieldName<ProductSearchBrandDefinition>();
+            IndexSearcher indexSearcher = _productSearcher.IndexSearcher;
+            string name = FieldDefinition.GetFieldName<ProductSearchBrandDefinition>();
             var valueCollector = new ValueCollector(indexSearcher, name);
-            indexSearcher.Search(clone.GetQuery(), clone.GetFilter(), valueCollector);
-            return valueCollector.Values[name].Where(x => !string.IsNullOrEmpty(x)).Select(s => Convert.ToInt32(s)).Distinct().ToList();
+            indexSearcher.Search(GetQuery(clone), GetFilter(clone), valueCollector);
+            return
+                valueCollector.Values[name].Where(x => !string.IsNullOrEmpty(x))
+                    .Select(s => Convert.ToInt32(s))
+                    .Distinct()
+                    .ToList();
         }
 
         public List<int> GetCategories(ProductSearchQuery query)
         {
             var clone = query.Clone() as ProductSearchQuery;
             clone.CategoryId = null;
-            var indexSearcher = _productSearcher.IndexSearcher;
-            var name = FieldDefinition.GetFieldName<ProductSearchCategoriesDefinition>();
-            var valueCollector = new ValueCollector(indexSearcher, name);
-            var query1 = clone.GetQuery();
-            indexSearcher.Search(query1, clone.GetFilter(), valueCollector);
-            return valueCollector.Values[name].Select(s => Convert.ToInt32(s)).Distinct().ToList();
-        }
-    }
-
-    public struct OptionInfo
-    {
-        public int OptionId { get; set; }
-        public string Value { get; set; }
-    }
-
-    public class ValueCollector : Collector
-    {
-        private readonly IndexSearcher _indexSearcher;
-        private readonly Dictionary<string, List<string>> _values;
-
-        public ValueCollector(IndexSearcher indexSearcher, params string[] fieldNames)
-        {
-            _indexSearcher = indexSearcher;
-            _values = new Dictionary<string, List<string>>();
-            foreach (var fieldName in fieldNames)
-            {
-                _values[fieldName] = new List<string>();
-            }
+            Query searchQuery = GetQuery(clone);
+            Filter filter = GetFilter(clone);
+            return _getProductCategories.Get(searchQuery, filter);
         }
 
-        public override void SetScorer(Scorer scorer) { }
-        public override void Collect(int doc)
+        public CachingInfo GetCachingInfo(ProductSearchQuery query, string suffix = null)
         {
-            var document = _indexSearcher.Doc(doc);
-            foreach (var key in Values.Keys)
-            {
-                Values[key].AddRange(document.GetValues(key));
-            }
+            return new CachingInfo(_ecommerceSearchCacheSettings.SearchCache, GetCacheKey(query) + suffix,
+                TimeSpan.FromSeconds(_ecommerceSearchCacheSettings.SearchCacheLength),
+                _ecommerceSearchCacheSettings.SearchCacheExpiryType);
         }
 
-        public override void SetNextReader(IndexReader reader, int docBase) { }
-
-        public override bool AcceptsDocsOutOfOrder { get { return true; } }
-
-        public Dictionary<string, List<string>> Values
+        private Sort GetSort(ProductSearchQuery query)
         {
-            get { return _values; }
+            return _getProductSearchQueryObjects.GetSort(query);
+        }
+
+        private Filter GetFilter(ProductSearchQuery query)
+        {
+            return _getProductSearchQueryObjects.GetFilter(query);
+        }
+
+        private Query GetQuery(ProductSearchQuery query)
+        {
+            return _getProductSearchQueryObjects.GetQuery(query);
+        }
+
+        private static List<int> GetSpecifications(ValueCollector valueCollector)
+        {
+            return
+                valueCollector.Values[FieldDefinition.GetFieldName<ProductSearchSpecificationsDefinition>()].Select(
+                    s => Convert.ToInt32(s)).Distinct().ToList();
+        }
+
+        private List<OptionInfo> GetOptionInfo(ValueCollector valueCollector)
+        {
+            return
+                valueCollector.Values[FieldDefinition.GetFieldName<ProductSearchOptionsDefinition>()].Select(
+                    GetOptionInfo)
+                    .Where(info => !info.Equals(default(OptionInfo)))
+                    .Distinct()
+                    .ToList();
+        }
+
+        private ValueCollector GetOptionValueCollector(ProductSearchQuery query)
+        {
+            var clone = query.Clone() as ProductSearchQuery;
+            //clone.Options = new List<string>();
+            IndexSearcher indexSearcher = _productSearcher.IndexSearcher;
+            var valueCollector = new ValueCollector(indexSearcher,
+                FieldDefinition.GetFieldName<ProductSearchSpecificationsDefinition>(),
+                FieldDefinition.GetFieldName<ProductSearchOptionsDefinition>());
+            indexSearcher.Search(GetQuery(clone), GetFilter(clone), valueCollector);
+            return valueCollector;
+        }
+
+        private OptionInfo GetOptionInfo(string value)
+        {
+            if (!value.Contains("["))
+                return default(OptionInfo);
+
+            int bracketsOpened = value.IndexOf('[');
+            string optionIdString = value.Substring(0, bracketsOpened);
+
+            int startIndex = bracketsOpened + 1;
+            string valueData = value.Substring(startIndex, value.Length - startIndex - 1);
+
+
+            int optionId;
+            if (!int.TryParse(optionIdString, out optionId))
+                return default(OptionInfo);
+
+            return new OptionInfo {OptionId = optionId, Value = valueData};
+        }
+
+        private string GetCacheKey(ProductSearchQuery query)
+        {
+            return _ecommerceSearchCacheSettings.SearchCachePerUser
+                ? JsonConvert.SerializeObject(new {CurrentRequestData.UserGuid, query})
+                : JsonConvert.SerializeObject(query);
         }
     }
 }

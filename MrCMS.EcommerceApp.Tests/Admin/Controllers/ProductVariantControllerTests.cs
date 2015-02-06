@@ -5,6 +5,7 @@ using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services.ProductReviews;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
@@ -13,11 +14,13 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
     {
         private readonly IProductVariantAdminService _productVariantAdminService;
         private readonly ProductVariantController _productVariantController;
+        private readonly IProductReviewUIService _productReviewUIService;
 
         public ProductVariantControllerTests()
         {
             _productVariantAdminService = A.Fake<IProductVariantAdminService>();
-            _productVariantController = new ProductVariantController(_productVariantAdminService);
+            _productReviewUIService = A.Fake<IProductReviewUIService>();
+            _productVariantController = new ProductVariantController(_productVariantAdminService, _productReviewUIService);
         }
 
         [Fact]

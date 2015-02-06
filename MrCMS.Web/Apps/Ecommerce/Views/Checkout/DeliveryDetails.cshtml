@@ -1,16 +1,21 @@
-﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
-@using System
-@using MrCMS.Helpers
+﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Helpers
-<h4>Delivery Details</h4>
-<ul class="media-list">
-    <li>@(Model.ShippingAddress.Name??String.Empty)</li>
-    <li>@(Model.ShippingAddress.PhoneNumber??String.Empty)</li>
-    <li>@(Model.ShippingAddress.Company??String.Empty)</li>
-    <li>@(Model.ShippingAddress.Address1??String.Empty)</li>
-    <li>@(Model.ShippingAddress.Address2??String.Empty)</li>
-    <li>@(Model.ShippingAddress.City??String.Empty)</li>
-    <li>@(Model.ShippingAddress.PostalCode??String.Empty)</li>
-    <li>@(Model.ShippingAddress.GetCountryName())</li>
-</ul>
-<a class="btn btn-default" id="edit" href="@(UniquePageHelper.GetUrl<MrCMS.Web.Apps.Ecommerce.Pages.SetShippingDetails>())">Edit</a>
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
+<div class="grey-background padding-20 margin-bottom-20">
+    <p>
+        <strong>@Resource("Delivery Details")</strong>
+        <span class="pull-right"><img src="~/Apps/Ecommerce/Content/Images/tick-sm.png" alt="tick" /></span>
+    </p>
+    <ul class="list-unstyled">
+        <li>@(Model.ShippingAddress.Name ?? String.Empty)</li>
+        <li>@(Model.ShippingAddress.PhoneNumber ?? String.Empty)</li>
+        <li>@(Model.ShippingAddress.Company ?? String.Empty)</li>
+        <li>@(Model.ShippingAddress.Address1 ?? String.Empty)</li>
+        <li>@(Model.ShippingAddress.Address2 ?? String.Empty)</li>
+        <li>@(Model.ShippingAddress.City ?? String.Empty)</li>
+        <li>@(Model.ShippingAddress.PostalCode ?? String.Empty)</li>
+        <li>@(Model.ShippingAddress.GetCountryName())</li>
+    </ul>
+    <a class="btn btn-default" id="edit" href="@(UniquePageHelper.GetUrl<SetShippingDetails>())">Edit</a>
+</div>

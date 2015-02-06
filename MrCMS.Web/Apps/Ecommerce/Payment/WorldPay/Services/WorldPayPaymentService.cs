@@ -65,7 +65,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
             postInfo.currency = _ecommerceSettings.CurrencyCode();
             postInfo.email = _cart.OrderEmail;
             postInfo.withDelivery = _cart.RequiresShipping ? "true" : "false";
-            postInfo.amount = _cart.Total.ToString(new CultureInfo("en-US", false).NumberFormat);
+            postInfo.amount = _cart.TotalToPay.ToString(new CultureInfo("en-US", false).NumberFormat);
             postInfo.desc = _site.Name;
             postInfo.M_UserID = _cart.UserGuid.ToString();
             postInfo.M_FirstName = _cart.BillingAddress.FirstName;
@@ -119,6 +119,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
             string transId = form["transId"] ?? string.Empty;
             string transResult = queryString["msg"] ?? string.Empty;
             string authCode = queryString["rawAuthMessage"] ?? string.Empty;
+            decimal amount;
+            decimal.TryParse(queryString["authAmount"], out amount);
             string instanceId = _worldPaySettings.InstanceId;
 
             CartModel cart = GetCart(orderId);
@@ -150,6 +152,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.WorldPay.Services
                         string.Format(
                             "The transaction status received from WorldPay ({0}) for the order {1} was declined.",
                             transStatus, orderId));
+                if (cart.TotalToPay != amount)
+                {
+                    throw new Exception(
+                        string.Format("The paid amount {0} does not match the amount to pay {1}", amount,
+                            cart.TotalToPay));
+                }
             }
             catch (Exception exception)
             {

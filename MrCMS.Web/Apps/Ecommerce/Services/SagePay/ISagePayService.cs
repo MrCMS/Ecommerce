@@ -92,7 +92,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.SagePay
         /// </summary>
         public virtual bool IsSignatureValid(string securityKey, string vendorName)
         {
-            return this.GenerateSignature(securityKey, vendorName) == this.VPSSignature;
+            var name = (vendorName ?? string.Empty).ToLower();
+            return this.GenerateSignature(securityKey, name) == this.VPSSignature;
         }
 
         /// <summary>

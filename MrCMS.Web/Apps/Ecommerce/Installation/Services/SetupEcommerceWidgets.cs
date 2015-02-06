@@ -141,18 +141,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var teaser4Area = layout.LayoutAreas.FirstOrDefault(x => x.AreaName == "Teaser4");
 
 
-            var slider = new Slider
-            {
-                Image = mediaModel.SliderImage1.FileUrl,
-                Image1 = mediaModel.SliderImage2.FileUrl,
-                LayoutArea = beforeContent,
-                Webpage = pageModel.HomePage,
-                Cache = true,
-                CacheExpiryType = CacheExpiryType.Sliding,
-                CacheLength = 1800
-            };
-            _widgetService.AddWidget(slider);
-
             var featuredProducts = new FeaturedProducts
             {
                 LayoutArea = beforeContent,
@@ -276,24 +264,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             };
             _widgetService.AddWidget(cartWidget);
 
-            //nav
-            var nav = new MobileFriendlyNavigation.Widgets.MobileFriendlyNavigation
-            {
-                Name = "Navigation",
-                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == ("Navigation")),
-                IncludeChildren = true,
-                Cache = true,
-                CacheExpiryType = CacheExpiryType.Sliding,
-                CacheLength = 60
-            };
-            _widgetService.AddWidget(nav);
-
             //footer links
             var footerLinksWidget = new TextWidget
             {
                 LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 1"),
                 Name = "Footer links",
-                Text = EcommerceInstalInfo.FooterText1,
+                Text = EcommerceInstallInfo.FooterText1,
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Sliding,
                 CacheLength = 60
@@ -304,7 +280,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 2"),
                 Name = "Footer links",
-                Text = EcommerceInstalInfo.FooterText2,
+                Text = EcommerceInstallInfo.FooterText2,
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Sliding,
                 CacheLength = 60
@@ -315,7 +291,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "Footer Area 3"),
                 Name = "Footer links",
-                Text = EcommerceInstalInfo.FooterText3,
+                Text = EcommerceInstallInfo.FooterText3,
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Sliding,
                 CacheLength = 60
@@ -326,7 +302,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "After Content"),
                 Name = "Footer links",
-                Text = EcommerceInstalInfo.AfterContentCardsTeaser,
+                Text = EcommerceInstallInfo.AfterContentCardsTeaser,
                 Cache = true,
                 CacheExpiryType = CacheExpiryType.Sliding,
                 CacheLength = 60

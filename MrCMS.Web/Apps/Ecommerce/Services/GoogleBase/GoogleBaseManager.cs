@@ -141,7 +141,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.GoogleBase
             if (productVariant.Product != null && !String.IsNullOrWhiteSpace(productVariant.DisplayName))
                 description = productVariant.Product.BodyContent.StripHtml();
             if (productVariant.Product != null && String.IsNullOrEmpty(description))
-                description = productVariant.Product.Abstract.StripHtml();
+                description = productVariant.Product.ProductAbstract.StripHtml();
             if (productVariant.Product != null && String.IsNullOrEmpty(description))
                 description = productVariant.DisplayName.StripHtml();
             description = XmlCharacterWhitelist(description);

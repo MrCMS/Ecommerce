@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MrCMS.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using PayPal.PayPalAPIInterfaceService.Model;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
@@ -9,17 +11,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
     public class PayPalOrderService : IPayPalOrderService
     {
         private readonly PayPalExpressCheckoutSettings _payPalExpressCheckoutSettings;
+        private readonly ICartDiscountApplicationService _cartDiscountApplicationService;
 
-        public PayPalOrderService(PayPalExpressCheckoutSettings payPalExpressCheckoutSettings)
+        public PayPalOrderService(PayPalExpressCheckoutSettings payPalExpressCheckoutSettings, ICartDiscountApplicationService cartDiscountApplicationService)
         {
             _payPalExpressCheckoutSettings = payPalExpressCheckoutSettings;
+            _cartDiscountApplicationService = cartDiscountApplicationService;
         }
 
         public List<PaymentDetailsType> GetPaymentDetails(CartModel cart)
         {
             var paymentDetailsType = new PaymentDetailsType
             {
-                ItemTotal = (cart.Subtotal - cart.OrderTotalDiscount).GetAmountType(),
+                ItemTotal = (cart.Subtotal - cart.OrderTotalDiscount - cart.ShippingDiscount).GetAmountType(),
                 PaymentDetailsItem = GetPaymentDetailsItems(cart),
                 PaymentAction = _payPalExpressCheckoutSettings.PaymentAction,
                 OrderTotal = cart.GetCartTotalForPayPal().GetAmountType(),
@@ -44,15 +48,32 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                 Quantity = item.Quantity,
                 Tax = item.UnitTax.GetAmountType(),
             }).ToList();
-            if (cart.OrderTotalDiscount > 0)
-                paymentDetailsItemTypes.Add(new PaymentDetailsItemType
-                                                {
-                                                    Name = "Discount - " + cart.DiscountCode,
-                                                    Amount = (-cart.OrderTotalDiscount).GetAmountType(),
-                                                    ItemCategory = ItemCategoryType.PHYSICAL,
-                                                    Quantity = 1,
-                                                    Tax = 0m.GetAmountType()
-                                                });
+            var applications = (from discountInfo in cart.Discounts
+                                let info = _cartDiscountApplicationService.ApplyDiscount(discountInfo, cart)
+                                select new { info, discountInfo }).ToHashSet();
+            paymentDetailsItemTypes.AddRange(from application in applications
+
+                                             where application.info.OrderTotalDiscount > 0
+                                             select new PaymentDetailsItemType
+                                             {
+                                                 Name = "Order Total Discount - " + application.discountInfo.Discount.Name,
+                                                 Amount = (-application.info.OrderTotalDiscount).GetAmountType(),
+                                                 ItemCategory = ItemCategoryType.PHYSICAL,
+                                                 Quantity = 1,
+                                                 Tax = 0m.GetAmountType()
+                                             });
+
+            paymentDetailsItemTypes.AddRange(from application in applications
+                                             where application.info.ShippingDiscount > 0
+                                             select new PaymentDetailsItemType
+                                             {
+                                                 Name = "Shipping Discount - " + application.discountInfo.Discount.Name,
+                                                 Amount = (-application.info.ShippingDiscount).GetAmountType(),
+                                                 ItemCategory = ItemCategoryType.PHYSICAL,
+                                                 Quantity = 1,
+                                                 Tax = 0m.GetAmountType()
+                                             });
+
             return paymentDetailsItemTypes;
         }
 

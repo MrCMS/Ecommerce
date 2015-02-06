@@ -32,10 +32,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                         _cartManager.SetPayPalExpressToken(type.Token);
                     },
                     (type, response) =>
-                        {
-                            response.Errors.Add("An error occurred");
-                            type.RaiseErrors();
-                        });
+                    {
+                        response.Errors.Add("An error occurred");
+                        type.RaiseErrors();
+                    });
         }
 
         public GetExpressCheckoutResponse ProcessReturn(string token)
@@ -47,13 +47,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                 ((type, response) =>
                 {
                     response.AddressAndMethodSet = _payPalCartManager.UpdateCart(type.GetExpressCheckoutDetailsResponseDetails);
-                    
+
                 },
                  (type, response) =>
-                     {
-                         response.Errors.Add("An error occurred");
-                         type.RaiseErrors();
-                     });
+                 {
+                     response.Errors.Add("An error occurred");
+                     type.RaiseErrors();
+                 });
         }
 
         public DoExpressCheckoutPaymentResponse DoExpressCheckout(CartModel cart)
@@ -63,18 +63,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
             return doExpressCheckoutPaymentResponseType
                 .HandleResponse<DoExpressCheckoutPaymentResponseType, DoExpressCheckoutPaymentResponse>(
                     (type, response) =>
-                        {
-                            response.Details = type.DoExpressCheckoutPaymentResponseDetails;
-                        },
+                    {
+                        response.Details = type.DoExpressCheckoutPaymentResponseDetails;
+                    },
                     (type, response) =>
+                    {
+                        response.Errors.Add("An error occurred");
+                        type.RaiseErrors();
+                        if (type.Errors.Any(errorType => errorType.ErrorCode == "10486" || errorType.ErrorCode == "10411"))
                         {
-                            response.Errors.Add("An error occurred");
-                            type.RaiseErrors();
-                            if (type.Errors.Any(errorType => errorType.ErrorCode == "10486"))
-                            {
-                                response.RedirectToPayPal = true;
-                            }
-                        });
+                            response.RedirectToPayPal = true;
+                        }
+                    });
         }
     }
 }

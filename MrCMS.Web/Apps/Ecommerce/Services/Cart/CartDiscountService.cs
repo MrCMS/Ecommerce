@@ -1,24 +1,39 @@
 using System.Collections.Generic;
+using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
 {
-    public class CartDiscountService : ICartDiscountService, ICartSessionKeyList
+    public class CartDiscountService : ICartDiscountService
     {
-        private readonly ICartSessionManager _cartSessionManager;
-        private readonly IGetUserGuid _getUserGuid;
+        private readonly CartModel _cart;
+        private readonly ICartDiscountCodeService _cartDiscountCodeService;
+        private readonly IGetValidDiscounts _getValidDiscounts;
 
-        public CartDiscountService(ICartSessionManager cartSessionManager, IGetUserGuid getUserGuid)
+        public CartDiscountService(ICartDiscountCodeService cartDiscountCodeService,
+            IGetValidDiscounts getValidDiscounts, CartModel cart)
         {
-            _cartSessionManager = cartSessionManager;
-            _getUserGuid = getUserGuid;
+            _cartDiscountCodeService = cartDiscountCodeService;
+            _getValidDiscounts = getValidDiscounts;
+            _cart = cart;
         }
 
-        public const string CurrentDiscountCodeKey = "current.discount-code";
-        public void SetDiscountCode(string code)
+        public CheckCodeResult AddDiscountCode(string code)
         {
-            _cartSessionManager.SetSessionValue(CurrentDiscountCodeKey, _getUserGuid.UserGuid, code);
+            HashSet<string> codes = _cartDiscountCodeService.Get();
+            CheckCodeResult codeResult = _getValidDiscounts.CheckCode(_cart, code);
+            if (codeResult.Success)
+            {
+                codes.Add(code);
+                _cartDiscountCodeService.SaveDiscounts(codes);
+            }
+            return codeResult;
         }
 
-        public IEnumerable<string> Keys { get { yield return CurrentDiscountCodeKey; } }
+        public void RemoveDiscountCode(string discountCode)
+        {
+            HashSet<string> codes = _cartDiscountCodeService.Get();
+            codes.Remove(discountCode);
+            _cartDiscountCodeService.SaveDiscounts(codes);
+        }
     }
 }

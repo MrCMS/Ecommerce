@@ -9,7 +9,7 @@ namespace MrCMS.Web.Apps.Articles.Pages
     public class Article : TextPage, IBelongToUser
     {
         [AllowHtml]
-        [StringLength(160, ErrorMessage = "Abstract cannot be longer than 500 characters.")]
+        [StringLength(160, ErrorMessage = "Abstract cannot be longer than 160 characters.")]
         public virtual string Abstract { get; set; }
 
         [DisplayName("Author")]

@@ -6,6 +6,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Paypoint;
 using MrCMS.Web.Areas.Admin.Helpers;
+using MrCMS.Website;
 using MrCMS.Website.Controllers;
 using MrCMS.Website.Filters;
 
@@ -66,6 +67,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 var order = _orderPlacementService.PlaceOrder(_cartModel, o =>
                 {
                     o.PaymentStatus = PaymentStatus.Paid;
+                    o.PaidDate = CurrentRequestData.Now;
                     o.AuthorisationToken = response.PaypointPaymentDetails.AuthCode;
                     o.ShippingStatus = ShippingStatus.Unshipped;
                 });
@@ -90,7 +92,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 return _uniquePageService.RedirectTo<PaymentDetails>();
             }
             if (_cartModel.CartGuid != _paypoint3DSecureHelper.GetCartGuid() ||
-                _cartModel.Total != _paypoint3DSecureHelper.GetOrderAmount())
+                _cartModel.TotalToPay != _paypoint3DSecureHelper.GetOrderAmount())
             {
                 TempData["error-details"] = new FailureDetails
                 {
@@ -112,6 +114,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
                 var order = _orderPlacementService.PlaceOrder(_cartModel, o =>
                 {
                     o.PaymentStatus = PaymentStatus.Paid;
+                    o.PaidDate = CurrentRequestData.Now;
                     o.ShippingStatus = ShippingStatus.Unshipped;
                     o.AuthorisationToken = response.PaypointPaymentDetails.AuthCode;
                 });
