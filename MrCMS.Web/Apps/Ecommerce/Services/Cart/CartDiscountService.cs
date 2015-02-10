@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using MrCMS.Web.Apps.Ecommerce.Models;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
@@ -32,7 +34,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public void RemoveDiscountCode(string discountCode)
         {
             HashSet<string> codes = _cartDiscountCodeService.Get();
-            codes.Remove(discountCode);
+            var matchedCode =
+                codes.FirstOrDefault(x => x.Equals(discountCode, StringComparison.InvariantCultureIgnoreCase));
+            if (matchedCode != null)
+                codes.Remove(matchedCode);
             _cartDiscountCodeService.SaveDiscounts(codes);
         }
     }
