@@ -1317,6 +1317,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\CartDiscountCodeService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartDiscountService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartGuidResetter.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\CartHasAtLeastXItemsChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartItemBasedDiscountApplicationApplier.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartItemManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
