@@ -20,8 +20,8 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
             return new SendOrderPlacedEmailToStoreOwnerMessageTemplate
             {
                 FromName = fromName,
-                ToAddress = "{OrderEmail}",
-                ToName = "{CustomerName}",
+                ToAddress = "you@example.com",
+                ToName = "Site Owner",
                 Bcc = String.Empty,
                 Cc = String.Empty,
                 Subject = String.Format("{0} - Order Placed", fromName),
