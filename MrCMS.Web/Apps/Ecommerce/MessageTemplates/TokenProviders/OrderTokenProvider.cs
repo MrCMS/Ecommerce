@@ -77,7 +77,7 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
                                    : string.Empty
                            },
                            {
-                               "ShippingAddressPhoneNummber",
+                               "ShippingAddressPhoneNumber",
                                order =>
                                order.ShippingAddress != null
                                    ? order.ShippingAddress.PhoneNumber
