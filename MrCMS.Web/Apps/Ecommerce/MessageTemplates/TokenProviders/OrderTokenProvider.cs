@@ -63,10 +63,24 @@ namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates.TokenProviders
                                    : string.Empty
                            },
                            {
+                               "BillingAddressPhoneNumber",
+                               order =>
+                               order.BillingAddress != null
+                                   ? order.BillingAddress.PhoneNumber
+                                   : string.Empty
+                           },
+                           {
                                "ShippingAddressFormattedHtml",
                                order =>
                                order.ShippingAddress != null
                                    ? order.ShippingAddress.GetDescription().Replace(",", ",<br />")
+                                   : string.Empty
+                           },
+                           {
+                               "ShippingAddressPhoneNummber",
+                               order =>
+                               order.ShippingAddress != null
+                                   ? order.ShippingAddress.PhoneNumber
                                    : string.Empty
                            },
                            {
