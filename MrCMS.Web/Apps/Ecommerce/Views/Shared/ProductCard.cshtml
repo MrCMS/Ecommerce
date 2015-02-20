@@ -12,7 +12,7 @@
             </a>
         </div>
         <div class="product-info margin-top-10">
-            @if (Model.VariantId.HasValue)
+            @if (Model.CanBuyStatus != null && Model.CanBuyStatus.OK)
             {
                 <div class="padding-bottom-10">
                     @using (Html.BeginForm("Add", "AddToCart", FormMethod.Post))
@@ -28,6 +28,10 @@
             </div>
             <div class="product-price">
                 <span class="current-price">
+                    @if (Model.IsMultiVariant)
+                    {
+                        @Resource("From: ")
+                    }
                     @Model.Price.ToCurrencyFormat()
                 </span>
                 @if (Model.PreviousPrice.HasValue)

@@ -288,6 +288,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
             }
         }
 
+        [DisplayName("Custom In Stock Message")]
+        public virtual string CustomStockInStockMessage { get; set; }
+        
+        [DisplayName("Custom Out Of Stock Message")]
+        public virtual string CustomStockOutOfStockMessage { get; set; }
+
         private PriceBreak GetPriceBreak(int quantity)
         {
             return PriceBreaks != null

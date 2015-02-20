@@ -1,0 +1,43 @@
+﻿@using System.Collections.Generic
+@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Settings
+@model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
+@{
+    var productVariantTypeOptions = ViewData["product-variant-type-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
+<div id="stock" class="tab-pane">
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                @Html.LabelFor(product => product.TrackingPolicy)
+                @Html.DropDownListFor(product => product.TrackingPolicy, ViewData["tracking-policy"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                @if (!SiteSettings<EcommerceSettings>().WarehouseStockEnabled)
+                {
+                    @Html.LabelFor(variant => variant.StockRemaining)
+                    @Html.TextBoxFor(variant => variant.StockRemaining, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(variant => variant.StockRemaining)
+                }
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                @Html.LabelFor(product => product.CustomStockInStockMessage)
+                @Html.TextBoxFor(product => product.CustomStockInStockMessage, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                @Html.LabelFor(product => product.CustomStockOutOfStockMessage)
+                @Html.TextBoxFor(product => product.CustomStockOutOfStockMessage, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+    @Html.InfoBlock("Heads up!", "Leave blank for default in/out of stock messages")
+</div>
