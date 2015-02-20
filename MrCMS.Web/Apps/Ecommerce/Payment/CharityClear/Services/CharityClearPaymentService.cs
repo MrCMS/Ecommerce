@@ -6,16 +6,24 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
+using Elmah;
+using FluentNHibernate.Utils;
 using MrCMS.Entities.Multisite;
+using MrCMS.Helpers;
+using MrCMS.Logging;
+using MrCMS.Web.Apps.Core.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities;
 using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Payment.CharityClear.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Apps.Ecommerce.Settings;
+using MrCMS.Web.Areas.Admin.Services;
 using MrCMS.Website;
 using Newtonsoft.Json;
 using NHibernate;
@@ -31,10 +39,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CharityClear.Services
         private readonly ISession _session;
         private readonly Site _site;
         private readonly CharityClearSettings _charityClearSettings;
+        private readonly ILogAdminService _logService;
 
         public CharityClearPaymentService(CartModel cart,
             EcommerceSettings ecommerceSettings, ICartBuilder cartBuilder,
-            ISession session, IOrderPlacementService orderPlacementService, Site site, CharityClearSettings charityClearSettings)
+            ISession session, IOrderPlacementService orderPlacementService, Site site, CharityClearSettings charityClearSettings, ILogAdminService logService)
         {
             _cart = cart;
             _ecommerceSettings = ecommerceSettings;
@@ -43,6 +52,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CharityClear.Services
             _orderPlacementService = orderPlacementService;
             _site = site;
             _charityClearSettings = charityClearSettings;
+            _logService = logService;
         }
 
         public CharityClearPostModel GetInfo()
@@ -60,7 +70,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CharityClear.Services
         public SortedDictionary<string, string> GetBaseFields()
         {
             string returnUrl = string.Format("{0}/Apps/Ecommerce/CharityClear/Notification", GetSiteUrl());
-            string total = _cart.TotalToPay.ToString("0.00").Replace(".", "");
+            string total = ((int)(_cart.TotalToPay * 100)).ToString();
             var fields = new SortedDictionary<string, string>
             {
                 {"merchantID", _charityClearSettings.MerchantId},
@@ -70,7 +80,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CharityClear.Services
                 {"countryCode", _charityClearSettings.ISOCountryCode},
                 {"currencyCode", _ecommerceSettings.CurrencyCode()},
                 {"orderRef", _cart.CartGuid.ToString()},
-                {"redirectURL", returnUrl}
+                {"redirectURL", returnUrl},
+                {"callbackURL", returnUrl}
             };
             if (!string.IsNullOrWhiteSpace(_charityClearSettings.MerchantPassword))
             {
@@ -120,7 +131,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CharityClear.Services
         private string ToRequest(SortedDictionary<string, string> fields)
         {
             var values = new List<string>();
-            foreach (var item in fields.Where(x=>x.Key != "signature"))
+            foreach (var item in fields.Where(x => x.Key != "signature"))
             {
                 values.Add(string.Format("{0}={1}", item.Key,
                     UrlEncodeUpperCase(item.Value)));
@@ -155,12 +166,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CharityClear.Services
 
         public CharityClearResponse HandleNotification(FormCollection form)
         {
+
+            _logService.Insert(new Log
+            {
+                Detail = JsonConvert.SerializeObject(form),
+                Message = "Callback from Charity Clear",
+                Error = new Error()
+            });
+
             if (form["responseCode"] == "0")
             {
-                
+                Guid cartGuid;
+                string orderId = form["orderRef"];
+                Guid.TryParse(orderId, out cartGuid);
+
+                var existingOrder =
+                    _session.QueryOver<Order>().Where(o => o.Guid == cartGuid).Take(1).SingleOrDefault();
+                if (existingOrder != null)
+                {
+                    return new CharityClearResponse
+                    {
+                        Order = existingOrder,
+                        Success = true
+                    };
+                }
+
                 string captureTransactionId = form["transactionID"];
                 var amountCharged = form["amountReceived"];
-                string orderId = form["orderRef"];
                 string hash = form["merchantData"];
                 var cart = GetCart(orderId);
 
@@ -188,14 +220,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CharityClear.Services
                     };
                 }
 
-                if (amountCharged != cart.TotalToPay.ToString("0.00").Replace(".", ""))
+                if (amountCharged != ((int)(cart.TotalToPay * 100)).ToString())
                 {
+                    string message = string.Format("Something went wrong with the amount we charged you. Please contact us quoting transaction {0}", captureTransactionId);
+                    _logService.Insert(new Log
+                    {
+                        Detail = JsonConvert.SerializeObject(form),
+                        Message = message,
+                        Error = new Error()
+                    });
                     return new CharityClearResponse
                     {
                         ErrorMessages =
                             new List<string>
                             {
-                                string.Format("Something went wrong with the amount we charged you. Please contact us quoting transaction {0}", captureTransactionId)
+                                message
                             }
                     };
                 }
