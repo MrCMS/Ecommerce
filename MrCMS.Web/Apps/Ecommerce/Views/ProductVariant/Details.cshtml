@@ -33,7 +33,7 @@
                             <span itemprop="price">@Model.Price.ToCurrencyFormat()</span>
                             @if (canBuy.OK)
                             {
-                                <span class="instock" itemprop="availability" content="in_stock">@Resource("In stock")</span>
+                                <span class="instock" itemprop="availability" content="in_stock">@(!string.IsNullOrEmpty(Model.CustomStockInStockMessage) ? Model.CustomStockInStockMessage : Resource("In Stock"))</span>
                             }
                             @if (Model.ShowPreviousPrice)
                             {
@@ -65,13 +65,13 @@
                         }
                         if (canBuy is OutOfStock)
                         {
-                            <span itemprop="availability" content="out_of_stock">Out of stock</span> <br />
+                            <span itemprop="availability" content="out_of_stock" class="bg-warning">@(!string.IsNullOrEmpty(Model.CustomStockOutOfStockMessage) ? Model.CustomStockOutOfStockMessage : Resource("Out of stock"))</span> <br />
                             Html.RenderAction("BackInStockForm", "Product", new { id = Model.Id });
                         }
                         if (canBuy is CannotOrderQuantity)
                         {
                             <p class="text-center">
-                                You currently have all available stock in your cart
+                                @canBuy.Message;
                             </p>
                         }
                         if (canBuy is NoShippingMethodWouldBeAvailable)

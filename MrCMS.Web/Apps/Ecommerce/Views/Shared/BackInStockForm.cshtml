@@ -4,9 +4,6 @@
     var backInStock = ViewData["back-in-stock"] is bool && (bool)ViewData["back-in-stock"];
 }
 <div class="margin-bottom-20">
-    <p class="bg-warning">
-        Sorry, this item is out of stock.
-    </p>
     @if (backInStock)
     {
         <p class="bg-success">Thank you, you will be notified when this product is back in stock.</p>
