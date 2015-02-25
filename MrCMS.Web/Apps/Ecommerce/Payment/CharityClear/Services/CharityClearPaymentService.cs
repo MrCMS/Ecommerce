@@ -143,7 +143,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.CharityClear.Services
         static string UrlEncodeUpperCase(string value)
         {
             value = HttpUtility.UrlEncode(value);
-            return Regex.Replace(value, "(%[0-9a-f][0-9a-f])", c => c.Value.ToUpper());
+            if (value != null) return Regex.Replace(value, "(%[0-9a-f][0-9a-f])", c => c.Value.ToUpper());
+            return "";
         }
 
         private string GetSiteUrl()
