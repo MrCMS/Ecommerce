@@ -30,7 +30,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                 .Where(stock => stock.Site.Id == _site.Id && !stock.IsDeleted
                                 && stock.ProductVariant != null
                                 && stock.ProductVariant.SKU != null
-                                && stock.Warehouse != null)
+                                && stock.Warehouse != null && !stock.ProductVariant.IsDeleted)
                 .Fetch(stock => stock.ProductVariant)
                 .Fetch(stock => stock.Warehouse)
                 .ToList();
