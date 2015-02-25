@@ -1465,6 +1465,7 @@
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantPreviousPriceEqOrGrThan0.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantPriceBreaksAreValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantPriceEqOrGrThan0.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantProductDoesntAlreadyExist.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantStockIsValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantTaxRateIdIsValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantWeightEqOrGrThan0.cs" />

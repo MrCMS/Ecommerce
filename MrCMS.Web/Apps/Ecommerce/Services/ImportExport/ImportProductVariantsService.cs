@@ -39,9 +39,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 if (productVariant == null)
                 {
                     productVariant = new ProductVariant();
-                    product.Variants.Add(productVariant);
                     _session.Transact(session => session.Save(productVariant));
                 }
+
+                if (!product.Variants.Contains(productVariant))
+                    product.Variants.Add(productVariant);
 
                 productVariant.Name = item.Name;
                 productVariant.SKU = item.SKU;
