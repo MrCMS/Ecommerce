@@ -1018,6 +1018,7 @@
     <Compile Include="Apps\Ecommerce\Events\UndoRewardPointUsage.cs" />
     <Compile Include="Apps\Ecommerce\Events\UpdateIndexesOnOrderPlaced.cs" />
     <Compile Include="Apps\Ecommerce\Events\UpdateProductIndexesWhenDisplayOrderSet.cs" />
+    <Compile Include="Apps\Ecommerce\Filters\CanEnterCheckout.cs" />
     <Compile Include="Apps\Ecommerce\Filters\SetProductResultsViewDataAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Filters\SetProductSearchViewDataAttribute.cs" />
     <Compile Include="Apps\Ecommerce\HealthChecks\CheckGiftCardsEnabledIfAvailable.cs" />

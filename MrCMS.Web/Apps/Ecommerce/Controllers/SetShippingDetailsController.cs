@@ -1,4 +1,5 @@
 using System.Web.Mvc;
+using MrCMS.Web.Apps.Ecommerce.Filters;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Website.Controllers;
@@ -14,6 +15,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _setShippingDetailsUIService = setShippingDetailsUIService;
         }
 
+        [CanEnterCheckout]
         public ActionResult Show(SetShippingDetails page)
         {
             if (_setShippingDetailsUIService.UserRequiresRedirect())

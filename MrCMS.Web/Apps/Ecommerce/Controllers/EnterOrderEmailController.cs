@@ -5,6 +5,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Models;
 using MrCMS.Web.Apps.Core.Models.RegisterAndLogin;
 using MrCMS.Web.Apps.Core.Services;
+using MrCMS.Web.Apps.Ecommerce.Filters;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 using MrCMS.Web.Areas.Admin.Helpers;
@@ -30,6 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _userService = userService;
         }
 
+        [CanEnterCheckout]
         public ActionResult Show(EnterOrderEmail page)
         {
             if (CurrentRequestData.CurrentUser == null)
