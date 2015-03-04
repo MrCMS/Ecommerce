@@ -12,18 +12,14 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
     public class UpdateAmazonInfo : IPerformAmazonUpdates
     {
         private readonly IValidateAmazonOrderService _validateAmazonOrderService;
-        private readonly IEnumerable<IOnAmazonOrderPlaced> _onAmazonOrderPlaceds;
-        private readonly IOrderService _orderService;
 
-        public UpdateAmazonInfo(IValidateAmazonOrderService validateAmazonOrderService,
-            IEnumerable<IOnAmazonOrderPlaced> onAmazonOrderPlaceds, IOrderService orderService)
+        public UpdateAmazonInfo(IValidateAmazonOrderService validateAmazonOrderService)
+
         {
             _validateAmazonOrderService = validateAmazonOrderService;
-            _onAmazonOrderPlaceds = onAmazonOrderPlaceds;
-            _orderService = orderService;
         }
 
-        public void Update(AmazonOrder amazonOrder, Order order)
+        public bool Update(AmazonOrder amazonOrder, Order order)
         {
             if (amazonOrder.Id == 0 || (amazonOrder.Status != AmazonOrderStatus.Shipped &&
                                         amazonOrder.Status != AmazonOrderStatus.Canceled))
@@ -34,9 +30,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 
             amazonOrder.NumberOfItemsShipped = order.NumberOfItemsShipped;
             amazonOrder.Status = order.OrderStatus.GetEnumByValue<AmazonOrderStatus>();
-            if (amazonOrder.Status == AmazonOrderStatus.Shipped && amazonOrder.Order != null && amazonOrder.Order.ShippingStatus == ShippingStatus.Unshipped)
-            {
-            }
+            return true;
         }
 
         public int Order { get { return -10; } }
