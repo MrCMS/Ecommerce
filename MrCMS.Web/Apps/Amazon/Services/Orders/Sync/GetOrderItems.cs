@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using MarketplaceWebServiceOrders.Model;
 using MrCMS.Web.Apps.Amazon.Entities.Orders;
 using MrCMS.Web.Apps.Amazon.Services.Api.Orders;
+using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
 {
@@ -16,12 +18,21 @@ namespace MrCMS.Web.Apps.Amazon.Services.Orders.Sync
             _importAmazonOrderService = importAmazonOrderService;
         }
 
-        public void Update(AmazonOrder amazonOrder, Order order)
+        public bool Update(AmazonOrder amazonOrder, Order order)
         {
-            if (amazonOrder.Items.Any()) return;
-
-            var orderItems = _amazonOrdersApiService.ListOrderItems(amazonOrder.AmazonOrderId);
-            _importAmazonOrderService.SetAmazonOrderItems(orderItems, amazonOrder);
+            if (amazonOrder.Items.Any())
+                return true;
+            try
+            {
+                var orderItems = _amazonOrdersApiService.ListOrderItems(amazonOrder.AmazonOrderId);
+                _importAmazonOrderService.SetAmazonOrderItems(orderItems, amazonOrder);
+                return true;
+            }
+            catch (Exception exception)
+            {
+                CurrentRequestData.ErrorSignal.Raise(exception);
+                return false;
+            }
         }
 
         public int Order { get { return -5; } }
