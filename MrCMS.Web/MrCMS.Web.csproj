@@ -3908,7 +3908,6 @@
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\plugins\htmlwriter\assets\outputforflash\outputforflash.fla" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\skins\moono\readme.md" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Stock.cshtml" />
-    <Content Include="Apps\Amazon\Services\Orders\Sync\UpdateAmazonInfo.cs.orig" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
