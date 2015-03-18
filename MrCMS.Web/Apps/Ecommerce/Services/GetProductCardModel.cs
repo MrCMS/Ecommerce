@@ -79,7 +79,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                 }
                 else
                 {
-                    productCardModel.Price = productVariants.Any() ? productVariants.First().Price : (decimal?)null;
+                    productCardModel.Price = productVariants.Any() ? productVariants.Min(x => x.Price) : (decimal?)null;
                 }
                 productCardModels.Add(productCardModel);
             }
