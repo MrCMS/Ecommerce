@@ -33,8 +33,9 @@ namespace MrCMS.Tasks
                                               thisGroup.Where(action => action.Operation == LuceneOperation.Delete).ToList())
                                           luceneAction.Execute(writer);
 
-                                      writer.Optimize();
+                                      //writer.Optimize();
                                   });
+                managerBase.ResetSearcher();
             }
         }
     }
