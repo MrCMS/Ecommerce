@@ -29,7 +29,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             var mockingKernel = new MockingKernel();
             var session = A.Fake<ISession>();
             mockingKernel.Bind<ISession>().ToMethod(context => session).InSingletonScope();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
 
             var productVariantDTO = new ProductVariantImportDataTransferObject
             {

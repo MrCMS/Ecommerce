@@ -14,12 +14,16 @@
                 editor.on('configLoaded', function () {
                     editor.config.toolbar = 'Basic';
                 });
+
             });
 
             $("#enable-editing").click(function () {
                 $(this).mrcmsinline(!getEditingEnabled() ? 'enable' : 'disable');
             });
             $(this).mrcmsinline(getEditingEnabled() ? 'enable' : 'disable', true);
+
+            $('body').addClass('mrcms-admin-bar-on');
+
             return this;
         },
 
@@ -228,22 +232,24 @@
 $(function () {
     $('.editable', document).mrcmsinline();
 
-    $(document).on('click', '[data-toggle="fb-modal"]', function () {
-        var clone = $(this).clone();
-        clone.attr('data-toggle', '');
-        clone.hide();
-        clone.fancybox({
-            type: 'iframe',
-            autoSize: true,
-            minHeight: 400,
-            minWidth: 500,
-            padding: 0,
-            afterShow: function () {
-                $(".fancybox-iframe").contents().find('form').attr('target', '_parent').css('margin', '0');
-            }
-        }).click().remove();
-        return false;
+    $(document).featherlight({
+        filter: '[data-toggle="fb-modal"]',
+        type: 'iframe',
+        iframeWidth: 800,
+        afterOpen: function () { setCloseButtonPosition(); },
+        onResize: function () {
+            setCloseButtonPosition();
+        },
+        beforeOpen: function () {
+            $(".mrcms-edit-menu", document).hide();
+        }
     });
+
+    function setCloseButtonPosition() {
+        var offset = $(".featherlight-content").offset();
+        $(".featherlight-close-icon").css('top', offset.top);
+        $(".featherlight-close-icon").css('right', offset.left + -20);
+    }
 
     $("#unpublish-now").click(function () {
         if (window.top.location.pathname == '/') {
@@ -262,6 +268,7 @@ $(function () {
         });
         return false;
     });
+
 });
 
 

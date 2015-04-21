@@ -64,7 +64,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                                 ? nopImportContext.FindNew<Brand>(productData.BrandId.Value)
                                 : null,
                         Categories = productData.Categories.Select(nopImportContext.FindNew<Category>).ToList(),
-                        Tags = new HashedSet<Tag>(productData.Tags.Select(nopImportContext.FindNew<Tag>).ToList()),
+                        Tags = new HashSet<Tag>(productData.Tags.Select(nopImportContext.FindNew<Tag>).ToList()),
                         PublishOn = productData.Published ? CurrentRequestData.Now.Date : (DateTime?) null
                     };
 

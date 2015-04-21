@@ -48,7 +48,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
         public void PrepareForSyncAmazonListingService_UpdateAmazonListing_ShouldReturnAmazonListingType()
         {
             var mockingKernel = new MockingKernel();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
 
             var product = new Product();
@@ -72,7 +72,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             Session.Transact(session => session.Save(item));
 
             var mockingKernel = new MockingKernel();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
             mockingKernel.Bind<EcommerceSettings>().ToMethod(context => new EcommerceSettings(){CurrencyId = 1});
 
@@ -125,7 +125,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             Session.Transact(session => session.Save(item));
 
             var mockingKernel = new MockingKernel();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
             mockingKernel.Bind<EcommerceSettings>().ToMethod(context => new EcommerceSettings() { CurrencyId = 1 });
 
@@ -165,7 +165,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
         public void PrepareForSyncAmazonListingService_InitAmazonListingFromProductVariant_ShouldReturnAmazonListingType()
         {
             var mockingKernel = new MockingKernel();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
 
             var model = new AmazonListing();
@@ -182,7 +182,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             Session.Transact(session => session.Save(item));
 
             var mockingKernel = new MockingKernel();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
             mockingKernel.Bind<EcommerceSettings>().ToMethod(context => new EcommerceSettings() { CurrencyId = 1 });
 
@@ -239,7 +239,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
             Session.Transact(session => session.Save(item));
 
             var mockingKernel = new MockingKernel();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
             mockingKernel.Bind<EcommerceSettings>().ToMethod(context => new EcommerceSettings() { CurrencyId = 1 });
 
