@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using MrCMS.Batching;
 using MrCMS.Services.Notifications;
 using MrCMS.Website;
@@ -31,6 +32,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.Batching
                     return BatchJobExecutionResult.Failure(exception.Message);
                 }
             }
+        }
+
+        protected override Task<BatchJobExecutionResult> OnExecuteAsync(ImportProductBatchJob batchJob)
+        {
+            throw new NotImplementedException();
         }
     }
 }

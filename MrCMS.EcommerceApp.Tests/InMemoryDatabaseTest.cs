@@ -46,6 +46,7 @@ namespace MrCMS.EcommerceApp.Tests
             }
             Session = SessionFactory.OpenFilteredSession();
             Kernel.Bind<ISession>().ToMethod(context => Session);
+            Kernel.Bind<IStatelessSession>().ToMethod(context => SessionFactory.OpenStatelessSession());
 
             new SchemaExport(Configuration).Execute(false, true, false, Session.Connection, null);
 
@@ -72,6 +73,7 @@ namespace MrCMS.EcommerceApp.Tests
             Kernel.Load(new GenericBindingsModule());
             _eventContext = new TestableEventContext(Kernel.Get<EventContext>());
             Kernel.Rebind<IEventContext>().ToMethod(context => EventContext);
+
         }
 
         protected Site CurrentSite { get; set; }
@@ -90,8 +92,8 @@ namespace MrCMS.EcommerceApp.Tests
                 Name = UserRole.Administrator
             };
 
-            user.Roles = new HashedSet<UserRole> { adminUserRole };
-            adminUserRole.Users = new HashedSet<User> { user };
+            user.Roles = new HashSet<UserRole> { adminUserRole };
+            adminUserRole.Users = new HashSet<User> { user };
 
             CurrentRequestData.CurrentUser = user;
         }

@@ -78,11 +78,6 @@ namespace MrCMS.Web.Apps.Ecommerce
             }
         }
 
-        public override IEnumerable<Type> Conventions
-        {
-            get { yield return typeof(TableNameConvention); }
-        }
-
         public static Dictionary<string, string> SalesChannelApps
         {
             get { return _salesChannelApps; }

@@ -72,7 +72,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Api.Feeds
         public void AmazonGenerateFeedService_GetProductPrice_ShouldReturnPriceType()
         {
             var mockingKernel = new MockingKernel();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
 
             var model = new AmazonListing()
@@ -88,7 +88,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Api.Feeds
         public void AmazonGenerateFeedService_GetProductPrice_ShouldSetValues()
         {
             var mockingKernel = new MockingKernel();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
             mockingKernel.Bind<ISession>().ToMethod(context => A.Fake<ISession>());
 
             var listing = new AmazonListing()
