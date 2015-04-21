@@ -13,6 +13,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Areas.Admin.Services;
+using MrCMS.Website.ActionResults;
 using Xunit;
 
 namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
@@ -136,9 +137,9 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         {
             var product = new Product {Id = 123};
 
-            JsonResult result = _productController.AddCategory(product, 1);
+            var result = _productController.AddCategory(product, 1);
 
-            result.Should().BeOfType<JsonResult>();
+            result.Should().BeOfType<JsonNetResult>();
         }
 
         [Fact]
