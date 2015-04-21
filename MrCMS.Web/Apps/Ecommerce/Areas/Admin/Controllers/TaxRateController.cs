@@ -29,7 +29,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         public ViewResult Index()
         {
             ViewData["settings"] = _taxSettings;
-            var taxRates = _taxRateManager.GetAll().OrderByDescending(x=>x.IsDefault).ThenBy(x=>x.Percentage).ToList();
+            var taxRates = _taxRateManager.GetAll();
             return View(taxRates);
         }
 
@@ -107,7 +107,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             {
                 ViewBag.Status = "false";
                 ViewData["settings"] = _taxSettings;
-                var taxRates = _taxRateManager.GetAll().OrderByDescending(x => x.IsDefault).ThenBy(x => x.Percentage).ToList();
+                var taxRates = _taxRateManager.GetAll();
                 return View("Index",taxRates);
             }
              _configurationProvider.SaveSettings(settings);

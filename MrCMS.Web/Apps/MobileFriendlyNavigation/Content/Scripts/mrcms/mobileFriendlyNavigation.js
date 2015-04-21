@@ -68,11 +68,10 @@
                 .hide();
 
             $.each(data, function () {
-                $link = $('<a href="{url}">{text}</a>'.supplant(this));
+                $link = $('<a href="{url}">{text}</a>'.supplant(this))
+                    .prepend('<span class="glyphicon glyphicon-chevron-left"></span>')
+                    .append('<span class="glyphicon glyphicon-chevron-right"></span>');
 
-                if (this.hasChildren) {
-                    $link = $link.prepend('<span class="glyphicon glyphicon-chevron-left"></span>').append('<span class="glyphicon glyphicon-chevron-right"></span>');
-                }
                 $('<li ' + navItemSelector.replace("[", "").replace("]", "") + '>')
                     .append($link)
                     .data('mfnav-id', this.id)
@@ -347,12 +346,14 @@ $(document).ready(function () {
     var togglerRight = '#right-menu-toggle';
     var slideActiveRight = 'show-menu-right';
 
+
+
     $(leftMenuToggle).on("click", function (e) {
         e.preventDefault();
-        $("body").removeClass(slideActiveRight);
-        $("body").toggleClass(slideActive);
+        $("html").removeClass(slideActiveRight);
+        $("html").toggleClass(slideActive);
 
-        var selected = $("body").hasClass(slideActive);
+        var selected = $("html").hasClass(slideActive);
         if (selected) {
             $("#mfnav-mobile").appendTo($(".left-menu"));
         }
@@ -362,15 +363,26 @@ $(document).ready(function () {
     $(togglerRight).on("click", function (e) {
         e.preventDefault();
 
-        $("body").removeClass(slideActive);
-        $("body").toggleClass(slideActiveRight);
-        var selected = $("body").hasClass(slideActiveRight);
+        $("html").removeClass(slideActive);
+        $("html").toggleClass(slideActiveRight);
+        var selected = $("html").hasClass(slideActiveRight);
     });
+
+    $(document).on("mouseup", (function (e) {
+        var container = $(".site-overlay");
+        var close = $(".menu-close");
+        if (container.is(e.target) || close.is(e.target)) {
+            e.preventDefault();
+            $("html").removeClass(slideActive);
+            $("html").removeClass(slideActiveRight);
+        }
+    }));
 
     $(window).on("resize", function () {
         if ($(window).width() > 767 && $('.navbar-toggle').is(':hidden')) {
-            $("body").removeClass(slideActive);
-            $("body").removeClass(slideActiveRight);
+            $("html").removeClass(slideActive);
+            $("html").removeClass(slideActiveRight);
         }
     });
+
 });

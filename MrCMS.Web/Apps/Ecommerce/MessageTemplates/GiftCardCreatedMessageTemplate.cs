@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using MrCMS.Entities.Messaging;
+using MrCMS.Messages;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Website;
@@ -8,28 +8,8 @@ using NHibernate;
 
 namespace MrCMS.Web.Apps.Ecommerce.MessageTemplates
 {
-    public class GiftCardCreatedMessageTemplate : MessageTemplate, IMessageTemplate<GiftCard>
+    public class GiftCardCreatedMessageTemplate : MessageTemplate<GiftCard>
     {
-        public override MessageTemplate GetInitialTemplate(ISession session)
-        {
-            var fromName = CurrentRequestData.CurrentSite.Name;
-            return new GiftCardCreatedMessageTemplate
-            {
-                FromAddress = "test@example.com",
-                FromName = fromName,
-                ToAddress = "{RecipientEmail}",
-                ToName = "{RecipientName}",
-                Bcc = String.Empty,
-                Cc = String.Empty,
-                Subject = String.Format("Someone has given you a Gift Card for {0}", fromName),
-                Body = "<p>{SenderName} has send you a gift card for {SiteName}. To use this gift card, please enter code: {Code} at the checkout.</p>",
-                IsHtml = true
-            };
-        }
-
-        public override List<string> GetTokens(IMessageTemplateParser messageTemplateParser)
-        {
-            return messageTemplateParser.GetAllTokens<GiftCard>();
-        }
+      
     }
 }

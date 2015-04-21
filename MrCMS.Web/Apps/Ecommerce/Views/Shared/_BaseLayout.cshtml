@@ -18,7 +18,9 @@
         Html.IncludeCss("~/Apps/Ecommerce/Content/Styles/style.css");
         Html.AddAppUIStylesheets();
     }
-    @Html.RenderCss()
+    @{
+        Html.RenderCss();
+    }
     @Html.Raw(Model.CustomHeaderScripts)
     
     <!--[if IE 8]>

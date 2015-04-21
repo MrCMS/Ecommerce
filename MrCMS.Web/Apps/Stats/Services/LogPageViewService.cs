@@ -1,10 +1,12 @@
 using System;
 using System.Linq;
+using System.Web;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Stats.Controllers;
 using MrCMS.Web.Apps.Stats.Entities;
+using MrCMS.Web.Apps.Stats.Models;
 using MrCMS.Website;
 using NHibernate;
 
@@ -14,11 +16,13 @@ namespace MrCMS.Web.Apps.Stats.Services
     {
         private readonly ISession _session;
         private readonly IGetCurrentUser _getCurrentUser;
+        private readonly HttpRequestBase _request;
 
-        public LogPageViewService(ISession session, IGetCurrentUser getCurrentUser)
+        public LogPageViewService(ISession session, IGetCurrentUser getCurrentUser,HttpRequestBase request)
         {
             _session = session;
             _getCurrentUser = getCurrentUser;
+            _request = request;
         }
 
         public void LogPageView(PageViewInfo info)
@@ -29,9 +33,9 @@ namespace MrCMS.Web.Apps.Stats.Services
             {
                 analyticsUser = new AnalyticsUser
                 {
-                    User = _getCurrentUser.Get(),
-                    Guid = info.User
+                    User = _getCurrentUser.Get()
                 };
+                analyticsUser.SetGuid(info.User);
             }
             var analyticsSession = GetCurrentSession(info.Session);
             var sessionIsNew = analyticsSession == null;
@@ -40,8 +44,10 @@ namespace MrCMS.Web.Apps.Stats.Services
                 analyticsSession = new AnalyticsSession
                 {
                     AnalyticsUser = analyticsUser,
-                    Guid = info.Session
+                    IP = _request.GetCurrentIP(),
+                    UserAgent = _request.UserAgent
                 };
+                analyticsSession.SetGuid(info.Session);
             }
 
             var pageView = new AnalyticsPageView
