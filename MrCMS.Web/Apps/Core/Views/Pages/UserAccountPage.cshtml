@@ -1,54 +1,26 @@
-﻿@model MrCMS.Web.Apps.Core.Pages.UserAccountPage
+﻿@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Core.Models
+@model MrCMS.Web.Apps.Core.Pages.UserAccountPage
+<h1>@Editable(Model, page => page.Name) </h1>
+<hr />
+@Editable(Model, page => page.BodyContent, true)
 
+@{
+    var message = ViewData["message"] as string;
+}
 
-<div class="container">
-    <div class="row">
-        <div class="col-xs-12">
-            <h1>@Editable(Model, page => page.Name) </h1>
-            <hr />
-            @Editable(Model, page => page.BodyContent, true)
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-success">
+        @message
+    </div>
+}
 
-            @{
-                var message = ViewData["message"] as string;
-            }
-
-            @if (!string.IsNullOrEmpty(message))
-            {
-                <div class="alert alert-success">
-                    @message
-                </div>
-            }
-            
-            <div role="tabpanel">
-
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#details" aria-controls="home" role="tab" data-toggle="tab">Your details</a></li>
-                    <li role="presentation"><a href="#password" aria-controls="profile" role="tab" data-toggle="tab">Password</a></li>
-                </ul>
-
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="details">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="padding-top-bottom-10">
-                                    @{ Html.RenderAction("UserAccountDetails", "UserAccount"); }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="password">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="padding-top-bottom-10">
-                                    @{ Html.RenderAction("ChangePassword", "UserAccount"); }
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="row">
+    <div class="col-lg-6">
+        @{Html.RenderAction("UserAccountDetails", "UserAccount");}
+    </div>
+    <div class="col-lg-6">
+        @{Html.RenderAction("ChangePassword", "UserAccount");}
     </div>
 </div>
-
-<br/>

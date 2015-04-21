@@ -13,9 +13,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing
     {
         private readonly HashSet<IFieldDefinition<ProductSearchIndex, Product>> _definitions;
 
-        public ProductSearchIndex(ISession session,
-            IEnumerable<IFieldDefinition<ProductSearchIndex, Product>> definitions)
-            : base(session)
+        public ProductSearchIndex(ISession session, IEnumerable<IFieldDefinition<ProductSearchIndex, Product>> definitions, IGetLuceneIndexSearcher getLuceneIndexSearcher)
+            : base(session,getLuceneIndexSearcher)
         {
             _definitions = new HashSet<IFieldDefinition<ProductSearchIndex, Product>>(definitions);
         }

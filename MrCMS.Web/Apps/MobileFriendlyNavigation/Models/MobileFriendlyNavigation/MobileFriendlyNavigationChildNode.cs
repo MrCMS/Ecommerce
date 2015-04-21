@@ -11,6 +11,8 @@ namespace MrCMS.Web.Apps.MobileFriendlyNavigation.Models.MobileFriendlyNavigatio
         public string UrlSegment { get; set; }
         public int ChildCount { get; set; }
         public DateTime? PublishOn { get; set; }
+        public string DocumentType { get; set; }
+        public int DisplayOrder { get; set; }
 
         public bool HasSubMenu
         {
@@ -21,6 +23,7 @@ namespace MrCMS.Web.Apps.MobileFriendlyNavigation.Models.MobileFriendlyNavigatio
         {
             get { return new HtmlString((!UrlSegment.StartsWith("/") ? "/" : string.Empty) + UrlSegment); }
         }
+
 
         public string GetJsHasSubMenu()
         {

@@ -50,7 +50,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
             {
                 return Gallery != null
                     ? (IEnumerable<MediaFile>)
-                        Gallery.Files.Where(file => file.IsImage).OrderBy(file => file.DisplayOrder)
+                        Gallery.Files.Where(file => file.IsImage()).OrderBy(file => file.DisplayOrder)
                     : new List<MediaFile>();
             }
         }

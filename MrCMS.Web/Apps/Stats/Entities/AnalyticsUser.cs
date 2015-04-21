@@ -5,9 +5,9 @@ using MrCMS.Entities.People;
 
 namespace MrCMS.Web.Apps.Stats.Entities
 {
-    public class AnalyticsUser : SiteEntity
+    public class AnalyticsUser : SystemEntity
     {
-        public virtual Guid Guid { get; set; }
+        //public virtual Guid Guid { get; set; }
         public virtual User User { get; set; }
         public virtual IList<AnalyticsSession> AnalyticsSessions { get; set; }
     }

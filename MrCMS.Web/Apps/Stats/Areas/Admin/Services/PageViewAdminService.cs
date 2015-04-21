@@ -31,6 +31,10 @@ namespace MrCMS.Web.Apps.Stats.Areas.Admin.Services
             IQueryOver<AnalyticsPageView, AnalyticsPageView> queryOver = _session.QueryOver(() => pageView)
                 .JoinAlias(() => pageView.AnalyticsSession, () => analyticsSession)
                 .JoinAlias(() => analyticsSession.AnalyticsUser, () => analyticsUser);
+            if (!string.IsNullOrWhiteSpace(query.Url))
+            {
+                queryOver = queryOver.Where(view => view.Url.IsInsensitiveLike(query.Url, MatchMode.Anywhere));
+            }
             if (query.From.HasValue)
                 queryOver = queryOver.Where(() => pageView.CreatedOn >= query.From);
             if (query.To.HasValue)
@@ -87,7 +91,7 @@ namespace MrCMS.Web.Apps.Stats.Areas.Admin.Services
 
         public List<SelectListItem> GetSearchTypeOptions()
         {
-            return Enum.GetValues(typeof (PageViewSearchType)).Cast<PageViewSearchType>()
+            return Enum.GetValues(typeof(PageViewSearchType)).Cast<PageViewSearchType>()
                 .BuildSelectItemList(type => type.ToString(), emptyItem: null);
         }
     }

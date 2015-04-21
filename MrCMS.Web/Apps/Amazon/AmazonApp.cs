@@ -70,10 +70,5 @@ namespace MrCMS.Web.Apps.Amazon
                                  new { controller = "Home", action = "Index", id = UrlParameter.Optional },
                                  new[] { typeof(SettingsController).Namespace });
         }
-
-        public override IEnumerable<Type> Conventions
-        {
-            get { yield return typeof(AmazonTableNameConvention); }
-        }
     }
 }

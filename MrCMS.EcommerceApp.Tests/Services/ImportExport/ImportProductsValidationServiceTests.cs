@@ -46,7 +46,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             mockingKernel.Bind<IProductVariantImportValidationRule>()
                          .ToMethod(context => productVariantImportValidationRule)
                          .InSingletonScope();
-            MrCMSApplication.OverrideKernel(mockingKernel);
+            MrCMSKernel.OverrideKernel(mockingKernel);
 
             var products = Enumerable.Range(1, 10).Select(i => new ProductImportDataTransferObject()).ToList();
 

@@ -24,7 +24,6 @@ namespace MrCMS.Web.Apps.Amazon.Entities.Logs
         public virtual string Message { get; set; }
         public virtual string Detail { get; set; }
 
-        public virtual Guid Guid { get; set; }
         public virtual User User { get; set; }
     }
 }

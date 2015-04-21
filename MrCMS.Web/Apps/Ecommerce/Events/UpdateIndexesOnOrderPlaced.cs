@@ -1,6 +1,7 @@
 using MrCMS.Tasks;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
 using MrCMS.Website;
+using MrCMS.Website.Filters;
 using Ninject;
 
 namespace MrCMS.Web.Apps.Ecommerce.Events
@@ -9,7 +10,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Events
     {
         public void Execute(OrderPlacedArgs args)
         {
-            CurrentRequestData.OnEndRequest.Add(kernel => kernel.Get<ITaskRunner>().ExecuteLuceneTasks());
+            CurrentRequestData.OnEndRequest.Add(new ExecuteLuceneTasks());
         }
     }
 }

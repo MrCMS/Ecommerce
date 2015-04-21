@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Entities.Documents.Media;
+using MrCMS.Helpers;
 using MrCMS.Services.Resources;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
@@ -50,7 +51,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             var productCardModels = new List<ProductCardModel>();
             foreach (var product in products)
             {
-                MediaFile image = mediaFiles.FirstOrDefault(file => file.IsImage && file.MediaCategory.Id == product.Gallery.Id);
+                MediaFile image = mediaFiles.FirstOrDefault(file => file.IsImage() && file.MediaCategory.Id == product.Gallery.Id);
                 var productVariants = variants.FindAll(productVariant => productVariant.Product.Id == product.Id);
                 var productCardModel = new ProductCardModel
                 {
