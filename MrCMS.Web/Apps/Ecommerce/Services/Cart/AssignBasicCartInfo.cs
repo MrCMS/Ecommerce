@@ -22,7 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
         public AssignBasicCartInfo(ISession session, ICartSessionManager cartSessionManager,
             ICartGuidResetter cartGuidResetter,
             IGetBillingAddressSameAsShippingAddress billingAddressSameAsShippingAddress,
-            ICartItemAvailablityService cartItemAvailablityService,EcommerceSettings ecommerceSettings)
+            ICartItemAvailablityService cartItemAvailablityService, EcommerceSettings ecommerceSettings)
         {
             _session = session;
             _cartSessionManager = cartSessionManager;
@@ -101,31 +101,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
                 CartItem item = cartItem;
                 _session.Transact(session => _session.Delete(item));
             }
-        }
-    }
-
-    public interface IGetBillingAddressSameAsShippingAddress
-    {
-        bool Get(CartModel cart, Guid userGuid);
-    }
-
-    public class GetBillingAddressSameAsShippingAddress : IGetBillingAddressSameAsShippingAddress
-    {
-        private readonly ICartSessionManager _cartSessionManager;
-
-        public GetBillingAddressSameAsShippingAddress(ICartSessionManager cartSessionManager)
-        {
-            _cartSessionManager = cartSessionManager;
-        }
-
-        public bool Get(CartModel cart, Guid userGuid)
-        {
-            return cart.RequiresShipping && GetSessionValue(userGuid);
-        }
-        private bool GetSessionValue(Guid userGuid)
-        {
-            return _cartSessionManager.GetSessionValue(CartManager.CurrentBillingAddressSameAsShippingAddressKey,
-                userGuid, true);
         }
     }
 }

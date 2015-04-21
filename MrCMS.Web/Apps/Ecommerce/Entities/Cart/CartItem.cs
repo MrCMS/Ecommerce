@@ -1,9 +1,6 @@
 ﻿using System;
 using MrCMS.Entities;
-using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
-using MrCMS.Web.Apps.Ecommerce.Helpers;
-using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Models.StockAvailability;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
@@ -49,7 +46,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Cart
 
         public virtual decimal Weight
         {
-            get { return Item.Weight * Quantity; }
+            get { return Item.Weight*Quantity; }
         }
 
         public virtual string Name

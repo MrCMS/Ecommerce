@@ -1329,6 +1329,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\DiscountLimitationChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\EmptyBasket.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\FreeShippingApplier.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\GetBillingAddressSameAsShippingAddress.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartItemBasedApplicationProducts.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartItemsByCategoryIdList.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\GetCartItemsBySKUList.cs" />
@@ -1353,6 +1354,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\ICartSessionManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IClearCartSessionKeys.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IEmptyBasket.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\IGetBillingAddressSameAsShippingAddress.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetCartItemBasedApplicationProducts.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetCartItemsByCategoryIdList.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\IGetCartItemsBySKUList.cs" />
