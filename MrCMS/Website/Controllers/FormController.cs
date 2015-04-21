@@ -20,13 +20,19 @@ namespace MrCMS.Website.Controllers
         public ActionResult Save(int id)
         {
             var webpage = _documentService.GetDocument<Webpage>(id);
+            if (webpage.IsDeleted)
+                return new EmptyResult();
             var saveFormData = _formPostingHandler.SaveFormData(webpage, Request);
 
             TempData["form-submitted"] = true;
             TempData["form-submitted-message"] = saveFormData;
             // if any errors add form data to be renderered, otherwise form should be empty
             TempData["form-data"] = saveFormData.Any() ? Request.Form : null;
-            return Redirect(Referrer.ToString());
+
+            var redirectUrl = Referrer.ToString();
+            if (!string.IsNullOrEmpty(webpage.FormRedirectUrl) && !saveFormData.Any())
+                redirectUrl = webpage.FormRedirectUrl;
+            return Redirect(redirectUrl);
         }
     }
 }
