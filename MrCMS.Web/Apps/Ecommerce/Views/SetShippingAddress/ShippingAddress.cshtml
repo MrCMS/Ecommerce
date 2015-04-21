@@ -58,7 +58,7 @@
 
                     <div class="form-group">
                         <div class="col-sm-4 col-md-3 text-right">
-                            @Html.LabelFor(address => address.PhoneNumber, new { @class = "control-label" })
+                            @Html.LabelFor(address => address.PhoneNumber, new { @class = "control-label" }) <span class="red">*</span>
                         </div>
                         <div class="col-sm-8 col-md-6">
                             @Html.TextBoxFor(address => address.PhoneNumber, new { placeholder = "Phone number", @class = "form-control" })

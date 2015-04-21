@@ -95,23 +95,4 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-6">
-            <div class="form-group">
-                @Html.LabelFor(product => product.TrackingPolicy)
-                @Html.DropDownListFor(product => product.TrackingPolicy, ViewData["tracking-policy"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="col-xs-6">
-            <div class="form-group">
-                @if (!SiteSettings<EcommerceSettings>().WarehouseStockEnabled)
-                {
-                    @Html.LabelFor(variant => variant.StockRemaining)
-                    @Html.TextBoxFor(variant => variant.StockRemaining, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(variant => variant.StockRemaining)
-                }
-            </div>
-        </div>
-    </div>
-
 </div>

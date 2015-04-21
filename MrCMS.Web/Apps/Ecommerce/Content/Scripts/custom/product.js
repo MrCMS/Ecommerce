@@ -17,8 +17,15 @@ var Product = new function () {
         Product.History.pushState({ variant: variantId }, $('title').html(), location.pathname + '?variant=' + variantId);
     };
     this.init = function () {
+        //allow action as dropdown
         $(document).on('change', '#variant', function () {
             Product.setVariant($('#variant').val());
+        });
+
+        //allow action as a link
+        $(document).on('click', '[data-variant-link]', function (e) {
+            e.preventDefault();
+            Product.setVariant($(this).data('id'));
         });
 
         // Bind to StateChange Event

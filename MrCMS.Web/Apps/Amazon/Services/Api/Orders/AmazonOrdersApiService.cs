@@ -21,7 +21,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
         private readonly MarketplaceWebServiceOrders.MarketplaceWebServiceOrders _marketplaceWebServiceOrders;
 
         public AmazonOrdersApiService(AmazonSellerSettings amazonSellerSettings,
-            IAmazonAnalyticsService amazonAnalyticsService, IAmazonLogService amazonLogService, 
+            IAmazonAnalyticsService amazonAnalyticsService, IAmazonLogService amazonLogService,
             MarketplaceWebServiceOrders.MarketplaceWebServiceOrders marketplaceWebServiceOrders)
         {
             _amazonSellerSettings = amazonSellerSettings;
@@ -35,7 +35,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
             var request = new GetOrderRequest
             {
                 SellerId = _amazonSellerSettings.SellerId,
-                AmazonOrderId = new OrderIdList().WithId(orderIds.Select(x=>x).ToArray())
+                AmazonOrderId = new OrderIdList().WithId(orderIds.Select(x => x).ToArray())
             };
 
             return GetOrder(request);
@@ -43,7 +43,7 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
         private List<Order> GetOrder(GetOrderRequest request)
         {
             _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Stage, null, null, AmazonApiSection.Orders,
-                    "GetOrder", null, null, null, "Listing Specific Amazon Orders ("+request.AmazonOrderId.Id.ToTokenizedString(", ") + ")");
+                    "GetOrder", null, null, null, "Listing Specific Amazon Orders (" + request.AmazonOrderId.Id.ToTokenizedString(", ") + ")");
             _amazonAnalyticsService.TrackNewApiCall(AmazonApiSection.Orders, "GetOrder");
             var result = _marketplaceWebServiceOrders.GetOrder(request);
             var orders = new List<Order>();
@@ -125,21 +125,20 @@ namespace MrCMS.Web.Apps.Amazon.Services.Api.Orders
 
                 var result = _marketplaceWebServiceOrders.ListOrderItems(request);
 
-                if (result != null && result.ListOrderItemsResult != null && result.IsSetListOrderItemsResult()
-                    && result.ListOrderItemsResult.OrderItems != null)
-                    return result.ListOrderItemsResult.OrderItems.OrderItem;
+                return result.ListOrderItemsResult.OrderItems.OrderItem;
             }
             catch (MarketplaceWebServiceOrdersException ex)
             {
                 _amazonLogService.Add(AmazonLogType.Api, AmazonLogStatus.Error, ex, null,
                     AmazonApiSection.Orders, "ListOrderItems", null, null, null,
                     "Error happend during operation of listing items for Amazon Order #" + amazonOrderId);
+                throw;
             }
             catch (Exception ex)
             {
                 CurrentRequestData.ErrorSignal.Raise(ex);
+                throw;
             }
-            return null;
         }
         private ListOrderItemsRequest GetListOrderItemsRequest(string amazonOrderId)
         {

@@ -10,7 +10,7 @@
         'titlePosition': 'top',
         'legend': { position: 'bottom' },
         'colors': ['#3498db', '#e74c3c', '#8e44ad', '#f39c12', '#27ae60'],
-        'chartArea': { left: 30, top: 20, width: "95%", height: "65%" },
+        'chartArea': { width: "80%", height: "80%" },
         'vAxis': { gridlines: { color: 'transparent' } }
     };
     var salesByDay = null;
