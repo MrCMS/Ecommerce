@@ -1,46 +1,42 @@
-﻿@using System
-@using System.Linq
-@model System.Collections.Generic.IEnumerable<MobileFriendlyNavigationRootNode>
+﻿@using MrCMS.Entities.Documents.Web
+@model IEnumerable<MobileFriendlyNavigationRootNode>
 @{
-    var currentPage = CurrentRequestData.CurrentPage;
-    var activePages = currentPage.ActivePages.Select(webpage => "/" + webpage.LiveUrlSegment).ToList();
+    Webpage currentPage = CurrentRequestData.CurrentPage;
+    List<string> activePages = currentPage.ActivePages.Select(webpage => "/" + webpage.LiveUrlSegment).ToList();
+    var nodes = Model ?? new List<MobileFriendlyNavigationRootNode>();
 }
-<div class="hidden-sm hidden-xs">
+<div class="hidden-sm hidden-xs desktop-nav">
     <div id="mfnav-desktop" data-mfnav="root">
         <ul data-mfnav="nav" data-mfnav-max-levels="3" data-mfnav-url="/MobileFriendlyNavigation/GetChildNodes" class="mfnav nav navbar-nav">
-            @foreach (MobileFriendlyNavigationRootNode rootNode in Model)
+            @foreach (MobileFriendlyNavigationRootNode rootNode in nodes)
             {
-            <li data-mfnav="item" class="@(rootNode.HasSubMenu ? "has-sub-nav" : string.Empty) @(activePages.Contains(rootNode.Url.ToString(), StringComparer.OrdinalIgnoreCase) ? "active" : "")">
-                <a href="@rootNode.Url">
-                    @rootNode.Text
-                    @if (rootNode.HasSubMenu)
+                <li data-mfnav="item" class="@(rootNode.HasSubMenu ? "has-sub-nav" : string.Empty) @(activePages.Contains(rootNode.Url.ToString(), StringComparer.OrdinalIgnoreCase) ? "active" : "")">
+                    <a href="@rootNode.Url">
+                        @rootNode.Text
+                        @if (rootNode.HasSubMenu)
                         {
-                        <span class="glyphicon glyphicon-chevron-right"></span>
+                            <span class="glyphicon glyphicon-chevron-right"></span>
                         }
-                </a>
-                @if (rootNode.HasSubMenu)
+                    </a>
+                    @if (rootNode.HasSubMenu)
                     {
-                    <ul data-mfnav="subNav" class="sub-nav" style="display:none">
-                        @foreach (MobileFriendlyNavigationChildNode childNode in rootNode.Children)
+                        <ul data-mfnav="subNav" class="sub-nav" style="display: none">
+                            @foreach (MobileFriendlyNavigationChildNode childNode in rootNode.Children)
                             {
-                            <li data-mfnav="item" data-mfnav-id="@childNode.Id" data-mfnav-has-sub-nav="@childNode.GetJsHasSubMenu()" class="@(childNode.HasSubMenu ? "has-sub-nav" : string.Empty)">
-                                <a href="@childNode.Url">
-                                    @childNode.Name
-                                    @if (childNode.HasSubMenu)
-                                    {
+                                <li data-mfnav="item" data-mfnav-id="@childNode.Id" data-mfnav-has-sub-nav="@childNode.GetJsHasSubMenu()" class="@(childNode.HasSubMenu ? "has-sub-nav" : string.Empty)">
+                                    <a href="@childNode.Url">
+                                        @childNode.Name
                                         <span class="glyphicon glyphicon-chevron-right"></span>
-                                    }
-                                </a>
-                            </li>
+                                    </a>
+                                </li>
                             }
-                    </ul>
+                        </ul>
                     }
-            </li>
+                </li>
             }
         </ul>
     </div>
 </div>
-
 <div class="hidden-lg hidden-md" style="display: none;">
     <div id="mfnav-mobile" class="sidr left" style="display: block; left: 0px;" data-show-breadcrumbs="false">
         <div class="sidr-inner">
@@ -58,7 +54,7 @@
             </div>
         </div><div class="sidr-inner">
             <ul data-mfnav="nav" data-mfnav-max-levels="3" data-mfnav-url="/MobileFriendlyNavigation/GetChildNodes" class="mfnav">
-                @foreach (MobileFriendlyNavigationRootNode rootNode in Model)
+                @foreach (MobileFriendlyNavigationRootNode rootNode in nodes)
                 {
                     <li data-mfnav="item" class="@(rootNode.HasSubMenu ? "has-sub-nav" : string.Empty) @(activePages.Contains(rootNode.Url.ToString(), StringComparer.OrdinalIgnoreCase) ? "active" : "")">
                         <a href="@rootNode.Url">
@@ -70,7 +66,7 @@
                         </a>
                         @if (rootNode.HasSubMenu)
                         {
-                            <ul data-mfnav="subNav" class="sub-nav" style="display:none">
+                            <ul data-mfnav="subNav" class="sub-nav" style="display: none">
                                 @foreach (MobileFriendlyNavigationChildNode childNode in rootNode.Children)
                                 {
                                     <li data-mfnav="item" data-mfnav-id="@childNode.Id" data-mfnav-has-sub-nav="@childNode.GetJsHasSubMenu()" class="@(childNode.HasSubMenu ? "has-sub-nav" : string.Empty)">
@@ -89,7 +85,7 @@
     </div>
 </div>
 
-<div data-mfnav="mobile" style="display: none" >
+<div data-mfnav="mobile" style="display: none">
     <div data-mfnav="mobileHeader" class="mobile-header">
         <div class="clearfix">
             <div class="m-left">

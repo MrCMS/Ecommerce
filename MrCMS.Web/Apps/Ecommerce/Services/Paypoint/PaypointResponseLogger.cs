@@ -26,12 +26,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Paypoint
             {
                 dictionary[allKey] = collection[allKey];
             }
-            _session.Transact(session => session.Save(new PaypointResponse
-                                                          {
-                                                              Guid = _cart.CartGuid,
-                                                              RawData = rawData,
-                                                              Response = JsonConvert.SerializeObject(dictionary)
-                                                          }));
+            _session.Transact(session =>
+            {
+                var paypointResponse = new PaypointResponse
+                {
+                    RawData = rawData,
+                    Response = JsonConvert.SerializeObject(dictionary)
+                };
+                paypointResponse.SetGuid(_cart.CartGuid);
+                return session.Save(paypointResponse);
+            });
         }
     }
 }

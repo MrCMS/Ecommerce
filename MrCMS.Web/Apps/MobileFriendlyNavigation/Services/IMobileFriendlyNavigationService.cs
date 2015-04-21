@@ -6,7 +6,7 @@ namespace MrCMS.Web.Apps.MobileFriendlyNavigation.Services
 {
     public interface IMobileFriendlyNavigationService
     {
-        IEnumerable<MobileFriendlyNavigationRootNode> GetRootNodes(Widgets.MobileFriendlyNavigation widget);
-        IEnumerable<MobileFriendlyNavigationChildNode> GetChildNodes(Webpage parent);
+        List<MobileFriendlyNavigationRootNode> GetRootNodes(Webpage rootWebpage);
+        List<MobileFriendlyNavigationChildNode> GetChildNodes(Webpage parent);
     }
 }

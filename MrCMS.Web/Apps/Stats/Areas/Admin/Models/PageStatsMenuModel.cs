@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using MrCMS.Models;
 
 namespace MrCMS.Web.Apps.Stats.Areas.Admin.Models
@@ -29,11 +28,19 @@ namespace MrCMS.Web.Apps.Stats.Areas.Admin.Models
             get
             {
                 return _children ??
-                    (_children = new SubMenu
-                    {
-                        new ChildMenuItem("Page Views", _urlHelper.Action("Index","PageViews")),
-                    });
+                       (_children = GetChildren());
             }
+        }
+
+        private SubMenu GetChildren()
+        {
+            var subMenu = new SubMenu
+            {
+                new ChildMenuItem("Page Views", _urlHelper.Action("Index", "PageViews")),
+            };
+
+            return subMenu;
+
         }
 
         public int DisplayOrder { get { return 50; } }

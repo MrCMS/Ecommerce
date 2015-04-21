@@ -1732,37 +1732,23 @@
     <Compile Include="Apps\Galleries\Metadata\GalleryMetaData.cs" />
     <Compile Include="Apps\Galleries\Pages\Gallery.cs" />
     <Compile Include="Apps\Galleries\Pages\GalleryList.cs" />
-    <Compile Include="Apps\MobileFriendlyNavigation\Areas\Admin\Services\GetMobileFriendlyViewData.cs" />
-    <Compile Include="Apps\MobileFriendlyNavigation\Controllers\MobileFriendlyNavigationController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Apps\MobileFriendlyNavigation\MobileFriendlyNavigationApp.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Apps\MobileFriendlyNavigation\Models\MobileFriendlyNavigation\MobileFriendlyNavigationChildNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Apps\MobileFriendlyNavigation\Models\MobileFriendlyNavigation\MobileFriendlyNavigationRootNode.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Apps\MobileFriendlyNavigation\Services\GetMobileFriendlyNavigationNodes.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Apps\MobileFriendlyNavigation\Services\IMobileFriendlyNavigationService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Apps\MobileFriendlyNavigation\Services\MobileFriendlyNavigationScripts.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Apps\MobileFriendlyNavigation\Services\MobileFriendlyNavigationService.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Apps\MobileFriendlyNavigation\Services\MobileFriendlyNavigationStylesheets.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Apps\MobileFriendlyNavigation\Widgets\MobileFriendlyNavigation.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Apps\MobileFriendlyNavigation\Areas\Admin\Services\GetRootWebpageOptions.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Controllers\MobileFriendlyNavigationController.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\MobileFriendlyNavigationApp.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Models\MobileFriendlyNavigation\MobileFriendlyNavigationChildNode.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Models\MobileFriendlyNavigation\MobileFriendlyNavigationRootNode.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Services\GetMobileFriendlyNavigationNodes.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Services\IChildNodeProcessor.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Services\IMobileFriendlyNavigationService.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Services\IProcessChildNodes.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Services\IProcessRootNodes.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Services\IRootNodeProcessor.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Services\MobileFriendlyNavigationScripts.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Services\MobileFriendlyNavigationService.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Services\MobileFriendlyNavigationStylesheets.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Services\ProcessChildNodes.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Services\ProcessRootNodes.cs" />
+    <Compile Include="Apps\MobileFriendlyNavigation\Widgets\MobileFriendlyNavigation.cs" />
     <Compile Include="Apps\Stats\Areas\Admin\Controllers\PageViewsController.cs" />
     <Compile Include="Apps\Stats\Areas\Admin\Models\PageStatsMenuModel.cs" />
     <Compile Include="Apps\Stats\Areas\Admin\Models\PageViewResult.cs" />
@@ -1771,16 +1757,19 @@
     <Compile Include="Apps\Stats\Areas\Admin\Services\IPageViewAdminService.cs" />
     <Compile Include="Apps\Stats\Areas\Admin\Services\PageViewAdminService.cs" />
     <Compile Include="Apps\Stats\Controllers\AnalyticsController.cs" />
+    <Compile Include="Apps\Stats\DbConfiguration\AnalyticsSessionOverride.cs" />
     <Compile Include="Apps\Stats\Entities\AnalyticsPageView.cs" />
     <Compile Include="Apps\Stats\Entities\AnalyticsSession.cs" />
     <Compile Include="Apps\Stats\Entities\AnalyticsUser.cs" />
     <Compile Include="Apps\Stats\Filters\AnalyticsSessionFilter.cs" />
+    <Compile Include="Apps\Stats\Filters\PreventBotsAttribute.cs" />
     <Compile Include="Apps\Stats\Helpers\PagingHelper.cs" />
+    <Compile Include="Apps\Stats\Models\PageViewInfo.cs" />
     <Compile Include="Apps\Stats\Services\ILogPageViewService.cs" />
     <Compile Include="Apps\Stats\Services\LogPageViewService.cs" />
     <Compile Include="Apps\Stats\Services\StatsUIScripts.cs" />
+    <Compile Include="Apps\Stats\Settings\BotAgentsAndIPs.cs" />
     <Compile Include="Apps\Stats\StatsApp.cs" />
-    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Areas\Admin\ACL\MediaToolsACL.cs" />
     <Compile Include="Areas\Admin\ACL\NotificationACL.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
@@ -2384,15 +2373,9 @@
     <Content Include="Apps\Galleries\Content\blueimp-Bootstrap-Image-Gallery\js\bootstrap-image-gallery.js" />
     <Content Include="Apps\Galleries\Content\blueimp-Bootstrap-Image-Gallery\js\bootstrap-image-gallery.min.js" />
     <Content Include="Apps\Galleries\Content\blueimp-Bootstrap-Image-Gallery\js\jquery.blueimp-gallery.min.js" />
-    <Content Include="Apps\MobileFriendlyNavigation\Areas\Admin\Views\Web.config" />
-    <Content Include="Apps\MobileFriendlyNavigation\Areas\Admin\Views\Widget\MobileFriendlyNavigation.cshtml" />
     <Content Include="Apps\MobileFriendlyNavigation\Content\Scripts\mrcms\helpers.js" />
     <Content Include="Apps\MobileFriendlyNavigation\Content\Scripts\mrcms\mobileFriendlyNavigation.js" />
-    <Content Include="Apps\MobileFriendlyNavigation\Content\Styles\ie8.css" />
-    <Content Include="Apps\MobileFriendlyNavigation\Content\Styles\ie9.css" />
     <Content Include="Apps\MobileFriendlyNavigation\Content\Styles\mobileFriendlyNavigation.css" />
-    <Content Include="Apps\MobileFriendlyNavigation\Views\web.config" />
-    <Content Include="Apps\MobileFriendlyNavigation\Views\Widgets\MobileFriendlyNavigation.cshtml" />
     <Content Include="Apps\Stats\Content\Scripts\analytics.js" />
     <Content Include="Apps\Stats\Content\Scripts\jquery.cookie.js" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\adapters\jquery.js" />
@@ -3511,9 +3494,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\install\images\mr-cms-thumb.jpg" />
-    <Content Include="Apps\Stats\Areas\Admin\Views\PageViews\Index.cshtml" />
-    <Content Include="Apps\Stats\Areas\Admin\Views\Web.config" />
-    <Content Include="Apps\Stats\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Services\NopImport\Nop280\Nop280.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>Nop2802.designer.cs</LastGenOutput>
@@ -4139,6 +4119,16 @@
     <Content Include="Apps\Galleries\Views\Pages\Gallery.cshtml" />
     <Content Include="Apps\Galleries\Views\Pages\GalleryList.cshtml" />
     <Content Include="Apps\Galleries\Views\Web.config" />
+    <Content Include="Apps\MobileFriendlyNavigation\Areas\Admin\Views\razorgenerator.directives" />
+    <Content Include="Apps\MobileFriendlyNavigation\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\MobileFriendlyNavigation\Areas\Admin\Views\Widget\MobileFriendlyNavigation.cshtml" />
+    <Content Include="Apps\MobileFriendlyNavigation\Views\razorgenerator.directives" />
+    <Content Include="Apps\MobileFriendlyNavigation\Views\web.config" />
+    <Content Include="Apps\MobileFriendlyNavigation\Views\Widgets\MobileFriendlyNavigation.cshtml" />
+    <Content Include="Apps\Stats\Areas\Admin\Views\PageViews\Index.cshtml" />
+    <Content Include="Apps\Stats\Areas\Admin\Views\razorgenerator.directives" />
+    <Content Include="Apps\Stats\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Stats\Areas\Admin\Views\_ViewStart.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />

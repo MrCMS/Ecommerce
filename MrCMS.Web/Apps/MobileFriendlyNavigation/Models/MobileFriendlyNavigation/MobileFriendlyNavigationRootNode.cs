@@ -10,7 +10,10 @@ namespace MrCMS.Web.Apps.MobileFriendlyNavigation.Models.MobileFriendlyNavigatio
         public int Id { get; set; }
         public string Name { get; set; }
         public string UrlSegment { get; set; }
-        public IEnumerable<MobileFriendlyNavigationChildNode> Children { get; set; }
+        public string DocumentType { get; set; }
+        public int DisplayOrder { get; set; }
+
+        public List<MobileFriendlyNavigationChildNode> Children { get; set; }
 
         public bool HasSubMenu
         {

@@ -7,6 +7,7 @@ using MrCMS.Web.Apps.Amazon.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Amazon.Models;
 using MrCMS.Web.Apps.Amazon.Services.Analytics;
 using MrCMS.Web.Apps.Amazon.Services.Logs;
+using MrCMS.Website.ActionResults;
 using Xunit;
 using System;
 
@@ -86,7 +87,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         {
             var result = _appController.Revenue(DateTime.Now.AddDays(-7), DateTime.Now);
 
-            result.Should().BeOfType<JsonResult>();
+            result.Should().BeOfType<JsonNetResult>();
         }
 
         [Fact]
@@ -105,7 +106,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         {
             var result = _appController.ProductsSold(DateTime.Now.AddDays(-7), DateTime.Now);
 
-            result.Should().BeOfType<JsonResult>();
+            result.Should().BeOfType<JsonNetResult>();
         }
 
         [Fact]
@@ -124,7 +125,7 @@ namespace MrCMS.AmazonApp.Tests.Admin.Controllers
         {
             var result = _appController.ProgressBarStatus(new AmazonSyncModel(){TaskId = Guid.NewGuid()});
 
-            result.Should().BeOfType<JsonResult>();
+            result.Should().BeOfType<JsonNetResult>();
         }
 
         [Fact]

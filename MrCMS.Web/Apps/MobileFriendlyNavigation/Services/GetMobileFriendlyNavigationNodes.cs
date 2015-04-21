@@ -13,7 +13,7 @@ namespace MrCMS.Web.Apps.MobileFriendlyNavigation.Services
 
         public override object GetModel(Widgets.MobileFriendlyNavigation widget)
         {
-            return _mobileFriendlyNavigationService.GetRootNodes(widget);
+            return _mobileFriendlyNavigationService.GetRootNodes(widget.RootWebpage);
         }
     }
 }
