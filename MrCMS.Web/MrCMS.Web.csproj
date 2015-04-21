@@ -381,6 +381,7 @@
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\IAmazonOrderSyncDataService.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\AmazonOrderSyncManager.cs" />
+    <Compile Include="Apps\Amazon\Services\Orders\Sync\CancelAmazonOrder.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\GetOrderItems.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IAmazonOrderSyncManager.cs" />
     <Compile Include="Apps\Amazon\Services\Orders\Sync\IImportAmazonOrderService.cs" />
@@ -1018,6 +1019,7 @@
     <Compile Include="Apps\Ecommerce\Events\UndoRewardPointUsage.cs" />
     <Compile Include="Apps\Ecommerce\Events\UpdateIndexesOnOrderPlaced.cs" />
     <Compile Include="Apps\Ecommerce\Events\UpdateProductIndexesWhenDisplayOrderSet.cs" />
+    <Compile Include="Apps\Ecommerce\Filters\CanEnterCheckout.cs" />
     <Compile Include="Apps\Ecommerce\Filters\SetProductResultsViewDataAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Filters\SetProductSearchViewDataAttribute.cs" />
     <Compile Include="Apps\Ecommerce\HealthChecks\CheckGiftCardsEnabledIfAvailable.cs" />
@@ -1317,6 +1319,7 @@
     <Compile Include="Apps\Ecommerce\Services\Cart\CartDiscountCodeService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartDiscountService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartGuidResetter.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Cart\CartHasAtLeastXItemsChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartItemBasedDiscountApplicationApplier.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartItemManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Cart\CartManager.cs" />
@@ -1466,6 +1469,7 @@
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantPreviousPriceEqOrGrThan0.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantPriceBreaksAreValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantPriceEqOrGrThan0.cs" />
+    <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantProductDoesntAlreadyExist.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantStockIsValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantTaxRateIdIsValid.cs" />
     <Compile Include="Apps\Ecommerce\Services\ImportExport\Rules\ProductVariantWeightEqOrGrThan0.cs" />
@@ -2035,6 +2039,48 @@
     <Content Include="Apps\Amazon\Areas\Admin\Content\Scripts\custom\sync-one-listing.js" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Styles\dashboard.css" />
     <Content Include="Apps\Amazon\Areas\Admin\Content\Styles\progress-bar.css" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\AppStats.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Dashboard.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\DashboardContent.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Logs.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\ProductsSold.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\ProductsSoldStats.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Revenue.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\App\RevenueStats.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Add.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Delete.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Edit.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Index.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\ListingGroups.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Listings.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\AddMany.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\AddOne.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\ChooseProductVariant.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\CloseMany.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\CloseOne.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Delete.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Details.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Listing.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\ProductVariants.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\SyncMany.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\SyncOne.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\DeleteAllLogs.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Details.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Index.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\OrderInfo\AmazonInfo.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Details.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Index.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\OrderDetails.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\OrderItems.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Orders.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\SyncMany.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Order\Amazon.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\App.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Seller.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Sync.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Shared\ProgressBarMessages.cshtml" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Amazon\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Articles\Areas\Admin\Content\Scripts\articles.js" />
     <Content Include="Apps\Core\Content\Bootstrap\css\bootstrap-theme.css" />
     <Content Include="Apps\Core\Content\Bootstrap\css\bootstrap.css" />
@@ -3449,48 +3495,6 @@
     <Content Include="Apps\Articles\Views\Widgets\ArticleArchive.cshtml" />
     <Content Include="Apps\Articles\Views\Widgets\ArticleCategories.cshtml" />
     <Content Include="Apps\Articles\Views\Widgets\LatestXArticles.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\AppStats.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Dashboard.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\DashboardContent.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Logs.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\ProductsSold.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\ProductsSoldStats.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\Revenue.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\App\RevenueStats.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Add.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Delete.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Edit.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Index.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\ListingGroups.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\ListingGroup\Listings.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\AddMany.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\AddOne.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\ChooseProductVariant.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\CloseMany.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\CloseOne.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Delete.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Details.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\Listing.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\ProductVariants.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\SyncMany.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Listing\SyncOne.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\DeleteAllLogs.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Details.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Logs\Index.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\OrderInfo\AmazonInfo.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Details.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Index.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\OrderDetails.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\OrderItems.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\Orders.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Orders\SyncMany.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Order\Amazon.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\App.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Seller.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Settings\Sync.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Shared\ProgressBarMessages.cshtml" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\Web.config" />
-    <Content Include="Apps\Amazon\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Stats\Areas\Admin\Views\PageViews\Index.cshtml" />
     <Content Include="Apps\Stats\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Stats\Areas\Admin\Views\_ViewStart.cshtml" />
@@ -3905,6 +3909,7 @@
     <Content Include="Areas\Admin\Content\Editors\ckeditor\README.md" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\samples\plugins\htmlwriter\assets\outputforflash\outputforflash.fla" />
     <Content Include="Areas\Admin\Content\Editors\ckeditor\skins\moono\readme.md" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductVariant\Stock.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
@@ -4000,11 +4005,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>1834</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/</IISUrl>
+          <IISUrl>http://localhost:1835/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

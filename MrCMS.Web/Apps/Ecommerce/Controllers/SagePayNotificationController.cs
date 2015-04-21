@@ -67,8 +67,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         private void ResetSessionInfo(CartModel cart, FailureDetails failureDetails)
         {
-            _sagePayService.ResetSessionInfo(cart.UserGuid);
-            _sagePayService.SetFailureDetails(cart.UserGuid, failureDetails);
+            if (cart != null)
+            {
+                _sagePayService.ResetSessionInfo(cart.UserGuid);
+                _sagePayService.SetFailureDetails(cart.UserGuid, failureDetails);
+            }
         }
     }
 }

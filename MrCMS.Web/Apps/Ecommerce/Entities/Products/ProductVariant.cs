@@ -17,6 +17,7 @@ using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Helpers.Pricing;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.Services.Tax;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Web.Apps.Ecommerce.Stock.Entities;
 using MrCMS.Website;
@@ -155,9 +156,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         {
             get
             {
+                TaxRate taxRate = MrCMSApplication.Get<IGetDefaultTaxRate>().Get();
                 return MrCMSApplication.Get<TaxSettings>().TaxesEnabled
                     ? TaxRate == null
-                        ? decimal.Zero
+                    ? taxRate != null ? taxRate.Percentage : decimal.Zero
                         : TaxRate.Percentage
                     : decimal.Zero;
             }
@@ -285,6 +287,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
                         : VariantType.Standard;
             }
         }
+
+        [DisplayName("Custom In Stock Message")]
+        public virtual string CustomStockInStockMessage { get; set; }
+        
+        [DisplayName("Custom Out Of Stock Message")]
+        public virtual string CustomStockOutOfStockMessage { get; set; }
 
         private PriceBreak GetPriceBreak(int quantity)
         {
