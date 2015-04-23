@@ -1046,6 +1046,9 @@
     <Compile Include="Apps\Ecommerce\Events\UndoRewardPointUsage.cs" />
     <Compile Include="Apps\Ecommerce\Events\UpdateIndexesOnOrderPlaced.cs" />
     <Compile Include="Apps\Ecommerce\Events\UpdateProductIndexesWhenDisplayOrderSet.cs" />
+    <Compile Include="Apps\Ecommerce\Events\UpdateProductVariantOnReviewAdded.cs" />
+    <Compile Include="Apps\Ecommerce\Events\UpdateProductVariantOnReviewDelete.cs" />
+    <Compile Include="Apps\Ecommerce\Events\UpdateProductVariantOnReviewUpdate.cs" />
     <Compile Include="Apps\Ecommerce\Filters\CanEnterCheckout.cs" />
     <Compile Include="Apps\Ecommerce\Filters\SetProductResultsViewDataAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Filters\SetProductSearchViewDataAttribute.cs" />
@@ -1529,6 +1532,7 @@
     <Compile Include="Apps\Ecommerce\Services\ISetShippingMethodService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IShippingMethodSubmenuGenerator.cs" />
     <Compile Include="Apps\Ecommerce\Services\IShippingMethodUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IUpdateProductVariantReviewData.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\NewsletterBuilder\ContentItemService.cs" />
@@ -1687,6 +1691,7 @@
     <Compile Include="Apps\Ecommerce\Services\Tax\IGetTaxRateOptions.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\ITaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\TaxRateManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\UpdateProductVariantReviewData.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Wishlists\IWishlistUIService.cs" />
@@ -1711,6 +1716,9 @@
     <Compile Include="Apps\Ecommerce\UnifiedSearch\GetOrderSearchItem.cs" />
     <Compile Include="Apps\Ecommerce\UnifiedSearch\GetProductSearchItem.cs" />
     <Compile Include="Apps\Ecommerce\UnifiedSearch\GetProductSpecifications.cs" />
+    <Compile Include="Apps\Ecommerce\UrlGenerators\CategoryUrlGenerator.cs" />
+    <Compile Include="Apps\Ecommerce\UrlGenerators\CategoryWithHierarchyUrlGenerator.cs" />
+    <Compile Include="Apps\Ecommerce\UrlGenerators\ProductUrlGenerator.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\BreadCrumb.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CartWidget.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CategoriesOnlyNavigation.cs" />
@@ -2203,6 +2211,9 @@
     <Content Include="Apps\Ecommerce\Content\Bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.js" />
     <Content Include="Apps\Ecommerce\Content\Bootstrap\js\bootstrap.min.js" />
+    <Content Include="Apps\Ecommerce\Content\FontAwesome\css\font-awesome.css" />
+    <Content Include="Apps\Ecommerce\Content\FontAwesome\css\font-awesome.min.css" />
+    <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\fontawesome-webfont.svg" />
     <Content Include="Apps\Ecommerce\Content\Images\ajax-loader.gif" />
     <Content Include="Apps\Ecommerce\Content\Images\awaiting-image.jpg" />
     <Content Include="Apps\Ecommerce\Content\Images\basket.png" />
@@ -4131,6 +4142,12 @@
     <Content Include="Areas\Admin\Views\Widget\Delete.cshtml" />
     <Content Include="Areas\Admin\Views\Widget\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\ShowStarRating.cshtml" />
+    <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />

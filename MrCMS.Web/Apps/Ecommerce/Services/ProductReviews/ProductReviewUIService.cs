@@ -26,7 +26,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ProductReviews
         {
             User user = _getCurrentUser.Get();
             if (user != null)
+            {
                 productReview.User = user;
+                productReview.Name = user.Name;
+                productReview.Email = user.Email;
+            }
             _session.Transact(session => session.Save(productReview));
         }
 

@@ -1,5 +1,5 @@
 ﻿@using System.Drawing
-@using System.Linq
+@using FluentNHibernate.Conventions
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
 @using MrCMS.Web.Apps.Ecommerce.Settings
@@ -8,7 +8,7 @@
     <div class="product-con">
         <div class="product-image">
             <a href="/@Model.Url">
-                @RenderImage(Model.Image ?? SiteSettings<EcommerceSettings>().DefaultNoProductImage, new Size { Width = 200, Height = 175 }, null, null, new { @class = "img-responsive" })
+                @RenderImage(Model.Image ?? SiteSettings<EcommerceSettings>().DefaultNoProductImage, new Size { Width = 200, Height = 175 }, attributes: new { @class = "img-responsive" })
             </a>
         </div>
         <div class="product-info margin-top-10">
@@ -26,6 +26,12 @@
             <div class="product-name">
                 <a href="/@Model.Url">@Model.Name</a>
             </div>
+            @if (Model.ProductReviewsEnabled && Model.NumberOfReviews > 0)
+            {
+                <div class="product-rating">
+                    @{Html.RenderPartial("ShowStarRating", Model.Rating);} (<a href="/@Model.Url#product-reviews">@Model.NumberOfReviews</a>)
+                </div>
+            }
             <div class="product-price">
                 <span class="current-price">
                     @if (Model.IsMultiVariant)
