@@ -14,6 +14,7 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
+using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Web.Areas.Admin.Services;
 using MrCMS.Website;
 using MrCMS.Website.Binders;
@@ -281,17 +282,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
         {
             ViewBag.Product = product;
             List<ImageSortItem> sortItems =
-                _fileAdminService.GetFiles(product.Gallery).OrderBy(arg => arg.display_order)
-                    .Select(
-                        arg => new ImageSortItem
-                               {
-                                   Order = arg.display_order,
-                                   Id = arg.Id,
-                                   Name = arg.name,
-                                   ImageUrl = arg.url,
-                                   IsImage = arg.is_image
-                               })
-                    .ToList();
+                _fileAdminService.GetFilesToSort(product.Gallery);
 
             return View(sortItems);
         }

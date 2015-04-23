@@ -41,7 +41,7 @@ namespace MrCMS.Services
 
         public void Publish<TEvent, TArgs>(TArgs args) where TEvent : IEvent<TArgs>
         {
-            Publish(typeof(TEvent), args);
+            Publish(typeof (TEvent), args);
         }
 
         public void Publish(Type eventType, object args)
@@ -52,8 +52,8 @@ namespace MrCMS.Services
                 {
                     using (MiniProfiler.Current.Step("Invoking " + @event.GetType().FullName))
                     {
-                        MethodInfo methodInfo = @event.GetType().GetMethod("Execute", new[] { args.GetType() });
-                        methodInfo.Invoke(@event, new[] { args });
+                        MethodInfo methodInfo = @event.GetType().GetMethod("Execute", new[] {args.GetType()});
+                        methodInfo.Invoke(@event, new[] {args});
                     }
                 });
             }
@@ -61,7 +61,7 @@ namespace MrCMS.Services
 
         public IDisposable Disable<T>()
         {
-            return new EventPublishingDisabler(this, typeof(T));
+            return new EventPublishingDisabler(this, typeof (T));
         }
 
         public IDisposable Disable(params Type[] types)
