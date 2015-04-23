@@ -11,6 +11,7 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using NHibernate;
 using NHibernate.Criterion;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services
 {
@@ -56,6 +57,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             {
                 MediaFile image = mediaFiles.FirstOrDefault(file => file.IsImage() && file.MediaCategory.Id == product.Gallery.Id);
                 var productVariants = variants.FindAll(productVariant => productVariant.Product.Id == product.Id);
+                if(!productVariants.Any())
+                {
+                    continue;
+                }
+                    
                 var productCardModel = new ProductCardModel
                 {
                     Name = product.Name,
