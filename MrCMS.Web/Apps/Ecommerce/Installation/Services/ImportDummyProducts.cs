@@ -23,7 +23,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var result = _importExportManager.ImportProductsFromExcel(memoryStream, autoStartBatch: false);
 
             var batchRun = result.Batch.BatchRuns.First();
-            batchRun.Status = BatchRunStatus.Executing;
             _synchronousBatchRunExecution.Execute(batchRun);
         }
     }

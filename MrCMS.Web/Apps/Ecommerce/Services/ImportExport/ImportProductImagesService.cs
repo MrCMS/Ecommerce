@@ -67,6 +67,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 {
                     var memoryStream = new MemoryStream();
                     responseStream.CopyTo(memoryStream);
+                    memoryStream.Position = 0;
 
                     var fileName = Path.GetFileName(fileLocation);
                     _fileService.AddFile(memoryStream, fileName, httpWebResponse.ContentType,
