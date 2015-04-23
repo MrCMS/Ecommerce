@@ -7,11 +7,11 @@ using MrCMS.Web.Apps.Ecommerce.Settings;
 
 namespace MrCMS.Web.Apps.Ecommerce.UrlGenerators
 {
-    public class CategoryUrlGenerator : WebpageUrlGenerator<Category>
+    public class CategoryWithHierarchyUrlGenerator : WebpageUrlGenerator<Category>
     {
         private readonly EcommerceSettings _settings;
 
-        public CategoryUrlGenerator(EcommerceSettings settings)
+        public CategoryWithHierarchyUrlGenerator(EcommerceSettings settings)
         {
             _settings = settings;
         }
@@ -21,6 +21,11 @@ namespace MrCMS.Web.Apps.Ecommerce.UrlGenerators
             var categoryUrl = _settings.CategoryUrl ?? "{0}";
 
             var stringBuilder = new StringBuilder();
+
+            if (parent != null)
+            {
+                stringBuilder.Insert(0, SeoHelper.TidyUrl(parent.UrlSegment) + "/");
+            }
 
             stringBuilder.Append(string.Format(categoryUrl, SeoHelper.TidyUrl(pageName)));
 
