@@ -1532,6 +1532,7 @@
     <Compile Include="Apps\Ecommerce\Services\ISetShippingMethodService.cs" />
     <Compile Include="Apps\Ecommerce\Services\IShippingMethodSubmenuGenerator.cs" />
     <Compile Include="Apps\Ecommerce\Services\IShippingMethodUIService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\IUpdateProductVariantReviewData.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\IOptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Misc\OptionService.cs" />
     <Compile Include="Apps\Ecommerce\Services\NewsletterBuilder\ContentItemService.cs" />
@@ -1690,6 +1691,7 @@
     <Compile Include="Apps\Ecommerce\Services\Tax\IGetTaxRateOptions.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\ITaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\TaxRateManager.cs" />
+    <Compile Include="Apps\Ecommerce\Services\UpdateProductVariantReviewData.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Wishlists\IWishlistUIService.cs" />
