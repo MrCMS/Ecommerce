@@ -1714,6 +1714,7 @@
     <Compile Include="Apps\Ecommerce\UnifiedSearch\GetOrderSearchItem.cs" />
     <Compile Include="Apps\Ecommerce\UnifiedSearch\GetProductSearchItem.cs" />
     <Compile Include="Apps\Ecommerce\UnifiedSearch\GetProductSpecifications.cs" />
+    <Compile Include="Apps\Ecommerce\UrlGenerators\CategoryUrlGenerator.cs" />
     <Compile Include="Apps\Ecommerce\UrlGenerators\ProductUrlGenerator.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\BreadCrumb.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CartWidget.cs" />
