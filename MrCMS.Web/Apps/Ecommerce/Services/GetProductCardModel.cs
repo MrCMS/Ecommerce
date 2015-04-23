@@ -19,14 +19,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         private readonly ISession _session;
         private readonly IProductVariantAvailabilityService _productVariantAvailabilityService;
         private readonly IStringResourceProvider _stringResourceProvider;
-        private readonly EcommerceSettings _settings;
+        private readonly EcommerceSettings _ecommerceSettings;
+        private readonly ProductReviewSettings _productReviewSettings;
 
-        public GetProductCardModel(ISession session, IProductVariantAvailabilityService productVariantAvailabilityService, IStringResourceProvider stringResourceProvider, EcommerceSettings settings)
+        public GetProductCardModel(ISession session, IProductVariantAvailabilityService productVariantAvailabilityService, IStringResourceProvider stringResourceProvider, 
+            EcommerceSettings ecommerceSettings, ProductReviewSettings productReviewSettings)
         {
             _session = session;
             _productVariantAvailabilityService = productVariantAvailabilityService;
             _stringResourceProvider = stringResourceProvider;
-            _settings = settings;
+            _ecommerceSettings = ecommerceSettings;
+            _productReviewSettings = productReviewSettings;
         }
 
         public ProductCardModel Get(Product product)
@@ -59,7 +62,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                     Url = product.LiveUrlSegment,
                     Abstract = product.ProductAbstract,
                     Image = image == null ? null : image.FileUrl,
-                    PreviousPriceText = _settings.PreviousPriceText,
+                    PreviousPriceText = _ecommerceSettings.PreviousPriceText,
+                    ProductReviewsEnabled = _productReviewSettings.EnableProductReviews,
                     IsMultiVariant = productVariants.Count > 1
                 };
                 if (productVariants.Count == 1)
@@ -77,10 +81,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                         : (!string.IsNullOrEmpty(variant.CustomStockOutOfStockMessage)
                             ? variant.CustomStockOutOfStockMessage
                             : _stringResourceProvider.GetValue("Out of Stock"));
+                    productCardModel.Rating = variant.Rating;
+                    productCardModel.NumberOfReviews = variant.NumberOfReviews;
                 }
                 else
                 {
-                    productCardModel.Price = productVariants.Any() ? productVariants.Min(x => x.Price) : (decimal?)null;
+                    ProductVariant variant = productVariants.OrderBy(x => x.Price).FirstOrDefault();
+                    productCardModel.Price = variant != null ? variant.Price : (decimal?)null;
+                    productCardModel.Rating = variant.Rating;
+                    productCardModel.NumberOfReviews = variant.NumberOfReviews;
                 }
                 productCardModels.Add(productCardModel);
             }

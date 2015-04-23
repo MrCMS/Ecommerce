@@ -354,5 +354,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
             return title;
         }
+
+        public virtual decimal Rating { get; set; }
+
+        [DisplayName("Number of Reviews")]
+        public virtual int NumberOfReviews { get; set; }
+
     }
 }
