@@ -24,7 +24,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         private readonly IImportProductUrlHistoryService _importProductUrlHistoryService;
         private readonly ImportProductsService _importProductsService;
         private IUniquePageService _uniquePageService;
-        private ICreateBatchRun _createBatchRun;
+        private ICreateBatch _createBatch;
 
         public OldImportProductsServiceTests()
         {
@@ -34,12 +34,12 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             _importProductImagesService = A.Fake<IImportProductImagesService>();
             _importProductUrlHistoryService = A.Fake<IImportProductUrlHistoryService>();
             _uniquePageService = A.Fake<IUniquePageService>();
-            _createBatchRun = A.Fake<ICreateBatchRun>();
+            _createBatch = A.Fake<ICreateBatch>();
             _importProductsService = new ImportProductsService(_documentService, 
                 _importSpecificationsService,
                 _importProductVariantsService,
                 _importProductImagesService,
-                _importProductUrlHistoryService, Session, _uniquePageService,_createBatchRun);
+                _importProductUrlHistoryService, Session, _uniquePageService,_createBatch);
         }
 
         [Fact(Skip = "To be refactored")]
