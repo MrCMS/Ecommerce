@@ -43,7 +43,7 @@ namespace MrCMS.Search
         {
             var item = indexData.UniversalSearchItem;
             var entity = _session.Get(item.SystemType, item.Id) as SiteEntity;
-            return entity == null ? null : entity.Site;
+            return entity == null || entity.Site == null ? null : _session.Get<Site>(entity.Site.Id);
         }
     }
 }
