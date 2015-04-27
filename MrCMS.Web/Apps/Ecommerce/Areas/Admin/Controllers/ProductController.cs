@@ -25,7 +25,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 {
     public class ProductController : MrCMSAppAdminController<EcommerceApp>
     {
-        private readonly IBrandService _brandService;
         private readonly ICategoryService _categoryService;
         private readonly IDocumentService _documentService;
         private readonly IFileAdminService _fileAdminService;
@@ -37,7 +36,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
         public ProductController(IProductService productService, IDocumentService documentService,
             ICategoryService categoryService,
-            IProductOptionManager productOptionManager, IFileAdminService fileAdminService, IBrandService brandService,
+            IProductOptionManager productOptionManager, IFileAdminService fileAdminService,
             IProductOptionManagementService productOptionManagementService, SiteSettings siteSettings,
             IUniquePageService uniquePageService)
         {
@@ -46,7 +45,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _categoryService = categoryService;
             _productOptionManager = productOptionManager;
             _fileAdminService = fileAdminService;
-            _brandService = brandService;
             _productOptionManagementService = productOptionManagementService;
             _siteSettings = siteSettings;
             _uniquePageService = uniquePageService;
@@ -337,29 +335,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
                             .ToList());
 
             return Json(String.Empty, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public PartialViewResult Brands(Product product)
-        {
-            ViewData["brands"] = _brandService.GetOptions();
-            return PartialView(product);
-        }
-
-        [HttpGet]
-        public PartialViewResult AddBrand(Product product)
-        {
-            ViewData["product"] = product;
-            return PartialView(new Brand());
-        }
-
-        [HttpPost]
-        [ActionName("AddBrand")]
-        [ForceImmediateLuceneUpdate]
-        public JsonResult AddBrand_POST(Brand brand)
-        {
-            _brandService.Add(brand);
-            return Json(brand.Id);
         }
 
         [HttpGet]

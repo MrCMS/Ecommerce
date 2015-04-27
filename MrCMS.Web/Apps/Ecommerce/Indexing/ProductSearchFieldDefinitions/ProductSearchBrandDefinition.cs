@@ -25,8 +25,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 
         protected override IEnumerable<string> GetValues(Product obj)
         {
-            if (obj.Brand != null)
-                yield return obj.Brand.Id.ToString();
+            if (obj.BrandPage != null)
+                yield return obj.BrandPage.Id.ToString();
 
             yield return null;
         }
@@ -36,15 +36,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
             return new Dictionary<Type, Func<SystemEntity, IEnumerable<LuceneAction>>>
                        {
                            {
-                               typeof (Brand),
+                               typeof (BrandPage),
                                entity =>
                                    {
-                                       if (entity is Brand)
+                                       if (entity is BrandPage)
                                        {
-                                           var brand = (entity as Brand);
+                                           var page = (entity as BrandPage);
                                            var products =
                                                _session.QueryOver<Product>()
-                                                       .Where(product => product.Brand.Id == brand.Id)
+                                                       .Where(product => product.BrandPage.Id == page.Id)
                                                        .Cacheable()
                                                        .List();
                                            return products.Select(product =>

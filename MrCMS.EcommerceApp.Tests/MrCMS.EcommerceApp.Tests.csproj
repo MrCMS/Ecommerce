@@ -151,7 +151,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Admin\Controllers\CategoryControllerTests.cs" />
-    <Compile Include="Admin\Controllers\BrandControllerTests.cs" />
     <Compile Include="Admin\Controllers\GoogleBaseControllerTests.cs" />
     <Compile Include="Admin\Controllers\BulkStockUpdateControllerTests.cs" />
     <Compile Include="Admin\Controllers\ImportExportControllerTests.cs" />

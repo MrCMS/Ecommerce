@@ -84,18 +84,18 @@
                         {
                             @:SKU: <span itemprop="identifier" content="sku:@Model.SKU">@Model.SKU</span><br />
                         }
-                        if (product.Brand != null)
+                        if (product.BrandPage != null)
                         {
-                            if (!string.IsNullOrWhiteSpace(product.Brand.Logo))
+                            if (!string.IsNullOrWhiteSpace(product.BrandPage.FeatureImage))
                             {
                                 <div>
-                                    @RenderImage(product.Brand.Logo, new Size { Width = 120 }, product.Brand.Name, product.Brand.Name, new { @class = "img-responsive" })
+                                    @RenderImage(product.BrandPage.FeatureImage, new Size { Width = 120 }, product.BrandPage.Name, product.BrandPage.Name, new { @class = "img-responsive" })
                                 </div>
                                 <br />
                             }
                             else
                             {
-                                @:Brand: <span itemprop="brand">@product.Brand.Name</span><br />
+                                @:Brand: <span itemprop="brand">@product.BrandPage.Name</span><br />
                             }
                         }
                         if (mainCategory != null)

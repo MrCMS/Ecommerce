@@ -10,6 +10,7 @@ using MrCMS.Web.Apps.Amazon.Services.Listings.Sync;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.Currencies;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -78,7 +79,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
 
             var product = new Product()
                 {
-                    Brand = new Brand(){Name = "B"}
+                    BrandPage = new BrandPage(){Name = "B"}
                 };
             var productVariant = new ProductVariant()
                 {
@@ -131,7 +132,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
 
             var product = new Product()
             {
-                Brand = new Brand() { Name = "B" }
+                BrandPage = new BrandPage() { Name = "B" }
             };
             var productVariant = new ProductVariant()
             {
@@ -188,7 +189,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
 
             var product = new Product()
             {
-                Brand = new Brand() { Name = "B" }
+                BrandPage = new BrandPage() { Name = "B" }
             };
             var productVariant = new ProductVariant()
             {
@@ -245,7 +246,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
 
             var product = new Product()
             {
-                Brand = new Brand() { Name = "B" }
+                BrandPage = new BrandPage() { Name = "B" }
             };
             var productVariant = new ProductVariant()
             {

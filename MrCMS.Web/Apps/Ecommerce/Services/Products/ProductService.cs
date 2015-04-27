@@ -226,8 +226,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 
             if (!string.IsNullOrWhiteSpace(query.Brand))
             {
-                Brand brandAlias = null;
-                queryOver = queryOver.JoinAlias(product => product.Brand, () => brandAlias)
+                BrandPage brandAlias = null;
+                queryOver = queryOver.JoinAlias(product => product.BrandPage, () => brandAlias)
                     .Where(() => brandAlias.Name.IsInsensitiveLike(query.Brand, MatchMode.Anywhere));
             }
 

@@ -671,6 +671,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\ShippingMethodSettingsModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ModelBinders\WorldPaySettingsModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ApprovalStatus.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\BrandSearchModel.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\BulkStockUpdateResult.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\BulkUpdateResult.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\BulkWarehouseStockUpdateDTO.cs" />
@@ -705,6 +706,8 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\AddOrderDeletedNote.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\AddOrderShippedNote.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\AddOrderVoidedNote.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BrandAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BrandListingWebpageTreeNav.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BulkShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BulkSimpleStockUpdateService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\BulkStockUpdateAdminService.cs" />
@@ -730,6 +733,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetTrackingPolicyOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GiftCardAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GiftCardSettingsAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBrandAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBulkShippingService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBulkSimpleStockUpdateService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IBulkStockUpdateAdminService.cs" />
@@ -919,6 +923,7 @@
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\WishlistController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\WorldPayController.cs" />
+    <Compile Include="Apps\Ecommerce\DbConfiguration\BrandOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemBasedDiscountApplicationOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CategoryOverride.cs" />
@@ -929,11 +934,9 @@
     <Compile Include="Apps\Ecommerce\DbConfiguration\EcommerceSearchablePageOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\FeaturedCategoryWidgetOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\FeaturedProductsWidgetOverride.cs" />
-    <Compile Include="Apps\Ecommerce\DbConfiguration\FreeTextOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\GiftCardOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\GiftCardUsageOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\GoogleBaseProductOverride.cs" />
-    <Compile Include="Apps\Ecommerce\DbConfiguration\ImageRightAndTextLeftOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ItemHasSKUOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\ItemIsInCategoryOverride.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\Listeners\BackInStockListener.cs" />
@@ -1151,6 +1154,8 @@
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\BackInStockTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\OrderTokenProvider.cs" />
     <Compile Include="Apps\Ecommerce\MessageTemplates\TokenProviders\ProductVariantTokenProvider.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\BrandListingMetadata.cs" />
+    <Compile Include="Apps\Ecommerce\Metadata\BrandPageMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CartMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\CategoryMetadata.cs" />
     <Compile Include="Apps\Ecommerce\Metadata\EnterOrderEmailMetadata.cs" />
@@ -1254,6 +1259,8 @@
     <Compile Include="Apps\Ecommerce\Models\UserAccountReviewsModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ValidationResult.cs" />
     <Compile Include="Apps\Ecommerce\Models\WishlistSummary.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\BrandListing.cs" />
+    <Compile Include="Apps\Ecommerce\Pages\BrandPage.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Cart.cs" />
     <Compile Include="Apps\Ecommerce\Pages\Category.cs" />
     <Compile Include="Apps\Ecommerce\Pages\ContactUs.cs" />
@@ -1619,7 +1626,7 @@
     <Compile Include="Apps\Ecommerce\Services\ProductShippingChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\ProductStockChecker.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\BackInStockNotificationService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Products\BrandService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\AvailableBrandsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\Download\DownloadOrderedFileService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\Download\DownloadValidationResult.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\Download\IDownloadOrderedFileService.cs" />
@@ -1630,7 +1637,7 @@
     <Compile Include="Apps\Ecommerce\Services\Products\GetProductSearchQueryObjects.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\GetProductSearchSortByValue.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IBackInStockNotificationService.cs" />
-    <Compile Include="Apps\Ecommerce\Services\Products\IBrandService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Products\IAvailableBrandsService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IGetProductCategories.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IGetProductSearchLuceneQuery.cs" />
     <Compile Include="Apps\Ecommerce\Services\Products\IGetProductSearchQueryObjects.cs" />
@@ -3518,9 +3525,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Address\Edit.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\Add.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\Delete.cshtml" />
-    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BulkShipping\Update.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BulkStockUpdate\Index.cshtml" />
@@ -4153,6 +4157,8 @@
     <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\fontawesome-webfont.woff" />
     <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\fontawesome-webfont.woff2" />
     <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\FontAwesome.otf" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\Migrate.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Brand\ForProduct.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />

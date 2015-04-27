@@ -4,6 +4,7 @@ using FluentAssertions;
 using MrCMS.Batching.Services;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
@@ -25,6 +26,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         private readonly ImportProductsService _importProductsService;
         private IUniquePageService _uniquePageService;
         private ICreateBatch _createBatch;
+        private IGetNewBrandPage _getNewBrandPage = A.Fake<IGetNewBrandPage>();
 
         public OldImportProductsServiceTests()
         {
@@ -39,7 +41,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                 _importSpecificationsService,
                 _importProductVariantsService,
                 _importProductImagesService,
-                _importProductUrlHistoryService, Session, _uniquePageService,_createBatch);
+                _importProductUrlHistoryService, Session, _uniquePageService,_createBatch,_getNewBrandPage);
         }
 
         [Fact(Skip = "To be refactored")]
@@ -108,11 +110,11 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                 Brand = "Test Brand"
             };
 
-            var brand = new Brand { Name = "Test Brand" };
+            var brand = new BrandPage { Name = "Test BrandPage" };
 
             var importProduct = _importProductsService.ImportProduct(product);
 
-            importProduct.Brand.Should().Be(brand);
+            importProduct.BrandPage.Should().Be(brand);
         }
 
         [Fact(Skip = "To be refactored")]
@@ -126,7 +128,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 
             var importProduct = _importProductsService.ImportProduct(product);
 
-            importProduct.Brand.Name.Should().Be("Test Brand");
+            importProduct.BrandPage.Name.Should().Be("Test Brand");
         }
 
         [Fact(Skip = "To be refactored")]

@@ -1,0 +1,16 @@
+﻿@model dynamic
+@{ Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";}
+@using (Html.BeginForm("Migrate", "Brand", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Migrate Brands
+            <span class="btn-group pull-right display-inline">
+                <button type="submit" class="btn btn-primary">Migrate</button>
+            </span>
+        </legend>
+        <p>
+            Please confirm that you want to migrate the brands. Depending on the size of your product database, this may take some time.
+        </p>
+    </fieldset>
+}
