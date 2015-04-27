@@ -150,6 +150,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 _layoutAreaAdminService.SaveArea(area);
             layoutModel.SearchLayout = searchLayout;
 
+            //useraccount
+            var userAccountLayout = new Layout
+            {
+                Name = "User Account Layout",
+                UrlSegment = "_UserAccountLayout",
+                LayoutAreas = new List<LayoutArea>(),
+                Parent = eCommerceLayout
+            };
+            var userAccountAreas = new List<LayoutArea>
+            {
+                new LayoutArea {AreaName = "Right Column", Layout = userAccountLayout}
+            };
+            _documentService.AddDocument(userAccountLayout);
+
             var contentLayout = new Layout
             {
                 Name = "Content Layout",

@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "_EcommerceLayout.cshtml";
+}
+<div class="row">
+    <div class="col-xs-12 col-sm-3">
+        @{ Html.RenderAction("Show", "UserAccountLinks"); }
+        @{RenderZone("Right Column");}
+    </div>
+    <div class="col-xs-12 col-sm-9">
+        @RenderBody()
+    </div>
+</div>

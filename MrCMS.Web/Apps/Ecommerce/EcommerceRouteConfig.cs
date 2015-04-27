@@ -22,6 +22,7 @@ namespace MrCMS.Web.Apps.Ecommerce
             MapPaymentMethodRoutes(context);
             MapRemoteValidationRoutes(context);
             MapWishlistRoutes(context);
+            MapUserAccount(context);
 
             context.MapRoute("User Account Orders", "Apps/Ecommerce/UserAccount/UserAccountOrders",
                 new { controller = "UserAccount", action = "UserAccountOrders" });
@@ -72,6 +73,13 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Generate Contact Us Map", "get-contact-map",
                 new { controller = "ContactUs", action = "GenerateMap" },
                 new[] { typeof(ContactUsController).Namespace });
+        }
+
+        private static void MapUserAccount(MrCMSAppRegistrationContext context)
+        {
+            context.MapRoute("Update User Info", "user-account/handle/user-info",
+                new {controller = "UserAccountInfo", action = "UpdateUserInfo"},
+                new[] {typeof (UserAccountInfoController).Namespace});
         }
 
         private static void MapWishlistRoutes(MrCMSAppRegistrationContext context)

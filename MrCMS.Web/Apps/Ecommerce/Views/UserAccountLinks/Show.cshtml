@@ -1,0 +1,11 @@
+﻿@model IList<MrCMS.Web.Apps.Core.Models.Navigation.NavigationRecord>
+           
+@if (Model.Any())
+{
+    <ul class="list-unstyled">
+        @foreach (var link in Model)
+        {
+            <li><a href="@link.Url">@link.Text</a></li>
+        }
+    </ul>
+}
