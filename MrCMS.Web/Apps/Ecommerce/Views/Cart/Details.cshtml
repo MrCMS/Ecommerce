@@ -17,6 +17,7 @@
     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/discount.js");
     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/cart.js");
     Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/gift-cards.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/reward-points.js");
 }
 <div data-cart-info="@Url.Action("Details", "Cart")">
     <div class="container">
@@ -170,11 +171,11 @@
                     {
                         <div class="row margin-bottom-10">
                             <div class="col-sm-12 line-height-30">
-                                @Html.InlineCheckboxFor(x => x.UseRewardPoints, checkboxAttributes: new { @class = "checkbox" })
+                                @Html.InlineCheckboxFor(x => x.UseRewardPoints, checkboxAttributes: new { @class = "checkbox", data_use_reward_points = true })
                                 @if (!Model.UseRewardPoints)
                                 {
                                     <span>
-                                        Available balance: @Model.AvailablePoints (@Model.AvailablePointsValue.ToCurrencyFormat())
+                                        @Resource("Available balance"): @Model.AvailablePoints (@Model.AvailablePointsValue.ToCurrencyFormat())
                                     </span>
                                 }
                             </div>

@@ -10,5 +10,6 @@
         $(document).on('update-summary', updateSummary);
         $(document).on('gift-card-applied', updateSummary);
         $(document).on('gift-card-removed', updateSummary);
+        $(document).on('reward-points-updated', updateSummary);
     });
 })(jQuery);

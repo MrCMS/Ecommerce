@@ -9,7 +9,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Settings
         public RewardPointSettings()
         {
             StatusToAward = OrderStatus.Complete;
-            StatusToAward = OrderStatus.Complete;
+            StatusToCancel = OrderStatus.Cancelled;
         }
 
         [DisplayName("Exchange Rate")]
