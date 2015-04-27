@@ -43,7 +43,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
         private IEnumerable<string> GetValues(Product product, HashSet<ProductSpecificationValue> values)
         {
             return
-                values.Where(value => value.Product == product)
+                values.Where(value => value.Product != null && value.Product.Id == product.Id)
                     .Select(value => value.ProductSpecificationAttributeOption.Id.ToString())
                     .ToList();
         }

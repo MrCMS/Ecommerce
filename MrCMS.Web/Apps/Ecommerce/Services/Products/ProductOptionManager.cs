@@ -246,18 +246,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             _session.Transact(session => session.Delete(value));
         }
 
-        public List<ProductOptionModel<string>> GetSearchAttributeOptions(ProductSearchQuery query)
-        {
-            List<OptionInfo> values = _productSearchIndexService.GetOptions(query);
-            return GetSearchAttributeOptions(values);
-        }
-
-        public List<ProductOptionModel<int>> GetSearchSpecificationAttributes(ProductSearchQuery query)
-        {
-            List<int> values = _productSearchIndexService.GetSpecifications(query);
-            return GetSearchSpecificationAttributes(query, values);
-        }
-
         public ProductOptionSearchData GetSearchData(ProductSearchQuery query)
         {
             OptionSearchData values = _productSearchIndexService.GetOptionSearchData(query);
