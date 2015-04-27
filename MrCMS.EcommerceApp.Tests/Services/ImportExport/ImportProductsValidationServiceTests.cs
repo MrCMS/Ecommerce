@@ -255,8 +255,8 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                 wsProducts.Cells["E" + rowId].Value = productVariants[i].Product.MetaDescription;
                 wsProducts.Cells["F" + rowId].Value = productVariants[i].Product.MetaKeywords;
                 wsProducts.Cells["G" + rowId].Value = productVariants[i].Product.ProductAbstract;
-                if (productVariants[i].Product.Brand != null)
-                    wsProducts.Cells["H" + rowId].Value = productVariants[i].Product.Brand.Name;
+                if (productVariants[i].Product.BrandPage != null)
+                    wsProducts.Cells["H" + rowId].Value = productVariants[i].Product.BrandPage.Name;
                 if (productVariants[i].Product.Categories.Any())
                 {
                     foreach (var item in productVariants[i].Product.Categories)

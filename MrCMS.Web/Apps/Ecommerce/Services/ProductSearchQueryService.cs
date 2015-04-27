@@ -7,16 +7,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 {
     public class ProductSearchQueryService : IProductSearchQueryService
     {
-        private readonly IBrandService _brandService;
+        private readonly IAvailableBrandsService _availableBrandsService;
         private readonly ICategoryService _categoryService;
         private readonly IProductSearchIndexService _productSearchIndexService;
         private readonly IProductOptionManager _productOptionManager;
 
-        public ProductSearchQueryService(IProductOptionManager productOptionManager, IBrandService brandService,
+        public ProductSearchQueryService(IProductOptionManager productOptionManager, IAvailableBrandsService availableBrandsService,
             ICategoryService categoryService,IProductSearchIndexService productSearchIndexService)
         {
             _productOptionManager = productOptionManager;
-            _brandService = brandService;
+            _availableBrandsService = availableBrandsService;
             _categoryService = categoryService;
             _productSearchIndexService = productSearchIndexService;
         }
@@ -26,7 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             ProductOptionSearchData productOptionSearchData = _productOptionManager.GetSearchData(query);
             viewData["product-options"] = productOptionSearchData.AttributeOptions;
             viewData["product-specifications"] = productOptionSearchData.SpecificationOptions;
-            viewData["product-brands"] = _brandService.GetAvailableBrands(query);
+            viewData["product-brands"] = _availableBrandsService.GetAvailableBrands(query);
             viewData["categories"] = _categoryService.GetCategoriesForSearch(query);
             viewData["max-price"] = _productSearchIndexService.GetMaxPrice(query);
         }

@@ -59,9 +59,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                             string.IsNullOrWhiteSpace(productData.Url)
                                 ? _webpageUrlService.Suggest(productContainer, suggestParams)
                                 : productData.Url,
-                        Brand =
+                        BrandPage =
                             productData.BrandId.HasValue
-                                ? nopImportContext.FindNew<Brand>(productData.BrandId.Value)
+                                ? nopImportContext.FindNew<BrandPage>(productData.BrandId.Value)
                                 : null,
                         Categories = productData.Categories.Select(nopImportContext.FindNew<Category>).ToList(),
                         Tags = new HashSet<Tag>(productData.Tags.Select(nopImportContext.FindNew<Tag>).ToList()),

@@ -9,6 +9,7 @@ using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
 using MrCMS.Indexing;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.Batching;
@@ -24,6 +25,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     public class ImportProductsService : IImportProductsService
     {
         private readonly ICreateBatch _createBatch;
+        private readonly IGetNewBrandPage _getNewBrandPage;
         private readonly IDocumentService _documentService;
         private readonly IImportProductImagesService _importProductImagesService;
         private readonly IImportProductVariantsService _importProductVariantsService;
@@ -38,7 +40,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             IImportProductVariantsService importProductVariantsService,
             IImportProductImagesService importProductImagesService,
             IImportProductUrlHistoryService importUrlHistoryService, ISession session,
-            IUniquePageService uniquePageService,ICreateBatch createBatch)
+            IUniquePageService uniquePageService, ICreateBatch createBatch, IGetNewBrandPage getNewBrandPage)
         {
             _documentService = documentService;
             _importSpecificationsService = importSpecificationsService;
@@ -48,6 +50,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             _session = session;
             _uniquePageService = uniquePageService;
             _createBatch = createBatch;
+            _getNewBrandPage = getNewBrandPage;
         }
 
         public Batch CreateBatch(HashSet<ProductImportDataTransferObject> productsToImport)
@@ -164,17 +167,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             if (!String.IsNullOrWhiteSpace(dataTransferObject.Brand))
             {
                 string dtoBrand = dataTransferObject.Brand.Trim();
-                Brand brand =
-                    _session.QueryOver<Brand>()
+                BrandPage brand =
+                    _session.QueryOver<BrandPage>()
                         .Where(b => b.Name.IsInsensitiveLike(dtoBrand, MatchMode.Exact))
                         .Take(1)
                         .SingleOrDefault();
                 if (brand == null)
                 {
-                    brand = new Brand { Name = dtoBrand };
+
+                    brand = _getNewBrandPage.Get(dtoBrand);
                     _session.Transact(session => session.Save(brand));
                 }
-                product.Brand = brand;
+                product.BrandPage = brand;
             }
         }
 

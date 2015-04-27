@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -38,7 +39,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Pages
 
         public virtual IList<ProductOption> Options { get; set; }
 
+        [Obsolete("Use BrandPage instead")]
         public virtual Brand Brand { get; set; }
+        public virtual BrandPage BrandPage { get; set; }
 
         [DisplayName("Abstract")]
         [StringLength(500, ErrorMessage = "Abstract cannot be longer than 500 characters.")]
