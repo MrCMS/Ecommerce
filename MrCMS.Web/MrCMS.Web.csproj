@@ -1179,6 +1179,7 @@
     <Compile Include="Apps\Ecommerce\Models\CartModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartShippingStatus.cs" />
     <Compile Include="Apps\Ecommerce\Models\CartUpdateValue.cs" />
+    <Compile Include="Apps\Ecommerce\Models\Cart\SessionDataTimeoutDefaults.cs" />
     <Compile Include="Apps\Ecommerce\Models\CashOnDeliveryConfirmModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategoryPagedList.cs" />
     <Compile Include="Apps\Ecommerce\Models\CategorySearchModel.cs" />

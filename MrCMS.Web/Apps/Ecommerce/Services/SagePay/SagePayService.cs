@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Routing;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Models.Cart;
 using MrCMS.Web.Apps.Ecommerce.Payment.SagePay;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
 
