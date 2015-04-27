@@ -1088,6 +1088,8 @@
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchSalesChannelDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchShippingStatusDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\OrderSearchIndexDefinitions\OrderSearchTotalDefinition.cs" />
+    <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductBarcodeDefinition.cs" />
+    <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductPartNumberDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchBodyContentDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchBrandDefinition.cs" />
     <Compile Include="Apps\Ecommerce\Indexing\ProductSearchFieldDefinitions\ProductSearchCategoriesDefinition.cs" />
