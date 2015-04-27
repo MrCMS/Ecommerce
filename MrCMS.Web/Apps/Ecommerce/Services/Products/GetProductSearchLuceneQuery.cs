@@ -19,19 +19,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
     {
         public Query Get(ProductSearchQuery searchQuery)
         {
+            var booleanQuery = new BooleanQuery { ProductSearchPublishedDefinition.PublishedOnly };
             if (!searchQuery.Options.Any() && !searchQuery.Specifications.Any() && Math.Abs(searchQuery.PriceFrom - 0) < 0.01 && !searchQuery.PriceTo.HasValue &&
                 !searchQuery.CategoryId.HasValue && string.IsNullOrWhiteSpace(searchQuery.SearchTerm)
                 && !searchQuery.BrandId.HasValue)
-                return new MatchAllDocsQuery();
+            {
+                return booleanQuery;
+            }
 
-            var booleanQuery = new BooleanQuery();
             if (searchQuery.Options.Any())
                 booleanQuery.Add(GetOptionsQuery(searchQuery.Options), Occur.MUST);
             if (searchQuery.Specifications.Any())
                 booleanQuery.Add(GetSpecificationsQuery(searchQuery.Specifications), Occur.MUST);
             if (searchQuery.CategoryId.HasValue)
                 booleanQuery.Add(GetCategoriesQuery(searchQuery.CategoryId.Value), Occur.MUST);
-            if (searchQuery.PriceFrom > 0 ||searchQuery.PriceTo.HasValue)
+            if (searchQuery.PriceFrom > 0 || searchQuery.PriceTo.HasValue)
                 booleanQuery.Add(GetPriceRangeQuery(searchQuery), Occur.MUST);
             if (!String.IsNullOrWhiteSpace(searchQuery.SearchTerm))
             {

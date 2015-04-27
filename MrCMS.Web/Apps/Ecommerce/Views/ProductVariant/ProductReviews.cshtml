@@ -14,7 +14,7 @@
     var response = TempData["productreview-response-info"] as IProductReviewResponseInfo;
     bool canAddReview = CurrentRequestData.CurrentUser != null || guestReviews;
 }
-<div data-paging-type="async" data-product-review="true">
+<div data-paging-type="async" data-product-review="true" id="product-review">
     <div class="margin-top-bottom-30">
         <div class="container">
             <div class="margin-top-20">
@@ -30,8 +30,7 @@
                     </div>
                     <div class="clearfix"></div>
                 </div>
-
-
+                
                 @if (response != null && !string.IsNullOrWhiteSpace(response.Message))
                 {
                     <div class="margin-bottom-10">
@@ -47,15 +46,14 @@
                         @(Resource("Product Review submitted", "Your product review has been successfully submitted. It will be shown once it has been approved."))
                     </div>
                 }
-
-
-
+                
                 @if (!canAddReview)
                 {
                     <div class="alert alert-info">
                         @Resource("Product Reviews - Guest Reviews unavailable", "Guest reviews currently unavailable, please login to post review.")
                     </div>
                 }
+                
                 @if (canAddReview)
                 {
                     <button class="btn btn-sm btn-info pull-right" type="button" data-toggle="collapse" data-target="#add-a-review">@Resource("Add a review")</button>
@@ -63,6 +61,7 @@
                         @{ Html.RenderAction("Add", "ProductReview", new {productVariant = Model}); }
                     </div>
                 }
+                
                 @foreach (ProductReview item in reviews)
                 {
                     foreach (int i in Enumerable.Range(1, item.Rating))
@@ -85,7 +84,7 @@
                                    <span>@item.Email</span>
                                }
                            </span>,
-                        <meta itemprop="datePublished" content="2011-04-01" />@item.CreatedOn.ToString("MMM dd, yyyy")
+                        <meta itemprop="datePublished" content="@item.CreatedOn.ToString("yyyy-mm-dd")" />@item.CreatedOn.ToString("MMM dd, yyyy")
                         <div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
                             <meta itemprop="worstRating" content="1" />
                             <span itemprop="ratingValue">@item.Rating</span>/<span itemprop="bestRating">5</span> stars

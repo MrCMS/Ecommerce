@@ -28,12 +28,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             _indexSearcher = indexSearcher;
         }
 
-        public List<int> Get(Query searchQuery, Filter filter)
+        public List<int> Get(Query searchQuery)
         {
             var indexSearcher = _productSearcher.IndexSearcher;
             var name = FieldDefinition.GetFieldName<ProductSearchCategoriesDefinition>();
             var valueCollector = new ValueCollector(indexSearcher, name);
-            indexSearcher.Search(searchQuery, filter, valueCollector);
+            indexSearcher.Search(searchQuery, valueCollector);
             var categoryIds = valueCollector.Values[name].Select(s => Convert.ToInt32(s)).Distinct().ToList();
 
             if (!categoryIds.Any())

@@ -34,24 +34,20 @@
         $.post('/Apps/Ecommerce/DeleteCartItem', { id: id }, updateCartInfo);
     }
 
-    function toggleUseRewardPoints(event) {
-        event.preventDefault();
-        $.post('/Apps/Ecommerce/UseRewardPoints', { useRewardPoints: $(event.target).is(':checked') }, updateCartInfo);
-    }
-
     $(function() {
         $.ajaxSetup({ cache: false });
 
         $(document).on('click', "#empty-basket", emptyBasket);
         $(document).on('click', "#update-basket", updateBasket);
         $(document).on('click', "a[data-action=delete-cart-item]", deleteCartItem);
-        $(document).on('change', "#UseRewardPoints", toggleUseRewardPoints);
 
         $(document).on('add-discount', updateCartInfo);
         $(document).on('remove-discount', updateCartInfo);
 
         $(document).on('gift-card-applied', updateCartInfo);
         $(document).on('gift-card-removed', updateCartInfo);
+
+        $(document).on('reward-points-updated', updateCartInfo);
 
     });
 })(jQuery);

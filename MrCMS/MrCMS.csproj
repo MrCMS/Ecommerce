@@ -542,6 +542,7 @@
     <Compile Include="Events\OnUpdatedArgs.cs" />
     <Compile Include="Events\OnUpdatingArgs.cs" />
     <Compile Include="Events\Widgets\ClearWidgetsFromCache.cs" />
+    <Compile Include="HealthChecks\PublishWebpageTaskHealthCheck.cs" />
     <Compile Include="HealthChecks\EmailSenderTaskCheck.cs" />
     <Compile Include="HealthChecks\HealthCheck.cs" />
     <Compile Include="HealthChecks\HealthCheckResult.cs" />
@@ -633,6 +634,7 @@
     <Compile Include="Messages\MessageTemplate.cs" />
     <Compile Include="Messages\MessageTemplateProvider.cs" />
     <Compile Include="Models\CachingInfo.cs" />
+    <Compile Include="Models\ImageSortItem.cs" />
     <Compile Include="Models\LayoutTreeListModel.cs" />
     <Compile Include="Models\MrCMSIndex.cs" />
     <Compile Include="Models\RequiredFieldException.cs" />
@@ -642,6 +644,8 @@
     <Compile Include="Models\VersionChange.cs" />
     <Compile Include="Models\WebpageCount.cs" />
     <Compile Include="Models\WebsiteTreeListModel.cs" />
+    <Compile Include="Search\AddUniversalSearchTaskInfo.cs" />
+    <Compile Include="Search\AddUniversalSearchTaskInfoExecutor.cs" />
     <Compile Include="Search\DeleteFromUniversalIndex.cs" />
     <Compile Include="Search\DeleteFromUniversalIndexExecutor.cs" />
     <Compile Include="Search\GetUniversalIndexStatuses.cs" />
@@ -661,6 +665,7 @@
     <Compile Include="Search\ItemCreation\IGetUserSearchTerms.cs" />
     <Compile Include="Search\ItemCreation\IGetWebpageSearchTerms.cs" />
     <Compile Include="Search\ISearchConverter.cs" />
+    <Compile Include="Search\IUniversalSearchIndexTask.cs" />
     <Compile Include="Search\IUniversalSearchItemGenerator.cs" />
     <Compile Include="Search\IUniversalSearchIndexManager.cs" />
     <Compile Include="Search\Models\UniversalSearchIndexResult.cs" />
@@ -668,7 +673,10 @@
     <Compile Include="Search\Models\UniversalSearchItem.cs" />
     <Compile Include="Search\SearchConverter.cs" />
     <Compile Include="Search\UniversalSearchFieldNames.cs" />
+    <Compile Include="Search\UniversalSearchIndexAction.cs" />
+    <Compile Include="Search\UniversalSearchIndexData.cs" />
     <Compile Include="Search\UniversalSearchIndexManager.cs" />
+    <Compile Include="Search\UniversalSearchIndexTask.cs" />
     <Compile Include="Search\UniversalSearchItemGenerator.cs" />
     <Compile Include="Search\UpdateUniversalIndex.cs" />
     <Compile Include="Search\UpdateUniversalIndexExecutor.cs" />
@@ -1051,6 +1059,8 @@
     <Compile Include="Tasks\TaskExecutionStatus.cs" />
     <Compile Include="Tasks\TaskResetter.cs" />
     <Compile Include="Tasks\TaskStatusUpdater.cs" />
+    <Compile Include="Tasks\UniversalIndexTaskExecutionHandler.cs" />
+    <Compile Include="Tasks\UniversalSearchActionExecutor.cs" />
     <Compile Include="Website\ActionMethodInfo.cs" />
     <Compile Include="Website\AdminUISiteAgnosticAttribute.cs" />
     <Compile Include="Tasks\UpdateIndicesTask.cs" />
@@ -1112,6 +1122,8 @@
     <Compile Include="Website\MrCMSRazorViewEngine.cs" />
     <Compile Include="Website\MrCMSTypeACLAttribute.cs" />
     <Compile Include="Website\OnEndRequestExecutor.cs" />
+    <Compile Include="Website\Optimization\AppScriptBundle.cs" />
+    <Compile Include="Website\Optimization\AppStylesheetBundle.cs" />
     <Compile Include="Website\Optimization\AsIsBundleOrderer.cs" />
     <Compile Include="Website\Optimization\IScriptBundle.cs" />
     <Compile Include="Website\Optimization\IResourceBundler.cs" />

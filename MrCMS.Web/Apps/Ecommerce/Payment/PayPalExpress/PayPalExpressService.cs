@@ -76,5 +76,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                         }
                     });
         }
+
+        public void Reset()
+        {
+            _cartManager.ResetPayPalExpress();
+        }
     }
 }

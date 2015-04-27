@@ -119,6 +119,10 @@ namespace MrCMS.Web.Apps.Ecommerce
                 "Apps/Ecommerce/PayPalExpress/SetExpressCheckout",
                 new { controller = "PayPalExpressCheckout", action = "SetExpressCheckout" },
                 new[] { typeof(PayPalExpressCheckoutController).Namespace });
+            context.MapRoute("PayPal Express Checkout - Reset",
+                "Apps/Ecommerce/PayPalExpress/Reset",
+                new { controller = "PayPalExpressCheckout", action = "Reset" },
+                new[] { typeof(PayPalExpressCheckoutController).Namespace });
             context.MapRoute("PayPal Express Checkout - IPN", "Apps/Ecommerce/PayPalExpress/IPN",
                 new { controller = "PayPalExpressIPN", action = "Handle" },
                 new[] { typeof(PayPalExpressIPNController).Namespace });

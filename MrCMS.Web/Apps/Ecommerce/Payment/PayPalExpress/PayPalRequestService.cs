@@ -78,7 +78,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                 {
                     OrderTotal = cart.TotalToPay.GetAmountType(),
                     ShippingTotal = cart.ShippingTotal.GetAmountType(),
-                    ItemTotal = (cart.Subtotal - cart.OrderTotalDiscount).GetAmountType(),
+                    ItemTotal = _payPalOrderService.GetItemTotal(cart),
                     TaxTotal = cart.ItemTax.GetAmountType(),
                     Custom = cart.CartGuid.ToString(),
                     ButtonSource = "Thought_Cart_MrCMS",
