@@ -38,7 +38,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         public IPagedList<Product> SearchProducts(ProductSearchQuery query)
         {
             IPagedList<Product> searchProducts = _productSearcher.Search(GetQuery(query), query.Page, query.PageSize,
-                GetFilter(query), GetSort(query));
+                sort: GetSort(query));
             return searchProducts;
         }
 
@@ -46,7 +46,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             var clone = query.Clone() as ProductSearchQuery;
             clone.PriceTo = null;
-            TopDocs search = _productSearcher.IndexSearcher.Search(GetQuery(clone), GetFilter(clone), int.MaxValue);
+            TopDocs search = _productSearcher.IndexSearcher.Search(GetQuery(clone), int.MaxValue);
             List<Document> documents =
                 search.ScoreDocs.Select(doc => _productSearcher.IndexSearcher.Doc(doc.Doc)).ToList();
             decimal max = documents.Count > 0
@@ -60,7 +60,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                         document =>
                             document.GetValue<decimal>(FieldDefinition.GetFieldName<ProductSearchPriceDefinition>()))
                         .Max();
-            return Convert.ToDouble(Math.Ceiling(max/5.0m)*5m);
+            return Convert.ToDouble(Math.Ceiling(max / 5.0m) * 5m);
         }
 
         public List<int> GetSpecifications(ProductSearchQuery query)
@@ -70,7 +70,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             IndexSearcher indexSearcher = _productSearcher.IndexSearcher;
             var valueCollector = new ValueCollector(indexSearcher,
                 FieldDefinition.GetFieldName<ProductSearchSpecificationsDefinition>());
-            indexSearcher.Search(GetQuery(clone), GetFilter(clone), valueCollector);
+            indexSearcher.Search(GetQuery(clone), valueCollector);
             return GetSpecifications(valueCollector);
         }
 
@@ -80,7 +80,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             IndexSearcher indexSearcher = _productSearcher.IndexSearcher;
             var valueCollector = new ValueCollector(indexSearcher,
                 FieldDefinition.GetFieldName<ProductSearchOptionsDefinition>());
-            indexSearcher.Search(GetQuery(clone), GetFilter(clone), valueCollector);
+            indexSearcher.Search(GetQuery(clone), valueCollector);
             return GetOptionInfo(valueCollector);
         }
 
@@ -102,7 +102,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             IndexSearcher indexSearcher = _productSearcher.IndexSearcher;
             string name = FieldDefinition.GetFieldName<ProductSearchBrandDefinition>();
             var valueCollector = new ValueCollector(indexSearcher, name);
-            indexSearcher.Search(GetQuery(clone), GetFilter(clone), valueCollector);
+            indexSearcher.Search(GetQuery(clone), valueCollector);
             return
                 valueCollector.Values[name].Where(x => !string.IsNullOrEmpty(x))
                     .Select(s => Convert.ToInt32(s))
@@ -115,8 +115,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var clone = query.Clone() as ProductSearchQuery;
             clone.CategoryId = null;
             Query searchQuery = GetQuery(clone);
-            Filter filter = GetFilter(clone);
-            return _getProductCategories.Get(searchQuery, filter);
+            return _getProductCategories.Get(searchQuery);
         }
 
         public CachingInfo GetCachingInfo(ProductSearchQuery query, string suffix = null)
@@ -130,12 +129,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             return _getProductSearchQueryObjects.GetSort(query);
         }
-
-        private Filter GetFilter(ProductSearchQuery query)
-        {
-            return _getProductSearchQueryObjects.GetFilter(query);
-        }
-
         private Query GetQuery(ProductSearchQuery query)
         {
             return _getProductSearchQueryObjects.GetQuery(query);
@@ -166,7 +159,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             var valueCollector = new ValueCollector(indexSearcher,
                 FieldDefinition.GetFieldName<ProductSearchSpecificationsDefinition>(),
                 FieldDefinition.GetFieldName<ProductSearchOptionsDefinition>());
-            indexSearcher.Search(GetQuery(clone), GetFilter(clone), valueCollector);
+            indexSearcher.Search(GetQuery(clone), valueCollector);
             return valueCollector;
         }
 
@@ -186,13 +179,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             if (!int.TryParse(optionIdString, out optionId))
                 return default(OptionInfo);
 
-            return new OptionInfo {OptionId = optionId, Value = valueData};
+            return new OptionInfo { OptionId = optionId, Value = valueData };
         }
 
         private string GetCacheKey(ProductSearchQuery query)
         {
             return _ecommerceSearchCacheSettings.SearchCachePerUser
-                ? JsonConvert.SerializeObject(new {CurrentRequestData.UserGuid, query})
+                ? JsonConvert.SerializeObject(new { CurrentRequestData.UserGuid, query })
                 : JsonConvert.SerializeObject(query);
         }
     }

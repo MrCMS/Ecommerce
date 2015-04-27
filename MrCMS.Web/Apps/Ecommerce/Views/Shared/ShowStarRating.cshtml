@@ -1,0 +1,21 @@
+﻿@model decimal
+@{
+    var value = Model;
+}
+@for (int i = 0; i < 5; i++)
+{
+    if (value >= 1)
+    {
+        <i class="fa fa-star"></i>
+        value--;
+    }
+    else if (value == 0.5m)
+    {
+        <i class="fa fa-star-half-o"></i>
+        value = 0;
+    }
+    else
+    {
+        <i class="fa fa-star-o"></i>
+    }
+}

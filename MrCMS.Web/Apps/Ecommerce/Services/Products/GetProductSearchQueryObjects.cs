@@ -1,10 +1,8 @@
-using Lucene.Net.Documents;
 using Lucene.Net.Search;
 using MrCMS.Indexing.Management;
 using MrCMS.Web.Apps.Ecommerce.Indexing;
 using MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions;
 using MrCMS.Web.Apps.Ecommerce.Models;
-using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.Products
 {
@@ -23,16 +21,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
         {
             return _getProductSearchLuceneQuery.Get(searchQuery);
            
-        }
-
-        public Filter GetFilter(ProductSearchQuery query)
-        {
-            string dateValue = DateTools.DateToString(CurrentRequestData.Now, DateTools.Resolution.SECOND);
-            FieldCacheRangeFilter<string> filter =
-                FieldCacheRangeFilter.NewStringRange(FieldDefinition.GetFieldName<ProductSearchPublishOnDefinition>(),
-                    null,
-                    dateValue, false, true);
-            return filter;
         }
 
         public Sort GetSort(ProductSearchQuery query)

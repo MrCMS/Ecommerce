@@ -15,9 +15,8 @@
         Html.IncludeCss("~/Apps/Ecommerce/Content/bootstrap/css/bootstrap-theme.css");
         Html.IncludeCss("~/Apps/Ecommerce/Content/Styles/jquery-ui-bootstrap/jquery-ui-1.9.2.custom.css");
         Html.IncludeCss("~/Apps/Ecommerce/Content/Styles/checkout.css");
-        //Html.AddAppUIStylesheets();
     }
-    @Html.RenderCss()
+    @{ Html.RenderCss(); }
     @Html.Raw(Model.CustomHeaderScripts)
 </head>
 <body>
@@ -28,7 +27,7 @@
      Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.min.js");
      Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.validate.unobtrusive.min.js");
      Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/ecommerce.js");
-     //Html.AddAppUIScripts();
+    //Html.AddAppUIScripts();
     }
     @{ Html.RenderScripts(); }
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><script src="/Apps/Core/Content/Scripts/respond.min.js"></script><![endif]-->

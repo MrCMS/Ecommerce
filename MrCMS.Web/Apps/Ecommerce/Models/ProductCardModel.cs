@@ -15,5 +15,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public bool IsMultiVariant { get; set; }
         public CanBuyStatus CanBuyStatus { get; set; }
         public string StockMessage { get; set; }
+        public bool ProductReviewsEnabled { get; set; }
+        public decimal Rating { get; set; }
+        public int NumberOfReviews { get; set; }
     }
 }

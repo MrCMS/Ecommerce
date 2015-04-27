@@ -9,7 +9,7 @@
 @Html.HiddenFor(x => x.UrlSegment)
 <div class="margin-bottom-30 grey-border-top padding-top-10">
     <div class="container">
-        <div class="row" id="product-search-container">
+        <div class="row" id="product-search-container" data-product-search-container="true" data-product-search-scroll-to="#product-search-container">
             <div class="col-sm-3">
                 @{ RenderZone("Before Filters"); }
                 @{ Html.RenderAction("Query", "ProductSearch", new { query });}
@@ -17,7 +17,6 @@
             </div>
             <div class="col-sm-9">
                 <h1>@Editable(Model, page => page.Name, false)</h1>
-                @*@Editable(Model, page => page.BodyContent, true)*@
                 @{ Html.RenderAction("Results", "ProductSearch", new { query }); }
             </div>
         </div>

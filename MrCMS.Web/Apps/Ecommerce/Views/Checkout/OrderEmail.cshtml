@@ -1,16 +1,31 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Models.CartModel
 @using MrCMS.Helpers
 
-@if (Model.CanUsePayPalExpress && string.IsNullOrEmpty(Model.PayPalExpressToken))
+@if (Model.CanUsePayPalExpress)
 {
-    <div class="grey-background padding-20 margin-bottom-20">
-        <p><strong>@Resource("Or Checkout with")...</strong></p>
+    if (Model.IsPayPalTransaction)
+    {
+        <div class="grey-background padding-20 margin-bottom-20">
+            <p><strong>@(Resource("Don't want to use PayPal after all?"))</strong></p>
 
-        @using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
-        {
-            <input type="image" src="https://www.paypal-marketing.com/paypal/html/partner/na/portal-v2/img/logos/checkout_logo_medium_170x32.png" />
-        }
-    </div>
+            @using (Html.BeginForm("Reset", "PayPalExpressCheckout", FormMethod.Post))
+            {
+                @Html.ReturnToThis()
+                <button type="submit" class="btn btn-primary">@Resource("Use standard checkout")</button>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="grey-background padding-20 margin-bottom-20">
+            <p><strong>@(Resource("Or Checkout with"))...</strong></p>
+
+            @using (Html.BeginForm("SetExpressCheckout", "PayPalExpressCheckout", FormMethod.Post))
+            {
+                <input type="image" src="https://www.paypal-marketing.com/paypal/html/partner/na/portal-v2/img/logos/checkout_logo_medium_170x32.png" />
+            }
+        </div>
+    }
 }
 <div class="grey-background padding-20 margin-bottom-20">
     <p>
