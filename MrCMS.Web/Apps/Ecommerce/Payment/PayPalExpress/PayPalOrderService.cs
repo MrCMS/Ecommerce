@@ -23,7 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
         {
             var paymentDetailsType = new PaymentDetailsType
             {
-                ItemTotal = (cart.Subtotal - cart.OrderTotalDiscount - cart.ShippingDiscount).GetAmountType(),
+                ItemTotal = GetItemTotal(cart),
                 PaymentDetailsItem = GetPaymentDetailsItems(cart),
                 PaymentAction = _payPalExpressCheckoutSettings.PaymentAction,
                 OrderTotal = cart.GetCartTotalForPayPal().GetAmountType(),
@@ -74,7 +74,33 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                                                  Tax = 0m.GetAmountType()
                                              });
 
+            paymentDetailsItemTypes.AddRange(from giftCard in cart.AppliedGiftCards
+                                             where giftCard.AvailableAmount> 0
+                                             select new PaymentDetailsItemType
+                                             {
+                                                 Name = "Gift Card - " + giftCard.Code,
+                                                 Amount = (-giftCard.AvailableAmount).GetAmountType(),
+                                                 ItemCategory = ItemCategoryType.PHYSICAL,
+                                                 Quantity = 1,
+                                                 Tax = 0m.GetAmountType()
+                                             });
+
+            if (cart.AppliedRewardPointsAmount > 0)
+                paymentDetailsItemTypes.Add(new PaymentDetailsItemType
+                {
+                    Name = string.Format("Reward Points ({0})", cart.AppliedRewardPoints),
+                    Amount = (-cart.AppliedRewardPointsAmount).GetAmountType(),
+                    ItemCategory = ItemCategoryType.PHYSICAL,
+                    Quantity = 1,
+                    Tax = 0m.GetAmountType()
+                });
+
             return paymentDetailsItemTypes;
+        }
+
+        public BasicAmountType GetItemTotal(CartModel cart)
+        {
+            return (cart.Subtotal - cart.OrderTotalDiscount - cart.AppliedRewardPointsAmount - cart.GiftCardAmount).GetAmountType();
         }
 
         public string GetBuyerEmail(CartModel cart)
