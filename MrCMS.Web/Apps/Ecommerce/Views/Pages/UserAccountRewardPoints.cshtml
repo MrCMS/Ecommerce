@@ -1,0 +1,64 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Controllers
+@using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
+@model MrCMS.Web.Apps.Ecommerce.Pages.UserAccountRewardPoints
+@{
+    var history = ViewData["rewards"] as IPagedList<RewardPointsHistory> ?? PagedList<RewardPointsHistory>.Empty;
+    var details = ViewData["balance-details"] as UserRewardPointsModel ?? new UserRewardPointsModel();
+}
+
+<h1>@Editable(Model, page => page.Name)</h1>
+@Editable(Model, page => page.BodyContent, true)
+
+<p>
+    @string.Format(Resource("User Account - Balance Overview", "Your current balance is {0} reward points ({1})"), details.Balance, details.BalanceValue.ToCurrencyFormat())
+</p>
+
+@if (history.Any())
+{
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Points</th>
+                <th>Description</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in history)
+            {
+                <tr class="@GetRowStatus(item)">
+                    <td>@item.CreatedOn</td>
+                    <td>@item.Points</td>
+                    <td>@item.DisplayName</td>
+                    <td>@item.Message</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Html.PageCurrentPage(history, page => new { page }, PagedListRenderOptions.OnlyShowFivePagesAtATime)
+}
+else
+{
+    <p>@Resource("User Account - No Reward Points", "No reward points awarded.")</p>
+}
+
+@functions {
+    private static string GetRowStatus(RewardPointsHistory item)
+    {
+        string status = "warning";
+        if (item.Points > 0)
+        {
+            status = "success";
+        }
+        else if (item.Points < 0)
+        {
+            status = "error";
+        }
+        return status;
+    }
+}
