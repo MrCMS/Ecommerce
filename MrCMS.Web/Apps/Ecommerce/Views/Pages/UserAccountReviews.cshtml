@@ -10,17 +10,30 @@
 
 @if (reviews.Any())
 {
-    foreach (var review in reviews)
-    {
-        <div>
-            <h4><a href="@review.ProductVariant.DirectUrl">@review.ProductVariant.Name</a></h4>
-            <p>@review.Title</p>
-            <p>@review.Text</p>
-            <p>@Resource("Your Rating"): @review.Rating</p>
-            <p>@Resource("Average Rating"): @review.ProductVariant.Rating.ToString("#.#")</p>
-            <hr />
-        </div>
-    }
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>@Resource("Product")</th>
+                <th>@Resource("Review Title")</th>
+                <th>@Resource("Your Review")</th>
+                <th>@Resource("Your Rating")</th>
+                <th>@Resource("Average Rating")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var review in reviews)
+            {
+                <tr>
+                    <td><a href="@review.ProductVariant.DirectUrl">@review.ProductVariant.Name</a></td>
+                    <td>@review.Title</td>
+                    <td>@review.Text</td>
+                    <td>@review.Rating</td>
+                    <td>@review.ProductVariant.Rating.ToString("#.#")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
     @Html.PageCurrentPage(reviews, page => new { page }, PagedListRenderOptions.OnlyShowFivePagesAtATime)
 }
 else
