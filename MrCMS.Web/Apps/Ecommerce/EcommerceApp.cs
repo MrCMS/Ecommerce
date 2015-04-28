@@ -51,7 +51,6 @@ namespace MrCMS.Web.Apps.Ecommerce
                 yield return typeof(DiscountApplication);
                 yield return typeof(CartItemBasedDiscountApplication);
                 yield return typeof(EcommerceSearchablePage);
-                yield return typeof(ContentItem);
                 yield return typeof(RewardPointsHistory);
                 yield return typeof(OrderRewardPointsHistory);
             }
