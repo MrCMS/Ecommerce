@@ -1,0 +1,47 @@
+﻿@model IList<MrCMS.Web.Apps.NewsletterBuilder.Entities.NewsletterTemplate>
+@{
+    ViewBag.Title = "Newsletter Templates";
+}
+<form>
+    <fieldset>
+        <legend>Newsletter Templates
+            <span class="btn-group display-inline pull-right">
+                @Html.ActionLink("Add Newsletter Template", "Add", null, new { @class = "btn btn-primary" })
+            </span>
+        </legend>
+    
+        @if (!Model.Any())
+        {
+            <p>No Newsletter Templates yet.</p>
+        }
+        else
+        {
+            <table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Added</th>
+                        <th>Last Updated</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var template in Model)
+                    {
+                        <tr>
+                            <td>@template.Name</td>
+                            <td>@template.CreatedOn</td>
+                            <td>@template.UpdatedOn</td>
+                            <td>
+                                <div class="btn-group">
+                                    @Html.ActionLink("Edit", "Edit", new { id = template.Id }, new { @class = "btn btn-xs btn-default" })
+                                    @Html.ActionLink("Delete", "Delete", new { id = template.Id }, new { @class = "btn btn-danger btn-xs ", data_toggle = "fb-modal" })
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </fieldset>    
+</form>

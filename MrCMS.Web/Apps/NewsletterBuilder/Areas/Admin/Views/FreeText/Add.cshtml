@@ -1,0 +1,34 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.NewsletterBuilder.Entities.ContentItems.FreeText
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+}
+
+@using (Html.BeginForm("Add", "FreeText", new { id = "" },FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Add Free Text
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn btn-primary" value="Add" />
+            </span>
+        </legend>
+        
+        @Html.HiddenFor(x => x.Newsletter.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Text)
+            @Html.TextAreaFor(x => x.Text, new { @class = "newsletter-ck" })
+            @Html.ValidationMessageFor(x => x.Text)
+        </div>
+    </fieldset>
+}
+
+@{
+    Html.IncludeScript("~/Apps/NewsletterBuilder/Areas/Admin/Content/Scripts/newsletter-ck.js");
+}

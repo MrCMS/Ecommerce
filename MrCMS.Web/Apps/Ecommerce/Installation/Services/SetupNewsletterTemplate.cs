@@ -1,16 +1,16 @@
 ﻿using System.Web;
-using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder;
-using MrCMS.Web.Apps.Ecommerce.Services.NewsletterBuilder;
+using MrCMS.Web.Apps.NewsletterBuilder.Areas.Admin.Services;
+using MrCMS.Web.Apps.NewsletterBuilder.Entities;
 
 namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
 {
     public class SetupNewsletterTemplate : ISetupNewsletterTemplate
     {
-        private readonly INewsletterTemplateService _newsletterTemplateService;
+        private readonly INewsletterTemplateAdminService _newsletterTemplateAdminService;
 
-        public SetupNewsletterTemplate(INewsletterTemplateService newsletterTemplateService)
+        public SetupNewsletterTemplate(INewsletterTemplateAdminService newsletterTemplateAdminService)
         {
-            _newsletterTemplateService = newsletterTemplateService;
+            _newsletterTemplateAdminService = newsletterTemplateAdminService;
         }
 
         public void Setup()
@@ -26,36 +26,36 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 Divider =
                     System.IO.File.ReadAllText(
                         HttpContext.Current.Server.MapPath(@"\Apps\Ecommerce\Installation\Content\NewsletterDivider.txt")),
-                FreeTextTemplate =
-                    System.IO.File.ReadAllText(
-                        HttpContext.Current.Server.MapPath(
-                            @"\Apps\Ecommerce\Installation\Content\NewsletterFreeTextTemplate.txt")),
-                ImageLeftAndTextRightTemplate =
-                    System.IO.File.ReadAllText(
-                        HttpContext.Current.Server.MapPath(
-                            @"\Apps\Ecommerce\Installation\Content\ImageLeftAndTextRightTemplate.txt")),
-                ImageRightAndTextLeftTemplate =
-                    System.IO.File.ReadAllText(
-                        HttpContext.Current.Server.MapPath(
-                            @"\Apps\Ecommerce\Installation\Content\ImageRightAndTextLeftTemplate.txt")),
-                ProductGridTemplate =
-                    System.IO.File.ReadAllText(
-                        HttpContext.Current.Server.MapPath(
-                            @"\Apps\Ecommerce\Installation\Content\NewsletterProductGridTemplate.txt")),
-                ProductRowTemplate =
-                    System.IO.File.ReadAllText(
-                        HttpContext.Current.Server.MapPath(
-                            @"\Apps\Ecommerce\Installation\Content\NewsletterProductRowTemplate.txt")),
-                ProductTemplate =
-                    System.IO.File.ReadAllText(
-                        HttpContext.Current.Server.MapPath(
-                            @"\Apps\Ecommerce\Installation\Content\NewsletterProductTemplate.txt")),
-                BannerTemplate =
-                    System.IO.File.ReadAllText(
-                        HttpContext.Current.Server.MapPath(
-                            @"\Apps\Ecommerce\Installation\Content\NewsletterBannerTemplate.txt")),
+                //FreeTextTemplate =
+                //    System.IO.File.ReadAllText(
+                //        HttpContext.Current.Server.MapPath(
+                //            @"\Apps\Ecommerce\Installation\Content\NewsletterFreeTextTemplate.txt")),
+                //ImageLeftAndTextRightTemplate =
+                //    System.IO.File.ReadAllText(
+                //        HttpContext.Current.Server.MapPath(
+                //            @"\Apps\Ecommerce\Installation\Content\ImageLeftAndTextRightTemplate.txt")),
+                //ImageRightAndTextLeftTemplate =
+                //    System.IO.File.ReadAllText(
+                //        HttpContext.Current.Server.MapPath(
+                //            @"\Apps\Ecommerce\Installation\Content\ImageRightAndTextLeftTemplate.txt")),
+                //ProductGridTemplate =
+                //    System.IO.File.ReadAllText(
+                //        HttpContext.Current.Server.MapPath(
+                //            @"\Apps\Ecommerce\Installation\Content\NewsletterProductGridTemplate.txt")),
+                //ProductRowTemplate =
+                //    System.IO.File.ReadAllText(
+                //        HttpContext.Current.Server.MapPath(
+                //            @"\Apps\Ecommerce\Installation\Content\NewsletterProductRowTemplate.txt")),
+                //ProductTemplate =
+                //    System.IO.File.ReadAllText(
+                //        HttpContext.Current.Server.MapPath(
+                //            @"\Apps\Ecommerce\Installation\Content\NewsletterProductTemplate.txt")),
+                //BannerTemplate =
+                //    System.IO.File.ReadAllText(
+                //        HttpContext.Current.Server.MapPath(
+                //            @"\Apps\Ecommerce\Installation\Content\NewsletterBannerTemplate.txt")),
             };
-            _newsletterTemplateService.Add(template);
+            _newsletterTemplateAdminService.Add(template);
         }
     }
 }

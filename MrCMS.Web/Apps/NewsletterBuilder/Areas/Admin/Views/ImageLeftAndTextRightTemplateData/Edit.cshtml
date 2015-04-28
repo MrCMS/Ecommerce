@@ -1,0 +1,24 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.NewsletterBuilder.Entities.TemplateData.ImageLeftAndTextRightTemplateData
+
+@using (Html.BeginForm("Edit", "ImageLeftAndTextRightTemplateData", FormMethod.Post))
+{
+    @Html.ReturnToReferrer()
+    <fieldset>
+        <legend>
+            Update Image Left And Text Right Template Data for @Model.NewsletterTemplate.Name
+            <span class="pull-right display-inline btn-group">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </span>
+        </legend>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.ImageLeftAndTextRightTemplate)
+            @Html.TextAreaFor(x => x.ImageLeftAndTextRightTemplate, new {@class = "form-control", rows = 6})
+            @Html.ValidationMessageFor(x => x.ImageLeftAndTextRightTemplate)
+        </div>
+        <div class="alert alert-info">
+            <strong>Available Tokens: </strong> [ImageUrl], [Text]
+        </div>
+    </fieldset>
+}

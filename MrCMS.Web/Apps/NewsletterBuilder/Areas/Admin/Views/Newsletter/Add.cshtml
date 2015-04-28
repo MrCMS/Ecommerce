@@ -1,0 +1,26 @@
+﻿@model MrCMS.Web.Apps.NewsletterBuilder.Entities.Newsletter
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+    var templates = ViewData["templates"] as IEnumerable<SelectListItem>;
+}
+@using (Html.BeginForm("Add", "Newsletter", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Add Newsletter
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" value="Add Newsletter" class="btn btn-primary" />
+            </span>
+        </legend>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new{@class="form-control"})
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.NewsletterTemplate)
+            @Html.DropDownListFor(x => x.NewsletterTemplate.Id, templates, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.NewsletterTemplate)
+        </div>
+    </fieldset>
+}

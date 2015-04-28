@@ -1,0 +1,31 @@
+﻿@model MrCMS.Web.Apps.NewsletterBuilder.Entities.ContentItems.Banner
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+}
+
+@using (Html.BeginForm("Edit", "Banner", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Edit Banner
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn btn-primary" value="Edit" />
+            </span>
+        </legend>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.ImageUrl)
+            @Html.TextBoxFor(x => x.ImageUrl, new { @class = "media-selector" })
+            @Html.ValidationMessageFor(x => x.ImageUrl)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.LinkUrl)
+            @Html.TextBoxFor(x => x.LinkUrl, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.LinkUrl)
+        </div>
+    </fieldset>
+}
