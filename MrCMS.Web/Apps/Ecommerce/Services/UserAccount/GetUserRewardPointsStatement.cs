@@ -3,6 +3,7 @@ using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Models.UserAccount;
 using MrCMS.Web.Apps.Ecommerce.Services.RewardPoints;
 using NHibernate;
 

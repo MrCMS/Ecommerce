@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using MrCMS.Web.Apps.Ecommerce.Services;
+using MrCMS.Web.Apps.Ecommerce.Services.UserAccount;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.Ecommerce.Controllers
