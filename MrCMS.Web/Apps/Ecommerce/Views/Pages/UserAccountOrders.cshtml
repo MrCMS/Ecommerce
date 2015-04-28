@@ -1,0 +1,60 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Entities.Orders
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model UserAccountOrders
+@{
+    var orders = ViewData["orders"] as IPagedList<Order> ?? PagedList<Order>.Empty;
+}
+<h1>@Editable(Model, page => page.Name)</h1>
+@Editable(Model, page => page.BodyContent, true)
+
+@if (orders.Any())
+{
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Order Id</th>
+                <th>Payment Status</th>
+                <th>Shipping Status</th>
+                <th>Amount</th>
+                <th>Order Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in orders)
+            {
+                string status = "warning";
+                if (order.ShippingStatus.Equals(ShippingStatus.Shipped) && order.PaymentStatus.Equals(PaymentStatus.Paid))
+                {
+                    status = "success";
+                }
+                else if (order.IsCancelled)
+                {
+                    status = "error";
+                
+                }
+                <tr class="@status">
+                    <td>@order.Id</td>
+                    <td>@order.PaymentStatus</td>
+                    <td>@order.ShippingStatus</td>
+                    <td>@order.Total.ToCurrencyFormat()</td>
+                    <td>@order.OrderDate</td>
+                    <td>
+                        <a href="@(UniquePageHelper.GetUrl<UserOrder>(new { id = order.Guid }))" class="btn btn-default btn-block">
+                            View Details
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Html.PageCurrentPage(orders, page => new { page }, PagedListRenderOptions.OnlyShowFivePagesAtATime)
+}
+else
+{
+    <p>You have no orders yet.</p>
+}

@@ -919,6 +919,8 @@
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountInfoController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\UserAccountLinksController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\UserAccountOrdersController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\UserAccountReviewsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\WishlistController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\WorldPayController.cs" />
     <Compile Include="Apps\Ecommerce\DbConfiguration\CartItemBasedDiscountApplicationOverride.cs" />
@@ -1180,6 +1182,7 @@
     <Compile Include="Apps\Ecommerce\ModelBinders\SetIPAddressModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\ShippingMethodModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\ModelBinders\UpdateBasketModelBinder.cs" />
+    <Compile Include="Apps\Ecommerce\ModelBinders\UserAccountOrdersModelBinder.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddPriceBreakModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddressComparison.cs" />
     <Compile Include="Apps\Ecommerce\Models\AddToCartModel.cs" />
@@ -1258,6 +1261,7 @@
     <Compile Include="Apps\Ecommerce\Models\StrictKeyEqualityComparer.cs" />
     <Compile Include="Apps\Ecommerce\Models\TrackingPolicy.cs" />
     <Compile Include="Apps\Ecommerce\Models\UserAccountOrdersModel.cs" />
+    <Compile Include="Apps\Ecommerce\Models\UserAccountOrdersSearchModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\UserAccountReviewsModel.cs" />
     <Compile Include="Apps\Ecommerce\Models\ValidationResult.cs" />
     <Compile Include="Apps\Ecommerce\Models\WishlistSummary.cs" />
@@ -1710,6 +1714,8 @@
     <Compile Include="Apps\Ecommerce\Services\Tax\ITaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\TaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\UpdateProductVariantReviewData.cs" />
+    <Compile Include="Apps\Ecommerce\Services\UserAccount\GetUserOrders.cs" />
+    <Compile Include="Apps\Ecommerce\Services\UserAccount\IGetUserOrders.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Wishlists\IWishlistUIService.cs" />
@@ -4178,6 +4184,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\UserAccountRewardPoints.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\UserAccountReviews.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\UserAccountOrders.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Pages\UserAccountOrders.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
