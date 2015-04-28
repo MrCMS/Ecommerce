@@ -80,6 +80,10 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Update User Info", "user-account/handle/user-info",
                 new {controller = "UserAccountInfo", action = "UpdateUserInfo"},
                 new[] {typeof (UserAccountInfoController).Namespace});
+
+            context.MapRoute("Update Password", "user-account/handle/update-password",
+                new { controller = "UserAccountChangePassword", action = "UpdatePassword" },
+                new[] {typeof (UserAccountChangePasswordController).Namespace});
         }
 
         private static void MapWishlistRoutes(MrCMSAppRegistrationContext context)

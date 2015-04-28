@@ -1,4 +1,4 @@
-namespace MrCMS.Web.Apps.Ecommerce.Models
+namespace MrCMS.Web.Apps.Ecommerce.Models.UserAccount
 {
     public class UserAccountRewardPointsSearchModel
     {

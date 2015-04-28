@@ -1,21 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using System.Web.UI;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Models.Navigation;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 
-namespace MrCMS.Web.Apps.Ecommerce.Services
+namespace MrCMS.Web.Apps.Ecommerce.Services.UserAccount
 {
-    public interface IGetUserAccountLinks
-    {
-        IList<NavigationRecord> Get();
-    }
-
     public class GetUserAccountLinks : IGetUserAccountLinks
     {
         private readonly IUniquePageService _uniquePageService;

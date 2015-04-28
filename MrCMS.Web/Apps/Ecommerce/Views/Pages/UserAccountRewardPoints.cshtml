@@ -1,9 +1,9 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Paging
-@using MrCMS.Web.Apps.Ecommerce.Controllers
 @using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints
 @using MrCMS.Web.Apps.Ecommerce.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Web.Apps.Ecommerce.Models.UserAccount
 @model MrCMS.Web.Apps.Ecommerce.Pages.UserAccountRewardPoints
 @{
     var history = ViewData["rewards"] as IPagedList<RewardPointsHistory> ?? PagedList<RewardPointsHistory>.Empty;
@@ -57,7 +57,7 @@ else
         }
         else if (item.Points < 0)
         {
-            status = "error";
+            status = "danger";
         }
         return status;
     }

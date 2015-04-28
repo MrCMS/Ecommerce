@@ -1,5 +1,6 @@
 using System.Web.Mvc;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Models.UserAccount;
 using MrCMS.Website.Binders;
 using Ninject;
 

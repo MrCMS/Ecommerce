@@ -2,6 +2,7 @@ using MrCMS.Entities.People;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints;
 using MrCMS.Web.Apps.Ecommerce.Models;
+using MrCMS.Web.Apps.Ecommerce.Models.UserAccount;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.UserAccount
 {
