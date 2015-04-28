@@ -7,7 +7,7 @@
 }
 <h1>@Editable(Model, page => page.Name)</h1>
 @Editable(Model, page => page.BodyContent, true)
-
+@{Html.RenderPartial("ShowMessages");}
 @if (addresses.Any())
 {
     foreach (var chunk in addresses.Chunk(3))
@@ -26,8 +26,8 @@
                         <li>@address.GetCountryName()</li>
                         <li>@address.PostalCode</li>
                     </ul>
-                    <a href="#" class="btn btn-default btn-xs">Edit</a>
-                    <a href="#" class="btn btn-danger btn-xs">Delete</a>
+                    @Html.ActionLink("Edit", "EditAddress", "UserAccountAddresses", new { id = address.Id }, new { @class = "btn btn-default btn-xs" })
+                    @Html.ActionLink("Delete", "DeleteAddress", "UserAccountAddresses", new { id = address.Id }, new { @class = "btn btn-danger btn-xs" })
                 </div>
             }
         </div>

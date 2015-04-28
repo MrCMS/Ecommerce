@@ -1723,11 +1723,15 @@
     <Compile Include="Apps\Ecommerce\Services\Tax\ITaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\Tax\TaxRateManager.cs" />
     <Compile Include="Apps\Ecommerce\Services\UpdateProductVariantReviewData.cs" />
+    <Compile Include="Apps\Ecommerce\Services\UserAccount\ExistingAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\UserAccount\GetUserAccountLinks.cs" />
+    <Compile Include="Apps\Ecommerce\Services\UserAccount\GetUserAddresses.cs" />
     <Compile Include="Apps\Ecommerce\Services\UserAccount\GetUserOrders.cs" />
     <Compile Include="Apps\Ecommerce\Services\UserAccount\GetUserProductReviews.cs" />
     <Compile Include="Apps\Ecommerce\Services\UserAccount\GetUserRewardPointsStatement.cs" />
+    <Compile Include="Apps\Ecommerce\Services\UserAccount\IExistingAddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\UserAccount\IGetUserAccountLinks.cs" />
+    <Compile Include="Apps\Ecommerce\Services\UserAccount\IGetUserAddresses.cs" />
     <Compile Include="Apps\Ecommerce\Services\UserAccount\IGetUserOrders.cs" />
     <Compile Include="Apps\Ecommerce\Services\UserAccount\IGetUserProductReviews.cs" />
     <Compile Include="Apps\Ecommerce\Services\UserAccount\IGetUserRewardPointsStatement.cs" />
@@ -4207,6 +4211,8 @@
     <Content Include="Apps\Ecommerce\Views\Pages\UserAccountAddresses.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Pages\UserAccountChangePassword.cshtml" />
     <Content Include="Apps\Ecommerce\Views\UserAccountChangePassword\UpdatePassword.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\UserAccountAddresses\EditAddress.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\UserAccountAddresses\DeleteAddress.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
