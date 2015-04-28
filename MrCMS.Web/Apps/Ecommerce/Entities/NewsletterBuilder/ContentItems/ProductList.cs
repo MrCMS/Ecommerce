@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using MrCMS.Web.Apps.Ecommerce.Pages;
+﻿using MrCMS.Web.Apps.NewsletterBuilder.Entities.ContentItems;
 
 namespace MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems
 {
