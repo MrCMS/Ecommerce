@@ -10,6 +10,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using System.Linq;
+using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
 
 namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 {
@@ -36,12 +37,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
             return new Dictionary<Type, Func<SystemEntity, IEnumerable<LuceneAction>>>
                        {
                            {
-                               typeof (BrandPage),
+                               typeof (Brand),
                                entity =>
                                    {
-                                       if (entity is BrandPage)
+                                       if (entity is Brand)
                                        {
-                                           var page = (entity as BrandPage);
+                                           var page = (entity as Brand);
                                            var products =
                                                _session.QueryOver<Product>()
                                                        .Where(product => product.BrandPage.Id == page.Id)

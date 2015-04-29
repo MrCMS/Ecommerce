@@ -13,7 +13,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
         private readonly IProductOptionManager _productOptionManager;
 
         public ProductSearchQueryService(IProductOptionManager productOptionManager, IAvailableBrandsService availableBrandsService,
-            ICategoryService categoryService,IProductSearchIndexService productSearchIndexService)
+            ICategoryService categoryService, IProductSearchIndexService productSearchIndexService)
         {
             _productOptionManager = productOptionManager;
             _availableBrandsService = availableBrandsService;
@@ -21,13 +21,21 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
             _productSearchIndexService = productSearchIndexService;
         }
 
-        public void SetViewData(ProductSearchQuery query, ViewDataDictionary viewData)
+        public void SetProductSearchViewData(ProductSearchQuery query, ViewDataDictionary viewData)
         {
             ProductOptionSearchData productOptionSearchData = _productOptionManager.GetSearchData(query);
             viewData["product-options"] = productOptionSearchData.AttributeOptions;
             viewData["product-specifications"] = productOptionSearchData.SpecificationOptions;
             viewData["product-brands"] = _availableBrandsService.GetAvailableBrands(query);
             viewData["categories"] = _categoryService.GetCategoriesForSearch(query);
+            viewData["max-price"] = _productSearchIndexService.GetMaxPrice(query);
+        }
+
+        public void SetBrandSearchViewData(ProductSearchQuery query, ViewDataDictionary viewData)
+        {
+            ProductOptionSearchData productOptionSearchData = _productOptionManager.GetSearchData(query);
+            viewData["product-options"] = productOptionSearchData.AttributeOptions;
+            viewData["product-specifications"] = productOptionSearchData.SpecificationOptions;
             viewData["max-price"] = _productSearchIndexService.GetMaxPrice(query);
         }
     }

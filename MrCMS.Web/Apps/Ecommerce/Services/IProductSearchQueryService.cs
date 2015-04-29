@@ -5,6 +5,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
 {
     public interface IProductSearchQueryService
     {
-        void SetViewData(ProductSearchQuery query, ViewDataDictionary viewData);
+        void SetProductSearchViewData(ProductSearchQuery query, ViewDataDictionary viewData);
+        void SetBrandSearchViewData(ProductSearchQuery query, ViewDataDictionary viewData);
     }
 }

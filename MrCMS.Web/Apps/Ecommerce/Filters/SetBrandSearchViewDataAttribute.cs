@@ -6,7 +6,7 @@ using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Filters
 {
-    public class SetProductSearchViewDataAttribute : ActionFilterAttribute
+    public class SetBrandSearchViewDataAttribute : ActionFilterAttribute
     {
         private IProductSearchQueryService _productSearchQueryService;
 
@@ -24,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Filters
             if (productSearchQuery == null)
                 return;
 
-            ProductSearchQueryService.SetProductSearchViewData(productSearchQuery, filterContext.Controller.ViewData);
+            ProductSearchQueryService.SetBrandSearchViewData(productSearchQuery, filterContext.Controller.ViewData);
         }
     }
 }

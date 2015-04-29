@@ -4,9 +4,9 @@ using MrCMS.Web.Apps.Core.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.Pages
 {
-    public class BrandPage : TextPage
+    public class Brand : TextPage
     {
-        public BrandPage()
+        public Brand()
         {
             Products = new List<Product>();
         }

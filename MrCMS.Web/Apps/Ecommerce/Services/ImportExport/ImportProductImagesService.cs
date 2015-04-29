@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
-using MrCMS.Website;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {

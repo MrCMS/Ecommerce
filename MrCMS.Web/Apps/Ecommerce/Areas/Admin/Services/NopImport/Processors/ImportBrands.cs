@@ -5,6 +5,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using NHibernate.Criterion;
+using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
 {
@@ -25,8 +26,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
             foreach (BrandData brandData in brandDatas)
             {
                 string name = brandData.Name.Trim();
-                BrandPage brand =
-                    _session.QueryOver<BrandPage>()
+                Brand brand =
+                    _session.QueryOver<Brand>()
                         .Where(b => b.Name.IsInsensitiveLike(name, MatchMode.Exact))
                         .List().FirstOrDefault();
                 if (brand == null)

@@ -5,28 +5,25 @@ using MrCMS.Batching.Services;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
-using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
-using MrCMS.Web.Apps.Ecommerce.Services.Products;
-using NHibernate;
 using Xunit;
-using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
 {
     public class OldImportProductsServiceTests : InMemoryDatabaseTest
     {
         private readonly IDocumentService _documentService;
-        private readonly IImportProductSpecificationsService _importSpecificationsService;
-        private readonly IImportProductVariantsService _importProductVariantsService;
+        private readonly IGetNewBrandPage _getNewBrandPage = A.Fake<IGetNewBrandPage>();
         private readonly IImportProductImagesService _importProductImagesService;
         private readonly IImportProductUrlHistoryService _importProductUrlHistoryService;
+        private readonly IImportProductVariantsService _importProductVariantsService;
         private readonly ImportProductsService _importProductsService;
-        private IUniquePageService _uniquePageService;
+        private readonly IImportProductSpecificationsService _importSpecificationsService;
+        private readonly IUniquePageService _uniquePageService;
         private ICreateBatch _createBatch;
-        private IGetNewBrandPage _getNewBrandPage = A.Fake<IGetNewBrandPage>();
 
         public OldImportProductsServiceTests()
         {
@@ -37,17 +34,17 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             _importProductUrlHistoryService = A.Fake<IImportProductUrlHistoryService>();
             _uniquePageService = A.Fake<IUniquePageService>();
             _createBatch = A.Fake<ICreateBatch>();
-            _importProductsService = new ImportProductsService(_documentService, 
+            _importProductsService = new ImportProductsService(_documentService,
                 _importSpecificationsService,
                 _importProductVariantsService,
                 _importProductImagesService,
-                _importProductUrlHistoryService, Session, _uniquePageService,_createBatch,_getNewBrandPage);
+                _importProductUrlHistoryService, Session, _uniquePageService, _createBatch, _getNewBrandPage);
         }
 
         [Fact(Skip = "To be refactored")]
         public void ImportProductsService_ImportProduct_ShouldCallGetGetDocumentByUrlOfDocumentService()
         {
-            var product = new ProductImportDataTransferObject()
+            var product = new ProductImportDataTransferObject
             {
                 UrlSegment = "test-url",
             };
@@ -61,10 +58,10 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         public void ImportProductsService_ImportProduct_ShouldTryToLoadTheCategoryFromTheDocumentService()
         {
             var product = new ProductImportDataTransferObject
-                              {
-                                  UrlSegment = "test-url",
-                                  Categories = new List<string> { "test-category" }
-                              };
+            {
+                UrlSegment = "test-url",
+                Categories = new List<string> {"test-category"}
+            };
 
             _importProductsService.ImportProduct(product);
 
@@ -74,7 +71,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         [Fact]
         public void ImportProductsService_ImportProduct_ShouldSetProductPrimaryProperties()
         {
-            var product = new ProductImportDataTransferObject()
+            var product = new ProductImportDataTransferObject
             {
                 UrlSegment = "test-url",
                 Name = "Test Product",
@@ -90,7 +87,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             MediaCategory category = new MediaCategory().PersistTo(Session);
             A.CallTo(() => _documentService.GetDocumentByUrl<MediaCategory>("product-galleries")).Returns(category);
 
-            var result = _importProductsService.ImportProduct(product);
+            Product result = _importProductsService.ImportProduct(product);
 
             result.UrlSegment.ShouldBeEquivalentTo("test-url");
             result.Name.ShouldBeEquivalentTo("Test Product");
@@ -110,9 +107,9 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
                 Brand = "Test Brand"
             };
 
-            var brand = new BrandPage { Name = "Test BrandPage" };
+            var brand = new Brand {Name = "Test BrandPage"};
 
-            var importProduct = _importProductsService.ImportProduct(product);
+            Product importProduct = _importProductsService.ImportProduct(product);
 
             importProduct.BrandPage.Should().Be(brand);
         }
@@ -120,13 +117,13 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         [Fact(Skip = "To be refactored")]
         public void ImportProductsService_ImportProducts_ShouldSetTheBrandToOneWithTheCorrectNameIfItDoesNotExist()
         {
-            var product = new ProductImportDataTransferObject()
+            var product = new ProductImportDataTransferObject
             {
                 UrlSegment = "test-url",
                 Brand = "Test Brand"
             };
 
-            var importProduct = _importProductsService.ImportProduct(product);
+            Product importProduct = _importProductsService.ImportProduct(product);
 
             importProduct.BrandPage.Name.Should().Be("Test Brand");
         }
@@ -134,19 +131,19 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
         [Fact(Skip = "To be refactored")]
         public void ImportProductsService_ImportProducts_ShouldSetCategoriesIfTheyExist()
         {
-            var productDTO = new ProductImportDataTransferObject()
+            var productDTO = new ProductImportDataTransferObject
             {
                 UrlSegment = "test-url",
-                Categories = new List<string>() { "test-category" }
+                Categories = new List<string> {"test-category"}
             };
 
-            var category = new Category() { Id = 1, Name = "Test Category" };
+            var category = new Category {Id = 1, Name = "Test Category"};
             A.CallTo(() => _documentService.GetDocument<Category>(1)).Returns(category);
 
-            var product = new Product() { Name = "Test Product" };
+            var product = new Product {Name = "Test Product"};
             A.CallTo(() => _documentService.GetDocumentByUrl<Product>(productDTO.UrlSegment)).Returns(product);
 
-            var importProduct = _importProductsService.ImportProduct(productDTO);
+            Product importProduct = _importProductsService.ImportProduct(productDTO);
 
             importProduct.Categories.Should().HaveCount(1);
         }
@@ -157,10 +154,10 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             var productDTO = new ProductImportDataTransferObject
             {
                 UrlSegment = "test-url",
-                UrlHistory = new List<string>() { "test-url-old" }
+                UrlHistory = new List<string> {"test-url-old"}
             };
 
-            var product = new Product() { Name = "Test Product" };
+            var product = new Product {Name = "Test Product"};
             A.CallTo(() => _documentService.GetDocumentByUrl<Product>(productDTO.UrlSegment)).Returns(product);
 
             _importProductsService.ImportProduct(productDTO);

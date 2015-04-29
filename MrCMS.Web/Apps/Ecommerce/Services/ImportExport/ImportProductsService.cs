@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Linq;
+using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
 
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 {
@@ -167,8 +168,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             if (!String.IsNullOrWhiteSpace(dataTransferObject.Brand))
             {
                 string dtoBrand = dataTransferObject.Brand.Trim();
-                BrandPage brand =
-                    _session.QueryOver<BrandPage>()
+                Brand brand =
+                    _session.QueryOver<Brand>()
                         .Where(b => b.Name.IsInsensitiveLike(dtoBrand, MatchMode.Exact))
                         .Take(1)
                         .SingleOrDefault();

@@ -6,8 +6,13 @@ using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce.Metadata
 {
-    public class BrandPageMetadata : DocumentMetadataMap<BrandPage>
+    public class BrandMetadata : DocumentMetadataMap<Brand>
     {
+        public override string WebGetController
+        {
+            get { return "Brand"; }
+        }
+
         public override ChildrenListType ChildrenListType
         {
             get { return ChildrenListType.WhiteList; }
