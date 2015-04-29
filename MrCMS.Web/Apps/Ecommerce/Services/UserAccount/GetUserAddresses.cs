@@ -16,7 +16,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.UserAccount
 
         public IList<Address> Get(User user)
         {
-            return _session.QueryOver<Address>().OrderBy(x => x.Id).Desc.Cacheable().List();
+            return
+                _session.QueryOver<Address>()
+                    .Where(x => x.User.Id == user.Id)
+                    .OrderBy(x => x.Id)
+                    .Desc.Cacheable()
+                    .List();
         }
     }
 }

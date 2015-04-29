@@ -1,4 +1,7 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Users.Address
+@{
+    Layout = "~/Apps/Ecommerce/Views/Shared/_LayoutPopup.cshtml";
+}
 @using (Html.BeginForm("DeleteAddress", "UserAccountAddresses", FormMethod.Post))
 {
     <fieldset>
@@ -10,7 +13,20 @@
         </legend>
         <div class="row">
             <div class="col-xs-12">
-                @Resource("Are you sure you wish to delete this address, deleting this can not be undone.")
+                @Resource("Are you sure you wish to delete the below address?, deleting this can not be undone.")
+                <br/><br/>
+                <ul class="list-unstyled">
+                    <li>@Model.Name</li>
+                    <li>@Model.Company</li>
+                    <li>@Model.PhoneNumber</li>
+                    <li>@Model.Address1</li>
+                    <li>@Model.Address2</li>
+                    <li>@Model.City</li>
+                    <li>@Model.StateProvince</li>
+                    <li>@Model.PostalCode</li>
+                    <li>@Model.CountryCode</li>
+                </ul>
+
             </div>
         </div>
     </fieldset>
