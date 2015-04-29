@@ -2245,6 +2245,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\tax-rates.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\lib\zero-clipboard\ZeroClipboard.min.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\lib\zero-clipboard\ZeroClipboard.swf" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Content\Scripts\custom\address-popup.js" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\dashboard.css" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\ecommerce-admin.css" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Content\Styles\product-variant.css" />
