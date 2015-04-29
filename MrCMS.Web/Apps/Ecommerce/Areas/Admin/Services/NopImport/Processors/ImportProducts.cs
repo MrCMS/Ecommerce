@@ -12,6 +12,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Website;
 using NHibernate;
+using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
 {
@@ -59,7 +60,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services.NopImport.Processors
                             string.IsNullOrWhiteSpace(productData.Url)
                                 ? _webpageUrlService.Suggest(productContainer, suggestParams)
                                 : productData.Url,
-                        Brand =
+                        BrandPage =
                             productData.BrandId.HasValue
                                 ? nopImportContext.FindNew<Brand>(productData.BrandId.Value)
                                 : null,

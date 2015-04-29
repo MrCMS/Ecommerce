@@ -194,8 +194,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
         private static void AddBrand(int i, ExcelWorksheet wsItems, IList<ProductVariant> productVariants, int rowId)
         {
-            if (productVariants[i].Product.Brand != null)
-                wsItems.Cells["H" + rowId].Value = productVariants[i].Product.Brand.Name;
+            if (productVariants[i].Product.BrandPage != null)
+                wsItems.Cells["H" + rowId].Value = productVariants[i].Product.BrandPage.Name;
         }
 
         private static void AddCoreInfo(int i, ExcelWorksheet wsItems, IList<ProductVariant> productVariants, int rowId)

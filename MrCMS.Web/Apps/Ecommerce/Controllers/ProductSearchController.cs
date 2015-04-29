@@ -41,7 +41,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         [SetProductSearchViewData]
         public PartialViewResult QueryInternal(ProductSearchQuery query)
         {
-            //SetViewData(query);
             return PartialView("Query", query);
         }
 

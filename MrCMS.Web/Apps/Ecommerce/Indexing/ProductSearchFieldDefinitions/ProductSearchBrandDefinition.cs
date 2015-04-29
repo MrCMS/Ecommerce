@@ -10,6 +10,7 @@ using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using NHibernate;
 using System.Linq;
+using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
 
 namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 {
@@ -25,8 +26,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
 
         protected override IEnumerable<string> GetValues(Product obj)
         {
-            if (obj.Brand != null)
-                yield return obj.Brand.Id.ToString();
+            if (obj.BrandPage != null)
+                yield return obj.BrandPage.Id.ToString();
 
             yield return null;
         }
@@ -41,10 +42,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Indexing.ProductSearchFieldDefinitions
                                    {
                                        if (entity is Brand)
                                        {
-                                           var brand = (entity as Brand);
+                                           var page = (entity as Brand);
                                            var products =
                                                _session.QueryOver<Product>()
-                                                       .Where(product => product.Brand.Id == brand.Id)
+                                                       .Where(product => product.BrandPage.Id == page.Id)
                                                        .Cacheable()
                                                        .List();
                                            return products.Select(product =>

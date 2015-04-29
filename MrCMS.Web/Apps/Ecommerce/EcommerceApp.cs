@@ -94,6 +94,11 @@ namespace MrCMS.Web.Apps.Ecommerce
                                                                                  new BackInStockListener()
                                                                              });
         }
+
+        public override IEnumerable<Type> Conventions
+        {
+            get { yield return typeof(TableNameConvention); }
+        }
     }
 
     public interface IEcommerceApp

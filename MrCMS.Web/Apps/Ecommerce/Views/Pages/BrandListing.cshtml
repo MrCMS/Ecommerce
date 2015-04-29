@@ -1,0 +1,29 @@
+﻿@using System.Drawing
+@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.Ecommerce.Controllers
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model MrCMS.Web.Apps.Ecommerce.Pages.BrandListing
+@{
+    var brands = ViewData[BrandListingController.BrandsKey] as IPagedList<Brand> ?? BasePagedList<Brand>.Empty;
+}
+
+<div class="row">
+    @foreach (var brand in brands)
+    {
+        var urlSegment = string.Format("/{0}", brand.LiveUrlSegment);
+        var image = brand.FeatureImage;
+        var imageSize = new Size(240, 180);
+        var name = brand.Name;
+        var abstractText = brand.BrandAbstract;
+
+        <div class="col-sm-6 col-md-3">
+            @RenderImage(image, imageSize)
+            <hr />
+            <h3><a href="@urlSegment">@name</a></h3>
+            <p>
+                @abstractText
+            </p>
+        </div>
+    }
+</div>

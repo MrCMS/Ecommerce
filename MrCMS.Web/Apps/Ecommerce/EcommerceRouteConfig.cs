@@ -33,6 +33,13 @@ namespace MrCMS.Web.Apps.Ecommerce
             context.MapRoute("Product Search - Results", "search/results",
                 new { controller = "ProductSearch", action = "Results" },
                 new[] { typeof(ProductSearchController).Namespace });
+
+            context.MapRoute("Brand Search - Query", "brand/search/query",
+                new { controller = "Brand", action = "Query" }, new[] { typeof(BrandController).Namespace });
+            context.MapRoute("Brand Search - Results", "brand/search/results",
+                new { controller = "Brand", action = "Results" },
+                new[] { typeof(BrandController).Namespace });
+
             context.MapRoute("Category Container - Categories", "Apps/Ecommerce/CategoryContainer/Categories",
                 new { controller = "CategoryContainer", action = "Categories" },
                 new[] { typeof(ProductContainer).Namespace });
@@ -161,8 +168,8 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new { controller = "WorldPay", action = "Form" },
                 new[] { typeof(WorldPayController).Namespace });
             context.MapRoute("Checkout - WorldPay Notification Url", "Apps/Ecommerce/WorldPay/Notification",
-                new {controller = "WorldPay", action = "Notification"},
-                new[] {typeof (WorldPayController).Namespace});
+                new { controller = "WorldPay", action = "Notification" },
+                new[] { typeof(WorldPayController).Namespace });
 
 
 

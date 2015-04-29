@@ -95,6 +95,7 @@
     @Html.Raw(Model.CustomFooterScripts)
 
     @{ Html.RenderScripts(); }
-    @MiniProfiler.RenderIncludes()
+
+    @MiniProfiler.RenderIncludes(RenderPosition.BottomRight)
 </body>
 </html>

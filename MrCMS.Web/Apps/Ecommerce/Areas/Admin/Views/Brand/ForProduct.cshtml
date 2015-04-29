@@ -1,0 +1,5 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+<div class="form-group">
+        @Html.LabelFor(product => product.BrandPage.Id, Resource("Brand"))
+        @Html.DropDownListFor(product => product.BrandPage.Id, ViewData["brands"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+    </div>

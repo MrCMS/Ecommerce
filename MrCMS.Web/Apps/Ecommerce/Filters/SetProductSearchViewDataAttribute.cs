@@ -24,7 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Filters
             if (productSearchQuery == null)
                 return;
 
-            ProductSearchQueryService.SetViewData(productSearchQuery, filterContext.Controller.ViewData);
+            ProductSearchQueryService.SetProductSearchViewData(productSearchQuery, filterContext.Controller.ViewData);
         }
     }
 }
