@@ -19,6 +19,7 @@
                     <ul class="list-unstyled">
                         <li>@address.Name</li>
                         <li>@address.Company</li>
+                        <li>@address.PhoneNumber</li>
                         <li>@address.Address1</li>
                         <li>@address.Address2</li>
                         <li>@address.City</li>
@@ -26,8 +27,8 @@
                         <li>@address.GetCountryName()</li>
                         <li>@address.PostalCode</li>
                     </ul>
-                    @Html.ActionLink("Edit", "EditAddress", "UserAccountAddresses", new { id = address.Id }, new { @class = "btn btn-default btn-xs" })
-                    @Html.ActionLink("Delete", "DeleteAddress", "UserAccountAddresses", new { id = address.Id }, new { @class = "btn btn-danger btn-xs" })
+                    @Html.ActionLink("Edit", "EditAddress", "UserAccountAddresses", new { id = address.Id }, new { @class = "btn btn-default btn-xs", data_toggle = "fb-modal" })
+                    @Html.ActionLink("Delete", "DeleteAddress", "UserAccountAddresses", new { id = address.Id }, new { @class = "btn btn-danger btn-xs", data_toggle = "fb-modal" })
                 </div>
             }
         </div>

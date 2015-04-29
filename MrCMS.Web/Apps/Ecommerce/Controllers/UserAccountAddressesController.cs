@@ -31,7 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
 
         public ActionResult Show(UserAccountAddresses page)
         {
-            User user = CurrentRequestData.CurrentUser;
+            var user = CurrentRequestData.CurrentUser;
             if (user == null)
                 _uniquePageService.RedirectTo<LoginPage>();
 

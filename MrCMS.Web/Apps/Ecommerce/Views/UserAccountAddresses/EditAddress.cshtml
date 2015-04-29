@@ -1,5 +1,6 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Entities.Users.Address
 @{
+    Layout = "~/Apps/Ecommerce/Views/Shared/_LayoutPopup.cshtml";
     var countryOptions = ViewData["country-options"] as List<SelectListItem> ?? new List<SelectListItem>();
 }
 @using (Html.BeginForm("EditAddress", "UserAccountAddresses", FormMethod.Post))
@@ -28,6 +29,11 @@
                     @Html.LabelFor(address => address.Company)
                     @Html.TextBoxFor(address => address.Company, new { @class = "form-control" })
                     @Html.ValidationMessageFor(address => address.Company)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(address => address.PhoneNumber)
+                    @Html.TextBoxFor(address => address.PhoneNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(address => address.PhoneNumber)
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(address => address.Address1)

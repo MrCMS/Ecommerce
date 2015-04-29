@@ -4213,6 +4213,8 @@
     <Content Include="Apps\Ecommerce\Views\UserAccountChangePassword\UpdatePassword.cshtml" />
     <Content Include="Apps\Ecommerce\Views\UserAccountAddresses\EditAddress.cshtml" />
     <Content Include="Apps\Ecommerce\Views\UserAccountAddresses\DeleteAddress.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\_LayoutPopup.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Webpage\UserOrder.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
