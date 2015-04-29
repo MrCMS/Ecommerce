@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-lg-3">
         <div id="brands">
-            @{Html.RenderAction("Brands", "Product", new { id = Model.Id, brandId = Model.Brand != null ? Model.Brand.Id.ToString() : String.Empty });}
+            @{Html.RenderAction("ForProduct", "Brand", new { product = Model});}
         </div>
     </div>
     <div class="col-lg-9">

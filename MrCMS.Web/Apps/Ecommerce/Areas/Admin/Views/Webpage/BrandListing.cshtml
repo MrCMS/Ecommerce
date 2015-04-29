@@ -1,0 +1,7 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.BrandListing
+
+<div class="form-group">
+    @Html.LabelFor(x => x.PageSize)
+    @Html.TextBoxFor(x => x.PageSize, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.PageSize)
+</div>

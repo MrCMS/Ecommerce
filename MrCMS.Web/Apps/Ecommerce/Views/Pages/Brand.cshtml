@@ -1,0 +1,32 @@
+﻿@model Brand
+@using System.Collections.Generic
+@using System.Linq
+@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@using MrCMS.Web.Apps.Ecommerce.Services.Products
+@{
+    var query = ViewData["query"] as ProductSearchQuery;
+    var parentCategories = Model.ActivePages.Skip(1).Where(webpage => webpage is Category).ToList();
+    parentCategories.Reverse();
+}
+@Html.HiddenFor(x => x.Id)
+@Html.HiddenFor(x => x.LiveUrlSegment)
+
+<div class="margin-bottom-30">
+    <div class="row" id="brand-search-container" data-brand-search-container="true" data-brand-search-scroll-to="">
+        <div class="col-sm-3">
+            @{ Html.RenderAction("Query", "Brand", new { query });}
+        </div>
+        <div class="col-sm-9">
+            <h1>@Editable(Model, brand => brand.Name)</h1>
+            @{ Html.RenderAction("Results", "Brand", new { query });}
+            @Editable(Model, brand => brand.BodyContent, true)
+        </div>
+    </div>
+</div>
+
+@{
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/jquery.history.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/brand-search.js");
+}

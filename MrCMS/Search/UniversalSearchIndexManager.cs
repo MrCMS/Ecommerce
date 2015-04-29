@@ -110,6 +110,7 @@ namespace MrCMS.Search
 
         public IndexSearcher GetSearcher()
         {
+            EnsureIndexExists();
             return _searcher ?? (_searcher = new IndexSearcher(GetDirectory(_site), true));
         }
 
@@ -117,7 +118,7 @@ namespace MrCMS.Search
         public void EnsureIndexExists()
         {
             if (!IndexExists)
-                InitializeIndex();
+                ReindexAll();
         }
 
         public MrCMSIndex GetUniversalIndexInfo()
@@ -140,16 +141,6 @@ namespace MrCMS.Search
                 writeFunc(indexWriter);
             }
             _searcher = null;
-        }
-
-        public void Index(SystemEntity entity)
-        {
-            if (!_universalSearchItemGenerator.CanGenerate(entity))
-            {
-                return;
-            }
-
-            CurrentRequestData.OnEndRequest.Add(new UpdateUniversalIndex(entity));
         }
 
         private static bool AnyExistInEndRequest(UniversalSearchIndexData data)

@@ -10,6 +10,7 @@ using MrCMS.Web.Apps.Amazon.Services.Listings.Sync;
 using MrCMS.Web.Apps.Amazon.Settings;
 using MrCMS.Web.Apps.Ecommerce.Entities.Currencies;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
+using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.Products;
 using MrCMS.Web.Apps.Ecommerce.Settings;
@@ -17,6 +18,7 @@ using MrCMS.Website;
 using NHibernate;
 using Ninject.MockingKernel;
 using Xunit;
+using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
 using Product = MrCMS.Web.Apps.Ecommerce.Pages.Product;
 
 namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
@@ -78,7 +80,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
 
             var product = new Product()
                 {
-                    Brand = new Brand(){Name = "B"}
+                    BrandPage = new Brand(){Name = "B"}
                 };
             var productVariant = new ProductVariant()
                 {
@@ -131,7 +133,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
 
             var product = new Product()
             {
-                Brand = new Brand() { Name = "B" }
+                BrandPage = new Brand() { Name = "B" }
             };
             var productVariant = new ProductVariant()
             {
@@ -188,7 +190,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
 
             var product = new Product()
             {
-                Brand = new Brand() { Name = "B" }
+                BrandPage = new Brand() { Name = "B" }
             };
             var productVariant = new ProductVariant()
             {
@@ -245,7 +247,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
 
             var product = new Product()
             {
-                Brand = new Brand() { Name = "B" }
+                BrandPage = new Brand() { Name = "B" }
             };
             var productVariant = new ProductVariant()
             {

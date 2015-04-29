@@ -18,7 +18,6 @@ namespace MrCMS.Search.ItemCreation
             _session = session;
         }
 
-
         public IEnumerable<string> GetPrimary(Webpage webpage)
         {
             return GetPrimaryTerms(webpage);

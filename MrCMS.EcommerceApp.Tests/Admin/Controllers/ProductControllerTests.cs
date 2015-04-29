@@ -20,7 +20,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
 {
     public class ProductControllerTests
     {
-        private readonly IBrandService _brandService;
         private readonly ICategoryService _categoryService;
         private readonly IDocumentService _documentService;
         private readonly IFileAdminService _fileService;
@@ -39,7 +38,6 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _categoryService = A.Fake<ICategoryService>();
             _productOptionManager = A.Fake<IProductOptionManager>();
             _fileService = A.Fake<IFileAdminService>();
-            _brandService = A.Fake<IBrandService>();
             _productOptionManagementService = A.Fake<IProductOptionManagementService>();
             _siteSettings = new SiteSettings {DefaultPageSize = 10};
             _uniquePageService = A.Fake<IUniquePageService>();
@@ -47,7 +45,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             A.CallTo(() => _uniquePageService.GetUniquePage<ProductSearch>()).Returns(_productSearch);
             _productController = new ProductController(_productService, _documentService, _categoryService,
                 _productOptionManager,
-                _fileService, _brandService, _productOptionManagementService, _siteSettings, _uniquePageService);
+                _fileService, _productOptionManagementService, _siteSettings, _uniquePageService);
         }
 
         [Fact]
