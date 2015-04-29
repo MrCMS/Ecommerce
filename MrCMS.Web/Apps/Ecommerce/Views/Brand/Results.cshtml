@@ -1,0 +1,78 @@
+﻿@model MrCMS.Paging.IPagedList<MrCMS.Web.Apps.Ecommerce.Pages.Product>
+@using System.Linq
+@using MrCMS.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Helpers
+@using MrCMS.Web.Apps.Ecommerce.Models
+@{
+    var query = ViewData["query"] as ProductSearchQuery??new ProductSearchQuery();
+    var sortByOptions = ViewData["sort-by-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    var perPageOptions = ViewData["per-page-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+}
+<div id="brand-results-container">
+    <div id="loading-message" style="display: none; position: fixed; top: 50%; left: 50%;">
+        <img src="/Apps/Ecommerce/Content/Images/ajax-loader.gif" alt="Loading" />
+    </div>
+    <div id="products-operations" class="grey-border-bottom">
+        <div class="row margin-bottom-10">
+            <div class="col-sm-6 col-md-4">
+                <div class="col-md-3 col-sm-4 col-xs-3 line-height-30 padding-0">
+                    @Resource("Sort by")
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-9 margin-bottom-10 padding-0" id="sorting">
+                    @Html.DropDownList("SortBy", sortByOptions, new { @class = "form-control" })
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <div class="col-md-3 col-sm-4 col-xs-3 line-height-30 padding-0">
+                    @Resource("Show")
+                </div>
+                <div class="col-md-9 col-sm-8 col-xs-9 margin-bottom-10 padding-0" id="show">
+                    @Html.DropDownList("PageSize", perPageOptions, new { @class = "form-control" })
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div id="stats">
+        @if (Model.Any())
+        {
+            <div class="row padding-top-bottom-10">
+                <div class="col-sm-12">
+                    <small>@Resource("Showing") @(Model.PageSize > 1 ? Model.FirstItemOnPage + " - " + Model.LastItemOnPage : Model.PageNumber.ToString()) @Resource("of") @Model.TotalItemCount</small>
+                </div>
+            </div>
+        }
+    </div>
+    <div id="products-wrapper">
+        @if (Model.Any())
+        {
+            var p = 1;
+            <div id="products">
+                @foreach (var product in Model.GetCardModels())
+                {
+                    Html.RenderPartial("ProductCard", product);
+                    if (p % 3 == 0)
+                    {
+                        <div class="clearfix hidden-xs"></div>
+                    }
+                    if (p % 2 == 0)
+                    {
+                        <div class="clearfix visible-xs"></div>
+                    }
+                    p++;
+                }
+            </div>
+            <div id="products-paging">
+                <div class="clearfix"></div>
+                @Html.PageCurrentPage(Model, i => new { page = i }, PagedListRenderOptions.OnlyShowFivePagesAtATime)
+            </div>
+        }
+        else
+        {
+            @Resource("No products to display, please refine your search.")
+        }
+    </div>
+</div>

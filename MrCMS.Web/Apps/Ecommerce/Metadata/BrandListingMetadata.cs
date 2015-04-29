@@ -8,6 +8,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
 {
     public class BrandListingMetadata : DocumentMetadataMap<BrandListing>
     {
+        public override string WebGetController
+        {
+            get { return "BrandListing"; }
+        }
+
         public override ChildrenListType ChildrenListType
         {
             get { return ChildrenListType.WhiteList; }
@@ -15,7 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
 
         public override IEnumerable<Type> ChildrenList
         {
-            get { yield return typeof(BrandPage); }
+            get { yield return typeof(Brand); }
         }
 
         public override string IconClass

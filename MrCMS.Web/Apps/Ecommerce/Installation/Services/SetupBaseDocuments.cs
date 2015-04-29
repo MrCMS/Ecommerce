@@ -175,6 +175,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             _documentService.AddDocument(contactUs);
             GetFormProperties(contactUs);
 
+            var brandListing = new BrandListing
+            {
+                Name = "Brands",
+                UrlSegment = "brands",
+                RevealInNavigation = true,
+                PublishOn = now,
+                BodyContent = ""
+            };
+            _documentService.AddDocument(brandListing);
+
             return pageModel;
         }
 

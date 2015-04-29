@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder;
 using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems;
 using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.TemplateData;
 using MrCMS.Web.Apps.Ecommerce.Pages;
@@ -18,8 +17,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Parsing
     {
         private static readonly Regex RowRegex = new Regex(@"\[(?i)ProductRow\]");
         private static readonly Regex ProductRegex = new Regex(@"\[(?i)Product\]");
-        private readonly INewsletterProductParser _productParser;
         private readonly IGetContentItemTemplateData _getContentItemTemplateData;
+        private readonly INewsletterProductParser _productParser;
         private readonly ISession _session;
 
         public ProductListItemParser(ISession session, INewsletterProductParser productParser,

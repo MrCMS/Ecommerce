@@ -8,7 +8,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 {
     public interface IBrandAdminService
     {
-        IPagedList<BrandPage> Search(BrandSearchModel searchModel);
+        IPagedList<Brand> Search(BrandSearchModel searchModel);
         BrandListing GetListingPage();
         bool AnyToMigrate();
         void MigrateBrands();

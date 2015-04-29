@@ -30,7 +30,7 @@ namespace MrCMS.Search
                         session.Save(new QueuedTask
                         {
                             Data = JsonConvert.SerializeObject(indexData),
-                            Type = typeof (UniversalSearchIndexTask).FullName,
+                            Type = typeof(UniversalSearchIndexTask).FullName,
                             Status = TaskExecutionStatus.Pending,
                             Site = GetSite(indexData)
                         });

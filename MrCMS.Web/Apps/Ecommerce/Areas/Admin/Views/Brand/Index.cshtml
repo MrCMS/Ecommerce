@@ -6,7 +6,7 @@
     ViewBag.Title = "Brands";
     var listing = ViewData["listing-page"] as BrandListing;
     var anyToMigrate = ViewData["any-to-migrate"] is bool && (bool)ViewData["any-to-migrate"];
-    var results = ViewData["results"] as IPagedList<BrandPage> ?? BasePagedList<BrandPage>.Empty;
+    var results = ViewData["results"] as IPagedList<Brand> ?? BasePagedList<Brand>.Empty;
 }
 
 @{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/brands.js"); }

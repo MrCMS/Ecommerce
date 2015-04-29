@@ -13,6 +13,7 @@ using MrCMS.Website;
 using NHibernate;
 using NHibernate.Criterion;
 using NHibernate.Transform;
+using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
 
 namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 {
@@ -29,9 +30,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
             _getNewBrandPage = getNewBrandPage;
         }
 
-        public IPagedList<BrandPage> Search(BrandSearchModel searchModel)
+        public IPagedList<Brand> Search(BrandSearchModel searchModel)
         {
-            var queryOver = _session.QueryOver<BrandPage>();
+            var queryOver = _session.QueryOver<Brand>();
             if (!string.IsNullOrWhiteSpace(searchModel.Query))
             {
                 queryOver = queryOver.Where(x => x.Name.IsInsensitiveLike(searchModel.Query, MatchMode.Anywhere));
@@ -47,16 +48,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 
         public bool AnyToMigrate()
         {
-            return _session.QueryOver<Brand>().Where(x => !x.IsMigrated).Any();
+            return _session.QueryOver<Entities.Products.OldBrand>().Where(x => !x.IsMigrated).Any();
         }
 
         public void MigrateBrands()
         {
             using (new NotificationDisabler())
             {
-                var toMigrate = _session.QueryOver<Brand>().Where(x => !x.IsMigrated).List();
+                var toMigrate = _session.QueryOver<Entities.Products.OldBrand>().Where(x => !x.IsMigrated).List();
 
-                var map = new Dictionary<Brand, BrandPage>();
+                var map = new Dictionary<Entities.Products.OldBrand, Brand>();
                 _session.Transact(session =>
                 {
                     foreach (var brand in toMigrate)
@@ -91,7 +92,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
         public List<SelectListItem> GetOptions()
         {
             BrandInfo info = null;
-            return _session.QueryOver<BrandPage>()
+            return _session.QueryOver<Brand>()
                 .OrderBy(x => x.Name).Asc
                 .SelectList(builder =>
                 {
@@ -116,7 +117,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 
     public interface IGetNewBrandPage
     {
-        BrandPage Get(string name, string logo = null);
+        Brand Get(string name, string logo = null);
     }
 
     public class GetNewBrandPage : IGetNewBrandPage
@@ -130,18 +131,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
             _webpageUrlService = webpageUrlService;
         }
 
-        public BrandPage Get(string name, string logo = null)
+        public Brand Get(string name, string logo = null)
         {
 
             var listing = _uniquePageService.GetUniquePage<BrandListing>();
-            return new BrandPage
+            return new Brand
             {
                 Name = name,
                 UrlSegment =
                     _webpageUrlService.Suggest(listing,
                         new SuggestParams
                         {
-                            DocumentType = typeof(BrandPage).FullName,
+                            DocumentType = typeof(Brand).FullName,
                             PageName = name,
                             UseHierarchy = true
                         }),

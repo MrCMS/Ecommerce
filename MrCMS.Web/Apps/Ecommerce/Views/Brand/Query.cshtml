@@ -1,0 +1,42 @@
+﻿@using MrCMS.Web.Apps.Ecommerce.Models
+@model MrCMS.Web.Apps.Ecommerce.Models.ProductSearchQuery
+@{
+    List<ProductOptionModel<string>> options = ViewData["product-options"] as List<ProductOptionModel<string>> ?? new List<ProductOptionModel<string>>();
+    List<ProductOptionModel<int>> specifications = ViewData["product-specifications"] as List<ProductOptionModel<int>> ?? new List<ProductOptionModel<int>>();
+    double maxPrice = ViewData["max-price"] is double ? (double) ViewData["max-price"] : 0;
+}
+<div id="brand-query-container">
+    <div class="margin-bottom-10">
+        <h3 class="hidden-xs">
+            Refine results
+        </h3>
+        <a class="btn btn-primary visible-xs" data-toggle="collapse" data-target="#filter-container"><i class="glyphicon glyphicon-filter"></i>&nbsp;@Resource("Refine results")</a>
+    </div>
+
+    <div id="filter-container" class="collapsable collapse">
+        @{ Html.RenderPartial("SearchOptions", new ViewDataDictionary(options) { { "query", Model } }); }
+        <div class="widget-con">
+            <div class="title-con">
+                @Resource("By price")
+            </div>
+            <div class="options-con">
+                <div class="option">
+                    @Html.HiddenFor(query => query.PriceFrom)
+                    @Html.Hidden("PriceTo", Model.PriceTo ?? maxPrice)
+                    @Html.Hidden("MaxPrice", maxPrice)
+                    <span class="price-range" id="amount">
+                    </span>
+                    <div class="padding-right-10">
+                        <div id="slider-range"></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        @{ Html.RenderPartial("SearchSpecifications", new ViewDataDictionary(specifications) { { "query", Model } }); }
+
+        @Html.HiddenFor(query => query.BrandId)
+    </div>
+
+</div>

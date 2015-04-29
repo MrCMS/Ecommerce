@@ -18,6 +18,7 @@ using MrCMS.Website;
 using NHibernate;
 using Ninject.MockingKernel;
 using Xunit;
+using Brand = MrCMS.Web.Apps.Ecommerce.Pages.Brand;
 using Product = MrCMS.Web.Apps.Ecommerce.Pages.Product;
 
 namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
@@ -79,7 +80,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
 
             var product = new Product()
                 {
-                    BrandPage = new BrandPage(){Name = "B"}
+                    BrandPage = new Brand(){Name = "B"}
                 };
             var productVariant = new ProductVariant()
                 {
@@ -132,7 +133,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
 
             var product = new Product()
             {
-                BrandPage = new BrandPage() { Name = "B" }
+                BrandPage = new Brand() { Name = "B" }
             };
             var productVariant = new ProductVariant()
             {
@@ -189,7 +190,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
 
             var product = new Product()
             {
-                BrandPage = new BrandPage() { Name = "B" }
+                BrandPage = new Brand() { Name = "B" }
             };
             var productVariant = new ProductVariant()
             {
@@ -246,7 +247,7 @@ namespace MrCMS.AmazonApp.Tests.Services.Listings.Sync
 
             var product = new Product()
             {
-                BrandPage = new BrandPage() { Name = "B" }
+                BrandPage = new Brand() { Name = "B" }
             };
             var productVariant = new ProductVariant()
             {

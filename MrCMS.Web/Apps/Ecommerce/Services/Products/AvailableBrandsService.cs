@@ -26,7 +26,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
             BrandInfo info = null;
             List<int> brands = _productSearchIndexService.GetBrands(query);
             IList<BrandInfo> items =
-                _session.QueryOver<BrandPage>().Where(item => item.Id.IsIn(brands)).SelectList(builder =>
+                _session.QueryOver<Brand>().Where(item => item.Id.IsIn(brands)).SelectList(builder =>
                 {
                     builder.Select(x => x.Id).WithAlias(() => info.Id);
                     builder.Select(x => x.Name).WithAlias(() => info.Name);

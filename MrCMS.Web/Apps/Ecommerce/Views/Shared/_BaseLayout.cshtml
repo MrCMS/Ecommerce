@@ -1,6 +1,7 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Settings
 @using MrCMS.Website
+@using StackExchange.Profiling
 @model MrCMS.Entities.Documents.Web.Webpage
 <!DOCTYPE html>
 <html lang="en">
@@ -55,5 +56,6 @@
         @RenderSection("JavascriptBlockInclude")
     }
     @Html.Raw(Model.CustomFooterScripts)
+    @MiniProfiler.RenderIncludes(RenderPosition.BottomRight)
 </body>
 </html>
