@@ -10,6 +10,7 @@ using MrCMS.Entities;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Helpers.Validation;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
+using MrCMS.Web.Apps.Ecommerce.Entities.ETags;
 using MrCMS.Web.Apps.Ecommerce.Entities.GiftCards;
 using MrCMS.Web.Apps.Ecommerce.Entities.GoogleBase;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
@@ -359,6 +360,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
 
         [DisplayName("Number of Reviews")]
         public virtual int NumberOfReviews { get; set; }
+
+        [DisplayName("E-Tag")]
+        public virtual ETag ETag { get; set; }
 
     }
 }

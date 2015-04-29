@@ -3,6 +3,7 @@ using System.Linq;
 using FakeItEasy;
 using FluentAssertions;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Entities.Tax;
 using MrCMS.Web.Apps.Ecommerce.Models;
@@ -27,7 +28,7 @@ namespace MrCMS.EcommerceApp.Tests.Services.ImportExport
             _importProductVariantPriceBreaksService = A.Fake<IImportProductVariantPriceBreaksService>();
             _taxRateManager = A.Fake<ITaxRateManager>();
             _importProductVariantsService = new ImportProductVariantsService(_importProductVariantPriceBreaksService,
-                                                                              _taxRateManager,  A.Fake<ISession>());
+                                                                              _taxRateManager,  A.Fake<ISession>(), A.Fake<IETagAdminService>());
         }
 
         [Fact(Skip = "To be refactored")]

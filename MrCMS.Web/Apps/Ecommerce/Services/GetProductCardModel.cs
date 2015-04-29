@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Ajax.Utilities;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Helpers;
 using MrCMS.Services.Resources;
@@ -89,6 +90,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                             : _stringResourceProvider.GetValue("Out of Stock"));
                     productCardModel.Rating = variant.Rating;
                     productCardModel.NumberOfReviews = variant.NumberOfReviews;
+
+                    if (variant.ETag != null)
+                        productCardModel.ETag = variant.ETag;
                 }
                 else
                 {
@@ -96,6 +100,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services
                     productCardModel.Price = variant != null ? variant.Price : (decimal?)null;
                     productCardModel.Rating = variant.Rating;
                     productCardModel.NumberOfReviews = variant.NumberOfReviews;
+                    if (variant.ETag != null)
+                        productCardModel.ETag = variant.ETag;
                 }
                 productCardModels.Add(productCardModel);
             }

@@ -1,0 +1,32 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Entities.ETags.ETag
+@using MrCMS.Helpers
+@{
+    ViewBag.Title = "Edit E-Tag";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Edit", "ETag", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Edit E-Tag
+            <span class="btn-group  display-inline  pull-right">
+                <a class="btn-default btn" href="@Url.Action("Index", "ETag")">Back</a>
+                <input type="submit" class="btn-primary btn" value="Save" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Id)
+        
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Image)
+            <br />
+            @Html.TextBoxFor(x => x.Image, new { @class = "media-selector" })
+            @Html.ValidationMessageFor(x => x.Image)
+        </div>
+    </fieldset>
+}

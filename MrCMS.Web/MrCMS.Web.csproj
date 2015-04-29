@@ -22,10 +22,14 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
-    <IISExpressSSLPort>44300</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <TargetFrameworkProfile />
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
     <AutoParameterizationWebConfigConnectionStrings>false</AutoParameterizationWebConfigConnectionStrings>
@@ -550,6 +554,7 @@
     <Compile Include="Apps\Ecommerce\ACL\DiscountACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\EcommerceSearchCacheSettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\EcommerceSettingsACL.cs" />
+    <Compile Include="Apps\Ecommerce\ACL\ETagACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\ExportOrderACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\GiftCardACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\GoogleBaseACL.cs" />
@@ -579,6 +584,9 @@
     <Compile Include="Apps\Ecommerce\ACL\WarehouseStockACL.cs" />
     <Compile Include="Apps\Ecommerce\ACL\WorldPaySettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ActionFilters\ReturnJsonTrueIfAjaxPostAttribute.cs" />
+    <Compile Include="Apps\Ecommerce\Bundles\CheckoutLibScriptBundle.cs" />
+    <Compile Include="Apps\Ecommerce\Bundles\CheckoutStylesheetBundle.cs" />
+    <Compile Include="Apps\Ecommerce\Bundles\EcommerceLibScriptBundle.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BulkShippingController.cs" />
@@ -602,6 +610,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceSearchablePageController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceSearchCacheSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\EcommerceSettingsController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ETagController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\FreeShippingController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\GiftCardController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\GiftCardSettingsController.cs" />
@@ -672,6 +681,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\BulkWarehouseStockUpdateDTO.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\CalculationInfo.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\DiscountSearchQuery.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ETagSearchQuery.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\ExportStockReportResult.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\GenerateStockResult.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Models\GetProductVariantsFromFileResult.cs" />
@@ -716,6 +726,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\DiscountLimitationAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\EcommerceSearchablePageAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\EcommerceSettingsAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ETagAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GenerateGiftCardCode.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetGiftCardTypeOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\GetLowStockQuery.cs" />
@@ -741,6 +752,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IDiscountLimitationAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IEcommerceSearchablePageAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IEcommerceSettingsAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IETagAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGenerateGiftCardCode.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetGiftCardTypeOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IGetLowStockQuery.cs" />
@@ -762,6 +774,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IProductVariantAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IProductVariantAdminViewDataService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IRewardPointSettingsAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ISetETagService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ISetRestrictedShippingMethods.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ISetVariantTypeProperties.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\IShippingCountryIsAdminService.cs" />
@@ -871,6 +884,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\ViewData\GetCategoryProductSortOptions.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\WarehouseAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\WarehouseStockAdminService.cs" />
+    <Compile Include="Apps\Ecommerce\Bundles\EcommerceStylesheetBundle.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\AddToCartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CartRewardPointsController.cs" />
@@ -974,6 +988,7 @@
     <Compile Include="Apps\Ecommerce\Entities\Discounts\DiscountApplication.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Discounts\DiscountLimitation.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Discounts\DiscountUsage.cs" />
+    <Compile Include="Apps\Ecommerce\Entities\ETags\ETag.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Geographic\Country.cs" />
     <Compile Include="Apps\Ecommerce\Entities\Geographic\Region.cs" />
     <Compile Include="Apps\Ecommerce\Entities\GiftCards\GiftCard.cs" />
@@ -4233,6 +4248,12 @@
     <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\razorgenerator.directives" />
     <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ETag\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ETag\Delete.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ETag\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ETag\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\ETagList.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ETags.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
