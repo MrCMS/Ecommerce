@@ -1,3 +1,4 @@
+using MrCMS.Web.Apps.Ecommerce.Entities.ETags;
 using MrCMS.Web.Apps.Ecommerce.Models.StockAvailability;
 
 namespace MrCMS.Web.Apps.Ecommerce.Models
@@ -18,5 +19,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
         public bool ProductReviewsEnabled { get; set; }
         public decimal Rating { get; set; }
         public int NumberOfReviews { get; set; }
+
+        public ETag ETag { get; set; }
     }
 }

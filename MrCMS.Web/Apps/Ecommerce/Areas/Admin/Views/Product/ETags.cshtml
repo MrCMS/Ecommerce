@@ -1,0 +1,6 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.Product
+<div class="form-group">
+    @Html.LabelFor(product => product.ETag.Id, "E-Tag")
+    @Html.DropDownListFor(product => product.ETag.Id, ViewData["eTags"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+</div>
+@*@Html.ActionLink("New ETag", "AddETag", "Product", new { id = Model.Id }, new { @class = "btn btn-default", data_toggle = "fb-modal" })*@

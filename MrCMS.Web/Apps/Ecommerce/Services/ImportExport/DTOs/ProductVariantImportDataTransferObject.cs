@@ -1,4 +1,5 @@
-﻿using MrCMS.Web.Apps.Ecommerce.Models;
+﻿using MrCMS.Web.Apps.Ecommerce.Entities.ETags;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using System.Collections.Generic;
 namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs
 {
@@ -22,5 +23,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs
         public Dictionary<string, string> Options { get; set; }
         public Dictionary<int, decimal> PriceBreaks { get; set; }
         public string ManufacturerPartNumber { get; set; }
+
+        public string ETag { get; set; }
     }
 }

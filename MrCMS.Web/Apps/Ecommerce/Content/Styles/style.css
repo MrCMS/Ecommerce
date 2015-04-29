@@ -144,7 +144,7 @@ footer > .container .row > div { min-height: 200px;}
 #product-image-thumbnails ul {margin:0;padding: 0;}
 #product-image-thumbnails ul li {margin:0;list-style-type: none;padding: 5px;border: 1px solid #f0f0f0;display: inline-block;}
 #product-image-thumbnails ul li img {}
-.product-image-box { padding: 10px 0;}
+.product-image-box { padding: 10px 0;position: relative;}
 .price { font-size: 28px;line-height: 34px;color: #87A725;font-weight: bold;}
 .price span.instock { color: #87A725;font-size: 15px;font-weight: normal;}
 .price span.previous-price .inner {color:#444444;}
@@ -190,6 +190,8 @@ table.price-break tbody tr td { border-top: 1px dotted #ddd;}
 
 /*Cart Widget*/
 li a.notification {position:absolute;top:3px;right:3px;background:url(/Apps/Ecommerce/Content/Images/notification.png) no-repeat 0 0;width:24px;height:25px;color:#fff;font-size:12px;line-height:25px;padding:0;text-align:center;}
+.product-image .e-tag-image {position:absolute;top:0;right:33px;}
+.product-image-box .e-tag-image {position:absolute;top:0;right:0;}
 
 /*mobile and tablet*/
 @media (min-width: 0px) and (max-width:992px) {

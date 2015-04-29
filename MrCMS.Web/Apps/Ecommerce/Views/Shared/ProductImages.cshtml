@@ -5,6 +5,10 @@
 
 <div class="grey-border text-center product-image-box">
     @Html.RenderImage(Model.DisplayImageUrl, new Size { Width = 400, Height = 400 }, Model.Name, Model.Name, new { @class = "img-responsive center-block", itemprop = "image" })    
+    @if (Model.ETag != null)
+    {
+        @RenderImage(Model.ETag.Image, new Size { Width = 200, Height = 175 }, attributes: new { @class = "img-responsive e-tag-image" })
+    }
     <div class="clearfix"></div>
 
     <div class="row">
