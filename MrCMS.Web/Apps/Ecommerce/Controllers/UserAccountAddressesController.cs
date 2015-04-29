@@ -66,6 +66,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return PartialView(address);
         }
 
+        [HttpPost]
+        [ActionName("DeleteAddress")]
         public RedirectResult DeleteAddress_POST(Address address)
         {
             User user = CurrentRequestData.CurrentUser;

@@ -4,6 +4,10 @@
 @model MrCMS.Web.Apps.Ecommerce.Pages.UserAccountAddresses      
 @{
     var addresses = ViewData["addresses"] as IList<Address> ?? new List<Address>();
+
+    Html.IncludeCss("~/Areas/Admin/Content/Styles/featherlight.css");
+    Html.IncludeScript("~/Areas/Admin/Content/Scripts/lib/featherlight.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/address-popup.js");
 }
 <h1>@Editable(Model, page => page.Name)</h1>
 @Editable(Model, page => page.BodyContent, true)
@@ -24,8 +28,8 @@
                         <li>@address.Address2</li>
                         <li>@address.City</li>
                         <li>@address.StateProvince</li>
-                        <li>@address.GetCountryName()</li>
                         <li>@address.PostalCode</li>
+                        <li>@address.GetCountryName()</li>
                     </ul>
                     @Html.ActionLink("Edit", "EditAddress", "UserAccountAddresses", new { id = address.Id }, new { @class = "btn btn-default btn-xs", data_toggle = "fb-modal" })
                     @Html.ActionLink("Delete", "DeleteAddress", "UserAccountAddresses", new { id = address.Id }, new { @class = "btn btn-danger btn-xs", data_toggle = "fb-modal" })
