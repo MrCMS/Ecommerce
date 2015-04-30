@@ -167,6 +167,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             wsItems.Cells["R" + rowId].Value = productVariants[i].SKU;
             wsItems.Cells["S" + rowId].Value = productVariants[i].Barcode;
             wsItems.Cells["T" + rowId].Value = productVariants[i].ManufacturerPartNumber;
+            wsItems.Cells["AG" + rowId].Value = (productVariants[i].ETag != null) ? productVariants[i].ETag.Name : String.Empty;
         }
 
         private static void AddSpecifications(int i, ExcelWorksheet wsItems, IList<ProductVariant> productVariants, int rowId)
@@ -216,8 +217,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
 
         private static void AddHeader(ExcelWorksheet wsItems)
         {
-            wsItems.Cells["A1:AF1"].Style.Font.Bold = true;
-            wsItems.Cells["A:AF"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+            wsItems.Cells["A1:AG1"].Style.Font.Bold = true;
+            wsItems.Cells["A:AG"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
             wsItems.Cells["A1"].Value = "Url (Must not be changed!)";
             wsItems.Cells["B1"].Value = "Product Name";
             wsItems.Cells["C1"].Value = "Description";
@@ -250,6 +251,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             wsItems.Cells["AD1"].Value = "Price Breaks";
             wsItems.Cells["AE1"].Value = "Url History";
             wsItems.Cells["AF1"].Value = "Publish Date";
+            wsItems.Cells["AG1"].Value = "E-Tag";
         }
 
         private static void CreateInfo(ExcelPackage excelFile)

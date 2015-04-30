@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
@@ -13,13 +14,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders
     {
         private readonly ISetVariantTypeProperties _setVariantTypeProperties;
         private readonly ISetRestrictedShippingMethods _setRestrictedShippingMethods;
+        private readonly ISetETagService _setETagService;
 
 
-        public ProductVariantModelBinder(ISetVariantTypeProperties setVariantTypeProperties, ISetRestrictedShippingMethods setRestrictedShippingMethods, IKernel kernel)
+        public ProductVariantModelBinder(ISetVariantTypeProperties setVariantTypeProperties, ISetRestrictedShippingMethods setRestrictedShippingMethods, ISetETagService setETagService, IKernel kernel)
             : base(kernel)
         {
             _setVariantTypeProperties = setVariantTypeProperties;
             _setRestrictedShippingMethods = setRestrictedShippingMethods;
+            _setETagService = setETagService;
         }
 
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
@@ -32,6 +35,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.ModelBinders
                 var variantType = controllerContext.GetValueFromRequest("VariantType");
                 _setVariantTypeProperties.SetProperties(productVariant, variantType);
                 _setRestrictedShippingMethods.SetMethods(productVariant, controllerContext.HttpContext.Request.Params);
+
+                var eTag = 0;
+                Int32.TryParse(controllerContext.GetValueFromRequest("ETag"), out eTag);
+                if(eTag > 0)
+                    _setETagService.SetETag(productVariant, eTag);
             }
             return bindModel;
         }

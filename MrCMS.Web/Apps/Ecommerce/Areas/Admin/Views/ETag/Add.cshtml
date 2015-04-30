@@ -1,0 +1,28 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.ETags.ETag
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+}
+@using (Html.BeginForm("Add", "ETag", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Add E-Tag
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn-primary btn" value="Add E-Tag" />
+            </span>
+        </legend>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Image)
+            <br />
+            @Html.TextBoxFor(x => x.Image, new { @class = "media-selector" })
+            @Html.ValidationMessageFor(x => x.Image)
+        </div>
+    </fieldset>
+}

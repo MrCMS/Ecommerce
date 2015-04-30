@@ -8,6 +8,7 @@ using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Categories;
@@ -30,7 +31,7 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
         private readonly IProductService _productService;
         private readonly SiteSettings _siteSettings;
         private readonly IUniquePageService _uniquePageService;
-
+        private readonly IETagAdminService _eTagAdminService;
         public ProductControllerTests()
         {
             _documentService = A.Fake<IDocumentService>();
@@ -42,10 +43,11 @@ namespace MrCMS.EcommerceApp.Tests.Admin.Controllers
             _siteSettings = new SiteSettings {DefaultPageSize = 10};
             _uniquePageService = A.Fake<IUniquePageService>();
             _productSearch = new ProductSearch();
+            _eTagAdminService = A.Fake<IETagAdminService>();
             A.CallTo(() => _uniquePageService.GetUniquePage<ProductSearch>()).Returns(_productSearch);
             _productController = new ProductController(_productService, _documentService, _categoryService,
                 _productOptionManager,
-                _fileService, _productOptionManagementService, _siteSettings, _uniquePageService);
+                _fileService, _productOptionManagementService, _siteSettings, _uniquePageService, _eTagAdminService);
         }
 
         [Fact]

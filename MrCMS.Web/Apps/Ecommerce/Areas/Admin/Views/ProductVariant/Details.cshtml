@@ -3,9 +3,9 @@
 @model MrCMS.Web.Apps.Ecommerce.Entities.Products.ProductVariant
 @{
     var productVariantTypeOptions = ViewData["product-variant-type-options"] as List<SelectListItem> ?? new List<SelectListItem>();
+    var eTagOptions = ViewData["e-tag-options"] as List<SelectListItem> ?? new List<SelectListItem>();
 }
 <div id="details" class="tab-pane active">
-
     @Html.HiddenFor(variant => variant.Product.Id)
     <div class="row">
         <div class="col-xs-6">
@@ -92,6 +92,15 @@
                     @Html.LabelFor(product => product.TaxRate.Id, "Tax Rate")
                     @Html.DropDownListFor(product => product.TaxRate.Id, ViewData["tax-rate-options"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
                 }
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                @Html.LabelFor(variant => variant.ETag)
+                @Html.DropDownListFor(variant => variant.ETag.Id, eTagOptions, new { @class = "form-control" })
             </div>
         </div>
     </div>
