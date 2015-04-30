@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
+using MrCMS.Web.Apps.Ecommerce.Entities.ETags;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.ImportExport.DTOs;
@@ -15,13 +17,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
     {
         private readonly IImportProductVariantPriceBreaksService _importProductVariantPriceBreaksService;
         private readonly ISession _session;
+        private readonly IETagAdminService _eTagAdminService;
         private readonly ITaxRateManager _taxRateManager;
 
         public ImportProductVariantsService(IImportProductVariantPriceBreaksService importPriceBreaksService,
-            ITaxRateManager taxRateManager, ISession session)
+            ITaxRateManager taxRateManager, ISession session, IETagAdminService eTagAdminService)
         {
             _taxRateManager = taxRateManager;
             _session = session;
+            _eTagAdminService = eTagAdminService;
             _importProductVariantPriceBreaksService = importPriceBreaksService;
         }
 
@@ -59,7 +63,24 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                     : _taxRateManager.GetDefaultRate();
                 productVariant.Product = product;
 
-            
+                if (!string.IsNullOrEmpty(item.ETag))
+                {
+                    var eTag = _eTagAdminService.GetETagByName(item.ETag);
+                    if (eTag != null)
+                        productVariant.ETag = eTag;
+                    else
+                    {
+                        _eTagAdminService.Add(new ETag
+                        {
+                            Name = item.ETag
+                        });
+
+                        var tag = _eTagAdminService.GetETagByName(item.ETag);
+                        if(tag != null)
+                            productVariant.ETag = tag;
+                    }
+                }
+
                 List<KeyValuePair<string, string>> optionsToAdd =
                     item.Options.Where(
                         s =>

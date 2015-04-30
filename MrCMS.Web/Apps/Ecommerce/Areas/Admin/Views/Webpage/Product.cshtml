@@ -6,6 +6,11 @@
             @{Html.RenderAction("ForProduct", "Brand", new { product = Model});}
         </div>
     </div>
+    @*<div class="col-lg-3">
+        <div id="eTags">
+            @{Html.RenderAction("ETags", "Product", new { id = Model.Id, eTagId = Model.ETag != null ? Model.ETag.Id.ToString() : String.Empty });}
+        </div>
+    </div>*@
     <div class="col-lg-9">
         @Html.LabelFor(product => product.ProductAbstract)
         @Html.TextAreaFor(product => product.ProductAbstract, new { rows = 4, @class = "form-control", data_characters = "500" })

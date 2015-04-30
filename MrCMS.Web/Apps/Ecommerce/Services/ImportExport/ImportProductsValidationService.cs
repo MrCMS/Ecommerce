@@ -280,6 +280,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
             productVariant.Barcode = worksheet.GetValue<string>(rowId, 19);
 
             productVariant.ManufacturerPartNumber = worksheet.GetValue<string>(rowId, 20);
+
+            productVariant.ETag = worksheet.GetValue<string>(rowId, 33);
+            
             return productVariant;
         }
 

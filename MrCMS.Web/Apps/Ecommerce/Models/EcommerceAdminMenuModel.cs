@@ -58,6 +58,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
                         ACLOption.Create(new ProductOptionSortingACL(), ProductOptionSortingACL.List)),
                     new ChildMenuItem("Discounts", _urlHelper.Action("Index", "Discount"),
                         ACLOption.Create(new DiscountACL(), DiscountACL.List)),
+                    new ChildMenuItem("E-Tags", _urlHelper.Action("Index", "ETag"),
+                        ACLOption.Create(new ETagACL(), ETagACL.List)),
                 };
                 if (_ecommerceSettings.GiftCardsEnabled)
                 {

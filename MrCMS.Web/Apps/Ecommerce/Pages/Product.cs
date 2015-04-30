@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using MrCMS.Entities.Documents.Media;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
+using MrCMS.Web.Apps.Ecommerce.Entities.ETags;
 using MrCMS.Web.Apps.Ecommerce.Entities.Products;
 using MrCMS.Web.Apps.Ecommerce.Settings;
 using MrCMS.Website;
