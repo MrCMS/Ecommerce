@@ -56,6 +56,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Braintree-2.40.0">
+      <HintPath>..\packages\Braintree.2.40.0\lib\Braintree-2.40.0.dll</HintPath>
+    </Reference>
     <Reference Include="CsvHelper">
       <HintPath>..\packages\CsvHelper.2.8.2\lib\net40-client\CsvHelper.dll</HintPath>
       <Private>True</Private>
@@ -580,6 +583,7 @@
     <Compile Include="Apps\Ecommerce\ACL\WorldPaySettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ActionFilters\ReturnJsonTrueIfAjaxPostAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\AddressController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BraintreeSettingsController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BrandController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BulkShippingController.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\BulkStockUpdateController.cs" />
@@ -872,6 +876,7 @@
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\WarehouseAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Services\WarehouseStockAdminService.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\AddToCartController.cs" />
+    <Compile Include="Apps\Ecommerce\Controllers\BraintreeController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CartController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CartRewardPointsController.cs" />
     <Compile Include="Apps\Ecommerce\Controllers\CartValidationController.cs" />
@@ -1259,6 +1264,12 @@
     <Compile Include="Apps\Ecommerce\Pages\UserOrder.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\ProductListItemParser.cs" />
     <Compile Include="Apps\Ecommerce\Parsing\ProductParser.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Braintree\BraintreePaymentMethod.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Braintree\BraintreeSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Braintree\Models\BraintreePostModel.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Braintree\Models\BraintreeResponse.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Braintree\Services\BraintreePaymentService.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Braintree\Services\IBraintreePaymentService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\CashOnDeliveryPaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\Services\CashOnDeliveryUIService.cs" />
     <Compile Include="Apps\Ecommerce\Payment\CashOnDelivery\Services\ICashOnDeliveryUIService.cs" />
@@ -2349,6 +2360,7 @@
     <Content Include="Apps\Ecommerce\Content\Images\topoffer.png" />
     <Content Include="Apps\Ecommerce\Content\Images\xboxone.gif" />
     <Content Include="Apps\Ecommerce\Content\Scripts\bootstrap.dropdown.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\braintree-setup.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\contact-us.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\cart.js" />
@@ -4233,6 +4245,8 @@
     <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\razorgenerator.directives" />
     <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\BraintreeSettings\Index.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Braintree\Form.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
