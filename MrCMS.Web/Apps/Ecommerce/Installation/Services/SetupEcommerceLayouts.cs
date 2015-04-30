@@ -150,7 +150,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 _layoutAreaAdminService.SaveArea(area);
             layoutModel.SearchLayout = searchLayout;
 
-            //useraccount
+            var contentLayout = new Layout
+            {
+                Name = "Content Layout",
+                UrlSegment = "_ContentLayout",
+                LayoutAreas = new List<LayoutArea>(),
+                Parent = eCommerceLayout
+            };
+            _documentService.AddDocument(contentLayout);
+            layoutModel.ContentLayout = contentLayout;
+
+            // UserAccount
             var userAccountLayout = new Layout
             {
                 Name = "User Account Layout",
@@ -163,16 +173,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 new LayoutArea {AreaName = "Right Column", Layout = userAccountLayout}
             };
             _documentService.AddDocument(userAccountLayout);
-
-            var contentLayout = new Layout
-            {
-                Name = "Content Layout",
-                UrlSegment = "_ContentLayout",
-                LayoutAreas = new List<LayoutArea>(),
-                Parent = eCommerceLayout
-            };
-            _documentService.AddDocument(contentLayout);
-            layoutModel.ContentLayout = contentLayout;
+            foreach (var area in userAccountAreas)
+                _layoutAreaAdminService.SaveArea(area);
+            layoutModel.UserAccountLayout = userAccountLayout;
             
             //Page templates
             var homeTemplate = new PageTemplate
@@ -228,6 +231,45 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             {
                 PageTypeName = typeof(Product).FullName,
                 LayoutId = layoutModel.ProductLayout.Id,
+                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+            });
+
+            // UserAccount Pages
+
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(UserAccountInfo).FullName,
+                LayoutId = layoutModel.UserAccountLayout.Id,
+                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+            });
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(UserAccountChangePassword).FullName,
+                LayoutId = layoutModel.UserAccountLayout.Id,
+                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+            });
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(UserAccountAddresses).FullName,
+                LayoutId = layoutModel.UserAccountLayout.Id,
+                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+            });
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(UserAccountOrders).FullName,
+                LayoutId = layoutModel.UserAccountLayout.Id,
+                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+            });
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(UserAccountReviews).FullName,
+                LayoutId = layoutModel.UserAccountLayout.Id,
+                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+            });
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(UserAccountRewardPoints).FullName,
+                LayoutId = layoutModel.UserAccountLayout.Id,
                 GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
             });
         }
