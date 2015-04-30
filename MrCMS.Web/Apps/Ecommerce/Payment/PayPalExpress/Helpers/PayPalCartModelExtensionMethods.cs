@@ -39,10 +39,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress.Helpers
             if (cart.ShippingMethod != null)
                 return cart.TotalToPay;
 
-            var cheapestShippingOption = cart.GetCheapestShippingOption();
-            if (cheapestShippingOption == null) return Decimal.Zero;
+            decimal shippingTotal;
+            if (cart.ShippingMethod == null)
+            {
 
-            decimal shippingTotal = cheapestShippingOption.GetShippingTotal(cart);
+                var cheapestShippingOption = cart.GetCheapestShippingOption();
+                if (cheapestShippingOption == null) return Decimal.Zero;
+
+                shippingTotal = cheapestShippingOption.GetShippingTotal(cart);
+            }
+            else
+            {
+                shippingTotal = cart.ShippingTotal;
+            }
+
             return (cart.TotalToPay + shippingTotal);
         }
 
