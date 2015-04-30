@@ -75,7 +75,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
                                              });
 
             paymentDetailsItemTypes.AddRange(from giftCard in cart.AppliedGiftCards
-                                             where giftCard.AvailableAmount> 0
+                                             where giftCard.AvailableAmount > 0
                                              select new PaymentDetailsItemType
                                              {
                                                  Name = "Gift Card - " + giftCard.Code,
@@ -100,7 +100,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.PayPalExpress
 
         public BasicAmountType GetItemTotal(CartModel cart)
         {
-            return (cart.Subtotal - cart.OrderTotalDiscount - cart.AppliedRewardPointsAmount - cart.GiftCardAmount).GetAmountType();
+            return (cart.Subtotal - cart.OrderTotalDiscount - cart.ShippingDiscount - cart.AppliedRewardPointsAmount - cart.GiftCardAmount).GetAmountType();
         }
 
         public string GetBuyerEmail(CartModel cart)
