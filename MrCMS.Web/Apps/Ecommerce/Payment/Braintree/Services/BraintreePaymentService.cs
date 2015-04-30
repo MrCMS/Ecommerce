@@ -9,7 +9,6 @@ using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Models;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders;
 using MrCMS.Web.Areas.Admin.Services;
-using Newtonsoft.Json;
 
 namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services
 {
