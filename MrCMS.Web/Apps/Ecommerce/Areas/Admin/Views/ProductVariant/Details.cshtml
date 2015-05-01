@@ -87,11 +87,8 @@
         </div>
         <div class="col-xs-6">
             <div class="form-group">
-                @if (MrCMS.Website.MrCMSApplication.Get<MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings>().TaxesEnabled)
-                {
-                    @Html.LabelFor(product => product.TaxRate.Id, "Tax Rate")
-                    @Html.DropDownListFor(product => product.TaxRate.Id, ViewData["tax-rate-options"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
-                }
+                @Html.LabelFor(variant => variant.ETag)
+                @Html.DropDownListFor(variant => variant.ETag.Id, eTagOptions, new { @class = "form-control" })
             </div>
         </div>
     </div>
@@ -99,8 +96,11 @@
     <div class="row">
         <div class="col-xs-6">
             <div class="form-group">
-                @Html.LabelFor(variant => variant.ETag)
-                @Html.DropDownListFor(variant => variant.ETag.Id, eTagOptions, new { @class = "form-control" })
+                @if (MrCMS.Website.MrCMSApplication.Get<MrCMS.Web.Apps.Ecommerce.Settings.TaxSettings>().TaxesEnabled)
+                {
+                    @Html.LabelFor(product => product.TaxRate.Id, "Tax Rate")
+                    @Html.DropDownListFor(product => product.TaxRate.Id, ViewData["tax-rate-options"] as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                }
             </div>
         </div>
     </div>
