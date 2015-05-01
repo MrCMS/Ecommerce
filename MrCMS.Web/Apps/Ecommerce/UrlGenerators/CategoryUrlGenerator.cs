@@ -18,11 +18,11 @@ namespace MrCMS.Web.Apps.Ecommerce.UrlGenerators
 
         public override string GetUrl(string pageName, Webpage parent, bool useHierarchy)
         {
-            var categoryUrl = _settings.CategoryUrl ?? "{0}";
+            var prefix = !string.IsNullOrWhiteSpace(_settings.CategoryUrl) ? _settings.CategoryUrl : "{0}";
 
             var stringBuilder = new StringBuilder();
 
-            stringBuilder.Append(string.Format(categoryUrl, SeoHelper.TidyUrl(pageName)));
+            stringBuilder.Append(string.Format(prefix, SeoHelper.TidyUrl(pageName)));
 
             return stringBuilder.ToString();
         }
