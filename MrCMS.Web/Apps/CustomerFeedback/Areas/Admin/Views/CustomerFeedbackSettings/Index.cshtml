@@ -1,0 +1,38 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.CustomerFeedback.Settings.CustomerFeedbackSettings
+
+@using (Html.BeginForm("Save", "CustomerFeedbackSettings", FormMethod.Post))
+{
+    <fieldset>
+        
+        <legend>
+            Customer Feedback Settings
+            <span class="btn-group pull-right display-inline">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </span>
+        </legend>
+
+        <div class="form-group">
+            @Html.InlineCheckboxFor(x => x.IsEnabled)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.NotificationEmailAddresses)
+            @Html.TextBoxFor(x => x.NotificationEmailAddresses, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.NotificationEmailAddresses)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.SendFeedbackStartDate)
+            @Html.EditorFor(x => x.SendFeedbackStartDate, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.SendFeedbackStartDate)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.TimeAfterOrderToSendFeedbackEmail)
+            @Html.TextBoxFor(x => x.TimeAfterOrderToSendFeedbackEmail, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.TimeAfterOrderToSendFeedbackEmail)
+        </div>
+
+    </fieldset>
+}

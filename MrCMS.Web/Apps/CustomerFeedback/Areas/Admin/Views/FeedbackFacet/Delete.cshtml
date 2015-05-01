@@ -1,0 +1,20 @@
+﻿@model MrCMS.Web.Apps.CustomerFeedback.Entities.FeedbackFacet
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+}
+@using (Html.BeginForm("Delete", "FeedbackFacet", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Delete Feedback Facet
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" class="btn-danger btn" value="Delete" />
+            </span>
+        </legend>
+
+        <p>
+            Are you sure you wish to delete this feedback facet?, this can not be undone.
+        </p>
+
+    </fieldset>
+}

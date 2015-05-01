@@ -1,0 +1,46 @@
+﻿@using MrCMS.Paging
+@using MrCMS.Web.Apps.CustomerFeedback.Entities
+@model MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Models.FeedbackFacetAdminSearchQuery     
+@{
+    var results = ViewData["results"] as IPagedList<FeedbackFacet> ?? PagedList<FeedbackFacet>.Empty;
+}
+
+<fieldset>
+    <legend>
+        Feedback Facets
+        <span class="btn-group display-inline pull-right">
+            @Html.ActionLink("Add", "Add", "FeedbackFacet", new { id = "" }, new { @class = "btn btn-primary", data_toggle = "fb-modal" })
+        </span>
+    </legend>
+    
+    @if (results.Any())
+    {
+        <table class="table table-hover table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var result in results)
+                {
+                    <tr>
+                        <td>@result.Name</td>
+                        <td>
+                            <div class="btn-group">
+                                @Html.ActionLink("Edit", "Edit", "FeedbackFacet", new { id = result.Id }, new { @class = "btn btn-default btn-xs", data_toggle = "fb-modal" })
+                                @Html.ActionLink("Delete", "Delete", "FeedbackFacet", new { id = result.Id }, new { @class = "btn btn-danger btn-xs", data_toggle = "fb-modal" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No feedback facets to display.</p>
+    }
+
+</fieldset>
