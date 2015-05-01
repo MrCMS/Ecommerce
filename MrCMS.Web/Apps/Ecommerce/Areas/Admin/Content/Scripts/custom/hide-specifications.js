@@ -1,6 +1,6 @@
 $(function () {
     $('button#close').click(function () {
-        parent.$.fancybox.close();
+        parent.$.featherlight.close();
         return false;
     });
 

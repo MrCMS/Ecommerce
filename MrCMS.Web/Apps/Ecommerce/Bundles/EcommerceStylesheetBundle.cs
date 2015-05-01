@@ -5,11 +5,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Bundles
 {
     public class EcommerceStylesheetBundle : IStylesheetBundle
     {
+        public const string BundleUrl = "~/ecommerce/stylesheets";
+
         public string Url 
         {
             get
             {
-                return "~/ecommerce/stylesheets/apps";
+                return BundleUrl;
             }
         }
 

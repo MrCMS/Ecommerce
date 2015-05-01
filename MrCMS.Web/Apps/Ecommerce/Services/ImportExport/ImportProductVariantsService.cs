@@ -66,20 +66,19 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.ImportExport
                 if (!string.IsNullOrEmpty(item.ETag))
                 {
                     var eTag = _eTagAdminService.GetETagByName(item.ETag);
-                    if (eTag != null)
-                        productVariant.ETag = eTag;
-                    else
+                    if (eTag == null)
                     {
-                        _eTagAdminService.Add(new ETag
+                        eTag = new ETag
                         {
                             Name = item.ETag
-                        });
-
-                        var tag = _eTagAdminService.GetETagByName(item.ETag);
-                        if(tag != null)
-                            productVariant.ETag = tag;
+                        };
+                        _eTagAdminService.Add(eTag);
                     }
+
+                    productVariant.ETag = eTag;
                 }
+                else
+                    productVariant.ETag = null;
 
                 List<KeyValuePair<string, string>> optionsToAdd =
                     item.Options.Where(
