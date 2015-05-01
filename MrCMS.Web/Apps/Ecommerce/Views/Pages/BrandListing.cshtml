@@ -7,7 +7,9 @@
 @{
     var brands = ViewData[BrandListingController.BrandsKey] as IPagedList<Brand> ?? BasePagedList<Brand>.Empty;
 }
-<div class="row">
+<h1>@Editable(Model, page => page.Name)</h1>
+@Editable(Model, page => page.BodyContent, true)
+
     @foreach (var chunk in brands.Chunk(4))
     {
         var p = 1;
@@ -45,4 +47,3 @@
             }
         </div>
     }
-</div>
