@@ -14,11 +14,11 @@
                 function (response) {
                     parent.$.get('/Admin/Apps/Ecommerce/Product/Specifications/' + pId, function (products) {
                         parent.$('#specification-list').replaceWith(products);
-                        parent.$.fancybox.close();
+                        parent.$.featherlight.close();
                     });
                 });
         } else {
-            parent.$.fancybox.close();
+            parent.$.featherlight.close();
         }
     };
     var updateValues = function (event) {
