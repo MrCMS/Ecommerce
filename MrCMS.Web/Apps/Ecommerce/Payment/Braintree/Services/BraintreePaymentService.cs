@@ -31,14 +31,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services
         //JsonResult
         public string GenerateClientToken()
         {
-            var gateway = new BraintreeGateway
-            {
-                Environment =
-                    _braintreeSettings.UseSandbox ? Environment.SANDBOX : Environment.PRODUCTION,
-                MerchantId = _braintreeSettings.MerchantId,
-                PublicKey = _braintreeSettings.PublicKey,
-                PrivateKey = _braintreeSettings.PrivateKey
-            };
+            var gateway = GetGateway();
 
             var clientToken = gateway.ClientToken.generate();
 
