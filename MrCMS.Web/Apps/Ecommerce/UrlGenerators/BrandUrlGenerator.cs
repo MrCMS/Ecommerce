@@ -18,7 +18,7 @@ namespace MrCMS.Web.Apps.Ecommerce.UrlGenerators
 
         public override string GetUrl(string pageName, Webpage parent, bool useHierarchy)
         {
-            var brandUrl = _settings.BrandUrl ?? "{0}";
+            var prefix = !string.IsNullOrWhiteSpace(_settings.BrandUrl) ? _settings.BrandUrl : "{0}";
 
             var stringBuilder = new StringBuilder();
 
@@ -27,7 +27,7 @@ namespace MrCMS.Web.Apps.Ecommerce.UrlGenerators
                 stringBuilder.Insert(0, SeoHelper.TidyUrl(parent.UrlSegment) + "/");
             }
 
-            stringBuilder.Append(string.Format(brandUrl, SeoHelper.TidyUrl(pageName)));
+            stringBuilder.Append(string.Format(prefix, SeoHelper.TidyUrl(pageName)));
 
             return stringBuilder.ToString();
         }

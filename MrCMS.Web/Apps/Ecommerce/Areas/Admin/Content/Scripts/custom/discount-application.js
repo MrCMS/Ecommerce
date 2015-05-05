@@ -20,7 +20,7 @@
         $.post(form.attr('action'), form.serialize(), function (response) {
             if (response) {
                 parent.$(parent.document).trigger('reload-applications');
-                parent.$.fancybox.close();
+                parent.$.featherlight.close();
             }
         });
     }
