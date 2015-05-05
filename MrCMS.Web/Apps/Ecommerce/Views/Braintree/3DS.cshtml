@@ -1,0 +1,33 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Models.BraintreePaymentDetailsModel
+@{
+    var token = ViewData["token"] as string;
+    var total = ViewData["total-to-pay"] is decimal ? (decimal) ViewData["total-to-pay"] : 0;
+}
+
+<script type="text/javascript">
+    var client = new braintree.api.Client({ clientToken: "@token" });
+    client.verify3DS({
+        amount: "@total",
+        creditCard: {
+            number: "@Model.CardNumber",
+            expirationMonth: "@Model.ExpirationMonth",
+            expirationYear: "@Model.ExpirationYear",
+            cvv: "@Model.CVV",
+            billingAddress: {
+                postalCode: "@Model.PostalCode"
+            }
+        }
+    }, function (error, response) {
+        if (!error) {
+            // 3D Secure finished. Using response.nonce you may proceed with the transaction with the associated server side parameters below.
+            console.log("3ds finished");
+            console.log("Response : " + response.nonce);
+        } else {
+            console.log(error.message);
+            // Handle errors
+            //var p = document.createElement("p");
+            //p.innerHTML = error.message;
+            //document.body.appendChild(p);
+        }
+    });
+</script>

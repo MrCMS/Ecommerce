@@ -1266,6 +1266,7 @@
     <Compile Include="Apps\Ecommerce\Parsing\ProductParser.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Braintree\BraintreePaymentMethod.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Braintree\BraintreeSettings.cs" />
+    <Compile Include="Apps\Ecommerce\Payment\Braintree\Models\BraintreePaymentDetailsModel.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Braintree\Models\BraintreePostModel.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Braintree\Models\BraintreeResponse.cs" />
     <Compile Include="Apps\Ecommerce\Payment\Braintree\Services\BraintreePaymentService.cs" />
@@ -2360,7 +2361,7 @@
     <Content Include="Apps\Ecommerce\Content\Images\topoffer.png" />
     <Content Include="Apps\Ecommerce\Content\Images\xboxone.gif" />
     <Content Include="Apps\Ecommerce\Content\Scripts\bootstrap.dropdown.js" />
-    <Content Include="Apps\Ecommerce\Content\Scripts\braintree-setup.js" />
+    <Content Include="Apps\Ecommerce\Content\Scripts\Braintree\verify.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\contact-us.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\async-paging.js" />
     <Content Include="Apps\Ecommerce\Content\Scripts\custom\cart.js" />
@@ -4247,6 +4248,7 @@
     <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BraintreeSettings\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Braintree\Form.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Braintree\3DS.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />

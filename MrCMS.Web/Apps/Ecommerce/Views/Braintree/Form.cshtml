@@ -1,6 +1,10 @@
 ﻿@using MrCMS.Web.Areas.Admin.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Models.BraintreePostModel
-
+@model MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Models.BraintreePaymentDetailsModel
+@{
+    var token = ViewData["token"] as string;
+    var expiryMonths = ViewData["expiry-months"] as IEnumerable<SelectListItem>;
+    var expiryYears = ViewData["expiry-years"] as IEnumerable<SelectListItem>;
+}
 @if (TempData.ErrorMessages().Any())
 {
     <div class="alert alert-danger" role="alert">
@@ -8,17 +12,121 @@
     </div>
 }
 
-@using (Html.BeginForm("MakePayment", "Braintree", FormMethod.Post))
+@using (Html.BeginForm("MakePayment", "Braintree", FormMethod.Post, new { id = "braintree-checkout" }))
 {
-    <div id="dropin"></div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.CardNumber)
+        @Html.TextBoxFor(x => x.CardNumber, new { @class = "form-control", data_braintree_name = "number" })
+        @Html.ValidationMessageFor(x => x.CardNumber)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.CardholderName)
+        @Html.TextBoxFor(x => x.CardholderName, new { @class = "form-control", data_braintree_name = "cardholder_name" })
+        @Html.ValidationMessageFor(x => x.CardholderName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.CVV)
+        @Html.TextBoxFor(x => x.CVV, new { @class = "form-control", data_braintree_name = "cvv" })
+        @Html.ValidationMessageFor(x => x.CVV)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.ExpirationMonth)
+        @Html.DropDownListFor(x => x.ExpirationMonth, expiryMonths, new { @class = "form-control", data_braintree_name = "expiration_month" })
+        @Html.ValidationMessageFor(x => x.ExpirationMonth)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.ExpirationYear)
+        @Html.DropDownListFor(x => x.ExpirationYear, expiryYears, new { @class = "form-control", data_braintree_name = "expiration_year" })
+        @Html.ValidationMessageFor(x => x.ExpirationYear)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.PostalCode)
+        @Html.TextBoxFor(x => x.PostalCode, new { @class = "form-control", data_braintree_name = "postal_code" })
+        @Html.ValidationMessageFor(x => x.PostalCode)
+    </div>
+
     <input type="submit" value="@Resource("Confirm Order")" class="btn btn-primary btn-lg">
 }
+<script type="text/javascript">
+    @*braintree.setup("@token", "custom",
+        { id: "braintree-checkout" }
+    );*@
 
-@*<script src="https://js.braintreegateway.com/v2/braintree.js"></script>*@
-<script>
-    braintree.setup(
-      "@Model.ClientToken",
-      'dropin', {
-          container: 'dropin'
-      });
+
+    var client = new braintree.api.Client({ clientToken: "@token" });
+    client.verify3DS({
+        amount: 19.98,
+        creditCard: {
+            number: "4000000000000002",
+            expirationMonth: "12",
+            expirationYear: "2020",
+            cvv: "832",
+            billingAddress: {
+                postalCode: "NE38 7TA"
+            }
+        }
+    }, function(error, response) {
+        if (!error) {
+            // 3D Secure finished. Using response.nonce you may proceed with the transaction with the associated server side parameters below.
+            console.log("3ds finished");
+            console.log("Response : " + response.nonce);
+        } else {
+            console.log(error.message);
+            // Handle errors
+            //var p = document.createElement("p");
+            //p.innerHTML = error.message;
+            //document.body.appendChild(p);
+        }
+    });
+
+    //client.verify3DS({
+    //    amount: 500,
+    //    creditCard: {
+    //        number: "4010000000000018",
+    //        expirationMonth: "12",
+    //        expirationYear: "2020"
+    //    }
+    //}, function (error, response) {
+    //    var liabilityShifted = response.verificationDetails.liabilityShifted; // true || false
+    //    var liabilityShiftPossible = response.verificationDetails.liabilityShiftPossible; // true || false
+    //});
+
+
+
+
+    //(function ($) {
+    //    function getForm() {
+    //        return $("#braintree-checkout");
+    //    }
+
+    //    function something() {
+    //        var form = getForm();
+    //    }
+
+    //    function tokenize() {
+    //        client.tokenizeCard({
+    //            number: "4111111111111111",
+    //            cardholderName: "John",
+    //            expirationMonth: "10",
+    //            expirationYear: "2015",
+    //            cvv: "832",
+    //            // Address if AVS is on
+    //            billingAddress: {
+    //                postalCode: "94107"
+    //            }
+    //        }, function(err, nonce) {
+    //            // Send nonce to your server
+    //        });
+    //    }
+
+    //    $(function () {
+    //        //$(document).on("click", "#test", tokenize);
+    //    });
+
+    //})(jQuery);
 </script>
