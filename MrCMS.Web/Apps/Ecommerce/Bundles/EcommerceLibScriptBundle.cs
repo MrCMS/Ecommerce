@@ -5,9 +5,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Bundles
 {
     public class EcommerceLibScriptBundle : IScriptBundle
     {
+        public const string BundleUrl = "~/ecommerce/scripts";
+
         public string Url
         {
-            get { return "~/ecommerce/scripts/lib"; }
+            get { return BundleUrl; }
         }
 
         public IEnumerable<string> Files

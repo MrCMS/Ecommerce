@@ -15,7 +15,7 @@
         $.post(form.attr('action'), form.serialize(), function(response) {
             if (response) {
                 parent.$(parent.document).trigger('reload-limitations');
-                parent.$.fancybox.close();
+                parent.$.featherlight.close();
             }
         });
     }

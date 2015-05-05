@@ -19,7 +19,7 @@
                         parent.$.post('/Admin/Webpage/Edit/' + productId, { "Brand.Id": response }, function (resp) {
                             parent.$.get('/Admin/Apps/Ecommerce/Product/Brands', { Id: productId }, function (brands) {
                                 parent.$('#brands').html(brands);
-                                parent.$.fancybox.close();
+                                parent.$.featherlight.close();
                             });
                         });
                     }

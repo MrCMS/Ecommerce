@@ -1,6 +1,7 @@
 ﻿@using System.Web.Optimization
 @using MrCMS.Helpers
 @using MrCMS.Settings
+@using MrCMS.Web.Apps.Ecommerce.Bundles
 @using MrCMS.Website
 @using StackExchange.Profiling
 @model MrCMS.Entities.Documents.Web.Webpage
@@ -12,7 +13,7 @@
     <meta name="description" content="@Model.MetaDescription" />
     <meta name="keywords" content="@Model.MetaKeywords" />
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    @Styles.Render("~/ecommerce/stylesheets/apps")
+    @Styles.Render(EcommerceStylesheetBundle.BundleUrl)
     @{
         Html.AddAppUIStylesheets();
     }
@@ -34,7 +35,7 @@
     @RenderBody()
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-    @Scripts.Render("~/ecommerce/scripts/lib")
+    @Scripts.Render(EcommerceLibScriptBundle.BundleUrl)
     @{ 
      Html.AddAppUIScripts();
     }
