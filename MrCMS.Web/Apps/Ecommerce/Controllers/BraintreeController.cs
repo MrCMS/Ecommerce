@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Services;
+using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Models;
 using MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services;
@@ -12,22 +13,27 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly IBraintreePaymentService _braintreePaymentService;
         private readonly IUniquePageService _uniquePageService;
+        private readonly CartModel _cartModel;
 
-        public BraintreeController(IBraintreePaymentService braintreePaymentService, IUniquePageService uniquePageService)
+        public BraintreeController(IBraintreePaymentService braintreePaymentService, 
+            IUniquePageService uniquePageService, CartModel cartModel)
         {
             _braintreePaymentService = braintreePaymentService;
             _uniquePageService = uniquePageService;
+            _cartModel = cartModel;
         }
 
         [HttpGet]
         public PartialViewResult Form()
         {
-            var token = _braintreePaymentService.GenerateClientToken();
-            return PartialView(new BraintreePostModel { ClientToken = token }); //get
+            ViewData["expiry-months"] = _braintreePaymentService.ExpiryMonths();
+            ViewData["expiry-years"] = _braintreePaymentService.ExpiryYears();
+            ViewData["token"] = _braintreePaymentService.GenerateClientToken();
+            return PartialView(new BraintreePaymentDetailsModel{ PostalCode = _cartModel.BillingAddress.PostalCode});
         }
 
         [HttpPost]
-        public ActionResult MakePayment(FormCollection collection)
+        public ActionResult MakePayment(FormCollection collection)//BraintreePaymentDetailsModel model
         {
             BraintreeResponse response = _braintreePaymentService.MakePayment(collection);
 
@@ -40,7 +46,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return _uniquePageService.RedirectTo<PaymentDetails>();
         }
 
-
+        public ActionResult Braintree3DSecure(BraintreePaymentDetailsModel details, string clientToken)
+        {
+            ViewData["total-to-pay"] = _cartModel.TotalToPay;
+            return PartialView(details);
+        }
+        
         public JsonResult GetToken()
         {
             return Json(_braintreePaymentService.GenerateClientToken(), JsonRequestBehavior.AllowGet);
