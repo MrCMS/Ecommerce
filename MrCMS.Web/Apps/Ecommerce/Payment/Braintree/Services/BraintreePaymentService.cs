@@ -38,9 +38,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services
             return clientToken;
         }
 
-        public BraintreeResponse MakePayment(FormCollection collection)
+        public BraintreeResponse MakePayment(string nonce)
         {
-            string nonce = collection["payment_method_nonce"]; // get nonce
             BraintreeGateway braintreeGateway = GetGateway();
             TransactionRequest request = new TransactionRequest
             {
@@ -71,14 +70,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services
                 // Success
                 return new BraintreeResponse { Success = true, Order = order };
             }
-
-
-            if (result.Transaction.GatewayRejectionReason == TransactionGatewayRejectionReason.THREE_D_SECURE)
-            {
-
-
-            }
-
 
             // error return
             List<string> errorList =
