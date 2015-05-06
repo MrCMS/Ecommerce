@@ -29,13 +29,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             ViewData["expiry-months"] = _braintreePaymentService.ExpiryMonths();
             ViewData["expiry-years"] = _braintreePaymentService.ExpiryYears();
             ViewData["token"] = _braintreePaymentService.GenerateClientToken();
-            return PartialView(new BraintreePaymentDetailsModel{ PostalCode = _cartModel.BillingAddress.PostalCode});
+            return PartialView(new BraintreePaymentDetailsModel{ PostalCode = _cartModel.BillingAddress.PostalCode, TotalToPay = _cartModel.TotalToPay });
         }
 
         [HttpPost]
-        public ActionResult MakePayment(FormCollection collection)//BraintreePaymentDetailsModel model
+        public ActionResult MakePayment(string nonce, bool liabilityShifted, bool liabilityShiftPossible)
         {
-            BraintreeResponse response = _braintreePaymentService.MakePayment(collection);
+            BraintreeResponse response = _braintreePaymentService.MakePayment(nonce);
 
             if (response.Success)
             {
@@ -46,15 +46,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return _uniquePageService.RedirectTo<PaymentDetails>();
         }
 
-        public ActionResult Braintree3DSecure(BraintreePaymentDetailsModel details, string clientToken)
-        {
-            ViewData["total-to-pay"] = _cartModel.TotalToPay;
-            return PartialView(details);
-        }
-        
-        public JsonResult GetToken()
-        {
-            return Json(_braintreePaymentService.GenerateClientToken(), JsonRequestBehavior.AllowGet);
-        }
     }
 }

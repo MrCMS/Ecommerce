@@ -20,5 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Models
         public int ExpirationYear { get; set; }
 
         public string PostalCode { get; set; }
+
+        public decimal TotalToPay { get; set; }
     }
 }
