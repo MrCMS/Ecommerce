@@ -32,6 +32,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             ecommerceSettings.PreviousPriceText = "Was";
             ecommerceSettings.DefaultNoProductImage = mediaModel.AwatiginImage.FileUrl;
             ecommerceSettings.EnableWishlists = true;
+
+            ecommerceSettings.ProductUrl = "product/{0}";
+            ecommerceSettings.CategoryUrl = "category/{0}";
+            ecommerceSettings.BrandUrl = "brand/{0}";
+
             _configurationProvider.SaveSettings(ecommerceSettings);
 
             var paymentSettings = _configurationProvider.GetSiteSettings<PaymentSettings>();
