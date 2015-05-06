@@ -56,8 +56,7 @@
     @*braintree.setup("@token", "custom",
         { id: "braintree-checkout" }
     );*@
-
-
+    
     var client = new braintree.api.Client({ clientToken: "@token" });
     client.verify3DS({
         amount: 19.98,
@@ -75,6 +74,7 @@
             // 3D Secure finished. Using response.nonce you may proceed with the transaction with the associated server side parameters below.
             console.log("3ds finished");
             console.log("Response : " + response.nonce);
+            //post nonce to server
         } else {
             console.log(error.message);
             // Handle errors
