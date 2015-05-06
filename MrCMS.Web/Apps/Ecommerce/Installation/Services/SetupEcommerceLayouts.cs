@@ -5,6 +5,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Installation.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
+using MrCMS.Web.Apps.Ecommerce.UrlGenerators;
 using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Web.Areas.Admin.Services;
 
@@ -226,13 +227,26 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 LayoutId = layoutModel.CheckoutLayout.Id,
                 GeneratorTypeName = generatorTypeName
             });
-            //product
+            // product
             _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
             {
                 PageTypeName = typeof(Product).FullName,
                 LayoutId = layoutModel.ProductLayout.Id,
-                GeneratorTypeName = generatorTypeName
+                GeneratorTypeName = typeof(ProductUrlGenerator).FullName
             });
+            // category
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(Category).FullName,
+                GeneratorTypeName = typeof(CategoryWithHierarchyUrlGenerator).FullName
+            });
+            // brand
+            //_pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            //{
+            //    PageTypeName = typeof(Brand).FullName,
+            //    GeneratorTypeName = typeof(BrandUrlGenerator).FullName
+            //});
+
 
             // UserAccount Pages
 
