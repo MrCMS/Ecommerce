@@ -1,0 +1,7 @@
+﻿@model MrCMS.Web.Apps.Ecommerce.Pages.UserAccountInfo
+           
+<h1>@Editable(Model, page => page.Name)</h1>
+
+@{ Html.RenderPartial("ShowMessages");}
+
+@{Html.RenderAction("Form", "UserAccountInfo");}
