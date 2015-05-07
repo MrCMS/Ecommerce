@@ -241,11 +241,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 GeneratorTypeName = typeof(CategoryWithHierarchyUrlGenerator).FullName
             });
             // brand
-            //_pageDefaultsAdminService.SetDefaults(new DefaultsInfo
-            //{
-            //    PageTypeName = typeof(Brand).FullName,
-            //    GeneratorTypeName = typeof(BrandUrlGenerator).FullName
-            //});
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(Brand).FullName,
+                GeneratorTypeName = typeof(BrandUrlGenerator).FullName
+            });
 
 
             // UserAccount Pages
