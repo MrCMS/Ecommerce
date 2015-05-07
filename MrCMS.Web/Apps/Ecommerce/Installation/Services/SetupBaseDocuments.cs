@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using MrCMS.Entities.Documents.Web;
 using MrCMS.Entities.Documents.Web.FormProperties;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Pages;
@@ -94,6 +95,90 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 PublishOn = now,
             };
             _documentService.AddDocument(orderPlaced);
+
+            // User Account
+            var userAccount = new SitemapPlaceholder
+            {
+                Name = "User Account",
+                UrlSegment = "user-account",
+                RevealInNavigation = false,
+                PublishOn = now
+            };
+            _documentService.AddDocument(userAccount);
+
+            var userAccountInfo = new UserAccountInfo
+            {
+                Name = "Account Details",
+                UrlSegment = "user-account-details",
+                RevealInNavigation = false,
+                PublishOn = now,
+                Parent = userAccount
+            };
+            _documentService.AddDocument(userAccountInfo);
+
+            var userAccountPassword = new UserAccountChangePassword
+            {
+                Name = "Change Password",
+                UrlSegment = "user-account-change-password",
+                RevealInNavigation = false,
+                PublishOn = now,
+                Parent = userAccount
+            };
+            _documentService.AddDocument(userAccountPassword);
+
+            var userAccountAddresses = new UserAccountAddresses
+            {
+                Name = "Account Addresses",
+                UrlSegment = "user-account-addresses",
+                RevealInNavigation = false,
+                PublishOn = now,
+                Parent = userAccount
+            };
+            _documentService.AddDocument(userAccountAddresses);
+
+
+            var userAccountOrders = new UserAccountOrders
+            {
+                Name = "Orders",
+                UrlSegment = "user-account-orders",
+                RevealInNavigation = false,
+                PublishOn = now,
+                Parent = userAccount
+            };
+            _documentService.AddDocument(userAccountOrders);
+
+            var userOrder = new UserOrder
+            {
+                Name = "View Order",
+                UrlSegment = "user-account-orders/order",
+                RevealInNavigation = false,
+                PublishOn = now,
+                Parent = userAccountOrders
+            };
+            _documentService.AddDocument(userOrder);
+
+            var userAccountReviews = new UserAccountReviews
+            {
+                Name = "Reviews",
+                UrlSegment = "user-account-reviews",
+                RevealInNavigation = false,
+                PublishOn = now,
+                Parent = userAccount
+            };
+            _documentService.AddDocument(userAccountReviews);
+
+            var userAccountRewards = new UserAccountRewardPoints
+            {
+                Name = "Reward Points",
+                UrlSegment = "user-account-reward-points",
+                RevealInNavigation = false,
+                PublishOn = now,
+                Parent = userAccount
+            };
+            _documentService.AddDocument(userAccountRewards);
+
+            // End User Account
+
 
             //Added to cart
             var addedToCart = new ProductAddedToCart

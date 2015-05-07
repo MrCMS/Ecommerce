@@ -1,9 +1,8 @@
 ﻿@using MrCMS.Helpers
-@using MrCMS.Web.Apps.Core.Pages
 @using MrCMS.Web.Apps.Ecommerce.Entities.Orders
 @using MrCMS.Web.Apps.Ecommerce.Helpers
-@using MrCMS.Web.Apps.Ecommerce.Models
-@model MrCMS.Web.Apps.Ecommerce.Pages.UserOrder
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model UserOrder
 @{
     var order = ViewData["Order"] as Order;
 
@@ -20,7 +19,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="pull-right btn-group">
-                            <a href="@(UniquePageHelper.GetUrl<UserAccountPage>())" class="btn btn-default">Return to account</a>
+                            <a href="@(UniquePageHelper.GetUrl<UserAccountOrders>())" class="btn btn-default">Return to account</a>
                             @if (order.OrderStatus.Equals(OrderStatus.Paid))
                             {
                                 <a href="/Apps/Ecommerce/OrderPdf/ExportOrderToPdf/@order.Id" class="btn btn-primary">@Resource("Download Order Invoice")</a>
