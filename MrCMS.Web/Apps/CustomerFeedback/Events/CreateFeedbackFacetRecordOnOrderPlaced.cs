@@ -7,12 +7,12 @@ using NHibernate;
 
 namespace MrCMS.Web.Apps.CustomerFeedback.Events
 {
-    public class CreateFeedbackFacetRecordOnOrderPlaced : IOnOrderPlaced
+    public class CreateFeedbackRecordOnOrderPlaced : IOnOrderPlaced
     {
         private readonly CustomerFeedbackSettings _settings;
         private readonly ISession _session;
 
-        public CreateFeedbackFacetRecordOnOrderPlaced(CustomerFeedbackSettings settings,
+        public CreateFeedbackRecordOnOrderPlaced(CustomerFeedbackSettings settings,
             ISession session)
         {
             _settings = settings;
@@ -21,27 +21,36 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Events
 
         public void Execute(OrderPlacedArgs args)
         {
-            //if (_settings.IsEnabled)
-            //{
-            //    if (CurrentRequestData.Now > _settings.SendFeedbackStartDate)
-            //    {
-            //        // Get Feedback Facets
-            //        var facets = _session.QueryOver<FeedbackFacet>().OrderBy(x => x.DisplayOrder).Asc.Cacheable().List();
+            if (_settings.IsEnabled)
+            {
+                if (CurrentRequestData.Now > _settings.SendFeedbackStartDate)
+                {
+                    // Get Feedback Facets
+                    var facets = _session.QueryOver<FeedbackFacet>().OrderBy(x => x.DisplayOrder).Asc.Cacheable().List();
 
-            //        // Create a record
-            //        var feedbackRecord = new FeedbackRecord { Order = args.Order };
-            //        if (args.Order.User != null)
-            //            feedbackRecord.User = args.Order.User;
-                    
-            //        foreach (var facet in facets)
-            //        {
-            //            feedbackRecord.FeedbackFacetRecords.Add(new FeedbackFacetRecord { FeedbackFacet = facet });
-            //        }
+                    // Create a record
+                    var feedbackRecord = new FeedbackRecord { Order = args.Order };
+                    if (args.Order.User != null)
+                        feedbackRecord.User = args.Order.User;
 
-            //        // Save
-            //        _session.Transact(session => session.Save(feedbackRecord));
-            //    }
-            //}
+                    foreach (var facet in facets)
+                    {
+                        feedbackRecord.FeedbackFacetRecords.Add(new FeedbackFacetRecord
+                        {
+                            FeedbackFacet = facet,
+                            FeedbackRecord = feedbackRecord
+                        });
+                    }
+
+                    if (_settings.ItemFeedbackEnabled)
+                    {
+                        
+                    }
+
+                    // Save
+                    _session.Transact(session => session.Save(feedbackRecord));
+                }
+            }
         }
     }
 }

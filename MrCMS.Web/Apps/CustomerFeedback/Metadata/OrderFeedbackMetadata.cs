@@ -9,5 +9,10 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Metadata
         {
             get { return "OrderFeedback"; }
         }
+
+        public override bool RevealInNavigation
+        {
+            get { return false; }
+        }
     }
 }
