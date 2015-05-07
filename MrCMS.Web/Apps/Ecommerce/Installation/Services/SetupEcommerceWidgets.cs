@@ -248,10 +248,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             };
             _widgetService.AddWidget(searchBox);
 
-            //userlink
-            var userLinks = new UserLinks
+            // Ecommerce user links
+            var userLinks = new EcommerceUserLinks
             {
-                Name = "User Links",
+                Name = "Ecommerce User Links",
                 LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == "User Links")
             };
             _widgetService.AddWidget(userLinks);

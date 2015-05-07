@@ -1,12 +1,11 @@
 using System.Collections.Generic;
-using System.Linq;
 using MrCMS.Entities.Documents.Layout;
 using MrCMS.Entities.Documents.Web;
 using MrCMS.Services;
-using MrCMS.Web.Apps.Core.Widgets;
+using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Installation.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Widgets;
+using MrCMS.Web.Apps.Ecommerce.UrlGenerators;
 using MrCMS.Web.Areas.Admin.Models;
 using MrCMS.Web.Areas.Admin.Services;
 
@@ -16,15 +15,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
     {
         private readonly IDocumentService _documentService;
         private readonly ILayoutAreaAdminService _layoutAreaAdminService;
-        private readonly IWidgetService _widgetService;
-        private readonly IPageTemplateAdminService _pageTemplateAdminService;
         private readonly IPageDefaultsAdminService _pageDefaultsAdminService;
+        private readonly IPageTemplateAdminService _pageTemplateAdminService;
 
-        public SetupEcommerceLayouts(IDocumentService documentService, ILayoutAreaAdminService layoutAreaAdminService, IWidgetService widgetService, IPageTemplateAdminService pageTemplateAdminService, IPageDefaultsAdminService pageDefaultsAdminService)
+        public SetupEcommerceLayouts(IDocumentService documentService, ILayoutAreaAdminService layoutAreaAdminService,
+            IPageTemplateAdminService pageTemplateAdminService,
+            IPageDefaultsAdminService pageDefaultsAdminService)
         {
             _documentService = documentService;
             _layoutAreaAdminService = layoutAreaAdminService;
-            _widgetService = widgetService;
             _pageTemplateAdminService = pageTemplateAdminService;
             _pageDefaultsAdminService = pageDefaultsAdminService;
         }
@@ -63,9 +62,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 new LayoutArea {AreaName = "Footer Area 3", Layout = eCommerceLayout},
                 new LayoutArea {AreaName = "Footer Area 4", Layout = eCommerceLayout}
             };
-            
+
             _documentService.AddDocument(eCommerceLayout);
-            foreach (var area in ecommerceLayoutArea)
+            foreach (LayoutArea area in ecommerceLayoutArea)
                 _layoutAreaAdminService.SaveArea(area);
 
             layoutModel.EcommerceLayout = eCommerceLayout;
@@ -86,7 +85,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 new LayoutArea {AreaName = "Teaser4", Layout = homeLayout}
             };
             _documentService.AddDocument(homeLayout);
-            foreach (var area in homeLayoutAreas)
+            foreach (LayoutArea area in homeLayoutAreas)
                 _layoutAreaAdminService.SaveArea(area);
             layoutModel.HomeLayout = homeLayout;
             //checkout layout
@@ -107,7 +106,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             };
             _documentService.AddDocument(checkoutLayout);
 
-            foreach (var area in checkoutLayoutAreas)
+            foreach (LayoutArea area in checkoutLayoutAreas)
                 _layoutAreaAdminService.SaveArea(area);
             layoutModel.CheckoutLayout = checkoutLayout;
             //product layout
@@ -128,7 +127,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             };
 
             _documentService.AddDocument(productLayout);
-            foreach (var area in productLayoutAreas)
+            foreach (LayoutArea area in productLayoutAreas)
                 _layoutAreaAdminService.SaveArea(area);
             layoutModel.ProductLayout = productLayout;
             //category/search layout
@@ -146,7 +145,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             };
 
             _documentService.AddDocument(searchLayout);
-            foreach (var area in searchLayoutAreas)
+            foreach (LayoutArea area in searchLayoutAreas)
                 _layoutAreaAdminService.SaveArea(area);
             layoutModel.SearchLayout = searchLayout;
 
@@ -159,13 +158,30 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             };
             _documentService.AddDocument(contentLayout);
             layoutModel.ContentLayout = contentLayout;
-            
+
+            // UserAccount
+            var userAccountLayout = new Layout
+            {
+                Name = "User Account Layout",
+                UrlSegment = "_UserAccountLayout",
+                LayoutAreas = new List<LayoutArea>(),
+                Parent = eCommerceLayout
+            };
+            var userAccountAreas = new List<LayoutArea>
+            {
+                new LayoutArea {AreaName = "Right Column", Layout = userAccountLayout}
+            };
+            _documentService.AddDocument(userAccountLayout);
+            foreach (LayoutArea area in userAccountAreas)
+                _layoutAreaAdminService.SaveArea(area);
+            layoutModel.UserAccountLayout = userAccountLayout;
+
             //Page templates
             var homeTemplate = new PageTemplate
             {
                 Name = "Home Page",
-                PageType = "MrCMS.Web.Apps.Core.Pages.TextPage",
-                UrlGeneratorType = "MrCMS.Services.DefaultWebpageUrlGenerator",
+                PageType = typeof (TextPage).FullName,
+                UrlGeneratorType = typeof(DefaultWebpageUrlGenerator).FullName,
                 Layout = homeLayout
             };
             _pageTemplateAdminService.Add(homeTemplate);
@@ -178,43 +194,97 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
         private void SetPageDefaults(LayoutModel layoutModel)
         {
             //product search
+            string generatorTypeName = typeof(DefaultWebpageUrlGenerator).FullName;
+
             _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
             {
                 PageTypeName = typeof(ProductSearch).FullName,
                 LayoutId = layoutModel.SearchLayout.Id,
-                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+                GeneratorTypeName = generatorTypeName
             });
             //checkout
             _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
             {
                 PageTypeName = typeof(EnterOrderEmail).FullName,
                 LayoutId = layoutModel.CheckoutLayout.Id,
-                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+                GeneratorTypeName = generatorTypeName
             });
             _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
             {
                 PageTypeName = typeof(OrderPlaced).FullName,
                 LayoutId = layoutModel.CheckoutLayout.Id,
-                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+                GeneratorTypeName = generatorTypeName
             });
             _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
             {
                 PageTypeName = typeof(PaymentDetails).FullName,
                 LayoutId = layoutModel.CheckoutLayout.Id,
-                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+                GeneratorTypeName = generatorTypeName
             });
             _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
             {
                 PageTypeName = typeof(SetShippingDetails).FullName,
                 LayoutId = layoutModel.CheckoutLayout.Id,
-                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+                GeneratorTypeName = generatorTypeName
             });
-            //product
+            // product
             _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
             {
                 PageTypeName = typeof(Product).FullName,
                 LayoutId = layoutModel.ProductLayout.Id,
-                GeneratorTypeName = "MrCMS.Services.DefaultWebpageUrlGenerator"
+                GeneratorTypeName = typeof(ProductUrlGenerator).FullName
+            });
+            // category
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(Category).FullName,
+                GeneratorTypeName = typeof(CategoryWithHierarchyUrlGenerator).FullName
+            });
+            // brand
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(Brand).FullName,
+                GeneratorTypeName = typeof(BrandUrlGenerator).FullName
+            });
+
+
+            // UserAccount Pages
+
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(UserAccountInfo).FullName,
+                LayoutId = layoutModel.UserAccountLayout.Id,
+                GeneratorTypeName = generatorTypeName
+            });
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(UserAccountChangePassword).FullName,
+                LayoutId = layoutModel.UserAccountLayout.Id,
+                GeneratorTypeName = generatorTypeName
+            });
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(UserAccountAddresses).FullName,
+                LayoutId = layoutModel.UserAccountLayout.Id,
+                GeneratorTypeName = generatorTypeName
+            });
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(UserAccountOrders).FullName,
+                LayoutId = layoutModel.UserAccountLayout.Id,
+                GeneratorTypeName = generatorTypeName
+            });
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(UserAccountReviews).FullName,
+                LayoutId = layoutModel.UserAccountLayout.Id,
+                GeneratorTypeName = generatorTypeName
+            });
+            _pageDefaultsAdminService.SetDefaults(new DefaultsInfo
+            {
+                PageTypeName = typeof(UserAccountRewardPoints).FullName,
+                LayoutId = layoutModel.UserAccountLayout.Id,
+                GeneratorTypeName = generatorTypeName
             });
         }
     }
