@@ -112,6 +112,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services
             return addressRequest;
         }
 
+        //public CustomerRequest GetCustomer()
+        //{
+        //    var customer = new CustomerRequest
+        //    {
+        //        FirstName = _cartModel.BillingAddress.FirstName,
+        //        LastName = _cartModel.BillingAddress.LastName,
+        //        Company = _cartModel.BillingAddress.Company,
+        //        Phone = _cartModel.BillingAddress.PhoneNumber,
+        //        Email = _cartModel.OrderEmail
+        //    };
+
+        //    return customer;
+        //}
+
         public IEnumerable<SelectListItem> ExpiryMonths()
         {
             return Enumerable.Range(1, 12).BuildSelectItemList(i => i.ToString().PadLeft(2, '0'), i => i.ToString(), emptyItemText: "Month");
