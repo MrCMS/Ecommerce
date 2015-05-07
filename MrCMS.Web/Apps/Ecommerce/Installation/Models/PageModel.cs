@@ -20,6 +20,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Models
         public Layout ProductLayout { get; set; }
         public Layout SearchLayout { get; set; }
         public Layout CheckoutLayout { get; set; }
+        public Layout UserAccountLayout { get; set; }
 
     }
 
