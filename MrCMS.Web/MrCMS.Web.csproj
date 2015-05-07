@@ -1745,6 +1745,7 @@
     <Compile Include="Apps\Ecommerce\Services\UserAccount\UpdatePasswordService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\AddressService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Users\IAddressService.cs" />
+    <Compile Include="Apps\Ecommerce\Services\Widgets\GetEcommerceUserLinks.cs" />
     <Compile Include="Apps\Ecommerce\Services\Wishlists\IWishlistUIService.cs" />
     <Compile Include="Apps\Ecommerce\Services\Wishlists\WishlistUIService.cs" />
     <Compile Include="Apps\Ecommerce\Settings\EcommerceSearchCacheSettings.cs" />
@@ -1774,6 +1775,7 @@
     <Compile Include="Apps\Ecommerce\Widgets\CartWidget.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\CategoriesOnlyNavigation.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\EcommerceNavigation.cs" />
+    <Compile Include="Apps\Ecommerce\Widgets\EcommerceUserLinks.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedCategories.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\FeaturedProducts.cs" />
     <Compile Include="Apps\Ecommerce\Widgets\NotWhatYouWereLookingForWidget.cs" />
@@ -4335,6 +4337,7 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ETag\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Shared\ETagList.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\Product\ETags.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Widgets\EcommerceUserLinks.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
