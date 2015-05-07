@@ -147,6 +147,16 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             };
             _documentService.AddDocument(userAccountOrders);
 
+            var userOrder = new UserOrder
+            {
+                Name = "View Order",
+                UrlSegment = "user-account-orders/order",
+                RevealInNavigation = false,
+                PublishOn = now,
+                Parent = userAccountOrders
+            };
+            _documentService.AddDocument(userOrder);
+
             var userAccountReviews = new UserAccountReviews
             {
                 Name = "Reviews",
