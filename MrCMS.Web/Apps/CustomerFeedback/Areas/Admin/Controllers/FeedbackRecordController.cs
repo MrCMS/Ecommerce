@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Models;
 using MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Services;
+using MrCMS.Web.Apps.CustomerFeedback.Entities;
 using MrCMS.Website.Controllers;
 
 namespace MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Controllers
@@ -18,6 +19,11 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Controllers
         {
             ViewData["results"] = _service.Search(query);
             return View(query);
+        }
+
+        public ViewResult Show(FeedbackRecord record)
+        {
+            return View(record);
         }
     }
 }

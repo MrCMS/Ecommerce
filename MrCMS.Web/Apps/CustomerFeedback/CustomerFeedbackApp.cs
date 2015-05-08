@@ -1,4 +1,5 @@
 ﻿using MrCMS.Apps;
+using MrCMS.Web.Apps.CustomerFeedback.Controllers;
 using Ninject;
 
 namespace MrCMS.Web.Apps.CustomerFeedback
@@ -7,6 +8,10 @@ namespace MrCMS.Web.Apps.CustomerFeedback
     {
         protected override void RegisterApp(MrCMSAppRegistrationContext context)
         {
+            // Order Feedback
+            context.MapRoute("Order Feedback Post", "Apps/CustomerFeedback/OrderFeedback/Handle",
+                new {controller = "OrderFeedback", action = "Submit"},
+                new[] {typeof (OrderFeedbackController).Namespace});
         }
 
         public override string AppName

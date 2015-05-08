@@ -18,4 +18,11 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Entities
         public virtual bool IsCompleted { get; set; }
         public virtual bool IsSent { get; set; }
     }
+
+    public enum FeedbackRecordStatus
+    {
+        Unsent,
+        Sent,
+        Completed
+    }
 }

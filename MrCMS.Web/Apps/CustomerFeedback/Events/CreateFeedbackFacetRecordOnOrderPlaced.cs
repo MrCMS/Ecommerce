@@ -44,7 +44,11 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Events
 
                     if (_settings.ItemFeedbackEnabled)
                     {
-                        
+                        foreach (var orderLine in args.Order.OrderLines)
+                        {
+                            // Create FacetRecord for orderLine.Name
+                            
+                        }
                     }
 
                     // Save

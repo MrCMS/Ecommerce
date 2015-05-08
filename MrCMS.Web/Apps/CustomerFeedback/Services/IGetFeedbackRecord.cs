@@ -23,12 +23,12 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Services
         {
             var order = _session.QueryOver<Order>().Where(o => o.Guid == guid).Take(1).Cacheable().SingleOrDefault();
 
-            return
-                _session.QueryOver<FeedbackRecord>()
-                    .Where(o => o.Order.Id == order.Id)
-                    .Take(1)
-                    .Cacheable()
-                    .SingleOrDefault();
+            if (order == null)
+            {
+                return null;
+            }
+
+            return _session.QueryOver<FeedbackRecord>().Where(x => x.Order.Id == order.Id).Take(1).Cacheable().SingleOrDefault();
         }
     }
 }

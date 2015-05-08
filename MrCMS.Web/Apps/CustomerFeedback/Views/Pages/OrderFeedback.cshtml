@@ -1,4 +1,52 @@
-﻿@model MrCMS.Web.Apps.CustomerFeedback.Pages.OrderFeedback
-           
+﻿@using MrCMS.Web.Apps.CustomerFeedback.Entities
+@model MrCMS.Web.Apps.CustomerFeedback.Pages.OrderFeedback
+@{
+    var feedbackRecord = ViewData["model"] as FeedbackRecord ?? new FeedbackRecord();
+}
 <h1>@Model.Name</h1>
 @Html.Raw(Model.BodyContent)
+
+@if (feedbackRecord.IsCompleted)
+{
+    <div class="alert alert-success" role="alert">
+        @Resource("Order Feedback Submitted - Success", "Order Feedback Submitted.")
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-xs-12">
+
+            @using (Html.BeginForm("Submit", "OrderFeedback", FormMethod.Post))
+            {
+                @Html.Hidden("FeedbackRecordId", feedbackRecord.Id)
+                <h2>Order</h2>
+                foreach (var test in feedbackRecord.FeedbackFacetRecords)
+                {
+                    <h3>
+                        @test.FeedbackFacet.Name
+                    </h3>
+                    <div class="form-group">
+                        @Html.Label("Rating")
+                        <span class="field-validation-valid" data-valmsg-for="Rating-@test.Id" data-valmsg-replace="true"></span>
+                        <select class="form-control" id="Rating-@test.Id" name="Rating-@test.Id" data-val="true" data-val-required="A rating is required">
+                            <option value="">@Resource("Select a rating")</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Message-" + test.Id, "Message")
+                        @Html.TextArea("Message-" + test.Id, new { @class = "form-control", rows = 5 })
+                    </div>
+                }
+                
+                <button type="submit" class="btn btn-primary">@Resource("Submit")</button>
+            }
+        </div>
+    </div>
+}

@@ -1,0 +1,46 @@
+﻿@using MrCMS.Helpers
+@using MrCMS.Paging
+@using MrCMS.Web.Apps.CustomerFeedback.Entities
+@model MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Models.FeedbackRecordAdminQuery
+@{
+    var results = ViewData["results"] as IPagedList<FeedbackRecord> ?? PagedList<FeedbackRecord>.Empty;
+}
+
+<fieldset>
+    <legend>
+        Order Feedback
+    </legend>
+
+    @if (results.Any())
+    {
+        <table class="table table-condensed table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Received</th>
+                    <th>Order Id</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var result in results)
+                {
+                    <tr>
+                        <td>@result.UpdatedOn</td>
+                        <td>@result.Order.Id</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="@Url.Action("Show", "FeedbackRecord", new { id = result.Id})" class="btn btn-default btn-xs">View</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.Pager(results, "Index", page => new { page })
+    }
+    else
+    {
+        <p>No customer order feedback has been recieved yet.</p>
+    }
+
+</fieldset>

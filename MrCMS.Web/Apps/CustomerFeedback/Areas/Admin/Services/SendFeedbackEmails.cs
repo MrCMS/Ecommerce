@@ -3,6 +3,7 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.CustomerFeedback.Entities;
 using MrCMS.Web.Apps.CustomerFeedback.MessageTemplates;
 using MrCMS.Web.Apps.CustomerFeedback.Settings;
+using MrCMS.Website;
 using NHibernate;
 
 namespace MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Services
@@ -31,8 +32,8 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Services
                 _session.QueryOver<FeedbackRecord>()
                     .Where(
                         record =>
-                            record.IsSent == false && (record.CreatedOn >= _settings.SendFeedbackStartDate))
-                    //&& (record.CreatedOn.AddDays(_settings.TimeAfterOrderToSendFeedbackEmail) >= CurrentRequestData.Now))
+                            record.IsSent == false && (record.CreatedOn >= _settings.SendFeedbackStartDate) &&
+                            (record.CreatedOn.AddDays(_settings.TimeAfterOrderToSendFeedbackEmail) >= CurrentRequestData.Now))
                     .Cacheable()
                     .List();
 
@@ -40,16 +41,16 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Services
                 return;
 
             // Queue Message and mark IsSent as true foreach record
-            //foreach (var feedbackRecord in feedbackToSend)
-            //{
-            //    var queuedMessage = _messageParser.GetMessage(feedbackRecord);
-            //    if (queuedMessage != null)
-            //    {
-            //        _messageParser.QueueMessage(queuedMessage);
-            //        feedbackRecord.IsSent = true;
-            //        _session.Update(feedbackRecord);
-            //    }
-            //}
+            foreach (var feedbackRecord in feedbackToSend)
+            {
+                var queuedMessage = _messageParser.GetMessage(feedbackRecord);
+                if (queuedMessage != null)
+                {
+                    _messageParser.QueueMessage(queuedMessage);
+                    feedbackRecord.IsSent = true;
+                    _session.Update(feedbackRecord);
+                }
+            }
         }
     }
 }

@@ -1,0 +1,31 @@
+﻿@model MrCMS.Web.Apps.CustomerFeedback.Entities.FeedbackRecord
+
+<fieldset>
+    <legend>
+        Order #@Model.Order.Id Feedback
+        <span class="pull-right display-inline btn-group">
+            <a href="@Url.Action("Index", "FeedbackRecord")" class="btn btn-default">Back</a>
+        </span>
+    </legend>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Facet</th>
+                <th>Rating</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.FeedbackFacetRecords.ToList())
+            {
+                <tr>
+                    <td>@item.FeedbackFacet.Name</td>
+                    <td>@item.Rating</td>
+                    <td>@item.Message</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</fieldset>

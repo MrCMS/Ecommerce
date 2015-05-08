@@ -24,7 +24,8 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Models
             {
                 new ChildMenuItem("Settings", _urlHelper.Action("Index", "CustomerFeedbackSettings"),
                     ACLOption.Create(new CustomerFeedbackSettingsACL(), CustomerFeedbackSettingsACL.View)),
-                    new ChildMenuItem("Facets", _urlHelper.Action("Index", "FeedbackFacet"))
+                new ChildMenuItem("Order Feedback Facets", _urlHelper.Action("Index", "FeedbackFacet")),
+                new ChildMenuItem("Order Feedback", _urlHelper.Action("Index", "FeedbackRecord"))
             };
         }
     }

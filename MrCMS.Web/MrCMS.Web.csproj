@@ -565,6 +565,8 @@
     <Compile Include="Apps\CustomerFeedback\Entities\FeedbackFacetRecord.cs" />
     <Compile Include="Apps\CustomerFeedback\Entities\FeedbackRecord.cs" />
     <Compile Include="Apps\CustomerFeedback\Events\CreateFeedbackFacetRecordOnOrderPlaced.cs" />
+    <Compile Include="Apps\CustomerFeedback\Events\CustomerCorrespondenceRecieved.cs" />
+    <Compile Include="Apps\CustomerFeedback\Events\InitialOrderFeedbackRecieved.cs" />
     <Compile Include="Apps\CustomerFeedback\MessageTemplates\CustomerFeedbackMessageTemplate.cs" />
     <Compile Include="Apps\CustomerFeedback\MessageTemplates\CustomerServiceReplyMessageTemplate.cs" />
     <Compile Include="Apps\CustomerFeedback\MessageTemplates\GetDefaultCustomerFeedbackMessageTemplate.cs" />
@@ -572,9 +574,15 @@
     <Compile Include="Apps\CustomerFeedback\MessageTemplates\TokenProviders\FeedbackRecordTokenProvider.cs" />
     <Compile Include="Apps\CustomerFeedback\Metadata\CustomerInteractionMetadata.cs" />
     <Compile Include="Apps\CustomerFeedback\Metadata\OrderFeedbackMetadata.cs" />
+    <Compile Include="Apps\CustomerFeedback\ModelBinders\OrderFeedbackByGuidModelBinder.cs" />
+    <Compile Include="Apps\CustomerFeedback\ModelBinders\SubmitOrderFeedbackModelBinder.cs" />
     <Compile Include="Apps\CustomerFeedback\Pages\CustomerInteraction.cs" />
     <Compile Include="Apps\CustomerFeedback\Pages\OrderFeedback.cs" />
+    <Compile Include="Apps\CustomerFeedback\Services\GetCustomerInteraction.cs" />
+    <Compile Include="Apps\CustomerFeedback\Services\IGetCustomerInteraction.cs" />
     <Compile Include="Apps\CustomerFeedback\Services\IGetFeedbackRecord.cs" />
+    <Compile Include="Apps\CustomerFeedback\Services\IUpdateFeedbackRecord.cs" />
+    <Compile Include="Apps\CustomerFeedback\Services\UpdateFeedbackRecord.cs" />
     <Compile Include="Apps\CustomerFeedback\Settings\CustomerFeedbackSettings.cs" />
     <Compile Include="Apps\CustomerFeedback\Tasks\SendFeedbackEmailTask.cs" />
     <Compile Include="Apps\Ecommerce\ACL\BrandACL.cs" />
@@ -4320,6 +4328,8 @@
     <Content Include="Apps\CustomerFeedback\Areas\Admin\Views\Webpage\OrderFeedback.cshtml" />
     <Content Include="Apps\CustomerFeedback\Views\Pages\CustomerInteraction.cshtml" />
     <Content Include="Apps\CustomerFeedback\Views\Pages\OrderFeedback.cshtml" />
+    <Content Include="Apps\CustomerFeedback\Areas\Admin\Views\FeedbackRecord\Index.cshtml" />
+    <Content Include="Apps\CustomerFeedback\Areas\Admin\Views\FeedbackRecord\Show.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />

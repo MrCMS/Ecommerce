@@ -19,8 +19,10 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Services
         {
             return
                 _session.QueryOver<FeedbackRecord>()
-                    .OrderBy(x => x.CreatedOn)
-                    .Desc.Cacheable()
+                    .Where(x => x.IsCompleted)
+                    .OrderBy(x => x.UpdatedOn)
+                    .Desc
+                    .Cacheable()
                     .List()
                     .ToPagedList(query.Page);
         }

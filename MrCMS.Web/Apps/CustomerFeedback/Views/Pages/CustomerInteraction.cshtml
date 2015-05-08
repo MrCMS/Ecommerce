@@ -1,3 +1,38 @@
-﻿@model MrCMS.Web.Apps.CustomerFeedback.Pages.CustomerInteraction
-<h1>@Model.Name</h1>
-@Html.Raw(Model.BodyContent)
+﻿@using MrCMS.Web.Apps.CustomerFeedback.Entities
+@using MrCMS.Web.Apps.Ecommerce.Entities.Orders
+@model MrCMS.Web.Apps.CustomerFeedback.Pages.CustomerInteraction
+@{
+    var order = ViewData["order"] as Order;
+    var records = ViewData["interaction"] as IList<CorrespondenceRecord> ?? new List<CorrespondenceRecord>();
+}
+
+@if (order != null)
+{
+    <h1>Customer Interaction for Order #@order.Id</h1>
+    @Html.Raw(Model.BodyContent)
+
+    if (records.Any())
+    {
+        foreach (var correspondenceRecord in records)
+        {
+            <div class="">
+                @correspondenceRecord.CreatedOn
+
+                @correspondenceRecord.CorrespondenceDirection
+
+                @correspondenceRecord.MessageInfo
+            </div>
+        }
+    }
+    else
+    {
+        <p>No customer interaction records for this order.</p>
+    }
+}
+else
+{
+    <div class="alert alert-danger" role="alert">
+        Invalid order
+    </div>
+}
+

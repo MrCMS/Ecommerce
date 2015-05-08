@@ -1,45 +1,55 @@
-using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using MrCMS.Web.Apps.CustomerFeedback.Entities;
+using MrCMS.Web.Apps.CustomerFeedback.ModelBinders;
 using MrCMS.Web.Apps.CustomerFeedback.Pages;
 using MrCMS.Web.Apps.CustomerFeedback.Services;
 using MrCMS.Website.Binders;
 using MrCMS.Website.Controllers;
-using Ninject;
 
 namespace MrCMS.Web.Apps.CustomerFeedback.Controllers
 {
     public class OrderFeedbackController : MrCMSAppUIController<CustomerFeedbackApp>
     {
+        private readonly IUpdateFeedbackRecord _updateFeedbackRecord;
+
+        public OrderFeedbackController(IUpdateFeedbackRecord updateFeedbackRecord)
+        {
+            _updateFeedbackRecord = updateFeedbackRecord;
+        }
+
         public ActionResult Show(OrderFeedback page, [IoCModelBinder(typeof(OrderFeedbackByGuidModelBinder))] FeedbackRecord record)
         {
             if (record == null)
-                return Redirect("~/"); // Invalid GUID
+                return Redirect("~/");
 
+            ViewData["model"] = record;
 
             return View(page);
         }
+
+        [HttpPost]
+        public ActionResult Submit([IoCModelBinder(typeof(SubmitOrderFeedbackModelBinder))] List<FeedbackFacetRecordModel> records)
+        {
+            _updateFeedbackRecord.Update(records);
+            return Redirect("~/");
+        }
     }
 
-    public class OrderFeedbackByGuidModelBinder : MrCMSDefaultModelBinder
+    public class UpdateFeedbackModel
     {
-        private readonly IGetFeedbackRecord _getFeedbackRecord;
-
-        public OrderFeedbackByGuidModelBinder(IKernel kernel, IGetFeedbackRecord getFeedbackRecord) : base(kernel)
+        public UpdateFeedbackModel()
         {
-            _getFeedbackRecord = getFeedbackRecord;
+            FacetRecords = new List<FeedbackFacetRecord>();
         }
+        public int FeedbackRecordId { get; set; }
+        public List<FeedbackFacetRecord> FacetRecords { get; set; } 
+    }
 
-        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
-        {
-            Guid guid;
-
-            return
-                Guid.TryParse(
-                    GetValueFromContext(controllerContext, "guid") ??
-                    Convert.ToString(controllerContext.RouteData.Values["guid"]), out guid)
-                    ? _getFeedbackRecord.GetByOrderGuid(guid)
-                    : null;
-        }
+    public class FeedbackFacetRecordModel
+    {
+        public int Id { get; set; }
+        public int Rating { get; set; }
+        public string Message { get; set; }
     }
 }
