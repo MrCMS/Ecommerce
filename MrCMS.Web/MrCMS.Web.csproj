@@ -4366,7 +4366,6 @@
     <Folder Include="Apps\Ecommerce\Content\Scripts\charts\" />
     <Folder Include="Apps\Ecommerce\Entities\Search\" />
     <Folder Include="Apps\Ecommerce\Models\Shipping\" />
-    <Folder Include="Apps\Ecommerce\Queries\" />
     <Folder Include="Apps\Ecommerce\Services\Inventory\StockReport\" />
     <Folder Include="Apps\Ecommerce\Services\Search\" />
     <Folder Include="Apps\Ecommerce\Views\PaymentMethod\" />
