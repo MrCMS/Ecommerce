@@ -20,13 +20,13 @@ namespace MrCMS.Web.Apps.CustomerFeedback.MessageTemplates
             return new InitialCustomerServiceMessageTemplate
             {
                 FromName = fromName,
-                FromAddress = "",
+                FromAddress = "admin@yoursite.com",
                 ToName = "{OrderName}",
                 ToAddress = "{OrderEmail}",
                 Cc = string.Empty,
                 Bcc = string.Empty,
-                Subject = "Customer Services - ",
-                Body = "<p></p>",
+                Subject = "Customer Services - Feedback - Order {OrderId}",
+                Body = "{MessageInfo}<p>View more information by clicking <a href='{InteractionPageUrl}'>here</a></p>",
                 IsHtml = true
             };
         }

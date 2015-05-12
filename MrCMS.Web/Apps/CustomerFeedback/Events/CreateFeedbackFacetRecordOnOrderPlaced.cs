@@ -44,7 +44,7 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Events
                     {
                         foreach (var facet in facets)
                         {
-                            feedbackRecord.FeedbackFacetRecords.Add(new FeedbackFacetRecord
+                            feedbackRecord.FeedbackRecords.Add(new FeedbackFacetRecord
                             {
                                 FeedbackFacet = facet,
                                 FeedbackRecord = feedbackRecord
@@ -57,7 +57,7 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Events
                     {
                         foreach (var item in order.OrderLines.ToList())
                         {
-                            feedbackRecord.ProductVariantFeedbackRecords.Add(new ProductVariantFeedbackRecord
+                            feedbackRecord.FeedbackRecords.Add(new ProductVariantFeedbackRecord
                             {
                                 ProductVariant = item.ProductVariant,
                                 FeedbackRecord = feedbackRecord

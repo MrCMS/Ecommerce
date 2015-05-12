@@ -567,9 +567,10 @@
     <Compile Include="Apps\CustomerFeedback\Entities\FeedbackFacet.cs" />
     <Compile Include="Apps\CustomerFeedback\Entities\FeedbackFacetRecord.cs" />
     <Compile Include="Apps\CustomerFeedback\Entities\FeedbackRecord.cs" />
+    <Compile Include="Apps\CustomerFeedback\Events\SendCorrespondenceRecordMessage.cs" />
     <Compile Include="Apps\CustomerFeedback\Events\CreateFeedbackFacetRecordOnOrderPlaced.cs" />
     <Compile Include="Apps\CustomerFeedback\Events\CustomerCorrespondenceRecieved.cs" />
-    <Compile Include="Apps\CustomerFeedback\Events\InitialOrderFeedbackRecieved.cs" />
+    <Compile Include="Apps\CustomerFeedback\Events\OrderFeedbackRecieved.cs" />
     <Compile Include="Apps\CustomerFeedback\MessageTemplates\CustomerFeedbackMessageTemplate.cs" />
     <Compile Include="Apps\CustomerFeedback\MessageTemplates\CustomerServiceReplyMessageTemplate.cs" />
     <Compile Include="Apps\CustomerFeedback\MessageTemplates\GetDefaultCustomerFeedbackMessageTemplate.cs" />

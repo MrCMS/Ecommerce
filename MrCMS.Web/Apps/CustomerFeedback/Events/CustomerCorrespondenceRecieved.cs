@@ -1,5 +1,3 @@
-using System.Web.Mvc;
-using MrCMS.Entities.Notifications;
 using MrCMS.Events;
 using MrCMS.Services;
 using MrCMS.Services.Notifications;
