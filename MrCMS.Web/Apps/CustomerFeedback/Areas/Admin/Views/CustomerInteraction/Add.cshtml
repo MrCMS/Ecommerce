@@ -1,0 +1,29 @@
+﻿@model MrCMS.Web.Apps.CustomerFeedback.Entities.CorrespondenceRecord
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+}
+
+@using (Html.BeginForm("Add", "CustomerInteraction", new { id = "" }, FormMethod.Post))
+{
+    <fieldset>
+    <legend>
+        Add New Correspondence Record
+        <span class="btn-group display-inline pull-right">
+            <button type="submit" class="btn btn-primary">Add</button>
+        </span>
+    </legend>
+    
+    @Html.HiddenFor(x => x.CorrespondenceDirection)
+    @Html.HiddenFor(x => x.User.Id)
+    @Html.HiddenFor(x => x.Order.Id)
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.MessageInfo)
+        @Html.TextAreaFor(x => x.MessageInfo, new { @class = "form-control", rows = 6 })
+        @Html.ValidationMessageFor(x => x.MessageInfo)
+    </div>
+
+</fieldset>
+}
+
+

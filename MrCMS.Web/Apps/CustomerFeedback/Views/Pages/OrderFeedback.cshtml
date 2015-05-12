@@ -1,4 +1,5 @@
 ﻿@using MrCMS.Web.Apps.CustomerFeedback.Entities
+@using MrCMS.Web.Apps.Ecommerce.Helpers
 @model MrCMS.Web.Apps.CustomerFeedback.Pages.OrderFeedback
 @{
     var feedbackRecord = ViewData["model"] as FeedbackRecord ?? new FeedbackRecord();
@@ -16,20 +17,36 @@ else
 {
     <div class="row">
         <div class="col-xs-12">
+            
+            <h2>Order #@feedbackRecord.Order.Id</h2>
+            <ul class="list-unstyled">
+                <li><strong>Order Date:</strong> @feedbackRecord.Order.OrderDate</li>
+                <li>
+                    <strong>Items:</strong>
+                    <ul>
+                        @foreach (var orderline in feedbackRecord.Order.OrderLines)
+                        {
+                            <li>@orderline.Name &ndash; @orderline.Price.ToCurrencyFormat()</li>
+                        }
+                    </ul>
+                </li>
+                <li><strong>Postage:</strong> @feedbackRecord.Order.ShippingTotal.ToCurrencyFormat()</li>
+                <li><strong>Total:</strong> @feedbackRecord.Order.TotalPaid.ToCurrencyFormat()</li>
+            </ul>
 
             @using (Html.BeginForm("Submit", "OrderFeedback", FormMethod.Post))
             {
                 @Html.Hidden("FeedbackRecordId", feedbackRecord.Id)
-                <h2>Order</h2>
-                foreach (var test in feedbackRecord.FeedbackFacetRecords)
+                
+                foreach (var feedbackFacetRecord in feedbackRecord.FeedbackFacetRecords)
                 {
                     <h3>
-                        @test.FeedbackFacet.Name
+                        @feedbackFacetRecord.FeedbackFacet.Name
                     </h3>
                     <div class="form-group">
                         @Html.Label("Rating")
-                        <span class="field-validation-valid" data-valmsg-for="Rating-@test.Id" data-valmsg-replace="true"></span>
-                        <select class="form-control" id="Rating-@test.Id" name="Rating-@test.Id" data-val="true" data-val-required="A rating is required">
+                        <span class="field-validation-valid" data-valmsg-for="Rating-@feedbackFacetRecord.Id" data-valmsg-replace="true"></span>
+                        <select class="form-control" id="Rating-@feedbackFacetRecord.Id" name="Rating-@feedbackFacetRecord.Id" data-val="true" data-val-required="A rating is required">
                             <option value="">@Resource("Select a rating")</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -40,8 +57,8 @@ else
 
                     </div>
                     <div class="form-group">
-                        @Html.Label("Message-" + test.Id, "Message")
-                        @Html.TextArea("Message-" + test.Id, new { @class = "form-control", rows = 5 })
+                        @Html.Label("Message-" + feedbackFacetRecord.Id, "Message")
+                        @Html.TextArea("Message-" + feedbackFacetRecord.Id, new { @class = "form-control", rows = 5 })
                     </div>
                 }
                 

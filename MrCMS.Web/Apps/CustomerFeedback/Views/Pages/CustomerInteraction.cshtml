@@ -1,9 +1,20 @@
 ﻿@using MrCMS.Web.Apps.CustomerFeedback.Entities
 @using MrCMS.Web.Apps.Ecommerce.Entities.Orders
+@using MrCMS.Web.Areas.Admin.Helpers
 @model MrCMS.Web.Apps.CustomerFeedback.Pages.CustomerInteraction
 @{
     var order = ViewData["order"] as Order;
     var records = ViewData["interaction"] as IList<CorrespondenceRecord> ?? new List<CorrespondenceRecord>();
+}
+
+@if (TempData.SuccessMessages().Any())
+{
+    <div class="alert alert-success" role="alert">
+        @foreach (var message in TempData.SuccessMessages())
+        {
+            <p>@message</p>
+        }
+    </div>
 }
 
 @if (order != null)
@@ -13,21 +24,40 @@
 
     if (records.Any())
     {
-        foreach (var correspondenceRecord in records)
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Created</th>
+                    <th>User</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var correspondenceRecord in records)
+                {
+                    <tr>
+                        <td>@correspondenceRecord.CreatedOn</td>
+                        <td>@(correspondenceRecord.User != null ? correspondenceRecord.User.Name : "-")</td>
+                        <td>@correspondenceRecord.MessageInfo</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        if (records.First().CorrespondenceDirection == CorrespondenceDirection.Outgoing)
         {
-            <div class="">
-                @correspondenceRecord.CreatedOn
-
-                @correspondenceRecord.CorrespondenceDirection
-
-                @correspondenceRecord.MessageInfo
-            </div>
+            Html.RenderAction("Form", "CustomerInteraction", new { id = order.Id });
         }
+        
+        
+
     }
     else
     {
         <p>No customer interaction records for this order.</p>
     }
+    
+    
 }
 else
 {

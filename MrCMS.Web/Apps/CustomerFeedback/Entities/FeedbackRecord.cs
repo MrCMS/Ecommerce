@@ -15,14 +15,9 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Entities
         public virtual Order Order { get; set; }
         public virtual User User { get; set; }
         public virtual IList<FeedbackFacetRecord> FeedbackFacetRecords { get; set; }
+        //public virtual IList<> ProductVariantFeedbackRecords { get; set; } 
         public virtual bool IsCompleted { get; set; }
         public virtual bool IsSent { get; set; }
     }
 
-    public enum FeedbackRecordStatus
-    {
-        Unsent,
-        Sent,
-        Completed
-    }
 }

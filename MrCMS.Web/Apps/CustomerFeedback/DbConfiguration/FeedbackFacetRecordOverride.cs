@@ -5,9 +5,9 @@ using MrCMS.Web.Apps.CustomerFeedback.Entities;
 
 namespace MrCMS.Web.Apps.CustomerFeedback.DbConfiguration
 {
-    public class FeedbackFacetRecordOverride : IAutoMappingOverride<FeedbackFacetRecord>
+    public class FeedbackOverride : IAutoMappingOverride<Feedback>
     {
-        public void Override(AutoMapping<FeedbackFacetRecord> mapping)
+        public void Override(AutoMapping<Feedback> mapping)
         {
             mapping.Map(x => x.Message).MakeVarCharMax();
         }

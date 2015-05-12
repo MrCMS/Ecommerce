@@ -4,6 +4,7 @@
     <legend>
         Order #@Model.Order.Id Feedback
         <span class="pull-right display-inline btn-group">
+            <a href="@Url.Action("ShowInteraction", "CustomerInteraction", new { id = Model.Order.Id })" class="btn btn-primary">Customer Interaction</a>
             <a href="@Url.Action("Index", "FeedbackRecord")" class="btn btn-default">Back</a>
         </span>
     </legend>

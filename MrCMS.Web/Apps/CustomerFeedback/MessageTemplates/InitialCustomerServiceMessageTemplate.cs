@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using MrCMS.Messages;
+using MrCMS.Web.Apps.CustomerFeedback.Entities;
 
 namespace MrCMS.Web.Apps.CustomerFeedback.MessageTemplates
 {
-    public class InitialCustomerServiceMessageTemplate
+    public class InitialCustomerServiceMessageTemplate : MessageTemplate<CorrespondenceRecord>
     {
     }
 }

@@ -12,6 +12,11 @@ namespace MrCMS.Web.Apps.CustomerFeedback
             context.MapRoute("Order Feedback Post", "Apps/CustomerFeedback/OrderFeedback/Handle",
                 new {controller = "OrderFeedback", action = "Submit"},
                 new[] {typeof (OrderFeedbackController).Namespace});
+
+
+            context.MapRoute("Customer Interaction Post", "Apps/CustomerFeedback/CustomerInteraction/Handle",
+                new {controller = "CustomerInteraction", action = "Submit"},
+                new[] {typeof (CustomerInteractionController).Namespace});
         }
 
         public override string AppName

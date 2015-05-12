@@ -1,0 +1,44 @@
+﻿@using MrCMS.Web.Apps.CustomerFeedback.Entities
+@model MrCMS.Web.Apps.Ecommerce.Entities.Orders.Order
+
+@{
+    var messages = ViewData["data"] as IList<CorrespondenceRecord> ?? new List<CorrespondenceRecord>();
+}
+<fieldset>
+    <legend>
+        Customer Interaction for Order #@Model.Id
+        <span class="btn-group display-inline pull-right">
+            @Html.ActionLink("Add New Record", "Add", "CustomerInteraction", new { id = Model.Id }, new { @class = "btn btn-primary", data_toggle = "fb-modal" })
+        </span>
+    </legend>
+
+    @if (messages.Any())
+    {
+        <table class="table table-condensed table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Direction</th>
+                    <th>User</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var message in messages)
+                {
+                    <tr>
+                        <td>@message.CreatedOn</td>
+                        <td>@message.CorrespondenceDirection</td>
+                        <td>@(message.User != null ? message.User.Name : "-")</td>
+                        <td>@message.MessageInfo</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No customer interaction to display.</p>
+    }
+</fieldset>

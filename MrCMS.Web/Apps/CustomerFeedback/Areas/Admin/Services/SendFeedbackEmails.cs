@@ -27,13 +27,16 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Services
             if (!_settings.IsEnabled)
                 return;
 
+            var temp = CurrentRequestData.Now.AddDays(-_settings.TimeAfterOrderToSendFeedbackEmail);
+
             // Get Records that require message to be send to customer
             var feedbackToSend =
                 _session.QueryOver<FeedbackRecord>()
                     .Where(
                         record =>
-                            record.IsSent == false && (record.CreatedOn >= _settings.SendFeedbackStartDate) &&
-                            (record.CreatedOn.AddDays(_settings.TimeAfterOrderToSendFeedbackEmail) >= CurrentRequestData.Now))
+                            !record.IsSent 
+                            && record.CreatedOn >= _settings.SendFeedbackStartDate
+                            && record.CreatedOn >= temp)
                     .Cacheable()
                     .List();
 
@@ -46,8 +49,8 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Areas.Admin.Services
                 var queuedMessage = _messageParser.GetMessage(feedbackRecord);
                 if (queuedMessage != null)
                 {
-                    _messageParser.QueueMessage(queuedMessage);
                     feedbackRecord.IsSent = true;
+                    _messageParser.QueueMessage(queuedMessage);
                     _session.Update(feedbackRecord);
                 }
             }
