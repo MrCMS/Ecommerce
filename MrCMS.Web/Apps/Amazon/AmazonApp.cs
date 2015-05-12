@@ -39,6 +39,11 @@ namespace MrCMS.Web.Apps.Amazon
             get { return "0.1"; }
         }
 
+        public override IEnumerable<Type> Conventions
+        {
+            get { yield return typeof(AmazonTableNameConvention); }
+        }
+
         protected override void RegisterServices(IKernel kernel)
         {
             kernel.Bind<MarketplaceWebServiceOrders.MarketplaceWebServiceOrders>().ToMethod(context =>
