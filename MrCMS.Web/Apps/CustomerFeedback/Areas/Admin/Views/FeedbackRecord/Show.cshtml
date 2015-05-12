@@ -9,24 +9,51 @@
         </span>
     </legend>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Facet</th>
-                <th>Rating</th>
-                <th>Message</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.FeedbackFacetRecords.ToList())
-            {
+
+    @if (Model.FeedbackFacetRecords.Any())
+    {
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>@item.FeedbackFacet.Name</td>
-                    <td>@item.Rating</td>
-                    <td>@item.Message</td>
+                    <th>Facet</th>
+                    <th>Rating</th>
+                    <th>Message</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.FeedbackFacetRecords.ToList())
+                {
+                    <tr>
+                        <td>@item.FeedbackFacet.Name</td>
+                        <td>@item.Rating</td>
+                        <td>@item.Message</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (Model.ProductVariantFeedbackRecords.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Facet</th>
+                    <th>Rating</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ProductVariantFeedbackRecords.ToList())
+                {
+                    <tr>
+                        <td>@item.ProductVariant.Name</td>
+                        <td>@item.Rating</td>
+                        <td>@item.Message</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 
 </fieldset>

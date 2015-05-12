@@ -1,6 +1,9 @@
-﻿using MrCMS.Helpers;
+﻿using System.Linq;
+using Elmah;
+using MrCMS.Helpers;
 using MrCMS.Web.Apps.CustomerFeedback.Entities;
 using MrCMS.Web.Apps.CustomerFeedback.Settings;
+using MrCMS.Web.Apps.Ecommerce.Entities.Orders;
 using MrCMS.Web.Apps.Ecommerce.Services.Orders.Events;
 using MrCMS.Website;
 using NHibernate;
@@ -21,25 +24,45 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Events
 
         public void Execute(OrderPlacedArgs args)
         {
+            Order order = args.Order;
+
             if (_settings.IsEnabled)
             {
                 if (CurrentRequestData.Now > _settings.SendFeedbackStartDate)
                 {
+                    // Create a record
+                    // if the order has a user add it to the feedback record.
+                    var feedbackRecord = new FeedbackRecord { Order = order };
+                    if (order.User != null)
+                        feedbackRecord.User = order.User;
+                    
                     // Get Feedback Facets
                     var facets = _session.QueryOver<FeedbackFacet>().OrderBy(x => x.DisplayOrder).Asc.Cacheable().List();
 
-                    // Create a record
-                    var feedbackRecord = new FeedbackRecord { Order = args.Order };
-                    if (args.Order.User != null)
-                        feedbackRecord.User = args.Order.User;
-
-                    foreach (var facet in facets)
+                    // for each facet in the system add a facetrecord
+                    if (facets.Any())
                     {
-                        feedbackRecord.FeedbackFacetRecords.Add(new FeedbackFacetRecord
+                        foreach (var facet in facets)
                         {
-                            FeedbackFacet = facet,
-                            FeedbackRecord = feedbackRecord
-                        });
+                            feedbackRecord.FeedbackFacetRecords.Add(new FeedbackFacetRecord
+                            {
+                                FeedbackFacet = facet,
+                                FeedbackRecord = feedbackRecord
+                            });
+                        }
+                    }
+
+                    // if item feedback is on create those records and add them
+                    if (_settings.ItemFeedbackEnabled)
+                    {
+                        foreach (var item in order.OrderLines.ToList())
+                        {
+                            feedbackRecord.ProductVariantFeedbackRecords.Add(new ProductVariantFeedbackRecord
+                            {
+                                ProductVariant = item.ProductVariant,
+                                FeedbackRecord = feedbackRecord
+                            });
+                        }
                     }
 
                     // Save

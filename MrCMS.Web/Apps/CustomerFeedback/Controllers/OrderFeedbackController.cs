@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using MrCMS.Services;
 using MrCMS.Web.Apps.CustomerFeedback.Entities;
 using MrCMS.Web.Apps.CustomerFeedback.ModelBinders;
 using MrCMS.Web.Apps.CustomerFeedback.Pages;
@@ -12,10 +14,12 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Controllers
     public class OrderFeedbackController : MrCMSAppUIController<CustomerFeedbackApp>
     {
         private readonly IUpdateFeedbackRecord _updateFeedbackRecord;
+        private readonly IUniquePageService _uniquePageService;
 
-        public OrderFeedbackController(IUpdateFeedbackRecord updateFeedbackRecord)
+        public OrderFeedbackController(IUpdateFeedbackRecord updateFeedbackRecord, IUniquePageService uniquePageService)
         {
             _updateFeedbackRecord = updateFeedbackRecord;
+            _uniquePageService = uniquePageService;
         }
 
         public ActionResult Show(OrderFeedback page, [IoCModelBinder(typeof(OrderFeedbackByGuidModelBinder))] FeedbackRecord record)
@@ -29,21 +33,21 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Controllers
         }
 
         [HttpPost]
-        public ActionResult Submit([IoCModelBinder(typeof(SubmitOrderFeedbackModelBinder))] List<FeedbackFacetRecordModel> records)
+        public ActionResult Submit([IoCModelBinder(typeof(SubmitOrderFeedbackModelBinder))] OrderFeedbackPostModel model)
         {
-            _updateFeedbackRecord.Update(records);
-            return Redirect("~/");
+            _updateFeedbackRecord.Update(model.Records);
+            return _uniquePageService.RedirectTo<OrderFeedback>(new { guid = model.Guid });
         }
     }
 
-    public class UpdateFeedbackModel
+    public class OrderFeedbackPostModel
     {
-        public UpdateFeedbackModel()
+        public OrderFeedbackPostModel()
         {
-            FacetRecords = new List<FeedbackFacetRecord>();
+            Records = new List<FeedbackFacetRecordModel>();
         }
-        public int FeedbackRecordId { get; set; }
-        public List<FeedbackFacetRecord> FacetRecords { get; set; } 
+        public Guid Guid { get; set; }
+        public List<FeedbackFacetRecordModel> Records { get; set; }
     }
 
     public class FeedbackFacetRecordModel

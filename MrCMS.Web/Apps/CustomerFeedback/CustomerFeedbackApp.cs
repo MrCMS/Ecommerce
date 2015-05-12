@@ -1,5 +1,8 @@
-﻿using MrCMS.Apps;
+﻿using System;
+using System.Collections.Generic;
+using MrCMS.Apps;
 using MrCMS.Web.Apps.CustomerFeedback.Controllers;
+using MrCMS.Web.Apps.CustomerFeedback.Entities;
 using Ninject;
 
 namespace MrCMS.Web.Apps.CustomerFeedback
@@ -31,6 +34,11 @@ namespace MrCMS.Web.Apps.CustomerFeedback
 
         protected override void RegisterServices(IKernel kernel)
         {
+        }
+
+        public override IEnumerable<Type> BaseTypes
+        {
+            get { yield return typeof (Feedback); }
         }
     }
 }

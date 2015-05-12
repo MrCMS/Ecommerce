@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -19,7 +20,6 @@ namespace MrCMS.Web.Apps.CustomerFeedback.ModelBinders
             var form = controllerContext.HttpContext.Request.Form;
             var ratings = form.AllKeys.Where(s => s.StartsWith("Rating-"));
             var recordsToUpdate = new List<FeedbackFacetRecordModel>();
-            var feedbackRecord = form["FeedbackRecordId"];
 
             foreach (var rating in ratings)
             {
@@ -32,12 +32,22 @@ namespace MrCMS.Web.Apps.CustomerFeedback.ModelBinders
                     int i;
                     if (int.TryParse(rate, out i))
                     {
-                        recordsToUpdate.Add(new FeedbackFacetRecordModel{ Id = feedbackFacetRecordId, Rating = i, Message = msg });
+                        recordsToUpdate.Add(new FeedbackFacetRecordModel
+                        {
+                            Id = feedbackFacetRecordId,
+                            Rating = i,
+                            Message = msg
+                        });
                     }
                 }
             }
-            
-            return recordsToUpdate;
+
+            Guid guid;
+            Guid.TryParse(form["OrderGuid"], out guid);
+
+            return new OrderFeedbackPostModel {Guid = guid, Records = recordsToUpdate};
+
+            //return recordsToUpdate;
         }
     }
 }

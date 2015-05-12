@@ -9,13 +9,15 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Entities
     {
         public FeedbackRecord()
         {
+            ProductVariantFeedbackRecords = new List<ProductVariantFeedbackRecord>();
             FeedbackFacetRecords = new List<FeedbackFacetRecord>();
         }
 
         public virtual Order Order { get; set; }
         public virtual User User { get; set; }
+        public virtual IList<ProductVariantFeedbackRecord> ProductVariantFeedbackRecords { get; set; } 
         public virtual IList<FeedbackFacetRecord> FeedbackFacetRecords { get; set; }
-        //public virtual IList<> ProductVariantFeedbackRecords { get; set; } 
+
         public virtual bool IsCompleted { get; set; }
         public virtual bool IsSent { get; set; }
     }

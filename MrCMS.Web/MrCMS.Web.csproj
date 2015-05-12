@@ -561,7 +561,7 @@
     <Compile Include="Apps\CustomerFeedback\Controllers\OrderFeedbackController.cs" />
     <Compile Include="Apps\CustomerFeedback\CustomerFeedbackApp.cs" />
     <Compile Include="Apps\CustomerFeedback\DbConfiguration\CorrespondenceRecordOverride.cs" />
-    <Compile Include="Apps\CustomerFeedback\DbConfiguration\FeedbackFacetRecordOverride.cs" />
+    <Compile Include="Apps\CustomerFeedback\DbConfiguration\FeedbackOverride.cs" />
     <Compile Include="Apps\CustomerFeedback\Entities\CorrespondenceDirection.cs" />
     <Compile Include="Apps\CustomerFeedback\Entities\CorrespondenceRecord.cs" />
     <Compile Include="Apps\CustomerFeedback\Entities\FeedbackFacet.cs" />
@@ -573,6 +573,8 @@
     <Compile Include="Apps\CustomerFeedback\MessageTemplates\CustomerFeedbackMessageTemplate.cs" />
     <Compile Include="Apps\CustomerFeedback\MessageTemplates\CustomerServiceReplyMessageTemplate.cs" />
     <Compile Include="Apps\CustomerFeedback\MessageTemplates\GetDefaultCustomerFeedbackMessageTemplate.cs" />
+    <Compile Include="Apps\CustomerFeedback\MessageTemplates\GetDefaultCustomerServiceReplyMessageTemplate.cs" />
+    <Compile Include="Apps\CustomerFeedback\MessageTemplates\GetDefaultInitialCustomerServiceMessageTemplate.cs" />
     <Compile Include="Apps\CustomerFeedback\MessageTemplates\InitialCustomerServiceMessageTemplate.cs" />
     <Compile Include="Apps\CustomerFeedback\MessageTemplates\TokenProviders\CorrespondanceRecordTokenProvider.cs" />
     <Compile Include="Apps\CustomerFeedback\MessageTemplates\TokenProviders\FeedbackRecordTokenProvider.cs" />

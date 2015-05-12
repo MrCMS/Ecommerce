@@ -17,15 +17,15 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Services
 
         public void Update(List<FeedbackFacetRecordModel> records)
         {
-            List<FeedbackFacetRecord> toUpdate = new List<FeedbackFacetRecord>();
+            List<Feedback> toUpdate = new List<Feedback>();
 
             foreach (var feedbackFacetRecordModel in records)
             {
-                var record =_session.Get<FeedbackFacetRecord>(feedbackFacetRecordModel.Id);
+                //FeedbackFacetRecordModel model = feedbackFacetRecordModel;
+                var record = _session.Get<Feedback>(feedbackFacetRecordModel.Id);
                 record.Rating = feedbackFacetRecordModel.Rating;
                 record.Message = feedbackFacetRecordModel.Message;
                 toUpdate.Add(record);
-
                 record.FeedbackRecord.IsCompleted = true;
             }
 
@@ -36,6 +36,7 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Services
                     session.Update(feedbackFacetRecord);
                 }
             });
+
         }
     }
 }
