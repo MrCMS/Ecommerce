@@ -2,11 +2,10 @@
 @model MrCMS.Web.Apps.CustomerFeedback.Pages.OrderFeedback
 @{
     var feedbackRecord = ViewData["model"] as FeedbackRecord ?? new FeedbackRecord();
-
     var productRecords = feedbackRecord.FeedbackRecords.OfType<ProductVariantFeedbackRecord>().ToList();
     var orderRecords = feedbackRecord.FeedbackRecords.OfType<FeedbackFacetRecord>().ToList();
 }
-<h1>@Model.Name</h1>
+<h1>Order #@feedbackRecord.Order.Id Feedback</h1>
 @Html.Raw(Model.BodyContent)
 
 @if (feedbackRecord.IsCompleted)
@@ -20,14 +19,12 @@ else
     <div class="row">
         <div class="col-xs-12">
             <ul class="list-unstyled">
-                <li><strong>Id:</strong> #@feedbackRecord.Order.Id</li>
                 <li><strong>Order Date:</strong> @feedbackRecord.Order.OrderDate</li>
             </ul>
 
             @using (Html.BeginForm("Submit", "OrderFeedback", FormMethod.Post))
             {
                 @Html.Hidden("OrderGuid", feedbackRecord.Order.Guid)
-                
 
                 if (orderRecords.Any())
                 {
@@ -47,6 +44,7 @@ else
                         @OptionHtml(productVariantFeedbackRecord.Id)
                     }
                 }
+                
                 <button type="submit" class="btn btn-primary">@Resource("Submit")</button>
             }
         </div>

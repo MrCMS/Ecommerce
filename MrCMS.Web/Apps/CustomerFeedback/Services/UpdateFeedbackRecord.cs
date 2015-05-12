@@ -21,12 +21,14 @@ namespace MrCMS.Web.Apps.CustomerFeedback.Services
 
             foreach (var feedbackFacetRecordModel in records)
             {
-                //FeedbackFacetRecordModel model = feedbackFacetRecordModel;
                 var record = _session.Get<Feedback>(feedbackFacetRecordModel.Id);
-                record.Rating = feedbackFacetRecordModel.Rating;
-                record.Message = feedbackFacetRecordModel.Message;
-                toUpdate.Add(record);
-                record.FeedbackRecord.IsCompleted = true;
+                if (record != null)
+                {
+                    record.Rating = feedbackFacetRecordModel.Rating;
+                    record.Message = feedbackFacetRecordModel.Message;
+                    toUpdate.Add(record);
+                    record.FeedbackRecord.IsCompleted = true;
+                }
             }
 
             _session.Transact(session =>
