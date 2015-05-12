@@ -4344,7 +4344,6 @@
     <Content Include="Apps\Amazon\Areas\Admin\Views\Shared\ProgressBarMessages.cshtml" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\Web.config" />
     <Content Include="Apps\Amazon\Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Apps\Amazon\Services\Orders\Sync\UpdateAmazonInfo.cs.orig" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
