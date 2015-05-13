@@ -112,17 +112,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services
             return addressRequest;
         }
 
-        //public CustomerRequest GetCustomer()
+        //public CustomerRequest CreateCustomer()
         //{
         //    var customer = new CustomerRequest
         //    {
+        //        CustomerId = _cartModel.User.Id.ToString(),
         //        FirstName = _cartModel.BillingAddress.FirstName,
         //        LastName = _cartModel.BillingAddress.LastName,
         //        Company = _cartModel.BillingAddress.Company,
         //        Phone = _cartModel.BillingAddress.PhoneNumber,
         //        Email = _cartModel.OrderEmail
         //    };
-
         //    return customer;
         //}
 

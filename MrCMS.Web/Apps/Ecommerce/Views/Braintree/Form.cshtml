@@ -5,7 +5,7 @@
     var expiryYears = ViewData["expiry-years"] as IEnumerable<SelectListItem>;
 }
 <div class="alert alert-danger" role="alert" data-braintree-errors="true" style="display: none;"></div>
-
+<div id="paypal-container"></div>
 <div class="row">
     <div class="col-sm-8">
         @using (Html.BeginForm("MakePayment", "Braintree", FormMethod.Post, new { id = "braintree-checkout" }))
