@@ -31,7 +31,7 @@
                         <td>@message.CreatedOn</td>
                         <td>@message.CorrespondenceDirection</td>
                         <td>@(message.User != null ? message.User.Name : "-")</td>
-                        <td>@message.MessageInfo</td>
+                        <td>@Html.Raw(message.MessageInfo)</td>
                     </tr>
                 }
             </tbody>

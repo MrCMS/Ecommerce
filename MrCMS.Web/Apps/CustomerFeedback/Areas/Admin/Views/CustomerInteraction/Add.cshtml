@@ -19,7 +19,7 @@
 
     <div class="form-group">
         @Html.LabelFor(x => x.MessageInfo)
-        @Html.TextAreaFor(x => x.MessageInfo, new { @class = "form-control", rows = 6 })
+        @Html.TextAreaFor(x => x.MessageInfo, new { @class = "ckedit-enabled" })
         @Html.ValidationMessageFor(x => x.MessageInfo)
     </div>
 

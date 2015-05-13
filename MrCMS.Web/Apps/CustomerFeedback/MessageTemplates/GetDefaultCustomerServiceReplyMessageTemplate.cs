@@ -24,7 +24,7 @@ namespace MrCMS.Web.Apps.CustomerFeedback.MessageTemplates
                 Cc = string.Empty,
                 Bcc = string.Empty,
                 Subject = "Customer Service Reply",
-                Body = "<p></p>",
+                Body = "<p>Dear Store Owner,</p><p>A customer has responded to your correspondance.</p>",
                 IsHtml = true
             };
         }

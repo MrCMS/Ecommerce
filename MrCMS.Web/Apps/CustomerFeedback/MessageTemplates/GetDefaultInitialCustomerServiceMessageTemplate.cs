@@ -26,7 +26,7 @@ namespace MrCMS.Web.Apps.CustomerFeedback.MessageTemplates
                 Cc = string.Empty,
                 Bcc = string.Empty,
                 Subject = "Customer Services - Feedback - Order {OrderId}",
-                Body = "{MessageInfo}<p>View more information by clicking <a href='{InteractionPageUrl}'>here</a></p>",
+                Body = "<p>Dear {OrderName},</p><p>Our customer service team have responded to your feedback left for your order {OrderId}.</p>{MessageInfo}<p>You can view more information and respond by clicking <a href='{InteractionPageUrl}'>here</a></p>",
                 IsHtml = true
             };
         }
