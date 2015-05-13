@@ -19,5 +19,8 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree
         {
             get { return false; }
         }
+
+
+        //public bool PaypalEnabled { get; set; }
     }
 }
