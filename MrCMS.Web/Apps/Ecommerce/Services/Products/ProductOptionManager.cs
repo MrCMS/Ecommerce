@@ -181,7 +181,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Products
                     ProductSpecificationAttributeOption = option
                 };
                 product.SpecificationValues.Add(productSpecificationValue);
-                _session.Transact(session => session.SaveOrUpdate(product));
+                _session.Transact(session => session.Update(product));
             }
         }
 
