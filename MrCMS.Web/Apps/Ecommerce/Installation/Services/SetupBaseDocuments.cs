@@ -136,6 +136,15 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             };
             _documentService.AddDocument(userAccountAddresses);
 
+            var editAddress = new UserAccountEditAddress
+            {
+                Name = "Edit Address",
+                UrlSegment = userAccountAddresses.UrlSegment + "/edit-address",
+                RevealInNavigation = false,
+                PublishOn = now,
+                Parent = userAccountAddresses
+            };
+            _documentService.AddDocument(editAddress);
 
             var userAccountOrders = new UserAccountOrders
             {

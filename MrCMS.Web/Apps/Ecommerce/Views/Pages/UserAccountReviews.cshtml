@@ -15,7 +15,6 @@
             <tr>
                 <th>@Resource("Product")</th>
                 <th>@Resource("Review Title")</th>
-                <th>@Resource("Your Review")</th>
                 <th>@Resource("Your Rating")</th>
                 <th>@Resource("Average Rating")</th>
             </tr>
@@ -26,7 +25,6 @@
                 <tr>
                     <td><a href="@review.ProductVariant.DirectUrl">@review.ProductVariant.Name</a></td>
                     <td>@review.Title</td>
-                    <td>@review.Text</td>
                     <td>@review.Rating</td>
                     <td>@review.ProductVariant.Rating.ToString("#.#")</td>
                 </tr>

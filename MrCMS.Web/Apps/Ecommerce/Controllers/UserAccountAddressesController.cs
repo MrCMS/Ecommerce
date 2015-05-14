@@ -4,7 +4,6 @@ using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
 using MrCMS.Web.Apps.Ecommerce.Pages;
-using MrCMS.Web.Apps.Ecommerce.Services;
 using MrCMS.Web.Apps.Ecommerce.Services.UserAccount;
 using MrCMS.Web.Areas.Admin.Helpers;
 using MrCMS.Website;
@@ -16,16 +15,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
     {
         private readonly IUniquePageService _uniquePageService;
         private readonly IGetUserAddresses _getUserAddresses;
-        private readonly IGetCountryOptions _getCountryOptions;
         private readonly IExistingAddressService _existingAddressService;
 
         public UserAccountAddressesController(IUniquePageService uniquePageService, 
-            IGetUserAddresses getUserAddresses, IGetCountryOptions getCountryOptions, 
-            IExistingAddressService existingAddressService)
+            IGetUserAddresses getUserAddresses, IExistingAddressService existingAddressService)
         {
             _uniquePageService = uniquePageService;
             _getUserAddresses = getUserAddresses;
-            _getCountryOptions = getCountryOptions;
             _existingAddressService = existingAddressService;
         }
 
@@ -40,37 +36,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             return View(page);
         }
 
-        [HttpGet]
-        public PartialViewResult EditAddress(Address address)
-        {
-            ViewData["country-options"] = _getCountryOptions.Get();
-            return PartialView(address);
-        }
-
         [HttpPost]
-        [ActionName("EditAddress")]
-        public RedirectResult EditAddress_POST(Address address)
+        public RedirectResult DeleteAddress(Address address)
         {
             User user = CurrentRequestData.CurrentUser;
-            if (address.User.Id != user.Id)
+            if (user == null)
                 return Redirect("~/");
 
-            _existingAddressService.Update(address);
-            TempData.SuccessMessages().Add("Address updated.");
-            return _uniquePageService.RedirectTo<UserAccountAddresses>();
-        }
-
-        [HttpGet]
-        public PartialViewResult DeleteAddress(Address address)
-        {
-            return PartialView(address);
-        }
-
-        [HttpPost]
-        [ActionName("DeleteAddress")]
-        public RedirectResult DeleteAddress_POST(Address address)
-        {
-            User user = CurrentRequestData.CurrentUser;
             if (address.User.Id != user.Id)
                 return Redirect("~/");
 

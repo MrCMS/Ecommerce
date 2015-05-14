@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ServiceModel;
 using MrCMS.Apps;
 using MrCMS.Helpers;
+using MrCMS.PaypointService.API;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration.Listeners;
 using MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications;
@@ -38,9 +40,13 @@ namespace MrCMS.Web.Apps.Ecommerce
         protected override void RegisterServices(IKernel kernel)
         {
             kernel.Rebind<CartModel>().ToMethod(context => context.Kernel.Get<ICartBuilder>().BuildCart()).InRequestScope();
-            kernel.Rebind<IStatelessSession>()
-                .ToMethod(context => context.Kernel.Get<ISessionFactory>().OpenStatelessSession());
-            //HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
+            kernel.Rebind<SECVPN>().ToMethod(context =>
+            {
+                var service = new SECVPNClient(new BasicHttpBinding(BasicHttpSecurityMode.Transport),
+                    new EndpointAddress("https://www.secpay.com/java-bin/services/SECCardService"));
+
+                return service;
+            });
         }
 
         public override IEnumerable<Type> BaseTypes
