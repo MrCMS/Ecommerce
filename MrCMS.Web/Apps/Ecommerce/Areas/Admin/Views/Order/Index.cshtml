@@ -10,7 +10,6 @@
     var results = ViewData["results"] as IPagedList<Order> ?? PagedList<Order>.Empty;
     var paymentStatusOptions = ViewData["payment-status-options"] as List<SelectListItem> ?? new List<SelectListItem>();
     var shippingStatusOptions = ViewData["shipping-status-options"] as List<SelectListItem> ?? new List<SelectListItem>();
-    Html.IncludeCss("~/Apps/Ecommerce/Areas/Admin/Content/Styles/ecommerce-admin.css");
 }
 
 @using (Html.BeginForm("Index", "Order", FormMethod.Get))

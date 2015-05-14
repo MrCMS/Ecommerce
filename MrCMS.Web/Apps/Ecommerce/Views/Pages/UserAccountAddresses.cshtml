@@ -1,13 +1,12 @@
 ﻿@using MrCMS.Helpers
 @using MrCMS.Web.Apps.Ecommerce.Entities.Users
 @using MrCMS.Web.Apps.Ecommerce.Helpers
-@model MrCMS.Web.Apps.Ecommerce.Pages.UserAccountAddresses      
+@using MrCMS.Web.Apps.Ecommerce.Pages
+@model UserAccountAddresses      
 @{
     var addresses = ViewData["addresses"] as IList<Address> ?? new List<Address>();
-
-    Html.IncludeCss("~/Areas/Admin/Content/Styles/featherlight.css");
-    Html.IncludeScript("~/Areas/Admin/Content/Scripts/lib/featherlight.js");
-    Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/address-popup.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/bootbox.min.js");
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/user-account-addresses.js");
 }
 <h1>@Editable(Model, page => page.Name)</h1>
 @Editable(Model, page => page.BodyContent, true)
@@ -31,8 +30,8 @@
                         <li>@address.PostalCode</li>
                         <li>@address.GetCountryName()</li>
                     </ul>
-                    @Html.ActionLink("Edit", "EditAddress", "UserAccountAddresses", new { id = address.Id }, new { @class = "btn btn-default btn-xs", data_toggle = "fb-modal" })
-                    @Html.ActionLink("Delete", "DeleteAddress", "UserAccountAddresses", new { id = address.Id }, new { @class = "btn btn-danger btn-xs", data_toggle = "fb-modal" })
+                    <a href="@(UniquePageHelper.GetUrl<UserAccountEditAddress>(new { id = address.Id }))" class="btn btn-default btn-xs">Edit</a>
+                    <a href="#" data-delete-address="@address.Id" class="btn btn-danger btn-xs">Delete</a>
                 </div>
             }
         </div>
@@ -42,3 +41,5 @@ else
 {
     <p>@Resource("User Account Addresses - No Addresses", "No addresses.")</p>
 }
+
+<div class="hidden" data-delete-message="true">@Resource("Are you sure you wish to delete this address?")</div>

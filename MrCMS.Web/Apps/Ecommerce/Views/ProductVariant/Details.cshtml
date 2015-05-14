@@ -83,14 +83,14 @@
                         if (!string.IsNullOrWhiteSpace(Model.SKU))
                         {
                             @:SKU: <span itemprop="identifier" content="sku:@Model.SKU">@Model.SKU</span><br />
-                        }
+                                            }
                         if (product.BrandPage != null)
                         {
                             if (!string.IsNullOrWhiteSpace(product.BrandPage.FeatureImage))
                             {
-                                <div>
+                                <a href="/@product.BrandPage.LiveUrlSegment">
                                     @RenderImage(product.BrandPage.FeatureImage, new Size { Width = 120 }, product.BrandPage.Name, product.BrandPage.Name, new { @class = "img-responsive" })
-                                </div>
+                                </a>
                                 <br />
                             }
                             else

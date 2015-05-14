@@ -140,6 +140,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var teaser3Area = layout.LayoutAreas.FirstOrDefault(x => x.AreaName == "Teaser3");
             var teaser4Area = layout.LayoutAreas.FirstOrDefault(x => x.AreaName == "Teaser4");
 
+            var slider = new Slider
+            {
+                Image = mediaModel.SliderImage1.FileUrl,
+                Image1 = mediaModel.SliderImage2.FileUrl,
+                LayoutArea = beforeContent,
+                Webpage = pageModel.HomePage,
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 1800
+            };
+            _widgetService.AddWidget(slider);
 
             var featuredProducts = new FeaturedProducts
             {
@@ -152,6 +163,18 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
                 CacheLength = 1800
             };
             _widgetService.AddWidget(featuredProducts);
+
+            //nav
+            var nav = new MobileFriendlyNavigation.Widgets.MobileFriendlyNavigation
+            {
+                Name = "Navigation",
+                LayoutArea = layoutModel.EcommerceLayout.LayoutAreas.Single(x => x.AreaName == ("Navigation")),
+                IncludeChildren = true,
+                Cache = true,
+                CacheExpiryType = CacheExpiryType.Sliding,
+                CacheLength = 60
+            };
+            _widgetService.AddWidget(nav);
 
             var featuredCategories = new FeaturedCategories
             {

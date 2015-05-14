@@ -31,10 +31,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var batchRun = result.Batch.BatchRuns.First();
             _synchronousBatchRunExecution.Execute(batchRun);
 
-            SetFeaturedProducts(model);
+            SetFeaturedCategories(model);
         }
 
-        private void SetFeaturedProducts(MediaModel model)
+        private void SetFeaturedCategories(MediaModel model)
         {
             var cat1 = _documentService.GetDocumentByUrl<Category>(FeaturedCategoriesInfo.Category1Url);
             var cat2 = _documentService.GetDocumentByUrl<Category>(FeaturedCategoriesInfo.Category2Url);

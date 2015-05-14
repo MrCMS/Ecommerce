@@ -1,7 +1,6 @@
 ﻿using System.Web.Mvc;
 using MrCMS.Apps;
 using MrCMS.Web.Apps.Ecommerce.Controllers;
-using MrCMS.Web.Apps.Ecommerce.Entities.ProductReviews;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 
 namespace MrCMS.Web.Apps.Ecommerce
@@ -92,9 +91,9 @@ namespace MrCMS.Web.Apps.Ecommerce
                 new { controller = "UserAccountChangePassword", action = "UpdatePassword" },
                 new[] {typeof (UserAccountChangePasswordController).Namespace});
 
-            context.MapRoute("User Account - Edit Address", "user-account/handle/edit-address/{id}",
-                new {controller = "UserAccountAddresses", action = "EditAddress"},
-                new[] {typeof (UserAccountAddressesController).Namespace});
+            context.MapRoute("User Account - Edit", "user-account/handle/edit-address",
+                new { controller = "UserAccountEditAddress", action = "Edit" },
+                new[] {typeof (UserAccountEditAddressController).Namespace});
 
             context.MapRoute("User Account - Delete Address", "user-account/handle/delete-address/{id}",
                 new {controller = "UserAccountAddresses", action = "DeleteAddress"},
