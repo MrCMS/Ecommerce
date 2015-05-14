@@ -1063,6 +1063,7 @@
     <Compile Include="Apps\Ecommerce\Events\UpdateProductVariantOnReviewDelete.cs" />
     <Compile Include="Apps\Ecommerce\Events\UpdateProductVariantOnReviewUpdate.cs" />
     <Compile Include="Apps\Ecommerce\Filters\CanEnterCheckout.cs" />
+    <Compile Include="Apps\Ecommerce\Filters\MustBeLoggedInAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Filters\SetBrandSearchViewDataAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Filters\SetProductResultsViewDataAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Filters\SetProductSearchViewDataAttribute.cs" />
