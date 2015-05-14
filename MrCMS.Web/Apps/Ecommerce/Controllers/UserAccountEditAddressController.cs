@@ -3,6 +3,7 @@ using MrCMS.Entities.People;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
+using MrCMS.Web.Apps.Ecommerce.Filters;
 using MrCMS.Web.Apps.Ecommerce.ModelBinders;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services;
@@ -20,7 +21,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         private readonly IGetCountryOptions _getCountryOptions;
         private readonly IExistingAddressService _existingAddressService;
 
-        public UserAccountEditAddressController(IUniquePageService uniquePageService, 
+        public UserAccountEditAddressController(IUniquePageService uniquePageService,
             IGetCountryOptions getCountryOptions, IExistingAddressService existingAddressService)
         {
             _uniquePageService = uniquePageService;
@@ -28,18 +29,17 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _existingAddressService = existingAddressService;
         }
 
+        [MustBeLoggedIn]
         public ActionResult Show(UserAccountEditAddress page, [IoCModelBinder(typeof(EditUserAddressModelBinder))] Address address)
         {
             if (address == null)
                 return Redirect("~/");
 
             User user = CurrentRequestData.CurrentUser;
-            if (user == null)
-                _uniquePageService.RedirectTo<LoginPage>();
 
             if (address.User.Id != user.Id)
                 return Redirect("~/");
-            
+
             ViewData["address"] = address;
             ViewData["country-options"] = _getCountryOptions.Get();
 

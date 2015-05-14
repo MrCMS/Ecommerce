@@ -3,6 +3,7 @@ using MrCMS.Entities.People;
 using MrCMS.Services;
 using MrCMS.Web.Apps.Core.Pages;
 using MrCMS.Web.Apps.Ecommerce.Entities.Users;
+using MrCMS.Web.Apps.Ecommerce.Filters;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.UserAccount;
 using MrCMS.Web.Areas.Admin.Helpers;
@@ -25,11 +26,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
             _existingAddressService = existingAddressService;
         }
 
+        [MustBeLoggedIn]
         public ActionResult Show(UserAccountAddresses page)
         {
             var user = CurrentRequestData.CurrentUser;
-            if (user == null)
-                _uniquePageService.RedirectTo<LoginPage>();
 
             ViewData["addresses"] = _getUserAddresses.Get(user);
 
@@ -37,11 +37,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Controllers
         }
 
         [HttpPost]
+        [MustBeLoggedIn]
         public RedirectResult DeleteAddress(Address address)
         {
             User user = CurrentRequestData.CurrentUser;
-            if (user == null)
-                return Redirect("~/");
 
             if (address.User.Id != user.Id)
                 return Redirect("~/");
