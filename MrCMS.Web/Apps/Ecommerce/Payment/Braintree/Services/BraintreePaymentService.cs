@@ -50,7 +50,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services
                 {
                     ThreeDSecure = new TransactionOptionsThreeDSecureRequest
                     {
-                        Required = true
+                        Required = _braintreeSettings.ThreeDSecureRequired
                     }
                 }
             };
@@ -63,7 +63,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services
                     o =>
                     {
                         o.PaymentStatus = PaymentStatus.Paid;
-                        o.ShippingStatus = _cartModel.RequiresShipping ? ShippingStatus.Unshipped : ShippingStatus.ShippingNotRequired;
                         o.CaptureTransactionId = result.Target.Id;
                     });
 
@@ -75,7 +74,9 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services
             List<string> errorList =
                 result.Errors.DeepAll()
                     .Select(
-                        error => "Code:" + error.Code + " Message: " + error.Message + " Attribute: " + error.Attribute)
+                        error =>
+                            string.Format("Code: {0}, Message: {1}, Attribute: {2}", error.Code, error.Message,
+                                error.Attribute))
                     .ToList();
 
             _logAdminService.Insert(new Log
@@ -111,20 +112,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Services
 
             return addressRequest;
         }
-
-        //public CustomerRequest CreateCustomer()
-        //{
-        //    var customer = new CustomerRequest
-        //    {
-        //        CustomerId = _cartModel.User.Id.ToString(),
-        //        FirstName = _cartModel.BillingAddress.FirstName,
-        //        LastName = _cartModel.BillingAddress.LastName,
-        //        Company = _cartModel.BillingAddress.Company,
-        //        Phone = _cartModel.BillingAddress.PhoneNumber,
-        //        Email = _cartModel.OrderEmail
-        //    };
-        //    return customer;
-        //}
 
         public IEnumerable<SelectListItem> ExpiryMonths()
         {
