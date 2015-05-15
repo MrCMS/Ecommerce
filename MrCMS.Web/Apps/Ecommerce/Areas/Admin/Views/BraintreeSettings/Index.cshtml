@@ -19,6 +19,9 @@
             @Html.InlineCheckboxFor(settings => settings.UseSandbox)
         </div>
         <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.ThreeDSecureRequired)
+        </div>
+        <div class="form-group">
             @Html.LabelFor(settings => settings.MerchantId)
             @Html.TextBoxFor(settings => settings.MerchantId, new { @class = "form-control" })
             @Html.ValidationMessageFor(settings => settings.MerchantId)

@@ -5,6 +5,11 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree
 {
     public class BraintreeSettings : SiteSettingsBase
     {
+        public BraintreeSettings()
+        {
+            ThreeDSecureRequired = true;
+        }
+
         [DisplayName("Enabled?")]
         public bool Enabled { get; set; }
         [DisplayName("Use Sandbox?")]
@@ -19,8 +24,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Payment.Braintree
         {
             get { return false; }
         }
-
-
-        //public bool PaypalEnabled { get; set; }
+        [DisplayName("3D Secure Required?")]
+        public bool ThreeDSecureRequired { get; set; }
     }
 }

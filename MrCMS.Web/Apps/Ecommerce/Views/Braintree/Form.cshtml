@@ -1,15 +1,16 @@
 ﻿@model MrCMS.Web.Apps.Ecommerce.Payment.Braintree.Models.BraintreePaymentDetailsModel
+<script type="text/javascript" src="~/Apps/Ecommerce/Content/Scripts/custom/braintree-checkout.js"></script>
 @{
     var token = ViewData["token"] as string;
     var expiryMonths = ViewData["expiry-months"] as IEnumerable<SelectListItem>;
     var expiryYears = ViewData["expiry-years"] as IEnumerable<SelectListItem>;
 }
 <div class="alert alert-danger" role="alert" data-braintree-errors="true" style="display: none;"></div>
-<div id="paypal-container"></div>
 <div class="row">
     <div class="col-sm-8">
-        @using (Html.BeginForm("MakePayment", "Braintree", FormMethod.Post, new { id = "braintree-checkout" }))
+        @using (Html.BeginForm("MakePayment", "Braintree", FormMethod.Post, new { id = "braintree-checkout", data_braintree_checkout_form = true }))
         {
+            @Html.Hidden("ClientToken", token)
             @Html.HiddenFor(x => x.TotalToPay)
 
             <div class="form-group">
@@ -57,78 +58,3 @@
         }
     </div>
 </div>
-
-<script type="text/javascript">
-    (function ($) {
-        var client = new braintree.api.Client({ clientToken: "@token" });
-
-        $(function () {
-            $('#braintree-checkout').on('submit', check3DSecure);
-        });
-
-        function check3DSecure(event) {
-            event.preventDefault();
-            var form = $(event.target);
-            var errorArea = $('[data-braintree-errors]');
-            var submitButton = form.find('[data-submit-button]');
-
-            errorArea.hide();
-            disablePaymentButton(submitButton);
-
-            client.verify3DS({
-                amount: form.find('#TotalToPay').val(),
-                creditCard: {
-                    number: form.find('[data-braintree-name="number"]').val(),
-                    cardholderName: form.find('[data-braintree-name="cardholder_name"]').val(),
-                    expirationMonth: form.find('[data-braintree-name="expiration_month"]').val(),
-                    expirationYear: form.find('[data-braintree-name="expiration_year"]').val(),
-                    cvv: form.find('[data-braintree-name="cvv"]').val(),
-                    billingAddress: {
-                        postalCode: form.find('[data-braintree-name="postal_code"]').val()
-                    }
-                }
-            }, function (error, response) {
-                if (!error) {
-                    postToUrl("/Apps/Ecommerce/Confirm/BraintreePayment", {
-                        nonce: response.nonce,
-                        liabilityShifted : response.verificationDetails.liabilityShifted,
-                        liabilityShiftPossible: response.verificationDetails.liabilityShiftPossible
-                    });
-                }
-                else {
-                    enablePaymentButton(submitButton);
-                    errorArea.empty();
-                    errorArea.show();
-                    errorArea.append(error.message);
-                }
-            });
-
-            function postToUrl(path, params) {
-                var tempForm = document.createElement("form");
-                tempForm.setAttribute("method", "post");
-                tempForm.setAttribute("action", path);
-
-                for (var key in params) {
-                    var hiddenField = document.createElement("input");
-                    hiddenField.setAttribute("type", "hidden");
-                    hiddenField.setAttribute("name", key);
-                    hiddenField.setAttribute("value", params[key]);
-                    tempForm.appendChild(hiddenField);
-                }
-                document.body.appendChild(tempForm);
-                tempForm.submit();
-            }
-        }
-
-        function disablePaymentButton(submitButton) {
-            submitButton.attr('disabled', 'disabled');
-            submitButton.val("Processing");
-        }
-
-        function enablePaymentButton(submitButton) {
-            submitButton.removeAttr('disabled');
-            submitButton.val("Confirm Order");
-        }
-
-    })(jQuery);
-</script>
