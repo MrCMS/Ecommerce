@@ -200,6 +200,14 @@ namespace MrCMS.Web.Apps.Ecommerce
                  "Apps/Ecommerce/CharityClear/Notification",
                  new { controller = "CharityClear", action = "Notification" },
                  new[] { typeof(CharityClearController).Namespace });
+
+            context.MapRoute("Braintree Form", "Apps/Ecommerce/Confirm/Braintree",
+                new {controller = "Braintree", action = "Form"},
+                new[] {typeof (BraintreeController).Namespace});
+
+            context.MapRoute("Braintree Form Post", "Apps/Ecommerce/Confirm/BraintreePayment",
+                new {controller = "Braintree", action = "MakePayment"},
+                new[] {typeof (BraintreeController).Namespace});
         }
 
 

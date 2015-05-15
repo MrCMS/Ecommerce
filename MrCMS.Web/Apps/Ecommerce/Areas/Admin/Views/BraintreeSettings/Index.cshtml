@@ -1,0 +1,40 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Payment.Braintree.BraintreeSettings
+@{
+    ViewBag.Title = "Braintree Settings";
+}
+@using (Html.BeginForm("Save", "BraintreeSettings", FormMethod.Post))
+{
+    <fieldset>
+        <legend>
+            Braintree Settings
+            <span class="btn-group display-inline pull-right">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </span>
+        </legend>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.Enabled)
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.UseSandbox)
+        </div>
+        <div class="form-group">
+            @Html.InlineCheckboxFor(settings => settings.ThreeDSecureRequired)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.MerchantId)
+            @Html.TextBoxFor(settings => settings.MerchantId, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.MerchantId)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.PublicKey)
+            @Html.TextBoxFor(settings => settings.PublicKey, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.PublicKey)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(settings => settings.PrivateKey)
+            @Html.TextBoxFor(settings => settings.PrivateKey, new { @class = "form-control" })
+            @Html.ValidationMessageFor(settings => settings.PrivateKey)
+        </div>
+    </fieldset>
+}
