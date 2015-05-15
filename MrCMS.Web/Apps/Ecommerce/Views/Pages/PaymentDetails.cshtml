@@ -82,10 +82,10 @@
                             <div id="loading-message" style="display: none;"><img src="~/Apps/Ecommerce/Content/Images/ajax-loader.gif" alt="Loading" title="Loading" /></div>
                             @{ Html.RenderPartial("SelectMethod", cart); }
                             <div id="payment-confirmation">
-                                @if (cart.CanShowPaymentMethod())
+                                @*@if (cart.CanShowPaymentMethod())
                                 {
                                     Html.RenderAction(cart.PaymentMethodAction, cart.PaymentMethodController);
-                                }
+                                }*@
                             </div>
                         </div>
                         <div data-please-accept="true">
@@ -111,4 +111,7 @@
         </div>
     </div>
 </div>
-@{ Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/payment-details.js"); }
+@{
+    Html.IncludeScript("~/Apps/Ecommerce/Content/Scripts/custom/payment-details.js");
+    Html.IncludeScript("https://js.braintreegateway.com/v2/braintree.js");
+}
