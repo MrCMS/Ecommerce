@@ -41,6 +41,8 @@ Mr CMS eCommerce project is currently supplied with the latest version of Mr CMS
 	* Newsletter builder App
 	* Stats App
 	* Amazon App - sent products to Amazon, import orders from Amazon
+	* Digital download support
+	* Reward points system
 
 # Limitations
 
@@ -49,3 +51,67 @@ Mr CMS Ecommerce does not currently support multiple currencies or multisite fun
 # Contribuation
 
 If you would like to contribute to Mr CMS ecommerce by supplying any missing features please do so by submitting a pull request.
+
+# Version History
+
+Version 0.1 (January 2014)
+------------
+	* Initial release
+
+Version 0.1.1 (23 April 2014)
+------------
+	* Upgrade to Mr CMS 0.4
+	* Added health checks for payment gateways
+	* Category nodes limited to 100
+
+Version 0.2 
+------------
+	* Upgrade to Mr CMS 0.4.1
+		* Localise resources like brand text etc 
+	* Newsletter Builder
+	* Allow filtering to be turned on/off per spec/attribute
+	* Check over index management set up
+	*	lated updates do not action index update
+	* In Order Placed email use product name and variant name for items
+	* Create generic design
+	* Create discount code limitation to SKU and Category
+	* Add in Geo Code for orders: https://freegeoip.net/json/77.95.33.45
+
+Version 0.2.1
+------------
+	* Better discounts
+	* 4-2-1
+	* BOGOF
+	* Product reviews
+	* Proper pluggable payment system
+	* PDF to be done properly for VAT (tax per line)
+
+Version 0.3
+------------
+	* Product reviews
+	* Brand / Product search (admin)
+	* Refactor discounts (2-4-1 etc available)
+	* Reward points
+	* nopCommerce import from 2.80
+	* Gift Cards
+	* Gift Message
+	* Search log
+	* Dashboard graph axis fixed
+	* Charity Clear payment gateway
+	* Batch importer
+	* Warehouse based stock
+	* Added an OrderOn Date instead of CreatedOn
+	* Add button to stop shipment emails on tools page
+
+Version 0.4 (May 2015)
+-----------
+	* Custom stock messages for in/out of stock
+	* Brand search page and search
+	* Feedback app
+	* URL Generator configuation for products/brands/categories
+	* Braintree support
+	* Review score can be viewed on product card
+	* E-tag admin
+	* My account pages broken down into: details, change password, orders, reviews, rewards, addresses
+	* Reward points can be used during checkout
+	* Newsletter list
