@@ -5,16 +5,12 @@ using MrCMS.Apps;
 using MrCMS.Helpers;
 using MrCMS.PaypointService.API;
 using MrCMS.Web.Apps.Ecommerce.DbConfiguration;
-using MrCMS.Web.Apps.Ecommerce.DbConfiguration.Listeners;
 using MrCMS.Web.Apps.Ecommerce.Entities.DiscountApplications;
 using MrCMS.Web.Apps.Ecommerce.Entities.Discounts;
-using MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems;
 using MrCMS.Web.Apps.Ecommerce.Entities.RewardPoints;
 using MrCMS.Web.Apps.Ecommerce.Models;
 using MrCMS.Web.Apps.Ecommerce.Pages;
 using MrCMS.Web.Apps.Ecommerce.Services.Cart;
-using NHibernate;
-using NHibernate.Event;
 using Ninject;
 using Ninject.Web.Common;
 
@@ -95,10 +91,6 @@ namespace MrCMS.Web.Apps.Ecommerce
 
         protected override void AppendConfiguration(NHibernate.Cfg.Configuration configuration)
         {
-            configuration.AppendListeners(ListenerType.PostCommitUpdate, new IPostUpdateEventListener[]
-                                                                             {
-                                                                                 new BackInStockListener()
-                                                                             });
         }
 
         public override IEnumerable<Type> Conventions
