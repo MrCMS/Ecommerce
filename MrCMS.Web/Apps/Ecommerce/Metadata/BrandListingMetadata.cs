@@ -27,5 +27,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
         {
             get { return "glyphicon glyphicon-list"; }
         }
+
+        public override bool ChildrenMaintainHierarchy
+        {
+            get { return false; }
+        }
     }
 }
