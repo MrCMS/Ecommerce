@@ -1,44 +1,51 @@
-# MrCMS
+# Mr CMS Ecommerce
 
-**Mr CMS is an ASP.NET MVC 5 C# open source content management system and framework.**
+**Mr CMS eCommerce is an app created for Mr CMS**
 
-**For more information please visitÂ [www.mrcms.com](https://www.mrcms.com)**
+Mr CMS eCommerce project is currently supplied with the latest version of Mr CMS, so there is no need to download Mr CMS separately.
 
-Designed from the ground up, Mr CMS is extremely easy for both developers and content editors.
+# Installation
 
-For content editors, the CMS is designed in a way that they do not need to know any HTML knowledge.
+	1. Open the project in Visual Studio and run the application. An installer will install some demo data.
+	2. Once installed you should set up some shipping options under Ecommerce Settings -> Shipping -> Configuration.
+	3. Featured products on the homepage are not set on installation. Navigate to the homepage and turn inline editing on and add 4 products to the featured products widget.
 
-For developers, the framework allows you to create unlimited amounts of different page types, widgets and layouts. All which content editors can then administer through a simple admin interface, or through in line editing.
+# Features
 
-Developers are not limited by what they can build within Mr CMS. Mr CMS has the concept of 'Apps' which contain functionality. I.E you could write a Blog app, an eCommerce app and so forth. In other words, whilst you can have a eCommerce plugin to Wordpress, its not very scalable and not its intended purpose. Mr CMS is whatever you build it to be.
+	* Unlimited Products
+	* Unlimited Categories / Nested Categories
+	* Product Specifications
+	* Product Attributes (Color, Size etc)
+	* Stock management
+	* Lucene based filterable search (automatically managed)
+	* Message template management for order confirmations etc
+	* Price breats (buy 10 for £1.99 instead of £2.50)
+	* Country based shipping
+	* Shipping by weight
+	* Payments by: PayPal, Braintree, Paypoint, SagePay, WorldPay and CharityClear
+	* Product Reviews
+	* Reports - Sales by day, Sales by Payment Type, Sales by Shipping Type, Orders by Shipping Type
+	* Import/Export products using Excel
+	* Low Stock Report
+	* Bulk stock update
+	* Bulk Shipping update
+	* Order Export
+	* NopCommerce import from version 2.80 (more to ve supported)
+	* Google Base Integration
+	* Brand Management / Brand filterable search
+	* Discounts - Automatic, Code based, Time based
+	* Discount Limitations - Cart Total Greater than X, Item Has SKU, Item is in Catgory, Cart has at least X itmes, Cart Subtotal greater than X, Shipping country is, Shipping postcode starts with, Single Use, Single use per customer
+	* Discount Application - Buy X get Y free, Free Shipping, Order total fixed amount, X % from items, X% from order
+	* Discount Usage - View discount useage
+	* E-tags (show tags over product images such as 2-4-1 or similar)
+	* Newsletter builder App
+	* Stats App
+	* Amazon App - sent products to Amazon, import orders from Amazon
 
-Within apps you have page types, widget types and of course logic which makes your bespoke features work.
+# Limitations
 
-A getting started guide will be published soon on how to start building your own apps.
+Mr CMS Ecommerce does not currently support multiple currencies or multisite functionality. It also does not yet support the American tax system.
 
-**Feature list**
+# Contribuation
 
-*   Unlimited document types
-*   Lucene based search architecture - easily create search indexes for super fast content filtering and searching of '000's of items.
-*   Layouts & Layout areas give complete control over widgets on each page
-*   Bulk media upload and management
-*   Azure or file based media storage
-*   Inline content editing
-*   Error logging
-*   Task management
-*   SEO - Control over meta details
-*   URL History table - keep track of URL changes. When a URL changes create 301 redirect to new location
-*   URL History - add URLs at will to create redirects or if importing from another system add in the original URLs here
-*   Form builder - create forms on the fly and collect their data
-*   Enforce user login to page
-*   SSL per page
-*   User management & roles
-*   Document version control
-*   Complete control of page meta data - I.E when creating a page type (e.g BlogPage) control what type of pages can be added below it, say weather the page can maintain url hierarchy, say how many children should show in the page tree in item (if there are 000's of pages you might only show the top 5 pages) and lots more
-*   Content managed into apps
-*   Themes - override standard views
-*   Multi-site capability - run multiple domains through one set of files & admin system
-*   ACL
-*   Webpage import and exportÂ 
-*   Site duplication button to duplicate a website quicklyÂ 
-*   Azure support for SQL, Caching and Lucene
+If you would like to contribute to Mr CMS ecommerce by supplying any missing features please do so by submitting a pull request.
