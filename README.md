@@ -75,7 +75,6 @@ Version 0.2
 	* In Order Placed email use product name and variant name for items
 	* Create generic design
 	* Create discount code limitation to SKU and Category
-	* Add in Geo Code for orders: https://freegeoip.net/json/77.95.33.45
 
 Version 0.2.1
 ------------
@@ -107,11 +106,11 @@ Version 0.4 (May 2015)
 -----------
 	* Custom stock messages for in/out of stock
 	* Brand search page and search
-	* Feedback app
-	* URL Generator configuation for products/brands/categories
-	* Braintree support
+	* URL Generator configuation for products/brands/categories	
 	* Review score can be viewed on product card
 	* E-tag admin
-	* My account pages broken down into: details, change password, orders, reviews, rewards, addresses
+	* My account pages broken down into: details, change password, orders, reviews, rewards, addresses		
 	* Reward points can be used during checkout
-	* Newsletter list
+	* Newsletter build made into app
+	* Feedback app
+	* Braintree support
