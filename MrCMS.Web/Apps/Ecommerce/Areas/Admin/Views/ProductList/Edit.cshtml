@@ -1,0 +1,42 @@
+﻿@using MrCMS.Helpers
+@model MrCMS.Web.Apps.Ecommerce.Entities.NewsletterBuilder.ContentItems.ProductList
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPopup.cshtml";
+}
+
+@using (Html.BeginForm("Edit", "ProductList", FormMethod.Post))
+{
+    <fieldset style="min-height: 600px;">
+        <legend>
+            Edit Product List
+            <span class="btn-group  display-inline  pull-right">
+                <input type="submit" class="btn btn-primary" value="Save" />
+            </span>
+        </legend>
+
+        @Html.HiddenFor(x => x.Newsletter.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.Name)
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+        </div>
+        <div class="clearfix"></div>
+        <input autocomplete="off" class="form-control" id="searchparam" name="searchparam" placeholder="Search for product" type="text" />
+        <div class="clearfix"></div>
+        <br />
+        @Html.Hidden("productlistId", Model.Id)
+        <div class="form-group">
+            @Html.LabelFor(x => x.Products)
+            @Html.TextBoxFor(x => x.Products, new { @class = "form-control" })
+        </div>
+        <div id="products2">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table class="table table-striped table-condensed pull-left" style="margin-bottom: 0;"></table>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+}
+@{ Html.IncludeScript("~/Apps/Ecommerce/Areas/Admin/Content/Scripts/custom/content-item-product-list.js"); }

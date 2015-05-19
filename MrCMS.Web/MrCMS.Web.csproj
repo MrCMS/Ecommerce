@@ -24,9 +24,12 @@
     <OldToolsVersion>4.0</OldToolsVersion>
     <IISExpressSSLPort>
     </IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
+    <IISExpressAnonymousAuthentication>
+    </IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>
+    </IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>
+    </IISExpressUseClassicPipelineMode>
     <TargetFrameworkProfile />
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
     <AutoParameterizationWebConfigConnectionStrings>false</AutoParameterizationWebConfigConnectionStrings>
@@ -583,6 +586,8 @@
     <Compile Include="Apps\Ecommerce\ACL\WorldPaySettingsACL.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\ActionFilters\ReturnJsonTrueIfAjaxPostAttribute.cs" />
     <Compile Include="Apps\Ecommerce\Areas\Admin\Bundles\EcommerceAdminStylesheetBundle.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListController.cs" />
+    <Compile Include="Apps\Ecommerce\Areas\Admin\Controllers\ProductListTemplateDataController.cs" />
     <Compile Include="Apps\Ecommerce\Bundles\CheckoutLibScriptBundle.cs" />
     <Compile Include="Apps\Ecommerce\Bundles\CheckoutStylesheetBundle.cs" />
     <Compile Include="Apps\Ecommerce\Bundles\EcommerceLibScriptBundle.cs" />
@@ -4398,6 +4403,9 @@
     <Content Include="Apps\NewsletterBuilder\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\BraintreeSettings\Index.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Braintree\Form.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductListTemplateData\Edit.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductList\Add.cshtml" />
+    <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductList\Edit.cshtml" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
