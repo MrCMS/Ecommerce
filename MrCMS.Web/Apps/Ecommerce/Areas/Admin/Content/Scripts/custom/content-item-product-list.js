@@ -8,7 +8,7 @@
                 $("table").empty();
                 $.each(response, function (key, val) {
                     $("table").append("<tr><td>" + val["Name"] + "</td><td><div class=\"pull-right\"><button data-product-id=\"" + val["ProductID"] + "\" data-product-name=\"" + val["Name"] + "\" class=\"btn btn-success add-product\">Add</button></div></td></tr>");
-                })
+                });
             });
         }
         else {
