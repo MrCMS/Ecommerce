@@ -3925,7 +3925,7 @@
     <Content Include="Apps\Ecommerce\Views\Shared\SearchOptions.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\SearchSpecifications.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\SocialLinks.cshtml" />
-    <Content Include="Apps\Ecommerce\Views\Shared\_BaseLayout.cshtml" />
+    <Content Include="Apps\Ecommerce\Views\Shared\_BaseEcommerceLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_CheckoutLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_ContentLayout.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\_EcommerceLayout.cshtml" />
@@ -4409,12 +4409,10 @@
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />
-    <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Shared\_TwoColumn.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Web.config" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Widgets\Slider.cshtml" />
     <Content Include="Themes\Ecommerce\Apps\Core\Views\Widgets\UserLinks.cshtml" />
-    <Content Include="Themes\Ecommerce\Apps\Ecommerce\Views\Web.config" />
     <Content Include="Themes\Ecommerce\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -4442,11 +4440,6 @@
     <Folder Include="Apps\Galleries\Views\Widgets\" />
     <Folder Include="Apps\Galleries\Widgets\" />
     <Folder Include="Themes\Ecommerce\Apps\Core\Views\Pages\" />
-    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Content\Styles\" />
-    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Cart\" />
-    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Pages\" />
-    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Shared\" />
-    <Folder Include="Themes\Ecommerce\Apps\Ecommerce\Views\Webpage\" />
     <Folder Include="Themes\Ecommerce\Content\" />
     <Folder Include="Themes\Ecommerce\Shared\" />
     <Folder Include="Themes\Ecommerce\Views\Shared\" />
