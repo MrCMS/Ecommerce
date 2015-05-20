@@ -124,7 +124,7 @@
                     @if (!string.IsNullOrWhiteSpace(product.ProductAbstract))
                     {
                         <div class="padding-bottom-10" itemprop="description">
-                            @Editable(product, p => p.ProductAbstract, true)
+                            @Editable(product, p => p.ProductAbstract, false)
                         </div>
                     }
 
