@@ -77,5 +77,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public ActionResult ValidateNameIsAllowed(string name, int? id)
+        {
+            return _eTagAdminService.NameIsValidForETag(name, id)
+                ? Json("Please choose a different NAME as this one is already used.", JsonRequestBehavior.AllowGet)
+                : Json(true, JsonRequestBehavior.AllowGet);
+        }
     }
 }

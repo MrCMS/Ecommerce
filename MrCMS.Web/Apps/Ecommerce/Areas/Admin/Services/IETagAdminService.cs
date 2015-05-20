@@ -17,5 +17,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
 
         ETag GetById(int id);
         ETag GetETagByName(string name);
+        bool NameIsValidForETag(string name, int? id);
     }
 }
