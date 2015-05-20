@@ -14,9 +14,6 @@ namespace MrCMS.Web.Apps.Stats.Filters
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (!CurrentRequestData.DatabaseIsInstalled) 
-                return; 
-
             var botAgentsAndIPs = filterContext.HttpContext.Get<BotAgentsAndIPs>();
             if (botAgentsAndIPs.IsABot(filterContext.HttpContext.Request))
                 return;
