@@ -4,10 +4,10 @@
 {
 
     @Html.HiddenFor(model => model.ProductVariant.Id)
-    <div id="product-addtobasket" class="padding-bottom-20 grey-border-bottom">
+    <div id="product-addtobasket" class="padding-bottom-20">
         <div class="col-sm-3 col-xs-4 padding-left-0">@Html.LabelFor(model => model.Quantity, new { @class = "line-height-30" })</div>
         <div class="col-sm-9 col-xs-8">
-            @Html.TextBoxFor(model => model.Quantity, new { @class = "" })
+            @Html.TextBoxFor(model => model.Quantity, new { @class = "qty-input" })
             <div class="clearfix"></div>
             @Html.ValidationMessageFor(model => model.Quantity)
         </div>
@@ -16,7 +16,7 @@
         {
             Html.RenderPartial("GiftCardInfo", new GiftCardInfo());
         }
-        <button class="btn btn-primary btn-block" type="submit">Add to basket</button>
+        <button class="btn btn-primary btn-block" type="submit">@Resource("Product details add to cart", "Add to basket")</button>
         <div class="clearfix"></div>
     </div>
 }

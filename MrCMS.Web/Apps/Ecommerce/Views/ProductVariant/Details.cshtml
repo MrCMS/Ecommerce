@@ -63,6 +63,11 @@
                         {
                             Html.RenderAction("Add", "AddToCart", new { model = new AddToCartModel { ProductVariant = Model, Quantity = 1 } });
                         }
+
+                        Html.RenderAction("Add", "Wishlist", new { productVariant = Model });
+
+                        Html.RenderPartial("ProductPricebreaks", Model);                        
+                                                
                         if (canBuy is OutOfStock)
                         {
                             <span itemprop="availability" content="out_of_stock" class="bg-warning">@(!string.IsNullOrEmpty(Model.CustomStockOutOfStockMessage) ? Model.CustomStockOutOfStockMessage : Resource("Out of stock"))</span> <br />
@@ -80,32 +85,36 @@
                                 @canBuy.Message
                             </p>
                         }
-                        if (!string.IsNullOrWhiteSpace(Model.SKU))
-                        {
-                            @:SKU: <span itemprop="identifier" content="sku:@Model.SKU">@Model.SKU</span><br />
-                                            }
-                        if (product.BrandPage != null)
-                        {
-                            if (!string.IsNullOrWhiteSpace(product.BrandPage.FeatureImage))
+                        <table class="table table-condensed">
+                            <tr>
+                                <th colspan="2">Product Information</th>
+                            </tr>
+                            @if (!string.IsNullOrWhiteSpace(Model.SKU))
                             {
-                                <a href="/@product.BrandPage.LiveUrlSegment">
-                                    @RenderImage(product.BrandPage.FeatureImage, new Size { Width = 120 }, product.BrandPage.Name, product.BrandPage.Name, new { @class = "img-responsive" })
-                                </a>
-                                <br />
+                                <tr>
+                                    <td width="20%">@Resource("Product Details SKU", "SKU")</td>
+                                    <td><span itemprop="identifier" content="sku:@Model.SKU">@Model.SKU</span></td>
+                                </tr>
                             }
-                            else
+                            @if (product.BrandPage != null)
                             {
-                                @:Brand: <span itemprop="brand"><a href="/@product.BrandPage.LiveUrlSegment">@product.BrandPage.Name</a></span><br />
+                                <tr>
+                                    <td>@Resource("Product Details Brand", "Brand")</td>
+                                    <td><a href="/@product.BrandPage.LiveUrlSegment"><span itemprop="brand">@product.BrandPage.Name</span></a></td>
+                                </tr>
                             }
-                        }
-                        if (mainCategory != null)
-                        {
-                            @:Category: <span itemprop="category" content="@mainCategory.NestedName"><a href="/@mainCategory.UrlSegment">@mainCategory.Name</a></span><br />
-                        }
+                            @if (mainCategory != null)
+                            {
+                                <tr>
+                                    <td>@Resource("Product Details Category", "Category")</td>
+                                    <td>
+                                        <span itemprop="category" content="@mainCategory.NestedName"><a href="/@mainCategory.UrlSegment">@mainCategory.Name</a></span>
+                                    </td>
+                                </tr>
+                            }
+                        </table>
 
-                        Html.RenderAction("Add", "Wishlist", new { productVariant = Model });
 
-                        Html.RenderPartial("ProductPricebreaks", Model);
                     }
                     else
                     {
