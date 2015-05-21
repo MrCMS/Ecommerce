@@ -66,7 +66,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Services.Cart
             return billingAddress;
         }
 
-
         private string GetPaymentMethod(Guid userGuid)
         {
             return _cartSessionManager.GetSessionValue<string>(CartManager.CurrentPaymentMethodKey, userGuid);
