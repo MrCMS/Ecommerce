@@ -8,7 +8,7 @@
         @if (Model.ETag != null && !string.IsNullOrEmpty(Model.ETag.Image))
         {
             <a href="/@Model.Url" class="e-tag-image">
-                @RenderImage(Model.ETag.Image, new Size { Width = 200, Height = 175 }, attributes: new { @class = "img-responsive" })
+                @RenderImage(Model.ETag.Image, attributes: new { @class = "img-responsive" })
             </a>
         }
         <a href="/@Model.Url">@RenderImage(Model.Image, new Size { Width = 200, Height = 175 }, attributes: new { @class = "img-responsive" })</a>

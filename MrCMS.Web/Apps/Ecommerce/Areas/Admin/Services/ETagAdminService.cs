@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using MrCMS.Entities.Documents.Web;
 using MrCMS.Helpers;
 using MrCMS.Paging;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
@@ -71,6 +72,20 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services
                             .Where(
                                 brand =>
                                 brand.Name.IsInsensitiveLike(name, MatchMode.Exact)).SingleOrDefault();
+        }
+
+        public bool NameIsValidForETag(string name, int? id)
+        {
+            if (string.IsNullOrEmpty(name))
+                return false;
+            var query = _session.QueryOver<ETag>()
+                .Where(eTag => eTag.Name == name);
+
+            if (id.HasValue)
+                query = query.Where(x => x.Id != id);
+            
+            return query.Cacheable()
+                .RowCount() > 0;
         }
     }
 }

@@ -35,7 +35,7 @@ namespace MrCMS.Web.Apps.Ecommerce.Installation.Services
             var baseLayout = new Layout
             {
                 Name = "Base Ecommerce Layout",
-                UrlSegment = "_BaseLayout",
+                UrlSegment = "_BaseEcommerceLayout",
                 LayoutAreas = new List<LayoutArea>(),
             };
             _documentService.AddDocument(baseLayout);

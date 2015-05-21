@@ -364,5 +364,10 @@ namespace MrCMS.Web.Apps.Ecommerce.Entities.Products
         [DisplayName("E-Tag")]
         public virtual ETag ETag { get; set; }
 
+        public virtual bool CanShowEtag
+        {
+            get { return this.ETag != null && !string.IsNullOrWhiteSpace(this.ETag.Image); }
+        }
+
     }
 }
