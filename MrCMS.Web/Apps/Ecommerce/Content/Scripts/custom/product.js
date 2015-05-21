@@ -43,7 +43,7 @@ var Product = new function () {
 
     function reloadProductReviews() {
         var state = History.getState();
-        $.get('Apps/Ecommerce/ProductVariant/ProductReviews', { productVariantId: state.data.variant }, function (response) {
+        $.get('/Apps/Ecommerce/ProductVariant/ProductReviews', { productVariantId: state.data.variant }, function (response) {
             $('[data-product-review]').replaceWith(response);
             resetValidation();
         });

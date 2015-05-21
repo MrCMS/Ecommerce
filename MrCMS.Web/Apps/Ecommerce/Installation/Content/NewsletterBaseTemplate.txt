@@ -189,8 +189,9 @@ h2 {margin:0 0 10px 0; padding:0; mso-line-height-rule: exactly;font-size: 22px;
                                                 <tr>
                                                     <td bgcolor="#ffffff">
                                                         <p style="mso-table-lspace:0;mso-table-rspace:0;padding:0;margin:0;">
-                                                            <a href="http://www.mrcmsecommerce.co.uk.web-preview.eu" target="_blank">
-                                                                <img src="http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/newsletter/logo.jpg" alt="header image" border="0" style="display: block;" />
+                                                            <a href="http://ecommerce-demo.preview.hosting/" target="_blank">
+
+<img src="http://ecommerce-demo.preview.hosting/content/upload/1/default/logo1.png" target="_blank"/>
                                                             </a>
                                                         </p>
                                                     </td>
@@ -204,8 +205,8 @@ h2 {margin:0 0 10px 0; padding:0; mso-line-height-rule: exactly;font-size: 22px;
                                             <table align="right" class="" border="0" cellpadding="0" cellspacing="0" style="border:1px solid #ffffff;padding-top:5px;">
                                                 <tr>
                                                     <td bgcolor="#ffffff" class="center">
-                                                        <p style="mso-table-lspace:0;mso-table-rspace:0;padding: 5px 0 0 0;margin:0;">
-                                                            <a href="http://www.mrcmsecommerce.co.uk.web-preview.eu" target="_blank"><img src="http://ecommerce-demo.mrcms.com.web-preview.eu/content/upload/1/newsletter/btn-shop-now.jpg" alt="" border="0" style="display: block;" /></a>
+                                                        <p style="mso-table-lspace:0;mso-table-rspace:0;padding: 10px 0 0 0;margin:0;">
+                                                            <a href="http://ecommerce-demo.preview.hosting/" target="_blank" style="background:#4679C3;color:#fff;text-decoration:none;padding:10px 20px;font-family:Arial,Serif;">Shop Now</a>
                                                         </p>
                                                     </td>
                                                 </tr>
