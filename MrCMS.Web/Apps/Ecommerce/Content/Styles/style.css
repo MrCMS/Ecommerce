@@ -103,6 +103,9 @@ nav .navbar-collapse.collapse { padding-left: 0; }
     .product-con .product-price .old-price .inner { color: #444444; }
     .product-con .product-price .old-price { text-decoration: line-through; color: #EA2D48; }
 
+/* Product details*/
+.qty-input { width: 50px;}
+
 /*Category Container*/
 .category-con { margin-bottom: 10px; }
     .category-con .category-image { margin-bottom: 10px; min-height: 184px; }

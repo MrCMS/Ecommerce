@@ -77,8 +77,6 @@ namespace MrCMS.Web.Apps.Ecommerce.Models
 
                 var ecommerceMenu = new SubMenu();
                 ecommerceMenu.AddRange(adminItems);
-                ecommerceMenu.Add(new ChildMenuItem("Templates", _urlHelper.Action("Index", "NewsletterTemplate"),
-                    ACLOption.Create(new NewsletterTemplateACL(), NewsletterTemplateACL.List)));
                 ecommerceMenu.Add(new ChildMenuItem("Product Reviews", _urlHelper.Action("Index", "ProductReview"),
                     ACLOption.Create(new ProductReviewACL(), ProductReviewACL.List)));
                 return ecommerceMenu;

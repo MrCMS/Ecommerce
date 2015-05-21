@@ -5,7 +5,7 @@
         formSelector = '[data-discount-application]';
 
     function updateFancyBox() {
-        parent.$.fancybox.update();
+        //parent.$.fancybox.update();
     }
     function setFields(html) {
         var fieldsContainer = $(fieldsSelector);

@@ -27,10 +27,5 @@ namespace MrCMS.Web.Apps.Ecommerce.Metadata
         {
             get { return true; }
         }
-
-        public override bool ChildrenMaintainHierarchy
-        {
-            get { return false; }
-        }
     }
 }

@@ -1,4 +1,5 @@
 using System.Web.Mvc;
+using MrCMS.Services.Resources;
 using MrCMS.Web.Apps.Ecommerce.ACL;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Models;
 using MrCMS.Web.Apps.Ecommerce.Areas.Admin.Services;
@@ -12,10 +13,12 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
     public class ETagController : MrCMSAppAdminController<EcommerceApp>
     {
         private readonly IETagAdminService _eTagAdminService;
+        private readonly IStringResourceProvider _stringResourceProvider;
 
-        public ETagController(IETagAdminService eTagAdminService)
+        public ETagController(IETagAdminService eTagAdminService, IStringResourceProvider  stringResourceProvider)
         {
             _eTagAdminService = eTagAdminService;
+            _stringResourceProvider = stringResourceProvider;
         }
 
         [MrCMSACLRule(typeof(ETagACL), ETagACL.List)]
@@ -76,6 +79,13 @@ namespace MrCMS.Web.Apps.Ecommerce.Areas.Admin.Controllers
             _eTagAdminService.Delete(eTag);
 
             return RedirectToAction("Index");
+        }
+
+        public ActionResult ValidateNameIsAllowed(string name, int? id)
+        {
+            return _eTagAdminService.NameIsValidForETag(name, id)
+                ? Json(_stringResourceProvider.GetValue("Ecommerce - Admin - ETag name validation","Please choose a different name as this one is already used."), JsonRequestBehavior.AllowGet)
+                : Json(true, JsonRequestBehavior.AllowGet);
         }
     }
 }

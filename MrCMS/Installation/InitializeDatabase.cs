@@ -1,6 +1,7 @@
 using System;
 using MrCMS.Entities.Multisite;
 using MrCMS.Helpers;
+using MrCMS.Indexing;
 using MrCMS.Services;
 using MrCMS.Settings;
 using MrCMS.Tasks;
@@ -92,7 +93,12 @@ namespace MrCMS.Installation
                 Type = typeof(DeleteExpiredLogsTask).FullName,
                 EveryXSeconds = 600
             };
- 
+
+            var optimizeIndexes = new ScheduledTask
+            {
+                Type = typeof(OptimiseIndexes).FullName,
+                EveryXSeconds = 600
+            };
 
             _session.Transact(s =>
             {
@@ -101,6 +107,7 @@ namespace MrCMS.Installation
                 s.Save(sendQueueEmailsTask);
                 s.Save(publishPagesTask);
                 s.Save(deleteOldLogsTask);
+                s.Save(optimizeIndexes);
             });
 
         }
