@@ -57,6 +57,7 @@
         $(document).on('change', 'input[name="TermsAndConditionsAccepted"]', showHidePaymentOptions);
         $(document).on('add-discount', setPaymentMethod);
         $(document).on('remove-discount', setPaymentMethod);
+        $(document).on('reward-points-updated', setPaymentMethod);
         setPaymentMethod();
 
         $('input[type=checkbox][name="TermsAndConditionsAccepted"]').change();

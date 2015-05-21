@@ -1917,6 +1917,7 @@
     <Compile Include="Apps\Stats\Filters\AnalyticsSessionFilter.cs" />
     <Compile Include="Apps\Stats\Filters\PreventBotsAttribute.cs" />
     <Compile Include="Apps\Stats\Helpers\PagingHelper.cs" />
+    <Compile Include="Apps\Stats\Helpers\WebpageStatsExtensions.cs" />
     <Compile Include="Apps\Stats\Models\PageViewInfo.cs" />
     <Compile Include="Apps\Stats\Services\ILogPageViewService.cs" />
     <Compile Include="Apps\Stats\Services\LogPageViewService.cs" />
@@ -4053,10 +4054,6 @@
     <Content Include="Apps\MobileFriendlyNavigation\Views\razorgenerator.directives" />
     <Content Include="Apps\MobileFriendlyNavigation\Views\web.config" />
     <Content Include="Apps\MobileFriendlyNavigation\Views\Widgets\MobileFriendlyNavigation.cshtml" />
-    <Content Include="Apps\Stats\Areas\Admin\Views\PageViews\Index.cshtml" />
-    <Content Include="Apps\Stats\Areas\Admin\Views\razorgenerator.directives" />
-    <Content Include="Apps\Stats\Areas\Admin\Views\Web.config" />
-    <Content Include="Apps\Stats\Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Apps\Ecommerce\Views\Shared\ShowStarRating.cshtml" />
     <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\fontawesome-webfont.eot" />
     <Content Include="Apps\Ecommerce\Content\FontAwesome\fonts\fontawesome-webfont.ttf" />
@@ -4406,6 +4403,11 @@
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductListTemplateData\Edit.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductList\Add.cshtml" />
     <Content Include="Apps\Ecommerce\Areas\Admin\Views\ProductList\Edit.cshtml" />
+    <Content Include="Apps\Stats\Areas\Admin\Views\PageViews\Index.cshtml" />
+    <Content Include="Apps\Stats\Areas\Admin\Views\razorgenerator.directives" />
+    <Content Include="Apps\Stats\Areas\Admin\Views\Web.config" />
+    <Content Include="Apps\Stats\Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Apps\Stats\LICENSE" />
     <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\ecommerce-test.pubxml" />
     <None Include="Properties\PublishProfiles\new.pubxml" />

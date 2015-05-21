@@ -6,7 +6,7 @@
     function setFields(html) {
         var fieldsContainer = $(fieldsSelector);
         fieldsContainer.html(html);
-        parent.$.fancybox.update();
+        //parent.$.fancybox.update();
     }
 
     function submitForm(event) {
